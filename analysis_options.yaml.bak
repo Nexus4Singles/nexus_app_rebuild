@@ -1,0 +1,23 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - lib/_ignored/**
+    - lib/**/_ignored/**
+    - lib/**/generated/**
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+
+linter:
+  rules:
+    # Reduce noise for generated / preview-heavy code
+    prefer_const_constructors: false
+    prefer_const_literals_to_create_immutables: false
+    prefer_const_declarations: false
+    deprecated_member_use: false
+    unused_import: false
+    dead_null_aware_expression: false
+    unnecessary_null_comparison: false
+    constant_pattern_never_matches_value_type: false
+    unrelated_type_equality_checks: false
+    dangling_library_doc_comments: false

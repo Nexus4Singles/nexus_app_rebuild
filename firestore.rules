@@ -1,0 +1,142 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // =============================================
+    // HELPER FUNCTIONS
+    // =============================================
+    
+    // Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Check if user owns this document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Check if user is participant in chat
+    function isParticipant(participantIds) {
+      return isAuthenticated() && request.auth.uid in participantIds;
+    }
+    
+    // =============================================
+    // USERS COLLECTION
+    // =============================================
+    
+    match /users/{userId} {
+      // Anyone authenticated can read user profiles (for search/discovery)
+      allow read: if isAuthenticated();
+      
+      // Only owner can write their own profile
+      allow write: if isOwner(userId);
+      
+      // Nexus2 subcollection
+      match /nexus2/{document=**} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      // Story progress subcollection
+      match /storyProgress/{storyId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      // Assessment history subcollection  
+      match /assessmentHistory/{assessmentId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+    
+    // =============================================
+    // CHATS COLLECTION
+    // =============================================
+    
+    match /chats/{chatId} {
+      // Only participants can read/write chat metadata
+      allow read: if isAuthenticated() && 
+        isParticipant(resource.data.participantIds);
+      
+      allow create: if isAuthenticated() && 
+        request.auth.uid in request.resource.data.participantIds;
+      
+      allow update: if isAuthenticated() && 
+        isParticipant(resource.data.participantIds);
+      
+      // Messages subcollection
+      match /messages/{messageId} {
+        // Only participants can read messages
+        allow read: if isAuthenticated() && 
+          isParticipant(get(/databases/$(database)/documents/chats/$(chatId)).data.participantIds);
+        
+        // Only sender can create message
+        allow create: if isAuthenticated() && 
+          request.auth.uid == request.resource.data.senderId &&
+          isParticipant(get(/databases/$(database)/documents/chats/$(chatId)).data.participantIds);
+        
+        // Only receiver can update (mark as read)
+        allow update: if isAuthenticated() && 
+          request.auth.uid == resource.data.receiverId;
+      }
+    }
+    
+    // =============================================
+    // STORIES & POLLS (Read-only for users)
+    // =============================================
+    
+    match /stories/{storyId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Admin only via Firebase Console
+    }
+    
+    match /polls/{pollId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Admin only
+    }
+    
+    // =============================================
+    // POLL VOTES
+    // =============================================
+    
+    match /pollVotes/{pollId}/votes/{oderId} {
+      // Users can read their own votes
+      allow read: if isOwner(oderId);
+      
+      // Users can create their vote (once)
+      allow create: if isOwner(oderId);
+      
+      // No updates or deletes (vote is final)
+      allow update, delete: if false;
+    }
+    
+    // =============================================
+    // POLL AGGREGATES (Results)
+    // =============================================
+    
+    match /pollAggregates/{pollId} {
+      // Anyone authenticated can read results (after voting)
+      allow read: if isAuthenticated();
+      
+      // Only the system updates aggregates (via client SDK with increment)
+      allow write: if isAuthenticated();
+    }
+    
+    // =============================================
+    // APP CONFIG (Read-only)
+    // =============================================
+    
+    match /config/{configId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Admin only
+    }
+    
+    // =============================================
+    // ASSESSMENTS (Read-only catalog)
+    // =============================================
+    
+    match /assessments/{assessmentId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Admin only
+    }
+  }
+}

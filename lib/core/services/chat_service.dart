@@ -1,0 +1,580 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+
+/// Chat message model
+class ChatMessage {
+  final String id;
+  final String chatId;
+  final String senderId;
+  final String receiverId;
+  final String content;
+  final MessageType type;
+  final DateTime sentAt;
+  final DateTime? readAt;
+  final bool isRead;
+  final Map<String, dynamic>? metadata;
+
+  const ChatMessage({
+    required this.id,
+    required this.chatId,
+    required this.senderId,
+    required this.receiverId,
+    required this.content,
+    this.type = MessageType.text,
+    required this.sentAt,
+    this.readAt,
+    this.isRead = false,
+    this.metadata,
+  });
+
+  factory ChatMessage.fromFirestore(Map<String, dynamic> data, String id) {
+    return ChatMessage(
+      id: id,
+      chatId: data['chatId'] as String? ?? '',
+      senderId: data['senderId'] as String? ?? '',
+      receiverId: data['receiverId'] as String? ?? '',
+      content: data['content'] as String? ?? '',
+      type: MessageType.fromString(data['type'] as String?),
+      sentAt: (data['sentAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      readAt: (data['readAt'] as Timestamp?)?.toDate(),
+      isRead: data['isRead'] as bool? ?? false,
+      metadata: data['metadata'] as Map<String, dynamic>?,
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      'chatId': chatId,
+      'senderId': senderId,
+      'receiverId': receiverId,
+      'content': content,
+      'type': type.name,
+      'sentAt': FieldValue.serverTimestamp(),
+      'readAt': readAt != null ? Timestamp.fromDate(readAt!) : null,
+      'isRead': isRead,
+      'metadata': metadata,
+    };
+  }
+
+  ChatMessage copyWith({
+    String? id,
+    String? chatId,
+    String? senderId,
+    String? receiverId,
+    String? content,
+    MessageType? type,
+    DateTime? sentAt,
+    DateTime? readAt,
+    bool? isRead,
+    Map<String, dynamic>? metadata,
+  }) {
+    return ChatMessage(
+      id: id ?? this.id,
+      chatId: chatId ?? this.chatId,
+      senderId: senderId ?? this.senderId,
+      receiverId: receiverId ?? this.receiverId,
+      content: content ?? this.content,
+      type: type ?? this.type,
+      sentAt: sentAt ?? this.sentAt,
+      readAt: readAt ?? this.readAt,
+      isRead: isRead ?? this.isRead,
+      metadata: metadata ?? this.metadata,
+    );
+  }
+}
+
+enum MessageType {
+  text,
+  image,
+  audio,
+  video,
+  file,
+  system;
+
+  static MessageType fromString(String? value) {
+    return MessageType.values.firstWhere(
+      (e) => e.name == value,
+      orElse: () => MessageType.text,
+    );
+  }
+}
+
+/// Chat conversation model (metadata for a chat between two users)
+class ChatConversation {
+  final String id;
+  final List<String> participantIds;
+  final String? lastMessage;
+  final DateTime? lastMessageAt;
+  final String? lastMessageSenderId;
+  final Map<String, int> unreadCounts;
+  final Map<String, DateTime?> lastReadAt;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final bool isActive;
+
+  const ChatConversation({
+    required this.id,
+    required this.participantIds,
+    this.lastMessage,
+    this.lastMessageAt,
+    this.lastMessageSenderId,
+    this.unreadCounts = const {},
+    this.lastReadAt = const {},
+    required this.createdAt,
+    this.updatedAt,
+    this.isActive = true,
+  });
+
+  factory ChatConversation.fromFirestore(Map<String, dynamic> data, String id) {
+    return ChatConversation(
+      id: id,
+      participantIds: List<String>.from(data['participantIds'] ?? []),
+      lastMessage: data['lastMessage'] as String?,
+      lastMessageAt: (data['lastMessageAt'] as Timestamp?)?.toDate(),
+      lastMessageSenderId: data['lastMessageSenderId'] as String?,
+      unreadCounts: Map<String, int>.from(data['unreadCounts'] ?? {}),
+      lastReadAt: (data['lastReadAt'] as Map<String, dynamic>?)?.map(
+        (key, value) => MapEntry(key, (value as Timestamp?)?.toDate()),
+      ) ?? {},
+      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      updatedAt: (data['updatedAt'] as Timestamp?)?.toDate(),
+      isActive: data['isActive'] as bool? ?? true,
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      'participantIds': participantIds,
+      'lastMessage': lastMessage,
+      'lastMessageAt': lastMessageAt != null ? Timestamp.fromDate(lastMessageAt!) : null,
+      'lastMessageSenderId': lastMessageSenderId,
+      'unreadCounts': unreadCounts,
+      'lastReadAt': lastReadAt.map(
+        (key, value) => MapEntry(key, value != null ? Timestamp.fromDate(value) : null),
+      ),
+      'createdAt': Timestamp.fromDate(createdAt),
+      'updatedAt': FieldValue.serverTimestamp(),
+      'isActive': isActive,
+    };
+  }
+
+  /// Get the other participant's ID
+  String getOtherParticipantId(String currentUserId) {
+    return participantIds.firstWhere(
+      (id) => id != currentUserId,
+      orElse: () => '',
+    );
+  }
+
+  /// Get unread count for a user
+  int getUnreadCount(String userId) {
+    return unreadCounts[userId] ?? 0;
+  }
+}
+
+/// Service for managing chat functionality
+class ChatService {
+  final FirebaseFirestore _firestore;
+
+  ChatService({FirebaseFirestore? firestore})
+      : _firestore = firestore ?? FirebaseFirestore.instance;
+
+  // Collection references
+  CollectionReference<Map<String, dynamic>> get _chatsRef =>
+      _firestore.collection('chats');
+
+  CollectionReference<Map<String, dynamic>> _messagesRef(String chatId) =>
+      _chatsRef.doc(chatId).collection('messages');
+
+  // ============================================================================
+  // CONVERSATION MANAGEMENT
+  // ============================================================================
+
+  /// Create a new chat conversation between two users
+  /// Returns the chat ID
+  Future<String> createConversation(String userId1, String userId2) async {
+    try {
+      // Check if conversation already exists
+      final existingChat = await getConversationBetween(userId1, userId2);
+      if (existingChat != null) {
+        return existingChat.id;
+      }
+
+      // Create new conversation
+      final chatRef = _chatsRef.doc();
+      final conversation = ChatConversation(
+        id: chatRef.id,
+        participantIds: [userId1, userId2]..sort(), // Sort for consistent ordering
+        createdAt: DateTime.now(),
+        unreadCounts: {userId1: 0, userId2: 0},
+      );
+
+      await chatRef.set(conversation.toFirestore());
+      return chatRef.id;
+    } catch (e) {
+      throw ChatException('Failed to create conversation: $e');
+    }
+  }
+
+  /// Get conversation between two users
+  Future<ChatConversation?> getConversationBetween(String userId1, String userId2) async {
+    try {
+      final sortedIds = [userId1, userId2]..sort();
+      
+      final query = await _chatsRef
+          .where('participantIds', isEqualTo: sortedIds)
+          .limit(1)
+          .get();
+
+      if (query.docs.isEmpty) return null;
+      
+      return ChatConversation.fromFirestore(
+        query.docs.first.data(),
+        query.docs.first.id,
+      );
+    } catch (e) {
+      debugPrint('Error getting conversation: $e');
+      return null;
+    }
+  }
+
+  /// Get conversation by ID
+  Future<ChatConversation?> getConversation(String chatId) async {
+    try {
+      final doc = await _chatsRef.doc(chatId).get();
+      if (!doc.exists || doc.data() == null) return null;
+      return ChatConversation.fromFirestore(doc.data()!, doc.id);
+    } catch (e) {
+      debugPrint('Error getting conversation: $e');
+      return null;
+    }
+  }
+
+  /// Get all conversations for a user
+  Future<List<ChatConversation>> getUserConversations(String userId) async {
+    try {
+      final query = await _chatsRef
+          .where('participantIds', arrayContains: userId)
+          .where('isActive', isEqualTo: true)
+          .orderBy('lastMessageAt', descending: true)
+          .get();
+
+      return query.docs
+          .map((doc) => ChatConversation.fromFirestore(doc.data(), doc.id))
+          .toList();
+    } catch (e) {
+      throw ChatException('Failed to get conversations: $e');
+    }
+  }
+
+  /// Stream all conversations for a user (real-time)
+  Stream<List<ChatConversation>> streamUserConversations(String userId) {
+    return _chatsRef
+        .where('participantIds', arrayContains: userId)
+        .where('isActive', isEqualTo: true)
+        .orderBy('lastMessageAt', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => ChatConversation.fromFirestore(doc.data(), doc.id))
+            .toList());
+  }
+
+  /// Delete/deactivate a conversation
+  Future<void> deleteConversation(String chatId) async {
+    try {
+      await _chatsRef.doc(chatId).update({
+        'isActive': false,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      throw ChatException('Failed to delete conversation: $e');
+    }
+  }
+
+  // ============================================================================
+  // MESSAGE OPERATIONS
+  // ============================================================================
+
+  /// Send a text message
+  Future<ChatMessage> sendMessage({
+    required String chatId,
+    required String senderId,
+    required String receiverId,
+    required String content,
+    MessageType type = MessageType.text,
+    Map<String, dynamic>? metadata,
+  }) async {
+    try {
+      final messageRef = _messagesRef(chatId).doc();
+      
+      final message = ChatMessage(
+        id: messageRef.id,
+        chatId: chatId,
+        senderId: senderId,
+        receiverId: receiverId,
+        content: content,
+        type: type,
+        sentAt: DateTime.now(),
+        metadata: metadata,
+      );
+
+      // Use batch for atomic operation
+      final batch = _firestore.batch();
+
+      // Add message
+      batch.set(messageRef, message.toFirestore());
+
+      // Update conversation metadata
+      batch.update(_chatsRef.doc(chatId), {
+        'lastMessage': type == MessageType.text 
+            ? content 
+            : _getMessageTypePreview(type),
+        'lastMessageAt': FieldValue.serverTimestamp(),
+        'lastMessageSenderId': senderId,
+        'unreadCounts.$receiverId': FieldValue.increment(1),
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
+      return message;
+    } catch (e) {
+      throw ChatException('Failed to send message: $e');
+    }
+  }
+
+  String _getMessageTypePreview(MessageType type) {
+    switch (type) {
+      case MessageType.image:
+        return '📷 Photo';
+      case MessageType.audio:
+        return '🎵 Voice message';
+      case MessageType.video:
+        return '🎥 Video';
+      case MessageType.file:
+        return '📎 File';
+      case MessageType.system:
+        return 'System message';
+      default:
+        return '';
+    }
+  }
+
+  /// Send a quick text message (convenience method)
+  Future<ChatMessage> sendTextMessage({
+    required String chatId,
+    required String senderId,
+    required String receiverId,
+    required String text,
+  }) async {
+    return sendMessage(
+      chatId: chatId,
+      senderId: senderId,
+      receiverId: receiverId,
+      content: text,
+      type: MessageType.text,
+    );
+  }
+
+  /// Send an image message
+  Future<ChatMessage> sendImageMessage({
+    required String chatId,
+    required String senderId,
+    required String receiverId,
+    required String imageUrl,
+    String? caption,
+  }) async {
+    return sendMessage(
+      chatId: chatId,
+      senderId: senderId,
+      receiverId: receiverId,
+      content: imageUrl,
+      type: MessageType.image,
+      metadata: caption != null ? {'caption': caption} : null,
+    );
+  }
+
+  /// Send an audio message
+  Future<ChatMessage> sendAudioMessage({
+    required String chatId,
+    required String senderId,
+    required String receiverId,
+    required String audioUrl,
+    required int durationSeconds,
+  }) async {
+    return sendMessage(
+      chatId: chatId,
+      senderId: senderId,
+      receiverId: receiverId,
+      content: audioUrl,
+      type: MessageType.audio,
+      metadata: {'duration': durationSeconds},
+    );
+  }
+
+  /// Get messages for a chat
+  Future<List<ChatMessage>> getMessages(
+    String chatId, {
+    int limit = 50,
+    DocumentSnapshot? startAfter,
+  }) async {
+    try {
+      Query<Map<String, dynamic>> query = _messagesRef(chatId)
+          .orderBy('sentAt', descending: true)
+          .limit(limit);
+
+      if (startAfter != null) {
+        query = query.startAfterDocument(startAfter);
+      }
+
+      final snapshot = await query.get();
+      
+      return snapshot.docs
+          .map((doc) => ChatMessage.fromFirestore(doc.data(), doc.id))
+          .toList();
+    } catch (e) {
+      throw ChatException('Failed to get messages: $e');
+    }
+  }
+
+  /// Stream messages for a chat (real-time)
+  Stream<List<ChatMessage>> streamMessages(String chatId, {int limit = 50}) {
+    return _messagesRef(chatId)
+        .orderBy('sentAt', descending: true)
+        .limit(limit)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => ChatMessage.fromFirestore(doc.data(), doc.id))
+            .toList());
+  }
+
+  /// Delete a message
+  Future<void> deleteMessage(String chatId, String messageId) async {
+    try {
+      await _messagesRef(chatId).doc(messageId).delete();
+    } catch (e) {
+      throw ChatException('Failed to delete message: $e');
+    }
+  }
+
+  // ============================================================================
+  // READ STATUS
+  // ============================================================================
+
+  /// Mark messages as read
+  Future<void> markMessagesAsRead(String chatId, String userId) async {
+    try {
+      // Update unread count in conversation
+      await _chatsRef.doc(chatId).update({
+        'unreadCounts.$userId': 0,
+        'lastReadAt.$userId': FieldValue.serverTimestamp(),
+      });
+
+      // Optionally mark individual messages as read
+      final unreadMessages = await _messagesRef(chatId)
+          .where('receiverId', isEqualTo: userId)
+          .where('isRead', isEqualTo: false)
+          .get();
+
+      if (unreadMessages.docs.isEmpty) return;
+
+      final batch = _firestore.batch();
+      for (final doc in unreadMessages.docs) {
+        batch.update(doc.reference, {
+          'isRead': true,
+          'readAt': FieldValue.serverTimestamp(),
+        });
+      }
+      await batch.commit();
+    } catch (e) {
+      debugPrint('Error marking messages as read: $e');
+    }
+  }
+
+  /// Get total unread count for a user across all chats
+  Future<int> getTotalUnreadCount(String userId) async {
+    try {
+      final chats = await getUserConversations(userId);
+      int total = 0;
+      for (final chat in chats) {
+        total += chat.getUnreadCount(userId);
+      }
+      return total;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  /// Stream total unread count
+  Stream<int> streamTotalUnreadCount(String userId) {
+    return streamUserConversations(userId).map((chats) {
+      int total = 0;
+      for (final chat in chats) {
+        total += chat.getUnreadCount(userId);
+      }
+      return total;
+    });
+  }
+
+  // ============================================================================
+  // TYPING INDICATORS (Optional)
+  // ============================================================================
+
+  /// Set typing status
+  Future<void> setTypingStatus(String chatId, String userId, bool isTyping) async {
+    try {
+      await _chatsRef.doc(chatId).update({
+        'typingUsers.$userId': isTyping,
+      });
+    } catch (e) {
+      debugPrint('Error setting typing status: $e');
+    }
+  }
+
+  /// Stream typing users
+  Stream<List<String>> streamTypingUsers(String chatId) {
+    return _chatsRef.doc(chatId).snapshots().map((doc) {
+      final data = doc.data();
+      if (data == null) return <String>[];
+      
+      final typingUsers = data['typingUsers'] as Map<String, dynamic>? ?? {};
+      return typingUsers.entries
+          .where((e) => e.value == true)
+          .map((e) => e.key)
+          .toList();
+    });
+  }
+
+  // ============================================================================
+  // SEARCH & FILTERING
+  // ============================================================================
+
+  /// Search messages in a chat
+  Future<List<ChatMessage>> searchMessages(
+    String chatId,
+    String query, {
+    int limit = 20,
+  }) async {
+    try {
+      // Note: Firestore doesn't support full-text search
+      // This is a basic implementation - for production, use Algolia or similar
+      final messages = await getMessages(chatId, limit: 200);
+      
+      final queryLower = query.toLowerCase();
+      return messages
+          .where((m) => m.content.toLowerCase().contains(queryLower))
+          .take(limit)
+          .toList();
+    } catch (e) {
+      return [];
+    }
+  }
+}
+
+/// Exception for chat operations
+class ChatException implements Exception {
+  final String message;
+  ChatException(this.message);
+
+  @override
+  String toString() => 'ChatException: $message';
+}
