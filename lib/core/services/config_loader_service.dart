@@ -334,6 +334,13 @@ class ConfigLoaderService {
       loadPollsCatalog(),
     ]);
   }
+
+  /// Load Singles journey catalog
+  /// Backwards-compat: use Singles Never Married catalog as the default
+  Future<JourneyCatalog?> loadSinglesJourneyCatalog() async {
+    return loadSinglesNeverMarriedJourneyCatalog();
+  }
+
 }
 
 /// Exception thrown when config loading fails
@@ -343,4 +350,5 @@ class ConfigLoadException implements Exception {
 
   @override
   String toString() => 'ConfigLoadException: $message';
-}
+
+  }

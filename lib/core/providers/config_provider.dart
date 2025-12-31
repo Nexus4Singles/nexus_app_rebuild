@@ -50,7 +50,8 @@ final userAssessmentConfigProvider =
 final singlesJourneyCatalogProvider =
     FutureProvider<JourneyCatalog>((ref) async {
   final configLoader = ref.watch(configLoaderProvider);
-  return configLoader.loadSinglesJourneyCatalog();
+  final catalog = await configLoader.loadSinglesJourneyCatalog();
+  return catalog ?? const JourneyCatalog(version: "v1", audience: "singles", products: []);
 });
 
 /// Provider for Married Journey Catalog

@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/user_model.dart';
 import '../constants/app_constants.dart';
-import '../services/firestore_service.dart';
+import 'package:nexus_app_min_test/core/services/firestore_service.dart';
 import 'auth_provider.dart';
 import 'service_providers.dart';
+import 'firestore_service_provider.dart';
 
 /// Stream provider for current user data from Firestore
 final userStreamProvider = StreamProvider<UserModel?>((ref) {

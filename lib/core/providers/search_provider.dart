@@ -253,7 +253,14 @@ final searchServiceProvider = Provider<SearchService>((ref) {
 class SearchService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  /// Get the opposite gender for filtering
+  
+  Query<Map<String, dynamic>> _usersQuery() =>
+      _firestore.collection("users").withConverter<Map<String, dynamic>>(
+            fromFirestore: (snap, _) => snap.data() ?? <String, dynamic>{},
+            toFirestore: (data, _) => data,
+          );
+
+/// Get the opposite gender for filtering
   /// Nexus 2.0 uses lowercase: 'male' / 'female'
   /// This function handles any input and returns the correct opposite
   String? _getOppositeGender(String? currentGender) {
@@ -284,7 +291,7 @@ class SearchService {
   }) async {
     try {
       // Start with base query
-      Query query = _firestore.collection('users');
+      Query<Map<String, dynamic>> query = _usersQuery();
 
       // MANDATORY: Filter by opposite gender (Nexus 1.0 requirement)
       final targetGender = _getOppositeGender(currentUserGender);
@@ -355,7 +362,7 @@ class SearchService {
     List<String>? blockedUserIds,
   }) async {
     try {
-      Query query = _firestore.collection('users');
+      Query<Map<String, dynamic>> query = _usersQuery();
 
       // MANDATORY: Filter by opposite gender
       final targetGender = _getOppositeGender(currentUserGender);
@@ -408,7 +415,7 @@ class SearchService {
     int limit = 10,
   }) async {
     try {
-      Query query = _firestore.collection('users');
+      Query<Map<String, dynamic>> query = _usersQuery();
 
       // MANDATORY: Filter by opposite gender
       final targetGender = _getOppositeGender(currentUserGender);
@@ -445,7 +452,7 @@ class SearchService {
   /// Get user by ID (for profile viewing)
   Future<UserModel?> getUserById(String userId) async {
     try {
-      final doc = await _firestore.collection('users').doc(userId).get();
+      final doc = await _firestore.collection('users').doc(userId).withConverter<Map<String, dynamic>>(fromFirestore: (snap, _) => snap.data() ?? <String, dynamic>{}, toFirestore: (data, _) => data,).get();
       if (!doc.exists) return null;
       return UserModel.fromDocument(doc);
     } catch (e) {
@@ -523,7 +530,7 @@ class SavedProfilesNotifier extends StateNotifier<Set<String>> {
     if (userId == null) return;
     
     try {
-      final doc = await _firestore.collection('users').doc(userId).get();
+      final doc = await _firestore.collection('users').doc(userId).withConverter<Map<String, dynamic>>(fromFirestore: (snap, _) => snap.data() ?? <String, dynamic>{}, toFirestore: (data, _) => data,).get();
       final data = doc.data();
       if (data != null && data['savedProfiles'] != null) {
         final saved = List<String>.from(data['savedProfiles'] as List);

@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nexus_app_min_test/core/services/firestore_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/auth_service.dart';
-import '../services/firestore_service.dart';
+import 'firestore_service_provider.dart';
 import '../models/user_model.dart';
 
 /// Provider for AuthService instance
@@ -10,10 +11,6 @@ final authServiceProvider = Provider<AuthService>((ref) {
 });
 
 /// Provider for FirestoreService instance
-final firestoreServiceProvider = Provider<FirestoreService>((ref) {
-  return FirestoreService();
-});
-
 /// Stream provider for Firebase auth state
 final authStateProvider = StreamProvider<User?>((ref) {
   final authService = ref.watch(authServiceProvider);

@@ -1,4 +1,4 @@
-import 'package:nexus_app_min_test/core/stubs/firestore_stub.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import '../constants/app_constants.dart';
 
@@ -247,11 +247,17 @@ class UserModel extends Equatable {
   });
 
   /// Create from Firestore document
-  factory UserModel.fromDocument(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>?;
+  factory UserModel.fromDocument(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data();
     if (data == null) {
       return UserModel(id: doc.id);
     }
+    return UserModel.fromMap(doc.id, data);
+  }
+
+  /// Create from Firestore query document
+  factory UserModel.fromQueryDocument(QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data();
     return UserModel.fromMap(doc.id, data);
   }
 

@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nexus_app_min_test/core/stubs/firebase_exceptions_stub.dart';
+// firebase removed (stubbed)
 
 import '../theme/app_colors.dart';
 
@@ -617,7 +617,7 @@ extension ResultExtensions<T> on Future<T> {
       if (e is AppError) {
         return Failure(e);
       }
-      return Failure(AppError(e.toString()));
+      return Failure(NetworkError(e.toString()));
     }
   }
 }

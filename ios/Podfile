@@ -74,4 +74,21 @@ post_install do |installer|
   else
     Pod::UI.puts "ℹ️ gRPC-Core header not found (no patch applied)"
   end
+  
+  # ---- Fix broken gRPC-Core.modulemap path (CocoaPods regeneration issue) ----
+  grpc_modulemap_wrong = "${PODS_ROOT}/Headers/Private/grpc/gRPC-Core.modulemap"
+  grpc_modulemap_correct = "${PODS_ROOT}/Target Support Files/gRPC-Core/gRPC-Core.modulemap"
+
+  Dir.glob(File.join(installer.sandbox.root.to_s, "Target Support Files", "**", "*.xcconfig")).each do |xcconfig_path|
+    next unless File.exist?(xcconfig_path)
+
+    xcconfig = File.read(xcconfig_path)
+    next unless xcconfig.include?(grpc_modulemap_wrong)
+
+    xcconfig.gsub!(grpc_modulemap_wrong, grpc_modulemap_correct)
+
+    File.write(xcconfig_path, xcconfig)
+    Pod::UI.puts "✅ Patched gRPC-Core.modulemap reference in #{File.basename(xcconfig_path)}"
+  end
+
 end

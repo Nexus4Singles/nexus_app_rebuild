@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -88,7 +87,7 @@ class AppNotification {
 // ============================================================================
 
 /// User's notification preferences
-class NotificationSettings {
+class AppNotificationSettings {
   final bool pushEnabled;
   final bool newMessageEnabled;
   final bool newMatchEnabled;
@@ -97,7 +96,7 @@ class NotificationSettings {
   final bool soundEnabled;
   final bool vibrationEnabled;
 
-  const NotificationSettings({
+  const AppNotificationSettings({
     this.pushEnabled = true,
     this.newMessageEnabled = true,
     this.newMatchEnabled = true,
@@ -107,8 +106,8 @@ class NotificationSettings {
     this.vibrationEnabled = true,
   });
 
-  factory NotificationSettings.fromJson(Map<String, dynamic> json) {
-    return NotificationSettings(
+  factory AppNotificationSettings.fromJson(Map<String, dynamic> json) {
+    return AppNotificationSettings(
       pushEnabled: json['pushEnabled'] ?? true,
       newMessageEnabled: json['newMessageEnabled'] ?? true,
       newMatchEnabled: json['newMatchEnabled'] ?? true,
@@ -129,7 +128,7 @@ class NotificationSettings {
     'vibrationEnabled': vibrationEnabled,
   };
 
-  NotificationSettings copyWith({
+  AppNotificationSettings copyWith({
     bool? pushEnabled,
     bool? newMessageEnabled,
     bool? newMatchEnabled,
@@ -138,7 +137,7 @@ class NotificationSettings {
     bool? soundEnabled,
     bool? vibrationEnabled,
   }) {
-    return NotificationSettings(
+    return AppNotificationSettings(
       pushEnabled: pushEnabled ?? this.pushEnabled,
       newMessageEnabled: newMessageEnabled ?? this.newMessageEnabled,
       newMatchEnabled: newMatchEnabled ?? this.newMatchEnabled,
@@ -160,8 +159,8 @@ final pushNotificationServiceProvider = Provider<PushNotificationService>((ref) 
 });
 
 /// Provider for notification settings
-final notificationSettingsProvider = StateProvider<NotificationSettings>((ref) {
-  return const NotificationSettings();
+final notificationSettingsProvider = StateProvider<AppNotificationSettings>((ref) {
+  return const AppNotificationSettings();
 });
 
 /// Provider for notification permission status
@@ -192,10 +191,9 @@ class PushNotificationService {
 
     // Request permission
     final settings = await requestPermission();
-    debugPrint('🔔 Permission status: ${settings.authorizationStatus}');
+    debugPrint('🔔 Push enabled: ${settings.pushEnabled}');
 
-    if (settings.authorizationStatus == AuthorizationStatus.authorized ||
-        settings.authorizationStatus == AuthorizationStatus.provisional) {
+    if (settings.pushEnabled) {
       
       // Get FCM token
       final token = await getToken();
@@ -221,8 +219,8 @@ class PushNotificationService {
   }
 
   /// Request notification permission
-  Future<NotificationSettings> requestPermission() async {
-    final settings = await _messaging.requestPermission(
+  Future<AppNotificationSettings> requestPermission() async {
+    final firebaseSettings = await _messaging.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -231,13 +229,19 @@ class PushNotificationService {
       provisional: false,
       sound: true,
     );
-    return settings;
+
+    final enabled = firebaseSettings.authorizationStatus == AuthorizationStatus.authorized ||
+        firebaseSettings.authorizationStatus == AuthorizationStatus.provisional;
+
+    return AppNotificationSettings(
+      pushEnabled: enabled,
+    );
   }
 
   /// Get current permission status
   Future<AuthorizationStatus> getPermissionStatus() async {
-    final settings = await _messaging.getNotificationSettings();
-    return settings.authorizationStatus;
+    final firebaseSettings = await _messaging.getNotificationSettings();
+    return firebaseSettings.authorizationStatus;
   }
 
   /// Get FCM token
@@ -404,21 +408,21 @@ class PushNotificationService {
   }
 
   /// Load notification settings from local storage
-  Future<NotificationSettings> loadSettings() async {
+  Future<AppNotificationSettings> loadSettings() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final json = prefs.getString(_settingsKey);
       if (json != null) {
-        return NotificationSettings.fromJson(jsonDecode(json));
+        return AppNotificationSettings.fromJson(jsonDecode(json));
       }
     } catch (e) {
       debugPrint('Error loading notification settings: $e');
     }
-    return const NotificationSettings();
+    return const AppNotificationSettings();
   }
 
   /// Save notification settings to local storage
-  Future<void> saveSettings(NotificationSettings settings) async {
+  Future<void> saveSettings(AppNotificationSettings settings) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_settingsKey, jsonEncode(settings.toJson()));
@@ -429,7 +433,7 @@ class PushNotificationService {
   }
 
   /// Check if a specific notification type is enabled
-  bool isNotificationTypeEnabled(NotificationSettings settings, NotificationType type) {
+  bool isNotificationTypeEnabled(AppNotificationSettings settings, NotificationType type) {
     if (!settings.pushEnabled) return false;
     
     switch (type) {

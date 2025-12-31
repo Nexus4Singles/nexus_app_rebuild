@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nexus_app_min_test/core/stubs/firebase_auth_import.dart';
 
 /// Service for Firebase Authentication operations.
 /// Currently supports email/password auth. Google Sign-In can be enabled later.

@@ -6,7 +6,7 @@ import '../services/chat_service.dart';
 import 'auth_provider.dart';
 import 'user_provider.dart';
 
-// Note: firestoreServiceProvider and authServiceProvider are in auth_provider.dart
+// Note: firestoreServiceProvider is in firestore_service_provider.dart
 
 // ============================================================================
 // MEDIA SERVICE PROVIDER

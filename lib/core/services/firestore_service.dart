@@ -9,6 +9,7 @@ import '../constants/app_constants.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore;
 
+
   FirestoreService({FirebaseFirestore? firestore})
       : _firestore = firestore ?? FirebaseFirestore.instance;
 
@@ -176,6 +177,16 @@ class FirestoreService {
     }
   }
 
+  Stream<List<AssessmentResult>> watchAssessmentResults(String uid) {
+    return _assessmentResultsRef(uid)
+        .orderBy("completedAt", descending: true)
+        .snapshots()
+        .map((snap) => snap.docs
+            .map((doc) => AssessmentResult.fromJson(doc.data()))
+            .toList());
+  }
+
+
   // ==================== JOURNEY OPERATIONS ====================
 
   Future<JourneyProgress?> getJourneyProgress(String uid, String productId) async {
@@ -294,6 +305,24 @@ class FirestoreService {
       throw FirestoreException('Failed to get session response: $e');
     }
   }
+
+  Future<List<SessionResponse>> getSessionResponses(
+    String uid,
+    String productId,
+  ) async {
+    try {
+      final query = await _sessionResponsesRef(uid, productId)
+          .orderBy('createdAt', descending: false)
+          .get();
+
+      return query.docs
+          .map((doc) => SessionResponse.fromJson(doc.data()))
+          .toList();
+    } catch (e) {
+      throw FirestoreException('Failed to get session responses: ');
+    }
+  }
+
 
   // ==================== STORY OPERATIONS ====================
 
@@ -494,13 +523,158 @@ class FirestoreService {
       throw FirestoreException('Failed to submit support request: $e');
     }
   }
-}
 
 /// Exception thrown when Firestore operation fails
+
+  // ==================== STORY (STREAMS + ENGAGEMENT) ====================
+  DocumentReference<Map<String, dynamic>> _pollAggregateDoc(String pollId) =>
+      _firestore.collection("pollAggregates").doc(pollId);
+
+  DocumentReference<Map<String, dynamic>> _storyEngagementDoc(String storyId) =>
+      _firestore.collection("storyEngagement").doc(storyId);
+
+  CollectionReference<Map<String, dynamic>> _storyCommentsRef(String storyId) =>
+      _firestore.collection("storyComments").doc(storyId).collection("comments");
+
+  DocumentReference<Map<String, dynamic>> _storyLikesDoc(String storyId, String userId) =>
+      _firestore.collection("storyLikes").doc(storyId).collection("likes").doc(userId);
+
+  Stream<PollVote?> watchPollVote(String pollId, String userId) {
+    return _pollVotesRef(pollId).doc(userId).snapshots().map((doc) {
+      final data = doc.data();
+      if (!doc.exists || data == null) return null;
+      return PollVote.fromFirestore(data);
+    });
+  }
+
+  Stream<PollAggregate?> watchPollAggregate(String pollId) {
+    return _pollAggregateDoc(pollId).snapshots().map((doc) {
+      final data = doc.data();
+      if (!doc.exists || data == null) return null;
+      return PollAggregate.fromFirestore(data);
+    });
+  }
+
+  Stream<StoryEngagement?> watchStoryEngagement(String storyId) {
+    return _storyEngagementDoc(storyId).snapshots().map((doc) {
+      final data = doc.data();
+      if (!doc.exists || data == null) return null;
+      return StoryEngagement.fromJson(data);
+    });
+  }
+
+  Stream<bool> watchUserLikedStory(String storyId, String userId) {
+    return _storyLikesDoc(storyId, userId).snapshots().map((doc) => doc.exists);
+  }
+
+  Stream<List<StoryComment>> watchStoryComments(String storyId) {
+    return _storyCommentsRef(storyId)
+        .orderBy("createdAt", descending: true)
+        .snapshots()
+        .map((snap) => snap.docs.map((d) => StoryComment.fromJson(d.data())).toList());
+  }
+
+  Future<void> likeStory({
+    required String storyId,
+    required String userId,
+    String? userName,
+  }) async {
+    await _storyLikesDoc(storyId, userId).set({
+      "visitorId": userId,
+      "storyId": storyId,
+      "userId": userId,
+      if (userName != null) "userName": userName,
+      "createdAt": FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+
+    await _storyEngagementDoc(storyId).set({
+      "storyId": storyId,
+      "likeCount": FieldValue.increment(1),
+      "updatedAt": FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+  }
+
+  Future<void> unlikeStory({
+    required String storyId,
+    required String userId,
+  }) async {
+    await _storyLikesDoc(storyId, userId).delete();
+
+    await _storyEngagementDoc(storyId).set({
+      "storyId": storyId,
+      "likeCount": FieldValue.increment(-1),
+      "updatedAt": FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+  }
+
+  Future<bool> hasUserLikedStory(String storyId, String userId) async {
+    final doc = await _storyLikesDoc(storyId, userId).get();
+    return doc.exists;
+  }
+
+  Future<StoryComment> addStoryComment({
+    required String storyId,
+    required String userId,
+    required String userName,
+    String? userPhotoUrl,
+    required String text,
+  }) async {
+    final ref = _storyCommentsRef(storyId).doc();
+    final payload = {
+      "visitorId": ref.id,
+      "storyId": storyId,
+      "userId": userId,
+      "userName": userName,
+      if (userPhotoUrl != null) "userPhotoUrl": userPhotoUrl,
+      "text": text,
+      "createdAt": FieldValue.serverTimestamp(),
+    };
+
+    await ref.set(payload);
+
+    await _storyEngagementDoc(storyId).set({
+      "storyId": storyId,
+      "commentCount": FieldValue.increment(1),
+      "updatedAt": FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+
+    // Local return (server timestamp will resolve later)
+    return StoryComment.fromJson({
+      ...payload,
+      "createdAt": Timestamp.fromDate(DateTime.now()),
+    });
+  }
+
+  Future<void> deleteStoryComment({
+    required String storyId,
+    required String commentId,
+  }) async {
+    await _storyCommentsRef(storyId).doc(commentId).delete();
+
+    await _storyEngagementDoc(storyId).set({
+      "storyId": storyId,
+      "commentCount": FieldValue.increment(-1),
+      "updatedAt": FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+  }
+
+  Future<void> incrementShareCount(String storyId) async {
+    await _storyEngagementDoc(storyId).set({
+      "storyId": storyId,
+      "shareCount": FieldValue.increment(1),
+      "updatedAt": FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+  }
+
+
+}
+
 class FirestoreException implements Exception {
+
   final String message;
   FirestoreException(this.message);
-
-  @override
-  String toString() => 'FirestoreException: $message';
+  
+  
+  String toString() => message;
 }
+

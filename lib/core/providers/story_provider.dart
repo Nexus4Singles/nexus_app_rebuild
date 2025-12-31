@@ -2,7 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/story_model.dart';
 import '../constants/app_constants.dart';
 import '../services/config_loader_service.dart';
-import '../services/firestore_service.dart';
+import 'firestore_service_provider.dart';
+import 'package:nexus_app_min_test/core/services/firestore_service.dart';
 import 'config_provider.dart';
 import 'user_provider.dart';
 
@@ -412,6 +413,7 @@ class StoryViewNotifier extends StateNotifier<StoryViewState> {
       );
 
       final vote = PollVote(
+        visitorId: user.id,
         pollId: state.poll!.pollId,
         storyId: state.story!.storyId,
         userId: user.id,
@@ -508,7 +510,7 @@ class StoryViewNotifier extends StateNotifier<StoryViewState> {
         storyId: state.story!.storyId,
         userId: user.id,
         userName: user.displayName,
-        userPhotoUrl: user.photos.isNotEmpty ? user.photos.first : null,
+        userPhotoUrl: (user.photos ?? const <String>[]).isNotEmpty ? (user.photos ?? const <String>[]).first : null,
         text: text.trim(),
       );
       return comment;

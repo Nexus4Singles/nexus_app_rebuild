@@ -1,8 +1,9 @@
+import "firestore_service_provider.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/assessment_model.dart';
 import '../constants/app_constants.dart';
 import '../services/config_loader_service.dart';
-import '../services/firestore_service.dart';
+import 'package:nexus_app_min_test/core/services/firestore_service.dart';
 import 'config_provider.dart';
 import 'user_provider.dart';
 
@@ -204,12 +205,6 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
     state = state.copyWith(isSubmitting: true, error: null);
 
     try {
-      // Calculate result
-      final result = AssessmentResult.calculate(
-        config: state.config!,
-        answers: state.answers.values.toList(),
-      );
-
       // Get current user ID
       final user = _ref.read(currentUserProvider).valueOrNull;
       if (user == null) {
@@ -219,6 +214,14 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
         );
         return;
       }
+
+      // Calculate result
+      final result = AssessmentResult.calculate(
+        id: user.id,
+        userId: user.id,
+        config: state.config!,
+        answers: state.answers.values.toList(),
+      );
 
       // Save to Firestore
       await _firestoreService.saveAssessmentResult(user.id, result);

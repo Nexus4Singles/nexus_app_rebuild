@@ -1,12 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../models/assessment_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/journey_model.dart';
 import '../constants/app_constants.dart';
 import '../services/config_loader_service.dart';
-import '../services/firestore_service.dart';
+import 'package:nexus_app_min_test/core/services/firestore_service.dart';
+import 'firestore_service_provider.dart';
 import 'config_provider.dart';
 import 'user_provider.dart';
-import 'assessment_provider.dart';
+import "assessment_provider.dart";
 
 // ============================================================================
 // JOURNEY CATALOG PROVIDERS
@@ -118,91 +120,55 @@ final activeJourneysProvider = FutureProvider<List<JourneyProduct>>((ref) async 
 final recommendedProductsProvider = FutureProvider<List<JourneyProduct>>((ref) async {
   final catalog = await ref.watch(userJourneyCatalogProvider.future);
   if (catalog == null || catalog.products.isEmpty) return [];
-  
-  final user = ref.watch(currentUserProvider).valueOrNull;
-  if (user == null) return catalog.products.take(3).toList();
 
-  // Get latest assessment results to find inferred tags
-  final assessmentHistory = await ref.watch(assessmentHistoryProvider.future);
-  
-  final recommendedProducts = <JourneyProduct>[];
+  final user = ref.watch(currentUserProvider).valueOrNull;
+  if (user == null) return catalog.products.take(5).toList();
+
+  // Restore assessment-driven recommendations
+  final history = await ref.watch(assessmentHistoryProvider.future);
+  if (history.isEmpty) return catalog.products.take(5).toList();
+
+  final recommended = <JourneyProduct>[];
   final inferredTags = <String>{};
-  
-  // Collect all inferred tags from recent assessments
-  for (final result in assessmentHistory.take(3)) {
+
+  // Collect inferred tags + any explicitly recommended journey IDs from recent results
+  final recent = history.take(3);
+  for (final result in recent) {
     inferredTags.addAll(result.inferredTags);
-    
-    // If assessment has a specific recommended journey, add it
-    if (result.recommendedJourneyId != null) {
-      final product = catalog.products.where(
-        (p) => p.productId.toLowerCase().contains(result.recommendedJourneyId!.toLowerCase()) ||
-               p.productName.toLowerCase().contains(result.recommendedJourneyId!.toLowerCase())
-      ).firstOrNull;
-      if (product != null && !recommendedProducts.contains(product)) {
-        recommendedProducts.add(product);
+
+    final recId = result.recommendedJourneyId;
+    if (recId != null && recId.trim().isNotEmpty) {
+      JourneyProduct? match;
+      for (final p in catalog.products) {
+        final haystack = " ".toLowerCase();
+        if (haystack.contains(recId.toLowerCase())) {
+          match = p;
+          break;
+        }
+      }
+      if (match != null && !recommended.contains(match)) {
+        recommended.add(match);
       }
     }
   }
-  
-  // Match products based on inferred tags (areas needing improvement)
-  // Tags might be dimension IDs like 'conflict', 'intimacy', 'communication', etc.
-  for (final product in catalog.products) {
-    if (recommendedProducts.contains(product)) continue;
-    if (recommendedProducts.length >= 5) break;
-    
-    // Check if product name or ID matches any inferred tags
-    final productLower = '${product.productId} ${product.productName}'.toLowerCase();
+
+  // Tag-based matching fallback
+  for (final p in catalog.products) {
+    if (recommended.length >= 5) break;
+    if (recommended.contains(p)) continue;
+
+    final haystack = " ".toLowerCase();
     for (final tag in inferredTags) {
-      if (productLower.contains(tag.toLowerCase())) {
-        recommendedProducts.add(product);
+      if (haystack.contains(tag.toLowerCase())) {
+        recommended.add(p);
         break;
       }
     }
   }
-  
-  // If still not enough recommendations, add products not yet started
-  if (recommendedProducts.length < 3) {
-    final progressMap = await ref.watch(allJourneyProgressProvider.future);
-    for (final product in catalog.products) {
-      if (recommendedProducts.contains(product)) continue;
-      if (recommendedProducts.length >= 3) break;
-      
-      // Prioritize products user hasn't started
-      final progress = progressMap[product.productId];
-      if (progress == null || progress.completedSessionIds.isEmpty) {
-        recommendedProducts.add(product);
-      }
-    }
-  }
-  
-  // Fill remaining slots if needed
-  if (recommendedProducts.length < 3) {
-    for (final product in catalog.products) {
-      if (recommendedProducts.contains(product)) continue;
-      if (recommendedProducts.length >= 3) break;
-      recommendedProducts.add(product);
-    }
-  }
-  
-  return recommendedProducts;
-});
 
-/// Provider for all journey progress (for recommendations)
-final allJourneyProgressProvider = FutureProvider<Map<String, JourneyProgress>>((ref) async {
-  final user = ref.watch(currentUserProvider).valueOrNull;
-  if (user == null) return {};
-
-  final snapshot = await FirebaseFirestore.instance
-      .collection('users')
-      .doc(user.id)
-      .collection('journeyProgress')
-      .get();
-
-  final progressMap = <String, JourneyProgress>{};
-  for (final doc in snapshot.docs) {
-    progressMap[doc.id] = JourneyProgress.fromMap(doc.data());
-  }
-  return progressMap;
+  // Final fallback if nothing matched
+  if (recommended.isEmpty) return catalog.products.take(5).toList();
+  return recommended;
 });
 
 // ============================================================================
@@ -396,32 +362,24 @@ class SessionNotifier extends StateNotifier<SessionState> {
         state = state.copyWith(isSubmitting: false, error: 'User not authenticated');
         return;
       }
-
       // Encode response value based on type
       dynamic responseValue;
       switch (responseType) {
-        case ResponseType.singleChoice:
+        case ResponseType.singleSelect:
           responseValue = selectedOption;
           break;
-        case ResponseType.multipleChoice:
+        case ResponseType.multiSelect:
           responseValue = selectedMultiple;
           break;
         case ResponseType.scale3:
-        case ResponseType.scale5:
-        case ResponseType.scale7:
-          responseValue = scaleValue;
-          break;
-        case ResponseType.openText:
-        case ResponseType.journal:
-        case ResponseType.prayer:
-          responseValue = textResponse;
-          break;
-        case ResponseType.checkIn:
-          responseValue = checkInValue;
+          responseValue = scaleValue ?? checkInValue;
           break;
         case ResponseType.reflection:
+        case ResponseType.shortText:
           responseValue = textResponse;
           break;
+        default:
+          responseValue = textResponse;
       }
 
       final sessionId = 'session_$sessionNumber';
@@ -481,6 +439,8 @@ class SessionNotifier extends StateNotifier<SessionState> {
         return (value as bool) ? 'completed' : 'skipped';
       case ResponseType.ranking:
         return (value as List<String>).join(',');
+      default:
+        return null;
     }
   }
 
@@ -570,8 +530,10 @@ class PurchaseNotifier extends StateNotifier<AsyncValue<void>> {
 
       // Create initial journey progress
       final progress = JourneyProgress(
+        visitorId: user.id,
+        visitorUid: user.id,
         productId: productId,
-        userId: user.id,
+        productName: product.title,
         purchased: true,
         purchasedAt: DateTime.now(),
         totalSessions: product.sessions.length,

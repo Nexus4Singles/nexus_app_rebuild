@@ -1,4 +1,4 @@
-import 'package:nexus_app_min_test/core/stubs/firestore_stub.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import '../constants/app_constants.dart';
 

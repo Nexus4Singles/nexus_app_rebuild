@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nexus_app_min_test/safe_imports.dart';
 import 'package:nexus_app_min_test/safe_router.dart';
+import 'package:nexus_app_min_test/core/router/app_router.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -26,7 +27,7 @@ class _AppShellState extends State<AppShell> {
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.light,
       theme: AppTheme.lightTheme,
-      onGenerateRoute: safeOnGenerateRoute,
+      onGenerateRoute: onGenerateRoute,
       home: Scaffold(
         body: _tabs[_index],
         bottomNavigationBar: BottomNavigationBar(
