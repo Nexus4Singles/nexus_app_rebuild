@@ -1,3 +1,4 @@
+import 'package:nexus_app_min_test/core/router/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:nexus_app_min_test/app_shell.dart';
 import 'package:nexus_app_min_test/safe_imports.dart';
@@ -25,27 +26,27 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
   }
 
   switch (name) {
-    case '/':
+    case AppRoutes.root:
       return MaterialPageRoute(builder: (_) => const AppShell());
 
     // Main tabs
-    case '/home':
+    case AppRoutes.home:
       return MaterialPageRoute(builder: (_) => const HomeScreen());
-    case '/search':
+    case AppRoutes.search:
       return MaterialPageRoute(builder: (_) => const SearchScreen());
-    case '/chats':
+    case AppRoutes.chats:
       return MaterialPageRoute(builder: (_) => const ChatsScreen());
-    case '/challenges':
+    case AppRoutes.challenges:
       return MaterialPageRoute(builder: (_) => const ChallengesScreen());
-    case '/profile':
+    case AppRoutes.profile:
       return MaterialPageRoute(builder: (_) => const ProfileScreen());
 
     // Missing known routes (stubs)
-    case '/stories':
+    case AppRoutes.stories:
       return MaterialPageRoute(builder: (_) => const StoriesStubScreen());
-    case '/notifications':
+    case AppRoutes.notifications:
       return MaterialPageRoute(builder: (_) => const NotificationsStubScreen());
-    case '/contact-support':
+    case AppRoutes.contactSupport:
       return MaterialPageRoute(builder: (_) => const ContactSupportStubScreen());
 
     default:
