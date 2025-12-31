@@ -2,10 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:nexus_app_min_test/app_shell.dart';
 import 'package:nexus_app_min_test/safe_imports.dart';
 
+import 'package:nexus_app_min_test/features/presentation/screens/_stubs/stories_stub_screen.dart';
+import 'package:nexus_app_min_test/features/presentation/screens/_stubs/notifications_stub_screen.dart';
+import 'package:nexus_app_min_test/features/presentation/screens/_stubs/contact_support_stub_screen.dart';
+import 'package:nexus_app_min_test/features/presentation/screens/_stubs/chat_thread_stub_screen.dart';
+import 'package:nexus_app_min_test/features/presentation/screens/_stubs/profile_view_stub_screen.dart';
+
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
-  switch (settings.name) {
+  final name = settings.name ?? '/';
+
+  // Dynamic routes: /chat/:id and /profile/:id
+  final chatMatch = RegExp(r'^/chat/([^/]+)$').firstMatch(name);
+  if (chatMatch != null) {
+    final chatId = chatMatch.group(1)!;
+    return MaterialPageRoute(builder: (_) => ChatThreadStubScreen(chatId: chatId));
+  }
+
+  final profileMatch = RegExp(r'^/profile/([^/]+)$').firstMatch(name);
+  if (profileMatch != null) {
+    final userId = profileMatch.group(1)!;
+    return MaterialPageRoute(builder: (_) => ProfileViewStubScreen(userId: userId));
+  }
+
+  switch (name) {
     case '/':
       return MaterialPageRoute(builder: (_) => const AppShell());
+
+    // Main tabs
     case '/home':
       return MaterialPageRoute(builder: (_) => const HomeScreen());
     case '/search':
@@ -16,10 +39,19 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const ChallengesScreen());
     case '/profile':
       return MaterialPageRoute(builder: (_) => const ProfileScreen());
+
+    // Missing known routes (stubs)
+    case '/stories':
+      return MaterialPageRoute(builder: (_) => const StoriesStubScreen());
+    case '/notifications':
+      return MaterialPageRoute(builder: (_) => const NotificationsStubScreen());
+    case '/contact-support':
+      return MaterialPageRoute(builder: (_) => const ContactSupportStubScreen());
+
     default:
       return MaterialPageRoute(
         builder: (_) => Scaffold(
-          body: Center(child: Text('Route not found: ${settings.name}')),
+          body: Center(child: Text('Route not found: $name')),
         ),
       );
   }
