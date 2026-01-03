@@ -1,21 +1,10 @@
-include: package:flutter_lints/flutter.yaml
-
 analyzer:
   exclude:
-    - lib/core/providers/assessment_provider.dart
-    - lib/core/services/media_service.dart
-    - lib/core/services/chat_service.dart- lib/core/services/dating_profile_service.dart- lib/core/services/subscription_service.dart
     - _ignored/**
     - lib/_ignored/**
-    - lib/_ignored/**
     - test/**
-    # Providers still reference firebase/firestore packages you removed
-    # If intl isn't in pubspec, exclude this utility
-    # Template firebase options file (generated in real app, missing here)
     - lib/**/firebase_options_TEMPLATE.dart
 
-    - lib/core/providers/assessment_provider.dart
-  # Keep signal high: ignore noisy style infos while you stabilize build
   errors:
     deprecated_member_use: ignore
     prefer_const_constructors: ignore

@@ -1,3 +1,5 @@
+import 'package:nexus_app_min_test/core/router/safe_nav.dart';
+import 'package:nexus_app_min_test/core/constants/app_constants.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -6,6 +8,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Global navigator key for push notification navigation
@@ -154,17 +157,23 @@ class AppNotificationSettings {
 // ============================================================================
 
 /// Provider for push notification service
-final pushNotificationServiceProvider = Provider<PushNotificationService>((ref) {
+final pushNotificationServiceProvider = Provider<PushNotificationService>((
+  ref,
+) {
   return PushNotificationService();
 });
 
 /// Provider for notification settings
-final notificationSettingsProvider = StateProvider<AppNotificationSettings>((ref) {
+final notificationSettingsProvider = StateProvider<AppNotificationSettings>((
+  ref,
+) {
   return const AppNotificationSettings();
 });
 
 /// Provider for notification permission status
-final notificationPermissionProvider = FutureProvider<AuthorizationStatus>((ref) async {
+final notificationPermissionProvider = FutureProvider<AuthorizationStatus>((
+  ref,
+) async {
   final service = ref.watch(pushNotificationServiceProvider);
   return service.getPermissionStatus();
 });
@@ -172,14 +181,17 @@ final notificationPermissionProvider = FutureProvider<AuthorizationStatus>((ref)
 /// Service to handle push notifications via Firebase Cloud Messaging
 class PushNotificationService {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  
+  FirebaseFirestore? _firestore;
+
+  FirebaseFirestore get _fs =>
+      _firestore ?? (throw StateError('Firestore not ready'));
   // Stream controller for notifications
-  final StreamController<AppNotification> _notificationController = 
+  final StreamController<AppNotification> _notificationController =
       StreamController<AppNotification>.broadcast();
-  
+
   // Get notification stream
-  Stream<AppNotification> get notificationStream => _notificationController.stream;
+  Stream<AppNotification> get notificationStream =>
+      _notificationController.stream;
 
   // Storage key for settings
   static const _settingsKey = 'notification_settings';
@@ -194,7 +206,6 @@ class PushNotificationService {
     debugPrint('🔔 Push enabled: ${settings.pushEnabled}');
 
     if (settings.pushEnabled) {
-      
       // Get FCM token
       final token = await getToken();
       debugPrint('🔔 FCM Token: ${token?.substring(0, 20)}...');
@@ -230,12 +241,12 @@ class PushNotificationService {
       sound: true,
     );
 
-    final enabled = firebaseSettings.authorizationStatus == AuthorizationStatus.authorized ||
+    final enabled =
+        firebaseSettings.authorizationStatus ==
+            AuthorizationStatus.authorized ||
         firebaseSettings.authorizationStatus == AuthorizationStatus.provisional;
 
-    return AppNotificationSettings(
-      pushEnabled: enabled,
-    );
+    return AppNotificationSettings(pushEnabled: enabled);
   }
 
   /// Get current permission status
@@ -267,7 +278,7 @@ class PushNotificationService {
   /// Save FCM token to Firestore
   Future<void> saveTokenToFirestore(String userId, String token) async {
     try {
-      await _firestore.collection('users').doc(userId).update({
+      await _fs.collection('users').doc(userId).update({
         'fcmToken': token,
         'notificationToken': token, // Nexus 1.0 compatibility
         'tokenUpdatedAt': FieldValue.serverTimestamp(),
@@ -282,7 +293,7 @@ class PushNotificationService {
   /// Remove FCM token from Firestore (for logout)
   Future<void> removeTokenFromFirestore(String userId) async {
     try {
-      await _firestore.collection('users').doc(userId).update({
+      await _fs.collection('users').doc(userId).update({
         'fcmToken': FieldValue.delete(),
         'notificationToken': FieldValue.delete(),
       });
@@ -306,11 +317,13 @@ class PushNotificationService {
 
   /// Handle message received while app is in foreground
   void _handleForegroundMessage(RemoteMessage message) {
-    debugPrint('🔔 Foreground message received: ${message.notification?.title}');
-    
+    debugPrint(
+      '🔔 Foreground message received: ${message.notification?.title}',
+    );
+
     final notification = AppNotification.fromRemoteMessage(message);
     _notificationController.add(notification);
-    
+
     // Show local notification or in-app banner
     // This depends on your UI requirements
   }
@@ -318,10 +331,10 @@ class PushNotificationService {
   /// Handle notification tap (app opened from notification)
   void _handleNotificationTap(RemoteMessage message) {
     debugPrint('🔔 Notification tapped: ${message.notification?.title}');
-    
+
     final notification = AppNotification.fromRemoteMessage(message);
     _notificationController.add(notification);
-    
+
     // Navigate based on notification type
     _navigateFromNotification(message.data);
   }
@@ -337,54 +350,10 @@ class PushNotificationService {
 
   /// Navigate to appropriate screen based on notification data
   void _navigateFromNotification(Map<String, dynamic> data) {
-    final type = NotificationType.fromString(data['type']);
-    final navigator = navigatorKey.currentState;
-    
-    if (navigator == null) {
-      debugPrint('🔔 Navigator not available');
-      return;
-    }
-    
-    switch (type) {
-      case NotificationType.newMessage:
-        // Navigate directly to chat
-        final senderId = data['senderId'] as String?;
-        final chatId = data['chatId'] as String?;
-        final targetId = senderId ?? chatId;
-        if (targetId != null) {
-          navigator.pushNamed('/chat/$targetId');
-          debugPrint('🔔 Navigating to chat: $targetId');
-        }
-        break;
-        
-      case NotificationType.newMatch:
-      case NotificationType.newLike:
-        // Since we removed likes/matches, just go to notifications
-        navigator.pushNamed('/notifications');
-        debugPrint('🔔 Navigating to notifications');
-        break;
-        
-      case NotificationType.storyOfTheWeek:
-        // Navigate to stories
-        navigator.pushNamed('/stories');
-        debugPrint('🔔 Navigating to stories');
-        break;
-        
-      case NotificationType.profileView:
-        // Navigate to the profile viewer
-        final viewerId = data['viewerId'] as String?;
-        if (viewerId != null) {
-          navigator.pushNamed('/profile/$viewerId');
-          debugPrint('🔔 Navigating to profile: $viewerId');
-        }
-        break;
-        
-      default:
-        // Navigate to notifications screen
-        navigator.pushNamed('/notifications');
-        debugPrint('🔔 Navigating to notifications');
-        break;
-    }
+    // NOTE: Deep-link navigation disabled for MVP stability.
+    // Tapping a notification should only launch the app.
+    // We keep this method as a no-op to avoid crashes during cold starts.
+    debugPrint('🔔 Notification tapped (navigation disabled): \$data');
   }
 
   /// Subscribe to a topic (e.g., "weekly_stories", "all_users")
@@ -433,21 +402,14 @@ class PushNotificationService {
   }
 
   /// Check if a specific notification type is enabled
-  bool isNotificationTypeEnabled(AppNotificationSettings settings, NotificationType type) {
+  bool isNotificationTypeEnabled(
+    AppNotificationSettings settings,
+    NotificationType type,
+  ) {
+    // Minimal safe default: if push is enabled globally, treat all types as enabled.
+    // (Per-type toggles can be reintroduced later without affecting MVP stability.)
     if (!settings.pushEnabled) return false;
-    
-    switch (type) {
-      case NotificationType.newMessage:
-        return settings.newMessageEnabled;
-      case NotificationType.newMatch:
-        return settings.newMatchEnabled;
-      case NotificationType.newLike:
-        return settings.newLikeEnabled;
-      case NotificationType.storyOfTheWeek:
-        return settings.storyEnabled;
-      default:
-        return true;
-    }
+    return true;
   }
 
   /// Dispose the service
@@ -466,9 +428,9 @@ class PushNotificationService {
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // Note: You may need to initialize Firebase here if not already done
   // await Firebase.initializeApp();
-  
+
   debugPrint('🔔 Background message received: ${message.notification?.title}');
-  
+
   // Process the message (e.g., update local database, show notification)
   // Be careful: this runs in a separate isolate, so you can't access
   // Flutter-specific APIs or providers directly
@@ -503,17 +465,11 @@ class NotificationHelper {
       },
       'android': {
         'priority': 'high',
-        'notification': {
-          'channel_id': 'messages',
-          'sound': 'default',
-        },
+        'notification': {'channel_id': 'messages', 'sound': 'default'},
       },
       'apns': {
         'payload': {
-          'aps': {
-            'sound': 'default',
-            'badge': 1,
-          },
+          'aps': {'sound': 'default', 'badge': 1},
         },
       },
     };

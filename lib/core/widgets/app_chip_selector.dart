@@ -25,13 +25,13 @@ class AppChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = isSelected
-        ? (selectedColor ?? AppColors.primary)
-        : (unselectedColor ?? AppColors.surfaceDark);
+    final bgColor =
+        isSelected
+            ? (selectedColor ?? AppColors.primary)
+            : (unselectedColor ?? AppColors.surfaceDark);
     final textColor = isSelected ? Colors.white : AppColors.textPrimary;
-    final borderColor = isSelected
-        ? (selectedColor ?? AppColors.primary)
-        : AppColors.border;
+    final borderColor =
+        isSelected ? (selectedColor ?? AppColors.primary) : AppColors.border;
 
     return Material(
       color: Colors.transparent,
@@ -59,9 +59,9 @@ class AppChip extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: textColor,
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                    ),
+                  color: textColor,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                ),
               ),
               if (isSelected) ...[
                 const SizedBox(width: AppSpacing.xs),
@@ -104,34 +104,34 @@ class AppChipSelector<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chips = options.map((option) {
-      return AppChip(
-        label: labelBuilder(option),
-        isSelected: selectedValue == option,
-        icon: iconBuilder?.call(option),
-        selectedColor: selectedColor,
-        enabled: enabled,
-        onTap: enabled ? () => onSelected(option) : null,
-      );
-    }).toList();
+    final chips =
+        options.map((option) {
+          return AppChip(
+            label: labelBuilder(option),
+            isSelected: selectedValue == option,
+            icon: iconBuilder?.call(option),
+            selectedColor: selectedColor,
+            enabled: enabled,
+            onTap: enabled ? () => onSelected(option) : null,
+          );
+        }).toList();
 
     if (wrap) {
-      return Wrap(
-        spacing: spacing,
-        runSpacing: runSpacing,
-        children: chips,
-      );
+      return Wrap(spacing: spacing, runSpacing: runSpacing, children: chips);
     }
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: chips
-            .map((chip) => Padding(
-                  padding: EdgeInsets.only(right: spacing),
-                  child: chip,
-                ))
-            .toList(),
+        children:
+            chips
+                .map(
+                  (chip) => Padding(
+                    padding: EdgeInsets.only(right: spacing),
+                    child: chip,
+                  ),
+                )
+                .toList(),
       ),
     );
   }
@@ -168,49 +168,51 @@ class AppMultiChipSelector<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chips = options.map((option) {
-      final isSelected = selectedValues.contains(option);
-      final canSelect = maxSelections == null ||
-          selectedValues.length < maxSelections! ||
-          isSelected;
+    final chips =
+        options.map((option) {
+          final isSelected = selectedValues.contains(option);
+          final canSelect =
+              maxSelections == null ||
+              selectedValues.length < maxSelections! ||
+              isSelected;
 
-      return AppChip(
-        label: labelBuilder(option),
-        isSelected: isSelected,
-        icon: iconBuilder?.call(option),
-        selectedColor: selectedColor,
-        enabled: enabled && canSelect,
-        onTap: enabled && canSelect
-            ? () {
-                final newSelection = List<T>.from(selectedValues);
-                if (isSelected) {
-                  newSelection.remove(option);
-                } else {
-                  newSelection.add(option);
-                }
-                onChanged(newSelection);
-              }
-            : null,
-      );
-    }).toList();
+          return AppChip(
+            label: labelBuilder(option),
+            isSelected: isSelected,
+            icon: iconBuilder?.call(option),
+            selectedColor: selectedColor,
+            enabled: enabled && canSelect,
+            onTap:
+                enabled && canSelect
+                    ? () {
+                      final newSelection = List<T>.from(selectedValues);
+                      if (isSelected) {
+                        newSelection.remove(option);
+                      } else {
+                        newSelection.add(option);
+                      }
+                      onChanged(newSelection);
+                    }
+                    : null,
+          );
+        }).toList();
 
     if (wrap) {
-      return Wrap(
-        spacing: spacing,
-        runSpacing: runSpacing,
-        children: chips,
-      );
+      return Wrap(spacing: spacing, runSpacing: runSpacing, children: chips);
     }
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: chips
-            .map((chip) => Padding(
-                  padding: EdgeInsets.only(right: spacing),
-                  child: chip,
-                ))
-            .toList(),
+        children:
+            chips
+                .map(
+                  (chip) => Padding(
+                    padding: EdgeInsets.only(right: spacing),
+                    child: chip,
+                  ),
+                )
+                .toList(),
       ),
     );
   }
@@ -263,7 +265,10 @@ class AppOptionCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(AppSpacing.sm),
                   decoration: BoxDecoration(
-                    color: isSelected ? color.withOpacity(0.2) : AppColors.surfaceDark,
+                    color:
+                        isSelected
+                            ? color.withOpacity(0.2)
+                            : AppColors.surfaceDark,
                     borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
                   ),
                   child: Icon(
@@ -282,17 +287,18 @@ class AppOptionCard extends StatelessWidget {
                     Text(
                       title,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                            color: isSelected ? color : AppColors.textPrimary,
-                          ),
+                        fontWeight:
+                            isSelected ? FontWeight.w600 : FontWeight.w500,
+                        color: isSelected ? color : AppColors.textPrimary,
+                      ),
                     ),
                     if (subtitle != null) ...[
                       const SizedBox(height: AppSpacing.xxs),
                       Text(
                         subtitle!,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.textSecondary,
-                            ),
+                          color: AppColors.textSecondary,
+                        ),
                       ),
                     ],
                   ],
@@ -310,9 +316,10 @@ class AppOptionCard extends StatelessWidget {
                     width: 2,
                   ),
                 ),
-                child: isSelected
-                    ? const Icon(Icons.check, size: 16, color: Colors.white)
-                    : null,
+                child:
+                    isSelected
+                        ? const Icon(Icons.check, size: 16, color: Colors.white)
+                        : null,
               ),
             ],
           ),
@@ -351,20 +358,21 @@ class AppOptionCardSelector<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: options.map((option) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: spacing),
-          child: AppOptionCard(
-            title: titleBuilder(option),
-            subtitle: subtitleBuilder?.call(option),
-            icon: iconBuilder?.call(option),
-            isSelected: selectedValue == option,
-            selectedColor: selectedColor,
-            enabled: enabled,
-            onTap: enabled ? () => onSelected(option) : null,
-          ),
-        );
-      }).toList(),
+      children:
+          options.map((option) {
+            return Padding(
+              padding: EdgeInsets.only(bottom: spacing),
+              child: AppOptionCard(
+                title: titleBuilder(option),
+                subtitle: subtitleBuilder?.call(option),
+                icon: iconBuilder?.call(option),
+                isSelected: selectedValue == option,
+                selectedColor: selectedColor,
+                enabled: enabled,
+                onTap: enabled ? () => onSelected(option) : null,
+              ),
+            );
+          }).toList(),
     );
   }
 }

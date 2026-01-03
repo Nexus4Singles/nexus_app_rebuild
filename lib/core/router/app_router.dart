@@ -1,59 +1,126 @@
-import 'package:nexus_app_min_test/core/router/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:nexus_app_min_test/app_shell.dart';
-import 'package:nexus_app_min_test/safe_imports.dart';
 
-import 'package:nexus_app_min_test/features/presentation/screens/_stubs/stories_stub_screen.dart';
-import 'package:nexus_app_min_test/features/presentation/screens/_stubs/notifications_stub_screen.dart';
-import 'package:nexus_app_min_test/features/presentation/screens/_stubs/contact_support_stub_screen.dart';
-import 'package:nexus_app_min_test/features/presentation/screens/_stubs/chat_thread_stub_screen.dart';
-import 'package:nexus_app_min_test/features/presentation/screens/_stubs/profile_view_stub_screen.dart';
+import '../../app_shell.dart';
+import 'placeholder_screen.dart';
+
+import '../../features/presentation/screens/home_screen.dart';
+import '../../features/presentation/screens/search_screen.dart';
+import '../../features/presentation/screens/chats_screen.dart';
+import '../../features/profile/presentation/screens/profile_screen.dart';
+import '../../features/presentation/screens/settings_screen.dart';
+
+import '../../features/chats/presentation/screens/chat_thread_screen.dart';
+
+import '../../features/presentation/screens/_stubs/signup_stub_screen.dart';
+import '../../features/presentation/screens/_stubs/login_stub_screen.dart';
+import '../../features/presentation/screens/_stubs/forgot_password_stub_screen.dart';
+import '../../features/presentation/screens/_stubs/onboarding_stub_screen.dart';
+import '../../features/presentation/screens/_stubs/notifications_stub_screen.dart';
+import '../../features/presentation/screens/_stubs/contact_support_stub_screen.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   final name = settings.name ?? '/';
 
-  // Dynamic routes: /chat/:id and /profile/:id
-  final chatMatch = RegExp(r'^/chat/([^/]+)$').firstMatch(name);
-  if (chatMatch != null) {
-    final chatId = chatMatch.group(1)!;
-    return MaterialPageRoute(builder: (_) => ChatThreadStubScreen(chatId: chatId));
+  // Ignore external scheme deeplinks for stability.
+  if (name.contains('://')) {
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => const AppShell(),
+    );
   }
 
-  final profileMatch = RegExp(r'^/profile/([^/]+)$').firstMatch(name);
-  if (profileMatch != null) {
-    final userId = profileMatch.group(1)!;
-    return MaterialPageRoute(builder: (_) => ProfileViewStubScreen(userId: userId));
+  final uri = Uri.parse(name);
+  final segments = uri.pathSegments;
+
+  // /chats/:chatId
+  if (segments.length == 2 && segments[0] == 'chats') {
+    final chatId = segments[1];
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => ChatThreadScreen(chatId: chatId),
+    );
   }
 
-  switch (name) {
-    case AppRoutes.root:
-      return MaterialPageRoute(builder: (_) => const AppShell());
+  switch (uri.path) {
+    case '/':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const AppShell(),
+      );
 
-    // Main tabs
-    case AppRoutes.home:
-      return MaterialPageRoute(builder: (_) => const HomeScreen());
-    case AppRoutes.search:
-      return MaterialPageRoute(builder: (_) => const SearchScreen());
-    case AppRoutes.chats:
-      return MaterialPageRoute(builder: (_) => const ChatsScreen());
-    case AppRoutes.challenges:
-      return MaterialPageRoute(builder: (_) => const ChallengesScreen());
-    case AppRoutes.profile:
-      return MaterialPageRoute(builder: (_) => const ProfileScreen());
+    case '/home':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const HomeScreen(),
+      );
 
-    // Missing known routes (stubs)
-    case AppRoutes.stories:
-      return MaterialPageRoute(builder: (_) => const StoriesStubScreen());
-    case AppRoutes.notifications:
-      return MaterialPageRoute(builder: (_) => const NotificationsStubScreen());
-    case AppRoutes.contactSupport:
-      return MaterialPageRoute(builder: (_) => const ContactSupportStubScreen());
+    case '/search':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const SearchScreen(),
+      );
+
+    case '/chats':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const ChatsScreen(),
+      );
+case '/profile':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const ProfileScreen(),
+      );
+
+    case '/settings':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const SettingsScreen(),
+      );
+
+    case '/signup':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const SignupStubScreen(),
+      );
+
+    case '/login':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const LoginStubScreen(),
+      );
+
+    case '/forgot-password':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const ForgotPasswordStubScreen(),
+      );
+
+    case '/onboarding':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const OnboardingStubScreen(),
+      );
+
+    case '/notifications':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const NotificationsStubScreen(),
+      );
+
+    case '/contact-support':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const ContactSupportStubScreen(),
+      );
 
     default:
       return MaterialPageRoute(
-        builder: (_) => Scaffold(
-          body: Center(child: Text('Route not found: $name')),
-        ),
+        settings: settings,
+        builder:
+            (_) => PlaceholderScreen(
+              title: 'Not found',
+              message: 'Unknown route: $name',
+            ),
       );
   }
 }

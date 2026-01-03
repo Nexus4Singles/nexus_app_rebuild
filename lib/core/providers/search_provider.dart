@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
 
 import '../models/user_model.dart';
 import '../models/dating_profile_model.dart';
@@ -59,7 +60,8 @@ class SearchFilters {
       church: church ?? this.church,
       country: country ?? this.country,
       incomeSource: incomeSource ?? this.incomeSource,
-      longDistancePreference: longDistancePreference ?? this.longDistancePreference,
+      longDistancePreference:
+          longDistancePreference ?? this.longDistancePreference,
       maritalStatus: maritalStatus ?? this.maritalStatus,
       hasKids: hasKids ?? this.hasKids,
       genotype: genotype ?? this.genotype,
@@ -100,20 +102,21 @@ class SearchFilters {
   bool matchesUser(UserModel user) {
     // Education filter
     if (education != null && user.educationLevel != education) return false;
-    
+
     // Country filter
     if (country != null && user.country != country) return false;
-    
+
     // Nationality filter - check both nationality and nationalityCode
     if (nationality != null) {
-      if (user.nationality != nationality && user.nationalityCode != nationality) {
+      if (user.nationality != nationality &&
+          user.nationalityCode != nationality) {
         return false;
       }
     }
-    
+
     // Church filter
     if (church != null && user.churchName != church) return false;
-    
+
     return true;
   }
 
@@ -154,9 +157,10 @@ class SearchFilters {
 // ============================================================================
 
 /// Provider for current search filters
-final searchFiltersProvider = StateNotifierProvider<SearchFiltersNotifier, SearchFilters>((ref) {
-  return SearchFiltersNotifier();
-});
+final searchFiltersProvider =
+    StateNotifierProvider<SearchFiltersNotifier, SearchFilters>((ref) {
+      return SearchFiltersNotifier();
+    });
 
 class SearchFiltersNotifier extends StateNotifier<SearchFilters> {
   SearchFiltersNotifier() : super(const SearchFilters());
@@ -186,7 +190,9 @@ class SearchFiltersNotifier extends StateNotifier<SearchFilters> {
   }
 
   void setLongDistancePreference(String? value) {
-    state = state.copyWith(longDistancePreference: value == 'Any' ? null : value);
+    state = state.copyWith(
+      longDistancePreference: value == 'Any' ? null : value,
+    );
   }
 
   void setMaritalStatus(String? value) {
@@ -211,33 +217,34 @@ class SearchFiltersNotifier extends StateNotifier<SearchFilters> {
 // ============================================================================
 
 /// Provider for search results
-final searchResultsProvider = FutureProvider.family<List<UserModel>, SearchFilters>(
-  (ref, filters) async {
-    final currentUserId = ref.watch(currentUserIdProvider);
-    final currentUser = ref.watch(currentUserProvider).valueOrNull;
-    
-    if (currentUserId == null || currentUser == null) {
-      return [];
-    }
+final searchResultsProvider =
+    FutureProvider.family<List<UserModel>, SearchFilters>((ref, filters) async {
+      final currentUserId = ref.watch(currentUserIdProvider);
+      final currentUser = ref.watch(currentUserProvider).valueOrNull;
 
-    // Get gender from root level (Nexus 1.0) or nexus2 (Nexus 2.0)
-    final userGender = currentUser.gender ?? currentUser.nexus2?.gender;
-    
-    // Get blocked users list
-    final blockedUsers = currentUser.blocked ?? [];
+      if (currentUserId == null || currentUser == null) {
+        return [];
+      }
 
-    final searchService = ref.watch(searchServiceProvider);
-    return searchService.searchUsers(
-      filters: filters,
-      currentUserId: currentUserId,
-      currentUserGender: userGender,
-      blockedUserIds: blockedUsers,
-    );
-  },
-);
+      // Get gender from root level (Nexus 1.0) or nexus2 (Nexus 2.0)
+      final userGender = currentUser.gender ?? currentUser.nexus2?.gender;
+
+      // Get blocked users list
+      final blockedUsers = currentUser.blocked ?? [];
+
+      final searchService = ref.watch(searchServiceProvider);
+      return searchService.searchUsers(
+        filters: filters,
+        currentUserId: currentUserId,
+        currentUserGender: userGender,
+        blockedUserIds: blockedUsers,
+      );
+    });
 
 /// Convenience provider that uses current filters
-final filteredSearchResultsProvider = FutureProvider<List<UserModel>>((ref) async {
+final filteredSearchResultsProvider = FutureProvider<List<UserModel>>((
+  ref,
+) async {
   final filters = ref.watch(searchFiltersProvider);
   return ref.watch(searchResultsProvider(filters).future);
 });
@@ -247,25 +254,34 @@ final filteredSearchResultsProvider = FutureProvider<List<UserModel>>((ref) asyn
 // ============================================================================
 
 final searchServiceProvider = Provider<SearchService>((ref) {
-  return SearchService();
+  final firestore = ref.watch(firestoreInstanceProvider);
+  return SearchService(firestore);
 });
 
 class SearchService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore? _firestore;
 
-  
-  Query<Map<String, dynamic>> _usersQuery() =>
-      _firestore.collection("users").withConverter<Map<String, dynamic>>(
-            fromFirestore: (snap, _) => snap.data() ?? <String, dynamic>{},
-            toFirestore: (data, _) => data,
-          );
+  SearchService(this._firestore);
 
-/// Get the opposite gender for filtering
+  CollectionReference<Map<String, dynamic>> _usersQuery() {
+    final fs = _firestore;
+    if (fs == null) {
+      throw StateError('Firestore not ready');
+    }
+    return fs
+        .collection("users")
+        .withConverter<Map<String, dynamic>>(
+          fromFirestore: (snap, _) => snap.data() ?? <String, dynamic>{},
+          toFirestore: (data, _) => data,
+        );
+  }
+
+  /// Get the opposite gender for filtering
   /// Nexus 2.0 uses lowercase: 'male' / 'female'
   /// This function handles any input and returns the correct opposite
   String? _getOppositeGender(String? currentGender) {
     if (currentGender == null || currentGender.isEmpty) return null;
-    
+
     final normalized = currentGender.toLowerCase();
     // Return opposite gender in same case as input (for Nexus 1.0 compatibility)
     // Nexus 1.0 may use 'Male'/'Female', Nexus 2.0 uses 'male'/'female'
@@ -312,34 +328,33 @@ class SearchService {
 
       // Execute query
       final snapshot = await query.get();
-      
+
       // Convert to UserModel list with additional filtering
       final blockedSet = blockedUserIds?.toSet() ?? <String>{};
-      
-      List<UserModel> users = snapshot.docs
-          .map((doc) => UserModel.fromDocument(doc))
-          .where((user) {
+
+      List<UserModel> users =
+          snapshot.docs.map((doc) => UserModel.fromDocument(doc)).where((user) {
             // Exclude current user
             if (user.id == currentUserId) return false;
-            
+
             // Exclude blocked users
             if (blockedSet.contains(user.id)) return false;
-            
+
             // Exclude users without photos (incomplete profiles)
-            if ((user.photos == null || user.photos!.isEmpty) && 
+            if ((user.photos == null || user.photos!.isEmpty) &&
                 (user.profileUrl == null || user.profileUrl!.isEmpty)) {
               return false;
             }
-            
+
             // Apply age filter
             if (user.age != null) {
-              if (user.age! < filters.minAge || user.age! > filters.maxAge) return false;
+              if (user.age! < filters.minAge || user.age! > filters.maxAge)
+                return false;
             }
-            
+
             // Apply additional filters client-side
             return filters.matchesUser(user);
-          })
-          .toList();
+          }).toList();
 
       return users;
     } catch (e) {
@@ -374,24 +389,23 @@ class SearchService {
 
       query = query.limit(100);
       final snapshot = await query.get();
-      
+
       final blockedSet = blockedUserIds?.toSet() ?? <String>{};
-      
-      List<UserModel> users = snapshot.docs
-          .map((doc) => UserModel.fromDocument(doc))
-          .where((user) {
+
+      List<UserModel> users =
+          snapshot.docs.map((doc) => UserModel.fromDocument(doc)).where((user) {
             if (user.id == currentUserId) return false;
             if (blockedSet.contains(user.id)) return false;
-            if ((user.photos == null || user.photos!.isEmpty) && 
+            if ((user.photos == null || user.photos!.isEmpty) &&
                 (user.profileUrl == null || user.profileUrl!.isEmpty)) {
               return false;
             }
             if (user.age != null) {
-              if (user.age! < filters.minAge || user.age! > filters.maxAge) return false;
+              if (user.age! < filters.minAge || user.age! > filters.maxAge)
+                return false;
             }
             return filters.matchesUser(user);
-          })
-          .toList();
+          }).toList();
 
       // Sort client-side by profile completion date (newest first)
       users.sort((a, b) {
@@ -430,12 +444,12 @@ class SearchService {
       query = query.limit(limit * 2);
 
       final snapshot = await query.get();
-      
+
       return snapshot.docs
           .map((doc) => UserModel.fromDocument(doc))
           .where((user) {
             if (user.id == currentUserId) return false;
-            if ((user.photos == null || user.photos!.isEmpty) && 
+            if ((user.photos == null || user.photos!.isEmpty) &&
                 (user.profileUrl == null || user.profileUrl!.isEmpty)) {
               return false;
             }
@@ -452,7 +466,7 @@ class SearchService {
   /// Get user by ID (for profile viewing)
   Future<UserModel?> getUserById(String userId) async {
     try {
-      final doc = await _firestore.collection('users').doc(userId).withConverter<Map<String, dynamic>>(fromFirestore: (snap, _) => snap.data() ?? <String, dynamic>{}, toFirestore: (data, _) => data,).get();
+      final doc = await _usersQuery().doc(userId).get();
       if (!doc.exists) return null;
       return UserModel.fromDocument(doc);
     } catch (e) {
@@ -513,24 +527,35 @@ final canSendMessagesProvider = Provider<bool>((ref) {
 // ============================================================================
 
 /// Provider for saved/bookmarked profiles
-final savedProfilesProvider = StateNotifierProvider<SavedProfilesNotifier, Set<String>>((ref) {
-  final userId = ref.watch(currentUserIdProvider);
-  return SavedProfilesNotifier(userId);
-});
+final savedProfilesProvider =
+    StateNotifierProvider<SavedProfilesNotifier, Set<String>>((ref) {
+      final userId = ref.watch(currentUserIdProvider);
+      final firestore = ref.watch(firestoreInstanceProvider);
+      return SavedProfilesNotifier(userId, firestore);
+    });
 
 class SavedProfilesNotifier extends StateNotifier<Set<String>> {
   final String? userId;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore? _firestore;
 
-  SavedProfilesNotifier(this.userId) : super({}) {
-    if (userId != null) _loadSavedProfiles();
+  SavedProfilesNotifier(this.userId, this._firestore) : super({}) {
+    if (userId != null && _firestore != null) _loadSavedProfiles();
   }
 
   Future<void> _loadSavedProfiles() async {
     if (userId == null) return;
-    
+    if (_firestore == null) return;
+
     try {
-      final doc = await _firestore.collection('users').doc(userId).withConverter<Map<String, dynamic>>(fromFirestore: (snap, _) => snap.data() ?? <String, dynamic>{}, toFirestore: (data, _) => data,).get();
+      final doc =
+          await _firestore
+              .collection('users')
+              .doc(userId)
+              .withConverter<Map<String, dynamic>>(
+                fromFirestore: (snap, _) => snap.data() ?? <String, dynamic>{},
+                toFirestore: (data, _) => data,
+              )
+              .get();
       final data = doc.data();
       if (data != null && data['savedProfiles'] != null) {
         final saved = List<String>.from(data['savedProfiles'] as List);
@@ -543,7 +568,8 @@ class SavedProfilesNotifier extends StateNotifier<Set<String>> {
 
   Future<void> toggleSave(String profileId) async {
     if (userId == null) return;
-    
+    final fs = _firestore;
+    if (fs == null) return;
     final newState = Set<String>.from(state);
     if (newState.contains(profileId)) {
       newState.remove(profileId);
@@ -554,14 +580,15 @@ class SavedProfilesNotifier extends StateNotifier<Set<String>> {
 
     // Save to Firestore
     try {
-      await _firestore.collection('users').doc(userId).update({
+      await fs.collection('users').doc(userId).update({
         'savedProfiles': newState.toList(),
       });
     } catch (e) {
       // Revert on error
-      state = state.contains(profileId) 
-          ? (Set<String>.from(state)..remove(profileId))
-          : (Set<String>.from(state)..add(profileId));
+      state =
+          state.contains(profileId)
+              ? (Set<String>.from(state)..remove(profileId))
+              : (Set<String>.from(state)..add(profileId));
     }
   }
 

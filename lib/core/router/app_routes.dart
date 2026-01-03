@@ -1,15 +1,16 @@
 class AppRoutes {
-  static const root = '/';
   static const home = '/home';
-  static const search = '/search';
-  static const chats = '/chats';
-  static const challenges = '/challenges';
+  static const login = '/login';
+  static const signup = '/signup';
+  static const forgotPassword = '/forgot-password';
+  static const onboarding = '/onboarding';
   static const profile = '/profile';
-
+  static const settings = '/settings';
+  static const chats = '/chats';
+  static const search = '/search';
+  static const challenges = '/challenges';
   static const stories = '/stories';
-  static const notifications = '/notifications';
-  static const contactSupport = '/contact-support';
-
-  static String chat(String id) => '/chat/$id';
-  static String profileView(String id) => '/profile/$id';
+  static const assessmentIntro = '/assessment/intro';
+  static const assessment = '/assessment';
+  static const assessmentResult = '/assessment/result';
 }

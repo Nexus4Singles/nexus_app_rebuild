@@ -133,9 +133,11 @@ class ChatConversation {
       lastMessageAt: (data['lastMessageAt'] as Timestamp?)?.toDate(),
       lastMessageSenderId: data['lastMessageSenderId'] as String?,
       unreadCounts: Map<String, int>.from(data['unreadCounts'] ?? {}),
-      lastReadAt: (data['lastReadAt'] as Map<String, dynamic>?)?.map(
-        (key, value) => MapEntry(key, (value as Timestamp?)?.toDate()),
-      ) ?? {},
+      lastReadAt:
+          (data['lastReadAt'] as Map<String, dynamic>?)?.map(
+            (key, value) => MapEntry(key, (value as Timestamp?)?.toDate()),
+          ) ??
+          {},
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       updatedAt: (data['updatedAt'] as Timestamp?)?.toDate(),
       isActive: data['isActive'] as bool? ?? true,
@@ -146,11 +148,13 @@ class ChatConversation {
     return {
       'participantIds': participantIds,
       'lastMessage': lastMessage,
-      'lastMessageAt': lastMessageAt != null ? Timestamp.fromDate(lastMessageAt!) : null,
+      'lastMessageAt':
+          lastMessageAt != null ? Timestamp.fromDate(lastMessageAt!) : null,
       'lastMessageSenderId': lastMessageSenderId,
       'unreadCounts': unreadCounts,
       'lastReadAt': lastReadAt.map(
-        (key, value) => MapEntry(key, value != null ? Timestamp.fromDate(value) : null),
+        (key, value) =>
+            MapEntry(key, value != null ? Timestamp.fromDate(value) : null),
       ),
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': FieldValue.serverTimestamp(),
@@ -174,14 +178,15 @@ class ChatConversation {
 
 /// Service for managing chat functionality
 class ChatService {
-  final FirebaseFirestore _firestore;
+  FirebaseFirestore? _firestore;
 
-  ChatService({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+  FirebaseFirestore get _fs =>
+      _firestore ?? (throw StateError('Firestore not ready'));
+  ChatService({FirebaseFirestore? firestore}) : _firestore = firestore;
 
   // Collection references
   CollectionReference<Map<String, dynamic>> get _chatsRef =>
-      _firestore.collection('chats');
+      _fs.collection('chats');
 
   CollectionReference<Map<String, dynamic>> _messagesRef(String chatId) =>
       _chatsRef.doc(chatId).collection('messages');
@@ -204,7 +209,8 @@ class ChatService {
       final chatRef = _chatsRef.doc();
       final conversation = ChatConversation(
         id: chatRef.id,
-        participantIds: [userId1, userId2]..sort(), // Sort for consistent ordering
+        participantIds: [userId1, userId2]
+          ..sort(), // Sort for consistent ordering
         createdAt: DateTime.now(),
         unreadCounts: {userId1: 0, userId2: 0},
       );
@@ -217,17 +223,21 @@ class ChatService {
   }
 
   /// Get conversation between two users
-  Future<ChatConversation?> getConversationBetween(String userId1, String userId2) async {
+  Future<ChatConversation?> getConversationBetween(
+    String userId1,
+    String userId2,
+  ) async {
     try {
       final sortedIds = [userId1, userId2]..sort();
-      
-      final query = await _chatsRef
-          .where('participantIds', isEqualTo: sortedIds)
-          .limit(1)
-          .get();
+
+      final query =
+          await _chatsRef
+              .where('participantIds', isEqualTo: sortedIds)
+              .limit(1)
+              .get();
 
       if (query.docs.isEmpty) return null;
-      
+
       return ChatConversation.fromFirestore(
         query.docs.first.data(),
         query.docs.first.id,
@@ -253,11 +263,12 @@ class ChatService {
   /// Get all conversations for a user
   Future<List<ChatConversation>> getUserConversations(String userId) async {
     try {
-      final query = await _chatsRef
-          .where('participantIds', arrayContains: userId)
-          .where('isActive', isEqualTo: true)
-          .orderBy('lastMessageAt', descending: true)
-          .get();
+      final query =
+          await _chatsRef
+              .where('participantIds', arrayContains: userId)
+              .where('isActive', isEqualTo: true)
+              .orderBy('lastMessageAt', descending: true)
+              .get();
 
       return query.docs
           .map((doc) => ChatConversation.fromFirestore(doc.data(), doc.id))
@@ -274,9 +285,14 @@ class ChatService {
         .where('isActive', isEqualTo: true)
         .orderBy('lastMessageAt', descending: true)
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => ChatConversation.fromFirestore(doc.data(), doc.id))
-            .toList());
+        .map(
+          (snapshot) =>
+              snapshot.docs
+                  .map(
+                    (doc) => ChatConversation.fromFirestore(doc.data(), doc.id),
+                  )
+                  .toList(),
+        );
   }
 
   /// Delete/deactivate a conversation
@@ -306,7 +322,7 @@ class ChatService {
   }) async {
     try {
       final messageRef = _messagesRef(chatId).doc();
-      
+
       final message = ChatMessage(
         id: messageRef.id,
         chatId: chatId,
@@ -319,16 +335,15 @@ class ChatService {
       );
 
       // Use batch for atomic operation
-      final batch = _firestore.batch();
+      final batch = _fs.batch();
 
       // Add message
       batch.set(messageRef, message.toFirestore());
 
       // Update conversation metadata
       batch.update(_chatsRef.doc(chatId), {
-        'lastMessage': type == MessageType.text 
-            ? content 
-            : _getMessageTypePreview(type),
+        'lastMessage':
+            type == MessageType.text ? content : _getMessageTypePreview(type),
         'lastMessageAt': FieldValue.serverTimestamp(),
         'lastMessageSenderId': senderId,
         'unreadCounts.$receiverId': FieldValue.increment(1),
@@ -418,16 +433,16 @@ class ChatService {
     DocumentSnapshot? startAfter,
   }) async {
     try {
-      Query<Map<String, dynamic>> query = _messagesRef(chatId)
-          .orderBy('sentAt', descending: true)
-          .limit(limit);
+      Query<Map<String, dynamic>> query = _messagesRef(
+        chatId,
+      ).orderBy('sentAt', descending: true).limit(limit);
 
       if (startAfter != null) {
         query = query.startAfterDocument(startAfter);
       }
 
       final snapshot = await query.get();
-      
+
       return snapshot.docs
           .map((doc) => ChatMessage.fromFirestore(doc.data(), doc.id))
           .toList();
@@ -442,9 +457,12 @@ class ChatService {
         .orderBy('sentAt', descending: true)
         .limit(limit)
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => ChatMessage.fromFirestore(doc.data(), doc.id))
-            .toList());
+        .map(
+          (snapshot) =>
+              snapshot.docs
+                  .map((doc) => ChatMessage.fromFirestore(doc.data(), doc.id))
+                  .toList(),
+        );
   }
 
   /// Delete a message
@@ -470,14 +488,15 @@ class ChatService {
       });
 
       // Optionally mark individual messages as read
-      final unreadMessages = await _messagesRef(chatId)
-          .where('receiverId', isEqualTo: userId)
-          .where('isRead', isEqualTo: false)
-          .get();
+      final unreadMessages =
+          await _messagesRef(chatId)
+              .where('receiverId', isEqualTo: userId)
+              .where('isRead', isEqualTo: false)
+              .get();
 
       if (unreadMessages.docs.isEmpty) return;
 
-      final batch = _firestore.batch();
+      final batch = _fs.batch();
       for (final doc in unreadMessages.docs) {
         batch.update(doc.reference, {
           'isRead': true,
@@ -520,11 +539,13 @@ class ChatService {
   // ============================================================================
 
   /// Set typing status
-  Future<void> setTypingStatus(String chatId, String userId, bool isTyping) async {
+  Future<void> setTypingStatus(
+    String chatId,
+    String userId,
+    bool isTyping,
+  ) async {
     try {
-      await _chatsRef.doc(chatId).update({
-        'typingUsers.$userId': isTyping,
-      });
+      await _chatsRef.doc(chatId).update({'typingUsers.$userId': isTyping});
     } catch (e) {
       debugPrint('Error setting typing status: $e');
     }
@@ -535,7 +556,7 @@ class ChatService {
     return _chatsRef.doc(chatId).snapshots().map((doc) {
       final data = doc.data();
       if (data == null) return <String>[];
-      
+
       final typingUsers = data['typingUsers'] as Map<String, dynamic>? ?? {};
       return typingUsers.entries
           .where((e) => e.value == true)
@@ -558,7 +579,7 @@ class ChatService {
       // Note: Firestore doesn't support full-text search
       // This is a basic implementation - for production, use Algolia or similar
       final messages = await getMessages(chatId, limit: 200);
-      
+
       final queryLower = query.toLowerCase();
       return messages
           .where((m) => m.content.toLowerCase().contains(queryLower))

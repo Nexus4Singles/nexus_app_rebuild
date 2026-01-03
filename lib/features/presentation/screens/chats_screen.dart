@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nexus_app_min_test/core/auth/auth_providers.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
+import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
 import 'package:nexus_app_min_test/core/safe_providers/chats_provider_safe.dart';
-import 'package:nexus_app_min_test/features/presentation/screens/chats_detail_screen.dart';
 
 class ChatsScreen extends ConsumerWidget {
   const ChatsScreen({super.key});
@@ -10,6 +11,12 @@ class ChatsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chats = ref.watch(safeChatsProvider);
+
+    final authAsync = ref.watch(authStateProvider);
+    final isSignedIn = authAsync.maybeWhen(
+      data: (a) => a.isSignedIn,
+      orElse: () => false,
+    );
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -31,23 +38,41 @@ class ChatsScreen extends ConsumerWidget {
                 separatorBuilder: (_, __) => const SizedBox(height: 10),
                 itemBuilder: (context, index) {
                   final chat = chats[index];
+                  final chatId = 'c$index'; // TODO: real id later
                   return _ChatRow(
                     name: chat.name,
                     message: chat.message,
                     time: chat.time,
                     unread: chat.unread,
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ChatDetailScreen(name: chat.name),
-                        ),
-                      );
+                      if (!isSignedIn) {
+                        GuestGuard.requireSignedIn(
+                          context,
+                          ref,
+                          title: 'Create an account to chat',
+                          message:
+                              'You\'re currently in guest mode. Create an account to send and receive messages.',
+                          primaryText: 'Create an account',
+                          onCreateAccount:
+                              () => Navigator.of(context).pushNamed('/signup'),
+                          onAllowed: () async {},
+                        );
+                        return;
+                      }
+                      Navigator.of(context).pushNamed('/chats/$chatId');
                     },
                   );
                 },
               ),
             ),
+            const SizedBox(height: 8),
+            if (!isSignedIn)
+              Text(
+                'Guest mode: chats require an account.',
+                style: AppTextStyles.caption.copyWith(
+                  color: AppColors.textMuted,
+                ),
+              ),
           ],
         ),
       ),

@@ -14,5 +14,5 @@ class FirebaseException implements Exception {
 
 class FirebaseAuthException extends FirebaseException {
   FirebaseAuthException({String? message, String? code})
-      : super(plugin: 'firebase_auth', message: message, code: code);
+    : super(plugin: 'firebase_auth', message: message, code: code);
 }

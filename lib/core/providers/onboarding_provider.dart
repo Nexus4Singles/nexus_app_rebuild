@@ -53,7 +53,9 @@ final educationalLevelsListProvider = FutureProvider<List<String>>((ref) async {
 // ============================================================================
 
 /// Provider for search filters configuration
-final searchFiltersConfigProvider = FutureProvider<SearchFiltersConfig>((ref) async {
+final searchFiltersConfigProvider = FutureProvider<SearchFiltersConfig>((
+  ref,
+) async {
   final configLoader = ref.watch(configLoaderProvider);
   return configLoader.loadSearchFiltersConfig();
 });

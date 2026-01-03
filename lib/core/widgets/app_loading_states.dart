@@ -24,8 +24,8 @@ class AppLoadingScreen extends StatelessWidget {
               Text(
                 message!,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                  color: AppColors.textSecondary,
+                ),
               ),
             ],
           ],
@@ -66,17 +66,14 @@ class AppShimmer extends StatefulWidget {
   final Widget child;
   final bool isLoading;
 
-  const AppShimmer({
-    super.key,
-    required this.child,
-    this.isLoading = true,
-  });
+  const AppShimmer({super.key, required this.child, this.isLoading = true});
 
   @override
   State<AppShimmer> createState() => _AppShimmerState();
 }
 
-class _AppShimmerState extends State<AppShimmer> with SingleTickerProviderStateMixin {
+class _AppShimmerState extends State<AppShimmer>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -87,9 +84,10 @@ class _AppShimmerState extends State<AppShimmer> with SingleTickerProviderStateM
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     )..repeat();
-    _animation = Tween<double>(begin: -1.0, end: 2.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _animation = Tween<double>(
+      begin: -1.0,
+      end: 2.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -115,11 +113,12 @@ class _AppShimmerState extends State<AppShimmer> with SingleTickerProviderStateM
                 Color(0xFFF5F5F5),
                 Color(0xFFEBEBEB),
               ],
-              stops: [
-                _animation.value - 0.3,
-                _animation.value,
-                _animation.value + 0.3,
-              ].map((e) => e.clamp(0.0, 1.0)).toList(),
+              stops:
+                  [
+                    _animation.value - 0.3,
+                    _animation.value,
+                    _animation.value + 0.3,
+                  ].map((e) => e.clamp(0.0, 1.0)).toList(),
             ).createShader(bounds);
           },
           blendMode: BlendMode.srcATop,
@@ -187,18 +186,14 @@ class AppEmptyState extends StatelessWidget {
                 color: AppColors.surfaceDark,
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                icon,
-                size: 48,
-                color: AppColors.textMuted,
-              ),
+              child: Icon(icon, size: 48, color: AppColors.textMuted),
             ),
             const SizedBox(height: AppSpacing.lg),
             Text(
               title,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
             if (message != null) ...[
@@ -206,17 +201,14 @@ class AppEmptyState extends StatelessWidget {
               Text(
                 message!,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                  color: AppColors.textSecondary,
+                ),
                 textAlign: TextAlign.center,
               ),
             ],
             if (actionLabel != null && onAction != null) ...[
               const SizedBox(height: AppSpacing.xl),
-              AppButton.primary(
-                label: actionLabel!,
-                onPressed: onAction,
-              ),
+              AppButton.primary(label: actionLabel!, onPressed: onAction),
             ],
           ],
         ),
@@ -231,12 +223,7 @@ class AppErrorState extends StatelessWidget {
   final String? message;
   final VoidCallback? onRetry;
 
-  const AppErrorState({
-    super.key,
-    this.title,
-    this.message,
-    this.onRetry,
-  });
+  const AppErrorState({super.key, this.title, this.message, this.onRetry});
 
   @override
   Widget build(BuildContext context) {
@@ -261,9 +248,9 @@ class AppErrorState extends StatelessWidget {
             const SizedBox(height: AppSpacing.lg),
             Text(
               title ?? 'Something went wrong',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
             if (message != null) ...[
@@ -271,8 +258,8 @@ class AppErrorState extends StatelessWidget {
               Text(
                 message!,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                  color: AppColors.textSecondary,
+                ),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -329,18 +316,18 @@ class AppSuccessState extends StatelessWidget {
             const SizedBox(height: AppSpacing.lg),
             Text(
               title,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             if (message != null) ...[
               const SizedBox(height: AppSpacing.sm),
               Text(
                 message!,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
                 textAlign: TextAlign.center,
               ),
             ],

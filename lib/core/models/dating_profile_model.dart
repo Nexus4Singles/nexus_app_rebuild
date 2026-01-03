@@ -34,7 +34,7 @@ class CompatibilityData extends Equatable {
 
   factory CompatibilityData.fromMap(Map<String, dynamic>? map) {
     if (map == null) return const CompatibilityData();
-    
+
     return CompatibilityData(
       maritalStatus: map['maritalStatus'] as String?,
       haveKids: map['haveKids'] as String?,
@@ -43,8 +43,10 @@ class CompatibilityData extends Equatable {
       regularSourceOfIncome: map['regularSourceOfIncome'] as String?,
       marrySomeoneNotFS: map['marrySomeoneNotFS'] as String?,
       longDistance: map['longDistance'] as String?,
-      believeInCohabiting: map['believeInCohiabiting'] as String?, // Note: typo in original
-      shouldChristianSpeakInTongue: map['shouldChristianSpeakInTongue'] as String?,
+      believeInCohabiting:
+          map['believeInCohiabiting'] as String?, // Note: typo in original
+      shouldChristianSpeakInTongue:
+          map['shouldChristianSpeakInTongue'] as String?,
       believeInTithing: map['believeInTithing'] as String?,
     );
   }
@@ -55,11 +57,14 @@ class CompatibilityData extends Equatable {
       if (haveKids != null) 'haveKids': haveKids,
       if (genotype != null) 'genotype': genotype,
       if (personalityType != null) 'personalityType': personalityType,
-      if (regularSourceOfIncome != null) 'regularSourceOfIncome': regularSourceOfIncome,
+      if (regularSourceOfIncome != null)
+        'regularSourceOfIncome': regularSourceOfIncome,
       if (marrySomeoneNotFS != null) 'marrySomeoneNotFS': marrySomeoneNotFS,
       if (longDistance != null) 'longDistance': longDistance,
-      if (believeInCohabiting != null) 'believeInCohiabiting': believeInCohabiting,
-      if (shouldChristianSpeakInTongue != null) 'shouldChristianSpeakInTongue': shouldChristianSpeakInTongue,
+      if (believeInCohabiting != null)
+        'believeInCohiabiting': believeInCohabiting,
+      if (shouldChristianSpeakInTongue != null)
+        'shouldChristianSpeakInTongue': shouldChristianSpeakInTongue,
       if (believeInTithing != null) 'believeInTithing': believeInTithing,
     };
   }
@@ -112,7 +117,7 @@ class DatingAudioData extends Equatable {
 
   factory DatingAudioData.fromMap(Map<String, dynamic>? map) {
     if (map == null) return const DatingAudioData();
-    
+
     // Handle both old format (separate fields) and new format (nested audio object)
     final audioMap = map['audio'] as Map<String, dynamic>?;
     if (audioMap != null) {
@@ -123,7 +128,7 @@ class DatingAudioData extends Equatable {
         completed: audioMap['completed'] as bool? ?? false,
       );
     }
-    
+
     // Legacy format - check for separate fields
     return DatingAudioData(
       audio1Url: map['audio1Url'] as String?,
@@ -171,25 +176,24 @@ class DatingAudioData extends Equatable {
 /// Service to check dating profile completion status
 /// Follows exact requirements from Nexus 1.0
 class DatingProfileCompletionService {
-  
   /// Check if dating profile is fully complete
   /// Required for: viewing full profiles, starting DMs
   static bool isComplete(UserModel user) {
     return hasBasicInfo(user) &&
-           hasPhotos(user) &&
-           hasHobbies(user) &&
-           hasDesiredQualities(user) &&
-           hasAudioRecordings(user) &&
-           hasCompatibilityQuiz(user) &&
-           hasSocialMedia(user);
+        hasPhotos(user) &&
+        hasHobbies(user) &&
+        hasDesiredQualities(user) &&
+        hasAudioRecordings(user) &&
+        hasCompatibilityQuiz(user) &&
+        hasSocialMedia(user);
   }
 
   /// Check basic profile info
   static bool hasBasicInfo(UserModel user) {
     return (user.name != null && user.name!.isNotEmpty) &&
-           user.age != null &&
-           user.age! >= 21 && // Minimum dating age is 21
-           (user.gender != null && user.gender!.isNotEmpty);
+        user.age != null &&
+        user.age! >= 21 && // Minimum dating age is 21
+        (user.gender != null && user.gender!.isNotEmpty);
   }
 
   /// Check if user has at least 1 photo
@@ -210,12 +214,13 @@ class DatingProfileCompletionService {
   /// Check if user has completed 3 audio recordings
   static bool hasAudioRecordings(UserModel user) {
     // Check for audio data in datingProfile.audio or legacy format
-    final datingProfile = user.toMap()['datingProfile'] as Map<String, dynamic>?;
+    final datingProfile =
+        user.toMap()['datingProfile'] as Map<String, dynamic>?;
     if (datingProfile != null) {
       final audio = DatingAudioData.fromMap(datingProfile);
       return audio.isComplete;
     }
-    
+
     // Check legacy format in root document
     final audio = DatingAudioData.fromMap(user.toMap());
     return audio.isComplete;
@@ -228,11 +233,13 @@ class DatingProfileCompletionService {
 
   /// Check if user has at least one social media username
   static bool hasSocialMedia(UserModel user) {
-    return (user.facebookUsername != null && user.facebookUsername!.isNotEmpty) ||
-           (user.instagramUsername != null && user.instagramUsername!.isNotEmpty) ||
-           (user.twitterUsername != null && user.twitterUsername!.isNotEmpty) ||
-           (user.telegramUsername != null && user.telegramUsername!.isNotEmpty) ||
-           (user.snapchatUsername != null && user.snapchatUsername!.isNotEmpty);
+    return (user.facebookUsername != null &&
+            user.facebookUsername!.isNotEmpty) ||
+        (user.instagramUsername != null &&
+            user.instagramUsername!.isNotEmpty) ||
+        (user.twitterUsername != null && user.twitterUsername!.isNotEmpty) ||
+        (user.telegramUsername != null && user.telegramUsername!.isNotEmpty) ||
+        (user.snapchatUsername != null && user.snapchatUsername!.isNotEmpty);
   }
 
   /// Get completion percentage (0-100)
@@ -258,9 +265,12 @@ class DatingProfileCompletionService {
     if (!hasBasicInfo(user)) missing.add(DatingProfileStep.basicInfo);
     if (!hasPhotos(user)) missing.add(DatingProfileStep.photos);
     if (!hasHobbies(user)) missing.add(DatingProfileStep.hobbies);
-    if (!hasDesiredQualities(user)) missing.add(DatingProfileStep.desiredQualities);
-    if (!hasAudioRecordings(user)) missing.add(DatingProfileStep.audioRecordings);
-    if (!hasCompatibilityQuiz(user)) missing.add(DatingProfileStep.compatibility);
+    if (!hasDesiredQualities(user))
+      missing.add(DatingProfileStep.desiredQualities);
+    if (!hasAudioRecordings(user))
+      missing.add(DatingProfileStep.audioRecordings);
+    if (!hasCompatibilityQuiz(user))
+      missing.add(DatingProfileStep.compatibility);
     if (!hasSocialMedia(user)) missing.add(DatingProfileStep.socialMedia);
 
     return missing;
@@ -342,7 +352,8 @@ class SearchFilters extends Equatable {
       country: country ?? this.country,
       nationality: nationality ?? this.nationality,
       incomeSource: incomeSource ?? this.incomeSource,
-      longDistancePreference: longDistancePreference ?? this.longDistancePreference,
+      longDistancePreference:
+          longDistancePreference ?? this.longDistancePreference,
       maritalStatus: maritalStatus ?? this.maritalStatus,
       hasKids: hasKids ?? this.hasKids,
       genotype: genotype ?? this.genotype,
@@ -369,9 +380,15 @@ class SearchFilters extends Equatable {
     // Education filter - "Graduate" or "Any is fine"
     if (education != null && education == 'Graduate') {
       final graduateLevels = [
-        'Undergraduate Degree', 'Postgraduate Degree', 'Doctorate Degree',
-        'Bachelor\'s Degree', 'Master\'s Degree', 'Doctorate',
-        'Graduate', 'Bachelors', 'Masters',
+        'Undergraduate Degree',
+        'Postgraduate Degree',
+        'Doctorate Degree',
+        'Bachelor\'s Degree',
+        'Master\'s Degree',
+        'Doctorate',
+        'Graduate',
+        'Bachelors',
+        'Masters',
       ];
       if (!graduateLevels.contains(user.educationLevel)) return false;
     }
@@ -388,16 +405,20 @@ class SearchFilters extends Equatable {
       // "Not Compulsory" - no filtering
 
       // Long distance
-      if (longDistancePreference != null && longDistancePreference!.isNotEmpty) {
+      if (longDistancePreference != null &&
+          longDistancePreference!.isNotEmpty) {
         if (longDistancePreference != 'Maybe') {
-          if (userCompatibility['longDistance'] != longDistancePreference) return false;
+          if (userCompatibility['longDistance'] != longDistancePreference)
+            return false;
         }
       }
 
       // Marital status - "Never Married" or "Any is fine"
       if (maritalStatus != null && maritalStatus == 'Never Married') {
         final userStatus = userCompatibility['maritalStatus'];
-        if (userStatus != 'Never Married' && userStatus != 'Single (Never Married)') return false;
+        if (userStatus != 'Never Married' &&
+            userStatus != 'Single (Never Married)')
+          return false;
       }
       // "Any is fine" - no filtering
 
@@ -416,7 +437,9 @@ class SearchFilters extends Equatable {
     }
 
     // Nationality filter
-    if (nationality != null && nationality!.isNotEmpty && nationality != 'Any') {
+    if (nationality != null &&
+        nationality!.isNotEmpty &&
+        nationality != 'Any') {
       if (user.nationality != nationality) return false;
     }
 
@@ -425,8 +448,17 @@ class SearchFilters extends Equatable {
 
   @override
   List<Object?> get props => [
-    minAge, maxAge, education, church, country, nationality,
-    incomeSource, longDistancePreference, maritalStatus, hasKids, genotype,
+    minAge,
+    maxAge,
+    education,
+    church,
+    country,
+    nationality,
+    incomeSource,
+    longDistancePreference,
+    maritalStatus,
+    hasKids,
+    genotype,
   ];
 }
 
@@ -452,18 +484,9 @@ class SearchFilterOptions {
     'South Africa',
   ];
 
-  static const List<String> incomeOptions = [
-    'Any',
-    'Yes',
-    'No',
-    'Sometimes',
-  ];
+  static const List<String> incomeOptions = ['Any', 'Yes', 'No', 'Sometimes'];
 
-  static const List<String> yesNoOptions = [
-    'Any',
-    'Yes',
-    'No',
-  ];
+  static const List<String> yesNoOptions = ['Any', 'Yes', 'No'];
 
   static const List<String> maritalStatusOptions = [
     'Any',

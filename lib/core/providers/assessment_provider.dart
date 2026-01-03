@@ -12,25 +12,24 @@ import 'user_provider.dart';
 // ============================================================================
 
 /// Provider for loading assessment config by type
-final assessmentConfigProvider = FutureProvider.family<AssessmentConfig?, AssessmentType>(
-  (ref, type) async {
-    final configLoader = ref.watch(configLoaderProvider);
-    return configLoader.loadAssessment(type);
-  },
-);
+final assessmentConfigProvider =
+    FutureProvider.family<AssessmentConfig?, AssessmentType>((ref, type) async {
+      final configLoader = ref.watch(configLoaderProvider);
+      return configLoader.loadAssessment(type);
+    });
 
 /// Provider for getting recommended assessment based on user's relationship status
 final recommendedAssessmentTypeProvider = Provider<AssessmentType?>((ref) {
   final user = ref.watch(currentUserProvider).valueOrNull;
   if (user?.nexus2 == null) return null;
-  
-  final status = user!.nexus2!.relationshipStatus;
-  if (status == null) return null;
-  
+
+  final status = user!.nexus2!.relationshipStatusEnum;
+
   switch (status) {
     case RelationshipStatus.singleNeverMarried:
       return AssessmentType.singlesReadiness;
-    case RelationshipStatus.divorcedWidowed:
+    case RelationshipStatus.divorced:
+    case RelationshipStatus.widowed:
       return AssessmentType.remarriageReadiness;
     case RelationshipStatus.married:
       return AssessmentType.marriageHealthCheck;
@@ -38,7 +37,9 @@ final recommendedAssessmentTypeProvider = Provider<AssessmentType?>((ref) {
 });
 
 /// Provider for recommended assessment config
-final recommendedAssessmentProvider = FutureProvider<AssessmentConfig?>((ref) async {
+final recommendedAssessmentProvider = FutureProvider<AssessmentConfig?>((
+  ref,
+) async {
   final type = ref.watch(recommendedAssessmentTypeProvider);
   if (type == null) return null;
   return ref.watch(assessmentConfigProvider(type).future);
@@ -128,14 +129,17 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
   final Ref _ref;
   final FirestoreService _firestoreService;
 
-  AssessmentNotifier(this._ref, this._firestoreService) : super(const AssessmentState());
+  AssessmentNotifier(this._ref, this._firestoreService)
+    : super(const AssessmentState());
 
   /// Start a new assessment
   Future<void> startAssessment(AssessmentType type) async {
     try {
       final config = await _ref.read(assessmentConfigProvider(type).future);
       if (config == null) {
-        state = state.copyWith(error: 'Failed to load assessment configuration');
+        state = state.copyWith(
+          error: 'Failed to load assessment configuration',
+        );
         return;
       }
 
@@ -177,14 +181,18 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
   /// Go to next question
   void nextQuestion() {
     if (state.canGoNext) {
-      state = state.copyWith(currentQuestionIndex: state.currentQuestionIndex + 1);
+      state = state.copyWith(
+        currentQuestionIndex: state.currentQuestionIndex + 1,
+      );
     }
   }
 
   /// Go to previous question
   void previousQuestion() {
     if (state.canGoBack) {
-      state = state.copyWith(currentQuestionIndex: state.currentQuestionIndex - 1);
+      state = state.copyWith(
+        currentQuestionIndex: state.currentQuestionIndex - 1,
+      );
     }
   }
 
@@ -226,10 +234,7 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
       // Save to Firestore
       await _firestoreService.saveAssessmentResult(user.id, result);
 
-      state = state.copyWith(
-        isSubmitting: false,
-        result: result,
-      );
+      state = state.copyWith(isSubmitting: false, result: result);
     } catch (e) {
       state = state.copyWith(
         isSubmitting: false,
@@ -254,41 +259,43 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
 // ============================================================================
 
 /// Provider for assessment state notifier
-final assessmentNotifierProvider = StateNotifierProvider<AssessmentNotifier, AssessmentState>(
-  (ref) {
-    final firestoreService = ref.watch(firestoreServiceProvider);
-    return AssessmentNotifier(ref, firestoreService);
-  },
-);
+final assessmentNotifierProvider =
+    StateNotifierProvider<AssessmentNotifier, AssessmentState>((ref) {
+      final firestoreService = ref.watch(firestoreServiceProvider);
+      return AssessmentNotifier(ref, firestoreService);
+    });
 
 /// Provider for user's assessment history
 final assessmentHistoryProvider = StreamProvider<List<AssessmentResult>>((ref) {
   final user = ref.watch(currentUserProvider).valueOrNull;
   if (user == null) return Stream.value([]);
-  
+
   final firestoreService = ref.watch(firestoreServiceProvider);
   return firestoreService.watchAssessmentResults(user.id);
 });
 
 /// Provider for latest assessment result of a specific type
-final latestAssessmentResultProvider = FutureProvider.family<AssessmentResult?, String>(
-  (ref, assessmentId) async {
-    final history = await ref.watch(assessmentHistoryProvider.future);
-    try {
-      return history.firstWhere((r) => r.assessmentId == assessmentId);
-    } catch (_) {
-      return null;
-    }
-  },
-);
+final latestAssessmentResultProvider =
+    FutureProvider.family<AssessmentResult?, String>((ref, assessmentId) async {
+      final history = await ref.watch(assessmentHistoryProvider.future);
+      try {
+        return history.firstWhere((r) => r.assessmentId == assessmentId);
+      } catch (_) {
+        return null;
+      }
+    });
 
 /// Provider for checking if user has completed their recommended assessment
-final hasCompletedRecommendedAssessmentProvider = FutureProvider<bool>((ref) async {
+final hasCompletedRecommendedAssessmentProvider = FutureProvider<bool>((
+  ref,
+) async {
   final type = ref.watch(recommendedAssessmentTypeProvider);
   if (type == null) return false;
-  
+
   final assessmentId = type.toAssessmentId();
-  final result = await ref.watch(latestAssessmentResultProvider(assessmentId).future);
+  final result = await ref.watch(
+    latestAssessmentResultProvider(assessmentId).future,
+  );
   return result != null;
 });
 

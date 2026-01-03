@@ -6,10 +6,7 @@ import 'package:nexus_app_min_test/features/presentation/screens/session_flow_sc
 class ChallengeDetailScreen extends StatelessWidget {
   final SafeChallengeItem challenge;
 
-  const ChallengeDetailScreen({
-    super.key,
-    required this.challenge,
-  });
+  const ChallengeDetailScreen({super.key, required this.challenge});
 
   @override
   Widget build(BuildContext context) {

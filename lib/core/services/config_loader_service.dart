@@ -19,15 +19,15 @@ class ConfigLoaderService {
   AssessmentConfig? _singlesReadinessConfig;
   AssessmentConfig? _remarriageReadinessConfig;
   AssessmentConfig? _marriageHealthCheckConfig;
-  
+
   // Journey catalogs by relationship status
   JourneyCatalog? _singlesNeverMarriedJourneyCatalog;
   JourneyCatalog? _divorcedWidowedJourneyCatalog;
   JourneyCatalog? _marriedJourneyCatalog;
-  
+
   StoriesCatalog? _storiesCatalog;
   PollsCatalog? _pollsCatalog;
-  
+
   // Onboarding config
   OnboardingConfig? _onboardingConfig;
   SearchFiltersConfig? _searchFiltersConfig;
@@ -48,7 +48,7 @@ class ConfigLoaderService {
   /// Load Singles Readiness Assessment config
   Future<AssessmentConfig> loadSinglesReadinessConfig() async {
     if (_singlesReadinessConfig != null) return _singlesReadinessConfig!;
-    
+
     final jsonData = await _loadJsonAsset(AppConfig.singlesReadinessPath);
     _singlesReadinessConfig = AssessmentConfig.fromJson(jsonData);
     return _singlesReadinessConfig!;
@@ -57,7 +57,7 @@ class ConfigLoaderService {
   /// Load Remarriage Readiness Assessment config
   Future<AssessmentConfig> loadRemarriageReadinessConfig() async {
     if (_remarriageReadinessConfig != null) return _remarriageReadinessConfig!;
-    
+
     final jsonData = await _loadJsonAsset(AppConfig.remarriageReadinessPath);
     _remarriageReadinessConfig = AssessmentConfig.fromJson(jsonData);
     return _remarriageReadinessConfig!;
@@ -66,18 +66,21 @@ class ConfigLoaderService {
   /// Load Marriage Health Check Assessment config
   Future<AssessmentConfig> loadMarriageHealthCheckConfig() async {
     if (_marriageHealthCheckConfig != null) return _marriageHealthCheckConfig!;
-    
+
     final jsonData = await _loadJsonAsset(AppConfig.marriageHealthCheckPath);
     _marriageHealthCheckConfig = AssessmentConfig.fromJson(jsonData);
     return _marriageHealthCheckConfig!;
   }
 
   /// Get the appropriate assessment config based on relationship status
-  Future<AssessmentConfig> getAssessmentForStatus(RelationshipStatus status) async {
+  Future<AssessmentConfig> getAssessmentForStatus(
+    RelationshipStatus status,
+  ) async {
     switch (status) {
       case RelationshipStatus.singleNeverMarried:
         return loadSinglesReadinessConfig();
-      case RelationshipStatus.divorcedWidowed:
+      case RelationshipStatus.divorced:
+      case RelationshipStatus.widowed:
         return loadRemarriageReadinessConfig();
       case RelationshipStatus.married:
         return loadMarriageHealthCheckConfig();
@@ -102,32 +105,44 @@ class ConfigLoaderService {
   /// Load Singles (Never Married) Journey Catalog
   /// Falls back to singles_v1.json if the v2 file is empty
   Future<JourneyCatalog> loadSinglesNeverMarriedJourneyCatalog() async {
-    if (_singlesNeverMarriedJourneyCatalog != null) return _singlesNeverMarriedJourneyCatalog!;
-    
+    if (_singlesNeverMarriedJourneyCatalog != null)
+      return _singlesNeverMarriedJourneyCatalog!;
+
     try {
-      final jsonData = await _loadJsonAsset(AppConfig.singlesNeverMarriedJourneyPath);
+      final jsonData = await _loadJsonAsset(
+        AppConfig.singlesNeverMarriedJourneyPath,
+      );
       final catalog = JourneyCatalog.fromJson(jsonData);
-      
+
       // If v2 file is empty, fall back to v1
       if (catalog.products.isEmpty) {
-        final fallbackData = await _loadJsonAsset(AppConfig.singlesV1FallbackPath);
-        _singlesNeverMarriedJourneyCatalog = JourneyCatalog.fromJson(fallbackData);
+        final fallbackData = await _loadJsonAsset(
+          AppConfig.singlesV1FallbackPath,
+        );
+        _singlesNeverMarriedJourneyCatalog = JourneyCatalog.fromJson(
+          fallbackData,
+        );
       } else {
         _singlesNeverMarriedJourneyCatalog = catalog;
       }
     } catch (_) {
       // On any error, use the v1 fallback
-      final fallbackData = await _loadJsonAsset(AppConfig.singlesV1FallbackPath);
-      _singlesNeverMarriedJourneyCatalog = JourneyCatalog.fromJson(fallbackData);
+      final fallbackData = await _loadJsonAsset(
+        AppConfig.singlesV1FallbackPath,
+      );
+      _singlesNeverMarriedJourneyCatalog = JourneyCatalog.fromJson(
+        fallbackData,
+      );
     }
-    
+
     return _singlesNeverMarriedJourneyCatalog!;
   }
 
   /// Load Divorced/Widowed Journey Catalog (includes parenting content)
   Future<JourneyCatalog> loadDivorcedWidowedJourneyCatalog() async {
-    if (_divorcedWidowedJourneyCatalog != null) return _divorcedWidowedJourneyCatalog!;
-    
+    if (_divorcedWidowedJourneyCatalog != null)
+      return _divorcedWidowedJourneyCatalog!;
+
     final jsonData = await _loadJsonAsset(AppConfig.divorcedWidowedJourneyPath);
     _divorcedWidowedJourneyCatalog = JourneyCatalog.fromJson(jsonData);
     return _divorcedWidowedJourneyCatalog!;
@@ -136,7 +151,7 @@ class ConfigLoaderService {
   /// Load Married Journey Catalog (includes parenting content)
   Future<JourneyCatalog> loadMarriedJourneyCatalog() async {
     if (_marriedJourneyCatalog != null) return _marriedJourneyCatalog!;
-    
+
     final jsonData = await _loadJsonAsset(AppConfig.marriedJourneyPath);
     _marriedJourneyCatalog = JourneyCatalog.fromJson(jsonData);
     return _marriedJourneyCatalog!;
@@ -147,11 +162,14 @@ class ConfigLoaderService {
   /// - Singles: Dating/readiness focused
   /// - Divorced/Widowed: Healing + co-parenting content
   /// - Married: Marriage enrichment + parenting content
-  Future<JourneyCatalog> getJourneyCatalogForStatus(RelationshipStatus status) async {
+  Future<JourneyCatalog> getJourneyCatalogForStatus(
+    RelationshipStatus status,
+  ) async {
     switch (status) {
       case RelationshipStatus.singleNeverMarried:
         return loadSinglesNeverMarriedJourneyCatalog();
-      case RelationshipStatus.divorcedWidowed:
+      case RelationshipStatus.divorced:
+      case RelationshipStatus.widowed:
         return loadDivorcedWidowedJourneyCatalog();
       case RelationshipStatus.married:
         return loadMarriedJourneyCatalog();
@@ -159,7 +177,10 @@ class ConfigLoaderService {
   }
 
   /// Get a specific journey product by ID
-  Future<JourneyProduct?> getJourneyProduct(String productId, RelationshipStatus status) async {
+  Future<JourneyProduct?> getJourneyProduct(
+    String productId,
+    RelationshipStatus status,
+  ) async {
     final catalog = await getJourneyCatalogForStatus(status);
     return catalog.findProduct(productId);
   }
@@ -186,7 +207,7 @@ class ConfigLoaderService {
   /// Load Stories Catalog
   Future<StoriesCatalog> loadStoriesCatalog() async {
     if (_storiesCatalog != null) return _storiesCatalog!;
-    
+
     final jsonData = await _loadJsonAsset(AppConfig.storiesPath);
     _storiesCatalog = StoriesCatalog.fromJson(jsonData);
     return _storiesCatalog!;
@@ -195,7 +216,7 @@ class ConfigLoaderService {
   /// Load Polls Catalog
   Future<PollsCatalog> loadPollsCatalog() async {
     if (_pollsCatalog != null) return _pollsCatalog!;
-    
+
     final jsonData = await _loadJsonAsset(AppConfig.pollsPath);
     _pollsCatalog = PollsCatalog.fromJson(jsonData);
     return _pollsCatalog!;
@@ -225,7 +246,7 @@ class ConfigLoaderService {
   /// Load onboarding configuration (hobbies, professions, states, etc.)
   Future<OnboardingConfig> loadOnboardingConfig() async {
     if (_onboardingConfig != null) return _onboardingConfig!;
-    
+
     final jsonData = await _loadJsonAsset(AppConfig.onboardingConfigPath);
     _onboardingConfig = OnboardingConfig.fromJson(jsonData);
     return _onboardingConfig!;
@@ -258,19 +279,22 @@ class ConfigLoaderService {
   /// Get churches list (loaded from separate file due to corruption in main file)
   Future<List<String>> getChurches() async {
     if (_churchesList != null) return _churchesList!;
-    
+
     try {
       final jsonData = await _loadJsonAsset(AppConfig.churchesConfigPath);
-      final churches = (jsonData['churches'] as List<dynamic>?)
-          ?.whereType<String>()
-          .where((s) => s.isNotEmpty)
-          .toList() ?? [];
-      
-      _churchesList = churches.isNotEmpty ? churches : OnboardingConfig.defaultChurches;
+      final churches =
+          (jsonData['churches'] as List<dynamic>?)
+              ?.whereType<String>()
+              .where((s) => s.isNotEmpty)
+              .toList() ??
+          [];
+
+      _churchesList =
+          churches.isNotEmpty ? churches : OnboardingConfig.defaultChurches;
     } catch (_) {
       _churchesList = OnboardingConfig.defaultChurches;
     }
-    
+
     return _churchesList!;
   }
 
@@ -286,7 +310,7 @@ class ConfigLoaderService {
   /// Load search filters configuration
   Future<SearchFiltersConfig> loadSearchFiltersConfig() async {
     if (_searchFiltersConfig != null) return _searchFiltersConfig!;
-    
+
     final jsonData = await _loadJsonAsset(AppConfig.onboardingConfigPath);
     _searchFiltersConfig = SearchFiltersConfig.fromJson(jsonData);
     return _searchFiltersConfig!;
@@ -299,7 +323,8 @@ class ConfigLoaderService {
     switch (status) {
       case RelationshipStatus.singleNeverMarried:
         return 'single_never_married';
-      case RelationshipStatus.divorcedWidowed:
+      case RelationshipStatus.divorced:
+      case RelationshipStatus.widowed:
         return 'divorced_widowed';
       case RelationshipStatus.married:
         return 'married';
@@ -340,7 +365,6 @@ class ConfigLoaderService {
   Future<JourneyCatalog?> loadSinglesJourneyCatalog() async {
     return loadSinglesNeverMarriedJourneyCatalog();
   }
-
 }
 
 /// Exception thrown when config loading fails
@@ -350,5 +374,4 @@ class ConfigLoadException implements Exception {
 
   @override
   String toString() => 'ConfigLoadException: $message';
-
-  }
+}

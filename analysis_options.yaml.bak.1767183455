@@ -1,0 +1,19 @@
+analyzer:
+  exclude:
+    - lib/core/services/media_service.dart
+    - lib/core/services/chat_service.dart
+    - lib/core/services/dating_profile_service.dart
+    - lib/core/services/subscription_service.dart
+    - lib/core/providers/assessment_provider.dart
+    - _ignored/**
+    - lib/_ignored/**
+    - test/**
+    - lib/**/firebase_options_TEMPLATE.dart
+
+  errors:
+    deprecated_member_use: ignore
+    prefer_const_constructors: ignore
+    prefer_const_literals_to_create_immutables: ignore
+    prefer_const_declarations: ignore
+    dangling_library_doc_comments: ignore
+    unused_import: ignore

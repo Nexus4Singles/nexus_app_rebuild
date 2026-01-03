@@ -70,9 +70,15 @@ class _DesignPreviewHome extends StatelessWidget {
 
             Text('Buttons', style: t.titleLarge),
             const SizedBox(height: 12),
-            ElevatedButton(onPressed: () {}, child: const Text('Primary Button')),
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text('Primary Button'),
+            ),
             const SizedBox(height: 12),
-            OutlinedButton(onPressed: () {}, child: const Text('Outlined Button')),
+            OutlinedButton(
+              onPressed: () {},
+              child: const Text('Outlined Button'),
+            ),
             const SizedBox(height: 12),
             TextButton(onPressed: () {}, child: const Text('Text Button')),
 

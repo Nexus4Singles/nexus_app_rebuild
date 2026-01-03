@@ -5,8 +5,6 @@ class NotificationsStubScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Notifications (stub)')),
-    );
+    return const Scaffold(body: Center(child: Text('Notifications (stub)')));
   }
 }

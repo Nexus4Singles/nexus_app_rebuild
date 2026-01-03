@@ -17,9 +17,12 @@ class AssessmentDimension extends Equatable {
     return AssessmentDimension(
       id: json['id'] as String,
       name: json['name'] as String,
-      insights: json['insights'] != null && (json['insights'] as Map).isNotEmpty
-          ? DimensionInsights.fromJson(json['insights'] as Map<String, dynamic>)
-          : null,
+      insights:
+          json['insights'] != null && (json['insights'] as Map).isNotEmpty
+              ? DimensionInsights.fromJson(
+                json['insights'] as Map<String, dynamic>,
+              )
+              : null,
     );
   }
 
@@ -136,9 +139,10 @@ class AssessmentQuestion extends Equatable {
       number: json['number'] as int,
       dimension: json['dimension'] as String,
       text: json['text'] as String,
-      options: (json['options'] as List<dynamic>)
-          .map((e) => AssessmentOption.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      options:
+          (json['options'] as List<dynamic>)
+              .map((e) => AssessmentOption.fromJson(e as Map<String, dynamic>))
+              .toList(),
     );
   }
 
@@ -180,12 +184,18 @@ class AssessmentConfig extends Equatable {
       title: json['title'] as String,
       version: json['version'] as String,
       questionCount: json['questionCount'] as int,
-      dimensions: (json['dimensions'] as List<dynamic>)
-          .map((e) => AssessmentDimension.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      questions: (json['questions'] as List<dynamic>)
-          .map((e) => AssessmentQuestion.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      dimensions:
+          (json['dimensions'] as List<dynamic>)
+              .map(
+                (e) => AssessmentDimension.fromJson(e as Map<String, dynamic>),
+              )
+              .toList(),
+      questions:
+          (json['questions'] as List<dynamic>)
+              .map(
+                (e) => AssessmentQuestion.fromJson(e as Map<String, dynamic>),
+              )
+              .toList(),
     );
   }
 
@@ -264,10 +274,10 @@ class AssessmentAnswer extends Equatable {
 
   @override
   List<Object?> get props => [
-    questionNumber, 
-    selectedOptionId, 
-    weight, 
-    signalTier, 
+    questionNumber,
+    selectedOptionId,
+    weight,
+    signalTier,
     dimension,
   ];
 }
@@ -326,6 +336,8 @@ class AssessmentResult extends Equatable {
   final List<AssessmentAnswer> answers;
   final Map<String, DimensionScore> dimensionScores;
   final DateTime completedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
   final String? recommendedJourneyId;
   final List<String> inferredTags;
 
@@ -340,6 +352,8 @@ class AssessmentResult extends Equatable {
     required this.answers,
     required this.dimensionScores,
     required this.completedAt,
+    this.createdAt,
+    this.updatedAt,
     this.recommendedJourneyId,
     this.inferredTags = const [],
   });
@@ -356,24 +370,41 @@ class AssessmentResult extends Equatable {
       maxScore: json['maxScore'] as int,
       percentage: (json['percentage'] as num).toDouble(),
       overallTier: SignalTier.fromValue(json['overallTier'] as String),
-      answers: (json['answers'] as List<dynamic>?)
-          ?.map((e) => AssessmentAnswer.fromJson(e as Map<String, dynamic>))
-          .toList() ?? [],
-      dimensionScores: (json['dimensionScores'] as Map<String, dynamic>?)?.map(
-        (k, v) => MapEntry(k, DimensionScore(
-          dimensionId: v['dimensionId'] as String,
-          dimensionName: v['dimensionName'] as String,
-          totalScore: v['totalScore'] as int,
-          maxScore: v['maxScore'] as int,
-          questionCount: v['questionCount'] as int,
-          answers: [],
-        )),
-      ) ?? {},
+      answers:
+          (json['answers'] as List<dynamic>?)
+              ?.map((e) => AssessmentAnswer.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      dimensionScores:
+          (json['dimensionScores'] as Map<String, dynamic>?)?.map(
+            (k, v) => MapEntry(
+              k,
+              DimensionScore(
+                dimensionId: v['dimensionId'] as String,
+                dimensionName: v['dimensionName'] as String,
+                totalScore: v['totalScore'] as int,
+                maxScore: v['maxScore'] as int,
+                questionCount: v['questionCount'] as int,
+                answers: [],
+              ),
+            ),
+          ) ??
+          {},
       completedAt: DateTime.parse(json['completedAt'] as String),
+      createdAt:
+          json['createdAt'] != null
+              ? DateTime.parse(json['createdAt'] as String)
+              : null,
+      updatedAt:
+          json['updatedAt'] != null
+              ? DateTime.parse(json['updatedAt'] as String)
+              : null,
       recommendedJourneyId: json['recommendedJourneyId'] as String?,
-      inferredTags: (json['inferredTags'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
+      inferredTags:
+          (json['inferredTags'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
     );
   }
 
@@ -391,13 +422,20 @@ class AssessmentResult extends Equatable {
     // Calculate dimension scores
     final dimensionScores = <String, DimensionScore>{};
     for (final dimension in config.dimensions) {
-      final dimensionAnswers = answers.where(
-        (a) => a.dimension.toLowerCase() == dimension.name.toLowerCase(),
-      ).toList();
-      
+      final dimensionAnswers =
+          answers
+              .where(
+                (a) =>
+                    a.dimension.toLowerCase() == dimension.name.toLowerCase(),
+              )
+              .toList();
+
       if (dimensionAnswers.isEmpty) continue;
 
-      final dimTotal = dimensionAnswers.fold<int>(0, (sum, a) => sum + a.weight);
+      final dimTotal = dimensionAnswers.fold<int>(
+        0,
+        (sum, a) => sum + a.weight,
+      );
       final dimMax = dimensionAnswers.length * AppConfig.maxScorePerQuestion;
 
       dimensionScores[dimension.id] = DimensionScore(
@@ -478,7 +516,10 @@ class AssessmentResult extends Equatable {
       }),
     ),
     'completedAt': completedAt.toIso8601String(),
-    if (recommendedJourneyId != null) 'recommendedJourneyId': recommendedJourneyId,
+    if (createdAt != null) 'createdAt': createdAt!.toIso8601String(),
+    if (updatedAt != null) 'updatedAt': updatedAt!.toIso8601String(),
+    if (recommendedJourneyId != null)
+      'recommendedJourneyId': recommendedJourneyId,
     'inferredTags': inferredTags,
   };
 
@@ -494,6 +535,8 @@ class AssessmentResult extends Equatable {
     answers,
     dimensionScores,
     completedAt,
+    createdAt,
+    updatedAt,
     recommendedJourneyId,
     inferredTags,
   ];

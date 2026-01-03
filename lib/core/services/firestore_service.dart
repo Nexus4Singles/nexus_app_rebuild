@@ -9,9 +9,8 @@ import '../constants/app_constants.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore;
 
-
   FirestoreService({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   // ==================== DOCUMENT REFERENCES ====================
 
@@ -20,19 +19,52 @@ class FirestoreService {
   }
 
   CollectionReference<Map<String, dynamic>> _assessmentResultsRef(String uid) {
-    return _firestore.collection('assessmentResults').doc(uid).collection('results');
+    return _firestore
+        .collection('assessmentResults')
+        .doc(uid)
+        .collection('results');
+  }
+
+  // ✅ Nexus v2 assessment storage:
+  // users/{uid}/assessments/{assessmentId} -> latest
+  // users/{uid}/assessments/{assessmentId}/history/{docId} -> history
+  CollectionReference<Map<String, dynamic>> _userAssessmentsRef(String uid) {
+    return _userDocRef(uid).collection('assessments');
+  }
+
+  DocumentReference<Map<String, dynamic>> _latestAssessmentRef(
+    String uid,
+    String assessmentId,
+  ) {
+    return _userAssessmentsRef(uid).doc(assessmentId);
+  }
+
+  CollectionReference<Map<String, dynamic>> _assessmentHistoryRef(
+    String uid,
+    String assessmentId,
+  ) {
+    return _latestAssessmentRef(uid, assessmentId).collection('history');
   }
 
   CollectionReference<Map<String, dynamic>> _journeyProgressRef(String uid) {
-    return _firestore.collection('journeyProgress').doc(uid).collection('progress');
+    return _firestore
+        .collection('journeyProgress')
+        .doc(uid)
+        .collection('progress');
   }
 
-  CollectionReference<Map<String, dynamic>> _sessionResponsesRef(String uid, String productId) {
+  CollectionReference<Map<String, dynamic>> _sessionResponsesRef(
+    String uid,
+    String productId,
+  ) {
     return _journeyProgressRef(uid).doc(productId).collection('responses');
   }
 
   CollectionReference<Map<String, dynamic>> _storyProgressRef(String uid) {
-    return _firestore.collection('storyProgress').doc(uid).collection('stories');
+    return _firestore
+        .collection('storyProgress')
+        .doc(uid)
+        .collection('stories');
   }
 
   CollectionReference<Map<String, dynamic>> _pollVotesRef(String pollId) {
@@ -77,15 +109,16 @@ class FirestoreService {
 
   Future<void> updateNexus2Data(String uid, Nexus2Data nexus2Data) async {
     try {
-      await _userDocRef(uid).update({
-        'nexus2': nexus2Data.toMap(),
-      });
+      await _userDocRef(uid).update({'nexus2': nexus2Data.toMap()});
     } catch (e) {
       throw FirestoreException('Failed to update nexus2 data: $e');
     }
   }
 
-  Future<void> updateNexus2Fields(String uid, Map<String, dynamic> fields) async {
+  Future<void> updateNexus2Fields(
+    String uid,
+    Map<String, dynamic> fields,
+  ) async {
     try {
       final prefixedFields = <String, dynamic>{};
       fields.forEach((key, value) {
@@ -99,9 +132,9 @@ class FirestoreService {
 
   Future<void> updateLastActive(String uid) async {
     try {
-      await _userDocRef(uid).update({
-        'nexus2.lastActiveAt': FieldValue.serverTimestamp(),
-      });
+      await _userDocRef(
+        uid,
+      ).update({'nexus2.lastActiveAt': FieldValue.serverTimestamp()});
     } catch (_) {
       // Silently fail - not critical
     }
@@ -141,21 +174,48 @@ class FirestoreService {
 
   Future<void> saveAssessmentResult(String uid, AssessmentResult result) async {
     try {
-      final docId = '${result.assessmentId}_${DateTime.now().millisecondsSinceEpoch}';
-      await _assessmentResultsRef(uid).doc(docId).set(result.toJson());
+      final now = DateTime.now();
+      final historyId = '${now.millisecondsSinceEpoch}';
+
+      // ✅ New Nexus v2 storage (latest + history)
+      await _latestAssessmentRef(
+        uid,
+        result.assessmentId,
+      ).set({...result.toJson(), 'updatedAt': now.toIso8601String()});
+
+      await _assessmentHistoryRef(uid, result.assessmentId).doc(historyId).set({
+        ...result.toJson(),
+        'createdAt': now.toIso8601String(),
+      });
+
+      // ✅ Legacy storage (keep for backward compatibility / migration)
+      final legacyDocId =
+          '${result.assessmentId}_${now.millisecondsSinceEpoch}';
+      await _assessmentResultsRef(uid).doc(legacyDocId).set(result.toJson());
     } catch (e) {
       throw FirestoreException('Failed to save assessment result: $e');
     }
   }
 
-  Future<AssessmentResult?> getLatestAssessmentResult(String uid, String assessmentId) async {
+  Future<AssessmentResult?> getLatestAssessmentResult(
+    String uid,
+    String assessmentId,
+  ) async {
     try {
-      final query = await _assessmentResultsRef(uid)
-          .where('assessmentId', isEqualTo: assessmentId)
-          .orderBy('completedAt', descending: true)
-          .limit(1)
-          .get();
-      
+      // ✅ New Nexus v2 storage first
+      final latestSnap = await _latestAssessmentRef(uid, assessmentId).get();
+      if (latestSnap.exists && latestSnap.data() != null) {
+        return AssessmentResult.fromJson(latestSnap.data()!);
+      }
+
+      // ✅ Fallback to legacy storage
+      final query =
+          await _assessmentResultsRef(uid)
+              .where('assessmentId', isEqualTo: assessmentId)
+              .orderBy('completedAt', descending: true)
+              .limit(1)
+              .get();
+
       if (query.docs.isEmpty) return null;
       return AssessmentResult.fromJson(query.docs.first.data());
     } catch (e) {
@@ -165,31 +225,49 @@ class FirestoreService {
 
   Future<List<AssessmentResult>> getAllAssessmentResults(String uid) async {
     try {
-      final query = await _assessmentResultsRef(uid)
-          .orderBy('completedAt', descending: true)
-          .get();
-      
-      return query.docs
+      // ✅ Prefer latest-per-assessment documents
+      final snap =
+          await _userAssessmentsRef(
+            uid,
+          ).orderBy('updatedAt', descending: true).get();
+
+      return snap.docs
           .map((doc) => AssessmentResult.fromJson(doc.data()))
           .toList();
     } catch (e) {
-      throw FirestoreException('Failed to get assessment results: $e');
+      // ✅ Fallback to legacy storage
+      try {
+        final query =
+            await _assessmentResultsRef(
+              uid,
+            ).orderBy('completedAt', descending: true).get();
+        return query.docs
+            .map((doc) => AssessmentResult.fromJson(doc.data()))
+            .toList();
+      } catch (e2) {
+        throw FirestoreException('Failed to get assessment results: $e2');
+      }
     }
   }
 
   Stream<List<AssessmentResult>> watchAssessmentResults(String uid) {
-    return _assessmentResultsRef(uid)
-        .orderBy("completedAt", descending: true)
+    return _userAssessmentsRef(uid)
+        .orderBy('updatedAt', descending: true)
         .snapshots()
-        .map((snap) => snap.docs
-            .map((doc) => AssessmentResult.fromJson(doc.data()))
-            .toList());
+        .map(
+          (snap) =>
+              snap.docs
+                  .map((doc) => AssessmentResult.fromJson(doc.data()))
+                  .toList(),
+        );
   }
-
 
   // ==================== JOURNEY OPERATIONS ====================
 
-  Future<JourneyProgress?> getJourneyProgress(String uid, String productId) async {
+  Future<JourneyProgress?> getJourneyProgress(
+    String uid,
+    String productId,
+  ) async {
     try {
       final doc = await _journeyProgressRef(uid).doc(productId).get();
       if (!doc.exists || doc.data() == null) return null;
@@ -210,33 +288,39 @@ class FirestoreService {
     }
   }
 
-  Future<void> createJourneyProgress(String uid, JourneyProgress progress) async {
+  Future<void> createJourneyProgress(
+    String uid,
+    JourneyProgress progress,
+  ) async {
     try {
-      await _journeyProgressRef(uid).doc(progress.productId).set(progress.toJson());
+      await _journeyProgressRef(
+        uid,
+      ).doc(progress.productId).set(progress.toJson());
     } catch (e) {
       throw FirestoreException('Failed to create journey progress: $e');
     }
   }
 
   Future<void> updateJourneyProgress(
-    String uid, 
-    String productId, 
+    String uid,
+    String productId,
     int completedSessionNumber,
   ) async {
     try {
       // Get current progress to update
       final doc = await _journeyProgressRef(uid).doc(productId).get();
-      final currentProgress = doc.exists && doc.data() != null
-          ? JourneyProgress.fromJson(doc.data()!)
-          : null;
-      
+      final currentProgress =
+          doc.exists && doc.data() != null
+              ? JourneyProgress.fromJson(doc.data()!)
+              : null;
+
       final completedSessions = currentProgress?.completedSessionIdsList ?? [];
       final sessionId = 'session_$completedSessionNumber';
-      
+
       if (!completedSessions.contains(sessionId)) {
         completedSessions.add(sessionId);
       }
-      
+
       await _journeyProgressRef(uid).doc(productId).set({
         'visitorId': uid,
         'visitorUid': uid,
@@ -252,8 +336,8 @@ class FirestoreService {
   }
 
   Future<void> updateJourneyProgressFields(
-    String uid, 
-    String productId, 
+    String uid,
+    String productId,
     Map<String, dynamic> updates,
   ) async {
     try {
@@ -266,7 +350,10 @@ class FirestoreService {
   Future<void> saveSessionResponse(String uid, SessionResponse response) async {
     try {
       final docId = '${response.sessionId}_${response.stepId}';
-      await _sessionResponsesRef(uid, response.productId).doc(docId).set(response.toJson());
+      await _sessionResponsesRef(
+        uid,
+        response.productId,
+      ).doc(docId).set(response.toJson());
     } catch (e) {
       throw FirestoreException('Failed to save session response: $e');
     }
@@ -291,9 +378,9 @@ class FirestoreService {
   }
 
   Future<SessionResponse?> getSessionResponse(
-    String uid, 
-    String productId, 
-    String sessionId, 
+    String uid,
+    String productId,
+    String sessionId,
     String stepId,
   ) async {
     try {
@@ -311,9 +398,11 @@ class FirestoreService {
     String productId,
   ) async {
     try {
-      final query = await _sessionResponsesRef(uid, productId)
-          .orderBy('createdAt', descending: false)
-          .get();
+      final query =
+          await _sessionResponsesRef(
+            uid,
+            productId,
+          ).orderBy('createdAt', descending: false).get();
 
       return query.docs
           .map((doc) => SessionResponse.fromJson(doc.data()))
@@ -322,7 +411,6 @@ class FirestoreService {
       throw FirestoreException('Failed to get session responses: ');
     }
   }
-
 
   // ==================== STORY OPERATIONS ====================
 
@@ -349,10 +437,9 @@ class FirestoreService {
 
   Future<void> updateStoryProgress(String uid, StoryProgress progress) async {
     try {
-      await _storyProgressRef(uid).doc(progress.storyId).set(
-        progress.toJson(),
-        SetOptions(merge: true),
-      );
+      await _storyProgressRef(
+        uid,
+      ).doc(progress.storyId).set(progress.toJson(), SetOptions(merge: true));
     } catch (e) {
       throw FirestoreException('Failed to update story progress: $e');
     }
@@ -391,22 +478,18 @@ class FirestoreService {
   Future<void> savePollVote(PollVote vote) async {
     try {
       final batch = _firestore.batch();
-      
+
       // Save the vote
       batch.set(_pollVotesRef(vote.pollId).doc(vote.userId), vote.toJson());
-      
+
       // Update aggregate
-      batch.set(
-        _pollAggregateRef(vote.pollId),
-        {
-          'pollId': vote.pollId,
-          'totalVotes': FieldValue.increment(1),
-          'optionCounts.${vote.selectedOptionId}': FieldValue.increment(1),
-          'updatedAt': FieldValue.serverTimestamp(),
-        },
-        SetOptions(merge: true),
-      );
-      
+      batch.set(_pollAggregateRef(vote.pollId), {
+        'pollId': vote.pollId,
+        'totalVotes': FieldValue.increment(1),
+        'optionCounts.${vote.selectedOptionId}': FieldValue.increment(1),
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+
       await batch.commit();
     } catch (e) {
       throw FirestoreException('Failed to save poll vote: $e');
@@ -524,7 +607,7 @@ class FirestoreService {
     }
   }
 
-/// Exception thrown when Firestore operation fails
+  /// Exception thrown when Firestore operation fails
 
   // ==================== STORY (STREAMS + ENGAGEMENT) ====================
   DocumentReference<Map<String, dynamic>> _pollAggregateDoc(String pollId) =>
@@ -534,10 +617,19 @@ class FirestoreService {
       _firestore.collection("storyEngagement").doc(storyId);
 
   CollectionReference<Map<String, dynamic>> _storyCommentsRef(String storyId) =>
-      _firestore.collection("storyComments").doc(storyId).collection("comments");
+      _firestore
+          .collection("storyComments")
+          .doc(storyId)
+          .collection("comments");
 
-  DocumentReference<Map<String, dynamic>> _storyLikesDoc(String storyId, String userId) =>
-      _firestore.collection("storyLikes").doc(storyId).collection("likes").doc(userId);
+  DocumentReference<Map<String, dynamic>> _storyLikesDoc(
+    String storyId,
+    String userId,
+  ) => _firestore
+      .collection("storyLikes")
+      .doc(storyId)
+      .collection("likes")
+      .doc(userId);
 
   Stream<PollVote?> watchPollVote(String pollId, String userId) {
     return _pollVotesRef(pollId).doc(userId).snapshots().map((doc) {
@@ -571,7 +663,10 @@ class FirestoreService {
     return _storyCommentsRef(storyId)
         .orderBy("createdAt", descending: true)
         .snapshots()
-        .map((snap) => snap.docs.map((d) => StoryComment.fromJson(d.data())).toList());
+        .map(
+          (snap) =>
+              snap.docs.map((d) => StoryComment.fromJson(d.data())).toList(),
+        );
   }
 
   Future<void> likeStory({
@@ -665,16 +760,11 @@ class FirestoreService {
       "updatedAt": FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
   }
-
-
 }
 
 class FirestoreException implements Exception {
-
   final String message;
   FirestoreException(this.message);
-  
-  
+
   String toString() => message;
 }
-

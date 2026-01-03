@@ -39,9 +39,10 @@ class SessionStep extends Equatable {
       contentType: json['contentType'] as String? ?? 'teaching',
       content: json['content'] as String?,
       responseType: json['responseType'] as String?,
-      options: (json['options'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList(),
+      options:
+          (json['options'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList(),
       minSelect: json['minSelect'] as int?,
       maxSelect: json['maxSelect'] as int?,
       placeholder: json['placeholder'] as String?,
@@ -68,9 +69,18 @@ class SessionStep extends Equatable {
 
   @override
   List<Object?> get props => [
-    stepId, title, contentType, content, responseType, 
-    options, minSelect, maxSelect, placeholder, maxChars,
-    actionInstructions, estimatedMins,
+    stepId,
+    title,
+    contentType,
+    content,
+    responseType,
+    options,
+    minSelect,
+    maxSelect,
+    placeholder,
+    maxChars,
+    actionInstructions,
+    estimatedMins,
   ];
 }
 
@@ -125,9 +135,11 @@ class JourneySession extends Equatable {
       unlockCondition: json['unlockCondition'] as String?,
       estimatedMins: json['estimatedMins'] as int? ?? 10,
       badgeOnComplete: json['badgeOnComplete'] as String?,
-      steps: (json['steps'] as List<dynamic>?)
-          ?.map((e) => SessionStep.fromJson(e as Map<String, dynamic>))
-          .toList() ?? [],
+      steps:
+          (json['steps'] as List<dynamic>?)
+              ?.map((e) => SessionStep.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
       completionMessage: json['completionMessage'] as String?,
     );
   }
@@ -148,8 +160,17 @@ class JourneySession extends Equatable {
 
   @override
   List<Object?> get props => [
-    sessionId, sessionNumber, title, subtitle, tier, lockRule,
-    unlockCondition, estimatedMins, badgeOnComplete, steps, completionMessage,
+    sessionId,
+    sessionNumber,
+    title,
+    subtitle,
+    tier,
+    lockRule,
+    unlockCondition,
+    estimatedMins,
+    badgeOnComplete,
+    steps,
+    completionMessage,
   ];
 }
 
@@ -216,23 +237,31 @@ class JourneyProduct extends Equatable {
       title: json['title'] as String? ?? '',
       subtitle: json['subtitle'] as String? ?? '',
       description: json['description'] as String? ?? '',
-      audiences: (json['audiences'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
-      goalTags: (json['goalTags'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
+      audiences:
+          (json['audiences'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      goalTags:
+          (json['goalTags'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
       thumbnailUrl: json['thumbnailUrl'] as String?,
       tier: json['tier'] as String? ?? 'Free',
       revenuecatProductId: json['revenuecatProductId'] as String?,
       totalSessions: json['totalSessions'] as int? ?? 0,
       estimatedWeeks: json['estimatedWeeks'] as int? ?? 1,
-      outcomes: (json['outcomes'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
-      sessions: (json['sessions'] as List<dynamic>?)
-          ?.map((e) => JourneySession.fromJson(e as Map<String, dynamic>))
-          .toList() ?? [],
+      outcomes:
+          (json['outcomes'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      sessions:
+          (json['sessions'] as List<dynamic>?)
+              ?.map((e) => JourneySession.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
       completionBadge: json['completionBadge'] as String?,
       completionCertText: json['completionCertText'] as String?,
     );
@@ -258,9 +287,21 @@ class JourneyProduct extends Equatable {
 
   @override
   List<Object?> get props => [
-    productId, title, subtitle, description, audiences, goalTags,
-    thumbnailUrl, tier, revenuecatProductId, totalSessions, estimatedWeeks,
-    outcomes, sessions, completionBadge, completionCertText,
+    productId,
+    title,
+    subtitle,
+    description,
+    audiences,
+    goalTags,
+    thumbnailUrl,
+    tier,
+    revenuecatProductId,
+    totalSessions,
+    estimatedWeeks,
+    outcomes,
+    sessions,
+    completionBadge,
+    completionCertText,
   ];
 }
 
@@ -280,9 +321,11 @@ class JourneyCatalog extends Equatable {
     return JourneyCatalog(
       version: json['version'] as String? ?? 'v1',
       audience: json['audience'] as String? ?? '',
-      products: (json['products'] as List<dynamic>?)
-          ?.map((e) => JourneyProduct.fromJson(e as Map<String, dynamic>))
-          .toList() ?? [],
+      products:
+          (json['products'] as List<dynamic>?)
+              ?.map((e) => JourneyProduct.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
   }
 
@@ -345,9 +388,10 @@ class SessionResponse extends Equatable {
       productId: json['productId'] as String,
       responseType: json['responseType'] as String,
       value: json['value'],
-      createdAt: json['createdAt'] != null
-          ? (json['createdAt'] as Timestamp).toDate()
-          : DateTime.now(),
+      createdAt:
+          json['createdAt'] != null
+              ? (json['createdAt'] as Timestamp).toDate()
+              : DateTime.now(),
       rating: json['rating'] as int?,
       confidenceRating: json['confidenceRating'] as int?,
     );
@@ -374,8 +418,16 @@ class SessionResponse extends Equatable {
 
   @override
   List<Object?> get props => [
-    visitorId, sessionId, stepId, userId, productId,
-    responseType, value, createdAt, rating, confidenceRating,
+    visitorId,
+    sessionId,
+    stepId,
+    userId,
+    productId,
+    responseType,
+    value,
+    createdAt,
+    rating,
+    confidenceRating,
   ];
 }
 
@@ -438,35 +490,49 @@ class JourneyProgress extends Equatable {
   factory JourneyProgress.fromJson(Map<String, dynamic> json) {
     return JourneyProgress(
       visitorId: json['visitorId'] as String? ?? json['id'] as String? ?? '',
-      visitorUid: json['visitorUid'] as String? ?? json['userId'] as String? ?? '',
+      visitorUid:
+          json['visitorUid'] as String? ?? json['userId'] as String? ?? '',
       productId: json['productId'] as String,
       productName: json['productName'] as String? ?? '',
       purchased: json['purchased'] as bool? ?? false,
-      purchasedAt: json['purchasedAt'] != null
-          ? (json['purchasedAt'] as Timestamp).toDate()
-          : null,
-      completedSessionCount: json['completedSessionCount'] as int? ?? json['completedSessions'] as int? ?? 0,
+      purchasedAt:
+          json['purchasedAt'] != null
+              ? (json['purchasedAt'] as Timestamp).toDate()
+              : null,
+      completedSessionCount:
+          json['completedSessionCount'] as int? ??
+          json['completedSessions'] as int? ??
+          0,
       totalSessions: json['totalSessions'] as int? ?? 0,
       currentStreak: json['currentStreak'] as int? ?? 0,
       longestStreak: json['longestStreak'] as int? ?? 0,
-      lastSessionAt: json['lastSessionAt'] != null
-          ? (json['lastSessionAt'] as Timestamp).toDate()
-          : null,
-      startedAt: json['startedAt'] != null
-          ? (json['startedAt'] as Timestamp).toDate()
-          : null,
-      isCompleted: json['isCompleted'] as bool? ?? json['completed'] as bool? ?? false,
-      completedAt: json['completedAt'] != null
-          ? (json['completedAt'] as Timestamp).toDate()
-          : null,
-      earnedBadges: (json['earnedBadges'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
-      completedSessionIdsList: (json['completedSessionIdsList'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? (json['completedSessionIds'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
+      lastSessionAt:
+          json['lastSessionAt'] != null
+              ? (json['lastSessionAt'] as Timestamp).toDate()
+              : null,
+      startedAt:
+          json['startedAt'] != null
+              ? (json['startedAt'] as Timestamp).toDate()
+              : null,
+      isCompleted:
+          json['isCompleted'] as bool? ?? json['completed'] as bool? ?? false,
+      completedAt:
+          json['completedAt'] != null
+              ? (json['completedAt'] as Timestamp).toDate()
+              : null,
+      earnedBadges:
+          (json['earnedBadges'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      completedSessionIdsList:
+          (json['completedSessionIdsList'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          (json['completedSessionIds'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
       metadata: json['metadata'] as Map<String, dynamic>?,
     );
   }
@@ -486,7 +552,8 @@ class JourneyProgress extends Equatable {
     'totalSessions': totalSessions,
     'currentStreak': currentStreak,
     'longestStreak': longestStreak,
-    if (lastSessionAt != null) 'lastSessionAt': Timestamp.fromDate(lastSessionAt!),
+    if (lastSessionAt != null)
+      'lastSessionAt': Timestamp.fromDate(lastSessionAt!),
     if (startedAt != null) 'startedAt': Timestamp.fromDate(startedAt!),
     'isCompleted': isCompleted,
     if (completedAt != null) 'completedAt': Timestamp.fromDate(completedAt!),
@@ -523,7 +590,8 @@ class JourneyProgress extends Equatable {
       productName: productName ?? this.productName,
       purchased: purchased ?? this.purchased,
       purchasedAt: purchasedAt ?? this.purchasedAt,
-      completedSessionCount: completedSessionCount ?? this.completedSessionCount,
+      completedSessionCount:
+          completedSessionCount ?? this.completedSessionCount,
       totalSessions: totalSessions ?? this.totalSessions,
       currentStreak: currentStreak ?? this.currentStreak,
       longestStreak: longestStreak ?? this.longestStreak,
@@ -532,16 +600,29 @@ class JourneyProgress extends Equatable {
       isCompleted: isCompleted ?? this.isCompleted,
       completedAt: completedAt ?? this.completedAt,
       earnedBadges: earnedBadges ?? this.earnedBadges,
-      completedSessionIdsList: completedSessionIdsList ?? this.completedSessionIdsList,
+      completedSessionIdsList:
+          completedSessionIdsList ?? this.completedSessionIdsList,
       metadata: metadata ?? this.metadata,
     );
   }
 
   @override
   List<Object?> get props => [
-    visitorId, visitorUid, productId, productName, purchased, purchasedAt,
-    completedSessionCount, totalSessions, currentStreak, longestStreak,
-    lastSessionAt, startedAt, isCompleted, completedAt, earnedBadges,
+    visitorId,
+    visitorUid,
+    productId,
+    productName,
+    purchased,
+    purchasedAt,
+    completedSessionCount,
+    totalSessions,
+    currentStreak,
+    longestStreak,
+    lastSessionAt,
+    startedAt,
+    isCompleted,
+    completedAt,
+    earnedBadges,
     completedSessionIdsList,
   ];
 }

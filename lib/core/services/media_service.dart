@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:record/record.dart';
@@ -19,23 +18,22 @@ class MediaService {
   final ImagePicker _imagePicker = ImagePicker();
   final AudioRecorder _audioRecorder = AudioRecorder();
   final AudioPlayer _audioPlayer = AudioPlayer();
-  final FirebaseStorage _storage = FirebaseStorage.instance;
-
   // Audio recording state
   bool _isRecording = false;
   String? _currentRecordingPath;
   DateTime? _recordingStartTime;
   Timer? _recordingTimer;
-  
+
   // Callbacks for recording updates
   Function(Duration)? onRecordingDurationUpdate;
   Function(double)? onRecordingAmplitudeUpdate;
 
   // Getters
   bool get isRecording => _isRecording;
-  Duration get recordingDuration => _recordingStartTime != null 
-      ? DateTime.now().difference(_recordingStartTime!) 
-      : Duration.zero;
+  Duration get recordingDuration =>
+      _recordingStartTime != null
+          ? DateTime.now().difference(_recordingStartTime!)
+          : Duration.zero;
 
   // ============================================================================
   // PERMISSIONS
@@ -138,59 +136,63 @@ class MediaService {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (context) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Choose Photo Source',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 20),
-              ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
-                    shape: BoxShape.circle,
+      builder:
+          (context) => SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
-                  child: Icon(Icons.photo_library, color: AppColors.primary),
-                ),
-                title: const Text('Photo Library'),
-                subtitle: const Text('Choose from your gallery'),
-                onTap: () => Navigator.pop(context, ImageSource.gallery),
-              ),
-              ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppColors.secondary.withOpacity(0.1),
-                    shape: BoxShape.circle,
+                  const SizedBox(height: 20),
+                  Text(
+                    'Choose Photo Source',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  child: Icon(Icons.camera_alt, color: AppColors.secondary),
-                ),
-                title: const Text('Camera'),
-                subtitle: const Text('Take a new photo'),
-                onTap: () => Navigator.pop(context, ImageSource.camera),
+                  const SizedBox(height: 20),
+                  ListTile(
+                    leading: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.photo_library,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    title: const Text('Photo Library'),
+                    subtitle: const Text('Choose from your gallery'),
+                    onTap: () => Navigator.pop(context, ImageSource.gallery),
+                  ),
+                  ListTile(
+                    leading: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppColors.secondary.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(Icons.camera_alt, color: AppColors.secondary),
+                    ),
+                    title: const Text('Camera'),
+                    subtitle: const Text('Take a new photo'),
+                    onTap: () => Navigator.pop(context, ImageSource.camera),
+                  ),
+                  const SizedBox(height: 10),
+                ],
               ),
-              const SizedBox(height: 10),
-            ],
+            ),
           ),
-        ),
-      ),
     );
 
     if (source == null) return null;
@@ -246,39 +248,12 @@ class MediaService {
     int photoIndex = 0,
     Function(double)? onProgress,
   }) async {
-    try {
-      final fileName = 'photo_${photoIndex}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final ref = _storage.ref().child('users/$userId/photos/$fileName');
-
-      final uploadTask = ref.putFile(
-        imageFile,
-        SettableMetadata(contentType: 'image/jpeg'),
-      );
-
-      // Listen to progress
-      if (onProgress != null) {
-        uploadTask.snapshotEvents.listen((event) {
-          final progress = event.bytesTransferred / event.totalBytes;
-          onProgress(progress);
-        });
-      }
-
-      await uploadTask;
-      return await ref.getDownloadURL();
-    } catch (e) {
-      throw MediaException('Failed to upload photo: $e');
-    }
+    throw MediaException("Upload not wired (DigitalOcean storage pending)");
   }
 
   /// Delete photo from Firebase Storage
   Future<void> deleteProfilePhoto(String photoUrl) async {
-    try {
-      final ref = _storage.refFromURL(photoUrl);
-      await ref.delete();
-    } catch (e) {
-      debugPrint('Error deleting photo: $e');
-      // Don't throw - photo might already be deleted
-    }
+    throw MediaException("Delete not wired (DigitalOcean storage pending)");
   }
 
   // ============================================================================
@@ -325,9 +300,11 @@ class MediaService {
       onRecordingAmplitudeUpdate = onAmplitudeUpdate;
 
       // Start duration timer
-      _recordingTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      _recordingTimer = Timer.periodic(const Duration(milliseconds: 100), (
+        timer,
+      ) {
         final duration = DateTime.now().difference(_recordingStartTime!);
-        
+
         // Auto-stop at max duration
         if (duration.inSeconds >= maxDuration) {
           stopRecording();
@@ -464,7 +441,8 @@ class MediaService {
   }
 
   /// Listen to playback state changes
-  Stream<PlayerState> get onPlayerStateChanged => _audioPlayer.onPlayerStateChanged;
+  Stream<PlayerState> get onPlayerStateChanged =>
+      _audioPlayer.onPlayerStateChanged;
 
   /// Listen to playback position changes
   Stream<Duration> get onPositionChanged => _audioPlayer.onPositionChanged;
@@ -481,46 +459,15 @@ class MediaService {
   Future<String> uploadAudioRecording(
     String userId,
     String filePath, {
-    required int questionIndex, // 1, 2, or 3
+    required int questionIndex,
     Function(double)? onProgress,
   }) async {
-    try {
-      final file = File(filePath);
-      if (!await file.exists()) {
-        throw MediaException('Audio file not found');
-      }
-
-      final fileName = 'audio_q${questionIndex}_${DateTime.now().millisecondsSinceEpoch}.m4a';
-      final ref = _storage.ref().child('users/$userId/audio/$fileName');
-
-      final uploadTask = ref.putFile(
-        file,
-        SettableMetadata(contentType: 'audio/mp4'),
-      );
-
-      // Listen to progress
-      if (onProgress != null) {
-        uploadTask.snapshotEvents.listen((event) {
-          final progress = event.bytesTransferred / event.totalBytes;
-          onProgress(progress);
-        });
-      }
-
-      await uploadTask;
-      return await ref.getDownloadURL();
-    } catch (e) {
-      throw MediaException('Failed to upload audio: $e');
-    }
+    throw MediaException("Upload not wired (DigitalOcean storage pending)");
   }
 
   /// Delete audio from Firebase Storage
   Future<void> deleteAudioRecording(String audioUrl) async {
-    try {
-      final ref = _storage.refFromURL(audioUrl);
-      await ref.delete();
-    } catch (e) {
-      debugPrint('Error deleting audio: $e');
-    }
+    throw MediaException("Delete not wired (DigitalOcean storage pending)");
   }
 
   // ============================================================================

@@ -28,7 +28,7 @@ class OnboardingConfig extends Equatable {
 
   factory OnboardingConfig.fromJson(Map<String, dynamic> json) {
     final lists = json['lists'] as Map<String, dynamic>? ?? {};
-    
+
     return OnboardingConfig(
       version: json['version'] as int? ?? 1,
       hobbies: _parseStringList(lists['hobbies']),
@@ -56,12 +56,19 @@ class OnboardingConfig extends Equatable {
   static List<String> _parseChurchList(dynamic data) {
     if (data == null) return defaultChurches;
     if (data is List) {
-      final parsed = data
-          .whereType<String>()
-          .where((s) => s.isNotEmpty && s.length > 3 && !s.contains('\\n') && !s.contains('\\"'))
-          .map((s) => s.trim())
-          .toList();
-      
+      final parsed =
+          data
+              .whereType<String>()
+              .where(
+                (s) =>
+                    s.isNotEmpty &&
+                    s.length > 3 &&
+                    !s.contains('\\n') &&
+                    !s.contains('\\"'),
+              )
+              .map((s) => s.trim())
+              .toList();
+
       // If parsed list is too short or corrupted, use defaults
       if (parsed.length < 10) return defaultChurches;
       return parsed;
@@ -97,7 +104,7 @@ class OnboardingConfig extends Equatable {
     'Guiding Light Assembly',
     'Word of Life Bible Church',
     'Global Impact Church',
-    
+
     // Traditional/Orthodox Churches
     'Catholic Church',
     'Anglican Church',
@@ -106,14 +113,14 @@ class OnboardingConfig extends Equatable {
     'Presbyterian Church',
     'Lutheran Church',
     'Seventh Day Adventist Church',
-    
+
     // African Indigenous Churches
     'The Apostolic Church',
     'Celestial Church of Christ',
     'Cherubim and Seraphim Church',
     'Christ Apostolic Church (CAC)',
     'The African Church',
-    
+
     // Other Notable Churches
     'Household of God Church',
     'Sword of the Spirit Ministries',
@@ -125,7 +132,7 @@ class OnboardingConfig extends Equatable {
     'HillSong Church',
     'Rhema Bible Church',
     'All Nations Christian Ministry',
-    
+
     // Default option
     'Other',
   ];
@@ -182,34 +189,67 @@ class SearchFiltersConfig extends Equatable {
 
   factory SearchFiltersConfig.fromJson(Map<String, dynamic> json) {
     final lists = json['lists'] as Map<String, dynamic>? ?? {};
-    
+
     return SearchFiltersConfig(
-      countryOfResidenceFilters: _parseFilterList(lists['countryOfResidenceFilters'], defaultCountryFilters),
-      educationLevelFilters: _parseFilterList(lists['educationLevelFilters'], defaultEducationFilters),
-      incomeSourceFilters: _parseFilterList(lists['incomeSourceFilters'], defaultIncomeFilters),
-      relationshipDistanceFilters: _parseFilterList(lists['relationshipDistanceFilters'], defaultDistanceFilters),
-      maritalStatusFilters: _parseFilterList(lists['maritalStatusFilters'], defaultMaritalStatusFilters),
-      hasKidsFilters: _parseFilterList(lists['hasKidsFilters'], defaultHasKidsFilters),
-      genotypeFilters: _parseFilterList(lists['genotypeFilters'], defaultGenotypeFilters),
+      countryOfResidenceFilters: _parseFilterList(
+        lists['countryOfResidenceFilters'],
+        defaultCountryFilters,
+      ),
+      educationLevelFilters: _parseFilterList(
+        lists['educationLevelFilters'],
+        defaultEducationFilters,
+      ),
+      incomeSourceFilters: _parseFilterList(
+        lists['incomeSourceFilters'],
+        defaultIncomeFilters,
+      ),
+      relationshipDistanceFilters: _parseFilterList(
+        lists['relationshipDistanceFilters'],
+        defaultDistanceFilters,
+      ),
+      maritalStatusFilters: _parseFilterList(
+        lists['maritalStatusFilters'],
+        defaultMaritalStatusFilters,
+      ),
+      hasKidsFilters: _parseFilterList(
+        lists['hasKidsFilters'],
+        defaultHasKidsFilters,
+      ),
+      genotypeFilters: _parseFilterList(
+        lists['genotypeFilters'],
+        defaultGenotypeFilters,
+      ),
     );
   }
 
   static List<String> _parseFilterList(dynamic data, List<String> defaults) {
     if (data == null) return defaults;
     if (data is List) {
-      final parsed = data.whereType<String>().where((s) => s.isNotEmpty).toList();
+      final parsed =
+          data.whereType<String>().where((s) => s.isNotEmpty).toList();
       return parsed.isNotEmpty ? parsed : defaults;
     }
     return defaults;
   }
 
   // Default filter options
-  static const List<String> defaultCountryFilters = ['Nigeria', 'Diaspora', 'Any'];
+  static const List<String> defaultCountryFilters = [
+    'Nigeria',
+    'Diaspora',
+    'Any',
+  ];
   static const List<String> defaultEducationFilters = ['Graduate', 'Any Level'];
   static const List<String> defaultIncomeFilters = ['Yes', 'Not Compulsory'];
   static const List<String> defaultDistanceFilters = ['Yes', 'No', 'Any'];
-  static const List<String> defaultMaritalStatusFilters = ['Never Married', 'Any Status'];
-  static const List<String> defaultHasKidsFilters = ['No kids', 'Has kids', 'Any'];
+  static const List<String> defaultMaritalStatusFilters = [
+    'Never Married',
+    'Any Status',
+  ];
+  static const List<String> defaultHasKidsFilters = [
+    'No kids',
+    'Has kids',
+    'Any',
+  ];
   static const List<String> defaultGenotypeFilters = ['AA only', 'Anyone'];
 
   @override

@@ -55,7 +55,8 @@ class AppCard extends StatelessWidget {
     this.height,
     this.backgroundColor,
     this.borderRadius,
-  }) : variant = AppCardVariant.outlined, showShadow = false;
+  }) : variant = AppCardVariant.outlined,
+       showShadow = false;
 
   /// Filled card with background color
   const AppCard.filled({
@@ -68,13 +69,15 @@ class AppCard extends StatelessWidget {
     this.height,
     this.backgroundColor,
     this.borderRadius,
-  }) : variant = AppCardVariant.filled, showShadow = false;
+  }) : variant = AppCardVariant.filled,
+       showShadow = false;
 
   @override
   Widget build(BuildContext context) {
     final defaultPadding = padding ?? const EdgeInsets.all(AppSpacing.base);
-    final defaultRadius = borderRadius ?? BorderRadius.circular(AppSpacing.radiusMd);
-    
+    final defaultRadius =
+        borderRadius ?? BorderRadius.circular(AppSpacing.radiusMd);
+
     BoxDecoration decoration;
     switch (variant) {
       case AppCardVariant.elevated:
@@ -106,21 +109,14 @@ class AppCard extends StatelessWidget {
       decoration: decoration,
       child: ClipRRect(
         borderRadius: defaultRadius,
-        child: Padding(
-          padding: defaultPadding,
-          child: child,
-        ),
+        child: Padding(padding: defaultPadding, child: child),
       ),
     );
 
     if (onTap != null) {
       card = Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: defaultRadius,
-          child: card,
-        ),
+        child: InkWell(onTap: onTap, borderRadius: defaultRadius, child: card),
       );
     }
 
@@ -153,7 +149,8 @@ class AppImageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final defaultRadius = borderRadius ?? BorderRadius.circular(AppSpacing.radiusMd);
+    final defaultRadius =
+        borderRadius ?? BorderRadius.circular(AppSpacing.radiusMd);
 
     return Container(
       margin: margin,
@@ -179,19 +176,22 @@ class AppImageCard extends StatelessWidget {
                 ),
                 child: SizedBox(
                   height: imageHeight,
-                  child: imageUrl != null
-                      ? Image.network(
-                          imageUrl!,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) =>
-                              imagePlaceholder ?? _defaultPlaceholder(),
-                        )
-                      : imagePlaceholder ?? _defaultPlaceholder(),
+                  child:
+                      imageUrl != null
+                          ? Image.network(
+                            imageUrl!,
+                            fit: BoxFit.cover,
+                            errorBuilder:
+                                (_, __, ___) =>
+                                    imagePlaceholder ?? _defaultPlaceholder(),
+                          )
+                          : imagePlaceholder ?? _defaultPlaceholder(),
                 ),
               ),
               // Content
               Padding(
-                padding: contentPadding ?? const EdgeInsets.all(AppSpacing.base),
+                padding:
+                    contentPadding ?? const EdgeInsets.all(AppSpacing.base),
                 child: child,
               ),
             ],
@@ -205,11 +205,7 @@ class AppImageCard extends StatelessWidget {
     return Container(
       color: AppColors.surfaceDark,
       child: Center(
-        child: Icon(
-          Icons.image_outlined,
-          size: 48,
-          color: AppColors.textMuted,
-        ),
+        child: Icon(Icons.image_outlined, size: 48, color: AppColors.textMuted),
       ),
     );
   }
@@ -267,8 +263,8 @@ class AppListCard extends StatelessWidget {
                   Text(
                     subtitle!,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
+                      color: AppColors.textSecondary,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

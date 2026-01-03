@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nexus_app_min_test/core/auth/auth_controller.dart';
+import 'package:nexus_app_min_test/core/auth/auth_providers.dart';
 import 'package:nexus_app_min_test/core/theme/app_colors.dart';
 import 'package:nexus_app_min_test/core/theme/app_text_styles.dart';
-import 'package:nexus_app_min_test/features/presentation/screens/settings_screen.dart';
+import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authAsync = ref.watch(authStateProvider);
+
+    final user = authAsync.maybeWhen(data: (a) => a.user, orElse: () => null);
+
+    final isSignedIn = user != null;
+    final displayName = isSignedIn ? (user.email ?? 'User') : 'Guest User';
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -16,12 +26,7 @@ class ProfileScreen extends StatelessWidget {
         title: Text('Profile', style: AppTextStyles.headlineLarge),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              );
-            },
+            onPressed: () => Navigator.of(context).pushNamed('/settings'),
             icon: const Icon(
               Icons.settings_outlined,
               color: AppColors.textPrimary,
@@ -33,54 +38,90 @@ class ProfileScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _ProfileHeader(),
+          _ProfileHeader(
+            title: displayName,
+            subtitle: isSignedIn ? 'Signed in' : 'Guest mode',
+          ),
           const SizedBox(height: 16),
-          _ProfileStatRow(),
+          const _ProfileStatRow(),
           const SizedBox(height: 20),
           Text('Your Account', style: AppTextStyles.titleLarge),
           const SizedBox(height: 12),
           _ProfileTile(
             icon: Icons.edit_outlined,
             title: 'Edit Profile',
-            subtitle: 'Coming soon',
-            onTap: () => _showComingSoon(context, 'Edit Profile'),
+            subtitle: isSignedIn ? 'Coming soon' : 'Requires account',
+            onTap: () {
+              GuestGuard.requireSignedIn(
+                context,
+                ref,
+                title: 'Create an account to edit your profile',
+                message:
+                    'You\'re currently in guest mode. Create an account to edit your profile and settings.',
+                primaryText: 'Create an account',
+                onCreateAccount:
+                    () => Navigator.of(context).pushNamed('/signup'),
+                onAllowed: () async {
+                  _showComingSoon(context, 'Edit Profile');
+                },
+              );
+            },
           ),
           const SizedBox(height: 10),
           _ProfileTile(
             icon: Icons.lock_outline,
             title: 'Privacy',
-            subtitle: 'Coming soon',
-            onTap: () => _showComingSoon(context, 'Privacy'),
+            subtitle: isSignedIn ? 'Coming soon' : 'Requires account',
+            onTap: () {
+              GuestGuard.requireSignedIn(
+                context,
+                ref,
+                title: 'Create an account to access privacy settings',
+                message:
+                    'You\'re currently in guest mode. Create an account to manage privacy settings.',
+                primaryText: 'Create an account',
+                onCreateAccount:
+                    () => Navigator.of(context).pushNamed('/signup'),
+                onAllowed: () async {
+                  _showComingSoon(context, 'Privacy');
+                },
+              );
+            },
           ),
           const SizedBox(height: 10),
           _ProfileTile(
             icon: Icons.support_agent,
             title: 'Help & Support',
-            subtitle: 'Coming soon',
-            onTap: () => _showComingSoon(context, 'Help & Support'),
+            subtitle: 'Contact support',
+            onTap: () => Navigator.of(context).pushNamed('/contact-support'),
           ),
           const SizedBox(height: 24),
-          Text('Stabilization', style: AppTextStyles.titleLarge),
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: AppColors.border),
+          if (!isSignedIn)
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => Navigator.of(context).pushNamed('/signup'),
+                child: const Text('Create an account'),
+              ),
             ),
-            child: Text(
-              'Safe Mode Profile Screen ✅\n\nBackend stays OFF.\nFirebase will be reintroduced later with a controlled toolchain.',
-              style: AppTextStyles.bodyMedium,
+          if (isSignedIn) ...[
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () async {
+                  await ref.read(authControllerProvider).signOut();
+                },
+                child: const Text('Sign out'),
+              ),
             ),
-          ),
+          ],
           const SizedBox(height: 24),
         ],
       ),
     );
   }
 
-  void _showComingSoon(BuildContext context, String title) {
+  static void _showComingSoon(BuildContext context, String title) {
     showDialog(
       context: context,
       builder:
@@ -90,7 +131,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             title: Text(title, style: AppTextStyles.headlineSmall),
             content: Text(
-              'This is coming soon. We are stabilizing the app first.',
+              'This is coming soon. We are rebuilding feature-by-feature.',
               style: AppTextStyles.bodyMedium,
             ),
             actions: [
@@ -111,6 +152,11 @@ class ProfileScreen extends StatelessWidget {
 }
 
 class _ProfileHeader extends StatelessWidget {
+  final String title;
+  final String subtitle;
+
+  const _ProfileHeader({required this.title, required this.subtitle});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -136,9 +182,9 @@ class _ProfileHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Guest User', style: AppTextStyles.headlineSmall),
+                Text(title, style: AppTextStyles.headlineSmall),
                 const SizedBox(height: 4),
-                Text('Stabilization mode', style: AppTextStyles.caption),
+                Text(subtitle, style: AppTextStyles.caption),
               ],
             ),
           ),
@@ -149,6 +195,8 @@ class _ProfileHeader extends StatelessWidget {
 }
 
 class _ProfileStatRow extends StatelessWidget {
+  const _ProfileStatRow();
+
   @override
   Widget build(BuildContext context) {
     return Row(

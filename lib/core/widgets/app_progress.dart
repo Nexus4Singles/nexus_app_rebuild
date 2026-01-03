@@ -34,9 +34,9 @@ class AppLinearProgress extends StatelessWidget {
           Text(
             '${(clampedProgress * 100).toInt()}%',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: AppSpacing.xxs),
         ],
@@ -139,9 +139,9 @@ class AppCircularProgress extends StatelessWidget {
             Text(
               '${(clampedProgress * 100).toInt()}%',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
             ),
         ],
       ),
@@ -231,10 +231,7 @@ class AppStepProgress extends StatelessWidget {
         Container(
           width: stepSize,
           height: stepSize,
-          decoration: BoxDecoration(
-            color: bgColor,
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
           child: Center(child: content),
         ),
         if (stepLabels != null && stepNumber <= stepLabels!.length) ...[
@@ -242,9 +239,9 @@ class AppStepProgress extends StatelessWidget {
           Text(
             stepLabels![stepNumber - 1],
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: isActive ? AppColors.textPrimary : AppColors.textMuted,
-                  fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-                ),
+              color: isActive ? AppColors.textPrimary : AppColors.textMuted,
+              fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+            ),
           ),
         ],
       ],
@@ -257,9 +254,10 @@ class AppStepProgress extends StatelessWidget {
     return Expanded(
       child: Container(
         height: lineHeight,
-        color: isCompleted
-            ? (completedColor ?? AppColors.accent)
-            : (inactiveColor ?? AppColors.surfaceDark),
+        color:
+            isCompleted
+                ? (completedColor ?? AppColors.accent)
+                : (inactiveColor ?? AppColors.surfaceDark),
       ),
     );
   }
@@ -355,15 +353,15 @@ class AppStreakIndicator extends StatelessWidget {
               Text(
                 '$current / $target',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: displayColor,
-                    ),
+                  fontWeight: FontWeight.bold,
+                  color: displayColor,
+                ),
               ),
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                  color: AppColors.textSecondary,
+                ),
               ),
             ],
           ),

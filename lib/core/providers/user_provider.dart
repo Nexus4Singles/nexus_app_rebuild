@@ -1,3 +1,4 @@
+import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/user_model.dart';
 import '../constants/app_constants.dart';
@@ -8,11 +9,11 @@ import 'firestore_service_provider.dart';
 
 /// Stream provider for current user data from Firestore
 final userStreamProvider = StreamProvider<UserModel?>((ref) {
-  final userId = ref.watch(currentUserIdProvider);
-  if (userId == null) return Stream.value(null);
+  final _userId = ref.watch(currentUserIdProvider);
+  if (_userId == null) return Stream.value(null);
 
   final firestoreService = ref.watch(firestoreServiceProvider);
-  return firestoreService.streamUser(userId);
+  return firestoreService.streamUser(_userId);
 });
 
 /// Provider for current user (as AsyncValue for proper loading/error handling)
@@ -70,9 +71,12 @@ final isProfileCompleteForDatingProvider = Provider<bool>((ref) {
 });
 
 /// Provider to fetch any user by ID (for viewing other profiles)
-final userByIdProvider = FutureProvider.family<UserModel?, String>((ref, userId) async {
+final userByIdProvider = FutureProvider.family<UserModel?, String>((
+  ref,
+  _userId,
+) async {
   final firestoreService = ref.watch(firestoreServiceProvider);
-  return firestoreService.getUser(userId);
+  return firestoreService.getUser(_userId);
 });
 
 /// State notifier for user operations
@@ -81,7 +85,7 @@ class UserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
   final String? _userId;
 
   UserNotifier(this._firestoreService, this._userId)
-      : super(const AsyncValue.loading()) {
+    : super(const AsyncValue.loading()) {
     if (_userId != null) {
       _loadUser();
     } else {
@@ -90,10 +94,14 @@ class UserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
   }
 
   Future<void> _loadUser() async {
-    if (_userId == null) return;
+    final userId = _userId;
+    if (userId == null) {
+      state = const AsyncValue.data(null);
+      return;
+    }
 
     try {
-      final user = await _firestoreService.getUser(_userId);
+      final user = await _firestoreService.getUser(userId);
       state = AsyncValue.data(user);
     } catch (e, st) {
       state = AsyncValue.error(e, st);
@@ -111,12 +119,13 @@ class UserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
     required Gender gender,
     required List<UserGoal> primaryGoals,
   }) async {
-    if (_userId == null) return;
+    final userId = _userId;
+    if (userId == null) return;
 
     state = const AsyncValue.loading();
     try {
       await _firestoreService.completeOnboarding(
-        _userId!,
+        userId,
         relationshipStatus: relationshipStatus.value,
         gender: gender.value,
         primaryGoals: primaryGoals.map((g) => g.value).toList(),
@@ -130,10 +139,11 @@ class UserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
 
   /// Update specific Nexus 2.0 fields
   Future<void> updateNexus2Fields(Map<String, dynamic> fields) async {
-    if (_userId == null) return;
+    final userId = _userId;
+    if (userId == null) return;
 
     try {
-      await _firestoreService.updateNexus2Fields(_userId!, fields);
+      await _firestoreService.updateNexus2Fields(userId, fields);
       await _loadUser();
     } catch (e, st) {
       state = AsyncValue.error(e, st);
@@ -143,16 +153,18 @@ class UserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
 
   /// Update last active timestamp
   Future<void> updateLastActive() async {
-    if (_userId == null) return;
-    await _firestoreService.updateLastActive(_userId!);
+    final userId = _userId;
+    if (userId == null) return;
+    await _firestoreService.updateLastActive(userId);
   }
 
   /// Update profile fields
   Future<void> updateProfile(Map<String, dynamic> updates) async {
-    if (_userId == null) return;
+    final userId = _userId;
+    if (userId == null) return;
 
     try {
-      await _firestoreService.updateUserFields(_userId!, updates);
+      await _firestoreService.updateUserFields(userId, updates);
       await _loadUser();
     } catch (e, st) {
       state = AsyncValue.error(e, st);
@@ -162,10 +174,11 @@ class UserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
 
   /// Unblock a user
   Future<void> unblockUser(String blockedUserId) async {
-    if (_userId == null) return;
+    final userId = _userId;
+    if (userId == null) return;
 
     try {
-      await _firestoreService.unblockUser(_userId!, blockedUserId);
+      await _firestoreService.unblockUser(userId, blockedUserId);
       await _loadUser();
     } catch (e, st) {
       state = AsyncValue.error(e, st);
@@ -177,10 +190,10 @@ class UserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
 /// Provider for user notifier
 final userNotifierProvider =
     StateNotifierProvider<UserNotifier, AsyncValue<UserModel?>>((ref) {
-  final firestoreService = ref.watch(firestoreServiceProvider);
-  final userId = ref.watch(currentUserIdProvider);
-  return UserNotifier(firestoreService, userId);
-});
+      final firestoreService = ref.watch(firestoreServiceProvider);
+      final _userId = ref.watch(currentUserIdProvider);
+      return UserNotifier(firestoreService, _userId);
+    });
 
 /// Onboarding state for pre-auth survey
 class OnboardingState {
@@ -234,10 +247,7 @@ class OnboardingNotifier extends StateNotifier<OnboardingState> {
   }
 
   void setGender(Gender gender) {
-    state = state.copyWith(
-      gender: gender,
-      currentStep: 2,
-    );
+    state = state.copyWith(gender: gender, currentStep: 2);
   }
 
   void toggleGoal(UserGoal goal) {
@@ -275,5 +285,5 @@ class OnboardingNotifier extends StateNotifier<OnboardingState> {
 /// Provider for onboarding state
 final onboardingProvider =
     StateNotifierProvider<OnboardingNotifier, OnboardingState>((ref) {
-  return OnboardingNotifier();
-});
+      return OnboardingNotifier();
+    });

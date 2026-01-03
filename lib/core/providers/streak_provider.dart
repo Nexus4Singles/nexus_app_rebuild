@@ -1,3 +1,4 @@
+import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,7 +24,7 @@ class StreakData {
 
   factory StreakData.fromMap(Map<String, dynamic>? map) {
     if (map == null) return const StreakData();
-    
+
     DateTime? lastActive;
     if (map['lastActiveDate'] != null) {
       if (map['lastActiveDate'] is Timestamp) {
@@ -33,9 +34,10 @@ class StreakData {
 
     List<DateTime> recent = [];
     if (map['recentActivity'] != null) {
-      recent = (map['recentActivity'] as List)
-          .map((e) => e is Timestamp ? e.toDate() : DateTime.now())
-          .toList();
+      recent =
+          (map['recentActivity'] as List)
+              .map((e) => e is Timestamp ? e.toDate() : DateTime.now())
+              .toList();
     }
 
     return StreakData(
@@ -49,7 +51,8 @@ class StreakData {
   Map<String, dynamic> toMap() => {
     'currentStreak': currentStreak,
     'longestStreak': longestStreak,
-    'lastActiveDate': lastActiveDate != null ? Timestamp.fromDate(lastActiveDate!) : null,
+    'lastActiveDate':
+        lastActiveDate != null ? Timestamp.fromDate(lastActiveDate!) : null,
     'recentActivity': recentActivity.map((d) => Timestamp.fromDate(d)).toList(),
   };
 
@@ -76,7 +79,11 @@ class StreakData {
   bool get isAtRisk {
     if (lastActiveDate == null) return false;
     final now = DateTime.now();
-    final lastDate = DateTime(lastActiveDate!.year, lastActiveDate!.month, lastActiveDate!.day);
+    final lastDate = DateTime(
+      lastActiveDate!.year,
+      lastActiveDate!.month,
+      lastActiveDate!.day,
+    );
     final today = DateTime(now.year, now.month, now.day);
     return lastDate.isBefore(today);
   }
@@ -88,49 +95,49 @@ class StreakData {
 
 /// Provider for user's streak data
 final streakProvider = StreamProvider<StreakData>((ref) {
+  final firestore = ref.watch(firestoreInstanceProvider);
+  if (firestore == null) return Stream.value(const StreakData());
   final userId = ref.watch(currentUserIdProvider);
   if (userId == null) {
     return Stream.value(const StreakData());
   }
-
-  return FirebaseFirestore.instance
-      .collection('users')
-      .doc(userId)
-      .snapshots()
-      .map((doc) {
-        final data = doc.data();
-        if (data == null) return const StreakData();
-        return StreakData.fromMap(data['streak'] as Map<String, dynamic>?);
-      });
+  return firestore.collection('users').doc(userId).snapshots().map((doc) {
+    final data = doc.data();
+    if (data == null) return const StreakData();
+    return StreakData.fromMap(data['streak'] as Map<String, dynamic>?);
+  });
 });
 
 /// Provider to record activity and update streak
 final streakServiceProvider = Provider<StreakService>((ref) {
   final userId = ref.watch(currentUserIdProvider);
-  return StreakService(userId);
+  return StreakService(userId, ref.watch(firestoreInstanceProvider));
 });
 
 class StreakService {
   final String? userId;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore? _firestore;
 
-  StreakService(this.userId);
+  StreakService(this.userId, this._firestore);
 
   /// Record user activity for today - call this when user completes a session or logs in
   Future<void> recordActivity() async {
     if (userId == null) return;
+    if (_firestore == null) return;
 
     try {
       final userRef = _firestore.collection('users').doc(userId);
       final doc = await userRef.get();
       final data = doc.data();
-      
+
       final now = DateTime.now();
       final today = DateTime(now.year, now.month, now.day);
-      
+
       // Get current streak data
-      final currentStreak = StreakData.fromMap(data?['streak'] as Map<String, dynamic>?);
-      
+      final currentStreak = StreakData.fromMap(
+        data?['streak'] as Map<String, dynamic>?,
+      );
+
       // Check if already recorded today
       if (currentStreak.lastActiveDate != null) {
         final lastDate = DateTime(
@@ -153,7 +160,7 @@ class StreakService {
           currentStreak.lastActiveDate!.day,
         );
         final yesterday = today.subtract(const Duration(days: 1));
-        
+
         if (lastDate == yesterday) {
           // Consecutive day - increment streak
           newStreak = currentStreak.currentStreak + 1;
@@ -162,15 +169,17 @@ class StreakService {
       }
 
       // Update longest streak if needed
-      final newLongest = newStreak > currentStreak.longestStreak 
-          ? newStreak 
-          : currentStreak.longestStreak;
+      final newLongest =
+          newStreak > currentStreak.longestStreak
+              ? newStreak
+              : currentStreak.longestStreak;
 
       // Keep last 7 days of activity
       final recentActivity = [...currentStreak.recentActivity, today];
-      final last7Days = recentActivity.length > 7 
-          ? recentActivity.sublist(recentActivity.length - 7) 
-          : recentActivity;
+      final last7Days =
+          recentActivity.length > 7
+              ? recentActivity.sublist(recentActivity.length - 7)
+              : recentActivity;
 
       // Update Firestore
       await userRef.update({
@@ -178,7 +187,8 @@ class StreakService {
           'currentStreak': newStreak,
           'longestStreak': newLongest,
           'lastActiveDate': Timestamp.fromDate(today),
-          'recentActivity': last7Days.map((d) => Timestamp.fromDate(d)).toList(),
+          'recentActivity':
+              last7Days.map((d) => Timestamp.fromDate(d)).toList(),
         },
       });
 
@@ -193,6 +203,7 @@ class StreakService {
     if (userId == null) return;
 
     try {
+      if (_firestore == null) return;
       await _firestore.collection('users').doc(userId).update({
         'streak': {
           'currentStreak': 0,
@@ -213,12 +224,36 @@ final streakMilestonesProvider = Provider<List<StreakMilestone>>((ref) {
   final currentStreak = streakAsync.valueOrNull?.currentStreak ?? 0;
 
   return [
-    StreakMilestone(days: 3, name: 'Getting Started', achieved: currentStreak >= 3),
-    StreakMilestone(days: 7, name: 'Week Warrior', achieved: currentStreak >= 7),
-    StreakMilestone(days: 14, name: 'Two Week Champion', achieved: currentStreak >= 14),
-    StreakMilestone(days: 30, name: 'Monthly Master', achieved: currentStreak >= 30),
-    StreakMilestone(days: 60, name: 'Dedication Hero', achieved: currentStreak >= 60),
-    StreakMilestone(days: 100, name: 'Century Legend', achieved: currentStreak >= 100),
+    StreakMilestone(
+      days: 3,
+      name: 'Getting Started',
+      achieved: currentStreak >= 3,
+    ),
+    StreakMilestone(
+      days: 7,
+      name: 'Week Warrior',
+      achieved: currentStreak >= 7,
+    ),
+    StreakMilestone(
+      days: 14,
+      name: 'Two Week Champion',
+      achieved: currentStreak >= 14,
+    ),
+    StreakMilestone(
+      days: 30,
+      name: 'Monthly Master',
+      achieved: currentStreak >= 30,
+    ),
+    StreakMilestone(
+      days: 60,
+      name: 'Dedication Hero',
+      achieved: currentStreak >= 60,
+    ),
+    StreakMilestone(
+      days: 100,
+      name: 'Century Legend',
+      achieved: currentStreak >= 100,
+    ),
   ];
 });
 

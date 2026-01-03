@@ -1,3 +1,5 @@
+import 'package:nexus_app_min_test/core/router/safe_nav.dart';
+import 'package:nexus_app_min_test/core/constants/app_constants.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -29,17 +31,18 @@ abstract class AppError implements Exception {
 
 /// Network-related errors
 class NetworkError extends AppError {
-  NetworkError([String? message]) 
-      : super(
-          message ?? 'Unable to connect. Please check your internet connection and try again.',
-          userAction: 'Check your Wi-Fi or mobile data connection.',
-        );
+  NetworkError([String? message])
+    : super(
+        message ??
+            'Unable to connect. Please check your internet connection and try again.',
+        userAction: 'Check your Wi-Fi or mobile data connection.',
+      );
 }
 
 /// Authentication errors
 class AuthError extends AppError {
-  AuthError(String message, {String? code, String? userAction}) 
-      : super(message, code: code, userAction: userAction);
+  AuthError(String message, {String? code, String? userAction})
+    : super(message, code: code, userAction: userAction);
 
   factory AuthError.fromFirebaseAuth(FirebaseAuthException e) {
     switch (e.code) {
@@ -65,7 +68,8 @@ class AuthError extends AppError {
         return AuthError(
           'Your password is too weak.',
           code: e.code,
-          userAction: 'Use at least 8 characters with a mix of letters and numbers.',
+          userAction:
+              'Use at least 8 characters with a mix of letters and numbers.',
         );
       case 'invalid-email':
         return AuthError(
@@ -108,8 +112,8 @@ class AuthError extends AppError {
 
 /// Firestore/Database errors
 class DatabaseError extends AppError {
-  DatabaseError(String message, {String? code, String? userAction}) 
-      : super(message, code: code, userAction: userAction);
+  DatabaseError(String message, {String? code, String? userAction})
+    : super(message, code: code, userAction: userAction);
 
   factory DatabaseError.fromFirestore(FirebaseException e) {
     switch (e.code) {
@@ -117,7 +121,8 @@ class DatabaseError extends AppError {
         return DatabaseError(
           'You don\'t have access to this content.',
           code: e.code,
-          userAction: 'This might be premium content. Check your subscription status.',
+          userAction:
+              'This might be premium content. Check your subscription status.',
         );
       case 'not-found':
         return DatabaseError(
@@ -141,7 +146,8 @@ class DatabaseError extends AppError {
         return DatabaseError(
           'Something went wrong while loading your data.',
           code: e.code,
-          userAction: 'Please try again. If the problem persists, contact support.',
+          userAction:
+              'Please try again. If the problem persists, contact support.',
         );
     }
   }
@@ -156,17 +162,17 @@ class ValidationError extends AppError {
 
 /// Permission errors
 class PermissionError extends AppError {
-  PermissionError(String message, {String? userAction}) 
-      : super(message, userAction: userAction);
+  PermissionError(String message, {String? userAction})
+    : super(message, userAction: userAction);
 }
 
 /// Subscription/Premium errors
 class SubscriptionError extends AppError {
-  SubscriptionError(String message, {String? userAction}) 
-      : super(
-          message,
-          userAction: userAction ?? 'Check your subscription in Settings.',
-        );
+  SubscriptionError(String message, {String? userAction})
+    : super(
+        message,
+        userAction: userAction ?? 'Check your subscription in Settings.',
+      );
 }
 
 // ============================================================================
@@ -195,8 +201,8 @@ class ErrorHandlerService {
 
     // Check for common error patterns
     final errorString = error.toString().toLowerCase();
-    if (errorString.contains('socket') || 
-        errorString.contains('network') || 
+    if (errorString.contains('socket') ||
+        errorString.contains('network') ||
         errorString.contains('connection')) {
       return 'Unable to connect. Please check your internet connection.';
     }
@@ -226,21 +232,21 @@ class ErrorHandlerService {
       debugPrint(stackTrace.toString());
     }
     debugPrint('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    
+
     // TODO: In production, send to Firebase Crashlytics:
     // FirebaseCrashlytics.instance.recordError(error, stackTrace);
   }
 
   /// Show error snackbar with optional contact support action
   void showErrorSnackBar(
-    BuildContext context, 
+    BuildContext context,
     dynamic error, {
     bool showContactSupport = false,
     VoidCallback? onRetry,
   }) {
     final message = handleError(error);
     final userAction = getUserAction(error);
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Column(
@@ -254,7 +260,10 @@ class ErrorHandlerService {
                 Expanded(
                   child: Text(
                     message,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ],
@@ -278,35 +287,36 @@ class ErrorHandlerService {
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         duration: const Duration(seconds: 5),
-        action: showContactSupport
-            ? SnackBarAction(
-                label: 'Get Help',
-                textColor: Colors.white,
-                onPressed: () {
-                  // Navigate to contact support
-                  Navigator.of(context).pushNamed('/contact-support');
-                },
-              )
-            : onRetry != null
+        action:
+            showContactSupport
                 ? SnackBarAction(
-                    label: 'Retry',
-                    textColor: Colors.white,
-                    onPressed: onRetry,
-                  )
+                  label: 'Get Help',
+                  textColor: Colors.white,
+                  onPressed: () {
+                    // Navigate to contact support
+                    safePushNamed(context, '/contact-support');
+                  },
+                )
+                : onRetry != null
+                ? SnackBarAction(
+                  label: 'Retry',
+                  textColor: Colors.white,
+                  onPressed: onRetry,
+                )
                 : SnackBarAction(
-                    label: 'OK',
-                    textColor: Colors.white,
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                    },
-                  ),
+                  label: 'OK',
+                  textColor: Colors.white,
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  },
+                ),
       ),
     );
   }
 
   /// Show error dialog for critical errors
   void showErrorDialog(
-    BuildContext context, 
+    BuildContext context,
     dynamic error, {
     String? title,
     VoidCallback? onRetry,
@@ -316,95 +326,109 @@ class ErrorHandlerService {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: AppColors.error.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(Icons.error_outline, color: AppColors.error, size: 24),
+      builder:
+          (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                title ?? 'Oops!',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              ),
-            ),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              message,
-              style: TextStyle(color: AppColors.textSecondary, height: 1.4),
-            ),
-            if (userAction != null) ...[
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.surfaceLight,
-                  borderRadius: BorderRadius.circular(10),
+            title: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppColors.error.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    Icons.error_outline,
+                    color: AppColors.error,
+                    size: 24,
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    Icon(Icons.lightbulb_outline, size: 18, color: AppColors.textMuted),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        userAction,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    title ?? 'Oops!',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
+                  ),
+                ),
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  message,
+                  style: TextStyle(color: AppColors.textSecondary, height: 1.4),
+                ),
+                if (userAction != null) ...[
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.surfaceLight,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.lightbulb_outline,
+                          size: 18,
+                          color: AppColors.textMuted,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            userAction,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  safePushNamed(context, '/contact-support');
+                },
+                child: Text(
+                  'Contact Support',
+                  style: TextStyle(color: AppColors.textMuted),
                 ),
               ),
+              if (onRetry != null)
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    onRetry();
+                  },
+                  child: Text('Try Again'),
+                )
+              else
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text('OK'),
+                ),
             ],
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.of(context).pushNamed('/contact-support');
-            },
-            child: Text(
-              'Contact Support',
-              style: TextStyle(color: AppColors.textMuted),
-            ),
           ),
-          if (onRetry != null)
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                onRetry();
-              },
-              child: Text('Try Again'),
-            )
-          else
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text('OK'),
-            ),
-        ],
-      ),
     );
   }
 
@@ -414,13 +438,14 @@ class ErrorHandlerService {
       SnackBar(
         content: Row(
           children: [
-            const Icon(Icons.check_circle_outline, color: Colors.white, size: 20),
+            const Icon(
+              Icons.check_circle_outline,
+              color: Colors.white,
+              size: 20,
+            ),
             const SizedBox(width: 12),
             Expanded(
-              child: Text(
-                message,
-                style: const TextStyle(color: Colors.white),
-              ),
+              child: Text(message, style: const TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -438,13 +463,14 @@ class ErrorHandlerService {
       SnackBar(
         content: Row(
           children: [
-            const Icon(Icons.warning_amber_outlined, color: Colors.white, size: 20),
+            const Icon(
+              Icons.warning_amber_outlined,
+              color: Colors.white,
+              size: 20,
+            ),
             const SizedBox(width: 12),
             Expanded(
-              child: Text(
-                message,
-                style: const TextStyle(color: Colors.white),
-              ),
+              child: Text(message, style: const TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -474,11 +500,7 @@ class ErrorBoundary extends StatefulWidget {
   final Widget child;
   final Widget Function(FlutterErrorDetails)? errorBuilder;
 
-  const ErrorBoundary({
-    super.key,
-    required this.child,
-    this.errorBuilder,
-  });
+  const ErrorBoundary({super.key, required this.child, this.errorBuilder});
 
   @override
   State<ErrorBoundary> createState() => _ErrorBoundaryState();
@@ -536,17 +558,12 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
                 const SizedBox(height: 24),
                 const Text(
                   'Something went wrong',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'We\'re sorry, but something unexpected happened.',
-                  style: TextStyle(
-                    color: AppColors.textSecondary,
-                  ),
+                  style: TextStyle(color: AppColors.textSecondary),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),
@@ -555,7 +572,10 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 12,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -677,7 +697,8 @@ class AsyncDataHandler<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return value.when(
       data: builder,
-      loading: () => loading ?? const Center(child: CircularProgressIndicator()),
+      loading:
+          () => loading ?? const Center(child: CircularProgressIndicator()),
       error: (e, st) => error?.call(e, st) ?? _buildDefaultError(context, e),
     );
   }
@@ -689,11 +710,7 @@ class AsyncDataHandler<T> extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline,
-              size: 48,
-              color: AppColors.textMuted,
-            ),
+            Icon(Icons.error_outline, size: 48, color: AppColors.textMuted),
             const SizedBox(height: 16),
             Text(
               ErrorHandlerService().handleError(error),

@@ -6,6 +6,8 @@ Future<void> initFirebaseSafely() async {
     await Firebase.initializeApp();
   } catch (e, st) {
     if (kDebugMode) {
-      debugPrint('⚠️ Firebase init skipped (expected during rebuild): $e');    }
+      debugPrint('⚠️ Firebase init skipped (expected during rebuild): $e');
+      debugPrint(st.toString());
+    }
   }
 }

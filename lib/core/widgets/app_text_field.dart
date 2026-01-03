@@ -80,13 +80,13 @@ class AppTextField extends StatefulWidget {
     this.contentPadding,
     this.minLines = 3,
     this.maxLines = 6,
-  })  : keyboardType = TextInputType.multiline,
-        textInputAction = TextInputAction.newline,
-        textCapitalization = TextCapitalization.sentences,
-        obscureText = false,
-        prefixIcon = null,
-        suffixIcon = null,
-        onSubmitted = null;
+  }) : keyboardType = TextInputType.multiline,
+       textInputAction = TextInputAction.newline,
+       textCapitalization = TextCapitalization.sentences,
+       obscureText = false,
+       prefixIcon = null,
+       suffixIcon = null,
+       onSubmitted = null;
 
   /// Search input field
   const AppTextField.search({
@@ -99,23 +99,23 @@ class AppTextField extends StatefulWidget {
     this.onTap,
     this.onChanged,
     this.onSubmitted,
-  })  : label = null,
-        helperText = null,
-        errorText = null,
-        keyboardType = TextInputType.text,
-        textInputAction = TextInputAction.search,
-        textCapitalization = TextCapitalization.none,
-        obscureText = false,
-        readOnly = false,
-        maxLines = 1,
-        minLines = null,
-        maxLength = null,
-        prefixIcon = const Icon(Icons.search, size: 20),
-        suffixIcon = null,
-        validator = null,
-        inputFormatters = null,
-        showCounter = false,
-        contentPadding = null;
+  }) : label = null,
+       helperText = null,
+       errorText = null,
+       keyboardType = TextInputType.text,
+       textInputAction = TextInputAction.search,
+       textCapitalization = TextCapitalization.none,
+       obscureText = false,
+       readOnly = false,
+       maxLines = 1,
+       minLines = null,
+       maxLength = null,
+       prefixIcon = const Icon(Icons.search, size: 20),
+       suffixIcon = null,
+       validator = null,
+       inputFormatters = null,
+       showCounter = false,
+       contentPadding = null;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -131,9 +131,9 @@ class _AppTextFieldState extends State<AppTextField> {
         if (widget.label != null) ...[
           Text(
             widget.label!,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w500),
           ),
           const SizedBox(height: AppSpacing.xs),
         ],
@@ -156,7 +156,15 @@ class _AppTextFieldState extends State<AppTextField> {
           onFieldSubmitted: widget.onSubmitted,
           validator: widget.validator,
           style: Theme.of(context).textTheme.bodyLarge,
-          buildCounter: widget.showCounter ? null : (context, {required currentLength, required isFocused, maxLength}) => null,
+          buildCounter:
+              widget.showCounter
+                  ? null
+                  : (
+                    context, {
+                    required currentLength,
+                    required isFocused,
+                    maxLength,
+                  }) => null,
           decoration: InputDecoration(
             hintText: widget.hint,
             helperText: widget.helperText,
@@ -212,9 +220,9 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         if (widget.label != null) ...[
           Text(
             widget.label!,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w500),
           ),
           const SizedBox(height: AppSpacing.xs),
         ],
@@ -233,7 +241,9 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             errorText: widget.errorText,
             suffixIcon: IconButton(
               icon: Icon(
-                _obscureText ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                _obscureText
+                    ? Icons.visibility_outlined
+                    : Icons.visibility_off_outlined,
                 color: AppColors.textMuted,
               ),
               onPressed: () {

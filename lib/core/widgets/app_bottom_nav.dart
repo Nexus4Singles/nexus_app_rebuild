@@ -7,25 +7,25 @@ import '../constants/app_constants.dart';
 // ============================================================================
 
 /// Maps semantic icon names to Material Icons
-/// 
+///
 /// When Figma designs are ready:
 /// 1. Replace Material Icons with custom icon assets
 /// 2. Or create an IconMapper that loads from assets
-/// 
+///
 /// This abstraction makes icon changes a single-file update.
 class AppIcons {
   AppIcons._();
-  
+
   /// Get icon from semantic name (outlined/inactive state)
   static IconData getOutlined(String name) {
     return _outlinedIcons[name] ?? Icons.circle_outlined;
   }
-  
+
   /// Get icon from semantic name (filled/active state)
   static IconData getFilled(String name) {
     return _filledIcons[name] ?? Icons.circle;
   }
-  
+
   // Outlined (inactive) icons
   static const Map<String, IconData> _outlinedIcons = {
     // Navigation
@@ -35,14 +35,14 @@ class AppIcons {
     'stories_outlined': Icons.auto_stories_outlined,
     'challenges_outlined': Icons.fitness_center_outlined,
     'profile_outlined': Icons.person_outline,
-    
+
     // Survey & general
     'person_single': Icons.person_outline,
     'person_refresh': Icons.refresh,
     'couple': Icons.favorite_border,
     'gender_male': Icons.male,
     'gender_female': Icons.female,
-    
+
     // Goals
     'heart_search': Icons.favorite_border,
     'clipboard_check': Icons.assignment_outlined,
@@ -57,7 +57,7 @@ class AppIcons {
     'intimacy': Icons.volunteer_activism_outlined,
     'family': Icons.family_restroom_outlined,
   };
-  
+
   // Filled (active) icons
   static const Map<String, IconData> _filledIcons = {
     // Navigation
@@ -67,14 +67,14 @@ class AppIcons {
     'stories_filled': Icons.auto_stories,
     'challenges_filled': Icons.fitness_center,
     'profile_filled': Icons.person,
-    
+
     // General
     'person_single': Icons.person,
     'person_refresh': Icons.refresh,
     'couple': Icons.favorite,
     'gender_male': Icons.male,
     'gender_female': Icons.female,
-    
+
     // Goals (same as outlined for now)
     'heart_search': Icons.favorite,
     'clipboard_check': Icons.assignment,
@@ -96,26 +96,26 @@ class AppIcons {
 // ============================================================================
 
 /// Theme tokens for bottom nav bar - easy to update for Figma
-/// 
+///
 /// When Figma designs are ready, update these values.
 class NavBarTokens {
   NavBarTokens._();
-  
+
   // Layout
   static const double height = 64.0;
   static const double iconSize = 24.0;
   static const double iconContainerSize = 40.0;
   static const double labelFontSize = 11.0;
   static const double labelSpacing = 2.0;
-  
+
   // Badge
   static const double badgeSize = 16.0;
   static const double badgeFontSize = 10.0;
   static const double badgeBorderWidth = 2.0;
-  
+
   // Animation
   static const Duration animationDuration = Duration(milliseconds: 200);
-  
+
   // Colors (reference from theme)
   static Color get activeColor => AppColors.primary;
   static Color get inactiveColor => AppColors.textMuted;
@@ -129,22 +129,22 @@ class NavBarTokens {
 // ============================================================================
 
 /// Config-driven bottom navigation bar
-/// 
+///
 /// Automatically adjusts tabs based on user's relationship status.
 /// Uses NavConfig from app_constants.dart to determine which tabs to show.
 class AppBottomNavBar extends StatelessWidget {
   /// Current selected tab index
   final int currentIndex;
-  
+
   /// Callback when a tab is tapped
   final ValueChanged<int> onTap;
-  
+
   /// User's relationship status (determines which tabs to show)
   final RelationshipStatus? userStatus;
-  
+
   /// Badge counts for tabs that support badges (keyed by NavTab)
   final Map<NavTab, int>? badgeCounts;
-  
+
   /// Whether to show badge dots (without count) for specific tabs
   final Set<NavTab>? showBadgeDots;
 
@@ -178,39 +178,43 @@ class AppBottomNavBar extends StatelessWidget {
           height: NavBarTokens.height,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: tabs.asMap().entries.map((entry) {
-              final index = entry.key;
-              final tabConfig = entry.value;
-              final isActive = index == currentIndex;
-              
-              // Check for badge
-              final badgeCount = badgeCounts?[tabConfig.id];
-              final showDot = showBadgeDots?.contains(tabConfig.id) ?? false;
-              final showBadge = tabConfig.supportsBadge && (badgeCount != null || showDot);
+            children:
+                tabs.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final tabConfig = entry.value;
+                  final isActive = index == currentIndex;
 
-              return Expanded(
-                child: _NavBarItem(
-                  config: tabConfig,
-                  isActive: isActive,
-                  badgeCount: badgeCount,
-                  showBadge: showBadge,
-                  onTap: () => onTap(index),
-                ),
-              );
-            }).toList(),
+                  // Check for badge
+                  final badgeCount = badgeCounts?[tabConfig.id];
+                  final showDot =
+                      showBadgeDots?.contains(tabConfig.id) ?? false;
+                  final showBadge =
+                      tabConfig.supportsBadge &&
+                      (badgeCount != null || showDot);
+
+                  return Expanded(
+                    child: _NavBarItem(
+                      config: tabConfig,
+                      isActive: isActive,
+                      badgeCount: badgeCount,
+                      showBadge: showBadge,
+                      onTap: () => onTap(index),
+                    ),
+                  );
+                }).toList(),
           ),
         ),
       ),
     );
   }
-  
+
   /// Get the route for a given tab index
   String? getRouteForIndex(int index) {
     final tabs = NavConfig.getTabsForStatus(userStatus);
     if (index < 0 || index >= tabs.length) return null;
     return tabs[index].route;
   }
-  
+
   /// Get the index for a given route
   int? getIndexForRoute(String route) {
     final tabs = NavConfig.getTabsForStatus(userStatus);
@@ -242,10 +246,12 @@ class _NavBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isActive ? NavBarTokens.activeColor : NavBarTokens.inactiveColor;
-    final icon = isActive 
-        ? AppIcons.getFilled(config.activeIconName)
-        : AppIcons.getOutlined(config.iconName);
+    final color =
+        isActive ? NavBarTokens.activeColor : NavBarTokens.inactiveColor;
+    final icon =
+        isActive
+            ? AppIcons.getFilled(config.activeIconName)
+            : AppIcons.getOutlined(config.iconName);
 
     return InkWell(
       onTap: onTap,
@@ -261,24 +267,17 @@ class _NavBarItem extends StatelessWidget {
                 duration: NavBarTokens.animationDuration,
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: isActive 
-                      ? NavBarTokens.activeBackgroundColor 
-                      : Colors.transparent,
+                  color:
+                      isActive
+                          ? NavBarTokens.activeBackgroundColor
+                          : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(
-                  icon, 
-                  color: color, 
-                  size: NavBarTokens.iconSize,
-                ),
+                child: Icon(icon, color: color, size: NavBarTokens.iconSize),
               ),
               // Badge
               if (showBadge)
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: _Badge(count: badgeCount),
-                ),
+                Positioned(right: 0, top: 0, child: _Badge(count: badgeCount)),
             ],
           ),
           SizedBox(height: NavBarTokens.labelSpacing),
@@ -309,12 +308,9 @@ class _Badge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasCount = count != null && count! > 0;
-    
+
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: hasCount ? 5 : 0,
-        vertical: 2,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: hasCount ? 5 : 0, vertical: 2),
       constraints: BoxConstraints(
         minWidth: NavBarTokens.badgeSize,
         minHeight: NavBarTokens.badgeSize,
@@ -323,21 +319,22 @@ class _Badge extends StatelessWidget {
         color: NavBarTokens.badgeColor,
         borderRadius: BorderRadius.circular(NavBarTokens.badgeSize / 2),
         border: Border.all(
-          color: NavBarTokens.backgroundColor, 
+          color: NavBarTokens.backgroundColor,
           width: NavBarTokens.badgeBorderWidth,
         ),
       ),
-      child: hasCount
-          ? Text(
-              count! > 99 ? '99+' : count.toString(),
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: NavBarTokens.badgeFontSize,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            )
-          : null,
+      child:
+          hasCount
+              ? Text(
+                count! > 99 ? '99+' : count.toString(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: NavBarTokens.badgeFontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              )
+              : null,
     );
   }
 }
@@ -347,7 +344,7 @@ class _Badge extends StatelessWidget {
 // ============================================================================
 
 /// Convenience widget that wraps Scaffold with AppBottomNavBar
-/// 
+///
 /// Use this for main screens to ensure consistent nav bar behavior.
 class AppScaffoldWithNav extends StatelessWidget {
   final Widget body;

@@ -5,13 +5,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/app_theme.dart';
 
 /// Theme mode provider - persists user's theme preference
-final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
+final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((
+  ref,
+) {
   return ThemeModeNotifier();
 });
 
 class ThemeModeNotifier extends StateNotifier<ThemeMode> {
   static const String _themeKey = 'theme_mode';
-  
+
   ThemeModeNotifier() : super(ThemeMode.light) {
     _loadTheme();
   }
@@ -20,7 +22,7 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final themeString = prefs.getString(_themeKey);
-      
+
       if (themeString == 'dark') {
         state = ThemeMode.dark;
         AppTheme.setDarkSystemUIOverlayStyle();
@@ -38,14 +40,14 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
 
   Future<void> setThemeMode(ThemeMode mode) async {
     state = mode;
-    
+
     // Update system UI
     if (mode == ThemeMode.dark) {
       AppTheme.setDarkSystemUIOverlayStyle();
     } else {
       AppTheme.setSystemUIOverlayStyle();
     }
-    
+
     // Persist preference
     try {
       final prefs = await SharedPreferences.getInstance();

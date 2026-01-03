@@ -1,3 +1,4 @@
+import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../services/media_service.dart';
@@ -32,7 +33,7 @@ final datingProfileServiceProvider = Provider<DatingProfileService>((ref) {
 final isDatingProfileCompleteProvider = FutureProvider<bool>((ref) async {
   final userId = ref.watch(currentUserIdProvider);
   if (userId == null) return false;
-  
+
   final service = ref.watch(datingProfileServiceProvider);
   return await service.isDatingProfileComplete(userId);
 });
@@ -41,7 +42,7 @@ final isDatingProfileCompleteProvider = FutureProvider<bool>((ref) async {
 final isCompatibilityCompleteProvider = FutureProvider<bool>((ref) async {
   final userId = ref.watch(currentUserIdProvider);
   if (userId == null) return false;
-  
+
   final service = ref.watch(datingProfileServiceProvider);
   return await service.isCompatibilityQuizComplete(userId);
 });
@@ -50,7 +51,7 @@ final isCompatibilityCompleteProvider = FutureProvider<bool>((ref) async {
 final profileCompletionPercentProvider = FutureProvider<int>((ref) async {
   final userId = ref.watch(currentUserIdProvider);
   if (userId == null) return 0;
-  
+
   final service = ref.watch(datingProfileServiceProvider);
   return await service.getProfileCompletionPercentage(userId);
 });
@@ -59,13 +60,14 @@ final profileCompletionPercentProvider = FutureProvider<int>((ref) async {
 final needsCompatibilityQuizProvider = Provider<bool>((ref) {
   final user = ref.watch(currentUserProvider).valueOrNull;
   if (user == null) return false;
-  
+
   // Singles need to complete compatibility quiz
   // Check if user is single AND hasn't completed the quiz
   final status = user.nexus2?.relationshipStatus ?? '';
-  final isSingle = status == 'single_never_married' || status == 'divorced_widowed';
+  final isSingle =
+      status == 'single_never_married' || status == 'divorced_widowed';
   final hasCompletedQuiz = user.compatibilitySetted ?? false;
-  
+
   return isSingle && !hasCompletedQuiz;
 });
 
@@ -73,8 +75,18 @@ final needsCompatibilityQuizProvider = Provider<bool>((ref) {
 // CHAT SERVICE PROVIDER
 // ============================================================================
 
-/// Provider for ChatService instance
+// ============================================================================
+// CHAT SERVICE PROVIDER
+// ============================================================================
+
+class _ChatServiceStub implements ChatService {
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+// Provider for ChatService instance
 final chatServiceProvider = Provider<ChatService>((ref) {
+  final ready = ref.watch(firebaseReadyProvider);
+  if (!ready) return _ChatServiceStub();
   return ChatService();
 });
 
@@ -82,7 +94,7 @@ final chatServiceProvider = Provider<ChatService>((ref) {
 final userConversationsProvider = StreamProvider<List<ChatConversation>>((ref) {
   final userId = ref.watch(currentUserIdProvider);
   if (userId == null) return Stream.value([]);
-  
+
   final chatService = ref.watch(chatServiceProvider);
   return chatService.streamUserConversations(userId);
 });
@@ -91,28 +103,37 @@ final userConversationsProvider = StreamProvider<List<ChatConversation>>((ref) {
 final totalUnreadCountProvider = StreamProvider<int>((ref) {
   final userId = ref.watch(currentUserIdProvider);
   if (userId == null) return Stream.value(0);
-  
+
   final chatService = ref.watch(chatServiceProvider);
   return chatService.streamTotalUnreadCount(userId);
 });
 
 /// Provider for messages in a specific chat (real-time)
-final chatMessagesProvider = StreamProvider.family<List<ChatMessage>, String>((ref, chatId) {
+final chatMessagesProvider = StreamProvider.family<List<ChatMessage>, String>((
+  ref,
+  chatId,
+) {
   final chatService = ref.watch(chatServiceProvider);
   return chatService.streamMessages(chatId);
 });
 
 /// Provider for typing users in a chat
-final typingUsersProvider = StreamProvider.family<List<String>, String>((ref, chatId) {
+final typingUsersProvider = StreamProvider.family<List<String>, String>((
+  ref,
+  chatId,
+) {
   final chatService = ref.watch(chatServiceProvider);
   return chatService.streamTypingUsers(chatId);
 });
 
 /// Provider to get or create a conversation with another user
-final getOrCreateChatProvider = FutureProvider.family<String, String>((ref, otherUserId) async {
+final getOrCreateChatProvider = FutureProvider.family<String, String>((
+  ref,
+  otherUserId,
+) async {
   final userId = ref.watch(currentUserIdProvider);
   if (userId == null) throw Exception('Not authenticated');
-  
+
   final chatService = ref.watch(chatServiceProvider);
   return await chatService.createConversation(userId, otherUserId);
 });
@@ -127,7 +148,7 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
   final String _currentUserId;
 
   ChatNotifier(this._chatService, this._currentUserId)
-      : super(const AsyncValue.data(null));
+    : super(const AsyncValue.data(null));
 
   /// Send a text message
   Future<ChatMessage?> sendMessage({
@@ -219,16 +240,17 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
 }
 
 /// Provider for ChatNotifier
-final chatNotifierProvider = StateNotifierProvider<ChatNotifier, AsyncValue<void>>((ref) {
-  final chatService = ref.watch(chatServiceProvider);
-  final userId = ref.watch(currentUserIdProvider);
-  
-  if (userId == null) {
-    throw Exception('Not authenticated');
-  }
-  
-  return ChatNotifier(chatService, userId);
-});
+final chatNotifierProvider =
+    StateNotifierProvider<ChatNotifier, AsyncValue<void>>((ref) {
+      final chatService = ref.watch(chatServiceProvider);
+      final userId = ref.watch(currentUserIdProvider);
+
+      if (userId == null) {
+        throw Exception('Not authenticated');
+      }
+
+      return ChatNotifier(chatService, userId);
+    });
 
 // ============================================================================
 // DATING PROFILE NOTIFIER (for profile updates)
@@ -323,25 +345,23 @@ class DatingProfileFormState {
   }
 
   bool get isStep1Complete => age != null && age! >= 21;
-  
+
   bool get isStep2Complete =>
       nationality != null &&
       cityCountry != null &&
       country != null &&
       educationLevel != null &&
       profession != null;
-  
+
   bool get isStep3Complete => hobbies.isNotEmpty;
-  
+
   bool get isStep4Complete => desiredQualities.isNotEmpty;
-  
+
   bool get isStep5Complete => photos.length >= 2;
-  
+
   bool get isStep6Complete =>
-      audioUrls[0] != null &&
-      audioUrls[1] != null &&
-      audioUrls[2] != null;
-  
+      audioUrls[0] != null && audioUrls[1] != null && audioUrls[2] != null;
+
   bool get isStep7Complete =>
       (instagramUsername?.isNotEmpty ?? false) ||
       (twitterUsername?.isNotEmpty ?? false) ||
@@ -363,21 +383,25 @@ class DatingProfileFormState {
 /// Notifier for dating profile form
 class DatingProfileFormNotifier extends StateNotifier<DatingProfileFormState> {
   final DatingProfileService _service;
+  // ignore: unused_field
   final MediaService _mediaService;
   final String _userId;
 
   DatingProfileFormNotifier(this._service, this._mediaService, this._userId)
-      : super(const DatingProfileFormState());
+    : super(const DatingProfileFormState());
 
   // Setters for each field
   void setAge(int age) => state = state.copyWith(age: age);
-  void setNationality(String value) => state = state.copyWith(nationality: value);
-  void setCityCountry(String value) => state = state.copyWith(cityCountry: value);
+  void setNationality(String value) =>
+      state = state.copyWith(nationality: value);
+  void setCityCountry(String value) =>
+      state = state.copyWith(cityCountry: value);
   void setCountry(String value) => state = state.copyWith(country: value);
-  void setEducationLevel(String value) => state = state.copyWith(educationLevel: value);
+  void setEducationLevel(String value) =>
+      state = state.copyWith(educationLevel: value);
   void setProfession(String value) => state = state.copyWith(profession: value);
   void setChurch(String? value) => state = state.copyWith(church: value);
-  
+
   void toggleHobby(String hobby) {
     final hobbies = List<String>.from(state.hobbies);
     if (hobbies.contains(hobby)) {
@@ -387,23 +411,24 @@ class DatingProfileFormNotifier extends StateNotifier<DatingProfileFormState> {
     }
     state = state.copyWith(hobbies: hobbies);
   }
-  
+
   void toggleQuality(String quality) {
     final qualities = List<String>.from(state.desiredQualities);
     if (qualities.contains(quality)) {
       qualities.remove(quality);
-    } else if (qualities.length < 8) { // Max 8 qualities
+    } else if (qualities.length < 8) {
+      // Max 8 qualities
       qualities.add(quality);
     }
     state = state.copyWith(desiredQualities: qualities);
   }
-  
+
   void addPhoto(String url) {
     if (state.photos.length < 4) {
       state = state.copyWith(photos: [...state.photos, url]);
     }
   }
-  
+
   void removePhoto(int index) {
     final photos = List<String>.from(state.photos);
     if (index < photos.length) {
@@ -411,19 +436,25 @@ class DatingProfileFormNotifier extends StateNotifier<DatingProfileFormState> {
       state = state.copyWith(photos: photos);
     }
   }
-  
+
   void setAudioUrl(int index, String url) {
     final audioUrls = List<String?>.from(state.audioUrls);
     audioUrls[index] = url;
     state = state.copyWith(audioUrls: audioUrls);
   }
-  
-  void setInstagram(String? value) => state = state.copyWith(instagramUsername: value);
-  void setTwitter(String? value) => state = state.copyWith(twitterUsername: value);
-  void setWhatsapp(String? value) => state = state.copyWith(whatsappNumber: value);
-  void setFacebook(String? value) => state = state.copyWith(facebookUsername: value);
-  void setTelegram(String? value) => state = state.copyWith(telegramUsername: value);
-  void setSnapchat(String? value) => state = state.copyWith(snapchatUsername: value);
+
+  void setInstagram(String? value) =>
+      state = state.copyWith(instagramUsername: value);
+  void setTwitter(String? value) =>
+      state = state.copyWith(twitterUsername: value);
+  void setWhatsapp(String? value) =>
+      state = state.copyWith(whatsappNumber: value);
+  void setFacebook(String? value) =>
+      state = state.copyWith(facebookUsername: value);
+  void setTelegram(String? value) =>
+      state = state.copyWith(telegramUsername: value);
+  void setSnapchat(String? value) =>
+      state = state.copyWith(snapchatUsername: value);
 
   /// Save complete profile
   Future<bool> saveCompleteProfile() async {
@@ -526,14 +557,17 @@ class DatingProfileFormNotifier extends StateNotifier<DatingProfileFormState> {
 }
 
 /// Provider for dating profile form
-final datingProfileFormProvider = StateNotifierProvider<DatingProfileFormNotifier, DatingProfileFormState>((ref) {
-  final service = ref.watch(datingProfileServiceProvider);
-  final mediaService = ref.watch(mediaServiceProvider);
-  final userId = ref.watch(currentUserIdProvider);
-  
-  if (userId == null) {
-    throw Exception('Not authenticated');
-  }
-  
-  return DatingProfileFormNotifier(service, mediaService, userId);
-});
+final datingProfileFormProvider =
+    StateNotifierProvider<DatingProfileFormNotifier, DatingProfileFormState>((
+      ref,
+    ) {
+      final service = ref.watch(datingProfileServiceProvider);
+      final mediaService = ref.watch(mediaServiceProvider);
+      final userId = ref.watch(currentUserIdProvider);
+
+      if (userId == null) {
+        throw Exception('Not authenticated');
+      }
+
+      return DatingProfileFormNotifier(service, mediaService, userId);
+    });

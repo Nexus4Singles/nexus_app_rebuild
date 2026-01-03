@@ -36,10 +36,7 @@ class ChatDetailScreen extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  _Bubble(
-                    text: 'Hi 👋 Welcome to Nexus.',
-                    isMe: false,
-                  ),
+                  _Bubble(text: 'Hi 👋 Welcome to Nexus.', isMe: false),
                   _Bubble(
                     text: 'Thanks — just testing the rebuild!',
                     isMe: true,

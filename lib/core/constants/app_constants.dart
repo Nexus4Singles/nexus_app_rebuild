@@ -1,12 +1,12 @@
 /// Nexus 2.0 Constants and Configuration
-library;
 
 /// User relationship status types
 /// Used to determine user path, assessments, and journeys
 enum RelationshipStatus {
-  singleNeverMarried('single_never_married', 'Single'),
-  divorcedWidowed('divorced_widowed', 'Divorced/Widowed'),
-  married('married', 'Married');
+  singleNeverMarried('single_never_married', 'Never Married'),
+  married('married', 'Married'),
+  divorced('divorced', 'Divorced'),
+  widowed('widowed', 'Widowed');
 
   final String value;
   final String displayName;
@@ -22,8 +22,48 @@ enum RelationshipStatus {
 
   bool get isSingle =>
       this == RelationshipStatus.singleNeverMarried ||
-      this == RelationshipStatus.divorcedWidowed;
+      this == RelationshipStatus.divorced ||
+      this == RelationshipStatus.widowed;
+
   bool get isMarried => this == RelationshipStatus.married;
+}
+
+/// Presurvey goal display copies (mockup exact copies)
+/// These are UI-facing and can be edited later without changing enums.
+class PresurveyGoalCopy {
+  static const List<String> neverMarried = [
+    'Find a Compatible Partner through our Dating hub',
+    'Take a Free Test to check your Readiness for Marriage',
+    'Heal from past Trauma or Family Hurt',
+    'Prepare for Marriage',
+  ];
+
+  /// Divorced and Widowed share the same copy
+  static const List<String> divorcedWidowed = [
+    'Heal from a Traumatic Marriage or Family Hurt',
+    'Prepare for Remarriage',
+    'Find a Compatible Partner through our Dating Hub',
+    'Become a better parent to your Kid(s)',
+  ];
+
+  static const List<String> married = [
+    'Check the Health of your Marriage',
+    'Strengthen the Bond in Your Marriage',
+    'Heal from Spousal Hurt',
+    'Become a better Parent to your Kid(s)',
+  ];
+
+  static List<String> forStatus(RelationshipStatus status) {
+    switch (status) {
+      case RelationshipStatus.singleNeverMarried:
+        return neverMarried;
+      case RelationshipStatus.married:
+        return married;
+      case RelationshipStatus.divorced:
+      case RelationshipStatus.widowed:
+        return divorcedWidowed;
+    }
+  }
 }
 
 /// User gender
@@ -101,7 +141,8 @@ enum UserGoal {
           UserGoal.buildEmotionalHealth,
           UserGoal.prepareForMarriage,
         ];
-      case RelationshipStatus.divorcedWidowed:
+      case RelationshipStatus.divorced:
+      case RelationshipStatus.widowed:
         return [
           UserGoal.remarriageReadiness,
           UserGoal.healFromPast,
@@ -459,49 +500,6 @@ class AppConfig {
   static const int nexus2SchemaVersion = 1;
 }
 
-/// Route names for navigation
-class AppRoutes {
-  AppRoutes._();
-
-  // Pre-auth
-  static const String splash = '/splash';
-  static const String onboarding = '/onboarding';
-  static const String survey = '/survey';
-
-  // Auth
-  static const String login = '/login';
-  static const String signup = '/signup';
-  static const String forgotPassword = '/forgot-password';
-
-  // Main app (after auth)
-  static const String home = '/home';
-  static const String search = '/search';
-  static const String chats = '/chats';
-  static const String chatDetail = '/chats/:chatId';
-  static const String challenges = '/challenges';
-  static const String stories = '/stories';
-  static const String profile = '/profile';
-
-  // Assessment
-  static const String assessment = '/assessment';
-  static const String assessmentResult = '/assessment/result';
-
-  // Challenge/Journey
-  static const String journeyDetail = '/journey/:productId';
-  static const String sessionDetail =
-      '/journey/:productId/session/:sessionNumber';
-
-  // Story
-  static const String storyDetail = '/story/:storyId';
-  static const String pollVote = '/story/:storyId/poll';
-
-  // Profile screens
-  static const String editProfile = '/profile/edit';
-  static const String settings = '/profile/settings';
-  static const String savedStories = '/profile/saved-stories';
-  static const String myProgress = '/profile/progress';
-}
-
 // ============================================================================
 // NAVIGATION CONFIGURATION
 // ============================================================================
@@ -534,6 +532,48 @@ class NavTabConfig {
 /// 1. Add to NavTab enum above
 /// 2. Add config to allTabs map below
 /// 3. Add to appropriate tab list (singlesTabs/marriedTabs)
+
+class AppNavRoutes {
+  AppNavRoutes._();
+
+  // Dynamic route helpers (deterministic, no string concatenation elsewhere)
+  static String chat(String chatId) => '/chats/$chatId';
+  static String profileView(String userId) => '/profile/$userId';
+  static String journey(String productId) => '/journey/$productId';
+  static String journeySession(String productId, int sessionNumber) =>
+      '/journey/$productId/session/$sessionNumber';
+  static String story(String storyId) => '/story/$storyId';
+  static String storyPoll(String storyId) => '/story/$storyId/poll';
+
+  static const String root = '/';
+
+  static const String splash = '/splash';
+  static const String onboarding = '/onboarding';
+  static const String survey = '/survey';
+
+  static const String login = '/login';
+  static const String signup = '/signup';
+  static const String forgotPassword = '/forgot-password';
+
+  static const String home = '/home';
+  static const String search = '/search';
+  static const String chats = '/chats';
+  static const String challenges = '/challenges';
+  static const String stories = '/stories';
+  static const String profile = '/profile';
+
+  static const String notifications = '/notifications';
+  static const String contactSupport = '/contact-support';
+
+  static const String assessment = '/assessment';
+  static const String assessmentResult = '/assessment/result';
+
+  static const String editProfile = '/profile/edit';
+  static const String settings = '/profile/settings';
+  static const String savedStories = '/profile/saved-stories';
+  static const String myProgress = '/profile/progress';
+}
+
 class NavConfig {
   NavConfig._();
 
@@ -544,21 +584,21 @@ class NavConfig {
       label: 'Home',
       iconName: 'home_outlined',
       activeIconName: 'home_filled',
-      route: AppRoutes.home,
+      route: AppNavRoutes.home,
     ),
     NavTab.search: NavTabConfig(
       id: NavTab.search,
       label: 'Search',
       iconName: 'search_outlined',
       activeIconName: 'search_filled',
-      route: AppRoutes.search,
+      route: AppNavRoutes.search,
     ),
     NavTab.chats: NavTabConfig(
       id: NavTab.chats,
       label: 'Chats',
       iconName: 'chat_outlined',
       activeIconName: 'chat_filled',
-      route: AppRoutes.chats,
+      route: AppNavRoutes.chats,
       supportsBadge: true,
     ),
     NavTab.stories: NavTabConfig(
@@ -566,7 +606,7 @@ class NavConfig {
       label: 'Stories',
       iconName: 'stories_outlined',
       activeIconName: 'stories_filled',
-      route: AppRoutes.stories,
+      route: AppNavRoutes.stories,
       supportsBadge: true,
     ),
     NavTab.challenges: NavTabConfig(
@@ -574,14 +614,14 @@ class NavConfig {
       label: 'Challenges',
       iconName: 'challenges_outlined',
       activeIconName: 'challenges_filled',
-      route: AppRoutes.challenges,
+      route: AppNavRoutes.challenges,
     ),
     NavTab.profile: NavTabConfig(
       id: NavTab.profile,
       label: 'Profile',
       iconName: 'profile_outlined',
       activeIconName: 'profile_filled',
-      route: AppRoutes.profile,
+      route: AppNavRoutes.profile,
     ),
   };
 
@@ -608,7 +648,7 @@ class NavConfig {
   static List<NavTabConfig> getTabsForStatus(RelationshipStatus? status) {
     final tabIds = switch (status) {
       RelationshipStatus.singleNeverMarried => singlesTabs,
-      RelationshipStatus.divorcedWidowed => singlesTabs,
+      RelationshipStatus.divorced || RelationshipStatus.widowed => singlesTabs,
       RelationshipStatus.married => marriedTabs,
       null => singlesTabs, // Default to singles if unknown
     };
@@ -665,7 +705,7 @@ class SurveyConfig {
       iconName: 'person_single',
     ),
     SurveyOption(
-      value: RelationshipStatus.divorcedWidowed,
+      value: RelationshipStatus.divorced,
       label: 'Divorced or Widowed',
       subtitle: 'Ready for a fresh start',
       iconName: 'person_refresh',
@@ -705,7 +745,8 @@ class SurveyConfig {
   ) {
     return switch (status) {
       RelationshipStatus.singleNeverMarried => singlesGoalOptions,
-      RelationshipStatus.divorcedWidowed => divorcedWidowedGoalOptions,
+      RelationshipStatus.divorced ||
+      RelationshipStatus.widowed => divorcedWidowedGoalOptions,
       RelationshipStatus.married => marriedGoalOptions,
     };
   }

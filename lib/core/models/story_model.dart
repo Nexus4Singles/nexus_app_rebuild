@@ -21,9 +21,8 @@ class ContentBlock extends Equatable {
       type: json['type'] as String,
       text: json['text'] as String?,
       attribution: json['attribution'] as String?,
-      items: (json['items'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList(),
+      items:
+          (json['items'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
     );
   }
 
@@ -105,7 +104,12 @@ class ActionStep extends Equatable {
   };
 
   @override
-  List<Object?> get props => [title, instructions, estimatedMins, completionSignalTag];
+  List<Object?> get props => [
+    title,
+    instructions,
+    estimatedMins,
+    completionSignalTag,
+  ];
 }
 
 /// Story configuration
@@ -177,32 +181,42 @@ class Story extends Equatable {
       storyId: json['storyId'] as String,
       weekNumber: json['weekNumber'] as int,
       publishDate: json['publishDate'] as String,
-      audiences: (json['audiences'] as List<dynamic>)
-          .map((e) => e.toString())
-          .toList(),
-      tags: (json['tags'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
+      audiences:
+          (json['audiences'] as List<dynamic>)
+              .map((e) => e.toString())
+              .toList(),
+      tags:
+          (json['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ??
+          [],
       title: json['title'] as String,
       subtitle: json['subtitle'] as String? ?? '',
       readingTimeMins: json['readingTimeMins'] as int? ?? 5,
       heroImage: json['heroImage'] as String?,
-      contentBlocks: (json['contentBlocks'] as List<dynamic>?)
-          ?.map((e) => ContentBlock.fromJson(e as Map<String, dynamic>))
-          .toList() ?? [],
-      keyLessons: (json['keyLessons'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
-      reflectionPrompts: (json['reflectionPrompts'] as List<dynamic>?)
-          ?.map((e) => ReflectionPrompt.fromJson(e as Map<String, dynamic>))
-          .toList() ?? [],
-      actionStep: json['actionStep'] != null
-          ? ActionStep.fromJson(json['actionStep'] as Map<String, dynamic>)
-          : null,
+      contentBlocks:
+          (json['contentBlocks'] as List<dynamic>?)
+              ?.map((e) => ContentBlock.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      keyLessons:
+          (json['keyLessons'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      reflectionPrompts:
+          (json['reflectionPrompts'] as List<dynamic>?)
+              ?.map((e) => ReflectionPrompt.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      actionStep:
+          json['actionStep'] != null
+              ? ActionStep.fromJson(json['actionStep'] as Map<String, dynamic>)
+              : null,
       pollId: json['pollId'] as String? ?? '',
-      recommendedProductIds: (json['recommendedProductIds'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
+      recommendedProductIds:
+          (json['recommendedProductIds'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
       authorName: json['author'] as String?,
       categoryName: json['category'] as String?,
       openingHookText: json['openingHook'] as String?,
@@ -263,17 +277,15 @@ class StoriesCatalog extends Equatable {
   final String version;
   final List<Story> stories;
 
-  const StoriesCatalog({
-    required this.version,
-    required this.stories,
-  });
+  const StoriesCatalog({required this.version, required this.stories});
 
   factory StoriesCatalog.fromJson(Map<String, dynamic> json) {
     return StoriesCatalog(
       version: json['version'] as String? ?? 'v1',
-      stories: (json['stories'] as List<dynamic>)
-          .map((e) => Story.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      stories:
+          (json['stories'] as List<dynamic>)
+              .map((e) => Story.fromJson(e as Map<String, dynamic>))
+              .toList(),
     );
   }
 
@@ -297,18 +309,19 @@ class StoriesCatalog extends Equatable {
   Story? get currentStoryOfWeek {
     if (stories.isEmpty) return null;
     final now = DateTime.now();
-    
-    final validStories = stories.where((s) {
-      try {
-        final pubDate = DateTime.parse(s.publishDate);
-        return pubDate.isBefore(now) || pubDate.isAtSameMomentAs(now);
-      } catch (_) {
-        return true;
-      }
-    }).toList();
+
+    final validStories =
+        stories.where((s) {
+          try {
+            final pubDate = DateTime.parse(s.publishDate);
+            return pubDate.isBefore(now) || pubDate.isAtSameMomentAs(now);
+          } catch (_) {
+            return true;
+          }
+        }).toList();
 
     if (validStories.isEmpty) return stories.first;
-    
+
     return validStories.reduce((a, b) {
       try {
         final aDate = DateTime.parse(a.publishDate);
@@ -350,13 +363,17 @@ class PollOption extends Equatable {
     return PollOption(
       id: json['id'] as String? ?? json['optionId'] as String? ?? '',
       text: json['text'] as String,
-      inferredTags: (json['inferredTags'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
+      inferredTags:
+          (json['inferredTags'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
       insightCopy: json['insightCopy'] as String? ?? '',
-      recommendedProductIds: (json['recommendedProductIds'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
+      recommendedProductIds:
+          (json['recommendedProductIds'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
       votes: json['votes'] as int? ?? json['voteCount'] as int? ?? 0,
     );
   }
@@ -382,7 +399,14 @@ class PollOption extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, text, inferredTags, insightCopy, recommendedProductIds, votes];
+  List<Object?> get props => [
+    id,
+    text,
+    inferredTags,
+    insightCopy,
+    recommendedProductIds,
+    votes,
+  ];
 }
 
 /// Poll configuration
@@ -414,13 +438,16 @@ class Poll extends Equatable {
       storyId: json['storyId'] as String? ?? '',
       weekNumber: json['weekNumber'] as int? ?? 0,
       question: json['question'] as String,
-      options: (json['options'] as List<dynamic>)
-          .map((e) => PollOption.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      options:
+          (json['options'] as List<dynamic>)
+              .map((e) => PollOption.fromJson(e as Map<String, dynamic>))
+              .toList(),
       defaultInsightCopy: json['defaultInsightCopy'] as String? ?? '',
-      defaultRecommendedProductIds: (json['defaultRecommendedProductIds'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
+      defaultRecommendedProductIds:
+          (json['defaultRecommendedProductIds'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
     );
   }
 
@@ -459,17 +486,15 @@ class PollsCatalog extends Equatable {
   final String version;
   final List<Poll> polls;
 
-  const PollsCatalog({
-    required this.version,
-    required this.polls,
-  });
+  const PollsCatalog({required this.version, required this.polls});
 
   factory PollsCatalog.fromJson(Map<String, dynamic> json) {
     return PollsCatalog(
       version: json['version'] as String? ?? 'v1',
-      polls: (json['polls'] as List<dynamic>)
-          .map((e) => Poll.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      polls:
+          (json['polls'] as List<dynamic>)
+              .map((e) => Poll.fromJson(e as Map<String, dynamic>))
+              .toList(),
     );
   }
 
@@ -525,12 +550,15 @@ class PollVote extends Equatable {
       storyId: json['storyId'] as String,
       userId: json['userId'] as String,
       selectedOptionId: json['selectedOptionId'] as String,
-      inferredTags: (json['inferredTags'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
-      createdAt: json['createdAt'] != null
-          ? (json['createdAt'] as Timestamp).toDate()
-          : DateTime.now(),
+      inferredTags:
+          (json['inferredTags'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      createdAt:
+          json['createdAt'] != null
+              ? (json['createdAt'] as Timestamp).toDate()
+              : DateTime.now(),
     );
   }
 
@@ -580,11 +608,15 @@ class PollAggregate extends Equatable {
     return PollAggregate(
       pollId: json['pollId'] as String,
       totalVotes: json['totalVotes'] as int? ?? 0,
-      optionCounts: (json['optionCounts'] as Map<String, dynamic>?)
-          ?.map((k, v) => MapEntry(k, v as int)) ?? {},
-      updatedAt: json['updatedAt'] != null
-          ? (json['updatedAt'] as Timestamp).toDate()
-          : DateTime.now(),
+      optionCounts:
+          (json['optionCounts'] as Map<String, dynamic>?)?.map(
+            (k, v) => MapEntry(k, v as int),
+          ) ??
+          {},
+      updatedAt:
+          json['updatedAt'] != null
+              ? (json['updatedAt'] as Timestamp).toDate()
+              : DateTime.now(),
     );
   }
 
@@ -638,16 +670,22 @@ class StoryProgress extends Equatable {
   factory StoryProgress.fromJson(Map<String, dynamic> json) {
     return StoryProgress(
       storyId: json['storyId'] as String,
-      visitorId: json['visitorId'] as String? ?? json['userId'] as String? ?? '',
+      visitorId:
+          json['visitorId'] as String? ?? json['userId'] as String? ?? '',
       readStatus: json['readStatus'] as String? ?? 'started',
       isSaved: json['isSaved'] as bool? ?? json['saved'] as bool? ?? false,
-      reflectionDone: json['reflectionDone'] as bool? ?? json['reflectionCompleted'] as bool? ?? false,
-      completedAt: json['completedAt'] != null
-          ? (json['completedAt'] as Timestamp).toDate()
-          : null,
-      lastOpenedAt: json['lastOpenedAt'] != null
-          ? (json['lastOpenedAt'] as Timestamp).toDate()
-          : null,
+      reflectionDone:
+          json['reflectionDone'] as bool? ??
+          json['reflectionCompleted'] as bool? ??
+          false,
+      completedAt:
+          json['completedAt'] != null
+              ? (json['completedAt'] as Timestamp).toDate()
+              : null,
+      lastOpenedAt:
+          json['lastOpenedAt'] != null
+              ? (json['lastOpenedAt'] as Timestamp).toDate()
+              : null,
     );
   }
 
@@ -723,9 +761,10 @@ class StoryLike extends Equatable {
       storyId: json['storyId'] as String,
       userId: json['userId'] as String,
       userName: json['userName'] as String?,
-      createdAt: json['createdAt'] != null
-          ? (json['createdAt'] as Timestamp).toDate()
-          : DateTime.now(),
+      createdAt:
+          json['createdAt'] != null
+              ? (json['createdAt'] as Timestamp).toDate()
+              : DateTime.now(),
     );
   }
 
@@ -771,9 +810,10 @@ class StoryComment extends Equatable {
       userName: json['userName'] as String? ?? 'Anonymous',
       userPhotoUrl: json['userPhotoUrl'] as String?,
       text: json['text'] as String,
-      createdAt: json['createdAt'] != null
-          ? (json['createdAt'] as Timestamp).toDate()
-          : DateTime.now(),
+      createdAt:
+          json['createdAt'] != null
+              ? (json['createdAt'] as Timestamp).toDate()
+              : DateTime.now(),
     );
   }
 
@@ -788,7 +828,15 @@ class StoryComment extends Equatable {
   };
 
   @override
-  List<Object?> get props => [visitorId, storyId, userId, userName, userPhotoUrl, text, createdAt];
+  List<Object?> get props => [
+    visitorId,
+    storyId,
+    userId,
+    userName,
+    userPhotoUrl,
+    text,
+    createdAt,
+  ];
 }
 
 /// Story engagement aggregate
@@ -813,9 +861,10 @@ class StoryEngagement extends Equatable {
       likeCount: json['likeCount'] as int? ?? 0,
       commentCount: json['commentCount'] as int? ?? 0,
       shareCount: json['shareCount'] as int? ?? 0,
-      updatedAt: json['updatedAt'] != null
-          ? (json['updatedAt'] as Timestamp).toDate()
-          : DateTime.now(),
+      updatedAt:
+          json['updatedAt'] != null
+              ? (json['updatedAt'] as Timestamp).toDate()
+              : DateTime.now(),
     );
   }
 
@@ -828,5 +877,11 @@ class StoryEngagement extends Equatable {
   };
 
   @override
-  List<Object?> get props => [storyId, likeCount, commentCount, shareCount, updatedAt];
+  List<Object?> get props => [
+    storyId,
+    likeCount,
+    commentCount,
+    shareCount,
+    updatedAt,
+  ];
 }

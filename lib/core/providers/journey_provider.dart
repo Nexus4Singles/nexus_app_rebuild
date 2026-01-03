@@ -15,19 +15,25 @@ import "assessment_provider.dart";
 // ============================================================================
 
 /// Provider for singles (never married) journey catalog
-final singlesNeverMarriedCatalogProvider = FutureProvider<JourneyCatalog?>((ref) async {
+final singlesNeverMarriedCatalogProvider = FutureProvider<JourneyCatalog?>((
+  ref,
+) async {
   final configLoader = ref.watch(configLoaderProvider);
   return configLoader.loadSinglesNeverMarriedJourneyCatalog();
 });
 
 /// Provider for divorced/widowed journey catalog (includes parenting content)
-final divorcedWidowedCatalogProvider = FutureProvider<JourneyCatalog?>((ref) async {
+final divorcedWidowedCatalogProvider = FutureProvider<JourneyCatalog?>((
+  ref,
+) async {
   final configLoader = ref.watch(configLoaderProvider);
   return configLoader.loadDivorcedWidowedJourneyCatalog();
 });
 
 /// Provider for married journey catalog (includes parenting content)
-final marriedJourneyCatalogProvider = FutureProvider<JourneyCatalog?>((ref) async {
+final marriedJourneyCatalogProvider = FutureProvider<JourneyCatalog?>((
+  ref,
+) async {
   final configLoader = ref.watch(configLoaderProvider);
   return configLoader.loadMarriedJourneyCatalog();
 });
@@ -40,55 +46,63 @@ final marriedJourneyCatalogProvider = FutureProvider<JourneyCatalog?>((ref) asyn
 final userJourneyCatalogProvider = FutureProvider<JourneyCatalog?>((ref) async {
   final user = ref.watch(currentUserProvider).valueOrNull;
   if (user?.nexus2 == null) return null;
-  
+
   final statusStr = user!.nexus2!.relationshipStatus;
-  if (statusStr == null || statusStr.isEmpty) return null;
-  
+  if (statusStr.isEmpty) return null;
+
   final status = RelationshipStatus.fromValue(statusStr);
   final configLoader = ref.watch(configLoaderProvider);
   return configLoader.getJourneyCatalogForStatus(status);
 });
 
 /// Provider for all available products for current user
-final availableProductsProvider = FutureProvider<List<JourneyProduct>>((ref) async {
+final availableProductsProvider = FutureProvider<List<JourneyProduct>>((
+  ref,
+) async {
   final catalog = await ref.watch(userJourneyCatalogProvider.future);
   return catalog?.products ?? [];
 });
 
 /// Provider for a specific product by ID
-final productByIdProvider = FutureProvider.family<JourneyProduct?, String>(
-  (ref, productId) async {
-    final catalog = await ref.watch(userJourneyCatalogProvider.future);
-    return catalog?.findProduct(productId);
-  },
-);
+final productByIdProvider = FutureProvider.family<JourneyProduct?, String>((
+  ref,
+  productId,
+) async {
+  final catalog = await ref.watch(userJourneyCatalogProvider.future);
+  return catalog?.findProduct(productId);
+});
 
 // ============================================================================
 // JOURNEY PROGRESS PROVIDERS
 // ============================================================================
 
 /// Provider for all user's journey progress
-final allJourneyProgressProvider = StreamProvider<Map<String, JourneyProgress>>((ref) {
-  final user = ref.watch(currentUserProvider).valueOrNull;
-  if (user == null) return Stream.value({});
-  
-  final firestoreService = ref.watch(firestoreServiceProvider);
-  return firestoreService.watchAllJourneyProgress(user.id);
-});
+final allJourneyProgressProvider = StreamProvider<Map<String, JourneyProgress>>(
+  (ref) {
+    final user = ref.watch(currentUserProvider).valueOrNull;
+    if (user == null) return Stream.value({});
+
+    final firestoreService = ref.watch(firestoreServiceProvider);
+    return firestoreService.watchAllJourneyProgress(user.id);
+  },
+);
 
 /// Provider for specific journey progress
 final journeyProgressProvider = StreamProvider.family<JourneyProgress?, String>(
   (ref, productId) {
     final user = ref.watch(currentUserProvider).valueOrNull;
     if (user == null) return Stream.value(null);
-    
+
     final firestoreService = ref.watch(firestoreServiceProvider);
     return firestoreService.watchJourneyProgress(user.id, productId);
   },
 );
 
 /// Provider for checking if a product is purchased
-final isProductPurchasedProvider = Provider.family<bool, String>((ref, productId) {
+final isProductPurchasedProvider = Provider.family<bool, String>((
+  ref,
+  productId,
+) {
   final progress = ref.watch(journeyProgressProvider(productId)).valueOrNull;
   return progress?.purchased ?? false;
 });
@@ -103,21 +117,32 @@ final purchasedProductsProvider = Provider<List<String>>((ref) {
 });
 
 /// Provider for active journeys (purchased but not completed)
-final activeJourneysProvider = FutureProvider<List<JourneyProduct>>((ref) async {
+final activeJourneysProvider = FutureProvider<List<JourneyProduct>>((
+  ref,
+) async {
   final allProgress = ref.watch(allJourneyProgressProvider).valueOrNull ?? {};
   final catalog = await ref.watch(userJourneyCatalogProvider.future);
   if (catalog == null) return [];
-  
-  final activeIds = allProgress.entries
-      .where((e) => e.value.purchased && e.value.completedSessions < e.value.totalSessions)
-      .map((e) => e.key)
+
+  final activeIds =
+      allProgress.entries
+          .where(
+            (e) =>
+                e.value.purchased &&
+                e.value.completedSessions < e.value.totalSessions,
+          )
+          .map((e) => e.key)
+          .toList();
+
+  return catalog.products
+      .where((p) => activeIds.contains(p.productId))
       .toList();
-  
-  return catalog.products.where((p) => activeIds.contains(p.productId)).toList();
 });
 
 /// Provider for recommended products based on assessment results
-final recommendedProductsProvider = FutureProvider<List<JourneyProduct>>((ref) async {
+final recommendedProductsProvider = FutureProvider<List<JourneyProduct>>((
+  ref,
+) async {
   final catalog = await ref.watch(userJourneyCatalogProvider.future);
   if (catalog == null || catalog.products.isEmpty) return [];
 
@@ -244,7 +269,8 @@ class SessionNotifier extends StateNotifier<SessionState> {
   final Ref _ref;
   final FirestoreService _firestoreService;
 
-  SessionNotifier(this._ref, this._firestoreService) : super(const SessionState());
+  SessionNotifier(this._ref, this._firestoreService)
+    : super(const SessionState());
 
   /// Start a session
   Future<void> startSession(String productId, int sessionNumber) async {
@@ -261,7 +287,9 @@ class SessionNotifier extends StateNotifier<SessionState> {
         return;
       }
 
-      final progress = await _ref.read(journeyProgressProvider(productId).future);
+      final progress = await _ref.read(
+        journeyProgressProvider(productId).future,
+      );
 
       state = SessionState(
         product: product,
@@ -300,7 +328,10 @@ class SessionNotifier extends StateNotifier<SessionState> {
     try {
       final user = _ref.read(currentUserProvider).valueOrNull;
       if (user == null) {
-        state = state.copyWith(isSubmitting: false, error: 'User not authenticated');
+        state = state.copyWith(
+          isSubmitting: false,
+          error: 'User not authenticated',
+        );
         return;
       }
 
@@ -331,10 +362,7 @@ class SessionNotifier extends StateNotifier<SessionState> {
         state.session!.sessionNumber,
       );
 
-      state = state.copyWith(
-        isSubmitting: false,
-        isComplete: true,
-      );
+      state = state.copyWith(isSubmitting: false, isComplete: true);
     } catch (e) {
       state = state.copyWith(
         isSubmitting: false,
@@ -359,7 +387,10 @@ class SessionNotifier extends StateNotifier<SessionState> {
     try {
       final user = _ref.read(currentUserProvider).valueOrNull;
       if (user == null) {
-        state = state.copyWith(isSubmitting: false, error: 'User not authenticated');
+        state = state.copyWith(
+          isSubmitting: false,
+          error: 'User not authenticated',
+        );
         return;
       }
       // Encode response value based on type
@@ -409,10 +440,7 @@ class SessionNotifier extends StateNotifier<SessionState> {
         sessionNumber,
       );
 
-      state = state.copyWith(
-        isSubmitting: false,
-        isComplete: true,
-      );
+      state = state.copyWith(isSubmitting: false, isComplete: true);
     } catch (e) {
       state = state.copyWith(
         isSubmitting: false,
@@ -422,9 +450,10 @@ class SessionNotifier extends StateNotifier<SessionState> {
   }
 
   /// Encode response value for storage
+  // ignore: unused_element
   String? _encodeResponse(dynamic value, ResponseType type) {
     if (value == null) return null;
-    
+
     switch (type) {
       case ResponseType.scale3:
         return (value as PulseValue).name;
@@ -460,45 +489,50 @@ class SessionNotifier extends StateNotifier<SessionState> {
 // ============================================================================
 
 /// Provider for session state notifier
-final sessionNotifierProvider = StateNotifierProvider<SessionNotifier, SessionState>(
-  (ref) {
-    final firestoreService = ref.watch(firestoreServiceProvider);
-    return SessionNotifier(ref, firestoreService);
-  },
-);
+final sessionNotifierProvider =
+    StateNotifierProvider<SessionNotifier, SessionState>((ref) {
+      final firestoreService = ref.watch(firestoreServiceProvider);
+      return SessionNotifier(ref, firestoreService);
+    });
 
 /// Provider for session responses for a product
-final sessionResponsesProvider = FutureProvider.family<List<SessionResponse>, String>(
-  (ref, productId) async {
-    final user = ref.watch(currentUserProvider).valueOrNull;
-    if (user == null) return [];
-    
-    final firestoreService = ref.watch(firestoreServiceProvider);
-    return firestoreService.getSessionResponses(user.id, productId);
-  },
-);
+final sessionResponsesProvider =
+    FutureProvider.family<List<SessionResponse>, String>((
+      ref,
+      productId,
+    ) async {
+      final user = ref.watch(currentUserProvider).valueOrNull;
+      if (user == null) return [];
+
+      final firestoreService = ref.watch(firestoreServiceProvider);
+      return firestoreService.getSessionResponses(user.id, productId);
+    });
 
 /// Provider for checking if a specific session is completed
-final isSessionCompletedProvider = Provider.family<bool, ({String productId, int sessionNumber})>(
-  (ref, params) {
-    final progress = ref.watch(journeyProgressProvider(params.productId)).valueOrNull;
-    if (progress == null) return false;
-    return progress.completedSessions >= params.sessionNumber;
-  },
-);
+final isSessionCompletedProvider =
+    Provider.family<bool, ({String productId, int sessionNumber})>((
+      ref,
+      params,
+    ) {
+      final progress =
+          ref.watch(journeyProgressProvider(params.productId)).valueOrNull;
+      if (progress == null) return false;
+      return progress.completedSessions >= params.sessionNumber;
+    });
 
 /// Provider for next available session in a journey
-final nextSessionProvider = FutureProvider.family<JourneySession?, String>(
-  (ref, productId) async {
-    final product = await ref.watch(productByIdProvider(productId).future);
-    if (product == null) return null;
-    
-    final progress = ref.watch(journeyProgressProvider(productId)).valueOrNull;
-    final nextNumber = (progress?.completedSessions ?? 0) + 1;
-    
-    return product.getSession(nextNumber);
-  },
-);
+final nextSessionProvider = FutureProvider.family<JourneySession?, String>((
+  ref,
+  productId,
+) async {
+  final product = await ref.watch(productByIdProvider(productId).future);
+  if (product == null) return null;
+
+  final progress = ref.watch(journeyProgressProvider(productId)).valueOrNull;
+  final nextNumber = (progress?.completedSessions ?? 0) + 1;
+
+  return product.getSession(nextNumber);
+});
 
 // ============================================================================
 // PURCHASE PROVIDER
@@ -509,7 +543,8 @@ class PurchaseNotifier extends StateNotifier<AsyncValue<void>> {
   final Ref _ref;
   final FirestoreService _firestoreService;
 
-  PurchaseNotifier(this._ref, this._firestoreService) : super(const AsyncValue.data(null));
+  PurchaseNotifier(this._ref, this._firestoreService)
+    : super(const AsyncValue.data(null));
 
   /// Purchase a product (creates journey progress record)
   Future<bool> purchaseProduct(String productId) async {
@@ -551,9 +586,8 @@ class PurchaseNotifier extends StateNotifier<AsyncValue<void>> {
 }
 
 /// Provider for purchase notifier
-final purchaseNotifierProvider = StateNotifierProvider<PurchaseNotifier, AsyncValue<void>>(
-  (ref) {
-    final firestoreService = ref.watch(firestoreServiceProvider);
-    return PurchaseNotifier(ref, firestoreService);
-  },
-);
+final purchaseNotifierProvider =
+    StateNotifierProvider<PurchaseNotifier, AsyncValue<void>>((ref) {
+      final firestoreService = ref.watch(firestoreServiceProvider);
+      return PurchaseNotifier(ref, firestoreService);
+    });

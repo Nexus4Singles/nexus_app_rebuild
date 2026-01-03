@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
 import 'package:flutter/foundation.dart';
 
 import '../models/user_model.dart';
@@ -6,14 +7,15 @@ import '../models/user_model.dart';
 /// Service for managing dating profile data in Firestore
 /// Handles all profile creation, updates, and compatibility quiz operations
 class DatingProfileService {
-  final FirebaseFirestore _firestore;
+  FirebaseFirestore? _firestore;
 
-  DatingProfileService({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+  FirebaseFirestore get _fs =>
+      _firestore ?? (throw StateError('Firestore not ready'));
+  DatingProfileService({FirebaseFirestore? firestore}) : _firestore = firestore;
 
   /// Get user document reference
   DocumentReference<Map<String, dynamic>> _userDocRef(String uid) {
-    return _firestore.collection('users').doc(uid);
+    return _fs.collection('users').doc(uid);
   }
 
   // ============================================================================
@@ -23,10 +25,9 @@ class DatingProfileService {
   /// Step 1: Save age
   Future<void> saveAge(String uid, int age) async {
     try {
-      await _userDocRef(uid).update({
-        'age': age,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
+      await _userDocRef(
+        uid,
+      ).update({'age': age, 'updatedAt': FieldValue.serverTimestamp()});
     } catch (e) {
       throw DatingProfileException('Failed to save age: $e');
     }
@@ -60,10 +61,9 @@ class DatingProfileService {
   /// Step 3: Save hobbies/interests
   Future<void> saveHobbies(String uid, List<String> hobbies) async {
     try {
-      await _userDocRef(uid).update({
-        'hobbies': hobbies,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
+      await _userDocRef(
+        uid,
+      ).update({'hobbies': hobbies, 'updatedAt': FieldValue.serverTimestamp()});
     } catch (e) {
       throw DatingProfileException('Failed to save hobbies: $e');
     }
@@ -92,7 +92,8 @@ class DatingProfileService {
 
       // Also update individual photo fields for Nexus 1.0 compatibility
       for (int i = 0; i < 4; i++) {
-        updateData['profileUrl${i + 1}'] = i < photoUrls.length ? photoUrls[i] : null;
+        updateData['profileUrl${i + 1}'] =
+            i < photoUrls.length ? photoUrls[i] : null;
       }
 
       await _userDocRef(uid).update(updateData);
@@ -106,9 +107,9 @@ class DatingProfileService {
     try {
       final doc = await _userDocRef(uid).get();
       final data = doc.data() ?? {};
-      
+
       List<String> photos = List<String>.from(data['photos'] ?? []);
-      
+
       if (index < photos.length) {
         photos[index] = photoUrl;
       } else {
@@ -126,9 +127,9 @@ class DatingProfileService {
     try {
       final doc = await _userDocRef(uid).get();
       final data = doc.data() ?? {};
-      
+
       List<String> photos = List<String>.from(data['photos'] ?? []);
-      
+
       if (index < photos.length) {
         photos.removeAt(index);
       }
@@ -148,18 +149,19 @@ class DatingProfileService {
   }) async {
     try {
       final audioData = <String, dynamic>{};
-      
+
       if (audio1Url != null) audioData['audio1Url'] = audio1Url;
       if (audio2Url != null) audioData['audio2Url'] = audio2Url;
       if (audio3Url != null) audioData['audio3Url'] = audio3Url;
-      
+
       // Check if all 3 are complete
       final doc = await _userDocRef(uid).get();
       final existingData = doc.data() ?? {};
-      final existingAudio = existingData['audio'] as Map<String, dynamic>? ?? {};
-      
+      final existingAudio =
+          existingData['audio'] as Map<String, dynamic>? ?? {};
+
       final mergedAudio = {...existingAudio, ...audioData};
-      mergedAudio['completed'] = 
+      mergedAudio['completed'] =
           mergedAudio['audio1Url'] != null &&
           mergedAudio['audio2Url'] != null &&
           mergedAudio['audio3Url'] != null;
@@ -174,25 +176,27 @@ class DatingProfileService {
   }
 
   /// Step 6 (single): Save one audio recording
-  Future<void> saveSingleAudio(String uid, int questionIndex, String audioUrl) async {
+  Future<void> saveSingleAudio(
+    String uid,
+    int questionIndex,
+    String audioUrl,
+  ) async {
     try {
       final fieldName = 'audio${questionIndex}Url';
       await _userDocRef(uid).update({
         'audio.$fieldName': audioUrl,
         'updatedAt': FieldValue.serverTimestamp(),
       });
-      
+
       // Check completion
       final doc = await _userDocRef(uid).get();
       final data = doc.data() ?? {};
       final audio = data['audio'] as Map<String, dynamic>? ?? {};
-      
-      if (audio['audio1Url'] != null && 
-          audio['audio2Url'] != null && 
+
+      if (audio['audio1Url'] != null &&
+          audio['audio2Url'] != null &&
           audio['audio3Url'] != null) {
-        await _userDocRef(uid).update({
-          'audio.completed': true,
-        });
+        await _userDocRef(uid).update({'audio.completed': true});
       }
     } catch (e) {
       throw DatingProfileException('Failed to save audio: $e');
@@ -255,7 +259,7 @@ class DatingProfileService {
       final updateData = <String, dynamic>{
         // Step 1: Age
         'age': age,
-        
+
         // Step 2: Extra info
         'nationality': nationality,
         'location': cityCountry,
@@ -263,25 +267,26 @@ class DatingProfileService {
         'educationLevel': educationLevel,
         'profession': profession,
         'church': church,
-        
+
         // Step 3: Hobbies
         'hobbies': hobbies,
-        
+
         // Step 4: Desired qualities
         'desiredQualities': desiredQualities,
-        
+
         // Step 5: Photos
         'profileUrl': photoUrls.isNotEmpty ? photoUrls.first : null,
         'photos': photoUrls,
-        
+
         // Step 6: Audio
         'audio': {
           'audio1Url': audio1Url,
           'audio2Url': audio2Url,
           'audio3Url': audio3Url,
-          'completed': audio1Url != null && audio2Url != null && audio3Url != null,
+          'completed':
+              audio1Url != null && audio2Url != null && audio3Url != null,
         },
-        
+
         // Step 7: Contact info
         'instagramUsername': instagramUsername,
         'twitterUsername': twitterUsername,
@@ -289,7 +294,7 @@ class DatingProfileService {
         'facebookUsername': facebookUsername,
         'telegramUsername': telegramUsername,
         'snapchatUsername': snapchatUsername,
-        
+
         // Profile completion flags
         'datingProfileCompleted': true,
         'datingProfileCompletedAt': FieldValue.serverTimestamp(),
@@ -298,7 +303,8 @@ class DatingProfileService {
 
       // Add individual photo fields for Nexus 1.0 compatibility
       for (int i = 0; i < 4; i++) {
-        updateData['profileUrl${i + 1}'] = i < photoUrls.length ? photoUrls[i] : null;
+        updateData['profileUrl${i + 1}'] =
+            i < photoUrls.length ? photoUrls[i] : null;
       }
 
       await _userDocRef(uid).update(updateData);
@@ -335,7 +341,8 @@ class DatingProfileService {
           'regularSourceOfIncome': regularSourceOfIncome,
           'marrySomeoneNotFS': marrySomeoneNotFS,
           'longDistance': longDistance,
-          'believeInCohiabiting': believeInCohabiting, // Note: Nexus 1.0 typo preserved
+          'believeInCohiabiting':
+              believeInCohabiting, // Note: Nexus 1.0 typo preserved
           'shouldChristianSpeakInTongue': shouldChristianSpeakInTongue,
           'believeInTithing': believeInTithing,
         },
@@ -349,7 +356,10 @@ class DatingProfileService {
   }
 
   /// Save compatibility quiz from a map (convenience method)
-  Future<void> saveCompatibilityQuizFromMap(String uid, Map<String, String> answers) async {
+  Future<void> saveCompatibilityQuizFromMap(
+    String uid,
+    Map<String, String> answers,
+  ) async {
     await saveCompatibilityQuiz(
       uid,
       maritalStatus: answers['maritalStatus'] ?? '',
@@ -360,7 +370,8 @@ class DatingProfileService {
       marrySomeoneNotFS: answers['marrySomeoneNotFS'] ?? '',
       longDistance: answers['longDistance'] ?? '',
       believeInCohabiting: answers['believeInCohabiting'] ?? '',
-      shouldChristianSpeakInTongue: answers['shouldChristianSpeakInTongue'] ?? '',
+      shouldChristianSpeakInTongue:
+          answers['shouldChristianSpeakInTongue'] ?? '',
       believeInTithing: answers['believeInTithing'] ?? '',
     );
   }
@@ -382,9 +393,9 @@ class DatingProfileService {
       final hobbies = data['hobbies'] as List? ?? [];
       final desiredQualities = data['desiredQualities'] as List? ?? [];
       final audio = data['audio'] as Map<String, dynamic>? ?? {};
-      
+
       // Social media - at least one
-      final hasSocialMedia = 
+      final hasSocialMedia =
           (data['instagramUsername'] as String?)?.isNotEmpty == true ||
           (data['twitterUsername'] as String?)?.isNotEmpty == true ||
           (data['whatsappNumber'] as String?)?.isNotEmpty == true ||
@@ -392,7 +403,8 @@ class DatingProfileService {
           (data['telegramUsername'] as String?)?.isNotEmpty == true ||
           (data['snapchatUsername'] as String?)?.isNotEmpty == true;
 
-      return age != null && age >= 21 &&
+      return age != null &&
+          age >= 21 &&
           photos.length >= 2 &&
           hobbies.isNotEmpty &&
           desiredQualities.isNotEmpty &&
@@ -452,7 +464,7 @@ class DatingProfileService {
       if (audio['completed'] == true) completed++;
 
       // Step 7: Contact info
-      final hasSocialMedia = 
+      final hasSocialMedia =
           (data['instagramUsername'] as String?)?.isNotEmpty == true ||
           (data['twitterUsername'] as String?)?.isNotEmpty == true ||
           (data['whatsappNumber'] as String?)?.isNotEmpty == true ||
@@ -472,19 +484,25 @@ class DatingProfileService {
   // ============================================================================
 
   /// Update individual profile fields
-  Future<void> updateProfileField(String uid, String field, dynamic value) async {
+  Future<void> updateProfileField(
+    String uid,
+    String field,
+    dynamic value,
+  ) async {
     try {
-      await _userDocRef(uid).update({
-        field: value,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
+      await _userDocRef(
+        uid,
+      ).update({field: value, 'updatedAt': FieldValue.serverTimestamp()});
     } catch (e) {
       throw DatingProfileException('Failed to update $field: $e');
     }
   }
 
   /// Update multiple profile fields
-  Future<void> updateProfileFields(String uid, Map<String, dynamic> fields) async {
+  Future<void> updateProfileFields(
+    String uid,
+    Map<String, dynamic> fields,
+  ) async {
     try {
       fields['updatedAt'] = FieldValue.serverTimestamp();
       await _userDocRef(uid).update(fields);

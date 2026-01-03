@@ -41,7 +41,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
   final FirestoreService _firestoreService;
 
   AuthNotifier(this._authService, this._firestoreService)
-      : super(const AsyncValue.loading()) {
+    : super(const AsyncValue.loading()) {
     // Initialize with current auth state
     _init();
   }
@@ -125,7 +125,8 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
           state = AsyncValue.data(credential.user);
           return true; // Needs username
-        } else if (existingUser.username == null || existingUser.username!.isEmpty) {
+        } else if (existingUser.username == null ||
+            existingUser.username!.isEmpty) {
           // Existing user but no username set
           state = AsyncValue.data(credential.user);
           return true; // Needs username
@@ -176,7 +177,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 /// Provider for auth notifier
 final authNotifierProvider =
     StateNotifierProvider<AuthNotifier, AsyncValue<User?>>((ref) {
-  final authService = ref.watch(authServiceProvider);
-  final firestoreService = ref.watch(firestoreServiceProvider);
-  return AuthNotifier(authService, firestoreService);
-});
+      final authService = ref.watch(authServiceProvider);
+      final firestoreService = ref.watch(firestoreServiceProvider);
+      return AuthNotifier(authService, firestoreService);
+    });

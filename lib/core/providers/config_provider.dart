@@ -14,29 +14,33 @@ final configLoaderProvider = Provider<ConfigLoaderService>((ref) {
 // ==================== ASSESSMENT CONFIGS ====================
 
 /// Provider for Singles Readiness Assessment config
-final singlesReadinessConfigProvider =
-    FutureProvider<AssessmentConfig>((ref) async {
+final singlesReadinessConfigProvider = FutureProvider<AssessmentConfig>((
+  ref,
+) async {
   final configLoader = ref.watch(configLoaderProvider);
   return configLoader.loadSinglesReadinessConfig();
 });
 
 /// Provider for Remarriage Readiness Assessment config
-final remarriageReadinessConfigProvider =
-    FutureProvider<AssessmentConfig>((ref) async {
+final remarriageReadinessConfigProvider = FutureProvider<AssessmentConfig>((
+  ref,
+) async {
   final configLoader = ref.watch(configLoaderProvider);
   return configLoader.loadRemarriageReadinessConfig();
 });
 
 /// Provider for Marriage Health Check Assessment config
-final marriageHealthCheckConfigProvider =
-    FutureProvider<AssessmentConfig>((ref) async {
+final marriageHealthCheckConfigProvider = FutureProvider<AssessmentConfig>((
+  ref,
+) async {
   final configLoader = ref.watch(configLoaderProvider);
   return configLoader.loadMarriageHealthCheckConfig();
 });
 
 /// Provider for assessment config based on user's relationship status
-final userAssessmentConfigProvider =
-    FutureProvider<AssessmentConfig?>((ref) async {
+final userAssessmentConfigProvider = FutureProvider<AssessmentConfig?>((
+  ref,
+) async {
   final status = ref.watch(userRelationshipStatusProvider);
   if (status == null) return null;
 
@@ -47,23 +51,25 @@ final userAssessmentConfigProvider =
 // ==================== JOURNEY CONFIGS ====================
 
 /// Provider for Singles Journey Catalog
-final singlesJourneyCatalogProvider =
-    FutureProvider<JourneyCatalog>((ref) async {
+final singlesJourneyCatalogProvider = FutureProvider<JourneyCatalog>((
+  ref,
+) async {
   final configLoader = ref.watch(configLoaderProvider);
   final catalog = await configLoader.loadSinglesJourneyCatalog();
-  return catalog ?? const JourneyCatalog(version: "v1", audience: "singles", products: []);
+  return catalog ??
+      const JourneyCatalog(version: "v1", audience: "singles", products: []);
 });
 
 /// Provider for Married Journey Catalog
-final marriedJourneyCatalogProvider =
-    FutureProvider<JourneyCatalog>((ref) async {
+final marriedJourneyCatalogProvider = FutureProvider<JourneyCatalog>((
+  ref,
+) async {
   final configLoader = ref.watch(configLoaderProvider);
   return configLoader.loadMarriedJourneyCatalog();
 });
 
 /// Provider for journey catalog based on user's relationship status
-final userJourneyCatalogProvider =
-    FutureProvider<JourneyCatalog?>((ref) async {
+final userJourneyCatalogProvider = FutureProvider<JourneyCatalog?>((ref) async {
   final status = ref.watch(userRelationshipStatusProvider);
   if (status == null) return null;
 
@@ -72,8 +78,10 @@ final userJourneyCatalogProvider =
 });
 
 /// Provider for a specific journey product
-final journeyProductProvider =
-    FutureProvider.family<JourneyProduct?, String>((ref, productId) async {
+final journeyProductProvider = FutureProvider.family<JourneyProduct?, String>((
+  ref,
+  productId,
+) async {
   final status = ref.watch(userRelationshipStatusProvider);
   if (status == null) return null;
 
@@ -82,8 +90,9 @@ final journeyProductProvider =
 });
 
 /// Provider for all journey products available to user
-final userJourneyProductsProvider =
-    FutureProvider<List<JourneyProduct>>((ref) async {
+final userJourneyProductsProvider = FutureProvider<List<JourneyProduct>>((
+  ref,
+) async {
   final catalog = await ref.watch(userJourneyCatalogProvider.future);
   return catalog?.products ?? [];
 });
@@ -118,22 +127,28 @@ final userStoriesProvider = FutureProvider<List<Story>>((ref) async {
 });
 
 /// Provider for a specific story by ID
-final storyByIdProvider =
-    FutureProvider.family<Story?, String>((ref, storyId) async {
+final storyByIdProvider = FutureProvider.family<Story?, String>((
+  ref,
+  storyId,
+) async {
   final catalog = await ref.watch(storiesCatalogProvider.future);
   return catalog.findStory(storyId);
 });
 
 /// Provider for poll by story ID
-final pollForStoryProvider =
-    FutureProvider.family<Poll?, String>((ref, storyId) async {
+final pollForStoryProvider = FutureProvider.family<Poll?, String>((
+  ref,
+  storyId,
+) async {
   final configLoader = ref.watch(configLoaderProvider);
   return configLoader.getPollForStory(storyId);
 });
 
 /// Provider for a specific poll by ID
-final pollByIdProvider =
-    FutureProvider.family<Poll?, String>((ref, pollId) async {
+final pollByIdProvider = FutureProvider.family<Poll?, String>((
+  ref,
+  pollId,
+) async {
   final catalog = await ref.watch(pollsCatalogProvider.future);
   return catalog.findPoll(pollId);
 });

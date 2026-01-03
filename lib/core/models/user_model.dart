@@ -28,21 +28,21 @@ class Nexus2Data extends Equatable {
   /// Create from Firestore document
   factory Nexus2Data.fromMap(Map<String, dynamic>? map) {
     if (map == null) {
-      return const Nexus2Data(
-        relationshipStatus: '',
-        gender: '',
-      );
+      return const Nexus2Data(relationshipStatus: '', gender: '');
     }
-    
+
     return Nexus2Data(
       relationshipStatus: map['relationshipStatus'] as String? ?? '',
       gender: map['gender'] as String? ?? '',
-      primaryGoals: (map['primaryGoals'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
+      primaryGoals:
+          (map['primaryGoals'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
       onboardingCompleted: map['onboardingCompleted'] as bool? ?? false,
       onboardedAt: (map['onboardedAt'] as Timestamp?)?.toDate(),
-      schemaVersion: map['schemaVersion'] as int? ?? AppConfig.nexus2SchemaVersion,
+      schemaVersion:
+          map['schemaVersion'] as int? ?? AppConfig.nexus2SchemaVersion,
       lastActiveAt: (map['lastActiveAt'] as Timestamp?)?.toDate(),
       experiments: map['experiments'] as Map<String, dynamic>?,
     );
@@ -55,18 +55,18 @@ class Nexus2Data extends Equatable {
       'gender': gender,
       'primaryGoals': primaryGoals,
       'onboardingCompleted': onboardingCompleted,
-      'onboardedAt': onboardedAt != null ? Timestamp.fromDate(onboardedAt!) : null,
+      'onboardedAt':
+          onboardedAt != null ? Timestamp.fromDate(onboardedAt!) : null,
       'schemaVersion': schemaVersion,
-      'lastActiveAt': lastActiveAt != null ? Timestamp.fromDate(lastActiveAt!) : null,
+      'lastActiveAt':
+          lastActiveAt != null ? Timestamp.fromDate(lastActiveAt!) : null,
       if (experiments != null) 'experiments': experiments,
     };
   }
 
   /// Convert to update map for Firestore (prefixed with nexus2.)
   Map<String, dynamic> toNexus2UpdateMap() {
-    return {
-      'nexus2': toMap(),
-    };
+    return {'nexus2': toMap()};
   }
 
   /// Create a copy with updated fields
@@ -93,25 +93,22 @@ class Nexus2Data extends Equatable {
   }
 
   /// Helper getters
-  RelationshipStatus get relationshipStatusEnum => 
+  RelationshipStatus get relationshipStatusEnum =>
       RelationshipStatus.fromValue(relationshipStatus);
-  
-  Gender get genderEnum => Gender.fromValue(gender);
-  
-  List<UserGoal> get primaryGoalsEnum => 
-      primaryGoals.map((g) => UserGoal.fromValue(g)).toList();
-  
-  bool get isValid => 
-      relationshipStatus.isNotEmpty && 
-      gender.isNotEmpty && 
-      onboardingCompleted;
 
-  bool get isSingle => 
+  Gender get genderEnum => Gender.fromValue(gender);
+
+  List<UserGoal> get primaryGoalsEnum =>
+      primaryGoals.map((g) => UserGoal.fromValue(g)).toList();
+
+  bool get isValid =>
+      relationshipStatus.isNotEmpty && gender.isNotEmpty && onboardingCompleted;
+
+  bool get isSingle =>
       relationshipStatusEnum == RelationshipStatus.singleNeverMarried ||
-      relationshipStatusEnum == RelationshipStatus.divorcedWidowed;
-  
-  bool get isMarried => 
-      relationshipStatusEnum == RelationshipStatus.married;
+      relationshipStatusEnum == RelationshipStatus.divorced;
+
+  bool get isMarried => relationshipStatusEnum == RelationshipStatus.married;
 
   @override
   List<Object?> get props => [
@@ -256,7 +253,9 @@ class UserModel extends Equatable {
   }
 
   /// Create from Firestore query document
-  factory UserModel.fromQueryDocument(QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+  factory UserModel.fromQueryDocument(
+    QueryDocumentSnapshot<Map<String, dynamic>> doc,
+  ) {
     final data = doc.data();
     return UserModel.fromMap(doc.id, data);
   }
@@ -275,7 +274,8 @@ class UserModel extends Equatable {
       profileUrl: data['profileUrl'] as String?,
       age: data['age'] as int?,
       gender: data['gender'] as String?,
-      bestQualitiesOrTraits: data['bestQualotiesOrTraits'] as String?, // Note: typo in original
+      bestQualitiesOrTraits:
+          data['bestQualotiesOrTraits'] as String?, // Note: typo in original
       city: data['city'] as String?,
       countLike: data['countLike'] as int?,
       desiredQualities: data['desiredQualities'] as String?,
@@ -327,9 +327,7 @@ class UserModel extends Equatable {
   /// Convert to map - ONLY includes Nexus 2.0 fields for update
   /// Use this when updating only Nexus 2.0 data
   Map<String, dynamic> toNexus2UpdateMap() {
-    return {
-      'nexus2': nexus2?.toMap(),
-    };
+    return {'nexus2': nexus2?.toMap()};
   }
 
   /// Convert full model to map (for reference only - use with caution)
@@ -383,9 +381,13 @@ class UserModel extends Equatable {
       'usedOneFreeText': usedOneFreeText,
       'entitledUser': entitledUser,
       'subscriberId': subscriberId,
-      'recommendedTime': recommendedTime != null ? Timestamp.fromDate(recommendedTime!) : null,
+      'recommendedTime':
+          recommendedTime != null ? Timestamp.fromDate(recommendedTime!) : null,
       'hasExternalSubscriptionFlow': hasExternalSubscriptionFlow,
-      'profileCompletionDate': profileCompletionDate != null ? Timestamp.fromDate(profileCompletionDate!) : null,
+      'profileCompletionDate':
+          profileCompletionDate != null
+              ? Timestamp.fromDate(profileCompletionDate!)
+              : null,
       'nexus2': nexus2?.toMap(),
     };
   }
@@ -451,7 +453,8 @@ class UserModel extends Equatable {
       profileUrl: profileUrl ?? this.profileUrl,
       age: age ?? this.age,
       gender: gender ?? this.gender,
-      bestQualitiesOrTraits: bestQualitiesOrTraits ?? this.bestQualitiesOrTraits,
+      bestQualitiesOrTraits:
+          bestQualitiesOrTraits ?? this.bestQualitiesOrTraits,
       city: city ?? this.city,
       countLike: countLike ?? this.countLike,
       desiredQualities: desiredQualities ?? this.desiredQualities,
@@ -492,8 +495,10 @@ class UserModel extends Equatable {
       entitledUser: entitledUser ?? this.entitledUser,
       subscriberId: subscriberId ?? this.subscriberId,
       recommendedTime: recommendedTime ?? this.recommendedTime,
-      hasExternalSubscriptionFlow: hasExternalSubscriptionFlow ?? this.hasExternalSubscriptionFlow,
-      profileCompletionDate: profileCompletionDate ?? this.profileCompletionDate,
+      hasExternalSubscriptionFlow:
+          hasExternalSubscriptionFlow ?? this.hasExternalSubscriptionFlow,
+      profileCompletionDate:
+          profileCompletionDate ?? this.profileCompletionDate,
       nexus2: nexus2 ?? this.nexus2,
     );
   }

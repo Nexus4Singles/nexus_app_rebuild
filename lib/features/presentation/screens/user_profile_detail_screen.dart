@@ -36,7 +36,11 @@ class UserProfileDetailScreen extends StatelessWidget {
                       color: AppColors.primary.withOpacity(0.12),
                       borderRadius: BorderRadius.circular(22),
                     ),
-                    child: Icon(Icons.person, color: AppColors.primary, size: 34),
+                    child: Icon(
+                      Icons.person,
+                      color: AppColors.primary,
+                      size: 34,
+                    ),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -45,7 +49,10 @@ class UserProfileDetailScreen extends StatelessWidget {
                       children: [
                         Text(name, style: AppTextStyles.headlineSmall),
                         const SizedBox(height: 4),
-                        Text('Safe Mode profile view', style: AppTextStyles.caption),
+                        Text(
+                          'Safe Mode profile view',
+                          style: AppTextStyles.caption,
+                        ),
                       ],
                     ),
                   ),

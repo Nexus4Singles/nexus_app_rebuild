@@ -30,45 +30,50 @@ final currentStoryProvider = FutureProvider<Story?>((ref) async {
 });
 
 /// Provider for story by ID
-final storyByIdProvider = FutureProvider.family<Story?, String>(
-  (ref, storyId) async {
-    final catalog = await ref.watch(storiesCatalogProvider.future);
-    return catalog?.findStory(storyId);
-  },
-);
+final storyByIdProvider = FutureProvider.family<Story?, String>((
+  ref,
+  storyId,
+) async {
+  final catalog = await ref.watch(storiesCatalogProvider.future);
+  return catalog?.findStory(storyId);
+});
 
 /// Provider for poll by story ID
-final pollByStoryIdProvider = FutureProvider.family<Poll?, String>(
-  (ref, storyId) async {
-    final pollsCatalog = await ref.watch(pollsCatalogProvider.future);
-    return pollsCatalog?.findPollForStory(storyId);
-  },
-);
+final pollByStoryIdProvider = FutureProvider.family<Poll?, String>((
+  ref,
+  storyId,
+) async {
+  final pollsCatalog = await ref.watch(pollsCatalogProvider.future);
+  return pollsCatalog?.findPollForStory(storyId);
+});
 
 /// Provider for poll by ID
-final pollByIdProvider = FutureProvider.family<Poll?, String>(
-  (ref, pollId) async {
-    final pollsCatalog = await ref.watch(pollsCatalogProvider.future);
-    return pollsCatalog?.findPoll(pollId);
-  },
-);
+final pollByIdProvider = FutureProvider.family<Poll?, String>((
+  ref,
+  pollId,
+) async {
+  final pollsCatalog = await ref.watch(pollsCatalogProvider.future);
+  return pollsCatalog?.findPoll(pollId);
+});
 
 /// Provider for stories filtered by user's audience
 final userStoriesProvider = FutureProvider<List<Story>>((ref) async {
   final user = ref.watch(currentUserProvider).valueOrNull;
   final catalog = await ref.watch(storiesCatalogProvider.future);
-  
+
   if (catalog == null) return [];
-  if (user?.nexus2?.relationshipStatus == null) return catalog.stories;
-  
-  return catalog.getStoriesForAudience(user!.nexus2!.relationshipStatus!);
+  final audience = user?.nexus2?.relationshipStatus ?? '';
+
+  if (audience.isEmpty) return catalog.stories;
+
+  return catalog.getStoriesForAudience(audience);
 });
 
 /// Provider for past stories (excluding current week)
 final pastStoriesProvider = FutureProvider<List<Story>>((ref) async {
   final userStories = await ref.watch(userStoriesProvider.future);
   final now = DateTime.now();
-  
+
   return userStories.where((s) {
     final publishDate = DateTime.tryParse(s.publishDate);
     if (publishDate == null) return false;
@@ -82,24 +87,27 @@ final pastStoriesProvider = FutureProvider<List<Story>>((ref) async {
 // ============================================================================
 
 /// Provider for all story progress for current user
-final allStoryProgressProvider = StreamProvider<Map<String, StoryProgress>>((ref) {
+final allStoryProgressProvider = StreamProvider<Map<String, StoryProgress>>((
+  ref,
+) {
   final user = ref.watch(currentUserProvider).valueOrNull;
   if (user == null) return Stream.value({});
-  
+
   final firestoreService = ref.watch(firestoreServiceProvider);
   return firestoreService.watchAllStoryProgress(user.id);
 });
 
 /// Provider for specific story progress
-final storyProgressProvider = StreamProvider.family<StoryProgress?, String>(
-  (ref, storyId) {
-    final user = ref.watch(currentUserProvider).valueOrNull;
-    if (user == null) return Stream.value(null);
-    
-    final firestoreService = ref.watch(firestoreServiceProvider);
-    return firestoreService.watchStoryProgress(user.id, storyId);
-  },
-);
+final storyProgressProvider = StreamProvider.family<StoryProgress?, String>((
+  ref,
+  storyId,
+) {
+  final user = ref.watch(currentUserProvider).valueOrNull;
+  if (user == null) return Stream.value(null);
+
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  return firestoreService.watchStoryProgress(user.id, storyId);
+});
 
 /// Provider for checking if a story is read
 final isStoryReadProvider = Provider.family<bool, String>((ref, storyId) {
@@ -117,14 +125,15 @@ final isStorySavedProvider = Provider.family<bool, String>((ref, storyId) {
 final savedStoriesProvider = FutureProvider<List<Story>>((ref) async {
   final allProgress = ref.watch(allStoryProgressProvider).valueOrNull ?? {};
   final catalog = await ref.watch(storiesCatalogProvider.future);
-  
+
   if (catalog == null) return [];
-  
-  final savedIds = allProgress.entries
-      .where((e) => e.value.saved)
-      .map((e) => e.key)
-      .toList();
-  
+
+  final savedIds =
+      allProgress.entries
+          .where((e) => e.value.saved)
+          .map((e) => e.key)
+          .toList();
+
   return catalog.stories.where((s) => savedIds.contains(s.storyId)).toList();
 });
 
@@ -133,15 +142,16 @@ final savedStoriesProvider = FutureProvider<List<Story>>((ref) async {
 // ============================================================================
 
 /// Provider for user's vote on a poll
-final userPollVoteProvider = StreamProvider.family<PollVote?, String>(
-  (ref, pollId) {
-    final user = ref.watch(currentUserProvider).valueOrNull;
-    if (user == null) return Stream.value(null);
-    
-    final firestoreService = ref.watch(firestoreServiceProvider);
-    return firestoreService.watchPollVote(pollId, user.id);
-  },
-);
+final userPollVoteProvider = StreamProvider.family<PollVote?, String>((
+  ref,
+  pollId,
+) {
+  final user = ref.watch(currentUserProvider).valueOrNull;
+  if (user == null) return Stream.value(null);
+
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  return firestoreService.watchPollVote(pollId, user.id);
+});
 
 /// Provider for checking if user has voted on a poll
 final hasVotedOnPollProvider = Provider.family<bool, String>((ref, pollId) {
@@ -150,18 +160,22 @@ final hasVotedOnPollProvider = Provider.family<bool, String>((ref, pollId) {
 });
 
 /// Provider for poll aggregates (results)
-final pollAggregateProvider = StreamProvider.family<PollAggregate?, String>(
-  (ref, pollId) {
-    final firestoreService = ref.watch(firestoreServiceProvider);
-    return firestoreService.watchPollAggregate(pollId);
-  },
-);
+final pollAggregateProvider = StreamProvider.family<PollAggregate?, String>((
+  ref,
+  pollId,
+) {
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  return firestoreService.watchPollAggregate(pollId);
+});
 
 /// Provider for poll results with percentages
-final pollResultsProvider = Provider.family<Map<String, double>, String>((ref, pollId) {
+final pollResultsProvider = Provider.family<Map<String, double>, String>((
+  ref,
+  pollId,
+) {
   final aggregate = ref.watch(pollAggregateProvider(pollId)).valueOrNull;
   if (aggregate == null) return {};
-  
+
   final results = <String, double>{};
   for (final optionId in aggregate.optionCounts.keys) {
     results[optionId] = aggregate.getPercentage(optionId);
@@ -182,15 +196,16 @@ final storyEngagementProvider = StreamProvider.family<StoryEngagement?, String>(
 );
 
 /// Provider for checking if user has liked a story
-final hasUserLikedStoryProvider = StreamProvider.family<bool, String>(
-  (ref, storyId) {
-    final user = ref.watch(currentUserProvider).valueOrNull;
-    if (user == null) return Stream.value(false);
-    
-    final firestoreService = ref.watch(firestoreServiceProvider);
-    return firestoreService.watchUserLikedStory(storyId, user.id);
-  },
-);
+final hasUserLikedStoryProvider = StreamProvider.family<bool, String>((
+  ref,
+  storyId,
+) {
+  final user = ref.watch(currentUserProvider).valueOrNull;
+  if (user == null) return Stream.value(false);
+
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  return firestoreService.watchUserLikedStory(storyId, user.id);
+});
 
 /// Provider for story comments
 final storyCommentsProvider = StreamProvider.family<List<StoryComment>, String>(
@@ -260,7 +275,9 @@ class StoryViewState {
   PollOption? get selectedOption {
     if (poll == null || userVote == null) return null;
     try {
-      return poll!.options.firstWhere((o) => o.id == userVote!.selectedOptionId);
+      return poll!.options.firstWhere(
+        (o) => o.id == userVote!.selectedOptionId,
+      );
     } catch (_) {
       return null;
     }
@@ -280,7 +297,8 @@ class StoryViewNotifier extends StateNotifier<StoryViewState> {
   final Ref _ref;
   final FirestoreService _firestoreService;
 
-  StoryViewNotifier(this._ref, this._firestoreService) : super(const StoryViewState());
+  StoryViewNotifier(this._ref, this._firestoreService)
+    : super(const StoryViewState());
 
   /// Load a story and its associated poll
   Future<void> loadStory(String storyId) async {
@@ -294,8 +312,8 @@ class StoryViewNotifier extends StateNotifier<StoryViewState> {
       }
 
       Poll? poll;
-      if (story.pollId != null) {
-        poll = await _ref.read(pollByIdProvider(story.pollId!).future);
+      if (story.pollId.isNotEmpty) {
+        poll = await _ref.read(pollByIdProvider(story.pollId).future);
       }
 
       final user = _ref.read(currentUserProvider).valueOrNull;
@@ -307,7 +325,9 @@ class StoryViewNotifier extends StateNotifier<StoryViewState> {
         progress = await _ref.read(storyProgressProvider(storyId).future);
         if (poll != null) {
           userVote = await _ref.read(userPollVoteProvider(poll.pollId).future);
-          pollAggregate = await _ref.read(pollAggregateProvider(poll.pollId).future);
+          pollAggregate = await _ref.read(
+            pollAggregateProvider(poll.pollId).future,
+          );
         }
       }
 
@@ -324,7 +344,10 @@ class StoryViewNotifier extends StateNotifier<StoryViewState> {
         await _markStoryOpened(user.id, storyId);
       }
     } catch (e) {
-      state = state.copyWith(isLoading: false, error: 'Error loading story: $e');
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Error loading story: $e',
+      );
     }
   }
 
@@ -353,10 +376,9 @@ class StoryViewNotifier extends StateNotifier<StoryViewState> {
     await _firestoreService.updateStoryProgress(user.id, progress);
 
     state = state.copyWith(
-      progress: (state.progress ?? StoryProgress(
-        storyId: state.story!.storyId,
-        visitorId: user.id,
-      )).copyWith(readStatus: 'completed'),
+      progress: (state.progress ??
+              StoryProgress(storyId: state.story!.storyId, visitorId: user.id))
+          .copyWith(readStatus: 'completed'),
     );
   }
 
@@ -366,12 +388,11 @@ class StoryViewNotifier extends StateNotifier<StoryViewState> {
     if (user == null || state.story == null) return;
 
     final newSavedStatus = !state.isSaved;
-    
-    final currentProgress = state.progress ?? StoryProgress(
-      storyId: state.story!.storyId,
-      visitorId: user.id,
-    );
-    
+
+    final currentProgress =
+        state.progress ??
+        StoryProgress(storyId: state.story!.storyId, visitorId: user.id);
+
     final updatedProgress = currentProgress.copyWith(isSaved: newSavedStatus);
     await _firestoreService.updateStoryProgress(user.id, updatedProgress);
 
@@ -383,11 +404,10 @@ class StoryViewNotifier extends StateNotifier<StoryViewState> {
     final user = _ref.read(currentUserProvider).valueOrNull;
     if (user == null || state.story == null) return;
 
-    final currentProgress = state.progress ?? StoryProgress(
-      storyId: state.story!.storyId,
-      visitorId: user.id,
-    );
-    
+    final currentProgress =
+        state.progress ??
+        StoryProgress(storyId: state.story!.storyId, visitorId: user.id);
+
     final updatedProgress = currentProgress.copyWith(reflectionDone: true);
     await _firestoreService.updateStoryProgress(user.id, updatedProgress);
 
@@ -425,7 +445,9 @@ class StoryViewNotifier extends StateNotifier<StoryViewState> {
       await _firestoreService.savePollVote(vote);
 
       // Refresh aggregate
-      final aggregate = await _ref.refresh(pollAggregateProvider(state.poll!.pollId).future);
+      final aggregate = await _ref.refresh(
+        pollAggregateProvider(state.poll!.pollId).future,
+      );
 
       state = state.copyWith(
         isLoading: false,
@@ -510,7 +532,10 @@ class StoryViewNotifier extends StateNotifier<StoryViewState> {
         storyId: state.story!.storyId,
         userId: user.id,
         userName: user.displayName,
-        userPhotoUrl: (user.photos ?? const <String>[]).isNotEmpty ? (user.photos ?? const <String>[]).first : null,
+        userPhotoUrl:
+            (user.photos ?? const <String>[]).isNotEmpty
+                ? (user.photos ?? const <String>[]).first
+                : null,
         text: text.trim(),
       );
       return comment;
@@ -551,27 +576,29 @@ class StoryViewNotifier extends StateNotifier<StoryViewState> {
 // ============================================================================
 
 /// Provider for story view notifier
-final storyViewNotifierProvider = StateNotifierProvider<StoryViewNotifier, StoryViewState>(
-  (ref) {
-    final firestoreService = ref.watch(firestoreServiceProvider);
-    return StoryViewNotifier(ref, firestoreService);
-  },
-);
+final storyViewNotifierProvider =
+    StateNotifierProvider<StoryViewNotifier, StoryViewState>((ref) {
+      final firestoreService = ref.watch(firestoreServiceProvider);
+      return StoryViewNotifier(ref, firestoreService);
+    });
 
 /// Provider for stories with read status enriched
-final enrichedStoriesProvider = FutureProvider<List<({Story story, bool isRead, bool isSaved})>>((ref) async {
-  final stories = await ref.watch(userStoriesProvider.future);
-  final allProgress = ref.watch(allStoryProgressProvider).valueOrNull ?? {};
-  
-  return stories.map((story) {
-    final progress = allProgress[story.storyId];
-    return (
-      story: story,
-      isRead: progress?.isRead ?? false,
-      isSaved: progress?.saved ?? false,
-    );
-  }).toList();
-});
+final enrichedStoriesProvider =
+    FutureProvider<List<({Story story, bool isRead, bool isSaved})>>((
+      ref,
+    ) async {
+      final stories = await ref.watch(userStoriesProvider.future);
+      final allProgress = ref.watch(allStoryProgressProvider).valueOrNull ?? {};
+
+      return stories.map((story) {
+        final progress = allProgress[story.storyId];
+        return (
+          story: story,
+          isRead: progress?.isRead ?? false,
+          isSaved: progress?.saved ?? false,
+        );
+      }).toList();
+    });
 
 /// Provider for unread story count
 final unreadStoryCountProvider = Provider<int>((ref) {

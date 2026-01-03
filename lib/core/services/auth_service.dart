@@ -5,9 +5,7 @@ import 'package:nexus_app_min_test/core/stubs/firebase_auth_import.dart';
 class AuthService {
   final FirebaseAuth _auth;
 
-  AuthService({
-    FirebaseAuth? auth,
-  }) : _auth = auth ?? FirebaseAuth.instance;
+  AuthService({FirebaseAuth? auth}) : _auth = auth ?? FirebaseAuth.instance;
 
   /// Get current user
   User? get currentUser => _auth.currentUser;
@@ -111,8 +109,9 @@ class AuthService {
 
   /// Check if Google is linked
   bool get isGoogleLinked {
-    return _auth.currentUser?.providerData
-            .any((p) => p.providerId == 'google.com') ??
+    return _auth.currentUser?.providerData.any(
+          (p) => p.providerId == 'google.com',
+        ) ??
         false;
   }
 
