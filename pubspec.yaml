@@ -46,6 +46,8 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/config/journeys/
+    - assets/config/assessments/
     - assets/images/
     - assets/data/churches_v1.json
     - assets/data/nexus1_onboarding_lists.v1.json

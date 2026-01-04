@@ -9,6 +9,7 @@ class SessionStep extends Equatable {
   final String contentType; // teaching, reflection, action, prayer, journal
   final String? content;
   final String? responseType;
+  final String? ui;
   final List<String>? options;
   final int? minSelect;
   final int? maxSelect;
@@ -23,6 +24,7 @@ class SessionStep extends Equatable {
     required this.contentType,
     this.content,
     this.responseType,
+    this.ui,
     this.options,
     this.minSelect,
     this.maxSelect,
@@ -35,10 +37,12 @@ class SessionStep extends Equatable {
   factory SessionStep.fromJson(Map<String, dynamic> json) {
     return SessionStep(
       stepId: json['stepId'] as String? ?? '',
-      title: json['title'] as String? ?? '',
+      title:
+          (json['title'] as String?) ?? (json['productName'] as String?) ?? '',
       contentType: json['contentType'] as String? ?? 'teaching',
       content: json['content'] as String?,
       responseType: json['responseType'] as String?,
+      ui: json['ui'] as String?,
       options:
           (json['options'] as List<dynamic>?)
               ?.map((e) => e.toString())
@@ -58,6 +62,7 @@ class SessionStep extends Equatable {
     'contentType': contentType,
     if (content != null) 'content': content,
     if (responseType != null) 'responseType': responseType,
+    if (ui != null) 'ui': ui,
     if (options != null) 'options': options,
     if (minSelect != null) 'minSelect': minSelect,
     if (maxSelect != null) 'maxSelect': maxSelect,
@@ -128,18 +133,47 @@ class JourneySession extends Equatable {
     return JourneySession(
       sessionId: json['sessionId'] as String? ?? '',
       sessionNumber: json['sessionNumber'] as int? ?? 0,
-      title: json['title'] as String? ?? '',
-      subtitle: json['subtitle'] as String? ?? '',
+      title:
+          (json['title'] as String?) ?? (json['productName'] as String?) ?? '',
+      subtitle:
+          (json['subtitle'] as String?) ?? (json['preview'] as String?) ?? '',
       tier: json['tier'] as String? ?? 'Starter',
       lockRule: json['lockRule'] as String? ?? 'Locked',
       unlockCondition: json['unlockCondition'] as String?,
       estimatedMins: json['estimatedMins'] as int? ?? 10,
       badgeOnComplete: json['badgeOnComplete'] as String?,
-      steps:
-          (json['steps'] as List<dynamic>?)
-              ?.map((e) => SessionStep.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
+      steps: (() {
+        final rawSteps = (json['steps'] as List<dynamic>?)
+            ?.map((e) => SessionStep.fromJson(e as Map<String, dynamic>))
+            .toList();
+
+        if (rawSteps != null && rawSteps.isNotEmpty) return rawSteps;
+
+        final prompt = json['prompt'] as String?;
+        if (prompt == null || prompt.trim().isEmpty) return <SessionStep>[];
+
+        final responseType = json['responseType'] as String?;
+        final options = json['options'];
+
+        List<String>? parsedOptions;
+        if (options is List) {
+          parsedOptions = options.map((e) => e.toString()).toList();
+        } else if (options is String) {
+          parsedOptions = options.split('|').map((e) => e.trim()).toList();
+        }
+
+        print('⚠️ JourneySession fallback step created for: ${json['title']}');
+        return <SessionStep>[
+          SessionStep(
+            stepId: 'prompt',
+            title: json['title'] as String? ?? 'Session',
+            contentType: 'reflection',
+            content: prompt,
+            responseType: responseType,
+            options: parsedOptions,
+          )
+        ];
+      })(),
       completionMessage: json['completionMessage'] as String?,
     );
   }
@@ -176,7 +210,13 @@ class JourneySession extends Equatable {
 
 /// Journey product
 class JourneyProduct extends Equatable {
+  final String id;
+  final bool isPublished;
+  final bool isFeatured;
+
   final String productId;
+
+  /// Alias for compatibility with UI and older JSON
   final String title;
   final String subtitle;
   final String description;
@@ -193,6 +233,9 @@ class JourneyProduct extends Equatable {
   final String? completionCertText;
 
   const JourneyProduct({
+    required this.id,
+    this.isPublished = true,
+    this.isFeatured = false,
     required this.productId,
     required this.title,
     required this.subtitle,
@@ -233,10 +276,14 @@ class JourneyProduct extends Equatable {
 
   factory JourneyProduct.fromJson(Map<String, dynamic> json) {
     return JourneyProduct(
-      productId: json['productId'] as String? ?? '',
-      title: json['title'] as String? ?? '',
-      subtitle: json['subtitle'] as String? ?? '',
-      description: json['description'] as String? ?? '',
+      id: (json['productId'] as String?) ?? (json['id'] as String? ?? ''),
+      productId:
+          (json['productId'] as String?) ?? (json['id'] as String? ?? ''),
+      title:
+          (json['title'] as String?) ?? (json['productName'] as String? ?? ''),
+      subtitle:
+          (json['subtitle'] as String?) ?? (json['preview'] as String? ?? ''),
+      description: (json['description'] as String?) ?? '',
       audiences:
           (json['audiences'] as List<dynamic>?)
               ?.map((e) => e.toString())
@@ -248,9 +295,12 @@ class JourneyProduct extends Equatable {
               .toList() ??
           [],
       thumbnailUrl: json['thumbnailUrl'] as String?,
-      tier: json['tier'] as String? ?? 'Free',
+      tier: json['tier'] as String? ?? 'Premium',
       revenuecatProductId: json['revenuecatProductId'] as String?,
-      totalSessions: json['totalSessions'] as int? ?? 0,
+      totalSessions:
+          json['totalSessions'] as int? ??
+          (json['sessions'] as List?)?.length ??
+          0,
       estimatedWeeks: json['estimatedWeeks'] as int? ?? 1,
       outcomes:
           (json['outcomes'] as List<dynamic>?)
