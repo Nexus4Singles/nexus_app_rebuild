@@ -89,10 +89,8 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                       return _SessionStepRendererWidget(
                         step: step,
                         onChanged: (value) {
-                          setState(() {
-                            _answers[step.stepId] = value;
-                          });
-                        },
+  _answers[step.stepId] = value;
+},
                       );
                     },
                   ),
@@ -112,13 +110,14 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                       ),
                       elevation: 0,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (isFree || widget.sessionNumber <= 1) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Completed (TODO)')),
-                        );
-                        return;
-                      }
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('✅ Saved locally (TODO Firestore)')));
+                        Future.delayed(const Duration(milliseconds: 400), () {
+                        if (context.mounted) Navigator.of(context).pop();
+                      });
+                      return;
+                    }
 
                       GuestGuard.requireSignedIn(
                         context,
@@ -130,10 +129,13 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                         onCreateAccount: () =>
                             Navigator.of(context).pushNamed('/signup'),
                         onAllowed: () async {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Completed (TODO)')),
-                          );
-                        },
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Completed (TODO)')),
+                            );
+                            Future.delayed(const Duration(milliseconds: 400), () {
+                              if (context.mounted) Navigator.of(context).pop();
+                            });
+                          },
                       );
                     },
                     child: Text(
@@ -171,6 +173,20 @@ class _SessionStepRendererWidget extends StatefulWidget {
 
 class _SessionStepRendererWidgetState extends State<_SessionStepRendererWidget> {
   dynamic selected;
+  late final TextEditingController _controller;
+
+  
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
 
   List<String> _normalizeOptions(List<String>? raw) {
     if (raw == null) return [];
@@ -216,6 +232,7 @@ class _SessionStepRendererWidgetState extends State<_SessionStepRendererWidget> 
   @override
   Widget build(BuildContext context) {
     final step = widget.step;
+      selected ??= null;
     final ui = (step.ui ?? step.responseType ?? '').toLowerCase();
     final prompt = (step.content ?? '').trim();
 
@@ -324,8 +341,9 @@ class _SessionStepRendererWidgetState extends State<_SessionStepRendererWidget> 
         children: [
           promptWidget,
           TextField(
-            minLines: 2,
-            maxLines: 6,
+              controller: _controller,
+              minLines: 2,
+              maxLines: 6,
             decoration: InputDecoration(
               hintText: step.placeholder ?? 'Write here...',
               border: const OutlineInputBorder(),
