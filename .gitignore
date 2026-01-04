@@ -72,3 +72,24 @@ app.*.map.json
 
 # Secrets (optional)
 *.env
+
+# ---- Local exports / dumps ----
+assets/data/Nexus_2_0_Engagement_JSON_Schemas_and_Templates 2/
+assets/data/Nexus_2_0_JSON_Config_Full_Exports 2/
+
+# ---- Local tools/scripts ----
+tools/
+
+# ---- Local experimental flags ----
+lib/core/constants/dev_flags.dart
+
+# ---- Local prototype features ----
+lib/features/assessment/
+lib/features/home/
+
+# ---- Local prototypes/services ----
+lib/core/models/recommendation_bundle.dart
+lib/core/providers/auth_status_provider.dart
+lib/core/providers/dev_relationship_status_provider.dart
+lib/core/services/assessment_recommendation_service.dart
+
