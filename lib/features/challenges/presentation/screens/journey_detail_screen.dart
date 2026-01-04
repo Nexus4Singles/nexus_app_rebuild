@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/services/journey_local_progress_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_constants.dart';
@@ -15,6 +16,7 @@ class JourneyDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final progressStorage = JourneyLocalProgressStorage();
     final status =
         ref.watch(effectiveRelationshipStatusProvider) ??
         RelationshipStatus.singleNeverMarried;
@@ -109,70 +111,137 @@ class JourneyDetailScreen extends ConsumerWidget {
 
               const SizedBox(height: 18),
 
-              Text(
-                'Sessions',
-                style: AppTextStyles.titleMedium.copyWith(
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-              const SizedBox(height: 10),
+              FutureBuilder<Set<int>>(
+                future: progressStorage.loadCompleted(resolvedId),
+                builder: (context, snap) {
+                  final completed = snap.data ?? <int>{};
+                  final completedCount =
+                      completed.where((n) => n >= 1 && n <= sessionCount).length;
 
-              if (sessionCount == 0)
-                const Text('No sessions configured yet.')
-              else
-                ...List.generate(sessionCount, (i) {
-                  final sessionNumber = i + 1;
-                  final isUnlocked = sessionNumber == 1; // Rule for now
+                  int? nextSession;
+                  for (var i = 1; i <= sessionCount; i++) {
+                    final unlocked = i == 1 || completed.contains(i - 1);
+                    final done = completed.contains(i);
+                    if (unlocked && !done) {
+                      nextSession = i;
+                      break;
+                    }
+                  }
 
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _SessionTile(
-                      sessionNumber: sessionNumber,
-                      title: sessions[i].title,
-                      subtitle: sessions[i].subtitle,
-                      isUnlocked: isUnlocked,
-                      onTap: () {
-                        if (isUnlocked) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (_) => JourneySessionScreen(
-                                    journeyId: journeyId,
-                                    sessionNumber: sessionNumber,
-                                  ),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.surface,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: AppColors.border),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.auto_graph_outlined,
+                              color: AppColors.primary,
                             ),
-                          );
-                          return;
-                        }
-
-                        // Locked session: enforce account (guest) first.
-                        GuestGuard.requireSignedIn(
-                          context,
-                          ref,
-                          title: 'Create an account to continue',
-                          message:
-                              'You’re currently in guest mode. Create an account to unlock all sessions and track progress.',
-                          primaryText: 'Create an account',
-                          onCreateAccount:
-                              () => Navigator.of(context).pushNamed('/signup'),
-                          onAllowed: () async {
-                            // TODO: purchase flow placeholder
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Locked — purchase flow coming soon',
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                '$completedCount of $sessionCount sessions completed',
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                  height: 1.2,
                                 ),
                               ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  );
-                }),
+                            ),
+                            if (nextSession != null)
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => JourneySessionScreen(
+                                        journeyId: journeyId,
+                                        sessionNumber: nextSession!,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: const Text('Continue'),
+                              ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Sessions',
+                        style: AppTextStyles.titleMedium.copyWith(
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      if (sessionCount == 0)
+                        const Text('No sessions configured yet.')
+                      else
+                        Column(
+                          children: List.generate(sessionCount, (i) {
+                            final sessionNumber = i + 1;
+                            final isUnlocked = sessionNumber == 1 ||
+                                completed.contains(sessionNumber - 1);
 
-              const SizedBox(height: 6),
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: _SessionTile(
+                                sessionNumber: sessionNumber,
+                                title: sessions[i].title,
+                                subtitle: sessions[i].subtitle,
+                                isUnlocked: isUnlocked,
+                                onTap: () {
+                                  if (isUnlocked) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => JourneySessionScreen(
+                                          journeyId: journeyId,
+                                          sessionNumber: sessionNumber,
+                                        ),
+                                      ),
+                                    );
+                                    return;
+                                  }
+
+                                  GuestGuard.requireSignedIn(
+                                    context,
+                                    ref,
+                                    title: 'Create an account to continue',
+                                    message:
+                                        'You’re currently in guest mode. Create an account to unlock all sessions and track progress.',
+                                    primaryText: 'Create an account',
+                                    onCreateAccount: () =>
+                                        Navigator.of(context).pushNamed('/signup'),
+                                    onAllowed: () async {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            'Locked — purchase flow coming soon',
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            );
+                          }),
+                        ),
+                      const SizedBox(height: 6),
+                    ],
+                  );
+                },
+              ),
             ],
           );
         },

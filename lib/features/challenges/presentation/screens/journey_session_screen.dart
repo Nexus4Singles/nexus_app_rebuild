@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/services/journey_local_progress_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_constants.dart';
@@ -24,7 +25,9 @@ class JourneySessionScreen extends ConsumerStatefulWidget {
 }
 
 class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
+  final _progressStorage = JourneyLocalProgressStorage();
   final Map<String, dynamic> _answers = {};
+  bool _didLoadLocal = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,12 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text('Session ${widget.sessionNumber}'),
+        title: Text(
+          'Session ${widget.sessionNumber}',
+          style: AppTextStyles.titleMedium.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
+        ),
         backgroundColor: AppColors.background,
         surfaceTintColor: AppColors.background,
         elevation: 0,
@@ -66,6 +74,18 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
           final isFree = session.isFree;
           final steps = session.steps;
 
+
+          if (!_didLoadLocal) {
+            _didLoadLocal = true;
+            _progressStorage.loadSessionAnswer(widget.journeyId, widget.sessionNumber).then((m) {
+              if (!mounted) return;
+              setState(() {
+                _answers.addAll(m);
+              });
+            });
+          }
+
+
           return Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
             child: Column(
@@ -79,6 +99,36 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                 ),
                 const SizedBox(height: 12),
 
+
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.menu_book_outlined,
+                        color: AppColors.primary,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          'Take your time. Answer honestly. You can return anytime.',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.textMuted,
+                            height: 1.3,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 14),
+
                 // ✅ Do NOT show session.prompt — steps already contain the prompt(s).
                 Expanded(
                   child: ListView.separated(
@@ -86,11 +136,19 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                     separatorBuilder: (_, __) => const SizedBox(height: 18),
                     itemBuilder: (context, index) {
                       final step = steps[index];
-                      return _SessionStepRendererWidget(
-                        step: step,
-                        onChanged: (value) {
-  _answers[step.stepId] = value;
-},
+                      return Container(
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: AppColors.surface,
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(color: AppColors.border),
+                        ),
+                        child: _SessionStepRendererWidget(
+                          step: step,
+                          onChanged: (value) {
+                            _answers[step.stepId] = value;
+                          },
+                        ),
                       );
                     },
                   ),
