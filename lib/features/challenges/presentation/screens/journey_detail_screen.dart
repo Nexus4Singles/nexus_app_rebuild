@@ -48,7 +48,6 @@ class JourneyDetailScreen extends ConsumerWidget {
           }
 
           final title = product.title;
-          final subtitle = product.subtitle;
           final description = product.description;
           final sessions = product.sessions;
           final sessionCount = sessions.length;
@@ -63,14 +62,6 @@ class JourneyDetailScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 6),
-              if (subtitle.trim().isNotEmpty)
-                Text(
-                  subtitle,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textMuted,
-                    height: 1.35,
-                  ),
-                ),
               const SizedBox(height: 12),
               if (description.trim().isNotEmpty)
                 Text(
@@ -111,10 +102,14 @@ class JourneyDetailScreen extends ConsumerWidget {
 
               const SizedBox(height: 18),
 
-              FutureBuilder<Set<int>>(
-                future: progressStorage.loadCompleted(resolvedId),
+              FutureBuilder<List<Object?>>(
+                future: Future.wait([
+                  progressStorage.loadCompleted(resolvedId),
+                  progressStorage.hasAnyProgress(resolvedId),
+                ]),
                 builder: (context, snap) {
-                  final completed = snap.data ?? <int>{};
+                  final completed = (snap.data != null ? snap.data![0] as Set<int> : <int>{});
+                  final hasProgress = (snap.data != null ? snap.data![1] as bool : false);
                   final completedCount =
                       completed.where((n) => n >= 1 && n <= sessionCount).length;
 
@@ -150,7 +145,9 @@ class JourneyDetailScreen extends ConsumerWidget {
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
-                                '$completedCount of $sessionCount sessions completed',
+                                (completedCount == sessionCount && sessionCount > 0)
+                                  ? 'Completed'
+                                  : (hasProgress ? 'In progress' : 'Not started'),
                                 style: AppTextStyles.bodyMedium.copyWith(
                                   fontWeight: FontWeight.w900,
                                   height: 1.2,
@@ -191,6 +188,7 @@ class JourneyDetailScreen extends ConsumerWidget {
                             final sessionNumber = i + 1;
                             final isUnlocked = sessionNumber == 1 ||
                                 completed.contains(sessionNumber - 1);
+                        final isCompleted = completed.contains(sessionNumber);
 
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 12),
@@ -199,8 +197,15 @@ class JourneyDetailScreen extends ConsumerWidget {
                                 title: sessions[i].title,
                                 subtitle: sessions[i].subtitle,
                                 isUnlocked: isUnlocked,
+                            isCompleted: isCompleted,
                                 onTap: () {
-                                  if (isUnlocked) {
+                              if (isCompleted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('✅ Session already completed')),
+                                );
+                                return;
+                              }
+                              if (isUnlocked) {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -255,6 +260,7 @@ class _SessionTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final bool isUnlocked;
+  final bool isCompleted;
   final VoidCallback onTap;
 
   const _SessionTile({
@@ -262,12 +268,13 @@ class _SessionTile extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.isUnlocked,
+    required this.isCompleted,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final badgeColor = isUnlocked ? AppColors.success : AppColors.textMuted;
+    final badgeColor = isCompleted ? AppColors.success : (isUnlocked ? AppColors.primary : AppColors.textMuted);
 
     return InkWell(
       onTap: onTap,
@@ -289,7 +296,7 @@ class _SessionTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Icon(
-                isUnlocked ? Icons.play_circle_outline : Icons.lock_outline,
+                isCompleted ? Icons.check_circle_outline : (isUnlocked ? Icons.play_circle_outline : Icons.lock_outline),
                 color: badgeColor,
               ),
             ),

@@ -70,8 +70,8 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
           if (session == null) {
             return const Center(child: Text('Session not found'));
           }
+          final completedFuture = _progressStorage.loadCompleted(widget.journeyId);
 
-          final isFree = session.isFree;
           final steps = session.steps;
 
 
@@ -86,7 +86,14 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
           }
 
 
-          return Padding(
+          return FutureBuilder<Set<int>>(
+            future: completedFuture,
+            builder: (context, completedSnap) {
+              final completedSet = completedSnap.data ?? <int>{};
+              final isCompleted = completedSet.contains(widget.sessionNumber);
+              final isUnlocked = widget.sessionNumber == 1 || completedSet.contains(widget.sessionNumber - 1);
+
+              return Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,6 +152,7 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                         ),
                         child: _SessionStepRendererWidget(
                           step: step,
+                          initialValue: _answers[step.stepId],
                           onChanged: (value) {
                             _answers[step.stepId] = value;
                           },
@@ -168,8 +176,10 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                       ),
                       elevation: 0,
                     ),
-                    onPressed: () async {
-                      if (isFree || widget.sessionNumber <= 1) {
+                    onPressed: isCompleted
+                        ? null
+                        : () async {
+                      if (isUnlocked) {
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('✅ Saved locally (TODO Firestore)')));
                         Future.delayed(const Duration(milliseconds: 400), () {
                         if (context.mounted) Navigator.of(context).pop();
@@ -197,7 +207,9 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                       );
                     },
                     child: Text(
-                      isFree ? 'Complete session' : 'Unlock + complete',
+                      isCompleted
+                          ? 'Completed'
+                          : (isUnlocked ? 'Continue' : 'Locked'),
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w800,
@@ -208,6 +220,8 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
               ],
             ),
           );
+            },
+          );
         },
       ),
     );
@@ -217,10 +231,12 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
 
 class _SessionStepRendererWidget extends StatefulWidget {
   final SessionStep step;
+  final dynamic initialValue;
   final void Function(dynamic value)? onChanged;
 
   const _SessionStepRendererWidget({
     required this.step,
+    required this.initialValue,
     this.onChanged,
     super.key,
   });
@@ -237,6 +253,10 @@ class _SessionStepRendererWidgetState extends State<_SessionStepRendererWidget> 
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    selected = widget.initialValue;
+    if (widget.initialValue is String) {
+      _controller.text = widget.initialValue as String;
+    }
   }
 
   
@@ -339,7 +359,7 @@ class _SessionStepRendererWidgetState extends State<_SessionStepRendererWidget> 
                 setState(() => selected = v);
                 widget.onChanged?.call(v);
               },
-              title: Text(o),
+              title: Text(o, style: Theme.of(context).textTheme.bodyMedium),
               contentPadding: EdgeInsets.zero,
             ),
           ),
@@ -355,13 +375,14 @@ class _SessionStepRendererWidgetState extends State<_SessionStepRendererWidget> 
           promptWidget,
           ...options.map(
             (o) => RadioListTile<String>(
+              title: Text(o, style: Theme.of(context).textTheme.bodyMedium),
               value: o,
               groupValue: selected,
               onChanged: (v) {
                 setState(() => selected = v);
                 widget.onChanged?.call(v);
               },
-              title: Text(o),
+              
               contentPadding: EdgeInsets.zero,
             ),
           ),
@@ -381,7 +402,7 @@ class _SessionStepRendererWidgetState extends State<_SessionStepRendererWidget> 
             children: options
                 .map(
                   (o) => ChoiceChip(
-                    label: Text(o),
+                    label: Text(o, style: Theme.of(context).textTheme.bodyMedium),
                     selected: false,
                     onSelected: (_) => widget.onChanged?.call(o),
                   ),

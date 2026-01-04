@@ -66,4 +66,13 @@ class JourneyLocalProgressStorage {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_key(journeyId));
   }
+
+
+  Future<bool> hasAnyProgress(String journeyId) async {
+    final raw = await _loadRaw(journeyId);
+    final completed = (raw['completedSessions'] as List<dynamic>? ?? []);
+    final answers = (raw['answers'] as Map<String, dynamic>? ?? {});
+    return completed.isNotEmpty || answers.isNotEmpty;
+  }
+
 }
