@@ -1,3 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final firebaseReadyProvider = StateProvider<bool>((ref) => false);
+import "package:flutter/foundation.dart";
+
+final firebaseReadyProvider = StateProvider<bool>((ref) => kDebugMode ? true : false);

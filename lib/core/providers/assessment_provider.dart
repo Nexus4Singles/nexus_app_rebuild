@@ -1,5 +1,8 @@
+import "package:nexus_app_min_test/core/session/effective_relationship_status_provider.dart";
+import 'dev_relationship_status_provider.dart';
 import "firestore_service_provider.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/foundation.dart';
 import '../models/assessment_model.dart';
 import '../constants/app_constants.dart';
 import '../services/config_loader_service.dart';
@@ -20,10 +23,7 @@ final assessmentConfigProvider =
 
 /// Provider for getting recommended assessment based on user's relationship status
 final recommendedAssessmentTypeProvider = Provider<AssessmentType?>((ref) {
-  final user = ref.watch(currentUserProvider).valueOrNull;
-  if (user?.nexus2 == null) return null;
-
-  final status = user!.nexus2!.relationshipStatusEnum;
+  final status = ref.watch(effectiveRelationshipStatusProvider) ?? ref.watch(devRelationshipStatusProvider);
 
   switch (status) {
     case RelationshipStatus.singleNeverMarried:
@@ -33,6 +33,9 @@ final recommendedAssessmentTypeProvider = Provider<AssessmentType?>((ref) {
       return AssessmentType.remarriageReadiness;
     case RelationshipStatus.married:
       return AssessmentType.marriageHealthCheck;
+  
+    case null:
+      return AssessmentType.singlesReadiness;
   }
 });
 
@@ -156,11 +159,15 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
 
   /// Answer current question
   void answerQuestion(String optionId) {
+    if (optionId.trim().isEmpty) return;
+    debugPrint("ANSWER TAP: optionId=[]");
     final question = state.currentQuestion;
     if (question == null) return;
 
+    debugPrint("CURRENT OPTIONS: ${question.options.map((o) => o.id).toList()}");
+
     final selectedOption = question.options.firstWhere(
-      (o) => o.id == optionId,
+      (o) => o.id.toLowerCase() == optionId.toLowerCase(),
       orElse: () => question.options.first,
     );
 
@@ -172,8 +179,12 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
       weight: selectedOption.weight,
     );
 
+    debugPrint("ANSWERED Q option= weight= tier=");
+
     final newAnswers = Map<int, AssessmentAnswer>.from(state.answers);
     newAnswers[state.currentQuestionIndex] = answer;
+
+        debugPrint("ANSWERED Q option=[$optionId] weight=[${answer.weight}] tier=[${answer.signalTier}]");
 
     state = state.copyWith(answers: newAnswers);
   }
@@ -215,24 +226,22 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
     try {
       // Get current user ID
       final user = _ref.read(currentUserProvider).valueOrNull;
-      if (user == null) {
-        state = state.copyWith(
-          isSubmitting: false,
-          error: 'User not authenticated',
-        );
-        return;
-      }
+      final userId = user?.id ?? "dev_guest";
 
-      // Calculate result
+// Calculate result
       final result = AssessmentResult.calculate(
-        id: user.id,
-        userId: user.id,
+        id: userId,
+        userId: userId,
         config: state.config!,
         answers: state.answers.values.toList(),
       );
 
-      // Save to Firestore
-      await _firestoreService.saveAssessmentResult(user.id, result);
+      debugPrint("RESULT total=${result.totalScore} max=${result.maxScore} pct=${(result.percentage*100).round()} tier=${result.overallTier.value}");
+
+      // Save to Firestore (skip in dev mode if Firebase is unavailable)
+      if (_firestoreService.isAvailable) {
+        await _firestoreService.saveAssessmentResult(userId, result);
+      }
 
       state = state.copyWith(isSubmitting: false, result: result);
     } catch (e) {
@@ -261,57 +270,21 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
 /// Provider for assessment state notifier
 final assessmentNotifierProvider =
     StateNotifierProvider<AssessmentNotifier, AssessmentState>((ref) {
-      final firestoreService = ref.watch(firestoreServiceProvider);
-      return AssessmentNotifier(ref, firestoreService);
-    });
-
-/// Provider for user's assessment history
-final assessmentHistoryProvider = StreamProvider<List<AssessmentResult>>((ref) {
-  final user = ref.watch(currentUserProvider).valueOrNull;
-  if (user == null) return Stream.value([]);
-
   final firestoreService = ref.watch(firestoreServiceProvider);
+  return AssessmentNotifier(ref, firestoreService);
+});
+
+final assessmentHistoryProvider = StreamProvider<List<AssessmentResult>>((ref) {
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  final user = ref.watch(currentUserProvider).valueOrNull;
+  if (user == null) return const Stream.empty();
   return firestoreService.watchAssessmentResults(user.id);
 });
 
-/// Provider for latest assessment result of a specific type
 final latestAssessmentResultProvider =
     FutureProvider.family<AssessmentResult?, String>((ref, assessmentId) async {
-      final history = await ref.watch(assessmentHistoryProvider.future);
-      try {
-        return history.firstWhere((r) => r.assessmentId == assessmentId);
-      } catch (_) {
-        return null;
-      }
-    });
-
-/// Provider for checking if user has completed their recommended assessment
-final hasCompletedRecommendedAssessmentProvider = FutureProvider<bool>((
-  ref,
-) async {
-  final type = ref.watch(recommendedAssessmentTypeProvider);
-  if (type == null) return false;
-
-  final assessmentId = type.toAssessmentId();
-  final result = await ref.watch(
-    latestAssessmentResultProvider(assessmentId).future,
-  );
-  return result != null;
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  final user = ref.watch(currentUserProvider).valueOrNull;
+  if (user == null) return null;
+  return firestoreService.getLatestAssessmentResult(user.id, assessmentId);
 });
-
-// ============================================================================
-// HELPER EXTENSION
-// ============================================================================
-
-extension AssessmentTypeExtension on AssessmentType {
-  String toAssessmentId() {
-    switch (this) {
-      case AssessmentType.singlesReadiness:
-        return 'singles_readiness_v1';
-      case AssessmentType.remarriageReadiness:
-        return 'remarriage_readiness_v1';
-      case AssessmentType.marriageHealthCheck:
-        return 'marriage_health_check_v1';
-    }
-  }
-}

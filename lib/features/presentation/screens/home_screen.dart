@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
+import 'package:nexus_app_min_test/core/router/app_routes.dart';
 import 'package:nexus_app_min_test/core/safe_providers/user_provider_safe.dart';
-import 'package:nexus_app_min_test/features/presentation/screens/story_detail_screen.dart';
+import 'package:nexus_app_min_test/features/stories/presentation/screens/story_detail_screen.dart';
+import 'package:nexus_app_min_test/core/session/effective_relationship_status_provider.dart';
+import 'package:nexus_app_min_test/core/constants/app_constants.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -28,6 +31,9 @@ class HomeScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          const SizedBox(height: 8),
+          _HomeAssessmentCTA(),
+          const SizedBox(height: 16),
           // ✅ Story of the Week (tap to open StoryDetailScreen)
           GestureDetector(
             onTap: () {
@@ -36,7 +42,7 @@ class HomeScreen extends ConsumerWidget {
                 MaterialPageRoute(
                   builder:
                       (_) =>
-                          const StoryDetailScreen(title: 'Story of the Week'),
+                          const StoryDetailScreen(storyId: 'story_of_the_week'),
                 ),
               );
             },
@@ -201,6 +207,85 @@ class _ListRow extends StatelessWidget {
             ),
           ),
           Icon(Icons.chevron_right, color: AppColors.textMuted),
+        ],
+      ),
+    );
+  }
+}
+
+class _HomeAssessmentCTA extends ConsumerWidget {
+  const _HomeAssessmentCTA();
+
+  ({String title, String subtitle, String type}) _copyFor(
+    RelationshipStatus? s,
+  ) {
+    switch (s) {
+      case RelationshipStatus.married:
+        return (
+          title: "Marriage Health Check",
+          subtitle:
+              "Spot strengths, uncover blind spots, and strengthen your bond.",
+          type: "marriage_health_check",
+        );
+      case RelationshipStatus.divorced:
+      case RelationshipStatus.widowed:
+        return (
+          title: "Remarriage Readiness",
+          subtitle:
+              "Heal, rebuild trust, and prepare for a healthier next chapter.",
+          type: "remarriage_readiness",
+        );
+      case RelationshipStatus.singleNeverMarried:
+      default:
+        return (
+          title: "Marriage Readiness",
+          subtitle: "Know what to build now for a strong future marriage.",
+          type: "singles_readiness",
+        );
+    }
+  }
+
+  Widget build(BuildContext context, WidgetRef ref) {
+    final status = ref.watch(effectiveRelationshipStatusProvider);
+    final copy = _copyFor(status);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.primarySoft,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.primary.withOpacity(0.15)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            copy.title,
+            style: AppTextStyles.titleLarge.copyWith(
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            copy.subtitle,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  "${AppRoutes.assessmentIntro}?type=${copy.type}",
+                );
+              },
+              child: const Text("Start Assessment"),
+            ),
+          ),
         ],
       ),
     );

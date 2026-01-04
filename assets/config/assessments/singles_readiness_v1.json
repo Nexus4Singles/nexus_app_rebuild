@@ -184,11 +184,32 @@
       "text": "I believe my strengths in relationships are mostly around:",
       "options": [
         {
-          "id": "D",
-          "text": "Iâ€™m still figuring this out",
+          "id": "A",
+          "text": "Communication and empathy",
+          "signalTier": "STRONG",
+          "weight": 3,
+          "outcomeSignal": "Strong: emotionally intelligent and relationally aware"
+        },
+        {
+          "id": "B",
+          "text": "Loyalty and commitment",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: self-awareness still forming"
+          "outcomeSignal": "Developing: stable intention, still building clarity"
+        },
+        {
+          "id": "C",
+          "text": "Providing support and stability",
+          "signalTier": "GUARDED",
+          "weight": 1,
+          "outcomeSignal": "Guarded: supportive but may avoid emotional depth"
+        },
+        {
+          "id": "D",
+          "text": "I’m still figuring this out",
+          "signalTier": "AT_RISK",
+          "weight": 0,
+          "outcomeSignal": "At-Risk: low self-awareness about relational strengths"
         }
       ]
     },

@@ -3,11 +3,26 @@ import 'package:flutter/material.dart';
 import '../../app_shell.dart';
 import 'placeholder_screen.dart';
 
+import '../constants/app_constants.dart';
+
 import '../../features/presentation/screens/home_screen.dart';
 import '../../features/presentation/screens/search_screen.dart';
 import '../../features/presentation/screens/chats_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/presentation/screens/settings_screen.dart';
+
+import 'app_routes.dart';
+
+import '../../features/stories/presentation/screens/stories_screen.dart';
+import '../../features/stories/presentation/screens/story_detail_screen.dart';
+
+import '../../features/challenges/presentation/screens/challenges_screen.dart';
+import '../../features/challenges/presentation/screens/journey_detail_screen.dart';
+
+import '../../features/assessment/presentation/screens/assessments_hub_screen.dart';
+import '../../features/assessment/presentation/screens/assessment_intro_screen.dart';
+import '../../features/assessment/presentation/screens/assessment_screen.dart';
+import '../../features/assessment/presentation/screens/assessment_result_screen.dart';
 
 import '../../features/chats/presentation/screens/chat_thread_screen.dart';
 
@@ -38,6 +53,24 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     return MaterialPageRoute(
       settings: settings,
       builder: (_) => ChatThreadScreen(chatId: chatId),
+    );
+  }
+
+  // /journey/:id
+  if (segments.length == 2 && segments[0] == 'journey') {
+    final journeyId = segments[1];
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => JourneyDetailScreen(journeyId: journeyId),
+    );
+  }
+
+  // /journey/:id
+  if (segments.length == 2 && segments[0] == "journey") {
+    final journeyId = segments[1];
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => JourneyDetailScreen(journeyId: journeyId),
     );
   }
 
@@ -112,6 +145,58 @@ case '/profile':
         settings: settings,
         builder: (_) => const ContactSupportStubScreen(),
       );
+
+
+    case AppRoutes.stories:
+
+      return MaterialPageRoute(
+
+        settings: settings,
+
+        builder: (_) => const StoriesScreen(),
+
+      );
+
+
+    case AppRoutes.challenges:
+
+      return MaterialPageRoute(
+
+        settings: settings,
+
+        builder: (_) => const ChallengesScreen(),
+
+      );
+
+
+    case AppRoutes.assessments:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const AssessmentsHubScreen(),
+        );
+
+      case AppRoutes.assessmentIntro:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => AssessmentIntroScreen(),
+        );
+
+case AppRoutes.assessment:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => AssessmentScreen(),
+        );
+
+case AppRoutes.assessmentResult:
+
+      return MaterialPageRoute(
+
+        settings: settings,
+
+        builder: (_) => const AssessmentResultScreen(),
+
+      );
+
 
     default:
       return MaterialPageRoute(

@@ -464,11 +464,32 @@
       "text": "Since my previous marriage ended, I believe I have grown most in:",
       "options": [
         {
-          "id": "D",
-          "text": "Iâ€™m still discovering this",
+          "id": "A",
+          "text": "Emotional awareness",
+          "signalTier": "STRONG",
+          "weight": 3,
+          "outcomeSignal": "Strong: emotionally aware and reflective"
+        },
+        {
+          "id": "B",
+          "text": "Spiritual maturity",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: unclear growth"
+          "outcomeSignal": "Developing: growing inner stability and alignment"
+        },
+        {
+          "id": "C",
+          "text": "Communication skills",
+          "signalTier": "GUARDED",
+          "weight": 1,
+          "outcomeSignal": "Guarded: improving expression but still inconsistent"
+        },
+        {
+          "id": "D",
+          "text": "I’m still discovering this",
+          "signalTier": "AT_RISK",
+          "weight": 0,
+          "outcomeSignal": "At-Risk: unclear personal growth after separation"
         }
       ]
     },

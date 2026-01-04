@@ -7,19 +7,28 @@ import '../constants/app_constants.dart';
 
 /// Service for Firestore database operations.
 class FirestoreService {
-  final FirebaseFirestore _firestore;
+  void _requireDb() {
+    if (_db == null) {
+      throw Exception("Firestore unavailable in dev mode (Firebase not initialized)");
+    }
+  }
 
-  FirestoreService({FirebaseFirestore? firestore})
-    : _firestore = firestore ?? FirebaseFirestore.instance;
+  final FirebaseFirestore? _db;
+
+  bool get isAvailable => _db != null;
+
+  FirestoreService({FirebaseFirestore? firestore}) : _db = firestore;
 
   // ==================== DOCUMENT REFERENCES ====================
 
   DocumentReference<Map<String, dynamic>> _userDocRef(String uid) {
-    return _firestore.collection(AppConfig.usersCollection).doc(uid);
+    _requireDb();
+    return _db!.collection(AppConfig.usersCollection).doc(uid);
   }
 
   CollectionReference<Map<String, dynamic>> _assessmentResultsRef(String uid) {
-    return _firestore
+        _requireDb();
+    return _db!
         .collection('assessmentResults')
         .doc(uid)
         .collection('results');
@@ -47,7 +56,8 @@ class FirestoreService {
   }
 
   CollectionReference<Map<String, dynamic>> _journeyProgressRef(String uid) {
-    return _firestore
+        _requireDb();
+    return _db!
         .collection('journeyProgress')
         .doc(uid)
         .collection('progress');
@@ -61,18 +71,21 @@ class FirestoreService {
   }
 
   CollectionReference<Map<String, dynamic>> _storyProgressRef(String uid) {
-    return _firestore
+        _requireDb();
+    return _db!
         .collection('storyProgress')
         .doc(uid)
         .collection('stories');
   }
 
   CollectionReference<Map<String, dynamic>> _pollVotesRef(String pollId) {
-    return _firestore.collection('pollVotes').doc(pollId).collection('votes');
+    _requireDb();
+    return _db!.collection('pollVotes').doc(pollId).collection('votes');
   }
 
   DocumentReference<Map<String, dynamic>> _pollAggregateRef(String pollId) {
-    return _firestore.collection('pollAggregates').doc(pollId);
+    _requireDb();
+    return _db!.collection('pollAggregates').doc(pollId);
   }
 
   // ==================== USER OPERATIONS ====================
@@ -100,6 +113,8 @@ class FirestoreService {
   }
 
   Future<void> createUser(UserModel user) async {
+    if (_db == null) return;
+
     try {
       await _userDocRef(user.id).set(user.toMap());
     } catch (e) {
@@ -108,6 +123,8 @@ class FirestoreService {
   }
 
   Future<void> updateNexus2Data(String uid, Nexus2Data nexus2Data) async {
+    if (_db == null) return;
+
     try {
       await _userDocRef(uid).update({'nexus2': nexus2Data.toMap()});
     } catch (e) {
@@ -119,6 +136,8 @@ class FirestoreService {
     String uid,
     Map<String, dynamic> fields,
   ) async {
+    if (_db == null) return;
+
     try {
       final prefixedFields = <String, dynamic>{};
       fields.forEach((key, value) {
@@ -131,6 +150,8 @@ class FirestoreService {
   }
 
   Future<void> updateLastActive(String uid) async {
+    if (_db == null) return;
+
     try {
       await _userDocRef(
         uid,
@@ -141,6 +162,8 @@ class FirestoreService {
   }
 
   Future<void> updateUserFields(String uid, Map<String, dynamic> fields) async {
+    if (_db == null) return;
+
     try {
       await _userDocRef(uid).update(fields);
     } catch (e) {
@@ -154,6 +177,8 @@ class FirestoreService {
     required String gender,
     required List<String> primaryGoals,
   }) async {
+    if (_db == null) return;
+
     try {
       await _userDocRef(uid).set({
         'nexus2': {
@@ -173,6 +198,8 @@ class FirestoreService {
   // ==================== ASSESSMENT OPERATIONS ====================
 
   Future<void> saveAssessmentResult(String uid, AssessmentResult result) async {
+    if (_db == null) return;
+
     try {
       final now = DateTime.now();
       final historyId = '${now.millisecondsSinceEpoch}';
@@ -292,6 +319,8 @@ class FirestoreService {
     String uid,
     JourneyProgress progress,
   ) async {
+    if (_db == null) return;
+
     try {
       await _journeyProgressRef(
         uid,
@@ -306,6 +335,8 @@ class FirestoreService {
     String productId,
     int completedSessionNumber,
   ) async {
+    if (_db == null) return;
+
     try {
       // Get current progress to update
       final doc = await _journeyProgressRef(uid).doc(productId).get();
@@ -340,6 +371,8 @@ class FirestoreService {
     String productId,
     Map<String, dynamic> updates,
   ) async {
+    if (_db == null) return;
+
     try {
       await _journeyProgressRef(uid).doc(productId).update(updates);
     } catch (e) {
@@ -348,6 +381,8 @@ class FirestoreService {
   }
 
   Future<void> saveSessionResponse(String uid, SessionResponse response) async {
+    if (_db == null) return;
+
     try {
       final docId = '${response.sessionId}_${response.stepId}';
       await _sessionResponsesRef(
@@ -436,6 +471,8 @@ class FirestoreService {
   }
 
   Future<void> updateStoryProgress(String uid, StoryProgress progress) async {
+    if (_db == null) return;
+
     try {
       await _storyProgressRef(
         uid,
@@ -476,8 +513,11 @@ class FirestoreService {
   }
 
   Future<void> savePollVote(PollVote vote) async {
+        final db = _db;
+    if (db == null) return;
+
     try {
-      final batch = _firestore.batch();
+      final batch = db.batch();
 
       // Save the vote
       batch.set(_pollVotesRef(vote.pollId).doc(vote.userId), vote.toJson());
@@ -530,6 +570,8 @@ class FirestoreService {
   // ==================== BLOCK & REPORT ====================
 
   Future<void> blockUser(String currentUserId, String blockedUserId) async {
+    if (_db == null) return;
+
     try {
       await _userDocRef(currentUserId).update({
         'blocked': FieldValue.arrayUnion([blockedUserId]),
@@ -540,6 +582,8 @@ class FirestoreService {
   }
 
   Future<void> unblockUser(String currentUserId, String blockedUserId) async {
+    if (_db == null) return;
+
     try {
       await _userDocRef(currentUserId).update({
         'blocked': FieldValue.arrayRemove([blockedUserId]),
@@ -589,8 +633,11 @@ class FirestoreService {
     required String platform,
     required String appVersion,
   }) async {
+        final db = _db;
+    if (db == null) return;
+
     try {
-      await _firestore.collection('supportRequests').add({
+      await db.collection('supportRequests').add({
         'userId': userId,
         'userEmail': userEmail,
         'username': username,
@@ -611,13 +658,13 @@ class FirestoreService {
 
   // ==================== STORY (STREAMS + ENGAGEMENT) ====================
   DocumentReference<Map<String, dynamic>> _pollAggregateDoc(String pollId) =>
-      _firestore.collection("pollAggregates").doc(pollId);
+      _db!.collection("pollAggregates").doc(pollId);
 
   DocumentReference<Map<String, dynamic>> _storyEngagementDoc(String storyId) =>
-      _firestore.collection("storyEngagement").doc(storyId);
+      _db!.collection("storyEngagement").doc(storyId);
 
   CollectionReference<Map<String, dynamic>> _storyCommentsRef(String storyId) =>
-      _firestore
+      _db!
           .collection("storyComments")
           .doc(storyId)
           .collection("comments");
@@ -625,7 +672,7 @@ class FirestoreService {
   DocumentReference<Map<String, dynamic>> _storyLikesDoc(
     String storyId,
     String userId,
-  ) => _firestore
+  ) => _db!
       .collection("storyLikes")
       .doc(storyId)
       .collection("likes")
@@ -674,6 +721,8 @@ class FirestoreService {
     required String userId,
     String? userName,
   }) async {
+    if (_db == null) return;
+
     await _storyLikesDoc(storyId, userId).set({
       "visitorId": userId,
       "storyId": storyId,
@@ -693,6 +742,8 @@ class FirestoreService {
     required String storyId,
     required String userId,
   }) async {
+    if (_db == null) return;
+
     await _storyLikesDoc(storyId, userId).delete();
 
     await _storyEngagementDoc(storyId).set({
@@ -744,6 +795,8 @@ class FirestoreService {
     required String storyId,
     required String commentId,
   }) async {
+    if (_db == null) return;
+
     await _storyCommentsRef(storyId).doc(commentId).delete();
 
     await _storyEngagementDoc(storyId).set({
@@ -754,6 +807,8 @@ class FirestoreService {
   }
 
   Future<void> incrementShareCount(String storyId) async {
+    if (_db == null) return;
+
     await _storyEngagementDoc(storyId).set({
       "storyId": storyId,
       "shareCount": FieldValue.increment(1),
