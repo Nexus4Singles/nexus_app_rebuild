@@ -47,8 +47,8 @@
         "low": "Parenting and family leadership may be a tension point right now. A shared plan can reduce conflict and bring more peace at home.",
         "medium": "You seem mostly aligned on family direction, but a few areas may still need clearer agreement. Small adjustments can make a big difference.",
         "high": "Your answers suggest strong alignment on family values and a steady approach during pressure. This supports a safe and faith-filled home.",
-        "microStep": "Have a 15-minute â€˜family vision chatâ€™ this week: agree on one value you want your home to be known for.",
-        "recommendedJourney": "Raising Godly Kids (Married)"
+        "microStep": "Have a 15-minute ‘family vision chat’ this week: agree on one value you want your home to be known for.",
+        "recommendedJourney": "parenting_family_leadership_blueprint"
       }
     },
     {
@@ -391,7 +391,7 @@
     {
       "number": 9,
       "dimension": "Trust & Integrity",
-      "text": "I feel confident in my spouseâ€™s honesty and integrity:",
+      "text": "I feel confident in my spouse’s honesty and integrity:",
       "options": [
         {
           "id": "A",

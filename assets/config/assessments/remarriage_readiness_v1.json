@@ -40,15 +40,15 @@
       "name": "Family Patterns & Future Home",
       "insights": {
         "low": "Some family experiences may still feel painful or heavy. Taking time to heal and build a clear family vision can help you enter remarriage with confidence.",
-        "medium": "You seem to recognize some family patterns and youâ€™re learning healthier ways forward. With a little more clarity, this can become a strong foundation for remarriage.",
+        "medium": "You seem to recognize some family patterns and you’re learning healthier ways forward. With a little more clarity, this can become a strong foundation for remarriage.",
         "high": "Your answers show thoughtful reflection and a desire to build a healthier home than what you experienced. This supports stability and peace in remarriage.",
         "microStep": "Write one family pattern you want to stop and one new habit you want to build in your future home.",
-        "recommendedJourney": "Healing Family Patterns (Singles)"
+        "recommendedJourney": "healing_family_patterns_singles"
       }
     },
     {
       "id": "god_s_role_framing",
-      "name": "Godâ€™s Role Framing",
+      "name": "God’s Role Framing",
       "insights": {}
     },
     {
@@ -150,7 +150,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Something Iâ€™ve processed deeply",
+          "text": "Something I’ve processed deeply",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "Strong/Integrated: processed deeply"
@@ -164,7 +164,7 @@
         },
         {
           "id": "C",
-          "text": "Something Iâ€™m still trying to make sense of",
+          "text": "Something I’m still trying to make sense of",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "Guarded: still making sense"
@@ -500,14 +500,14 @@
       "options": [
         {
           "id": "A",
-          "text": "Iâ€™ve intentionally done inner work",
+          "text": "I’ve intentionally done inner work",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "Strong/Integrated: inner work"
         },
         {
           "id": "B",
-          "text": "Iâ€™ve learned through reflection",
+          "text": "I’ve learned through reflection",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "Developing: reflection-based"
@@ -521,7 +521,7 @@
         },
         {
           "id": "D",
-          "text": "Iâ€™m not fully sure yet",
+          "text": "I’m not fully sure yet",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "At-risk: unsure"
@@ -565,8 +565,8 @@
     },
     {
       "number": 14,
-      "dimension": "Godâ€™s Role Framing",
-      "text": "I believe Godâ€™s role in my future marriage would be to:",
+      "dimension": "God’s Role Framing",
+      "text": "I believe God’s role in my future marriage would be to:",
       "options": [
         {
           "id": "A",
@@ -710,14 +710,14 @@
       "options": [
         {
           "id": "A",
-          "text": "A calling Iâ€™m prepared for",
+          "text": "A calling I’m prepared for",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "Strong/Integrated: prepared calling"
         },
         {
           "id": "B",
-          "text": "A desire Iâ€™m still preparing for",
+          "text": "A desire I’m still preparing for",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "Developing: preparing desire"
@@ -731,7 +731,7 @@
         },
         {
           "id": "D",
-          "text": "Something Iâ€™m unsure about",
+          "text": "Something I’m unsure about",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "At-risk: uncertainty"
@@ -745,14 +745,14 @@
       "options": [
         {
           "id": "A",
-          "text": "I understand it clearly and Iâ€™m choosing healthier patterns",
+          "text": "I understand it clearly and I’m choosing healthier patterns",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "Strong/Integrated: self-aware and intentionally breaking cycles"
         },
         {
           "id": "B",
-          "text": "I see some patterns, but Iâ€™m still learning how to change them",
+          "text": "I see some patterns, but I’m still learning how to change them",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "Developing: awareness growing but change is in progress"
@@ -794,7 +794,7 @@
         },
         {
           "id": "C",
-          "text": "Uncertain â€” Iâ€™m not sure how to handle family decisions well",
+          "text": "Uncertain — I’m not sure how to handle family decisions well",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "Guarded: uncertainty may create future conflict"

@@ -165,10 +165,10 @@ enum UserGoal {
 
 /// Assessment signal tiers
 enum SignalTier {
-  strong('STRONG', 3, 'Strong/Integrated'),
+  strong('STRONG', 3, 'Strong'),
   developing('DEVELOPING', 2, 'Developing'),
   guarded('GUARDED', 1, 'Guarded'),
-  atRisk('AT_RISK', 0, 'At-Risk'),
+  atRisk('AT_RISK', 0, 'At risk'),
   restoration('RESTORATION', 1, 'Restoration');
 
   final String value;
@@ -475,7 +475,7 @@ class AppConfig {
   static const double strongThreshold = 0.75; // 75%+
   static const double developingThreshold = 0.50; // 50-74%
   static const double guardedThreshold = 0.25; // 25-49%
-  // Below 25% = At-Risk
+  // Below 25% = At risk
 
   // Session configuration
   static const int maxShortTextChars = 280;
@@ -858,4 +858,23 @@ class SurveyConfig {
       iconName: 'family',
     ),
   ];
+}
+
+/// Tier explanation copy (audience-aware).
+/// - Married users: uses "in your marriage"
+/// - Singles / Divorced-Widowed: uses "for marriage"
+String tierExplanation(SignalTier tier, {required bool isMarried}) {
+  final scope = isMarried ? "in your marriage" : "for marriage";
+  switch (tier) {
+    case SignalTier.strong:
+      return "You are strong and steady $scope!";
+    case SignalTier.restoration:
+      return "You seem to be developing in the right direction!";
+    case SignalTier.developing:
+      return "You seem to be developing in the right direction!";
+    case SignalTier.guarded:
+      return "You seem too emotionally guarded $scope.";
+    case SignalTier.atRisk:
+      return "It appears you may need some urgent help!";
+  }
 }

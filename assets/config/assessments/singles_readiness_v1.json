@@ -35,10 +35,10 @@
       "name": "Family Background & Learned Patterns",
       "insights": {
         "low": "Some patterns from your upbringing may still affect how you handle trust and conflict. Noticing them is the first step to building something healthier.",
-        "medium": "You seem to recognize some patterns from your upbringing and youâ€™re learning new ways to respond. With practice, this can become a strong foundation for marriage.",
+        "medium": "You seem to recognize some patterns from your upbringing and you’re learning new ways to respond. With practice, this can become a strong foundation for marriage.",
         "high": "Your answers show you can reflect on your upbringing and choose healthier patterns. This supports a stable and emotionally safe marriage.",
-        "microStep": "Write down one family pattern you donâ€™t want to repeat and one healthier response you want to practice this week.",
-        "recommendedJourney": "Healing Family Patterns (Singles)"
+        "microStep": "Write down one family pattern you don’t want to repeat and one healthier response you want to practice this week.",
+        "recommendedJourney": "healing_family_patterns_singles"
       }
     },
     {
@@ -150,7 +150,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Listen carefully even if itâ€™s uncomfortable",
+          "text": "Listen carefully even if it’s uncomfortable",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "Strong/Integrated: curiosity + emotional maturity in conflict"
@@ -242,7 +242,7 @@
         {
           "id": "D",
           "text": "Something I am rebuilding",
-          "signalTier": "RESTORATION",
+          "signalTier": "DEVELOPING",
           "weight": 1,
           "outcomeSignal": "Restoration phase: rebuilding faith practices"
         }
@@ -311,7 +311,7 @@
         },
         {
           "id": "D",
-          "text": "Iâ€™m still learning what this looks like",
+          "text": "I’m still learning what this looks like",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "Developing: leadership theology forming"
@@ -671,7 +671,7 @@
     {
       "number": 17,
       "dimension": "Priority Management",
-      "text": "If my spouseâ€™s needs conflicted with my personal goals for a season, I would likely:",
+      "text": "If my spouse’s needs conflicted with my personal goals for a season, I would likely:",
       "options": [
         {
           "id": "A",
@@ -706,7 +706,7 @@
     {
       "number": 18,
       "dimension": "Long-Term Orientation",
-      "text": "When I picture myself 10â€“15 years into marriage, I feel:",
+      "text": "When I picture myself 10–15 years into marriage, I feel:",
       "options": [
         {
           "id": "A",
@@ -752,7 +752,7 @@
         },
         {
           "id": "B",
-          "text": "Mixed â€” sometimes calm, sometimes tense",
+          "text": "Mixed — sometimes calm, sometimes tense",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "Developing: some healthy modeling but inconsistent"
@@ -801,7 +801,7 @@
         },
         {
           "id": "D",
-          "text": "Feel stuck repeating patterns even when I donâ€™t want to",
+          "text": "Feel stuck repeating patterns even when I don’t want to",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "At-Risk: high likelihood of repeating harmful cycles"

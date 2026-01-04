@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nexus_app_min_test/core/services/journey_local_progress_storage.dart';
 import '../models/assessment_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/journey_model.dart';
@@ -9,7 +10,6 @@ import 'firestore_service_provider.dart';
 import 'config_provider.dart';
 import 'user_provider.dart';
 import "assessment_provider.dart";
-
 // ============================================================================
 // JOURNEY CATALOG PROVIDERS
 // ============================================================================
