@@ -10,7 +10,8 @@ class SessionStep extends Equatable {
   final String? content;
   final String? responseType;
   final String? ui;
-  final List<String>? options;
+  final String? storeKey;
+  final Map<String, dynamic>? validation;final List<String>? options;
   final int? minSelect;
   final int? maxSelect;
   final String? placeholder;
@@ -25,6 +26,8 @@ class SessionStep extends Equatable {
     this.content,
     this.responseType,
     this.ui,
+    this.storeKey,
+    this.validation,
     this.options,
     this.minSelect,
     this.maxSelect,
@@ -43,6 +46,8 @@ class SessionStep extends Equatable {
       content: json['content'] as String?,
       responseType: json['responseType'] as String?,
       ui: json['ui'] as String?,
+      storeKey: json['storeKey'] as String?,
+      validation: json['validation'] as Map<String, dynamic>?,
       options:
           (json['options'] as List<dynamic>?)
               ?.map((e) => e.toString())
@@ -63,6 +68,8 @@ class SessionStep extends Equatable {
     if (content != null) 'content': content,
     if (responseType != null) 'responseType': responseType,
     if (ui != null) 'ui': ui,
+    if (storeKey != null) 'storeKey': storeKey,
+    if (validation != null) 'validation': validation,
     if (options != null) 'options': options,
     if (minSelect != null) 'minSelect': minSelect,
     if (maxSelect != null) 'maxSelect': maxSelect,
