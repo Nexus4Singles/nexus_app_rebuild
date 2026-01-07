@@ -1,0 +1,93 @@
+{
+  "version": "v1",
+  "stories": [
+    {
+      "storyId": "wk_001_example",
+      "weekNumber": 1,
+      "publishDate": "2026-01-05",
+      "audiences": [
+        "single_never_married",
+        "divorced_widowed",
+        "married"
+      ],
+      "tags": [
+        "communication",
+        "repair",
+        "faith_at_home"
+      ],
+      "title": "When Silence Became the Third Person in the Marriage",
+      "subtitle": "A story about avoiding hard conversations and learning to repair early.",
+      "readingTimeMins": 4,
+      "heroImage": "assets/images/stories/wk_001.png",
+      "contentBlocks": [
+        {
+          "type": "paragraph",
+          "text": "Start with a relatable scene and the main tension in 2–3 lines."
+        },
+        {
+          "type": "heading",
+          "text": "What Started It"
+        },
+        {
+          "type": "paragraph",
+          "text": "Describe the trigger and the pattern (avoid blame language)."
+        },
+        {
+          "type": "heading",
+          "text": "The Turning Point"
+        },
+        {
+          "type": "paragraph",
+          "text": "Introduce the small shift: honesty, apology, prayer, counsel, structure."
+        },
+        {
+          "type": "heading",
+          "text": "What Changed"
+        },
+        {
+          "type": "bullets",
+          "items": [
+            "A new conversation habit",
+            "A repair practice",
+            "A faith rhythm in the home"
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "We thought love was enough, but we needed skills too.",
+          "attribution": "Anonymous"
+        }
+      ],
+      "keyLessons": [
+        "Avoiding issues doesn’t remove them — it delays them.",
+        "Repair is a skill you can learn.",
+        "Small consistent habits change the climate of a home."
+      ],
+      "reflectionPrompts": [
+        {
+          "promptId": "wk_001_r1",
+          "text": "Where do you tend to avoid hard conversations — and why?",
+          "responseType": "short_text",
+          "maxChars": 200
+        },
+        {
+          "promptId": "wk_001_r2",
+          "text": "What is one small repair action you can practice within 24 hours of conflict?",
+          "responseType": "short_text",
+          "maxChars": 200
+        }
+      ],
+      "actionStep": {
+        "title": "The 10-Minute Repair",
+        "instructions": "Set a 10-minute timer. Share one feeling, one need, and one request. End with a short prayer (optional).",
+        "estimatedMins": 10,
+        "completionSignalTag": "repair_practice"
+      },
+      "pollId": "poll_wk_001",
+      "recommendedProductIds": [
+        "restore_intimacy",
+        "communication_mastery"
+      ]
+    }
+  ]
+}

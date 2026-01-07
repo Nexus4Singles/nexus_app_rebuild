@@ -1,0 +1,31 @@
+{
+  "version": "v1",
+  "polls": [
+    {
+      "pollId": "string",
+      "storyId": "string",
+      "weekNumber": 1,
+      "question": "string",
+      "options": [
+        {
+          "id": "A",
+          "text": "string",
+          "inferredTags": [
+            "string",
+            "string"
+          ],
+          "insightCopy": "string",
+          "recommendedProductIds": [
+            "string",
+            "string"
+          ]
+        }
+      ],
+      "defaultInsightCopy": "string",
+      "defaultRecommendedProductIds": [
+        "string",
+        "string"
+      ]
+    }
+  ]
+}

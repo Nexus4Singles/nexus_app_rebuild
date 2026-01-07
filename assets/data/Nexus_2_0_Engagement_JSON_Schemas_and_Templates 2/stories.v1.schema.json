@@ -1,0 +1,75 @@
+{
+  "version": "v1",
+  "stories": [
+    {
+      "storyId": "string",
+      "weekNumber": 1,
+      "publishDate": "YYYY-MM-DD",
+      "audiences": [
+        "single_never_married",
+        "divorced_widowed",
+        "married"
+      ],
+      "tags": [
+        "string",
+        "string"
+      ],
+      "title": "string",
+      "subtitle": "string",
+      "readingTimeMins": 5,
+      "heroImage": "optional asset path or remote url",
+      "contentBlocks": [
+        {
+          "type": "paragraph",
+          "text": "string"
+        },
+        {
+          "type": "heading",
+          "text": "string"
+        },
+        {
+          "type": "quote",
+          "text": "string",
+          "attribution": "optional"
+        },
+        {
+          "type": "bullets",
+          "items": [
+            "string",
+            "string"
+          ]
+        }
+      ],
+      "keyLessons": [
+        "string",
+        "string",
+        "string"
+      ],
+      "reflectionPrompts": [
+        {
+          "promptId": "string",
+          "text": "string",
+          "responseType": "short_text",
+          "maxChars": 200
+        },
+        {
+          "promptId": "string",
+          "text": "string",
+          "responseType": "short_text",
+          "maxChars": 200
+        }
+      ],
+      "actionStep": {
+        "title": "string",
+        "instructions": "string",
+        "estimatedMins": 3,
+        "completionSignalTag": "string"
+      },
+      "pollId": "string",
+      "recommendedProductIds": [
+        "string",
+        "string"
+      ]
+    }
+  ]
+}
