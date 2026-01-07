@@ -37,7 +37,7 @@ class AssessmentResultScreen extends ConsumerWidget {
       );
     }
 
-    final bundle = const AssessmentRecommendationService().build(
+    final bundle = AssessmentRecommendationService().build(
       result: result,
       config: config,
     );
