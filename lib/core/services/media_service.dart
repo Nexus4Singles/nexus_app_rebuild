@@ -19,6 +19,24 @@ class MediaService {
   final ImagePicker _imagePicker = ImagePicker();
   final AudioRecorder _audioRecorder = AudioRecorder();
   final AudioPlayer _audioPlayer = AudioPlayer();
+
+  // Audio playback coordination (prevents overlapping plays + tap races)
+  bool _playerReady = false;
+  Future<void> _playQueue = Future.value();
+
+  Future<void> _ensurePlayerReady() async {
+    if (_playerReady) return;
+    await _audioPlayer.setReleaseMode(ReleaseMode.stop);
+    _playerReady = true;
+  }
+
+  Future<T> _enqueue<T>(Future<T> Function() op) {
+    final next = _playQueue.then((_) => op());
+    // Keep the queue alive even if an op throws
+    _playQueue = next.then((_) async {}).catchError((_) async {});
+    return next;
+  }
+
   // Audio recording state
   bool _isRecording = false;
   String? _currentRecordingPath;
@@ -418,63 +436,87 @@ class MediaService {
   // AUDIO PLAYBACK
   // ============================================================================
 
-  /// Play audio from file path
+  /// Play audio from file path (exclusive: stops any current playback first)
   Future<void> playAudio(String path) async {
-    try {
-      if (path.startsWith('http')) {
-        await _audioPlayer.play(UrlSource(path));
-      } else {
-        await _audioPlayer.play(DeviceFileSource(path));
+    return _enqueue(() async {
+      try {
+        await _ensurePlayerReady();
+        await _audioPlayer.stop();
+
+        if (path.startsWith('http')) {
+          await _audioPlayer.play(UrlSource(path));
+        } else {
+          await _audioPlayer.play(DeviceFileSource(path));
+        }
+      } catch (e) {
+        throw MediaException('Failed to play audio: $e');
       }
-    } catch (e) {
-      throw MediaException('Failed to play audio: $e');
-    }
+    });
   }
 
-  /// Play audio from URL
+  /// Play audio from URL (exclusive: stops any current playback first)
   Future<void> playAudioFromUrl(String url) async {
-    try {
-      await _audioPlayer.play(UrlSource(url));
-    } catch (e) {
-      throw MediaException('Failed to play audio from URL: $e');
-    }
+    return _enqueue(() async {
+      try {
+        await _ensurePlayerReady();
+        await _audioPlayer.stop();
+        await _audioPlayer.play(UrlSource(url));
+      } catch (e) {
+        throw MediaException('Failed to play audio from URL: $e');
+      }
+    });
   }
 
   /// Pause audio playback
   Future<void> pauseAudio() async {
-    await _audioPlayer.pause();
+    return _enqueue(() async {
+      await _ensurePlayerReady();
+      await _audioPlayer.pause();
+    });
   }
 
   /// Resume audio playback
   Future<void> resumeAudio() async {
-    await _audioPlayer.resume();
+    return _enqueue(() async {
+      await _ensurePlayerReady();
+      await _audioPlayer.resume();
+    });
   }
 
   /// Stop audio playback
   Future<void> stopAudio() async {
-    await _audioPlayer.stop();
+    return _enqueue(() async {
+      await _ensurePlayerReady();
+      await _audioPlayer.stop();
+    });
   }
 
   /// Seek to position
   Future<void> seekAudio(Duration position) async {
-    await _audioPlayer.seek(position);
+    return _enqueue(() async {
+      await _ensurePlayerReady();
+      await _audioPlayer.seek(position);
+    });
   }
 
-  /// Get audio duration
+  /// Get audio duration (queued; stops playback to avoid source conflicts)
   Future<Duration?> getAudioDuration(String path) async {
-    try {
-      await _audioPlayer.setSource(
-        path.startsWith('http') ? UrlSource(path) : DeviceFileSource(path),
-      );
-      return await _audioPlayer.getDuration();
-    } catch (e) {
-      return null;
-    }
+    return _enqueue(() async {
+      try {
+        await _ensurePlayerReady();
+        await _audioPlayer.stop();
+        await _audioPlayer.setSource(
+          path.startsWith('http') ? UrlSource(path) : DeviceFileSource(path),
+        );
+        return await _audioPlayer.getDuration();
+      } catch (_) {
+        return null;
+      }
+    });
   }
 
   /// Listen to playback state changes
-  Stream<PlayerState> get onPlayerStateChanged =>
-      _audioPlayer.onPlayerStateChanged;
+  Stream<PlayerState> get onPlayerStateChanged => _audioPlayer.onPlayerStateChanged;
 
   /// Listen to playback position changes
   Stream<Duration> get onPositionChanged => _audioPlayer.onPositionChanged;
