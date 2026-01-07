@@ -111,700 +111,780 @@
     {
       "number": 1,
       "dimension": "Connection & Communication",
-      "text": "When we talk about our day-to-day lives, I feel:",
+      "text": "Right now, how would you describe the friendship between you and your spouse?",
       "options": [
         {
           "id": "A",
-          "text": "Heard, understood, and emotionally connected",
+          "text": "Strong and consistent, we genuinely enjoy each other",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: feels heard and connected"
+          "outcomeSignal": "connection_communication_feels_heard_and_connected",
+          "outcomeLabel": "feels heard and connected"
         },
         {
           "id": "B",
-          "text": "Mostly connected, though we sometimes miss each other",
+          "text": "Mostly good, but we have moments where connection feels weaker",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: generally connected with occasional misses"
+          "outcomeSignal": "connection_communication_generally_connected_with_occasional_misses",
+          "outcomeLabel": "generally connected with occasional misses"
         },
         {
           "id": "C",
-          "text": "Often misunderstood or dismissed",
+          "text": "Weak, we relate more as partners managing life than as friends",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: often misunderstood/dismissed"
+          "outcomeSignal": "connection_communication_often_misunderstood_dismissed",
+          "outcomeLabel": "often misunderstood/dismissed"
         },
         {
           "id": "D",
-          "text": "I avoid sharing because it rarely feels safe or helpful",
+          "text": "Very weak, we feel emotionally distant most of the time",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: avoids sharing; low emotional safety"
+          "outcomeSignal": "connection_communication_avoids_sharing_low_emotional_safety",
+          "outcomeLabel": "avoids sharing; low emotional safety"
         }
       ]
     },
     {
       "number": 2,
       "dimension": "Quality Time",
-      "text": "How often do we intentionally spend quality time together (without distractions)?",
+      "text": "How emotionally safe do you feel being honest and vulnerable with your spouse?",
       "options": [
         {
           "id": "A",
-          "text": "Regularly (weekly or more)",
+          "text": "Very safe, I can share freely without fear",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: consistent quality time"
+          "outcomeSignal": "quality_time_consistent_quality_time",
+          "outcomeLabel": "consistent quality time"
         },
         {
           "id": "B",
-          "text": "Sometimes (a few times a month)",
+          "text": "Mostly safe, but there are a few areas I still hold back",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: some intentional time"
+          "outcomeSignal": "quality_time_some_intentional_time",
+          "outcomeLabel": "some intentional time"
         },
         {
           "id": "C",
-          "text": "Rarely (monthly or less)",
+          "text": "Not very safe, I often filter what I say to avoid conflict",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: rare quality time"
+          "outcomeSignal": "quality_time_rare_quality_time",
+          "outcomeLabel": "rare quality time"
         },
         {
           "id": "D",
-          "text": "Almost never",
+          "text": "Not safe, vulnerability usually leads to pain or misunderstanding",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: almost none; relationship neglect risk"
+          "outcomeSignal": "quality_time_almost_none_relationship_neglect_risk",
+          "outcomeLabel": "almost none; relationship neglect risk"
         }
       ]
     },
     {
       "number": 3,
       "dimension": "Responsiveness to Concerns",
-      "text": "When I bring up a concern, my spouse generally responds with:",
+      "text": "When you and your spouse disagree, what usually happens?",
       "options": [
         {
           "id": "A",
-          "text": "Curiosity and willingness to understand",
+          "text": "We communicate respectfully and work toward understanding",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: curiosity and understanding"
+          "outcomeSignal": "responsiveness_to_concerns_curiosity_and_understanding",
+          "outcomeLabel": "curiosity and understanding"
         },
         {
           "id": "B",
-          "text": "A mix of openness and defensiveness",
+          "text": "We try to talk it through, but sometimes emotions take over",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: mixed openness and defensiveness"
+          "outcomeSignal": "responsiveness_to_concerns_mixed_openness_and_defensiveness",
+          "outcomeLabel": "mixed openness and defensiveness"
         },
         {
           "id": "C",
-          "text": "Defensiveness, minimizing, or blame",
+          "text": "One or both of us withdraw, shut down, or avoid it",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: defensive/minimizing/blame"
+          "outcomeSignal": "responsiveness_to_concerns_defensive_minimizing_blame",
+          "outcomeLabel": "defensive/minimizing/blame"
         },
         {
           "id": "D",
-          "text": "Shutting down, stonewalling, or anger",
+          "text": "It often escalates into arguments, harsh words, or ongoing tension",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: shutdown/stonewalling/anger escalation"
+          "outcomeSignal": "responsiveness_to_concerns_shutdown_stonewalling_anger_escalation",
+          "outcomeLabel": "shutdown/stonewalling/anger escalation"
         }
       ]
     },
     {
       "number": 4,
       "dimension": "Appreciation & Encouragement",
-      "text": "In our marriage, expressions of appreciation and encouragement are:",
+      "text": "How well do you and your spouse repair after conflict?",
       "options": [
         {
           "id": "A",
-          "text": "Frequent and genuine",
+          "text": "We repair well and return to peace quickly",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: frequent appreciation"
+          "outcomeSignal": "appreciation_encouragement_frequent_appreciation",
+          "outcomeLabel": "frequent appreciation"
         },
         {
           "id": "B",
-          "text": "Present, but inconsistent",
+          "text": "We repair, but it sometimes takes time or effort",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: present but inconsistent"
+          "outcomeSignal": "appreciation_encouragement_present_but_inconsistent",
+          "outcomeLabel": "present but inconsistent"
         },
         {
           "id": "C",
-          "text": "Rare",
+          "text": "Repair is inconsistent, some conflicts linger",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: rare encouragement"
+          "outcomeSignal": "appreciation_encouragement_rare_encouragement",
+          "outcomeLabel": "rare encouragement"
         },
         {
           "id": "D",
-          "text": "Almost absent, or replaced by criticism",
+          "text": "We struggle to repair, many issues remain unresolved",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: criticism-dominant climate"
+          "outcomeSignal": "appreciation_encouragement_criticism_dominant_climate",
+          "outcomeLabel": "criticism-dominant climate"
         }
       ]
     },
     {
       "number": 5,
       "dimension": "Conflict Navigation",
-      "text": "When disagreements happen, we usually:",
+      "text": "How often do you and your spouse express appreciation and respect to each other?",
       "options": [
         {
           "id": "A",
-          "text": "Work toward understanding and resolution",
+          "text": "Often and sincerely, it is part of our daily culture",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: resolution-oriented disagreements"
+          "outcomeSignal": "conflict_navigation_resolution_oriented_disagreements",
+          "outcomeLabel": "resolution-oriented disagreements"
         },
         {
           "id": "B",
-          "text": "Find temporary peace but leave issues unresolved",
+          "text": "Sometimes, but it can fade when life gets busy",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: temporary peace without full repair"
+          "outcomeSignal": "conflict_navigation_temporary_peace_without_full_repair",
+          "outcomeLabel": "temporary peace without full repair"
         },
         {
           "id": "C",
-          "text": "Argue repeatedly about the same issues",
+          "text": "Rarely, we tend to focus more on problems than appreciation",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: recurring unresolved arguments"
+          "outcomeSignal": "conflict_navigation_recurring_unresolved_arguments",
+          "outcomeLabel": "recurring unresolved arguments"
         },
         {
           "id": "D",
-          "text": "Avoid the issue or it escalates quickly",
+          "text": "Almost never, it often feels tense or critical instead",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: avoidance or rapid escalation"
+          "outcomeSignal": "conflict_navigation_avoidance_or_rapid_escalation",
+          "outcomeLabel": "avoidance or rapid escalation"
         }
       ]
     },
     {
       "number": 6,
       "dimension": "Repair & Reconnection",
-      "text": "After a conflict, repair (apology, reconnection, forgiveness) is:",
+      "text": "How would you describe the tone of your daily interactions?",
       "options": [
         {
           "id": "A",
-          "text": "Intentional and happens within a reasonable time",
+          "text": "Warm and kind, even under pressure",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: repair happens intentionally"
+          "outcomeSignal": "repair_reconnection_repair_happens_intentionally",
+          "outcomeLabel": "repair happens intentionally"
         },
         {
           "id": "B",
-          "text": "Sometimes happens, but can take a while",
+          "text": "Mostly calm, with occasional tension",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: repair happens but delayed"
+          "outcomeSignal": "repair_reconnection_repair_happens_but_delayed",
+          "outcomeLabel": "repair happens but delayed"
         },
         {
           "id": "C",
-          "text": "Rare or inconsistent",
+          "text": "Often tense or cold, even in small conversations",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: repair is rare/inconsistent"
+          "outcomeSignal": "repair_reconnection_repair_is_rare_inconsistent",
+          "outcomeLabel": "repair is rare/inconsistent"
         },
         {
           "id": "D",
-          "text": "Almost never happens; conflict lingers",
+          "text": "Frequently hurtful, sarcastic, or disrespectful",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: conflict lingers; little/no repair"
+          "outcomeSignal": "repair_reconnection_conflict_lingers_little_no_repair",
+          "outcomeLabel": "conflict lingers; little/no repair"
         }
       ]
     },
     {
       "number": 7,
       "dimension": "Respect During Conflict",
-      "text": "During conflict, we are able to stay respectful (no insults, contempt, or intimidation):",
+      "text": "How strong is trust in your marriage right now?",
       "options": [
         {
           "id": "A",
-          "text": "Consistently",
+          "text": "Strong, we can rely on each other emotionally and practically",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: respectful conflict consistently"
+          "outcomeSignal": "respect_during_conflict_respectful_conflict_consistently",
+          "outcomeLabel": "respectful conflict consistently"
         },
         {
           "id": "B",
-          "text": "Most of the time",
+          "text": "Mostly strong, but there are a few areas we are rebuilding",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: respectful most of the time"
+          "outcomeSignal": "respect_during_conflict_respectful_most_of_the_time",
+          "outcomeLabel": "respectful most of the time"
         },
         {
           "id": "C",
-          "text": "Sometimes",
+          "text": "Weak, trust has been damaged and still affects us",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: respect sometimes breaks down"
+          "outcomeSignal": "respect_during_conflict_respect_sometimes_breaks_down",
+          "outcomeLabel": "respect sometimes breaks down"
         },
         {
           "id": "D",
-          "text": "Rarely",
+          "text": "Very weak, distrust shapes how we relate daily",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: contempt/insults/intimidation risk"
+          "outcomeSignal": "respect_during_conflict_contempt_insults_intimidation_risk",
+          "outcomeLabel": "contempt/insults/intimidation risk"
         }
       ]
     },
     {
       "number": 8,
       "dimension": "Emotional Safety to Share Hurt",
-      "text": "If one of us feels hurt, we can talk about it without fear of retaliation or punishment:",
+      "text": "How connected do you feel emotionally to your spouse?",
       "options": [
         {
           "id": "A",
-          "text": "Yes, consistently",
+          "text": "Very connected, we understand and support each other deeply",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: safe to talk without retaliation"
+          "outcomeSignal": "emotional_safety_to_share_hurt_safe_to_talk_without_retaliation",
+          "outcomeLabel": "safe to talk without retaliation"
         },
         {
           "id": "B",
-          "text": "Usually, but not always",
+          "text": "Somewhat connected, but we need more intentional bonding",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: usually safe with exceptions"
+          "outcomeSignal": "emotional_safety_to_share_hurt_usually_safe_with_exceptions",
+          "outcomeLabel": "usually safe with exceptions"
         },
         {
           "id": "C",
-          "text": "Sometimes, depending on the topic",
+          "text": "Not very connected, it often feels like we are living separate lives",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: topic-dependent safety"
+          "outcomeSignal": "emotional_safety_to_share_hurt_topic_dependent_safety",
+          "outcomeLabel": "topic-dependent safety"
         },
         {
           "id": "D",
-          "text": "No, it often feels unsafe",
+          "text": "Disconnected, we feel like strangers emotionally",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: unsafe to share; retaliation/punishment risk"
+          "outcomeSignal": "emotional_safety_to_share_hurt_unsafe_to_share_retaliation_punishment_risk",
+          "outcomeLabel": "unsafe to share; retaliation/punishment risk"
         }
       ]
     },
     {
       "number": 9,
       "dimension": "Trust & Integrity",
-      "text": "I feel confident in my spouse’s honesty and integrity:",
+      "text": "How satisfied are you with the physical intimacy in your marriage?",
       "options": [
         {
           "id": "A",
-          "text": "Strongly agree",
+          "text": "Satisfied, we connect physically in a healthy and loving way",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: high confidence in integrity"
+          "outcomeSignal": "trust_integrity_high_confidence_in_integrity",
+          "outcomeLabel": "high confidence in integrity"
         },
         {
           "id": "B",
-          "text": "Somewhat agree",
+          "text": "Mostly satisfied, but we have areas to improve",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: generally trusts integrity"
+          "outcomeSignal": "trust_integrity_generally_trusts_integrity",
+          "outcomeLabel": "generally trusts integrity"
         },
         {
           "id": "C",
-          "text": "Unsure",
+          "text": "Unsatisfied, intimacy is inconsistent or strained",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: uncertainty about integrity"
+          "outcomeSignal": "trust_integrity_uncertainty_about_integrity",
+          "outcomeLabel": "uncertainty about integrity"
         },
         {
           "id": "D",
-          "text": "Disagree",
+          "text": "Very unsatisfied, physical intimacy is a major pain point",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: low trust / integrity concern"
+          "outcomeSignal": "trust_integrity_low_trust_integrity_concern",
+          "outcomeLabel": "low trust / integrity concern"
         }
       ]
     },
     {
       "number": 10,
       "dimension": "Trust Repair Practices",
-      "text": "When trust is strained (misunderstandings, secrecy, broken promises), we:",
+      "text": "How comfortable are you discussing intimacy and sexual needs with your spouse?",
       "options": [
         {
           "id": "A",
-          "text": "Address it directly and rebuild intentionally",
+          "text": "Very comfortable, we can talk openly without shame",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: rebuilds trust intentionally"
+          "outcomeSignal": "trust_repair_practices_rebuilds_trust_intentionally",
+          "outcomeLabel": "rebuilds trust intentionally"
         },
         {
           "id": "B",
-          "text": "Talk about it but struggle to follow through",
+          "text": "Somewhat comfortable, but certain topics are hard",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: talks but follow-through is hard"
+          "outcomeSignal": "trust_repair_practices_talks_but_follow_through_is_hard",
+          "outcomeLabel": "talks but follow-through is hard"
         },
         {
           "id": "C",
-          "text": "Avoid it and hope time fixes it",
+          "text": "Not comfortable, we avoid the conversation",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: avoids; relies on time only"
+          "outcomeSignal": "trust_repair_practices_avoids_relies_on_time_only",
+          "outcomeLabel": "avoids; relies on time only"
         },
         {
           "id": "D",
-          "text": "Fight about it or ignore it entirely",
+          "text": "Very uncomfortable, it often leads to tension or conflict",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: cycles of fighting/ignoring trust issues"
+          "outcomeSignal": "trust_repair_practices_cycles_of_fighting_ignoring_trust_issues",
+          "outcomeLabel": "cycles of fighting/ignoring trust issues"
         }
       ]
     },
     {
       "number": 11,
       "dimension": "Commitment to Growth",
-      "text": "I believe we are both committed to growing and staying aligned long-term:",
+      "text": "How aligned are you and your spouse about the direction of your marriage and family?",
       "options": [
         {
           "id": "A",
-          "text": "Strongly agree",
+          "text": "Very aligned, we share vision and priorities",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: shared commitment to grow"
+          "outcomeSignal": "commitment_to_growth_shared_commitment_to_grow",
+          "outcomeLabel": "shared commitment to grow"
         },
         {
           "id": "B",
-          "text": "Somewhat agree",
+          "text": "Mostly aligned, but we differ in some areas",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: partial alignment on growth"
+          "outcomeSignal": "commitment_to_growth_partial_alignment_on_growth",
+          "outcomeLabel": "partial alignment on growth"
         },
         {
           "id": "C",
-          "text": "Unsure",
+          "text": "Not aligned, we struggle to agree on important decisions",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: unclear alignment on growth"
+          "outcomeSignal": "commitment_to_growth_unclear_alignment_on_growth",
+          "outcomeLabel": "unclear alignment on growth"
         },
         {
           "id": "D",
-          "text": "Disagree",
+          "text": "Very misaligned, it causes major tension and confusion",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: low commitment/alignment"
+          "outcomeSignal": "commitment_to_growth_low_commitment_alignment",
+          "outcomeLabel": "low commitment/alignment"
         }
       ]
     },
     {
       "number": 12,
       "dimension": "Emotional Intimacy",
-      "text": "Emotional intimacy (feeling close, known, safe) in our marriage is:",
+      "text": "If children are part of your life, how united are you in parenting decisions?",
       "options": [
         {
           "id": "A",
-          "text": "Strong and consistent",
+          "text": "United, we work together as a team",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: consistently close and safe"
+          "outcomeSignal": "emotional_intimacy_consistently_close_and_safe",
+          "outcomeLabel": "consistently close and safe"
         },
         {
           "id": "B",
-          "text": "Present but needs attention",
+          "text": "Mostly united, but we disagree sometimes",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: present but needs attention"
+          "outcomeSignal": "emotional_intimacy_present_but_needs_attention",
+          "outcomeLabel": "present but needs attention"
         },
         {
           "id": "C",
-          "text": "Often lacking",
+          "text": "Often divided, it causes confusion or tension",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: often lacking"
+          "outcomeSignal": "emotional_intimacy_often_lacking",
+          "outcomeLabel": "often lacking"
         },
         {
           "id": "D",
-          "text": "Very low or painful to pursue",
+          "text": "Very divided, it creates serious conflict in the home",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: very low/painful closeness"
+          "outcomeSignal": "emotional_intimacy_very_low_painful_closeness",
+          "outcomeLabel": "very low/painful closeness"
         }
       ]
     },
     {
       "number": 13,
       "dimension": "Physical Affection & Intimacy",
-      "text": "Physical affection and intimacy in our marriage feels:",
+      "text": "How united are you and your spouse in managing money and financial decisions?",
       "options": [
         {
           "id": "A",
-          "text": "Mutually satisfying and respectful",
+          "text": "Very united, we plan and steward well together",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: mutually satisfying and respectful"
+          "outcomeSignal": "physical_affection_intimacy_mutually_satisfying_and_respectful",
+          "outcomeLabel": "mutually satisfying and respectful"
         },
         {
           "id": "B",
-          "text": "Generally okay, but could improve",
+          "text": "Mostly united, but we have some disagreements",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: generally okay; improvement possible"
+          "outcomeSignal": "physical_affection_intimacy_generally_okay_improvement_possible",
+          "outcomeLabel": "generally okay; improvement possible"
         },
         {
           "id": "C",
-          "text": "Often mismatched, tense, or avoided",
+          "text": "Often divided, money causes tension",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: mismatched/tense/avoided"
+          "outcomeSignal": "physical_affection_intimacy_mismatched_tense_avoided",
+          "outcomeLabel": "mismatched/tense/avoided"
         },
         {
           "id": "D",
-          "text": "A source of distress or conflict",
+          "text": "Very divided, financial conflict is a major issue",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: distress or recurrent conflict"
+          "outcomeSignal": "physical_affection_intimacy_distress_or_recurrent_conflict",
+          "outcomeLabel": "distress or recurrent conflict"
         }
       ]
     },
     {
       "number": 14,
       "dimension": "Teamwork & Responsibilities",
-      "text": "Our responsibilities (home, work, family) feel:",
+      "text": "How fair and supportive does the partnership feel in handling responsibilities?",
       "options": [
         {
           "id": "A",
-          "text": "Balanced and handled as a team",
+          "text": "Fair and supportive, we share the load well",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: balanced teamwork"
+          "outcomeSignal": "teamwork_responsibilities_balanced_teamwork",
+          "outcomeLabel": "balanced teamwork"
         },
         {
           "id": "B",
-          "text": "Mostly okay, with occasional tension",
+          "text": "Mostly fair, but sometimes one of us feels overwhelmed",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: mostly okay with occasional tension"
+          "outcomeSignal": "teamwork_responsibilities_mostly_okay_with_occasional_tension",
+          "outcomeLabel": "mostly okay with occasional tension"
         },
         {
           "id": "C",
-          "text": "Often unbalanced and a frequent source of stress",
+          "text": "Not fair, responsibilities feel unbalanced",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: often unbalanced; recurring stress"
+          "outcomeSignal": "teamwork_responsibilities_often_unbalanced_recurring_stress",
+          "outcomeLabel": "often unbalanced; recurring stress"
         },
         {
           "id": "D",
-          "text": "Very unbalanced and causing significant conflict",
+          "text": "Very unfair, it often causes resentment or conflict",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: severe imbalance causing significant conflict"
+          "outcomeSignal": "teamwork_responsibilities_severe_imbalance_causing_significant_conflict",
+          "outcomeLabel": "severe imbalance causing significant conflict"
         }
       ]
     },
     {
       "number": 15,
       "dimension": "Financial Alignment",
-      "text": "How we handle money and financial decisions is:",
+      "text": "When life is hard, how supported do you feel by your spouse?",
       "options": [
         {
           "id": "A",
-          "text": "Aligned and transparent",
+          "text": "Strongly supported, my spouse shows up for me",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: aligned and transparent finances"
+          "outcomeSignal": "financial_alignment_aligned_and_transparent_finances",
+          "outcomeLabel": "aligned and transparent finances"
         },
         {
           "id": "B",
-          "text": "Mostly aligned, with some friction",
+          "text": "Mostly supported, but sometimes I need more",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: mostly aligned with friction"
+          "outcomeSignal": "financial_alignment_mostly_aligned_with_friction",
+          "outcomeLabel": "mostly aligned with friction"
         },
         {
           "id": "C",
-          "text": "Often stressful or unclear",
+          "text": "Not supported, I often feel alone in difficulties",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: stressful/unclear money handling"
+          "outcomeSignal": "financial_alignment_stressful_unclear_money_handling",
+          "outcomeLabel": "stressful/unclear money handling"
         },
         {
           "id": "D",
-          "text": "A major recurring conflict",
+          "text": "Unsupported, my spouse feels absent or dismissive",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: major recurring money conflict"
+          "outcomeSignal": "financial_alignment_major_recurring_money_conflict",
+          "outcomeLabel": "major recurring money conflict"
         }
       ]
     },
     {
       "number": 16,
       "dimension": "Faith in Daily Conduct",
-      "text": "Our faith meaningfully shapes how we treat each other day-to-day:",
+      "text": "How healthy is the culture of forgiveness and grace in your marriage?",
       "options": [
         {
           "id": "A",
-          "text": "Strongly agree",
+          "text": "Healthy, we forgive and choose peace consistently",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: faith shapes treatment daily"
+          "outcomeSignal": "faith_in_daily_conduct_faith_shapes_treatment_daily",
+          "outcomeLabel": "faith shapes treatment daily"
         },
         {
           "id": "B",
-          "text": "Somewhat agree",
+          "text": "Mostly healthy, but some wounds still need healing",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: faith shapes sometimes"
+          "outcomeSignal": "faith_in_daily_conduct_faith_shapes_sometimes",
+          "outcomeLabel": "faith shapes sometimes"
         },
         {
           "id": "C",
-          "text": "Unsure",
+          "text": "Weak, we forgive verbally but resentment still lingers",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: unsure of faith impact"
+          "outcomeSignal": "faith_in_daily_conduct_unsure_of_faith_impact",
+          "outcomeLabel": "unsure of faith impact"
         },
         {
           "id": "D",
-          "text": "Disagree",
+          "text": "Very weak, bitterness and unresolved pain are common",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: faith not guiding relational conduct"
+          "outcomeSignal": "faith_in_daily_conduct_faith_not_guiding_relational_conduct",
+          "outcomeLabel": "faith not guiding relational conduct"
         }
       ]
     },
     {
       "number": 17,
       "dimension": "Shared Spiritual Practices",
-      "text": "We pray, worship, or pursue spiritual growth together as a couple:",
+      "text": "How would you describe your spiritual connection as a couple?",
       "options": [
         {
           "id": "A",
-          "text": "Regularly",
+          "text": "Strong, we grow in faith together intentionally",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: regular shared spiritual rhythms"
+          "outcomeSignal": "shared_spiritual_practices_regular_shared_spiritual_rhythms",
+          "outcomeLabel": "regular shared spiritual rhythms"
         },
         {
           "id": "B",
-          "text": "Sometimes",
+          "text": "Somewhat strong, but we could be more consistent",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: occasional shared practices"
+          "outcomeSignal": "shared_spiritual_practices_occasional_shared_practices",
+          "outcomeLabel": "occasional shared practices"
         },
         {
           "id": "C",
-          "text": "Rarely",
+          "text": "Weak, faith feels individual rather than shared",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: rare shared spiritual growth"
+          "outcomeSignal": "shared_spiritual_practices_rare_shared_spiritual_growth",
+          "outcomeLabel": "rare shared spiritual growth"
         },
         {
           "id": "D",
-          "text": "Almost never",
+          "text": "Very weak, spirituality often causes tension or distance",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: almost none; spiritual disconnection"
+          "outcomeSignal": "shared_spiritual_practices_almost_none_spiritual_disconnection",
+          "outcomeLabel": "almost none; spiritual disconnection"
         }
       ]
     },
     {
       "number": 18,
       "dimension": "Safety & Wellbeing",
-      "text": "I feel emotionally and physically safe in my marriage:",
+      "text": "How often do you and your spouse pray together or invite God into your marriage intentionally?",
       "options": [
         {
           "id": "A",
-          "text": "Yes, consistently",
+          "text": "Often, it is a consistent part of our relationship",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: feels emotionally/physically safe"
+          "outcomeSignal": "safety_wellbeing_feels_emotionally_physically_safe",
+          "outcomeLabel": "feels emotionally/physically safe"
         },
         {
           "id": "B",
-          "text": "Mostly, with occasional concerns",
+          "text": "Sometimes, but we are not consistent",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: mostly safe with minor concerns"
+          "outcomeSignal": "safety_wellbeing_mostly_safe_with_minor_concerns",
+          "outcomeLabel": "mostly safe with minor concerns"
         },
         {
           "id": "C",
-          "text": "Sometimes, but there are worrying moments",
+          "text": "Rarely, it happens only occasionally",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: worrying moments present"
+          "outcomeSignal": "safety_wellbeing_worrying_moments_present",
+          "outcomeLabel": "worrying moments present"
         },
         {
           "id": "D",
-          "text": "No, I do not feel safe",
+          "text": "Almost never, it feels difficult or awkward",
           "signalTier": "SAFETY_ALERT",
           "weight": 0,
-          "outcomeSignal": "Safety Alert: does not feel safe (prioritize safety-first guidance)"
+          "outcomeSignal": "safety_wellbeing_does_not_feel_safe_prioritize_safety_first_guidance",
+          "outcomeLabel": "does not feel safe (prioritize safety-first guidance)"
         }
       ]
     },
     {
       "number": 19,
       "dimension": "Family Leadership & Parenting Alignment",
-      "text": "When it comes to parenting (or raising children in the future), my spouse and I are:",
+      "text": "What emotional pattern best describes your marriage during stressful seasons?",
       "options": [
         {
           "id": "A",
-          "text": "Aligned on values, discipline style, and spiritual direction",
+          "text": "We become more united and supportive under pressure",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: strong parenting unity and shared vision"
+          "outcomeSignal": "family_leadership_parenting_alignment_strong_parenting_unity_and_shared_vision",
+          "outcomeLabel": "strong parenting unity and shared vision"
         },
         {
           "id": "B",
-          "text": "Mostly aligned, but we still have a few differences to work through",
+          "text": "We stay mostly stable, though we sometimes feel strained",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: good alignment with some unresolved gaps"
+          "outcomeSignal": "family_leadership_parenting_alignment_good_alignment_with_some_unresolved_gaps",
+          "outcomeLabel": "good alignment with some unresolved gaps"
         },
         {
           "id": "C",
-          "text": "Often unsure what we agree on, so we avoid the topic or delay decisions",
+          "text": "We become tense, distant, or easily irritated",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: avoidance creates confusion and tension"
+          "outcomeSignal": "family_leadership_parenting_alignment_avoidance_creates_confusion_and_tension",
+          "outcomeLabel": "avoidance creates confusion and tension"
         },
         {
           "id": "D",
-          "text": "Frequently in conflict about parenting approach or what to prioritize",
+          "text": "Stress brings out conflict, disconnection, or emotional shutdown",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-Risk: high friction that can affect family stability"
+          "outcomeSignal": "family_leadership_parenting_alignment_high_friction_that_can_affect_family_stability",
+          "outcomeLabel": "high friction that can affect family stability"
         }
       ]
     },
     {
       "number": 20,
       "dimension": "Family Leadership & Parenting Alignment",
-      "text": "When my child(ren) or family needs stretch us, I usually respond by:",
+      "text": "When family responsibilities feel heavy (children, extended family, or life pressures), what most often happens between you and your spouse?",
       "options": [
         {
           "id": "A",
-          "text": "Staying steady and leading with patience, prayer, and teamwork",
+          "text": "We stay united, communicate well, and share the load as a team",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: emotionally steady leadership under pressure"
+          "outcomeSignal": "family_leadership_parenting_alignment_emotionally_steady_leadership_under_pressure",
+          "outcomeLabel": "emotionally steady leadership under pressure"
         },
         {
           "id": "B",
-          "text": "Trying my best, but sometimes I get overwhelmed and need support",
+          "text": "We manage, but stress sometimes creates tension or misunderstandings",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: good intention with stress sensitivity"
+          "outcomeSignal": "family_leadership_parenting_alignment_good_intention_with_stress_sensitivity",
+          "outcomeLabel": "good intention with stress sensitivity"
         },
         {
           "id": "C",
-          "text": "Withdrawing, shutting down, or leaving most of it to my spouse",
+          "text": "We become disconnected or one of us carries the burden alone",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: low engagement; risk of resentment and imbalance"
+          "outcomeSignal": "family_leadership_parenting_alignment_low_engagement_risk_of_resentment_and_imbalance",
+          "outcomeLabel": "low engagement; risk of resentment and imbalance"
         },
         {
           "id": "D",
-          "text": "Becoming easily reactive, harsh, or emotionally unavailable",
+          "text": "Stress leads to conflict, blame, or emotional withdrawal in the home",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-Risk: high stress reactivity impacting home climate"
+          "outcomeSignal": "family_leadership_parenting_alignment_high_stress_reactivity_impacting_home_climate",
+          "outcomeLabel": "high stress reactivity impacting home climate"
         }
       ]
     }

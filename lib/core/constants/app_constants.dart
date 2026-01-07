@@ -611,7 +611,7 @@ class NavConfig {
     ),
     NavTab.challenges: NavTabConfig(
       id: NavTab.challenges,
-      label: 'Challenges',
+      label: 'Journeys',
       iconName: 'challenges_outlined',
       activeIconName: 'challenges_filled',
       route: AppNavRoutes.challenges,

@@ -6,7 +6,7 @@ class AppRoutes {
   static const stories = '/stories';
   static const storyDetail = '/story/:id';
 
-  // Challenges
+  // Journeys
   static const challenges = '/challenges';
   static const journeyDetail = '/journey/:id';
 

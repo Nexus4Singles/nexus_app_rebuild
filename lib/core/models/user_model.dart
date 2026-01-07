@@ -142,6 +142,7 @@ class UserModel extends Equatable {
   final String? desiredQualities;
   final List<String>? hobbies;
   final List<String>? photos;
+  final List<String>? audioPrompts;
   final List<String>? likeMe;
   final List<String>? myLikes;
   final List<String>? mySaves;
@@ -201,6 +202,7 @@ class UserModel extends Equatable {
     this.desiredQualities,
     this.hobbies,
     this.photos,
+    this.audioPrompts,
     this.likeMe,
     this.myLikes,
     this.mySaves,
@@ -281,6 +283,7 @@ class UserModel extends Equatable {
       desiredQualities: data['desiredQualities'] as String?,
       hobbies: _parseStringList(data['hobbies']),
       photos: _parseStringList(data['photos']),
+      audioPrompts: _parseStringList(data['audioPrompts']),
       likeMe: _parseStringList(data['likeMe']),
       myLikes: _parseStringList(data['myLikes']),
       mySaves: _parseStringList(data['mySaves']),
@@ -345,6 +348,7 @@ class UserModel extends Equatable {
       'desiredQualities': desiredQualities,
       'hobbies': hobbies,
       'photos': photos,
+      'audioPrompts': audioPrompts,
       'likeMe': likeMe,
       'myLikes': myLikes,
       'mySaves': mySaves,
@@ -406,6 +410,7 @@ class UserModel extends Equatable {
     String? desiredQualities,
     List<String>? hobbies,
     List<String>? photos,
+    List<String>? audioPrompts,
     List<String>? likeMe,
     List<String>? myLikes,
     List<String>? mySaves,
@@ -460,6 +465,7 @@ class UserModel extends Equatable {
       desiredQualities: desiredQualities ?? this.desiredQualities,
       hobbies: hobbies ?? this.hobbies,
       photos: photos ?? this.photos,
+      audioPrompts: audioPrompts ?? this.audioPrompts,
       likeMe: likeMe ?? this.likeMe,
       myLikes: myLikes ?? this.myLikes,
       mySaves: mySaves ?? this.mySaves,

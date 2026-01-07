@@ -18,6 +18,7 @@ import '../../features/stories/presentation/screens/story_detail_screen.dart';
 
 import '../../features/challenges/presentation/screens/challenges_screen.dart';
 import '../../features/challenges/presentation/screens/journey_detail_screen.dart';
+import '../../features/challenges/presentation/screens/journey_gate_screen.dart';
 
 import '../../features/assessment/presentation/screens/assessments_hub_screen.dart';
 import '../../features/assessment/presentation/screens/assessment_intro_screen.dart';
@@ -56,23 +57,26 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     );
   }
 
+
+  // /journey/:id/mission/:missionId
+  if (segments.length == 4 && segments[0] == 'journey' && segments[2] == 'mission') {
+    final journeyId = segments[1];
+    final missionId = segments[3];
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => JourneyGateScreen(journeyId: journeyId, missionId: missionId),
+    );
+  }
+
   // /journey/:id
   if (segments.length == 2 && segments[0] == 'journey') {
     final journeyId = segments[1];
     return MaterialPageRoute(
       settings: settings,
-      builder: (_) => JourneyDetailScreen(journeyId: journeyId),
+      builder: (_) => JourneyDetailScreen(id: journeyId),
     );
   }
 
-  // /journey/:id
-  if (segments.length == 2 && segments[0] == "journey") {
-    final journeyId = segments[1];
-    return MaterialPageRoute(
-      settings: settings,
-      builder: (_) => JourneyDetailScreen(journeyId: journeyId),
-    );
-  }
 
   switch (uri.path) {
     case '/':

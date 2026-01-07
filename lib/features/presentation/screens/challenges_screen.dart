@@ -26,7 +26,7 @@ class ChallengesScreen extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
-        title: Text('Challenges', style: AppTextStyles.headlineLarge),
+        title: Text('Journeys', style: AppTextStyles.headlineLarge),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),

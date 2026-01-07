@@ -7,7 +7,7 @@
   "dimensions": [
     {
       "id": "attachment_security",
-      "name": "Attachment Security",
+      "name": "Emotional Security",
       "insights": {}
     },
     {
@@ -17,7 +17,7 @@
     },
     {
       "id": "conflict_resolution_pattern",
-      "name": "Conflict Resolution Pattern",
+      "name": "Conflict Repair Skills",
       "insights": {}
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "id": "hard_season_coping",
-      "name": "Hard-Season Coping",
+      "name": "Handling Stress",
       "insights": {}
     },
     {
@@ -103,7 +103,7 @@
     },
     {
       "id": "unresolved_wounds",
-      "name": "Unresolved Wounds",
+      "name": "Healing From Past Hurt",
       "insights": {}
     }
   ],
@@ -111,700 +111,780 @@
     {
       "number": 1,
       "dimension": "Emotional Regulation",
-      "text": "When I feel stressed or overwhelmed, I usually:",
+      "text": "When you feel stressed or overwhelmed, what do you most often do first?",
       "options": [
         {
           "id": "A",
-          "text": "Take time to reflect and calm myself",
+          "text": "Pause, reflect, and calm myself before I respond",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: self-regulation + reflective coping"
+          "outcomeSignal": "emotional_regulation_self_regulation_reflective_coping",
+          "outcomeLabel": "self-regulation + reflective coping"
         },
         {
           "id": "B",
-          "text": "Talk it through with someone I trust",
+          "text": "Talk it through with someone I trust and regain perspective",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: regulates with relational support"
+          "outcomeSignal": "emotional_regulation_regulates_with_relational_support",
+          "outcomeLabel": "regulates with relational support"
         },
         {
           "id": "C",
-          "text": "Distract myself until it passes",
+          "text": "Keep busy or distract myself until it fades",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded/Avoidant: distraction-based coping"
+          "outcomeSignal": "emotional_regulation_distraction_based_coping",
+          "outcomeLabel": "distraction-based coping"
         },
         {
           "id": "D",
-          "text": "Struggle to process it and feel stuck",
+          "text": "Feel stuck in it and struggle to process what I am feeling",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk/Unresolved: overwhelm/stuckness under stress"
+          "outcomeSignal": "emotional_regulation_overwhelm_stuckness_under_stress",
+          "outcomeLabel": "overwhelm/stuckness under stress"
         }
       ]
     },
     {
       "number": 2,
       "dimension": "Conflict Posture",
-      "text": "When someone close to me disagrees with me, I tend to:",
+      "text": "When you are emotionally hurt, how do you usually respond over time?",
       "options": [
         {
           "id": "A",
-          "text": "Listen carefully even if it’s uncomfortable",
+          "text": "I process it honestly and choose healing rather than carrying it forward",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: curiosity + emotional maturity in conflict"
+          "outcomeSignal": "conflict_posture_curiosity_emotional_maturity_in_conflict",
+          "outcomeLabel": "curiosity + emotional maturity in conflict"
         },
         {
           "id": "B",
-          "text": "Defend my position strongly",
+          "text": "I take time, but I eventually recover and move forward",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing/Guarded: defensiveness; needs softening"
+          "outcomeSignal": "conflict_posture_defensiveness_needs_softening",
+          "outcomeLabel": "defensiveness; needs softening"
         },
         {
           "id": "C",
-          "text": "Withdraw to avoid conflict",
+          "text": "I try not to think about it, even if it still affects me",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded/Avoidant: conflict avoidance/shutdown"
+          "outcomeSignal": "conflict_posture_conflict_avoidance_shutdown",
+          "outcomeLabel": "conflict avoidance/shutdown"
         },
         {
           "id": "D",
-          "text": "Feel personally attacked",
+          "text": "It stays with me for a long time and shapes how I relate to people",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk/Unresolved: high reactivity/sensitivity to disagreement"
+          "outcomeSignal": "conflict_posture_high_reactivity_sensitivity_to_disagreement",
+          "outcomeLabel": "high reactivity/sensitivity to disagreement"
         }
       ]
     },
     {
       "number": 3,
       "dimension": "Relational Self-Awareness",
-      "text": "I believe my strengths in relationships are mostly around:",
+      "text": "How comfortable are you with setting healthy boundaries, even when it may disappoint someone?",
       "options": [
         {
           "id": "A",
-          "text": "Communication and empathy",
+          "text": "Very comfortable, I can be kind and firm at the same time",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong: emotionally intelligent and relationally aware"
+          "outcomeSignal": "relational_self_awareness_emotionally_intelligent_and_relationally_aware",
+          "outcomeLabel": "emotionally intelligent and relationally aware"
         },
         {
           "id": "B",
-          "text": "Loyalty and commitment",
+          "text": "Somewhat comfortable, though I sometimes second guess myself",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: stable intention, still building clarity"
+          "outcomeSignal": "relational_self_awareness_stable_intention_still_building_clarity",
+          "outcomeLabel": "stable intention, still building clarity"
         },
         {
           "id": "C",
-          "text": "Providing support and stability",
+          "text": "I often avoid boundaries because I fear conflict or rejection",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: supportive but may avoid emotional depth"
+          "outcomeSignal": "relational_self_awareness_supportive_but_may_avoid_emotional_depth",
+          "outcomeLabel": "supportive but may avoid emotional depth"
         },
         {
           "id": "D",
-          "text": "I’m still figuring this out",
+          "text": "I struggle to set boundaries and often feel taken advantage of",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-Risk: low self-awareness about relational strengths"
+          "outcomeSignal": "relational_self_awareness_low_self_awareness_about_relational_strengths",
+          "outcomeLabel": "low self-awareness about relational strengths"
         }
       ]
     },
     {
       "number": 4,
       "dimension": "Spiritual Consistency",
-      "text": "My relationship with God currently feels:",
+      "text": "When you make a mistake or fall short, what is your usual inner response?",
       "options": [
         {
           "id": "A",
-          "text": "Consistent and growing",
+          "text": "I take responsibility, learn from it, and extend myself grace",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: faith is active + growing"
+          "outcomeSignal": "spiritual_consistency_faith_is_active_growing",
+          "outcomeLabel": "faith is active + growing"
         },
         {
           "id": "B",
-          "text": "Stable but routine",
+          "text": "I feel bad at first, but I work through it and do better",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: consistent but routine"
+          "outcomeSignal": "spiritual_consistency_consistent_but_routine",
+          "outcomeLabel": "consistent but routine"
         },
         {
           "id": "C",
-          "text": "Present but inconsistent",
+          "text": "I tend to be hard on myself and replay it repeatedly",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: inconsistent spiritual rhythm"
+          "outcomeSignal": "spiritual_consistency_inconsistent_spiritual_rhythm",
+          "outcomeLabel": "inconsistent spiritual rhythm"
         },
         {
           "id": "D",
-          "text": "Something I am rebuilding",
+          "text": "I feel deep shame and it is difficult to bounce back",
           "signalTier": "DEVELOPING",
           "weight": 1,
-          "outcomeSignal": "Restoration phase: rebuilding faith practices"
+          "outcomeSignal": "spiritual_consistency_rebuilding_faith_practices",
+          "outcomeLabel": "rebuilding faith practices"
         }
       ]
     },
     {
       "number": 5,
       "dimension": "Decision-Making Alignment",
-      "text": "When making major life decisions, I usually:",
+      "text": "How would you describe your relationship with your emotions?",
       "options": [
         {
           "id": "A",
-          "text": "Pray and seek biblical counsel",
+          "text": "I can name what I feel and respond wisely most of the time",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: spiritually anchored decisions"
+          "outcomeSignal": "decision_making_alignment_spiritually_anchored_decisions",
+          "outcomeLabel": "spiritually anchored decisions"
         },
         {
           "id": "B",
-          "text": "Reflect personally before deciding",
+          "text": "I understand my emotions somewhat, though I still learn as I go",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: reflective but internal"
+          "outcomeSignal": "decision_making_alignment_reflective_but_internal",
+          "outcomeLabel": "reflective but internal"
         },
         {
           "id": "C",
-          "text": "Ask trusted people for advice",
+          "text": "I often feel confused by what I feel or why I feel it",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: values counsel"
+          "outcomeSignal": "decision_making_alignment_values_counsel",
+          "outcomeLabel": "values counsel"
         },
         {
           "id": "D",
-          "text": "Act based on circumstances at the time",
+          "text": "My emotions frequently overwhelm me or control my reactions",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded/Reactive: circumstance-led"
+          "outcomeSignal": "decision_making_alignment_circumstance_led",
+          "outcomeLabel": "circumstance-led"
         }
       ]
     },
     {
       "number": 6,
       "dimension": "Spiritual Leadership Understanding",
-      "text": "In marriage, I believe spiritual leadership means:",
+      "text": "How do you handle unresolved conflict with someone close to you?",
       "options": [
         {
           "id": "A",
-          "text": "Serving one another selflessly",
+          "text": "I address it respectfully and work toward reconciliation",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: covenant service mindset"
+          "outcomeSignal": "spiritual_leadership_understanding_covenant_service_mindset",
+          "outcomeLabel": "covenant service mindset"
         },
         {
           "id": "B",
-          "text": "Leading by example in faith and character",
+          "text": "I try to resolve it, though I may need time to gather my thoughts",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: character-led leadership"
+          "outcomeSignal": "spiritual_leadership_understanding_character_led_leadership",
+          "outcomeLabel": "character-led leadership"
         },
         {
           "id": "C",
-          "text": "Encouraging each other spiritually",
+          "text": "I avoid it and hope it fades with time",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: mutual encouragement"
+          "outcomeSignal": "spiritual_leadership_understanding_mutual_encouragement",
+          "outcomeLabel": "mutual encouragement"
         },
         {
           "id": "D",
-          "text": "I’m still learning what this looks like",
+          "text": "It often escalates or lingers because I do not know how to handle it well",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: leadership theology forming"
+          "outcomeSignal": "spiritual_leadership_understanding_leadership_theology_forming",
+          "outcomeLabel": "leadership theology forming"
         }
       ]
     },
     {
       "number": 7,
       "dimension": "Conflict Resolution Pattern",
-      "text": "In past relationships, conflict usually ended with:",
+      "text": "How would you describe your ability to forgive someone who has hurt you?",
       "options": [
         {
           "id": "A",
-          "text": "Mutual understanding",
+          "text": "I forgive genuinely and release bitterness, even if healing takes time",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: resolution-oriented"
+          "outcomeSignal": "conflict_resolution_pattern_resolution_oriented",
+          "outcomeLabel": "resolution-oriented"
         },
         {
           "id": "B",
-          "text": "Temporary peace without resolution",
+          "text": "I work toward forgiveness, though it can be a process",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: peacekeeping without repair"
+          "outcomeSignal": "conflict_resolution_pattern_peacekeeping_without_repair",
+          "outcomeLabel": "peacekeeping without repair"
         },
         {
           "id": "C",
-          "text": "Emotional distance",
+          "text": "I say I forgive, but I often keep emotional distance afterward",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded/Avoidant: withdrawal"
+          "outcomeSignal": "conflict_resolution_pattern_withdrawal",
+          "outcomeLabel": "withdrawal"
         },
         {
           "id": "D",
-          "text": "Repeating the same issues",
+          "text": "I struggle deeply to forgive and I hold on to the pain",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: repetitive unresolved conflict"
+          "outcomeSignal": "conflict_resolution_pattern_repetitive_unresolved_conflict",
+          "outcomeLabel": "repetitive unresolved conflict"
         }
       ]
     },
     {
       "number": 8,
       "dimension": "Attachment Security",
-      "text": "I feel most secure in relationships when:",
+      "text": "When you feel lonely, what do you most often seek?",
       "options": [
         {
           "id": "A",
-          "text": "Communication is open and honest",
+          "text": "Healthy connection while staying grounded in my purpose",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: secure bonding"
+          "outcomeSignal": "attachment_security_secure_bonding",
+          "outcomeLabel": "secure bonding"
         },
         {
           "id": "B",
-          "text": "There is reassurance and consistency",
+          "text": "Comfort and companionship, but I try to stay balanced",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: reassurance-seeking"
+          "outcomeSignal": "attachment_security_reassurance_seeking",
+          "outcomeLabel": "reassurance-seeking"
         },
         {
           "id": "C",
-          "text": "I maintain independence",
+          "text": "Distraction or attention to help me feel better",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: high autonomy"
+          "outcomeSignal": "attachment_security_high_autonomy",
+          "outcomeLabel": "high autonomy"
         },
         {
           "id": "D",
-          "text": "There is minimal conflict",
+          "text": "Someone to fill the emptiness so I do not feel alone",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: conflict avoidance"
+          "outcomeSignal": "attachment_security_conflict_avoidance",
+          "outcomeLabel": "conflict avoidance"
         }
       ]
     },
     {
       "number": 9,
       "dimension": "Hurt Response",
-      "text": "When I feel emotionally hurt by someone I care about, I tend to:",
+      "text": "What best describes your view of marriage right now?",
       "options": [
         {
           "id": "A",
-          "text": "Express it calmly",
+          "text": "A covenant I am preparing for with intention and wisdom",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: calm expression"
+          "outcomeSignal": "hurt_response_calm_expression",
+          "outcomeLabel": "calm expression"
         },
         {
           "id": "B",
-          "text": "Hold it in until it builds up",
+          "text": "A meaningful partnership I desire and I am learning about",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: suppression"
+          "outcomeSignal": "hurt_response_suppression",
+          "outcomeLabel": "suppression"
         },
         {
           "id": "C",
-          "text": "Pull away emotionally",
+          "text": "A goal I want, but I have not thought through deeply yet",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded/Avoidant: withdrawal"
+          "outcomeSignal": "hurt_response_withdrawal",
+          "outcomeLabel": "withdrawal"
         },
         {
           "id": "D",
-          "text": "React strongly in the moment",
+          "text": "Something I fear, or feel uncertain about because of what I have seen",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: reactive escalation"
+          "outcomeSignal": "hurt_response_reactive_escalation",
+          "outcomeLabel": "reactive escalation"
         }
       ]
     },
     {
       "number": 10,
       "dimension": "Past Relationship Integration",
-      "text": "When I think about my past romantic experiences, I feel mostly:",
+      "text": "How consistent are you in living by your values when you are attracted to someone?",
       "options": [
         {
           "id": "A",
-          "text": "Grateful for lessons learned",
+          "text": "Very consistent, I do not compromise my convictions for attention or chemistry",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: processed with insight"
+          "outcomeSignal": "past_relationship_integration_processed_with_insight",
+          "outcomeLabel": "processed with insight"
         },
         {
           "id": "B",
-          "text": "Neutral and detached",
+          "text": "Mostly consistent, though I sometimes struggle in moments",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: emotional distancing"
+          "outcomeSignal": "past_relationship_integration_emotional_distancing",
+          "outcomeLabel": "emotional distancing"
         },
         {
           "id": "C",
-          "text": "Still emotionally affected",
+          "text": "Inconsistent, I often make decisions based on feelings",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: lingering emotional impact"
+          "outcomeSignal": "past_relationship_integration_lingering_emotional_impact",
+          "outcomeLabel": "lingering emotional impact"
         },
         {
           "id": "D",
-          "text": "Avoidant of thinking about them",
+          "text": "Not consistent, I often ignore my values when I really like someone",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: avoidance of processing"
+          "outcomeSignal": "past_relationship_integration_avoidance_of_processing",
+          "outcomeLabel": "avoidance of processing"
         }
       ]
     },
     {
       "number": 11,
       "dimension": "Unresolved Wounds",
-      "text": "There are unresolved emotional wounds from my past that:",
+      "text": "How would you describe your spiritual life as it relates to relationships and dating?",
       "options": [
         {
           "id": "A",
-          "text": "I have actively worked through",
+          "text": "My faith guides my choices and I seek God’s wisdom intentionally",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: healing work done"
+          "outcomeSignal": "unresolved_wounds_healing_work_done",
+          "outcomeLabel": "healing work done"
         },
         {
           "id": "B",
-          "text": "I am currently working through",
+          "text": "My faith matters, though I sometimes struggle to apply it consistently",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: healing in progress"
+          "outcomeSignal": "unresolved_wounds_healing_in_progress",
+          "outcomeLabel": "healing in progress"
         },
         {
           "id": "C",
-          "text": "I acknowledge but avoid",
+          "text": "My faith is important, but it does not shape my dating decisions much",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: acknowledged but avoided"
+          "outcomeSignal": "unresolved_wounds_acknowledged_but_avoided",
+          "outcomeLabel": "acknowledged but avoided"
         },
         {
           "id": "D",
-          "text": "I am unsure how to address",
+          "text": "I feel spiritually disconnected or unsure how to involve God in this area",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: unsure how to heal"
+          "outcomeSignal": "unresolved_wounds_unsure_how_to_heal",
+          "outcomeLabel": "unsure how to heal"
         }
       ]
     },
     {
       "number": 12,
       "dimension": "Trigger Handling",
-      "text": "If my future spouse triggered a painful memory or insecurity in me, I would likely:",
+      "text": "When you think about your future spouse, what matters most to you?",
       "options": [
         {
           "id": "A",
-          "text": "Communicate it and seek understanding",
+          "text": "Character and spiritual alignment, even more than attraction",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: communicate + repair"
+          "outcomeSignal": "trigger_handling_communicate_repair",
+          "outcomeLabel": "communicate + repair"
         },
         {
           "id": "B",
-          "text": "Feel unsettled but manage privately",
+          "text": "A balance of character, compatibility, and attraction",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: private regulation"
+          "outcomeSignal": "trigger_handling_private_regulation",
+          "outcomeLabel": "private regulation"
         },
         {
           "id": "C",
-          "text": "Withdraw or shut down",
+          "text": "Strong attraction and shared interests first",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: shutdown response"
+          "outcomeSignal": "trigger_handling_shutdown_response",
+          "outcomeLabel": "shutdown response"
         },
         {
           "id": "D",
-          "text": "React defensively",
+          "text": "Mainly how they make me feel and whether they choose me",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: defensive escalation"
+          "outcomeSignal": "trigger_handling_defensive_escalation",
+          "outcomeLabel": "defensive escalation"
         }
       ]
     },
     {
       "number": 13,
       "dimension": "Marriage Expectations",
-      "text": "I believe marriage will mostly:",
+      "text": "How ready do you feel to communicate your needs clearly without fear or pressure?",
       "options": [
         {
           "id": "A",
-          "text": "Refine my character",
+          "text": "Ready, I can express myself calmly and honestly",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: character refinement"
+          "outcomeSignal": "marriage_expectations_character_refinement",
+          "outcomeLabel": "character refinement"
         },
         {
           "id": "B",
-          "text": "Provide companionship and support",
+          "text": "Somewhat ready, though I sometimes hold back",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: companionship focus"
+          "outcomeSignal": "marriage_expectations_companionship_focus",
+          "outcomeLabel": "companionship focus"
         },
         {
           "id": "C",
-          "text": "Bring fulfillment and joy",
+          "text": "Not very ready, I often fear being misunderstood or rejected",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing/Guarded: fulfillment focus"
+          "outcomeSignal": "marriage_expectations_fulfillment_focus",
+          "outcomeLabel": "fulfillment focus"
         },
         {
           "id": "D",
-          "text": "Solve my loneliness struggles",
+          "text": "Not ready, I often shut down or become defensive",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: rescue expectation"
+          "outcomeSignal": "marriage_expectations_rescue_expectation",
+          "outcomeLabel": "rescue expectation"
         }
       ]
     },
     {
       "number": 14,
       "dimension": "Partner Discernment",
-      "text": "When I imagine my future spouse, I think most about:",
+      "text": "How do you respond when you see other people getting married and moving forward?",
       "options": [
         {
           "id": "A",
-          "text": "Shared values and faith",
+          "text": "I feel hopeful and focused on my own journey",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: values-first"
+          "outcomeSignal": "partner_discernment_values_first",
+          "outcomeLabel": "values-first"
         },
         {
           "id": "B",
-          "text": "Emotional connection",
+          "text": "I feel a mix of joy and longing, but I stay grounded",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: emotional focus"
+          "outcomeSignal": "partner_discernment_emotional_focus",
+          "outcomeLabel": "emotional focus"
         },
         {
           "id": "C",
-          "text": "Character and integrity",
+          "text": "I often feel pressure or comparison, even if I hide it",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: character-first"
+          "outcomeSignal": "partner_discernment_character_first",
+          "outcomeLabel": "character-first"
         },
         {
           "id": "D",
-          "text": "Specific traits or roles",
+          "text": "I feel discouraged, anxious, or resentful at times",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded/At-risk: checklist driven"
+          "outcomeSignal": "partner_discernment_checklist_driven",
+          "outcomeLabel": "checklist driven"
         }
       ]
     },
     {
       "number": 15,
       "dimension": "Hard-Season Coping",
-      "text": "In a difficult season of marriage, my instinct would be to:",
+      "text": "How would you describe your financial habits and stewardship right now?",
       "options": [
         {
           "id": "A",
-          "text": "Work through it intentionally",
+          "text": "Stable and responsible, I plan and manage money intentionally",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: intentional repair"
+          "outcomeSignal": "hard_season_coping_intentional_repair",
+          "outcomeLabel": "intentional repair"
         },
         {
           "id": "B",
-          "text": "Seek counseling or mentorship",
+          "text": "Fairly responsible, though I still have areas to improve",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: help-seeking"
+          "outcomeSignal": "hard_season_coping_help_seeking",
+          "outcomeLabel": "help-seeking"
         },
         {
           "id": "C",
-          "text": "Endure quietly",
+          "text": "Unstable, I struggle with planning or impulsive spending",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: silent endurance"
+          "outcomeSignal": "hard_season_coping_silent_endurance",
+          "outcomeLabel": "silent endurance"
         },
         {
           "id": "D",
-          "text": "Feel uncertain how to proceed",
+          "text": "Very unstable, finances often stress me and I avoid facing them",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: low coping clarity"
+          "outcomeSignal": "hard_season_coping_low_coping_clarity",
+          "outcomeLabel": "low coping clarity"
         }
       ]
     },
     {
       "number": 16,
       "dimension": "Sacrifice Readiness",
-      "text": "Marriage requires daily sacrifice. This idea makes me feel:",
+      "text": "How would you describe your readiness to partner with someone emotionally in marriage?",
       "options": [
         {
           "id": "A",
-          "text": "Prepared and willing",
+          "text": "Ready, I can love deeply while staying emotionally healthy",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: covenant readiness"
+          "outcomeSignal": "sacrifice_readiness_covenant_readiness",
+          "outcomeLabel": "covenant readiness"
         },
         {
           "id": "B",
-          "text": "Cautious but open",
+          "text": "Mostly ready, though I still have some growth areas",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: cautious openness"
+          "outcomeSignal": "sacrifice_readiness_cautious_openness",
+          "outcomeLabel": "cautious openness"
         },
         {
           "id": "C",
-          "text": "Unsure of my capacity",
+          "text": "Not very ready, I often guard myself or struggle with vulnerability",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: low confidence"
+          "outcomeSignal": "sacrifice_readiness_low_confidence",
+          "outcomeLabel": "low confidence"
         },
         {
           "id": "D",
-          "text": "Overwhelmed",
+          "text": "Not ready, I feel emotionally unprepared for that level of partnership",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: overwhelmed"
+          "outcomeSignal": "sacrifice_readiness_overwhelmed",
+          "outcomeLabel": "overwhelmed"
         }
       ]
     },
     {
       "number": 17,
       "dimension": "Priority Management",
-      "text": "If my spouse’s needs conflicted with my personal goals for a season, I would likely:",
+      "text": "When you picture building a home and family, what feels most true for you right now?",
       "options": [
         {
           "id": "A",
-          "text": "Reevaluate priorities prayerfully",
+          "text": "I feel prepared to build a godly home with wisdom and humility",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: prayerful reprioritization"
+          "outcomeSignal": "priority_management_prayerful_reprioritization",
+          "outcomeLabel": "prayerful reprioritization"
         },
         {
           "id": "B",
-          "text": "Compromise temporarily",
+          "text": "I feel hopeful and I am learning what it takes",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: temporary compromise"
+          "outcomeSignal": "priority_management_temporary_compromise",
+          "outcomeLabel": "temporary compromise"
         },
         {
           "id": "C",
-          "text": "Struggle internally but comply",
+          "text": "I desire it, but I do not feel prepared yet",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: internal struggle"
+          "outcomeSignal": "priority_management_internal_struggle",
+          "outcomeLabel": "internal struggle"
         },
         {
           "id": "D",
-          "text": "Feel resentful",
+          "text": "It feels overwhelming and I have many fears about it",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: resentment"
+          "outcomeSignal": "priority_management_resentment",
+          "outcomeLabel": "resentment"
         }
       ]
     },
     {
       "number": 18,
       "dimension": "Long-Term Orientation",
-      "text": "When I picture myself 10–15 years into marriage, I feel:",
+      "text": "How well do you manage sexual boundaries as a Christian single?",
       "options": [
         {
           "id": "A",
-          "text": "Hopeful and grounded",
+          "text": "Well, I have clear boundaries and I honor them consistently",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: hopeful & grounded"
+          "outcomeSignal": "long_term_orientation_hopeful_grounded",
+          "outcomeLabel": "hopeful & grounded"
         },
         {
           "id": "B",
-          "text": "Realistic but cautious",
+          "text": "I try, though it can be challenging and I need accountability",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: realistic caution"
+          "outcomeSignal": "long_term_orientation_realistic_caution",
+          "outcomeLabel": "realistic caution"
         },
         {
           "id": "C",
-          "text": "Uncertain about sustainability",
+          "text": "I struggle often and I do not have strong boundaries",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: sustainability doubt"
+          "outcomeSignal": "long_term_orientation_sustainability_doubt",
+          "outcomeLabel": "sustainability doubt"
         },
         {
           "id": "D",
-          "text": "Anxious about change",
+          "text": "I feel trapped in patterns that do not align with my values",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: anxiety about change"
+          "outcomeSignal": "long_term_orientation_anxiety_about_change",
+          "outcomeLabel": "anxiety about change"
         }
       ]
     },
     {
       "number": 19,
       "dimension": "Family Background & Learned Patterns",
-      "text": "Growing up, the way conflict was handled in my home was:",
+      "text": "How would you describe your emotional atmosphere in relationships?",
       "options": [
         {
           "id": "A",
-          "text": "Calm, respectful, and solutions-focused",
+          "text": "Peaceful and stable, I tend to bring calm into connection",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: learned healthy conflict modeling"
+          "outcomeSignal": "family_background_learned_patterns_learned_healthy_conflict_modeling",
+          "outcomeLabel": "learned healthy conflict modeling"
         },
         {
           "id": "B",
-          "text": "Mixed — sometimes calm, sometimes tense",
+          "text": "Mixed, sometimes calm and sometimes tense depending on the season",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: some healthy modeling but inconsistent"
+          "outcomeSignal": "family_background_learned_patterns_some_healthy_modeling_but_inconsistent",
+          "outcomeLabel": "some healthy modeling but inconsistent"
         },
         {
           "id": "C",
-          "text": "Mostly avoided, silent, or swept under the rug",
+          "text": "Often tense, I can be reactive or easily triggered",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: learned avoidance and unspoken resentment"
+          "outcomeSignal": "family_background_learned_patterns_learned_avoidance_and_unspoken_resentment",
+          "outcomeLabel": "learned avoidance and unspoken resentment"
         },
         {
           "id": "D",
-          "text": "Often loud, hurtful, or unsafe",
+          "text": "Very tense, emotional conflict follows me often",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-Risk: learned fear-based conflict and instability"
+          "outcomeSignal": "family_background_learned_patterns_learned_fear_based_conflict_and_instability",
+          "outcomeLabel": "learned fear-based conflict and instability"
         }
       ]
     },
     {
       "number": 20,
       "dimension": "Family Background & Learned Patterns",
-      "text": "When I notice a negative pattern from my upbringing showing up in me, I usually:",
+      "text": "Overall, how ready do you feel for a healthy, godly marriage at this stage of your life?",
       "options": [
         {
           "id": "A",
-          "text": "Name it and choose a healthier response intentionally",
+          "text": "Ready, I feel emotionally, spiritually, and practically prepared",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: aware and actively rewires patterns"
+          "outcomeSignal": "family_background_learned_patterns_aware_and_actively_rewires_patterns",
+          "outcomeLabel": "aware and actively rewires patterns"
         },
         {
           "id": "B",
-          "text": "Notice it later and try to correct it over time",
+          "text": "Mostly ready, I have strong foundations but I am still growing",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: aware but inconsistent change"
+          "outcomeSignal": "family_background_learned_patterns_aware_but_inconsistent_change",
+          "outcomeLabel": "aware but inconsistent change"
         },
         {
           "id": "C",
-          "text": "Struggle to identify patterns until they cause problems",
+          "text": "Somewhat ready, but there are key areas I need to work on",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: limited awareness; change happens reactively"
+          "outcomeSignal": "family_background_learned_patterns_limited_awareness_change_happens_reactively",
+          "outcomeLabel": "limited awareness; change happens reactively"
         },
         {
           "id": "D",
-          "text": "Feel stuck repeating patterns even when I don’t want to",
+          "text": "Not ready yet, I need significant growth and healing first",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-Risk: high likelihood of repeating harmful cycles"
+          "outcomeSignal": "family_background_learned_patterns_high_likelihood_of_repeating_harmful_cycles",
+          "outcomeLabel": "high likelihood of repeating harmful cycles"
         }
       ]
     }

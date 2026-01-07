@@ -126,7 +126,7 @@ class HomeScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 12),
           _SectionCard(
-            title: 'Challenges',
+            title: 'Journeys',
             subtitle: 'Preview',
             child: Column(
               children: const [

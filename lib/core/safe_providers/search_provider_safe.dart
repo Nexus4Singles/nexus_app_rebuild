@@ -25,9 +25,9 @@ final safeSearchProvider = Provider<List<SafeSearchItem>>((ref) {
       routeTitle: 'Assessment',
     ),
     SafeSearchItem(
-      title: 'Challenges',
+      title: 'Journeys',
       subtitle: '3 mins daily',
-      routeTitle: 'Challenges',
+      routeTitle: 'Journeys',
     ),
   ];
 });

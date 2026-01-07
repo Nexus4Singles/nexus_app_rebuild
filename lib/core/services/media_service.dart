@@ -12,6 +12,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 
 /// Service for handling media operations: photos and audio recordings
 class MediaService {
@@ -201,6 +202,37 @@ class MediaService {
       return await pickImageFromCamera();
     } else {
       return await pickImageFromGallery();
+    }
+  }
+
+
+  // ============================================================================
+  // FACE DETECTION (ML Kit)
+  // ============================================================================
+  /// Detect if an image contains at least one human face.
+  ///
+  /// Returns:
+  /// - true: face detected
+  /// - false: no face detected
+  /// - null: detection failed technically (fail-open behavior)
+  Future<bool?> hasHumanFace(String filePath) async {
+    try {
+      final options = FaceDetectorOptions(
+        performanceMode: FaceDetectorMode.fast,
+        enableContours: false,
+        enableLandmarks: false,
+      );
+
+      final detector = FaceDetector(options: options);
+      final input = InputImage.fromFilePath(filePath);
+
+      final faces = await detector.processImage(input);
+      await detector.close();
+
+      return faces.isNotEmpty;
+    } catch (e) {
+      debugPrint('Face detection failed (fail-open): $e');
+      return null;
     }
   }
 

@@ -115,33 +115,38 @@
       "options": [
         {
           "id": "A",
-          "text": "At peace with what has passed",
+          "text": "A steady sense of peace, even if I still remember it clearly",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: peace with past"
+          "outcomeSignal": "emotional_state_peace_with_past",
+          "outcomeLabel": "peace with past"
         },
         {
           "id": "B",
-          "text": "Grateful but still reflective",
+          "text": "Gratitude and growth, but I still reflect on it from time to time",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: reflective healing"
+          "outcomeSignal": "emotional_state_reflective_healing",
+          "outcomeLabel": "reflective healing"
         },
         {
           "id": "C",
-          "text": "Emotionally affected",
+          "text": "It still affects me emotionally, especially on certain days",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: emotionally affected"
+          "outcomeSignal": "emotional_state_emotionally_affected",
+          "outcomeLabel": "emotionally affected"
         },
         {
           "id": "D",
-          "text": "Overwhelmed or unsettled",
+          "text": "I feel deeply unsettled or overwhelmed when it comes up",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: active distress"
+          "outcomeSignal": "emotional_state_active_distress",
+          "outcomeLabel": "active distress"
         }
-      ]
+      ],
+      "question": "When you think about your previous marriage today, what emotion shows up most often?"
     },
     {
       "number": 2,
@@ -150,33 +155,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Something I’ve processed deeply",
+          "text": "I have processed it deeply, and I can talk about it with emotional stability",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: processed deeply"
+          "outcomeSignal": "meaning_making_processed_deeply",
+          "outcomeLabel": "processed deeply"
         },
         {
           "id": "B",
-          "text": "Something I understand intellectually",
+          "text": "I understand what happened, but some parts still feel unresolved emotionally",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: intellectual clarity"
+          "outcomeSignal": "meaning_making_intellectual_clarity",
+          "outcomeLabel": "intellectual clarity"
         },
         {
           "id": "C",
-          "text": "Something I’m still trying to make sense of",
+          "text": "I am still trying to understand the full meaning of what happened",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: still making sense"
+          "outcomeSignal": "meaning_making_still_making_sense",
+          "outcomeLabel": "still making sense"
         },
         {
           "id": "D",
-          "text": "Something I avoid thinking about",
+          "text": "I avoid thinking about it because it feels too painful or confusing",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: avoidance"
+          "outcomeSignal": "meaning_making_avoidance",
+          "outcomeLabel": "avoidance"
         }
-      ]
+      ],
+      "question": "When you reflect on your previous marriage and how that season came to an end, what best describes the meaning you have made of it?"
     },
     {
       "number": 3,
@@ -185,33 +195,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Share openly with appropriate boundaries",
+          "text": "I can share honestly with wisdom and healthy boundaries",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: open with boundaries"
+          "outcomeSignal": "disclosure_boundaries_open_with_boundaries",
+          "outcomeLabel": "open with boundaries"
         },
         {
           "id": "B",
-          "text": "Give a brief, neutral response",
+          "text": "I give a simple, respectful response without going into details",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: neutral sharing"
+          "outcomeSignal": "disclosure_boundaries_neutral_sharing",
+          "outcomeLabel": "neutral sharing"
         },
         {
           "id": "C",
-          "text": "Change the subject",
+          "text": "I usually redirect the conversation because it feels uncomfortable",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: avoidance"
+          "outcomeSignal": "disclosure_boundaries_avoidance",
+          "outcomeLabel": "avoidance"
         },
         {
           "id": "D",
-          "text": "Feel emotionally triggered",
+          "text": "I feel emotionally triggered or distressed when the topic comes up",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: emotional triggering"
+          "outcomeSignal": "disclosure_boundaries_emotional_triggering",
+          "outcomeLabel": "emotional triggering"
         }
-      ]
+      ],
+      "question": "When someone asks about your previous marriage, what is your most common response?"
     },
     {
       "number": 4,
@@ -220,33 +235,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Reached a place of peace and acceptance",
+          "text": "I am at peace and have accepted what happened",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: peace & acceptance"
+          "outcomeSignal": "healing_progress_peace_acceptance",
+          "outcomeLabel": "peace & acceptance"
         },
         {
           "id": "B",
-          "text": "Made significant progress",
+          "text": "I have made meaningful progress, though I am still growing",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: significant progress"
+          "outcomeSignal": "healing_progress_significant_progress",
+          "outcomeLabel": "significant progress"
         },
         {
           "id": "C",
-          "text": "Started but not gone far",
+          "text": "I have started healing, but I still feel stuck in some areas",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: early-stage healing"
+          "outcomeSignal": "healing_progress_early_stage_healing",
+          "outcomeLabel": "early-stage healing"
         },
         {
           "id": "D",
-          "text": "Not intentionally addressed it",
+          "text": "I have not intentionally faced or processed the pain yet",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: unaddressed"
+          "outcomeSignal": "healing_progress_unaddressed",
+          "outcomeLabel": "unaddressed"
         }
-      ]
+      ],
+      "question": "When it comes to healing from the loss or ending of your marriage, where would you honestly say you are right now?"
     },
     {
       "number": 5,
@@ -255,33 +275,38 @@
       "options": [
         {
           "id": "A",
-          "text": "No longer disrupt my emotional balance",
+          "text": "I notice them, but they no longer disrupt my emotional balance",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: integrated memories"
+          "outcomeSignal": "memory_intrusion_integrated_memories",
+          "outcomeLabel": "integrated memories"
         },
         {
           "id": "B",
-          "text": "Occasionally resurface",
+          "text": "They show up occasionally, but I can regain my calm fairly quickly",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: occasional resurfacing"
+          "outcomeSignal": "memory_intrusion_occasional_resurfacing",
+          "outcomeLabel": "occasional resurfacing"
         },
         {
           "id": "C",
-          "text": "Frequently affect my mood",
+          "text": "They come up often and affect my mood or emotional stability",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: frequent impact"
+          "outcomeSignal": "memory_intrusion_frequent_impact",
+          "outcomeLabel": "frequent impact"
         },
         {
           "id": "D",
-          "text": "Still feel raw",
+          "text": "They still feel raw and overwhelming when they surface",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: raw grief"
+          "outcomeSignal": "memory_intrusion_raw_grief",
+          "outcomeLabel": "raw grief"
         }
-      ]
+      ],
+      "question": "When memories of your marriage come up unexpectedly, what is usually true for you?"
     },
     {
       "number": 6,
@@ -290,33 +315,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Normal human companionship needs",
+          "text": "A normal desire for companionship and partnership",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: companionship need"
+          "outcomeSignal": "loneliness_driver_companionship_need",
+          "outcomeLabel": "companionship need"
         },
         {
           "id": "B",
-          "text": "Missing partnership but without pain",
+          "text": "Missing shared life with someone, but not from a wounded place",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: longing without pain"
+          "outcomeSignal": "loneliness_driver_longing_without_pain",
+          "outcomeLabel": "longing without pain"
         },
         {
           "id": "C",
-          "text": "Unresolved grief or loss",
+          "text": "Unresolved grief, loss, or emotional emptiness that still feels heavy",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: grief-driven"
+          "outcomeSignal": "loneliness_driver_grief_driven",
+          "outcomeLabel": "grief-driven"
         },
         {
           "id": "D",
-          "text": "Fear of being alone again",
+          "text": "Fear of being alone again, even when I am doing well otherwise",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: fear-driven"
+          "outcomeSignal": "loneliness_driver_fear_driven",
+          "outcomeLabel": "fear-driven"
         }
-      ]
+      ],
+      "question": "When loneliness shows up for you, what does it usually connect to most?"
     },
     {
       "number": 7,
@@ -325,33 +355,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Hopeful and grounded",
+          "text": "Hopeful, grounded, and open to love again",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: grounded hope"
+          "outcomeSignal": "remarriage_posture_grounded_hope",
+          "outcomeLabel": "grounded hope"
         },
         {
           "id": "B",
-          "text": "Cautiously optimistic",
+          "text": "Cautiously optimistic, but still paying attention to my healing",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: cautious optimism"
+          "outcomeSignal": "remarriage_posture_cautious_optimism",
+          "outcomeLabel": "cautious optimism"
         },
         {
           "id": "C",
-          "text": "Emotionally guarded",
+          "text": "Guarded, even though I want something meaningful",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: emotional guarding"
+          "outcomeSignal": "remarriage_posture_emotional_guarding",
+          "outcomeLabel": "emotional guarding"
         },
         {
           "id": "D",
-          "text": "Anxious or fearful",
+          "text": "Anxious or fearful that I could be hurt again",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: fear/anxiety"
+          "outcomeSignal": "remarriage_posture_fear_anxiety",
+          "outcomeLabel": "fear/anxiety"
         }
-      ]
+      ],
+      "question": "When you imagine entering another marriage, what best describes your emotional posture?"
     },
     {
       "number": 8,
@@ -360,33 +395,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Strong and healthy",
+          "text": "Strong and healthy, with good boundaries",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: healthy trust"
+          "outcomeSignal": "trust_capacity_healthy_trust",
+          "outcomeLabel": "healthy trust"
         },
         {
           "id": "B",
-          "text": "Possible with time",
+          "text": "Possible, but I know it will take time and consistency",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: rebuilding trust"
+          "outcomeSignal": "trust_capacity_rebuilding_trust",
+          "outcomeLabel": "rebuilding trust"
         },
         {
           "id": "C",
-          "text": "Difficult but desired",
+          "text": "Difficult, though I genuinely desire to trust again",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: difficult but desired"
+          "outcomeSignal": "trust_capacity_difficult_but_desired",
+          "outcomeLabel": "difficult but desired"
         },
         {
           "id": "D",
-          "text": "Very challenging",
+          "text": "Very challenging, because fear still has a strong voice",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: very challenging"
+          "outcomeSignal": "trust_capacity_very_challenging",
+          "outcomeLabel": "very challenging"
         }
-      ]
+      ],
+      "question": "How would you describe your current ability to trust someone deeply in a future marriage?"
     },
     {
       "number": 9,
@@ -395,33 +435,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Handling it differently than before",
+          "text": "Whether I can handle conflict in a healthier way than before",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: growth focus"
+          "outcomeSignal": "conflict_fear_growth_focus",
+          "outcomeLabel": "growth focus"
         },
         {
           "id": "B",
-          "text": "Repeating unhealthy patterns",
+          "text": "The possibility of repeating painful patterns",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: pattern awareness"
+          "outcomeSignal": "conflict_fear_pattern_awareness",
+          "outcomeLabel": "pattern awareness"
         },
         {
           "id": "C",
-          "text": "Being misunderstood",
+          "text": "Being misunderstood or emotionally dismissed",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: validation insecurity"
+          "outcomeSignal": "conflict_fear_validation_insecurity",
+          "outcomeLabel": "validation insecurity"
         },
         {
           "id": "D",
-          "text": "Being hurt again",
+          "text": "Being deeply hurt again through conflict",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: fear of pain"
+          "outcomeSignal": "conflict_fear_fear_of_pain",
+          "outcomeLabel": "fear of pain"
         }
-      ]
+      ],
+      "question": "When you imagine disagreement or tension in a future marriage, what concern feels most real for you?"
     },
     {
       "number": 10,
@@ -430,33 +475,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Clearly and humbly",
+          "text": "I can see it clearly and take ownership with humility",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: humble ownership"
+          "outcomeSignal": "accountability_humble_ownership",
+          "outcomeLabel": "humble ownership"
         },
         {
           "id": "B",
-          "text": "Partially",
+          "text": "I can see some of it, but I still struggle with parts",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: partial insight"
+          "outcomeSignal": "accountability_partial_insight",
+          "outcomeLabel": "partial insight"
         },
         {
           "id": "C",
-          "text": "With difficulty",
+          "text": "It is hard for me to face, even when I try",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: defensive difficulty"
+          "outcomeSignal": "accountability_defensive_difficulty",
+          "outcomeLabel": "defensive difficulty"
         },
         {
           "id": "D",
-          "text": "Not yet",
+          "text": "I have not reflected on this yet",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: no reflection"
+          "outcomeSignal": "accountability_no_reflection",
+          "outcomeLabel": "no reflection"
         }
-      ]
+      ],
+      "question": "When you look back on your previous marriage, how able are you to reflect honestly on how you showed up, what you learned, and what you would do differently now?"
     },
     {
       "number": 11,
@@ -465,33 +515,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Emotional awareness",
+          "text": "My emotional awareness and ability to self reflect",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong: emotionally aware and reflective"
+          "outcomeSignal": "growth_domain_emotionally_aware_and_reflective",
+          "outcomeLabel": "emotionally aware and reflective"
         },
         {
           "id": "B",
-          "text": "Spiritual maturity",
+          "text": "My spiritual maturity and connection with God",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: growing inner stability and alignment"
+          "outcomeSignal": "growth_domain_growing_inner_stability_and_alignment",
+          "outcomeLabel": "growing inner stability and alignment"
         },
         {
           "id": "C",
-          "text": "Communication skills",
+          "text": "My communication and how I express myself",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: improving expression but still inconsistent"
+          "outcomeSignal": "growth_domain_improving_expression_but_still_inconsistent",
+          "outcomeLabel": "improving expression but still inconsistent"
         },
         {
           "id": "D",
-          "text": "I’m still discovering this",
+          "text": "I am still trying to understand what growth looks like for me",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-Risk: unclear personal growth after separation"
+          "outcomeSignal": "growth_domain_unclear_personal_growth_after_separation",
+          "outcomeLabel": "unclear personal growth after separation"
         }
-      ]
+      ],
+      "question": "Since your marriage ended, where do you sense the most genuine growth in your life?"
     },
     {
       "number": 12,
@@ -500,33 +555,38 @@
       "options": [
         {
           "id": "A",
-          "text": "I’ve intentionally done inner work",
+          "text": "I have intentionally done inner work and allowed real transformation",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: inner work"
+          "outcomeSignal": "change_basis_inner_work",
+          "outcomeLabel": "inner work"
         },
         {
           "id": "B",
-          "text": "I’ve learned through reflection",
+          "text": "I have learned through reflection and life experience",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: reflection-based"
+          "outcomeSignal": "change_basis_reflection_based",
+          "outcomeLabel": "reflection-based"
         },
         {
           "id": "C",
-          "text": "Time has passed",
+          "text": "Enough time has passed, and I feel different",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: time-only healing"
+          "outcomeSignal": "change_basis_time_only_healing",
+          "outcomeLabel": "time-only healing"
         },
         {
           "id": "D",
-          "text": "I’m not fully sure yet",
+          "text": "I am not fully sure yet what would be different",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: unsure"
+          "outcomeSignal": "change_basis_unsure",
+          "outcomeLabel": "unsure"
         }
-      ]
+      ],
+      "question": "If you entered a new marriage, why do you believe you would show up differently this time?"
     },
     {
       "number": 13,
@@ -535,33 +595,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Deeper and more realistic",
+          "text": "Deeper, more realistic, and grounded in wisdom",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: mature theology"
+          "outcomeSignal": "marriage_understanding_mature_theology",
+          "outcomeLabel": "mature theology"
         },
         {
           "id": "B",
-          "text": "More cautious but wiser",
+          "text": "More cautious, but also more mature and thoughtful",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: cautious wisdom"
+          "outcomeSignal": "marriage_understanding_cautious_wisdom",
+          "outcomeLabel": "cautious wisdom"
         },
         {
           "id": "C",
-          "text": "More guarded",
+          "text": "More guarded, because I have learned pain is real",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: protection focus"
+          "outcomeSignal": "marriage_understanding_protection_focus",
+          "outcomeLabel": "protection focus"
         },
         {
           "id": "D",
-          "text": "Still forming",
+          "text": "Still forming, but I want to grow in clarity",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: forming view"
+          "outcomeSignal": "marriage_understanding_forming_view",
+          "outcomeLabel": "forming view"
         }
-      ]
+      ],
+      "question": "Compared to before, how would you describe your understanding of marriage today?"
     },
     {
       "number": 14,
@@ -570,33 +635,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Guide and sustain us daily",
+          "text": "To guide and sustain our love through daily dependence on Him",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: sustaining guide"
+          "outcomeSignal": "god_s_role_framing_sustaining_guide",
+          "outcomeLabel": "sustaining guide"
         },
         {
           "id": "B",
-          "text": "Heal what was broken before",
+          "text": "To heal the wounds of the past and help me love again",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing/Guarded: repair focus"
+          "outcomeSignal": "god_s_role_framing_repair_focus",
+          "outcomeLabel": "repair focus"
         },
         {
           "id": "C",
-          "text": "Restore hope and trust",
+          "text": "To restore hope, trust, and emotional stability in my heart",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: hope restoration"
+          "outcomeSignal": "god_s_role_framing_hope_restoration",
+          "outcomeLabel": "hope restoration"
         },
         {
           "id": "D",
-          "text": "I am still discerning this",
+          "text": "I am still discerning what His role would look like for me",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: discerning"
+          "outcomeSignal": "god_s_role_framing_discerning",
+          "outcomeLabel": "discerning"
         }
-      ]
+      ],
+      "question": "What do you believe God’s role would be in your future marriage?"
     },
     {
       "number": 15,
@@ -605,33 +675,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Peaceful and assured",
+          "text": "I feel peaceful and assured before God",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: peace"
+          "outcomeSignal": "spiritual_peace_peace",
+          "outcomeLabel": "peace"
         },
         {
           "id": "B",
-          "text": "Prayerfully hopeful",
+          "text": "I feel hopeful and prayerful as I seek clarity",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: hopeful discernment"
+          "outcomeSignal": "spiritual_peace_hopeful_discernment",
+          "outcomeLabel": "hopeful discernment"
         },
         {
           "id": "C",
-          "text": "Conflicted at times",
+          "text": "I feel conflicted at times, even though I want to move forward",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: conflicted"
+          "outcomeSignal": "spiritual_peace_conflicted",
+          "outcomeLabel": "conflicted"
         },
         {
           "id": "D",
-          "text": "Uncertain or hesitant",
+          "text": "I feel uncertain or spiritually unsettled about it",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: uncertain"
+          "outcomeSignal": "spiritual_peace_uncertain",
+          "outcomeLabel": "uncertain"
         }
-      ]
+      ],
+      "question": "When you consider remarriage as a Christian, what best describes your spiritual posture?"
     },
     {
       "number": 16,
@@ -640,33 +715,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Communicate openly and self-regulate",
+          "text": "I would self regulate, communicate openly, and stay emotionally present",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: regulated communication"
+          "outcomeSignal": "trigger_response_regulated_communication",
+          "outcomeLabel": "regulated communication"
         },
         {
           "id": "B",
-          "text": "Feel uncomfortable but manage",
+          "text": "I would feel discomfort, but I would manage it with honesty",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: managed discomfort"
+          "outcomeSignal": "trigger_response_managed_discomfort",
+          "outcomeLabel": "managed discomfort"
         },
         {
           "id": "C",
-          "text": "Withdraw emotionally",
+          "text": "I would likely withdraw emotionally to protect myself",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: withdrawal"
+          "outcomeSignal": "trigger_response_withdrawal",
+          "outcomeLabel": "withdrawal"
         },
         {
           "id": "D",
-          "text": "React defensively",
+          "text": "I might react defensively or become easily triggered",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: defensive reaction"
+          "outcomeSignal": "trigger_response_defensive_reaction",
+          "outcomeLabel": "defensive reaction"
         }
-      ]
+      ],
+      "question": "If something about your future spouse reminded you of your former spouse, how do you think you would respond?"
     },
     {
       "number": 17,
@@ -675,33 +755,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Yes, consistently",
+          "text": "I am ready, and I can stay consistent in this",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: low risk"
+          "outcomeSignal": "comparison_risk_low_risk",
+          "outcomeLabel": "low risk"
         },
         {
           "id": "B",
-          "text": "Mostly, with awareness",
+          "text": "Mostly ready, and I stay aware when comparison tries to show up",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: managed awareness"
+          "outcomeSignal": "comparison_risk_managed_awareness",
+          "outcomeLabel": "managed awareness"
         },
         {
           "id": "C",
-          "text": "Sometimes",
+          "text": "Sometimes I compare without meaning to",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: frequent comparison"
+          "outcomeSignal": "comparison_risk_frequent_comparison",
+          "outcomeLabel": "frequent comparison"
         },
         {
           "id": "D",
-          "text": "Not yet",
+          "text": "Not yet, comparison still shows up often for me",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: high projection"
+          "outcomeSignal": "comparison_risk_high_projection",
+          "outcomeLabel": "high projection"
         }
-      ]
+      ],
+      "question": "How ready do you feel to love someone without comparing them to your previous marriage?"
     },
     {
       "number": 18,
@@ -710,33 +795,38 @@
       "options": [
         {
           "id": "A",
-          "text": "A calling I’m prepared for",
+          "text": "A calling I feel prepared for",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: prepared calling"
+          "outcomeSignal": "readiness_orientation_prepared_calling",
+          "outcomeLabel": "prepared calling"
         },
         {
           "id": "B",
-          "text": "A desire I’m still preparing for",
+          "text": "A desire I am still preparing for",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: preparing desire"
+          "outcomeSignal": "readiness_orientation_preparing_desire",
+          "outcomeLabel": "preparing desire"
         },
         {
           "id": "C",
-          "text": "Something I want but fear",
+          "text": "Something I want, but fear still competes with hope",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: fear-competing desire"
+          "outcomeSignal": "readiness_orientation_fear_competing_desire",
+          "outcomeLabel": "fear-competing desire"
         },
         {
           "id": "D",
-          "text": "Something I’m unsure about",
+          "text": "Something I am unsure about at this stage",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-risk: uncertainty"
+          "outcomeSignal": "readiness_orientation_uncertainty",
+          "outcomeLabel": "uncertainty"
         }
-      ]
+      ],
+      "question": "Right now, remarriage feels like what kind of decision in your life?"
     },
     {
       "number": 19,
@@ -745,33 +835,38 @@
       "options": [
         {
           "id": "A",
-          "text": "I understand it clearly and I’m choosing healthier patterns",
+          "text": "I understand my patterns clearly and I am choosing healthier ways forward",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: self-aware and intentionally breaking cycles"
+          "outcomeSignal": "family_patterns_future_home_self_aware_and_intentionally_breaking_cycles",
+          "outcomeLabel": "self-aware and intentionally breaking cycles"
         },
         {
           "id": "B",
-          "text": "I see some patterns, but I’m still learning how to change them",
+          "text": "I recognize some patterns, and I am learning how to change them",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: awareness growing but change is in progress"
+          "outcomeSignal": "family_patterns_future_home_awareness_growing_but_change_is_in_progress",
+          "outcomeLabel": "awareness growing but change is in progress"
         },
         {
           "id": "C",
-          "text": "I rarely think about it, even though it may affect me",
+          "text": "I do not think about it much, even though it likely affects me",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: limited reflection; patterns may run unconsciously"
+          "outcomeSignal": "family_patterns_future_home_limited_reflection_patterns_may_run_unconsciously",
+          "outcomeLabel": "limited reflection; patterns may run unconsciously"
         },
         {
           "id": "D",
-          "text": "It still causes pain or triggers that affect my relationships",
+          "text": "It still carries pain and triggers that affect my relationships today",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-Risk: unresolved family wounds may impact remarriage"
+          "outcomeSignal": "family_patterns_future_home_unresolved_family_wounds_may_impact_remarriage",
+          "outcomeLabel": "unresolved family wounds may impact remarriage"
         }
-      ]
+      ],
+      "question": "When you reflect on your upbringing and family background, what feels most true?"
     },
     {
       "number": 20,
@@ -780,33 +875,38 @@
       "options": [
         {
           "id": "A",
-          "text": "Clear, steady, and shaped by wisdom from my past",
+          "text": "Clear, steady, and shaped by wisdom from what I have lived through",
           "signalTier": "STRONG",
           "weight": 3,
-          "outcomeSignal": "Strong/Integrated: stable family leadership readiness"
+          "outcomeSignal": "family_patterns_future_home_stable_family_leadership_readiness",
+          "outcomeLabel": "stable family leadership readiness"
         },
         {
           "id": "B",
-          "text": "Mostly clear, but I still want to grow in consistency",
+          "text": "Mostly clear, but I want to grow in consistency and confidence",
           "signalTier": "DEVELOPING",
           "weight": 2,
-          "outcomeSignal": "Developing: good intention with growth needs"
+          "outcomeSignal": "family_patterns_future_home_good_intention_with_growth_needs",
+          "outcomeLabel": "good intention with growth needs"
         },
         {
           "id": "C",
-          "text": "Uncertain — I’m not sure how to handle family decisions well",
+          "text": "Uncertain, I am not sure how to handle family decisions well",
           "signalTier": "GUARDED",
           "weight": 1,
-          "outcomeSignal": "Guarded: uncertainty may create future conflict"
+          "outcomeSignal": "family_patterns_future_home_uncertainty_may_create_future_conflict",
+          "outcomeLabel": "uncertainty may create future conflict"
         },
         {
           "id": "D",
-          "text": "A sensitive area that feels heavy or overwhelming",
+          "text": "It feels heavy or overwhelming, and I need more healing and clarity",
           "signalTier": "AT_RISK",
           "weight": 0,
-          "outcomeSignal": "At-Risk: unresolved stress that can affect future home stability"
+          "outcomeSignal": "family_patterns_future_home_unresolved_stress_that_can_affect_future_home_stability",
+          "outcomeLabel": "unresolved stress that can affect future home stability"
         }
-      ]
+      ],
+      "question": "If children are part of your story now or in the future, how would you describe your approach to building a healthy home?"
     }
   ]
 }
