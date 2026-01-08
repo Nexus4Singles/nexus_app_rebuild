@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/theme.dart';
 import '../../../../core/ui/icon_mapper.dart';
-import '../../providers/journeys_providers.dart';
 import '../../domain/journey_v1_models.dart';
+import '../../providers/journeys_providers.dart';
 
 class JourneySessionScreen extends ConsumerStatefulWidget {
   final String journeyId;
@@ -17,7 +17,8 @@ class JourneySessionScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<JourneySessionScreen> createState() => _JourneySessionScreenState();
+  ConsumerState<JourneySessionScreen> createState() =>
+      _JourneySessionScreenState();
 }
 
 class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
@@ -30,11 +31,11 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
 
   String _cardKey(int index) => 'card_$index';
 
-  Future<void> _hydrateChoices(MissionV1 mission) async {
+  Future<void> _hydrateChoices(MissionV1 activity) async {
     final svc = ref.read(journeyMissionResponseServiceProvider);
 
-    for (var i = 0; i < mission.cards.length; i++) {
-      final c = mission.cards[i];
+    for (var i = 0; i < activity.cards.length; i++) {
+      final c = activity.cards[i];
       if (c.type != 'choice_card') continue;
 
       final key = _cardKey(i);
@@ -57,211 +58,200 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final journey = ref.watch(journeyByIdProvider(widget.journeyId));
-    MissionV1? mission;
+    final catalogAsync = ref.watch(journeyCatalogProvider);
 
-    if (journey != null) {
-      mission = journey.missions.firstWhere(
-        (m) => m.id == widget.missionId,
-        orElse: () => journey.missions.first,
-      );
-    }
+    return catalogAsync.when(
+      loading:
+          () => const Scaffold(
+            backgroundColor: AppColors.background,
+            body: Center(child: CircularProgressIndicator()),
+          ),
+      error:
+          (_, __) => _simpleScaffold(
+            title: 'Activity',
+            body: const Center(child: Text('Unable to load journeys')),
+          ),
+      data: (catalog) {
+        final journey = catalog.findById(widget.journeyId);
+        if (journey == null) {
+          return _simpleScaffold(
+            title: 'Activity',
+            body: const Center(child: Text('Journey not found')),
+          );
+        }
 
-    if (journey == null || mission == null) {
-      return Scaffold(
-        backgroundColor: AppColors.background,
-        appBar: AppBar(
-          title: const Text('Mission'),
+        MissionV1? activity;
+        try {
+          activity = journey.missions.firstWhere(
+            (m) => m.id == widget.missionId,
+            orElse: () => journey.missions.first,
+          );
+        } catch (_) {
+          activity = null;
+        }
+
+        if (activity == null) {
+          return _simpleScaffold(
+            title: 'Activity',
+            body: const Center(child: Text('Activity not found')),
+          );
+        }
+
+        final m = activity;
+
+        // hydrate choices once we have activity
+        _hydrateChoices(m);
+
+        final totalCards = m.cards.length;
+        final progressIndex = (_cardIndex + 1).clamp(1, totalCards);
+
+        return Scaffold(
           backgroundColor: AppColors.background,
-          surfaceTintColor: AppColors.background,
-          elevation: 0,
-        ),
-        body: const Center(child: Text('Mission not found')),
-      );
-    }
+          appBar: AppBar(
+            title: Text('Activity ${m.missionNumber}'),
+            backgroundColor: AppColors.background,
+            surfaceTintColor: AppColors.background,
+            elevation: 0,
+            actions: [
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.close),
+              ),
+            ],
+          ),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _CardsProgressHeader(index: progressIndex, total: totalCards),
+                  const SizedBox(height: 14),
+                  Text(
+                    m.title,
+                    style: AppTextStyles.titleLarge.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    m.subtitle,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textMuted,
+                      height: 1.35,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child:
+                        totalCards == 0
+                            ? const Center(
+                              child: Text('No cards found for this activity.'),
+                            )
+                            : _MissionCardRenderer(
+                              card: m.cards[_cardIndex],
+                              journeyId: widget.journeyId,
+                              missionId: widget.missionId,
+                              cardIndex: _cardIndex,
+                              choiceSelections: _choiceSelections,
+                              onChoiceSelected: (val) {
+                                setState(() {
+                                  _choiceSelections[_cardKey(_cardIndex)] = val;
+                                });
+                              },
+                            ),
+                  ),
+                  const SizedBox(height: 14),
+                  _OutcomeButtons(
+                    failed: _failed,
+                    isFirst: _cardIndex == 0,
+                    isLast: _cardIndex >= totalCards - 1,
+                    onBack: () {
+                      if (_cardIndex == 0) return;
+                      setState(() => _cardIndex -= 1);
+                    },
+                    onNext: () async {
+                      if (totalCards == 0) return;
 
-    final m = mission;
+                      // save choice card if needed
+                      final card = m.cards[_cardIndex];
+                      if (card.type == 'choice_card') {
+                        final key = _cardKey(_cardIndex);
+                        final selected = _choiceSelections[key];
+                        if (selected != null) {
+                          final svc = ref.read(
+                            journeyMissionResponseServiceProvider,
+                          );
+                          await svc.saveChoice(
+                            journeyId: widget.journeyId,
+                            missionId: widget.missionId,
+                            cardKey: key,
+                            selectedOption: selected,
+                          );
+                        }
+                      }
 
-    // Hydrate saved choices (index-keyed) once we have mission
-    _hydrateChoices(m);
+                      if (_cardIndex >= totalCards - 1) {
+                        // mark completed
+                        final progressSvc = ref.read(
+                          journeyProgressServiceProvider,
+                        );
+                        await progressSvc.markMissionCompleted(
+                          widget.journeyId,
+                          m.id,
+                        );
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Activity completed')),
+                        );
+                        Navigator.pop(context);
+                        return;
+                      }
 
-    final totalCards = m.cards.length;
-    final hasCards = totalCards > 0;
+                      setState(() => _cardIndex += 1);
+                    },
+                    onReset: () async {
+                      final progressSvc = ref.read(
+                        journeyProgressServiceProvider,
+                      );
+                      await progressSvc.resetMission(widget.journeyId, m.id);
 
-    final safeIndex = _cardIndex.clamp(0, hasCards ? totalCards - 1 : 0);
-    if (safeIndex != _cardIndex) _cardIndex = safeIndex;
+                      final responseSvc = ref.read(
+                        journeyMissionResponseServiceProvider,
+                      );
+                      await responseSvc.clearMission(
+                        journeyId: widget.journeyId,
+                        missionId: widget.missionId,
+                      );
 
-    final isLastCard = !hasCards || safeIndex == totalCards - 1;
-    final key = _cardKey(safeIndex);
+                      if (!mounted) return;
+                      setState(() {
+                        _failed = false;
+                        _cardIndex = 0;
+                        _choiceSelections.clear();
+                        _hydratedCardKeys.clear();
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
+  Scaffold _simpleScaffold({required String title, required Widget body}) {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text('Mission ${m.missionNumber}'),
+        title: Text(title),
         backgroundColor: AppColors.background,
         surfaceTintColor: AppColors.background,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              m.title,
-              style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w900),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              m.subtitle,
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textMuted,
-                height: 1.35,
-              ),
-            ),
-            const SizedBox(height: 14),
-
-            if (m.requiresPartnerPresent)
-              _InfoBanner(
-                icon: Icons.groups_outlined,
-                title: 'Do this with your partner present',
-                message: 'This mission works best when your partner is there with you.',
-              ),
-            if (m.requiresPartnerPresent) const SizedBox(height: 12),
-
-            _InfoBanner(
-              icon: Icons.schedule_outlined,
-              title: '${m.timeBoxMinutes} minutes',
-              message: 'Keep it short. Finish the action, not a long discussion.',
-            ),
-
-            const SizedBox(height: 14),
-
-            if (hasCards) _CardsProgressHeader(index: safeIndex, total: totalCards),
-
-            const SizedBox(height: 12),
-
-            Expanded(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 180),
-                child: hasCards
-                    ? _MissionCardRenderer(
-                        key: ValueKey('card_$safeIndex'),
-                        cardKey: key,
-                        journeyId: widget.journeyId,
-                        missionId: widget.missionId,
-                        card: m.cards[safeIndex],
-                        selectedChoice: _choiceSelections[key],
-                        onSelectChoice: (cardKey, option) async {
-                          final svc = ref.read(journeyMissionResponseServiceProvider);
-                          await svc.saveChoice(
-                            journeyId: widget.journeyId,
-                            missionId: widget.missionId,
-                            cardKey: cardKey,
-                            selectedOption: option,
-                          );
-                          setState(() => _choiceSelections[cardKey] = option);
-                        },
-                      )
-                    : _CardShell(
-                        child: Text(
-                          'No cards found for this mission.',
-                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
-                        ),
-                      ),
-              ),
-            ),
-
-            const SizedBox(height: 14),
-
-            if (!isLastCard) ...[
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: safeIndex <= 0 ? null : () => setState(() => _cardIndex = safeIndex - 1),
-                      icon: const Icon(Icons.chevron_left),
-                      label: const Text('Back'),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.textPrimary,
-                        side: BorderSide(color: AppColors.border),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () => setState(() => _cardIndex = safeIndex + 1),
-                      icon: const Icon(Icons.chevron_right),
-                      label: const Text('Next'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ] else ...[
-              Text(
-                'Outcome',
-                style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w900),
-              ),
-              const SizedBox(height: 10),
-              _OutcomeButtons(
-                onDidIt: () async {
-                  final svc = ref.read(journeyProgressServiceProvider);
-                  await svc.markMissionCompleted(widget.journeyId, m.id);
-                  if (!mounted) return;
-                  Navigator.pop(context);
-                },
-                onNotYet: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('No worries. Come back when you’re ready.')),
-                  );
-                },
-                onFailed: () => setState(() => _failed = true),
-              ),
-              if (_failed) ...[
-                const SizedBox(height: 12),
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    final progressSvc = ref.read(journeyProgressServiceProvider);
-                    await progressSvc.resetMission(widget.journeyId, m.id);
-
-                    final responseSvc = ref.read(journeyMissionResponseServiceProvider);
-                    await responseSvc.clearMission(journeyId: widget.journeyId, missionId: widget.missionId);
-
-                    if (!mounted) return;
-                    setState(() {
-                      _failed = false;
-                      _choiceSelections.clear();
-                      _hydratedCardKeys.clear();
-                      _cardIndex = 0;
-                    });
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Reset. Try again when you’re ready.')),
-                    );
-                  },
-                  icon: const Icon(Icons.refresh),
-                  label: const Text('Try again'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                ),
-              ],
-            ],
-          ],
-        ),
-      ),
+      body: body,
     );
   }
 }
@@ -269,38 +259,41 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
 class _CardsProgressHeader extends StatelessWidget {
   final int index;
   final int total;
-
   const _CardsProgressHeader({required this.index, required this.total});
 
   @override
   Widget build(BuildContext context) {
-    final current = index + 1;
-
-    return Row(
+    final pct = total == 0 ? 0.0 : (index / total);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Card $current of $total',
-          style: AppTextStyles.labelMedium.copyWith(
-            color: AppColors.textMuted,
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-        const Spacer(),
         Row(
-          children: List.generate(
-            total.clamp(0, 8),
-            (i) {
-              final active = i == index;
-              return Container(
-                width: active ? 10 : 7,
-                height: 7,
-                margin: const EdgeInsets.only(left: 6),
-                decoration: BoxDecoration(
-                  color: active ? AppColors.primary : AppColors.border,
-                  borderRadius: BorderRadius.circular(999),
-                ),
-              );
-            },
+          children: [
+            Text(
+              'Step $index of $total',
+              style: AppTextStyles.bodySmall.copyWith(
+                fontWeight: FontWeight.w800,
+                color: AppColors.textMuted,
+              ),
+            ),
+            const Spacer(),
+            Text(
+              '${(pct * 100).round()}%',
+              style: AppTextStyles.bodySmall.copyWith(
+                fontWeight: FontWeight.w900,
+                color: AppColors.primary,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(999),
+          child: LinearProgressIndicator(
+            value: pct,
+            minHeight: 7,
+            backgroundColor: AppColors.border.withOpacity(0.7),
+            valueColor: AlwaysStoppedAnimation(AppColors.primary),
           ),
         ),
       ],
@@ -309,244 +302,285 @@ class _CardsProgressHeader extends StatelessWidget {
 }
 
 class _OutcomeButtons extends StatelessWidget {
-  final VoidCallback onDidIt;
-  final VoidCallback onNotYet;
-  final VoidCallback onFailed;
+  final bool failed;
+  final bool isFirst;
+  final bool isLast;
+  final VoidCallback onBack;
+  final VoidCallback onNext;
+  final VoidCallback onReset;
 
   const _OutcomeButtons({
-    required this.onDidIt,
-    required this.onNotYet,
-    required this.onFailed,
+    required this.failed,
+    required this.isFirst,
+    required this.isLast,
+    required this.onBack,
+    required this.onNext,
+    required this.onReset,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
-        ElevatedButton.icon(
-          onPressed: onDidIt,
-          icon: const Icon(Icons.check_circle_outline),
-          label: const Text('I did it'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            padding: const EdgeInsets.symmetric(vertical: 14),
+        if (!isFirst)
+          Expanded(
+            child: OutlinedButton(onPressed: onBack, child: const Text('Back')),
+          ),
+        if (!isFirst) const SizedBox(width: 12),
+        Expanded(
+          child: ElevatedButton(
+            onPressed: onNext,
+            child: Text(isLast ? 'Finish' : 'Next'),
           ),
         ),
-        const SizedBox(height: 10),
-        OutlinedButton.icon(
-          onPressed: onNotYet,
-          icon: const Icon(Icons.schedule_outlined),
-          label: const Text('Not yet'),
-          style: OutlinedButton.styleFrom(
-            foregroundColor: AppColors.textPrimary,
-            side: BorderSide(color: AppColors.border),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            padding: const EdgeInsets.symmetric(vertical: 14),
+        if (failed) ...[
+          const SizedBox(width: 12),
+          Expanded(
+            child: TextButton(onPressed: onReset, child: const Text('Reset')),
           ),
-        ),
-        const SizedBox(height: 10),
-        OutlinedButton.icon(
-          onPressed: onFailed,
-          icon: const Icon(Icons.rotate_left_outlined),
-          label: const Text('I didn’t do it'),
-          style: OutlinedButton.styleFrom(
-            foregroundColor: AppColors.textPrimary,
-            side: BorderSide(color: AppColors.border),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            padding: const EdgeInsets.symmetric(vertical: 14),
-          ),
-        ),
+        ],
       ],
     );
   }
 }
 
-class _InfoBanner extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String message;
+class _MissionCardRenderer extends StatelessWidget {
+  final MissionCardV1 card;
+  final String journeyId;
+  final String missionId;
+  final int cardIndex;
+  final Map<String, String> choiceSelections;
+  final ValueChanged<String> onChoiceSelected;
 
-  const _InfoBanner({
-    required this.icon,
+  const _MissionCardRenderer({
+    required this.card,
+    required this.journeyId,
+    required this.missionId,
+    required this.cardIndex,
+    required this.choiceSelections,
+    required this.onChoiceSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    switch (card.type) {
+      case 'instruction_card':
+        return _InfoCard(
+          iconKey: card.icon,
+          title: card.title,
+          text: card.text ?? '',
+          bullets: card.bullets,
+        );
+
+      case 'tip_card':
+        return _InfoCard(
+          iconKey: card.icon,
+          title: card.title,
+          text: card.text ?? '',
+          bullets: card.bullets,
+        );
+
+      case 'choice_card':
+        {
+          final key = 'card_$cardIndex';
+          final selected = choiceSelections[key];
+
+          return _ChoiceCard(
+            iconKey: card.icon,
+            title: card.title,
+            prompt: card.prompt ?? '',
+            options: card.options ?? const [],
+            selected: selected,
+            onSelected: onChoiceSelected,
+          );
+        }
+
+      case 'mission_card':
+      default:
+        return _InfoCard(
+          iconKey: card.icon,
+          title: card.title,
+          text: card.text ?? '',
+          bullets: card.bullets,
+        );
+    }
+  }
+}
+
+class _InfoCard extends StatelessWidget {
+  final String iconKey;
+  final String title;
+  final String text;
+  final List<String>? bullets;
+
+  const _InfoCard({
+    required this.iconKey,
     required this.title,
-    required this.message,
+    required this.text,
+    this.bullets,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.06),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primary.withOpacity(0.14)),
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.primary.withOpacity(0.22)),
       ),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: AppColors.primary),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w900)),
-                const SizedBox(height: 4),
-                Text(
-                  message,
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted, height: 1.3),
+          Row(
+            children: [
+              _IconBubble(icon: iconFromKey(iconKey)),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  title,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+          const SizedBox(height: 12),
+          Text(text, style: AppTextStyles.bodyMedium.copyWith(height: 1.35)),
+          if (bullets != null && bullets!.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            ...bullets!.map(
+              (b) => Padding(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('•  '),
+                    Expanded(
+                      child: Text(
+                        b,
+                        style: AppTextStyles.bodyMedium.copyWith(height: 1.3),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
   }
 }
 
-class _CardShell extends StatelessWidget {
-  final Widget child;
-  const _CardShell({required this.child});
+class _ChoiceCard extends StatelessWidget {
+  final String iconKey;
+  final String title;
+  final String prompt;
+  final List<String> options;
+  final String? selected;
+  final ValueChanged<String> onSelected;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: child,
-    );
-  }
-}
-
-class _MissionCardRenderer extends StatelessWidget {
-  final String cardKey;
-  final String journeyId;
-  final String missionId;
-  final MissionCardV1 card;
-
-  final String? selectedChoice;
-  final Future<void> Function(String cardKey, String option) onSelectChoice;
-
-  const _MissionCardRenderer({
-    super.key,
-    required this.cardKey,
-    required this.journeyId,
-    required this.missionId,
-    required this.card,
-    required this.selectedChoice,
-    required this.onSelectChoice,
+  const _ChoiceCard({
+    required this.iconKey,
+    required this.title,
+    required this.prompt,
+    required this.options,
+    required this.selected,
+    required this.onSelected,
   });
 
   @override
   Widget build(BuildContext context) {
-    final title = card.title;
-    final leftIcon = iconFromKey(card.icon);
-
-    switch (card.type) {
-      case 'mission_card':
-      case 'tip_card':
-      case 'instruction_card':
-        return _CardShell(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.primary.withOpacity(0.22)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  Icon(leftIcon, color: AppColors.primary),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(title, style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w900)),
+              _IconBubble(icon: iconFromKey(iconKey)),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  title,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    fontWeight: FontWeight.w900,
                   ),
-                ],
+                ),
               ),
-              if ((card.text ?? '').trim().isNotEmpty) ...[
-                const SizedBox(height: 10),
-                Text(card.text!, style: AppTextStyles.bodyMedium.copyWith(height: 1.35)),
-              ],
-              if ((card.bullets ?? const []).isNotEmpty) ...[
-                const SizedBox(height: 10),
-                ...card.bullets!.map((b) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('•  '),
-                          Expanded(child: Text(b, style: AppTextStyles.bodyMedium.copyWith(height: 1.35))),
-                        ],
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(prompt, style: AppTextStyles.bodyMedium.copyWith(height: 1.35)),
+          const SizedBox(height: 14),
+          ...options.map((o) {
+            final isSelected = selected == o;
+            return Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(14),
+                onTap: () => onSelected(o),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    color:
+                        isSelected
+                            ? AppColors.primary.withOpacity(0.10)
+                            : AppColors.background,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: AppColors.primary.withOpacity(0.22),
+                      width: isSelected ? 1.5 : 1,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          o,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ),
-                    )),
-              ],
-            ],
-          ),
-        );
-
-      case 'choice_card':
-        final options = (card.options ?? const <String>[]);
-        return _CardShell(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(leftIcon, color: AppColors.primary),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(title, style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w900)),
+                      if (isSelected)
+                        Icon(Icons.check_circle, color: AppColors.primary),
+                    ],
                   ),
-                ],
+                ),
               ),
-              if ((card.prompt ?? '').trim().isNotEmpty) ...[
-                const SizedBox(height: 10),
-                Text(card.prompt!, style: AppTextStyles.bodyMedium.copyWith(height: 1.35)),
-              ],
-              const SizedBox(height: 10),
-              ...options.map((o) {
-                final isSelected = selectedChoice == o;
-                return InkWell(
-                  onTap: () => onSelectChoice(cardKey, o),
-                  borderRadius: BorderRadius.circular(14),
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppColors.background,
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: isSelected ? AppColors.primary.withOpacity(0.55) : AppColors.border),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
-                          size: 20,
-                          color: isSelected ? AppColors.primary : AppColors.textMuted,
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(o, style: AppTextStyles.bodyMedium.copyWith(height: 1.3)),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }),
-            ],
-          ),
-        );
+            );
+          }),
+        ],
+      ),
+    );
+  }
+}
 
-      default:
-        return _CardShell(
-          child: Text(
-            '[Unsupported card type: ${card.type}]',
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
-          ),
-        );
-    }
+class _IconBubble extends StatelessWidget {
+  final IconData icon;
+  const _IconBubble({required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 42,
+      height: 42,
+      decoration: BoxDecoration(
+        color: AppColors.primary.withOpacity(0.10),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Icon(icon, color: AppColors.primary),
+    );
   }
 }

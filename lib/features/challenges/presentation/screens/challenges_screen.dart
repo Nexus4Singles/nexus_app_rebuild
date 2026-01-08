@@ -39,10 +39,10 @@ class ChallengesScreen extends ConsumerWidget {
 
           return CustomScrollView(
             slivers: [
-              SliverToBoxAdapter(
+              const SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 14, 20, 8),
-                  child: const _PremiumHeader(),
+                  padding: EdgeInsets.fromLTRB(20, 14, 20, 8),
+                  child: _PremiumHeader(),
                 ),
               ),
 
@@ -70,7 +70,7 @@ class ChallengesScreen extends ConsumerWidget {
                       Text(
                         '${rest.length}',
                         style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.primary.withOpacity(0.22),
+                          color: AppColors.textMuted,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
@@ -124,24 +124,15 @@ class _PremiumHeader extends StatelessWidget {
         Wrap(
           spacing: 10,
           runSpacing: 10,
-          children: [
-            _TagChip(label: 'Faith', tint: _tagTint(_slugTag('Faith'))),
-            _TagChip(
-              label: 'Communication',
-              tint: _tagTint(_slugTag('Communication')),
-            ),
-            _TagChip(label: 'Healing', tint: _tagTint(_slugTag('Healing'))),
-            _TagChip(
-              label: 'Discernment',
-              tint: _tagTint(_slugTag('Discernment')),
-            ),
-            _TagChip(label: 'Intimacy', tint: _tagTint(_slugTag('Intimacy'))),
-            _TagChip(
-              label: 'Boundaries',
-              tint: _tagTint(_slugTag('Boundaries')),
-            ),
-            _TagChip(label: 'Purpose', tint: _tagTint(_slugTag('Purpose'))),
-            _TagChip(label: 'Conflict', tint: _tagTint(_slugTag('Conflict'))),
+          children: const [
+            _TagChip(label: 'Faith'),
+            _TagChip(label: 'Communication'),
+            _TagChip(label: 'Healing'),
+            _TagChip(label: 'Discernment'),
+            _TagChip(label: 'Intimacy'),
+            _TagChip(label: 'Boundaries'),
+            _TagChip(label: 'Purpose'),
+            _TagChip(label: 'Conflict'),
           ],
         ),
       ],
@@ -151,8 +142,7 @@ class _PremiumHeader extends StatelessWidget {
 
 class _TagChip extends StatelessWidget {
   final String label;
-  final Color tint;
-  _TagChip({required this.label, required this.tint});
+  const _TagChip({required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +151,7 @@ class _TagChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.primary.withOpacity(0.08),
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: tint.withOpacity(0.22)),
+        border: Border.all(color: AppColors.primary.withOpacity(0.22)),
       ),
       child: Text(
         label,
@@ -226,50 +216,62 @@ class _FeaturedHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tint = AppColors.primary;
+
     return InkWell(
       borderRadius: BorderRadius.circular(22),
       onTap: () => _openDetail(context, journey.id),
       child: Container(
-        width: 250,
-        padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+        width: 280,
+        height: 150,
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(22),
-          color: AppColors.primary.withOpacity(0.82),
-          border: Border.all(color: Colors.white.withOpacity(0.14), width: 1),
+          color: tint.withOpacity(0.78),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.18),
-              blurRadius: 18,
-              offset: const Offset(0, 12),
+              color: tint.withOpacity(0.20),
+              blurRadius: 22,
+              offset: const Offset(0, 14),
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            Row(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _HeroIcon(iconKey: journey.icon, tint: AppColors.primary),
-                const Spacer(),
-                _ThemePill(tag: journey.themeTag),
+                Row(
+                  children: [_HeroIcon(iconKey: journey.icon), const Spacer()],
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(right: 95),
+                  child: Text(
+                    journey.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.titleMedium.copyWith(
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                      height: 1.12,
+                      letterSpacing: -0.2,
+                    ),
+                  ),
+                ),
+
+                const Align(
+                  alignment: Alignment.centerRight,
+                  child: _GlassPill(text: 'Start'),
+                ),
               ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              journey.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.titleMedium.copyWith(
-                fontWeight: FontWeight.w900,
-                color: Colors.white,
-                height: 1.12,
-                letterSpacing: -0.2,
-              ),
-            ),
-            const Spacer(),
-            Align(
-              alignment: Alignment.centerRight,
-              child: _GlassPill(text: 'Start'),
+
+            Positioned(
+              top: 0,
+              right: 0,
+              child: _ThemePill(tag: journey.themeTag),
             ),
           ],
         ),
@@ -280,8 +282,7 @@ class _FeaturedHeroCard extends StatelessWidget {
 
 class _HeroIcon extends StatelessWidget {
   final String iconKey;
-  final Color tint;
-  const _HeroIcon({required this.iconKey, required this.tint});
+  const _HeroIcon({required this.iconKey});
 
   @override
   Widget build(BuildContext context) {
@@ -291,7 +292,7 @@ class _HeroIcon extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: tint.withOpacity(0.20)),
+        border: Border.all(color: AppColors.primary.withOpacity(0.22)),
       ),
       child: Icon(iconFromKey(iconKey), color: AppColors.primary, size: 22),
     );
@@ -309,7 +310,7 @@ class _GlassPill extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.16),
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.white.withOpacity(0.22)),
+        border: Border.all(color: Colors.white.withOpacity(0.24)),
       ),
       child: Text(
         text,
@@ -326,8 +327,9 @@ class _ClassyJourneyListCard extends StatelessWidget {
   final JourneyV1 journey;
   const _ClassyJourneyListCard({required this.journey});
 
+  @override
   Widget build(BuildContext context) {
-    final tint = _tagTint(journey.themeTag);
+    final tint = AppColors.primary;
 
     return InkWell(
       borderRadius: BorderRadius.circular(18),
@@ -337,7 +339,7 @@ class _ClassyJourneyListCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: AppColors.border.withOpacity(0.90)),
+          border: Border.all(color: AppColors.primary.withOpacity(0.22)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.035),
@@ -358,7 +360,7 @@ class _ClassyJourneyListCard extends StatelessWidget {
               ),
               child: Icon(
                 iconFromKey(_iconKeyForJourney(journey)),
-                color: tint.withOpacity(0.95),
+                color: tint,
                 size: 20,
               ),
             ),
@@ -381,10 +383,10 @@ class _ClassyJourneyListCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: tint.withOpacity(0.10),
                 borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: tint.withOpacity(0.26)),
+                border: Border.all(color: tint.withOpacity(0.22)),
               ),
               child: Text(
-                "Start",
+                'Start',
                 style: AppTextStyles.bodySmall.copyWith(
                   fontWeight: FontWeight.w900,
                   color: tint.withOpacity(0.95),
@@ -402,39 +404,30 @@ class _ThemePill extends StatelessWidget {
   final String? tag;
   const _ThemePill({required this.tag});
 
+  @override
   Widget build(BuildContext context) {
-    final t = (tag ?? "").trim();
+    final t = (tag ?? '').trim();
     if (t.isEmpty) return const SizedBox.shrink();
-    final tint = _tagTint(t);
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.18),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.white.withOpacity(0.40)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 7,
-            height: 7,
-            decoration: BoxDecoration(
-              color: tint.withOpacity(0.95),
-              shape: BoxShape.circle,
-            ),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 120),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.20),
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(color: Colors.white.withOpacity(0.24)),
+        ),
+        child: Text(
+          _prettyTag(t),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: AppTextStyles.bodySmall.copyWith(
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+            letterSpacing: -0.2,
           ),
-          const SizedBox(width: 6),
-          Text(
-            _prettyTag(t),
-            style: AppTextStyles.bodySmall.copyWith(
-              fontWeight: FontWeight.w900,
-              color: Colors.white,
-              letterSpacing: -0.2,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -476,42 +469,6 @@ String _iconKeyForJourney(JourneyV1 journey) {
   final k = journey.accentIcon;
   if (k != null && k.trim().isNotEmpty) return k;
   return journey.icon;
-}
-
-String _slugTag(String label) {
-  final l = label.toLowerCase().trim();
-  if (l.contains("faith")) return "faith";
-  if (l.contains("communication")) return "communication";
-  if (l.contains("healing")) return "healing";
-  if (l.contains("discernment")) return "discernment";
-  if (l.contains("intimacy")) return "intimacy";
-  if (l.contains("boundaries")) return "boundaries";
-  if (l.contains("purpose")) return "purpose";
-  if (l.contains("conflict")) return "conflict";
-  return "faith";
-}
-
-Color _tagTint(String? tag) {
-  switch (tag) {
-    case 'faith':
-      return AppColors.primary;
-    case 'healing':
-      return const Color(0xFFB83280);
-    case 'communication':
-      return const Color(0xFF2563EB);
-    case 'discernment':
-      return const Color(0xFF0F766E);
-    case 'boundaries':
-      return const Color(0xFF7C3AED);
-    case 'intimacy':
-      return const Color(0xFFDC2626);
-    case 'purpose':
-      return const Color(0xFFB45309);
-    case 'conflict':
-      return const Color(0xFF334155);
-    default:
-      return AppColors.primary;
-  }
 }
 
 List<JourneyV1> _pickFeaturedJourneys(

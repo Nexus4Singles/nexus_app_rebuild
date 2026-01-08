@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/ui/icon_mapper.dart';
 import '../../domain/journey_v1_models.dart';
@@ -30,9 +29,17 @@ class JourneyDetailScreen extends ConsumerWidget {
     final purchaseAsync = ref.watch(isJourneyPurchasedProvider(journey.id));
 
     return purchaseAsync.when(
-      loading: () => _Shell(journey: journey, isPurchased: false, isLoading: true),
-      error: (_, __) => _Shell(journey: journey, isPurchased: false, isLoading: false),
-      data: (isPurchased) => _Shell(journey: journey, isPurchased: isPurchased, isLoading: false),
+      loading:
+          () => _Shell(journey: journey, isPurchased: false, isLoading: true),
+      error:
+          (_, __) =>
+              _Shell(journey: journey, isPurchased: false, isLoading: false),
+      data:
+          (isPurchased) => _Shell(
+            journey: journey,
+            isPurchased: isPurchased,
+            isLoading: false,
+          ),
     );
   }
 }
@@ -52,37 +59,54 @@ class _Shell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final completedAsync = ref.watch(completedMissionIdsProvider(journey.id));
 
-    final missions = journey.missions.toList()
-      ..sort((a, b) => a.missionNumber.compareTo(b.missionNumber));
+    final activities =
+        journey.missions.toList()
+          ..sort((a, b) => a.missionNumber.compareTo(b.missionNumber));
 
-    final freeMissionId = missions.firstWhere((m) => m.missionNumber == 1, orElse: () => missions.first).id;
+    final freeMissionId =
+        activities.isEmpty
+            ? ''
+            : activities
+                .firstWhere(
+                  (m) => m.missionNumber == 1,
+                  orElse: () => activities.first,
+                )
+                .id;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(journey.title),
         backgroundColor: AppColors.background,
         surfaceTintColor: AppColors.background,
         elevation: 0,
+        titleSpacing: 0,
+        title: Text(
+          'Journey',
+          style: AppTextStyles.titleMedium.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
+        ),
       ),
       body: completedAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, __) => _Body(
-          journey: journey,
-          missions: missions,
-          completedMissionIds: const {},
-          isPurchased: isPurchased,
-          isLoading: isLoading,
-          freeMissionId: freeMissionId,
-        ),
-        data: (completed) => _Body(
-          journey: journey,
-          missions: missions,
-          completedMissionIds: completed,
-          isPurchased: isPurchased,
-          isLoading: isLoading,
-          freeMissionId: freeMissionId,
-        ),
+        error:
+            (_, __) => _Body(
+              journey: journey,
+              activities: activities,
+              completedMissionIds: const {},
+              isPurchased: isPurchased,
+              isLoading: isLoading,
+              freeMissionId: freeMissionId,
+            ),
+        data:
+            (completed) => _Body(
+              journey: journey,
+              activities: activities,
+              completedMissionIds: completed,
+              isPurchased: isPurchased,
+              isLoading: isLoading,
+              freeMissionId: freeMissionId,
+            ),
       ),
     );
   }
@@ -90,7 +114,7 @@ class _Shell extends ConsumerWidget {
 
 class _Body extends ConsumerWidget {
   final JourneyV1 journey;
-  final List<MissionV1> missions;
+  final List<MissionV1> activities;
   final Set<String> completedMissionIds;
   final bool isPurchased;
   final bool isLoading;
@@ -98,7 +122,7 @@ class _Body extends ConsumerWidget {
 
   const _Body({
     required this.journey,
-    required this.missions,
+    required this.activities,
     required this.completedMissionIds,
     required this.isPurchased,
     required this.isLoading,
@@ -107,47 +131,65 @@ class _Body extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final total = missions.length;
+    final total = activities.length;
     final done = completedMissionIds.length.clamp(0, total);
     final progress = total == 0 ? 0.0 : done / total;
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 28),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 22),
       children: [
-        _HeroHeader(journey: journey, progress: progress, done: done, total: total),
-        const SizedBox(height: 16),
-        Text('Missions', style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w900)),
-        const SizedBox(height: 10),
+        _HeroHeader(
+          journey: journey,
+          progress: progress,
+          done: done,
+          total: total,
+          isPurchased: isPurchased,
+        ),
+        const SizedBox(height: 12),
+        Text(
+          'Activities',
+          style: AppTextStyles.titleMedium.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const SizedBox(height: 8),
+        ...activities.asMap().entries.map((entry) {
+          final idx = entry.key;
+          final m = entry.value;
 
-        ...missions.map((m) {
           final isFree = m.missionNumber == 1 && m.isFree;
           final isLocked = !(isPurchased || isFree);
           final isDone = completedMissionIds.contains(m.id);
+          final isLast = idx == activities.length - 1;
 
           return Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: _MissionRow(
-              mission: m,
+            padding: const EdgeInsets.only(bottom: 8),
+            child: _ActivityCard(
+              activity: m,
               isLocked: isLocked,
               isDone: isDone,
+              showRail: !isLast,
               onTap: () {
                 if (isLocked) {
-                  _showUnlockSheet(context, ref, journey: journey, freeMissionId: freeMissionId);
+                  _showUnlockSheet(
+                    context,
+                    ref,
+                    journey: journey,
+                    freeMissionId: freeMissionId,
+                  );
                   return;
                 }
 
                 Navigator.pushNamed(
                   context,
-                  '/journey/${journey.id}/mission/${m.id}',
+                  '/journey/${journey.id}/activity/${m.id}',
                   arguments: {'journeyId': journey.id, 'missionId': m.id},
                 );
               },
             ),
           );
         }),
-
-        const SizedBox(height: 16),
-
+        const SizedBox(height: 10),
         if (!isPurchased) _UnlockCta(journey: journey, isLoading: isLoading),
       ],
     );
@@ -169,7 +211,7 @@ class _Body extends ConsumerWidget {
         final missionCount = journey.missions.length;
 
         return Padding(
-          padding: const EdgeInsets.fromLTRB(20, 18, 20, 22),
+          padding: const EdgeInsets.fromLTRB(18, 16, 18, 20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -186,25 +228,36 @@ class _Body extends ConsumerWidget {
                 children: [
                   _IconBubble(
                     icon: iconFromKey(journey.icon),
-                    bg: AppColors.primary.withOpacity(0.10),
+                    bg: AppColors.primary.withOpacity(0.12),
                     fg: AppColors.primary,
+                    size: 42,
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Unlock this Journey', style: AppTextStyles.titleMedium.copyWith(fontWeight: FontWeight.w900)),
+                        Text(
+                          'Unlock this Journey',
+                          style: AppTextStyles.titleMedium.copyWith(
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
                         const SizedBox(height: 4),
-                        Text('$missionCount missions • One-time purchase', style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted)),
+                        Text(
+                          '$missionCount activities • One-time purchase',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.textMuted,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 12),
               Text(
-                'You can complete Mission 1 free. Unlock to access the full Journey and finish strong.',
+                'You can complete Activity 1 free. Unlock to access the full Journey and finish strong.',
                 style: AppTextStyles.bodyMedium.copyWith(height: 1.35),
               ),
               const SizedBox(height: 14),
@@ -216,24 +269,31 @@ class _Body extends ConsumerWidget {
                         Navigator.pop(context);
                         Navigator.pushNamed(
                           context,
-                          '/journey/${journey.id}/mission/$freeMissionId',
-                          arguments: {'journeyId': journey.id, 'missionId': freeMissionId},
+                          '/journey/${journey.id}/activity/$freeMissionId',
+                          arguments: {
+                            'journeyId': journey.id,
+                            'missionId': freeMissionId,
+                          },
                         );
                       },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.textPrimary,
                         side: BorderSide(color: AppColors.border),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
-                      child: const Text('Do free mission'),
+                      child: const Text('Do free activity'),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () async {
-                        final ent = ref.read(journeyEntitlementsServiceProvider);
+                        final ent = ref.read(
+                          journeyEntitlementsServiceProvider,
+                        );
                         await ent.markPurchased(journey.id);
 
                         ref.invalidate(purchasedJourneyIdsProvider);
@@ -242,13 +302,19 @@ class _Body extends ConsumerWidget {
                         if (context.mounted) Navigator.pop(context);
 
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Unlocked. You can now access all missions.')),
+                          const SnackBar(
+                            content: Text(
+                              'Unlocked. You can now access all activities.',
+                            ),
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                       child: const Text('Unlock'),
@@ -269,105 +335,190 @@ class _HeroHeader extends StatelessWidget {
   final double progress;
   final int done;
   final int total;
+  final bool isPurchased;
 
   const _HeroHeader({
     required this.journey,
     required this.progress,
     required this.done,
     required this.total,
+    required this.isPurchased,
   });
 
   @override
   Widget build(BuildContext context) {
+    final showProgress = done > 0 && total > 0;
+
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Row(
-        children: [
-          _IconBubble(
-            icon: iconFromKey(journey.icon),
-            bg: AppColors.primary.withOpacity(0.10),
-            fg: AppColors.primary,
+        color: AppColors.primary.withOpacity(0.88),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: AppColors.primary.withOpacity(0.22)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.10),
+            blurRadius: 18,
+            offset: const Offset(0, 12),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(journey.summary, style: AppTextStyles.bodyMedium.copyWith(height: 1.35)),
-                const SizedBox(height: 10),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(99),
-                  child: LinearProgressIndicator(
-                    value: progress,
-                    minHeight: 6,
-                    backgroundColor: AppColors.border.withOpacity(0.7),
-                    valueColor: AlwaysStoppedAnimation(AppColors.primary),
-                  ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              _IconBubble(
+                icon: iconFromKey(journey.icon),
+                bg: Colors.white.withOpacity(0.18),
+                fg: Colors.white,
+                size: 42,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      journey.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.titleMedium.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w900,
+                        height: 1.12,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '$total activities • ${isPurchased ? 'Full access' : 'Preview available'}',
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: Colors.white.withOpacity(0.80),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  '$done of $total missions complete',
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted),
-                ),
-              ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            journey.summary,
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.bodySmall.copyWith(
+              color: Colors.white.withOpacity(0.92),
+              height: 1.35,
             ),
           ),
+          if (showProgress) ...[
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(99),
+              child: LinearProgressIndicator(
+                value: progress,
+                minHeight: 6,
+                backgroundColor: Colors.white.withOpacity(0.22),
+                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '$done of $total complete',
+              style: AppTextStyles.bodySmall.copyWith(
+                color: Colors.white.withOpacity(0.85),
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
         ],
       ),
     );
   }
 }
 
-class _MissionRow extends StatelessWidget {
-  final MissionV1 mission;
+class _ActivityCard extends StatelessWidget {
+  final MissionV1 activity;
   final bool isLocked;
   final bool isDone;
+  final bool showRail;
   final VoidCallback onTap;
 
-  const _MissionRow({
-    required this.mission,
+  const _ActivityCard({
+    required this.activity,
     required this.isLocked,
     required this.isDone,
+    required this.showRail,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final leftIcon = isDone
-        ? Icons.check_circle_outline
-        : isLocked
-            ? Icons.lock_outline
-            : iconFromKey(mission.icon);
+    final isFree = activity.missionNumber == 1 && activity.isFree;
 
-    final badge = isDone
-        ? 'DONE'
-        : (mission.missionNumber == 1 && mission.isFree)
-            ? 'FREE'
-            : null;
+    final leftIcon =
+        isDone
+            ? Icons.check_circle_outline
+            : isLocked
+            ? Icons.lock_outline
+            : iconFromKey(activity.icon);
+
+    final badgeText =
+        isDone ? 'DONE' : (isFree ? 'FREE' : (isLocked ? 'LOCKED' : null));
+
+    final badgeBg =
+        (isDone || isFree)
+            ? AppColors.primary.withOpacity(0.10)
+            : AppColors.primary.withOpacity(0.08);
+
+    final cardBg =
+        isLocked ? AppColors.surface.withOpacity(0.52) : AppColors.surface;
+
+    final accentColor = AppColors.primary;
 
     return InkWell(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(18),
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.border),
+          color: cardBg,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: AppColors.primary.withOpacity(0.22)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(isLocked ? 0.015 : 0.045),
+              blurRadius: 12,
+              offset: const Offset(0, 9),
+            ),
+          ],
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _ProgressRailDot(
+              number: activity.missionNumber,
+              isDone: isDone,
+              isLocked: isLocked,
+              showRail: showRail,
+            ),
+            const SizedBox(width: 9),
+            Container(
+              width: 3,
+              height: 42,
+              decoration: BoxDecoration(
+                color: accentColor.withOpacity(isLocked ? 0.25 : 0.75),
+                borderRadius: BorderRadius.circular(99),
+              ),
+            ),
+            const SizedBox(width: 9),
             _IconBubble(
               icon: leftIcon,
-              bg: AppColors.primary.withOpacity(0.08),
+              bg: AppColors.primary.withOpacity(0.10),
               fg: AppColors.primary,
+              size: 38,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -376,19 +527,27 @@ class _MissionRow extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'Mission ${mission.missionNumber}: ${mission.title}',
-                          style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w900),
+                          activity.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            fontWeight: FontWeight.w900,
+                            height: 1.12,
+                          ),
                         ),
                       ),
-                      if (badge != null)
+                      if (badgeText != null)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 9,
+                            vertical: 5,
+                          ),
                           decoration: BoxDecoration(
-                            color: AppColors.primary.withOpacity(0.10),
+                            color: badgeBg,
                             borderRadius: BorderRadius.circular(999),
                           ),
                           child: Text(
-                            badge,
+                            badgeText,
                             style: AppTextStyles.labelSmall.copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.w900,
@@ -399,16 +558,111 @@ class _MissionRow extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    isLocked ? 'Unlock to access this mission' : mission.subtitle,
-                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted, height: 1.3),
+                    isLocked ? 'Unlock to access' : activity.subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textMuted,
+                      height: 1.22,
+                    ),
                   ),
+                  if (isLocked) ...[
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(
+                            color: AppColors.primary.withOpacity(0.22),
+                          ),
+                        ),
+                        child: Text(
+                          'Tap to unlock',
+                          style: AppTextStyles.labelSmall.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
-            const SizedBox(width: 8),
-            Icon(Icons.chevron_right, color: AppColors.textMuted),
+            const SizedBox(width: 6),
+            Icon(Icons.chevron_right, color: AppColors.primary),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ProgressRailDot extends StatelessWidget {
+  final int number;
+  final bool isDone;
+  final bool isLocked;
+  final bool showRail;
+
+  const _ProgressRailDot({
+    required this.number,
+    required this.isDone,
+    required this.isLocked,
+    required this.showRail,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final dotBg =
+        isDone
+            ? AppColors.primary
+            : isLocked
+            ? AppColors.primary.withOpacity(0.08)
+            : AppColors.primary.withOpacity(0.12);
+
+    final dotFg = isDone ? Colors.white : AppColors.primary;
+
+    return SizedBox(
+      width: 26,
+      child: Column(
+        children: [
+          Container(
+            width: 22,
+            height: 22,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: dotBg,
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.primary.withOpacity(0.22)),
+            ),
+            child:
+                isDone
+                    ? const Icon(Icons.check, size: 13, color: Colors.white)
+                    : Text(
+                      '$number',
+                      style: AppTextStyles.labelSmall.copyWith(
+                        color: dotFg,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+          ),
+          const SizedBox(height: 6),
+          if (showRail)
+            Container(
+              width: 2,
+              height: 42,
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(99),
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -424,40 +678,52 @@ class _UnlockCta extends ConsumerWidget {
     final missionCount = journey.missions.length;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: AppColors.primary.withOpacity(0.06),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.primary.withOpacity(0.18)),
+        border: Border.all(color: AppColors.primary.withOpacity(0.22)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Unlock this Journey', style: AppTextStyles.titleMedium.copyWith(fontWeight: FontWeight.w900)),
+          Text(
+            'Unlock this Journey',
+            style: AppTextStyles.titleSmall.copyWith(
+              fontWeight: FontWeight.w900,
+            ),
+          ),
           const SizedBox(height: 6),
           Text(
-            '$missionCount missions • One-time purchase',
+            '$missionCount activities • One-time purchase',
             style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted),
           ),
           const SizedBox(height: 12),
           ElevatedButton(
-            onPressed: isLoading
-                ? null
-                : () async {
-                    final ent = ref.read(journeyEntitlementsServiceProvider);
-                    await ent.markPurchased(journey.id);
+            onPressed:
+                isLoading
+                    ? null
+                    : () async {
+                      final ent = ref.read(journeyEntitlementsServiceProvider);
+                      await ent.markPurchased(journey.id);
 
-                    ref.invalidate(purchasedJourneyIdsProvider);
-                    ref.invalidate(isJourneyPurchasedProvider(journey.id));
+                      ref.invalidate(purchasedJourneyIdsProvider);
+                      ref.invalidate(isJourneyPurchasedProvider(journey.id));
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Unlocked. You can now access all missions.')),
-                    );
-                  },
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Unlocked. You can now access all activities.',
+                          ),
+                        ),
+                      );
+                    },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
               padding: const EdgeInsets.symmetric(vertical: 14),
             ),
             child: const Text('Unlock Journey'),
@@ -472,19 +738,25 @@ class _IconBubble extends StatelessWidget {
   final IconData icon;
   final Color bg;
   final Color fg;
+  final double size;
 
-  const _IconBubble({required this.icon, required this.bg, required this.fg});
+  const _IconBubble({
+    required this.icon,
+    required this.bg,
+    required this.fg,
+    this.size = 44,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 44,
-      height: 44,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(14),
       ),
-      child: Icon(icon, color: fg),
+      child: Icon(icon, color: fg, size: size * 0.52),
     );
   }
 }
