@@ -11,9 +11,10 @@ class JourneyCatalogV1 {
 
   factory JourneyCatalogV1.fromJson(Map<String, dynamic> json) {
     final journeysJson = (json['journeys'] as List<dynamic>? ?? []);
-    final parsed = journeysJson
-        .map((e) => JourneyV1.fromJson(e as Map<String, dynamic>))
-        .toList();
+    final parsed =
+        journeysJson
+            .map((e) => JourneyV1.fromJson(e as Map<String, dynamic>))
+            .toList();
     parsed.sort((a, b) => a.priorityRank.compareTo(b.priorityRank));
 
     return JourneyCatalogV1(
@@ -37,6 +38,12 @@ class JourneyV1 {
   final String summary;
   final int priorityRank;
   final String icon;
+
+  // cover (optional)
+  final String? themeTag;
+  final String? accentIcon;
+  final String? heroImage;
+
   final List<MissionV1> missions;
 
   JourneyV1({
@@ -45,20 +52,29 @@ class JourneyV1 {
     required this.summary,
     required this.priorityRank,
     required this.icon,
+    this.themeTag,
+    this.accentIcon,
+    this.heroImage,
     required this.missions,
   });
 
   factory JourneyV1.fromJson(Map<String, dynamic> json) {
     final missionsJson = (json['missions'] as List<dynamic>? ?? []);
+    final cover = json['cover'] as Map<String, dynamic>?;
+
     return JourneyV1(
       id: (json['id'] ?? '') as String,
       title: (json['title'] ?? '') as String,
       summary: (json['summary'] ?? '') as String,
       priorityRank: (json['priorityRank'] ?? 9999) as int,
       icon: (json['icon'] ?? 'sparkles') as String,
-      missions: missionsJson
-          .map((e) => MissionV1.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      themeTag: cover?['themeTag'] as String?,
+      accentIcon: cover?['accentIcon'] as String?,
+      heroImage: cover?['heroImage'] as String?,
+      missions:
+          missionsJson
+              .map((e) => MissionV1.fromJson(e as Map<String, dynamic>))
+              .toList(),
     );
   }
 }
@@ -100,9 +116,10 @@ class MissionV1 {
       requiresPartnerPresent: (json['requiresPartnerPresent'] ?? false) as bool,
       icon: (json['icon'] ?? 'sparkles') as String,
       whyThisMatters: (json['whyThisMatters'] ?? '') as String,
-      cards: cardsJson
-          .map((e) => MissionCardV1.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      cards:
+          cardsJson
+              .map((e) => MissionCardV1.fromJson(e as Map<String, dynamic>))
+              .toList(),
     );
   }
 }
@@ -132,9 +149,15 @@ class MissionCardV1 {
       icon: (json['icon'] ?? 'sparkles') as String,
       title: (json['title'] ?? '') as String,
       text: json['text'] as String?,
-      bullets: (json['bullets'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
+      bullets:
+          (json['bullets'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList(),
       prompt: json['prompt'] as String?,
-      options: (json['options'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
+      options:
+          (json['options'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList(),
     );
   }
 }
