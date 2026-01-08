@@ -9,13 +9,20 @@ import '../../../core/session/effective_relationship_status_provider.dart';
 import '../domain/journey_v1_models.dart';
 
 final journeysServiceProvider = Provider((ref) => const JourneysService());
-final journeyProgressServiceProvider = Provider((ref) => JourneyProgressService());
-final journeyEntitlementsServiceProvider = Provider((ref) => JourneyEntitlementsService());
-final journeyMissionResponseServiceProvider = Provider((ref) => JourneyMissionResponseService());
+final journeyProgressServiceProvider = Provider(
+  (ref) => JourneyProgressService(),
+);
+final journeyEntitlementsServiceProvider = Provider(
+  (ref) => JourneyEntitlementsService(),
+);
+final journeyMissionResponseServiceProvider = Provider(
+  (ref) => JourneyMissionResponseService(),
+);
 
 final journeyCatalogProvider = FutureProvider<JourneyCatalogV1>((ref) async {
   final status =
-      ref.watch(effectiveRelationshipStatusProvider) ?? RelationshipStatus.singleNeverMarried;
+      ref.watch(effectiveRelationshipStatusProvider) ??
+      RelationshipStatus.singleNeverMarried;
 
   final service = ref.watch(journeysServiceProvider);
   final json = await service.loadCatalogForStatus(status);
@@ -30,12 +37,18 @@ final journeyByIdProvider = Provider.family<JourneyV1?, String>((ref, id) {
   );
 });
 
-final completedMissionIdsProvider = FutureProvider.family<Set<String>, String>((ref, journeyId) async {
+final completedMissionIdsProvider = FutureProvider.family<Set<String>, String>((
+  ref,
+  journeyId,
+) async {
   final svc = ref.watch(journeyProgressServiceProvider);
   return svc.loadCompletedMissionIds(journeyId);
 });
 
-final journeyStreakProvider = FutureProvider.family<int, String>((ref, journeyId) async {
+final journeyStreakProvider = FutureProvider.family<int, String>((
+  ref,
+  journeyId,
+) async {
   final svc = ref.watch(journeyProgressServiceProvider);
   return svc.loadStreak(journeyId);
 });
@@ -45,7 +58,10 @@ final purchasedJourneyIdsProvider = FutureProvider<Set<String>>((ref) async {
   return svc.loadPurchasedJourneyIds();
 });
 
-final isJourneyPurchasedProvider = FutureProvider.family<bool, String>((ref, journeyId) async {
+final isJourneyPurchasedProvider = FutureProvider.family<bool, String>((
+  ref,
+  journeyId,
+) async {
   final svc = ref.watch(journeyEntitlementsServiceProvider);
   return svc.isPurchased(journeyId);
 });

@@ -7,7 +7,7 @@
       "id": "healing_and_restoration_after_divorce",
       "title": "Healing and Restoration After Divorce",
       "audience": "Divorced",
-      "summary": "Missions to stabilize your emotions, rebuild peace, and start healing without rushing your process.",
+      "summary": "Activities to stabilize your emotions, rebuild peace, and start healing without rushing your process.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 1,
@@ -82,7 +82,7 @@
             {
               "type": "mission_card",
               "icon": "message-circle",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Text one trusted person today and ask for support."
             },
             {
@@ -725,7 +725,7 @@
       "id": "processing_past_relationship_pain",
       "title": "Processing Past Relationship Pain",
       "audience": "Divorced",
-      "summary": "Missions to process what hurt you, stop emotional bleeding, and regain your peace without denial.",
+      "summary": "Activities to process what hurt you, stop emotional bleeding, and regain your peace without denial.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 2,
@@ -800,7 +800,7 @@
             {
               "type": "mission_card",
               "icon": "list-checks",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write one sentence: “What hurt me most was ______.”"
             },
             {
@@ -1404,7 +1404,7 @@
       "id": "rebuilding_identity_and_self_worth",
       "title": "Rebuilding Identity and Self-Worth",
       "audience": "Divorced",
-      "summary": "Missions to rebuild your confidence, reject shame, and see yourself as valuable again.",
+      "summary": "Activities to rebuild your confidence, reject shame, and see yourself as valuable again.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 3,
@@ -1479,7 +1479,7 @@
             {
               "type": "mission_card",
               "icon": "shield-check",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, replace one shame sentence in your mind."
             },
             {
@@ -2091,7 +2091,7 @@
       "id": "letting_go_of_resentment_and_lingering_conflict",
       "title": "Letting Go of Resentment and Lingering Conflict",
       "audience": "Divorced",
-      "summary": "Missions to release bitterness, stop mental fights, and regain peace—without pretending what happened was okay.",
+      "summary": "Activities to release bitterness, stop mental fights, and regain peace—without pretending what happened was okay.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 4,
@@ -2166,7 +2166,7 @@
             {
               "type": "mission_card",
               "icon": "list-checks",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write one sentence: “I still feel angry about ______.”"
             },
             {
@@ -2783,7 +2783,7 @@
       "id": "rebuilding_trust_safely",
       "title": "Rebuilding Trust Safely",
       "audience": "Divorced",
-      "summary": "Missions to rebuild trust wisely—without rushing, ignoring red flags, or trusting words without proof.",
+      "summary": "Activities to rebuild trust wisely—without rushing, ignoring red flags, or trusting words without proof.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 5,
@@ -2858,7 +2858,7 @@
             {
               "type": "mission_card",
               "icon": "gavel",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write 3 trust rules you will follow."
             },
             {
@@ -3472,7 +3472,7 @@
       "id": "emotional_readiness_for_remarriage",
       "title": "Emotional Readiness for Remarriage",
       "audience": "Divorced",
-      "summary": "Missions to confirm you are ready, heal your weak spots, and enter love again with stability and wisdom.",
+      "summary": "Activities to confirm you are ready, heal your weak spots, and enter love again with stability and wisdom.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 6,
@@ -3547,7 +3547,7 @@
             {
               "type": "mission_card",
               "icon": "clipboard-check",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Answer these 5 questions with yes/no."
             },
             {
@@ -4158,7 +4158,7 @@
       "id": "discerning_healthy_love_again",
       "title": "Discerning Healthy Love Again",
       "audience": "Divorced",
-      "summary": "Missions to choose healthy love, spot safe character, and avoid repeating old mistakes.",
+      "summary": "Activities to choose healthy love, spot safe character, and avoid repeating old mistakes.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 7,
@@ -4233,7 +4233,7 @@
             {
               "type": "mission_card",
               "icon": "gavel",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write 5 non-negotiables you will not compromise."
             },
             {
@@ -4852,7 +4852,7 @@
       "id": "dating_again_with_wisdom",
       "title": "Dating Again With Wisdom",
       "audience": "Divorced",
-      "summary": "Missions to date calmly, avoid rushing, and handle fear and hope with maturity.",
+      "summary": "Activities to date calmly, avoid rushing, and handle fear and hope with maturity.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 8,
@@ -4927,7 +4927,7 @@
             {
               "type": "mission_card",
               "icon": "gavel",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write 5 dating rules you will follow."
             },
             {
@@ -5531,7 +5531,7 @@
       "id": "co_parenting_with_peace_and_stability",
       "title": "Co-Parenting With Peace and Stability",
       "audience": "Divorced",
-      "summary": "Missions to reduce drama, protect your kid(s), and co-parent with calm structure.",
+      "summary": "Activities to reduce drama, protect your kid(s), and co-parent with calm structure.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 9,
@@ -5606,7 +5606,7 @@
             {
               "type": "mission_card",
               "icon": "shield",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write one child-first rule you will follow."
             },
             {
@@ -6212,7 +6212,7 @@
       "id": "addressing_family_patterns_before_remarriage",
       "title": "Addressing Family Patterns Before Remarriage",
       "audience": "Divorced",
-      "summary": "Missions to spot patterns from your upbringing, stop repeating them, and build a healthier future marriage.",
+      "summary": "Activities to spot patterns from your upbringing, stop repeating them, and build a healthier future marriage.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 10,
@@ -6287,7 +6287,7 @@
             {
               "type": "mission_card",
               "icon": "list-checks",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write one family pattern you don’t want in your next marriage."
             },
             {
@@ -6897,7 +6897,7 @@
       "id": "preparing_for_a_new_covenant",
       "title": "Preparing for a New Covenant",
       "audience": "Divorced",
-      "summary": "Missions to prepare your heart, clarify your values, and enter a new marriage with wisdom and maturity.",
+      "summary": "Activities to prepare your heart, clarify your values, and enter a new marriage with wisdom and maturity.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 11,
@@ -6972,7 +6972,7 @@
             {
               "type": "mission_card",
               "icon": "book-open",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write one sentence: “Covenant means ______ to me.”"
             },
             {

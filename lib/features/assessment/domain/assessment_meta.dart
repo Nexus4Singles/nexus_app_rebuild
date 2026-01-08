@@ -20,7 +20,8 @@ extension AssessmentTypeMetaX on AssessmentType {
       case AssessmentType.singlesReadiness:
         return const AssessmentMeta(
           title: "Singles Readiness Assessment",
-          tagline: "Discover how ready you are for intentional dating & marriage.",
+          tagline:
+              "Discover how ready you are for intentional dating & marriage.",
           emoji: "��",
         );
       case AssessmentType.remarriageReadiness:
@@ -32,7 +33,8 @@ extension AssessmentTypeMetaX on AssessmentType {
       case AssessmentType.marriageHealthCheck:
         return const AssessmentMeta(
           title: "Marriage Health Check",
-          tagline: "Strengthen your marriage with a clear relationship diagnosis.",
+          tagline:
+              "Strengthen your marriage with a clear relationship diagnosis.",
           emoji: "💍",
         );
     }

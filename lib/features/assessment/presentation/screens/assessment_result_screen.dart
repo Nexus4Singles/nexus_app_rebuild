@@ -23,12 +23,21 @@ class AssessmentResultScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.info_outline, size: 64, color: AppColors.textMuted),
+              const Icon(
+                Icons.info_outline,
+                size: 64,
+                color: AppColors.textMuted,
+              ),
               const SizedBox(height: 12),
               const Text('No assessment result available'),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () => Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (_) => false),
+                onPressed:
+                    () => Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      AppRoutes.home,
+                      (_) => false,
+                    ),
                 child: const Text('Go Home'),
               ),
             ],
@@ -51,7 +60,11 @@ class AssessmentResultScreen extends ConsumerWidget {
             _TopBar(
               onClose: () {
                 ref.read(assessmentNotifierProvider.notifier).reset();
-                Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (_) => false);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRoutes.home,
+                  (_) => false,
+                );
               },
             ),
 
@@ -92,13 +105,17 @@ class AssessmentResultScreen extends ConsumerWidget {
 
             const SizedBox(height: 16),
 
-if ((bundle.recommendedJourneyId ?? '').trim().isNotEmpty)
+            if ((bundle.recommendedJourneyId ?? '').trim().isNotEmpty)
               _JourneyCtaCard(
                 journeyId: bundle.recommendedJourneyId!.trim(),
                 onTap: () {
                   // TODO: wire to journey screen once ready.
                   // For now route to home; home can surface journeys.
-                  Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (_) => false);
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.home,
+                    (_) => false,
+                  );
                 },
               ),
 
@@ -108,14 +125,24 @@ if ((bundle.recommendedJourneyId ?? '').trim().isNotEmpty)
               width: double.infinity,
               height: 54,
               child: ElevatedButton(
-                onPressed: () => Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (_) => false),
+                onPressed:
+                    () => Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      AppRoutes.home,
+                      (_) => false,
+                    ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   elevation: 0,
                 ),
-                child: const Text('Done', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                child: const Text(
+                  'Done',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                ),
               ),
             ),
           ],
@@ -124,7 +151,6 @@ if ((bundle.recommendedJourneyId ?? '').trim().isNotEmpty)
     );
   }
 }
-
 
 class _ExploreChallengesCtaCard extends StatelessWidget {
   final VoidCallback onTap;
@@ -144,12 +170,18 @@ class _ExploreChallengesCtaCard extends StatelessWidget {
         children: [
           Text(
             'Recommended Next Steps',
-            style: AppTextStyles.titleMedium.copyWith(fontWeight: FontWeight.w900),
+            style: AppTextStyles.titleMedium.copyWith(
+              fontWeight: FontWeight.w900,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
-            'You don’t have to work through these areas alone.\nOur challenges offer structured, faith-grounded guidance designed around growth patterns like yours.'.replaceAll('\\n', '\n'),
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted, height: 1.35),
+            'You don’t have to work through these areas alone.\nOur challenges offer structured, faith-grounded guidance designed around growth patterns like yours.'
+                .replaceAll('\\n', '\n'),
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textMuted,
+              height: 1.35,
+            ),
           ),
           const SizedBox(height: 14),
           SizedBox(
@@ -158,7 +190,9 @@ class _ExploreChallengesCtaCard extends StatelessWidget {
             child: OutlinedButton(
               onPressed: onTap,
               style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 side: BorderSide(color: AppColors.primary.withOpacity(0.35)),
               ),
               child: Text(
@@ -185,10 +219,7 @@ class _TopBar extends StatelessWidget {
     return Row(
       children: [
         const Spacer(),
-        IconButton(
-          onPressed: onClose,
-          icon: const Icon(Icons.close),
-        ),
+        IconButton(onPressed: onClose, icon: const Icon(Icons.close)),
       ],
     );
   }
@@ -224,14 +255,17 @@ class _ProfileCard extends StatelessWidget {
           if (showSafetyBanner) ...[
             _Banner(
               icon: Icons.shield_outlined,
-              text: 'Safety may be a concern. Prioritize emotional and physical safety first.',
+              text:
+                  'Safety may be a concern. Prioritize emotional and physical safety first.',
             ),
             const SizedBox(height: 12),
           ],
 
           Text(
             title.trim().isEmpty ? 'Your Profile' : title,
-            style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w900),
+            style: AppTextStyles.titleLarge.copyWith(
+              fontWeight: FontWeight.w900,
+            ),
           ),
 
           const SizedBox(height: 8),
@@ -239,7 +273,10 @@ class _ProfileCard extends StatelessWidget {
           if (summary.trim().isNotEmpty)
             Text(
               summary,
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted, height: 1.35),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textMuted,
+                height: 1.35,
+              ),
             ),
 
           const SizedBox(height: 14),
@@ -292,23 +329,30 @@ class _DimensionSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: AppTextStyles.titleMedium.copyWith(fontWeight: FontWeight.w900)),
+          Text(
+            title,
+            style: AppTextStyles.titleMedium.copyWith(
+              fontWeight: FontWeight.w900,
+            ),
+          ),
           const SizedBox(height: 4),
           Text(
             subtitle,
             style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted),
           ),
           const SizedBox(height: 14),
-          ...items.map((d) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: _DimensionRow(
-                  name: d.dimensionName,
-                  percentage: d.percentage,
-                  tier: d.tier,
-                  insight: d.insightText,
-                  pillColor: pillColor,
-                ),
-              )),
+          ...items.map(
+            (d) => Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: _DimensionRow(
+                name: d.dimensionName,
+                percentage: d.percentage,
+                tier: d.tier,
+                insight: d.insightText,
+                pillColor: pillColor,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -342,7 +386,9 @@ class _DimensionRow extends StatelessWidget {
             Expanded(
               child: Text(
                 name,
-                style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w800),
+                style: AppTextStyles.bodyLarge.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
             _Pill(
@@ -357,22 +403,21 @@ class _DimensionRow extends StatelessWidget {
         if (insightText.isNotEmpty)
           Text(
             insightText,
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted, height: 1.35),
+            style: AppTextStyles.bodySmall.copyWith(
+              color: AppColors.textMuted,
+              height: 1.35,
+            ),
           ),
       ],
     );
   }
 }
 
-
 class _JourneyCtaCard extends StatelessWidget {
   final String journeyId;
   final VoidCallback onTap;
 
-  const _JourneyCtaCard({
-    required this.journeyId,
-    required this.onTap,
-  });
+  const _JourneyCtaCard({required this.journeyId, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -396,12 +441,16 @@ class _JourneyCtaCard extends StatelessWidget {
                 children: [
                   Text(
                     'Recommended Journey',
-                    style: AppTextStyles.titleSmall.copyWith(fontWeight: FontWeight.w900),
+                    style: AppTextStyles.titleSmall.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'Journey ID: $journeyId',
-                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted),
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textMuted,
+                    ),
                   ),
                 ],
               ),
@@ -473,7 +522,10 @@ class _Pill extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             label,
-            style: AppTextStyles.labelSmall.copyWith(color: textColor, fontWeight: FontWeight.w800),
+            style: AppTextStyles.labelSmall.copyWith(
+              color: textColor,
+              fontWeight: FontWeight.w800,
+            ),
           ),
         ],
       ),

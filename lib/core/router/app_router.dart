@@ -57,14 +57,18 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     );
   }
 
-
-  // /journey/:id/mission/:missionId
-  if (segments.length == 4 && segments[0] == 'journey' && segments[2] == 'mission') {
+  // /journey/:id/mission/:missionId  OR  /journey/:id/activity/:missionId
+  if (segments.length == 4 &&
+      segments[0] == 'journey' &&
+      (segments[2] == 'mission' || segments[2] == 'activity')) {
     final journeyId = segments[1];
     final missionId = segments[3];
     return MaterialPageRoute(
       settings: settings,
-      builder: (_) => JourneyGateScreen(journeyId: journeyId, missionId: missionId),
+      builder: (_) => JourneyGateScreen(
+        journeyId: journeyId,
+        missionId: missionId,
+      ),
     );
   }
 
@@ -76,7 +80,6 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       builder: (_) => JourneyDetailScreen(id: journeyId),
     );
   }
-
 
   switch (uri.path) {
     case '/':
@@ -102,7 +105,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         settings: settings,
         builder: (_) => const ChatsScreen(),
       );
-case '/profile':
+    case '/profile':
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => const ProfileScreen(),
@@ -150,57 +153,44 @@ case '/profile':
         builder: (_) => const ContactSupportStubScreen(),
       );
 
-
     case AppRoutes.stories:
-
       return MaterialPageRoute(
-
         settings: settings,
 
         builder: (_) => const StoriesScreen(),
-
       );
 
-
     case AppRoutes.challenges:
-
       return MaterialPageRoute(
-
         settings: settings,
 
         builder: (_) => const ChallengesScreen(),
-
       );
 
-
     case AppRoutes.assessments:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => const AssessmentsHubScreen(),
-        );
-
-      case AppRoutes.assessmentIntro:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => AssessmentIntroScreen(),
-        );
-
-case AppRoutes.assessment:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => AssessmentScreen(),
-        );
-
-case AppRoutes.assessmentResult:
-
       return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const AssessmentsHubScreen(),
+      );
 
+    case AppRoutes.assessmentIntro:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => AssessmentIntroScreen(),
+      );
+
+    case AppRoutes.assessment:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => AssessmentScreen(),
+      );
+
+    case AppRoutes.assessmentResult:
+      return MaterialPageRoute(
         settings: settings,
 
         builder: (_) => const AssessmentResultScreen(),
-
       );
-
 
     default:
       return MaterialPageRoute(

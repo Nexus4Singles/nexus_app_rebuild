@@ -20,19 +20,28 @@ class AssessmentRecommendationService {
     final dimensionRecs = _buildDimensionRecs(result: result, config: config);
     dimensionRecs.sort((a, b) => a.percentage.compareTo(b.percentage));
 
-    final growthAreas = dimensionRecs.take(min(3, dimensionRecs.length)).toList();
-    final strengths = dimensionRecs.reversed.take(min(3, dimensionRecs.length)).toList();
+    final growthAreas =
+        dimensionRecs.take(min(3, dimensionRecs.length)).toList();
+    final strengths =
+        dimensionRecs.reversed.take(min(3, dimensionRecs.length)).toList();
 
     final recommendedJourneyId =
-        growthAreas.firstWhere((d) => (d.recommendedJourney ?? '').trim().isNotEmpty,
-                orElse: () => growthAreas.isNotEmpty ? growthAreas.first : const DimensionRecommendation(
-                  dimensionId: '',
-                  dimensionName: '',
-                  score: 0,
-                  maxScore: 1,
-                  percentage: 0,
-                  tier: 'AT_RISK',
-                ))
+        growthAreas
+            .firstWhere(
+              (d) => (d.recommendedJourney ?? '').trim().isNotEmpty,
+              orElse:
+                  () =>
+                      growthAreas.isNotEmpty
+                          ? growthAreas.first
+                          : const DimensionRecommendation(
+                            dimensionId: '',
+                            dimensionName: '',
+                            score: 0,
+                            maxScore: 1,
+                            percentage: 0,
+                            tier: 'AT_RISK',
+                          ),
+            )
             .recommendedJourney;
 
     final nextSteps = _buildNextSteps(growthAreas);
@@ -76,15 +85,19 @@ class AssessmentRecommendationService {
 
       final dimension = config.getDimension(dimScore.dimensionName);
 
-      final insightText = dimension?.insights?.getInsightForScore(dimScore.percentage);
+      final insightText = dimension?.insights?.getInsightForScore(
+        dimScore.percentage,
+      );
       final microStepRaw = dimension?.insights?.microStep;
-      final microStep = (microStepRaw ?? '').trim().isEmpty
-          ? 'Pick one small action you can practice this week.'
-          : microStepRaw;
+      final microStep =
+          (microStepRaw ?? '').trim().isEmpty
+              ? 'Pick one small action you can practice this week.'
+              : microStepRaw;
       final journeyRaw = dimension?.insights?.recommendedJourney;
-      final journey = (journeyRaw ?? '').trim().isEmpty
-          ? (result.recommendedJourneyId)
-          : journeyRaw;
+      final journey =
+          (journeyRaw ?? '').trim().isEmpty
+              ? (result.recommendedJourneyId)
+              : journeyRaw;
 
       recs.add(
         DimensionRecommendation(
@@ -124,12 +137,17 @@ class AssessmentRecommendationService {
     for (final answer in result.answers) {
       final q = config.questions.firstWhere(
         (qq) => qq.number == answer.questionNumber,
-        orElse: () => throw StateError('Missing question ${answer.questionNumber}'),
+        orElse:
+            () => throw StateError('Missing question ${answer.questionNumber}'),
       );
 
       final opt = q.options.firstWhere(
         (o) => o.id == answer.selectedOptionId,
-        orElse: () => throw StateError('Missing option ${answer.selectedOptionId} for Q${answer.questionNumber}'),
+        orElse:
+            () =>
+                throw StateError(
+                  'Missing option ${answer.selectedOptionId} for Q${answer.questionNumber}',
+                ),
       );
 
       final s = opt.outcomeSignal.trim();
@@ -149,7 +167,7 @@ class AssessmentRecommendationService {
     if (isSafetyAlert) {
       return (
         'Safety First',
-        'Your responses suggest that safety may be a concern. The most important next step is to prioritize emotional and physical safety before working on relationship growth.'
+        'Your responses suggest that safety may be a concern. The most important next step is to prioritize emotional and physical safety before working on relationship growth.',
       );
     }
 
@@ -166,23 +184,23 @@ class AssessmentRecommendationService {
       case 'STRONG':
         return (
           'Ready & Grounded',
-          'You show strong readiness signals across key areas. Keep strengthening what is already working and build consistency in growth zones.'
+          'You show strong readiness signals across key areas. Keep strengthening what is already working and build consistency in growth zones.',
         );
       case 'DEVELOPING':
         return (
           'Promising, Still Building',
-          'Your foundation is forming well. A few intentional upgrades in key areas can significantly increase your readiness and stability.'
+          'Your foundation is forming well. A few intentional upgrades in key areas can significantly increase your readiness and stability.',
         );
       case 'GUARDED':
         return (
           'Cautious & Uncertain',
-          'You have some stable areas, but there are signals that need attention before you feel fully ready and secure. Focus on your weakest two dimensions first.'
+          'You have some stable areas, but there are signals that need attention before you feel fully ready and secure. Focus on your weakest two dimensions first.',
         );
       case 'AT_RISK':
       default:
         return (
           'Fragile Foundations',
-          'Right now, several areas need support. Take gentle, practical steps to rebuild stability before making major relational decisions.'
+          'Right now, several areas need support. Take gentle, practical steps to rebuild stability before making major relational decisions.',
         );
     }
   }

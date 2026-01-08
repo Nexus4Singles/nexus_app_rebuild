@@ -1,4 +1,5 @@
 name: nexus_app_min_test
+version: 1.0.0+1
 description: Minimal build to validate iOS simulator setup.
 publish_to: "none"
 

@@ -7,7 +7,7 @@
       "id": "navigating_grief_and_loss",
       "title": "Navigating Grief and Loss",
       "audience": "Widowed",
-      "summary": "Missions to survive the heavy days, handle triggers, and process grief with gentleness and faith.",
+      "summary": "Activities to survive the heavy days, handle triggers, and process grief with gentleness and faith.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 1,
@@ -82,7 +82,7 @@
             {
               "type": "mission_card",
               "icon": "heart",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, name your grief in one word."
             },
             {
@@ -706,7 +706,7 @@
       "id": "supporting_kid(s)_through_grief",
       "title": "Supporting Kid(s) Through Grief",
       "audience": "Widowed",
-      "summary": "Missions to help your kid(s) feel safe, talk about feelings, and grieve with support and stability.",
+      "summary": "Activities to help your kid(s) feel safe, talk about feelings, and grieve with support and stability.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 2,
@@ -781,7 +781,7 @@
             {
               "type": "mission_card",
               "icon": "message-circle",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Ask your kid(s): “How are you feeling today?”"
             },
             {
@@ -1382,7 +1382,7 @@
       "id": "rebuilding_life_after_loss",
       "title": "Rebuilding Life After Loss",
       "audience": "Widowed",
-      "summary": "Missions to rebuild routines, manage loneliness, and find purpose again without rushing your healing.",
+      "summary": "Activities to rebuild routines, manage loneliness, and find purpose again without rushing your healing.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 3,
@@ -1457,7 +1457,7 @@
             {
               "type": "mission_card",
               "icon": "calendar",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Choose one small routine and do it today."
             },
             {
@@ -2069,7 +2069,7 @@
       "id": "honoring_the_past_while_moving_forward",
       "title": "Honoring the Past While Moving Forward",
       "audience": "Widowed",
-      "summary": "Missions to honor your spouse’s memory while giving yourself permission to keep living.",
+      "summary": "Activities to honor your spouse’s memory while giving yourself peractivity to keep living.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 4,
@@ -2144,7 +2144,7 @@
             {
               "type": "mission_card",
               "icon": "book-open",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write one sentence that honors your spouse and your future."
             },
             {
@@ -2762,7 +2762,7 @@
       "id": "rediscovering_identity_and_purpose",
       "title": "Rediscovering Identity and Purpose",
       "audience": "Widowed",
-      "summary": "Missions to rediscover who you are now, rebuild confidence, and find purpose again.",
+      "summary": "Activities to rediscover who you are now, rebuild confidence, and find purpose again.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 5,
@@ -2837,7 +2837,7 @@
             {
               "type": "mission_card",
               "icon": "list",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write 3 identity statements about you today."
             },
             {
@@ -3451,7 +3451,7 @@
       "id": "emotional_readiness_for_love_again",
       "title": "Emotional Readiness for Love Again",
       "audience": "Widowed",
-      "summary": "Missions to know when you are ready, reduce guilt, and approach love again with calm wisdom.",
+      "summary": "Activities to know when you are ready, reduce guilt, and approach love again with calm wisdom.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 6,
@@ -3526,7 +3526,7 @@
             {
               "type": "mission_card",
               "icon": "clipboard-check",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Answer these questions with yes/no."
             },
             {
@@ -4152,7 +4152,7 @@
       "id": "opening_the_heart_to_new_love",
       "title": "Opening the Heart to New Love",
       "audience": "Widowed",
-      "summary": "Missions to open your heart gently, reduce fear, and take healthy steps toward love again.",
+      "summary": "Activities to open your heart gently, reduce fear, and take healthy steps toward love again.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 7,
@@ -4227,7 +4227,7 @@
             {
               "type": "mission_card",
               "icon": "book-open",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write one sentence that gives you permission to love again in the future."
             },
             {
@@ -4854,7 +4854,7 @@
       "id": "dating_after_loss_with_wisdom",
       "title": "Dating After Loss With Wisdom",
       "audience": "Widowed",
-      "summary": "Missions to date safely, protect your heart and home, and move slowly with calm confidence.",
+      "summary": "Activities to date safely, protect your heart and home, and move slowly with calm confidence.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 8,
@@ -4929,7 +4929,7 @@
             {
               "type": "mission_card",
               "icon": "gavel",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write 5 dating safety rules you will follow."
             },
             {
@@ -5534,7 +5534,7 @@
       "id": "blending_memories_and_new_beginnings",
       "title": "Blending Memories and New Beginnings",
       "audience": "Widowed",
-      "summary": "Missions to hold your past with honor while building a new chapter with peace and wisdom.",
+      "summary": "Activities to hold your past with honor while building a new chapter with peace and wisdom.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 9,
@@ -5609,7 +5609,7 @@
             {
               "type": "mission_card",
               "icon": "list-checks",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write two truths you can hold at the same time."
             },
             {
@@ -6222,7 +6222,7 @@
       "id": "preparing_for_a_new_covenant",
       "title": "Preparing for a New Covenant",
       "audience": "Widowed",
-      "summary": "Missions to prepare your heart, clarify your values, and enter a new marriage with wisdom and peace.",
+      "summary": "Activities to prepare your heart, clarify your values, and enter a new marriage with wisdom and peace.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 10,
@@ -6297,7 +6297,7 @@
             {
               "type": "mission_card",
               "icon": "book-open",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write one sentence: “Covenant means ______ to me.”"
             },
             {

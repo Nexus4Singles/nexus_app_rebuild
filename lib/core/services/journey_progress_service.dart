@@ -2,12 +2,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class JourneyProgressService {
   static const _kCompletedPrefix = 'journey_completed_missions:'; // + journeyId
-  static const _kLastCompletePrefix = 'journey_last_complete:';   // + journeyId (yyyy-mm-dd)
-  static const _kStreakPrefix = 'journey_streak:';                // + journeyId (int)
+  static const _kLastCompletePrefix =
+      'journey_last_complete:'; // + journeyId (yyyy-mm-dd)
+  static const _kStreakPrefix = 'journey_streak:'; // + journeyId (int)
 
   Future<Set<String>> loadCompletedMissionIds(String journeyId) async {
     final prefs = await SharedPreferences.getInstance();
-    final list = prefs.getStringList('$_kCompletedPrefix$journeyId') ?? <String>[];
+    final list =
+        prefs.getStringList('$_kCompletedPrefix$journeyId') ?? <String>[];
     return list.toSet();
   }
 

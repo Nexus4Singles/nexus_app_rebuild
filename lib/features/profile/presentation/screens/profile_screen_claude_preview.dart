@@ -8,7 +8,8 @@ class ProfileScreenClaudePreview extends StatefulWidget {
   const ProfileScreenClaudePreview({super.key});
 
   @override
-  State<ProfileScreenClaudePreview> createState() => _ProfileScreenClaudePreviewState();
+  State<ProfileScreenClaudePreview> createState() =>
+      _ProfileScreenClaudePreviewState();
 }
 
 class _ProfileScreenClaudePreviewState extends State<ProfileScreenClaudePreview>
@@ -65,7 +66,9 @@ class _ProfileScreenClaudePreviewState extends State<ProfileScreenClaudePreview>
                           backgroundColor: AppColors.primarySoft,
                           child: Text(
                             name.isNotEmpty ? name[0].toUpperCase() : "U",
-                            style: t.titleLarge?.copyWith(color: AppColors.primary),
+                            style: t.titleLarge?.copyWith(
+                              color: AppColors.primary,
+                            ),
                           ),
                         ),
                         const SizedBox(width: AppSpacing.md),
@@ -77,7 +80,9 @@ class _ProfileScreenClaudePreviewState extends State<ProfileScreenClaudePreview>
                               const SizedBox(height: AppSpacing.xs),
                               Text(
                                 status,
-                                style: t.bodySmall?.copyWith(color: AppColors.textSecondary),
+                                style: t.bodySmall?.copyWith(
+                                  color: AppColors.textSecondary,
+                                ),
                               ),
                             ],
                           ),
@@ -99,10 +104,17 @@ class _ProfileScreenClaudePreviewState extends State<ProfileScreenClaudePreview>
                 const SizedBox(height: AppSpacing.sm),
 
                 _RowItem(title: "Edit Profile", icon: Icons.edit_outlined),
-                _RowItem(title: "Notifications", icon: Icons.notifications_outlined),
+                _RowItem(
+                  title: "Notifications",
+                  icon: Icons.notifications_outlined,
+                ),
                 _RowItem(title: "Privacy & Safety", icon: Icons.lock_outline),
                 _RowItem(title: "Help & Support", icon: Icons.help_outline),
-                _RowItem(title: "Log out", icon: Icons.logout, isDestructive: true),
+                _RowItem(
+                  title: "Log out",
+                  icon: Icons.logout,
+                  isDestructive: true,
+                ),
               ],
             ),
           ),
@@ -129,7 +141,10 @@ class _RowItem extends StatelessWidget {
 
     return Card(
       child: ListTile(
-        leading: Icon(icon, color: isDestructive ? AppColors.error : AppColors.textPrimary),
+        leading: Icon(
+          icon,
+          color: isDestructive ? AppColors.error : AppColors.textPrimary,
+        ),
         title: Text(
           title,
           style: t.bodyLarge?.copyWith(

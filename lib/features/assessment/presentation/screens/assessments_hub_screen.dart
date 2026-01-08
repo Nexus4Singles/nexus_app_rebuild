@@ -62,25 +62,26 @@ class AssessmentsHubScreen extends ConsumerWidget {
                 if (!isLoggedIn) {
                   showDialog(
                     context: context,
-                    builder: (_) => AlertDialog(
-                      title: const Text("Sign in required"),
-                      content: const Text(
-                        "Create an account or sign in to take assessments.",
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text("Not now"),
+                    builder:
+                        (_) => AlertDialog(
+                          title: const Text("Sign in required"),
+                          content: const Text(
+                            "Create an account or sign in to take assessments.",
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text("Not now"),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.pushNamed(context, AppRoutes.login);
+                              },
+                              child: const Text("Sign in"),
+                            ),
+                          ],
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            Navigator.pushNamed(context, AppRoutes.login);
-                          },
-                          child: const Text("Sign in"),
-                        ),
-                      ],
-                    ),
                   );
                   return;
                 }
@@ -180,25 +181,38 @@ class _AssessmentCard extends ConsumerWidget {
                         final q = config?.questions.length ?? 0;
                         return Row(
                           children: [
-                            _MetaChip(icon: Icons.quiz_outlined, text: "$q Questions"),
+                            _MetaChip(
+                              icon: Icons.quiz_outlined,
+                              text: "$q Questions",
+                            ),
                             const SizedBox(width: 8),
-                            _MetaChip(icon: Icons.timer_outlined, text: "5–7 mins"),
+                            _MetaChip(
+                              icon: Icons.timer_outlined,
+                              text: "5–7 mins",
+                            ),
                             const Spacer(),
-                            if (!isLoggedIn)
-                              _LockedChip(),
+                            if (!isLoggedIn) _LockedChip(),
                           ],
                         );
                       },
-                      loading: () => Row(
-                        children: const [
-                          _MetaChip(icon: Icons.quiz_outlined, text: "Loading..."),
-                        ],
-                      ),
-                      error: (_, __) => Row(
-                        children: const [
-                          _MetaChip(icon: Icons.error_outline, text: "Unavailable"),
-                        ],
-                      ),
+                      loading:
+                          () => Row(
+                            children: const [
+                              _MetaChip(
+                                icon: Icons.quiz_outlined,
+                                text: "Loading...",
+                              ),
+                            ],
+                          ),
+                      error:
+                          (_, __) => Row(
+                            children: const [
+                              _MetaChip(
+                                icon: Icons.error_outline,
+                                text: "Unavailable",
+                              ),
+                            ],
+                          ),
                     ),
                   ],
                 ),
@@ -231,7 +245,9 @@ class _MetaChip extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             text,
-            style: AppTextStyles.bodySmall.copyWith(fontWeight: FontWeight.w700),
+            style: AppTextStyles.bodySmall.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ],
       ),

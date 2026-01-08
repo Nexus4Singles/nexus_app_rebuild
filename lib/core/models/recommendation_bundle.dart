@@ -35,15 +35,15 @@ class RecommendationBundle extends Equatable {
 
   @override
   List<Object?> get props => [
-        profileTitle,
-        profileSummary,
-        strengths,
-        growthAreas,
-        keySignals,
-        nextSteps,
-        recommendedJourneyId,
-        isSafetyAlert,
-      ];
+    profileTitle,
+    profileSummary,
+    strengths,
+    growthAreas,
+    keySignals,
+    nextSteps,
+    recommendedJourneyId,
+    isSafetyAlert,
+  ];
 }
 
 class DimensionRecommendation extends Equatable {
@@ -71,14 +71,14 @@ class DimensionRecommendation extends Equatable {
 
   @override
   List<Object?> get props => [
-        dimensionId,
-        dimensionName,
-        score,
-        maxScore,
-        percentage,
-        tier,
-        insightText,
-        microStep,
-        recommendedJourney,
-      ];
+    dimensionId,
+    dimensionName,
+    score,
+    maxScore,
+    percentage,
+    tier,
+    insightText,
+    microStep,
+    recommendedJourney,
+  ];
 }

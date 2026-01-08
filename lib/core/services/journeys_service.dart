@@ -8,7 +8,9 @@ import '../constants/app_constants.dart';
 class JourneysService {
   const JourneysService();
 
-  Future<Map<String, dynamic>> loadCatalogForStatus(RelationshipStatus status) async {
+  Future<Map<String, dynamic>> loadCatalogForStatus(
+    RelationshipStatus status,
+  ) async {
     final assetPath = _assetForStatus(status);
     final raw = await rootBundle.loadString(assetPath);
     return json.decode(raw) as Map<String, dynamic>;

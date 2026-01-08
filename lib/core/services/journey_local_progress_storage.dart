@@ -28,9 +28,10 @@ class JourneyLocalProgressStorage {
 
   Future<void> markCompleted(String journeyId, int sessionNumber) async {
     final raw = await _loadRaw(journeyId);
-    final set = ((raw['completedSessions'] as List<dynamic>? ?? [])
-        .map((e) => e as int)
-        .toSet());
+    final set =
+        ((raw['completedSessions'] as List<dynamic>? ?? [])
+            .map((e) => e as int)
+            .toSet());
     set.add(sessionNumber);
     raw['completedSessions'] = set.toList()..sort();
     raw['updatedAt'] = DateTime.now().toIso8601String();
@@ -67,12 +68,10 @@ class JourneyLocalProgressStorage {
     await prefs.remove(_key(journeyId));
   }
 
-
   Future<bool> hasAnyProgress(String journeyId) async {
     final raw = await _loadRaw(journeyId);
     final completed = (raw['completedSessions'] as List<dynamic>? ?? []);
     final answers = (raw['answers'] as Map<String, dynamic>? ?? {});
     return completed.isNotEmpty || answers.isNotEmpty;
   }
-
 }

@@ -38,7 +38,7 @@ class AssessmentDimension extends Equatable {
 }
 
 /// Insights for a dimension (low/medium/high feedback)
- class DimensionInsights extends Equatable {
+class DimensionInsights extends Equatable {
   final String? low;
   final String? medium;
   final String? high;
@@ -81,16 +81,12 @@ class AssessmentDimension extends Equatable {
   List<Object?> get props => [low, medium, high, microStep, recommendedJourney];
 }
 
-
 /// Profile config per tier
 class AssessmentProfile extends Equatable {
   final String title;
   final String summary;
 
-  const AssessmentProfile({
-    required this.title,
-    required this.summary,
-  });
+  const AssessmentProfile({required this.title, required this.summary});
 
   factory AssessmentProfile.fromJson(Map<String, dynamic> json) {
     return AssessmentProfile(
@@ -99,12 +95,8 @@ class AssessmentProfile extends Equatable {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    "title": title,
-    "summary": summary,
-  };
+  Map<String, dynamic> toJson() => {"title": title, "summary": summary};
 
-  
   List<Object?> get props => [title, summary];
 }
 
@@ -118,17 +110,19 @@ class AssessmentProfiles extends Equatable {
     final map = <String, AssessmentProfile>{};
     for (final entry in json.entries) {
       if (entry.value is Map<String, dynamic>) {
-        map[entry.key] = AssessmentProfile.fromJson(entry.value as Map<String, dynamic>);
+        map[entry.key] = AssessmentProfile.fromJson(
+          entry.value as Map<String, dynamic>,
+        );
       }
     }
     return AssessmentProfiles(byTier: map);
   }
 
-  Map<String, dynamic> toJson() => byTier.map((k, v) => MapEntry(k, v.toJson()));
+  Map<String, dynamic> toJson() =>
+      byTier.map((k, v) => MapEntry(k, v.toJson()));
 
   AssessmentProfile? getForTier(String tier) => byTier[tier];
 
-  
   List<Object?> get props => [byTier];
 }
 
@@ -244,10 +238,18 @@ class AssessmentConfig extends Equatable {
                 (e) => AssessmentDimension.fromJson(e as Map<String, dynamic>),
               )
               .toList(),
-      questions: (json["questions"] as List<dynamic>).map((e) => AssessmentQuestion.fromJson(e as Map<String, dynamic>)).toList(),
-      profiles: json["profiles"] != null && (json["profiles"] as Map).isNotEmpty
-          ? AssessmentProfiles.fromJson(json["profiles"] as Map<String, dynamic>)
-          : null,
+      questions:
+          (json["questions"] as List<dynamic>)
+              .map(
+                (e) => AssessmentQuestion.fromJson(e as Map<String, dynamic>),
+              )
+              .toList(),
+      profiles:
+          json["profiles"] != null && (json["profiles"] as Map).isNotEmpty
+              ? AssessmentProfiles.fromJson(
+                json["profiles"] as Map<String, dynamic>,
+              )
+              : null,
     );
   }
 
@@ -415,7 +417,8 @@ class AssessmentResult extends Equatable {
   /// Alias for percentage (UI compatibility)
   double get overallPercentage => percentage;
 
-  factory AssessmentResult.fromJson(Map<String, dynamic> json) {    return AssessmentResult(
+  factory AssessmentResult.fromJson(Map<String, dynamic> json) {
+    return AssessmentResult(
       id: json['id'] as String? ?? '',
       assessmentId: json['assessmentId'] as String,
       userId: json['userId'] as String,

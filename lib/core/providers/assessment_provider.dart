@@ -23,7 +23,9 @@ final assessmentConfigProvider =
 
 /// Provider for getting recommended assessment based on user's relationship status
 final recommendedAssessmentTypeProvider = Provider<AssessmentType?>((ref) {
-  final status = ref.watch(effectiveRelationshipStatusProvider) ?? ref.watch(devRelationshipStatusProvider);
+  final status =
+      ref.watch(effectiveRelationshipStatusProvider) ??
+      ref.watch(devRelationshipStatusProvider);
 
   switch (status) {
     case RelationshipStatus.singleNeverMarried:
@@ -33,7 +35,7 @@ final recommendedAssessmentTypeProvider = Provider<AssessmentType?>((ref) {
       return AssessmentType.remarriageReadiness;
     case RelationshipStatus.married:
       return AssessmentType.marriageHealthCheck;
-  
+
     case null:
       return AssessmentType.singlesReadiness;
   }
@@ -164,7 +166,9 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
     final question = state.currentQuestion;
     if (question == null) return;
 
-    debugPrint("CURRENT OPTIONS: ${question.options.map((o) => o.id).toList()}");
+    debugPrint(
+      "CURRENT OPTIONS: ${question.options.map((o) => o.id).toList()}",
+    );
 
     final selectedOption = question.options.firstWhere(
       (o) => o.id.toLowerCase() == optionId.toLowerCase(),
@@ -184,7 +188,9 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
     final newAnswers = Map<int, AssessmentAnswer>.from(state.answers);
     newAnswers[state.currentQuestionIndex] = answer;
 
-        debugPrint("ANSWERED Q option=[$optionId] weight=[${answer.weight}] tier=[${answer.signalTier}]");
+    debugPrint(
+      "ANSWERED Q option=[$optionId] weight=[${answer.weight}] tier=[${answer.signalTier}]",
+    );
 
     state = state.copyWith(answers: newAnswers);
   }
@@ -228,7 +234,7 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
       final user = _ref.read(currentUserProvider).valueOrNull;
       final userId = user?.id ?? "dev_guest";
 
-// Calculate result
+      // Calculate result
       final result = AssessmentResult.calculate(
         id: userId,
         userId: userId,
@@ -236,7 +242,9 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
         answers: state.answers.values.toList(),
       );
 
-      debugPrint("RESULT total=${result.totalScore} max=${result.maxScore} pct=${(result.percentage*100).round()} tier=${result.overallTier.value}");
+      debugPrint(
+        "RESULT total=${result.totalScore} max=${result.maxScore} pct=${(result.percentage * 100).round()} tier=${result.overallTier.value}",
+      );
 
       // Save to Firestore (skip in dev mode if Firebase is unavailable)
       if (_firestoreService.isAvailable) {
@@ -270,9 +278,9 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
 /// Provider for assessment state notifier
 final assessmentNotifierProvider =
     StateNotifierProvider<AssessmentNotifier, AssessmentState>((ref) {
-  final firestoreService = ref.watch(firestoreServiceProvider);
-  return AssessmentNotifier(ref, firestoreService);
-});
+      final firestoreService = ref.watch(firestoreServiceProvider);
+      return AssessmentNotifier(ref, firestoreService);
+    });
 
 final assessmentHistoryProvider = StreamProvider<List<AssessmentResult>>((ref) {
   final firestoreService = ref.watch(firestoreServiceProvider);
@@ -283,8 +291,8 @@ final assessmentHistoryProvider = StreamProvider<List<AssessmentResult>>((ref) {
 
 final latestAssessmentResultProvider =
     FutureProvider.family<AssessmentResult?, String>((ref, assessmentId) async {
-  final firestoreService = ref.watch(firestoreServiceProvider);
-  final user = ref.watch(currentUserProvider).valueOrNull;
-  if (user == null) return null;
-  return firestoreService.getLatestAssessmentResult(user.id, assessmentId);
-});
+      final firestoreService = ref.watch(firestoreServiceProvider);
+      final user = ref.watch(currentUserProvider).valueOrNull;
+      if (user == null) return null;
+      return firestoreService.getLatestAssessmentResult(user.id, assessmentId);
+    });

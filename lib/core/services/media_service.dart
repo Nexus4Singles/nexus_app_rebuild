@@ -223,7 +223,6 @@ class MediaService {
     }
   }
 
-
   // ============================================================================
   // FACE DETECTION (ML Kit)
   // ============================================================================
@@ -516,7 +515,8 @@ class MediaService {
   }
 
   /// Listen to playback state changes
-  Stream<PlayerState> get onPlayerStateChanged => _audioPlayer.onPlayerStateChanged;
+  Stream<PlayerState> get onPlayerStateChanged =>
+      _audioPlayer.onPlayerStateChanged;
 
   /// Listen to playback position changes
   Stream<Duration> get onPositionChanged => _audioPlayer.onPositionChanged;

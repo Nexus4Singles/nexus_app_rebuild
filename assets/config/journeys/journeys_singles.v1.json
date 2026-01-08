@@ -5,9 +5,9 @@
   "journeys": [
     {
       "id": "choosing_well",
-      "title": "Choosing Well",
+      "title": "Choosing the Right Spouse",
       "audience": "Never Married",
-      "summary": "Missions to help you slow down, spot patterns, and choose wisely before emotional attachment forms.",
+      "summary": "Activities to help you slow down, spot patterns, and choose wisely before emotional attachment forms.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 1,
@@ -82,7 +82,7 @@
             {
               "type": "mission_card",
               "icon": "pause-circle",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, pause before responding to someone you are interested in."
             },
             {
@@ -726,7 +726,7 @@
       "id": "building_emotional_readiness_for_love",
       "title": "Building Emotional Readiness for Love",
       "audience": "Never Married",
-      "summary": "Missions to heal emotional gaps, stop rushing for validation, and become ready for healthy love.",
+      "summary": "Activities to heal emotional gaps, stop rushing for validation, and become ready for healthy love.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 2,
@@ -796,12 +796,12 @@
           "timeBoxMinutes": 8,
           "requiresPartnerPresent": false,
           "icon": "ban",
-          "whyThisMatters": "If you chase validation, you will accept the wrong love. This mission breaks the habit.",
+          "whyThisMatters": "If you chase validation, you will accept the wrong love. This activity breaks the habit.",
           "cards": [
             {
               "type": "mission_card",
               "icon": "ban",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, do not post, text, or flirt to get attention. Choose peace instead."
             },
             {
@@ -1144,7 +1144,7 @@
           "timeBoxMinutes": 8,
           "requiresPartnerPresent": false,
           "icon": "moon",
-          "whyThisMatters": "Loneliness can push you into the wrong relationship. This mission trains steadiness.",
+          "whyThisMatters": "Loneliness can push you into the wrong relationship. This activity trains steadiness.",
           "cards": [
             {
               "type": "instruction_card",
@@ -1468,7 +1468,7 @@
       "id": "how_to_create_healthy_boundaries",
       "title": "How to Create Healthy Boundaries",
       "audience": "Never Married",
-      "summary": "Missions to protect your time, body, emotions, and faith without guilt or harshness.",
+      "summary": "Activities to protect your time, body, emotions, and faith without guilt or harshness.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 3,
@@ -1538,12 +1538,12 @@
           "timeBoxMinutes": 7,
           "requiresPartnerPresent": false,
           "icon": "shield",
-          "whyThisMatters": "Boundaries feel hard at first. This mission makes it simple and doable.",
+          "whyThisMatters": "Boundaries feel hard at first. This activity makes it simple and doable.",
           "cards": [
             {
               "type": "mission_card",
               "icon": "shield",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, say no to one thing you don’t want to do."
             },
             {
@@ -2034,7 +2034,7 @@
           "timeBoxMinutes": 10,
           "requiresPartnerPresent": false,
           "icon": "home",
-          "whyThisMatters": "Family pressure can shape your choices. This mission helps you stay steady.",
+          "whyThisMatters": "Family pressure can shape your choices. This activity helps you stay steady.",
           "cards": [
             {
               "type": "instruction_card",
@@ -2102,7 +2102,7 @@
           "timeBoxMinutes": 8,
           "requiresPartnerPresent": false,
           "icon": "heart",
-          "whyThisMatters": "Guilt can trick you into people-pleasing. This mission trains courage.",
+          "whyThisMatters": "Guilt can trick you into people-pleasing. This activity trains courage.",
           "cards": [
             {
               "type": "instruction_card",
@@ -2231,7 +2231,7 @@
       "id": "spotting_red_flags_and_toxic_behaviors",
       "title": "Spotting Red Flags and Toxic Behaviors",
       "audience": "Never Married",
-      "summary": "Missions to notice manipulation early, protect your heart, and avoid dangerous patterns.",
+      "summary": "Activities to notice manipulation early, protect your heart, and avoid dangerous patterns.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 4,
@@ -2306,7 +2306,7 @@
             {
               "type": "mission_card",
               "icon": "list",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Write your top 5 non‑negotiables for a relationship."
             },
             {
@@ -2962,7 +2962,7 @@
       "id": "identifying_your_toxic_triggers_before_marriage",
       "title": "Identifying Your Toxic Triggers Before Marriage",
       "audience": "Never Married",
-      "summary": "Missions to spot what triggers you, stop self-sabotage, and respond with maturity instead of reactions.",
+      "summary": "Activities to spot what triggers you, stop self-sabotage, and respond with maturity instead of reactions.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 5,
@@ -3032,12 +3032,12 @@
           "timeBoxMinutes": 7,
           "requiresPartnerPresent": false,
           "icon": "zap",
-          "whyThisMatters": "Triggers control you when you don’t notice them. This mission makes you aware.",
+          "whyThisMatters": "Triggers control you when you don’t notice them. This activity makes you aware.",
           "cards": [
             {
               "type": "mission_card",
               "icon": "zap",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, catch one moment you feel triggered and pause."
             },
             {
@@ -3105,7 +3105,7 @@
           "timeBoxMinutes": 8,
           "requiresPartnerPresent": false,
           "icon": "message-square",
-          "whyThisMatters": "Your mind tells a story fast. This mission helps you slow it down.",
+          "whyThisMatters": "Your mind tells a story fast. This activity helps you slow it down.",
           "cards": [
             {
               "type": "instruction_card",
@@ -3693,7 +3693,7 @@
       "id": "developing_emotional_maturity",
       "title": "Developing Emotional Maturity",
       "audience": "Never Married",
-      "summary": "Missions to stop emotional reactions, take responsibility, and respond with calm and wisdom.",
+      "summary": "Activities to stop emotional reactions, take responsibility, and respond with calm and wisdom.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 6,
@@ -3768,7 +3768,7 @@
             {
               "type": "mission_card",
               "icon": "badge-check",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, own one mistake without excuses."
             },
             {
@@ -4423,7 +4423,7 @@
       "id": "discerning_compatibility_and_values",
       "title": "Discerning Compatibility and Values",
       "audience": "Never Married",
-      "summary": "Missions to check alignment on faith, character, lifestyle, and future goals before commitment.",
+      "summary": "Activities to check alignment on faith, character, lifestyle, and future goals before commitment.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 7,
@@ -4498,7 +4498,7 @@
             {
               "type": "mission_card",
               "icon": "message-circle",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Ask 3 value questions today (in person or chat)."
             },
             {
@@ -5140,7 +5140,7 @@
       "id": "communicate_better_love_better",
       "title": "Communicate Better, Love Better",
       "audience": "Never Married",
-      "summary": "Missions to speak clearly, avoid mixed signals, and communicate with respect while dating.",
+      "summary": "Activities to speak clearly, avoid mixed signals, and communicate with respect while dating.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 8,
@@ -5215,7 +5215,7 @@
             {
               "type": "mission_card",
               "icon": "message-square",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, send one clear message instead of hinting."
             },
             {
@@ -5871,7 +5871,7 @@
       "id": "dating_with_purpose_and_covenant_mindset",
       "title": "Dating With Purpose and Covenant Mindset",
       "audience": "Never Married",
-      "summary": "Missions to date intentionally, avoid confusion, and treat dating as preparation for covenant.",
+      "summary": "Activities to date intentionally, avoid confusion, and treat dating as preparation for covenant.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 9,
@@ -5946,7 +5946,7 @@
             {
               "type": "mission_card",
               "icon": "target",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, clearly define why you are dating."
             },
             {
@@ -6545,7 +6545,7 @@
       "id": "faith_and_spiritual_alignment",
       "title": "Faith and Spiritual Alignment",
       "audience": "Never Married",
-      "summary": "Missions to ensure faith, values, and daily walk align.",
+      "summary": "Activities to ensure faith, values, and daily walk align.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 10,
@@ -6620,7 +6620,7 @@
             {
               "type": "mission_card",
               "icon": "cross",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Describe your daily faith practice honestly."
             }
           ],
@@ -7208,7 +7208,7 @@
       "id": "managing_sexual_chemistry_and_attachment",
       "title": "Managing Sexual Chemistry and Attachment",
       "audience": "Never Married",
-      "summary": "Missions to manage attraction wisely and avoid unhealthy attachment.",
+      "summary": "Activities to manage attraction wisely and avoid unhealthy attachment.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 11,
@@ -7283,7 +7283,7 @@
             {
               "type": "mission_card",
               "icon": "heart",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Notice attraction without acting on it."
             }
           ],
@@ -7867,7 +7867,7 @@
       "id": "building_secure_confidence_for_healthy_dating",
       "title": "Building Secure Confidence for Healthy Dating",
       "audience": "Never Married",
-      "summary": "Missions to stop insecurity-driven choices, build self-respect, and date from confidence instead of fear.",
+      "summary": "Activities to stop insecurity-driven choices, build self-respect, and date from confidence instead of fear.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 12,
@@ -7942,7 +7942,7 @@
             {
               "type": "mission_card",
               "icon": "ban",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, do not beg for attention, affection, or replies."
             },
             {
@@ -8575,7 +8575,7 @@
       "id": "addressing_family_patterns_for_a_stronger_marriage",
       "title": "Addressing Family Patterns for a Stronger Marriage",
       "audience": "Never Married",
-      "summary": "Missions to identify unhealthy family patterns and choose new healthy patterns before marriage.",
+      "summary": "Activities to identify unhealthy family patterns and choose new healthy patterns before marriage.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 13,
@@ -8650,7 +8650,7 @@
             {
               "type": "mission_card",
               "icon": "eye",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Name one family pattern you don’t want to repeat."
             },
             {
@@ -9274,7 +9274,7 @@
       "id": "purity_and_sexual_discipline",
       "title": "Purity and Sexual Discipline",
       "audience": "Never Married",
-      "summary": "Missions to build self-control, avoid temptation setups, and live with sexual purity and discipline.",
+      "summary": "Activities to build self-control, avoid temptation setups, and live with sexual purity and discipline.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 14,
@@ -9349,7 +9349,7 @@
             {
               "type": "mission_card",
               "icon": "scissors",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, remove one trigger that leads you into sexual sin."
             },
             {

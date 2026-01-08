@@ -46,8 +46,8 @@ class _AppBootstrapState extends State<_AppBootstrap> {
     bool firebaseReady = false;
     try {
       if (!kDebugMode) {
-      await initFirebaseSafely();
-    }
+        await initFirebaseSafely();
+      }
       firebaseReady = true;
     } catch (_) {
       firebaseReady = false;

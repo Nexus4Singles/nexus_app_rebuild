@@ -436,12 +436,14 @@ class _ProfileHeroAppBar extends StatelessWidget {
   final bool isViewingOtherUser;
   final String locationText;
 
-  const _ProfileHeroAppBar({Key? key, required this.profile,
+  const _ProfileHeroAppBar({
+    Key? key,
+    required this.profile,
     required this.photos,
     required this.isViewingOtherUser,
     required this.locationText,
   });
-@override
+  @override
   Widget build(BuildContext context) {
     final name = profile.name ?? 'User';
     final age = profile.age;
@@ -1028,12 +1030,14 @@ class _AudioPromptTile extends StatelessWidget {
   final bool isLocked;
   final _ProfileAudioController controller;
 
-  const _AudioPromptTile({Key? key, required this.prompt,
+  const _AudioPromptTile({
+    Key? key,
+    required this.prompt,
     required this.url,
     required this.isLocked,
     required this.controller,
   });
-@override
+  @override
   Widget build(BuildContext context) {
     final hasUrl = (url ?? '').trim().isNotEmpty;
 
@@ -1202,12 +1206,14 @@ class _PremiumButton extends StatelessWidget {
   final String subtitle;
   final VoidCallback onTap;
 
-  const _PremiumButton({Key? key, required this.icon,
+  const _PremiumButton({
+    Key? key,
+    required this.icon,
     required this.title,
     required this.subtitle,
     required this.onTap,
   });
-@override
+  @override
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(18),
@@ -1506,12 +1512,14 @@ class _ProfileTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final VoidCallback onTap;
-  const _ProfileTile({Key? key, required this.icon,
+  const _ProfileTile({
+    Key? key,
+    required this.icon,
     required this.title,
     required this.subtitle,
     required this.onTap,
   });
-@override
+  @override
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
@@ -2219,12 +2227,14 @@ class _PhotosEditor extends StatelessWidget {
   final void Function(int index) onDelete;
   final Future<void> Function() onAddPhoto;
 
-  const _PhotosEditor({Key? key, required this.photos,
+  const _PhotosEditor({
+    Key? key,
+    required this.photos,
     required this.onMakeProfile,
     required this.onDelete,
     required this.onAddPhoto,
   });
-@override
+  @override
   Widget build(BuildContext context) {
     final items = photos.take(4).toList();
     final showAdd = items.length < 4;
@@ -2436,7 +2446,9 @@ class _AboutEditor extends StatelessWidget {
   final String desiredQualities;
   final void Function(_AboutEditorValue value) onChanged;
 
-  const _AboutEditor({Key? key, required this.name,
+  const _AboutEditor({
+    Key? key,
+    required this.name,
     required this.age,
     required this.city,
     required this.country,
@@ -2447,7 +2459,7 @@ class _AboutEditor extends StatelessWidget {
     required this.desiredQualities,
     required this.onChanged,
   });
-@override
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -2696,11 +2708,13 @@ class _InterestsEditor extends ConsumerStatefulWidget {
   final List<String> qualities;
   final void Function(List<String> hobbies, List<String> qualities) onChanged;
 
-  const _InterestsEditor({Key? key, required this.hobbies,
+  const _InterestsEditor({
+    Key? key,
+    required this.hobbies,
     required this.qualities,
     required this.onChanged,
   });
-@override
+  @override
   ConsumerState<_InterestsEditor> createState() => _InterestsEditorState();
 }
 
@@ -2847,7 +2861,7 @@ class _SearchField extends StatelessWidget {
     required this.hint,
     required this.onChanged,
   });
-@override
+  @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
@@ -2886,7 +2900,7 @@ class _SelectableInterestGrid extends StatelessWidget {
     required this.max,
     required this.onToggle,
   });
-@override
+  @override
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 10,
@@ -2913,7 +2927,7 @@ class _SelectableChip extends StatelessWidget {
     required this.selected,
     required this.onTap,
   });
-@override
+  @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
@@ -2969,7 +2983,9 @@ class _ContactEditor extends StatelessWidget {
   final String snapchat;
   final void Function(_ContactEditorValue value) onChanged;
 
-  const _ContactEditor({Key? key, required this.instagram,
+  const _ContactEditor({
+    Key? key,
+    required this.instagram,
     required this.twitter,
     required this.whatsapp,
     required this.facebook,
@@ -2977,7 +2993,7 @@ class _ContactEditor extends StatelessWidget {
     required this.snapchat,
     required this.onChanged,
   });
-@override
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -3091,12 +3107,14 @@ class _InputField extends StatelessWidget {
   final TextInputType? keyboardType;
   final void Function(String value) onChanged;
 
-  const _InputField({Key? key, required this.label,
+  const _InputField({
+    Key? key,
+    required this.label,
     required this.initialValue,
     this.keyboardType,
     required this.onChanged,
   });
-@override
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -3143,12 +3161,14 @@ class _DropdownField extends StatelessWidget {
   final List<String> items;
   final ValueChanged<String> onChanged;
 
-  const _DropdownField({Key? key, required this.label,
+  const _DropdownField({
+    Key? key,
+    required this.label,
     required this.value,
     required this.items,
     required this.onChanged,
   });
-@override
+  @override
   Widget build(BuildContext context) {
     final normalizedItems = items.toSet().toList();
     normalizedItems.sort();

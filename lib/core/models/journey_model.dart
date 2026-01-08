@@ -11,7 +11,8 @@ class SessionStep extends Equatable {
   final String? responseType;
   final String? ui;
   final String? storeKey;
-  final Map<String, dynamic>? validation;final List<String>? options;
+  final Map<String, dynamic>? validation;
+  final List<String>? options;
   final int? minSelect;
   final int? maxSelect;
   final String? placeholder;
@@ -149,38 +150,44 @@ class JourneySession extends Equatable {
       unlockCondition: json['unlockCondition'] as String?,
       estimatedMins: json['estimatedMins'] as int? ?? 10,
       badgeOnComplete: json['badgeOnComplete'] as String?,
-      steps: (() {
-        final rawSteps = (json['steps'] as List<dynamic>?)
-            ?.map((e) => SessionStep.fromJson(e as Map<String, dynamic>))
-            .toList();
+      steps:
+          (() {
+            final rawSteps =
+                (json['steps'] as List<dynamic>?)
+                    ?.map(
+                      (e) => SessionStep.fromJson(e as Map<String, dynamic>),
+                    )
+                    .toList();
 
-        if (rawSteps != null && rawSteps.isNotEmpty) return rawSteps;
+            if (rawSteps != null && rawSteps.isNotEmpty) return rawSteps;
 
-        final prompt = json['prompt'] as String?;
-        if (prompt == null || prompt.trim().isEmpty) return <SessionStep>[];
+            final prompt = json['prompt'] as String?;
+            if (prompt == null || prompt.trim().isEmpty) return <SessionStep>[];
 
-        final responseType = json['responseType'] as String?;
-        final options = json['options'];
+            final responseType = json['responseType'] as String?;
+            final options = json['options'];
 
-        List<String>? parsedOptions;
-        if (options is List) {
-          parsedOptions = options.map((e) => e.toString()).toList();
-        } else if (options is String) {
-          parsedOptions = options.split('|').map((e) => e.trim()).toList();
-        }
+            List<String>? parsedOptions;
+            if (options is List) {
+              parsedOptions = options.map((e) => e.toString()).toList();
+            } else if (options is String) {
+              parsedOptions = options.split('|').map((e) => e.trim()).toList();
+            }
 
-        print('⚠️ JourneySession fallback step created for: ${json['title']}');
-        return <SessionStep>[
-          SessionStep(
-            stepId: 'prompt',
-            title: json['title'] as String? ?? 'Session',
-            contentType: 'reflection',
-            content: prompt,
-            responseType: responseType,
-            options: parsedOptions,
-          )
-        ];
-      })(),
+            print(
+              '⚠️ JourneySession fallback step created for: ${json['title']}',
+            );
+            return <SessionStep>[
+              SessionStep(
+                stepId: 'prompt',
+                title: json['title'] as String? ?? 'Session',
+                contentType: 'reflection',
+                content: prompt,
+                responseType: responseType,
+                options: parsedOptions,
+              ),
+            ];
+          })(),
       completionMessage: json['completionMessage'] as String?,
     );
   }

@@ -434,8 +434,7 @@ class AppConfig {
       'journeys_single_never_married.v4.foundations.json';
   static const String divorcedWidowedJourneyConfig =
       'journeys_divorced_widowed.v4.foundations.json';
-  static const String marriedJourneyConfig =
-      'journeys_married.v3.json';
+  static const String marriedJourneyConfig = 'journeys_married.v3.json';
 
   // Legacy journey configs (deprecated - keep for migration)
   static const String legacySinglesJourneyConfig = 'singles_v1.json';

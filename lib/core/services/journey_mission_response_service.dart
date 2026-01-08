@@ -32,7 +32,11 @@ class JourneyMissionResponseService {
     required String cardKey,
   }) async {
     final map = await _loadAll();
-    final k = _makeKey(journeyId: journeyId, missionId: missionId, cardKey: cardKey);
+    final k = _makeKey(
+      journeyId: journeyId,
+      missionId: missionId,
+      cardKey: cardKey,
+    );
     final v = map[k];
     return v is String ? v : null;
   }
@@ -44,7 +48,11 @@ class JourneyMissionResponseService {
     required String selectedOption,
   }) async {
     final map = await _loadAll();
-    final k = _makeKey(journeyId: journeyId, missionId: missionId, cardKey: cardKey);
+    final k = _makeKey(
+      journeyId: journeyId,
+      missionId: missionId,
+      cardKey: cardKey,
+    );
     map[k] = selectedOption;
     await _saveAll(map);
   }

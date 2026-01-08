@@ -7,7 +7,7 @@
       "id": "breaking_harmful_conflict_patterns",
       "title": "Breaking Harmful Conflict Patterns",
       "audience": "Married",
-      "summary": "Missions to help you stop the same fight from repeating and build calmer ways to disagree.",
+      "summary": "Activities to help you stop the same fight from repeating and build calmer ways to disagree.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 2,
@@ -77,12 +77,12 @@
           "timeBoxMinutes": 6,
           "requiresPartnerPresent": true,
           "icon": "eye",
-          "whyThisMatters": "You can’t change what you don’t notice. This mission helps you catch your pattern before it takes over.",
+          "whyThisMatters": "You can’t change what you don’t notice. This activity helps you catch your pattern before it takes over.",
           "cards": [
             {
               "type": "mission_card",
               "icon": "eye",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, notice your first reaction when tension starts."
             },
             {
@@ -289,7 +289,7 @@
           "timeBoxMinutes": 8,
           "requiresPartnerPresent": true,
           "icon": "anchor",
-          "whyThisMatters": "A break can calm you down, but disappearing makes things worse. This mission teaches a safe break.",
+          "whyThisMatters": "A break can calm you down, but disappearing makes things worse. This activity teaches a safe break.",
           "cards": [
             {
               "type": "instruction_card",
@@ -759,7 +759,7 @@
       "id": "recovering_after_hurt_or_betrayal",
       "title": "Recovering After Hurt or Betrayal",
       "audience": "Married",
-      "summary": "Serious missions to help you face what happened, speak with honesty, and rebuild safety step by step.",
+      "summary": "Serious activities to help you face what happened, speak with honesty, and rebuild safety step by step.",
       "estimatedDays": 12,
       "difficulty": "intermediate",
       "priorityRank": 3,
@@ -829,7 +829,7 @@
           "timeBoxMinutes": 10,
           "requiresPartnerPresent": true,
           "icon": "heart-handshake",
-          "whyThisMatters": "Healing can’t start until the hurt is named plainly. This mission starts that process with honesty.",
+          "whyThisMatters": "Healing can’t start until the hurt is named plainly. This activity starts that process with honesty.",
           "cards": [
             {
               "type": "instruction_card",
@@ -903,7 +903,7 @@
           "timeBoxMinutes": 14,
           "requiresPartnerPresent": true,
           "icon": "ear",
-          "whyThisMatters": "When your spouse feels heard, their heart softens. This mission is about listening, not defending.",
+          "whyThisMatters": "When your spouse feels heard, their heart softens. This activity is about listening, not defending.",
           "cards": [
             {
               "type": "instruction_card",
@@ -1037,7 +1037,7 @@
           "timeBoxMinutes": 12,
           "requiresPartnerPresent": true,
           "icon": "help-circle",
-          "whyThisMatters": "Honest answers rebuild trust. Angry answers destroy it. This mission trains calm truth.",
+          "whyThisMatters": "Honest answers rebuild trust. Angry answers destroy it. This activity trains calm truth.",
           "cards": [
             {
               "type": "instruction_card",
@@ -1099,7 +1099,7 @@
           "timeBoxMinutes": 10,
           "requiresPartnerPresent": true,
           "icon": "clipboard-check",
-          "whyThisMatters": "Words don’t rebuild trust. Consistent actions do. This mission turns talk into proof.",
+          "whyThisMatters": "Words don’t rebuild trust. Consistent actions do. This activity turns talk into proof.",
           "cards": [
             {
               "type": "choice_card",
@@ -1177,7 +1177,7 @@
           "timeBoxMinutes": 7,
           "requiresPartnerPresent": true,
           "icon": "anchor",
-          "whyThisMatters": "Rushing healing feels selfish. This mission trains patience and respect.",
+          "whyThisMatters": "Rushing healing feels selfish. This activity trains patience and respect.",
           "cards": [
             {
               "type": "instruction_card",
@@ -1512,7 +1512,7 @@
       "id": "rebuilding_trust_and_reliability",
       "title": "Rebuilding Trust and Reliability",
       "audience": "Married",
-      "summary": "Practical missions to help you keep your word, communicate clearly, and become dependable again.",
+      "summary": "Practical activities to help you keep your word, communicate clearly, and become dependable again.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 4,
@@ -1971,7 +1971,7 @@
           "timeBoxMinutes": 8,
           "requiresPartnerPresent": true,
           "icon": "help-circle",
-          "whyThisMatters": "Trust is personal. This mission helps you focus on what your spouse values.",
+          "whyThisMatters": "Trust is personal. This activity helps you focus on what your spouse values.",
           "cards": [
             {
               "type": "instruction_card",
@@ -2228,7 +2228,7 @@
       "id": "restoring_friendship_emotional_connection",
       "title": "Restoring Friendship and Emotional Connection",
       "audience": "Married",
-      "summary": "Missions to bring back laughter, warmth, and the feeling of being on the same team again.",
+      "summary": "Activities to bring back laughter, warmth, and the feeling of being on the same team again.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 5,
@@ -2303,7 +2303,7 @@
             {
               "type": "mission_card",
               "icon": "smartphone-off",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Spend 15 minutes with your spouse today with no phones and no problem talk."
             },
             {
@@ -2514,7 +2514,7 @@
           "timeBoxMinutes": 6,
           "requiresPartnerPresent": true,
           "icon": "mic",
-          "whyThisMatters": "People feel loved when appreciation is spoken. This mission makes it real.",
+          "whyThisMatters": "People feel loved when appreciation is spoken. This activity makes it real.",
           "cards": [
             {
               "type": "instruction_card",
@@ -2994,7 +2994,7 @@
       "id": "strengthening_emotional_and_physical_intimacy",
       "title": "Strengthening Emotional and Physical Intimacy",
       "audience": "Married",
-      "summary": "Missions to build closeness, safety, and affection without pressure or awkwardness.",
+      "summary": "Activities to build closeness, safety, and affection without pressure or awkwardness.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 6,
@@ -3069,7 +3069,7 @@
             {
               "type": "mission_card",
               "icon": "heart",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Give your spouse safe touch today without expecting anything back."
             },
             {
@@ -3727,7 +3727,7 @@
       "id": "aligning_roles_expectations_in_marriage",
       "title": "Aligning Roles and Expectations in Marriage",
       "audience": "Married",
-      "summary": "Missions to stop silent expectations, reduce resentment, and agree on what you each need in your home.",
+      "summary": "Activities to stop silent expectations, reduce resentment, and agree on what you each need in your home.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 7,
@@ -3802,7 +3802,7 @@
             {
               "type": "mission_card",
               "icon": "message-square",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Tell your spouse one expectation you have been holding silently."
             },
             {
@@ -4459,7 +4459,7 @@
       "id": "managing_finances_as_a_team",
       "title": "Managing Finances as a Team",
       "audience": "Married",
-      "summary": "Missions to stop money tension, talk about finances calmly, and build a simple plan together.",
+      "summary": "Activities to stop money tension, talk about finances calmly, and build a simple plan together.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 8,
@@ -4534,7 +4534,7 @@
             {
               "type": "mission_card",
               "icon": "wallet",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Have a calm 10-minute money talk with your spouse today."
             },
             {
@@ -5212,7 +5212,7 @@
       "id": "parenting_as_a_united_front",
       "title": "Parenting as a United Front",
       "audience": "Married",
-      "summary": "Missions to stop mixed signals, protect your child(ren) from conflict, and parent as one team.",
+      "summary": "Activities to stop mixed signals, protect your child(ren) from conflict, and parent as one team.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 9,
@@ -5287,7 +5287,7 @@
             {
               "type": "mission_card",
               "icon": "users",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Before correcting your child(ren) today, align with your spouse first."
             },
             {
@@ -5933,7 +5933,7 @@
       "id": "healthy_boundaries_with_extended_family",
       "title": "Healthy Boundaries With Extended Family",
       "audience": "Married",
-      "summary": "Missions to protect your marriage, stop outside interference, and stay united with your spouse.",
+      "summary": "Activities to protect your marriage, stop outside interference, and stay united with your spouse.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 10,
@@ -6008,7 +6008,7 @@
             {
               "type": "mission_card",
               "icon": "shield-check",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, use the sentence “We will decide together” when family pressure shows up."
             },
             {
@@ -6271,7 +6271,7 @@
           "timeBoxMinutes": 8,
           "requiresPartnerPresent": true,
           "icon": "ban",
-          "whyThisMatters": "Triangulation destroys marriages slowly. This mission stops it.",
+          "whyThisMatters": "Triangulation destroys marriages slowly. This activity stops it.",
           "cards": [
             {
               "type": "instruction_card",
@@ -6669,7 +6669,7 @@
       "id": "faith_and_spiritual_unity",
       "title": "Faith and Spiritual Unity",
       "audience": "Married",
-      "summary": "Missions to pray together, reduce spiritual tension, and build unity without pressure or judgment.",
+      "summary": "Activities to pray together, reduce spiritual tension, and build unity without pressure or judgment.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 11,
@@ -6744,7 +6744,7 @@
             {
               "type": "mission_card",
               "icon": "hands",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Pray one short sentence with your spouse today."
             },
             {
@@ -7411,7 +7411,7 @@
       "id": "personal_growth_emotional_maturity_in_marriage",
       "title": "Personal Growth and Emotional Maturity in Marriage",
       "audience": "Married",
-      "summary": "Missions to build self-control, take responsibility, and grow without blaming your spouse.",
+      "summary": "Activities to build self-control, take responsibility, and grow without blaming your spouse.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 12,
@@ -7486,7 +7486,7 @@
             {
               "type": "mission_card",
               "icon": "badge-check",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, own one mistake without excuses."
             },
             {
@@ -8146,7 +8146,7 @@
       "id": "building_shared_purpose_and_vision",
       "title": "Building Shared Purpose and Vision",
       "audience": "Married",
-      "summary": "Missions to align your priorities, agree on your direction, and build a shared future as a team.",
+      "summary": "Activities to align your priorities, agree on your direction, and build a shared future as a team.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "priorityRank": 13,
@@ -8221,7 +8221,7 @@
             {
               "type": "mission_card",
               "icon": "compass",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Have a 10-minute future talk with your spouse today."
             },
             {
@@ -8862,7 +8862,7 @@
       "id": "journey_married_communication_conflict_v1",
       "title": "Communication and Conflict Resolution",
       "audience": "Married",
-      "summary": "Simple missions to help you talk without snapping, listen without interrupting, and handle disagreements without repeating the same fight.",
+      "summary": "Simple activities to help you talk without snapping, listen without interrupting, and handle disagreements without repeating the same fight.",
       "estimatedDays": 10,
       "difficulty": "beginner",
       "icon": "message-circle",
@@ -8936,7 +8936,7 @@
             {
               "type": "mission_card",
               "icon": "pause-circle",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Today, when you feel tense, pause for 10 seconds before you reply."
             },
             {
@@ -9021,7 +9021,7 @@
             {
               "type": "mission_card",
               "icon": "ear",
-              "title": "Your mission",
+              "title": "Your activity",
               "text": "Ask your spouse one question and let them finish without you cutting in."
             },
             {

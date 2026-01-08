@@ -9,7 +9,9 @@ import '../constants/app_constants.dart';
 class FirestoreService {
   void _requireDb() {
     if (_db == null) {
-      throw Exception("Firestore unavailable in dev mode (Firebase not initialized)");
+      throw Exception(
+        "Firestore unavailable in dev mode (Firebase not initialized)",
+      );
     }
   }
 
@@ -27,11 +29,8 @@ class FirestoreService {
   }
 
   CollectionReference<Map<String, dynamic>> _assessmentResultsRef(String uid) {
-        _requireDb();
-    return _db!
-        .collection('assessmentResults')
-        .doc(uid)
-        .collection('results');
+    _requireDb();
+    return _db!.collection('assessmentResults').doc(uid).collection('results');
   }
 
   // ✅ Nexus v2 assessment storage:
@@ -56,11 +55,8 @@ class FirestoreService {
   }
 
   CollectionReference<Map<String, dynamic>> _journeyProgressRef(String uid) {
-        _requireDb();
-    return _db!
-        .collection('journeyProgress')
-        .doc(uid)
-        .collection('progress');
+    _requireDb();
+    return _db!.collection('journeyProgress').doc(uid).collection('progress');
   }
 
   CollectionReference<Map<String, dynamic>> _sessionResponsesRef(
@@ -71,11 +67,8 @@ class FirestoreService {
   }
 
   CollectionReference<Map<String, dynamic>> _storyProgressRef(String uid) {
-        _requireDb();
-    return _db!
-        .collection('storyProgress')
-        .doc(uid)
-        .collection('stories');
+    _requireDb();
+    return _db!.collection('storyProgress').doc(uid).collection('stories');
   }
 
   CollectionReference<Map<String, dynamic>> _pollVotesRef(String pollId) {
@@ -513,7 +506,7 @@ class FirestoreService {
   }
 
   Future<void> savePollVote(PollVote vote) async {
-        final db = _db;
+    final db = _db;
     if (db == null) return;
 
     try {
@@ -633,7 +626,7 @@ class FirestoreService {
     required String platform,
     required String appVersion,
   }) async {
-        final db = _db;
+    final db = _db;
     if (db == null) return;
 
     try {
@@ -664,10 +657,7 @@ class FirestoreService {
       _db!.collection("storyEngagement").doc(storyId);
 
   CollectionReference<Map<String, dynamic>> _storyCommentsRef(String storyId) =>
-      _db!
-          .collection("storyComments")
-          .doc(storyId)
-          .collection("comments");
+      _db!.collection("storyComments").doc(storyId).collection("comments");
 
   DocumentReference<Map<String, dynamic>> _storyLikesDoc(
     String storyId,

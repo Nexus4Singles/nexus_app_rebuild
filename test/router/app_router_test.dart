@@ -20,7 +20,9 @@ Future<void> _pumpRoute(WidgetTester tester, String routeName) async {
 
 void main() {
   group('onGenerateRoute', () {
-    testWidgets('resolves known static route: AppNavRoutes.home', (tester) async {
+    testWidgets('resolves known static route: AppNavRoutes.home', (
+      tester,
+    ) async {
       await _pumpRoute(tester, AppNavRoutes.home);
       expect(find.byType(PlaceholderScreen), findsNothing);
       expect(find.byType(Scaffold), findsOneWidget);
@@ -44,11 +46,17 @@ void main() {
       expect(find.textContaining('Journey (productId: p987)'), findsOneWidget);
     });
 
-    testWidgets('resolves dynamic route: /journey/:productId/session/:sessionNumber', (tester) async {
-      await _pumpRoute(tester, '/journey/p987/session/2');
-      expect(find.byType(PlaceholderScreen), findsOneWidget);
-      expect(find.textContaining('Journey Session (productId: p987, session: 2)'), findsOneWidget);
-    });
+    testWidgets(
+      'resolves dynamic route: /journey/:productId/session/:sessionNumber',
+      (tester) async {
+        await _pumpRoute(tester, '/journey/p987/session/2');
+        expect(find.byType(PlaceholderScreen), findsOneWidget);
+        expect(
+          find.textContaining('Journey Session (productId: p987, session: 2)'),
+          findsOneWidget,
+        );
+      },
+    );
 
     testWidgets('resolves dynamic route: /story/:storyId', (tester) async {
       await _pumpRoute(tester, '/story/s55');
@@ -62,7 +70,9 @@ void main() {
       expect(find.textContaining('Story Poll (storyId: s55)'), findsOneWidget);
     });
 
-    testWidgets('unknown route resolves to fallback placeholder', (tester) async {
+    testWidgets('unknown route resolves to fallback placeholder', (
+      tester,
+    ) async {
       await _pumpRoute(tester, '/does-not-exist');
       expect(find.byType(PlaceholderScreen), findsOneWidget);
       expect(find.textContaining('Not Found:'), findsOneWidget);

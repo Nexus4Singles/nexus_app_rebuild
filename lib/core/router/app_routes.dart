@@ -16,7 +16,6 @@ class AppRoutes {
   static const assessment = '/assessment';
   static const assessmentResult = '/assessment/result';
 
-
   // Auth
   static const login = '/login';
 }

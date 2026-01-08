@@ -26,7 +26,8 @@ class AssessmentIntroScreen extends ConsumerWidget {
     }
 
     final recommendedType =
-        ref.watch(recommendedAssessmentTypeProvider) ?? AssessmentType.singlesReadiness;
+        ref.watch(recommendedAssessmentTypeProvider) ??
+        AssessmentType.singlesReadiness;
     final typeToUse = selectedType ?? recommendedType;
 
     final configAsync = ref.watch(assessmentConfigProvider(typeToUse));
@@ -69,7 +70,10 @@ class AssessmentIntroScreen extends ConsumerWidget {
                         ],
                       ),
                       child: Center(
-                        child: Text(meta.emoji, style: const TextStyle(fontSize: 44)),
+                        child: Text(
+                          meta.emoji,
+                          style: const TextStyle(fontSize: 44),
+                        ),
                       ),
                     ),
                   ),
@@ -79,7 +83,9 @@ class AssessmentIntroScreen extends ConsumerWidget {
                   Center(
                     child: Text(
                       meta.title,
-                      style: AppTextStyles.headlineLarge.copyWith(fontWeight: FontWeight.w800),
+                      style: AppTextStyles.headlineLarge.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -101,8 +107,14 @@ class AssessmentIntroScreen extends ConsumerWidget {
 
                   _InfoRow(
                     items: [
-                      _InfoChip(icon: Icons.quiz_outlined, title: '${config.questions.length} Questions'),
-                      _InfoChip(icon: Icons.timer_outlined, title: '5–7 Minutes'),
+                      _InfoChip(
+                        icon: Icons.quiz_outlined,
+                        title: '${config.questions.length} Questions',
+                      ),
+                      _InfoChip(
+                        icon: Icons.timer_outlined,
+                        title: '5–7 Minutes',
+                      ),
                       _InfoChip(icon: Icons.lock_outline, title: 'Private'),
                     ],
                   ),
@@ -123,7 +135,9 @@ class AssessmentIntroScreen extends ConsumerWidget {
                         children: [
                           Text(
                             'What you’ll get',
-                            style: AppTextStyles.titleMedium.copyWith(fontWeight: FontWeight.w700),
+                            style: AppTextStyles.titleMedium.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                           const SizedBox(height: 14),
                           ...meta.discoveries.map(
@@ -132,12 +146,18 @@ class AssessmentIntroScreen extends ConsumerWidget {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(Icons.check_circle, color: AppColors.primary, size: 18),
+                                  Icon(
+                                    Icons.check_circle,
+                                    color: AppColors.primary,
+                                    size: 18,
+                                  ),
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Text(
                                       d,
-                                      style: AppTextStyles.bodyMedium.copyWith(height: 1.4),
+                                      style: AppTextStyles.bodyMedium.copyWith(
+                                        height: 1.4,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -175,31 +195,34 @@ class AssessmentIntroScreen extends ConsumerWidget {
                         if (!isLoggedIn) {
                           showDialog(
                             context: context,
-                            builder: (_) => AlertDialog(
-                              title: const Text('Sign in required'),
-                              content: const Text('Create an account or sign in to take assessments.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text('Not now'),
+                            builder:
+                                (_) => AlertDialog(
+                                  title: const Text('Sign in required'),
+                                  content: const Text(
+                                    'Create an account or sign in to take assessments.',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Not now'),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pushNamed(
+                                          context,
+                                          AppRoutes.login,
+                                        );
+                                      },
+                                      child: const Text('Sign in'),
+                                    ),
+                                  ],
                                 ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    Navigator.pushNamed(context, AppRoutes.login);
-                                  },
-                                  child: const Text('Sign in'),
-                                ),
-                              ],
-                            ),
                           );
                           return;
                         }
 
-                        Navigator.pushNamed(
-                          context,
-                          AppRoutes.assessment,
-                        );
+                        Navigator.pushNamed(context, AppRoutes.assessment);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
@@ -211,7 +234,10 @@ class AssessmentIntroScreen extends ConsumerWidget {
                       ),
                       child: const Text(
                         'Start Assessment',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ),
@@ -220,10 +246,11 @@ class AssessmentIntroScreen extends ConsumerWidget {
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (e, _) => _ErrorState(
-            message: 'Error loading assessment: $e',
-            onBack: () => Navigator.pop(context),
-          ),
+          error:
+              (e, _) => _ErrorState(
+                message: 'Error loading assessment: $e',
+                onBack: () => Navigator.pop(context),
+              ),
         ),
       ),
     );
@@ -251,13 +278,15 @@ class AssessmentMeta {
         return const AssessmentMeta(
           emoji: '💛',
           title: 'Singles Readiness Check',
-          subtitle: 'Understand what you’re truly ready for in love and dating.',
+          subtitle:
+              'Understand what you’re truly ready for in love and dating.',
           discoveries: [
             'Clarity on your emotional readiness',
             'Signals and patterns holding you back',
             'Next steps to build confidence',
           ],
-          note: 'This is private and designed to guide your next moves, not judge you.',
+          note:
+              'This is private and designed to guide your next moves, not judge you.',
         );
 
       case AssessmentType.remarriageReadiness:
@@ -270,14 +299,16 @@ class AssessmentMeta {
             'Patterns that could repeat in the next marriage',
             'Practical steps for healthier relationships',
           ],
-          note: 'Your past does not define you. This helps you move forward with intention.',
+          note:
+              'Your past does not define you. This helps you move forward with intention.',
         );
 
       case AssessmentType.marriageHealthCheck:
         return const AssessmentMeta(
           emoji: '💙',
           title: 'Marriage Health Check',
-          subtitle: 'Measure the health of your marriage and strengthen it together.',
+          subtitle:
+              'Measure the health of your marriage and strengthen it together.',
           discoveries: [
             'Strengths you can build on',
             'Blind spots affecting closeness',
@@ -314,16 +345,17 @@ class _InfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: items
-          .map(
-            (i) => Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: i,
-              ),
-            ),
-          )
-          .toList(),
+      children:
+          items
+              .map(
+                (i) => Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: i,
+                  ),
+                ),
+              )
+              .toList(),
     );
   }
 }
@@ -349,7 +381,9 @@ class _InfoChip extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             title,
-            style: AppTextStyles.bodySmall.copyWith(fontWeight: FontWeight.w600),
+            style: AppTextStyles.bodySmall.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),
@@ -370,7 +404,11 @@ class _ErrorState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, size: 44, color: AppColors.textSecondary),
+            const Icon(
+              Icons.error_outline,
+              size: 44,
+              color: AppColors.textSecondary,
+            ),
             const SizedBox(height: 12),
             Text(message, textAlign: TextAlign.center),
             const SizedBox(height: 18),
