@@ -100,7 +100,9 @@ class _LockedView extends ConsumerWidget {
         titleSpacing: 0,
         title: Text(
           'Locked',
-          style: AppTextStyles.titleMedium.copyWith(fontWeight: FontWeight.w900),
+          style: AppTextStyles.titleMedium.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
         ),
       ),
       body: Padding(
@@ -125,38 +127,68 @@ class _LockedView extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _BenefitsRow(),
+            const _BenefitsRow(),
             const Spacer(),
-            _UnlockFooter(
-              allowFree: allowFree,
-              onBack: () => Navigator.of(context).pop(),
-              onUnlock: () async {
-                final ent = ref.read(journeyEntitlementsServiceProvider);
-                await ent.markPurchased(journey.id);
-
-                ref.invalidate(purchasedJourneyIdsProvider);
-                ref.invalidate(isJourneyPurchasedProvider(journey.id));
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      'Unlocked. You can now access all activities.',
+            Row(
+              children: [
+                if (allowFree) ...[
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.textPrimary,
+                        side: BorderSide(color: AppColors.border),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: const Text('Back'),
                     ),
                   ),
-                );
+                  const SizedBox(width: 12),
+                ],
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final ent = ref.read(journeyEntitlementsServiceProvider);
+                      await ent.markPurchased(journey.id);
 
-                if (context.mounted) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder:
-                          (_) => JourneySessionScreen(
-                            journeyId: journey.id,
-                            missionId: activity.id,
+                      ref.invalidate(purchasedJourneyIdsProvider);
+                      ref.invalidate(isJourneyPurchasedProvider(journey.id));
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Unlocked. You can now access all activities.',
                           ),
+                        ),
+                      );
+
+                      if (context.mounted) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder:
+                                (_) => JourneySessionScreen(
+                                  journeyId: journey.id,
+                                  missionId: activity.id,
+                                ),
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
-                  );
-                }
-              },
+                    child: const Text('Unlock Journey'),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -169,10 +201,7 @@ class _GateHero extends StatelessWidget {
   final JourneyV1 journey;
   final MissionV1 activity;
 
-  const _GateHero({
-    required this.journey,
-    required this.activity,
-  });
+  const _GateHero({required this.journey, required this.activity});
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +277,7 @@ class _GateHero extends StatelessWidget {
                   'Activity ${activity.missionNumber}: ${activity.title}',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.titleSmall.copyWith(
+                  style: AppTextStyles.bodyLarge.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w900,
                     height: 1.15,
@@ -256,7 +285,7 @@ class _GateHero extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Unlock this Journey to complete all activities and track progress.',
+                  'Unlock this Journey to complete all activities and track your progress.',
                   style: AppTextStyles.bodySmall.copyWith(
                     color: Colors.white.withOpacity(0.88),
                     height: 1.35,
@@ -272,13 +301,15 @@ class _GateHero extends StatelessWidget {
 }
 
 class _BenefitsRow extends StatelessWidget {
+  const _BenefitsRow();
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 10,
       runSpacing: 10,
       children: const [
-        _BenefitChip(text: 'Full journey access'),
+        _BenefitChip(text: 'Full access'),
         _BenefitChip(text: 'Track progress'),
         _BenefitChip(text: 'Guided growth'),
       ],
@@ -306,57 +337,6 @@ class _BenefitChip extends StatelessWidget {
           fontWeight: FontWeight.w900,
         ),
       ),
-    );
-  }
-}
-
-class _UnlockFooter extends StatelessWidget {
-  final bool allowFree;
-  final VoidCallback onBack;
-  final VoidCallback onUnlock;
-
-  const _UnlockFooter({
-    required this.allowFree,
-    required this.onBack,
-    required this.onUnlock,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        if (allowFree) ...[
-          Expanded(
-            child: OutlinedButton(
-              onPressed: onBack,
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.textPrimary,
-                side: BorderSide(color: AppColors.border),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 14),
-              ),
-              child: const Text('Back'),
-            ),
-          ),
-          const SizedBox(width: 12),
-        ],
-        Expanded(
-          child: ElevatedButton(
-            onPressed: onUnlock,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 14),
-            ),
-            child: const Text('Unlock Journey'),
-          ),
-        ),
-      ],
     );
   }
 }

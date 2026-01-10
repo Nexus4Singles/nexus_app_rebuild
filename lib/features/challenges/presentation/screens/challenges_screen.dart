@@ -246,8 +246,7 @@ class _FeaturedHeroCard extends StatelessWidget {
                   children: [_HeroIcon(iconKey: journey.icon), const Spacer()],
                 ),
 
-                Padding(
-                  padding: const EdgeInsets.only(right: 95),
+                Expanded(
                   child: Text(
                     journey.title,
                     maxLines: 2,

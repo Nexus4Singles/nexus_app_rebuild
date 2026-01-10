@@ -463,38 +463,38 @@ class _ActivityCard extends StatelessWidget {
             ? Icons.lock_outline
             : iconFromKey(activity.icon);
 
-    final badgeText =
-        isDone ? 'DONE' : (isFree ? 'FREE' : (isLocked ? 'LOCKED' : null));
+    // Only show DONE/FREE badges. LOCKED is already communicated by the icon.
+    final badgeText = isDone ? 'DONE' : (isFree ? 'FREE' : null);
 
-    final badgeBg =
-        (isDone || isFree)
-            ? AppColors.primary.withOpacity(0.10)
-            : AppColors.primary.withOpacity(0.08);
+    final badgeBg = AppColors.primary.withOpacity(0.10);
 
     final cardBg =
-        isLocked ? AppColors.surface.withOpacity(0.52) : AppColors.surface;
-
-    final accentColor = AppColors.primary;
+        isLocked ? AppColors.surface.withOpacity(0.58) : AppColors.surface;
 
     return InkWell(
       borderRadius: BorderRadius.circular(18),
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
           color: cardBg,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: AppColors.primary.withOpacity(0.22)),
+          border: Border.all(
+            color:
+                isLocked
+                    ? AppColors.border
+                    : AppColors.primary.withOpacity(0.18),
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(isLocked ? 0.015 : 0.045),
+              color: Colors.black.withOpacity(isLocked ? 0.012 : 0.040),
               blurRadius: 12,
               offset: const Offset(0, 9),
             ),
           ],
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _ProgressRailDot(
               number: activity.missionNumber,
@@ -502,28 +502,25 @@ class _ActivityCard extends StatelessWidget {
               isLocked: isLocked,
               showRail: showRail,
             ),
-            const SizedBox(width: 9),
-            Container(
-              width: 3,
-              height: 42,
-              decoration: BoxDecoration(
-                color: accentColor.withOpacity(isLocked ? 0.25 : 0.75),
-                borderRadius: BorderRadius.circular(99),
-              ),
-            ),
-            const SizedBox(width: 9),
+            const SizedBox(width: 10),
             _IconBubble(
               icon: leftIcon,
-              bg: AppColors.primary.withOpacity(0.10),
-              fg: AppColors.primary,
+              bg:
+                  isLocked
+                      ? AppColors.primary.withOpacity(0.06)
+                      : AppColors.primary.withOpacity(0.10),
+              fg: isLocked ? AppColors.textMuted : AppColors.primary,
               size: 38,
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
                         child: Text(
@@ -536,7 +533,8 @@ class _ActivityCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      if (badgeText != null)
+                      if (badgeText != null) ...[
+                        const SizedBox(width: 10),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 9,
@@ -554,49 +552,54 @@ class _ActivityCard extends StatelessWidget {
                             ),
                           ),
                         ),
+                      ],
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    isLocked ? 'Unlock to access' : activity.subtitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textMuted,
-                      height: 1.22,
-                    ),
-                  ),
-                  if (isLocked) ...[
-                    const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.08),
-                          borderRadius: BorderRadius.circular(999),
-                          border: Border.all(
-                            color: AppColors.primary.withOpacity(0.22),
-                          ),
-                        ),
+                  Row(
+                    children: [
+                      Expanded(
                         child: Text(
-                          'Tap to unlock',
-                          style: AppTextStyles.labelSmall.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w900,
+                          isLocked ? 'Unlock to access' : activity.subtitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.textMuted,
+                            height: 1.22,
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      if (isLocked) ...[
+                        const SizedBox(width: 10),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withOpacity(0.08),
+                            borderRadius: BorderRadius.circular(999),
+                            border: Border.all(
+                              color: AppColors.primary.withOpacity(0.14),
+                            ),
+                          ),
+                          child: Text(
+                            'Unlock',
+                            style: AppTextStyles.labelSmall.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w900,
+                              height: 1.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                 ],
               ),
             ),
             const SizedBox(width: 6),
-            Icon(Icons.chevron_right, color: AppColors.primary),
+            Icon(Icons.chevron_right, color: AppColors.textMuted),
           ],
         ),
       ),
@@ -619,51 +622,46 @@ class _ProgressRailDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dotBg =
+    final bg =
         isDone
             ? AppColors.primary
             : isLocked
-            ? AppColors.primary.withOpacity(0.08)
-            : AppColors.primary.withOpacity(0.12);
+            ? AppColors.border
+            : AppColors.primary.withOpacity(0.15);
 
-    final dotFg = isDone ? Colors.white : AppColors.primary;
+    final fg = isDone ? Colors.white : AppColors.primary;
 
-    return SizedBox(
-      width: 26,
-      child: Column(
-        children: [
-          Container(
-            width: 22,
-            height: 22,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: dotBg,
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColors.primary.withOpacity(0.22)),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 26,
+          height: 26,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: bg,
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(
+              color:
+                  isDone
+                      ? AppColors.primary
+                      : AppColors.primary.withOpacity(0.18),
             ),
-            child:
-                isDone
-                    ? const Icon(Icons.check, size: 13, color: Colors.white)
-                    : Text(
-                      '$number',
-                      style: AppTextStyles.labelSmall.copyWith(
-                        color: dotFg,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
           ),
-          const SizedBox(height: 6),
-          if (showRail)
-            Container(
-              width: 2,
-              height: 42,
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.12),
-                borderRadius: BorderRadius.circular(99),
-              ),
-            ),
-        ],
-      ),
+          child:
+              isDone
+                  ? const Icon(Icons.check, size: 14, color: Colors.white)
+                  : Text(
+                    '$number',
+                    style: AppTextStyles.labelSmall.copyWith(
+                      color: fg,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+        ),
+        // no rail line (intentionally)
+        if (showRail) const SizedBox(height: 0),
+      ],
     );
   }
 }
