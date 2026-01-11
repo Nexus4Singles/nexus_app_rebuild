@@ -1,293 +1,469 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/core/router/app_routes.dart';
+
 import 'package:nexus_app_min_test/core/safe_providers/user_provider_safe.dart';
-import 'package:nexus_app_min_test/features/stories/presentation/screens/story_detail_screen.dart';
-import 'package:nexus_app_min_test/core/session/effective_relationship_status_provider.dart';
-import 'package:nexus_app_min_test/core/constants/app_constants.dart';
+
+import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
+import 'package:nexus_app_min_test/features/stories/domain/story_models.dart';
+import 'package:nexus_app_min_test/features/stories/presentation/screens/stories_screen.dart';
+
+import 'package:nexus_app_min_test/features/journeys/data/journey_repository.dart';
+import 'package:nexus_app_min_test/features/journeys/domain/journey_models.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-  String _getGreeting() {
+  String _greeting() {
     final hour = DateTime.now().hour;
     if (hour < 12) return 'Good morning';
     if (hour < 17) return 'Good afternoon';
     return 'Good evening';
   }
 
+  String _string(dynamic v) => v == null ? '' : v.toString().trim();
+
+  String _inferJourneyCategory(dynamic user) {
+    // Derive which journeys file to load from user relationship fields if available.
+    // Defaults to singles.
+    try {
+      final s = _string(user.relationshipStatus).toLowerCase();
+      if (s.contains('married')) return 'married';
+      if (s.contains('widow')) return 'widowed';
+      if (s.contains('divorc')) return 'divorced';
+      if (s.contains('single') || s.contains('never')) return 'singles';
+    } catch (_) {}
+
+    try {
+      final c = _string(user.category).toLowerCase();
+      if (c.contains('married')) return 'married';
+      if (c.contains('widow')) return 'widowed';
+      if (c.contains('divorc')) return 'divorced';
+      if (c.contains('single')) return 'singles';
+    } catch (_) {}
+
+    return 'singles';
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final bottomInset = MediaQuery.of(context).padding.bottom;
     final user = ref.watch(safeUserProvider);
+    final theme = Theme.of(context);
 
+    final firstName = user.firstName.trim();
+    final isGuest = user.isGuest;
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
-        title: Text('Home', style: AppTextStyles.headlineLarge),
-      ),
+      appBar: AppBar(title: const Text('Home'), centerTitle: true),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.fromLTRB(16, 14, 16, 220 + bottomInset),
         children: [
-          const SizedBox(height: 8),
-          _HomeAssessmentCTA(),
-          const SizedBox(height: 16),
-          // ✅ Story of the Week (tap to open StoryDetailScreen)
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (_) =>
-                          const StoryDetailScreen(storyId: 'story_of_the_week'),
-                ),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 54,
-                    height: 54,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.12),
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: Icon(Icons.menu_book, color: AppColors.primary),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Story of the Week',
-                          style: AppTextStyles.labelLarge,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Tap to open story detail',
-                          style: AppTextStyles.caption,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Icon(Icons.chevron_right, color: AppColors.textMuted),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-
-          _SectionCard(
-            title: 'Today',
-            subtitle: user.status,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${_getGreeting()}, ${user.firstName} 👋',
-                  style: AppTextStyles.headlineSmall,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Riverpod is now enabled in Safe Mode. Backend stays OFF.',
-                  style: AppTextStyles.bodyMedium,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
-          _SectionCard(
-            title: 'Your Journeys',
-            subtitle: 'Preview',
-            child: Column(
-              children: const [
-                _ListRow(
-                  title: 'Starter Journey',
-                  subtitle: '5 steps • Beginner',
-                ),
-                SizedBox(height: 10),
-                _ListRow(
-                  title: 'Mindful Reset',
-                  subtitle: '7 steps • Intermediate',
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
-          _SectionCard(
-            title: 'Journeys',
-            subtitle: 'Preview',
-            child: Column(
-              children: const [
-                _ListRow(title: '7-Day Focus', subtitle: '3 days left'),
-                SizedBox(height: 10),
-                _ListRow(
-                  title: 'Hydration Sprint',
-                  subtitle: 'Starts tomorrow',
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SectionCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final Widget child;
-
-  const _SectionCard({
-    required this.title,
-    required this.subtitle,
-    required this.child,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: AppTextStyles.titleLarge),
-          const SizedBox(height: 4),
-          Text(subtitle, style: AppTextStyles.caption),
-          const SizedBox(height: 12),
-          child,
-        ],
-      ),
-    );
-  }
-}
-
-class _ListRow extends StatelessWidget {
-  final String title;
-  final String subtitle;
-
-  const _ListRow({required this.title, required this.subtitle});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border.withOpacity(0.5)),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: AppTextStyles.labelLarge),
-                const SizedBox(height: 2),
-                Text(subtitle, style: AppTextStyles.caption),
-              ],
-            ),
-          ),
-          Icon(Icons.chevron_right, color: AppColors.textMuted),
-        ],
-      ),
-    );
-  }
-}
-
-class _HomeAssessmentCTA extends ConsumerWidget {
-  const _HomeAssessmentCTA();
-
-  ({String title, String subtitle, String type}) _copyFor(
-    RelationshipStatus? s,
-  ) {
-    switch (s) {
-      case RelationshipStatus.married:
-        return (
-          title: "Marriage Health Check",
-          subtitle:
-              "Spot strengths, uncover blind spots, and strengthen your bond.",
-          type: "marriage_health_check",
-        );
-      case RelationshipStatus.divorced:
-      case RelationshipStatus.widowed:
-        return (
-          title: "Remarriage Readiness",
-          subtitle:
-              "Heal, rebuild trust, and prepare for a healthier next chapter.",
-          type: "remarriage_readiness",
-        );
-      case RelationshipStatus.singleNeverMarried:
-      default:
-        return (
-          title: "Marriage Readiness",
-          subtitle: "Know what to build now for a strong future marriage.",
-          type: "singles_readiness",
-        );
-    }
-  }
-
-  Widget build(BuildContext context, WidgetRef ref) {
-    final status = ref.watch(effectiveRelationshipStatusProvider);
-    final copy = _copyFor(status);
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.primarySoft,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primary.withOpacity(0.15)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+          // ✅ Top greeting
           Text(
-            copy.title,
-            style: AppTextStyles.titleLarge.copyWith(
+            isGuest ? 'Hello 👋' : '${_greeting()}, $firstName 👋',
+            style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w800,
             ),
           ),
           const SizedBox(height: 6),
           Text(
-            copy.subtitle,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.4,
+            'Let’s build healthy love habits this week.',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.textTheme.bodySmall?.color?.withOpacity(0.75),
             ),
           ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  "${AppRoutes.assessmentIntro}?type=${copy.type}",
-                );
-              },
-              child: const Text("Start Assessment"),
+          const SizedBox(height: 14),
+
+          // Assessment card (keep as-is for now; update route later if needed)
+          _Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Start an Assessment',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Get insights and recommendations tailored to you.',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.textTheme.bodySmall?.color?.withOpacity(0.75),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/assessment');
+                    },
+                    child: const Text('Start'),
+                  ),
+                ),
+              ],
             ),
+          ),
+
+          const SizedBox(height: 14),
+
+          // Story of the Week (JSON-driven; route to StoriesScreen)
+          _StoryOfWeekCard(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const StoriesScreen()),
+              );
+            },
+          ),
+
+          const SizedBox(height: 16),
+
+          Text(
+            'Your Journeys',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Continue where you left off or start something new.',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.textTheme.bodySmall?.color?.withOpacity(0.75),
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          FutureBuilder<List<Journey>>(
+            future: const JourneyRepository().loadJourneysForCategory(
+              _inferJourneyCategory(user),
+            ),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return const Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+
+              final list = snapshot.data ?? const <Journey>[];
+              if (list.isEmpty) {
+                return _Card(
+                  child: Text(
+                    'No journeys available yet.',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                );
+              }
+
+              final continueJourney = list.first;
+              final recommendedJourney = list.length > 1 ? list[1] : list.first;
+
+              return Column(
+                children: [
+                  _JourneyCard(
+                    title: 'Continue Journey',
+                    subtitle:
+                        '${continueJourney.title} • ${continueJourney.estimatedDays} days',
+                    pillText: 'In progress',
+                    progress: 0.15, // TODO: replace with real local progress
+                    ctaText: 'Continue',
+                    onTap: () {
+                      // TODO: hook up to active journey continuation.
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  _JourneyCard(
+                    title: 'Recommended Journey',
+                    subtitle:
+                        '${recommendedJourney.title} • ${recommendedJourney.estimatedDays} days',
+                    pillText: 'New',
+                    progress: null,
+                    ctaText: 'View',
+                    onTap: () {
+                      // TODO: hook up to journey detail.
+                    },
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),
+    );
+  }
+}
+
+class _StoryOfWeekCard extends StatelessWidget {
+  final VoidCallback onTap;
+  const _StoryOfWeekCard({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    const repo = StoryRepository();
+    final theme = Theme.of(context);
+
+    return FutureBuilder<Story?>(
+      future: repo.loadCurrentStory(),
+      builder: (context, snapshot) {
+        final story = snapshot.data;
+
+        return InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(18),
+          child: Container(
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surface,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: theme.dividerColor.withOpacity(0.35)),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.asset(
+                        story?.heroImageAsset ??
+                            'assets/images/stories/placeholder_couple.jpg',
+                        fit: BoxFit.cover,
+                        errorBuilder:
+                            (_, __, ___) => Container(
+                              color: theme.colorScheme.surfaceVariant
+                                  .withOpacity(0.5),
+                              child: const Center(
+                                child: Icon(Icons.image_not_supported_outlined),
+                              ),
+                            ),
+                      ),
+                      Positioned.fill(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.black.withOpacity(0.05),
+                                Colors.black.withOpacity(0.55),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 14,
+                        right: 14,
+                        bottom: 12,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _GlassPill(text: 'Story of the Week'),
+                            const SizedBox(height: 8),
+                            Text(
+                              story?.title ?? 'Loading story…',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900,
+                                height: 1.05,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (story != null) ...[
+                        Row(
+                          children: [
+                            _MiniPill(text: story.category),
+                            const SizedBox(width: 8),
+                            _MiniPill(text: '${story.readTimeMins} min read'),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          story.excerpt,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            height: 1.35,
+                          ),
+                        ),
+                      ] else ...[
+                        Text(
+                          'A fresh story to guide your dating, marriage, and relationship life this week.',
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                      ],
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 46,
+                        child: ElevatedButton(
+                          onPressed: onTap,
+                          child: const Text('Read now'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _JourneyCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String pillText;
+  final double? progress;
+  final String ctaText;
+  final VoidCallback onTap;
+
+  const _JourneyCard({
+    required this.title,
+    required this.subtitle,
+    required this.pillText,
+    required this.progress,
+    required this.ctaText,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(18),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: theme.dividerColor.withOpacity(0.35)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                _MiniPill(text: pillText),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              subtitle,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.textTheme.bodySmall?.color?.withOpacity(0.75),
+              ),
+            ),
+            if (progress != null) ...[
+              const SizedBox(height: 12),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(999),
+                child: LinearProgressIndicator(value: progress),
+              ),
+            ],
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              height: 46,
+              child: ElevatedButton(onPressed: onTap, child: Text(ctaText)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _GlassPill extends StatelessWidget {
+  final String text;
+  const _GlassPill({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.18),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: Colors.white.withOpacity(0.25)),
+      ),
+      child: Text(
+        text,
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+}
+
+class _MiniPill extends StatelessWidget {
+  final String text;
+  const _MiniPill({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceVariant.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        text,
+        style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w700),
+      ),
+    );
+  }
+}
+
+class _Card extends StatelessWidget {
+  final Widget child;
+  const _Card({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: theme.dividerColor.withOpacity(0.35)),
+      ),
+      child: child,
     );
   }
 }

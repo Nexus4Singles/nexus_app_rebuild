@@ -1,0 +1,172 @@
+import 'package:flutter/material.dart';
+import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
+import 'package:nexus_app_min_test/features/stories/domain/story_models.dart';
+import 'package:nexus_app_min_test/features/presentation/screens/story_detail_screen.dart';
+
+class StoriesScreen extends StatelessWidget {
+  const StoriesScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    const repo = StoryRepository();
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Stories')),
+      body: FutureBuilder<List<Story>>(
+        future: repo.loadStories(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return _ErrorState(error: snapshot.error.toString());
+          }
+          final stories = snapshot.data ?? const <Story>[];
+          if (stories.isEmpty) {
+            return const Center(child: Text('No stories yet.'));
+          }
+
+          return ListView.separated(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+            itemCount: stories.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 16),
+            itemBuilder: (context, index) {
+              final s = stories[index];
+              return _StoryCard(
+                story: s,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => StoryDetailScreen(storyId: s.id),
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _StoryCard extends StatelessWidget {
+  final Story story;
+  final VoidCallback onTap;
+
+  const _StoryCard({required this.story, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: theme.dividerColor.withOpacity(0.35)),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AspectRatio(
+              aspectRatio: 16 / 10,
+              child: Image.asset(
+                story.heroImageAsset,
+                fit: BoxFit.cover,
+                errorBuilder:
+                    (_, __, ___) => Container(
+                      color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+                      child: const Center(
+                        child: Icon(Icons.image_not_supported_outlined),
+                      ),
+                    ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      _Pill(text: story.category),
+                      const SizedBox(width: 8),
+                      _Pill(text: '${story.readTimeMins} min read'),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    story.title,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    story.excerpt,
+                    style: theme.textTheme.bodyMedium,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: onTap,
+                      child: const Text('Read Full Story'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Pill extends StatelessWidget {
+  final String text;
+  const _Pill({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceVariant.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        text,
+        style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+}
+
+class _ErrorState extends StatelessWidget {
+  final String error;
+  const _ErrorState({required this.error});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          'Failed to load stories.\n\n$error',
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+}

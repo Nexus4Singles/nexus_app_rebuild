@@ -5,6 +5,10 @@ import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
 import 'package:nexus_app_min_test/core/safe_providers/chats_provider_safe.dart';
 
+// Dev-only bypass so you can test chat while Firebase/auth is not wired.
+// Run with: flutter run --dart-define=NEXUS_CHAT_DEV_BYPASS=true
+const bool _kChatDevBypass = bool.fromEnvironment('NEXUS_CHAT_DEV_BYPASS', defaultValue: false);
+
 class ChatsScreen extends ConsumerWidget {
   const ChatsScreen({super.key});
 
@@ -45,7 +49,7 @@ class ChatsScreen extends ConsumerWidget {
                     time: chat.time,
                     unread: chat.unread,
                     onTap: () {
-                      if (!isSignedIn) {
+                      if (!isSignedIn && !_kChatDevBypass) {
                         GuestGuard.requireSignedIn(
                           context,
                           ref,
@@ -66,7 +70,7 @@ class ChatsScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 8),
-            if (!isSignedIn)
+            if (!isSignedIn && !_kChatDevBypass)
               Text(
                 'Guest mode: chats require an account.',
                 style: AppTextStyles.caption.copyWith(

@@ -391,7 +391,7 @@ class _HeroHeader extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '$total activities • ${isPurchased ? 'Full access' : 'Preview available'}',
+                      '$total activities • ${isPurchased ? 'Full access' : 'First Activity is Free'}',
                       style: AppTextStyles.bodySmall.copyWith(
                         color: Colors.white.withOpacity(0.80),
                       ),
@@ -555,20 +555,20 @@ class _ActivityCard extends StatelessWidget {
                       ],
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 6),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Text(
-                          isLocked ? 'Unlock to access' : activity.subtitle,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                          activity.subtitle,
                           style: AppTextStyles.bodySmall.copyWith(
                             color: AppColors.textMuted,
-                            height: 1.22,
+                            height: 1.32,
                           ),
                         ),
                       ),
+
                       if (isLocked) ...[
                         const SizedBox(width: 10),
                         Container(

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "polls": [
+    {
+      "id": "poll_week_01",
+      "question": "When tension starts, what do you usually do first?",
+      "options": [
+        {
+          "id": "A",
+          "text": "I withdraw to avoid escalation"
+        },
+        {
+          "id": "B",
+          "text": "I push for clarity immediately"
+        },
+        {
+          "id": "C",
+          "text": "I use humor / change topic"
+        },
+        {
+          "id": "D",
+          "text": "It depends on the person"
+        }
+      ],
+      "insights": {
+        "A": "Withdrawing can protect you short-term, but repair requires re-entry: return with one clear sentence.",
+        "B": "Clarity is powerful when it’s calm. Try: “I want to understand, not win.”",
+        "C": "Humor can de-escalate, but don’t use it to dodge the real issue. Name the feeling gently.",
+        "D": "Your pattern is flexible—build a consistent repair habit so tension doesn’t linger."
+      },
+      "seedCounts": {
+        "A": 41,
+        "B": 33,
+        "C": 14,
+        "D": 12
+      }
+    }
+  ]
+}

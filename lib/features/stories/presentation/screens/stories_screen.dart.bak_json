@@ -1,0 +1,184 @@
+import 'package:flutter/material.dart';
+import 'story_detail_screen.dart';
+
+class StoriesScreen extends StatelessWidget {
+  const StoriesScreen({super.key});
+
+  // v1: Blog-style stories (fictional names, realistic tone).
+  // Next: load from assets/config/engagement/stories.v1.json
+  static const _stories = <StoryPreview>[
+    StoryPreview(
+      id: 'story_of_the_week',
+      title: 'Ade & Feyi: The First Year Test',
+      category: 'Marriage',
+      readTimeMins: 4,
+      heroImageAsset: 'assets/images/stories/placeholder_couple.jpg',
+      excerpt:
+          'They loved each other deeply—but small misunderstandings kept piling up. Here’s the moment they learned repair is a skill...',
+    ),
+    StoryPreview(
+      id: 'dating_boundaries',
+      title: 'Kemi & Seyi: Godly Dating Without Confusion',
+      category: 'Dating',
+      readTimeMins: 5,
+      heroImageAsset: 'assets/images/stories/placeholder_couple.jpg',
+      excerpt:
+          'Chemistry is real, but clarity is holy. This story shows how they set boundaries without killing the joy...',
+    ),
+    StoryPreview(
+      id: 'communication_reset_story',
+      title: '“I’m Fine” Isn’t Fine: The Silence Pattern',
+      category: 'Communication',
+      readTimeMins: 3,
+      heroImageAsset: 'assets/images/stories/placeholder_couple.jpg',
+      excerpt:
+          'Silence can feel peaceful—until it becomes distance. Here’s how to speak truth without starting a fight...',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Stories')),
+      body: ListView.separated(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+        itemCount: _stories.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 16),
+        itemBuilder: (context, index) {
+          final s = _stories[index];
+          return _StoryCard(
+            story: s,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => StoryDetailScreen(storyId: s.id),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _StoryCard extends StatelessWidget {
+  final StoryPreview story;
+  final VoidCallback onTap;
+
+  const _StoryCard({required this.story, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: theme.dividerColor.withOpacity(0.35)),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AspectRatio(
+              aspectRatio: 16 / 10,
+              child: Image.asset(
+                story.heroImageAsset,
+                fit: BoxFit.cover,
+                errorBuilder:
+                    (_, __, ___) => Container(
+                      color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+                      child: const Center(
+                        child: Icon(Icons.image_not_supported_outlined),
+                      ),
+                    ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      _Pill(text: story.category),
+                      const SizedBox(width: 8),
+                      _Pill(text: '${story.readTimeMins} min read'),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    story.title,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    story.excerpt,
+                    style: theme.textTheme.bodyMedium,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: onTap,
+                      child: const Text('Read Full Story'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Pill extends StatelessWidget {
+  final String text;
+  const _Pill({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceVariant.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        text,
+        style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+}
+
+class StoryPreview {
+  final String id;
+  final String title;
+  final String category;
+  final int readTimeMins;
+  final String heroImageAsset;
+  final String excerpt;
+
+  const StoryPreview({
+    required this.id,
+    required this.title,
+    required this.category,
+    required this.readTimeMins,
+    required this.heroImageAsset,
+    required this.excerpt,
+  });
+}

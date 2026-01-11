@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'story_detail_screen.dart';
+
+class StoriesScreen extends StatelessWidget {
+  const StoriesScreen({super.key});
+
+  static const _stories = <_StoryStub>[
+    _StoryStub(
+      id: 'story_of_the_week',
+      title: 'Story of the Week',
+      subtitle: 'Tap to read this week’s story',
+    ),
+    _StoryStub(
+      id: 'boundaries_small_wins',
+      title: 'Boundaries: Small Wins',
+      subtitle: 'How to say “no” without guilt',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Stories')),
+      body: ListView.separated(
+        padding: const EdgeInsets.all(16),
+        itemCount: _stories.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
+        itemBuilder: (context, index) {
+          final s = _stories[index];
+          return ListTile(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            tileColor: Theme.of(context).colorScheme.surface,
+            title: Text(s.title),
+            subtitle: Text(s.subtitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => StoryDetailScreen(storyId: s.id),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _StoryStub {
+  final String id;
+  final String title;
+  final String subtitle;
+  const _StoryStub({
+    required this.id,
+    required this.title,
+    required this.subtitle,
+  });
+}

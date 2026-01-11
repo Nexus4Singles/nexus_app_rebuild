@@ -1,0 +1,41 @@
+import 'package:flutter/material.dart';
+
+class StoryPollScreen extends StatelessWidget {
+  final String storyId;
+  const StoryPollScreen({super.key, required this.storyId});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Weekly Poll')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Poll for story: $storyId',
+                style: Theme.of(context).textTheme.titleMedium,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'Poll UI will be implemented next (options, vote gating, results).',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: null,
+                  child: const Text('Vote (coming soon)'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

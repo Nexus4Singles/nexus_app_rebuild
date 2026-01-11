@@ -125,6 +125,7 @@ class ProfileScreen extends ConsumerWidget {
                 profile: profile,
                 photos: photos,
                 isViewingOtherUser: isViewingOtherUser,
+                canEditRelationshipStatus: isSignedIn && !isViewingOtherUser,
                 locationText: location,
               ),
               SliverToBoxAdapter(
@@ -147,7 +148,7 @@ class ProfileScreen extends ConsumerWidget {
 
                       _Section(
                         title: 'Hobbies / Interests',
-                        child: _ChipWrap(
+                        child: _RedChipWrap(
                           chips: _parseChipList(profile.hobbies),
                           emptyText: 'No hobbies added yet.',
                         ),
@@ -156,7 +157,7 @@ class ProfileScreen extends ConsumerWidget {
 
                       _Section(
                         title: 'Most Desired Qualities',
-                        child: _ChipWrap(
+                        child: _RedChipWrap(
                           chips: _parseChipList(profile.desiredQualities),
                           emptyText: 'No desired qualities added yet.',
                         ),
@@ -354,7 +355,7 @@ final _mockProfileProvider = FutureProvider.family<UserModel?, String>((
     profession: rng.nextBool() ? 'Lawyer' : 'Product Manager',
     educationLevel: rng.nextBool() ? 'Doctorate Degree' : 'Bachelors Degree',
     nationality: rng.nextBool() ? 'Nigerian' : 'Ghanaian',
-    stateOfOrigin: rng.nextBool() ? 'Kaduna' : 'Oyo',
+    stateOfOrigin: null,
     churchName: rng.nextBool() ? 'CAC' : 'Redeemed',
     onPremium: rng.nextBool(),
     isVerified: rng.nextBool(),
@@ -400,6 +401,154 @@ Future<Map<String, String>> _loadDraftContact(String uid) async {
   }
 }
 
+/// ------------------------------
+/// RELATIONSHIP STATUS TAG (SAFE MODE - LOCAL)
+/// ------------------------------
+enum RelationshipStatusTag { available, taken }
+
+String _relationshipStatusLabel(RelationshipStatusTag v) {
+  switch (v) {
+    case RelationshipStatusTag.available:
+      return 'Available';
+    case RelationshipStatusTag.taken:
+      return 'Taken';
+  }
+}
+
+String _relationshipStatusKey(String uid) => 'relationship_status_tag_' + uid;
+
+Future<RelationshipStatusTag> _loadRelationshipStatusTag(String uid) async {
+  final prefs = await SharedPreferences.getInstance();
+  final raw = prefs.getString(_relationshipStatusKey(uid));
+  if (raw == 'taken') return RelationshipStatusTag.taken;
+  return RelationshipStatusTag.available;
+}
+
+Future<void> _saveRelationshipStatusTag(
+  String uid,
+  RelationshipStatusTag v,
+) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString(
+    _relationshipStatusKey(uid),
+    v == RelationshipStatusTag.taken ? 'taken' : 'available',
+  );
+}
+
+class _RelationshipStatusPill extends StatelessWidget {
+  final RelationshipStatusTag value;
+  final VoidCallback? onTap;
+
+  const _RelationshipStatusPill({required this.value, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final label = _relationshipStatusLabel(value);
+    final canTap = onTap != null;
+
+    return Semantics(
+      button: canTap,
+      label: canTap ? 'Change relationship status' : 'Relationship status',
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(999),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.42),
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(color: Colors.white.withOpacity(0.35)),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: 7,
+                width: 7,
+                decoration: BoxDecoration(
+                  color: value == RelationshipStatusTag.available
+                      ? Colors.greenAccent.withOpacity(0.9)
+                      : Colors.redAccent.withOpacity(0.9),
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Status: ',
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: Colors.white.withOpacity(0.85),
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text(
+                label,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              if (canTap) ...[
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.keyboard_arrow_down_rounded,
+                  size: 18,
+                  color: Colors.white.withOpacity(0.85),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StatusOptionTile extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _StatusOptionTile({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.background : AppColors.surface,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: selected ? AppColors.primary : AppColors.border,
+          ),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                label,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            Icon(
+              selected ? Icons.check_circle_rounded : Icons.circle_outlined,
+              color: selected ? AppColors.primary : AppColors.textSecondary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 Future<void> _saveDraftProfile(UserModel profile) async {
   try {
     final prefs = await SharedPreferences.getInstance();
@@ -435,13 +584,13 @@ class _ProfileHeroAppBar extends StatelessWidget {
   final List<String> photos;
   final bool isViewingOtherUser;
   final String locationText;
-
+  final bool canEditRelationshipStatus;
   const _ProfileHeroAppBar({
-    Key? key,
     required this.profile,
     required this.photos,
     required this.isViewingOtherUser,
     required this.locationText,
+    required this.canEditRelationshipStatus,
   });
   @override
   Widget build(BuildContext context) {
@@ -469,62 +618,182 @@ class _ProfileHeroAppBar extends StatelessWidget {
               photos: photos,
               overlayChild: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 18),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Flexible(
-                            child: Text(
-                              age != null ? '$name, $age' : name,
-                              style: AppTextStyles.headlineLarge.copyWith(
-                                color: Colors.white,
-                                fontSize: 16 * 0.36,
-                                height: 1.1,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  age != null ? '$name, $age' : name,
+                                  style: AppTextStyles.headlineLarge.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 32,
+                                    height: 1.1,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                              if (profile.isVerified == true) ...[
+                                const SizedBox(width: 12),
+                                const _Badge(
+                                  icon: Icons.verified_rounded,
+                                  label: 'Verified',
+                                ),
+                              ],
+                            ],
                           ),
-                          const SizedBox(width: 46),
-                          if (profile.isVerified == true)
-                            const _Badge(
-                              icon: Icons.verified_rounded,
-                              label: 'Verified',
-                            ),
-                          if (profile.onPremium == true) ...[
-                            const SizedBox(width: 46),
-                            const _Badge(
-                              icon: Icons.star_rounded,
-                              label: 'Premium',
-                            ),
-                          ],
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.location_on_rounded,
-                            color: Colors.white70,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 46),
-                          Flexible(
-                            child: Text(
-                              locationText,
-                              style: AppTextStyles.bodyMedium.copyWith(
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on_rounded,
                                 color: Colors.white70,
+                                size: 18,
                               ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                              const SizedBox(width: 8),
+                              Flexible(
+                                child: Text(
+                                  locationText,
+                                  style: AppTextStyles.bodyMedium.copyWith(
+                                    color: Colors.white70,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Positioned(
+                      top: MediaQuery.of(context).padding.top + 14,
+                      right: 12,
+                      child: FutureBuilder<RelationshipStatusTag>(
+                        future: _loadRelationshipStatusTag(profile.id),
+                        builder: (context, snap) {
+                          final value =
+                              snap.data ?? RelationshipStatusTag.available;
+
+                          final canEdit = canEditRelationshipStatus;
+
+                          return _RelationshipStatusPill(
+                            value: value,
+                            onTap:
+                                canEdit
+                                    ? () async {
+                                    final selected =
+                                        await showModalBottomSheet<RelationshipStatusTag>(
+                                      context: context,
+                                      backgroundColor: Colors.transparent,
+                                      isScrollControlled: false,
+                                      builder: (sheetContext) {
+                                        RelationshipStatusTag temp =
+                                            value; // local selection inside sheet
+
+                                        return StatefulBuilder(
+                                          builder: (sheetContext, setSheetState) {
+                                            return Container(
+                                              padding: const EdgeInsets.fromLTRB(
+                                                16,
+                                                16,
+                                                16,
+                                                24,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: AppColors.surface,
+                                                borderRadius: BorderRadius.circular(18),
+                                              ),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: Text(
+                                                          'Relationship status',
+                                                          style: AppTextStyles.titleLarge.copyWith(
+                                                            fontWeight: FontWeight.w900,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      InkWell(
+                                                        onTap: () => Navigator.pop(sheetContext, null),
+                                                        borderRadius: BorderRadius.circular(999),
+                                                        child: Container(
+                                                          height: 36,
+                                                          width: 36,
+                                                          decoration: BoxDecoration(
+                                                            color: AppColors.background,
+                                                            borderRadius: BorderRadius.circular(999),
+                                                            border: Border.all(color: AppColors.border),
+                                                          ),
+                                                          child: const Icon(Icons.close_rounded),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 12),
+                                                  Text(
+                                                    'Tap to update your visibility on the dating side of the app.',
+                                                    style: AppTextStyles.bodySmall.copyWith(
+                                                      color: AppColors.textSecondary,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 14),
+                                                  _StatusOptionTile(
+                                                    label: 'Available',
+                                                    selected: temp == RelationshipStatusTag.available,
+                                                    onTap: () {
+                                                      setSheetState(() {
+                                                        temp = RelationshipStatusTag.available;
+                                                      });
+                                                      Navigator.pop(sheetContext, RelationshipStatusTag.available);
+                                                    },
+                                                  ),
+                                                  const SizedBox(height: 10),
+                                                  _StatusOptionTile(
+                                                    label: 'Taken',
+                                                    selected: temp == RelationshipStatusTag.taken,
+                                                    onTap: () {
+                                                      setSheetState(() {
+                                                        temp = RelationshipStatusTag.taken;
+                                                      });
+                                                      Navigator.pop(sheetContext, RelationshipStatusTag.taken);
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+
+                                    if (selected == null) return;
+
+                                    await _saveRelationshipStatusTag(
+                                      profile.id,
+                                      selected,
+                                    );
+
+                                    // Force rebuild of the FutureBuilder wrapper.
+                                    (context as Element).markNeedsBuild();
+}
+                                    : null,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -712,8 +981,6 @@ class _QuickChips extends StatelessWidget {
           if ((profile.churchName ?? '').trim().isNotEmpty) profile.churchName!,
           if ((profile.nationality ?? '').trim().isNotEmpty)
             profile.nationality!,
-          if ((profile.stateOfOrigin ?? '').trim().isNotEmpty)
-            profile.stateOfOrigin!,
         ].where((e) => e.trim().isNotEmpty).toList();
 
     if (chips.isEmpty) {
@@ -726,7 +993,7 @@ class _QuickChips extends StatelessWidget {
       children: [
         for (final c in chips)
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
               color: AppColors.surface,
               borderRadius: BorderRadius.circular(999),
@@ -767,7 +1034,12 @@ class _Section extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: AppTextStyles.titleLarge),
+          Text(
+            title,
+            style: AppTextStyles.titleLarge.copyWith(
+              fontWeight: FontWeight.w800,
+            ),
+          ),
           if (subtitle != null) ...[
             const SizedBox(height: 6),
             Text(
@@ -793,7 +1065,6 @@ class _AboutSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final rows = <_AboutRow>[
       _AboutRow('Nationality', profile.nationality),
-      _AboutRow('State of Origin', profile.stateOfOrigin),
       _AboutRow('Education Level', profile.educationLevel),
       _AboutRow('Profession/Industry', profile.profession),
       _AboutRow('Church', profile.churchName),
@@ -828,39 +1099,54 @@ class _AboutRow {
 }
 
 class _AboutRowTile extends StatelessWidget {
+  const _AboutRowTile({required this.label, required this.value});
+
   final String label;
   final String value;
-  const _AboutRowTile({required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            label,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 4,
+            child: Text(
+              label,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-        ),
-        const SizedBox(width: 46),
-        Flexible(
-          child: Text(
-            value,
-            style: AppTextStyles.bodyMedium,
-            textAlign: TextAlign.right,
+          const SizedBox(width: 12),
+          Expanded(
+            flex: 6,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                value,
+                textAlign: TextAlign.right,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
-class _ChipWrap extends StatelessWidget {
+/// ------------------------------
+class _RedChipWrap extends StatelessWidget {
   final List<String> chips;
   final String emptyText;
-  const _ChipWrap({required this.chips, required this.emptyText});
+  const _RedChipWrap({required this.chips, required this.emptyText});
 
   @override
   Widget build(BuildContext context) {
@@ -872,26 +1158,32 @@ class _ChipWrap extends StatelessWidget {
         ),
       );
     }
-    return Wrap(
-      spacing: 8,
-      runSpacing: 10,
-      children: [
-        for (final c in chips)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppColors.background,
-              borderRadius: BorderRadius.circular(999),
-              border: Border.all(color: AppColors.border),
+
+    return SizedBox(
+      width: double.infinity,
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 10,
+        children: [
+          for (final c in chips)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.82),
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(color: AppColors.primary.withOpacity(0.82)),
+              ),
+              child: Text(
+                c,
+                style: AppTextStyles.bodySmall.copyWith(color: Colors.white),
+              ),
             ),
-            child: Text(c, style: AppTextStyles.bodySmall),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }
 
-/// ------------------------------
 /// AUDIO PLACEHOLDER
 /// ------------------------------
 
@@ -1031,16 +1323,15 @@ class _AudioPromptTile extends StatelessWidget {
   final _ProfileAudioController controller;
 
   const _AudioPromptTile({
-    Key? key,
     required this.prompt,
     required this.url,
     required this.isLocked,
     required this.controller,
   });
+
   @override
   Widget build(BuildContext context) {
     final hasUrl = (url ?? '').trim().isNotEmpty;
-
     final isCurrent = hasUrl && controller.currentUrl == url;
     final isPlaying = isCurrent && controller.state == PlayerState.playing;
 
@@ -1072,7 +1363,7 @@ class _AudioPromptTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(999),
                 child: Container(
                   height: 44,
-                  width: 46,
+                  width: 44,
                   decoration: BoxDecoration(
                     color: AppColors.surface,
                     borderRadius: BorderRadius.circular(999),
@@ -1091,7 +1382,7 @@ class _AudioPromptTile extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 46),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1207,7 +1498,6 @@ class _PremiumButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const _PremiumButton({
-    Key? key,
     required this.icon,
     required this.title,
     required this.subtitle,
@@ -1513,7 +1803,6 @@ class _ProfileTile extends StatelessWidget {
   final String subtitle;
   final VoidCallback onTap;
   const _ProfileTile({
-    Key? key,
     required this.icon,
     required this.title,
     required this.subtitle,
@@ -2228,7 +2517,6 @@ class _PhotosEditor extends StatelessWidget {
   final Future<void> Function() onAddPhoto;
 
   const _PhotosEditor({
-    Key? key,
     required this.photos,
     required this.onMakeProfile,
     required this.onDelete,
@@ -2447,7 +2735,6 @@ class _AboutEditor extends StatelessWidget {
   final void Function(_AboutEditorValue value) onChanged;
 
   const _AboutEditor({
-    Key? key,
     required this.name,
     required this.age,
     required this.city,
@@ -2709,7 +2996,6 @@ class _InterestsEditor extends ConsumerStatefulWidget {
   final void Function(List<String> hobbies, List<String> qualities) onChanged;
 
   const _InterestsEditor({
-    Key? key,
     required this.hobbies,
     required this.qualities,
     required this.onChanged,
@@ -2788,7 +3074,7 @@ class _InterestsEditorState extends ConsumerState<_InterestsEditor> {
               _SelectableInterestGrid(
                 items: hobbyItems,
                 selected: _selectedHobbies,
-                max: 5,
+                max: 8,
                 onToggle: (v) {
                   setState(() {
                     if (_selectedHobbies.contains(v)) {
@@ -2809,7 +3095,7 @@ class _InterestsEditorState extends ConsumerState<_InterestsEditor> {
               Text('Desired Qualities', style: AppTextStyles.titleLarge),
               const SizedBox(height: 6),
               Text(
-                'Select up to 5',
+                'Select up to 8',
                 style: AppTextStyles.bodySmall.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -2830,10 +3116,10 @@ class _InterestsEditorState extends ConsumerState<_InterestsEditor> {
                     if (_selectedQualities.contains(v)) {
                       _selectedQualities.remove(v);
                     } else {
-                      if (_selectedQualities.length >= 5) {
+                      if (_selectedQualities.length >= 8) {
                         _toast(
                           context,
-                          'You can only select up to 5 qualities.',
+                          'You can only select up to 8 qualities.',
                         );
                         return;
                       }
@@ -2984,7 +3270,6 @@ class _ContactEditor extends StatelessWidget {
   final void Function(_ContactEditorValue value) onChanged;
 
   const _ContactEditor({
-    Key? key,
     required this.instagram,
     required this.twitter,
     required this.whatsapp,
@@ -3108,7 +3393,6 @@ class _InputField extends StatelessWidget {
   final void Function(String value) onChanged;
 
   const _InputField({
-    Key? key,
     required this.label,
     required this.initialValue,
     this.keyboardType,
@@ -3162,7 +3446,6 @@ class _DropdownField extends StatelessWidget {
   final ValueChanged<String> onChanged;
 
   const _DropdownField({
-    Key? key,
     required this.label,
     required this.value,
     required this.items,

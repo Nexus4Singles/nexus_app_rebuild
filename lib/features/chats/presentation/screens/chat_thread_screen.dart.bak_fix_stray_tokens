@@ -1,0 +1,1022 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:nexus_app_min_test/core/auth/auth_providers.dart';
+import 'package:nexus_app_min_test/core/dating/dating_profile_gate.dart';
+import 'package:nexus_app_min_test/core/theme/theme.dart';
+import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:record/record.dart';
+
+enum _MessageKind { text, image, audio }
+
+// Dev-only bypass so you can test chat media while Firebase/auth is not wired.
+// Run with: flutter run --dart-define=NEXUS_CHAT_DEV_BYPASS=true
+const bool _kChatDevBypass = bool.fromEnvironment(
+  'NEXUS_CHAT_DEV_BYPASS',
+  defaultValue: false,
+);
+
+class ChatThreadScreen extends ConsumerStatefulWidget {
+  final String chatId;
+
+  const ChatThreadScreen({super.key, required this.chatId});
+
+  @override
+  ConsumerState<ChatThreadScreen> createState() => _ChatThreadScreenState();
+}
+
+class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
+  final _controller = TextEditingController();
+  final _scroll = ScrollController();
+
+  final _picker = ImagePicker();
+  late final AudioPlayer _player;
+  late final AudioRecorder _recorder;
+
+  bool _isRecording = false;
+  String? _recordingPath;
+
+  String? _playingMessageId;
+
+  // Local-only messages for now (UI + media first). Swap to Firestore later.
+  final List<_UiMessage> _messages = [
+    _UiMessage.text(
+      id: 'm1',
+      text: 'Hello 👋',
+      isMe: false,
+      timeLabel: '10:18',
+    ),
+    _UiMessage.text(id: 'm2', text: 'Hi!', isMe: true, timeLabel: '10:19'),
+    _UiMessage.text(
+      id: 'm3',
+      text: 'Now you can send voice notes and images locally.',
+      isMe: false,
+      timeLabel: '10:20',
+    ),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _player = AudioPlayer();
+    _recorder = AudioRecorder();
+
+    _player.playerStateStream.listen((_) {
+      if (!mounted) return;
+      setState(() {});
+    });
+
+    _player.processingStateStream.listen((state) {
+      if (!mounted) return;
+      if (state == ProcessingState.completed) {
+        setState(() => _playingMessageId = null);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _scroll.dispose();
+    _player.dispose();
+    _recorder.dispose();
+    super.dispose();
+  }
+
+  bool get _canSendText => _controller.text.trim().isNotEmpty;
+
+  Future<void> _ensureSignedInThen(Future<void> Function() onAllowed) async {
+    final authAsync = ref.read(authStateProvider);
+    final isSignedIn = authAsync.maybeWhen(
+      data: (a) => a.isSignedIn,
+      orElse: () => false,
+    );
+
+    if (!isSignedIn) {
+      if (_kChatDevBypass) {
+        // Allow guest testing in dev bypass mode.
+        await onAllowed();
+        return;
+      }
+
+      GuestGuard.requireSignedIn(
+        context,
+        ref,
+        title: 'Create an account to chat',
+        message:
+            'You\'re currently in guest mode. Create an account to send messages, voice notes, and photos.',
+        primaryText: 'Create an account',
+        onCreateAccount: () => Navigator.of(context).pushNamed('/signup'),
+        onAllowed: () async {},
+      );
+      return;
+    }
+
+    await DatingProfileGate.requireCompleteProfile(
+      context,
+      ref,
+      onAllowed: onAllowed,
+    );
+  }
+
+  void _scrollToBottomSoon() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_scroll.hasClients) return;
+      _scroll.animateTo(
+        0,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOut,
+      );
+    });
+  }
+
+  String _nowLabel() {
+    final t = TimeOfDay.now();
+    final h = t.hour.toString().padLeft(2, '0');
+    final m = t.minute.toString().padLeft(2, '0');
+    return '$h:$m';
+  }
+
+  String _newId() => DateTime.now().microsecondsSinceEpoch.toString();
+
+  Future<void> _sendText() async {
+    final text = _controller.text.trim();
+    if (text.isEmpty) return;
+
+    await _ensureSignedInThen(() async {
+      setState(() {
+        _messages.insert(
+          0,
+          _UiMessage.text(
+            id: _newId(),
+            text: text,
+            isMe: true,
+            timeLabel: _nowLabel(),
+          ),
+        );
+      });
+      _controller.clear();
+      _scrollToBottomSoon();
+    });
+  }
+
+  Future<void> _openAttachSheet() async {
+    await _ensureSignedInThen(() async {
+      if (!mounted) return;
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: AppColors.surface,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (_) {
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 44,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: AppColors.border,
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Text('Attach', style: AppTextStyles.titleLarge),
+                      const Spacer(),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  _AttachTile(
+                    icon: Icons.image_outlined,
+                    title: 'Photo',
+                    subtitle: 'Pick an image to send',
+                    onTap: () async {
+                      Navigator.of(context).pop();
+                      await _pickAndSendImage();
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  _AttachTile(
+                    icon: Icons.attach_file,
+                    title: 'File',
+                    subtitle: 'Attach a document (coming soon)',
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Files: add file_picker later.'),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  _AttachTile(
+                    icon: Icons.mic_none,
+                    title: 'Voice note',
+                    subtitle:
+                        _isRecording
+                            ? 'Recording… tap mic to stop'
+                            : 'Tap mic to start recording',
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      _toggleRecording();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    });
+  }
+
+  Future<void> _pickAndSendImage() async {
+    await _ensureSignedInThen(() async {
+      final picked = await _picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 85,
+      );
+      if (picked == null) return;
+
+      setState(() {
+        _messages.insert(
+          0,
+          _UiMessage.image(
+            id: _newId(),
+            filePath: picked.path,
+            isMe: true,
+            timeLabel: _nowLabel(),
+          ),
+        );
+      });
+      _scrollToBottomSoon();
+    });
+  }
+
+  Future<bool> _ensureMicPermission() async {
+    final status = await Permission.microphone.request();
+    return status.isGranted;
+  }
+
+  Future<String> _nextRecordingPath() async {
+    final dir = await getTemporaryDirectory();
+    final folder = Directory('${dir.path}/nexus_voice_notes');
+    if (!folder.existsSync()) folder.createSync(recursive: true);
+
+    final filename = 'vn_${DateTime.now().millisecondsSinceEpoch}.m4a';
+    return '${folder.path}/$filename';
+  }
+
+  Future<void> _toggleRecording() async {
+    await _ensureSignedInThen(() async {
+      if (_isRecording) {
+        await _stopRecordingAndSend();
+      } else {
+        await _startRecording();
+      }
+    });
+  }
+
+  Future<void> _startRecording() async {
+    final ok = await _ensureMicPermission();
+    if (!ok) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Microphone permission is required to record voice notes.',
+          ),
+        ),
+      );
+      return;
+    }
+
+    final canRecord = await _recorder.hasPermission();
+    if (!canRecord) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Microphone permission not granted.')),
+      );
+      return;
+    }
+
+    final path = await _nextRecordingPath();
+
+    await _recorder.start(
+      const RecordConfig(
+        encoder: AudioEncoder.aacLc,
+        bitRate: 128000,
+        sampleRate: 44100,
+      ),
+      path: path,
+    );
+
+    setState(() {
+      _isRecording = true;
+      _recordingPath = path;
+    });
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Recording… tap the mic again to stop.')),
+    );
+  }
+
+  Future<void> _stopRecordingAndSend() async {
+    final stoppedPath = await _recorder.stop();
+
+    setState(() {
+      _isRecording = false;
+    });
+
+    final path = stoppedPath ?? _recordingPath;
+    _recordingPath = null;
+
+    if (path == null || path.isEmpty) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not save recording. Try again.')),
+      );
+      return;
+    }
+
+    // Basic file existence check
+    final file = File(path);
+    if (!file.existsSync()) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Recording file not found. Try again.')),
+      );
+      return;
+    }
+
+    setState(() {
+      _messages.insert(
+        0,
+        _UiMessage.audio(
+          id: _newId(),
+          filePath: path,
+          isMe: true,
+          timeLabel: _nowLabel(),
+        ),
+      );
+    });
+    _scrollToBottomSoon();
+  }
+
+  Future<void> _startAudioCall() async {
+    await _ensureSignedInThen(() async {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Audio call (TODO). Needs WebRTC/signalling later.'),
+        ),
+      );
+    });
+  }
+
+  Future<void> _togglePlay(_UiMessage msg) async {
+    if (msg.kind != _MessageKind.audio || msg.filePath == null) return;
+
+    // If tapping currently playing message => pause/resume
+    if (_playingMessageId == msg.id) {
+      if (_player.playing) {
+        await _player.pause();
+      } else {
+        await _player.play();
+      }
+      setState(() {});
+      return;
+    }
+
+    // Start playing new message
+    try {
+      await _player.stop();
+      await _player.setFilePath(msg.filePath!);
+      setState(() => _playingMessageId = msg.id);
+      await _player.play();
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Could not play audio: $e')));
+      setState(() => _playingMessageId = null);
+    }
+  }
+
+  void _openOtherUserProfile() {
+    // TODO: replace '/profile' with your actual dating profile route if different.
+    Navigator.of(context).pushNamed('/profile');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        titleSpacing: 0,
+        title: Row(
+          children: [
+            const SizedBox(width: 8),
+            InkWell(
+              onTap: _openOtherUserProfile,
+              borderRadius: BorderRadius.circular(14),
+              child: _Avatar(label: widget.chatId),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Chat',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  Text(
+                    widget.chatId,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: AppColors.textMuted,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            tooltip: 'Audio call',
+            icon: const Icon(Icons.call_outlined),
+            onPressed: _startAudioCall,
+          ),
+          const SizedBox(width: 4),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              controller: _scroll,
+              reverse: true,
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                final m = _messages[index];
+                return _Bubble(
+                  message: m,
+                  isPlaying: _playingMessageId == m.id && _player.playing,
+                  isThisAudioSelected: _playingMessageId == m.id,
+                  positionStream: _player.positionStream,
+                  durationStream: _player.durationStream,
+                  onAudioTap: () => _togglePlay(m),
+                );
+              },
+            ),
+          ),
+          _Composer(
+            controller: _controller,
+            isRecording: _isRecording,
+            onTextChanged: () => setState(() {}),
+            onAttach: _openAttachSheet,
+            onPickImage: _pickAndSendImage,
+            onMic: _toggleRecording,
+            onSend: _canSendText ? _sendText : null,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Composer extends StatelessWidget {
+  final TextEditingController controller;
+  final bool isRecording;
+  final VoidCallback onTextChanged;
+  final VoidCallback onAttach;
+  final VoidCallback onMic;
+  final VoidCallback? onSend;
+
+  const _Composer({
+    required this.controller,
+    required this.isRecording,
+    required this.onTextChanged,
+    required this.onAttach,
+    required this.onMic,
+    required this.onSend,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: Border(top: BorderSide(color: AppColors.border)),
+      ),
+      child: SafeArea(
+        top: false,
+        child: Row(
+          children: [
+            IconButton(
+              tooltip: 'Attach',
+              icon: const Icon(Icons.add_circle_outline),
+              onPressed: onAttach,
+            ),
+            Expanded(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 46, maxHeight: 130),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: AppColors.background,
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  child: TextField(
+                    controller: controller,
+                    onChanged: (_) => onTextChanged(),
+                    minLines: 1,
+                    maxLines: 5,
+                    keyboardType: TextInputType.multiline,
+                    textInputAction: TextInputAction.newline,
+                    decoration: const InputDecoration(
+                      hintText: 'Message…',
+                      border: InputBorder.none,
+                      isDense: true,
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              tooltip: isRecording ? 'Stop recording' : 'Record voice note',
+              icon: Icon(isRecording ? Icons.stop_circle_outlined : Icons.mic_none),
+              onPressed: onMic,
+            ),
+            IconButton(
+              tooltip: 'Send',
+              icon: const Icon(Icons.send),
+              onPressed: onSend,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: Border(top: BorderSide(color: AppColors.border)),
+      ),
+      child: SafeArea(
+        top: false,
+        child: Row(
+          children: [
+            IconButton(
+              tooltip: 'Attach',
+              icon: const Icon(Icons.add_circle_outline),
+              onPressed: onAttach,
+            ),
+            IconButton(
+              tooltip: 'Photo',
+              icon: const Icon(Icons.image_outlined),
+              onPressed: onPickImage,
+            ),
+            Expanded(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: 52,
+                  maxHeight: 120, // ~4 lines max
+                ),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: AppColors.background.withOpacity(0.80),
+                    borderRadius: BorderRadius.circular(20),
+                    border: const Border.fromBorderSide(
+                      BorderSide(color: Color(0x14000000)),
+                    ),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0x0A000000),
+                        blurRadius: 10,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    child: TextField(
+                      controller: controller,
+                      onChanged: (_) => onTextChanged(),
+                      minLines: 1,
+                      maxLines: 4,
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.newline,
+                      textAlignVertical: TextAlignVertical.center,
+                      decoration: const InputDecoration(
+                        hintText: 'Message…',
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 14),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              tooltip: isRecording ? 'Stop recording' : 'Record voice note',
+              icon: Icon(
+                isRecording ? Icons.stop_circle_outlined : Icons.mic_none,
+              ),
+              onPressed: onMic,
+            ),
+            IconButton(
+              tooltip: 'Send',
+              icon: const Icon(Icons.send),
+              onPressed: onSend,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AttachTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  const _AttachTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: AppColors.background,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.border),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.10),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(icon, color: AppColors.primary),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: AppTextStyles.labelLarge),
+                    const SizedBox(height: 3),
+                    Text(
+                      subtitle,
+                      style: AppTextStyles.caption.copyWith(
+                        color: AppColors.textMuted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Bubble extends StatelessWidget {
+  final _UiMessage message;
+
+  final bool isPlaying;
+  final bool isThisAudioSelected;
+  final Stream<Duration> positionStream;
+  final Stream<Duration?> durationStream;
+  final VoidCallback onAudioTap;
+
+  const _Bubble({
+    required this.message,
+    required this.isPlaying,
+    required this.isThisAudioSelected,
+    required this.positionStream,
+    required this.durationStream,
+    required this.onAudioTap,
+  });
+
+  String _fmt(Duration d) {
+    final m = d.inMinutes;
+    final s = (d.inSeconds % 60).toString().padLeft(2, '0');
+    return '$m:$s';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final maxWidth = MediaQuery.of(context).size.width * 0.78;
+    final isMe = message.isMe;
+
+    return Align(
+      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: maxWidth),
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color:
+                isMe ? AppColors.primary.withOpacity(0.14) : AppColors.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.border),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: _MessageBody(
+                  message: message,
+                  isPlaying: isPlaying,
+                  isThisAudioSelected: isThisAudioSelected,
+                  positionStream: positionStream,
+                  durationStream: durationStream,
+                  onAudioTap: onAudioTap,
+                  fmt: _fmt,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                message.timeLabel,
+                style: AppTextStyles.caption.copyWith(
+                  color: AppColors.textMuted,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _MessageBody extends StatelessWidget {
+  final _UiMessage message;
+  final bool isPlaying;
+  final bool isThisAudioSelected;
+  final Stream<Duration> positionStream;
+  final Stream<Duration?> durationStream;
+  final VoidCallback onAudioTap;
+  final String Function(Duration) fmt;
+
+  const _MessageBody({
+    required this.message,
+    required this.isPlaying,
+    required this.isThisAudioSelected,
+    required this.positionStream,
+    required this.durationStream,
+    required this.onAudioTap,
+    required this.fmt,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    switch (message.kind) {
+      case _MessageKind.text:
+        return Text(message.text ?? '', style: AppTextStyles.bodyMedium);
+
+      case _MessageKind.image:
+        final path = message.filePath;
+        if (path == null || path.isEmpty) {
+          return Text('(missing image)', style: AppTextStyles.bodyMedium);
+        }
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(14),
+          child: Image.file(
+            File(path),
+            fit: BoxFit.cover,
+            errorBuilder:
+                (_, __, ___) => Container(
+                  height: 160,
+                  alignment: Alignment.center,
+                  color: AppColors.background,
+                  child: const Icon(Icons.broken_image_outlined),
+                ),
+          ),
+        );
+
+      case _MessageKind.audio:
+        final path = message.filePath;
+        if (path == null || path.isEmpty) {
+          return Text('(missing audio)', style: AppTextStyles.bodyMedium);
+        }
+
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          decoration: BoxDecoration(
+            color: AppColors.background,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: AppColors.border),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                visualDensity: VisualDensity.compact,
+                icon: Icon(
+                  isPlaying
+                      ? Icons.pause_circle_outline
+                      : Icons.play_circle_outline,
+                ),
+                onPressed: onAudioTap,
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: StreamBuilder<Duration?>(
+                  stream: durationStream,
+                  builder: (context, snapDur) {
+                    final dur =
+                        isThisAudioSelected
+                            ? (snapDur.data ?? Duration.zero)
+                            : Duration.zero;
+
+                    return StreamBuilder<Duration>(
+                      stream: positionStream,
+                      builder: (context, snapPos) {
+                        final pos =
+                            isThisAudioSelected
+                                ? (snapPos.data ?? Duration.zero)
+                                : Duration.zero;
+
+                        final safeDur =
+                            dur.inMilliseconds <= 0
+                                ? const Duration(seconds: 1)
+                                : dur;
+                        final value =
+                            pos.inMilliseconds / safeDur.inMilliseconds;
+                        final clamped =
+                            value.isFinite ? value.clamp(0.0, 1.0) : 0.0;
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            LinearProgressIndicator(value: clamped),
+                            const SizedBox(height: 4),
+                            Text(
+                              isThisAudioSelected
+                                  ? '${fmt(pos)} / ${fmt(dur)}'
+                                  : 'Voice note',
+                              style: AppTextStyles.caption.copyWith(
+                                color: AppColors.textMuted,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+    }
+  }
+}
+
+class _Avatar extends StatelessWidget {
+  final String label;
+  const _Avatar({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    final initials = label.isEmpty ? 'C' : label.substring(0, 1).toUpperCase();
+    return Container(
+      width: 38,
+      height: 38,
+      decoration: BoxDecoration(
+        color: AppColors.primary.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.border),
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        initials,
+        style: AppTextStyles.labelLarge.copyWith(color: AppColors.primary),
+      ),
+    );
+  }
+}
+
+class _UiMessage {
+  final String id;
+  final _MessageKind kind;
+  final bool isMe;
+  final String timeLabel;
+
+  final String? text;
+  final String? filePath;
+
+  const _UiMessage._({
+    required this.id,
+    required this.kind,
+    required this.isMe,
+    required this.timeLabel,
+    this.text,
+    this.filePath,
+  });
+
+  factory _UiMessage.text({
+    required String id,
+    required String text,
+    required bool isMe,
+    required String timeLabel,
+  }) {
+    return _UiMessage._(
+      id: id,
+      kind: _MessageKind.text,
+      isMe: isMe,
+      timeLabel: timeLabel,
+      text: text,
+    );
+  }
+
+  factory _UiMessage.image({
+    required String id,
+    required String filePath,
+    required bool isMe,
+    required String timeLabel,
+  }) {
+    return _UiMessage._(
+      id: id,
+      kind: _MessageKind.image,
+      isMe: isMe,
+      timeLabel: timeLabel,
+      filePath: filePath,
+    );
+  }
+
+  factory _UiMessage.audio({
+    required String id,
+    required String filePath,
+    required bool isMe,
+    required String timeLabel,
+  }) {
+    return _UiMessage._(
+      id: id,
+      kind: _MessageKind.audio,
+      isMe: isMe,
+      timeLabel: timeLabel,
+      filePath: filePath,
+    );
+  }
+}

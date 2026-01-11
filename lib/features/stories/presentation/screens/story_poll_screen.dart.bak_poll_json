@@ -1,0 +1,221 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
+
+/// Dev-only: allow poll voting/results while in guest mode (local testing).
+/// Enable with: flutter run --dart-define=NEXUS_DEV_BYPASS_POLLS=true
+const bool kDevBypassPolls = bool.fromEnvironment(
+  'NEXUS_DEV_BYPASS_POLLS',
+  defaultValue: false,
+);
+
+class StoryPollScreen extends ConsumerStatefulWidget {
+  final String storyId;
+  const StoryPollScreen({super.key, required this.storyId});
+
+  @override
+  ConsumerState<StoryPollScreen> createState() => _StoryPollScreenState();
+}
+
+class _StoryPollScreenState extends ConsumerState<StoryPollScreen> {
+  // ✅ v1 stub poll data (next: load from polls.v1.json)
+  final _poll = const _PollStub(
+    id: 'poll_week_01',
+    question: 'When tension starts, what do you usually do first?',
+    options: [
+      _PollOptionStub(id: 'A', text: 'I withdraw to avoid escalation'),
+      _PollOptionStub(id: 'B', text: 'I push for clarity immediately'),
+      _PollOptionStub(id: 'C', text: 'I use humor / change topic'),
+      _PollOptionStub(id: 'D', text: 'It depends on the person'),
+    ],
+  );
+
+  String? _selectedOptionId;
+  bool _hasVoted = false;
+
+  // ✅ v1 fake aggregates (later: Firestore poll_aggregates)
+  Map<String, int> _counts = {'A': 41, 'B': 33, 'C': 14, 'D': 12};
+
+  bool get _allowVoting {
+    // In production: only signed-in users can vote.
+    // During local build: dev bypass allows testing while guest.
+    return kDevBypassPolls;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final total = _counts.values.fold<int>(0, (a, b) => a + b).clamp(1, 999999);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Weekly Poll')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _poll.question,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 16),
+
+            if (!_hasVoted) ...[
+              ..._poll.options.map(
+                (o) => RadioListTile<String>(
+                  value: o.id,
+                  groupValue: _selectedOptionId,
+                  onChanged: (v) => setState(() => _selectedOptionId = v),
+                  title: Text(o.text),
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed:
+                      _selectedOptionId == null
+                          ? null
+                          : () {
+                            // ✅ Guest gating happens here.
+                            if (_allowVoting) {
+                              _vote();
+                              return;
+                            }
+
+                            GuestGuard.requireSignedIn(
+                              context,
+                              ref,
+                              title: 'Create an account to vote',
+                              message:
+                                  'You\'re currently in guest mode. Create an account to vote and see poll results.',
+                              primaryText: 'Create an account',
+                              onCreateAccount:
+                                  () => Navigator.of(
+                                    context,
+                                  ).pushNamed('/signup'),
+                              onAllowed: () async {
+                                _vote();
+                              },
+                            );
+                          },
+                  child: const Text('Vote to see results'),
+                ),
+              ),
+              if (!kDevBypassPolls) ...[
+                const SizedBox(height: 10),
+                Text(
+                  'Guest mode: you can read stories, but voting is for signed-in users.',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ] else ...[
+                const SizedBox(height: 10),
+                Text(
+                  'Dev bypass enabled: voting allowed in guest mode.',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ] else ...[
+              Text('Results', style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 12),
+              ..._poll.options.map((o) {
+                final c = _counts[o.id] ?? 0;
+                final pct = (c / total) * 100;
+                final isMine = o.id == _selectedOptionId;
+
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              isMine ? '✓ ${o.text}' : o.text,
+                              style: TextStyle(
+                                fontWeight:
+                                    isMine ? FontWeight.w600 : FontWeight.w400,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            LinearProgressIndicator(value: pct / 100),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      SizedBox(
+                        width: 52,
+                        child: Text('${pct.toStringAsFixed(0)}%'),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+              const SizedBox(height: 16),
+              _InsightCard(optionId: _selectedOptionId ?? ''),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _vote() {
+    setState(() {
+      _hasVoted = true;
+      _counts[_selectedOptionId!] = (_counts[_selectedOptionId!] ?? 0) + 1;
+    });
+  }
+}
+
+class _InsightCard extends StatelessWidget {
+  final String optionId;
+  const _InsightCard({required this.optionId});
+
+  @override
+  Widget build(BuildContext context) {
+    final text = switch (optionId) {
+      'A' =>
+        'Withdrawing can protect you short-term, but repair requires re-entry: return with one clear sentence.',
+      'B' =>
+        'Pushing for clarity is powerful when it’s calm. Try “I want to understand, not win.”',
+      'C' =>
+        'Humor can de-escalate, but don’t use it to dodge the real issue. Name the feeling gently.',
+      _ =>
+        'Your pattern is flexible — build a consistent repair habit so tension doesn’t linger.',
+    };
+
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.lightbulb_outline),
+          const SizedBox(width: 10),
+          Expanded(child: Text(text)),
+        ],
+      ),
+    );
+  }
+}
+
+class _PollStub {
+  final String id;
+  final String question;
+  final List<_PollOptionStub> options;
+  const _PollStub({
+    required this.id,
+    required this.question,
+    required this.options,
+  });
+}
+
+class _PollOptionStub {
+  final String id;
+  final String text;
+  const _PollOptionStub({required this.id, required this.text});
+}
