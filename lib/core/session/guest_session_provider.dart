@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/app_constants.dart';
 import 'guest_session.dart';
 import 'guest_session_service.dart';
+import 'relationship_status_key.dart';
 
 final sharedPrefsProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError(
@@ -32,6 +33,12 @@ class GuestSessionNotifier extends StateNotifier<GuestSession?> {
   }
 
   Future<void> setRelationshipStatus(RelationshipStatus status) async {
+    // Persist for HomeScreen + safe/mock mode (clean swap to Firebase later)
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      'relationshipStatus',
+      relationshipStatusKeyFromEnum(status),
+    );
     final next =
         (state == null)
             ? GuestSession(relationshipStatus: status)
@@ -57,5 +64,11 @@ class GuestSessionNotifier extends StateNotifier<GuestSession?> {
   Future<void> clear() async {
     state = null;
     await _service.clear();
+
+    // Also clear persisted relationship selection so presurvey starts fresh.
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('relationshipStatus');
+    await prefs.remove('activeJourneyId');
+    await prefs.remove('active_journey_id');
   }
 }

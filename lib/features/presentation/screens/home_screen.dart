@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:nexus_app_min_test/core/safe_providers/user_provider_safe.dart';
+import 'package:nexus_app_min_test/core/session/relationship_status_key.dart';
 
 import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
 import 'package:nexus_app_min_test/features/stories/domain/story_models.dart';
@@ -20,176 +22,204 @@ class HomeScreen extends ConsumerWidget {
     return 'Good evening';
   }
 
-  String _string(dynamic v) => v == null ? '' : v.toString().trim();
+  Future<String> _loadStatusKeyFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw =
+        prefs.getString('relationshipStatus') ??
+        prefs.getString('relationship_status') ??
+        prefs.getString('user_relationship_status') ??
+        prefs.getString('onboarding_relationship_status') ??
+        prefs.getString('category') ??
+        prefs.getString('user_category') ??
+        '';
+    return relationshipStatusKeyFromString(raw);
+  }
 
-  String _inferJourneyCategory(dynamic user) {
-    // Derive which journeys file to load from user relationship fields if available.
-    // Defaults to singles.
-    try {
-      final s = _string(user.relationshipStatus).toLowerCase();
-      if (s.contains('married')) return 'married';
-      if (s.contains('widow')) return 'widowed';
-      if (s.contains('divorc')) return 'divorced';
-      if (s.contains('single') || s.contains('never')) return 'singles';
-    } catch (_) {}
+  Future<String?> _loadActiveJourneyIdFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw =
+        prefs.getString('activeJourneyId') ??
+        prefs.getString('active_journey_id') ??
+        prefs.getString('activeJourney') ??
+        prefs.getString('active_journey');
+    final v = raw?.trim();
+    if (v == null || v.isEmpty) return null;
+    return v;
+  }
 
-    try {
-      final c = _string(user.category).toLowerCase();
-      if (c.contains('married')) return 'married';
-      if (c.contains('widow')) return 'widowed';
-      if (c.contains('divorc')) return 'divorced';
-      if (c.contains('single')) return 'singles';
-    } catch (_) {}
+  String _assessmentTitleForKey(String key) {
+    if (key == 'married') return 'Marriage Health Check';
+    if (key == 'divorced' || key == 'widowed')
+      return 'Remarriage Readiness Test';
+    return 'Marriage Readiness Test';
+  }
 
-    return 'singles';
+  String _assessmentDescForKey(String key) {
+    if (key == 'married') return 'Find out how healthy your marriage is';
+    if (key == 'divorced' || key == 'widowed') {
+      return 'Find out how ready you are to get married again';
+    }
+    return 'Find out how ready you are for the marriage you desire';
+  }
+
+  String _journeysCopyForKey(String key) {
+    if (key == 'married') {
+      return 'Strengthen your marriage by equipping yourself with practical knowledge and guidance required to navigate every aspect of married life';
+    }
+    if (key == 'divorced') {
+      return 'Rebuild with clarity and confidence by gaining practical guidance for healing, growth, and healthier relationships ahead';
+    }
+    if (key == 'widowed') {
+      return 'Find steady guidance and practical support as you navigate life, healing, and relationships after spousal loss';
+    }
+    return 'Equip yourself with the practical knowledge, clarity, and confidence you need to choose a life partner and navigate marriage';
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bottomInset = MediaQuery.of(context).padding.bottom;
-    final user = ref.watch(safeUserProvider);
+    final userAsync = ref.watch(safeUserProvider);
     final theme = Theme.of(context);
 
-    final firstName = user.firstName.trim();
-    final isGuest = user.isGuest;
+    final firstName = (userAsync.valueOrNull?.firstName ?? '').trim();
+    final isGuest = userAsync.valueOrNull?.isGuest ?? true;
+    final fallbackKey = relationshipStatusKeyFromString(
+      userAsync.valueOrNull?.relationshipStatus ?? '',
+    );
+
     return Scaffold(
       appBar: AppBar(title: const Text('Home'), centerTitle: true),
-      body: ListView(
-        padding: EdgeInsets.fromLTRB(16, 14, 16, 220 + bottomInset),
-        children: [
-          // ✅ Top greeting
-          Text(
-            isGuest ? 'Hello 👋' : '${_greeting()}, $firstName 👋',
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            'Let’s build healthy love habits this week.',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.textTheme.bodySmall?.color?.withOpacity(0.75),
-            ),
-          ),
-          const SizedBox(height: 14),
+      body: FutureBuilder<String>(
+        future: _loadStatusKeyFromPrefs(),
+        builder: (context, statusSnap) {
+          final statusKey = statusSnap.data ?? fallbackKey;
 
-          // Assessment card (keep as-is for now; update route later if needed)
-          _Card(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Start an Assessment',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
+          return ListView(
+            padding: EdgeInsets.fromLTRB(16, 14, 16, 220 + bottomInset),
+            children: [
+              Text(
+                isGuest ? 'Hello 👋' : '${_greeting()}, $firstName ��',
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
                 ),
-                const SizedBox(height: 6),
-                Text(
-                  'Get insights and recommendations tailored to you.',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.textTheme.bodySmall?.color?.withOpacity(0.75),
-                  ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Create an account to get the best experience',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.textTheme.bodySmall?.color?.withOpacity(0.75),
                 ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/assessment');
-                    },
-                    child: const Text('Start'),
-                  ),
+              ),
+              const SizedBox(height: 14),
+
+              _Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _assessmentTitleForKey(statusKey),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      _assessmentDescForKey(statusKey),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.textTheme.bodySmall?.color?.withOpacity(
+                          0.75,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/assessment');
+                        },
+                        child: const Text('Start Assessment'),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
 
-          const SizedBox(height: 14),
+              const SizedBox(height: 14),
 
-          // Story of the Week (JSON-driven; route to StoriesScreen)
-          _StoryOfWeekCard(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const StoriesScreen()),
-              );
-            },
-          ),
+              _StoryOfWeekCard(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const StoriesScreen()),
+                  );
+                },
+              ),
 
-          const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-          Text(
-            'Your Journeys',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Continue where you left off or start something new.',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.textTheme.bodySmall?.color?.withOpacity(0.75),
-            ),
-          ),
-          const SizedBox(height: 10),
+              Text(
+                'Journeys',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const SizedBox(height: 10),
 
-          FutureBuilder<List<Journey>>(
-            future: const JourneyRepository().loadJourneysForCategory(
-              _inferJourneyCategory(user),
-            ),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return const Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              }
+              FutureBuilder<String?>(
+                future: _loadActiveJourneyIdFromPrefs(),
+                builder: (context, activeSnap) {
+                  final activeId = activeSnap.data;
 
-              final list = snapshot.data ?? const <Journey>[];
-              if (list.isEmpty) {
-                return _Card(
-                  child: Text(
-                    'No journeys available yet.',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                );
-              }
-
-              final continueJourney = list.first;
-              final recommendedJourney = list.length > 1 ? list[1] : list.first;
-
-              return Column(
-                children: [
-                  _JourneyCard(
-                    title: 'Continue Journey',
-                    subtitle:
-                        '${continueJourney.title} • ${continueJourney.estimatedDays} days',
-                    pillText: 'In progress',
-                    progress: 0.15, // TODO: replace with real local progress
-                    ctaText: 'Continue',
-                    onTap: () {
-                      // TODO: hook up to active journey continuation.
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  _JourneyCard(
-                    title: 'Recommended Journey',
-                    subtitle:
-                        '${recommendedJourney.title} • ${recommendedJourney.estimatedDays} days',
-                    pillText: 'New',
-                    progress: null,
-                    ctaText: 'View',
-                    onTap: () {
-                      // TODO: hook up to journey detail.
-                    },
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
+                  return Column(
+                    children: [
+                      if (activeId != null) ...[
+                        _JourneyCard(
+                          title: 'Continue Journey',
+                          subtitle: 'Pick up where you left off',
+                          pillText: 'In progress',
+                          progress: 0.15,
+                          ctaText: 'Continue',
+                          onTap: () {
+                            Navigator.of(
+                              context,
+                            ).pushNamed('/journey/$activeId');
+                          },
+                        ),
+                        const SizedBox(height: 12),
+                      ],
+                      _JourneyCard(
+                        title: 'Journeys',
+                        subtitle: _journeysCopyForKey(statusKey),
+                        pillText: 'New',
+                        progress: null,
+                        ctaText: 'Start Now',
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/challenges');
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                      FutureBuilder<List<Journey>>(
+                        future: const JourneyRepository()
+                            .loadJourneysForCategory(statusKey),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState !=
+                              ConnectionState.done) {
+                            return const SizedBox.shrink();
+                          }
+                          final list = snapshot.data ?? const <Journey>[];
+                          if (list.isEmpty) return const SizedBox.shrink();
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -261,7 +291,7 @@ class _StoryOfWeekCard extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _GlassPill(text: 'Story of the Week'),
+                            const _GlassPill(text: 'Story of the Week'),
                             const SizedBox(height: 8),
                             Text(
                               story?.title ?? 'Loading story…',
