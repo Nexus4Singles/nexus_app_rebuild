@@ -219,7 +219,9 @@ class _VoteView extends StatelessWidget {
             children: [
               Text(
                 'Weekly Poll',
-                style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
               ),
               const SizedBox(height: 6),
               Text(poll.question, style: theme.textTheme.bodyLarge),
@@ -249,14 +251,18 @@ class _VoteView extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: theme.dividerColor.withOpacity(0.35)),
+                    border: Border.all(
+                      color: theme.dividerColor.withOpacity(0.35),
+                    ),
                   ),
                   child: RadioListTile<String>(
                     value: o.id,
                     groupValue: selectedOptionId,
                     onChanged: onSelect,
                     title: Text(o.text),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                     controlAffinity: ListTileControlAffinity.trailing,
                   ),
                 ),
@@ -266,8 +272,13 @@ class _VoteView extends StatelessWidget {
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: (selectedOptionId == null || selectedOptionId!.isEmpty) ? null : onVote,
-                  child: Text(hasStoredVote ? 'Vote again' : 'Vote to see results'),
+                  onPressed:
+                      (selectedOptionId == null || selectedOptionId!.isEmpty)
+                          ? null
+                          : onVote,
+                  child: Text(
+                    hasStoredVote ? 'Vote again' : 'Vote to see results',
+                  ),
                 ),
               ),
             ],
@@ -303,7 +314,9 @@ class _ResultsView extends StatelessWidget {
             children: [
               Text(
                 'Poll Results',
-                style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
               ),
               const SizedBox(height: 6),
               Text(poll.question, style: theme.textTheme.bodyLarge),
@@ -329,7 +342,10 @@ class _ResultsView extends StatelessWidget {
                           Expanded(
                             child: Text(
                               isMine ? '✓ ${o.text}' : o.text,
-                              style: TextStyle(fontWeight: isMine ? FontWeight.w700 : FontWeight.w500),
+                              style: TextStyle(
+                                fontWeight:
+                                    isMine ? FontWeight.w700 : FontWeight.w500,
+                              ),
                             ),
                           ),
                           Text('${pct.toStringAsFixed(0)}%'),
@@ -354,12 +370,7 @@ class _ResultsView extends StatelessWidget {
             children: [
               const Icon(Icons.lightbulb_outline),
               const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  insight,
-                  style: theme.textTheme.bodyMedium,
-                ),
-              ),
+              Expanded(child: Text(insight, style: theme.textTheme.bodyMedium)),
             ],
           ),
         ),

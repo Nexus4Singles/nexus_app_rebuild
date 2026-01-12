@@ -124,13 +124,13 @@ class AppTheme {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.textOnPrimary,
           elevation: 0,
-          minimumSize: const Size(double.infinity, 52),
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.buttonHorizontalPadding,
-            vertical: 16,
+            vertical: AppSpacing.buttonVerticalPadding,
           ),
           shape: RoundedRectangleBorder(borderRadius: AppRadius.button),
-          textStyle: AppTextStyles.buttonLarge.copyWith(height: 1.15),
+          textStyle: AppTextStyles.buttonLarge,
+          minimumSize: const Size(double.infinity, 52),
         ),
       ),
 
@@ -519,13 +519,13 @@ class AppTheme {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.textOnPrimary,
           elevation: 0,
-          minimumSize: const Size(double.infinity, 52),
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.buttonHorizontalPadding,
-            vertical: 16,
+            vertical: AppSpacing.buttonVerticalPadding,
           ),
           shape: RoundedRectangleBorder(borderRadius: AppRadius.button),
-          textStyle: AppTextStyles.buttonLarge.copyWith(height: 1.15),
+          textStyle: AppTextStyles.buttonLarge,
+          minimumSize: const Size(double.infinity, 52),
         ),
       ),
 

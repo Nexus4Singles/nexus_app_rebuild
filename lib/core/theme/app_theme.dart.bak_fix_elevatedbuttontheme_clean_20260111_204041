@@ -121,16 +121,19 @@ class AppTheme {
       // Elevated Button Theme
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
+          minimumSize: const Size.fromHeight(52),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          textStyle: const TextStyle(height: 1.15),
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.textOnPrimary,
           elevation: 0,
-          minimumSize: const Size(double.infinity, 52),
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.buttonHorizontalPadding,
-            vertical: 16,
+            vertical: AppSpacing.buttonVerticalPadding,
           ),
           shape: RoundedRectangleBorder(borderRadius: AppRadius.button),
-          textStyle: AppTextStyles.buttonLarge.copyWith(height: 1.15),
+          textStyle: AppTextStyles.buttonLarge,
+          minimumSize: const Size(double.infinity, 52),
         ),
       ),
 
@@ -516,16 +519,19 @@ class AppTheme {
       // Elevated Button Theme
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
+          minimumSize: const Size.fromHeight(52),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          textStyle: const TextStyle(height: 1.15),
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.textOnPrimary,
           elevation: 0,
-          minimumSize: const Size(double.infinity, 52),
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.buttonHorizontalPadding,
-            vertical: 16,
+            vertical: AppSpacing.buttonVerticalPadding,
           ),
           shape: RoundedRectangleBorder(borderRadius: AppRadius.button),
-          textStyle: AppTextStyles.buttonLarge.copyWith(height: 1.15),
+          textStyle: AppTextStyles.buttonLarge,
+          minimumSize: const Size(double.infinity, 52),
         ),
       ),
 

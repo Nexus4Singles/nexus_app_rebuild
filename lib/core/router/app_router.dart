@@ -65,10 +65,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     final missionId = segments[3];
     return MaterialPageRoute(
       settings: settings,
-      builder: (_) => JourneyGateScreen(
-        journeyId: journeyId,
-        missionId: missionId,
-      ),
+      builder:
+          (_) => JourneyGateScreen(journeyId: journeyId, missionId: missionId),
     );
   }
 

@@ -125,7 +125,8 @@ class ProfileScreen extends ConsumerWidget {
                 profile: profile,
                 photos: photos,
                 isViewingOtherUser: isViewingOtherUser,
-                canEditRelationshipStatus: isSignedIn && !isViewingOtherUser,
+                canEditRelationshipStatus:
+                    (me?.uid == profile.id) && !isViewingOtherUser,
                 locationText: location,
               ),
               SliverToBoxAdapter(
@@ -435,6 +436,43 @@ Future<void> _saveRelationshipStatusTag(
   );
 }
 
+class _RelationshipStatusTagController
+    extends StateNotifier<AsyncValue<RelationshipStatusTag>> {
+  final String uid;
+
+  _RelationshipStatusTagController(this.uid)
+    : super(const AsyncValue.loading()) {
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final v = await _loadRelationshipStatusTag(uid);
+      state = AsyncValue.data(v);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
+  }
+
+  Future<void> setTag(RelationshipStatusTag v) async {
+    // Optimistic update for instant UI feedback.
+    state = AsyncValue.data(v);
+    try {
+      await _saveRelationshipStatusTag(uid, v);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
+  }
+}
+
+final _relationshipStatusTagProvider = StateNotifierProvider.family<
+  _RelationshipStatusTagController,
+  AsyncValue<RelationshipStatusTag>,
+  String
+>((ref, uid) {
+  return _RelationshipStatusTagController(uid);
+});
+
 class _RelationshipStatusPill extends StatelessWidget {
   final RelationshipStatusTag value;
   final VoidCallback? onTap;
@@ -448,16 +486,31 @@ class _RelationshipStatusPill extends StatelessWidget {
 
     return Semantics(
       button: canTap,
-      label: canTap ? 'Change relationship status' : 'Relationship status',
+      label: canTap ? 'Edit dating status' : 'Dating Status',
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(999),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: EdgeInsets.symmetric(
+            horizontal: canTap ? 14 : 12,
+            vertical: canTap ? 10 : 8,
+          ),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.42),
+            color: Colors.black.withOpacity(canTap ? 0.56 : 0.42),
             borderRadius: BorderRadius.circular(999),
-            border: Border.all(color: Colors.white.withOpacity(0.35)),
+            border: Border.all(
+              color: Colors.white.withOpacity(canTap ? 0.65 : 0.35),
+            ),
+            boxShadow:
+                canTap
+                    ? [
+                      BoxShadow(
+                        blurRadius: 14,
+                        offset: const Offset(0, 6),
+                        color: Colors.black.withOpacity(0.22),
+                      ),
+                    ]
+                    : null,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -466,20 +519,22 @@ class _RelationshipStatusPill extends StatelessWidget {
                 height: 7,
                 width: 7,
                 decoration: BoxDecoration(
-                  color: value == RelationshipStatusTag.available
-                      ? Colors.greenAccent.withOpacity(0.9)
-                      : Colors.redAccent.withOpacity(0.9),
+                  color:
+                      value == RelationshipStatusTag.available
+                          ? Colors.greenAccent.withOpacity(0.9)
+                          : Colors.redAccent.withOpacity(0.9),
                   shape: BoxShape.circle,
                 ),
               ),
               const SizedBox(width: 8),
               Text(
-                'Status: ',
+                'Dating Status:',
                 style: AppTextStyles.bodySmall.copyWith(
-                  color: Colors.white.withOpacity(0.85),
-                  fontWeight: FontWeight.w700,
+                  color: Colors.white.withOpacity(0.9),
+                  fontWeight: FontWeight.w800,
                 ),
               ),
+              const SizedBox(width: 8),
               Text(
                 label,
                 style: AppTextStyles.bodySmall.copyWith(
@@ -488,11 +543,20 @@ class _RelationshipStatusPill extends StatelessWidget {
                 ),
               ),
               if (canTap) ...[
-                const SizedBox(width: 8),
-                Icon(
-                  Icons.keyboard_arrow_down_rounded,
-                  size: 18,
-                  color: Colors.white.withOpacity(0.85),
+                const SizedBox(width: 10),
+                Container(
+                  height: 28,
+                  width: 28,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.14),
+                    borderRadius: BorderRadius.circular(999),
+                    border: Border.all(color: Colors.white.withOpacity(0.6)),
+                  ),
+                  child: Icon(
+                    Icons.edit_rounded,
+                    size: 16,
+                    color: Colors.white.withOpacity(0.95),
+                  ),
                 ),
               ],
             ],
@@ -676,11 +740,15 @@ class _ProfileHeroAppBar extends StatelessWidget {
                     Positioned(
                       top: MediaQuery.of(context).padding.top + 14,
                       right: 12,
-                      child: FutureBuilder<RelationshipStatusTag>(
-                        future: _loadRelationshipStatusTag(profile.id),
-                        builder: (context, snap) {
-                          final value =
-                              snap.data ?? RelationshipStatusTag.available;
+                      child: Consumer(
+                        builder: (context, ref, _) {
+                          final tagAsync = ref.watch(
+                            _relationshipStatusTagProvider(profile.id),
+                          );
+                          final value = tagAsync.maybeWhen(
+                            data: (v) => v,
+                            orElse: () => RelationshipStatusTag.available,
+                          );
 
                           final canEdit = canEditRelationshipStatus;
 
@@ -689,105 +757,158 @@ class _ProfileHeroAppBar extends StatelessWidget {
                             onTap:
                                 canEdit
                                     ? () async {
-                                    final selected =
-                                        await showModalBottomSheet<RelationshipStatusTag>(
-                                      context: context,
-                                      backgroundColor: Colors.transparent,
-                                      isScrollControlled: false,
-                                      builder: (sheetContext) {
-                                        RelationshipStatusTag temp =
-                                            value; // local selection inside sheet
+                                      final selected = await showModalBottomSheet<
+                                        RelationshipStatusTag
+                                      >(
+                                        context: context,
+                                        backgroundColor: Colors.transparent,
+                                        isScrollControlled: false,
+                                        builder: (sheetContext) {
+                                          RelationshipStatusTag temp = value;
 
-                                        return StatefulBuilder(
-                                          builder: (sheetContext, setSheetState) {
-                                            return Container(
-                                              padding: const EdgeInsets.fromLTRB(
-                                                16,
-                                                16,
-                                                16,
-                                                24,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: AppColors.surface,
-                                                borderRadius: BorderRadius.circular(18),
-                                              ),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: Text(
-                                                          'Relationship status',
-                                                          style: AppTextStyles.titleLarge.copyWith(
-                                                            fontWeight: FontWeight.w900,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      InkWell(
-                                                        onTap: () => Navigator.pop(sheetContext, null),
-                                                        borderRadius: BorderRadius.circular(999),
-                                                        child: Container(
-                                                          height: 36,
-                                                          width: 36,
-                                                          decoration: BoxDecoration(
-                                                            color: AppColors.background,
-                                                            borderRadius: BorderRadius.circular(999),
-                                                            border: Border.all(color: AppColors.border),
-                                                          ),
-                                                          child: const Icon(Icons.close_rounded),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  const SizedBox(height: 12),
-                                                  Text(
-                                                    'Tap to update your visibility on the dating side of the app.',
-                                                    style: AppTextStyles.bodySmall.copyWith(
-                                                      color: AppColors.textSecondary,
+                                          return StatefulBuilder(
+                                            builder: (
+                                              sheetContext,
+                                              setSheetState,
+                                            ) {
+                                              return Container(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                      16,
+                                                      16,
+                                                      16,
+                                                      24,
                                                     ),
-                                                  ),
-                                                  const SizedBox(height: 14),
-                                                  _StatusOptionTile(
-                                                    label: 'Available',
-                                                    selected: temp == RelationshipStatusTag.available,
-                                                    onTap: () {
-                                                      setSheetState(() {
-                                                        temp = RelationshipStatusTag.available;
-                                                      });
-                                                      Navigator.pop(sheetContext, RelationshipStatusTag.available);
-                                                    },
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  _StatusOptionTile(
-                                                    label: 'Taken',
-                                                    selected: temp == RelationshipStatusTag.taken,
-                                                    onTap: () {
-                                                      setSheetState(() {
-                                                        temp = RelationshipStatusTag.taken;
-                                                      });
-                                                      Navigator.pop(sheetContext, RelationshipStatusTag.taken);
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                    );
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.surface,
+                                                  borderRadius:
+                                                      BorderRadius.circular(18),
+                                                ),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: Text(
+                                                            'Relationship status',
+                                                            style: AppTextStyles
+                                                                .titleLarge
+                                                                .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w900,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                        InkWell(
+                                                          onTap:
+                                                              () =>
+                                                                  Navigator.pop(
+                                                                    sheetContext,
+                                                                    null,
+                                                                  ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                999,
+                                                              ),
+                                                          child: Container(
+                                                            height: 36,
+                                                            width: 36,
+                                                            decoration: BoxDecoration(
+                                                              color:
+                                                                  AppColors
+                                                                      .background,
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                    999,
+                                                                  ),
+                                                              border: Border.all(
+                                                                color:
+                                                                    AppColors
+                                                                        .border,
+                                                              ),
+                                                            ),
+                                                            child: const Icon(
+                                                              Icons
+                                                                  .close_rounded,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(height: 12),
+                                                    Text(
+                                                      'Tap to update your visibility on the dating side of the app.',
+                                                      style: AppTextStyles
+                                                          .bodySmall
+                                                          .copyWith(
+                                                            color:
+                                                                AppColors
+                                                                    .textSecondary,
+                                                          ),
+                                                    ),
+                                                    const SizedBox(height: 14),
+                                                    _StatusOptionTile(
+                                                      label: 'Available',
+                                                      selected:
+                                                          temp ==
+                                                          RelationshipStatusTag
+                                                              .available,
+                                                      onTap: () {
+                                                        setSheetState(() {
+                                                          temp =
+                                                              RelationshipStatusTag
+                                                                  .available;
+                                                        });
+                                                        Navigator.pop(
+                                                          sheetContext,
+                                                          RelationshipStatusTag
+                                                              .available,
+                                                        );
+                                                      },
+                                                    ),
+                                                    const SizedBox(height: 10),
+                                                    _StatusOptionTile(
+                                                      label: 'Taken',
+                                                      selected:
+                                                          temp ==
+                                                          RelationshipStatusTag
+                                                              .taken,
+                                                      onTap: () {
+                                                        setSheetState(() {
+                                                          temp =
+                                                              RelationshipStatusTag
+                                                                  .taken;
+                                                        });
+                                                        Navigator.pop(
+                                                          sheetContext,
+                                                          RelationshipStatusTag
+                                                              .taken,
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                      );
 
-                                    if (selected == null) return;
+                                      if (selected == null) return;
 
-                                    await _saveRelationshipStatusTag(
-                                      profile.id,
-                                      selected,
-                                    );
-
-                                    // Force rebuild of the FutureBuilder wrapper.
-                                    (context as Element).markNeedsBuild();
-}
+                                      await ref
+                                          .read(
+                                            _relationshipStatusTagProvider(
+                                              profile.id,
+                                            ).notifier,
+                                          )
+                                          .setTag(selected);
+                                    }
                                     : null,
                           );
                         },

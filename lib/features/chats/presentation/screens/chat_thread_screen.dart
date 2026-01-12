@@ -56,7 +56,8 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
     _UiMessage.text(id: 'm2', text: 'Hi!', isMe: true, timeLabel: '10:19'),
     _UiMessage.text(
       id: 'm3',
-      text: 'Long press a message to reply. You can also send voice notes and images locally.',
+      text:
+          'Long press a message to reply. You can also send voice notes and images locally.',
       isMe: false,
       timeLabel: '10:20',
     ),
@@ -298,9 +299,10 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                   _AttachTile(
                     icon: Icons.mic_none,
                     title: 'Voice note',
-                    subtitle: _isRecording
-                        ? 'Recording… tap mic to stop'
-                        : 'Tap mic to start recording',
+                    subtitle:
+                        _isRecording
+                            ? 'Recording… tap mic to stop'
+                            : 'Tap mic to start recording',
                     onTap: () {
                       Navigator.of(context).pop();
                       _toggleRecording();
@@ -374,7 +376,9 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Microphone permission is required to record voice notes.'),
+          content: Text(
+            'Microphone permission is required to record voice notes.',
+          ),
         ),
       );
       return;
@@ -488,9 +492,9 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       await _player.play();
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not play audio: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Could not play audio: $e')));
       setState(() => _playingMessageId = null);
     }
   }
@@ -651,7 +655,9 @@ class _Composer extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            (replyWasMine ?? false) ? 'Replying to you' : 'Replying',
+                            (replyWasMine ?? false)
+                                ? 'Replying to you'
+                                : 'Replying',
                             style: AppTextStyles.caption.copyWith(
                               color: AppColors.textMuted,
                             ),
@@ -841,7 +847,9 @@ class _Bubble extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color:
-                  isMe ? AppColors.primary.withOpacity(0.14) : AppColors.surface,
+                  isMe
+                      ? AppColors.primary.withOpacity(0.14)
+                      : AppColors.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
             ),
@@ -944,123 +952,133 @@ class _MessageBody extends StatelessWidget {
     final hasReply = (message.replyToSnippet ?? '').trim().isNotEmpty;
 
     switch (message.kind) {
-      case _MessageKind.text: {
-        final body = Text(message.text ?? '', style: AppTextStyles.bodyMedium);
-        if (!hasReply) return body;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_replyBlock(), body],
-        );
-      }
-
-      case _MessageKind.image: {
-        final path = message.filePath;
-        final Widget body;
-        if (path == null || path.isEmpty) {
-          body = Text('(missing image)', style: AppTextStyles.bodyMedium);
-        } else {
-          body = ClipRRect(
-            borderRadius: BorderRadius.circular(14),
-            child: Image.file(
-              File(path),
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(
-                height: 160,
-                alignment: Alignment.center,
-                color: AppColors.background,
-                child: const Icon(Icons.broken_image_outlined),
-              ),
-            ),
+      case _MessageKind.text:
+        {
+          final body = Text(
+            message.text ?? '',
+            style: AppTextStyles.bodyMedium,
+          );
+          if (!hasReply) return body;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [_replyBlock(), body],
           );
         }
-        if (!hasReply) return body;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_replyBlock(), body],
-        );
-      }
 
-      case _MessageKind.audio: {
-        final path = message.filePath;
-        final Widget body;
-        if (path == null || path.isEmpty) {
-          body = Text('(missing audio)', style: AppTextStyles.bodyMedium);
-        } else {
-          body = Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppColors.background,
+      case _MessageKind.image:
+        {
+          final path = message.filePath;
+          final Widget body;
+          if (path == null || path.isEmpty) {
+            body = Text('(missing image)', style: AppTextStyles.bodyMedium);
+          } else {
+            body = ClipRRect(
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: AppColors.border),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  visualDensity: VisualDensity.compact,
-                  icon: Icon(
-                    isPlaying
-                        ? Icons.pause_circle_outline
-                        : Icons.play_circle_outline,
-                  ),
-                  onPressed: onAudioTap,
-                ),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: StreamBuilder<Duration?>(
-                    stream: durationStream,
-                    builder: (context, snapDur) {
-                      final dur = isThisAudioSelected
-                          ? (snapDur.data ?? Duration.zero)
-                          : Duration.zero;
-
-                      return StreamBuilder<Duration>(
-                        stream: positionStream,
-                        builder: (context, snapPos) {
-                          final pos = isThisAudioSelected
-                              ? (snapPos.data ?? Duration.zero)
-                              : Duration.zero;
-
-                          final safeDur = dur.inMilliseconds <= 0
-                              ? const Duration(seconds: 1)
-                              : dur;
-
-                          final value =
-                              pos.inMilliseconds / safeDur.inMilliseconds;
-                          final clamped =
-                              value.isFinite ? value.clamp(0.0, 1.0) : 0.0;
-
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              LinearProgressIndicator(value: clamped),
-                              const SizedBox(height: 4),
-                              Text(
-                                isThisAudioSelected
-                                    ? '${fmt(pos)} / ${fmt(dur)}'
-                                    : 'Voice note',
-                                style: AppTextStyles.caption.copyWith(
-                                  color: AppColors.textMuted,
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+              child: Image.file(
+                File(path),
+                fit: BoxFit.cover,
+                errorBuilder:
+                    (_, __, ___) => Container(
+                      height: 160,
+                      alignment: Alignment.center,
+                      color: AppColors.background,
+                      child: const Icon(Icons.broken_image_outlined),
+                    ),
+              ),
+            );
+          }
+          if (!hasReply) return body;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [_replyBlock(), body],
           );
         }
 
-        if (!hasReply) return body;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_replyBlock(), body],
-        );
-      }
+      case _MessageKind.audio:
+        {
+          final path = message.filePath;
+          final Widget body;
+          if (path == null || path.isEmpty) {
+            body = Text('(missing audio)', style: AppTextStyles.bodyMedium);
+          } else {
+            body = Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.background,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    visualDensity: VisualDensity.compact,
+                    icon: Icon(
+                      isPlaying
+                          ? Icons.pause_circle_outline
+                          : Icons.play_circle_outline,
+                    ),
+                    onPressed: onAudioTap,
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: StreamBuilder<Duration?>(
+                      stream: durationStream,
+                      builder: (context, snapDur) {
+                        final dur =
+                            isThisAudioSelected
+                                ? (snapDur.data ?? Duration.zero)
+                                : Duration.zero;
+
+                        return StreamBuilder<Duration>(
+                          stream: positionStream,
+                          builder: (context, snapPos) {
+                            final pos =
+                                isThisAudioSelected
+                                    ? (snapPos.data ?? Duration.zero)
+                                    : Duration.zero;
+
+                            final safeDur =
+                                dur.inMilliseconds <= 0
+                                    ? const Duration(seconds: 1)
+                                    : dur;
+
+                            final value =
+                                pos.inMilliseconds / safeDur.inMilliseconds;
+                            final clamped =
+                                value.isFinite ? value.clamp(0.0, 1.0) : 0.0;
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                LinearProgressIndicator(value: clamped),
+                                const SizedBox(height: 4),
+                                Text(
+                                  isThisAudioSelected
+                                      ? '${fmt(pos)} / ${fmt(dur)}'
+                                      : 'Voice note',
+                                  style: AppTextStyles.caption.copyWith(
+                                    color: AppColors.textMuted,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          if (!hasReply) return body;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [_replyBlock(), body],
+          );
+        }
     }
   }
 }
