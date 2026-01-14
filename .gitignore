@@ -94,3 +94,8 @@ lib/core/providers/dev_relationship_status_provider.dart
 lib/core/services/assessment_recommendation_service.dart
 
 *.sh
+
+# NEVER COMMIT service account keys
+*-firebase-adminsdk-*.json
+*adminsdk*.json
+serviceAccount*.json
