@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -7,94 +6,67 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
-        title: Text('Settings', style: AppTextStyles.headlineLarge),
-      ),
+      appBar: AppBar(title: const Text('Settings')),
       body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: const [
-          _SettingsItem(
-            title: 'Account',
-            subtitle: 'Edit profile, preferences',
-            icon: Icons.person_outline,
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+        children: [
+          _sectionTitle(context, 'Support'),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.help_outline),
+            title: const Text('Help Center'),
+            subtitle: const Text('FAQs and quick actions'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.of(context).pushNamed('/help'),
           ),
-          SizedBox(height: 10),
-          _SettingsItem(
-            title: 'Notifications',
-            subtitle: 'Reminders, updates',
-            icon: Icons.notifications_outlined,
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.support_agent),
+            title: const Text('Contact'),
+            subtitle: const Text('Email us for support and feedback'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.of(context).pushNamed('/contact'),
           ),
-          SizedBox(height: 10),
-          _SettingsItem(
-            title: 'Privacy',
-            subtitle: 'Blocked users, data',
-            icon: Icons.lock_outline,
+
+          const SizedBox(height: 16),
+          _sectionTitle(context, 'Legal'),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.description_outlined),
+            title: const Text('Terms of Service'),
+            subtitle: const Text('Read our terms'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.of(context).pushNamed('/terms'),
           ),
-          SizedBox(height: 10),
-          _SettingsItem(
-            title: 'Help & Support',
-            subtitle: 'Contact support',
-            icon: Icons.support_agent,
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.privacy_tip_outlined),
+            title: const Text('Privacy Policy'),
+            subtitle: const Text('How we handle your data'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.of(context).pushNamed('/privacy'),
           ),
-          SizedBox(height: 10),
-          _SettingsItem(
-            title: 'About',
-            subtitle: 'App version',
-            icon: Icons.info_outline,
+
+          const SizedBox(height: 24),
+          Center(
+            child: Text(
+              'Version 2.0.0',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
           ),
         ],
       ),
     );
   }
-}
 
-class _SettingsItem extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final IconData icon;
-
-  const _SettingsItem({
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Icon(icon, color: AppColors.primary),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: AppTextStyles.labelLarge),
-                const SizedBox(height: 2),
-                Text(subtitle, style: AppTextStyles.caption),
-              ],
-            ),
-          ),
-          Icon(Icons.chevron_right, color: AppColors.textMuted),
-        ],
+  Widget _sectionTitle(BuildContext context, String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Text(
+        text,
+        style: Theme.of(
+          context,
+        ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w900),
       ),
     );
   }

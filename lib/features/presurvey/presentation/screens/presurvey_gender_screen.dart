@@ -6,8 +6,8 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../guest/guest_entry_gate.dart';
 import '../../../../core/bootstrap/bootstrap_gate.dart';
-import '../../../presentation/screens/_stubs/login_stub_screen.dart';
-import '../../../presentation/screens/_stubs/signup_stub_screen.dart';
+import '../../../auth/presentation/screens/login_screen.dart';
+import '../../../auth/presentation/screens/signup_screen.dart';
 
 class PresurveyGenderScreen extends ConsumerWidget {
   const PresurveyGenderScreen({super.key});
@@ -93,7 +93,7 @@ class PresurveyGenderScreen extends ConsumerWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => const SignupStubScreen(),
+                            builder: (_) => const SignupScreen(),
                           ),
                         );
                       },
@@ -119,7 +119,7 @@ class PresurveyGenderScreen extends ConsumerWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => const LoginStubScreen(),
+                            builder: (_) => const LoginScreen(),
                           ),
                         );
                       },

@@ -17,93 +17,99 @@ class CompatibilityQuizScreen extends ConsumerWidget {
 
     final canNext = selected != null && selected.trim().isNotEmpty;
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
         backgroundColor: AppColors.background,
-        elevation: 0,
-        title: Text('Compatibility Quiz', style: AppTextStyles.headlineLarge),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            if (step == 0) {
-              Navigator.pop(context);
-            } else {
-              notifier.goBack();
-            }
-          },
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          title: Text('Compatibility Quiz', style: AppTextStyles.headlineLarge),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              if (step == 0) {
+                Navigator.pop(context);
+              } else {
+                notifier.goBack();
+              }
+            },
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _ProgressBar(step: step),
-            const SizedBox(height: 18),
-            Text(
-              'Question ${step + 1} of ${_quizSteps.length}',
-              style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
-            ),
-            const SizedBox(height: 10),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 260),
-              switchInCurve: Curves.easeOut,
-              switchOutCurve: Curves.easeIn,
-              child: _QuizStepView(
-                key: ValueKey(step),
-                step: step,
-                selected: selected,
-              ),
-            ),
-            if (state.error != null) ...[
-              const SizedBox(height: 10),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _ProgressBar(step: step),
+              const SizedBox(height: 18),
               Text(
-                state.error!,
-                style: AppTextStyles.bodyMedium.copyWith(color: Colors.red),
+                'Question ${step + 1} of ${_quizSteps.length}',
+                style: AppTextStyles.caption.copyWith(
+                  color: AppColors.textMuted,
+                ),
               ),
-            ],
-            const SizedBox(height: 14),
-            SafeArea(
-              top: false,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 54,
-                      child: ElevatedButton(
-                        onPressed:
-                            (!canNext || state.isSubmitting)
-                                ? null
-                                : () async {
-                                  if (step < _quizSteps.length - 1) {
-                                    notifier.goNext();
-                                  } else {
-                                    await notifier.submit();
-                                    if (context.mounted) Navigator.pop(context);
-                                  }
-                                },
-                        child:
-                            state.isSubmitting
-                                ? const SizedBox(
-                                  width: 22,
-                                  height: 22,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
+              const SizedBox(height: 10),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 260),
+                switchInCurve: Curves.easeOut,
+                switchOutCurve: Curves.easeIn,
+                child: _QuizStepView(
+                  key: ValueKey(step),
+                  step: step,
+                  selected: selected,
+                ),
+              ),
+              if (state.error != null) ...[
+                const SizedBox(height: 10),
+                Text(
+                  state.error!,
+                  style: AppTextStyles.bodyMedium.copyWith(color: Colors.red),
+                ),
+              ],
+              const SizedBox(height: 14),
+              SafeArea(
+                top: false,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: 54,
+                        child: ElevatedButton(
+                          onPressed:
+                              (!canNext || state.isSubmitting)
+                                  ? null
+                                  : () async {
+                                    if (step < _quizSteps.length - 1) {
+                                      notifier.goNext();
+                                    } else {
+                                      await notifier.submit();
+                                      if (context.mounted)
+                                        Navigator.pop(context);
+                                    }
+                                  },
+                          child:
+                              state.isSubmitting
+                                  ? const SizedBox(
+                                    width: 22,
+                                    height: 22,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                  : Text(
+                                    step < _quizSteps.length - 1
+                                        ? 'Next'
+                                        : 'Finish',
                                   ),
-                                )
-                                : Text(
-                                  step < _quizSteps.length - 1
-                                      ? 'Next'
-                                      : 'Finish',
-                                ),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

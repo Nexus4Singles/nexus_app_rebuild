@@ -2,12 +2,19 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
+import '../../../launch/presentation/app_launch_gate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/auth/auth_providers.dart';
+import 'package:nexus_app_min_test/core/user/is_admin_provider.dart';
+import 'package:nexus_app_min_test/features/admin_review/presentation/screens/admin_review_queue_screen.dart';
+import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
 import 'package:nexus_app_min_test/core/theme/app_colors.dart';
 import 'package:nexus_app_min_test/core/theme/app_text_styles.dart';
+import 'package:nexus_app_min_test/core/constants/app_constants.dart';
+import 'package:nexus_app_min_test/core/session/effective_relationship_status_provider.dart';
+import 'package:nexus_app_min_test/core/user/dating_profile_completed_provider.dart';
 import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
+import 'package:nexus_app_min_test/core/moderation/moderation_models.dart';
+import 'package:nexus_app_min_test/core/moderation/moderation_providers.dart';
 
 import '../../../../core/models/user_model.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -15,6 +22,80 @@ import 'package:nexus_app_min_test/core/services/media_service.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
+import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
+import '../../../../core/user/dating_opt_in_provider.dart';
+
+Future<void> handleLogout(BuildContext context, WidgetRef ref) async {
+  final ok = await showDialog<bool>(
+    context: context,
+    builder:
+        (ctx) => AlertDialog(
+          title: const Text('Log out?'),
+          content: const Text('You will be signed out of your account.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: const Text('Log out'),
+            ),
+          ],
+        ),
+  );
+
+  if (ok != true) return;
+
+  await ref.read(authNotifierProvider.notifier).signOut();
+  if (!context.mounted) return;
+
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(builder: (_) => const AppLaunchGate()),
+    (_) => false,
+  );
+}
+
+Future<void> handleToggleDatingOptIn(
+  BuildContext context,
+  WidgetRef ref, {
+  required bool nextValue,
+}) async {
+  final fs = ref.read(firestoreInstanceProvider);
+  final uid = FirebaseAuth.instance.currentUser?.uid;
+  if (fs == null || uid == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Unable to update dating settings right now.'),
+      ),
+    );
+    return;
+  }
+
+  try {
+    await fs.collection('users').doc(uid).set({
+      'dating': {'optIn': nextValue},
+    }, SetOptions(merge: true));
+
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(nextValue ? 'Dating turned on ✅' : 'Dating turned off ✅'),
+      ),
+    );
+  } catch (_) {
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Failed to update dating settings. Please try again.'),
+      ),
+    );
+  }
+}
 
 /// ------------------------------
 /// ONBOARDING LISTS LOADER (Assets)
@@ -48,8 +129,8 @@ class _OnboardingListsCache {
 /// - Viewing your own profile (userId == null)
 /// - Viewing another user's profile (userId != null)
 ///
-/// NOTE: Firebase is not connected yet, so this screen uses a local mock profile.
-/// When Firebase is ready, swap _mockProfileProvider with a real provider.
+/// NOTE: Firebase is connected. This screen may still use local draft/mock fallbacks in places
+/// while the Firestore-backed profile model is being completed.
 class ProfileScreen extends ConsumerWidget {
   final String? userId;
   const ProfileScreen({super.key, this.userId});
@@ -59,22 +140,19 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authAsync = ref.watch(authStateProvider);
-    final me = authAsync.maybeWhen(data: (a) => a.user, orElse: () => null);
+    final me = authAsync.maybeWhen(data: (u) => u, orElse: () => null);
 
     final isSignedIn = me != null;
-    final debugBypassGuestGate =
-        kDebugMode; // debug-only bypass for guest testing
-
     // Guard: guests cannot view || edit dating profiles.
     // Debug-only bypass allows UI testing without accounts (release builds unaffected).
     // TEMP: bypass guest gate for UI testing until auth/firebase is connected
-    if (!isSignedIn && !debugBypassGuestGate) {
+    if (!isSignedIn) {
       return _GuestProfileGate(
         onCreateAccount: () => Navigator.of(context).pushNamed('/signup'),
       );
     }
 
-    final effectiveUid = userId ?? (me?.uid ?? 'debug_guest_uid');
+    final effectiveUid = userId ?? me.uid;
 
     // In Phase 1, we use mock profile data for both own && other profiles.
     final draftAsync = ref.watch(_draftProfileProvider(effectiveUid));
@@ -99,12 +177,71 @@ class ProfileScreen extends ConsumerWidget {
           return const _ProfileNotFound();
         }
 
-        final nexus2 = profile.nexus2;
-        final isMarried = nexus2?.isMarried == true;
+        final status = ref.watch(effectiveRelationshipStatusProvider);
+        final isMarried = status == RelationshipStatus.married;
+
+        // Dating profile completion (v2 flag): users/{uid}.dating.profileCompleted == true
+        final datingCompletedAsync = ref.watch(datingProfileCompletedProvider);
+        final datingCompleted = datingCompletedAsync.maybeWhen(
+          data: (v) => v,
+          orElse: () => false,
+        );
 
         // Married users should not see dating profile UI
         if (isMarried) {
-          return _BasicProfileScreen(profile: profile);
+          return _BasicProfileScreen(
+            profile: profile,
+            ref: ref,
+            messageTitle: 'Your Profile',
+            messageBody:
+                'Your account is set to married. Dating is unavailable, but you can still use journeys, stories, polls, and your account settings here.',
+            showCreateDatingProfileCta: false,
+            onCreateDatingProfile: null,
+          );
+        }
+
+        final datingOptInAsync = ref.watch(datingOptInProvider);
+        final datingOptIn = datingOptInAsync.maybeWhen(
+          data: (v) => v,
+          orElse: () => true,
+        );
+
+        // Users can opt out of dating. They should see a basic profile with no dating UI.
+        if (!datingOptIn) {
+          return _BasicProfileScreen(
+            profile: profile,
+            ref: ref,
+            messageTitle: 'Your Profile',
+            messageBody:
+                'Dating is turned off for your account. You can still use journeys, stories, polls, and settings.',
+            showCreateDatingProfileCta: false,
+            onCreateDatingProfile: null,
+          );
+        }
+
+        // Eligible users without a dating profile:
+        // - If viewing another user -> gate access
+        // - If viewing own profile -> show basic profile + CTA to create dating profile
+        if (!datingCompleted) {
+          if (isViewingOtherUser) {
+            return _DatingProfileRequiredGate(
+              onCreateDatingProfile: () {
+                Navigator.of(context).pushNamed('/dating/setup/age');
+              },
+            );
+          }
+
+          return _BasicProfileScreen(
+            profile: profile,
+            ref: ref,
+            messageTitle: 'Create your dating profile',
+            messageBody:
+                'You can use Nexus without dating, but you need a dating profile to view other users in the pool and to appear in Search.',
+            showCreateDatingProfileCta: true,
+            onCreateDatingProfile: () {
+              Navigator.of(context).pushNamed('/dating/setup/age');
+            },
+          );
         }
 
         if (profile == null) {
@@ -121,12 +258,13 @@ class ProfileScreen extends ConsumerWidget {
           backgroundColor: AppColors.background,
           body: CustomScrollView(
             slivers: [
+              const SliverToBoxAdapter(child: _AdminReviewEntry()),
               _ProfileHeroAppBar(
                 profile: profile,
                 photos: photos,
                 isViewingOtherUser: isViewingOtherUser,
                 canEditRelationshipStatus:
-                    (me?.uid == profile.id) && !isViewingOtherUser,
+                    (me.uid == profile.id) && !isViewingOtherUser,
                 locationText: location,
               ),
               SliverToBoxAdapter(
@@ -210,15 +348,25 @@ class ProfileScreen extends ConsumerWidget {
 /// BASIC PROFILE (Non-singles)
 /// ------------------------------
 class _BasicProfileScreen extends StatelessWidget {
-  final UserModel? profile;
-  const _BasicProfileScreen({required this.profile});
-
+  final WidgetRef ref;
+  final UserModel profile;
+  final String messageTitle;
+  final String messageBody;
+  final bool showCreateDatingProfileCta;
+  final VoidCallback? onCreateDatingProfile;
+  const _BasicProfileScreen({
+    required this.profile,
+    required this.ref,
+    required this.messageTitle,
+    required this.messageBody,
+    required this.showCreateDatingProfileCta,
+    required this.onCreateDatingProfile,
+  });
   @override
   Widget build(BuildContext context) {
     final p = profile;
-    final name = (p?.name ?? 'User').trim();
-    final email = (p?.email ?? '').trim();
-    final status = (p?.nexus2?.relationshipStatus ?? '').trim();
+    final name = (p.name ?? 'User').trim();
+    final email = (p.email ?? '').trim();
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -256,21 +404,6 @@ class _BasicProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ],
-                        if (status.isNotEmpty) ...[
-                          const SizedBox(height: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.background,
-                              borderRadius: BorderRadius.circular(999),
-                              border: Border.all(color: AppColors.border),
-                            ),
-                            child: Text(status, style: AppTextStyles.bodySmall),
-                          ),
-                        ],
                       ],
                     ),
                   ),
@@ -289,20 +422,47 @@ class _BasicProfileScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Dating profiles are for Singles only',
-                    style: AppTextStyles.titleMedium,
-                  ),
+                  Text(messageTitle, style: AppTextStyles.titleMedium),
                   const SizedBox(height: 6),
                   Text(
-                    'You can still use the app normally. When you update your relationship status to Single, your dating profile will be available here.',
+                    messageBody,
                     style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.textSecondary,
                     ),
                   ),
+                  if (showCreateDatingProfileCta) ...[
+                    const SizedBox(height: 14),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: onCreateDatingProfile,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 18,
+                            vertical: 14,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        child: Text(
+                          'Create a Profile',
+                          style: AppTextStyles.labelLarge.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
+            Text('Your Account', style: AppTextStyles.titleLarge),
+            const SizedBox(height: 12),
+            _AccountTiles(context, ref, p),
+            const SizedBox(height: 18),
+
             const Spacer(),
             _ProfileTile(
               icon: Icons.logout_rounded,
@@ -359,7 +519,8 @@ final _mockProfileProvider = FutureProvider.family<UserModel?, String>((
     stateOfOrigin: null,
     churchName: rng.nextBool() ? 'CAC' : 'Redeemed',
     onPremium: rng.nextBool(),
-    isVerified: rng.nextBool(),
+    // Mock only; Firestore-driven verification status is used for badges.
+    isVerified: true,
     audioPrompts: const [
       'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
       'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
@@ -671,7 +832,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
         onPressed: () => Navigator.of(context).maybePop(),
       ),
       actions: [
-        if (isViewingOtherUser) _OverflowMenu(),
+        if (isViewingOtherUser) _OverflowMenu(targetUid: profile.id),
         const SizedBox(width: 46),
       ],
       flexibleSpace: LayoutBuilder(
@@ -705,13 +866,64 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              if (profile.isVerified == true) ...[
-                                const SizedBox(width: 12),
-                                const _Badge(
-                                  icon: Icons.verified_rounded,
-                                  label: 'Verified',
-                                ),
-                              ],
+                              Consumer(
+                                builder: (context, ref, _) {
+                                  final statusAsync = ref.watch(
+                                    _verificationStatusProvider(profile.id),
+                                  );
+                                  final status = statusAsync.maybeWhen(
+                                    data: (v) => v,
+                                    orElse: () => null,
+                                  );
+
+                                  // Legacy v1 users may have null/missing status; treat as verified
+                                  // so they remain seamless/visible until they explicitly re-verify.
+                                  final resolvedStatus =
+                                      (status == null || status.isEmpty)
+                                          ? 'verified'
+                                          : status;
+
+                                  final isVerified =
+                                      resolvedStatus == 'verified';
+                                  final isPending = resolvedStatus == 'pending';
+                                  final isRejected =
+                                      resolvedStatus == 'rejected';
+
+                                  // Product nuance:
+                                  // - Always show "Verified" badge to others (and self).
+                                  // - Only show "Pending review" / "Not verified" to self (avoid exposing moderation state).
+                                  if (!isViewingOtherUser) {
+                                    if (!(isVerified ||
+                                        isPending ||
+                                        isRejected)) {
+                                      return const SizedBox.shrink();
+                                    }
+                                  } else {
+                                    if (!isVerified)
+                                      return const SizedBox.shrink();
+                                  }
+
+                                  IconData icon;
+                                  String label;
+                                  if (isVerified) {
+                                    icon = Icons.verified_rounded;
+                                    label = 'Verified';
+                                  } else if (isPending) {
+                                    icon = Icons.hourglass_top_rounded;
+                                    label = 'Pending review';
+                                  } else {
+                                    icon = Icons.block_rounded;
+                                    label = 'Not verified';
+                                  }
+
+                                  return Row(
+                                    children: [
+                                      const SizedBox(width: 12),
+                                      _Badge(icon: icon, label: label),
+                                    ],
+                                  );
+                                },
+                              ),
                             ],
                           ),
                           const SizedBox(height: 8),
@@ -859,15 +1071,9 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                                           RelationshipStatusTag
                                                               .available,
                                                       onTap: () {
-                                                        setSheetState(() {
-                                                          temp =
-                                                              RelationshipStatusTag
-                                                                  .available;
-                                                        });
-                                                        Navigator.pop(
-                                                          sheetContext,
-                                                          RelationshipStatusTag
-                                                              .available,
+                                                        handleLogout(
+                                                          context,
+                                                          ref,
                                                         );
                                                       },
                                                     ),
@@ -1042,26 +1248,270 @@ class _Badge extends StatelessWidget {
   }
 }
 
-class _OverflowMenu extends StatelessWidget {
+class _OverflowMenu extends ConsumerWidget {
+  final String targetUid;
+  const _OverflowMenu({required this.targetUid});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authAsync = ref.watch(authStateProvider);
+    final me = authAsync.maybeWhen(data: (u) => u, orElse: () => null);
+
+    // Phase 1 local-only viewer identity:
+    // - signed-in: uid
+    // - guest/safe mode: 'guest'
+    final viewerKey = (me?.uid ?? 'guest').trim();
+
+    final isBlocked = ref.watch(
+      isBlockedProvider((viewerKey: viewerKey, targetUid: targetUid)),
+    );
+
     return PopupMenuButton<String>(
       icon: const Icon(Icons.more_vert_rounded, color: Colors.white),
       color: AppColors.surface,
-      onSelected: (v) {
+      onSelected: (v) async {
         if (v == 'block') {
-          _toast(context, 'Block user (pending Firebase)');
+          final ok = await showDialog<bool>(
+            context: context,
+            builder: (ctx) {
+              return AlertDialog(
+                title: const Text('Block user?'),
+                content: const Text(
+                  'They will be hidden from you and you won’t be able to start a chat with them.',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(false),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(true),
+                    child: const Text('Block'),
+                  ),
+                ],
+              );
+            },
+          );
+
+          if (ok == true) {
+            await ref
+                .read(blockedUsersProvider(viewerKey).notifier)
+                .block(targetUid);
+            _toast(context, 'User blocked');
+          }
+        } else if (v == 'unblock') {
+          final ok = await showDialog<bool>(
+            context: context,
+            builder: (ctx) {
+              return AlertDialog(
+                title: const Text('Unblock user?'),
+                content: const Text('They will be visible to you again.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(false),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(true),
+                    child: const Text('Unblock'),
+                  ),
+                ],
+              );
+            },
+          );
+
+          if (ok == true) {
+            await ref
+                .read(blockedUsersProvider(viewerKey).notifier)
+                .unblock(targetUid);
+            _toast(context, 'User unblocked');
+          }
         } else if (v == 'report') {
-          _toast(context, 'Report user (pending Firebase)');
+          await _showReportSheet(
+            context: context,
+            ref: ref,
+            reporterKey: viewerKey,
+            reportedUid: targetUid,
+          );
         }
       },
       itemBuilder:
-          (context) => const [
-            PopupMenuItem(value: 'block', child: Text('Block User')),
-            PopupMenuItem(value: 'report', child: Text('Report User')),
+          (context) => [
+            PopupMenuItem(
+              value: isBlocked ? 'unblock' : 'block',
+              child: Text(isBlocked ? 'Unblock User' : 'Block User'),
+            ),
+            const PopupMenuItem(value: 'report', child: Text('Report User')),
           ],
     );
   }
+}
+
+Future<void> _showReportSheet({
+  required BuildContext context,
+  required WidgetRef ref,
+  required String reporterKey,
+  required String reportedUid,
+}) async {
+  ReportReason reason = ReportReason.harassment;
+  final notesController = TextEditingController();
+
+  await showModalBottomSheet<void>(
+    context: context,
+    backgroundColor: Colors.transparent,
+    isScrollControlled: true,
+    builder: (sheetContext) {
+      final bottomInset = MediaQuery.of(sheetContext).viewInsets.bottom;
+
+      return StatefulBuilder(
+        builder: (ctx, setState) {
+          return Padding(
+            padding: EdgeInsets.only(bottom: bottomInset),
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Report user',
+                          style: AppTextStyles.titleLarge.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.of(sheetContext).pop(),
+                        borderRadius: BorderRadius.circular(999),
+                        child: Container(
+                          height: 36,
+                          width: 36,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: AppColors.background,
+                            borderRadius: BorderRadius.circular(999),
+                            border: Border.all(color: AppColors.border),
+                          ),
+                          child: const Icon(Icons.close_rounded, size: 18),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Reason',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: AppColors.background,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.border),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<ReportReason>(
+                        value: reason,
+                        isExpanded: true,
+                        items:
+                            ReportReason.values
+                                .map(
+                                  (r) => DropdownMenuItem(
+                                    value: r,
+                                    child: Text(r.label),
+                                  ),
+                                )
+                                .toList(),
+                        onChanged: (v) {
+                          if (v == null) return;
+                          setState(() => reason = v);
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Notes (optional)',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: notesController,
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                      hintText: 'Add more details (optional)',
+                      filled: true,
+                      fillColor: AppColors.background,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: AppColors.border),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: AppColors.border),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: AppColors.border),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          await submitLocalReport(
+                            ref: ref,
+                            reporterKey: reporterKey,
+                            reportedUid: reportedUid,
+                            reason: reason,
+                            notes: notesController.text,
+                          );
+                          if (context.mounted) {
+                            Navigator.of(sheetContext).pop();
+                            _toast(context, 'Report submitted');
+                          }
+                        } catch (_) {
+                          if (context.mounted) {
+                            _toast(context, 'Unable to submit report');
+                          }
+                        }
+                      },
+                      child: const Text('Submit report'),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Reports are reviewed. Please avoid sharing sensitive personal information.',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    },
+  );
+
+  notesController.dispose();
 }
 
 /// ------------------------------
@@ -1737,7 +2187,7 @@ class _AccountTiles extends StatelessWidget {
         _ProfileTile(
           icon: Icons.edit_outlined,
           title: 'Edit Profile',
-          subtitle: 'Coming soon',
+          subtitle: 'Update your profile information',
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -1747,6 +2197,79 @@ class _AccountTiles extends StatelessWidget {
           },
         ),
         const SizedBox(height: 10),
+        _ProfileTile(
+          icon: Icons.settings_outlined,
+          title: 'Settings',
+          subtitle: 'Preferences, privacy & support',
+          onTap: () {
+            Navigator.of(context).pushNamed('/settings');
+          },
+        ),
+        const SizedBox(height: 10),
+        const SizedBox(height: 10),
+        _ProfileTile(
+          icon: Icons.favorite_border_rounded,
+          title: 'Dating',
+          subtitle: 'Turn dating on or off',
+          onTap: () async {
+            final current = await ref.read(datingOptInProvider.future);
+            if (!context.mounted) return;
+
+            showModalBottomSheet(
+              context: context,
+              showDragHandle: true,
+              builder: (sheetCtx) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Dating', style: AppTextStyles.headlineLarge),
+                      const SizedBox(height: 8),
+                      Text(
+                        'If you turn dating off, you won\'t appear in Search and you won\'t be able to view other users in the pool.',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      StatefulBuilder(
+                        builder: (ctx, setLocal) {
+                          var enabled = current;
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  enabled ? 'On' : 'Off',
+                                  style: AppTextStyles.titleMedium,
+                                ),
+                              ),
+                              Switch(
+                                value: enabled,
+                                onChanged: (v) async {
+                                  setLocal(() => enabled = v);
+                                  Navigator.of(sheetCtx).pop();
+                                  await handleToggleDatingOptIn(
+                                    context,
+                                    ref,
+                                    nextValue: v,
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        ),
+
         _ProfileTile(
           icon: Icons.workspace_premium_outlined,
           title: 'Premium',
@@ -1768,6 +2291,72 @@ class _AccountTiles extends StatelessWidget {
     );
   }
 }
+
+/// ------------------------------
+/// DATING PROFILE REQUIRED GATE
+/// ------------------------------
+class _DatingProfileRequiredGate extends StatelessWidget {
+  final VoidCallback onCreateDatingProfile;
+  const _DatingProfileRequiredGate({required this.onCreateDatingProfile});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        title: Text(
+          'Dating Profile Required',
+          style: AppTextStyles.headlineLarge,
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Create your dating profile',
+              style: AppTextStyles.headlineLarge,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'You need a dating profile to view other users in the pool.',
+              style: AppTextStyles.bodyLarge.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 18),
+            ElevatedButton(
+              onPressed: onCreateDatingProfile,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 14,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              child: Text(
+                'Create a Profile',
+                style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// ------------------------------
+/// CREATE DATING PROFILE (Placeholder)
+/// ------------------------------
+/// This avoids guessing route names. Replace this with your real dating profile
+/// onboarding screen once it exists.
 
 /// ------------------------------
 /// GUEST GATE
@@ -3618,6 +4207,68 @@ class _DropdownField extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+final _verificationStatusProvider = StreamProvider.family<String?, String>((
+  ref,
+  uid,
+) {
+  final firebaseReady = ref.watch(firebaseReadyProvider);
+  if (!firebaseReady) return Stream.value(null);
+
+  final fs = ref.watch(firestoreInstanceProvider);
+  if (fs == null) return Stream.value(null);
+
+  return fs.collection('users').doc(uid).snapshots().map((doc) {
+    if (!doc.exists) return null;
+    final data = doc.data();
+    if (data == null) return null;
+    final dating = (data['dating'] is Map) ? data['dating'] as Map : null;
+    final status = dating?['verificationStatus']?.toString();
+    return status;
+  });
+});
+
+class _AdminReviewEntry extends ConsumerWidget {
+  const _AdminReviewEntry();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isAdmin = ref.watch(isAdminProvider);
+    if (!isAdmin) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const AdminReviewQueueScreen()),
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Colors.black.withOpacity(0.04),
+          ),
+          child: Row(
+            children: const [
+              Icon(Icons.admin_panel_settings_rounded),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Admin: Review Pending Profiles',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
+              Icon(Icons.chevron_right_rounded),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

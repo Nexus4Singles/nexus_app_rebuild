@@ -10,34 +10,56 @@ import '../../presurvey/presentation/splash/presurvey_splash_screen.dart';
 class AppLaunchGate extends ConsumerWidget {
   const AppLaunchGate({super.key});
 
+  bool _hasNonEmptyField(Map<String, dynamic>? doc, List<String> keys) {
+    if (doc == null) return false;
+    for (final k in keys) {
+      final v = doc[k];
+      if (v != null && v.toString().trim().isNotEmpty) return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authAsync = ref.watch(authStateProvider);
 
     return authAsync.when(
       data: (user) {
-        // If not signed in, start presurvey splash.
+        // Not signed in → start presurvey splash (new user flow).
         if (user == null) {
           return const PresurveySplashScreen();
         }
 
-        // Signed in user: check if they already have gender (v1 users / completed v2 profile).
+        // Signed in → require onboarding-critical fields that tailor the experience.
         final userDocAsync = ref.watch(currentUserDocProvider);
 
         return userDocAsync.when(
           data: (doc) {
-            final gender = doc?['gender'];
-            if (gender != null && gender.toString().trim().isNotEmpty) {
+            final hasGender = _hasNonEmptyField(doc, const ['gender']);
+
+            final nexus = (doc?['nexus'] as Map?)?.cast<String, dynamic>();
+            final nexus2 = (doc?['nexus2'] as Map?)?.cast<String, dynamic>();
+            final relationshipStatus =
+                (nexus?['relationshipStatus'] ?? nexus2?['relationshipStatus']);
+
+            final hasRelationshipStatus =
+                relationshipStatus != null &&
+                relationshipStatus.toString().trim().isNotEmpty;
+
+            if (hasGender && hasRelationshipStatus) {
               return const GuestEntryGate(child: BootstrapGate());
             }
-            // Signed-in but no gender → show presurvey.
+
+            // Signed-in but missing required onboarding fields → take them to presurvey.
             return const PresurveySplashScreen();
           },
           loading:
               () => const Scaffold(
                 body: Center(child: CircularProgressIndicator()),
               ),
-          error: (_, __) => const PresurveySplashScreen(),
+          // Best practice: don't block signed-in users on transient Firestore errors.
+          // Let them into the app and handle prompts/retry inside.
+          error: (_, __) => const GuestEntryGate(child: BootstrapGate()),
         );
       },
       loading:

@@ -8,6 +8,7 @@ import 'package:nexus_app_min_test/core/auth/auth_providers.dart';
 import 'package:nexus_app_min_test/core/dating/dating_profile_gate.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
+import 'package:nexus_app_min_test/core/widgets/disabled_account_gate.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';

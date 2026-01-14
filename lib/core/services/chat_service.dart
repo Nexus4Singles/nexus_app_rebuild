@@ -192,6 +192,60 @@ class ChatService {
       _chatsRef.doc(chatId).collection('messages');
 
   // ============================================================================
+  // ACCOUNT DISABLED GUARDS
+  // ============================================================================
+  Future<bool> _isUserDisabled(String uid) async {
+    final doc = await _fs.collection('users').doc(uid).get();
+    final data = doc.data();
+    if (data == null) return false;
+
+    final accountStatus = data['accountStatus']?.toString().toLowerCase();
+    if (accountStatus == 'disabled') return true;
+
+    final status = data['status']?.toString().toLowerCase();
+    if (status == 'disabled') return true;
+
+    final disabled = data['disabled'];
+    if (disabled == true) return true;
+
+    return false;
+  }
+
+  Future<void> _assertUsersNotDisabled(List<String> uids) async {
+    for (final uid in uids) {
+      if (await _isUserDisabled(uid)) {
+        throw ChatException('Account disabled by admin');
+      }
+    }
+  }
+
+  Future<void> _assertCanStartNewChat(String currentUserId) async {
+    // Legacy v1 users may not have dating.verificationStatus -> allow by default.
+    final doc = await _fs.collection('users').doc(currentUserId).get();
+    final data = doc.data();
+    final dating = (data?['dating'] as Map?)?.cast<String, dynamic>();
+    final status = dating?['verificationStatus']?.toString();
+
+    // Allow: verified OR null/missing (legacy)
+    if (status == null || status.isEmpty || status == 'verified') return;
+
+    // Block creating NEW chats while pending or rejected.
+    if (status == 'pending') {
+      throw ChatException(
+        'Your dating profile is under review. You can chat in existing conversations, but you can’t start new ones yet.',
+      );
+    }
+    if (status == 'rejected') {
+      throw ChatException(
+        'Your dating profile is not verified. Please update your profile and re-submit for verification to start new chats.',
+      );
+    }
+
+    // Unknown status -> be safe and allow (avoid accidentally blocking users).
+    return;
+  }
+
+  // ============================================================================
   // CONVERSATION MANAGEMENT
   // ============================================================================
 
@@ -199,6 +253,8 @@ class ChatService {
   /// Returns the chat ID
   Future<String> createConversation(String userId1, String userId2) async {
     try {
+      await _assertUsersNotDisabled([userId1, userId2]);
+
       // Check if conversation already exists
       final existingChat = await getConversationBetween(userId1, userId2);
       if (existingChat != null) {
@@ -206,6 +262,7 @@ class ChatService {
       }
 
       // Create new conversation
+      await _assertCanStartNewChat(userId1);
       final chatRef = _chatsRef.doc();
       final conversation = ChatConversation(
         id: chatRef.id,
@@ -321,6 +378,8 @@ class ChatService {
     Map<String, dynamic>? metadata,
   }) async {
     try {
+      await _assertUsersNotDisabled([senderId, receiverId]);
+
       final messageRef = _messagesRef(chatId).doc();
 
       final message = ChatMessage(

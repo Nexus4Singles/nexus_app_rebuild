@@ -1,16 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nexus_app_min_test/core/services/firestore_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:nexus_app_min_test/core/constants/app_constants.dart';
+import 'package:nexus_app_min_test/core/session/guest_session_provider.dart';
+import 'package:nexus_app_min_test/core/services/firestore_service.dart';
+
+import '../models/user_model.dart';
 import '../services/auth_service.dart';
 import 'firestore_service_provider.dart';
-import '../models/user_model.dart';
 
 /// Provider for AuthService instance
-final authServiceProvider = Provider<AuthService>((ref) {
-  return AuthService();
-});
+final authServiceProvider = Provider<AuthService>((ref) => AuthService());
 
-/// Provider for FirestoreService instance
 /// Stream provider for Firebase auth state
 final authStateProvider = StreamProvider<User?>((ref) {
   final authService = ref.watch(authServiceProvider);
@@ -35,24 +37,63 @@ final isAuthenticatedProvider = Provider<bool>((ref) {
   return authState.whenData((user) => user != null).value ?? false;
 });
 
-/// State notifier for auth operations
 class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
+  final Ref _ref;
   final AuthService _authService;
   final FirestoreService _firestoreService;
 
-  AuthNotifier(this._authService, this._firestoreService)
+  AuthNotifier(this._ref, this._authService, this._firestoreService)
     : super(const AsyncValue.loading()) {
-    // Initialize with current auth state
-    _init();
-  }
-
-  void _init() {
     _authService.authStateChanges.listen((user) {
       state = AsyncValue.data(user);
     });
   }
 
-  /// Sign up with email and create user document
+  String _relationshipStatusToKey(RelationshipStatus status) {
+    switch (status) {
+      case RelationshipStatus.singleNeverMarried:
+        return 'single_never_married';
+      case RelationshipStatus.married:
+        return 'married';
+      case RelationshipStatus.divorced:
+        return 'divorced';
+      case RelationshipStatus.widowed:
+        return 'widowed';
+    }
+  }
+
+  Future<void> _persistPresurveyToFirestore(String uid) async {
+    final guest = _ref.read(guestSessionProvider);
+    if (guest == null) return;
+
+    final payload = <String, dynamic>{};
+
+    // v1 users already have gender; for new users, persist it if available.
+    final gender = guest.gender;
+    if (gender != null && gender.toString().trim().isNotEmpty) {
+      payload['gender'] = gender.toString().trim();
+    }
+
+    // Relationship status drives v2 tailoring. This is v2-only (namespaced).
+    final rel = guest.relationshipStatus;
+    final relKey = _relationshipStatusToKey(rel);
+
+    payload['nexus'] = {
+      'relationshipStatus': relKey,
+      'onboarding': {
+        'presurveyCompleted': true,
+        'presurveyCompletedAt': FieldValue.serverTimestamp(),
+        'version': 2,
+      },
+    };
+
+    // Temporary mirror for older codepaths (safe to remove later).
+    payload['nexus2'] = {'relationshipStatus': relKey};
+
+    await _firestoreService.updateUserFields(uid, payload);
+  }
+
+  /// Sign up with email and create user document (merge-safe; won't overwrite v1 users)
   Future<void> signUpWithEmail({
     required String email,
     required String password,
@@ -65,18 +106,24 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         password: password,
       );
 
-      // Create initial user document with username
-      if (credential.user != null) {
-        final user = UserModel(
-          id: credential.user!.uid,
-          username: username,
-          name: username, // Also set name to username for display
-          email: email,
+      final user = credential.user;
+      if (user != null) {
+        // Create doc only if it doesn't exist (FirestoreService.createUser is hardened)
+        await _firestoreService.createUser(
+          UserModel(
+            id: user.uid,
+            name: username,
+            username: username,
+            email: email,
+            profileUrl: null,
+          ),
         );
-        await _firestoreService.createUser(user);
+
+        // Attach presurvey -> nexus fields (merge-safe)
+        await _persistPresurveyToFirestore(user.uid);
       }
 
-      state = AsyncValue.data(credential.user);
+      state = AsyncValue.data(user);
     } catch (e, st) {
       state = AsyncValue.error(e, st);
       rethrow;
@@ -94,7 +141,13 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         email: email,
         password: password,
       );
-      state = AsyncValue.data(credential.user);
+
+      final user = credential.user;
+      if (user != null) {
+        await _persistPresurveyToFirestore(user.uid);
+      }
+
+      state = AsyncValue.data(user);
     } catch (e, st) {
       state = AsyncValue.error(e, st);
       rethrow;
@@ -107,38 +160,38 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
     state = const AsyncValue.loading();
     try {
       final credential = await _authService.signInWithGoogle();
-      if (credential != null) {
-        // Check if this is a new user
-        final uid = credential.user!.uid;
-        final existingUser = await _firestoreService.getUser(uid);
-
-        if (existingUser == null) {
-          // Create new user document for Google sign-in
-          // Don't set username yet - will be prompted
-          final user = UserModel(
-            id: uid,
-            name: credential.user!.displayName ?? '',
-            email: credential.user!.email ?? '',
-            profileUrl: credential.user!.photoURL,
-          );
-          await _firestoreService.createUser(user);
-
-          state = AsyncValue.data(credential.user);
-          return true; // Needs username
-        } else if (existingUser.username == null ||
-            existingUser.username!.isEmpty) {
-          // Existing user but no username set
-          state = AsyncValue.data(credential.user);
-          return true; // Needs username
-        }
-
-        state = AsyncValue.data(credential.user);
-        return false; // Has username
-      } else {
+      if (credential == null) {
         // User cancelled
         state = AsyncValue.data(_authService.currentUser);
         return false;
       }
+
+      final user = credential.user;
+      if (user == null) {
+        state = const AsyncValue.data(null);
+        return false;
+      }
+
+      // Ensure a user doc exists (won't overwrite v1 docs)
+      final existingUser = await _firestoreService.getUser(user.uid);
+      if (existingUser == null) {
+        await _firestoreService.createUser(
+          UserModel(
+            id: user.uid,
+            name: user.displayName ?? '',
+            username: null,
+            email: user.email ?? '',
+            profileUrl: user.photoURL,
+          ),
+        );
+      }
+
+      await _persistPresurveyToFirestore(user.uid);
+
+      final needsUsername =
+          (existingUser?.username == null || existingUser!.username!.isEmpty);
+      state = AsyncValue.data(user);
+      return needsUsername;
     } catch (e, st) {
       state = AsyncValue.error(e, st);
       rethrow;
@@ -152,7 +205,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
     await _firestoreService.updateUserFields(user.uid, {
       'username': username,
-      'name': username, // Also update name for display
+      'name': username,
     });
   }
 
@@ -174,10 +227,10 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
   }
 }
 
-/// Provider for auth notifier
+/// Canonical provider used by UI screens/stubs.
 final authNotifierProvider =
     StateNotifierProvider<AuthNotifier, AsyncValue<User?>>((ref) {
       final authService = ref.watch(authServiceProvider);
       final firestoreService = ref.watch(firestoreServiceProvider);
-      return AuthNotifier(authService, firestoreService);
+      return AuthNotifier(ref, authService, firestoreService);
     });

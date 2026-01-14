@@ -109,7 +109,13 @@ class FirestoreService {
     if (_db == null) return;
 
     try {
-      await _userDocRef(user.id).set(user.toMap());
+      final ref = _userDocRef(user.id);
+      final existing = await ref.get();
+
+      // 🔒 Critical: never overwrite existing v1 user docs.
+      if (existing.exists) return;
+
+      await ref.set(user.toMap(), SetOptions(merge: true));
     } catch (e) {
       throw FirestoreException('Failed to create user: $e');
     }
@@ -119,7 +125,9 @@ class FirestoreService {
     if (_db == null) return;
 
     try {
-      await _userDocRef(uid).update({'nexus2': nexus2Data.toMap()});
+      await _userDocRef(
+        uid,
+      ).set({'nexus2': nexus2Data.toMap()}, SetOptions(merge: true));
     } catch (e) {
       throw FirestoreException('Failed to update nexus2 data: $e');
     }
@@ -136,7 +144,7 @@ class FirestoreService {
       fields.forEach((key, value) {
         prefixedFields['nexus2.$key'] = value;
       });
-      await _userDocRef(uid).update(prefixedFields);
+      await _userDocRef(uid).set(prefixedFields, SetOptions(merge: true));
     } catch (e) {
       throw FirestoreException('Failed to update nexus2 fields: $e');
     }
@@ -158,7 +166,7 @@ class FirestoreService {
     if (_db == null) return;
 
     try {
-      await _userDocRef(uid).update(fields);
+      await _userDocRef(uid).set(fields, SetOptions(merge: true));
     } catch (e) {
       throw FirestoreException('Failed to update user fields: $e');
     }
@@ -174,6 +182,15 @@ class FirestoreService {
 
     try {
       await _userDocRef(uid).set({
+        'nexus': {
+          'relationshipStatus': relationshipStatus,
+          'gender': gender,
+          'primaryGoals': primaryGoals,
+          'onboardingCompleted': true,
+          'onboardedAt': FieldValue.serverTimestamp(),
+          'schemaVersion': AppConfig.nexus2SchemaVersion,
+        },
+        // Temporary mirror for backwards compatibility while migrating codepaths.
         'nexus2': {
           'relationshipStatus': relationshipStatus,
           'gender': gender,

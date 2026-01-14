@@ -159,14 +159,6 @@ class HomeScreen extends ConsumerWidget {
 
               const SizedBox(height: 16),
 
-              Text(
-                'Journeys',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              const SizedBox(height: 10),
-
               FutureBuilder<String?>(
                 future: _loadActiveJourneyIdFromPrefs(),
                 builder: (context, activeSnap) {

@@ -1,4 +1,5 @@
 import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
+import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../services/media_service.dart';
@@ -6,6 +7,8 @@ import '../services/dating_profile_service.dart';
 import '../services/chat_service.dart';
 import 'auth_provider.dart';
 import 'user_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nexus_app_min_test/core/user/current_user_disabled_provider.dart';
 
 // Note: firestoreServiceProvider is in firestore_service_provider.dart
 
@@ -25,8 +28,18 @@ final mediaServiceProvider = Provider<MediaService>((ref) {
 // ============================================================================
 
 /// Provider for DatingProfileService instance
+class _DatingProfileServiceStub extends DatingProfileService {
+  _DatingProfileServiceStub() : super(firestore: FirebaseFirestore.instance);
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
 final datingProfileServiceProvider = Provider<DatingProfileService>((ref) {
-  return DatingProfileService();
+  final ready = ref.watch(firebaseReadyProvider);
+  final fs = ref.watch(firestoreInstanceProvider);
+  if (!ready || fs == null) return _DatingProfileServiceStub();
+  return DatingProfileService(firestore: fs);
 });
 
 /// Provider to check if dating profile is complete
@@ -86,8 +99,9 @@ class _ChatServiceStub implements ChatService {
 // Provider for ChatService instance
 final chatServiceProvider = Provider<ChatService>((ref) {
   final ready = ref.watch(firebaseReadyProvider);
-  if (!ready) return _ChatServiceStub();
-  return ChatService();
+  final fs = ref.watch(firestoreInstanceProvider);
+  if (!ready || fs == null) return _ChatServiceStub();
+  return ChatService(firestore: fs);
 });
 
 /// Provider for user's conversations (real-time)
@@ -134,6 +148,12 @@ final getOrCreateChatProvider = FutureProvider.family<String, String>((
   final userId = ref.watch(currentUserIdProvider);
   if (userId == null) throw Exception('Not authenticated');
 
+  // Hard gate: disabled users cannot start new chats.
+  final isDisabled = await ref.watch(currentUserDisabledProvider.future);
+  if (isDisabled) {
+    throw StateError('Your account has been disabled by Admin.');
+  }
+
   final chatService = ref.watch(chatServiceProvider);
   return await chatService.createConversation(userId, otherUserId);
 });
@@ -146,8 +166,9 @@ final getOrCreateChatProvider = FutureProvider.family<String, String>((
 class ChatNotifier extends StateNotifier<AsyncValue<void>> {
   final ChatService _chatService;
   final String _currentUserId;
+  final Future<bool> Function() _isDisabled;
 
-  ChatNotifier(this._chatService, this._currentUserId)
+  ChatNotifier(this._chatService, this._currentUserId, this._isDisabled)
     : super(const AsyncValue.data(null));
 
   /// Send a text message
@@ -158,6 +179,9 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
   }) async {
     state = const AsyncValue.loading();
     try {
+      if (await _isDisabled()) {
+        throw StateError('Your account has been disabled by Admin.');
+      }
       final message = await _chatService.sendTextMessage(
         chatId: chatId,
         senderId: _currentUserId,
@@ -181,6 +205,9 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
   }) async {
     state = const AsyncValue.loading();
     try {
+      if (await _isDisabled()) {
+        throw StateError('Your account has been disabled by Admin.');
+      }
       final message = await _chatService.sendImageMessage(
         chatId: chatId,
         senderId: _currentUserId,
@@ -205,6 +232,9 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
   }) async {
     state = const AsyncValue.loading();
     try {
+      if (await _isDisabled()) {
+        throw StateError('Your account has been disabled by Admin.');
+      }
       final message = await _chatService.sendAudioMessage(
         chatId: chatId,
         senderId: _currentUserId,
@@ -249,7 +279,8 @@ final chatNotifierProvider =
         throw Exception('Not authenticated');
       }
 
-      return ChatNotifier(chatService, userId);
+      Future<bool> isDisabled() => ref.read(currentUserDisabledProvider.future);
+      return ChatNotifier(chatService, userId, isDisabled);
     });
 
 // ============================================================================

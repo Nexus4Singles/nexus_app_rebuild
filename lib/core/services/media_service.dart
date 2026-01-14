@@ -8,14 +8,18 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+
+import 'package:nexus_app_min_test/core/storage/do_spaces_storage_service.dart';
+import 'package:nexus_app_min_test/core/storage/do_spaces_config.dart';
 
 import '../theme/app_colors.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 
 /// Service for handling media operations: photos and audio recordings
 class MediaService {
+  final DoSpacesStorageService _spacesStorage = DoSpacesStorageService();
+
   final ImagePicker _imagePicker = ImagePicker();
   final AudioRecorder _audioRecorder = AudioRecorder();
   final AudioPlayer _audioPlayer = AudioPlayer();
@@ -289,6 +293,27 @@ class MediaService {
   // IMAGE UPLOAD
   // ============================================================================
 
+  String _buildPhotoObjectKey({
+    required String userId,
+    required int photoIndex,
+    required String extension,
+  }) {
+    final ts = DateTime.now().millisecondsSinceEpoch;
+    final safeExt =
+        extension.startsWith('.') ? extension.substring(1) : extension;
+    return 'users/$userId/photos/photo_${photoIndex}_$ts.$safeExt';
+  }
+
+  String _objectKeyFromPublicUrl(String url) {
+    final bucket = DoSpacesConfig.bucket;
+    final marker = '/$bucket/';
+    final idx = url.indexOf(marker);
+    if (idx == -1) {
+      throw MediaException('Unsupported Spaces URL format');
+    }
+    return url.substring(idx + marker.length);
+  }
+
   /// Upload image to Firebase Storage
   /// Returns the download URL
   Future<String> uploadProfilePhoto(
@@ -297,12 +322,38 @@ class MediaService {
     int photoIndex = 0,
     Function(double)? onProgress,
   }) async {
-    throw MediaException("Upload not wired (DigitalOcean storage pending)");
+    try {
+      onProgress?.call(0.0);
+      final ext =
+          p.extension(imageFile.path).isNotEmpty
+              ? p.extension(imageFile.path)
+              : '.jpg';
+
+      final objectKey = _buildPhotoObjectKey(
+        userId: userId,
+        photoIndex: photoIndex,
+        extension: ext,
+      );
+
+      final url = await _spacesStorage.uploadImage(
+        localPath: imageFile.path,
+        objectKey: objectKey,
+      );
+      onProgress?.call(1.0);
+      return url;
+    } catch (e) {
+      throw MediaException('Failed to upload photo: $e');
+    }
   }
 
   /// Delete photo from Firebase Storage
   Future<void> deleteProfilePhoto(String photoUrl) async {
-    throw MediaException("Delete not wired (DigitalOcean storage pending)");
+    try {
+      final objectKey = _objectKeyFromPublicUrl(photoUrl);
+      await _spacesStorage.deleteObject(objectKey: objectKey);
+    } catch (e) {
+      throw MediaException('Failed to delete photo: $e');
+    }
   }
 
   // ============================================================================

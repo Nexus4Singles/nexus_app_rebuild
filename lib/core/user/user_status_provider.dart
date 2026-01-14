@@ -23,10 +23,28 @@ final userRelationshipStatusProvider = StreamProvider<RelationshipStatus?>((
     final data = doc.data();
     if (data == null) return null;
 
-    final raw = data['relationshipStatus'];
-    if (raw is String && raw.isNotEmpty) {
+    final nexus = (data['nexus'] as Map?)?.cast<String, dynamic>();
+    final nexus2 = (data['nexus2'] as Map?)?.cast<String, dynamic>();
+
+    // v2 canonical field (merge-safe, namespaced). nexus2 is temporary fallback.
+    final raw =
+        (nexus?['relationshipStatus'] ??
+            nexus2?['relationshipStatus'] ??
+            data['relationshipStatus']);
+
+    if (raw is String && raw.trim().isNotEmpty) {
+      final v = raw.trim();
+
+      // Prefer v2 stored keys
+      if (v == 'single_never_married')
+        return RelationshipStatus.singleNeverMarried;
+      if (v == 'married') return RelationshipStatus.married;
+      if (v == 'divorced') return RelationshipStatus.divorced;
+      if (v == 'widowed') return RelationshipStatus.widowed;
+
+      // Backward compatibility: if someone stored enum names
       try {
-        return RelationshipStatus.values.byName(raw);
+        return RelationshipStatus.values.byName(v);
       } catch (_) {
         return null;
       }

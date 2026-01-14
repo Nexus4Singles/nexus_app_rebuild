@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/app_constants.dart';
+import '../auth/auth_providers.dart';
+import '../bootstrap/firebase_ready_provider.dart';
+import '../user/dating_opt_in_provider.dart';
 import '../session/effective_relationship_status_provider.dart';
 import '../widgets/guest_guard.dart';
 import 'dating_profile_status_provider.dart';
@@ -20,14 +23,14 @@ class DatingProfileGate {
       return;
     }
 
-    // For singles, enforce sign-in first.
-    final statusAsync = ref.read(datingProfileStatusProvider);
-    final status = statusAsync.maybeWhen(
-      data: (s) => s,
-      orElse: () => DatingProfileStatus.none,
+    // First enforce sign-in explicitly (do NOT infer guest from profile status).
+    final authAsync = ref.read(authStateProvider);
+    final isSignedIn = authAsync.maybeWhen(
+      data: (a) => a.isSignedIn,
+      orElse: () => false,
     );
 
-    if (status == DatingProfileStatus.none) {
+    if (!isSignedIn) {
       await GuestGuard.requireSignedIn(
         context,
         ref,
@@ -39,6 +42,51 @@ class DatingProfileGate {
       );
       return;
     }
+
+    // If Firebase isn't ready yet, don't mis-classify signed-in users as guests.
+    final ready = ref.read(firebaseReadyProvider);
+    if (!ready) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Setting things up… try again shortly.')),
+      );
+      return;
+    }
+
+    // Dating opt-in gate (default is true; only block when explicitly false).
+    final optedIn = await ref.read(datingOptInProvider.future);
+    if (!optedIn) {
+      await showDialog<void>(
+        context: context,
+        builder:
+            (_) => AlertDialog(
+              title: const Text('Dating is turned off'),
+              content: const Text(
+                'To use Search and Chats, turn on the dating experience in your profile settings.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Not now'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushNamed('/profile');
+                  },
+                  child: const Text('Go to Profile'),
+                ),
+              ],
+            ),
+      );
+      return;
+    }
+
+    // Dating profile completion gate
+    final statusAsync = ref.read(datingProfileStatusProvider);
+    final status = statusAsync.maybeWhen(
+      data: (s) => s,
+      orElse: () => DatingProfileStatus.incomplete,
+    );
 
     if (status == DatingProfileStatus.complete) {
       await onAllowed();
@@ -61,7 +109,7 @@ class DatingProfileGate {
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.of(context).pushNamed('/dating-profile/complete');
+                  Navigator.of(context).pushNamed('/dating/setup/age');
                 },
                 child: const Text('Complete profile'),
               ),

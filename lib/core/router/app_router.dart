@@ -9,7 +9,23 @@ import '../../features/presentation/screens/home_screen.dart';
 import '../../features/presentation/screens/search_screen.dart';
 import '../../features/presentation/screens/chats_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_age_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_extra_info_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_photos_stub_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_audio_stub_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_audio_question_stub_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_audio_summary_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_hobbies_stub_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_qualities_stub_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_contact_info_stub_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_profile_complete_screen.dart';
 import '../../features/presentation/screens/settings_screen.dart';
+import '../../features/presentation/screens/contact_screen.dart';
+import '../../features/presentation/screens/privacy_policy_screen.dart';
+import '../../features/presentation/screens/terms_screen.dart';
+import '../../features/presentation/screens/blocked_users_screen.dart';
+import '../../features/presentation/screens/contact_support_screen.dart';
+import '../../features/presentation/screens/help_center_screen.dart';
 
 import 'app_routes.dart';
 
@@ -26,13 +42,14 @@ import '../../features/assessment/presentation/screens/assessment_screen.dart';
 import '../../features/assessment/presentation/screens/assessment_result_screen.dart';
 
 import '../../features/chats/presentation/screens/chat_thread_screen.dart';
+import '../../features/compatibility_quiz/presentation/screens/compatibility_quiz_screen.dart';
 
-import '../../features/presentation/screens/_stubs/signup_stub_screen.dart';
-import '../../features/presentation/screens/_stubs/login_stub_screen.dart';
-import '../../features/presentation/screens/_stubs/forgot_password_stub_screen.dart';
+import '../../features/auth/presentation/screens/signup_screen.dart';
+import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/forgot_password_screen.dart';
+
 import '../../features/presentation/screens/_stubs/onboarding_stub_screen.dart';
 import '../../features/presentation/screens/_stubs/notifications_stub_screen.dart';
-import '../../features/presentation/screens/_stubs/contact_support_stub_screen.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   final name = settings.name ?? '/';
@@ -55,6 +72,22 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       settings: settings,
       builder: (_) => ChatThreadScreen(chatId: chatId),
     );
+  }
+
+  // /dating/setup/audio/qN
+  if (segments.length == 4 &&
+      segments[0] == 'dating' &&
+      segments[1] == 'setup' &&
+      segments[2] == 'audio' &&
+      segments[3].startsWith('q')) {
+    final raw = segments[3].substring(1);
+    final n = int.tryParse(raw);
+    if (n != null && n > 0) {
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => DatingAudioQuestionStubScreen(questionNumber: n),
+      );
+    }
   }
 
   // /journey/:id/mission/:missionId  OR  /journey/:id/activity/:missionId
@@ -109,28 +142,111 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         builder: (_) => const ProfileScreen(),
       );
 
+    case '/dating/setup/age':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => DatingAgeScreen(),
+      );
+
+    case '/dating/setup/extra-info':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => DatingExtraInfoScreen(),
+      );
+
+    case '/dating/setup/photos':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => DatingPhotosStubScreen(),
+      );
+
+    case '/dating/setup/audio':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const DatingAudioStubScreen(),
+      );
+
+    case '/dating/setup/audio/summary':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => DatingAudioSummaryScreen(),
+      );
+
+    case '/dating/setup/hobbies':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const DatingHobbiesStubScreen(),
+      );
+
+    case '/dating/setup/qualities':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const DatingQualitiesStubScreen(),
+      );
+
+    case '/dating/setup/contact-info':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => DatingContactInfoStubScreen(),
+      );
+
+    case '/dating/setup/complete':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const DatingProfileCompleteScreen(),
+      );
+
+    case '/dating-profile/complete':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const DatingProfileCompleteScreen(),
+      );
+
     case '/settings':
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => const SettingsScreen(),
       );
 
+    case '/help':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const HelpCenterScreen(),
+      );
+
+    case '/blocked-users':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const BlockedUsersScreen(),
+      );
+
+    case '/terms':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const TermsScreen(),
+      );
+
+    case '/privacy':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const PrivacyPolicyScreen(),
+      );
     case '/signup':
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const SignupStubScreen(),
+        builder: (_) => const SignupScreen(),
       );
 
     case '/login':
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const LoginStubScreen(),
+        builder: (_) => const LoginScreen(),
       );
 
     case '/forgot-password':
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const ForgotPasswordStubScreen(),
+        builder: (_) => const ForgotPasswordScreen(),
       );
 
     case '/onboarding':
@@ -145,12 +261,11 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         builder: (_) => const NotificationsStubScreen(),
       );
 
-    case '/contact-support':
+    case '/contact':
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const ContactSupportStubScreen(),
+        builder: (_) => const ContactScreen(),
       );
-
     case AppRoutes.stories:
       return MaterialPageRoute(
         settings: settings,
@@ -188,6 +303,11 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         settings: settings,
 
         builder: (_) => const AssessmentResultScreen(),
+      );
+    case '/compatibility-quiz':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const CompatibilityQuizScreen(),
       );
 
     default:

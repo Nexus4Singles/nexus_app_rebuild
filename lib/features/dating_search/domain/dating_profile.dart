@@ -8,6 +8,7 @@ class DatingProfile {
   final String? profession;
   final List<String> photos;
   final DateTime createdAt;
+  final String verificationStatus; // verified | legacy
 
   // Compatibility fields (for filtering)
   final String? maritalStatus;
@@ -23,6 +24,7 @@ class DatingProfile {
     required this.gender,
     required this.photos,
     required this.createdAt,
+    required this.verificationStatus,
     this.city,
     this.country,
     this.profession,
@@ -32,6 +34,8 @@ class DatingProfile {
     this.regularSourceOfIncome,
     this.longDistance,
   });
+
+  bool get isVerified => verificationStatus == 'verified';
 
   String get displayLocation {
     final c = city?.trim();
@@ -63,6 +67,13 @@ class DatingProfile {
             ? photosRaw.map((e) => e.toString()).toList()
             : <String>[];
 
+    final dating = json['dating'];
+    final status =
+        (dating is Map) ? (dating['verificationStatus'] ?? '').toString() : '';
+    final normalizedVerificationStatus =
+        status.toString().toLowerCase().trim().isNotEmpty
+            ? status.toString().toLowerCase().trim()
+            : 'legacy';
     return DatingProfile(
       uid: uid,
       name: (json['name'] ?? json['username'] ?? '').toString(),
@@ -76,6 +87,7 @@ class DatingProfile {
       profession: json['profession']?.toString(),
       photos: photos,
       createdAt: _asDate(json['createdAt']),
+      verificationStatus: normalizedVerificationStatus,
       maritalStatus: json['maritalStatus']?.toString(),
       haveKids: json['haveKids']?.toString(),
       genotype: json['genotype']?.toString(),

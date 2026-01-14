@@ -1,29 +1,261 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_min_test/core/auth/auth_providers.dart';
+import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
+import 'package:nexus_app_min_test/core/dating/dating_profile_status_provider.dart';
+import 'package:nexus_app_min_test/core/providers/service_providers.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
-import 'package:nexus_app_min_test/core/safe_providers/chats_provider_safe.dart';
+import 'package:nexus_app_min_test/core/user/dating_opt_in_provider.dart';
 
-// Dev-only bypass so you can test chat while Firebase/auth is not wired.
-// Run with: flutter run --dart-define=NEXUS_CHAT_DEV_BYPASS=true
+/// Dev-only bypass so you can test chat while Firebase/auth is not wired.
+/// Run with: flutter run --dart-define=NEXUS_CHAT_DEV_BYPASS=true
 const bool _kChatDevBypass = bool.fromEnvironment(
   'NEXUS_CHAT_DEV_BYPASS',
   defaultValue: false,
 );
+
+String _formatChatTime(DateTime? dt) {
+  if (dt == null) return '';
+  final now = DateTime.now();
+  final diff = now.difference(dt);
+
+  if (diff.inMinutes < 1) return 'Now';
+  if (diff.inMinutes < 60) return '${diff.inMinutes}m';
+  if (diff.inHours < 24) return '${diff.inHours}h';
+  if (diff.inDays == 1) return 'Yesterday';
+  if (diff.inDays < 7) return '${diff.inDays}d';
+  // Keep it simple (avoid intl dependency here)
+  return '${dt.year}-${dt.month.toString().padLeft(2, '0')}-${dt.day.toString().padLeft(2, '0')}';
+}
+
+String _displayNameFromOtherId(String otherUserId) {
+  final id = otherUserId.trim();
+  if (id.isEmpty) return 'Unknown';
+  // Temporary: show a short id until we wire "other user's name" lookup.
+  return 'User ${id.substring(0, 6)}';
+}
 
 class ChatsScreen extends ConsumerWidget {
   const ChatsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chats = ref.watch(safeChatsProvider);
-
     final authAsync = ref.watch(authStateProvider);
     final isSignedIn = authAsync.maybeWhen(
       data: (a) => a.isSignedIn,
       orElse: () => false,
     );
+
+    final uid = authAsync.maybeWhen(
+      data: (a) => a.user?.uid,
+      orElse: () => null,
+    );
+
+    final ready = ref.watch(firebaseReadyProvider);
+
+    // Signed-in gating for Chats:
+    // - Guests must not see chat UI.
+    // - If dating is turned off, chats are unavailable.
+    // - If dating profile is incomplete, chats are unavailable.
+    final optedInAsync = ref.watch(datingOptInProvider);
+    final optedIn = optedInAsync.maybeWhen(data: (v) => v, orElse: () => true);
+
+    final statusAsync = ref.watch(datingProfileStatusProvider);
+    final status = statusAsync.maybeWhen(
+      data: (v) => v,
+      orElse: () => DatingProfileStatus.incomplete,
+    );
+
+    if (!isSignedIn && !_kChatDevBypass) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          title: Text('Chats', style: AppTextStyles.headlineLarge),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Center(
+            child: Container(
+              width: double.infinity,
+              constraints: const BoxConstraints(maxWidth: 520),
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Create an account to chat',
+                    style: AppTextStyles.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'You\'re currently in guest mode. Create an account to send and receive messages.',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed:
+                          () => Navigator.of(context).pushNamed('/signup'),
+                      child: const Text('Create an account'),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: OutlinedButton(
+                      onPressed:
+                          () => Navigator.of(context).pushNamed('/login'),
+                      child: const Text('Log in'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    // If signed-in but Firebase isn't ready, show a soft loading state (avoid mis-gating).
+    if (isSignedIn && !ready && !_kChatDevBypass) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          title: Text('Chats', style: AppTextStyles.headlineLarge),
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    // Dating opt-in gate
+    if (isSignedIn && !optedIn && !_kChatDevBypass) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          title: Text('Chats', style: AppTextStyles.headlineLarge),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Center(
+            child: Container(
+              width: double.infinity,
+              constraints: const BoxConstraints(maxWidth: 520),
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Turn on dating to use chats',
+                    style: AppTextStyles.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Chats are part of the dating experience. Enable dating in your profile to continue.',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed:
+                          () => Navigator.of(context).pushNamed('/profile'),
+                      child: const Text('Go to Profile'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Dating profile completion gate
+    if (isSignedIn &&
+        status != DatingProfileStatus.complete &&
+        !_kChatDevBypass) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          title: Text('Chats', style: AppTextStyles.headlineLarge),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Center(
+            child: Container(
+              width: double.infinity,
+              constraints: const BoxConstraints(maxWidth: 520),
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Complete your dating profile',
+                    style: AppTextStyles.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'You need a completed dating profile to use chats.',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed:
+                          () => Navigator.of(
+                            context,
+                          ).pushNamed('/dating/setup/age'),
+                      child: const Text('Complete profile'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    // ✅ Real conversations list (Firestore-backed)
+    final conversationsAsync = ref.watch(userConversationsProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -40,46 +272,88 @@ class ChatsScreen extends ConsumerWidget {
             Text('Recent conversations', style: AppTextStyles.titleLarge),
             const SizedBox(height: 12),
             Expanded(
-              child: ListView.separated(
-                itemCount: chats.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
-                itemBuilder: (context, index) {
-                  final chat = chats[index];
-                  final chatId = 'c$index'; // TODO: real id later
-                  return _ChatRow(
-                    name: chat.name,
-                    message: chat.message,
-                    time: chat.time,
-                    unread: chat.unread,
-                    onTap: () {
-                      if (!isSignedIn && !_kChatDevBypass) {
-                        GuestGuard.requireSignedIn(
-                          context,
-                          ref,
-                          title: 'Create an account to chat',
-                          message:
-                              'You\'re currently in guest mode. Create an account to send and receive messages.',
-                          primaryText: 'Create an account',
-                          onCreateAccount:
-                              () => Navigator.of(context).pushNamed('/signup'),
-                          onAllowed: () async {},
-                        );
-                        return;
-                      }
-                      Navigator.of(context).pushNamed('/chats/$chatId');
+              child: conversationsAsync.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error:
+                    (_, __) => Center(
+                      child: Text(
+                        'Unable to load chats right now.',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ),
+                data: (conversations) {
+                  final me = uid;
+                  if (me == null) {
+                    return Center(
+                      child: Text(
+                        'Please sign in to view your chats.',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    );
+                  }
+
+                  if (conversations.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'No conversations yet.',
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          SizedBox(
+                            height: 46,
+                            child: OutlinedButton(
+                              onPressed:
+                                  () => Navigator.of(
+                                    context,
+                                  ).pushNamed('/search'),
+                              child: const Text('Go to Search'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return ListView.separated(
+                    itemCount: conversations.length,
+                    separatorBuilder: (_, __) => const SizedBox(height: 10),
+                    itemBuilder: (context, index) {
+                      final c = conversations[index];
+                      final otherId = c.participantIds.firstWhere(
+                        (id) => id != me,
+                        orElse: () => '',
+                      );
+                      final title = _displayNameFromOtherId(otherId);
+                      final subtitle =
+                          (c.lastMessage ?? '').trim().isEmpty
+                              ? 'Say hi 👋'
+                              : (c.lastMessage ?? '');
+                      final time = _formatChatTime(c.lastMessageAt);
+                      final unread = c.getUnreadCount(me) > 0;
+
+                      return _ChatRow(
+                        name: title,
+                        message: subtitle,
+                        time: time,
+                        unread: unread,
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/chats/${c.id}');
+                        },
+                      );
                     },
                   );
                 },
               ),
             ),
-            const SizedBox(height: 8),
-            if (!isSignedIn && !_kChatDevBypass)
-              Text(
-                'Guest mode: chats require an account.',
-                style: AppTextStyles.caption.copyWith(
-                  color: AppColors.textMuted,
-                ),
-              ),
           ],
         ),
       ),

@@ -1,238 +1,162 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
 import 'package:flutter/foundation.dart';
 
-import '../models/user_model.dart';
-
-/// Service for managing dating profile data in Firestore
-/// Handles all profile creation, updates, and compatibility quiz operations
+/// Firestore-backed service for Dating Profile operations.
+///
+/// Notes:
+/// - We keep updates narrowly-scoped (only fields we intend to change).
+/// - We maintain a small set of Nexus 1.x compatibility fields (profileUrl1..4 etc).
+/// - "Moderation bump" logic is conservative: when media changes and user was
+///   previously verified, we can bump status back to pending.
 class DatingProfileService {
-  FirebaseFirestore? _firestore;
+  final FirebaseFirestore _fs;
 
-  FirebaseFirestore get _fs =>
-      _firestore ?? (throw StateError('Firestore not ready'));
-  DatingProfileService({FirebaseFirestore? firestore}) : _firestore = firestore;
+  DatingProfileService({required FirebaseFirestore firestore})
+    : _fs = firestore;
 
-  /// Get user document reference
-  DocumentReference<Map<String, dynamic>> _userDocRef(String uid) {
-    return _fs.collection('users').doc(uid);
+  DocumentReference<Map<String, dynamic>> _userDocRef(String uid) =>
+      _fs.collection('users').doc(uid);
+
+  // --------------------------------------------------------------------------
+  // Read helpers
+  // --------------------------------------------------------------------------
+
+  static List<String> _stringList(dynamic v) {
+    if (v is List) return v.map((e) => e.toString()).toList();
+    return const <String>[];
   }
 
-  // ============================================================================
-  // STEP-BY-STEP PROFILE UPDATES
-  // ============================================================================
+  static List<String> _audioUrlsFromExisting(Map<String, dynamic> existing) {
+    // Prefer v2 shape: dating.reviewPack.audioUrls
+    final dating =
+        (existing['dating'] is Map)
+            ? (existing['dating'] as Map).cast<String, dynamic>()
+            : null;
+    final reviewPack =
+        (dating?['reviewPack'] is Map)
+            ? (dating!['reviewPack'] as Map).cast<String, dynamic>()
+            : null;
 
-  /// Step 1: Save age
-  Future<void> saveAge(String uid, int age) async {
-    try {
-      await _userDocRef(
-        uid,
-      ).update({'age': age, 'updatedAt': FieldValue.serverTimestamp()});
-    } catch (e) {
-      throw DatingProfileException('Failed to save age: $e');
+    final fromReviewPack = _stringList(reviewPack?['audioUrls']);
+    if (fromReviewPack.isNotEmpty) return fromReviewPack;
+
+    // Fallback to legacy / flat fields if present
+    final a1 = existing['audio1Url']?.toString();
+    final a2 = existing['audio2Url']?.toString();
+    final a3 = existing['audio3Url']?.toString();
+    final out = <String>[
+      if (a1 != null && a1.trim().isNotEmpty) a1.trim(),
+      if (a2 != null && a2.trim().isNotEmpty) a2.trim(),
+      if (a3 != null && a3.trim().isNotEmpty) a3.trim(),
+    ];
+    return out;
+  }
+
+  static Map<String, dynamic> _buildReviewPack({
+    required List<String> photoUrls,
+    required List<String> audioUrls,
+  }) {
+    return <String, dynamic>{
+      'photoUrls': photoUrls,
+      'audioUrls': audioUrls,
+      'updatedAt': FieldValue.serverTimestamp(),
+    };
+  }
+
+  static Map<String, dynamic> _datingModerationUpdates({
+    required Map<String, dynamic> existingUserDoc,
+    required List<String> photoUrls,
+    required List<String> audioUrls,
+    required bool bumpToPendingIfVerified,
+  }) {
+    // Read current status from user doc: users/{uid}.dating.verificationStatus
+    final dating =
+        (existingUserDoc['dating'] is Map)
+            ? (existingUserDoc['dating'] as Map).cast<String, dynamic>()
+            : null;
+
+    final currentStatus = dating?['verificationStatus']?.toString();
+
+    final updates = <String, dynamic>{
+      'dating.reviewPack': _buildReviewPack(
+        photoUrls: photoUrls,
+        audioUrls: audioUrls,
+      ),
+    };
+
+    if (bumpToPendingIfVerified && currentStatus == 'verified') {
+      // Bump back to pending when user changes evidence content (photos/audio).
+      updates['dating.verificationStatus'] = 'pending';
+      updates['dating.pendingAt'] = FieldValue.serverTimestamp();
+      // Clear prior decisions (optional but reduces confusion).
+      updates['dating.verifiedAt'] = null;
+      updates['dating.verifiedBy'] = null;
+      updates['dating.rejectedAt'] = null;
+      updates['dating.rejectedBy'] = null;
+      updates['dating.rejectionReason'] = null;
     }
+
+    return updates;
   }
 
-  /// Step 2: Save extra information (nationality, location, education, profession, church)
-  Future<void> saveExtraInfo(
-    String uid, {
-    required String nationality,
-    required String cityCountry,
-    required String country,
-    required String educationLevel,
-    required String profession,
-    String? church,
-  }) async {
-    try {
-      await _userDocRef(uid).update({
-        'nationality': nationality,
-        'location': cityCountry,
-        'country': country,
-        'educationLevel': educationLevel,
-        'profession': profession,
-        'church': church,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
-    } catch (e) {
-      throw DatingProfileException('Failed to save extra info: $e');
-    }
+  // --------------------------------------------------------------------------
+  // Completion / progress
+  // --------------------------------------------------------------------------
+
+  Future<bool> isDatingProfileComplete(String uid) async {
+    final doc = await _userDocRef(uid).get();
+    if (!doc.exists || doc.data() == null) return false;
+    final data = doc.data()!;
+
+    // Primary v2 flag:
+    final dating =
+        (data['dating'] is Map)
+            ? (data['dating'] as Map).cast<String, dynamic>()
+            : null;
+    final completed = dating?['profileCompleted'];
+    if (completed == true) return true;
+
+    // Heuristic fallback: require a few basics.
+    final age = data['age'];
+    final photos = _stringList(data['photos']);
+    final hobbies = _stringList(data['hobbies']);
+    return (age is int && age > 0) && photos.isNotEmpty && hobbies.isNotEmpty;
   }
 
-  /// Step 3: Save hobbies/interests
-  Future<void> saveHobbies(String uid, List<String> hobbies) async {
-    try {
-      await _userDocRef(
-        uid,
-      ).update({'hobbies': hobbies, 'updatedAt': FieldValue.serverTimestamp()});
-    } catch (e) {
-      throw DatingProfileException('Failed to save hobbies: $e');
-    }
+  Future<bool> isCompatibilityQuizComplete(String uid) async {
+    final doc = await _userDocRef(uid).get();
+    if (!doc.exists || doc.data() == null) return false;
+    final data = doc.data()!;
+    // This is intentionally conservative: expects a boolean flag.
+    final v = data['compatibilityQuizCompleted'];
+    return v == true;
   }
 
-  /// Step 4: Save desired qualities
-  Future<void> saveDesiredQualities(String uid, List<String> qualities) async {
-    try {
-      await _userDocRef(uid).update({
-        'desiredQualities': qualities,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
-    } catch (e) {
-      throw DatingProfileException('Failed to save desired qualities: $e');
-    }
+  Future<int> getProfileCompletionPercentage(String uid) async {
+    final doc = await _userDocRef(uid).get();
+    if (!doc.exists || doc.data() == null) return 0;
+    final data = doc.data()!;
+
+    // Simple weighted heuristic: 6 core buckets.
+    int done = 0;
+    const int total = 6;
+
+    if ((data['age'] is int) && (data['age'] as int) > 0) done += 1;
+    if ((data['nationality']?.toString().trim().isNotEmpty ?? false)) done += 1;
+    if ((data['educationLevel']?.toString().trim().isNotEmpty ?? false))
+      done += 1;
+    if (_stringList(data['hobbies']).isNotEmpty) done += 1;
+    if (_stringList(data['desiredQualities']).isNotEmpty) done += 1;
+    if (_stringList(data['photos']).isNotEmpty) done += 1;
+
+    final pct = ((done / total) * 100.0).round();
+    return pct.clamp(0, 100);
   }
 
-  /// Step 5: Save photos (URLs)
-  Future<void> savePhotos(String uid, List<String> photoUrls) async {
-    try {
-      final updateData = <String, dynamic>{
-        'profileUrl': photoUrls.isNotEmpty ? photoUrls.first : null,
-        'photos': photoUrls,
-        'updatedAt': FieldValue.serverTimestamp(),
-      };
+  // --------------------------------------------------------------------------
+  // Write operations (called by service_providers.dart)
+  // --------------------------------------------------------------------------
 
-      // Also update individual photo fields for Nexus 1.0 compatibility
-      for (int i = 0; i < 4; i++) {
-        updateData['profileUrl${i + 1}'] =
-            i < photoUrls.length ? photoUrls[i] : null;
-      }
-
-      await _userDocRef(uid).update(updateData);
-    } catch (e) {
-      throw DatingProfileException('Failed to save photos: $e');
-    }
-  }
-
-  /// Step 5 (single): Add a single photo
-  Future<void> addPhoto(String uid, String photoUrl, int index) async {
-    try {
-      final doc = await _userDocRef(uid).get();
-      final data = doc.data() ?? {};
-
-      List<String> photos = List<String>.from(data['photos'] ?? []);
-
-      if (index < photos.length) {
-        photos[index] = photoUrl;
-      } else {
-        photos.add(photoUrl);
-      }
-
-      await savePhotos(uid, photos);
-    } catch (e) {
-      throw DatingProfileException('Failed to add photo: $e');
-    }
-  }
-
-  /// Step 5 (single): Remove a photo
-  Future<void> removePhoto(String uid, int index) async {
-    try {
-      final doc = await _userDocRef(uid).get();
-      final data = doc.data() ?? {};
-
-      List<String> photos = List<String>.from(data['photos'] ?? []);
-
-      if (index < photos.length) {
-        photos.removeAt(index);
-      }
-
-      await savePhotos(uid, photos);
-    } catch (e) {
-      throw DatingProfileException('Failed to remove photo: $e');
-    }
-  }
-
-  /// Step 6: Save audio recordings
-  Future<void> saveAudioRecordings(
-    String uid, {
-    String? audio1Url,
-    String? audio2Url,
-    String? audio3Url,
-  }) async {
-    try {
-      final audioData = <String, dynamic>{};
-
-      if (audio1Url != null) audioData['audio1Url'] = audio1Url;
-      if (audio2Url != null) audioData['audio2Url'] = audio2Url;
-      if (audio3Url != null) audioData['audio3Url'] = audio3Url;
-
-      // Check if all 3 are complete
-      final doc = await _userDocRef(uid).get();
-      final existingData = doc.data() ?? {};
-      final existingAudio =
-          existingData['audio'] as Map<String, dynamic>? ?? {};
-
-      final mergedAudio = {...existingAudio, ...audioData};
-      mergedAudio['completed'] =
-          mergedAudio['audio1Url'] != null &&
-          mergedAudio['audio2Url'] != null &&
-          mergedAudio['audio3Url'] != null;
-
-      await _userDocRef(uid).update({
-        'audio': mergedAudio,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
-    } catch (e) {
-      throw DatingProfileException('Failed to save audio recordings: $e');
-    }
-  }
-
-  /// Step 6 (single): Save one audio recording
-  Future<void> saveSingleAudio(
-    String uid,
-    int questionIndex,
-    String audioUrl,
-  ) async {
-    try {
-      final fieldName = 'audio${questionIndex}Url';
-      await _userDocRef(uid).update({
-        'audio.$fieldName': audioUrl,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
-
-      // Check completion
-      final doc = await _userDocRef(uid).get();
-      final data = doc.data() ?? {};
-      final audio = data['audio'] as Map<String, dynamic>? ?? {};
-
-      if (audio['audio1Url'] != null &&
-          audio['audio2Url'] != null &&
-          audio['audio3Url'] != null) {
-        await _userDocRef(uid).update({'audio.completed': true});
-      }
-    } catch (e) {
-      throw DatingProfileException('Failed to save audio: $e');
-    }
-  }
-
-  /// Step 7: Save contact information
-  Future<void> saveContactInfo(
-    String uid, {
-    String? instagramUsername,
-    String? twitterUsername,
-    String? whatsappNumber,
-    String? facebookUsername,
-    String? telegramUsername,
-    String? snapchatUsername,
-  }) async {
-    try {
-      await _userDocRef(uid).update({
-        'instagramUsername': instagramUsername,
-        'twitterUsername': twitterUsername,
-        'whatsappNumber': whatsappNumber,
-        'facebookUsername': facebookUsername,
-        'telegramUsername': telegramUsername,
-        'snapchatUsername': snapchatUsername,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
-    } catch (e) {
-      throw DatingProfileException('Failed to save contact info: $e');
-    }
-  }
-
-  // ============================================================================
-  // COMPLETE PROFILE SAVE
-  // ============================================================================
-
-  /// Save complete dating profile (all steps at once)
   Future<void> saveCompleteDatingProfile(
     String uid, {
     required int age,
@@ -255,264 +179,240 @@ class DatingProfileService {
     String? telegramUsername,
     String? snapchatUsername,
   }) async {
-    try {
-      final updateData = <String, dynamic>{
-        // Step 1: Age
-        'age': age,
+    final userRef = _userDocRef(uid);
 
-        // Step 2: Extra info
-        'nationality': nationality,
-        'location': cityCountry,
-        'country': country,
-        'educationLevel': educationLevel,
-        'profession': profession,
-        'church': church,
+    final doc = await userRef.get();
+    final existing = doc.data() ?? <String, dynamic>{};
 
-        // Step 3: Hobbies
-        'hobbies': hobbies,
+    final audioUrls = <String>[
+      if (audio1Url != null && audio1Url.trim().isNotEmpty) audio1Url.trim(),
+      if (audio2Url != null && audio2Url.trim().isNotEmpty) audio2Url.trim(),
+      if (audio3Url != null && audio3Url.trim().isNotEmpty) audio3Url.trim(),
+    ];
 
-        // Step 4: Desired qualities
-        'desiredQualities': desiredQualities,
+    final updateData = <String, dynamic>{
+      'age': age,
+      'nationality': nationality,
+      'location': cityCountry,
+      'country': country,
+      'educationLevel': educationLevel,
+      'profession': profession,
+      'church': church,
+      'hobbies': hobbies,
+      'desiredQualities': desiredQualities,
+      'profileUrl': photoUrls.isNotEmpty ? photoUrls.first : null,
+      'photos': photoUrls,
+      // legacy photo fields
+      for (int i = 0; i < 4; i++)
+        'profileUrl${i + 1}': i < photoUrls.length ? photoUrls[i] : null,
+      // legacy audio fields
+      'audio1Url': audio1Url,
+      'audio2Url': audio2Url,
+      'audio3Url': audio3Url,
+      // contact
+      'instagramUsername': instagramUsername,
+      'twitterUsername': twitterUsername,
+      'phoneNumber':
+          whatsappNumber, // WhatsApp stored as phoneNumber in some UIs
+      'facebookUsername': facebookUsername,
+      'telegramUsername': telegramUsername,
+      'snapchatUsername': snapchatUsername,
+      // v2 completion flag
+      'dating.profileCompleted': true,
+      'dating.profileCompletedAt': FieldValue.serverTimestamp(),
+      'updatedAt': FieldValue.serverTimestamp(),
+    };
 
-        // Step 5: Photos
-        'profileUrl': photoUrls.isNotEmpty ? photoUrls.first : null,
-        'photos': photoUrls,
-
-        // Step 6: Audio
-        'audio': {
-          'audio1Url': audio1Url,
-          'audio2Url': audio2Url,
-          'audio3Url': audio3Url,
-          'completed':
-              audio1Url != null && audio2Url != null && audio3Url != null,
-        },
-
-        // Step 7: Contact info
-        'instagramUsername': instagramUsername,
-        'twitterUsername': twitterUsername,
-        'whatsappNumber': whatsappNumber,
-        'facebookUsername': facebookUsername,
-        'telegramUsername': telegramUsername,
-        'snapchatUsername': snapchatUsername,
-
-        // Profile completion flags
-        'datingProfileCompleted': true,
-        'datingProfileCompletedAt': FieldValue.serverTimestamp(),
-        'updatedAt': FieldValue.serverTimestamp(),
-      };
-
-      // Add individual photo fields for Nexus 1.0 compatibility
-      for (int i = 0; i < 4; i++) {
-        updateData['profileUrl${i + 1}'] =
-            i < photoUrls.length ? photoUrls[i] : null;
-      }
-
-      await _userDocRef(uid).update(updateData);
-    } catch (e) {
-      throw DatingProfileException('Failed to save complete profile: $e');
-    }
-  }
-
-  // ============================================================================
-  // COMPATIBILITY QUIZ
-  // ============================================================================
-
-  /// Save compatibility quiz responses
-  Future<void> saveCompatibilityQuiz(
-    String uid, {
-    required String maritalStatus,
-    required String haveKids,
-    required String genotype,
-    required String personalityType,
-    required String regularSourceOfIncome,
-    required String marrySomeoneNotFS,
-    required String longDistance,
-    required String believeInCohabiting,
-    required String shouldChristianSpeakInTongue,
-    required String believeInTithing,
-  }) async {
-    try {
-      await _userDocRef(uid).update({
-        'compatibility': {
-          'maritalStatus': maritalStatus,
-          'haveKids': haveKids,
-          'genotype': genotype,
-          'personalityType': personalityType,
-          'regularSourceOfIncome': regularSourceOfIncome,
-          'marrySomeoneNotFS': marrySomeoneNotFS,
-          'longDistance': longDistance,
-          'believeInCohiabiting':
-              believeInCohabiting, // Note: Nexus 1.0 typo preserved
-          'shouldChristianSpeakInTongue': shouldChristianSpeakInTongue,
-          'believeInTithing': believeInTithing,
-        },
-        'compatibilitySetted': true,
-        'compatibilitySettedAt': FieldValue.serverTimestamp(),
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
-    } catch (e) {
-      throw DatingProfileException('Failed to save compatibility quiz: $e');
-    }
-  }
-
-  /// Save compatibility quiz from a map (convenience method)
-  Future<void> saveCompatibilityQuizFromMap(
-    String uid,
-    Map<String, String> answers,
-  ) async {
-    await saveCompatibilityQuiz(
-      uid,
-      maritalStatus: answers['maritalStatus'] ?? '',
-      haveKids: answers['haveKids'] ?? '',
-      genotype: answers['genotype'] ?? '',
-      personalityType: answers['personalityType'] ?? '',
-      regularSourceOfIncome: answers['regularSourceOfIncome'] ?? '',
-      marrySomeoneNotFS: answers['marrySomeoneNotFS'] ?? '',
-      longDistance: answers['longDistance'] ?? '',
-      believeInCohabiting: answers['believeInCohabiting'] ?? '',
-      shouldChristianSpeakInTongue:
-          answers['shouldChristianSpeakInTongue'] ?? '',
-      believeInTithing: answers['believeInTithing'] ?? '',
+    // moderation bumps when evidence changes
+    updateData.addAll(
+      _datingModerationUpdates(
+        existingUserDoc: existing,
+        photoUrls: photoUrls,
+        audioUrls: audioUrls,
+        bumpToPendingIfVerified: true,
+      ),
     );
+
+    await userRef.set(updateData, SetOptions(merge: true));
   }
 
-  // ============================================================================
-  // PROFILE COMPLETION CHECK
-  // ============================================================================
+  Future<void> saveAge(String uid, int age) async {
+    await _userDocRef(
+      uid,
+    ).update({'age': age, 'updatedAt': FieldValue.serverTimestamp()});
+  }
 
-  /// Check if dating profile is complete
-  Future<bool> isDatingProfileComplete(String uid) async {
-    try {
-      final doc = await _userDocRef(uid).get();
-      final data = doc.data();
-      if (data == null) return false;
+  Future<void> saveExtraInfo(
+    String uid, {
+    required String nationality,
+    required String cityCountry,
+    required String country,
+    required String educationLevel,
+    required String profession,
+    String? church,
+  }) async {
+    await _userDocRef(uid).update({
+      'nationality': nationality,
+      'location': cityCountry,
+      'country': country,
+      'educationLevel': educationLevel,
+      'profession': profession,
+      'church': church,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
 
-      // Check all required fields
-      final age = data['age'] as int?;
-      final photos = data['photos'] as List? ?? [];
-      final hobbies = data['hobbies'] as List? ?? [];
-      final desiredQualities = data['desiredQualities'] as List? ?? [];
-      final audio = data['audio'] as Map<String, dynamic>? ?? {};
+  Future<void> saveHobbies(String uid, List<String> hobbies) async {
+    await _userDocRef(
+      uid,
+    ).update({'hobbies': hobbies, 'updatedAt': FieldValue.serverTimestamp()});
+  }
 
-      // Social media - at least one
-      final hasSocialMedia =
-          (data['instagramUsername'] as String?)?.isNotEmpty == true ||
-          (data['twitterUsername'] as String?)?.isNotEmpty == true ||
-          (data['whatsappNumber'] as String?)?.isNotEmpty == true ||
-          (data['facebookUsername'] as String?)?.isNotEmpty == true ||
-          (data['telegramUsername'] as String?)?.isNotEmpty == true ||
-          (data['snapchatUsername'] as String?)?.isNotEmpty == true;
+  Future<void> saveDesiredQualities(String uid, List<String> qualities) async {
+    await _userDocRef(uid).update({
+      'desiredQualities': qualities,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
 
-      return age != null &&
-          age >= 21 &&
-          photos.length >= 2 &&
-          hobbies.isNotEmpty &&
-          desiredQualities.isNotEmpty &&
-          audio['completed'] == true &&
-          hasSocialMedia;
-    } catch (e) {
-      debugPrint('Error checking profile completion: $e');
-      return false;
+  Future<void> savePhotos(String uid, List<String> photoUrls) async {
+    final userRef = _userDocRef(uid);
+
+    final doc = await userRef.get();
+    final existing = doc.data() ?? <String, dynamic>{};
+
+    final updateData = <String, dynamic>{
+      'profileUrl': photoUrls.isNotEmpty ? photoUrls.first : null,
+      'photos': photoUrls,
+      'updatedAt': FieldValue.serverTimestamp(),
+    };
+
+    // Nexus 1.x compatibility fields profileUrl1..4
+    for (int i = 0; i < 4; i++) {
+      updateData['profileUrl${i + 1}'] =
+          i < photoUrls.length ? photoUrls[i] : null;
     }
+
+    final audioUrls = _audioUrlsFromExisting(existing);
+
+    updateData.addAll(
+      _datingModerationUpdates(
+        existingUserDoc: existing,
+        photoUrls: photoUrls,
+        audioUrls: audioUrls,
+        bumpToPendingIfVerified: true,
+      ),
+    );
+
+    await userRef.update(updateData);
   }
 
-  /// Check if compatibility quiz is complete
-  Future<bool> isCompatibilityQuizComplete(String uid) async {
-    try {
-      final doc = await _userDocRef(uid).get();
-      return doc.data()?['compatibilitySetted'] == true;
-    } catch (e) {
-      return false;
-    }
+  Future<void> saveAudioRecordings(
+    String uid, {
+    String? audio1Url,
+    String? audio2Url,
+    String? audio3Url,
+  }) async {
+    final userRef = _userDocRef(uid);
+
+    final doc = await userRef.get();
+    final existing = doc.data() ?? <String, dynamic>{};
+
+    final audioUrls = <String>[
+      if (audio1Url != null && audio1Url.trim().isNotEmpty) audio1Url.trim(),
+      if (audio2Url != null && audio2Url.trim().isNotEmpty) audio2Url.trim(),
+      if (audio3Url != null && audio3Url.trim().isNotEmpty) audio3Url.trim(),
+    ];
+
+    final photoUrls = _stringList(existing['photos']);
+
+    final updates = <String, dynamic>{
+      'audio1Url': audio1Url,
+      'audio2Url': audio2Url,
+      'audio3Url': audio3Url,
+      'updatedAt': FieldValue.serverTimestamp(),
+    };
+
+    updates.addAll(
+      _datingModerationUpdates(
+        existingUserDoc: existing,
+        photoUrls: photoUrls,
+        audioUrls: audioUrls,
+        bumpToPendingIfVerified: true,
+      ),
+    );
+
+    await userRef.update(updates);
   }
 
-  /// Get profile completion percentage (0-100)
-  Future<int> getProfileCompletionPercentage(String uid) async {
-    try {
-      final doc = await _userDocRef(uid).get();
-      final data = doc.data();
-      if (data == null) return 0;
-
-      int completed = 0;
-      const total = 7;
-
-      // Step 1: Age
-      if ((data['age'] as int?) != null && data['age'] >= 21) completed++;
-
-      // Step 2: Extra info
-      if ((data['nationality'] as String?)?.isNotEmpty == true &&
-          (data['location'] as String?)?.isNotEmpty == true &&
-          (data['educationLevel'] as String?)?.isNotEmpty == true &&
-          (data['profession'] as String?)?.isNotEmpty == true) {
-        completed++;
-      }
-
-      // Step 3: Hobbies
-      final hobbies = data['hobbies'] as List? ?? [];
-      if (hobbies.isNotEmpty) completed++;
-
-      // Step 4: Desired qualities
-      final qualities = data['desiredQualities'] as List? ?? [];
-      if (qualities.isNotEmpty) completed++;
-
-      // Step 5: Photos
-      final photos = data['photos'] as List? ?? [];
-      if (photos.length >= 2) completed++;
-
-      // Step 6: Audio
-      final audio = data['audio'] as Map<String, dynamic>? ?? {};
-      if (audio['completed'] == true) completed++;
-
-      // Step 7: Contact info
-      final hasSocialMedia =
-          (data['instagramUsername'] as String?)?.isNotEmpty == true ||
-          (data['twitterUsername'] as String?)?.isNotEmpty == true ||
-          (data['whatsappNumber'] as String?)?.isNotEmpty == true ||
-          (data['facebookUsername'] as String?)?.isNotEmpty == true ||
-          (data['telegramUsername'] as String?)?.isNotEmpty == true ||
-          (data['snapchatUsername'] as String?)?.isNotEmpty == true;
-      if (hasSocialMedia) completed++;
-
-      return ((completed / total) * 100).round();
-    } catch (e) {
-      return 0;
-    }
+  Future<void> saveContactInfo(
+    String uid, {
+    String? instagramUsername,
+    String? twitterUsername,
+    String? whatsappNumber,
+    String? facebookUsername,
+    String? telegramUsername,
+    String? snapchatUsername,
+  }) async {
+    await _userDocRef(uid).update({
+      'instagramUsername': instagramUsername,
+      'twitterUsername': twitterUsername,
+      'phoneNumber': whatsappNumber,
+      'facebookUsername': facebookUsername,
+      'telegramUsername': telegramUsername,
+      'snapchatUsername': snapchatUsername,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
   }
 
-  // ============================================================================
-  // PROFILE EDITS
-  // ============================================================================
-
-  /// Update individual profile fields
   Future<void> updateProfileField(
     String uid,
     String field,
     dynamic value,
   ) async {
-    try {
-      await _userDocRef(
-        uid,
-      ).update({field: value, 'updatedAt': FieldValue.serverTimestamp()});
-    } catch (e) {
-      throw DatingProfileException('Failed to update $field: $e');
-    }
+    await _userDocRef(
+      uid,
+    ).update({field: value, 'updatedAt': FieldValue.serverTimestamp()});
   }
 
-  /// Update multiple profile fields
   Future<void> updateProfileFields(
     String uid,
     Map<String, dynamic> fields,
   ) async {
-    try {
-      fields['updatedAt'] = FieldValue.serverTimestamp();
-      await _userDocRef(uid).update(fields);
-    } catch (e) {
-      throw DatingProfileException('Failed to update profile fields: $e');
-    }
+    fields['updatedAt'] = FieldValue.serverTimestamp();
+    await _userDocRef(uid).update(fields);
+  }
+
+  /// Best-effort migration for legacy verification flags into v2 structure.
+  /// Safe behavior:
+  /// - If v2 field already exists: do nothing.
+  /// - If legacy 'isVerified' == true and v2 missing: set dating.verificationStatus='verified'
+  /// - If legacy 'isVerified' != true and v2 missing: do nothing.
+  Future<void> migrateLegacyV1VerificationIfNeeded(String uid) async {
+    final ref = _userDocRef(uid);
+    final snap = await ref.get();
+    if (!snap.exists || snap.data() == null) return;
+
+    final data = snap.data()!;
+    final dating =
+        (data['dating'] is Map)
+            ? (data['dating'] as Map).cast<String, dynamic>()
+            : null;
+
+    final currentStatus = dating?['verificationStatus'];
+    if (currentStatus != null) return;
+
+    final legacyVerified = data['isVerified'] == true;
+    if (!legacyVerified) return;
+
+    await ref.update({
+      'dating.verificationStatus': 'verified',
+      'dating.verifiedAt': FieldValue.serverTimestamp(),
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
   }
 }
 
-/// Exception for dating profile operations
 class DatingProfileException implements Exception {
   final String message;
   DatingProfileException(this.message);

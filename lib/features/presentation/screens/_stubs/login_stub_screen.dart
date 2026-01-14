@@ -1,83 +1,117 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../../core/auth/auth_controller.dart';
-import '../../../../core/session/guest_session_provider.dart';
-import '../../../../core/user/user_profile_service.dart';
-
-class LoginStubScreen extends ConsumerStatefulWidget {
+class LoginStubScreen extends StatefulWidget {
   const LoginStubScreen({super.key});
 
   @override
-  ConsumerState<LoginStubScreen> createState() => _LoginStubScreenState();
+  State<LoginStubScreen> createState() => _LoginStubScreenState();
 }
 
-class _LoginStubScreenState extends ConsumerState<LoginStubScreen> {
-  final _email = TextEditingController();
-  final _password = TextEditingController();
+class _LoginStubScreenState extends State<LoginStubScreen> {
+  final _emailCtrl = TextEditingController();
+  final _passwordCtrl = TextEditingController();
+
   bool _loading = false;
   String? _error;
 
   @override
   void dispose() {
-    _email.dispose();
-    _password.dispose();
+    _emailCtrl.dispose();
+    _passwordCtrl.dispose();
     super.dispose();
   }
 
-  Future<void> _submit() async {
+  Future<void> _signIn() async {
+    final email = _emailCtrl.text.trim();
+    final password = _passwordCtrl.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      setState(() => _error = 'Please enter your email and password.');
+      return;
+    }
+
     setState(() {
       _loading = true;
       _error = null;
     });
 
     try {
-      await ref
-          .read(authControllerProvider)
-          .signIn(email: _email.text, password: _password.text);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
       if (!mounted) return;
-      Navigator.of(context).pop();
-    } catch (e) {
-      setState(() => _error = e.toString());
+      Navigator.of(context).pushNamedAndRemoveUntil('/home', (r) => false);
+    } on FirebaseAuthException catch (e) {
+      setState(() => _error = e.message ?? 'Login failed.');
+    } catch (_) {
+      setState(() => _error = 'Login failed.');
     } finally {
-      if (mounted) setState(() => _loading = false);
+      if (!mounted) return;
+      setState(() => _loading = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Log In')),
+      appBar: AppBar(title: const Text('Log in')),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             TextField(
-              controller: _email,
+              controller: _emailCtrl,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(labelText: 'Email'),
             ),
             const SizedBox(height: 12),
             TextField(
-              controller: _password,
+              controller: _passwordCtrl,
               obscureText: true,
               decoration: const InputDecoration(labelText: 'Password'),
             ),
             const SizedBox(height: 16),
-            if (_error != null)
-              Text(_error!, style: const TextStyle(color: Colors.red)),
-            const SizedBox(height: 12),
+            if (_error != null) ...[
+              Text(
+                _error!,
+                style: theme.textTheme.bodyMedium?.copyWith(color: Colors.red),
+              ),
+              const SizedBox(height: 12),
+            ],
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _loading ? null : _submit,
-                child: Text(_loading ? 'Signing in...' : 'Log in'),
+                onPressed: _loading ? null : _signIn,
+                child:
+                    _loading
+                        ? const SizedBox(
+                          height: 18,
+                          width: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                        : const Text('Log in'),
               ),
             ),
             const SizedBox(height: 12),
             TextButton(
-              onPressed: () => Navigator.of(context).pushNamed('/signup'),
-              child: const Text('Don’t have an account? Sign up'),
+              onPressed:
+                  _loading
+                      ? null
+                      : () =>
+                          Navigator.of(context).pushNamed('/forgot-password'),
+              child: const Text('Forgot password?'),
+            ),
+            TextButton(
+              onPressed:
+                  _loading
+                      ? null
+                      : () => Navigator.of(context).pushNamed('/signup'),
+              child: const Text('Create an account'),
             ),
           ],
         ),
