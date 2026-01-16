@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../auth/auth_providers.dart';
+import '../session/is_guest_provider.dart';
 import 'auth_gate_modal.dart';
 
 class GuestGuard {
@@ -14,14 +15,11 @@ class GuestGuard {
     required String primaryText,
     Future<void> Function()? onAllowed,
   }) async {
-    final authAsync = ref.read(authStateProvider);
+    final isGuestAsync = ref.read(isGuestProvider);
 
-    final isSignedIn = authAsync.maybeWhen(
-      data: (a) => a.isSignedIn,
-      orElse: () => false,
-    );
+    final isGuest = isGuestAsync.maybeWhen(data: (v) => v, orElse: () => true);
 
-    if (isSignedIn) {
+    if (!isGuest) {
       await onAllowed?.call();
       return;
     }

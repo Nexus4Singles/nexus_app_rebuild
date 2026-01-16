@@ -1,16 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
+import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
 import 'package:nexus_app_min_test/core/safe_providers/challenges_provider_safe.dart';
 import 'package:nexus_app_min_test/features/presentation/screens/challenges_detail_screen.dart';
 
 class ChallengesScreen extends ConsumerWidget {
   const ChallengesScreen({super.key});
 
-  void _openDetail(BuildContext context, SafeChallengeItem item) {
-    Navigator.push(
+  void _openDetail(
+    BuildContext context,
+    WidgetRef ref,
+    SafeChallengeItem item,
+  ) {
+    GuestGuard.requireSignedIn(
       context,
-      MaterialPageRoute(builder: (_) => ChallengeDetailScreen(challenge: item)),
+      ref,
+      title: 'Create an account',
+      message: 'Create an account to start journeys and track progress.',
+      primaryText: 'Create account',
+      onCreateAccount: () => Navigator.of(context).pushNamed('/signup'),
+      onAllowed: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ChallengeDetailScreen(challenge: item),
+          ),
+        );
+      },
     );
   }
 
@@ -40,7 +57,7 @@ class ChallengesScreen extends ConsumerWidget {
               subtitle: today.subtitle,
               description: today.description,
               icon: Icons.wb_sunny_outlined,
-              onTap: () => _openDetail(context, today),
+              onTap: () => _openDetail(context, ref, today),
             ),
             const SizedBox(height: 20),
             Text('More challenges', style: AppTextStyles.titleLarge),
@@ -55,7 +72,7 @@ class ChallengesScreen extends ConsumerWidget {
                     title: item.title,
                     subtitle: item.subtitle,
                     icon: Icons.emoji_events_outlined,
-                    onTap: () => _openDetail(context, item),
+                    onTap: () => _openDetail(context, ref, item),
                   );
                 },
               ),

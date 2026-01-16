@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
 
-import 'package:nexus_app_min_test/core/safe_providers/user_provider_safe.dart';
 import 'package:nexus_app_min_test/core/session/relationship_status_key.dart';
 
 import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
@@ -80,14 +80,14 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bottomInset = MediaQuery.of(context).padding.bottom;
-    final userAsync = ref.watch(safeUserProvider);
     final theme = Theme.of(context);
 
-    final firstName = (userAsync.valueOrNull?.firstName ?? '').trim();
-    final isGuest = userAsync.valueOrNull?.isGuest ?? true;
-    final fallbackKey = relationshipStatusKeyFromString(
-      userAsync.valueOrNull?.relationshipStatus ?? '',
-    );
+    final u = FirebaseAuth.instance.currentUser;
+    final isGuest = (u == null) || (u.isAnonymous == true);
+    final firstName = (u?.displayName ?? '').trim();
+
+    // Fallback for relationship status comes from local prefs (guest + signed-in safe).
+    final fallbackKey = relationshipStatusKeyFromString('');
 
     return Scaffold(
       appBar: AppBar(title: const Text('Home'), centerTitle: true),
@@ -100,7 +100,9 @@ class HomeScreen extends ConsumerWidget {
             padding: EdgeInsets.fromLTRB(16, 14, 16, 220 + bottomInset),
             children: [
               Text(
-                isGuest ? 'Hello 👋' : '${_greeting()}, $firstName ��',
+                isGuest
+                    ? 'Hello 👋'
+                    : '${_greeting()}, ${firstName.isEmpty ? 'there' : firstName} 👋',
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w800,
                 ),

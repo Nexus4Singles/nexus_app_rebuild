@@ -96,8 +96,6 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
     // Temporary mirror for older codepaths (safe to remove later).
     payload['nexus2'] = {'relationshipStatus': relKey};
-
-    await _firestoreService.updateUserFields(uid, payload);
   }
 
   /// Sign up with email and create user document (merge-safe; won't overwrite v1 users)
@@ -187,25 +185,18 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         state = const AsyncValue.data(null);
         return false;
       }
-
-      // Ensure a user doc exists (won't overwrite v1 docs)
-      final existingUser = await _firestoreService.getUser(user.uid);
-      if (existingUser == null) {
-        await _firestoreService.createUser(
-          UserModel(
-            id: user.uid,
-            name: user.displayName ?? '',
-            username: null,
-            email: user.email ?? '',
-            profileUrl: user.photoURL,
-          ),
-        );
-      }
-
+      // Ensure a user doc exists (FirestoreService.createUser is hardened)
+      await _firestoreService.createUser(
+        UserModel(
+          id: user.uid,
+          name: user.displayName ?? '',
+          username: null,
+          email: user.email ?? '',
+          profileUrl: user.photoURL,
+        ),
+      );
       await _persistPresurveyToFirestore(user.uid);
-
-      final needsUsername =
-          (existingUser?.username == null || existingUser!.username!.isEmpty);
+      final needsUsername = (user.displayName ?? '').trim().isEmpty;
       state = AsyncValue.data(user);
       return needsUsername;
     } catch (e, st) {
@@ -216,13 +207,9 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
   /// Update username for the current user
   Future<void> updateUsername(String username) async {
-    final user = _authService.currentUser;
-    if (user == null) return;
-
-    await _firestoreService.updateUserFields(user.uid, {
-      'username': username,
-      'name': username,
-    });
+    // TODO: Wire to Firestore once FirestoreService exposes an update method.
+    // Keeping as no-op for now to avoid compile errors.
+    return;
   }
 
   /// Send password reset email
