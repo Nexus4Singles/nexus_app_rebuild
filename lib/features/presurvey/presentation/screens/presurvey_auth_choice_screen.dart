@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../guest/guest_entry_gate.dart';
@@ -10,7 +12,13 @@ import '../../../auth/presentation/screens/signup_screen.dart';
 class PresurveyAuthChoiceScreen extends StatelessWidget {
   const PresurveyAuthChoiceScreen({super.key});
 
-  void _continueAsGuest(BuildContext context) {
+  Future<void> _continueAsGuest(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('force_guest', true);
+
+    await FirebaseAuth.instance.signOut();
+
+    if (!context.mounted) return;
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_min_test/core/constants/app_constants.dart';
 import 'package:nexus_app_min_test/core/session/guest_session_provider.dart';
 import 'package:nexus_app_min_test/core/services/firestore_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
@@ -28,13 +29,19 @@ final authStateStreamProvider = Provider<Stream<User?>>((ref) {
 /// Provider for current user ID (null if not signed in)
 final currentUserIdProvider = Provider<String?>((ref) {
   final authState = ref.watch(authStateProvider);
-  return authState.whenData((user) => user?.uid).value;
+  final user = authState.whenData((u) => u).value;
+  if (user == null) return null;
+  if (user.isAnonymous) return null;
+  return user.uid;
 });
 
 /// Provider to check if user is authenticated
 final isAuthenticatedProvider = Provider<bool>((ref) {
   final authState = ref.watch(authStateProvider);
-  return authState.whenData((user) => user != null).value ?? false;
+  final user = authState.whenData((u) => u).value;
+  if (user == null) return false;
+  // Treat anonymous users as guests
+  return !user.isAnonymous;
 });
 
 class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
@@ -106,6 +113,9 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         password: password,
       );
 
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('force_guest');
+
       final user = credential.user;
       if (user != null) {
         // Create doc only if it doesn't exist (FirestoreService.createUser is hardened)
@@ -142,6 +152,9 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         password: password,
       );
 
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('force_guest');
+
       final user = credential.user;
       if (user != null) {
         await _persistPresurveyToFirestore(user.uid);
@@ -160,6 +173,9 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
     state = const AsyncValue.loading();
     try {
       final credential = await _authService.signInWithGoogle();
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('force_guest');
+
       if (credential == null) {
         // User cancelled
         state = AsyncValue.data(_authService.currentUser);

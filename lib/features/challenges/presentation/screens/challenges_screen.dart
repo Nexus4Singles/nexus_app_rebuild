@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/widgets/guest_guard.dart';
 
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/theme.dart';
@@ -210,17 +211,17 @@ class _FeaturedHeroCarousel extends StatelessWidget {
   }
 }
 
-class _FeaturedHeroCard extends StatelessWidget {
+class _FeaturedHeroCard extends ConsumerWidget {
   final JourneyV1 journey;
   const _FeaturedHeroCard({required this.journey});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final tint = AppColors.primary;
 
     return InkWell(
       borderRadius: BorderRadius.circular(22),
-      onTap: () => _openDetail(context, journey.id),
+      onTap: () => _openDetail(context, ref, journey.id),
       child: Container(
         width: 280,
         height: 150,
@@ -322,17 +323,17 @@ class _GlassPill extends StatelessWidget {
   }
 }
 
-class _ClassyJourneyListCard extends StatelessWidget {
+class _ClassyJourneyListCard extends ConsumerWidget {
   final JourneyV1 journey;
   const _ClassyJourneyListCard({required this.journey});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final tint = AppColors.primary;
 
     return InkWell(
       borderRadius: BorderRadius.circular(18),
-      onTap: () => _openDetail(context, journey.id),
+      onTap: () => _openDetail(context, ref, journey.id),
       child: Container(
         padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
         decoration: BoxDecoration(
@@ -456,11 +457,19 @@ class _ErrorState extends StatelessWidget {
   }
 }
 
-void _openDetail(BuildContext context, String journeyId) {
-  Navigator.pushNamed(
+void _openDetail(BuildContext context, WidgetRef ref, String journeyId) {
+  GuestGuard.requireSignedIn(
     context,
-    AppRoutes.journeyDetail.replaceFirst(':id', journeyId),
-    arguments: {'journeyId': journeyId},
+    ref,
+    title: 'Sign in required',
+    message: 'Create an account to start a Journey and track your progress.',
+    primaryText: 'Continue',
+    onCreateAccount: () {
+      Navigator.of(context).pushNamed(AppRoutes.login);
+    },
+    onAllowed: () async {
+      Navigator.of(context).pushNamed('/journey/$journeyId');
+    },
   );
 }
 

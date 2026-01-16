@@ -26,8 +26,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
 import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
-import 'package:nexus_app_min_test/core/bootstrap/bootstrap_gate.dart';
-import 'package:nexus_app_min_test/features/guest/guest_entry_gate.dart';
 import '../../../../core/user/dating_opt_in_provider.dart';
 
 Future<void> handleLogout(BuildContext context, WidgetRef ref) async {
@@ -151,6 +149,7 @@ class ProfileScreen extends ConsumerWidget {
     if (!isSignedIn) {
       return _GuestProfileGate(
         onCreateAccount: () => Navigator.of(context).pushNamed('/signup'),
+        onLogin: () => Navigator.of(context).pushNamed('/login'),
       );
     }
 
@@ -377,10 +376,14 @@ class _BasicProfileScreen extends StatelessWidget {
         elevation: 0,
         title: Text('Profile', style: AppTextStyles.titleLarge),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
+      body: ListView(
+        padding: EdgeInsets.fromLTRB(
+          16,
+          16,
+          16,
+          24 + MediaQuery.of(context).padding.bottom,
+        ),
+        children: [
             Container(
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
@@ -474,7 +477,6 @@ class _BasicProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 18),
           ],
-        ),
       ),
     );
   }
@@ -760,6 +762,7 @@ class _StatusOptionTile extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
+                textAlign: TextAlign.center,
                 style: AppTextStyles.bodyMedium.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
@@ -770,7 +773,6 @@ class _StatusOptionTile extends StatelessWidget {
               color: selected ? AppColors.primary : AppColors.textSecondary,
             ),
           ],
-        ),
       ),
     );
   }
@@ -940,6 +942,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
                               Flexible(
                                 child: Text(
                                   locationText,
+                                  textAlign: TextAlign.center,
                                   style: AppTextStyles.bodyMedium.copyWith(
                                     color: Colors.white70,
                                   ),
@@ -1080,6 +1083,18 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                                       },
                                                     ),
                                                     const SizedBox(height: 10),
+                                                    Text(
+                                                      'You’re in guest mode. Create an account to access your profile and start chatting.',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: AppTextStyles
+                                                          .bodyLarge
+                                                          .copyWith(
+                                                            color:
+                                                                AppColors
+                                                                    .textSecondary,
+                                                          ),
+                                                    ),
                                                     _StatusOptionTile(
                                                       label: 'Taken',
                                                       selected:
@@ -1410,6 +1425,7 @@ Future<void> _showReportSheet({
                   const SizedBox(height: 12),
                   Text(
                     'Reason',
+                    textAlign: TextAlign.center,
                     style: AppTextStyles.bodyMedium.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -1445,6 +1461,7 @@ Future<void> _showReportSheet({
                   const SizedBox(height: 12),
                   Text(
                     'Notes (optional)',
+                    textAlign: TextAlign.center,
                     style: AppTextStyles.bodyMedium.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -2118,7 +2135,6 @@ class _PremiumButton extends StatelessWidget {
             ),
             const Icon(Icons.lock_rounded, color: AppColors.textSecondary),
           ],
-        ),
       ),
     );
   }
@@ -2208,24 +2224,6 @@ class _AccountTiles extends StatelessWidget {
           },
         ),
         const SizedBox(height: 10),
-        _ProfileTile(
-          icon: Icons.logout,
-          title: 'Sign out',
-          subtitle: 'Return to guest mode',
-          onTap: () async {
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setBool('force_guest', true);
-            await FirebaseAuth.instance.signOut();
-            if (!context.mounted) return;
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (_) => const GuestEntryGate(child: BootstrapGate()),
-              ),
-              (_) => false,
-            );
-          },
-        ),
-        const SizedBox(height: 10),
         const SizedBox(height: 10),
         _ProfileTile(
           icon: Icons.favorite_border_rounded,
@@ -2249,6 +2247,7 @@ class _AccountTiles extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         'If you turn dating off, you won\'t appear in Search and you won\'t be able to view other users in the pool.',
+                        textAlign: TextAlign.center,
                         style: AppTextStyles.bodyMedium.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -2342,7 +2341,8 @@ class _DatingProfileRequiredGate extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              'You need a dating profile to view other users in the pool.',
+              'You’re in guest mode. Create an account to access your profile and start chatting.',
+              textAlign: TextAlign.center,
               style: AppTextStyles.bodyLarge.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -2366,7 +2366,6 @@ class _DatingProfileRequiredGate extends StatelessWidget {
               ),
             ),
           ],
-        ),
       ),
     );
   }
@@ -2383,7 +2382,12 @@ class _DatingProfileRequiredGate extends StatelessWidget {
 /// ------------------------------
 class _GuestProfileGate extends StatelessWidget {
   final VoidCallback onCreateAccount;
-  const _GuestProfileGate({required this.onCreateAccount});
+  final VoidCallback onLogin;
+
+  const _GuestProfileGate({
+    required this.onCreateAccount,
+    required this.onLogin,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -2395,37 +2399,63 @@ class _GuestProfileGate extends StatelessWidget {
         title: Text('Profile', style: AppTextStyles.headlineLarge),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Create an account', style: AppTextStyles.headlineLarge),
-            const SizedBox(height: 10),
-            Text(
-              'You’re currently in guest mode. To access dating profiles, create an account && complete your dating profile.',
-              style: AppTextStyles.bodyLarge.copyWith(
-                color: AppColors.textSecondary,
+        padding: const EdgeInsets.all(16),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 520),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Create an account',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Create an account to access your profile, connect with people, and chat.',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed: onCreateAccount,
+                      child: const FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text('Create an account'),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: OutlinedButton(
+                      onPressed: onLogin,
+                      child: const FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text('Log in'),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 18),
-            ElevatedButton(
-              onPressed: onCreateAccount,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 14,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-              ),
-              child: Text(
-                'Create an account',
-                style: AppTextStyles.titleMedium.copyWith(color: Colors.white),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -2433,7 +2463,7 @@ class _GuestProfileGate extends StatelessWidget {
 }
 
 /// ------------------------------
-/// LOADING / ERROR / NOT FOUND
+/// LOADING / ERROR / NOT FOUND / ERROR / NOT FOUND
 /// ------------------------------
 class _ProfileLoading extends StatelessWidget {
   const _ProfileLoading();
@@ -2493,7 +2523,6 @@ class _ProfileError extends StatelessWidget {
               ),
             ),
           ],
-        ),
       ),
     );
   }
@@ -2802,7 +2831,6 @@ class _PhotoViewerScreenState extends State<_PhotoViewerScreen> {
                 ),
               ),
           ],
-        ),
       ),
     );
   }
@@ -3234,7 +3262,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
                 child: const Center(child: CircularProgressIndicator()),
               ),
           ],
-        ),
       ),
     );
   }
@@ -4205,6 +4232,7 @@ class _DropdownField extends StatelessWidget {
               value: safeValue.isEmpty ? null : safeValue,
               hint: Text(
                 'Select $label',
+                textAlign: TextAlign.center,
                 style: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -4256,7 +4284,9 @@ class _AdminReviewEntry extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isAdmin = ref.watch(isAdminProvider).valueOrNull ?? false;
+    final isAdmin = ref
+        .watch(isAdminProvider)
+        .maybeWhen(data: (v) => v, orElse: () => false);
     if (!isAdmin) return const SizedBox.shrink();
 
     return Padding(

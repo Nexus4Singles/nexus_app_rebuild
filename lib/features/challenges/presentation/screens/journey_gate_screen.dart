@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/auth/auth_providers.dart';
 
 import '../../../../core/theme/theme.dart';
+import '../../../../core/router/app_routes.dart';
+import '../../../../core/widgets/guest_guard.dart';
 import '../../domain/journey_v1_models.dart';
 import '../../providers/journeys_providers.dart';
 import 'journey_session_screen.dart';
 
-class JourneyGateScreen extends ConsumerWidget {
+class JourneyGateScreen extends ConsumerStatefulWidget {
   final String journeyId;
   final String missionId;
 
@@ -17,7 +20,59 @@ class JourneyGateScreen extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<JourneyGateScreen> createState() => _JourneyGateScreenState();
+}
+
+class _JourneyGateScreenState extends ConsumerState<JourneyGateScreen> {
+  bool _gateChecked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _ensureSignedIn());
+  }
+
+  Future<void> _ensureSignedIn() async {
+    if (_gateChecked) return;
+    _gateChecked = true;
+
+    await GuestGuard.requireSignedIn(
+      context,
+      ref,
+      title: 'Sign in required',
+      message: 'Create an account to start Activities and track your progress.',
+      primaryText: 'Continue',
+      onCreateAccount: () {
+        Navigator.of(context).pushNamed(AppRoutes.login);
+      },
+    );
+
+    final authAsync = ref.read(authStateProvider);
+    final isSignedIn = authAsync.maybeWhen(
+      data: (a) => a.isSignedIn,
+      orElse: () => false,
+    );
+    if (!isSignedIn && mounted) {
+      Navigator.of(context).maybePop();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final authAsync = ref.watch(authStateProvider);
+    final isSignedIn = authAsync.maybeWhen(
+      data: (a) => a.isSignedIn,
+      orElse: () => false,
+    );
+    if (!isSignedIn) {
+      return const Scaffold(
+        backgroundColor: AppColors.background,
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    final journeyId = widget.journeyId;
+    final missionId = widget.missionId;
     final journey = ref.watch(journeyByIdProvider(journeyId));
 
     if (journey == null) {

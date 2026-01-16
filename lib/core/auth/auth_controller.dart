@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../bootstrap/firebase_ready_provider.dart';
 
@@ -21,6 +22,8 @@ class AuthController {
       email: email.trim(),
       password: password,
     );
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('force_guest');
   }
 
   Future<void> signIn({required String email, required String password}) async {
@@ -28,6 +31,8 @@ class AuthController {
       email: email.trim(),
       password: password,
     );
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('force_guest');
   }
 
   Future<void> signOut() async {

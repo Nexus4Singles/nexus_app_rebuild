@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
+
 import 'package:nexus_app_min_test/core/safe_providers/user_provider_safe.dart';
 import 'package:nexus_app_min_test/core/session/relationship_status_key.dart';
 
@@ -136,8 +138,21 @@ class HomeScreen extends ConsumerWidget {
                       width: double.infinity,
                       height: 48,
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('/assessment');
+                        onPressed: () async {
+                          await GuestGuard.requireSignedIn(
+                            context,
+                            ref,
+                            title: 'Create an account',
+                            message:
+                                'Create an account to start your assessment and unlock personalized recommendations.',
+                            primaryText: 'Create an account',
+                            onCreateAccount:
+                                () =>
+                                    Navigator.of(context).pushNamed('/signup'),
+                            onAllowed: () async {
+                              Navigator.of(context).pushNamed('/assessment');
+                            },
+                          );
                         },
                         child: const Text('Start Assessment'),
                       ),
@@ -187,8 +202,21 @@ class HomeScreen extends ConsumerWidget {
                         pillText: 'New',
                         progress: null,
                         ctaText: 'Start Now',
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/challenges');
+                        onTap: () async {
+                          await GuestGuard.requireSignedIn(
+                            context,
+                            ref,
+                            title: 'Create an account',
+                            message:
+                                'Create an account to start journeys and unlock personalized guidance.',
+                            primaryText: 'Create an account',
+                            onCreateAccount:
+                                () =>
+                                    Navigator.of(context).pushNamed('/signup'),
+                            onAllowed: () async {
+                              Navigator.of(context).pushNamed('/challenges');
+                            },
+                          );
                         },
                       ),
                       const SizedBox(height: 12),

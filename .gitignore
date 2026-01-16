@@ -99,3 +99,16 @@ lib/core/services/assessment_recommendation_service.dart
 *-firebase-adminsdk-*.json
 *adminsdk*.json
 serviceAccount*.json
+
+# Firestore rules backups
+firebase_deploy/**/firestore.rules.bak_*
+firebase_deploy/**/firestore.rules.bak*
+
+# Flutter build artifacts
+build/
+.dart_tool/
+
+# Node artifacts
+node_modules/
+functions/node_modules/
+

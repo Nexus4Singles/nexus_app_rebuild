@@ -186,7 +186,7 @@ class ChatService {
 
   // Collection references
   CollectionReference<Map<String, dynamic>> get _chatsRef =>
-      _fs.collection('chats');
+      _fs.collection('nexus2_chats');
 
   CollectionReference<Map<String, dynamic>> _messagesRef(String chatId) =>
       _chatsRef.doc(chatId).collection('messages');
@@ -199,6 +199,12 @@ class ChatService {
     final data = doc.data();
     if (data == null) return false;
 
+    // v2 canonical disable flag
+    final account = (data['account'] is Map) ? (data['account'] as Map) : null;
+    final isDisabled = account?['isDisabled'];
+    if (isDisabled == true) return true;
+
+    // Legacy fallbacks (safe for older docs)
     final accountStatus = data['accountStatus']?.toString().toLowerCase();
     if (accountStatus == 'disabled') return true;
 
@@ -246,6 +252,44 @@ class ChatService {
   }
 
   // ============================================================================
+
+  // ============================================================================
+  // GENDER GUARDS
+  // ============================================================================
+  String? _normalizeGender(dynamic value) {
+    final s = value?.toString().trim().toLowerCase();
+    if (s == null || s.isEmpty) return null;
+
+    // Accept v1/v2 variants by normalization.
+    if (s == 'male') return 'male';
+    if (s == 'female') return 'female';
+
+    return null;
+  }
+
+  Future<void> _assertOppositeGender(String userId1, String userId2) async {
+    final d1 = await _fs.collection('users').doc(userId1).get();
+    final d2 = await _fs.collection('users').doc(userId2).get();
+
+    final m1 = d1.data();
+    final m2 = d2.data();
+
+    // v1 stores gender at root: users/{uid}.gender (often "Male"/"Female")
+    final g1 = _normalizeGender(m1?['gender']);
+    final g2 = _normalizeGender(m2?['gender']);
+
+    final isOpposite =
+        (g1 == 'male' && g2 == 'female') || (g1 == 'female' && g2 == 'male');
+
+    // Strict product rule: only male<->female chats are allowed.
+    // Unknown/missing genders are rejected.
+    if (!isOpposite) {
+      throw ChatException(
+        'You can only start chats with users of the opposite gender.',
+      );
+    }
+  }
+
   // CONVERSATION MANAGEMENT
   // ============================================================================
 
@@ -255,6 +299,7 @@ class ChatService {
     try {
       await _assertUsersNotDisabled([userId1, userId2]);
 
+      await _assertOppositeGender(userId1, userId2);
       // Check if conversation already exists
       final existingChat = await getConversationBetween(userId1, userId2);
       if (existingChat != null) {

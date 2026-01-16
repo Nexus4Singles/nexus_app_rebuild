@@ -304,6 +304,39 @@ class MediaService {
     return 'users/$userId/photos/photo_${photoIndex}_$ts.$safeExt';
   }
 
+  String _buildChatImageObjectKey({
+    required String userId,
+    required String chatId,
+    required String extension,
+  }) {
+    final ts = DateTime.now().millisecondsSinceEpoch;
+    final safeExt =
+        extension.startsWith('.') ? extension.substring(1) : extension;
+    return 'users/$userId/chats/$chatId/images/img_$ts.$safeExt';
+  }
+
+  String _buildChatAudioObjectKey({
+    required String userId,
+    required String chatId,
+    required String extension,
+  }) {
+    final ts = DateTime.now().millisecondsSinceEpoch;
+    final safeExt =
+        extension.startsWith('.') ? extension.substring(1) : extension;
+    return 'users/$userId/chats/$chatId/audio/aud_$ts.$safeExt';
+  }
+
+  String _buildPromptAudioObjectKey({
+    required String userId,
+    required int questionIndex,
+    required String extension,
+  }) {
+    final ts = DateTime.now().millisecondsSinceEpoch;
+    final safeExt =
+        extension.startsWith('.') ? extension.substring(1) : extension;
+    return 'users/$userId/audio_prompts/q_${questionIndex}_$ts.$safeExt';
+  }
+
   String _objectKeyFromPublicUrl(String url) {
     final bucket = DoSpacesConfig.bucket;
     final marker = '/$bucket/';
@@ -576,6 +609,66 @@ class MediaService {
   Stream<Duration> get onDurationChanged => _audioPlayer.onDurationChanged;
 
   // ============================================================================
+  // CHAT MEDIA UPLOAD (DigitalOcean Spaces)
+  // ============================================================================
+
+  Future<String> uploadChatImage({
+    required String userId,
+    required String chatId,
+    required File imageFile,
+    Function(double)? onProgress,
+  }) async {
+    try {
+      onProgress?.call(0.0);
+      final ext =
+          p.extension(imageFile.path).isNotEmpty
+              ? p.extension(imageFile.path)
+              : '.jpg';
+      final objectKey = _buildChatImageObjectKey(
+        userId: userId,
+        chatId: chatId,
+        extension: ext,
+      );
+
+      final url = await _spacesStorage.uploadImage(
+        localPath: imageFile.path,
+        objectKey: objectKey,
+      );
+      onProgress?.call(1.0);
+      return url;
+    } catch (e) {
+      throw MediaException('Failed to upload chat image: $e');
+    }
+  }
+
+  Future<String> uploadChatAudio({
+    required String userId,
+    required String chatId,
+    required String filePath,
+    Function(double)? onProgress,
+  }) async {
+    try {
+      onProgress?.call(0.0);
+      final ext =
+          p.extension(filePath).isNotEmpty ? p.extension(filePath) : '.m4a';
+      final objectKey = _buildChatAudioObjectKey(
+        userId: userId,
+        chatId: chatId,
+        extension: ext,
+      );
+
+      final url = await _spacesStorage.uploadImage(
+        localPath: filePath,
+        objectKey: objectKey,
+      );
+      onProgress?.call(1.0);
+      return url;
+    } catch (e) {
+      throw MediaException('Failed to upload chat audio: $e');
+    }
+  }
+
+  // ============================================================================
   // AUDIO UPLOAD
   // ============================================================================
 
@@ -587,12 +680,44 @@ class MediaService {
     required int questionIndex,
     Function(double)? onProgress,
   }) async {
-    throw MediaException("Upload not wired (DigitalOcean storage pending)");
+    try {
+      onProgress?.call(0.0);
+
+      final file = File(filePath);
+      if (!await file.exists()) {
+        throw MediaException('Audio file does not exist: $filePath');
+      }
+
+      final ext =
+          p.extension(filePath).isNotEmpty ? p.extension(filePath) : '.m4a';
+
+      // Reuse the existing helper (keeps object keys consistent + avoids unused warning).
+      final objectKey = _buildPromptAudioObjectKey(
+        userId: userId,
+        questionIndex: questionIndex,
+        extension: ext,
+      );
+
+      final url = await _spacesStorage.uploadImage(
+        localPath: filePath,
+        objectKey: objectKey,
+      );
+
+      onProgress?.call(1.0);
+      return url;
+    } catch (e) {
+      throw MediaException('Failed to upload audio: $e');
+    }
   }
 
   /// Delete audio from Firebase Storage
   Future<void> deleteAudioRecording(String audioUrl) async {
-    throw MediaException("Delete not wired (DigitalOcean storage pending)");
+    try {
+      final objectKey = _objectKeyFromPublicUrl(audioUrl);
+      await _spacesStorage.deleteObject(objectKey: objectKey);
+    } catch (e) {
+      throw MediaException('Failed to delete audio: $e');
+    }
   }
 
   // ============================================================================

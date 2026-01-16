@@ -1,13 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'current_user_doc_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-final isAdminProvider = Provider<bool>((ref) {
-  final docAsync = ref.watch(currentUserDocProvider);
-  return docAsync.maybeWhen(
-    data: (doc) {
-      final roles = (doc?['roles'] is Map) ? doc!['roles'] as Map : null;
-      return roles?['isAdmin'] == true;
-    },
-    orElse: () => false,
-  );
+/// Admin gate uses Firebase Auth custom claims:
+/// - Firestore rules check: request.auth.token.admin == true
+/// So the client must also check the same source of truth.
+final isAdminProvider = FutureProvider<bool>((ref) async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) return false;
+
+  // Force refresh so recently granted claims propagate after sign-in.
+  final token = await user.getIdTokenResult(true);
+  final claims = token.claims ?? const <String, Object?>{};
+  return claims['admin'] == true;
 });

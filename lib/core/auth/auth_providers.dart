@@ -1,20 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-import '../bootstrap/firebase_ready_provider.dart';
+import '../providers/auth_provider.dart' as v2;
 import 'auth_state.dart';
 
-final firebaseAuthProvider = Provider<FirebaseAuth?>((ref) {
-  final ready = ref.watch(firebaseReadyProvider);
-  if (!ready) return null;
-  return FirebaseAuth.instance;
-});
-
+/// Compatibility layer:
+/// Some screens still expect `authStateProvider` to yield `AuthState` (wrapper).
+/// The canonical auth state is now in `core/providers/auth_provider.dart`
+/// and yields `User?`. We wrap that canonical stream here so the whole app
+/// observes ONE auth source of truth.
 final authStateProvider = StreamProvider<AuthState>((ref) {
-  final auth = ref.watch(firebaseAuthProvider);
-  if (auth == null) {
-    return Stream.value(const AuthState(null));
-  }
-
-  return auth.authStateChanges().map((u) => AuthState(u));
+  final stream = ref.watch(v2.authStateStreamProvider);
+  return stream.map((u) => AuthState(u));
 });

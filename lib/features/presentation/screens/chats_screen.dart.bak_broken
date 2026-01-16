@@ -251,7 +251,6 @@ class ChatsScreen extends ConsumerWidget {
                   const SizedBox(height: 8),
                   Text(
                     'You need a completed dating profile to use chats.',
-                    textAlign: TextAlign.center,
                     style: AppTextStyles.bodyMedium.copyWith(
                       color: AppColors.textSecondary,
                     ),

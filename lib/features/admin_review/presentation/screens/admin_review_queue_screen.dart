@@ -10,7 +10,9 @@ class AdminReviewQueueScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isAdmin = ref.watch(isAdminProvider);
+    final isAdmin = ref
+        .watch(isAdminProvider)
+        .maybeWhen(data: (v) => v, orElse: () => false);
     if (!isAdmin) {
       return const Scaffold(body: Center(child: Text('Admin access required')));
     }

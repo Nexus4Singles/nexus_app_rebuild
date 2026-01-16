@@ -1,10 +1,11 @@
+import 'dart:io';
 import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
 import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nexus_app_min_test/core/services/chat_service.dart';
 
 import '../services/media_service.dart';
 import '../services/dating_profile_service.dart';
-import '../services/chat_service.dart';
 import 'auth_provider.dart';
 import 'user_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -131,6 +132,20 @@ final chatMessagesProvider = StreamProvider.family<List<ChatMessage>, String>((
   return chatService.streamMessages(chatId);
 });
 
+/// Provider for a conversation by chatId (one-shot)
+final chatConversationProvider =
+    FutureProvider.family<ChatConversation?, String>((ref, chatId) async {
+      final ready = ref.watch(firebaseReadyProvider);
+      if (!ready) return null;
+
+      final chatService = ref.watch(chatServiceProvider);
+      try {
+        return await chatService.getConversation(chatId);
+      } catch (_) {
+        return null;
+      }
+    });
+
 /// Provider for typing users in a chat
 final typingUsersProvider = StreamProvider.family<List<String>, String>((
   ref,
@@ -165,29 +180,53 @@ final getOrCreateChatProvider = FutureProvider.family<String, String>((
 /// State notifier for chat operations
 class ChatNotifier extends StateNotifier<AsyncValue<void>> {
   final ChatService _chatService;
+  final MediaService _mediaService;
   final String _currentUserId;
   final Future<bool> Function() _isDisabled;
 
-  ChatNotifier(this._chatService, this._currentUserId, this._isDisabled)
-    : super(const AsyncValue.data(null));
+  ChatNotifier(
+    this._chatService,
+    this._mediaService,
+    this._currentUserId,
+    this._isDisabled,
+  ) : super(const AsyncValue.data(null));
 
-  /// Send a text message
+  bool _looksLikeHttpUrl(String s) {
+    final v = s.trim().toLowerCase();
+    return v.startsWith('http://') || v.startsWith('https://');
+  }
+
+  bool _isLocalFilePath(String s) {
+    if (_looksLikeHttpUrl(s)) return false;
+    try {
+      return File(s).existsSync();
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Send a text message (optionally includes metadata e.g. reply info)
   Future<ChatMessage?> sendMessage({
     required String chatId,
     required String receiverId,
     required String content,
+    Map<String, dynamic>? metadata,
   }) async {
     state = const AsyncValue.loading();
     try {
       if (await _isDisabled()) {
         throw StateError('Your account has been disabled by Admin.');
       }
-      final message = await _chatService.sendTextMessage(
+
+      final message = await _chatService.sendMessage(
         chatId: chatId,
         senderId: _currentUserId,
         receiverId: receiverId,
-        text: content,
+        content: content,
+        type: MessageType.text,
+        metadata: metadata,
       );
+
       state = const AsyncValue.data(null);
       return message;
     } catch (e, st) {
@@ -196,25 +235,44 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
     }
   }
 
-  /// Send an image message
+  /// Send an image message (content is a URL for prod; can be a local path in dev)
   Future<ChatMessage?> sendImage({
     required String chatId,
     required String receiverId,
     required String imageUrl,
     String? caption,
+    Map<String, dynamic>? metadata,
   }) async {
     state = const AsyncValue.loading();
     try {
       if (await _isDisabled()) {
         throw StateError('Your account has been disabled by Admin.');
       }
-      final message = await _chatService.sendImageMessage(
+
+      final merged = <String, dynamic>{
+        if (metadata != null) ...metadata,
+        if (caption != null) 'caption': caption,
+      };
+
+      // If caller passed a local file path, upload to Spaces and store the public URL in Firestore.
+      String finalImageUrl = imageUrl;
+      if (_isLocalFilePath(imageUrl)) {
+        finalImageUrl = await _mediaService.uploadChatImage(
+          userId: _currentUserId,
+          chatId: chatId,
+          imageFile: File(imageUrl),
+        );
+      }
+
+      final message = await _chatService.sendMessage(
         chatId: chatId,
         senderId: _currentUserId,
         receiverId: receiverId,
-        imageUrl: imageUrl,
-        caption: caption,
+        content: finalImageUrl,
+        type: MessageType.image,
+        metadata: merged.isEmpty ? null : merged,
       );
+
       state = const AsyncValue.data(null);
       return message;
     } catch (e, st) {
@@ -223,25 +281,44 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
     }
   }
 
-  /// Send an audio message
+  /// Send an audio message (content is a URL for prod; can be a local path in dev)
   Future<ChatMessage?> sendAudio({
     required String chatId,
     required String receiverId,
     required String audioUrl,
     required int durationSeconds,
+    Map<String, dynamic>? metadata,
   }) async {
     state = const AsyncValue.loading();
     try {
       if (await _isDisabled()) {
         throw StateError('Your account has been disabled by Admin.');
       }
-      final message = await _chatService.sendAudioMessage(
+
+      final merged = <String, dynamic>{
+        if (metadata != null) ...metadata,
+        'duration': durationSeconds,
+      };
+
+      // If caller passed a local file path, upload to Spaces and store the public URL in Firestore.
+      String finalAudioUrl = audioUrl;
+      if (_isLocalFilePath(audioUrl)) {
+        finalAudioUrl = await _mediaService.uploadChatAudio(
+          userId: _currentUserId,
+          chatId: chatId,
+          filePath: audioUrl,
+        );
+      }
+
+      final message = await _chatService.sendMessage(
         chatId: chatId,
         senderId: _currentUserId,
         receiverId: receiverId,
-        audioUrl: audioUrl,
-        durationSeconds: durationSeconds,
+        content: finalAudioUrl,
+        type: MessageType.audio,
+        metadata: merged,
       );
+
       state = const AsyncValue.data(null);
       return message;
     } catch (e, st) {
@@ -250,21 +327,21 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
     }
   }
 
-  /// Mark messages as read
+  /// Mark messages as read in this chat
   Future<void> markAsRead(String chatId) async {
     try {
       await _chatService.markMessagesAsRead(chatId, _currentUserId);
-    } catch (e) {
-      // Silent fail - not critical
+    } catch (_) {
+      // Silent fail
     }
   }
 
-  /// Set typing status
+  /// Typing indicator
   Future<void> setTyping(String chatId, bool isTyping) async {
     try {
       await _chatService.setTypingStatus(chatId, _currentUserId, isTyping);
-    } catch (e) {
-      // Silent fail - not critical
+    } catch (_) {
+      // Silent fail
     }
   }
 }
@@ -280,7 +357,8 @@ final chatNotifierProvider =
       }
 
       Future<bool> isDisabled() => ref.read(currentUserDisabledProvider.future);
-      return ChatNotifier(chatService, userId, isDisabled);
+      final mediaService = ref.watch(mediaServiceProvider);
+      return ChatNotifier(chatService, mediaService, userId, isDisabled);
     });
 
 // ============================================================================

@@ -7,20 +7,15 @@ import 'package:just_audio/just_audio.dart';
 import 'package:nexus_app_min_test/core/auth/auth_providers.dart';
 import 'package:nexus_app_min_test/core/dating/dating_profile_gate.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
+import 'package:nexus_app_min_test/core/services/chat_service.dart';
 import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
 import 'package:nexus_app_min_test/core/widgets/disabled_account_gate.dart';
+import 'package:nexus_app_min_test/core/providers/service_providers.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 
 enum _MessageKind { text, image, audio }
-
-// Dev-only bypass so you can test chat media while Firebase/auth is not wired.
-// Run with: flutter run --dart-define=NEXUS_CHAT_DEV_BYPASS=true
-const bool _kChatDevBypass = bool.fromEnvironment(
-  'NEXUS_CHAT_DEV_BYPASS',
-  defaultValue: false,
-);
 
 class ChatThreadScreen extends ConsumerStatefulWidget {
   final String chatId;
@@ -45,24 +40,8 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   String? _playingMessageId;
 
   _UiMessage? _replyTo;
-
-  // Local-only messages for now (UI + media first). Swap to Firestore later.
-  final List<_UiMessage> _messages = [
-    _UiMessage.text(
-      id: 'm1',
-      text: 'Hello 👋',
-      isMe: false,
-      timeLabel: '10:18',
-    ),
-    _UiMessage.text(id: 'm2', text: 'Hi!', isMe: true, timeLabel: '10:19'),
-    _UiMessage.text(
-      id: 'm3',
-      text:
-          'Long press a message to reply. You can also send voice notes and images locally.',
-      isMe: false,
-      timeLabel: '10:20',
-    ),
-  ];
+  bool _didMarkAsReadForOpen = false;
+  // Messages are Firestore-backed via chatMessagesProvider.
 
   @override
   void initState() {
@@ -100,13 +79,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       data: (a) => a.isSignedIn,
       orElse: () => false,
     );
-
     if (!isSignedIn) {
-      if (_kChatDevBypass) {
-        await onAllowed();
-        return;
-      }
-
       GuestGuard.requireSignedIn(
         context,
         ref,
@@ -137,15 +110,6 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       );
     });
   }
-
-  String _nowLabel() {
-    final t = TimeOfDay.now();
-    final h = t.hour.toString().padLeft(2, '0');
-    final m = t.minute.toString().padLeft(2, '0');
-    return '$h:$m';
-  }
-
-  String _newId() => DateTime.now().microsecondsSinceEpoch.toString();
 
   String _replySnippet(_UiMessage m) {
     switch (m.kind) {
@@ -216,22 +180,48 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
     if (text.isEmpty) return;
 
     await _ensureSignedInThen(() async {
-      final reply = _replyTo;
-      setState(() {
-        _messages.insert(
-          0,
-          _UiMessage.text(
-            id: _newId(),
-            text: text,
-            isMe: true,
-            timeLabel: _nowLabel(),
-            replyToId: reply?.id,
-            replyToSnippet: reply == null ? null : _replySnippet(reply),
-            replyToWasMine: reply?.isMe,
+      final authAsync = ref.read(authStateProvider);
+      final me = authAsync.maybeWhen(
+        data: (a) => a.user?.uid,
+        orElse: () => null,
+      );
+      if (me == null) return;
+
+      final convo = await ref.read(
+        chatConversationProvider(widget.chatId).future,
+      );
+      final otherId = convo?.getOtherParticipantId(me) ?? '';
+
+      if (otherId.isEmpty) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not determine the other user in this chat.'),
           ),
         );
-        _replyTo = null;
-      });
+        return;
+      }
+
+      final reply = _replyTo;
+      final metadata =
+          reply == null
+              ? null
+              : <String, dynamic>{
+                'replyToId': reply.id,
+                'replyToSnippet': _replySnippet(reply),
+                'replyToWasMine': reply.isMe,
+              };
+
+      await ref
+          .read(chatNotifierProvider.notifier)
+          .sendMessage(
+            chatId: widget.chatId,
+            receiverId: otherId,
+            content: text,
+            metadata: metadata,
+          );
+
+      setState(() => _replyTo = null);
       _controller.clear();
       _scrollToBottomSoon();
     });
@@ -326,23 +316,55 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       );
       if (picked == null) return;
 
-      final reply = _replyTo;
+      final authAsync = ref.read(authStateProvider);
+      final me = authAsync.maybeWhen(
+        data: (a) => a.user?.uid,
+        orElse: () => null,
+      );
+      if (me == null) return;
 
-      setState(() {
-        _messages.insert(
-          0,
-          _UiMessage.image(
-            id: _newId(),
-            filePath: picked.path,
-            isMe: true,
-            timeLabel: _nowLabel(),
-            replyToId: reply?.id,
-            replyToSnippet: reply == null ? null : _replySnippet(reply),
-            replyToWasMine: reply?.isMe,
+      final convo = await ref.read(
+        chatConversationProvider(widget.chatId).future,
+      );
+      final otherId = convo?.getOtherParticipantId(me) ?? '';
+      if (otherId.isEmpty) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not determine the other user in this chat.'),
           ),
         );
-        _replyTo = null;
-      });
+        return;
+      }
+
+      final reply = _replyTo;
+      final metadata =
+          reply == null
+              ? null
+              : <String, dynamic>{
+                'replyToId': reply.id,
+                'replyToSnippet': _replySnippet(reply),
+                'replyToWasMine': reply.isMe,
+              };
+
+      final media = ref.read(mediaServiceProvider);
+      final imageUrl = await media.uploadChatImage(
+        chatId: widget.chatId,
+        userId: me,
+        imageFile: File(picked.path),
+      );
+
+      await ref
+          .read(chatNotifierProvider.notifier)
+          .sendImage(
+            chatId: widget.chatId,
+            receiverId: otherId,
+            imageUrl: imageUrl, // dev: local path; prod: upload -> URL later
+            metadata: metadata,
+          );
+
+      if (!mounted) return;
+      setState(() => _replyTo = null);
       _scrollToBottomSoon();
     });
   }
@@ -443,23 +465,67 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       return;
     }
 
-    final reply = _replyTo;
+    final authAsync = ref.read(authStateProvider);
+    final me = authAsync.maybeWhen(
+      data: (a) => a.user?.uid,
+      orElse: () => null,
+    );
+    if (me == null) return;
 
-    setState(() {
-      _messages.insert(
-        0,
-        _UiMessage.audio(
-          id: _newId(),
-          filePath: path,
-          isMe: true,
-          timeLabel: _nowLabel(),
-          replyToId: reply?.id,
-          replyToSnippet: reply == null ? null : _replySnippet(reply),
-          replyToWasMine: reply?.isMe,
+    final convo = await ref.read(
+      chatConversationProvider(widget.chatId).future,
+    );
+    final otherId = convo?.getOtherParticipantId(me) ?? '';
+    if (otherId.isEmpty) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Could not determine the other user in this chat.'),
         ),
       );
-      _replyTo = null;
-    });
+      return;
+    }
+
+    final reply = _replyTo;
+    final metadata =
+        reply == null
+            ? null
+            : <String, dynamic>{
+              'replyToId': reply.id,
+              'replyToSnippet': _replySnippet(reply),
+              'replyToWasMine': reply.isMe,
+            };
+
+    // Compute duration (seconds) safely without interrupting playback.
+    int durationSeconds = 0;
+    try {
+      final tmp = AudioPlayer();
+      await tmp.setFilePath(path);
+      durationSeconds = tmp.duration?.inSeconds ?? 0;
+      await tmp.dispose();
+    } catch (_) {
+      durationSeconds = 0;
+    }
+
+    final media = ref.read(mediaServiceProvider);
+    final audioUrl = await media.uploadChatAudio(
+      chatId: widget.chatId,
+      userId: me,
+      filePath: path,
+    );
+
+    await ref
+        .read(chatNotifierProvider.notifier)
+        .sendAudio(
+          chatId: widget.chatId,
+          receiverId: otherId,
+          audioUrl: audioUrl, // dev: local path; prod: upload -> URL later
+          durationSeconds: durationSeconds, // TODO: compute duration later
+          metadata: metadata,
+        );
+
+    if (!mounted) return;
+    setState(() => _replyTo = null);
     _scrollToBottomSoon();
   }
 
@@ -488,7 +554,12 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
 
     try {
       await _player.stop();
-      await _player.setFilePath(msg.filePath!);
+      final p = msg.filePath!;
+      if (p.startsWith('http://') || p.startsWith('https://')) {
+        await _player.setUrl(p);
+      } else {
+        await _player.setFilePath(p);
+      }
       setState(() => _playingMessageId = msg.id);
       await _player.play();
     } catch (e) {
@@ -557,21 +628,109 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              controller: _scroll,
-              reverse: true,
-              padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final m = _messages[index];
-                return _Bubble(
-                  message: m,
-                  isPlaying: _playingMessageId == m.id && _player.playing,
-                  isThisAudioSelected: _playingMessageId == m.id,
-                  positionStream: _player.positionStream,
-                  durationStream: _player.durationStream,
-                  onAudioTap: () => _togglePlay(m),
-                  onLongPress: () => _openMessageActions(m),
+            child: Builder(
+              builder: (context) {
+                final authAsync = ref.watch(authStateProvider);
+                final me = authAsync.maybeWhen(
+                  data: (a) => a.user?.uid,
+                  orElse: () => null,
+                );
+
+                final messagesAsync = ref.watch(
+                  chatMessagesProvider(widget.chatId),
+                );
+
+                return messagesAsync.when(
+                  loading:
+                      () => const Center(child: CircularProgressIndicator()),
+                  error:
+                      (_, __) => Center(
+                        child: Text(
+                          'Unable to load messages right now.',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.textMuted,
+                          ),
+                        ),
+                      ),
+                  data: (msgs) {
+                    final mine = me ?? '';
+                    final uiMsgs =
+                        msgs.map((m) {
+                          final isMe = m.senderId == mine;
+                          final t = TimeOfDay.fromDateTime(m.sentAt);
+                          final hh = t.hour.toString().padLeft(2, '0');
+                          final mm = t.minute.toString().padLeft(2, '0');
+
+                          final replyToSnippet =
+                              (m.metadata is Map)
+                                  ? (m.metadata?['replyToSnippet']?.toString())
+                                  : null;
+                          final replyToWasMine =
+                              (m.metadata is Map)
+                                  ? (m.metadata?['replyToWasMine'] == true)
+                                  : null;
+
+                          // Map Firestore message -> existing UI message type.
+                          if (m.type == MessageType.image) {
+                            return _UiMessage.image(
+                              id: m.id,
+                              filePath: m.content, // can be url
+                              isMe: isMe,
+                              timeLabel: '$hh:$mm',
+                              replyToSnippet: replyToSnippet,
+                              replyToWasMine: replyToWasMine,
+                            );
+                          }
+                          if (m.type == MessageType.audio) {
+                            return _UiMessage.audio(
+                              id: m.id,
+                              filePath: m.content, // can be url
+                              isMe: isMe,
+                              timeLabel: '$hh:$mm',
+                              replyToSnippet: replyToSnippet,
+                              replyToWasMine: replyToWasMine,
+                            );
+                          }
+                          return _UiMessage.text(
+                            id: m.id,
+                            text: m.content,
+                            isMe: isMe,
+                            timeLabel: '$hh:$mm',
+                            replyToSnippet: replyToSnippet,
+                            replyToWasMine: replyToWasMine,
+                          );
+                        }).toList();
+
+                    // Mark as read once per screen open (avoid firing on every rebuild).
+                    if (mine.isNotEmpty && !_didMarkAsReadForOpen) {
+                      _didMarkAsReadForOpen = true;
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        ref
+                            .read(chatNotifierProvider.notifier)
+                            .markAsRead(widget.chatId);
+                      });
+                    }
+
+                    return ListView.builder(
+                      controller: _scroll,
+                      reverse: true,
+                      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+                      itemCount: uiMsgs.length,
+                      itemBuilder: (context, index) {
+                        final m = uiMsgs[index];
+                        return _Bubble(
+                          message: m,
+                          isPlaying:
+                              _playingMessageId == m.id && _player.playing,
+                          isThisAudioSelected: _playingMessageId == m.id,
+                          positionStream: _player.positionStream,
+                          durationStream: _player.durationStream,
+                          onAudioTap: () => _togglePlay(m),
+                          onLongPress: () => _openMessageActions(m),
+                        );
+                      },
+                    );
+                  },
                 );
               },
             ),
