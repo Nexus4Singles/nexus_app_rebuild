@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nexus_app_min_test/core/constants/app_constants.dart';
 import 'package:nexus_app_min_test/core/session/guest_session_provider.dart';
+import 'package:nexus_app_min_test/core/user/user_schema_migrator.dart';
 import 'package:nexus_app_min_test/core/services/firestore_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -96,6 +97,49 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
     // Temporary mirror for older codepaths (safe to remove later).
     payload['nexus2'] = {'relationshipStatus': relKey};
+
+    // Write merge-safe (never overwrites existing v1 values outside these keys).
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .set(payload, SetOptions(merge: true));
+  }
+
+  Future<void> _ensureUserDocNormalized(User user) async {
+    final uid = user.uid;
+    final docRef = FirebaseFirestore.instance.collection('users').doc(uid);
+
+    final snap = await docRef.get();
+    final raw = (snap.data() ?? <String, dynamic>{});
+
+    // If missing doc entirely, create a minimal v2-compatible base doc (merge-safe).
+    if (!snap.exists) {
+      final base = <String, dynamic>{
+        'uid': uid,
+        'email': (user.email ?? '').trim().isEmpty ? null : user.email,
+        'profileUrl': user.photoURL,
+        'schemaVersion': 2,
+        'isGuest': false,
+        'isAdmin': false,
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+
+      await docRef.set(base, SetOptions(merge: true));
+      return;
+    }
+
+    // Existing doc (v1 or partial v2): patch missing v2 fields only.
+    final patch = buildUserV2Patch(
+      uid: uid,
+      raw: raw,
+      fallbackEmail: user.email,
+      fallbackDisplayName: user.displayName,
+      fallbackPhotoUrl: user.photoURL,
+    );
+
+    if (patch.isEmpty) return;
+    await docRef.set(patch, SetOptions(merge: true));
   }
 
   /// Sign up with email and create user document (merge-safe; won't overwrite v1 users)
@@ -116,6 +160,8 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
       final user = credential.user;
       if (user != null) {
+        await _ensureUserDocNormalized(user);
+
         // Create doc only if it doesn't exist (FirestoreService.createUser is hardened)
         await _firestoreService.createUser(
           UserModel(
@@ -128,6 +174,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         );
 
         // Attach presurvey -> nexus fields (merge-safe)
+        await _ensureUserDocNormalized(user);
         await _persistPresurveyToFirestore(user.uid);
       }
 
@@ -155,6 +202,8 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
       final user = credential.user;
       if (user != null) {
+        await _ensureUserDocNormalized(user);
+
         await _persistPresurveyToFirestore(user.uid);
       }
 
@@ -185,6 +234,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         state = const AsyncValue.data(null);
         return false;
       }
+      await _ensureUserDocNormalized(user);
       // Ensure a user doc exists (FirestoreService.createUser is hardened)
       await _firestoreService.createUser(
         UserModel(

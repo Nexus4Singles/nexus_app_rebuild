@@ -12,11 +12,15 @@ final isGuestProvider = FutureProvider<bool>((ref) async {
   final prefs = await SharedPreferences.getInstance();
   final forceGuest = prefs.getBool('force_guest') ?? false;
 
+  // Canonical guest rules:
+  // 1) force_guest wins (explicit guest mode)
+  // 2) no Firebase user => guest
+  // 3) anonymous Firebase user => guest
   if (forceGuest) return true;
 
   final user = FirebaseAuth.instance.currentUser;
   if (user == null) return true;
-  if (user.isAnonymous == true) return true;
+  if (user.isAnonymous) return true;
 
   return false;
 });

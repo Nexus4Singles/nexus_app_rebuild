@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:nexus_app_min_test/core/user/current_user_doc_provider.dart';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -133,6 +134,25 @@ class _OnboardingListsCache {
 ///
 /// NOTE: Firebase is connected. This screen may still use local draft/mock fallbacks in places
 /// while the Firestore-backed profile model is being completed.
+final userDocByIdProvider =
+    StreamProvider.family<Map<String, dynamic>?, String>((ref, uid) {
+      return FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .snapshots()
+          .map((doc) {
+            if (!doc.exists) return null;
+            return doc.data();
+          });
+    });
+
+final currentUserIsPremiumProvider = StreamProvider<bool>((ref) {
+  return ref.watch(currentUserDocProvider.stream).map((doc) {
+    final v = doc?['onPremium'];
+    return v == true;
+  });
+});
+
 class ProfileScreen extends ConsumerWidget {
   final String? userId;
   const ProfileScreen({super.key, this.userId});
@@ -156,28 +176,31 @@ class ProfileScreen extends ConsumerWidget {
 
     final effectiveUid = userId ?? me.uid;
 
-    // In Phase 1, we use mock profile data for both own && other profiles.
-    final draftAsync = ref.watch(_draftProfileProvider(effectiveUid));
-    final mockAsync = ref.watch(_mockProfileProvider(effectiveUid));
+    // Firebase is connected: for signed-in users, Profile must be Firestore-backed.
+    // No mock fallback for signed-in paths.
+    final userDocAsync =
+        isViewingOtherUser
+            ? ref.watch(userDocByIdProvider(effectiveUid))
+            : ref.watch(currentUserDocProvider);
 
-    // Draft takes precedence when available; otherwise fallback to mock.
-    final profileAsync = draftAsync.when(
-      data: (draft) => draft != null ? AsyncValue.data(draft) : mockAsync,
-      loading: () => const AsyncValue.loading(),
-      error: (_, __) => mockAsync,
-    );
-
-    return profileAsync.when(
+    return userDocAsync.when(
       loading: () => const _ProfileLoading(),
       error:
           (e, st) => _ProfileError(
             message: 'Unable to load profile right now.',
-            onRetry: () => ref.invalidate(_mockProfileProvider(effectiveUid)),
+            onRetry:
+                () => ref.invalidate(
+                  isViewingOtherUser
+                      ? userDocByIdProvider(effectiveUid)
+                      : currentUserDocProvider,
+                ),
           ),
-      data: (profile) {
-        if (profile == null) {
-          return const _ProfileNotFound();
-        }
+      data: (map) {
+        // If the document is missing, treat as "not found" (migration/creation handled elsewhere).
+        if (map == null) return const _ProfileNotFound();
+
+        // Build a proper UserModel from Firestore data.
+        final profile = UserModel.fromMap(effectiveUid, map);
 
         final status = ref.watch(effectiveRelationshipStatusProvider);
         final isMarried = status == RelationshipStatus.married;
@@ -244,10 +267,6 @@ class ProfileScreen extends ConsumerWidget {
               Navigator.of(context).pushNamed('/dating/setup/age');
             },
           );
-        }
-
-        if (profile == null) {
-          return const _ProfileNotFound();
         }
 
         final photos = _combineProfileUrlAndPhotos(
@@ -320,6 +339,7 @@ class ProfileScreen extends ConsumerWidget {
 
                       _PremiumActionsRow(
                         isViewingOtherUser: isViewingOtherUser,
+                        profile: profile,
                       ),
                       const SizedBox(height: 24),
 
@@ -484,52 +504,6 @@ class _BasicProfileScreen extends StatelessWidget {
 /// MOCK DATA PROVIDER (Phase 1)
 /// ------------------------------
 /// Replace this with Firestore-backed provider when firebase is ready.
-final _mockProfileProvider = FutureProvider.family<UserModel?, String>((
-  ref,
-  uid,
-) async {
-  await Future<void>.delayed(const Duration(milliseconds: 600));
-
-  // Deterministic mock values per uid
-  final seed = uid.hashCode;
-  final rng = Random(seed);
-
-  final photos = List.generate(
-    3 + rng.nextInt(2),
-    (i) => 'https://picsum.photos/seed/${seed + i}/800/1100',
-  );
-
-  return UserModel(
-    id: uid,
-    name: rng.nextBool() ? 'Ayodele' : 'Tomiwa',
-    age: 25 + rng.nextInt(10),
-    city: rng.nextBool() ? 'Berlin' : 'Lagos',
-    country: rng.nextBool() ? 'Germany' : 'Nigeria',
-    profileUrl: photos.first,
-    photos: photos,
-    hobbies: [
-      'Music',
-      'Travel',
-      'Wine',
-      'Books',
-      'Writing',
-    ].sublist(0, min(5, 3 + rng.nextInt(3))),
-    desiredQualities: 'Empathy, Thoughtfulness, Intelligence, Self-control',
-    profession: rng.nextBool() ? 'Lawyer' : 'Product Manager',
-    educationLevel: rng.nextBool() ? 'Doctorate Degree' : 'Bachelors Degree',
-    nationality: rng.nextBool() ? 'Nigerian' : 'Ghanaian',
-    stateOfOrigin: null,
-    churchName: rng.nextBool() ? 'CAC' : 'Redeemed',
-    onPremium: rng.nextBool(),
-    // Mock only; Firestore-driven verification status is used for badges.
-    isVerified: true,
-    audioPrompts: const [
-      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
-    ],
-  );
-});
 
 /// ------------------------------
 /// LOCAL DRAFT CACHE (Phase 2A)
@@ -579,62 +553,32 @@ String _relationshipStatusLabel(RelationshipStatusTag v) {
   }
 }
 
-String _relationshipStatusKey(String uid) => 'relationship_status_tag_' + uid;
+/// Firestore-backed dating availability status.
+/// Stored at: users/{uid}.dating.availability = 'available' | 'taken'
+/// Default: 'available' (missing field should not block visibility).
+final _relationshipStatusTagProvider =
+    StreamProvider.family<RelationshipStatusTag, String>((ref, uid) {
+      final fs = FirebaseFirestore.instance;
+      return fs.collection('users').doc(uid).snapshots().map((doc) {
+        final data = doc.data();
+        final dating = (data?['dating'] as Map?)?.cast<String, dynamic>();
+        final raw = (dating?['availability'] as String?)?.trim().toLowerCase();
 
-Future<RelationshipStatusTag> _loadRelationshipStatusTag(String uid) async {
-  final prefs = await SharedPreferences.getInstance();
-  final raw = prefs.getString(_relationshipStatusKey(uid));
-  if (raw == 'taken') return RelationshipStatusTag.taken;
-  return RelationshipStatusTag.available;
-}
+        if (raw == 'taken') return RelationshipStatusTag.taken;
+        return RelationshipStatusTag.available;
+      });
+    });
 
-Future<void> _saveRelationshipStatusTag(
+Future<void> _setRelationshipStatusTagFirestore(
   String uid,
   RelationshipStatusTag v,
 ) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString(
-    _relationshipStatusKey(uid),
-    v == RelationshipStatusTag.taken ? 'taken' : 'available',
-  );
+  final key = (v == RelationshipStatusTag.taken) ? 'taken' : 'available';
+
+  await FirebaseFirestore.instance.collection('users').doc(uid).set({
+    'dating': {'availability': key},
+  }, SetOptions(merge: true));
 }
-
-class _RelationshipStatusTagController
-    extends StateNotifier<AsyncValue<RelationshipStatusTag>> {
-  final String uid;
-
-  _RelationshipStatusTagController(this.uid)
-    : super(const AsyncValue.loading()) {
-    _load();
-  }
-
-  Future<void> _load() async {
-    try {
-      final v = await _loadRelationshipStatusTag(uid);
-      state = AsyncValue.data(v);
-    } catch (e, st) {
-      state = AsyncValue.error(e, st);
-    }
-  }
-
-  Future<void> setTag(RelationshipStatusTag v) async {
-    // Optimistic update for instant UI feedback.
-    state = AsyncValue.data(v);
-    try {
-      await _saveRelationshipStatusTag(uid, v);
-    } catch (e, st) {
-      state = AsyncValue.error(e, st);
-    }
-  }
-}
-
-final _relationshipStatusTagProvider = StateNotifierProvider.family<
-  _RelationshipStatusTagController,
-  AsyncValue<RelationshipStatusTag>,
-  String
->((ref, uid) {
-  return _RelationshipStatusTagController(uid);
-});
 
 class _RelationshipStatusPill extends StatelessWidget {
   final RelationshipStatusTag value;
@@ -964,7 +908,8 @@ class _ProfileHeroAppBar extends StatelessWidget {
                             orElse: () => RelationshipStatusTag.available,
                           );
 
-                          final canEdit = canEditRelationshipStatus;
+                          final canEdit =
+                              canEditRelationshipStatus && !isViewingOtherUser;
 
                           return _RelationshipStatusPill(
                             value: value,
@@ -1073,9 +1018,15 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                                           RelationshipStatusTag
                                                               .available,
                                                       onTap: () {
-                                                        handleLogout(
-                                                          context,
-                                                          ref,
+                                                        setSheetState(() {
+                                                          temp =
+                                                              RelationshipStatusTag
+                                                                  .available;
+                                                        });
+                                                        Navigator.pop(
+                                                          sheetContext,
+                                                          RelationshipStatusTag
+                                                              .available,
                                                         );
                                                       },
                                                     ),
@@ -1109,13 +1060,15 @@ class _ProfileHeroAppBar extends StatelessWidget {
 
                                       if (selected == null) return;
 
-                                      await ref
-                                          .read(
-                                            _relationshipStatusTagProvider(
-                                              profile.id,
-                                            ).notifier,
-                                          )
-                                          .setTag(selected);
+                                      await _setRelationshipStatusTagFirestore(
+                                        profile.id,
+                                        selected,
+                                      );
+                                      ref.invalidate(
+                                        _relationshipStatusTagProvider(
+                                          profile.id,
+                                        ),
+                                      );
                                     }
                                     : null,
                           );
@@ -2026,13 +1979,22 @@ String _formatDuration(Duration d) {
 /// ------------------------------
 /// PREMIUM GATED BUTTONS
 /// ------------------------------
-class _PremiumActionsRow extends StatelessWidget {
+class _PremiumActionsRow extends ConsumerWidget {
   final bool isViewingOtherUser;
-  const _PremiumActionsRow({required this.isViewingOtherUser});
+  final UserModel profile;
+
+  const _PremiumActionsRow({
+    required this.isViewingOtherUser,
+    required this.profile,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     if (!isViewingOtherUser) return const SizedBox.shrink();
+
+    final isPremium = ref
+        .watch(currentUserIsPremiumProvider)
+        .maybeWhen(data: (v) => v, orElse: () => false);
 
     return Row(
       children: [
@@ -2041,11 +2003,19 @@ class _PremiumActionsRow extends StatelessWidget {
             icon: Icons.favorite_rounded,
             title: 'Compatibility',
             subtitle: 'Premium only',
-            onTap:
-                () => _toast(
-                  context,
-                  'Upgrade to Premium to view compatibility.',
+            onTap: () {
+              if (!isPremium) {
+                _toast(context, 'Upgrade to Premium to view compatibility.');
+                return;
+              }
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder:
+                      (_) =>
+                          _PremiumCompatibilityViewerScreen(profile: profile),
                 ),
+              );
+            },
           ),
         ),
         const SizedBox(width: 46),
@@ -2054,9 +2024,17 @@ class _PremiumActionsRow extends StatelessWidget {
             icon: Icons.chat_bubble_rounded,
             title: 'Contact',
             subtitle: 'Premium only',
-            onTap:
-                () =>
-                    _toast(context, 'Upgrade to Premium to view contact info.'),
+            onTap: () {
+              if (!isPremium) {
+                _toast(context, 'Upgrade to Premium to view contact info.');
+                return;
+              }
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => _PremiumContactViewerScreen(profile: profile),
+                ),
+              );
+            },
           ),
         ),
       ],
@@ -4287,6 +4265,72 @@ class _AdminReviewEntry extends ConsumerWidget {
               Icon(Icons.chevron_right_rounded),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Premium viewers (other-user profile)
+// -----------------------------------------------------------------------------
+// Minimal implementation for now.
+// - Contact uses UserModel fields already built from Firestore users/{uid}.
+// - Compatibility is a placeholder; we will wire real Firestore compatibility next.
+class _PremiumContactViewerScreen extends StatelessWidget {
+  final UserModel profile;
+  const _PremiumContactViewerScreen({required this.profile});
+
+  @override
+  Widget build(BuildContext context) {
+    final ig = (profile.instagramUsername ?? '').trim();
+    final wa = (profile.phoneNumber ?? '').trim();
+    final email = (profile.email ?? '').trim();
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Contact info')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              (profile.name ?? '').trim().isEmpty
+                  ? 'Contact info'
+                  : (profile.name ?? '').trim(),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 14),
+            if (email.isNotEmpty) Text('Email: $email'),
+            if (ig.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Text('Instagram: @$ig'),
+            ],
+            if (wa.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Text('WhatsApp: $wa'),
+            ],
+            if (email.isEmpty && ig.isEmpty && wa.isEmpty)
+              const Text('No contact info available.'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PremiumCompatibilityViewerScreen extends StatelessWidget {
+  final UserModel profile;
+  const _PremiumCompatibilityViewerScreen({required this.profile});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Compatibility')),
+      body: const Padding(
+        padding: EdgeInsets.all(16),
+        child: Text(
+          'TODO: Wire real compatibility results from Firestore once the model is finalized.',
         ),
       ),
     );

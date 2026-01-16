@@ -6,13 +6,6 @@ import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
 import 'package:nexus_app_min_test/features/stories/domain/poll_models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Dev-only: allow poll voting/results while in guest mode (local testing).
-/// Enable with: flutter run --dart-define=NEXUS_DEV_BYPASS_POLLS=true
-const bool kDevBypassPolls = bool.fromEnvironment(
-  'NEXUS_DEV_BYPASS_POLLS',
-  defaultValue: false,
-);
-
 class StoryPollScreen extends ConsumerStatefulWidget {
   final String storyId;
   const StoryPollScreen({super.key, required this.storyId});
@@ -87,17 +80,14 @@ class _StoryPollScreenState extends ConsumerState<StoryPollScreen> {
   String _voteKey(String pollId) => 'poll_vote:$pollId';
 
   bool get _allowVoting {
-    // In production: signed-in users only. While building: dev bypass.
-    return kDevBypassPolls;
+    // Voting is for signed-in users only (no dev bypass).
+    return false;
   }
 
   bool get _canShowResults {
-    // Show results if:
-    // - user voted in this session (meaning signed-in via GuestGuard.onAllowed OR dev bypass), OR
-    // - dev bypass is enabled and we have a stored vote.
-    if (_hasVotedThisSession) return true;
-    if (kDevBypassPolls && _storedVoteOptionId != null) return true;
-    return false;
+    // Results are shown only after a signed-in vote in this session.
+    // Stored votes on device do not unlock results in guest mode.
+    return _hasVotedThisSession;
   }
 
   @override
@@ -132,7 +122,6 @@ class _StoryPollScreenState extends ConsumerState<StoryPollScreen> {
                           onSelect:
                               (v) => setState(() => _selectedOptionId = v),
                           onVote: _onVotePressed,
-                          devBypass: kDevBypassPolls,
                           hasStoredVote: _storedVoteOptionId != null,
                           pollId: _pollId ?? poll.id,
                         ),
@@ -193,7 +182,6 @@ class _VoteView extends StatelessWidget {
   final String? selectedOptionId;
   final ValueChanged<String?> onSelect;
   final VoidCallback onVote;
-  final bool devBypass;
   final bool hasStoredVote;
   final String pollId;
 
@@ -202,7 +190,6 @@ class _VoteView extends StatelessWidget {
     required this.selectedOptionId,
     required this.onSelect,
     required this.onVote,
-    required this.devBypass,
     required this.hasStoredVote,
     required this.pollId,
   });
@@ -227,12 +214,10 @@ class _VoteView extends StatelessWidget {
               Text(poll.question, style: theme.textTheme.bodyLarge),
               const SizedBox(height: 10),
               Text(
-                devBypass
-                    ? 'Dev bypass enabled: voting/results allowed in guest mode.'
-                    : 'Guests can read stories, but voting/results are for signed-in users.',
+                'Guests can read stories, but voting/results are for signed-in users.',
                 style: theme.textTheme.bodySmall,
               ),
-              if (hasStoredVote && !devBypass) ...[
+              if (hasStoredVote) ...[
                 const SizedBox(height: 6),
                 Text(
                   'A vote exists on this device (poll: $pollId), but results are locked until you sign in.',

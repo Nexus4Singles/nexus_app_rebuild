@@ -5,6 +5,7 @@ import '../auth/auth_providers.dart';
 import '../bootstrap/firebase_ready_provider.dart';
 import '../constants/app_constants.dart';
 import '../session/effective_relationship_status_provider.dart';
+import '../user/current_user_doc_provider.dart';
 
 enum DatingProfileStatus { none, incomplete, complete }
 
@@ -26,22 +27,37 @@ final datingProfileStatusProvider = StreamProvider<DatingProfileStatus>((ref) {
 
   final fs = FirebaseFirestore.instance;
 
-  return fs.collection('datingProfiles').doc(uid).snapshots().map((doc) {
-    final data = doc.data();
-    if (data == null) return DatingProfileStatus.none;
+  // Legacy compatibility:
+  // If the signed-in user's /users/{uid} doc is legacy (schemaVersion missing or < 2),
+  // treat their dating profile as complete so they can use chats/search immediately.
+  return ref.watch(currentUserDocProvider.stream).asyncExpand((userDoc) {
+    final sv = userDoc?['schemaVersion'];
+    final svInt = (sv is int) ? sv : int.tryParse(sv?.toString() ?? '');
+    final isLegacy = (svInt == null || svInt < 2);
 
-    final name = (data['name'] as String?)?.trim() ?? '';
-    final age = data['age'];
-    final gender = (data['gender'] as String?)?.trim() ?? '';
-    final photos = data['photos'];
+    if (isLegacy) {
+      return Stream.value(DatingProfileStatus.complete);
+    }
 
-    final ageOk = (age is num) && age >= 18;
-    final photosOk = (photos is List) && photos.isNotEmpty;
+    // v2 path: check datingProfiles/{uid} completeness.
+    return fs.collection('datingProfiles').doc(uid).snapshots().map((doc) {
+      final data = doc.data();
+      if (data == null) return DatingProfileStatus.none;
 
-    final complete = name.isNotEmpty && ageOk && gender.isNotEmpty && photosOk;
+      final name = (data['name'] as String?)?.trim() ?? '';
+      final age = data['age'];
+      final gender = (data['gender'] as String?)?.trim() ?? '';
+      final photos = data['photos'];
 
-    return complete
-        ? DatingProfileStatus.complete
-        : DatingProfileStatus.incomplete;
+      final ageOk = (age is num) && age >= 18;
+      final photosOk = (photos is List) && photos.isNotEmpty;
+
+      final complete =
+          name.isNotEmpty && ageOk && gender.isNotEmpty && photosOk;
+
+      return complete
+          ? DatingProfileStatus.complete
+          : DatingProfileStatus.incomplete;
+    });
   });
 });

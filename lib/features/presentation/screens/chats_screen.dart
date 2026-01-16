@@ -7,13 +7,6 @@ import 'package:nexus_app_min_test/core/providers/service_providers.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/core/user/dating_opt_in_provider.dart';
 
-/// Dev-only bypass so you can test chat while Firebase/auth is not wired.
-/// Run with: flutter run --dart-define=NEXUS_CHAT_DEV_BYPASS=true
-const bool _kChatDevBypass = bool.fromEnvironment(
-  'NEXUS_CHAT_DEV_BYPASS',
-  defaultValue: false,
-);
-
 String _formatChatTime(DateTime? dt) {
   if (dt == null) return '';
   final now = DateTime.now();
@@ -66,7 +59,7 @@ class ChatsScreen extends ConsumerWidget {
       orElse: () => DatingProfileStatus.incomplete,
     );
 
-    if (!isSignedIn && !_kChatDevBypass) {
+    if (!isSignedIn) {
       return Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
@@ -151,7 +144,7 @@ class ChatsScreen extends ConsumerWidget {
     }
 
     // If signed-in but Firebase isn't ready, show a soft loading state (avoid mis-gating).
-    if (isSignedIn && !ready && !_kChatDevBypass) {
+    if (isSignedIn && !ready) {
       return Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
@@ -164,7 +157,7 @@ class ChatsScreen extends ConsumerWidget {
     }
 
     // Dating opt-in gate
-    if (isSignedIn && !optedIn && !_kChatDevBypass) {
+    if (isSignedIn && !optedIn) {
       return Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
@@ -218,9 +211,7 @@ class ChatsScreen extends ConsumerWidget {
     }
 
     // Dating profile completion gate
-    if (isSignedIn &&
-        status != DatingProfileStatus.complete &&
-        !_kChatDevBypass) {
+    if (isSignedIn && status != DatingProfileStatus.complete && !false) {
       return Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(

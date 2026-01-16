@@ -1,5 +1,6 @@
 import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nexus_app_min_test/core/user/user_schema_migrator.dart';
 import '../models/user_model.dart';
 import '../constants/app_constants.dart';
 import 'package:nexus_app_min_test/core/services/firestore_service.dart';
