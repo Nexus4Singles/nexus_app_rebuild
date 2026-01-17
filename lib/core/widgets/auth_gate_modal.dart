@@ -9,6 +9,11 @@ class AuthGateModal {
     required String message,
     required String primaryButtonText,
     VoidCallback? onPrimary,
+
+    // Optional: show a Login button for existing users.
+    String? loginButtonText,
+    VoidCallback? onLogin,
+
     String secondaryButtonText = 'Not now',
     VoidCallback? onSecondary,
   }) {
@@ -45,9 +50,23 @@ class AuthGateModal {
                   ),
                 ),
                 const SizedBox(height: 10),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
+
+                if ((loginButtonText ?? '').trim().isNotEmpty)
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                        onLogin?.call();
+                      },
+                      child: Text(loginButtonText!),
+                    ),
+                  ),
+
+                const SizedBox(height: 6),
+                Align(
+                  alignment: Alignment.center,
+                  child: TextButton(
                     onPressed: () {
                       Navigator.of(ctx).pop();
                       onSecondary?.call();
@@ -55,6 +74,7 @@ class AuthGateModal {
                     child: Text(secondaryButtonText),
                   ),
                 ),
+
                 const SizedBox(height: 8),
                 Text(
                   'Guest Mode',

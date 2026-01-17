@@ -39,7 +39,8 @@ class Nexus2Data extends Equatable {
               ?.map((e) => e.toString())
               .toList() ??
           [],
-      onboardingCompleted: UserModel._boolFrom(map['onboardingCompleted']) ?? false,
+      onboardingCompleted:
+          UserModel._boolFrom(map['onboardingCompleted']) ?? false,
       onboardedAt: (map['onboardedAt'] as Timestamp?)?.toDate(),
       schemaVersion:
           map['schemaVersion'] as int? ?? AppConfig.nexus2SchemaVersion,
@@ -126,7 +127,6 @@ class Nexus2Data extends Equatable {
 /// Complete User model that extends Nexus 1.0 schema
 /// Maintains backward compatibility with existing users/{uid} documents
 class UserModel extends Equatable {
-
   /// Accepts bools from Firestore that may be stored as bool, string ("true"/"false"),
   /// or num (1/0). Returns null if not parseable.
   static bool? _boolFrom(dynamic v) {
@@ -141,6 +141,72 @@ class UserModel extends Equatable {
     return null;
   }
 
+  // ignore: unused_element
+  static String? _pickString(Map<String, dynamic> data, List<String> keys) {
+    for (final k in keys) {
+      final v = data[k];
+      if (v == null) continue;
+      final s = v.toString().trim();
+      if (s.isNotEmpty) return s;
+    }
+    return null;
+  }
+
+  static Map<String, dynamic>? _map(dynamic v) {
+    if (v == null) return null;
+    if (v is Map<String, dynamic>) return v;
+    if (v is Map) return v.cast<String, dynamic>();
+    return null;
+  }
+
+  static dynamic _getPath(Map<String, dynamic> root, List<String> path) {
+    dynamic cur = root;
+    for (final key in path) {
+      if (cur is Map) {
+        cur = cur[key];
+      } else {
+        return null;
+      }
+    }
+    return cur;
+  }
+
+  static String? _stringFrom(dynamic v) {
+    if (v == null) return null;
+    final s = v.toString().trim();
+    return s.isEmpty ? null : s;
+  }
+
+  static int? _intFrom(dynamic v) {
+    if (v == null) return null;
+    if (v is int) return v;
+    if (v is num) return v.toInt();
+    return int.tryParse(v.toString());
+  }
+
+  static String? _firstString(
+    Map<String, dynamic> root,
+    List<List<String>> paths,
+  ) {
+    for (final p in paths) {
+      final v = _getPath(root, p);
+      final s = _stringFrom(v);
+      if (s != null) return s;
+    }
+    return null;
+  }
+
+  static List<String> _firstStringList(
+    Map<String, dynamic> root,
+    List<List<String>> paths,
+  ) {
+    for (final p in paths) {
+      final v = _getPath(root, p);
+      final list = _parseStringList(v) ?? const <String>[];
+      if (list.isNotEmpty) return list;
+    }
+    return const <String>[];
+  }
 
   // ========================
   // NEXUS 1.0 FIELDS (DO NOT MODIFY)
@@ -152,7 +218,11 @@ class UserModel extends Equatable {
   final String? profileUrl;
   final int? age;
   final String? gender;
-  final String? bestQualitiesOrTraits;
+  final String? bestQualotiesOrTraits;
+
+  // Backward/forward compatibility: UI expects the correctly-spelled name.
+  String? get bestQualitiesOrTraits => bestQualotiesOrTraits;
+
   final String? city;
   final int? countLike;
   final String? desiredQualities;
@@ -212,7 +282,7 @@ class UserModel extends Equatable {
     this.profileUrl,
     this.age,
     this.gender,
-    this.bestQualitiesOrTraits,
+    this.bestQualotiesOrTraits,
     this.city,
     this.countLike,
     this.desiredQualities,
@@ -284,22 +354,117 @@ class UserModel extends Equatable {
   }
 
   factory UserModel.fromMap(String id, Map<String, dynamic> data) {
+    // v2 commonly nests values under nexus2 / dating. We read v1 first, then v2 paths.
+    final dating = _map(data['dating']);
+    final nexus2 = _map(data['nexus2']);
+    final reviewPack =
+        _map(dating?['reviewPack']) ?? _map(nexus2?['reviewPack']);
+
+    // Audio prompts:
+    // - v2 preferred: dating.reviewPack.audioUrls
+    // - v1 fallback: audioPrompts
+    // - legacy fallback: audio1Url/audio2Url/audio3Url
+    final audioUrls = <String>[
+      ...(_parseStringList(reviewPack?['audioUrls']) ?? const <String>[]),
+      ...(_parseStringList(data['audioPrompts']) ?? const <String>[]),
+    ];
+
+    bool _looksLikeUrl(String s) {
+      final t = s.trim().toLowerCase();
+      return t.startsWith('http://') ||
+          t.startsWith('https://') ||
+          t.startsWith('gs://');
+    }
+
+    // v1 audio fields were stored under the 3 question keys (snake_case / camelCase).
+    final v1AudioCandidates = <String?>[
+      _stringFrom(data['relationship_with_god'] ?? data['relationshipWithGod']),
+      _stringFrom(data['role_of_husband'] ?? data['roleOfHusband']),
+      _stringFrom(
+        data['best_qualities_or_traits'] ??
+            data['bestQualitiesOrTraits'] ??
+            data['bestQualotiesOrTraits'],
+      ),
+    ];
+
+    for (final a in v1AudioCandidates) {
+      if (a == null) continue;
+      if (!_looksLikeUrl(a)) continue;
+      if (!audioUrls.contains(a)) audioUrls.add(a);
+    }
+
     return UserModel(
       id: id,
-      name: data['name'] as String?,
-      username: data['username'] as String?,
-      email: data['email'] as String?,
-      profileUrl: data['profileUrl'] as String?,
-      age: data['age'] as int?,
-      gender: data['gender'] as String?,
-      bestQualitiesOrTraits:
-          data['bestQualotiesOrTraits'] as String?, // Note: typo in original
-      city: data['city'] as String?,
-      countLike: data['countLike'] as int?,
-      desiredQualities: data['desiredQualities'] as String?,
-      hobbies: _parseStringList(data['hobbies']),
-      photos: _parseStringList(data['photos']),
-      audioPrompts: _parseStringList(data['audioPrompts']),
+      name: _firstString(data, [
+        ['name'],
+        ['displayName'],
+        ['nexus2', 'profile', 'name'],
+        ['dating', 'profile', 'name'],
+      ]),
+      username: _firstString(data, [
+        ['username'],
+        ['userName'],
+        ['handle'], // v1 legacy
+        ['user_name'], // v1 snake_case
+        ['displayName'], // some v1 users
+        ['nexus2', 'profile', 'username'],
+        ['dating', 'profile', 'username'],
+      ]),
+
+      email: _firstString(data, [
+        ['email'],
+        ['nexus2', 'profile', 'email'],
+      ]),
+      profileUrl: _firstString(data, [
+        ['profileUrl'],
+        ['photoUrl'],
+        ['avatarUrl'],
+        ['nexus2', 'profile', 'profileUrl'],
+        ['dating', 'profile', 'profileUrl'],
+      ]),
+      age:
+          _intFrom(_getPath(data, ['age'])) ??
+          _intFrom(_getPath(data, ['nexus2', 'profile', 'age'])) ??
+          _intFrom(_getPath(data, ['dating', 'profile', 'age'])),
+      gender: _firstString(data, [
+        ['gender'],
+        ['nexus2', 'profile', 'gender'],
+        ['dating', 'profile', 'gender'],
+      ]),
+      // Note: typo in original v1 key: bestQualotiesOrTraits
+      bestQualotiesOrTraits: _firstString(data, [
+        ['bestQualitiesOrTraits'],
+        ['best_qualities_or_traits'], // v1 snake_case
+        ['nexus2', 'profile', 'bestQualitiesOrTraits'],
+        ['dating', 'profile', 'bestQualitiesOrTraits'],
+      ]),
+      city: _firstString(data, [
+        ['city'],
+        ['location', 'city'], // v1 nested
+        ['nexus2', 'profile', 'city'],
+        ['dating', 'profile', 'city'],
+      ]),
+
+      countLike: _intFrom(_getPath(data, ['countLike'])),
+      desiredQualities: _firstString(data, [
+        ['desiredQualities'],
+        ['desired_qualities'], // v1 snake_case
+        ['partnerQualities'], // legacy wording
+        ['nexus2', 'profile', 'desiredQualities'],
+        ['dating', 'profile', 'desiredQualities'],
+      ]),
+
+      hobbies: _firstStringList(data, [
+        ['hobbies'],
+        ['nexus2', 'profile', 'hobbies'],
+        ['dating', 'profile', 'hobbies'],
+      ]),
+      photos: _firstStringList(data, [
+        ['photos'],
+        ['nexus2', 'profile', 'photos'],
+        ['dating', 'profile', 'photos'],
+      ]),
+      audioPrompts: audioUrls,
       likeMe: _parseStringList(data['likeMe']),
       myLikes: _parseStringList(data['myLikes']),
       mySaves: _parseStringList(data['mySaves']),
@@ -307,37 +472,132 @@ class UserModel extends Equatable {
       usersChatWarning: _parseStringList(data['usersChatWarning']),
       matchedUsers: _parseStringList(data['matchedUsers']),
       unRecommendUsers: _parseStringList(data['unRecommendUsers']),
-      educationLevel: data['educationLevel'] as String?,
-      profession: data['profession'] as String?,
-      relationshipWithGod: data['relationshipWithGod'] as String?,
-      roleOfHusband: data['roleOfHusband'] as String?,
-      stateOfOrigin: data['stateOfOrigin'] as String?,
+      educationLevel: _firstString(data, [
+        ['educationLevel'],
+        ['education_level'], // ← ADD
+        ['education'], // ← ADD
+        ['nexus2', 'profile', 'educationLevel'],
+        ['dating', 'profile', 'educationLevel'],
+      ]),
+
+      profession: _firstString(data, [
+        ['profession'],
+        ['nexus2', 'profile', 'profession'],
+        ['dating', 'profile', 'profession'],
+      ]),
+      relationshipWithGod: _firstString(data, [
+        ['relationshipWithGod'],
+        ['relationship_with_god'],
+        ['nexus2', 'profile', 'relationshipWithGod'],
+      ]),
+
+      roleOfHusband: _firstString(data, [
+        ['roleOfHusband'],
+        ['role_of_husband'],
+        ['nexus2', 'profile', 'roleOfHusband'],
+      ]),
+
+      stateOfOrigin: _firstString(data, [
+        ['stateOfOrigin'],
+        ['nexus2', 'profile', 'stateOfOrigin'],
+      ]),
       isVerified: UserModel._boolFrom(data['isVerified']),
-      notificationToken: data['notificationToken'] as String?,
-      phoneNumber: data['phoneNumber'] as String?,
-      registrationProgress: data['registrationProgress'] as String?,
-      country: data['country'] as String?,
-      countryCode: data['countryCode'] as String?,
-      nationality: data['nationality'] as String?,
-      nationalityCode: data['nationalityCode'] as String?,
-      facebookUsername: data['facebookUsername'] as String?,
-      instagramUsername: data['instagramUsername'] as String?,
-      twitterUsername: data['twitterUsername'] as String?,
-      telegramUsername: data['telegramUsername'] as String?,
-      snapchatUsername: data['snapchatUsername'] as String?,
-      churchName: data['churchName'] as String?,
+      notificationToken: _stringFrom(data['notificationToken']),
+      phoneNumber: _firstString(data, [
+        ['phoneNumber'],
+        ['phone'],
+        ['nexus2', 'profile', 'phoneNumber'],
+        ['dating', 'profile', 'phoneNumber'],
+      ]),
+      registrationProgress: _stringFrom(data['registrationProgress']),
+      country: _firstString(data, [
+        // v1: residence display sometimes stored as location.place ("Lagos, Nigeria")
+        ['location', 'place'],
+        ['country'],
+        ['countryOfResidence'], // v1 search schema
+        ['country_name'],
+        ['nexus2', 'profile', 'country'],
+        ['dating', 'profile', 'country'],
+      ]),
+
+      countryCode: _firstString(data, [
+        ['countryCode'],
+        ['country_code'],
+        ['countryIso'],
+        ['nexus2', 'profile', 'countryCode'],
+        ['dating', 'profile', 'countryCode'],
+      ]),
+
+      nationality: _firstString(data, [
+        ['nationality'],
+        ['nationalityName'],
+        ['nationality_name'], // v1 variant
+        ['citizenship'], // legacy
+        ['countryOfOrigin'], // v1 variant
+        ['country_of_origin'], // v1 snake_case
+        ['country'], // v1: top-level country often stored as nationality
+        ['location', 'country'], // v1: nationality wrongly nested here
+        ['nexus2', 'profile', 'nationality'],
+        ['dating', 'profile', 'nationality'],
+      ]),
+
+      nationalityCode: _firstString(data, [
+        ['nationalityCode'],
+        ['nationality_code'],
+        ['countryOfOriginCode'], // v1 variant
+        ['country_of_origin_code'], // v1 snake_case
+        ['nexus2', 'profile', 'nationalityCode'],
+        ['dating', 'profile', 'nationalityCode'],
+      ]),
+
+      facebookUsername: _firstString(data, [
+        ['facebookUsername'],
+        ['nexus2', 'profile', 'facebookUsername'],
+      ]),
+      instagramUsername: _firstString(data, [
+        ['instagramUsername'],
+        ['nexus2', 'profile', 'instagramUsername'],
+      ]),
+      twitterUsername: _firstString(data, [
+        ['twitterUsername'],
+        ['nexus2', 'profile', 'twitterUsername'],
+      ]),
+      telegramUsername: _firstString(data, [
+        ['telegramUsername'],
+        ['nexus2', 'profile', 'telegramUsername'],
+      ]),
+      snapchatUsername: _firstString(data, [
+        ['snapchatUsername'],
+        ['nexus2', 'profile', 'snapchatUsername'],
+      ]),
+      churchName: _firstString(data, [
+        ['churchName'],
+        ['church_name'], // v1 snake_case
+        ['church'], // legacy
+        ['nexus2', 'profile', 'churchName'],
+        ['dating', 'profile', 'churchName'],
+      ]),
+
       compatibility: data['compatibility'] as Map<String, dynamic>?,
       compatibilitySetted: UserModel._boolFrom(data['compatibilitySetted']),
-      location: data['location'] as Map<String, dynamic>?,
-      fcmToken: data['fcmToken'] as String?,
+      location:
+          _getPath(data, ['location']) as Map<String, dynamic>? ??
+          _getPath(data, ['nexus2', 'profile', 'location'])
+              as Map<String, dynamic>? ??
+          _getPath(data, ['dating', 'profile', 'location'])
+              as Map<String, dynamic>?,
+
+      fcmToken: _stringFrom(data['fcmToken']),
       onPremium: UserModel._boolFrom(data['onPremium']),
       prevSubscribed: UserModel._boolFrom(data['prevSubscribed']),
       subExpDate: _parseTimestamp(data['subExpDate']),
       usedOneFreeText: UserModel._boolFrom(data['usedOneFreeText']),
       entitledUser: UserModel._boolFrom(data['entitledUser']),
-      subscriberId: data['subscriberId'] as String?,
+      subscriberId: _stringFrom(data['subscriberId']),
       recommendedTime: _parseTimestamp(data['recommendedTime']),
-      hasExternalSubscriptionFlow: UserModel._boolFrom(data['hasExternalSubscriptionFlow']),
+      hasExternalSubscriptionFlow: UserModel._boolFrom(
+        data['hasExternalSubscriptionFlow'],
+      ),
       profileCompletionDate: _parseTimestamp(data['profileCompletionDate']),
       nexus2: Nexus2Data.fromMap(data['nexus2'] as Map<String, dynamic>?),
     );
@@ -358,7 +618,8 @@ class UserModel extends Equatable {
       'profileUrl': profileUrl,
       'age': age,
       'gender': gender,
-      'bestQualotiesOrTraits': bestQualitiesOrTraits,
+      'bestQualotiesOrTraits': bestQualotiesOrTraits,
+
       'city': city,
       'countLike': countLike,
       'desiredQualities': desiredQualities,
@@ -420,7 +681,7 @@ class UserModel extends Equatable {
     String? profileUrl,
     int? age,
     String? gender,
-    String? bestQualitiesOrTraits,
+    String? bestQualotiesOrTraits,
     String? city,
     int? countLike,
     String? desiredQualities,
@@ -474,8 +735,8 @@ class UserModel extends Equatable {
       profileUrl: profileUrl ?? this.profileUrl,
       age: age ?? this.age,
       gender: gender ?? this.gender,
-      bestQualitiesOrTraits:
-          bestQualitiesOrTraits ?? this.bestQualitiesOrTraits,
+      bestQualotiesOrTraits:
+          bestQualotiesOrTraits ?? this.bestQualotiesOrTraits,
       city: city ?? this.city,
       countLike: countLike ?? this.countLike,
       desiredQualities: desiredQualities ?? this.desiredQualities,

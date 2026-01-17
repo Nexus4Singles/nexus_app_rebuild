@@ -17,6 +17,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   final _password = TextEditingController();
 
   bool _busy = false;
+  bool _obscurePassword = true;
   String? _error;
 
   @override
@@ -58,31 +59,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     }
   }
 
-  Future<void> _google() async {
-    FocusScope.of(context).unfocus();
-
-    setState(() {
-      _busy = true;
-      _error = null;
-    });
-
-    try {
-      await ref.read(authNotifierProvider.notifier).signInWithGoogle();
-
-      if (!mounted) return;
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (_) => const AppLaunchGate()),
-        (_) => false,
-      );
-    } catch (e) {
-      if (!mounted) return;
-      setState(() => _error = e.toString());
-    } finally {
-      if (mounted) setState(() => _busy = false);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,8 +83,21 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             TextField(
               controller: _password,
               enabled: !_busy,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'Password'),
+              obscureText: _obscurePassword,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                suffixIcon: IconButton(
+                  onPressed:
+                      _busy
+                          ? null
+                          : () => setState(
+                            () => _obscurePassword = !_obscurePassword,
+                          ),
+                  icon: Icon(
+                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                  ),
+                ),
+              ),
             ),
             const SizedBox(height: 12),
             if (_error != null)
@@ -120,12 +109,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 onPressed: _busy ? null : _signup,
                 child: Text(_busy ? 'Creating…' : 'Create Account'),
               ),
-            ),
-            const SizedBox(height: 12),
-            OutlinedButton.icon(
-              onPressed: _busy ? null : _google,
-              icon: const Icon(Icons.g_mobiledata),
-              label: Text(_busy ? 'Please wait…' : 'Continue with Google'),
             ),
           ],
         ),

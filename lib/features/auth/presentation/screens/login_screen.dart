@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../../core/providers/auth_provider.dart';
+import '../../../../core/bootstrap/bootstrap_gate.dart';
+import '../../../guest/guest_entry_gate.dart';
 import '../../../launch/presentation/app_launch_gate.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -17,6 +21,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   bool _busy = false;
   String? _error;
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -52,7 +57,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
-  Future<void> _google() async {
+  Future<void> _continueAsGuest() async {
     FocusScope.of(context).unfocus();
 
     setState(() {
@@ -61,12 +66,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     try {
-      await ref.read(authNotifierProvider.notifier).signInWithGoogle();
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('force_guest', true);
+
+      // Ensure FirebaseAuth doesn't re-hydrate an old signed-in user.
+      await FirebaseAuth.instance.signOut();
 
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const AppLaunchGate()),
+        MaterialPageRoute(
+          builder: (_) => const GuestEntryGate(child: BootstrapGate()),
+        ),
         (_) => false,
       );
     } catch (e) {
@@ -95,8 +106,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             TextField(
               controller: _password,
               enabled: !_busy,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'Password'),
+              obscureText: _obscurePassword,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                suffixIcon: IconButton(
+                  onPressed:
+                      _busy
+                          ? null
+                          : () => setState(
+                            () => _obscurePassword = !_obscurePassword,
+                          ),
+                  icon: Icon(
+                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                  ),
+                ),
+              ),
             ),
             const SizedBox(height: 12),
             if (_error != null)
@@ -110,11 +134,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            OutlinedButton.icon(
-              onPressed: _busy ? null : _google,
-              icon: const Icon(Icons.g_mobiledata),
-              label: Text(_busy ? 'Please wait…' : 'Continue with Google'),
+
+            // Replaces Google sign-in.
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: _busy ? null : _continueAsGuest,
+                child: Text(_busy ? 'Please wait…' : 'Continue as Guest'),
+              ),
             ),
+
             const SizedBox(height: 8),
             TextButton(
               onPressed:

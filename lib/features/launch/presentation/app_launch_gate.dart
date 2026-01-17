@@ -82,10 +82,11 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
 
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (_) =>
-                    done
-                        ? const GuestEntryGate(child: BootstrapGate())
-                        : const PresurveySplashScreen(),
+                builder:
+                    (_) =>
+                        done
+                            ? const GuestEntryGate(child: BootstrapGate())
+                            : const PresurveySplashScreen(),
               ),
             );
           },
@@ -117,10 +118,11 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
               final done = _isPresurveyCompleted(doc);
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (_) =>
-                      done
-                          ? const GuestEntryGate(child: BootstrapGate())
-                          : const PresurveySplashScreen(),
+                  builder:
+                      (_) =>
+                          done
+                              ? const GuestEntryGate(child: BootstrapGate())
+                              : const PresurveySplashScreen(),
                 ),
               );
             },

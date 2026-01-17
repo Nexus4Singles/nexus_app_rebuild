@@ -44,7 +44,10 @@ class ChatsScreen extends ConsumerWidget {
     final optedIn = optedInAsync.maybeWhen(data: (v) => v, orElse: () => true);
 
     final completedAsync = ref.watch(datingProfileCompletedProvider);
-    final isProfileComplete = completedAsync.maybeWhen(data: (v) => v, orElse: () => false);
+    final isProfileComplete = completedAsync.maybeWhen(
+      data: (v) => v,
+      orElse: () => false,
+    );
 
     if (!isSignedIn) {
       return Scaffold(
@@ -264,7 +267,7 @@ class ChatsScreen extends ConsumerWidget {
                 error:
                     (_, __) => Center(
                       child: Text(
-                        'Unable to load chats right now.',
+                        'You don’t have any chats yet.',
                         style: AppTextStyles.bodyMedium.copyWith(
                           color: AppColors.textSecondary,
                         ),

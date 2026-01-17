@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
 
+import 'package:nexus_app_min_test/core/session/is_guest_provider.dart';
+
 import 'package:nexus_app_min_test/core/session/relationship_status_key.dart';
 
 import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
@@ -13,6 +15,52 @@ import 'package:nexus_app_min_test/features/stories/presentation/screens/stories
 
 import 'package:nexus_app_min_test/features/journeys/data/journey_repository.dart';
 import 'package:nexus_app_min_test/features/journeys/domain/journey_models.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+Future<String> _homeDisplayNameForUser(User? u) async {
+  if (u == null) return '';
+  final dn = (u.displayName ?? '').trim();
+  if (dn.isNotEmpty) return dn;
+
+  // Firestore fallback for v1 users whose FirebaseAuth displayName is empty.
+  try {
+    final doc =
+        await FirebaseFirestore.instance.collection('users').doc(u.uid).get();
+    final data = doc.data();
+    if (data != null) {
+      String pick(List<String> keys) {
+        for (final k in keys) {
+          final v = data[k];
+          if (v == null) continue;
+          final t = v.toString().trim();
+          if (t.isNotEmpty) return t;
+        }
+        return '';
+      }
+
+      final candidate = pick([
+        'username',
+        'user_name',
+        'name',
+        'fullName',
+        'full_name',
+        'displayName',
+        'display_name',
+      ]);
+
+      if (candidate.isNotEmpty) {
+        return candidate.split(RegExp(r'\s+')).first.trim();
+      }
+    }
+  } catch (_) {}
+
+  // Email prefix fallback
+  final e = (u.email ?? '').trim();
+  if (e.isNotEmpty && e.contains('@')) {
+    return e.split('@').first.trim();
+  }
+  return '';
+}
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -82,9 +130,10 @@ class HomeScreen extends ConsumerWidget {
     final bottomInset = MediaQuery.of(context).padding.bottom;
     final theme = Theme.of(context);
 
-    final u = FirebaseAuth.instance.currentUser;
-    final isGuest = (u == null) || (u.isAnonymous == true);
-    final firstName = (u?.displayName ?? '').trim();
+    // Use the canonical guest logic (respects `force_guest` etc.)
+    final isGuest = ref
+        .watch(isGuestProvider)
+        .maybeWhen(data: (v) => v, orElse: () => true);
 
     // Fallback for relationship status comes from local prefs (guest + signed-in safe).
     final fallbackKey = relationshipStatusKeyFromString('');
@@ -99,21 +148,47 @@ class HomeScreen extends ConsumerWidget {
           return ListView(
             padding: EdgeInsets.fromLTRB(16, 14, 16, 220 + bottomInset),
             children: [
-              Text(
-                isGuest
-                    ? 'Hello 👋'
-                    : '${_greeting()}, ${firstName.isEmpty ? 'there' : firstName} 👋',
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
+              if (isGuest)
+                Text(
+                  'Hello 👋',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                )
+              else
+                StreamBuilder<User?>(
+                  stream: FirebaseAuth.instance.authStateChanges(),
+                  builder: (context, authSnap) {
+                    final user = authSnap.data ?? FirebaseAuth.instance.currentUser;
+                    return FutureBuilder<String>(
+                      future: _homeDisplayNameForUser(user),
+                      builder: (context, snap) {
+                        final firstName = (snap.data ?? '').trim();
+                        return Text(
+                          '${_greeting()}, ${firstName.isEmpty ? 'there' : firstName} 👋',
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
-              ),
               const SizedBox(height: 6),
-              Text(
-                'Create an account to get the best experience',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.textTheme.bodySmall?.color?.withOpacity(0.75),
+              if (isGuest)
+                Text(
+                  'Create an account to get the best experience',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.textTheme.bodySmall?.color?.withOpacity(0.75),
+                  ),
+                )
+              else
+                Text(
+                  'Welcome back — continue where you left off',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.textTheme.bodySmall?.color?.withOpacity(0.75),
+                  ),
                 ),
-              ),
               const SizedBox(height: 14),
 
               _Card(

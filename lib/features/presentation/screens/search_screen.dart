@@ -42,8 +42,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final isSignedIn = user != null && !user.isAnonymous;
 
     final isGuestAsync = ref.watch(isGuestProvider);
-    final isGuest = isGuestAsync.maybeWhen(data: (v) => v, orElse: () => !isSignedIn);
-final compatAsync = ref.watch(compatibilityStatusProvider);
+    final isGuest = isGuestAsync.maybeWhen(
+      data: (v) => v,
+      orElse: () => !isSignedIn,
+    );
+    final compatAsync = ref.watch(compatibilityStatusProvider);
     final resultsAsync = ref.watch(datingSearchResultsProvider);
     final listsAsync = ref.watch(searchFilterListsProvider);
 
@@ -193,6 +196,11 @@ final compatAsync = ref.watch(compatibilityStatusProvider);
                   height: 54,
                   child: ElevatedButton(
                     onPressed: () async {
+                      if (!isSignedIn) {
+                        Navigator.of(context).pushNamed('/login');
+                        return;
+                      }
+
                       await DatingProfileGate.requireCompleteProfile(
                         context,
                         ref,

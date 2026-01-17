@@ -316,7 +316,6 @@ class SearchService {
       } else {
         // If we can't determine gender, don't show any results
         // This ensures users complete their profile before searching
-        print('Warning: Current user gender not set, returning empty results');
         return [];
       }
 
@@ -358,7 +357,6 @@ class SearchService {
 
       return users;
     } catch (e) {
-      print('Search error: $e');
       // Fallback: try without ordering if index doesn't exist
       return _searchUsersFallback(
         filters: filters,
@@ -416,7 +414,6 @@ class SearchService {
 
       return users;
     } catch (e) {
-      print('Fallback search error: $e');
       return [];
     }
   }
@@ -458,7 +455,6 @@ class SearchService {
           .take(limit)
           .toList();
     } catch (e) {
-      print('Recommendations error: $e');
       return [];
     }
   }
@@ -470,7 +466,6 @@ class SearchService {
       if (!doc.exists) return null;
       return UserModel.fromDocument(doc);
     } catch (e) {
-      print('Get user error: $e');
       return null;
     }
   }

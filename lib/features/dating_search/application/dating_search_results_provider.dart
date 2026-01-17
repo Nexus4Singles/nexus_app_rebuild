@@ -22,7 +22,6 @@ final datingSearchResultsProvider = FutureProvider<List<DatingProfile>>((
   if (!firebaseReady) {
     if (kDebugMode) {
       // ignore: avoid_print
-      print('[DatingSearchResults] firebaseReady=false -> returning []');
     }
     return const [];
   }
@@ -32,7 +31,6 @@ final datingSearchResultsProvider = FutureProvider<List<DatingProfile>>((
   if (isDisabled) {
     if (kDebugMode) {
       // ignore: avoid_print
-      print('[DatingSearchResults] current user disabled -> returning []');
     }
     return const [];
   }
@@ -60,14 +58,12 @@ final datingSearchResultsProvider = FutureProvider<List<DatingProfile>>((
     if (debugGenderOverride.trim().isNotEmpty) {
       gender = debugGenderOverride.trim();
       // ignore: avoid_print
-      print('[DatingSearchResults] using debug gender override: $gender');
     }
   }
 
   if (gender == null || gender.trim().isEmpty) {
     if (kDebugMode) {
       // ignore: avoid_print
-      print('[DatingSearchResults] gender is null/empty -> returning []');
     }
     return const [];
   }
@@ -108,7 +104,6 @@ final datingSearchResultsProvider = FutureProvider<List<DatingProfile>>((
 
   if (kDebugMode) {
     // ignore: avoid_print
-    print('[DatingSearchResults] results=${results.length}');
   }
 
   return results;

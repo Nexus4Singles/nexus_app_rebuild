@@ -4,6 +4,7 @@ import '../models/assessment_model.dart';
 import '../models/journey_model.dart';
 import '../models/story_model.dart';
 import '../constants/app_constants.dart';
+import 'dart:developer' as dev;
 
 /// Service for Firestore database operations.
 class FirestoreService {
@@ -86,7 +87,15 @@ class FirestoreService {
   Future<UserModel?> getUser(String uid) async {
     try {
       final doc = await _userDocRef(uid).get();
-      if (!doc.exists || doc.data() == null) return null;
+      final data = doc.data();
+      if (!doc.exists || data == null) return null;
+
+      print(
+        '[USER DOC] rel_with_god=${data['relationship_with_god']} role_of_husband=${data['role_of_husband']} best_qualities=${data['best_qualities_or_traits']}',
+      );
+      print(
+        '[USER DOC] username=${data['username']} user_name=${data['user_name']} name=${data['name']} full_name=${data['full_name']} nationality=${data['nationality']}',
+      );
       return UserModel.fromDocument(doc);
     } catch (e) {
       throw FirestoreException('Failed to get user: $e');

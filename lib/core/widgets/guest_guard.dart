@@ -9,6 +9,9 @@ class GuestGuard {
   static Future<void> requireSignedIn(
     BuildContext context,
     WidgetRef ref, {
+    String loginText = 'Log in',
+    VoidCallback? onLogin,
+
     required VoidCallback onCreateAccount,
     required String title,
     required String message,
@@ -30,6 +33,14 @@ class GuestGuard {
       message: message,
       primaryButtonText: primaryText,
       onPrimary: onCreateAccount,
+
+      // Secondary action: existing users should be able to log in.
+      loginButtonText: loginText,
+      onLogin:
+          onLogin ??
+          () {
+            Navigator.of(context).pushNamed('/login');
+          },
     );
   }
 }

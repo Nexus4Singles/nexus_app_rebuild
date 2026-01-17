@@ -21,7 +21,5 @@ Future<void> initFirebaseSafely() async {
   await prefs.remove('force_guest');
 
   // ignore: avoid_print
-  print(
-    '[BOOTSTRAP] Firebase user detected → uid=${user.uid}, guest cleared',
-  );
+  print('[BOOTSTRAP] Firebase user detected → uid=${user.uid}, guest cleared');
 }
