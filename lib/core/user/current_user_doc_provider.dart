@@ -1,22 +1,22 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
-import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
+import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
 
+/// Streams the signed-in user's Firestore document from `users/{uid}`.
+/// - If signed out (or anonymous), yields null.
+/// - Avoids transient nulls caused by bootstrap "ready" providers.
 final currentUserDocProvider = StreamProvider<Map<String, dynamic>?>((ref) {
-  final firebaseReady = ref.watch(firebaseReadyProvider);
-  if (!firebaseReady) return Stream.value(null);
+  return ref.watch(authStateProvider.stream).asyncExpand((user) {
+    if (user == null || user.isAnonymous) return Stream.value(null);
 
-  final uid = FirebaseAuth.instance.currentUser?.uid;
-  if (uid == null) return Stream.value(null);
-
-  final fs = ref.watch(firestoreInstanceProvider);
-  if (fs == null) return Stream.value(null);
-
-  return fs.collection('users').doc(uid).snapshots().map((doc) {
-    if (!doc.exists) return null;
-    return doc.data();
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .snapshots()
+        .map((doc) {
+      if (!doc.exists) return null;
+      return doc.data();
+    });
   });
 });

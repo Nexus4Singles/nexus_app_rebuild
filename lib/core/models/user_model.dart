@@ -39,7 +39,7 @@ class Nexus2Data extends Equatable {
               ?.map((e) => e.toString())
               .toList() ??
           [],
-      onboardingCompleted: map['onboardingCompleted'] as bool? ?? false,
+      onboardingCompleted: UserModel._boolFrom(map['onboardingCompleted']) ?? false,
       onboardedAt: (map['onboardedAt'] as Timestamp?)?.toDate(),
       schemaVersion:
           map['schemaVersion'] as int? ?? AppConfig.nexus2SchemaVersion,
@@ -126,6 +126,22 @@ class Nexus2Data extends Equatable {
 /// Complete User model that extends Nexus 1.0 schema
 /// Maintains backward compatibility with existing users/{uid} documents
 class UserModel extends Equatable {
+
+  /// Accepts bools from Firestore that may be stored as bool, string ("true"/"false"),
+  /// or num (1/0). Returns null if not parseable.
+  static bool? _boolFrom(dynamic v) {
+    if (v == null) return null;
+    if (v is bool) return v;
+    if (v is num) return v != 0;
+    if (v is String) {
+      final t = v.trim().toLowerCase();
+      if (t == 'true' || t == '1' || t == 'yes') return true;
+      if (t == 'false' || t == '0' || t == 'no') return false;
+    }
+    return null;
+  }
+
+
   // ========================
   // NEXUS 1.0 FIELDS (DO NOT MODIFY)
   // ========================
@@ -296,7 +312,7 @@ class UserModel extends Equatable {
       relationshipWithGod: data['relationshipWithGod'] as String?,
       roleOfHusband: data['roleOfHusband'] as String?,
       stateOfOrigin: data['stateOfOrigin'] as String?,
-      isVerified: data['isVerified'] as bool?,
+      isVerified: UserModel._boolFrom(data['isVerified']),
       notificationToken: data['notificationToken'] as String?,
       phoneNumber: data['phoneNumber'] as String?,
       registrationProgress: data['registrationProgress'] as String?,
@@ -311,17 +327,17 @@ class UserModel extends Equatable {
       snapchatUsername: data['snapchatUsername'] as String?,
       churchName: data['churchName'] as String?,
       compatibility: data['compatibility'] as Map<String, dynamic>?,
-      compatibilitySetted: data['compatibilitySetted'] as bool?,
+      compatibilitySetted: UserModel._boolFrom(data['compatibilitySetted']),
       location: data['location'] as Map<String, dynamic>?,
       fcmToken: data['fcmToken'] as String?,
-      onPremium: data['onPremium'] as bool?,
-      prevSubscribed: data['prevSubscribed'] as bool?,
+      onPremium: UserModel._boolFrom(data['onPremium']),
+      prevSubscribed: UserModel._boolFrom(data['prevSubscribed']),
       subExpDate: _parseTimestamp(data['subExpDate']),
-      usedOneFreeText: data['usedOneFreeText'] as bool?,
-      entitledUser: data['entitledUser'] as bool?,
+      usedOneFreeText: UserModel._boolFrom(data['usedOneFreeText']),
+      entitledUser: UserModel._boolFrom(data['entitledUser']),
       subscriberId: data['subscriberId'] as String?,
       recommendedTime: _parseTimestamp(data['recommendedTime']),
-      hasExternalSubscriptionFlow: data['hasExternalSubscriptionFlow'] as bool?,
+      hasExternalSubscriptionFlow: UserModel._boolFrom(data['hasExternalSubscriptionFlow']),
       profileCompletionDate: _parseTimestamp(data['profileCompletionDate']),
       nexus2: Nexus2Data.fromMap(data['nexus2'] as Map<String, dynamic>?),
     );

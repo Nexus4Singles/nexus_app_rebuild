@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/auth/auth_providers.dart';
-import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
-import 'package:nexus_app_min_test/core/dating/dating_profile_status_provider.dart';
+import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
 import 'package:nexus_app_min_test/core/providers/service_providers.dart';
+import 'package:nexus_app_min_test/core/user/dating_profile_completed_provider.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/core/user/dating_opt_in_provider.dart';
 
@@ -34,18 +33,9 @@ class ChatsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authAsync = ref.watch(authStateProvider);
-    final isSignedIn = authAsync.maybeWhen(
-      data: (a) => a.isSignedIn,
-      orElse: () => false,
-    );
-
-    final uid = authAsync.maybeWhen(
-      data: (a) => a.user?.uid,
-      orElse: () => null,
-    );
-
-    final ready = ref.watch(firebaseReadyProvider);
-
+    final user = authAsync.maybeWhen(data: (u) => u, orElse: () => null);
+    final isSignedIn = user != null && !user.isAnonymous;
+    final uid = user?.uid;
     // Signed-in gating for Chats:
     // - Guests must not see chat UI.
     // - If dating is turned off, chats are unavailable.
@@ -53,11 +43,8 @@ class ChatsScreen extends ConsumerWidget {
     final optedInAsync = ref.watch(datingOptInProvider);
     final optedIn = optedInAsync.maybeWhen(data: (v) => v, orElse: () => true);
 
-    final statusAsync = ref.watch(datingProfileStatusProvider);
-    final status = statusAsync.maybeWhen(
-      data: (v) => v,
-      orElse: () => DatingProfileStatus.incomplete,
-    );
+    final completedAsync = ref.watch(datingProfileCompletedProvider);
+    final isProfileComplete = completedAsync.maybeWhen(data: (v) => v, orElse: () => false);
 
     if (!isSignedIn) {
       return Scaffold(
@@ -143,19 +130,6 @@ class ChatsScreen extends ConsumerWidget {
       );
     }
 
-    // If signed-in but Firebase isn't ready, show a soft loading state (avoid mis-gating).
-    if (isSignedIn && !ready) {
-      return Scaffold(
-        backgroundColor: AppColors.background,
-        appBar: AppBar(
-          backgroundColor: AppColors.background,
-          elevation: 0,
-          title: Text('Chats', style: AppTextStyles.headlineLarge),
-        ),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
-
     // Dating opt-in gate
     if (isSignedIn && !optedIn) {
       return Scaffold(
@@ -211,7 +185,7 @@ class ChatsScreen extends ConsumerWidget {
     }
 
     // Dating profile completion gate
-    if (isSignedIn && status != DatingProfileStatus.complete && !false) {
+    if (isSignedIn && !isProfileComplete) {
       return Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(

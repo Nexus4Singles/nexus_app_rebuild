@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:nexus_app_min_test/core/auth/auth_providers.dart';
+import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
 import 'package:nexus_app_min_test/core/lists/nexus_lists_provider.dart';
 import 'package:nexus_app_min_test/core/session/guest_session_provider.dart';
+import 'package:nexus_app_min_test/core/session/is_guest_provider.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
 import 'package:nexus_app_min_test/core/widgets/disabled_account_gate.dart';
@@ -37,14 +38,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final authAsync = ref.watch(authStateProvider);
-    final isSignedIn = authAsync.maybeWhen(
-      data: (a) => a.isSignedIn,
-      orElse: () => false,
-    );
-    final guestSession = ref.watch(guestSessionProvider);
-    final isGuest = guestSession != null;
+    final user = authAsync.maybeWhen(data: (u) => u, orElse: () => null);
+    final isSignedIn = user != null && !user.isAnonymous;
 
-    final compatAsync = ref.watch(compatibilityStatusProvider);
+    final isGuestAsync = ref.watch(isGuestProvider);
+    final isGuest = isGuestAsync.maybeWhen(data: (v) => v, orElse: () => !isSignedIn);
+final compatAsync = ref.watch(compatibilityStatusProvider);
     final resultsAsync = ref.watch(datingSearchResultsProvider);
     final listsAsync = ref.watch(searchFilterListsProvider);
 

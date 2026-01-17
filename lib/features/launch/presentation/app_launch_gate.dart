@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../core/providers/auth_provider.dart';
 import '../../../core/user/current_user_doc_provider.dart';
@@ -59,45 +60,94 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
     if (!mounted) return;
 
     final authAsync = ref.read(authStateProvider);
-    final user = authAsync.maybeWhen(data: (u) => u, orElse: () => null);
 
-    // Logged out -> auth entry screen (with guest option).
-    if (user == null) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => const GuestEntryGate(child: _AuthEntryScreen()),
-        ),
-      );
-      return;
-    }
+    authAsync.when(
+      data: (user) {
+        // Logged out (or anonymous) -> auth entry screen (with guest option).
+        if (user == null || user.isAnonymous) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => const GuestEntryGate(child: _AuthEntryScreen()),
+            ),
+          );
+          return;
+        }
 
-    // Signed in -> check presurvey completion from Firestore doc.
-    final docAsync = ref.read(currentUserDocProvider);
+        // Signed in -> check presurvey completion from Firestore doc.
+        final docAsync = ref.read(currentUserDocProvider);
 
-    docAsync.when(
-      data: (doc) {
-        final done = _isPresurveyCompleted(doc);
+        docAsync.when(
+          data: (doc) {
+            final done = _isPresurveyCompleted(doc);
 
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder:
-                (_) =>
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) =>
                     done
                         ? const GuestEntryGate(child: BootstrapGate())
                         : const PresurveySplashScreen(),
-          ),
+              ),
+            );
+          },
+          loading: () {
+            // If still loading, keep splash visible and try again shortly.
+            _timer?.cancel();
+            _timer = Timer(const Duration(milliseconds: 350), _route);
+          },
+          error: (_, __) {
+            // Don't block signed-in users on transient Firestore issues.
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => const GuestEntryGate(child: BootstrapGate()),
+              ),
+            );
+          },
         );
       },
       loading: () {
-        // If still loading, keep splash visible and try again shortly.
+        // Auth stream may still be resolving, but FirebaseAuth can already have a user.
+        // Avoid getting stuck on splash by falling back to the synchronous currentUser.
+        final fallbackUser = FirebaseAuth.instance.currentUser;
+        if (fallbackUser != null && !fallbackUser.isAnonymous) {
+          // Treat as signed in and continue routing.
+          final docAsync = ref.read(currentUserDocProvider);
+
+          docAsync.when(
+            data: (doc) {
+              final done = _isPresurveyCompleted(doc);
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) =>
+                      done
+                          ? const GuestEntryGate(child: BootstrapGate())
+                          : const PresurveySplashScreen(),
+                ),
+              );
+            },
+            loading: () {
+              _timer?.cancel();
+              _timer = Timer(const Duration(milliseconds: 350), _route);
+            },
+            error: (_, __) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => const GuestEntryGate(child: BootstrapGate()),
+                ),
+              );
+            },
+          );
+          return;
+        }
+
+        // Still no auth info; keep splash visible and try again.
         _timer?.cancel();
         _timer = Timer(const Duration(milliseconds: 350), _route);
       },
       error: (_, __) {
-        // Don't block signed-in users on transient Firestore issues.
+        // If auth stream errors, fall back to auth entry.
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (_) => const GuestEntryGate(child: BootstrapGate()),
+            builder: (_) => const GuestEntryGate(child: _AuthEntryScreen()),
           ),
         );
       },
