@@ -203,9 +203,14 @@
       "s Cathedral\",\n    \"St. Thomas Church\",\n    \"Summit Bible Church\",\n    \"Supernatural Life Church\",\n    \"Sword of the Spirit Ministries\",\n    \"Synagogue Church of All Nations\",\n    \"Tenth Church\",\n    \"The African Church\",\n    \"The Apostolic Church\",\n    \"The Baptizing Church\",\n    \"The Brooklyn Tabernacle\",\n    \"The Carpenter"
     ],
     "countryOfResidenceFilters": [
+      "Canada",
+      "Ghana",
+      "Kenya",
       "Nigeria",
-      "Diaspora",
-      "Any"
+    "South Africa",
+    "United Kingdom",
+    "United States",
+     "Others"
     ],
     "educationLevelFilters": [
       "Graduate",

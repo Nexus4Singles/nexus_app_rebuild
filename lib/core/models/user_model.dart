@@ -579,7 +579,9 @@ class UserModel extends Equatable {
       ]),
 
       compatibility: data['compatibility'] as Map<String, dynamic>?,
-      compatibilitySetted: UserModel._boolFrom(data['compatibilitySetted']),
+      compatibilitySetted: UserModel._boolFrom(data['compatibilitySetted'])
+          ?? UserModel._boolFrom(data['compatibility_setted'])
+          ?? UserModel._boolFrom(data['compatibilitysetted']),
       location:
           _getPath(data, ['location']) as Map<String, dynamic>? ??
           _getPath(data, ['nexus2', 'profile', 'location'])

@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/foundation.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
 import 'package:nexus_app_min_test/core/session/guest_session_provider.dart';
 import 'package:nexus_app_min_test/core/user/current_user_gender_provider.dart';
 import 'package:nexus_app_min_test/core/user/current_user_disabled_provider.dart';
-import 'package:nexus_app_min_test/features/compatibility_quiz/application/compatibility_status_provider.dart';
-
 import '../data/dating_search_service.dart';
 import '../domain/dating_profile.dart';
 import '../domain/dating_search_filters.dart';
@@ -31,17 +31,6 @@ final datingSearchResultsProvider = FutureProvider<List<DatingProfile>>((
   if (isDisabled) {
     if (kDebugMode) {
       // ignore: avoid_print
-    }
-    return const [];
-  }
-
-  final compat = await ref.watch(compatibilityStatusProvider.future);
-  if (compat != CompatibilityStatus.complete) {
-    if (kDebugMode) {
-      // ignore: avoid_print
-      print(
-        '[DatingSearchResults] compatibilityStatus=$compat -> returning []',
-      );
     }
     return const [];
   }

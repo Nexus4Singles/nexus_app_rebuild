@@ -34,6 +34,20 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   String? _maritalStatus;
   String? _kids;
   String? _genotype;
+  void _clearFilters() {
+    setState(() {
+      _minAge = 21;
+      _maxAge = 65;
+
+      _countryOfResidence = null;
+      _education = null;
+      _sourceOfIncome = null;
+      _longDistance = null;
+      _maritalStatus = null;
+      _kids = null;
+      _genotype = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +61,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       orElse: () => !isSignedIn,
     );
     final compatAsync = ref.watch(compatibilityStatusProvider);
-    final resultsAsync = ref.watch(datingSearchResultsProvider);
     final listsAsync = ref.watch(searchFilterListsProvider);
 
     final lists = listsAsync.maybeWhen(data: (v) => v, orElse: () => null);
@@ -103,9 +116,34 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Search filters',
-                              style: AppTextStyles.labelLarge,
+                            Row(
+                              children: [
+                                Text(
+                                  'Search filters',
+                                  style: AppTextStyles.labelLarge,
+                                ),
+                                const Spacer(),
+                                TextButton(
+                                  onPressed: _clearFilters,
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 6,
+                                    ),
+                                    minimumSize: Size.zero,
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    visualDensity: VisualDensity.compact,
+                                  ),
+                                  child: Text(
+                                    'Clear',
+                                    style: AppTextStyles.bodySmall.copyWith(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 12),
 
@@ -179,12 +217,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           ],
                         ),
                       ),
-
-                      const SizedBox(height: 14),
-
-                      _SectionCard(
-                        child: _SearchResultsCard(resultsAsync: resultsAsync),
-                      ),
                     ],
                   ),
                 ),
@@ -193,7 +225,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
                 SizedBox(
                   width: double.infinity,
-                  height: 54,
+                  height: 46,
                   child: ElevatedButton(
                     onPressed: () async {
                       if (!isSignedIn) {
@@ -201,33 +233,28 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         return;
                       }
 
-                      await DatingProfileGate.requireCompleteProfile(
-                        context,
-                        ref,
-                        onAllowed: () async {
-                          // Persist selected filters into the real provider
-                          ref
-                              .read(datingSearchFiltersProvider.notifier)
-                              .state = DatingSearchFilters(
-                            minAge: _minAge,
-                            maxAge: _maxAge,
-                            countryOfResidence: _countryOfResidence,
-                            educationLevel: _education,
-                            regularSourceOfIncome: _sourceOfIncome,
-                            longDistance: _longDistance,
-                            maritalStatus: _maritalStatus,
-                            hasKids: _kids,
-                            genotype: _genotype,
-                          );
+                      // Persist UI selections into provider state (Results screen reads from this)
+                      ref
+                          .read(datingSearchFiltersProvider.notifier)
+                          .state = DatingSearchFilters(
+                        minAge: _minAge,
+                        maxAge: _maxAge,
+                        countryOfResidence: _countryOfResidence,
+                        educationLevel: _education,
+                        regularSourceOfIncome: _sourceOfIncome,
+                        longDistance: _longDistance,
+                        maritalStatus: _maritalStatus,
+                        hasKids: _kids,
+                        genotype: _genotype,
+                      );
 
-                          // Trigger a fresh Firestore-backed fetch
-                          ref.invalidate(datingSearchResultsProvider);
+                      ref.invalidate(datingSearchResultsProvider);
 
-                          if (!mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Searching…')),
-                          );
-                        },
+                      if (!mounted) return;
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const SearchResultsScreen(),
+                        ),
                       );
                     },
                     child: Text(isSignedIn ? 'Search' : 'Sign in to Search'),
@@ -242,56 +269,63 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 }
 
-class _SearchResultsCard extends StatelessWidget {
-  final AsyncValue<List<DatingProfile>> resultsAsync;
-  const _SearchResultsCard({required this.resultsAsync});
+class SearchResultsScreen extends ConsumerWidget {
+  const SearchResultsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return resultsAsync.when(
-      loading:
-          () => const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: Center(child: CircularProgressIndicator()),
-          ),
-      error:
-          (e, _) => Text(
-            'Unable to load results right now. Please try again.',
-            style: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.textMuted,
-              height: 1.35,
-            ),
-          ),
-      data: (items) {
-        if (items.isEmpty) {
-          return Text(
-            'No results yet. Adjust filters and tap Search.',
-            style: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.textMuted,
-              height: 1.35,
-            ),
-          );
-        }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final resultsAsync = ref.watch(datingSearchResultsProvider);
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Results', style: AppTextStyles.labelLarge),
-            const SizedBox(height: 12),
-            ...items.take(20).map((p) => _SearchResultRow(profile: p)),
-            if (items.length > 20)
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Text(
-                  'Showing first 20 results. Narrow filters to refine.',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textMuted,
+    return DisabledAccountGate(
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          surfaceTintColor: AppColors.background,
+          elevation: 0,
+          title: Text('Results', style: AppTextStyles.headlineLarge),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+            child: resultsAsync.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error:
+                  (e, _) => Text(
+                    'Unable to load results right now. Please try again.',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textMuted,
+                      height: 1.35,
+                    ),
                   ),
-                ),
-              ),
-          ],
-        );
-      },
+              data: (items) {
+                if (items.isEmpty) {
+                  return Text(
+                    'No results yet. Adjust filters and tap Search.',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textMuted,
+                      height: 1.35,
+                    ),
+                  );
+                }
+
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    ref.invalidate(datingSearchResultsProvider);
+                    await ref.read(datingSearchResultsProvider.future);
+                  },
+                  child: ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: items.length,
+                    itemBuilder:
+                        (context, i) => _SearchResultRow(profile: items[i]),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -309,6 +343,8 @@ class _SearchResultRow extends StatelessWidget {
         profile.profession!.trim(),
     ].join(' • ');
 
+    final displayName =
+        (profile.name).trim().isNotEmpty ? profile.name.trim() : 'User';
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: InkWell(
@@ -321,7 +357,7 @@ class _SearchResultRow extends StatelessWidget {
           );
         },
         child: Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: AppColors.background,
             borderRadius: BorderRadius.circular(16),
@@ -330,49 +366,29 @@ class _SearchResultRow extends StatelessWidget {
           child: Row(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(12),
                 child: Container(
-                  width: 54,
-                  height: 54,
+                  width: 46,
+                  height: 46,
                   color: Colors.black12,
                   child:
                       photo == null
-                          ? const Icon(Icons.person, size: 28)
+                          ? const Icon(Icons.person, size: 24)
                           : Image.network(photo, fit: BoxFit.cover),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${profile.name}, ${profile.age}',
+                      '${displayName}, ${profile.age}',
                       style: AppTextStyles.labelLarge,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 3),
-                    if (!profile.isVerified)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 3),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 3,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.background,
-                            borderRadius: BorderRadius.circular(999),
-                            border: Border.all(color: AppColors.border),
-                          ),
-                          child: Text(
-                            'Unverified (Legacy)',
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.textMuted,
-                            ),
-                          ),
-                        ),
-                      ),
+
                     if (subtitle.trim().isNotEmpty)
                       Text(
                         subtitle,
@@ -385,7 +401,7 @@ class _SearchResultRow extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               const Icon(
                 Icons.chevron_right_rounded,
                 color: AppColors.textMuted,
@@ -522,11 +538,11 @@ class _BannerCard extends StatelessWidget {
             height: 42,
             decoration: BoxDecoration(
               color: AppColors.primary.withOpacity(0.10),
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(Icons.lock_outline, color: AppColors.primary),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

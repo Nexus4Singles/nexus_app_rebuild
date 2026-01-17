@@ -4,7 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'firebase_ready_provider.dart';
 
 final firestoreInstanceProvider = Provider<FirebaseFirestore?>((ref) {
-  if (kDebugMode) return null;
+  // In debug we still want Firestore reads for search/compatibility, otherwise
+  // downstream providers resolve as "unknown" and features appear broken.
+  if (kDebugMode) return FirebaseFirestore.instance;
 
   final ready = ref.watch(firebaseReadyProvider);
   if (!ready) return null;

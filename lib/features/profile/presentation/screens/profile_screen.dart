@@ -279,7 +279,7 @@ class ProfileScreen extends ConsumerWidget {
           backgroundColor: AppColors.background,
           body: CustomScrollView(
             slivers: [
-                            _ProfileHeroAppBar(
+              _ProfileHeroAppBar(
                 profile: profile,
                 photos: photos,
                 isViewingOtherUser: isViewingOtherUser,
@@ -410,7 +410,7 @@ class _BasicProfileScreen extends StatelessWidget {
               child: Row(
                 children: [
                   _InitialsAvatar(name: name),
-                  const SizedBox(width: 46),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -775,7 +775,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
       ),
       actions: [
         if (isViewingOtherUser) _OverflowMenu(targetUid: profile.id),
-        const SizedBox(width: 46),
+        const SizedBox(width: 12),
       ],
       flexibleSpace: LayoutBuilder(
         builder: (context, constraints) {
@@ -1956,7 +1956,7 @@ class _AudioPromptTile extends StatelessWidget {
                         : null,
                 borderRadius: BorderRadius.circular(999),
                 child: Container(
-                  height: 44,
+                  height: 34,
                   width: 44,
                   decoration: BoxDecoration(
                     color: AppColors.surface,
@@ -2074,8 +2074,7 @@ class _PremiumActionsRow extends ConsumerWidget {
         Expanded(
           child: _PremiumButton(
             icon: Icons.favorite_rounded,
-            title: 'Compatibility',
-            subtitle: 'Premium only',
+            title: 'Compatibility Data',
             onTap: () {
               if (!isPremium) {
                 _toast(context, 'Upgrade to Premium to view compatibility.');
@@ -2091,12 +2090,11 @@ class _PremiumActionsRow extends ConsumerWidget {
             },
           ),
         ),
-        const SizedBox(width: 46),
+        const SizedBox(width: 12),
         Expanded(
           child: _PremiumButton(
             icon: Icons.chat_bubble_rounded,
-            title: 'Contact',
-            subtitle: 'Premium only',
+            title: 'Contact Info',
             onTap: () {
               if (!isPremium) {
                 _toast(context, 'Upgrade to Premium to view contact info.');
@@ -2116,58 +2114,57 @@ class _PremiumActionsRow extends ConsumerWidget {
 }
 
 class _PremiumButton extends StatelessWidget {
-  final IconData icon;
   final String title;
-  final String subtitle;
+  final IconData icon;
   final VoidCallback onTap;
 
   const _PremiumButton({
-    required this.icon,
     required this.title,
-    required this.subtitle,
+    required this.icon,
     required this.onTap,
   });
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(14),
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: AppColors.border),
+          color: AppColors.primary,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: AppColors.primary.withOpacity(0.35)),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              height: 44,
-              width: 46,
+              height: 32,
+              width: 32,
               decoration: BoxDecoration(
-                color: AppColors.background,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.border),
+                color: Colors.white.withOpacity(0.18),
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, color: AppColors.primary),
-            ),
-            const SizedBox(width: 46),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: AppTextStyles.titleMedium),
-                  const SizedBox(height: 2),
-                  Text(
-                    subtitle,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
+              child: const Icon(
+                Icons.lock_rounded,
+                size: 18,
+                color: Colors.white,
               ),
             ),
-            const Icon(Icons.lock_rounded, color: AppColors.textSecondary),
+            const SizedBox(width: 10),
+            Flexible(
+              child: Text(
+                title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                  height: 1.1,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -2585,7 +2582,7 @@ class _ProfileTile extends StatelessWidget {
             children: [
               Container(
                 height: 46,
-                width: 46,
+                width: 34,
                 decoration: BoxDecoration(
                   color: AppColors.background,
                   borderRadius: BorderRadius.circular(14),
@@ -4282,7 +4279,6 @@ final _verificationStatusProvider = StreamProvider.family<String?, String>((
     return status;
   });
 });
-
 
 // -----------------------------------------------------------------------------
 // Premium viewers (other-user profile)

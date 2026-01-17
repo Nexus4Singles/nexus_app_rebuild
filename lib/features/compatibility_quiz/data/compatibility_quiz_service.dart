@@ -8,8 +8,7 @@ class CompatibilityQuizService {
   final FirebaseFirestore? _firestore;
   CompatibilityQuizService(this._firestore);
 
-  FirebaseFirestore get _fs =>
-      _firestore ?? (throw StateError('Firestore not ready'));
+  FirebaseFirestore get _fs => _firestore ?? FirebaseFirestore.instance;
 
   Future<void> saveQuiz({
     required String uid,
@@ -18,6 +17,7 @@ class CompatibilityQuizService {
     await _fs.collection('users').doc(uid).set({
       'compatibility': data,
       'compatibilitySetted': true,
+      'compatibility_setted': true,
     }, SetOptions(merge: true));
   }
 
@@ -32,7 +32,22 @@ class CompatibilityQuizService {
     final doc = await _fs.collection('users').doc(uid).get();
     final m = doc.data();
     if (m == null) return false;
-    return (m['compatibilitySetted'] == true);
+
+    // v2 flag
+    if (m['compatibilitySetted'] == true) return true;
+
+    // v1 legacy compatibility stored as a map
+    final compat = m['compatibility'];
+    if (compat is Map && compat.isNotEmpty) return true;
+
+    // v1 legacy answers (common shapes)
+    final answers = m['compatibilityAnswers'];
+    if (answers is List && answers.isNotEmpty) return true;
+
+    final answersMap = m['answers'];
+    if (answersMap is Map && answersMap.isNotEmpty) return true;
+
+    return false;
   }
 }
 
