@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
@@ -234,12 +235,26 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       }
 
                       // Persist UI selections into provider state (Results screen reads from this)
+                      if (kDebugMode) {
+                        // ignore: avoid_print
+                        print('[SearchScreen] applying filters: '
+                            'age=$_minAge-$_maxAge, '
+                            'country="$_countryOfResidence", '
+                            'edu="$_education", '
+                            'income="$_sourceOfIncome", '
+                            'distance="$_longDistance", '
+                            'marital="$_maritalStatus", '
+                            'kids="$_kids", '
+                            'geno="$_genotype"');
+                      }
+
                       ref
                           .read(datingSearchFiltersProvider.notifier)
                           .state = DatingSearchFilters(
                         minAge: _minAge,
                         maxAge: _maxAge,
                         countryOfResidence: _countryOfResidence,
+                        countryOptions: countries,
                         educationLevel: _education,
                         regularSourceOfIncome: _sourceOfIncome,
                         longDistance: _longDistance,
@@ -298,13 +313,76 @@ class SearchResultsScreen extends ConsumerWidget {
                       height: 1.35,
                     ),
                   ),
-              data: (items) {
-                if (items.isEmpty) {
-                  return Text(
-                    'No results yet. Adjust filters and tap Search.',
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textMuted,
-                      height: 1.35,
+              data: (result) {
+                final items = result.items;
+                                if (items.isEmpty) {
+                  final hint = result.emptyHint;
+                  final hasHint = hint != null && hint.trim().isNotEmpty;
+
+                  final title = hasHint
+                      ? 'No matches for your current filters'
+                      : 'No matches found';
+
+                  final subtitle = hasHint
+                      ? 'Try removing: $hint'
+                      : 'Widen your filters and try again.';
+
+                  return Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 420),
+                      child: Container(
+                        padding: const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: AppColors.surface,
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(color: AppColors.border),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              height: 48,
+                              width: 48,
+                              decoration: BoxDecoration(
+                                color: AppColors.background,
+                                borderRadius: BorderRadius.circular(999),
+                                border: Border.all(color: AppColors.border),
+                              ),
+                              child: Icon(
+                                Icons.search_off_rounded,
+                                color: AppColors.textMuted,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(title, style: AppTextStyles.titleMedium),
+                            const SizedBox(height: 8),
+                            Text(
+                              subtitle,
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: AppColors.textMuted,
+                                height: 1.35,
+                              ),
+                            ),
+                            if (hasHint) ...[
+                              const SizedBox(height: 10),
+                              Text(
+                                'Tip: start with 1–2 filters, then narrow down.',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  color: AppColors.textMuted,
+                                  height: 1.35,
+                                ),
+                              ),
+                            ],
+                            const SizedBox(height: 14),
+                            OutlinedButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text('Adjust filters'),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   );
                 }

@@ -10,12 +10,13 @@ import 'package:nexus_app_min_test/core/user/current_user_disabled_provider.dart
 import '../data/dating_search_service.dart';
 import '../domain/dating_profile.dart';
 import '../domain/dating_search_filters.dart';
+import '../domain/dating_search_result.dart';
 
 final datingSearchFiltersProvider = StateProvider<DatingSearchFilters>((ref) {
   return const DatingSearchFilters(minAge: 21, maxAge: 70);
 });
 
-final datingSearchResultsProvider = FutureProvider<List<DatingProfile>>((
+final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   ref,
 ) async {
   final firebaseReady = ref.watch(firebaseReadyProvider);
@@ -23,7 +24,7 @@ final datingSearchResultsProvider = FutureProvider<List<DatingProfile>>((
     if (kDebugMode) {
       // ignore: avoid_print
     }
-    return const [];
+    return const DatingSearchResult(items: []);
   }
 
   // Hard gate: disabled users cannot search.
@@ -32,7 +33,7 @@ final datingSearchResultsProvider = FutureProvider<List<DatingProfile>>((
     if (kDebugMode) {
       // ignore: avoid_print
     }
-    return const [];
+    return const DatingSearchResult(items: []);
   }
 
   // Debug-only override: lets you test search even if gender isn't resolved yet.
@@ -54,7 +55,7 @@ final datingSearchResultsProvider = FutureProvider<List<DatingProfile>>((
     if (kDebugMode) {
       // ignore: avoid_print
     }
-    return const [];
+    return const DatingSearchResult(items: []);
   }
 
   String opposite(String g) {
@@ -72,7 +73,7 @@ final datingSearchResultsProvider = FutureProvider<List<DatingProfile>>((
         '[DatingSearchResults] gender="$gender" -> opposite empty -> returning []',
       );
     }
-    return const [];
+    return const DatingSearchResult(items: []);
   }
 
   final filters = ref.watch(datingSearchFiltersProvider);

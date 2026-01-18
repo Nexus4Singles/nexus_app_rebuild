@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:nexus_app_min_test/core/user/current_user_doc_provider.dart';
 import 'dart:math';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../launch/presentation/app_launch_gate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_min_test/core/user/is_admin_provider.dart';
@@ -219,7 +220,7 @@ class ProfileScreen extends ConsumerWidget {
             ref: ref,
             messageTitle: 'Your Profile',
             messageBody:
-                'Your account is set to married. Dating is unavailable, but you can still use journeys, stories, polls, and your account settings here.',
+                'Your account is set to married. Dating is unavailable, but you can still use journeys, stories, polls, && your account settings here.',
             showCreateDatingProfileCta: false,
             onCreateDatingProfile: null,
           );
@@ -238,7 +239,7 @@ class ProfileScreen extends ConsumerWidget {
             ref: ref,
             messageTitle: 'Your Profile',
             messageBody:
-                'Dating is turned off for your account. You can still use journeys, stories, polls, and settings.',
+                'Dating is turned off for your account. You can still use journeys, stories, polls, && settings.',
             showCreateDatingProfileCta: false,
             onCreateDatingProfile: null,
           );
@@ -261,7 +262,7 @@ class ProfileScreen extends ConsumerWidget {
             ref: ref,
             messageTitle: 'Create your dating profile',
             messageBody:
-                'You can use Nexus without dating, but you need a dating profile to view other users in the pool and to appear in Search.',
+                'You can use Nexus without dating, but you need a dating profile to view other users in the pool && to appear in Search.',
             showCreateDatingProfileCta: true,
             onCreateDatingProfile: () {
               Navigator.of(context).pushNamed('/dating/setup/age');
@@ -527,14 +528,14 @@ Future<UserModel?> _loadDraftProfile(String uid) async {
 Future<Map<String, String>> _loadDraftContact(String uid) async {
   final prefs = await SharedPreferences.getInstance();
   final raw = prefs.getString('draft_profile_' + uid);
-  if (raw == null) return {};
+  if (raw == null) return <String, String>{};
   try {
     final decoded = jsonDecode(raw) as Map<String, dynamic>;
     final contact = decoded['draftContact'] as Map<String, dynamic>?;
-    if (contact == null) return {};
+    if (contact == null) return <String, String>{};
     return contact.map((k, v) => MapEntry(k, (v ?? '').toString()));
   } catch (_) {
-    return {};
+    return <String, String>{};
   }
 }
 
@@ -1240,7 +1241,7 @@ class _OverflowMenu extends ConsumerWidget {
               return AlertDialog(
                 title: const Text('Block user?'),
                 content: const Text(
-                  'They will be hidden from you and you won’t be able to start a chat with them.',
+                  'They will be hidden from you && you won’t be able to start a chat with them.',
                 ),
                 actions: [
                   TextButton(
@@ -1731,6 +1732,7 @@ class _RedChipWrap extends StatelessWidget {
 /// ------------------------------
 /// AUDIO (Real playback, one at a time)
 /// ------------------------------
+// ignore: unused_element
 final _profileAudioControllerProvider = Provider<_ProfileAudioController>((
   ref,
 ) {
@@ -1814,14 +1816,14 @@ class _ProfileAudioController {
     } catch (e) {
       lastError = e.toString();
       _notify?.call();
-    }
+    };
   }
 
   Future<void> seek(Duration d) async {
     if (!_hasSource) return;
     try {
       await _player.seek(d);
-    } catch (_) {}
+    } catch (_) {};
   }
 
   Future<void> stop() async {
@@ -1848,7 +1850,7 @@ class _ProfileAudioController {
 
     try {
       _player.dispose();
-    } catch (_) {}
+    } catch (_) {};
   }
 }
 
@@ -1864,15 +1866,48 @@ class _AudioPromptsSection extends ConsumerStatefulWidget {
 }
 
 class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
-  late final _ProfileAudioController _controller;
+  late final _ProfileAudioController _controller = _ProfileAudioController();
 
   @override
   void initState() {
     super.initState();
-    _controller = ref.read(_profileAudioControllerProvider);
     _controller.init(() {
       if (mounted) setState(() {});
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant _AudioPromptsSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    final oldUrls =
+        oldWidget.audioUrls
+            .map((e) => e.trim())
+            .where((e) => e.isNotEmpty)
+            .toList();
+    final newUrls =
+        widget.audioUrls
+            .map((e) => e.trim())
+            .where((e) => e.isNotEmpty)
+            .toList();
+
+    final urlChanged = oldUrls.join('|') != newUrls.join('|');
+    if (!urlChanged) return;
+
+    final current = (_controller.currentUrl ?? '').trim();
+    if (current.isEmpty) return;
+
+    // If the currently-playing URL isn't in the new profile's list, stop.
+    if (!newUrls.contains(current)) {
+      _controller.stop();
+    };
+  }
+
+  @override
+  void dispose() {
+    _controller.stop();
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -2069,6 +2104,15 @@ class _PremiumActionsRow extends ConsumerWidget {
         .watch(currentUserIsPremiumProvider)
         .maybeWhen(data: (v) => v, orElse: () => false);
 
+    // DEV ONLY: bypass premium gating for UI testing.
+    // Run with: flutter run --dart-define=NEXUS_DEBUG_UNLOCK_PREMIUM=true
+    const debugUnlockPremium = bool.fromEnvironment(
+      'NEXUS_DEBUG_UNLOCK_PREMIUM',
+      defaultValue: false,
+    );
+
+    final canViewPremiumGates = isPremium || (kDebugMode && debugUnlockPremium);
+
     return Row(
       children: [
         Expanded(
@@ -2076,7 +2120,7 @@ class _PremiumActionsRow extends ConsumerWidget {
             icon: Icons.favorite_rounded,
             title: 'Compatibility Data',
             onTap: () {
-              if (!isPremium) {
+              if (!canViewPremiumGates) {
                 _toast(context, 'Upgrade to Premium to view compatibility.');
                 return;
               }
@@ -2096,7 +2140,7 @@ class _PremiumActionsRow extends ConsumerWidget {
             icon: Icons.chat_bubble_rounded,
             title: 'Contact Info',
             onTap: () {
-              if (!isPremium) {
+              if (!canViewPremiumGates) {
                 _toast(context, 'Upgrade to Premium to view contact info.');
                 return;
               }
@@ -4274,72 +4318,645 @@ final _verificationStatusProvider = StreamProvider.family<String?, String>((
     if (!doc.exists) return null;
     final data = doc.data();
     if (data == null) return null;
+
     final dating = (data['dating'] is Map) ? data['dating'] as Map : null;
     final status = dating?['verificationStatus']?.toString();
     return status;
   });
 });
 
-// -----------------------------------------------------------------------------
-// Premium viewers (other-user profile)
-// -----------------------------------------------------------------------------
-// Minimal implementation for now.
-// - Contact uses UserModel fields already built from Firestore users/{uid}.
-// - Compatibility is a placeholder; we will wire real Firestore compatibility next.
+final _compatibilityMapProvider =
+    StreamProvider.family<Map<String, dynamic>, String>((
+  ref,
+  uid,
+) {
+  final firebaseReady = ref.watch(firebaseReadyProvider);
+  if (!firebaseReady) return Stream.value(const <String, dynamic>{});
+
+  final fs = ref.watch(firestoreInstanceProvider);
+  if (fs == null) return Stream.value(const <String, dynamic>{});
+
+  final trimmed = uid.trim();
+  if (trimmed.isEmpty) return Stream.value(const <String, dynamic>{});
+
+  return fs.collection('users').doc(trimmed).snapshots().map((doc) {
+    if (!doc.exists) return const <String, dynamic>{};
+    final data = doc.data();
+    if (data == null) return const <String, dynamic>{};
+
+    // v1 commonly had: compatibility: {...}
+    dynamic compat = data['compatibility'];
+
+    // v2 || alternate shapes may store under dating.*
+    final dating = (data['dating'] is Map) ? data['dating'] as Map : null;
+    compat = compat ??
+        (dating != null ? dating['compatibility'] : null) ??
+        (dating != null ? dating['compatibilityData'] : null) ??
+        data['compatibility_data'];
+
+    if (compat is Map) {
+      return Map<String, dynamic>.from(compat);
+    }
+    return const <String, dynamic>{};
+  });
+});
+
+
 class _PremiumContactViewerScreen extends StatelessWidget {
   final UserModel profile;
   const _PremiumContactViewerScreen({required this.profile});
 
+  void _copy(BuildContext context, String label, String value) {
+    Clipboard.setData(ClipboardData(text: value));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$label copied'),
+        duration: const Duration(milliseconds: 900),
+      ),
+    );
+  }
+
+  Widget _infoTile(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Row(
+        children: [
+          Container(
+            height: 38,
+            width: 38,
+            decoration: BoxDecoration(
+              color: AppColors.background,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.border),
+            ),
+            child: Icon(icon, color: AppColors.primary, size: 20),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.1,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  style: AppTextStyles.bodyMedium.copyWith(height: 1.2),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          InkWell(
+            borderRadius: BorderRadius.circular(999),
+            onTap: () => _copy(context, label, value),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.background,
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Text(
+                'Copy',
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final name =
+        (profile.name ?? '').trim().isEmpty ? (profile.username ?? '').trim() : (profile.name ?? '').trim();
+
     final ig = (profile.instagramUsername ?? '').trim();
     final wa = (profile.phoneNumber ?? '').trim();
     final email = (profile.email ?? '').trim();
 
+    final tiles = <Widget>[];
+    if (email.isNotEmpty) {
+      tiles.add(_infoTile(context, icon: Icons.mail_rounded, label: 'Email', value: email));
+    }
+    if (ig.isNotEmpty) {
+      tiles.add(_infoTile(context, icon: Icons.alternate_email_rounded, label: 'Instagram', value: '@$ig'));
+    }
+    if (wa.isNotEmpty) {
+      tiles.add(_infoTile(context, icon: Icons.chat_bubble_rounded, label: 'WhatsApp', value: wa));
+    }
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Contact info')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              (profile.name ?? '').trim().isEmpty
-                  ? 'Contact info'
-                  : (profile.name ?? '').trim(),
-              style: Theme.of(context).textTheme.titleLarge,
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
+        elevation: 0,
+        title: Text('Contact info', style: AppTextStyles.headlineLarge),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name.isEmpty ? 'Contact info' : name,
+                    style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w900),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Use these details to connect respectfully.\nTap Copy to save a detail.',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textMuted,
+                      height: 1.35,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  if (tiles.isEmpty)
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppColors.border),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.info_outline_rounded, color: AppColors.textSecondary),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'No contact info available yet.',
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: AppColors.textSecondary,
+                                height: 1.25,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  else
+                    Expanded(
+                      child: ListView.separated(
+                        itemCount: tiles.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 12),
+                        itemBuilder: (_, i) => tiles[i],
+                      ),
+                    ),
+                ],
+              ),
             ),
-            const SizedBox(height: 14),
-            if (email.isNotEmpty) Text('Email: $email'),
-            if (ig.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Text('Instagram: @$ig'),
-            ],
-            if (wa.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Text('WhatsApp: $wa'),
-            ],
-            if (email.isEmpty && ig.isEmpty && wa.isEmpty)
-              const Text('No contact info available.'),
-          ],
+          ),
         ),
       ),
     );
   }
 }
-
-class _PremiumCompatibilityViewerScreen extends StatelessWidget {
+class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
   final UserModel profile;
   const _PremiumCompatibilityViewerScreen({required this.profile});
 
+  String _profileUid() {
+    try {
+      final dynamic p = profile;
+      final dynamic id = p.id ?? p.uid;
+      return (id ?? '').toString().trim();
+    } catch (_) {
+      return '';
+    }
+  }
+
+  String _normGender(String? g) {
+    final v = (g ?? '').trim().toLowerCase();
+    if (v.isEmpty) return '';
+    if (v.startsWith('m')) return 'male';
+    if (v.startsWith('f')) return 'female';
+    return v;
+  }
+
+  Map<String, String> _pronouns() {
+    final g1 = _normGender(profile.gender);
+    final g2 = _normGender(profile.nexus2?.gender);
+    final g = g1.isNotEmpty ? g1 : g2;
+
+    if (g == 'female') {
+      return const <String, String>{
+        'subj': 'she',
+        'obj': 'her',
+        'possAdj': 'her',
+        'poss': 'hers',
+      };
+    }
+
+    // default male (safe fallback)
+    return const <String, String>{
+      'subj': 'he',
+      'obj': 'him',
+      'possAdj': 'his',
+      'poss': 'his',
+    };
+  }
+
+  String _cap(String s) {
+    final t = s.trim();
+    if (t.isEmpty) return t;
+    return t[0].toUpperCase() + t.substring(1);
+  }
+
+  String _normKey(String k) {
+    return k.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]+'), '');
+  }
+
+  bool? _yesNo(String v) {
+    final t = v.trim().toLowerCase();
+    if (t.isEmpty) return null;
+
+    // handle leading "yes, ..." / "no, ..."
+    if (t.startsWith('yes')) return true;
+    if (t.startsWith('no')) return false;
+
+    if (t == 'true' || t == '1') return true;
+    if (t == 'false' || t == '0') return false;
+
+    return null;
+  }
+
+  // v1-like ordering:
+  // marital_status, have_kids, genotype, personality_type, regular_source_of_income,
+  // marry_someone_fs, long_distance, believe_cohabiting,
+  // should_christian_speak_in_tongue, believe_in_tithing
+  List<MapEntry<String, dynamic>> _sortedEntries(Map<String, dynamic> m) {
+    final entries = m.entries.toList();
+
+    int rank(MapEntry<String, dynamic> e) {
+      final k = _normKey(e.key.toString());
+
+      bool hasAny(List<String> needles) => needles.any((n) => k.contains(n));
+
+      if (hasAny(['maritalstatus', 'marital_status', 'marital'])) return 0;
+      if (hasAny(['havekids', 'have_kids', 'kids'])) return 1;
+      if (hasAny(['genotype'])) return 2;
+      if (hasAny(['personalitytype', 'personality_type', 'personality'])) return 3;
+      if (hasAny(['regularsourceofincome', 'regular_source_of_income', 'sourceofincome', 'income'])) return 4;
+      if (hasAny(['marrysomeonefs', 'marry_someone_fs', 'financialstability', 'financial'])) return 5;
+      if (hasAny(['longdistance', 'long_distance', 'distance'])) return 6;
+      if (hasAny(['believecohabiting', 'believe_cohabiting', 'cohabit', 'cohabiting'])) return 7;
+      if (hasAny(['shouldchristianspeakintongue', 'should_christian_speak_in_tongue', 'tongue', 'tongues'])) return 8;
+      if (hasAny(['believeintithing', 'believe_in_tithing', 'tith'])) return 9;
+
+      return 100; // unknown -> bottom
+    }
+
+    entries.sort((a, b) {
+      final ra = rank(a);
+      final rb = rank(b);
+      if (ra != rb) return ra.compareTo(rb);
+      return a.key.toString().compareTo(b.key.toString());
+    });
+
+    return entries;
+  }
+
+  String _labelFor(String rawKey) {
+    final k = _normKey(rawKey);
+
+    if (k.contains('marital')) return 'Marital Status';
+    if (k.contains('havekids') || k.contains('have_kids') || k == 'kids' || k.contains('kids')) return 'Kids';
+    if (k.contains('genotype')) return 'Genotype';
+    if (k.contains('personality')) return 'Personality Type';
+    if (k.contains('regularsourceofincome') || k.contains('sourceofincome') || k == 'income' || k.contains('income')) {
+      return 'Source of Income';
+    }
+    if (k.contains('marrysomeonefs') || k.contains('marry_someone_fs') || k.contains('financial')) {
+      return 'Financial Stability';
+    }
+    if (k.contains('longdistance') || k.contains('long_distance') || (k.contains('distance') && !k.contains('country'))) {
+      return 'Long Distance';
+    }
+    if (k.contains('cohabit')) return 'Cohabiting';
+    if (k.contains('tongue')) return 'Speaking in Tongues';
+    if (k.contains('tith')) return 'Tithing';
+
+    // fallback: prettify key
+    final spaced = rawKey.replaceAll('_', ' ').trim();
+    return spaced.isEmpty ? 'Compatibility' : _cap(spaced);
+  }
+
+  String _sentenceFor({
+    required String rawKey,
+    required String rawValue,
+    required Map<String, String> p,
+  }) {
+    final subj = _cap(p['subj'] ?? 'they');
+    final k = _normKey(rawKey);
+    final v = rawValue.trim();
+    final yn = _yesNo(v);
+
+    // Marital status
+    if (k.contains('marital')) {
+      if (v.isEmpty) return '$subj has not shared marital status.';
+      return '$subj is ${v.toLowerCase()}.';
+    }
+
+    // Kids
+    if (k.contains('havekids') || k.contains('have_kids') || k == 'kids' || k.contains('kids')) {
+      if (yn == true) return '$subj has kids.';
+      if (yn == false) return '$subj does not have kids.';
+      if (v.isEmpty) return '$subj has not shared whether they have kids.';
+      return '$subj believes $v.';
+    }
+
+    // Genotype
+    if (k.contains('genotype')) {
+      if (v.isEmpty) return '$subj has not shared genotype.';
+      final possAdj = _cap(p['possAdj'] ?? 'their');
+      return '$possAdj genotype is $v.';
+    }
+
+    // Personality type
+    if (k.contains('personality')) {
+      if (v.isEmpty) return '$subj has not shared personality type.';
+      final vv = v.toLowerCase();
+      if (vv == 'introvert' || vv == 'extrovert' || vv == 'ambivert') {
+        return '$subj is an $vv.';
+      }
+      final possAdj = _cap(p['possAdj'] ?? 'their');
+      return '$possAdj personality type is $v.';
+    }
+
+    // Source of income
+    if (k.contains('regularsourceofincome') || k.contains('regular_source_of_income') || k.contains('sourceofincome') || k == 'income' || k.contains('income')) {
+      if (yn == true) return '$subj has a regular source of income.';
+      if (yn == false) return '$subj does not have a regular source of income.';
+      if (v.isEmpty) return '$subj has not shared whether they have a regular source of income.';
+      return '$subj believes $v.';
+    }
+
+    // Financial stability (your requested grammar)
+    // meaning: can/cannot marry someone who is NOT financially stable yet
+    if (k.contains('marrysomeonefs') || k.contains('marry_someone_fs') || k.contains('financial')) {
+      if (yn == true) return '$subj can marry someone who is not yet financially stable.';
+      if (yn == false) return '$subj cannot marry someone who is not yet financially stable.';
+      if (v.isEmpty) return '$subj has not shared their view on marrying someone who is not yet financially stable.';
+      return '$subj believes $v.';
+    }
+
+    // Long distance
+    if (k.contains('longdistance') || k.contains('long_distance') || k == 'distance' || k.contains('distance')) {
+      if (yn == true) return '$subj is open to a long-distance relationship.';
+      if (yn == false) return '$subj is not open to a long-distance relationship.';
+      if (v.isEmpty) return '$subj has not shared their view on long-distance relationships.';
+      return '$subj believes $v.';
+    }
+
+    // Cohabiting
+    if (k.contains('cohabit') || k.contains('cohabiting')) {
+      if (yn == true) return '$subj believes in cohabiting before marriage.';
+      if (yn == false) return '$subj does not believe in cohabiting before marriage.';
+      if (v.isEmpty) return '$subj has not shared their view on cohabiting before marriage.';
+      return '$subj believes $v.';
+    }
+
+    // Speaking in tongues
+    if (k.contains('tongue') || k.contains('tongues')) {
+      if (yn == true) return '$subj believes every Christian should desire to speak in tongues.';
+      if (yn == false) return '$subj does not believe every Christian should desire to speak in tongues.';
+      if (v.isEmpty) return '$subj has not shared their view on speaking in tongues.';
+      return '$subj believes $v.';
+    }
+
+    // Tithing (your requested grammar)
+    if (k.contains('tith')) {
+      if (yn == true) return '$subj believes in tithing.';
+      if (yn == false) return '$subj does not believe in tithing.';
+      if (v.isEmpty) return '$subj has not shared their view on tithing.';
+      return '$subj believes $v.';
+    }
+
+    // fallback
+    if (v.isEmpty) return '$subj has not provided an answer.';
+    return '$subj believes $v.';
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final name = (profile.name ?? '').trim().isEmpty
+        ? (profile.username ?? '').trim()
+        : (profile.name ?? '').trim();
+
+    final uid = _profileUid();
+    if (uid.isEmpty) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          surfaceTintColor: AppColors.background,
+          elevation: 0,
+          title: Text('Compatibility', style: AppTextStyles.headlineLarge),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 700),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: Text(
+                    'Unable to load compatibility right now (missing profile id).',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.3,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    final compatAsync = ref.watch(_compatibilityMapProvider(uid));
+    final p = _pronouns();
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Compatibility')),
-      body: const Padding(
-        padding: EdgeInsets.all(16),
-        child: Text(
-          'TODO: Wire real compatibility results from Firestore once the model is finalized.',
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
+        elevation: 0,
+        title: Text('Compatibility', style: AppTextStyles.headlineLarge),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 700),
+              child: compatAsync.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (e, _) => Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: Text(
+                    'Unable to load compatibility right now. Please try again.',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.3,
+                    ),
+                  ),
+                ),
+                data: (compat) {
+                  final entries = _sortedEntries(compat);
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name.isEmpty ? 'Compatibility' : 'Compatibility with $name',
+                        style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w900),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        'These insights are based on questionnaire data stored on the profile.',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.textMuted,
+                          height: 1.35,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      if (entries.isEmpty)
+                        Expanded(
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: AppColors.surface,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: AppColors.border),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(Icons.auto_awesome_rounded, color: AppColors.primary),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    'No compatibility data available yet for this profile.\n\nIf this is unexpected, the profile may not have completed the compatibility questionnaire.',
+                                    style: AppTextStyles.bodyMedium.copyWith(
+                                      color: AppColors.textSecondary,
+                                      height: 1.3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      else
+                        Expanded(
+                          child: ListView.separated(
+                            itemCount: entries.length,
+                            separatorBuilder: (_, __) => const SizedBox(height: 12),
+                            itemBuilder: (context, i) {
+                              final e = entries[i];
+                              final label = _labelFor(e.key.toString());
+                              final value = (e.value ?? '').toString().trim();
+                              final sentence = _sentenceFor(
+                                rawKey: e.key.toString(),
+                                rawValue: value,
+                                p: p,
+                              );
+
+                              return Container(
+                                padding: const EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                  color: AppColors.surface,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(color: AppColors.border),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 38,
+                                      width: 38,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.background,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(color: AppColors.border),
+                                      ),
+                                      child: Icon(Icons.insights_rounded, color: AppColors.primary, size: 20),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            label,
+                                            style: AppTextStyles.bodySmall.copyWith(
+                                              color: AppColors.textSecondary,
+                                              height: 1.1,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            sentence,
+                                            style: AppTextStyles.bodyMedium.copyWith(height: 1.25),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
         ),
       ),
     );

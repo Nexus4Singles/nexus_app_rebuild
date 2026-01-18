@@ -3,6 +3,7 @@ class DatingSearchFilters {
   final int maxAge;
 
   final String? countryOfResidence;
+  final List<String>? countryOptions;
   final String? educationLevel;
   final String? regularSourceOfIncome;
   final String? longDistance;
@@ -14,7 +15,8 @@ class DatingSearchFilters {
     required this.minAge,
     required this.maxAge,
     this.countryOfResidence,
-    this.educationLevel,
+        this.countryOptions,
+this.educationLevel,
     this.regularSourceOfIncome,
     this.longDistance,
     this.maritalStatus,
@@ -26,6 +28,7 @@ class DatingSearchFilters {
     int? minAge,
     int? maxAge,
     String? countryOfResidence,
+    List<String>? countryOptions,
     String? educationLevel,
     String? regularSourceOfIncome,
     String? longDistance,
@@ -37,6 +40,7 @@ class DatingSearchFilters {
       minAge: minAge ?? this.minAge,
       maxAge: maxAge ?? this.maxAge,
       countryOfResidence: countryOfResidence ?? this.countryOfResidence,
+      countryOptions: countryOptions ?? this.countryOptions,
       educationLevel: educationLevel ?? this.educationLevel,
       regularSourceOfIncome:
           regularSourceOfIncome ?? this.regularSourceOfIncome,
@@ -46,4 +50,19 @@ class DatingSearchFilters {
       genotype: genotype ?? this.genotype,
     );
   }
+
+  @override
+  String toString() {
+    return 'DatingSearchFilters('
+        'minAge=$minAge, maxAge=$maxAge, '
+        'countryOfResidence=$countryOfResidence, '
+        'educationLevel=$educationLevel, '
+        'regularSourceOfIncome=$regularSourceOfIncome, '
+        'longDistance=$longDistance, '
+        'maritalStatus=$maritalStatus, '
+        'hasKids=$hasKids, '
+        'genotype=$genotype'
+        ')';
+  }
+
 }

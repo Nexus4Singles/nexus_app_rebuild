@@ -290,6 +290,10 @@ class DatingProfile {
       );
     }
 
+    final compat = (json['compatibility'] is Map)
+        ? (json['compatibility'] as Map).cast<String, dynamic>()
+        : null;
+
     return DatingProfile(
       uid: uid,
       // v1 uses username/name interchangeably; prefer name, then username.
@@ -305,7 +309,13 @@ class DatingProfile {
 
       // v1 stores these as snake_case; v2 may store camelCase.
       city: _pickNullable(json, ['city']),
-      country: _pickNullable(json, ['country']),
+      country: _pickNullable(json, [
+        'country',
+        'countryOfResidence',
+        'country_of_residence',
+        'countryOfResidenceFilters',
+        'country_of_resident',
+      ]),
 
       // profession often exists already in v1
       profession: _pickNullable(json, ['profession']),
@@ -315,13 +325,72 @@ class DatingProfile {
 
       verificationStatus: normalizedVerificationStatus,
 
-      // Filters (IMPORTANT): hydrate from v1 + v2 keys
-      educationLevel: _pickNullable(json, ['educationLevel', 'education_level']),
-      maritalStatus: _pickNullable(json, ['maritalStatus', 'marital_status']),
-      haveKids: _pickNullable(json, ['haveKids', 'hasKids', 'have_kids', 'has_kids']),
-      genotype: _pickNullable(json, ['genotype']),
-      regularSourceOfIncome: _pickNullable(json, ['regularSourceOfIncome', 'regular_source_of_income', 'source_of_income']),
-      longDistance: _pickNullable(json, ['longDistance', 'long_distance', 'relationshipDistance', 'relationship_distance']),
+            // Filters (IMPORTANT): hydrate from v1 + v2 keys (root first, then compatibility map)
+      educationLevel: _pickNullable(json, [
+        'educationLevel',
+        'education_level',
+      ]) ??
+          _pickStringFromMap(compat, [
+            'educationLevel',
+            'education_level',
+            'education',
+          ]),
+      maritalStatus: _pickNullable(json, [
+        'maritalStatus',
+        'marital_status',
+      ]) ??
+          _pickStringFromMap(compat, [
+            'maritalStatus',
+            'marital_status',
+          ]),
+      haveKids: _pickNullable(json, [
+        'haveKids',
+        'hasKids',
+        'have_kids',
+        'has_kids',
+      ]) ??
+          _pickStringFromMap(compat, [
+            'haveKids',
+            'hasKids',
+            'have_kids',
+            'has_kids',
+            'kids',
+          ]),
+      genotype: _pickNullable(json, [
+        'genotype',
+      ]) ??
+          _pickStringFromMap(compat, [
+            'genotype',
+          ]),
+      regularSourceOfIncome: _pickNullable(json, [
+        'regularSourceOfIncome',
+        'regular_source_of_income',
+        'source_of_income',
+        'incomeSource',
+        'income_source',
+        'income',
+      ]) ??
+          _pickStringFromMap(compat, [
+            'regularSourceOfIncome',
+            'regular_source_of_income',
+            'source_of_income',
+            'incomeSource',
+            'income_source',
+            'income',
+          ]),
+      longDistance: _pickNullable(json, [
+        'longDistance',
+        'long_distance',
+        'relationshipDistance',
+        'relationship_distance',
+      ]) ??
+          _pickStringFromMap(compat, [
+            'longDistance',
+            'long_distance',
+            'relationshipDistance',
+            'relationship_distance',
+            'distance',
+          ]),
     );
 }
 }
