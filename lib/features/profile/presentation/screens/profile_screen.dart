@@ -32,6 +32,9 @@ import 'package:nexus_app_min_test/core/bootstrap/bootstrap_gate.dart';
 import 'package:nexus_app_min_test/features/guest/guest_entry_gate.dart';
 import '../../../../core/user/dating_opt_in_provider.dart';
 
+import 'package:nexus_app_min_test/core/providers/service_providers.dart';
+import 'package:nexus_app_min_test/features/chats/presentation/screens/chat_thread_screen.dart';
+
 Future<void> handleLogout(BuildContext context, WidgetRef ref) async {
   final ok = await showDialog<bool>(
     context: context,
@@ -152,8 +155,47 @@ final currentUserIsPremiumProvider = StreamProvider<bool>((ref) {
     final v = doc?['onPremium'];
     return v == true;
   });
+
+
 });
 
+
+
+/// ------------------------------
+/// LOCAL DRAFT PROFILE (SharedPreferences)
+/// ------------------------------
+/// Stores a local draft snapshot under `draft_profile_<uid>`.
+/// Used by EditProfileScreen while Firestore-backed editing is being finalized.
+final _draftProfileProvider =
+    StateNotifierProvider.family<_DraftProfileNotifier, UserModel?, String>(
+  (ref, uid) => _DraftProfileNotifier(uid: uid),
+);
+
+class _DraftProfileNotifier extends StateNotifier<UserModel?> {
+  final String uid;
+  _DraftProfileNotifier({required this.uid}) : super(null);
+
+  Future<void> setDraft(UserModel profile) async {
+    state = profile;
+
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'draft_profile_' + uid;
+
+    final raw = prefs.getString(key);
+    final existing =
+        raw != null && raw.trim().isNotEmpty
+            ? (jsonDecode(raw) as Map<String, dynamic>)
+            : <String, dynamic>{};
+
+    // Preserve any other keys already stored under this draft key (e.g. draftContact).
+    existing['profile'] = <String, dynamic>{
+      'id': profile.id,
+      'updatedAt': DateTime.now().toIso8601String(),
+    };
+
+    await prefs.setString(key, jsonEncode(existing));
+  }
+}
 class ProfileScreen extends ConsumerWidget {
   final String? userId;
   const ProfileScreen({super.key, this.userId});
@@ -295,10 +337,12 @@ class ProfileScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _PrimaryInfo(profile: profile, locationText: location),
-                      const SizedBox(height: 18),
+                      const SizedBox(height: 12),
 
-                      _QuickChips(profile: profile),
-                      const SizedBox(height: 22),
+                      isViewingOtherUser
+                          ? _SendMessageCompactButton(profile: profile)
+                          : _QuickChips(profile: profile),
+                      const SizedBox(height: 16),
 
                       _Section(
                         title: 'About',
@@ -386,1176 +430,92 @@ class _BasicProfileScreen extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final p = profile;
-    final name = (p.name ?? 'User').trim();
-    final email = (p.email ?? '').trim();
-
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
-        title: Text('Profile', style: AppTextStyles.titleLarge),
+        centerTitle: true,
+        title: Text(messageTitle, style: AppTextStyles.titleMedium),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: Row(
-                children: [
-                  _InitialsAvatar(name: name),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(name, style: AppTextStyles.titleLarge),
-                        if (email.isNotEmpty) ...[
-                          const SizedBox(height: 4),
-                          Text(
-                            email,
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 18),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(messageTitle, style: AppTextStyles.titleMedium),
-                  const SizedBox(height: 6),
-                  Text(
-                    messageBody,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                  if (showCreateDatingProfileCta) ...[
-                    const SizedBox(height: 14),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: onCreateDatingProfile,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 18,
-                            vertical: 14,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        child: Text(
-                          'Create a Profile',
-                          style: AppTextStyles.labelLarge.copyWith(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            Text('Your Account', style: AppTextStyles.titleLarge),
-            const SizedBox(height: 12),
-            _AccountTiles(context, ref, p),
-            const SizedBox(height: 18),
-
-            const Spacer(),
-            _ProfileTile(
-              icon: Icons.logout_rounded,
-              title: 'Log out',
-              subtitle: 'Sign out of your account',
-              onTap: () => _showComingSoon(context, 'Log out'),
-            ),
-            const SizedBox(height: 18),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// ------------------------------
-/// MOCK DATA PROVIDER (Phase 1)
-/// ------------------------------
-/// Replace this with Firestore-backed provider when firebase is ready.
-
-/// ------------------------------
-/// LOCAL DRAFT CACHE (Phase 2A)
-/// ------------------------------
-/// This enables profile edits to persist locally (SharedPreferences) until Firebase is connected.
-/// Draft profile takes precedence over mock data.
-String _draftProfileKey(String uid) => 'nexus_profile_draft_$uid';
-
-Future<UserModel?> _loadDraftProfile(String uid) async {
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_draftProfileKey(uid));
-    if (raw == null || raw.isEmpty) return null;
-    final map = jsonDecode(raw);
-    if (map is! Map<String, dynamic>) return null;
-    return UserModel.fromMap(uid, map);
-  } catch (_) {
-    return null;
-  }
-}
-
-Future<Map<String, String>> _loadDraftContact(String uid) async {
-  final prefs = await SharedPreferences.getInstance();
-  final raw = prefs.getString('draft_profile_' + uid);
-  if (raw == null) return <String, String>{};
-  try {
-    final decoded = jsonDecode(raw) as Map<String, dynamic>;
-    final contact = decoded['draftContact'] as Map<String, dynamic>?;
-    if (contact == null) return <String, String>{};
-    return contact.map((k, v) => MapEntry(k, (v ?? '').toString()));
-  } catch (_) {
-    return <String, String>{};
-  }
-}
-
-/// ------------------------------
-/// RELATIONSHIP STATUS TAG (SAFE MODE - LOCAL)
-/// ------------------------------
-enum RelationshipStatusTag { available, taken }
-
-String _relationshipStatusLabel(RelationshipStatusTag v) {
-  switch (v) {
-    case RelationshipStatusTag.available:
-      return 'Available';
-    case RelationshipStatusTag.taken:
-      return 'Taken';
-  }
-}
-
-/// Firestore-backed dating availability status.
-/// Stored at: users/{uid}.dating.availability = 'available' | 'taken'
-/// Default: 'available' (missing field should not block visibility).
-final _relationshipStatusTagProvider =
-    StreamProvider.family<RelationshipStatusTag, String>((ref, uid) {
-      final fs = FirebaseFirestore.instance;
-      return fs.collection('users').doc(uid).snapshots().map((doc) {
-        final data = doc.data();
-        final dating = (data?['dating'] as Map?)?.cast<String, dynamic>();
-        final raw = (dating?['availability'] as String?)?.trim().toLowerCase();
-
-        if (raw == 'taken') return RelationshipStatusTag.taken;
-        return RelationshipStatusTag.available;
-      });
-    });
-
-Future<void> _setRelationshipStatusTagFirestore(
-  String uid,
-  RelationshipStatusTag v,
-) async {
-  final key = (v == RelationshipStatusTag.taken) ? 'taken' : 'available';
-
-  await FirebaseFirestore.instance.collection('users').doc(uid).set({
-    'dating': {'availability': key},
-  }, SetOptions(merge: true));
-}
-
-class _RelationshipStatusPill extends StatelessWidget {
-  final RelationshipStatusTag value;
-  final VoidCallback? onTap;
-
-  const _RelationshipStatusPill({required this.value, this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    final label = _relationshipStatusLabel(value);
-    final canTap = onTap != null;
-
-    return Semantics(
-      button: canTap,
-      label: canTap ? 'Edit dating status' : 'Dating Status',
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(999),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: canTap ? 11 : 10,
-            vertical: canTap ? 7 : 6,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(canTap ? 0.56 : 0.42),
-            borderRadius: BorderRadius.circular(999),
-            border: Border.all(
-              color: Colors.white.withOpacity(canTap ? 0.65 : 0.35),
-            ),
-            boxShadow:
-                canTap
-                    ? [
-                      BoxShadow(
-                        blurRadius: 14,
-                        offset: const Offset(0, 6),
-                        color: Colors.black.withOpacity(0.22),
-                      ),
-                    ]
-                    : null,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 6,
-                width: 6,
-                decoration: BoxDecoration(
-                  color:
-                      value == RelationshipStatusTag.available
-                          ? Colors.greenAccent.withOpacity(0.9)
-                          : Colors.redAccent.withOpacity(0.9),
-                  shape: BoxShape.circle,
-                ),
-              ),
-              const SizedBox(width: 8),
+              Text(messageTitle, style: AppTextStyles.titleLarge),
+              const SizedBox(height: 12),
               Text(
-                label,
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
+                messageBody,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.textSecondary,
                 ),
               ),
-              if (canTap) ...[
-                const SizedBox(width: 10),
-                Container(
-                  height: 22,
-                  width: 22,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.14),
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(color: Colors.white.withOpacity(0.6)),
-                  ),
-                  child: Icon(
-                    Icons.edit_rounded,
-                    size: 13,
-                    color: Colors.white.withOpacity(0.95),
+              const SizedBox(height: 20),
+
+              if (showCreateDatingProfileCta && onCreateDatingProfile != null)
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: onCreateDatingProfile,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: const Text('Create dating profile'),
                   ),
                 ),
-              ],
+
+              const Spacer(),
+
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () => handleLogout(context, ref),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.textPrimary,
+                    side: BorderSide(color: AppColors.border),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                  child: const Text('Log out'),
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
+
   }
 }
 
-class _StatusOptionTile extends StatelessWidget {
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
 
-  const _StatusOptionTile({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(14),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.background : AppColors.surface,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: selected ? AppColors.primary : AppColors.border,
-          ),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                label,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ),
-            Icon(
-              selected ? Icons.check_circle_rounded : Icons.circle_outlined,
-              color: selected ? AppColors.primary : AppColors.textSecondary,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+String _formatDuration(Duration d) {
+  String two(int n) => n.toString().padLeft(2, '0');
+  final m = two(d.inMinutes.remainder(60));
+  final s = two(d.inSeconds.remainder(60));
+  return '$m:$s';
 }
 
-Future<void> _saveDraftProfile(UserModel profile) async {
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = jsonEncode(profile.toMap());
-    await prefs.setString(_draftProfileKey(profile.id), raw);
-  } catch (_) {
-    // ignore - local cache best-effort
-  }
-}
 
-final _draftProfileProvider =
-    AsyncNotifierProviderFamily<_DraftProfileController, UserModel?, String>(
-      _DraftProfileController.new,
-    );
-
-class _DraftProfileController extends FamilyAsyncNotifier<UserModel?, String> {
-  @override
-  FutureOr<UserModel?> build(String uid) async {
-    return await _loadDraftProfile(uid);
-  }
-
-  Future<void> setDraft(UserModel profile) async {
-    state = AsyncData(profile);
-    await _saveDraftProfile(profile);
-  }
-}
-
-/// ------------------------------
-/// HERO APP BAR
-/// ------------------------------
-class _ProfileHeroAppBar extends StatelessWidget {
-  final UserModel profile;
-  final List<String> photos;
-  final bool isViewingOtherUser;
-  final String locationText;
-  final bool canEditRelationshipStatus;
-  const _ProfileHeroAppBar({
-    required this.profile,
-    required this.photos,
-    required this.isViewingOtherUser,
-    required this.locationText,
-    required this.canEditRelationshipStatus,
-  });
-  @override
-  Widget build(BuildContext context) {
-    final name =
-        (profile.username ?? '').trim().isNotEmpty
-            ? profile.username!.trim()
-            : ((profile.name ?? '').trim().isNotEmpty
-                ? profile.name!.trim()
-                : 'User');
-    final age = profile.age;
-
-    return SliverAppBar(
-      pinned: true,
-      stretch: true,
-      backgroundColor: AppColors.background,
-      expandedHeight: 420,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
-        onPressed: () => Navigator.of(context).maybePop(),
-      ),
-      actions: [
-        if (isViewingOtherUser) _OverflowMenu(targetUid: profile.id),
-        const SizedBox(width: 12),
-      ],
-      flexibleSpace: LayoutBuilder(
-        builder: (context, constraints) {
-          return FlexibleSpaceBar(
-            collapseMode: CollapseMode.parallax,
-            background: _HeroCarousel(
-              photos: photos,
-              overlayChild: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 18),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  age != null ? '$name, $age' : name,
-                                  style: AppTextStyles.headlineLarge.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 32,
-                                    height: 1.1,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              Consumer(
-                                builder: (context, ref, _) {
-                                  final statusAsync = ref.watch(
-                                    _verificationStatusProvider(profile.id),
-                                  );
-                                  final status = statusAsync.maybeWhen(
-                                    data: (v) => v,
-                                    orElse: () => null,
-                                  );
-
-                                  // Legacy v1 users may have null/missing status; treat as verified
-                                  // so they remain seamless/visible until they explicitly re-verify.
-                                  final resolvedStatus =
-                                      (status == null || status.isEmpty)
-                                          ? 'verified'
-                                          : status;
-
-                                  final isVerified =
-                                      resolvedStatus == 'verified';
-                                  final isPending = resolvedStatus == 'pending';
-                                  final isRejected =
-                                      resolvedStatus == 'rejected';
-
-                                  // Product nuance:
-                                  // - Always show "Verified" badge to others (and self).
-                                  // - Only show "Pending review" / "Not verified" to self (avoid exposing moderation state).
-                                  if (!isViewingOtherUser) {
-                                    if (!(isVerified ||
-                                        isPending ||
-                                        isRejected)) {
-                                      return const SizedBox.shrink();
-                                    }
-                                  } else {
-                                    if (!isVerified)
-                                      return const SizedBox.shrink();
-                                  }
-
-                                  IconData icon;
-                                  String label;
-                                  if (isVerified) {
-                                    icon = Icons.verified_rounded;
-                                    label = 'Verified';
-                                  } else if (isPending) {
-                                    icon = Icons.hourglass_top_rounded;
-                                    label = 'Pending review';
-                                  } else {
-                                    icon = Icons.block_rounded;
-                                    label = 'Not verified';
-                                  }
-
-                                  return Row(
-                                    children: [
-                                      const SizedBox(width: 12),
-                                      _Badge(icon: icon, label: label),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.location_on_rounded,
-                                color: Colors.white70,
-                                size: 18,
-                              ),
-                              const SizedBox(width: 8),
-                              Flexible(
-                                child: Text(
-                                  locationText,
-                                  style: AppTextStyles.bodyMedium.copyWith(
-                                    color: Colors.white70,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: SafeArea(
-                        minimum: const EdgeInsets.only(top: 6, right: 6),
-                        child: Consumer(
-                          builder: (context, ref, _) {
-                            final tagAsync = ref.watch(
-                              _relationshipStatusTagProvider(profile.id),
-                            );
-                            final value = tagAsync.maybeWhen(
-                              data: (v) => v,
-                              orElse: () => RelationshipStatusTag.available,
-                            );
-
-                            final canEdit =
-                                canEditRelationshipStatus &&
-                                !isViewingOtherUser;
-
-                            return _RelationshipStatusPill(
-                              value: value,
-                              onTap:
-                                  canEdit
-                                      ? () async {
-                                        final selected = await showModalBottomSheet<
-                                          RelationshipStatusTag
-                                        >(
-                                          context: context,
-                                          backgroundColor: Colors.transparent,
-                                          isScrollControlled: false,
-                                          builder: (sheetContext) {
-                                            RelationshipStatusTag temp = value;
-
-                                            return StatefulBuilder(
-                                              builder: (
-                                                sheetContext,
-                                                setSheetState,
-                                              ) {
-                                                return Container(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                        16,
-                                                        16,
-                                                        16,
-                                                        24,
-                                                      ),
-                                                  decoration: BoxDecoration(
-                                                    color: AppColors.surface,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          18,
-                                                        ),
-                                                  ),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Expanded(
-                                                            child: Text(
-                                                              'Relationship status',
-                                                              style: AppTextStyles
-                                                                  .titleLarge
-                                                                  .copyWith(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w900,
-                                                                  ),
-                                                            ),
-                                                          ),
-                                                          InkWell(
-                                                            onTap:
-                                                                () => Navigator.pop(
-                                                                  sheetContext,
-                                                                  null,
-                                                                ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                  999,
-                                                                ),
-                                                            child: Container(
-                                                              height: 36,
-                                                              width: 36,
-                                                              decoration: BoxDecoration(
-                                                                color:
-                                                                    AppColors
-                                                                        .background,
-                                                                borderRadius:
-                                                                    BorderRadius.circular(
-                                                                      999,
-                                                                    ),
-                                                                border: Border.all(
-                                                                  color:
-                                                                      AppColors
-                                                                          .border,
-                                                                ),
-                                                              ),
-                                                              child: const Icon(
-                                                                Icons
-                                                                    .close_rounded,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 12,
-                                                      ),
-                                                      Text(
-                                                        'Tap to update your visibility on the dating side of the app.',
-                                                        style: AppTextStyles
-                                                            .bodySmall
-                                                            .copyWith(
-                                                              color:
-                                                                  AppColors
-                                                                      .textSecondary,
-                                                            ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 14,
-                                                      ),
-                                                      _StatusOptionTile(
-                                                        label: 'Available',
-                                                        selected:
-                                                            temp ==
-                                                            RelationshipStatusTag
-                                                                .available,
-                                                        onTap: () {
-                                                          setSheetState(() {
-                                                            temp =
-                                                                RelationshipStatusTag
-                                                                    .available;
-                                                          });
-                                                          Navigator.pop(
-                                                            sheetContext,
-                                                            RelationshipStatusTag
-                                                                .available,
-                                                          );
-                                                        },
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      _StatusOptionTile(
-                                                        label: 'Taken',
-                                                        selected:
-                                                            temp ==
-                                                            RelationshipStatusTag
-                                                                .taken,
-                                                        onTap: () {
-                                                          setSheetState(() {
-                                                            temp =
-                                                                RelationshipStatusTag
-                                                                    .taken;
-                                                          });
-                                                          Navigator.pop(
-                                                            sheetContext,
-                                                            RelationshipStatusTag
-                                                                .taken,
-                                                          );
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                            );
-                                          },
-                                        );
-
-                                        if (selected == null) return;
-
-                                        await _setRelationshipStatusTagFirestore(
-                                          profile.id,
-                                          selected,
-                                        );
-                                        ref.invalidate(
-                                          _relationshipStatusTagProvider(
-                                            profile.id,
-                                          ),
-                                        );
-                                      }
-                                      : null,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _HeroCarousel extends StatefulWidget {
-  final List<String> photos;
-  final Widget overlayChild;
-  const _HeroCarousel({required this.photos, required this.overlayChild});
-
-  @override
-  State<_HeroCarousel> createState() => _HeroCarouselState();
-}
-
-class _HeroCarouselState extends State<_HeroCarousel> {
-  final _controller = PageController();
-  int _index = 0;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final photos = widget.photos.isEmpty ? [''] : widget.photos;
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        PageView.builder(
-          controller: _controller,
-          itemCount: photos.length,
-          onPageChanged: (i) => setState(() => _index = i),
-          itemBuilder: (context, i) {
-            final url = photos[i];
-            return Container(
-              color: Colors.black,
-              child:
-                  url.isEmpty
-                      ? _InitialsAvatar(name: 'User')
-                      : Image.network(url, fit: BoxFit.cover),
-            );
-          },
-        ),
-        // gradient overlay for readability
-        const DecoratedBox(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.black54, Colors.transparent, Colors.black87],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.0, 0.45, 1.0],
-            ),
-          ),
-        ),
-        widget.overlayChild,
-        if (photos.length > 1)
-          Positioned(
-            bottom: 10,
-            left: 16,
-            right: 16,
-            child: _DotsIndicator(count: photos.length, index: _index),
-          ),
-      ],
-    );
-  }
-}
-
-class _DotsIndicator extends StatelessWidget {
-  final int count;
-  final int index;
-  const _DotsIndicator({required this.count, required this.index});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: List.generate(count, (i) {
-        final isActive = i == index;
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          margin: const EdgeInsets.only(right: 6),
-          height: 6,
-          width: isActive ? 18 : 6,
-          decoration: BoxDecoration(
-            color: isActive ? Colors.white : Colors.white30,
-            borderRadius: BorderRadius.circular(50),
-          ),
-        );
-      }),
-    );
-  }
-}
-
-class _Badge extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  const _Badge({required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.35),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.white24),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 14, color: Colors.white),
-          const SizedBox(width: 46),
-          Text(
-            label,
-            style: AppTextStyles.bodySmall.copyWith(color: Colors.white),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _OverflowMenu extends ConsumerWidget {
-  final String targetUid;
-  const _OverflowMenu({required this.targetUid});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authAsync = ref.watch(authStateProvider);
-    final me = authAsync.maybeWhen(data: (u) => u, orElse: () => null);
-
-    // Phase 1 local-only viewer identity:
-    // - signed-in: uid
-    // - guest/safe mode: 'guest'
-    final viewerKey = (me?.uid ?? 'guest').trim();
-
-    final isBlocked = ref.watch(
-      isBlockedProvider((viewerKey: viewerKey, targetUid: targetUid)),
-    );
-
-    return PopupMenuButton<String>(
-      icon: const Icon(Icons.more_vert_rounded, color: Colors.white),
-      color: AppColors.surface,
-      onSelected: (v) async {
-        if (v == 'block') {
-          final ok = await showDialog<bool>(
-            context: context,
-            builder: (ctx) {
-              return AlertDialog(
-                title: const Text('Block user?'),
-                content: const Text(
-                  'They will be hidden from you && you won’t be able to start a chat with them.',
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(false),
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(true),
-                    child: const Text('Block'),
-                  ),
-                ],
-              );
-            },
-          );
-
-          if (ok == true) {
-            await ref
-                .read(blockedUsersProvider(viewerKey).notifier)
-                .block(targetUid);
-            _toast(context, 'User blocked');
-          }
-        } else if (v == 'unblock') {
-          final ok = await showDialog<bool>(
-            context: context,
-            builder: (ctx) {
-              return AlertDialog(
-                title: const Text('Unblock user?'),
-                content: const Text('They will be visible to you again.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(false),
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(true),
-                    child: const Text('Unblock'),
-                  ),
-                ],
-              );
-            },
-          );
-
-          if (ok == true) {
-            await ref
-                .read(blockedUsersProvider(viewerKey).notifier)
-                .unblock(targetUid);
-            _toast(context, 'User unblocked');
-          }
-        } else if (v == 'report') {
-          await _showReportSheet(
-            context: context,
-            ref: ref,
-            reporterKey: viewerKey,
-            reportedUid: targetUid,
-          );
-        }
-      },
-      itemBuilder:
-          (context) => [
-            PopupMenuItem(
-              value: isBlocked ? 'unblock' : 'block',
-              child: Text(isBlocked ? 'Unblock User' : 'Block User'),
-            ),
-            const PopupMenuItem(value: 'report', child: Text('Report User')),
-          ],
-    );
-  }
-}
-
-Future<void> _showReportSheet({
-  required BuildContext context,
-  required WidgetRef ref,
-  required String reporterKey,
-  required String reportedUid,
-}) async {
-  ReportReason reason = ReportReason.harassment;
-  final notesController = TextEditingController();
-
-  await showModalBottomSheet<void>(
-    context: context,
-    backgroundColor: Colors.transparent,
-    isScrollControlled: true,
-    builder: (sheetContext) {
-      final bottomInset = MediaQuery.of(sheetContext).viewInsets.bottom;
-
-      return StatefulBuilder(
-        builder: (ctx, setState) {
-          return Padding(
-            padding: EdgeInsets.only(bottom: bottomInset),
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Report user',
-                          style: AppTextStyles.titleLarge.copyWith(
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () => Navigator.of(sheetContext).pop(),
-                        borderRadius: BorderRadius.circular(999),
-                        child: Container(
-                          height: 36,
-                          width: 36,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: AppColors.background,
-                            borderRadius: BorderRadius.circular(999),
-                            border: Border.all(color: AppColors.border),
-                          ),
-                          child: const Icon(Icons.close_rounded, size: 18),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'Reason',
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: AppColors.background,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.border),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<ReportReason>(
-                        value: reason,
-                        isExpanded: true,
-                        items:
-                            ReportReason.values
-                                .map(
-                                  (r) => DropdownMenuItem(
-                                    value: r,
-                                    child: Text(r.label),
-                                  ),
-                                )
-                                .toList(),
-                        onChanged: (v) {
-                          if (v == null) return;
-                          setState(() => reason = v);
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'Notes (optional)',
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: notesController,
-                    maxLines: 4,
-                    decoration: InputDecoration(
-                      hintText: 'Add more details (optional)',
-                      filled: true,
-                      fillColor: AppColors.background,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.border),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.border),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.border),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          await submitLocalReport(
-                            ref: ref,
-                            reporterKey: reporterKey,
-                            reportedUid: reportedUid,
-                            reason: reason,
-                            notes: notesController.text,
-                          );
-                          if (context.mounted) {
-                            Navigator.of(sheetContext).pop();
-                            _toast(context, 'Report submitted');
-                          }
-                        } catch (_) {
-                          if (context.mounted) {
-                            _toast(context, 'Unable to submit report');
-                          }
-                        }
-                      },
-                      child: const Text('Submit report'),
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'Reports are reviewed. Please avoid sharing sensitive personal information.',
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    },
-  );
-
-  notesController.dispose();
-}
-
-/// ------------------------------
-/// PRIMARY INFO + QUICK CHIPS
-/// ------------------------------
-class _PrimaryInfo extends StatelessWidget {
-  final UserModel profile;
-  final String locationText;
-  const _PrimaryInfo({required this.profile, required this.locationText});
-
-  @override
-  Widget build(BuildContext context) {
-    final aboutRaw = profile.bestQualitiesOrTraits?.trim();
-    final about =
-        (aboutRaw == null || aboutRaw.isEmpty)
-            ? null
-            : (aboutRaw.startsWith('http') ||
-                aboutRaw.contains('digitaloceanspaces.com'))
-            ? null
-            : aboutRaw;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (about != null && about.isNotEmpty) ...[
-          Text(about, style: AppTextStyles.bodyLarge),
-          const SizedBox(height: 14),
-        ],
-      ],
-    );
-  }
-}
-
-class _QuickChips extends StatelessWidget {
-  final UserModel profile;
-  const _QuickChips({required this.profile});
-
-  @override
-  Widget build(BuildContext context) {
-    final chips =
-        <String>[
-          if ((profile.educationLevel ?? '').trim().isNotEmpty)
-            profile.educationLevel!,
-          if ((profile.profession ?? '').trim().isNotEmpty) profile.profession!,
-          if ((profile.churchName ?? '').trim().isNotEmpty) profile.churchName!,
-          if ((profile.nationality ?? '').trim().isNotEmpty)
-            profile.nationality!,
-        ].where((e) => e.trim().isNotEmpty).toList();
-
-    if (chips.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        for (final c in chips)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(999),
-              border: Border.all(color: AppColors.border),
-            ),
-            child: Text(c, style: AppTextStyles.bodySmall),
-          ),
-      ],
-    );
-  }
-}
-
-/// ------------------------------
-/// SECTIONS
-/// ------------------------------
 class _Section extends StatelessWidget {
   final String title;
   final String? subtitle;
   final Widget child;
-  const _Section({required this.title, required this.child, this.subtitle});
+
+  const _Section({
+    required this.title,
+    required this.child,
+    this.subtitle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1565,27 +525,15 @@ class _Section extends StatelessWidget {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: AppColors.border),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 14,
-            offset: const Offset(0, 6),
-            color: Colors.black.withOpacity(0.05),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: AppTextStyles.titleLarge.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          if (subtitle != null) ...[
+          Text(title, style: AppTextStyles.titleMedium),
+          if ((subtitle ?? '').trim().isNotEmpty) ...[
             const SizedBox(height: 6),
             Text(
-              subtitle!,
+              subtitle!.trim(),
               style: AppTextStyles.bodySmall.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -1599,100 +547,20 @@ class _Section extends StatelessWidget {
   }
 }
 
-class _AboutSection extends StatelessWidget {
-  final UserModel profile;
-  const _AboutSection({required this.profile});
 
-  @override
-  Widget build(BuildContext context) {
-    final rows = <_AboutRow>[
-      _AboutRow('Nationality', profile.nationality),
-      _AboutRow('Education Level', profile.educationLevel),
-      _AboutRow('Profession/Industry', profile.profession),
-      _AboutRow('Church', profile.churchName),
-    ];
-
-    final items = rows.where((r) => (r.value ?? '').trim().isNotEmpty).toList();
-    if (items.isEmpty) {
-      return Text(
-        'No information added yet.',
-        style: AppTextStyles.bodyMedium.copyWith(
-          color: AppColors.textSecondary,
-        ),
-      );
-    }
-
-    return Column(
-      children: [
-        for (int i = 0; i < items.length; i++) ...[
-          _AboutRowTile(label: items[i].label, value: items[i].value!),
-          if (i != items.length - 1)
-            const Divider(height: 18, color: AppColors.border),
-        ],
-      ],
-    );
-  }
-}
-
-class _AboutRow {
-  final String label;
-  final String? value;
-  _AboutRow(this.label, this.value);
-}
-
-class _AboutRowTile extends StatelessWidget {
-  const _AboutRowTile({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 4,
-            child: Text(
-              label,
-              style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            flex: 6,
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                value,
-                textAlign: TextAlign.right,
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// ------------------------------
 class _RedChipWrap extends StatelessWidget {
   final List<String> chips;
   final String emptyText;
-  const _RedChipWrap({required this.chips, required this.emptyText});
+
+  const _RedChipWrap({
+    required this.chips,
+    required this.emptyText,
+  });
 
   @override
   Widget build(BuildContext context) {
-    if (chips.isEmpty) {
+    final items = chips.map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
+    if (items.isEmpty) {
       return Text(
         emptyText,
         style: AppTextStyles.bodyMedium.copyWith(
@@ -1701,387 +569,28 @@ class _RedChipWrap extends StatelessWidget {
       );
     }
 
-    return SizedBox(
-      width: double.infinity,
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 10,
-        children: [
-          for (final c in chips)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.82),
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: AppColors.primary.withOpacity(0.82)),
-              ),
-              child: Text(
-                c,
-                style: AppTextStyles.bodySmall.copyWith(color: Colors.white),
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: [
+        for (final c in items)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(999),
+              border: Border.all(color: AppColors.primary.withOpacity(0.18)),
+            ),
+            child: Text(
+              c,
+              style: AppTextStyles.bodySmall.copyWith(
+                fontWeight: FontWeight.w700,
               ),
             ),
-        ],
-      ),
-    );
-  }
-}
-
-/// AUDIO PLACEHOLDER
-/// ------------------------------
-
-/// ------------------------------
-/// AUDIO (Real playback, one at a time)
-/// ------------------------------
-// ignore: unused_element
-final _profileAudioControllerProvider = Provider<_ProfileAudioController>((
-  ref,
-) {
-  final controller = _ProfileAudioController();
-  ref.onDispose(controller.dispose);
-  return controller;
-});
-
-class _ProfileAudioController {
-  final AudioPlayer _player = AudioPlayer();
-  String? currentUrl;
-
-  Duration duration = Duration.zero;
-  Duration position = Duration.zero;
-  PlayerState state = PlayerState.stopped;
-
-  bool _initialized = false;
-  bool _hasSource = false;
-
-  String? lastError;
-  VoidCallback? _notify;
-
-  Future<void> init(VoidCallback notify) async {
-    _notify = notify;
-    if (_initialized) return;
-    _initialized = true;
-
-    try {
-      await _player.setReleaseMode(ReleaseMode.stop);
-    } catch (_) {}
-
-    _player.onDurationChanged.listen((d) {
-      duration = d;
-      notify();
-    });
-
-    _player.onPositionChanged.listen((p) {
-      position = p;
-      notify();
-    });
-
-    _player.onPlayerStateChanged.listen((s) {
-      state = s;
-      notify();
-    });
-  }
-
-  Future<void> playOrPause(String url) async {
-    lastError = null;
-    _notify?.call();
-    final u = url.trim();
-    if (u.isEmpty) return;
-
-    try {
-      if (currentUrl != u) {
-        currentUrl = u;
-        position = Duration.zero;
-
-        // stop only if we previously had a source
-        if (_hasSource) {
-          try {
-            await _player.stop();
-          } catch (_) {}
-        }
-
-        await _player.play(UrlSource(u));
-        _hasSource = true;
-        return;
-      }
-
-      // Same URL: toggle pause/play (avoid resume() — it often fails on iOS if native player isn't ready)
-      if (state == PlayerState.playing) {
-        try {
-          await _player.pause();
-        } catch (_) {}
-        return;
-      }
-
-      await _player.play(UrlSource(u));
-      _hasSource = true;
-    } catch (e) {
-      lastError = e.toString();
-      _notify?.call();
-    };
-  }
-
-  Future<void> seek(Duration d) async {
-    if (!_hasSource) return;
-    try {
-      await _player.seek(d);
-    } catch (_) {};
-  }
-
-  Future<void> stop() async {
-    currentUrl = null;
-    position = Duration.zero;
-    duration = Duration.zero;
-
-    if (!_hasSource) return;
-
-    try {
-      await _player.stop();
-    } catch (_) {}
-
-    _hasSource = false;
-  }
-
-  void dispose() {
-    currentUrl = null;
-    _hasSource = false;
-
-    try {
-      _player.stop();
-    } catch (_) {}
-
-    try {
-      _player.dispose();
-    } catch (_) {};
-  }
-}
-
-class _AudioPromptsSection extends ConsumerStatefulWidget {
-  final List<String> audioUrls;
-  final bool isLocked;
-
-  const _AudioPromptsSection({required this.audioUrls, required this.isLocked});
-
-  @override
-  ConsumerState<_AudioPromptsSection> createState() =>
-      _AudioPromptsSectionState();
-}
-
-class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
-  late final _ProfileAudioController _controller = _ProfileAudioController();
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.init(() {
-      if (mounted) setState(() {});
-    });
-  }
-
-  @override
-  void didUpdateWidget(covariant _AudioPromptsSection oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    final oldUrls =
-        oldWidget.audioUrls
-            .map((e) => e.trim())
-            .where((e) => e.isNotEmpty)
-            .toList();
-    final newUrls =
-        widget.audioUrls
-            .map((e) => e.trim())
-            .where((e) => e.isNotEmpty)
-            .toList();
-
-    final urlChanged = oldUrls.join('|') != newUrls.join('|');
-    if (!urlChanged) return;
-
-    final current = (_controller.currentUrl ?? '').trim();
-    if (current.isEmpty) return;
-
-    // If the currently-playing URL isn't in the new profile's list, stop.
-    if (!newUrls.contains(current)) {
-      _controller.stop();
-    };
-  }
-
-  @override
-  void dispose() {
-    _controller.stop();
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final prompts = const [
-      'My relationship with God',
-      'My view on gender roles in marriage',
-      'Favourite qualities || traits about myself',
-    ];
-
-    final urls = widget.audioUrls.where((e) => e.trim().isNotEmpty).toList();
-    if (urls.isEmpty) {
-      return Text(
-        'No audio recordings available yet.',
-        style: AppTextStyles.bodyMedium.copyWith(
-          color: AppColors.textSecondary,
-        ),
-      );
-    }
-
-    return Column(
-      children: List.generate(3, (i) {
-        final url = i < urls.length ? urls[i] : null;
-        return Padding(
-          padding: EdgeInsets.only(bottom: i == 2 ? 0 : 12),
-          child: _AudioPromptTile(
-            prompt: prompts[i],
-            url: url,
-            isLocked: widget.isLocked,
-            controller: _controller,
           ),
-        );
-      }),
+      ],
     );
   }
-}
-
-class _AudioPromptTile extends StatelessWidget {
-  final String prompt;
-  final String? url;
-  final bool isLocked;
-  final _ProfileAudioController controller;
-
-  const _AudioPromptTile({
-    required this.prompt,
-    required this.url,
-    required this.isLocked,
-    required this.controller,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final hasUrl = (url ?? '').trim().isNotEmpty;
-    final isCurrent = hasUrl && (controller.currentUrl == (url ?? '').trim());
-    final isPlaying = isCurrent && controller.state == PlayerState.playing;
-
-    final duration =
-        controller.duration.inMilliseconds == 0
-            ? const Duration(seconds: 1)
-            : controller.duration;
-    final position = controller.position;
-
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              InkWell(
-                onTap:
-                    (!isLocked && hasUrl)
-                        ? () async {
-                          await controller.playOrPause(url!);
-                        }
-                        : null,
-                borderRadius: BorderRadius.circular(999),
-                child: Container(
-                  height: 34,
-                  width: 44,
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(color: AppColors.border),
-                  ),
-                  child: Icon(
-                    isLocked
-                        ? Icons.lock_rounded
-                        : hasUrl
-                        ? (isPlaying
-                            ? Icons.pause_rounded
-                            : Icons.play_arrow_rounded)
-                        : Icons.mic_off_rounded,
-                    color:
-                        isLocked ? AppColors.textSecondary : AppColors.primary,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(prompt, style: AppTextStyles.bodyMedium),
-                    const SizedBox(height: 4),
-                    Text(
-                      isLocked
-                          ? 'Audio recordings cannot be changed after profile creation'
-                          : hasUrl
-                          ? ((isCurrent &&
-                                  (controller.lastError ?? '')
-                                      .trim()
-                                      .isNotEmpty)
-                              ? 'Unable to play audio'
-                              : (isPlaying ? 'Playing…' : 'Tap to play'))
-                          : 'Not recorded yet',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          if (!isLocked && hasUrl) ...[
-            const SizedBox(height: 12),
-            Slider(
-              value:
-                  isCurrent
-                      ? position.inMilliseconds
-                          .clamp(0, duration.inMilliseconds)
-                          .toDouble()
-                      : 0,
-              max: duration.inMilliseconds.toDouble(),
-              onChanged: (v) async {
-                if (!isCurrent) return;
-                await controller.seek(Duration(milliseconds: v.toInt()));
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  _formatDuration(isCurrent ? position : Duration.zero),
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-                Text(
-                  _formatDuration(duration),
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-String _formatDuration(Duration d) {
-  String two(int n) => n.toString().padLeft(2, '0');
-  final m = two(d.inMinutes.remainder(60));
-  final s = two(d.inSeconds.remainder(60));
-  return '$m:$s';
 }
 
 /// ------------------------------
@@ -2806,6 +1315,23 @@ class _PhotoViewerScreenState extends State<_PhotoViewerScreen> {
     _controller = PageController(initialPage: widget.initialIndex);
   }
 
+  Future<Map<String, String>> _loadDraftContact(String uid) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString('draft_profile_' + uid);
+      if (raw == null || raw.trim().isEmpty) return <String, String>{};
+
+      final decoded = jsonDecode(raw) as Map<String, dynamic>;
+      final draft = decoded['draftContact'];
+      if (draft is! Map) return <String, String>{};
+
+      return draft.map((k, v) => MapEntry(k.toString(), (v ?? '').toString()));
+    } catch (_) {
+      return <String, String>{};
+    }
+  }
+
+
   @override
   void dispose() {
     _controller.dispose();
@@ -2901,6 +1427,37 @@ class _ViewerIconButton extends StatelessWidget {
         ),
         child: Icon(icon, color: Colors.white),
       ),
+    );
+  }
+}
+
+
+class _DotsIndicator extends StatelessWidget {
+  final int count;
+  final int index;
+
+  const _DotsIndicator({required this.count, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    final safeCount = count < 0 ? 0 : count;
+    if (safeCount <= 1) return const SizedBox.shrink();
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(safeCount, (i) {
+        final active = i == index;
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          height: 7,
+          width: active ? 18 : 7,
+          decoration: BoxDecoration(
+            color: active ? Colors.white : Colors.white38,
+            borderRadius: BorderRadius.circular(999),
+          ),
+        );
+      }),
     );
   }
 }
@@ -3004,6 +1561,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
     _tabController.dispose();
     super.dispose();
   }
+
+
+
 
   Future<bool> _confirmExitIfDirty() async {
     if (!_dirty) return true;
@@ -4326,41 +2886,38 @@ final _verificationStatusProvider = StreamProvider.family<String?, String>((
 });
 
 final _compatibilityMapProvider =
-    StreamProvider.family<Map<String, dynamic>, String>((
-  ref,
-  uid,
-) {
-  final firebaseReady = ref.watch(firebaseReadyProvider);
-  if (!firebaseReady) return Stream.value(const <String, dynamic>{});
+    StreamProvider.family<Map<String, dynamic>, String>((ref, uid) {
+      final firebaseReady = ref.watch(firebaseReadyProvider);
+      if (!firebaseReady) return Stream.value(const <String, dynamic>{});
 
-  final fs = ref.watch(firestoreInstanceProvider);
-  if (fs == null) return Stream.value(const <String, dynamic>{});
+      final fs = ref.watch(firestoreInstanceProvider);
+      if (fs == null) return Stream.value(const <String, dynamic>{});
 
-  final trimmed = uid.trim();
-  if (trimmed.isEmpty) return Stream.value(const <String, dynamic>{});
+      final trimmed = uid.trim();
+      if (trimmed.isEmpty) return Stream.value(const <String, dynamic>{});
 
-  return fs.collection('users').doc(trimmed).snapshots().map((doc) {
-    if (!doc.exists) return const <String, dynamic>{};
-    final data = doc.data();
-    if (data == null) return const <String, dynamic>{};
+      return fs.collection('users').doc(trimmed).snapshots().map((doc) {
+        if (!doc.exists) return const <String, dynamic>{};
+        final data = doc.data();
+        if (data == null) return const <String, dynamic>{};
 
-    // v1 commonly had: compatibility: {...}
-    dynamic compat = data['compatibility'];
+        // v1 commonly had: compatibility: {...}
+        dynamic compat = data['compatibility'];
 
-    // v2 || alternate shapes may store under dating.*
-    final dating = (data['dating'] is Map) ? data['dating'] as Map : null;
-    compat = compat ??
-        (dating != null ? dating['compatibility'] : null) ??
-        (dating != null ? dating['compatibilityData'] : null) ??
-        data['compatibility_data'];
+        // v2 || alternate shapes may store under dating.*
+        final dating = (data['dating'] is Map) ? data['dating'] as Map : null;
+        compat =
+            compat ??
+            (dating != null ? dating['compatibility'] : null) ??
+            (dating != null ? dating['compatibilityData'] : null) ??
+            data['compatibility_data'];
 
-    if (compat is Map) {
-      return Map<String, dynamic>.from(compat);
-    }
-    return const <String, dynamic>{};
-  });
-});
-
+        if (compat is Map) {
+          return Map<String, dynamic>.from(compat);
+        }
+        return const <String, dynamic>{};
+      });
+    });
 
 class _PremiumContactViewerScreen extends StatelessWidget {
   final UserModel profile;
@@ -4449,7 +3006,9 @@ class _PremiumContactViewerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final name =
-        (profile.name ?? '').trim().isEmpty ? (profile.username ?? '').trim() : (profile.name ?? '').trim();
+        (profile.name ?? '').trim().isEmpty
+            ? (profile.username ?? '').trim()
+            : (profile.name ?? '').trim();
 
     final ig = (profile.instagramUsername ?? '').trim();
     final wa = (profile.phoneNumber ?? '').trim();
@@ -4457,13 +3016,34 @@ class _PremiumContactViewerScreen extends StatelessWidget {
 
     final tiles = <Widget>[];
     if (email.isNotEmpty) {
-      tiles.add(_infoTile(context, icon: Icons.mail_rounded, label: 'Email', value: email));
+      tiles.add(
+        _infoTile(
+          context,
+          icon: Icons.mail_rounded,
+          label: 'Email',
+          value: email,
+        ),
+      );
     }
     if (ig.isNotEmpty) {
-      tiles.add(_infoTile(context, icon: Icons.alternate_email_rounded, label: 'Instagram', value: '@$ig'));
+      tiles.add(
+        _infoTile(
+          context,
+          icon: Icons.alternate_email_rounded,
+          label: 'Instagram',
+          value: '@$ig',
+        ),
+      );
     }
     if (wa.isNotEmpty) {
-      tiles.add(_infoTile(context, icon: Icons.chat_bubble_rounded, label: 'WhatsApp', value: wa));
+      tiles.add(
+        _infoTile(
+          context,
+          icon: Icons.chat_bubble_rounded,
+          label: 'WhatsApp',
+          value: wa,
+        ),
+      );
     }
 
     return Scaffold(
@@ -4485,7 +3065,9 @@ class _PremiumContactViewerScreen extends StatelessWidget {
                 children: [
                   Text(
                     name.isEmpty ? 'Contact info' : name,
-                    style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w900),
+                    style: AppTextStyles.titleLarge.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
                   ),
                   const SizedBox(height: 6),
                   Text(
@@ -4507,7 +3089,10 @@ class _PremiumContactViewerScreen extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.info_outline_rounded, color: AppColors.textSecondary),
+                          Icon(
+                            Icons.info_outline_rounded,
+                            color: AppColors.textSecondary,
+                          ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
@@ -4538,6 +3123,7 @@ class _PremiumContactViewerScreen extends StatelessWidget {
     );
   }
 }
+
 class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
   final UserModel profile;
   const _PremiumCompatibilityViewerScreen({required this.profile});
@@ -4622,12 +3208,37 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
       if (hasAny(['maritalstatus', 'marital_status', 'marital'])) return 0;
       if (hasAny(['havekids', 'have_kids', 'kids'])) return 1;
       if (hasAny(['genotype'])) return 2;
-      if (hasAny(['personalitytype', 'personality_type', 'personality'])) return 3;
-      if (hasAny(['regularsourceofincome', 'regular_source_of_income', 'sourceofincome', 'income'])) return 4;
-      if (hasAny(['marrysomeonefs', 'marry_someone_fs', 'financialstability', 'financial'])) return 5;
+      if (hasAny(['personalitytype', 'personality_type', 'personality']))
+        return 3;
+      if (hasAny([
+        'regularsourceofincome',
+        'regular_source_of_income',
+        'sourceofincome',
+        'income',
+      ]))
+        return 4;
+      if (hasAny([
+        'marrysomeonefs',
+        'marry_someone_fs',
+        'financialstability',
+        'financial',
+      ]))
+        return 5;
       if (hasAny(['longdistance', 'long_distance', 'distance'])) return 6;
-      if (hasAny(['believecohabiting', 'believe_cohabiting', 'cohabit', 'cohabiting'])) return 7;
-      if (hasAny(['shouldchristianspeakintongue', 'should_christian_speak_in_tongue', 'tongue', 'tongues'])) return 8;
+      if (hasAny([
+        'believecohabiting',
+        'believe_cohabiting',
+        'cohabit',
+        'cohabiting',
+      ]))
+        return 7;
+      if (hasAny([
+        'shouldchristianspeakintongue',
+        'should_christian_speak_in_tongue',
+        'tongue',
+        'tongues',
+      ]))
+        return 8;
       if (hasAny(['believeintithing', 'believe_in_tithing', 'tith'])) return 9;
 
       return 100; // unknown -> bottom
@@ -4647,16 +3258,27 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
     final k = _normKey(rawKey);
 
     if (k.contains('marital')) return 'Marital Status';
-    if (k.contains('havekids') || k.contains('have_kids') || k == 'kids' || k.contains('kids')) return 'Kids';
+    if (k.contains('havekids') ||
+        k.contains('have_kids') ||
+        k == 'kids' ||
+        k.contains('kids'))
+      return 'Kids';
     if (k.contains('genotype')) return 'Genotype';
     if (k.contains('personality')) return 'Personality Type';
-    if (k.contains('regularsourceofincome') || k.contains('sourceofincome') || k == 'income' || k.contains('income')) {
+    if (k.contains('regularsourceofincome') ||
+        k.contains('sourceofincome') ||
+        k == 'income' ||
+        k.contains('income')) {
       return 'Source of Income';
     }
-    if (k.contains('marrysomeonefs') || k.contains('marry_someone_fs') || k.contains('financial')) {
+    if (k.contains('marrysomeonefs') ||
+        k.contains('marry_someone_fs') ||
+        k.contains('financial')) {
       return 'Financial Stability';
     }
-    if (k.contains('longdistance') || k.contains('long_distance') || (k.contains('distance') && !k.contains('country'))) {
+    if (k.contains('longdistance') ||
+        k.contains('long_distance') ||
+        (k.contains('distance') && !k.contains('country'))) {
       return 'Long Distance';
     }
     if (k.contains('cohabit')) return 'Cohabiting';
@@ -4685,7 +3307,10 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
     }
 
     // Kids
-    if (k.contains('havekids') || k.contains('have_kids') || k == 'kids' || k.contains('kids')) {
+    if (k.contains('havekids') ||
+        k.contains('have_kids') ||
+        k == 'kids' ||
+        k.contains('kids')) {
       if (yn == true) return '$subj has kids.';
       if (yn == false) return '$subj does not have kids.';
       if (v.isEmpty) return '$subj has not shared whether they have kids.';
@@ -4711,43 +3336,63 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
     }
 
     // Source of income
-    if (k.contains('regularsourceofincome') || k.contains('regular_source_of_income') || k.contains('sourceofincome') || k == 'income' || k.contains('income')) {
+    if (k.contains('regularsourceofincome') ||
+        k.contains('regular_source_of_income') ||
+        k.contains('sourceofincome') ||
+        k == 'income' ||
+        k.contains('income')) {
       if (yn == true) return '$subj has a regular source of income.';
       if (yn == false) return '$subj does not have a regular source of income.';
-      if (v.isEmpty) return '$subj has not shared whether they have a regular source of income.';
+      if (v.isEmpty)
+        return '$subj has not shared whether they have a regular source of income.';
       return '$subj believes $v.';
     }
 
     // Financial stability (your requested grammar)
     // meaning: can/cannot marry someone who is NOT financially stable yet
-    if (k.contains('marrysomeonefs') || k.contains('marry_someone_fs') || k.contains('financial')) {
-      if (yn == true) return '$subj can marry someone who is not yet financially stable.';
-      if (yn == false) return '$subj cannot marry someone who is not yet financially stable.';
-      if (v.isEmpty) return '$subj has not shared their view on marrying someone who is not yet financially stable.';
+    if (k.contains('marrysomeonefs') ||
+        k.contains('marry_someone_fs') ||
+        k.contains('financial')) {
+      if (yn == true)
+        return '$subj can marry someone who is not yet financially stable.';
+      if (yn == false)
+        return '$subj cannot marry someone who is not yet financially stable.';
+      if (v.isEmpty)
+        return '$subj has not shared their view on marrying someone who is not yet financially stable.';
       return '$subj believes $v.';
     }
 
     // Long distance
-    if (k.contains('longdistance') || k.contains('long_distance') || k == 'distance' || k.contains('distance')) {
+    if (k.contains('longdistance') ||
+        k.contains('long_distance') ||
+        k == 'distance' ||
+        k.contains('distance')) {
       if (yn == true) return '$subj is open to a long-distance relationship.';
-      if (yn == false) return '$subj is not open to a long-distance relationship.';
-      if (v.isEmpty) return '$subj has not shared their view on long-distance relationships.';
+      if (yn == false)
+        return '$subj is not open to a long-distance relationship.';
+      if (v.isEmpty)
+        return '$subj has not shared their view on long-distance relationships.';
       return '$subj believes $v.';
     }
 
     // Cohabiting
     if (k.contains('cohabit') || k.contains('cohabiting')) {
       if (yn == true) return '$subj believes in cohabiting before marriage.';
-      if (yn == false) return '$subj does not believe in cohabiting before marriage.';
-      if (v.isEmpty) return '$subj has not shared their view on cohabiting before marriage.';
+      if (yn == false)
+        return '$subj does not believe in cohabiting before marriage.';
+      if (v.isEmpty)
+        return '$subj has not shared their view on cohabiting before marriage.';
       return '$subj believes $v.';
     }
 
     // Speaking in tongues
     if (k.contains('tongue') || k.contains('tongues')) {
-      if (yn == true) return '$subj believes every Christian should desire to speak in tongues.';
-      if (yn == false) return '$subj does not believe every Christian should desire to speak in tongues.';
-      if (v.isEmpty) return '$subj has not shared their view on speaking in tongues.';
+      if (yn == true)
+        return '$subj believes every Christian should desire to speak in tongues.';
+      if (yn == false)
+        return '$subj does not believe every Christian should desire to speak in tongues.';
+      if (v.isEmpty)
+        return '$subj has not shared their view on speaking in tongues.';
       return '$subj believes $v.';
     }
 
@@ -4766,9 +3411,10 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final name = (profile.name ?? '').trim().isEmpty
-        ? (profile.username ?? '').trim()
-        : (profile.name ?? '').trim();
+    final name =
+        (profile.name ?? '').trim().isEmpty
+            ? (profile.username ?? '').trim()
+            : (profile.name ?? '').trim();
 
     final uid = _profileUid();
     if (uid.isEmpty) {
@@ -4827,22 +3473,23 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
               constraints: const BoxConstraints(maxWidth: 700),
               child: compatAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (e, _) => Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.border),
-                  ),
-                  child: Text(
-                    'Unable to load compatibility right now. Please try again.',
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.3,
+                error:
+                    (e, _) => Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppColors.border),
+                      ),
+                      child: Text(
+                        'Unable to load compatibility right now. Please try again.',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.3,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
                 data: (compat) {
                   final entries = _sortedEntries(compat);
 
@@ -4850,8 +3497,12 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        name.isEmpty ? 'Compatibility' : 'Compatibility with $name',
-                        style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w900),
+                        name.isEmpty
+                            ? 'Compatibility'
+                            : 'Compatibility with $name',
+                        style: AppTextStyles.titleLarge.copyWith(
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                       const SizedBox(height: 6),
                       Text(
@@ -4875,7 +3526,10 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Icon(Icons.auto_awesome_rounded, color: AppColors.primary),
+                                Icon(
+                                  Icons.auto_awesome_rounded,
+                                  color: AppColors.primary,
+                                ),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
@@ -4894,7 +3548,8 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                         Expanded(
                           child: ListView.separated(
                             itemCount: entries.length,
-                            separatorBuilder: (_, __) => const SizedBox(height: 12),
+                            separatorBuilder:
+                                (_, __) => const SizedBox(height: 12),
                             itemBuilder: (context, i) {
                               final e = entries[i];
                               final label = _labelFor(e.key.toString());
@@ -4921,26 +3576,36 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                                       decoration: BoxDecoration(
                                         color: AppColors.background,
                                         borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(color: AppColors.border),
+                                        border: Border.all(
+                                          color: AppColors.border,
+                                        ),
                                       ),
-                                      child: Icon(Icons.insights_rounded, color: AppColors.primary, size: 20),
+                                      child: Icon(
+                                        Icons.insights_rounded,
+                                        color: AppColors.primary,
+                                        size: 20,
+                                      ),
                                     ),
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             label,
-                                            style: AppTextStyles.bodySmall.copyWith(
-                                              color: AppColors.textSecondary,
-                                              height: 1.1,
-                                            ),
+                                            style: AppTextStyles.bodySmall
+                                                .copyWith(
+                                                  color:
+                                                      AppColors.textSecondary,
+                                                  height: 1.1,
+                                                ),
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
                                             sentence,
-                                            style: AppTextStyles.bodyMedium.copyWith(height: 1.25),
+                                            style: AppTextStyles.bodyMedium
+                                                .copyWith(height: 1.25),
                                           ),
                                         ],
                                       ),
