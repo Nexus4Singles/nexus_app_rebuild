@@ -1,0 +1,63 @@
+{
+  "version": "v1",
+  "polls": [
+    {
+      "pollId": "poll_wk_001",
+      "storyId": "wk_001_example",
+      "weekNumber": 1,
+      "question": "When conflict happens, what do you usually do first?",
+      "options": [
+        {
+          "id": "A",
+          "text": "I try to talk it through immediately.",
+          "inferredTags": [
+            "direct_communicator"
+          ],
+          "insightCopy": "Speaking early can prevent resentment â€” just keep it kind.",
+          "recommendedProductIds": [
+            "communication_mastery"
+          ]
+        },
+        {
+          "id": "B",
+          "text": "I stay quiet and hope it passes.",
+          "inferredTags": [
+            "conflict_avoidance"
+          ],
+          "insightCopy": "Silence can feel safe, but it can also build distance. Try naming one feeling instead.",
+          "recommendedProductIds": [
+            "communication_mastery",
+            "repair_reconnection"
+          ]
+        },
+        {
+          "id": "C",
+          "text": "I withdraw to calm down first.",
+          "inferredTags": [
+            "needs_space"
+          ],
+          "insightCopy": "Taking space can be healthy â€” just make sure you return to the conversation.",
+          "recommendedProductIds": [
+            "emotional_regulation"
+          ]
+        },
+        {
+          "id": "D",
+          "text": "I get reactive or harsh.",
+          "inferredTags": [
+            "reactivity"
+          ],
+          "insightCopy": "Reactivity often hides hurt. A pause can protect your words and your home.",
+          "recommendedProductIds": [
+            "emotional_regulation",
+            "repair_reconnection"
+          ]
+        }
+      ],
+      "defaultInsightCopy": "Small shifts in how you respond during conflict can change the whole tone of your relationship.",
+      "defaultRecommendedProductIds": [
+        "communication_mastery"
+      ]
+    }
+  ]
+}

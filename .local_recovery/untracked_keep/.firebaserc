@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "staging": "nexus-visibility-app"
+  },
+  "targets": {},
+  "etags": {}
+}

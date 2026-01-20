@@ -1,0 +1,40 @@
+diff --git a/lib/core/models/user_model.dart b/lib/core/models/user_model.dart
+index 0000000..0000000 100644
+--- a/lib/core/models/user_model.dart
++++ b/lib/core/models/user_model.dart
+@@
+ class UserModel extends Equatable {
+@@
+   static bool? _boolFrom(dynamic v) {
+@@
+     return null;
+   }
++
++  // ---------------------------------------------------------------------------
++  // Compatibility helpers (v1 snake_case + camelCase)
++  // ---------------------------------------------------------------------------
++  static String? _pickString(Map<String, dynamic> data, List<String> keys) {
++    for (final k in keys) {
++      final v = data[k];
++      if (v == null) continue;
++      final s = v.toString().trim();
++      if (s.isNotEmpty) return s;
++    }
++    return null;
++  }
+@@
+-      churchName: data['churchName'] as String?,
++      churchName: _pickString(data, ['churchName', 'church_name']),
+@@
+-      compatibilitySetted: UserModel._boolFrom(data['compatibilitySetted']),
++      compatibilitySetted: UserModel._boolFrom(
++        data['compatibilitySetted'] ?? data['compatibility_setted'],
++      ),
+@@
+-      fcmToken: data['fcmToken'] as String?,
++      fcmToken: _pickString(data, ['fcmToken', 'fcm_token']),
+@@
+-      profileCompletionDate: _parseTimestamp(data['profileCompletionDate']),
++      profileCompletionDate: _parseTimestamp(
++        data['profileCompletionDate'] ?? data['profile_completed_on'],
++      ),

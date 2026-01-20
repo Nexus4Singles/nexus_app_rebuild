@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyCRXUOlD6BB6fPmDFHtbBykDI9mmO_zbYg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>327599352691</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.nexus4singles.nexus</string>
+	<key>PROJECT_ID</key>
+	<string>nexus-visibility-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>nexus-visibility-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:327599352691:ios:ddd1141d47e32fd205b306</string>
+</dict>
+</plist>

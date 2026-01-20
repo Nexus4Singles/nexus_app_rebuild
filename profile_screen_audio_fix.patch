@@ -1,0 +1,58 @@
+diff --git a/lib/features/profile/presentation/screens/profile_screen.dart b/lib/features/profile/presentation/screens/profile_screen.dart
+--- a/lib/features/profile/presentation/screens/profile_screen.dart
++++ b/lib/features/profile/presentation/screens/profile_screen.dart
+@@ -1753,32 +1753,62 @@ class _ProfileAudioController {
+     });
+   }
+ 
+   Future<void> playOrPause(String url) async {
+     if (currentUrl != url) {
+       currentUrl = url;
+       position = Duration.zero;
+-      await _player.stop();
+-      await _player.play(UrlSource(url));
++      try {
++        // On iOS this can throw if the player hasn't started yet.
++        await _player.stop();
++      } catch (_) {}
++      await _player.play(UrlSource(url));
+       return;
+     }
+ 
+     if (state == PlayerState.playing) {
+-      await _player.pause();
++      try {
++        await _player.pause();
++      } catch (_) {}
+     } else {
+-      await _player.resume();
++      try {
++        await _player.resume();
++      } catch (_) {
++        // If resume fails (player not yet created / disposed), fall back to play.
++        await _player.play(UrlSource(url));
++      }
+     }
+   }
+ 
+   Future<void> seek(Duration d) async {
+     await _player.seek(d);
+   }
+ 
+   Future<void> stop() async {
+     currentUrl = null;
+     position = Duration.zero;
+-    await _player.stop();
++    try {
++      await _player.stop();
++    } catch (_) {}
+   }
+ 
+   void dispose() {
++    // Avoid iOS "already disposed" / "not created" edge cases.
++    try {
++      _player.stop();
++    } catch (_) {}
+     _player.dispose();
+   }
+ }

@@ -1,0 +1,56 @@
+/// Nexus 2.0 Core Library
+/// 
+/// This barrel file exports all core components for easy imports.
+/// 
+/// Usage:
+/// ```dart
+/// import 'package:nexus_app/core/core.dart';
+/// ```
+library;
+
+// Constants
+export 'constants/app_constants.dart';
+
+// Theme
+export 'theme/app_colors.dart';
+export 'theme/app_spacing.dart';
+export 'theme/app_text_styles.dart';
+export 'theme/app_theme.dart';
+export 'theme/design_tokens.dart';
+
+// Models
+export 'models/user_model.dart';
+export 'models/assessment_model.dart';
+export 'models/journey_model.dart';
+export 'models/story_model.dart';
+export 'models/dating_profile_model.dart';
+
+// Services
+export 'services/auth_service.dart';
+export 'services/firestore_service.dart';
+export 'services/config_loader_service.dart';
+
+// Providers
+export 'providers/auth_provider.dart';
+export 'providers/user_provider.dart';
+export 'providers/config_provider.dart';
+export 'providers/assessment_provider.dart';
+export 'providers/journey_provider.dart';
+export 'providers/story_provider.dart';
+export 'providers/search_provider.dart';
+
+// Router
+export 'router/app_router.dart';
+
+// Widgets
+export 'widgets/app_button.dart';
+export 'widgets/app_card.dart';
+export 'widgets/app_text_field.dart';
+export 'widgets/app_progress.dart';
+export 'widgets/app_chip_selector.dart';
+export 'widgets/app_bottom_nav.dart';
+export 'widgets/app_loading_states.dart';
+export 'widgets/profile_gating_modal.dart';
+
+// Utils
+export 'utils/date_utils.dart';

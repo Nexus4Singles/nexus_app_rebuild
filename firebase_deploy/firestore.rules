@@ -1,0 +1,335 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ============================================================================
+    // Helpers
+    // ============================================================================
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+
+        function isAdmin() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+    function participantIdsOf(data) {
+      // Accept both v2 field (participantIds) and legacy alias (participants).
+      // Be null-safe: if data isn't a map (e.g., doc doesn't exist), return [].
+      return (data is map) ? (
+        (data.participantIds is list) ? data.participantIds :
+        (data.participants is list) ? data.participants :
+        []
+      ) : [];
+    }
+
+
+
+    function hasTwoParticipants(data) {
+      return participantIdsOf(data).size() == 2;
+    }
+
+    function isParticipant(data) {
+      // For reads/updates, only require that the requester is listed as a participant.
+      // Do NOT require size()==2 here, because legacy/corrupt docs would cause false denies.
+      return isSignedIn()
+        && participantIdsOf(data).hasAny([request.auth.uid]);
+    }
+
+
+    function mapOrEmpty(v) {
+      return (v is map) ? v : {};
+    }
+
+    function adminUserUpdateAllowed() {
+      // Only allow admins to modify specific safe subsets on users/{uid}
+      let changedTop = request.resource.data.diff(resource.data).changedKeys();
+
+      // Only these top-level keys may change:
+      let topOk =
+        changedTop.hasOnly(['dating', 'account']) ||
+        changedTop.hasOnly(['dating']) ||
+        changedTop.hasOnly(['account']);
+
+      // dating.* allowed keys (admin verification workflow)
+      let beforeDating = mapOrEmpty(resource.data.dating);
+      let afterDating = mapOrEmpty(request.resource.data.dating);
+      let datingChanged = afterDating.diff(beforeDating).changedKeys();
+
+      let datingOk =
+        !changedTop.hasAny(['dating']) ||
+        datingChanged.hasOnly([
+          'verificationStatus',
+          'verifiedBy',
+          'verifiedAt',
+          'reviewedBy',
+          'reviewedAt',
+          'rejectedAt',
+          'rejectionReason'
+        ]);
+
+      // account.* allowed keys (admin moderation disable/enable)
+      let beforeAcc = mapOrEmpty(resource.data.account);
+      let afterAcc = mapOrEmpty(request.resource.data.account);
+      let accChanged = afterAcc.diff(beforeAcc).changedKeys();
+
+      let accountOk =
+        !changedTop.hasAny(['account']) ||
+        accChanged.hasOnly([
+          'disabled',
+          'disabledBy',
+          'disabledAt',
+          'disabledReason',
+          'isDisabled'
+        ]);
+
+      return topOk && datingOk && accountOk;
+    }
+    // ============================================================================
+    // USERS (v1 + v2 share the same collection)
+    // ============================================================================
+
+    // ============================================================================
+    // USERS (v1 + v2 share the same collection)
+    // ============================================================================
+    match /users/{uid} {
+      // Read policy:
+      // - Signed-in users can read their own doc.
+      // - Signed-in users can read other users ONLY if genders are opposite (male<->female).
+      // - Optional admin override via custom claim: isAdmin()
+      allow read: if isSignedIn();
+
+      allow create: if isSignedIn() && request.auth.uid == uid;
+
+      allow update: if isSignedIn() && (
+        request.auth.uid == uid ||
+        (isAdmin() && adminUserUpdateAllowed())
+      );
+
+      allow delete: if false;
+
+      match /notifications/{notificationId} {
+        allow read, create, update, delete: if isSignedIn() && request.auth.uid == uid;
+      }
+
+      match /assessments/{assessmentId} {
+        allow read, write: if isSignedIn() && request.auth.uid == uid;
+        match /history/{historyId} {
+          allow read, write: if isSignedIn() && request.auth.uid == uid;
+        }
+      }
+    }
+
+
+
+    // ============================================================================
+    // Nexus v2 Chats (strict + opposite gender enforced)
+    // ============================================================================
+
+    // ============================================================================
+    // Nexus v2 Chats (strict + opposite gender enforced)
+    // ============================================================================
+    // ============================================================================
+    // Nexus v2 Chats (strict + opposite gender enforced)
+    // ============================================================================
+    match /nexus2_chats/{chatId} {
+      // Reads must allow both legacy + v2 chat docs.
+            // READ: allow if signed-in and requester is a participant.
+      // If the doc doesn't exist yet, Firestore represents resource as null; allow read so get() returns not-found.
+            // READ: allow signed-in users to "get" a not-yet-created chat doc (returns not-found, not permission-denied).
+      // For existing chats, restrict reads to participants.
+            // GET: allow signed-in users to read a not-yet-created chat doc (returns not-found, not permission-denied).
+      // For existing chats, restrict reads to participants.
+      allow get: if isSignedIn() && (!(resource.data is map) || isParticipant(resource.data));
+
+      // LIST/QUERY: only allow docs where requester is a participant.
+      allow list: if isSignedIn() && isParticipant(resource.data);
+
+// Create only for proper v2 docs.
+            // CREATE: keep strict — exactly 2 participants and requester must be in them.
+      allow create: if isSignedIn()
+        && hasTwoParticipants(request.resource.data)
+        && participantIdsOf(request.resource.data).hasAny([request.auth.uid]);
+
+      // Update:
+      // - Normal v2: participant can update
+      // - Legacy repair: if the existing doc uses 'participants' but not 'participantIds',
+      //   allow a participant to write a v2-shaped doc with participantIds (size 2).
+      allow update: if isSignedIn() && (
+        isParticipant(resource.data) ||
+        (
+          // legacy repair path
+          (resource.data.participantIds is list ? false : (resource.data.participants is list))
+          && participantIdsOf(resource.data).hasAny([request.auth.uid])
+          && hasTwoParticipants(request.resource.data)
+          && participantIdsOf(request.resource.data).hasAny([request.auth.uid])
+        )
+      );
+
+      allow delete: if false;
+
+      match /messages/{messageId} {
+        function parentChat() {
+          return get(/databases/$(database)/documents/nexus2_chats/$(chatId)).data;
+        }
+
+        allow read: if isSignedIn() && (
+          !(parentChat() is map) || isParticipant(parentChat())
+        );
+
+        // Only sender can create, receiver must be the other participant.
+        allow create: if isSignedIn()
+          && request.resource.data.senderId == request.auth.uid
+          && request.resource.data.receiverId != request.auth.uid
+          && request.resource.data.receiverId in participantIdsOf(parentChat())
+          && isParticipant(parentChat());
+
+        // Only receiver can update (mark read).
+        allow update: if isSignedIn()
+          && request.auth.uid == resource.data.receiverId
+          && isParticipant(parentChat());
+
+        allow delete: if false;
+      }
+    }
+
+match /chats/{chatId} {
+  // Allow reads even if doc doesn't exist yet (so get() returns not-found rather than deny).
+  allow read: if isSignedIn() && (!(resource.data is map) || isParticipant(resource.data));
+
+  // Allow create for either schema: participantIds OR participants.
+  allow create: if isSignedIn()
+    && hasTwoParticipants(request.resource.data)
+    && participantIdsOf(request.resource.data).hasAny([request.auth.uid]);
+
+  // Participants can update (and allow a legacy->v2 repair write like nexus2_chats).
+  allow update: if isSignedIn() && (
+    isParticipant(resource.data) ||
+    (
+      (resource.data.participantIds is list ? false : (resource.data.participants is list))
+      && participantIdsOf(resource.data).hasAny([request.auth.uid])
+      && hasTwoParticipants(request.resource.data)
+      && participantIdsOf(request.resource.data).hasAny([request.auth.uid])
+    )
+  );
+
+  allow delete: if false;
+
+  match /messages/{messageId} {
+    function parentChat() {
+      return get(/databases/$(database)/documents/chats/$(chatId)).data;
+    }
+
+    allow read: if isSignedIn() && (
+      !(parentChat() is map) || isParticipant(parentChat())
+    );
+
+    // Only sender can create; receiver must be the other participant (if present).
+    allow create: if isSignedIn()
+      && request.resource.data.senderId == request.auth.uid
+      && isParticipant(parentChat());
+
+    // Conservative: only receiver updates (mark read) OR sender updates their own message.
+    allow update: if isSignedIn()
+      && isParticipant(parentChat());
+
+    allow delete: if false;
+  }
+}
+
+    // ============================================================================
+    // Assessments / Journeys / Stories / Polls / Support (as referenced in code)
+    // ============================================================================
+    match /assessmentResults/{uid} {
+      allow read, write: if isSignedIn() && request.auth.uid == uid;
+      match /results/{resultId} {
+        allow read, write: if isSignedIn() && request.auth.uid == uid;
+        match /history/{historyId} {
+          allow read, write: if isSignedIn() && request.auth.uid == uid;
+        }
+      }
+    }
+
+    match /journeyProgress/{uid} {
+      allow read, write: if isSignedIn() && request.auth.uid == uid;
+      match /progress/{progressId} {
+        allow read, write: if isSignedIn() && request.auth.uid == uid;
+        match /responses/{responseId} {
+          allow read, write: if isSignedIn() && request.auth.uid == uid;
+        }
+      }
+    }
+
+    match /storyProgress/{uid} {
+      allow read, write: if isSignedIn() && request.auth.uid == uid;
+      match /stories/{storyId} {
+        allow read, write: if isSignedIn() && request.auth.uid == uid;
+      }
+    }
+
+    match /pollAggregates/{pollId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /pollVotes/{pollId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+      match /votes/{voteId} {
+        allow read: if isSignedIn();
+        allow create: if isSignedIn();
+        allow update, delete: if false;
+      }
+    }
+
+    match /supportRequests/{requestId} {
+      allow create: if isSignedIn();
+      allow read, update, delete: if false;
+    }
+
+    // Public content (read-only)
+    match /stories/{storyId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /journeys/{journeyId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Story engagement/comments/likes
+    match /storyEngagement/{storyId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow update, delete: if false;
+    }
+
+    match /storyComments/{storyId}/comments/{commentId} {
+      allow read: if true;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    match /storyLikes/{storyId}/likes/{likeId} {
+      allow read: if true;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow update: if false;
+    }
+
+    // datingProfiles referenced by dating_profile_status_provider.dart
+    match /datingProfiles/{uid} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && request.auth.uid == uid;
+      allow delete: if false;
+    }
+
+    // ============================================================================
+    // Default deny
+    // ============================================================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

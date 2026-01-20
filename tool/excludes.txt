@@ -1,0 +1,5 @@
+_ignored/**
+lib/_ignored/**
+test/**
+lib/**/firebase_options_TEMPLATE.dart
+lib/core/services/chat_service.dart

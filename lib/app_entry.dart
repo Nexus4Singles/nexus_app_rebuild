@@ -1,0 +1,63 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:country_picker/country_picker.dart';
+
+import 'app_shell.dart';
+import 'core/bootstrap/firebase_bootstrap.dart';
+import 'core/bootstrap/firebase_ready_provider.dart';
+import 'core/router/app_router.dart';
+import 'core/services/push_notification_service.dart';
+import 'core/session/guest_session_provider.dart';
+import 'features/launch/presentation/app_launch_gate.dart';
+import 'safe_imports.dart';
+
+Future<void> appEntry() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  bool firebaseReady = false;
+  try {
+    await initFirebaseSafely();
+    firebaseReady = true;
+  } catch (_) {
+    firebaseReady = false;
+  }
+
+  final prefs = await SharedPreferences.getInstance();
+
+  final container = ProviderContainer(
+    overrides: [
+      sharedPrefsProvider.overrideWithValue(prefs),
+      firebaseReadyProvider.overrideWith((ref) => firebaseReady),
+    ],
+  );
+
+  runApp(
+    UncontrolledProviderScope(container: container, child: const _RootApp()),
+  );
+}
+
+class _RootApp extends StatelessWidget {
+  const _RootApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      localizationsDelegates: const [
+        CountryLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('en')],
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.light,
+      theme: AppTheme.lightTheme,
+      onGenerateRoute: onGenerateRoute,
+      home: const AppLaunchGate(),
+    );
+  }
+}
