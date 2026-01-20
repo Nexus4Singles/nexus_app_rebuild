@@ -1,0 +1,7 @@
+Analyzing nexus_app_min_test...                                 
+
+warning • The declaration '_formatDuration' isn't referenced • lib/features/profile/presentation/screens/profile_screen.dart:496:8 • unused_element
+warning • The declaration '_InitialsAvatar' isn't referenced • lib/features/profile/presentation/screens/profile_screen.dart:1629:7 • unused_element
+warning • The declaration '_verificationStatusProvider' isn't referenced • lib/features/profile/presentation/screens/profile_screen.dart:3309:7 • unused_element
+
+3 issues found. (ran in 4.9s)

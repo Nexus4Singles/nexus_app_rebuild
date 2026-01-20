@@ -4221,9 +4221,7 @@ class _ProfileAudioController {
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
 
-  
-  String? lastError;
-StreamSubscription<PlayerState>? _stateSub;
+  StreamSubscription<PlayerState>? _stateSub;
   StreamSubscription<Duration>? _durSub;
   StreamSubscription<Duration>? _posSub;
 
@@ -4240,9 +4238,7 @@ StreamSubscription<PlayerState>? _stateSub;
   }
 
   Future<void> playOrPause(String url) async {
-    
-    lastError = null;
-final u = url.trim();
+    final u = url.trim();
     if (u.isEmpty) return;
 
     // If same track, toggle.
@@ -4269,21 +4265,10 @@ final u = url.trim();
   }
 
   Future<void> stop() async {
-    lastError = null;
-
     try {
       await _player.stop();
     } catch (_) {}
     currentUrl = null;
-  }
-
-  Future<void> seek(Duration next) async {
-    try {
-      await _player.seek(next);
-      position = next;
-    } catch (e) {
-      lastError = e.toString();
-    }
   }
 
   void dispose() {

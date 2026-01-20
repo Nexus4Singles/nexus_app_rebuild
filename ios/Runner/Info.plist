@@ -59,5 +59,10 @@
 
   <key>NSMicrophoneUsageDescription</key>
   <string>Nexus needs microphone access to record your audio responses.</string>
+
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>We need photo library access to attach photos in chat.</string>
+  <key>NSCameraUsageDescription</key>
+  <string>We need camera access to take photos for chat.</string>
 </dict>
 </plist>

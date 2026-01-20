@@ -112,7 +112,23 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     );
   }
 
-  switch (uri.path) {
+  
+  // Dynamic profile route: /profile/<userId>
+  final routeName = settings.name ?? '';
+  if (routeName.startsWith('/profile/')) {
+    final parts = Uri.parse(routeName).pathSegments;
+    if (parts.length >= 2) {
+      final userId = parts[1];
+      if (userId.isNotEmpty) {
+        return MaterialPageRoute(
+          builder: (_) => ProfileScreen(userId: userId),
+          settings: settings,
+        );
+      }
+    }
+  }
+
+switch (uri.path) {
     case '/':
       return MaterialPageRoute(
         settings: settings,

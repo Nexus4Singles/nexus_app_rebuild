@@ -178,6 +178,7 @@ class ChatConversation {
 
 /// Service for managing chat functionality
 class ChatService {
+  
   // ============================================================================
   // PREMIUM GATING (v2)
   // ============================================================================
@@ -220,20 +221,15 @@ class ChatService {
 
     // Count distinct "other participants" for initiator in nexus2_chats.
     // If initiator already has at least 1 other participant, block starting a new one.
-    final snap =
-        await _chatsRef
-            .where('participantIds', arrayContains: initiatorId)
-            .limit(20)
-            .get();
+    final snap = await _chatsRef
+        .where('participantIds', arrayContains: initiatorId)
+        .limit(20)
+        .get();
 
     final others = <String>{};
     for (final d in snap.docs) {
       final data = d.data();
-      final parts =
-          (data['participantIds'] as List?)
-              ?.map((e) => e.toString())
-              .toList() ??
-          const <String>[];
+      final parts = (data['participantIds'] as List?)?.map((e) => e.toString()).toList() ?? const <String>[];
       for (final p in parts) {
         if (p != initiatorId) others.add(p);
       }
@@ -248,11 +244,13 @@ class ChatService {
     }
   }
 
-  FirebaseFirestore? _firestore;
+FirebaseFirestore? _firestore;
 
   FirebaseFirestore get _fs =>
       _firestore ?? (throw StateError('Firestore not ready'));
   ChatService({FirebaseFirestore? firestore}) : _firestore = firestore;
+
+  
 
   void _logFs(String stage, Object e, StackTrace st, Map<String, Object?> ctx) {
     // Deterministic logging to identify why Firestore denies an operation.
@@ -266,29 +264,17 @@ class ChatService {
       debugPrint('$prefix code=$code plugin=$plugin message=$msg');
       debugPrint('$prefix ctx=$ctx');
       debugPrint('$prefix error=$e');
-      debugPrint(
-        '$prefix stack=${st.toString().split('\n').take(12).join('\n')}',
-      );
+      debugPrint('$prefix stack=${st.toString().split('\n').take(12).join('\n')}');
     } catch (_) {
       // Never let logging break chat flows.
     }
   }
-
-  // Collection references
+// Collection references
   CollectionReference<Map<String, dynamic>> get _chatsRef =>
       _fs.collection('nexus2_chats');
 
   CollectionReference<Map<String, dynamic>> _messagesRef(String chatId) =>
       _chatsRef.doc(chatId).collection('messages');
-
-  /// Deterministic chatId for any two userIds.
-  /// Must remain consistent across create/read/write.
-  String _chatIdFor(String userId1, String userId2) {
-    final a = userId1.trim();
-    final b = userId2.trim();
-    final ids = <String>[a, b]..sort();
-    return '${ids[0]}_${ids[1]}';
-  }
 
   // ============================================================================
   // ACCOUNT DISABLED GUARDS
@@ -395,7 +381,7 @@ class ChatService {
   /// Create a new chat conversation between two users
   /// Returns the chat ID
   Future<String> createConversation(String userId1, String userId2) async {
-    // Ensure stable chatId (sorted) so reads are deterministic and rules remain consistent.
+    // Ensure consistent ordering for IDs and for a stable chatId.
     final a = userId1.trim();
     final b = userId2.trim();
     if (a.isEmpty || b.isEmpty) {
@@ -405,59 +391,86 @@ class ChatService {
       throw ChatException('You cannot start a chat with yourself.');
     }
 
+    // Guards (keep these unless you intentionally remove them later).
+    await _assertUsersNotDisabled([a, b]);
+    await _assertCanStartNewChat(a);
+    await _assertOppositeGender(a, b);
+    await _enforceOneFreeChatPartner(initiatorId: userId1, otherUserId: userId2);
+
+    // Check if conversation already exists
+    final existingChat = await getConversationBetween(a, b);
+    if (existingChat != null) return existingChat.id;
+
+    final ids = <String>[a, b]..sort();
+    final chatId = '${ids[0]}_${ids[1]}';
+
+    final chatDoc = <String, dynamic>{
+      // REQUIRED by Firestore rules (hasTwoParticipants + hasAny(auth.uid))
+      'participantIds': ids,
+
+      // Useful metadata
+      'createdAt': FieldValue.serverTimestamp(),
+      'updatedAt': FieldValue.serverTimestamp(),
+      'lastMessageAt': FieldValue.serverTimestamp(),
+      'lastMessagePreview': '',
+
+      // Unread counts keyed by uid (safe default)
+      'unreadCounts': <String, dynamic>{ids[0]: 0, ids[1]: 0},
+    };
+
     try {
-      await _assertUsersNotDisabled([a, b]);
-      await _assertCanStartNewChat(a);
-      await _enforceOneFreeChatPartner(initiatorId: a, otherUserId: b);
-      await _assertOppositeGender(a, b);
-
-      final chatId = _chatIdFor(a, b);
-
-      // If conversation already exists, return it.
-      final existing = await getConversation(chatId);
-      if (existing != null) return existing.id;
-
-      final ids = <String>[a, b]..sort();
-      final conversation = ChatConversation(
-        id: chatId,
-        participantIds: ids,
-        createdAt: DateTime.now(),
-        unreadCounts: {ids[0]: 0, ids[1]: 0},
-      );
-
-      await _chatsRef.doc(chatId).set(conversation.toFirestore());
-      return chatId;
-    } catch (e, st) {
-      _logFs('createConversation', e, st, <String, Object?>{
-        'a': a,
-        'b': b,
-        'chatId': _chatIdFor(a, b),
-      });
-      throw ChatException('Failed to create conversation: $e');
+      try {
+      await _chatsRef.doc(chatId).set(chatDoc, SetOptions(merge: false));
+    } catch (e) {
+      debugPrint('Error creating/updating chatDoc chatId=$chatId ids=$ids a=$a b=$b err=$e');
+      if (e is FirebaseException) {
+        debugPrint('Firestore code=${e.code} message=${e.message}');
+      }
+      rethrow;
     }
+} catch (e, st) {
+      _logFs(
+        'createConversation:setChatDoc',
+        e,
+        st,
+        <String, Object?>{
+          'userId1': a,
+          'userId2': b,
+          'sortedIds': ids,
+          'chatId': chatId,
+          'docKeys': chatDoc.keys.toList(),
+          'participantIds': chatDoc['participantIds'],
+        },
+      );
+      rethrow;
+    }
+    return chatId;
   }
 
-  /// Get conversation between two users
   /// Get conversation between two users
   Future<ChatConversation?> getConversationBetween(
     String userId1,
     String userId2,
   ) async {
-    final a = userId1.trim();
-    final b = userId2.trim();
-    if (a.isEmpty || b.isEmpty) return null;
-
-    final chatId = _chatIdFor(a, b);
     try {
+            final a = userId1.trim();
+      final b = userId2.trim();
+      if (a.isEmpty || b.isEmpty) return null;
+
+      // Deterministic v2 chat id (avoid query/list permission issues).
+      final ids = <String>[a, b]..sort();
+      final chatId = '${ids[0]}_${ids[1]}';
+
       final doc = await _chatsRef.doc(chatId).get();
       if (!doc.exists || doc.data() == null) return null;
+
       return ChatConversation.fromFirestore(doc.data()!, doc.id);
-    } catch (e, st) {
-      _logFs('getConversationBetween', e, st, <String, Object?>{
-        'a': a,
-        'b': b,
-        'chatId': chatId,
-      });
+
+    } catch (e) {
+      debugPrint('Error getting conversationBetween: $e');
+      if (e is FirebaseException) {
+        debugPrint('Firestore code=${e.code} message=${e.message}');
+      }
       return null;
     }
   }

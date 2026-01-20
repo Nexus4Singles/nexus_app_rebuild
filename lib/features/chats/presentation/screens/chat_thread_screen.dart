@@ -2,13 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:nexus_app_min_test/core/auth/auth_providers.dart';
-import 'package:nexus_app_min_test/core/dating/dating_profile_gate.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/core/services/chat_service.dart';
-import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
 import 'package:nexus_app_min_test/core/widgets/disabled_account_gate.dart';
 import 'package:nexus_app_min_test/core/providers/service_providers.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,6 +15,238 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 
 enum _MessageKind { text, image, audio }
+
+class _ThreadEmptyStateCard extends StatelessWidget {
+  const _ThreadEmptyStateCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 54,
+            height: 54,
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.10),
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: Icon(Icons.chat_bubble_outline, color: AppColors.primary),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'No messages yet',
+            style: AppTextStyles.titleLarge,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Send a thoughtful message to start the conversation.',
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textMuted,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ThreadErrorStateCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String? errorText;
+
+  const _ThreadErrorStateCard({
+    required this.title,
+    required this.subtitle,
+    this.errorText,
+  });
+
+  String _compact(String? s) {
+    final v = (s ?? '').trim();
+    if (v.isEmpty) return '';
+    return v.length > 220 ? '${v.substring(0, 220)}…' : v;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final details = _compact(errorText);
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: AppColors.border),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 54,
+                height: 54,
+                decoration: BoxDecoration(
+                  color: Colors.orange.withOpacity(0.14),
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: const Icon(Icons.wifi_off, color: Colors.orange),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                title,
+                style: AppTextStyles.titleLarge,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 6),
+              Text(
+                subtitle,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.textMuted,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              if (details.isNotEmpty) ...[
+                const SizedBox(height: 10),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.background,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: Text(
+                    details,
+                    style: AppTextStyles.caption.copyWith(
+                      color: AppColors.textMuted,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+final _chatOtherUserIdProvider = FutureProvider.family<String?, String>((
+  ref,
+  chatId,
+) async {
+  final authAsync = ref.watch(authStateProvider);
+  final me = authAsync.maybeWhen(data: (a) => a.user?.uid, orElse: () => null);
+  if (me == null) return null;
+
+  final convo = await ref.watch(chatConversationProvider(chatId).future);
+  return convo?.getOtherParticipantId(me);
+});
+
+final _userDocProvider = StreamProvider.family<Map<String, dynamic>?, String>((
+  ref,
+  uid,
+) {
+  return FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .snapshots()
+      .map((d) => d.data());
+});
+
+String _bestDisplayName(Map<String, dynamic>? u) {
+  if (u == null) return 'Chat';
+  final candidates = [
+    u['username'],
+    u['displayName'],
+    u['name'],
+    u['fullName'],
+  ];
+  for (final c in candidates) {
+    final v = (c ?? '').toString().trim();
+    if (v.isNotEmpty) return v;
+  }
+  return 'Chat';
+}
+
+String? _bestAvatarUrl(Map<String, dynamic>? u) {
+  if (u == null) return null;
+
+  // Common locations:
+  // - profileUrl
+  // - photos[0]
+  // - nexus2.photos[0]
+  final direct = (u['profileUrl'] ?? '').toString().trim();
+  if (direct.isNotEmpty) return direct;
+
+  final photos = u['photos'];
+  if (photos is List && photos.isNotEmpty) {
+    final v = (photos.first ?? '').toString().trim();
+    if (v.isNotEmpty) return v;
+  }
+
+  final nexus2 = u['nexus2'];
+  if (nexus2 is Map) {
+    final n2photos = nexus2['photos'];
+    if (n2photos is List && n2photos.isNotEmpty) {
+      final v = (n2photos.first ?? '').toString().trim();
+      if (v.isNotEmpty) return v;
+    }
+    final n2url = (nexus2['profileUrl'] ?? '').toString().trim();
+    if (n2url.isNotEmpty) return n2url;
+  }
+
+  return null;
+}
+
+bool? _bestIsOnline(Map<String, dynamic>? u) {
+  if (u == null) return null;
+
+  // Try a few common patterns. If none exist, return null (no indicator).
+  final direct = u['isOnline'];
+  if (direct is bool) return direct;
+
+  final online = u['online'];
+  if (online is bool) return online;
+
+  final presence = u['presence'];
+  if (presence is Map) {
+    final p = presence['isOnline'];
+    if (p is bool) return p;
+  }
+
+  return null;
+}
+
+class _OnlineDot extends StatelessWidget {
+  final bool isOnline;
+  const _OnlineDot({required this.isOnline});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 10,
+      height: 10,
+      decoration: BoxDecoration(
+        color: isOnline ? Colors.green : AppColors.textMuted,
+        shape: BoxShape.circle,
+        border: Border.all(color: AppColors.background, width: 2),
+      ),
+    );
+  }
+}
 
 class ChatThreadScreen extends ConsumerStatefulWidget {
   final String chatId;
@@ -74,33 +305,11 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   bool get _canSendText => _controller.text.trim().isNotEmpty;
 
   Future<void> _ensureSignedInThen(Future<void> Function() onAllowed) async {
-    final authAsync = ref.read(authStateProvider);
-    final isSignedIn = authAsync.maybeWhen(
-      data: (a) => a.isSignedIn,
-      orElse: () => false,
-    );
-    if (!isSignedIn) {
-      GuestGuard.requireSignedIn(
-        context,
-        ref,
-        title: 'Create an account to chat',
-        message:
-            'You\'re currently in guest mode. Create an account to send messages, voice notes, and photos.',
-        primaryText: 'Create an account',
-        onCreateAccount: () => Navigator.of(context).pushNamed('/signup'),
-        onAllowed: () async {},
-      );
-      return;
-    }
-
-    await DatingProfileGate.requireCompleteProfile(
-      context,
-      ref,
-      onAllowed: onAllowed,
-    );
-  }
-
-  void _scrollToBottomSoon() {
+  // Chat thread does not do guest/dating-profile gating.
+  // Auth is assumed by navigation (guests shouldn't reach chat).
+  await onAllowed();
+}
+void _scrollToBottomSoon() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_scroll.hasClients) return;
       _scroll.animateTo(
@@ -109,6 +318,25 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
         curve: Curves.easeOut,
       );
     });
+  }
+
+  void _toast(String msg) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
+
+  Future<T?> _runOp<T>(
+    Future<T?> Function() op, {
+    String failMessage = 'Something went wrong. Please try again.',
+  }) async {
+    try {
+      final result = await op();
+      if (result == null) _toast(failMessage);
+      return result;
+    } catch (e) {
+      _toast(e.toString());
+      return null;
+    }
   }
 
   String _replySnippet(_UiMessage m) {
@@ -212,14 +440,16 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                 'replyToWasMine': reply.isMe,
               };
 
-      await ref
-          .read(chatNotifierProvider.notifier)
-          .sendMessage(
-            chatId: widget.chatId,
-            receiverId: otherId,
-            content: text,
-            metadata: metadata,
-          );
+      final sent = await _runOp(
+        () => ref.read(chatNotifierProvider.notifier).sendMessage(
+              chatId: widget.chatId,
+              receiverId: otherId,
+              content: text,
+              metadata: metadata,
+            ),
+        failMessage: 'Message failed to send. Please try again.',
+      );
+      if (sent == null) return;
 
       setState(() => _replyTo = null);
       _controller.clear();
@@ -310,13 +540,28 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
 
   Future<void> _pickAndSendImage() async {
     await _ensureSignedInThen(() async {
+      final okPhotos = await _ensurePhotosPermission();
+      if (!okPhotos) {
+        _toast('Photo permission is required to attach images.');
+        return;
+      }
+
+      final ok = await _ensurePhotoPermission();
+      if (!ok) {
+        _toast('Photo permission is required to attach images.');
+        return;
+      }
+
       final picked = await _picker.pickImage(
         source: ImageSource.gallery,
         imageQuality: 85,
       );
-      if (picked == null) return;
+            if (picked == null) {
+        _toast('No photo selected.');
+        return;
+      }
 
-      final authAsync = ref.read(authStateProvider);
+final authAsync = ref.read(authStateProvider);
       final me = authAsync.maybeWhen(
         data: (a) => a.user?.uid,
         orElse: () => null,
@@ -345,23 +590,26 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                 'replyToId': reply.id,
                 'replyToSnippet': _replySnippet(reply),
                 'replyToWasMine': reply.isMe,
-              };
-
-      final media = ref.read(mediaServiceProvider);
-      final imageUrl = await media.uploadChatImage(
-        chatId: widget.chatId,
-        userId: me,
-        imageFile: File(picked.path),
+              };      final media = ref.read(mediaServiceProvider);
+      final imageUrl = await _runOp(
+        () => media.uploadChatImage(
+          chatId: widget.chatId,
+          userId: me,
+          imageFile: File(picked.path),
+        ),
+        failMessage: 'Could not upload photo. Please try again.',
       );
-
-      await ref
-          .read(chatNotifierProvider.notifier)
-          .sendImage(
-            chatId: widget.chatId,
-            receiverId: otherId,
-            imageUrl: imageUrl, // dev: local path; prod: upload -> URL later
-            metadata: metadata,
-          );
+      if (imageUrl == null || imageUrl.trim().isEmpty) return;
+final sent = await _runOp(
+        () => ref.read(chatNotifierProvider.notifier).sendImage(
+              chatId: widget.chatId,
+              receiverId: otherId,
+              imageUrl: imageUrl,
+              metadata: metadata,
+            ),
+        failMessage: 'Photo failed to send. Please try again.',
+      );
+      if (sent == null) return;
 
       if (!mounted) return;
       setState(() => _replyTo = null);
@@ -369,10 +617,57 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
     });
   }
 
+  
   Future<bool> _ensureMicPermission() async {
-    final status = await Permission.microphone.request();
-    return status.isGranted;
+  final before = await Permission.microphone.status;
+  debugPrint('[perm] mic before: $before');
+
+  final requested = await Permission.microphone.request();
+  debugPrint('[perm] mic requested: $requested');
+
+  final after = await Permission.microphone.status;
+  debugPrint('[perm] mic after: $after');
+
+  return requested.isGranted;
+}
+
+Future<bool> _ensurePhotoPermission() async {
+  final before = await Permission.photos.status;
+  debugPrint('[perm] photos before: $before');
+
+  final requested = await Permission.photos.request();
+  debugPrint('[perm] photos requested: $requested');
+
+  final after = await Permission.photos.status;
+  debugPrint('[perm] photos after: $after');
+
+  return requested.isGranted || requested.isLimited;
+}
+
+
+  
+  Future<bool> _ensurePhotosPermission() async {
+    // iOS: Permission.photos; Android: permission_handler maps appropriately, but manifest still matters.
+    final status = await Permission.photos.request();
+
+    if (status.isGranted || status.isLimited) return true;
+
+    if (status.isPermanentlyDenied) {
+      _toast('Photo permission is disabled. Enable it in Settings to attach images.');
+      await openAppSettings();
+      return false;
+    }
+
+    if (status.isRestricted) {
+      _toast('Photo permission is restricted on this device.');
+      return false;
+    }
+
+    _toast('Photo permission was denied.');
+    return false;
   }
+
+
 
   Future<String> _nextRecordingPath() async {
     final dir = await getTemporaryDirectory();
@@ -514,15 +809,17 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       filePath: path,
     );
 
-    await ref
-        .read(chatNotifierProvider.notifier)
-        .sendAudio(
-          chatId: widget.chatId,
-          receiverId: otherId,
-          audioUrl: audioUrl, // dev: local path; prod: upload -> URL later
-          durationSeconds: durationSeconds, // TODO: compute duration later
-          metadata: metadata,
-        );
+    final sent = await _runOp(
+      () => ref.read(chatNotifierProvider.notifier).sendAudio(
+            chatId: widget.chatId,
+            receiverId: otherId,
+            audioUrl: audioUrl,
+            durationSeconds: durationSeconds,
+            metadata: metadata,
+          ),
+      failMessage: 'Voice note failed to send. Please try again.',
+    );
+    if (sent == null) return;
 
     if (!mounted) return;
     setState(() => _replyTo = null);
@@ -571,8 +868,10 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
     }
   }
 
-  void _openOtherUserProfile() {
-    Navigator.of(context).pushNamed('/profile');
+  void _openOtherUserProfile(String otherUserId) {
+    final id = otherUserId.trim();
+    if (id.isEmpty) return;
+    Navigator.of(context).pushNamed('/profile/$id');
   }
 
   @override
@@ -585,36 +884,188 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         titleSpacing: 0,
-        title: Row(
-          children: [
-            const SizedBox(width: 8),
-            InkWell(
-              onTap: _openOtherUserProfile,
-              borderRadius: BorderRadius.circular(14),
-              child: _Avatar(label: widget.chatId),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Chat',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
+        title: Consumer(
+          builder: (context, ref, _) {
+            final otherIdAsync = ref.watch(
+              _chatOtherUserIdProvider(widget.chatId),
+            );
+
+            return otherIdAsync.when(
+              loading:
+                  () => Row(
+                    children: [
+                      const SizedBox(width: 8),
+                      _Avatar(label: '…'),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Chat',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    widget.chatId,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: AppColors.textMuted,
-                    ),
-                    overflow: TextOverflow.ellipsis,
+              error:
+                  (_, __) => Row(
+                    children: [
+                      const SizedBox(width: 8),
+                      _Avatar(label: '?'),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Chat',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ],
+              data: (otherId) {
+                if (otherId == null || otherId.trim().isEmpty) {
+                  return Row(
+                    children: [
+                      const SizedBox(width: 8),
+                      _Avatar(label: '?'),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Chat',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+
+                final otherUserAsync = ref.watch(_userDocProvider(otherId));
+
+                return otherUserAsync.when(
+                  loading:
+                      () => Row(
+                        children: [
+                          const SizedBox(width: 8),
+                          InkWell(
+                            onTap: () => _openOtherUserProfile(otherId),
+                            borderRadius: BorderRadius.circular(14),
+                            child: _Avatar(label: '…'),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Chat',
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                                Text(
+                                  'Loading…',
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: AppColors.textMuted,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                  error:
+                      (_, __) => Row(
+                        children: [
+                          const SizedBox(width: 8),
+                          InkWell(
+                            onTap: () => _openOtherUserProfile(otherId),
+                            borderRadius: BorderRadius.circular(14),
+                            child: _Avatar(label: '?'),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Chat',
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                                Text(
+                                  otherId,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: AppColors.textMuted,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                  data: (u) {
+                    final name = _bestDisplayName(u);
+                    final avatarUrl = _bestAvatarUrl(u);
+                    final isOnline = _bestIsOnline(u);
+
+                    return Row(
+                      children: [
+                        const SizedBox(width: 8),
+                        InkWell(
+                          onTap: () => _openOtherUserProfile(otherId),
+                          borderRadius: BorderRadius.circular(14),
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              _Avatar(label: name, imageUrl: avatarUrl),
+                              if (isOnline != null)
+                                Positioned(
+                                  right: -2,
+                                  bottom: -2,
+                                  child: _OnlineDot(isOnline: isOnline),
+                                ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                name,
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                isOnline == true
+                                    ? 'Online'
+                                    : (isOnline == false
+                                        ? 'Offline'
+                                        : 'Tap to view profile'),
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: AppColors.textMuted,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            );
+          },
         ),
         actions: [
           IconButton(
@@ -644,15 +1095,21 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                   loading:
                       () => const Center(child: CircularProgressIndicator()),
                   error:
-                      (_, __) => Center(
-                        child: Text(
-                          'Unable to load messages right now.',
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.textMuted,
-                          ),
-                        ),
+                      (e, __) => _ThreadErrorStateCard(
+                        title: 'Could not load messages',
+                        subtitle: 'Please check your connection and try again.',
+                        errorText: e.toString(),
                       ),
                   data: (msgs) {
+                    if (msgs.isEmpty) {
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18),
+                          child: const _ThreadEmptyStateCard(),
+                        ),
+                      );
+                    }
+
                     final mine = me ?? '';
                     final uiMsgs =
                         msgs.map((m) {
@@ -737,11 +1194,23 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
           ),
           _Composer(
             controller: _controller,
+            hintText: 'Message',
             isRecording: _isRecording,
             onTextChanged: () => setState(() {}),
-            onAttach: _openAttachSheet,
-            onMic: _toggleRecording,
-            onSend: _canSendText ? _sendText : null,
+            onAttach: () async {
+              _toast('Attach tapped');
+              await _openAttachSheet();
+            },
+            onMic: () async {
+              _toast('Mic tapped');
+              await _toggleRecording();
+            },
+            onSend: _canSendText
+                ? () async {
+                    _toast('Send tapped');
+                    await _sendText();
+                  }
+                : null,
             replySnippet: _replyTo == null ? null : _replySnippet(_replyTo!),
             replyWasMine: _replyTo?.isMe,
             onClearReply: () => setState(() => _replyTo = null),
@@ -755,6 +1224,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
 class _Composer extends StatelessWidget {
   final TextEditingController controller;
   final bool isRecording;
+  final String? hintText;
   final VoidCallback onTextChanged;
   final VoidCallback onAttach;
   final VoidCallback onMic;
@@ -767,6 +1237,7 @@ class _Composer extends StatelessWidget {
   const _Composer({
     required this.controller,
     required this.isRecording,
+    this.hintText,
     required this.onTextChanged,
     required this.onAttach,
     required this.onMic,
@@ -870,8 +1341,8 @@ class _Composer extends StatelessWidget {
                         maxLines: 5,
                         keyboardType: TextInputType.multiline,
                         textInputAction: TextInputAction.newline,
-                        decoration: const InputDecoration(
-                          hintText: 'Message…',
+                        decoration: InputDecoration(
+                          hintText: hintText ?? 'Message',
                           border: InputBorder.none,
                           isDense: true,
                           contentPadding: EdgeInsets.zero,
@@ -1245,24 +1716,44 @@ class _MessageBody extends StatelessWidget {
 
 class _Avatar extends StatelessWidget {
   final String label;
-  const _Avatar({required this.label});
+  final String? imageUrl;
+
+  const _Avatar({required this.label, this.imageUrl});
+
+  String _initials(String s) {
+    final parts =
+        s.trim().split(RegExp(r'\s+')).where((p) => p.isNotEmpty).toList();
+    if (parts.isEmpty) return '?';
+    if (parts.length == 1) {
+      final w = parts.first;
+      return w.isEmpty ? '?' : w.substring(0, 1).toUpperCase();
+    }
+    final a = parts[0].substring(0, 1).toUpperCase();
+    final b = parts[1].substring(0, 1).toUpperCase();
+    return '$a$b';
+  }
+
+  bool _looksLikeUrl(String? v) {
+    final u = (v ?? '').trim().toLowerCase();
+    return u.startsWith('http://') || u.startsWith('https://');
+  }
 
   @override
   Widget build(BuildContext context) {
-    final initials = label.isEmpty ? 'C' : label.substring(0, 1).toUpperCase();
-    return Container(
-      width: 38,
-      height: 38,
-      decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.12),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border),
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        initials,
-        style: AppTextStyles.labelLarge.copyWith(color: AppColors.primary),
-      ),
+    final u = (imageUrl ?? '').trim();
+    final hasUrl = _looksLikeUrl(u);
+
+    return CircleAvatar(
+      radius: 18,
+      backgroundColor: AppColors.surface,
+      backgroundImage: hasUrl ? NetworkImage(u) : null,
+      child:
+          hasUrl
+              ? null
+              : Text(
+                _initials(label),
+                style: const TextStyle(fontWeight: FontWeight.w800),
+              ),
     );
   }
 }

@@ -9,9 +9,7 @@ import 'do_spaces_config.dart';
 import 'media_storage_service.dart';
 
 class DoSpacesStorageService implements MediaStorageService {
-  DoSpacesStorageService() {
-    DoSpacesConfig.validate();
-  }
+  DoSpacesStorageService();
 
   @override
   Future<String> uploadImage({
@@ -32,6 +30,9 @@ class DoSpacesStorageService implements MediaStorageService {
     required String localPath,
     Function(double)? onProgress,
   }) async {
+    // Validate only when we actually attempt an upload (prevents chat/UI crashes).
+    DoSpacesConfig.validate();
+
     final file = File(localPath);
     if (!await file.exists()) {
       throw StateError('File does not exist: $localPath');
