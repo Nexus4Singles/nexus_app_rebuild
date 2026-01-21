@@ -24,6 +24,40 @@ final _userDocByIdProvider =
           .map((doc) => doc.exists ? doc.data() : null);
     });
 
+String? _bestAvatarUrl(Map<String, dynamic>? u) {
+  if (u == null) return null;
+
+  // Common locations:
+  // - profileUrl
+  // - photos[0]
+  // - nexus2.photos[0]
+  final direct = (u['profileUrl'] ?? '').toString().trim();
+  if (direct.isNotEmpty) return direct;
+
+  final photos = u['photos'];
+  if (photos is List && photos.isNotEmpty) {
+    final v = (photos.first ?? '').toString().trim();
+    if (v.isNotEmpty) return v;
+  }
+
+  final nexus2 = u['nexus2'];
+  if (nexus2 is Map) {
+    final n2photos = nexus2['photos'];
+    if (n2photos is List && n2photos.isNotEmpty) {
+      final v = (n2photos.first ?? '').toString().trim();
+      if (v.isNotEmpty) return v;
+    }
+    final n2url = (nexus2['profileUrl'] ?? '').toString().trim();
+    if (n2url.isNotEmpty) return n2url;
+  }
+
+  return null;
+}
+
+// Audio recording duration constraints (in seconds)
+const int _minAudioDuration = 45;
+const int _maxAudioDuration = 60;
+
 enum _MessageKind { text, image, audio }
 
 class _ThreadEmptyStateCard extends StatelessWidget {
@@ -199,36 +233,6 @@ String _bestDisplayName(Map<String, dynamic>? u) {
   return 'Chat';
 }
 
-String? _bestAvatarUrl(Map<String, dynamic>? u) {
-  if (u == null) return null;
-
-  // Common locations:
-  // - profileUrl
-  // - photos[0]
-  // - nexus2.photos[0]
-  final direct = (u['profileUrl'] ?? '').toString().trim();
-  if (direct.isNotEmpty) return direct;
-
-  final photos = u['photos'];
-  if (photos is List && photos.isNotEmpty) {
-    final v = (photos.first ?? '').toString().trim();
-    if (v.isNotEmpty) return v;
-  }
-
-  final nexus2 = u['nexus2'];
-  if (nexus2 is Map) {
-    final n2photos = nexus2['photos'];
-    if (n2photos is List && n2photos.isNotEmpty) {
-      final v = (n2photos.first ?? '').toString().trim();
-      if (v.isNotEmpty) return v;
-    }
-    final n2url = (nexus2['profileUrl'] ?? '').toString().trim();
-    if (n2url.isNotEmpty) return n2url;
-  }
-
-  return null;
-}
-
 bool? _bestIsOnline(Map<String, dynamic>? u) {
   if (u == null) return null;
 
@@ -276,6 +280,59 @@ class ChatThreadScreen extends ConsumerStatefulWidget {
 }
 
 class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
+  String _resolveOtherId(dynamic convo, String me) {
+    final myId = me.trim();
+    if (myId.isEmpty) return '';
+
+    // 1) Prefer convo participant ids (supports multiple model shapes).
+    try {
+      final ids = <String>[];
+
+      // ChatConversation in your "good" ChatService uses participantIds.
+      final dynamic p1 = (convo == null) ? null : (convo.participantIds);
+      if (p1 is List) {
+        for (final v in p1) {
+          final s = v.toString().trim();
+          if (s.isNotEmpty) ids.add(s);
+        }
+      }
+
+      // Your older chat_models.dart uses "participants".
+      final dynamic p2 = (convo == null) ? null : (convo.participants);
+      if (ids.isEmpty && p2 is List) {
+        for (final v in p2) {
+          final s = v.toString().trim();
+          if (s.isNotEmpty) ids.add(s);
+        }
+      }
+
+      // Some implementations expose a helper.
+      if (ids.isEmpty && convo != null) {
+        final dynamic other = convo.getOtherParticipantId(myId);
+        if (other is String && other.trim().isNotEmpty) return other.trim();
+      }
+
+      // Derive from ids list.
+      if (ids.isNotEmpty) {
+        for (final id in ids) {
+          if (id != myId) return id;
+        }
+      }
+    } catch (_) {
+      // fall through
+    }
+
+    // 2) Fallback: parse chatId like "<uidA>_<uidB>"
+    final parts = widget.chatId.split('_').map((s) => s.trim()).toList();
+    if (parts.length >= 2) {
+      // deterministic chatId is two uids joined by underscore
+      if (parts[0] == myId) return parts[1];
+      if (parts[1] == myId) return parts[0];
+    }
+
+    return '';
+  }
+
   final _controller = TextEditingController();
   final _scroll = ScrollController();
 
@@ -350,23 +407,30 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
 
     // Strip common exception prefixes shown to users.
     // e.g. "ChatException: Premium required..." -> "Premium required..."
-    final cleaned = raw
-        .replaceFirst(RegExp(r'^ChatException:\s*'), '')
-        .replaceFirst(RegExp(r'^Exception:\s*'), '')
-        .replaceFirst(RegExp(r'^StateError:\s*'), '')
-        .replaceFirst(RegExp(r'^Failed to send message:\s*'), '')
-        .trim();
+    final cleaned =
+        raw
+            .replaceFirst(RegExp(r'^ChatException:\s*'), '')
+            .replaceFirst(RegExp(r'^Exception:\s*'), '')
+            .replaceFirst(RegExp(r'^StateError:\s*'), '')
+            .replaceFirst(RegExp(r'^Failed to send message:\s*'), '')
+            .trim();
 
     // If this looks like a Firestore permission error, show a friendly gating message.
     // (This prevents users seeing cloud_firestore internals.)
-    if (cleaned.contains('permission-denied') ||
-        cleaned.contains('[cloud_firestore/permission-denied]')) {
-      return 'Premium required: you can message only one person for free. Upgrade to message more people.';
+    final lower = cleaned.toLowerCase();
+    if (lower.contains('permission-denied') ||
+        lower.contains('permission_denied') ||
+        lower.contains('permission denied') ||
+        lower.contains('[cloud_firestore/permission-denied]') ||
+        lower.contains('cloud_firestore/permission-denied') ||
+        lower.contains('permissiondenied')) {
+      return 'Premium required: you can message up to 3 people for free. Upgrade to message more.';
     }
 
-    return cleaned.isEmpty ? 'Something went wrong. Please try again.' : cleaned;
+    return cleaned.isEmpty
+        ? 'Something went wrong. Please try again.'
+        : cleaned;
   }
-
 
   Future<T?> _runOp<T>(
     Future<T?> Function() op, {
@@ -377,7 +441,20 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       if (result == null) _toast(failMessage);
       return result;
     } catch (e) {
-      _toast(_sanitizeChatError(e));
+      final msg = _sanitizeChatError(e);
+
+      final looksLikePremiumGate =
+          msg.toLowerCase().contains('premium required') ||
+          msg.toLowerCase().contains('upgrade') ||
+          msg.toLowerCase().contains('subscribe') ||
+          msg.toLowerCase().contains('chat with only one person') ||
+          msg.toLowerCase().contains('message only one person');
+
+      if (looksLikePremiumGate) {
+        await _showPremiumRequiredDialog(msg);
+      } else {
+        _toast(msg);
+      }
       return null;
     }
   }
@@ -461,7 +538,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       final convo = await ref.read(
         chatConversationProvider(widget.chatId).future,
       );
-      final otherId = convo?.getOtherParticipantId(me) ?? '';
+      final otherId = _resolveOtherId(convo, me);
 
       if (otherId.isEmpty) {
         if (!mounted) return;
@@ -483,54 +560,23 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                 'replyToWasMine': reply.isMe,
               };
 
-      final sent = await () async {
-      try {
-        return await ref
+      final sent = await _runOp(() async {
+        await ref
             .read(chatNotifierProvider.notifier)
             .sendMessage(
               chatId: widget.chatId,
+
               receiverId: otherId,
+
               content: text,
+
               metadata: metadata,
             );
-      } catch (e) {
-        if (!mounted) return null;
 
-        String msg = 'Message failed to send. Please try again.'; // default
+        return true;
+      }, failMessage: 'Message failed to send. Please try again.');
 
-        try {
-          var t = e.toString().trim();
-          // Strip noisy prefixes so users don't see "ChatException:"
-          if (t.startsWith('ChatException:')) {
-            t = t.substring('ChatException:'.length).trim();
-          }
-          if (t.startsWith('Exception:')) {
-            t = t.substring('Exception:'.length).trim();
-          }
-          if (t.startsWith('StateError:')) {
-            t = t.substring('StateError:'.length).trim();
-          }
-
-          final looksLikePremiumGate =
-              t.contains('Premium required') ||
-              t.contains('Upgrade') ||
-              t.contains('Subscribe') ||
-              t.contains('chat with only one person') ||
-              t.contains('message only one person');
-
-          if (t.isNotEmpty && looksLikePremiumGate) {
-            msg = t;
-          }
-        } catch (_) {}
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(msg)),
-        );
-        return null;
-      }
-    }();
       if (sent == null) return;
-
       setState(() => _replyTo = null);
       _controller.clear();
       _scrollToBottomSoon();
@@ -651,7 +697,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       final convo = await ref.read(
         chatConversationProvider(widget.chatId).future,
       );
-      final otherId = convo?.getOtherParticipantId(me) ?? '';
+      final otherId = _resolveOtherId(convo, me);
       if (otherId.isEmpty) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -681,9 +727,8 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
         failMessage: 'Could not upload photo. Please try again.',
       );
       if (imageUrl == null || imageUrl.trim().isEmpty) return;
-      final sent = await _runOp(
-        () async {
-          await ref
+      final sent = await _runOp(() async {
+        await ref
             .read(chatNotifierProvider.notifier)
             .sendImage(
               chatId: widget.chatId,
@@ -691,10 +736,8 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
               imageUrl: imageUrl,
               metadata: metadata,
             );
-          return true;
-        },
-        failMessage: 'Photo failed to send. Please try again.',
-      );
+        return true;
+      }, failMessage: 'Photo failed to send. Please try again.');
       if (sent == null) return;
 
       if (!mounted) return;
@@ -853,7 +896,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
     final convo = await ref.read(
       chatConversationProvider(widget.chatId).future,
     );
-    final otherId = convo?.getOtherParticipantId(me) ?? '';
+    final otherId = _resolveOtherId(convo, me);
     if (otherId.isEmpty) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -885,6 +928,32 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       durationSeconds = 0;
     }
 
+    // Validate duration meets minimum requirement
+    if (durationSeconds < _minAudioDuration) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Recording too short. Minimum duration is $_minAudioDuration seconds. You recorded ${durationSeconds}s.',
+          ),
+        ),
+      );
+      return;
+    }
+
+    // Validate duration doesn't exceed maximum
+    if (durationSeconds > _maxAudioDuration) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Recording too long. Maximum duration is $_maxAudioDuration seconds. You recorded ${durationSeconds}s.',
+          ),
+        ),
+      );
+      return;
+    }
+
     final media = ref.read(mediaServiceProvider);
     final audioUrl = await media.uploadChatAudio(
       chatId: widget.chatId,
@@ -892,9 +961,8 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       filePath: path,
     );
 
-    final sent = await _runOp(
-      () async {
-        await ref
+    final sent = await _runOp(() async {
+      await ref
           .read(chatNotifierProvider.notifier)
           .sendAudio(
             chatId: widget.chatId,
@@ -903,10 +971,8 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
             durationSeconds: durationSeconds,
             metadata: metadata,
           );
-        return true;
-      },
-      failMessage: 'Voice note failed to send. Please try again.',
-    );
+      return true;
+    }, failMessage: 'Voice note failed to send. Please try again.');
     if (sent == null) return;
 
     if (!mounted) return;
@@ -960,6 +1026,46 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
     final id = otherUserId.trim();
     if (id.isEmpty) return;
     Navigator.of(context).pushNamed(AppNavRoutes.profileView(id));
+  }
+
+  Future<void> _showPremiumRequiredDialog(String message) async {
+    if (!mounted) return;
+
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user can tap outside to close
+      builder: (ctx) {
+        return AlertDialog(
+          titlePadding: const EdgeInsets.fromLTRB(20, 16, 8, 0),
+          contentPadding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+          actionsPadding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+          title: Row(
+            children: [
+              const Expanded(child: Text('Subscription required')),
+              IconButton(
+                tooltip: 'Close',
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.of(ctx).pop(),
+              ),
+            ],
+          ),
+          content: Text(message),
+          actions: [
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                  // TODO: route to your subscription screen
+                  // Navigator.of(context).pushNamed('/subscribe');
+                },
+                child: const Text('Subscribe'),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -1282,6 +1388,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                               filePath: m.content,
                               isMe: isMe,
                               timeLabel: '$hh:$mm',
+                              senderId: m.senderId,
                               replyToSnippet: replyToSnippet,
                               replyToWasMine: replyToWasMine,
                             );
@@ -1292,6 +1399,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                               filePath: m.content,
                               isMe: isMe,
                               timeLabel: '$hh:$mm',
+                              senderId: m.senderId,
                               replyToSnippet: replyToSnippet,
                               replyToWasMine: replyToWasMine,
                             );
@@ -1301,6 +1409,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                             text: m.content,
                             isMe: isMe,
                             timeLabel: '$hh:$mm',
+                            senderId: m.senderId,
                             replyToSnippet: replyToSnippet,
                             replyToWasMine: replyToWasMine,
                           );
@@ -1345,17 +1454,14 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
             isRecording: _isRecording,
             onTextChanged: () => setState(() {}),
             onAttach: () async {
-              
               await _openAttachSheet();
             },
             onMic: () async {
-              
               await _toggleRecording();
             },
             onSend:
                 _canSendText
                     ? () async {
-                      
                       await _sendText();
                     }
                     : null,
@@ -1584,7 +1690,7 @@ class _AttachTile extends StatelessWidget {
   }
 }
 
-class _Bubble extends StatelessWidget {
+class _Bubble extends ConsumerWidget {
   final _UiMessage message;
 
   final bool isPlaying;
@@ -1611,53 +1717,151 @@ class _Bubble extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final maxWidth = MediaQuery.of(context).size.width * 0.78;
     final isMe = message.isMe;
 
+    final userDocAsync = ref.watch(_userDocByIdProvider(message.senderId));
+
     return GestureDetector(
       onLongPress: onLongPress,
-      child: Align(
-        alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: maxWidth),
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color:
-                  isMe
-                      ? AppColors.primary.withOpacity(0.14)
-                      : AppColors.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.border),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: _MessageBody(
-                    message: message,
-                    isPlaying: isPlaying,
-                    isThisAudioSelected: isThisAudioSelected,
-                    positionStream: positionStream,
-                    durationStream: durationStream,
-                    onAudioTap: onAudioTap,
-                    fmt: _fmt,
+      child: userDocAsync.maybeWhen(
+        data: (userData) {
+          final avatarUrl = _bestAvatarUrl(userData);
+
+          return Align(
+            alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.only(left: isMe ? 0 : 8, right: isMe ? 8 : 0),
+              child: Row(
+                mainAxisAlignment:
+                    isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  if (!isMe)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: CircleAvatar(
+                        radius: 16,
+                        backgroundImage:
+                            avatarUrl != null ? NetworkImage(avatarUrl) : null,
+                        backgroundColor: AppColors.primary.withOpacity(0.10),
+                        child:
+                            avatarUrl == null
+                                ? const Icon(
+                                  Icons.person,
+                                  size: 14,
+                                  color: AppColors.primary,
+                                )
+                                : null,
+                      ),
+                    ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color:
+                            isMe
+                                ? AppColors.primary.withOpacity(0.14)
+                                : AppColors.surface,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppColors.border),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: _MessageBody(
+                              message: message,
+                              isPlaying: isPlaying,
+                              isThisAudioSelected: isThisAudioSelected,
+                              positionStream: positionStream,
+                              durationStream: durationStream,
+                              onAudioTap: onAudioTap,
+                              fmt: _fmt,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            message.timeLabel,
+                            style: AppTextStyles.caption.copyWith(
+                              color: AppColors.textMuted,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  message.timeLabel,
-                  style: AppTextStyles.caption.copyWith(
-                    color: AppColors.textMuted,
-                  ),
-                ),
-              ],
+                  if (isMe)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: CircleAvatar(
+                        radius: 16,
+                        backgroundImage:
+                            avatarUrl != null ? NetworkImage(avatarUrl) : null,
+                        backgroundColor: AppColors.primary.withOpacity(0.10),
+                        child:
+                            avatarUrl == null
+                                ? const Icon(
+                                  Icons.person,
+                                  size: 14,
+                                  color: AppColors.primary,
+                                )
+                                : null,
+                      ),
+                    ),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
+        orElse: () {
+          return Align(
+            alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: maxWidth),
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color:
+                      isMe
+                          ? AppColors.primary.withOpacity(0.14)
+                          : AppColors.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: _MessageBody(
+                        message: message,
+                        isPlaying: isPlaying,
+                        isThisAudioSelected: isThisAudioSelected,
+                        positionStream: positionStream,
+                        durationStream: durationStream,
+                        onAudioTap: onAudioTap,
+                        fmt: _fmt,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      message.timeLabel,
+                      style: AppTextStyles.caption.copyWith(
+                        color: AppColors.textMuted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -1911,6 +2115,7 @@ class _UiMessage {
   final _MessageKind kind;
   final bool isMe;
   final String timeLabel;
+  final String senderId;
 
   final String? text;
   final String? filePath;
@@ -1924,6 +2129,7 @@ class _UiMessage {
     required this.kind,
     required this.isMe,
     required this.timeLabel,
+    required this.senderId,
     this.text,
     this.filePath,
     this.replyToId,
@@ -1936,6 +2142,7 @@ class _UiMessage {
     required String text,
     required bool isMe,
     required String timeLabel,
+    required String senderId,
     String? replyToId,
     String? replyToSnippet,
     bool? replyToWasMine,
@@ -1945,6 +2152,7 @@ class _UiMessage {
       kind: _MessageKind.text,
       isMe: isMe,
       timeLabel: timeLabel,
+      senderId: senderId,
       text: text,
       replyToId: replyToId,
       replyToSnippet: replyToSnippet,
@@ -1957,6 +2165,7 @@ class _UiMessage {
     required String filePath,
     required bool isMe,
     required String timeLabel,
+    required String senderId,
     String? replyToId,
     String? replyToSnippet,
     bool? replyToWasMine,
@@ -1966,6 +2175,7 @@ class _UiMessage {
       kind: _MessageKind.image,
       isMe: isMe,
       timeLabel: timeLabel,
+      senderId: senderId,
       filePath: filePath,
       replyToId: replyToId,
       replyToSnippet: replyToSnippet,
@@ -1978,6 +2188,7 @@ class _UiMessage {
     required String filePath,
     required bool isMe,
     required String timeLabel,
+    required String senderId,
     String? replyToId,
     String? replyToSnippet,
     bool? replyToWasMine,
@@ -1987,6 +2198,7 @@ class _UiMessage {
       kind: _MessageKind.audio,
       isMe: isMe,
       timeLabel: timeLabel,
+      senderId: senderId,
       filePath: filePath,
       replyToId: replyToId,
       replyToSnippet: replyToSnippet,

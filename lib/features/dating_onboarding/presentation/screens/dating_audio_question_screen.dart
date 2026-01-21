@@ -11,21 +11,18 @@ import 'package:record/record.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
 
-class DatingAudioQuestionStubScreen extends ConsumerStatefulWidget {
+class DatingAudioQuestionScreen extends ConsumerStatefulWidget {
   final int questionNumber;
 
-  const DatingAudioQuestionStubScreen({
-    super.key,
-    required this.questionNumber,
-  });
+  const DatingAudioQuestionScreen({super.key, required this.questionNumber});
 
   @override
-  ConsumerState<DatingAudioQuestionStubScreen> createState() =>
-      _DatingAudioQuestionStubScreenState();
+  ConsumerState<DatingAudioQuestionScreen> createState() =>
+      _DatingAudioQuestionScreenState();
 }
 
-class _DatingAudioQuestionStubScreenState
-    extends ConsumerState<DatingAudioQuestionStubScreen> {
+class _DatingAudioQuestionScreenState
+    extends ConsumerState<DatingAudioQuestionScreen> {
   static const int _maxSeconds = 60;
   static const int _minSeconds = 3;
 

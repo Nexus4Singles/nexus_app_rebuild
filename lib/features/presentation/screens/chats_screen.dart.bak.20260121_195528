@@ -6,16 +6,6 @@ import 'package:nexus_app_min_test/core/user/dating_profile_completed_provider.d
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/core/user/dating_opt_in_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:nexus_app_min_test/core/models/user_model.dart';
-
-final _userDocByIdProvider =
-    StreamProvider.family<Map<String, dynamic>?, String>((ref, uid) {
-      return FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .snapshots()
-          .map((doc) => doc.exists ? doc.data() : null);
-    });
 
 String _formatChatTime(DateTime? dt) {
   if (dt == null) return '';
@@ -36,36 +26,6 @@ String _displayNameFromOtherId(String otherUserId) {
   if (id.isEmpty) return 'Unknown';
   // Temporary: show a short id until we wire "other user's name" lookup.
   return 'User ${id.substring(0, 6)}';
-}
-
-String? _bestAvatarUrl(Map<String, dynamic>? u) {
-  if (u == null) return null;
-
-  // Common locations:
-  // - profileUrl
-  // - photos[0]
-  // - nexus2.photos[0]
-  final direct = (u['profileUrl'] ?? '').toString().trim();
-  if (direct.isNotEmpty) return direct;
-
-  final photos = u['photos'];
-  if (photos is List && photos.isNotEmpty) {
-    final v = (photos.first ?? '').toString().trim();
-    if (v.isNotEmpty) return v;
-  }
-
-  final nexus2 = u['nexus2'];
-  if (nexus2 is Map) {
-    final n2photos = nexus2['photos'];
-    if (n2photos is List && n2photos.isNotEmpty) {
-      final v = (n2photos.first ?? '').toString().trim();
-      if (v.isNotEmpty) return v;
-    }
-    final n2url = (nexus2['profileUrl'] ?? '').toString().trim();
-    if (n2url.isNotEmpty) return n2url;
-  }
-
-  return null;
 }
 
 class ChatsScreen extends ConsumerWidget {
@@ -331,15 +291,13 @@ class ChatsScreen extends ConsumerWidget {
                     );
                   }
 
-                  // Only show chats where someone has actually messaged
-                  // (lastMessage exists) OR there are unread messages.
                   final visible =
                       conversations.where((c) {
                         final last = (c.lastMessage ?? '').trim();
                         final unreadCount = c.getUnreadCount(me);
+                        // Show if there is an actual last message OR there are unread messages.
                         return last.isNotEmpty || unreadCount > 0;
                       }).toList();
-
                   if (visible.isEmpty) {
                     return Center(
                       child: Column(
@@ -376,7 +334,7 @@ class ChatsScreen extends ConsumerWidget {
                         (id) => id != me,
                         orElse: () => '',
                       );
-
+                      final title = _displayNameFromOtherId(otherId);
                       final subtitle =
                           (c.lastMessage ?? '').trim().isEmpty
                               ? 'Say hi 👋'
@@ -384,62 +342,13 @@ class ChatsScreen extends ConsumerWidget {
                       final time = _formatChatTime(c.lastMessageAt);
                       final unread = c.getUnreadCount(me) > 0;
 
-                      final otherAsync = ref.watch(
-                        _userDocByIdProvider(otherId),
-                      );
-                      return otherAsync.when(
-                        loading: () {
-                          return _ChatRow(
-                            name: _displayNameFromOtherId(otherId),
-                            message: subtitle,
-                            time: time,
-                            unread: unread,
-                            avatarUrl: null,
-                            onTap: () {
-                              Navigator.of(context).pushNamed('/chats/${c.id}');
-                            },
-                          );
-                        },
-                        error: (_, __) {
-                          return _ChatRow(
-                            name: _displayNameFromOtherId(otherId),
-                            message: subtitle,
-                            time: time,
-                            unread: unread,
-                            avatarUrl: null,
-                            onTap: () {
-                              Navigator.of(context).pushNamed('/chats/${c.id}');
-                            },
-                          );
-                        },
-                        data: (data) {
-                          final model =
-                              data == null
-                                  ? null
-                                  : UserModel.fromMap(otherId, data);
-
-                          final username = (model?.username ?? '').trim();
-                          final nameFromDoc = (model?.name ?? '').trim();
-
-                          final displayName =
-                              username.isNotEmpty
-                                  ? username
-                                  : (nameFromDoc.isNotEmpty
-                                      ? nameFromDoc
-                                      : _displayNameFromOtherId(otherId));
-
-                          final avatarUrl = _bestAvatarUrl(data);
-
-                          return _ChatRow(
-                            name: displayName,
-                            message: subtitle,
-                            time: time,
-                            unread: unread,
-                            avatarUrl: avatarUrl,
-                            onTap: () {
-                              Navigator.of(context).pushNamed('/chats/${c.id}');
-                            },
-                          );
+                      return _ChatRow(
+                        name: title,
+                        message: subtitle,
+                        time: time,
+                        unread: unread,
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/chats/${c.id}');
                         },
                       );
                     },

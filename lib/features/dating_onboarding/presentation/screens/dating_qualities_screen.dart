@@ -6,17 +6,16 @@ import 'package:nexus_app_min_test/core/lists/onboarding_lists.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
 
-class DatingHobbiesStubScreen extends ConsumerStatefulWidget {
-  const DatingHobbiesStubScreen({super.key});
+class DatingQualitiesScreen extends ConsumerStatefulWidget {
+  const DatingQualitiesScreen({super.key});
 
   @override
-  ConsumerState<DatingHobbiesStubScreen> createState() =>
-      _DatingHobbiesStubScreenState();
+  ConsumerState<DatingQualitiesScreen> createState() =>
+      _DatingQualitiesScreenState();
 }
 
-class _DatingHobbiesStubScreenState
-    extends ConsumerState<DatingHobbiesStubScreen> {
-  static const int _max = 5;
+class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
+  static const int _max = 8;
 
   final _search = TextEditingController();
   final Set<String> _selected = {};
@@ -25,7 +24,7 @@ class _DatingHobbiesStubScreenState
   void initState() {
     super.initState();
     final draft = ref.read(datingOnboardingDraftProvider);
-    _selected.addAll(draft.hobbies);
+    _selected.addAll(draft.desiredQualities);
   }
 
   @override
@@ -55,7 +54,7 @@ class _DatingHobbiesStubScreenState
         error:
             (e, _) => Center(
               child: Text(
-                'Failed to load hobbies: $e',
+                'Failed to load qualities: $e',
                 style: AppTextStyles.bodyMedium,
               ),
             ),
@@ -66,7 +65,7 @@ class _DatingHobbiesStubScreenState
   Widget _buildContent(BuildContext context, OnboardingLists lists) {
     final q = _search.text.trim().toLowerCase();
     final items =
-        lists.hobbies
+        lists.desiredQualities
             .where((h) => q.isEmpty || h.toLowerCase().contains(q))
             .toList();
 
@@ -75,12 +74,11 @@ class _DatingHobbiesStubScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ✅ COPY MUST MATCH MOCKUP INSTRUCTIONS (we will replace with exact text once you paste it)
           _ProgressHeader(
-            stepLabel: 'Step 3 of 8',
-            title: 'Select your hobbies',
+            stepLabel: 'Step 4 of 8',
+            title: 'Desired Qualities',
             subtitle:
-                'Select up to $_max hobbies. This helps us match you better.',
+                'Select up to $_max qualities you seek in a partner. This helps us find better matches.',
             counter: '${_selected.length} / $_max',
           ),
           const SizedBox(height: 14),
@@ -115,30 +113,30 @@ class _DatingHobbiesStubScreenState
     );
   }
 
-  void _toggle(String hobby) {
+  void _toggle(String quality) {
     setState(() {
-      if (_selected.contains(hobby)) {
-        _selected.remove(hobby);
+      if (_selected.contains(quality)) {
+        _selected.remove(quality);
         return;
       }
 
       if (_selected.length >= _max) {
         HapticFeedback.mediumImpact();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('You can only select up to $_max hobbies.')),
+          SnackBar(content: Text('You can only select up to $_max qualities.')),
         );
         return;
       }
 
-      _selected.add(hobby);
+      _selected.add(quality);
     });
   }
 
   void _onContinue(BuildContext context) {
     ref
         .read(datingOnboardingDraftProvider.notifier)
-        .setHobbies(_selected.toList());
-    Navigator.of(context).pushNamed('/dating/setup/qualities');
+        .setDesiredQualities(_selected.toList());
+    Navigator.of(context).pushNamed('/dating/setup/photos');
   }
 }
 
@@ -216,7 +214,7 @@ class _SearchField extends StatelessWidget {
               controller: controller,
               onChanged: onChanged,
               decoration: InputDecoration(
-                hintText: 'Search hobbies',
+                hintText: 'Search qualities',
                 hintStyle: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.textMuted,
                 ),

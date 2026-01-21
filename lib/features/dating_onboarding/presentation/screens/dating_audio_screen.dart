@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 
-class DatingAudioStubScreen extends StatelessWidget {
-  const DatingAudioStubScreen({super.key});
+class DatingAudioScreen extends StatelessWidget {
+  const DatingAudioScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

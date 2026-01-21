@@ -126,99 +126,18 @@ class ChatConversation {
   });
 
   factory ChatConversation.fromFirestore(Map<String, dynamic> data, String id) {
-    // Participants can appear in multiple shapes across versions:
-    // - participantIds: List<String> (v2 canonical)
-    // - participants: List<String> (legacy)
-    // - participants: Map<uid, true> (legacy)
-    // - memberIds/members: List<String> (legacy)
-    // As a last resort, infer from deterministic chatId "<uidA>_<uidB>".
-    final p = <String>{};
-
-    void addStr(dynamic v) {
-      if (v is String) {
-        final t = v.trim();
-        if (t.isNotEmpty) p.add(t);
-      } else if (v != null) {
-        final t = v.toString().trim();
-        if (t.isNotEmpty) p.add(t);
-      }
-    }
-
-    void addList(dynamic v) {
-      if (v is List) {
-        for (final e in v) {
-          addStr(e);
-        }
-      }
-    }
-
-    void addMapKeys(dynamic v) {
-      if (v is Map) {
-        for (final k in v.keys) {
-          addStr(k);
-        }
-      }
-    }
-
-    // Canonical
-    addList(data['participantIds']);
-    // Legacy
-    addList(data['participants']);
-    addMapKeys(data['participants']);
-    addList(data['memberIds']);
-    addList(data['members']);
-    addMapKeys(data['members']);
-
-    // Fallback: infer from chatId if it looks like "<a>_<b>"
-    if (p.isEmpty && id.contains('_')) {
-      final parts = id.split('_');
-      if (parts.length == 2) {
-        addStr(parts[0]);
-        addStr(parts[1]);
-      }
-    }
-
-    final participantIds = p.toList();
-
-    // unreadCounts can be Map<dynamic,dynamic> in practice
-    final rawUnread = data['unreadCounts'];
-    final unreadCounts =
-        (rawUnread is Map)
-            ? Map<String, int>.fromEntries(
-              rawUnread.entries.map((e) {
-                final k = e.key?.toString() ?? '';
-                final v = e.value;
-                final n =
-                    (v is num)
-                        ? v.toInt()
-                        : int.tryParse(v?.toString() ?? '') ?? 0;
-                return MapEntry(k, n);
-              }),
-            )
-            : <String, int>{};
-
-    // lastReadAt can be Map<dynamic,dynamic> with Timestamp values
-    final rawRead = data['lastReadAt'];
-    final lastReadAt =
-        (rawRead is Map)
-            ? Map<String, DateTime?>.fromEntries(
-              rawRead.entries.map((e) {
-                final k = e.key?.toString() ?? '';
-                final v = e.value;
-                if (v is Timestamp) return MapEntry(k, v.toDate());
-                return MapEntry(k, null);
-              }),
-            )
-            : <String, DateTime?>{};
-
     return ChatConversation(
       id: id,
-      participantIds: participantIds,
+      participantIds: List<String>.from(data['participantIds'] ?? []),
       lastMessage: data['lastMessage'] as String?,
       lastMessageAt: (data['lastMessageAt'] as Timestamp?)?.toDate(),
       lastMessageSenderId: data['lastMessageSenderId'] as String?,
-      unreadCounts: unreadCounts,
-      lastReadAt: lastReadAt,
+      unreadCounts: Map<String, int>.from(data['unreadCounts'] ?? {}),
+      lastReadAt:
+          (data['lastReadAt'])?.map(
+            (key, value) => MapEntry(key, (value as Timestamp?)?.toDate()),
+          ) ??
+          {},
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       updatedAt: (data['updatedAt'] as Timestamp?)?.toDate(),
       isActive: data['isActive'] as bool? ?? true,
@@ -245,14 +164,10 @@ class ChatConversation {
 
   /// Get the other participant's ID
   String getOtherParticipantId(String currentUserId) {
-    final me = currentUserId.trim();
-    if (me.isEmpty) return '';
-
-    for (final id in participantIds) {
-      final t = id.trim();
-      if (t.isNotEmpty && t != me) return t;
-    }
-    return '';
+    return participantIds.firstWhere(
+      (id) => id != currentUserId,
+      orElse: () => '',
+    );
   }
 
   /// Get unread count for a user
@@ -264,31 +179,6 @@ class ChatConversation {
 /// Service for managing chat functionality
 class ChatService {
   static const int _kFreeChatPartnerLimit = 3;
-
-  String _chatIdFor(String u1, String u2) {
-    final a = u1.trim();
-    final b = u2.trim();
-    final ids = [a, b]..sort();
-    return '${ids[0]}_${ids[1]}';
-  }
-
-  /// True if there's evidence sender has previously sent a message in this chat.
-  /// This is used to avoid blocking *existing* partners after gating logic changes.
-  Future<bool> _hasPreviouslyMessagedPartner({
-    required String senderId,
-    required String receiverId,
-  }) async {
-    try {
-      final chatId = _chatIdFor(senderId, receiverId);
-      final q =
-          await _messagesRef(
-            chatId,
-          ).where('senderId', isEqualTo: senderId).limit(1).get();
-      return q.docs.isNotEmpty;
-    } catch (_) {
-      return false;
-    }
-  }
 
   // ============================================================================
   // PREMIUM CHECK
@@ -334,8 +224,7 @@ class ChatService {
     // Behavior for free users:
     // - If receiverId is already in the allowed list => allow
     // - Else if list has room (< limit) => add receiverId and allow
-    // - Else => throw a friendly ChatException, *unless* sender has previously
-    //   messaged this receiver (back-compat for older chats).
+    // - Else => throw a friendly ChatException
 
     final isPremium = await _isPremiumUser(senderId);
     if (isPremium) return;
@@ -347,105 +236,61 @@ class ChatService {
 
     final meRef = _fs.collection('users').doc(senderId);
 
-    // Read current state first (outside transaction) so we can do a back-compat check
-    // without doing cross-collection reads inside a transaction.
-    final snap = await meRef.get();
-    final meData = snap.data();
-
-    final chatMap = (meData?['chat'] is Map) ? (meData!['chat'] as Map) : null;
-
-    // Preferred list field
-    List<String> freeList = <String>[];
-    final rawList = chatMap?['freeChatPartnerIds'];
-    if (rawList is List) {
-      freeList =
-          rawList
-              .map((e) => e.toString().trim())
-              .where((e) => e.isNotEmpty)
-              .toList();
-    }
-
-    // Backward-compat: if list empty, try legacy single id
-    if (freeList.isEmpty) {
-      final legacy1 = chatMap?['freeChatPartnerId']?.toString().trim();
-      if (legacy1 != null && legacy1.isNotEmpty) {
-        freeList = [legacy1];
-      } else {
-        final legacy2 = meData?['freeChatPartnerId']?.toString().trim();
-        if (legacy2 != null && legacy2.isNotEmpty) {
-          freeList = [legacy2];
-        }
-      }
-    }
-
-    // Normalize: unique + no empties
-    freeList = freeList.toSet().toList()..removeWhere((e) => e.trim().isEmpty);
-
-    // If already allowed, good.
-    if (freeList.contains(receiverId)) return;
-
-    // If at limit, allow *existing partner* if sender previously messaged them.
-    if (freeList.length >= _kFreeChatPartnerLimit) {
-      final okBecauseHistory = await _hasPreviouslyMessagedPartner(
-        senderId: senderId,
-        receiverId: receiverId,
-      );
-      if (okBecauseHistory) return;
-
-      throw ChatException(
-        'Premium required: you can only chat with $_kFreeChatPartnerLimit people for free. Subscribe to chat with more people.',
-      );
-    }
-
-    // Otherwise, add receiverId transactionally (still check-only; actual "consume" is
-    // finalized by _recordFreeTierPartnerIfNeeded after successful send).
     await _fs.runTransaction((tx) async {
-      final cur = await tx.get(meRef);
-      final curData = cur.data();
+      final snap = await tx.get(meRef);
+      final meData = snap.data();
 
-      final curChatMap =
-          (curData?['chat'] is Map) ? (curData!['chat'] as Map) : null;
+      final chatMap =
+          (meData?['chat'] is Map) ? (meData!['chat'] as Map) : null;
 
-      List<String> curList = <String>[];
-      final curRaw = curChatMap?['freeChatPartnerIds'];
-      if (curRaw is List) {
-        curList =
-            curRaw
+      // Preferred list field
+      List<String> freeList = <String>[];
+      final rawList = chatMap?['freeChatPartnerIds'];
+      if (rawList is List) {
+        freeList =
+            rawList
                 .map((e) => e.toString().trim())
                 .where((e) => e.isNotEmpty)
                 .toList();
       }
 
-      if (curList.isEmpty) {
-        final legacy1 = curChatMap?['freeChatPartnerId']?.toString().trim();
+      // Backward-compat: if list empty, try legacy single id
+      if (freeList.isEmpty) {
+        final legacy1 = chatMap?['freeChatPartnerId']?.toString().trim();
         if (legacy1 != null && legacy1.isNotEmpty) {
-          curList = [legacy1];
+          freeList = [legacy1];
         } else {
-          final legacy2 = curData?['freeChatPartnerId']?.toString().trim();
+          final legacy2 = meData?['freeChatPartnerId']?.toString().trim();
           if (legacy2 != null && legacy2.isNotEmpty) {
-            curList = [legacy2];
+            freeList = [legacy2];
           }
         }
       }
 
-      curList = curList.toSet().toList()..removeWhere((e) => e.trim().isEmpty);
+      // Normalize: unique + no empties
+      freeList =
+          freeList.toSet().toList()..removeWhere((e) => e.trim().isEmpty);
 
-      if (curList.contains(receiverId)) return;
+      final alreadyAllowed = freeList.contains(receiverId);
 
-      if (curList.length >= _kFreeChatPartnerLimit) {
-        // Another concurrent write may have filled the list. Do the same back-compat check.
-        // (If this throws, UI should show premium modal.)
-        throw ChatException(
-          'Premium required: you can only chat with $_kFreeChatPartnerLimit people for free. Subscribe to chat with more people.',
-        );
+      if (!alreadyAllowed) {
+        if (freeList.length >= _kFreeChatPartnerLimit) {
+          throw ChatException(
+            'Premium required: you can only chat with $_kFreeChatPartnerLimit people for free. Subscribe to chat with more people.',
+          );
+        }
+
+        freeList.add(receiverId);
+        freeList =
+            freeList.toSet().toList()..removeWhere((e) => e.trim().isEmpty);
+
+        tx.set(meRef, {
+          'chat': <String, dynamic>{'freeChatPartnerIds': freeList},
+        }, SetOptions(merge: true));
+
+        // Optional: clean up legacy single field (keep if you still rely on it elsewhere)
+        // tx.set(meRef, {'chat': <String, dynamic>{'freeChatPartnerId': FieldValue.delete()}}, SetOptions(merge: true));
       }
-
-      curList.add(receiverId);
-      curList = curList.toSet().toList()..removeWhere((e) => e.trim().isEmpty);
-
-      tx.set(meRef, {
-        'chat': <String, dynamic>{'freeChatPartnerIds': curList},
-      }, SetOptions(merge: true));
     });
   }
 
@@ -550,35 +395,16 @@ class ChatService {
     final a = userId1.trim();
     final b = userId2.trim();
     if (a.isEmpty || b.isEmpty) {
-      throw ChatException('Invalid user id(s).');
-    }
-    if (a == b) {
-      throw ChatException('You cannot start a chat with yourself.');
-    }
 
-    final ids = <String>[a, b]..sort();
-    final chatId = '${ids[0]}_${ids[1]}';
+          }
 
-    final chatRef = _chatsRef.doc(chatId);
-    final chatDoc = <String, dynamic>{
-      'participantIds': ids,
-      'createdAt': FieldValue.serverTimestamp(),
-      'updatedAt': FieldValue.serverTimestamp(),
-      'lastMessageAt': FieldValue.serverTimestamp(),
-      'lastMessagePreview': '',
-      'unreadCounts': <String, dynamic>{ids[0]: 0, ids[1]: 0},
-      'isActive': true,
-    };
-
-    try {
-      await _assertUsersNotDisabled([a, b]);
-      await _assertOppositeGender(a, b);
-
-      return await _fs.runTransaction((tx) async {
-        final existing = await tx.get(chatRef);
-        if (existing.exists) return chatId;
-
-        // Premium gating is enforced ONLY on send, not on opening/creating chats.
+          // First-time lock: set free partner id on initiator.
+          if (freePartner == null) {
+            tx.set(meRef, {
+              'chat': {'freeChatPartnerId': b},
+            }, SetOptions(merge: true));
+          }
+        }
 
         tx.set(chatRef, chatDoc);
         return chatId;
@@ -632,21 +458,16 @@ class ChatService {
   /// Get all conversations for a user
   Future<List<ChatConversation>> getUserConversations(String userId) async {
     try {
-      // NOTE: Do NOT filter by `isActive` in Firestore.
-      // Older chat docs may not have the field, and Firestore would exclude them.
       final query =
           await _chatsRef
               .where('participantIds', arrayContains: userId)
+              .where('isActive', isEqualTo: true)
               .orderBy('lastMessageAt', descending: true)
               .get();
 
-      final all =
-          query.docs
-              .map((doc) => ChatConversation.fromFirestore(doc.data(), doc.id))
-              .toList();
-
-      // Client-side filter: treat missing `isActive` as active (model defaults to true).
-      return all.where((c) => c.isActive).toList();
+      return query.docs
+          .map((doc) => ChatConversation.fromFirestore(doc.data(), doc.id))
+          .toList();
     } catch (e) {
       throw ChatException('Failed to get conversations: $e');
     }
@@ -654,23 +475,19 @@ class ChatService {
 
   /// Stream all conversations for a user (real-time)
   Stream<List<ChatConversation>> streamUserConversations(String userId) {
-    // NOTE: Do NOT filter by `isActive` in Firestore.
-    // Older chat docs may not have the field, and Firestore would exclude them.
     return _chatsRef
         .where('participantIds', arrayContains: userId)
+        .where('isActive', isEqualTo: true)
         .orderBy('lastMessageAt', descending: true)
         .snapshots()
-        .map((snapshot) {
-          final all =
+        .map(
+          (snapshot) =>
               snapshot.docs
                   .map(
                     (doc) => ChatConversation.fromFirestore(doc.data(), doc.id),
                   )
-                  .toList();
-
-          // Client-side filter: treat missing `isActive` as active (model defaults to true).
-          return all.where((c) => c.isActive).toList();
-        });
+                  .toList(),
+        );
   }
 
   /// Delete/deactivate a conversation
@@ -689,42 +506,6 @@ class ChatService {
   // MESSAGE OPERATIONS
   // ============================================================================
 
-  /// Record a free-tier chat partner ONLY after a message is successfully sent.
-  /// This guarantees: opening chats / failed sends do not consume free slots.
-  Future<void> _recordFreeTierPartnerIfNeeded({
-    required String senderId,
-    required String receiverId,
-  }) async {
-    final meRef = _fs.collection('users').doc(senderId);
-    final snap = await meRef.get();
-    final data = snap.data() as Map<String, dynamic>?;
-
-    final chatMap = (data?['chat'] as Map?)?.cast<String, dynamic>();
-    final rawList = chatMap?['freeChatPartnerIds'];
-    final legacySingle = chatMap?['freeChatPartnerId'];
-
-    final freeList = <String>[];
-    if (rawList is List) {
-      for (final v in rawList) {
-        if (v is String && v.trim().isNotEmpty) freeList.add(v.trim());
-      }
-    }
-    if (legacySingle is String && legacySingle.trim().isNotEmpty) {
-      final v = legacySingle.trim();
-      if (!freeList.contains(v)) freeList.add(v);
-    }
-
-    if (freeList.contains(receiverId)) return;
-
-    // If already at limit, don't throw here — send already succeeded.
-    if (freeList.length >= _kFreeChatPartnerLimit) return;
-
-    freeList.add(receiverId);
-    await meRef.set(<String, dynamic>{
-      'chat': <String, dynamic>{'freeChatPartnerIds': freeList},
-    }, SetOptions(merge: true));
-  }
-
   /// Send a text message
   Future<ChatMessage> sendMessage({
     required String chatId,
@@ -735,7 +516,6 @@ class ChatService {
     Map<String, dynamic>? metadata,
   }) async {
     // Free-tier gating happens ONLY on send.
-    await _enforceFreeTierOnSend(senderId: senderId, receiverId: receiverId);
 
     try {
       await _assertUsersNotDisabled([senderId, receiverId]);
@@ -770,10 +550,6 @@ class ChatService {
       });
 
       await batch.commit();
-      await _recordFreeTierPartnerIfNeeded(
-        senderId: senderId,
-        receiverId: receiverId,
-      );
       return message;
     } catch (e) {
       // Preserve user-facing gating/errors.

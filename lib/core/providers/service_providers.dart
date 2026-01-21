@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
 import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/foundation.dart';
 import 'package:nexus_app_min_test/core/services/chat_service.dart';
 
 import '../services/media_service.dart';
@@ -111,7 +112,16 @@ final userConversationsProvider = StreamProvider<List<ChatConversation>>((ref) {
   if (userId == null) return Stream.value([]);
 
   final chatService = ref.watch(chatServiceProvider);
-  return chatService.streamUserConversations(userId);
+  return chatService
+      .streamUserConversations(userId)
+      .handleError((e, st) {
+        // Force console visibility of why the Chats list fails.
+        // This will print even if the UI shows a generic error.
+        // ignore: avoid_print
+        debugPrint('[Chats][userConversationsProvider] error=$e');
+        // ignore: avoid_print
+        debugPrint(st.toString());
+      });
 });
 
 /// Provider for total unread message count
@@ -231,7 +241,7 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
       return message;
     } catch (e, st) {
       state = AsyncValue.error(e, st);
-      return null;
+      rethrow;
     }
   }
 
@@ -277,7 +287,7 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
       return message;
     } catch (e, st) {
       state = AsyncValue.error(e, st);
-      return null;
+      rethrow;
     }
   }
 
@@ -323,7 +333,7 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
       return message;
     } catch (e, st) {
       state = AsyncValue.error(e, st);
-      return null;
+      rethrow;
     }
   }
 

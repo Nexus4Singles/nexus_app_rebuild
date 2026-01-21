@@ -133,62 +133,32 @@ service cloud.firestore {
     // Nexus v2 Chats (strict + opposite gender enforced)
     // ============================================================================
     match /nexus2_chats/{chatId} {
-      // Reads must allow both legacy + v2 chat docs.
-            // READ: allow if signed-in and requester is a participant.
-      // If the doc doesn't exist yet, Firestore represents resource as null; allow read so get() returns not-found.
-            // READ: allow signed-in users to "get" a not-yet-created chat doc (returns not-found, not permission-denied).
-      // For existing chats, restrict reads to participants.
-      allow read: if isSignedIn() && (!(resource.data is map) || (resource.data.participantIds is list && resource.data.participantIds.hasAny([request.auth.uid])));
+  // Participants can read/list their chats.
+  // This is safe for queries because evaluation happens per-doc returned.
+  allow read, list: if isParticipant(resource.data);
 
-      
+  // Create allowed only if you're one of the participants.
+  allow create: if isSignedIn()
+    && request.resource.data.participantIds is list
+    && request.resource.data.participantIds.hasAny([request.auth.uid]);
 
-      // Create only for proper v2 docs.
-            // CREATE: keep strict — exactly 2 participants and requester must be in them.
-      allow create: if isSignedIn()
-        && hasTwoParticipants(request.resource.data)
-        && participantIdsOf(request.resource.data).hasAny([request.auth.uid]);
+  // Updates only by participants.
+  allow update: if isParticipant(resource.data);
 
-      // Update:
-      // - Normal v2: participant can update
-      // - Legacy repair: if the existing doc uses 'participants' but not 'participantIds',
-      //   allow a participant to write a v2-shaped doc with participantIds (size 2).
-      allow update: if isSignedIn() && (
-        isParticipant(resource.data) ||
-        (
-          // legacy repair path
-          (resource.data.participantIds is list ? false : (resource.data.participants is list))
-          && participantIdsOf(resource.data).hasAny([request.auth.uid])
-          && hasTwoParticipants(request.resource.data)
-          && participantIdsOf(request.resource.data).hasAny([request.auth.uid])
-        )
-      );
+  // No deletes
+  allow delete: if false;
 
-      allow delete: if false;
+  // Messages subcollection
+  match /messages/{messageId} {
+    allow read, list: if isParticipant(get(/databases/$(database)/documents/nexus2_chats/$(chatId)).data);
+    allow create: if isSignedIn()
+      && request.resource.data.senderId == request.auth.uid
+      && isParticipant(get(/databases/$(database)/documents/nexus2_chats/$(chatId)).data);
+    allow update: if isParticipant(get(/databases/$(database)/documents/nexus2_chats/$(chatId)).data);
+    allow delete: if false;
+  }
+}
 
-      match /messages/{messageId} {
-        function parentChat() {
-          return get(/databases/$(database)/documents/nexus2_chats/$(chatId)).data;
-        }
-
-        allow read: if isSignedIn() && (
-          !(parentChat() is map) || isParticipant(parentChat())
-        );
-
-        // Only sender can create, receiver must be the other participant.
-        allow create: if isSignedIn()
-          && request.resource.data.senderId == request.auth.uid
-          && request.resource.data.receiverId != request.auth.uid
-          && request.resource.data.receiverId in participantIdsOf(parentChat())
-          && isParticipant(parentChat());
-
-        // Only receiver can update (mark read).
-        allow update: if isSignedIn()
-          && request.auth.uid == resource.data.receiverId
-          && isParticipant(parentChat());
-
-        allow delete: if false;
-      }
-    }
 
 match /chats/{chatId} {
   // Allow reads even if doc doesn't exist yet (so get() returns not-found rather than deny).

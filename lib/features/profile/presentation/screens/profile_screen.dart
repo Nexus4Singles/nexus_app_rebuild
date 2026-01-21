@@ -338,6 +338,9 @@ class ProfileScreen extends ConsumerWidget {
                         child: _AudioPromptsSection(
                           audioUrls: profile.audioPrompts ?? const [],
                           isLocked: false,
+                          isViewingOtherUser: isViewingOtherUser,
+                          username: profile.username,
+                          gender: profile.gender,
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -1583,7 +1586,7 @@ class _SendMessageCta extends ConsumerWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(28),
         color: AppColors.primary,
         boxShadow: [
           BoxShadow(
@@ -1596,7 +1599,7 @@ class _SendMessageCta extends ConsumerWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(28),
           onTap: () async {
             try {
               final id = await ref.read(
@@ -1974,8 +1977,17 @@ class _ProfileAudioController {
 class _AudioPromptsSection extends ConsumerStatefulWidget {
   final List<String> audioUrls;
   final bool isLocked;
+  final bool isViewingOtherUser;
+  final String? username;
+  final String? gender;
 
-  const _AudioPromptsSection({required this.audioUrls, required this.isLocked});
+  const _AudioPromptsSection({
+    required this.audioUrls,
+    required this.isLocked,
+    required this.isViewingOtherUser,
+    this.username,
+    this.gender,
+  });
 
   @override
   ConsumerState<_AudioPromptsSection> createState() =>
@@ -2030,11 +2042,25 @@ class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
 
   @override
   Widget build(BuildContext context) {
-    final prompts = const [
-      'My relationship with God',
-      'My view on gender roles in marriage',
-      'Favourite qualities || traits about myself',
-    ];
+    final username = widget.username ?? 'them';
+    // Normalize gender: handles variations like "Male", "male", "man", "Female", "female", "woman", etc.
+    final genderNormalized =
+        (widget.gender ?? '').toString().trim().toLowerCase();
+    final isFemale = genderNormalized.startsWith('f');
+    final pronoun = isFemale ? 'herself' : 'himself';
+
+    final prompts =
+        widget.isViewingOtherUser
+            ? [
+              "$username's relationship with God",
+              "$username's view on gender roles in marriage",
+              "$username's favourite qualities about $pronoun",
+            ]
+            : const [
+              'My relationship with God',
+              'My view on gender roles in marriage',
+              'Favourite qualities or traits about myself',
+            ];
 
     final urls = widget.audioUrls.where((e) => e.trim().isNotEmpty).toList();
     if (urls.isEmpty) {

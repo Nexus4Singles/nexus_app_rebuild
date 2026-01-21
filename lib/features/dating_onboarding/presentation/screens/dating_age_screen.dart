@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/theme.dart';
-import '../../application/dating_onboarding_provider.dart';
+import '../../application/dating_onboarding_draft.dart';
 
 class DatingAgeScreen extends ConsumerStatefulWidget {
   const DatingAgeScreen({super.key});
@@ -21,7 +21,7 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
   @override
   void initState() {
     super.initState();
-    final draft = ref.read(datingOnboardingProvider);
+    final draft = ref.read(datingOnboardingDraftProvider);
     _selectedAge = (draft.age ?? _minAge).clamp(_minAge, _maxAge);
     _controller = FixedExtentScrollController(
       initialItem: _selectedAge - _minAge,
@@ -35,8 +35,8 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
   }
 
   void _continue() {
-    ref.read(datingOnboardingProvider.notifier).setAge(_selectedAge);
-    Navigator.pushNamed(context, '/dating/onboarding/extra-info');
+    ref.read(datingOnboardingDraftProvider.notifier).setAge(_selectedAge);
+    Navigator.pushNamed(context, '/dating/setup/extra-info');
   }
 
   @override

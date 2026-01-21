@@ -11,13 +11,13 @@ import '../../features/presentation/screens/chats_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/dating_onboarding/presentation/screens/dating_age_screen.dart';
 import '../../features/dating_onboarding/presentation/screens/dating_extra_info_screen.dart';
-import '../../features/dating_onboarding/presentation/screens/dating_photos_stub_screen.dart';
-import '../../features/dating_onboarding/presentation/screens/dating_audio_stub_screen.dart';
-import '../../features/dating_onboarding/presentation/screens/dating_audio_question_stub_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_photos_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_audio_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_audio_question_screen.dart';
 import '../../features/dating_onboarding/presentation/screens/dating_audio_summary_screen.dart';
-import '../../features/dating_onboarding/presentation/screens/dating_hobbies_stub_screen.dart';
-import '../../features/dating_onboarding/presentation/screens/dating_qualities_stub_screen.dart';
-import '../../features/dating_onboarding/presentation/screens/dating_contact_info_stub_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_hobbies_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_qualities_screen.dart';
+import '../../features/dating_onboarding/presentation/screens/dating_contact_info_screen.dart';
 import '../../features/dating_onboarding/presentation/screens/dating_profile_complete_screen.dart';
 import '../../features/presentation/screens/settings_screen.dart';
 import '../../features/presentation/screens/contact_screen.dart';
@@ -85,7 +85,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     if (n != null && n > 0) {
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => DatingAudioQuestionStubScreen(questionNumber: n),
+        builder: (_) => DatingAudioQuestionScreen(questionNumber: n),
       );
     }
   }
@@ -172,13 +172,13 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case '/dating/setup/photos':
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => DatingPhotosStubScreen(),
+        builder: (_) => DatingPhotosScreen(),
       );
 
     case '/dating/setup/audio':
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const DatingAudioStubScreen(),
+        builder: (_) => const DatingAudioScreen(),
       );
 
     case '/dating/setup/audio/summary':
@@ -190,19 +190,19 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case '/dating/setup/hobbies':
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const DatingHobbiesStubScreen(),
+        builder: (_) => const DatingHobbiesScreen(),
       );
 
     case '/dating/setup/qualities':
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const DatingQualitiesStubScreen(),
+        builder: (_) => const DatingQualitiesScreen(),
       );
 
     case '/dating/setup/contact-info':
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => DatingContactInfoStubScreen(),
+        builder: (_) => DatingContactInfoScreen(),
       );
 
     case '/dating/setup/complete':

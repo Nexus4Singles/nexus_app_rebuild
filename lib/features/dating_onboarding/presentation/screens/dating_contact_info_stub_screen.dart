@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/features/compatibility_quiz/data/compatibility_quiz_service.dart';
-import 'package:nexus_app_min_test/core/auth/auth_providers.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
 
 class DatingContactInfoStubScreen extends ConsumerStatefulWidget {
@@ -133,31 +131,7 @@ class _DatingContactInfoStubScreenState
     // Persist in local onboarding draft (Phase 1 + smooth migration later).
     ref.read(datingOnboardingDraftProvider.notifier).setContactInfo(info);
 
-    // If the user already completed compatibility quiz in Firestore,
-    // do NOT send them through the quiz gate again.
-    final authAsync = ref.read(authStateProvider);
-    final uid = authAsync.maybeWhen(
-      data: (a) => a.user?.uid,
-      orElse: () => null,
-    );
-
-    if (uid != null && uid.isNotEmpty) {
-      final svc = ref.read(compatibilityQuizServiceProvider);
-      bool ok = false;
-      try {
-        ok = await svc.isQuizComplete(uid);
-      } catch (_) {
-        ok = false;
-      }
-
-      if (!mounted) return;
-
-      if (ok) {
-        Navigator.of(context).pushNamedAndRemoveUntil('/profile', (r) => false);
-        return;
-      }
-    }
-
+    // Route to profile completion screen
     if (!mounted) return;
     Navigator.of(context).pushNamed('/dating/setup/complete');
   }

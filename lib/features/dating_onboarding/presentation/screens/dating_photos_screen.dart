@@ -10,16 +10,14 @@ import 'package:nexus_app_min_test/core/storage/providers/media_storage_provider
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
 
-class DatingPhotosStubScreen extends ConsumerStatefulWidget {
-  const DatingPhotosStubScreen({super.key});
+class DatingPhotosScreen extends ConsumerStatefulWidget {
+  const DatingPhotosScreen({super.key});
 
   @override
-  ConsumerState<DatingPhotosStubScreen> createState() =>
-      _DatingPhotosStubScreenState();
+  ConsumerState<DatingPhotosScreen> createState() => _DatingPhotosScreenState();
 }
 
-class _DatingPhotosStubScreenState
-    extends ConsumerState<DatingPhotosStubScreen> {
+class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
   static const int _minPhotos = 2;
 
   final _picker = ImagePicker();

@@ -126,22 +126,37 @@ class ChatConversation {
   });
 
   factory ChatConversation.fromFirestore(Map<String, dynamic> data, String id) {
-    // Participants can appear in multiple shapes across versions:
-    // - participantIds: List<String> (v2 canonical)
-    // - participants: List<String> (legacy)
-    // - participants: Map<uid, true> (legacy)
-    // - memberIds/members: List<String> (legacy)
-    // As a last resort, infer from deterministic chatId "<uidA>_<uidB>".
+    // Normalize participants across possible schemas.
     final p = <String>{};
 
     void addStr(dynamic v) {
       if (v is String) {
         final t = v.trim();
         if (t.isNotEmpty) p.add(t);
-      } else if (v != null) {
-        final t = v.toString().trim();
-        if (t.isNotEmpty) p.add(t);
       }
+
+  String getOtherParticipantId(String myUserId) {
+    final me = myUserId.trim();
+    if (me.isEmpty) return '';
+
+    // Primary: participantIds
+    for (final id in participantIds) {
+      final t = id.trim();
+      if (t.isNotEmpty && t != me) return t;
+    }
+
+    // Fallback: if stored in other fields (defensive)
+    final all = <String>{};
+    all.addAll(participantIds.map((e) => e.trim()).where((e) => e.isNotEmpty));
+
+    for (final id in all) {
+      if (id != me) return id;
+    }
+
+    return '';
+
+  }
+
     }
 
     void addList(dynamic v) {
@@ -160,69 +175,54 @@ class ChatConversation {
       }
     }
 
-    // Canonical
+    // New schema: participantIds
     addList(data['participantIds']);
-    // Legacy
+    addMapKeys(data['participantIds']);
+
+    // Legacy schema: participants can be list or map keyed by uid
     addList(data['participants']);
     addMapKeys(data['participants']);
+
+    // Other legacy shapes
     addList(data['memberIds']);
     addList(data['members']);
     addMapKeys(data['members']);
 
-    // Fallback: infer from chatId if it looks like "<a>_<b>"
-    if (p.isEmpty && id.contains('_')) {
-      final parts = id.split('_');
-      if (parts.length == 2) {
-        addStr(parts[0]);
-        addStr(parts[1]);
-      }
-    }
+    addStr(data['userId1']);
+    addStr(data['userId2']);
 
-    final participantIds = p.toList();
+    final participants = p.toList();
 
-    // unreadCounts can be Map<dynamic,dynamic> in practice
-    final rawUnread = data['unreadCounts'];
-    final unreadCounts =
-        (rawUnread is Map)
-            ? Map<String, int>.fromEntries(
-              rawUnread.entries.map((e) {
+    return ChatConversation(
+      id: id,
+      participantIds: participants,
+      // keep other fields as they were before (best effort)
+      lastMessage: data['lastMessage'] as String? ?? '',
+      lastMessageAt: (data['lastMessageAt'] as Timestamp?)?.toDate(),
+      isActive: data['isActive'] as bool? ?? true,
+      unreadCounts: (data['unreadCounts'] is Map)
+          ? Map<String, int>.fromEntries(
+              (data['unreadCounts'] as Map).entries.map((e) {
                 final k = e.key?.toString() ?? '';
                 final v = e.value;
-                final n =
-                    (v is num)
-                        ? v.toInt()
-                        : int.tryParse(v?.toString() ?? '') ?? 0;
+                final n = (v is num) ? v.toInt() : 0;
                 return MapEntry(k, n);
               }),
             )
-            : <String, int>{};
-
-    // lastReadAt can be Map<dynamic,dynamic> with Timestamp values
-    final rawRead = data['lastReadAt'];
-    final lastReadAt =
-        (rawRead is Map)
-            ? Map<String, DateTime?>.fromEntries(
-              rawRead.entries.map((e) {
+          : const <String, int>{},
+      lastReadAt: (data['lastReadAt'] is Map)
+          ? Map<String, DateTime?>.fromEntries(
+              (data['lastReadAt'] as Map).entries.map((e) {
                 final k = e.key?.toString() ?? '';
                 final v = e.value;
                 if (v is Timestamp) return MapEntry(k, v.toDate());
                 return MapEntry(k, null);
               }),
             )
-            : <String, DateTime?>{};
-
-    return ChatConversation(
-      id: id,
-      participantIds: participantIds,
-      lastMessage: data['lastMessage'] as String?,
-      lastMessageAt: (data['lastMessageAt'] as Timestamp?)?.toDate(),
-      lastMessageSenderId: data['lastMessageSenderId'] as String?,
-      unreadCounts: unreadCounts,
-      lastReadAt: lastReadAt,
-      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      updatedAt: (data['updatedAt'] as Timestamp?)?.toDate(),
-      isActive: data['isActive'] as bool? ?? true,
+          : const <String, DateTime?>{},
+      typingUserIds: List<String>.from(data['typingUserIds'] as List? ?? const []),
     );
+
   }
 
   Map<String, dynamic> toFirestore() {
@@ -245,14 +245,10 @@ class ChatConversation {
 
   /// Get the other participant's ID
   String getOtherParticipantId(String currentUserId) {
-    final me = currentUserId.trim();
-    if (me.isEmpty) return '';
-
-    for (final id in participantIds) {
-      final t = id.trim();
-      if (t.isNotEmpty && t != me) return t;
-    }
-    return '';
+    return participantIds.firstWhere(
+      (id) => id != currentUserId,
+      orElse: () => '',
+    );
   }
 
   /// Get unread count for a user
@@ -264,31 +260,6 @@ class ChatConversation {
 /// Service for managing chat functionality
 class ChatService {
   static const int _kFreeChatPartnerLimit = 3;
-
-  String _chatIdFor(String u1, String u2) {
-    final a = u1.trim();
-    final b = u2.trim();
-    final ids = [a, b]..sort();
-    return '${ids[0]}_${ids[1]}';
-  }
-
-  /// True if there's evidence sender has previously sent a message in this chat.
-  /// This is used to avoid blocking *existing* partners after gating logic changes.
-  Future<bool> _hasPreviouslyMessagedPartner({
-    required String senderId,
-    required String receiverId,
-  }) async {
-    try {
-      final chatId = _chatIdFor(senderId, receiverId);
-      final q =
-          await _messagesRef(
-            chatId,
-          ).where('senderId', isEqualTo: senderId).limit(1).get();
-      return q.docs.isNotEmpty;
-    } catch (_) {
-      return false;
-    }
-  }
 
   // ============================================================================
   // PREMIUM CHECK
@@ -334,8 +305,7 @@ class ChatService {
     // Behavior for free users:
     // - If receiverId is already in the allowed list => allow
     // - Else if list has room (< limit) => add receiverId and allow
-    // - Else => throw a friendly ChatException, *unless* sender has previously
-    //   messaged this receiver (back-compat for older chats).
+    // - Else => throw a friendly ChatException
 
     final isPremium = await _isPremiumUser(senderId);
     if (isPremium) return;
@@ -347,105 +317,61 @@ class ChatService {
 
     final meRef = _fs.collection('users').doc(senderId);
 
-    // Read current state first (outside transaction) so we can do a back-compat check
-    // without doing cross-collection reads inside a transaction.
-    final snap = await meRef.get();
-    final meData = snap.data();
-
-    final chatMap = (meData?['chat'] is Map) ? (meData!['chat'] as Map) : null;
-
-    // Preferred list field
-    List<String> freeList = <String>[];
-    final rawList = chatMap?['freeChatPartnerIds'];
-    if (rawList is List) {
-      freeList =
-          rawList
-              .map((e) => e.toString().trim())
-              .where((e) => e.isNotEmpty)
-              .toList();
-    }
-
-    // Backward-compat: if list empty, try legacy single id
-    if (freeList.isEmpty) {
-      final legacy1 = chatMap?['freeChatPartnerId']?.toString().trim();
-      if (legacy1 != null && legacy1.isNotEmpty) {
-        freeList = [legacy1];
-      } else {
-        final legacy2 = meData?['freeChatPartnerId']?.toString().trim();
-        if (legacy2 != null && legacy2.isNotEmpty) {
-          freeList = [legacy2];
-        }
-      }
-    }
-
-    // Normalize: unique + no empties
-    freeList = freeList.toSet().toList()..removeWhere((e) => e.trim().isEmpty);
-
-    // If already allowed, good.
-    if (freeList.contains(receiverId)) return;
-
-    // If at limit, allow *existing partner* if sender previously messaged them.
-    if (freeList.length >= _kFreeChatPartnerLimit) {
-      final okBecauseHistory = await _hasPreviouslyMessagedPartner(
-        senderId: senderId,
-        receiverId: receiverId,
-      );
-      if (okBecauseHistory) return;
-
-      throw ChatException(
-        'Premium required: you can only chat with $_kFreeChatPartnerLimit people for free. Subscribe to chat with more people.',
-      );
-    }
-
-    // Otherwise, add receiverId transactionally (still check-only; actual "consume" is
-    // finalized by _recordFreeTierPartnerIfNeeded after successful send).
     await _fs.runTransaction((tx) async {
-      final cur = await tx.get(meRef);
-      final curData = cur.data();
+      final snap = await tx.get(meRef);
+      final meData = snap.data();
 
-      final curChatMap =
-          (curData?['chat'] is Map) ? (curData!['chat'] as Map) : null;
+      final chatMap =
+          (meData?['chat'] is Map) ? (meData!['chat'] as Map) : null;
 
-      List<String> curList = <String>[];
-      final curRaw = curChatMap?['freeChatPartnerIds'];
-      if (curRaw is List) {
-        curList =
-            curRaw
+      // Preferred list field
+      List<String> freeList = <String>[];
+      final rawList = chatMap?['freeChatPartnerIds'];
+      if (rawList is List) {
+        freeList =
+            rawList
                 .map((e) => e.toString().trim())
                 .where((e) => e.isNotEmpty)
                 .toList();
       }
 
-      if (curList.isEmpty) {
-        final legacy1 = curChatMap?['freeChatPartnerId']?.toString().trim();
+      // Backward-compat: if list empty, try legacy single id
+      if (freeList.isEmpty) {
+        final legacy1 = chatMap?['freeChatPartnerId']?.toString().trim();
         if (legacy1 != null && legacy1.isNotEmpty) {
-          curList = [legacy1];
+          freeList = [legacy1];
         } else {
-          final legacy2 = curData?['freeChatPartnerId']?.toString().trim();
+          final legacy2 = meData?['freeChatPartnerId']?.toString().trim();
           if (legacy2 != null && legacy2.isNotEmpty) {
-            curList = [legacy2];
+            freeList = [legacy2];
           }
         }
       }
 
-      curList = curList.toSet().toList()..removeWhere((e) => e.trim().isEmpty);
+      // Normalize: unique + no empties
+      freeList =
+          freeList.toSet().toList()..removeWhere((e) => e.trim().isEmpty);
 
-      if (curList.contains(receiverId)) return;
+      final alreadyAllowed = freeList.contains(receiverId);
 
-      if (curList.length >= _kFreeChatPartnerLimit) {
-        // Another concurrent write may have filled the list. Do the same back-compat check.
-        // (If this throws, UI should show premium modal.)
-        throw ChatException(
-          'Premium required: you can only chat with $_kFreeChatPartnerLimit people for free. Subscribe to chat with more people.',
-        );
+      if (!alreadyAllowed) {
+        if (freeList.length >= _kFreeChatPartnerLimit) {
+          throw ChatException(
+            'Premium required: you can only chat with $_kFreeChatPartnerLimit people for free. Subscribe to chat with more people.',
+          );
+        }
+
+        freeList.add(receiverId);
+        freeList =
+            freeList.toSet().toList()..removeWhere((e) => e.trim().isEmpty);
+
+        tx.set(meRef, {
+          'chat': <String, dynamic>{'freeChatPartnerIds': freeList},
+        }, SetOptions(merge: true));
+
+        // Optional: clean up legacy single field (keep if you still rely on it elsewhere)
+        // tx.set(meRef, {'chat': <String, dynamic>{'freeChatPartnerId': FieldValue.delete()}}, SetOptions(merge: true));
       }
-
-      curList.add(receiverId);
-      curList = curList.toSet().toList()..removeWhere((e) => e.trim().isEmpty);
-
-      tx.set(meRef, {
-        'chat': <String, dynamic>{'freeChatPartnerIds': curList},
-      }, SetOptions(merge: true));
     });
   }
 
@@ -560,6 +486,8 @@ class ChatService {
     final chatId = '${ids[0]}_${ids[1]}';
 
     final chatRef = _chatsRef.doc(chatId);
+    final meRef = _fs.collection('users').doc(a);
+
     final chatDoc = <String, dynamic>{
       'participantIds': ids,
       'createdAt': FieldValue.serverTimestamp(),
@@ -578,7 +506,41 @@ class ChatService {
         final existing = await tx.get(chatRef);
         if (existing.exists) return chatId;
 
-        // Premium gating is enforced ONLY on send, not on opening/creating chats.
+        // Premium detection from *user doc* (transaction-safe).
+        final meSnap = await tx.get(meRef);
+        final meData = meSnap.data();
+
+        bool flag(String k) => (meData?[k] == true);
+        final isPremium =
+            flag('isPremium') ||
+            flag('premium') ||
+            flag('subscriptionActive') ||
+            flag('hasActiveSubscription');
+
+        if (!isPremium) {
+          // Read lock from either users/{uid}.chat.freeChatPartnerId (preferred)
+          // or legacy users/{uid}.freeChatPartnerId.
+          final chatMap =
+              (meData?['chat'] is Map) ? (meData?['chat'] as Map) : null;
+
+          String? freePartner =
+              chatMap?['freeChatPartnerId']?.toString().trim();
+          if (freePartner != null && freePartner.isEmpty) freePartner = null;
+
+          freePartner ??= meData?['freeChatPartnerId']?.toString().trim();
+          if (freePartner != null && freePartner.isEmpty) freePartner = null;
+
+          if (freePartner != null && freePartner != b) {
+            throw ChatException(
+          }
+
+          // First-time lock: set free partner id on initiator.
+          if (freePartner == null) {
+            tx.set(meRef, {
+              'chat': {'freeChatPartnerId': b},
+            }, SetOptions(merge: true));
+          }
+        }
 
         tx.set(chatRef, chatDoc);
         return chatId;
@@ -586,7 +548,6 @@ class ChatService {
     } catch (e) {
       debugPrint(
         '[CHAT][createConversation] FAILED chatId=$chatId a=$a b=$b error=$e',
-      );
       rethrow;
     }
   }
@@ -610,7 +571,6 @@ class ChatService {
       return ChatConversation.fromFirestore(
         query.docs.first.data(),
         query.docs.first.id,
-      );
     } catch (e) {
       debugPrint('Error getting conversation: $e');
       return null;
@@ -632,45 +592,33 @@ class ChatService {
   /// Get all conversations for a user
   Future<List<ChatConversation>> getUserConversations(String userId) async {
     try {
-      // NOTE: Do NOT filter by `isActive` in Firestore.
-      // Older chat docs may not have the field, and Firestore would exclude them.
       final query =
           await _chatsRef
               .where('participantIds', arrayContains: userId)
+              .where('isActive', isEqualTo: true)
               .orderBy('lastMessageAt', descending: true)
               .get();
 
-      final all =
-          query.docs
-              .map((doc) => ChatConversation.fromFirestore(doc.data(), doc.id))
-              .toList();
-
-      // Client-side filter: treat missing `isActive` as active (model defaults to true).
-      return all.where((c) => c.isActive).toList();
+      return query.docs
+          .map((doc) => ChatConversation.fromFirestore(doc.data(), doc.id))
+          .toList();
     } catch (e) {
-      throw ChatException('Failed to get conversations: $e');
     }
   }
 
   /// Stream all conversations for a user (real-time)
   Stream<List<ChatConversation>> streamUserConversations(String userId) {
-    // NOTE: Do NOT filter by `isActive` in Firestore.
-    // Older chat docs may not have the field, and Firestore would exclude them.
     return _chatsRef
         .where('participantIds', arrayContains: userId)
+        .where('isActive', isEqualTo: true)
         .orderBy('lastMessageAt', descending: true)
         .snapshots()
-        .map((snapshot) {
-          final all =
+        .map(
+          (snapshot) =>
               snapshot.docs
                   .map(
                     (doc) => ChatConversation.fromFirestore(doc.data(), doc.id),
-                  )
-                  .toList();
-
-          // Client-side filter: treat missing `isActive` as active (model defaults to true).
-          return all.where((c) => c.isActive).toList();
-        });
+                  .toList(),
   }
 
   /// Delete/deactivate a conversation
@@ -681,7 +629,6 @@ class ChatService {
         'updatedAt': FieldValue.serverTimestamp(),
       });
     } catch (e) {
-      throw ChatException('Failed to delete conversation: $e');
     }
   }
 
@@ -697,7 +644,7 @@ class ChatService {
   }) async {
     final meRef = _fs.collection('users').doc(senderId);
     final snap = await meRef.get();
-    final data = snap.data() as Map<String, dynamic>?;
+    final data = snap.data();
 
     final chatMap = (data?['chat'] as Map?)?.cast<String, dynamic>();
     final rawList = chatMap?['freeChatPartnerIds'];
@@ -720,10 +667,14 @@ class ChatService {
     if (freeList.length >= _kFreeChatPartnerLimit) return;
 
     freeList.add(receiverId);
-    await meRef.set(<String, dynamic>{
-      'chat': <String, dynamic>{'freeChatPartnerIds': freeList},
-    }, SetOptions(merge: true));
+    await meRef.set(
+      <String, dynamic>{
+        'chat': <String, dynamic>{'freeChatPartnerIds': freeList},
+      },
+      SetOptions(merge: true),
   }
+
+
 
   /// Send a text message
   Future<ChatMessage> sendMessage({
@@ -751,7 +702,6 @@ class ChatService {
         type: type,
         sentAt: DateTime.now(),
         metadata: metadata,
-      );
 
       // Use batch for atomic operation
       final batch = _fs.batch();
@@ -773,16 +723,13 @@ class ChatService {
       await _recordFreeTierPartnerIfNeeded(
         senderId: senderId,
         receiverId: receiverId,
-      );
       return message;
     } catch (e) {
       // Preserve user-facing gating/errors.
       if (e is ChatException) rethrow;
       // Otherwise keep a generic error.
-      throw ChatException('Message failed to send. Please try again.');
     }
 
-    // DEAD_CODE_REMOVED: throw ChatException('Message failed to send. Please try again.');
   }
 
   String _getMessageTypePreview(MessageType type) {
@@ -815,7 +762,6 @@ class ChatService {
       receiverId: receiverId,
       content: text,
       type: MessageType.text,
-    );
   }
 
   /// Send an image message
@@ -833,7 +779,6 @@ class ChatService {
       content: imageUrl,
       type: MessageType.image,
       metadata: caption != null ? {'caption': caption} : null,
-    );
   }
 
   /// Send an audio message
@@ -851,7 +796,6 @@ class ChatService {
       content: audioUrl,
       type: MessageType.audio,
       metadata: {'duration': durationSeconds},
-    );
   }
 
   /// Get messages for a chat
@@ -875,7 +819,6 @@ class ChatService {
           .map((doc) => ChatMessage.fromFirestore(doc.data(), doc.id))
           .toList();
     } catch (e) {
-      throw ChatException('Failed to get messages: $e');
     }
   }
 
@@ -890,7 +833,6 @@ class ChatService {
               snapshot.docs
                   .map((doc) => ChatMessage.fromFirestore(doc.data(), doc.id))
                   .toList(),
-        );
   }
 
   /// Delete a message
@@ -898,7 +840,6 @@ class ChatService {
     try {
       await _messagesRef(chatId).doc(messageId).delete();
     } catch (e) {
-      throw ChatException('Failed to delete message: $e');
     }
   }
 

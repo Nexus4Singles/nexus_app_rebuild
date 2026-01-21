@@ -6,17 +6,16 @@ import 'package:nexus_app_min_test/core/lists/onboarding_lists.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
 
-class DatingQualitiesStubScreen extends ConsumerStatefulWidget {
-  const DatingQualitiesStubScreen({super.key});
+class DatingHobbiesScreen extends ConsumerStatefulWidget {
+  const DatingHobbiesScreen({super.key});
 
   @override
-  ConsumerState<DatingQualitiesStubScreen> createState() =>
-      _DatingQualitiesStubScreenState();
+  ConsumerState<DatingHobbiesScreen> createState() =>
+      _DatingHobbiesScreenState();
 }
 
-class _DatingQualitiesStubScreenState
-    extends ConsumerState<DatingQualitiesStubScreen> {
-  static const int _max = 8;
+class _DatingHobbiesScreenState extends ConsumerState<DatingHobbiesScreen> {
+  static const int _max = 5;
 
   final _search = TextEditingController();
   final Set<String> _selected = {};
@@ -25,7 +24,7 @@ class _DatingQualitiesStubScreenState
   void initState() {
     super.initState();
     final draft = ref.read(datingOnboardingDraftProvider);
-    _selected.addAll(draft.desiredQualities);
+    _selected.addAll(draft.hobbies);
   }
 
   @override
@@ -55,7 +54,7 @@ class _DatingQualitiesStubScreenState
         error:
             (e, _) => Center(
               child: Text(
-                'Failed to load qualities: $e',
+                'Failed to load hobbies: $e',
                 style: AppTextStyles.bodyMedium,
               ),
             ),
@@ -66,7 +65,7 @@ class _DatingQualitiesStubScreenState
   Widget _buildContent(BuildContext context, OnboardingLists lists) {
     final q = _search.text.trim().toLowerCase();
     final items =
-        lists.desiredQualities
+        lists.hobbies
             .where((h) => q.isEmpty || h.toLowerCase().contains(q))
             .toList();
 
@@ -75,11 +74,12 @@ class _DatingQualitiesStubScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // ✅ COPY MUST MATCH MOCKUP INSTRUCTIONS (we will replace with exact text once you paste it)
           _ProgressHeader(
-            stepLabel: 'Step 4 of 8',
-            title: 'Desired Qualities',
+            stepLabel: 'Step 3 of 8',
+            title: 'Select your hobbies',
             subtitle:
-                'Select up to $_max qualities you seek in a partner. This helps us find better matches.',
+                'Select up to $_max hobbies. This helps us match you better.',
             counter: '${_selected.length} / $_max',
           ),
           const SizedBox(height: 14),
@@ -114,30 +114,30 @@ class _DatingQualitiesStubScreenState
     );
   }
 
-  void _toggle(String quality) {
+  void _toggle(String hobby) {
     setState(() {
-      if (_selected.contains(quality)) {
-        _selected.remove(quality);
+      if (_selected.contains(hobby)) {
+        _selected.remove(hobby);
         return;
       }
 
       if (_selected.length >= _max) {
         HapticFeedback.mediumImpact();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('You can only select up to $_max qualities.')),
+          SnackBar(content: Text('You can only select up to $_max hobbies.')),
         );
         return;
       }
 
-      _selected.add(quality);
+      _selected.add(hobby);
     });
   }
 
   void _onContinue(BuildContext context) {
     ref
         .read(datingOnboardingDraftProvider.notifier)
-        .setDesiredQualities(_selected.toList());
-    Navigator.of(context).pushNamed('/dating/setup/photos');
+        .setHobbies(_selected.toList());
+    Navigator.of(context).pushNamed('/dating/setup/qualities');
   }
 }
 
@@ -215,7 +215,7 @@ class _SearchField extends StatelessWidget {
               controller: controller,
               onChanged: onChanged,
               decoration: InputDecoration(
-                hintText: 'Search qualities',
+                hintText: 'Search hobbies',
                 hintStyle: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.textMuted,
                 ),
