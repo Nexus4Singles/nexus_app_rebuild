@@ -77,7 +77,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               controller: _email,
               enabled: !_busy,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                hintText: 'your.email@example.com',
+              ),
             ),
             const SizedBox(height: 12),
             TextField(

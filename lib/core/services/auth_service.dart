@@ -1,4 +1,5 @@
 import 'package:nexus_app_min_test/core/stubs/firebase_auth_import.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Service for Firebase Authentication operations.
 /// Currently supports email/password auth. Google Sign-In can be enabled later.
@@ -57,6 +58,52 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       throw AuthException.fromFirebaseAuth(e);
     } catch (e) {
+      throw AuthException('Sign in failed: $e');
+    }
+  }
+
+  /// Sign in with email or username (converts username to email via Firestore lookup)
+  Future<UserCredential> signInWithEmailOrUsername({
+    required String emailOrUsername,
+    required String password,
+    required FirebaseFirestore firestore,
+  }) async {
+    try {
+      String actualEmail = emailOrUsername;
+
+      // If not an email format, look up username in Firestore
+      if (!emailOrUsername.contains('@')) {
+        try {
+          final usersRef = firestore.collection('users');
+          final query =
+              await usersRef
+                  .where('username', isEqualTo: emailOrUsername.toLowerCase())
+                  .limit(1)
+                  .get();
+
+          if (query.docs.isEmpty) {
+            throw AuthException('Username not found');
+          }
+
+          final userEmail = query.docs.first.data()['email'] as String?;
+          if (userEmail == null) {
+            throw AuthException('User email not found');
+          }
+          actualEmail = userEmail;
+        } catch (e) {
+          if (e is AuthException) rethrow;
+          throw AuthException('Failed to look up username: $e');
+        }
+      }
+
+      return await _auth.signInWithEmailAndPassword(
+        email: actualEmail,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw AuthException.fromFirebaseAuth(e);
+    } catch (e) {
+      if (e is AuthException) rethrow;
       throw AuthException('Sign in failed: $e');
     }
   }

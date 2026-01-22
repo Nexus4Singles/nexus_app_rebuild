@@ -214,6 +214,36 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
     }
   }
 
+  /// Sign in with email or username
+  Future<void> signInWithEmailOrUsername({
+    required String emailOrUsername,
+    required String password,
+  }) async {
+    state = const AsyncValue.loading();
+    try {
+      final credential = await _authService.signInWithEmailOrUsername(
+        emailOrUsername: emailOrUsername,
+        password: password,
+        firestore: FirebaseFirestore.instance,
+      );
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('force_guest');
+
+      final user = credential.user;
+      if (user != null) {
+        await _ensureUserDocNormalized(user);
+
+        await _persistPresurveyToFirestore(user.uid);
+      }
+
+      state = AsyncValue.data(user);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+      rethrow;
+    }
+  }
+
   /// Sign in with Google
   /// Returns true if user needs to set username (new user)
   Future<bool> signInWithGoogle() async {

@@ -74,15 +74,27 @@ class AdminReviewDetailScreen extends ConsumerWidget {
             'dating.reviewedBy': adminId,
             'dating.reviewedAt': FieldValue.serverTimestamp(),
           };
+
           if (newStatus == 'verified') {
             payload['dating.verifiedAt'] = FieldValue.serverTimestamp();
+            // After approval: delete review pack (no longer needed)
+            payload['dating.reviewPack'] = FieldValue.delete();
           }
+
           if (newStatus == 'rejected') {
             payload['dating.rejectedAt'] = FieldValue.serverTimestamp();
             if (reason != null && reason.trim().isNotEmpty) {
               payload['dating.rejectionReason'] = reason.trim();
             }
+            // After rejection: delete review pack AND auto-disable account
+            payload['dating.reviewPack'] = FieldValue.delete();
+            payload['account.disabled'] = true;
+            payload['account.disabledBy'] = adminId;
+            payload['account.disabledAt'] = FieldValue.serverTimestamp();
+            payload['account.disabledReason'] =
+                'Profile rejected: ${reason?.trim() ?? 'Failed verification'}';
           }
+
           await fs.collection('users').doc(userId).update(payload);
         }
 

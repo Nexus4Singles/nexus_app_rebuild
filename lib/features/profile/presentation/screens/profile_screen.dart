@@ -785,8 +785,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
         onPressed: () => Navigator.of(context).maybePop(),
       ),
       actions: [
-        if (isViewingOtherUser) _OverflowMenu(targetUid: profile.id),
-        const SizedBox(width: 12),
+        if (isViewingOtherUser) const SizedBox(width: 12),
       ],
       flexibleSpace: LayoutBuilder(
         builder: (context, constraints) {
@@ -839,22 +838,15 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                   final isVerified =
                                       resolvedStatus == 'verified';
                                   final isPending = resolvedStatus == 'pending';
-                                  final isRejected =
-                                      resolvedStatus == 'rejected';
 
                                   // Product nuance:
-                                  // - Always show "Verified" badge to others (and self).
-                                  // - Only show "Pending review" / "Not verified" to self (avoid exposing moderation state).
-                                  if (!isViewingOtherUser) {
-                                    if (!(isVerified ||
-                                        isPending ||
-                                        isRejected)) {
-                                      return const SizedBox.shrink();
-                                    }
-                                  } else {
-                                    if (!isVerified)
-                                      return const SizedBox.shrink();
+                                  // - For other users: only show "Verified" badge (verified status only)
+                                  // - For own profile: show all statuses (Verified, Pending review, Not verified)
+                                  if (isViewingOtherUser) {
+                                    // Only show verified badge to others
+                                    if (!isVerified) return const SizedBox.shrink();
                                   }
+                                  // For own profile, show all statuses, so don't filter here
 
                                   IconData icon;
                                   String label;
@@ -907,98 +899,101 @@ class _ProfileHeroAppBar extends StatelessWidget {
                       right: 0,
                       child: SafeArea(
                         minimum: const EdgeInsets.only(top: 6, right: 6),
-                        child: Consumer(
-                          builder: (context, ref, _) {
-                            final tagAsync = ref.watch(
-                              _relationshipStatusTagProvider(profile.id),
-                            );
-                            final value = tagAsync.maybeWhen(
-                              data: (v) => v,
-                              orElse: () => RelationshipStatusTag.available,
-                            );
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Consumer(
+                              builder: (context, ref, _) {
+                                final tagAsync = ref.watch(
+                                  _relationshipStatusTagProvider(profile.id),
+                                );
+                                final value = tagAsync.maybeWhen(
+                                  data: (v) => v,
+                                  orElse: () => RelationshipStatusTag.available,
+                                );
 
-                            final canEdit =
-                                canEditRelationshipStatus &&
-                                !isViewingOtherUser;
+                                final canEdit =
+                                    canEditRelationshipStatus &&
+                                    !isViewingOtherUser;
 
-                            return _RelationshipStatusPill(
-                              value: value,
-                              onTap:
-                                  canEdit
-                                      ? () async {
-                                        final selected = await showModalBottomSheet<
-                                          RelationshipStatusTag
-                                        >(
-                                          context: context,
-                                          backgroundColor: Colors.transparent,
-                                          isScrollControlled: false,
-                                          builder: (sheetContext) {
-                                            RelationshipStatusTag temp = value;
+                                return _RelationshipStatusPill(
+                                  value: value,
+                                  onTap:
+                                      canEdit
+                                          ? () async {
+                                            final selected = await showModalBottomSheet<
+                                              RelationshipStatusTag
+                                            >(
+                                              context: context,
+                                              backgroundColor: Colors.transparent,
+                                              isScrollControlled: false,
+                                              builder: (sheetContext) {
+                                                RelationshipStatusTag temp = value;
 
-                                            return StatefulBuilder(
-                                              builder: (
-                                                sheetContext,
-                                                setSheetState,
-                                              ) {
-                                                return Container(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                        16,
-                                                        16,
-                                                        16,
-                                                        24,
-                                                      ),
-                                                  decoration: BoxDecoration(
-                                                    color: AppColors.surface,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          18,
-                                                        ),
-                                                  ),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Expanded(
-                                                            child: Text(
-                                                              'Relationship status',
-                                                              style: AppTextStyles
-                                                                  .titleLarge
-                                                                  .copyWith(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w900,
-                                                                  ),
-                                                            ),
+                                                return StatefulBuilder(
+                                                  builder: (
+                                                    sheetContext,
+                                                    setSheetState,
+                                                  ) {
+                                                    return Container(
+                                                      padding:
+                                                          const EdgeInsets.fromLTRB(
+                                                            16,
+                                                            16,
+                                                            16,
+                                                            24,
                                                           ),
-                                                          InkWell(
-                                                            onTap:
-                                                                () => Navigator.pop(
-                                                                  sheetContext,
-                                                                  null,
+                                                      decoration: BoxDecoration(
+                                                        color: AppColors.surface,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              18,
+                                                            ),
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child: Text(
+                                                                  'Relationship status',
+                                                                  style: AppTextStyles
+                                                                      .titleLarge
+                                                                      .copyWith(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w900,
+                                                                      ),
                                                                 ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                  999,
-                                                                ),
-                                                            child: Container(
-                                                              height: 36,
-                                                              width: 36,
-                                                              decoration: BoxDecoration(
-                                                                color:
-                                                                    AppColors
-                                                                        .background,
+                                                              ),
+                                                              InkWell(
+                                                                onTap:
+                                                                    () => Navigator.pop(
+                                                                      sheetContext,
+                                                                      null,
+                                                                    ),
                                                                 borderRadius:
                                                                     BorderRadius.circular(
                                                                       999,
                                                                     ),
-                                                                border: Border.all(
-                                                                  color:
+                                                                child: Container(
+                                                                  height: 36,
+                                                                  width: 36,
+                                                                  decoration: BoxDecoration(
+                                                                    color:
+                                                                        AppColors
+                                                                            .background,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                          999,
+                                                                        ),
+                                                                    border: Border.all(
+                                                                      color:
                                                                       AppColors
                                                                           .border,
                                                                 ),
@@ -1091,6 +1086,10 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                       : null,
                             );
                           },
+                        ),
+                            if (isViewingOtherUser)
+                              _OverflowMenu(targetUid: profile.id),
+                          ],
                         ),
                       ),
                     ),

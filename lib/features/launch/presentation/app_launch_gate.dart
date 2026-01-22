@@ -15,6 +15,7 @@ import '../../presurvey/presentation/splash/presurvey_splash_screen.dart';
 
 import '../../auth/presentation/screens/login_screen.dart';
 import '../../auth/presentation/screens/signup_screen.dart';
+import 'screens/account_disabled_screen.dart';
 
 class AppLaunchGate extends ConsumerWidget {
   const AppLaunchGate({super.key});
@@ -56,6 +57,12 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
     return onboarding?['presurveyCompleted'] == true;
   }
 
+  bool _isAccountDisabled(Map<String, dynamic>? doc) {
+    if (doc == null) return false;
+    final account = (doc['account'] as Map?)?.cast<String, dynamic>();
+    return (account?['disabled'] == true) || (account?['isDisabled'] == true);
+  }
+
   void _route() {
     if (!mounted) return;
 
@@ -73,11 +80,28 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
           return;
         }
 
-        // Signed in -> check presurvey completion from Firestore doc.
+        // Signed in -> check if account is disabled.
         final docAsync = ref.read(currentUserDocProvider);
 
         docAsync.when(
           data: (doc) {
+            // First check: is account disabled?
+            if (_isAccountDisabled(doc)) {
+              final account =
+                  (doc?['account'] as Map?)?.cast<String, dynamic>();
+              final disabledReason = account?['disabledReason']?.toString();
+
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder:
+                      (_) =>
+                          AccountDisabledScreen(disabledReason: disabledReason),
+                ),
+              );
+              return;
+            }
+
+            // Second check: is presurvey completed?
             final done = _isPresurveyCompleted(doc);
 
             Navigator.of(context).pushReplacement(
@@ -115,6 +139,23 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
 
           docAsync.when(
             data: (doc) {
+              // Check if account is disabled first
+              if (_isAccountDisabled(doc)) {
+                final account =
+                    (doc?['account'] as Map?)?.cast<String, dynamic>();
+                final disabledReason = account?['disabledReason']?.toString();
+
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder:
+                        (_) => AccountDisabledScreen(
+                          disabledReason: disabledReason,
+                        ),
+                  ),
+                );
+                return;
+              }
+
               final done = _isPresurveyCompleted(doc);
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(

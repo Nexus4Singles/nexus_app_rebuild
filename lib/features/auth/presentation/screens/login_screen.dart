@@ -16,7 +16,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final _email = TextEditingController();
+  final _email = TextEditingController(); // Can be email or username
   final _password = TextEditingController();
 
   bool _busy = false;
@@ -39,9 +39,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     try {
+      final emailOrUsername = _email.text.trim();
+
       await ref
           .read(authNotifierProvider.notifier)
-          .signInWithEmail(email: _email.text.trim(), password: _password.text);
+          .signInWithEmailOrUsername(
+            emailOrUsername: emailOrUsername,
+            password: _password.text,
+          );
 
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(
@@ -100,7 +105,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               controller: _email,
               enabled: !_busy,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(
+                labelText: 'Email or Username',
+                hintText: 'Enter your email or username',
+              ),
             ),
             const SizedBox(height: 12),
             TextField(

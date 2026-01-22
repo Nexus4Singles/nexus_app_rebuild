@@ -24,7 +24,7 @@ class DatingAudioQuestionScreen extends ConsumerStatefulWidget {
 class _DatingAudioQuestionScreenState
     extends ConsumerState<DatingAudioQuestionScreen> {
   static const int _maxSeconds = 60;
-  static const int _minSeconds = 3;
+  static const int _minSeconds = 45;
 
   final _recorder = AudioRecorder();
   final _player = AudioPlayer();
