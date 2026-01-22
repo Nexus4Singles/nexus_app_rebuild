@@ -74,9 +74,8 @@ class DatingSearchService {
 
   /// Legacy v1 eligibility heuristic (confirmed keys in production):
   /// - photos must be non-empty
-  /// - AND EITHER:
-  ///   - profile_completed_on exists
-  ///   - OR (compatibility_setted == true AND registration_progress == 'completed')
+  /// - AND registration_progress == 'completed'
+  /// - AND compatibility_setted == true (compatibility quiz completed)
   bool _isLegacyV1Eligible(Map<String, dynamic> data) {
     final photos = data['photos'];
     final hasPhotos = photos is List && photos.isNotEmpty;
@@ -87,8 +86,10 @@ class DatingSearchService {
     final regOk = reg == 'completed';
     if (!regOk) return false;
 
-    // v1 had profiles that were usable even when is_verified=false.
-    // For now, treat (photos + registration_progress=completed) as sufficient.
+    // v2 requirement: v1 users must have completed compatibility quiz
+    final compatibilitySetted = data['compatibility_setted'] == true;
+    if (!compatibilitySetted) return false;
+
     return true;
   }
 

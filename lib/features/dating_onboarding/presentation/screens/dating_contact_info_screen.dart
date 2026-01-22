@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
+import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
 
 class DatingContactInfoScreen extends ConsumerStatefulWidget {
   const DatingContactInfoScreen({super.key});
@@ -98,8 +99,9 @@ class _DatingContactInfoScreenState
   }
 
   bool get _hasAtLeastOneFilled {
-    final textFieldsFilled =
-        _controllers.values.any((c) => c.text.trim().isNotEmpty);
+    final textFieldsFilled = _controllers.values.any(
+      (c) => c.text.trim().isNotEmpty,
+    );
     final phoneFilled =
         _phoneNumberController.text.trim().isNotEmpty ||
         _whatsappNumberController.text.trim().isNotEmpty;
@@ -214,7 +216,9 @@ class _DatingContactInfoScreenState
     final whatsappNumber = _whatsappNumberController.text.trim();
     if (whatsappNumber.isNotEmpty) {
       info['WhatsApp'] =
-          whatsappCode.isEmpty ? whatsappNumber : '$whatsappCode$whatsappNumber';
+          whatsappCode.isEmpty
+              ? whatsappNumber
+              : '$whatsappCode$whatsappNumber';
     }
 
     if (info.isEmpty) {
@@ -251,8 +255,8 @@ class _ProgressHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(stepLabel, style: AppTextStyles.caption),
-        const SizedBox(height: 8),
+        const DatingProfileProgressBar(currentStep: 7, totalSteps: 8),
+        const SizedBox(height: 18),
         Text(title, style: AppTextStyles.headlineLarge),
         const SizedBox(height: 10),
         Text(
@@ -358,9 +362,8 @@ class _PhoneInputTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isWhatsApp = label == 'WhatsApp';
-    final iconPath = isWhatsApp
-        ? 'assets/images/social_icons/whatsapp.png'
-        : null;
+    final iconPath =
+        isWhatsApp ? 'assets/images/social_icons/whatsapp.png' : null;
     final materialIcon = !isWhatsApp ? Icons.phone_rounded : null;
 
     return Padding(

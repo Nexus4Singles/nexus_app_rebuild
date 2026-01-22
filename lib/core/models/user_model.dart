@@ -31,9 +31,16 @@ class Nexus2Data extends Equatable {
       return const Nexus2Data(relationshipStatus: '', gender: '');
     }
 
+    // Normalize gender for v1/v2 compatibility
+    final rawGender = map['gender'] as String? ?? '';
+    final normalizedGender =
+        rawGender.isNotEmpty
+            ? (UserModel._normalizeGender(rawGender) ?? rawGender)
+            : '';
+
     return Nexus2Data(
       relationshipStatus: map['relationshipStatus'] as String? ?? '',
-      gender: map['gender'] as String? ?? '',
+      gender: normalizedGender,
       primaryGoals:
           (map['primaryGoals'] as List<dynamic>?)
               ?.map((e) => e.toString())
@@ -175,6 +182,15 @@ class UserModel extends Equatable {
     if (v == null) return null;
     final s = v.toString().trim();
     return s.isEmpty ? null : s;
+  }
+
+  /// Normalize gender for v1/v2 compatibility
+  /// V1 stored "Male"/"Female", v2 uses "male"/"female"
+  static String? _normalizeGender(String? gender) {
+    if (gender == null) return null;
+    final normalized = gender.trim().toLowerCase();
+    if (normalized == 'male' || normalized == 'female') return normalized;
+    return gender; // Return as-is if not recognized
   }
 
   static int? _intFrom(dynamic v) {
@@ -426,11 +442,13 @@ class UserModel extends Equatable {
           _intFrom(_getPath(data, ['age'])) ??
           _intFrom(_getPath(data, ['nexus2', 'profile', 'age'])) ??
           _intFrom(_getPath(data, ['dating', 'profile', 'age'])),
-      gender: _firstString(data, [
-        ['gender'],
-        ['nexus2', 'profile', 'gender'],
-        ['dating', 'profile', 'gender'],
-      ]),
+      gender: _normalizeGender(
+        _firstString(data, [
+          ['gender'],
+          ['nexus2', 'profile', 'gender'],
+          ['dating', 'profile', 'gender'],
+        ]),
+      ),
       // Note: typo in original v1 key: bestQualotiesOrTraits
       bestQualotiesOrTraits: _firstString(data, [
         ['bestQualitiesOrTraits'],

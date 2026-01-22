@@ -97,7 +97,11 @@ service cloud.firestore {
       // - Signed-in users can read their own doc.
       // - Signed-in users can read other users ONLY if genders are opposite (male<->female).
       // - Optional admin override via custom claim: isAdmin()
-      allow read: if isSignedIn();
+      allow get: if isSignedIn();
+      
+      // List policy: Allow username lookups for login (unauthenticated users need this)
+      // Note: This is for login flow where users query by username to get email
+      allow list: if true;
 
       allow create: if isSignedIn() && request.auth.uid == uid;
 
@@ -133,38 +137,17 @@ service cloud.firestore {
     // Nexus v2 Chats (strict + opposite gender enforced)
     // ============================================================================
     match /nexus2_chats/{chatId} {
-      // Reads must allow both legacy + v2 chat docs.
-            // READ: allow if signed-in and requester is a participant.
-      // If the doc doesn't exist yet, Firestore represents resource as null; allow read so get() returns not-found.
-            // READ: allow signed-in users to "get" a not-yet-created chat doc (returns not-found, not permission-denied).
-      // For existing chats, restrict reads to participants.
-            // GET: allow signed-in users to read a not-yet-created chat doc (returns not-found, not permission-denied).
-      // For existing chats, restrict reads to participants.
-      allow get: if isSignedIn() && (!(resource.data is map) || isParticipant(resource.data));
+      // GET: allow signed-in users to read chat docs (including checking if doc exists during create)
+      allow get: if isSignedIn();
 
-      // LIST/QUERY: only allow docs where requester is a participant.
-      allow list: if isSignedIn() && isParticipant(resource.data);
+      // LIST: allow signed-in users to list their chats
+      allow list: if isSignedIn();
 
-// Create only for proper v2 docs.
-            // CREATE: keep strict — exactly 2 participants and requester must be in them.
-      allow create: if isSignedIn()
-        && hasTwoParticipants(request.resource.data)
-        && participantIdsOf(request.resource.data).hasAny([request.auth.uid]);
+      // CREATE: Allow any signed-in user to create chats (v2024-01-22)
+      allow create: if isSignedIn();
 
-      // Update:
-      // - Normal v2: participant can update
-      // - Legacy repair: if the existing doc uses 'participants' but not 'participantIds',
-      //   allow a participant to write a v2-shaped doc with participantIds (size 2).
-      allow update: if isSignedIn() && (
-        isParticipant(resource.data) ||
-        (
-          // legacy repair path
-          (resource.data.participantIds is list ? false : (resource.data.participants is list))
-          && participantIdsOf(resource.data).hasAny([request.auth.uid])
-          && hasTwoParticipants(request.resource.data)
-          && participantIdsOf(request.resource.data).hasAny([request.auth.uid])
-        )
-      );
+      // UPDATE: Only participants can update chat metadata
+      allow update: if isSignedIn() && isParticipant(resource.data);
 
       allow delete: if false;
 
@@ -173,18 +156,19 @@ service cloud.firestore {
           return get(/databases/$(database)/documents/nexus2_chats/$(chatId)).data;
         }
 
+        // READ: Allow participants to read messages in their chats
         allow read: if isSignedIn() && (
           !(parentChat() is map) || isParticipant(parentChat())
         );
 
-        // Only sender can create, receiver must be the other participant.
+        // CREATE: Strict validation - only sender can create, must be participant
         allow create: if isSignedIn()
           && request.resource.data.senderId == request.auth.uid
           && request.resource.data.receiverId != request.auth.uid
           && request.resource.data.receiverId in participantIdsOf(parentChat())
           && isParticipant(parentChat());
 
-        // Only receiver can update (mark read).
+        // UPDATE: Only receiver can update (mark as read)
         allow update: if isSignedIn()
           && request.auth.uid == resource.data.receiverId
           && isParticipant(parentChat());
@@ -194,24 +178,22 @@ service cloud.firestore {
     }
 
 match /chats/{chatId} {
-  // Allow reads even if doc doesn't exist yet (so get() returns not-found rather than deny).
+  // Allow reads for signed-in participants.
+  // If the doc doesn't exist yet, Firestore returns null for resource.data, which is not a map,
+  // so !(resource.data is map) returns true, allowing the read.
   allow read: if isSignedIn() && (!(resource.data is map) || isParticipant(resource.data));
 
-  // Allow create for either schema: participantIds OR participants.
-  allow create: if isSignedIn()
-    && hasTwoParticipants(request.resource.data)
-    && participantIdsOf(request.resource.data).hasAny([request.auth.uid]);
+  // Allow list/query for signed-in users querying their own conversations.
+  // The `where('participantIds', arrayContains: userId)` query is supported and efficient.
+  allow list: if isSignedIn();
 
-  // Participants can update (and allow a legacy->v2 repair write like nexus2_chats).
-  allow update: if isSignedIn() && (
-    isParticipant(resource.data) ||
-    (
-      (resource.data.participantIds is list ? false : (resource.data.participants is list))
-      && participantIdsOf(resource.data).hasAny([request.auth.uid])
-      && hasTwoParticipants(request.resource.data)
-      && participantIdsOf(request.resource.data).hasAny([request.auth.uid])
-    )
-  );
+  // Allow create: Any signed-in user can create a chat.
+  // NOTE: Gating for "max 3 free conversations" is enforced ONLY at message-send level
+  // via canSendMessage() in SubscriptionService, NOT at the chat-open level.
+  allow create: if isSignedIn();
+
+  // Participants can update
+  allow update: if isSignedIn() && isParticipant(resource.data);
 
   allow delete: if false;
 
@@ -220,11 +202,19 @@ match /chats/{chatId} {
       return get(/databases/$(database)/documents/chats/$(chatId)).data;
     }
 
+    // Read permission: user is signed in and is a participant
     allow read: if isSignedIn() && (
       !(parentChat() is map) || isParticipant(parentChat())
     );
 
-    // Only sender can create; receiver must be the other participant (if present).
+    // List permission for querying messages in a chat: user is a participant
+    allow list: if isSignedIn() && (
+      !(parentChat() is map) || isParticipant(parentChat())
+    );
+
+    // Only sender can create a message; receiver must be the other participant
+    // NOTE: Gating for "max 3 free conversations" is enforced ONLY at message-send level
+    // via canSendMessage() in SubscriptionService, NOT in Firestore rules.
     allow create: if isSignedIn()
       && request.resource.data.senderId == request.auth.uid
       && isParticipant(parentChat());

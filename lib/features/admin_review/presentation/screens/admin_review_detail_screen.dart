@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nexus_app_min_test/core/user/is_admin_provider.dart';
 import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
 import 'package:nexus_app_min_test/core/services/media_service.dart';
+import 'package:nexus_app_min_test/core/providers/service_providers.dart';
+import 'package:nexus_app_min_test/core/services/duplicate_detection_service.dart';
 
 class AdminReviewDetailScreen extends ConsumerWidget {
   final String userId;
@@ -372,6 +374,23 @@ class AdminReviewDetailScreen extends ConsumerWidget {
                   ),
 
                 const SizedBox(height: 24),
+
+                // Duplicate Detection Section
+                _DuplicateDetectionWidget(
+                  userId: userId,
+                  photoHashes:
+                      (rp?['photoHashes'] as List?)
+                          ?.map((e) => e.toString())
+                          .toList() ??
+                      [],
+                  audioHashes:
+                      (rp?['audioHashes'] as List?)
+                          ?.map((e) => e.toString())
+                          .toList() ??
+                      [],
+                ),
+
+                const SizedBox(height: 24),
                 Row(
                   children: [
                     Expanded(
@@ -406,4 +425,259 @@ class AdminReviewDetailScreen extends ConsumerWidget {
       },
     );
   }
+}
+
+// ============================================================================
+// Duplicate Detection Widget
+// ============================================================================
+
+class _DuplicateDetectionWidget extends ConsumerStatefulWidget {
+  final String userId;
+  final List<String> photoHashes;
+  final List<String> audioHashes;
+
+  const _DuplicateDetectionWidget({
+    required this.userId,
+    required this.photoHashes,
+    required this.audioHashes,
+  });
+
+  @override
+  ConsumerState<_DuplicateDetectionWidget> createState() =>
+      _DuplicateDetectionWidgetState();
+}
+
+class _DuplicateDetectionWidgetState
+    extends ConsumerState<_DuplicateDetectionWidget> {
+  late Future<_DuplicateCheckResult> _duplicateCheckFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _duplicateCheckFuture = _checkDuplicates();
+  }
+
+  Future<_DuplicateCheckResult> _checkDuplicates() async {
+    final service = ref.read(duplicateDetectionServiceProvider);
+
+    try {
+      final duplicatePhotos =
+          widget.photoHashes.isNotEmpty
+              ? await service.findDuplicatePhotos(
+                widget.userId,
+                widget.photoHashes,
+              )
+              : <DuplicateMatch>[];
+
+      final duplicateAudio =
+          widget.audioHashes.isNotEmpty
+              ? await service.findDuplicateAudio(
+                widget.userId,
+                widget.audioHashes,
+              )
+              : <DuplicateMatch>[];
+
+      final suspiciousPatterns = await service.detectSuspiciousPatterns(
+        widget.userId,
+      );
+
+      return _DuplicateCheckResult(
+        photoMatches: duplicatePhotos,
+        audioMatches: duplicateAudio,
+        suspiciousPatterns: suspiciousPatterns,
+      );
+    } catch (e) {
+      debugPrint('Error checking duplicates: $e');
+      return _DuplicateCheckResult(
+        photoMatches: [],
+        audioMatches: [],
+        suspiciousPatterns: [],
+        error: e.toString(),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<_DuplicateCheckResult>(
+      future: _duplicateCheckFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: SizedBox(height: 40, child: CircularProgressIndicator()),
+          );
+        }
+
+        if (snapshot.hasError || snapshot.data == null) {
+          return Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text(
+              'Error checking duplicates: ${snapshot.error}',
+              style: const TextStyle(color: Colors.red, fontSize: 12),
+            ),
+          );
+        }
+
+        final result = snapshot.data!;
+
+        // If no duplicates or suspicious patterns found, show nothing
+        if (result.photoMatches.isEmpty &&
+            result.audioMatches.isEmpty &&
+            result.suspiciousPatterns.isEmpty) {
+          return const Padding(
+            padding: EdgeInsets.all(12.0),
+            child: Text(
+              '✅ No duplicates or suspicious patterns detected',
+              style: TextStyle(color: Colors.green, fontSize: 12),
+            ),
+          );
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Security Check',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 8),
+
+            // Photo duplicates
+            if (result.photoMatches.isNotEmpty)
+              _buildDuplicateWarning(
+                icon: '📸',
+                title:
+                    '⚠️ Duplicate Photos Detected (${result.photoMatches.length})',
+                matches: result.photoMatches,
+              ),
+
+            // Audio duplicates
+            if (result.audioMatches.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: _buildDuplicateWarning(
+                  icon: '🎤',
+                  title:
+                      '⚠️ Duplicate Audio Detected (${result.audioMatches.length})',
+                  matches: result.audioMatches,
+                ),
+              ),
+
+            // Suspicious patterns
+            if (result.suspiciousPatterns.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (final pattern in result.suspiciousPatterns)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color:
+                                pattern.severity == 'high'
+                                    ? Colors.red.shade50
+                                    : Colors.orange.shade50,
+                            border: Border.all(
+                              color:
+                                  pattern.severity == 'high'
+                                      ? Colors.red
+                                      : Colors.orange,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${pattern.icon} ${pattern.description}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              if (pattern.relatedUserIds.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 6.0),
+                                  child: Text(
+                                    'Related users: ${pattern.relatedUserIds.take(3).join(", ")}',
+                                    style: const TextStyle(fontSize: 11),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildDuplicateWarning({
+    required String icon,
+    required String title,
+    required List<DuplicateMatch> matches,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.red.shade50,
+        border: Border.all(color: Colors.red),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              color: Colors.red,
+            ),
+          ),
+          const SizedBox(height: 6),
+          ...matches.take(3).map((match) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 4.0),
+              child: Text(
+                '• ${match.userName} (ID: ${match.userId.substring(0, 6)}...)',
+                style: const TextStyle(fontSize: 11),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            );
+          }),
+          if (matches.length > 3)
+            Text(
+              '• +${matches.length - 3} more',
+              style: const TextStyle(fontSize: 11, fontStyle: FontStyle.italic),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DuplicateCheckResult {
+  final List<DuplicateMatch> photoMatches;
+  final List<DuplicateMatch> audioMatches;
+  final List<SuspiciousPattern> suspiciousPatterns;
+  final String? error;
+
+  _DuplicateCheckResult({
+    required this.photoMatches,
+    required this.audioMatches,
+    required this.suspiciousPatterns,
+    this.error,
+  });
 }

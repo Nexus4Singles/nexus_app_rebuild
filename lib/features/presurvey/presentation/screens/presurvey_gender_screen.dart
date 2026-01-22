@@ -10,7 +10,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../guest/guest_entry_gate.dart';
 import '../../../../core/bootstrap/bootstrap_gate.dart';
-import '../../../auth/presentation/screens/login_screen.dart';
+import '../../../launch/presentation/app_launch_gate.dart';
 import '../../../auth/presentation/screens/signup_screen.dart';
 import 'presurvey_relationship_status_screen.dart';
 
@@ -246,7 +246,7 @@ class PresurveyGenderScreen extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const LoginScreen(),
+                              builder: (_) => const AppLaunchGate(),
                             ),
                           );
                         },

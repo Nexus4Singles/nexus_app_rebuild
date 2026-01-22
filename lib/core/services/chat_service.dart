@@ -571,15 +571,30 @@ class ChatService {
     };
 
     try {
+      debugPrint(
+        '[CHAT][createConversation] Checking if users are disabled...',
+      );
       await _assertUsersNotDisabled([a, b]);
+
+      debugPrint(
+        '[CHAT][createConversation] Checking if genders are opposite...',
+      );
       await _assertOppositeGender(a, b);
 
+      debugPrint(
+        '[CHAT][createConversation] Running transaction to create chat...',
+      );
+      debugPrint('[CHAT][createConversation] chatDoc=$chatDoc');
+      debugPrint(
+        '[CHAT][createConversation] participantIds type=${chatDoc['participantIds'].runtimeType}',
+      );
       return await _fs.runTransaction((tx) async {
         final existing = await tx.get(chatRef);
         if (existing.exists) return chatId;
 
         // Premium gating is enforced ONLY on send, not on opening/creating chats.
 
+        debugPrint('[CHAT][createConversation] Setting chat document...');
         tx.set(chatRef, chatDoc);
         return chatId;
       });

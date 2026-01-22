@@ -181,6 +181,18 @@ class FirestoreService {
     }
   }
 
+  /// Delete user document from Firestore
+  /// This triggers Cloud Function to delete Firebase Auth user
+  Future<void> deleteUser(String uid) async {
+    if (_db == null) return;
+
+    try {
+      await _userDocRef(uid).delete();
+    } catch (e) {
+      throw FirestoreException('Failed to delete user: $e');
+    }
+  }
+
   Future<void> completeOnboarding(
     String uid, {
     required String relationshipStatus,

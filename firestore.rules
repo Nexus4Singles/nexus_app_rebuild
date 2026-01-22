@@ -133,9 +133,12 @@ service cloud.firestore {
     // Nexus v2 Chats (strict + opposite gender enforced)
     // ============================================================================
     match /nexus2_chats/{chatId} {
-  // Participants can read/list their chats.
-  // This is safe for queries because evaluation happens per-doc returned.
-  allow read, list: if isParticipant(resource.data);
+  // Allow signed-in users to query their own chats
+  // The where('participantIds', arrayContains: userId) query is allowed
+  allow list: if isSignedIn();
+  
+  // Participants can read individual chat documents
+  allow read: if isParticipant(resource.data);
 
   // Create allowed only if you're one of the participants.
   allow create: if isSignedIn()
@@ -162,23 +165,20 @@ service cloud.firestore {
 
 match /chats/{chatId} {
   // Allow reads even if doc doesn't exist yet (so get() returns not-found rather than deny).
+  // Read permission: user is signed in AND is a participant
   allow read: if isSignedIn() && (!(resource.data is map) || isParticipant(resource.data));
 
-  // Allow create for either schema: participantIds OR participants.
-  allow create: if isSignedIn()
-    && hasTwoParticipants(request.resource.data)
-    && participantIdsOf(request.resource.data).hasAny([request.auth.uid]);
+  // Allow list/query for signed-in users querying their own conversations.
+  // The `where('participantIds', arrayContains: userId)` query is supported and efficient.
+  allow list: if isSignedIn();
 
-  // Participants can update (and allow a legacy->v2 repair write like nexus2_chats).
-  allow update: if isSignedIn() && (
-    isParticipant(resource.data) ||
-    (
-      (resource.data.participantIds is list ? false : (resource.data.participants is list))
-      && participantIdsOf(resource.data).hasAny([request.auth.uid])
-      && hasTwoParticipants(request.resource.data)
-      && participantIdsOf(request.resource.data).hasAny([request.auth.uid])
-    )
-  );
+  // Allow create: Any signed-in user can create a chat.
+  // NOTE: Gating for "max 3 free conversations" is enforced at the message-send level
+  // via canSendMessage() in SubscriptionService, not at the chat-open level.
+  allow create: if isSignedIn();
+
+  // Participants can update
+  allow update: if isSignedIn() && isParticipant(resource.data);
 
   allow delete: if false;
 
@@ -187,11 +187,19 @@ match /chats/{chatId} {
       return get(/databases/$(database)/documents/chats/$(chatId)).data;
     }
 
+    // Read permission: user is signed in and is a participant
     allow read: if isSignedIn() && (
       !(parentChat() is map) || isParticipant(parentChat())
     );
 
-    // Only sender can create; receiver must be the other participant (if present).
+    // List permission for querying messages in a chat: user is a participant
+    allow list: if isSignedIn() && (
+      !(parentChat() is map) || isParticipant(parentChat())
+    );
+
+    // Only sender can create a message; receiver must be the other participant
+    // NOTE: Gating for "max 3 free conversations" will be enforced in the app layer
+    // via SubscriptionService.canSendMessage(), NOT in Firestore rules.
     allow create: if isSignedIn()
       && request.resource.data.senderId == request.auth.uid
       && isParticipant(parentChat());

@@ -75,11 +75,22 @@ class AuthService {
       if (!emailOrUsername.contains('@')) {
         try {
           final usersRef = firestore.collection('users');
-          final query =
+
+          // Try exact match first (case-sensitive)
+          var query =
               await usersRef
-                  .where('username', isEqualTo: emailOrUsername.toLowerCase())
+                  .where('username', isEqualTo: emailOrUsername)
                   .limit(1)
                   .get();
+
+          // If not found, try lowercase (for compatibility)
+          if (query.docs.isEmpty) {
+            query =
+                await usersRef
+                    .where('username', isEqualTo: emailOrUsername.toLowerCase())
+                    .limit(1)
+                    .get();
+          }
 
           if (query.docs.isEmpty) {
             throw AuthException('Username not found');

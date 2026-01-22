@@ -36,6 +36,8 @@ class _AppSplashRouter extends ConsumerStatefulWidget {
 
 class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
   Timer? _timer;
+  int _retryCount = 0;
+  static const _maxRetries = 6; // Max ~2 seconds of retries (6 x 350ms)
 
   @override
   void initState() {
@@ -57,6 +59,23 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
     return onboarding?['presurveyCompleted'] == true;
   }
 
+  bool _isRelationshipStatusSelected(Map<String, dynamic>? doc) {
+    if (doc == null) return false;
+    final nexus = (doc['nexus'] as Map?)?.cast<String, dynamic>();
+    final session = (nexus?['session'] as Map?)?.cast<String, dynamic>();
+    final nexus2 = (doc['nexus2'] as Map?)?.cast<String, dynamic>();
+    final statusCandidates = [
+      session?['relationshipStatus'], // primary write path
+      nexus2?['relationshipStatus'], // possible v2 path
+      (nexus2?['profile'] as Map?)?['relationshipStatus'],
+      (nexus?['profile'] as Map?)?['relationshipStatus'],
+      doc['relationshipStatus'],
+    ];
+    return statusCandidates.any(
+      (s) => s != null && s.toString().trim().isNotEmpty,
+    );
+  }
+
   bool _isAccountDisabled(Map<String, dynamic>? doc) {
     if (doc == null) return false;
     final account = (doc['account'] as Map?)?.cast<String, dynamic>();
@@ -70,6 +89,8 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
 
     authAsync.when(
       data: (user) {
+        _retryCount = 0; // Reset retry count on data
+
         // Logged out (or anonymous) -> auth entry screen (with guest option).
         if (user == null || user.isAnonymous) {
           Navigator.of(context).pushReplacement(
@@ -101,7 +122,19 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
               return;
             }
 
-            // Second check: is presurvey completed?
+            // Second check: is relationship status selected (required for v1 users)?
+            final hasRelationshipStatus = _isRelationshipStatusSelected(doc);
+            if (!hasRelationshipStatus) {
+              // V1 users must select relationship status in presurvey
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => const PresurveySplashScreen(),
+                ),
+              );
+              return;
+            }
+
+            // Third check: is presurvey completed?
             final done = _isPresurveyCompleted(doc);
 
             Navigator.of(context).pushReplacement(
@@ -116,6 +149,17 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
           },
           loading: () {
             // If still loading, keep splash visible and try again shortly.
+            // But don't retry infinitely; after max retries, continue to app
+            if (_retryCount >= _maxRetries) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => const GuestEntryGate(child: BootstrapGate()),
+                ),
+              );
+              return;
+            }
+
+            _retryCount++;
             _timer?.cancel();
             _timer = Timer(const Duration(milliseconds: 350), _route);
           },
@@ -139,6 +183,8 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
 
           docAsync.when(
             data: (doc) {
+              _retryCount = 0; // Reset on data
+
               // Check if account is disabled first
               if (_isAccountDisabled(doc)) {
                 final account =
@@ -156,6 +202,17 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
                 return;
               }
 
+              // V1 users must select relationship status
+              final hasRelationshipStatus = _isRelationshipStatusSelected(doc);
+              if (!hasRelationshipStatus) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (_) => const PresurveySplashScreen(),
+                  ),
+                );
+                return;
+              }
+
               final done = _isPresurveyCompleted(doc);
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
@@ -168,6 +225,18 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
               );
             },
             loading: () {
+              // Retry with max limit
+              if (_retryCount >= _maxRetries) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder:
+                        (_) => const GuestEntryGate(child: BootstrapGate()),
+                  ),
+                );
+                return;
+              }
+
+              _retryCount++;
               _timer?.cancel();
               _timer = Timer(const Duration(milliseconds: 350), _route);
             },
@@ -183,6 +252,16 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
         }
 
         // Still no auth info; keep splash visible and try again.
+        if (_retryCount >= _maxRetries) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => const GuestEntryGate(child: _AuthEntryScreen()),
+            ),
+          );
+          return;
+        }
+
+        _retryCount++;
         _timer?.cancel();
         _timer = Timer(const Duration(milliseconds: 350), _route);
       },
@@ -258,99 +337,164 @@ class _AuthEntryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
-        centerTitle: true,
-        title: Text('Welcome', style: AppTextStyles.headlineLarge),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 10),
-              Text(
-                'Choose how you want to continue',
-                textAlign: TextAlign.center,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textMuted,
-                ),
-              ),
-              const SizedBox(height: 22),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Background Image
+          Image.asset('assets/images/welcome_bg.jpg', fit: BoxFit.cover),
 
-              SizedBox(
-                height: 54,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const LoginScreen()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: Text(
-                    'Log In',
-                    style: AppTextStyles.labelLarge.copyWith(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+          // Gradient overlay for better text readability
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.3),
+                  Colors.black.withOpacity(0.5),
+                  Colors.black.withOpacity(0.8),
+                ],
+                stops: const [0.0, 0.5, 1.0],
               ),
-              const SizedBox(height: 12),
-
-              SizedBox(
-                height: 54,
-                child: OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const SignupScreen()),
-                    );
-                  },
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    side: BorderSide(color: AppColors.border),
-                  ),
-                  child: Text(
-                    'Create Account',
-                    style: AppTextStyles.labelLarge,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              TextButton(
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder:
-                          (_) => const GuestEntryGate(child: BootstrapGate()),
-                    ),
-                    (_) => false,
-                  );
-                },
-                child: Text(
-                  'Continue as Guest',
-                  style: AppTextStyles.labelLarge.copyWith(
-                    color: AppColors.textMuted,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+
+          // Content
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Logo/Title at top
+                  Text(
+                    'Welcome',
+                    style: AppTextStyles.headlineLarge.copyWith(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  const Spacer(),
+
+                  // CTAs at bottom with backdrop
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.95),
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 20,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          'Choose how you want to continue',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+
+                        SizedBox(
+                          height: 54,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const LoginScreen(),
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              elevation: 0,
+                            ),
+                            child: Text(
+                              'Log In',
+                              style: AppTextStyles.labelLarge.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+
+                        SizedBox(
+                          height: 54,
+                          child: OutlinedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const SignupScreen(),
+                                ),
+                              );
+                            },
+                            style: OutlinedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              side: BorderSide(
+                                color: AppColors.primary,
+                                width: 2,
+                              ),
+                              backgroundColor: Colors.white,
+                            ),
+                            child: Text(
+                              'Create Account',
+                              style: AppTextStyles.labelLarge.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (_) => const GuestEntryGate(
+                                      child: BootstrapGate(),
+                                    ),
+                              ),
+                              (_) => false,
+                            );
+                          },
+                          child: Text(
+                            'Continue as Guest',
+                            style: AppTextStyles.labelLarge.copyWith(
+                              color: AppColors.textSecondary,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

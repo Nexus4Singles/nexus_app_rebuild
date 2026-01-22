@@ -15,6 +15,7 @@ import 'package:nexus_app_min_test/features/dating_search/application/dating_sea
 import 'package:nexus_app_min_test/features/dating_search/domain/dating_search_filters.dart';
 import 'package:nexus_app_min_test/features/dating_search/domain/dating_profile.dart';
 import 'package:nexus_app_min_test/features/profile/presentation/screens/profile_screen.dart';
+import 'package:nexus_app_min_test/features/launch/presentation/app_launch_gate.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -52,15 +53,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authAsync = ref.watch(authStateProvider);
-    final user = authAsync.maybeWhen(data: (u) => u, orElse: () => null);
-    final isSignedIn = user != null && !user.isAnonymous;
-
+    // Use the canonical guest logic (automatically watches auth state)
     final isGuestAsync = ref.watch(isGuestProvider);
     final isGuest = isGuestAsync.maybeWhen(
       data: (v) => v,
-      orElse: () => !isSignedIn,
+      orElse: () => true, // Default to guest while loading
     );
+
     final compatAsync = ref.watch(compatibilityStatusProvider);
     final listsAsync = ref.watch(searchFilterListsProvider);
 
@@ -229,8 +228,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   height: 46,
                   child: ElevatedButton(
                     onPressed: () async {
-                      if (!isSignedIn) {
-                        Navigator.of(context).pushNamed('/login');
+                      if (isGuest) {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const AppLaunchGate(),
+                          ),
+                        );
                         return;
                       }
 
@@ -274,7 +277,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         ),
                       );
                     },
-                    child: Text(isSignedIn ? 'Search' : 'Sign in to Search'),
+                    child: Text(!isGuest ? 'Search' : 'Sign in to Search'),
                   ),
                 ),
               ],

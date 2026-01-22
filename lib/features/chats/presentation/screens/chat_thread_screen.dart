@@ -780,9 +780,10 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
 
     if (status.isPermanentlyDenied) {
       _toast(
-        'Photo permission is disabled. Enable it in Settings to attach images.',
+        'Photo permission is disabled. Please enable it in app Settings to attach images.',
       );
-      await openAppSettings();
+      // Don't automatically open app settings - let user decide if they want to go there
+      // await openAppSettings();
       return false;
     }
 

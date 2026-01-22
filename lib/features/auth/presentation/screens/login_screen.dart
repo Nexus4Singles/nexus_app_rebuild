@@ -7,6 +7,7 @@ import '../../../../core/providers/auth_provider.dart';
 import '../../../../core/bootstrap/bootstrap_gate.dart';
 import '../../../guest/guest_entry_gate.dart';
 import '../../../launch/presentation/app_launch_gate.dart';
+import 'email_verification_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -49,9 +50,31 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           );
 
       if (!mounted) return;
+
+      // Check if email is verified
+      final authService = ref.read(authServiceProvider);
+      if (!authService.isEmailVerified) {
+        // Email not verified - navigate to verification screen
+        final user = FirebaseAuth.instance.currentUser;
+        if (user?.email != null) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (_) => EmailVerificationScreen(email: user!.email!),
+            ),
+            (_) => false,
+          );
+          return;
+        }
+      }
+
+      // Navigate directly to BootstrapGate instead of going back through splash
+      // This prevents state propagation timing issues
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const AppLaunchGate()),
+        MaterialPageRoute(
+          builder: (_) => const GuestEntryGate(child: BootstrapGate()),
+        ),
         (_) => false,
       );
     } catch (e) {

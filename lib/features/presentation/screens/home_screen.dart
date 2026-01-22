@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
 
 import 'package:nexus_app_min_test/core/session/is_guest_provider.dart';
+import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
 
 import 'package:nexus_app_min_test/core/session/relationship_status_key.dart';
 
@@ -19,10 +20,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<String> _homeDisplayNameForUser(User? u) async {
   if (u == null) return '';
+  
+  // First check Firebase Auth displayName
   final dn = (u.displayName ?? '').trim();
-  if (dn.isNotEmpty) return dn;
+  if (dn.isNotEmpty) return dn.split(RegExp(r'\s+')).first.trim();
 
-  // Firestore fallback for v1 users whose FirebaseAuth displayName is empty.
+  // Firestore fallback - prioritize username for v2 users
   try {
     final doc =
         await FirebaseFirestore.instance.collection('users').doc(u.uid).get();
@@ -38,6 +41,7 @@ Future<String> _homeDisplayNameForUser(User? u) async {
         return '';
       }
 
+      // Prioritize username, then name, then other variants
       final candidate = pick([
         'username',
         'user_name',
@@ -54,11 +58,7 @@ Future<String> _homeDisplayNameForUser(User? u) async {
     }
   } catch (_) {}
 
-  // Email prefix fallback
-  final e = (u.email ?? '').trim();
-  if (e.isNotEmpty && e.contains('@')) {
-    return e.split('@').first.trim();
-  }
+  // Only use email as absolute last resort if nothing else is available
   return '';
 }
 
@@ -131,9 +131,9 @@ class HomeScreen extends ConsumerWidget {
     final theme = Theme.of(context);
 
     // Use the canonical guest logic (respects `force_guest` etc.)
-    final isGuest = ref
-        .watch(isGuestProvider)
-        .maybeWhen(data: (v) => v, orElse: () => true);
+    // This now watches auth state internally, so it auto-updates on login/logout
+    final isGuestAsync = ref.watch(isGuestProvider);
+    final isGuest = isGuestAsync.maybeWhen(data: (v) => v, orElse: () => true);
 
     // Fallback for relationship status comes from local prefs (guest + signed-in safe).
     final fallbackKey = relationshipStatusKeyFromString('');
@@ -178,7 +178,7 @@ class HomeScreen extends ConsumerWidget {
               const SizedBox(height: 6),
               if (isGuest)
                 Text(
-                  'Create an account to get the best experience',
+                  'You can read our weekly stories without an account!',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.textTheme.bodySmall?.color?.withOpacity(0.75),
                   ),

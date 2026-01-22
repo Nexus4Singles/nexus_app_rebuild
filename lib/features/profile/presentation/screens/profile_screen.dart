@@ -4,7 +4,8 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../launch/presentation/app_launch_gate.dart';
+import 'package:nexus_app_min_test/features/auth/presentation/screens/login_screen.dart';
+import 'package:nexus_app_min_test/features/launch/presentation/app_launch_gate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_min_test/core/user/is_admin_provider.dart';
 import 'package:nexus_app_min_test/features/admin_review/presentation/screens/admin_review_queue_screen.dart';
@@ -58,6 +59,7 @@ Future<void> handleLogout(BuildContext context, WidgetRef ref) async {
   await ref.read(authNotifierProvider.notifier).signOut();
   if (!context.mounted) return;
 
+  // Navigate to welcome screen with background image
   Navigator.pushAndRemoveUntil(
     context,
     MaterialPageRoute(builder: (_) => const AppLaunchGate()),
@@ -405,7 +407,7 @@ class _BasicProfileScreen extends ConsumerWidget {
         elevation: 0,
         title: Text('Profile', style: AppTextStyles.titleLarge),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
@@ -490,19 +492,19 @@ class _BasicProfileScreen extends ConsumerWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 18),
             Text('Your Account', style: AppTextStyles.titleLarge),
             const SizedBox(height: 12),
             _AccountTiles(context, ref, p),
             const SizedBox(height: 18),
 
-            const Spacer(),
             _ProfileTile(
               icon: Icons.logout_rounded,
               title: 'Log out',
               subtitle: 'Sign out of your account',
               onTap: () => _showComingSoon(context, 'Log out'),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 32),
           ],
         ),
       ),
@@ -784,9 +786,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
         icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
         onPressed: () => Navigator.of(context).maybePop(),
       ),
-      actions: [
-        if (isViewingOtherUser) const SizedBox(width: 12),
-      ],
+      actions: [if (isViewingOtherUser) const SizedBox(width: 12)],
       flexibleSpace: LayoutBuilder(
         builder: (context, constraints) {
           return FlexibleSpaceBar(
@@ -844,7 +844,8 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                   // - For own profile: show all statuses (Verified, Pending review, Not verified)
                                   if (isViewingOtherUser) {
                                     // Only show verified badge to others
-                                    if (!isVerified) return const SizedBox.shrink();
+                                    if (!isVerified)
+                                      return const SizedBox.shrink();
                                   }
                                   // For own profile, show all statuses, so don't filter here
 
@@ -925,10 +926,12 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                               RelationshipStatusTag
                                             >(
                                               context: context,
-                                              backgroundColor: Colors.transparent,
+                                              backgroundColor:
+                                                  Colors.transparent,
                                               isScrollControlled: false,
                                               builder: (sheetContext) {
-                                                RelationshipStatusTag temp = value;
+                                                RelationshipStatusTag temp =
+                                                    value;
 
                                                 return StatefulBuilder(
                                                   builder: (
@@ -944,7 +947,8 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                                             24,
                                                           ),
                                                       decoration: BoxDecoration(
-                                                        color: AppColors.surface,
+                                                        color:
+                                                            AppColors.surface,
                                                         borderRadius:
                                                             BorderRadius.circular(
                                                               18,
@@ -966,8 +970,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                                                       .titleLarge
                                                                       .copyWith(
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w900,
+                                                                            FontWeight.w900,
                                                                       ),
                                                                 ),
                                                               ),
@@ -994,99 +997,99 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                                                         ),
                                                                     border: Border.all(
                                                                       color:
-                                                                      AppColors
-                                                                          .border,
+                                                                          AppColors
+                                                                              .border,
+                                                                    ),
+                                                                  ),
+                                                                  child: const Icon(
+                                                                    Icons
+                                                                        .close_rounded,
+                                                                  ),
                                                                 ),
                                                               ),
-                                                              child: const Icon(
-                                                                Icons
-                                                                    .close_rounded,
-                                                              ),
-                                                            ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 12,
+                                                          ),
+                                                          Text(
+                                                            'Tap to update your visibility on the dating side of the app.',
+                                                            style: AppTextStyles
+                                                                .bodySmall
+                                                                .copyWith(
+                                                                  color:
+                                                                      AppColors
+                                                                          .textSecondary,
+                                                                ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 14,
+                                                          ),
+                                                          _StatusOptionTile(
+                                                            label: 'Available',
+                                                            selected:
+                                                                temp ==
+                                                                RelationshipStatusTag
+                                                                    .available,
+                                                            onTap: () async {
+                                                              setSheetState(() {
+                                                                temp =
+                                                                    RelationshipStatusTag
+                                                                        .available;
+                                                              });
+                                                              Navigator.pop(
+                                                                sheetContext,
+                                                                RelationshipStatusTag
+                                                                    .available,
+                                                              );
+                                                            },
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          _StatusOptionTile(
+                                                            label: 'Taken',
+                                                            selected:
+                                                                temp ==
+                                                                RelationshipStatusTag
+                                                                    .taken,
+                                                            onTap: () {
+                                                              setSheetState(() {
+                                                                temp =
+                                                                    RelationshipStatusTag
+                                                                        .taken;
+                                                              });
+                                                              Navigator.pop(
+                                                                sheetContext,
+                                                                RelationshipStatusTag
+                                                                    .taken,
+                                                              );
+                                                            },
                                                           ),
                                                         ],
                                                       ),
-                                                      const SizedBox(
-                                                        height: 12,
-                                                      ),
-                                                      Text(
-                                                        'Tap to update your visibility on the dating side of the app.',
-                                                        style: AppTextStyles
-                                                            .bodySmall
-                                                            .copyWith(
-                                                              color:
-                                                                  AppColors
-                                                                      .textSecondary,
-                                                            ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 14,
-                                                      ),
-                                                      _StatusOptionTile(
-                                                        label: 'Available',
-                                                        selected:
-                                                            temp ==
-                                                            RelationshipStatusTag
-                                                                .available,
-                                                        onTap: () async {
-                                                          setSheetState(() {
-                                                            temp =
-                                                                RelationshipStatusTag
-                                                                    .available;
-                                                          });
-                                                          Navigator.pop(
-                                                            sheetContext,
-                                                            RelationshipStatusTag
-                                                                .available,
-                                                          );
-                                                        },
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      _StatusOptionTile(
-                                                        label: 'Taken',
-                                                        selected:
-                                                            temp ==
-                                                            RelationshipStatusTag
-                                                                .taken,
-                                                        onTap: () {
-                                                          setSheetState(() {
-                                                            temp =
-                                                                RelationshipStatusTag
-                                                                    .taken;
-                                                          });
-                                                          Navigator.pop(
-                                                            sheetContext,
-                                                            RelationshipStatusTag
-                                                                .taken,
-                                                          );
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
+                                                    );
+                                                  },
                                                 );
                                               },
                                             );
-                                          },
-                                        );
 
-                                        if (selected == null) return;
+                                            if (selected == null) return;
 
-                                        await _setRelationshipStatusTagFirestore(
-                                          profile.id,
-                                          selected,
-                                        );
-                                        ref.invalidate(
-                                          _relationshipStatusTagProvider(
-                                            profile.id,
-                                          ),
-                                        );
-                                      }
-                                      : null,
-                            );
-                          },
-                        ),
+                                            await _setRelationshipStatusTagFirestore(
+                                              profile.id,
+                                              selected,
+                                            );
+                                            ref.invalidate(
+                                              _relationshipStatusTagProvider(
+                                                profile.id,
+                                              ),
+                                            );
+                                          }
+                                          : null,
+                                );
+                              },
+                            ),
                             if (isViewingOtherUser)
                               _OverflowMenu(targetUid: profile.id),
                           ],
@@ -1868,6 +1871,9 @@ class _ProfileAudioController {
   bool _initialized = false;
   bool _hasSource = false;
 
+  // Track cached durations for URLs to avoid reloading
+  final Map<String, Duration> _durationCache = {};
+
   String? lastError;
   VoidCallback? _notify;
 
@@ -1882,6 +1888,10 @@ class _ProfileAudioController {
 
     _player.onDurationChanged.listen((d) {
       duration = d;
+      // Cache the duration for this URL
+      if (currentUrl != null) {
+        _durationCache[currentUrl!] = d;
+      }
       notify();
     });
 
@@ -1896,6 +1906,50 @@ class _ProfileAudioController {
     });
   }
 
+  /// Preload duration for a URL without playing it
+  Future<void> preloadDuration(String url) async {
+    final u = url.trim();
+    if (u.isEmpty) return;
+
+    // Return cached duration if available
+    if (_durationCache.containsKey(u)) {
+      duration = _durationCache[u]!;
+      _notify?.call();
+      return;
+    }
+
+    try {
+      // Create a temporary player just to load duration
+      final tempPlayer = AudioPlayer();
+
+      // Set up a one-time listener for duration
+      bool durationLoaded = false;
+      tempPlayer.onDurationChanged.listen((d) {
+        if (!durationLoaded && d != Duration.zero) {
+          durationLoaded = true;
+          _durationCache[u] = d;
+          duration = d;
+          _notify?.call();
+          tempPlayer.dispose();
+        }
+      });
+
+      // Start playing to trigger duration detection
+      await tempPlayer.play(UrlSource(u));
+
+      // Dispose after a short delay if duration wasn't loaded
+      Future.delayed(const Duration(seconds: 2), () {
+        if (!durationLoaded) {
+          try {
+            tempPlayer.dispose();
+          } catch (_) {}
+        }
+      });
+    } catch (e) {
+      debugPrint('Error preloading duration for $u: $e');
+    }
+  }
+
   Future<void> playOrPause(String url) async {
     lastError = null;
     _notify?.call();
@@ -1906,6 +1960,13 @@ class _ProfileAudioController {
       if (currentUrl != u) {
         currentUrl = u;
         position = Duration.zero;
+
+        // Use cached duration if available
+        if (_durationCache.containsKey(u)) {
+          duration = _durationCache[u]!;
+        } else {
+          duration = Duration.zero;
+        }
 
         // stop only if we previously had a source
         if (_hasSource) {
@@ -2088,7 +2149,7 @@ class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
   }
 }
 
-class _AudioPromptTile extends StatelessWidget {
+class _AudioPromptTile extends StatefulWidget {
   final String prompt;
   final String? url;
   final bool isLocked;
@@ -2102,16 +2163,41 @@ class _AudioPromptTile extends StatelessWidget {
   });
 
   @override
+  State<_AudioPromptTile> createState() => _AudioPromptTileState();
+}
+
+class _AudioPromptTileState extends State<_AudioPromptTile> {
+  @override
+  void initState() {
+    super.initState();
+    // Preload the duration when the tile is created
+    if ((widget.url ?? '').trim().isNotEmpty) {
+      widget.controller.preloadDuration(widget.url!);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant _AudioPromptTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // If the URL changed, preload the new duration
+    if (oldWidget.url != widget.url && (widget.url ?? '').trim().isNotEmpty) {
+      widget.controller.preloadDuration(widget.url!);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final hasUrl = (url ?? '').trim().isNotEmpty;
-    final isCurrent = hasUrl && (controller.currentUrl == (url ?? '').trim());
-    final isPlaying = isCurrent && controller.state == PlayerState.playing;
+    final hasUrl = (widget.url ?? '').trim().isNotEmpty;
+    final isCurrent =
+        hasUrl && (widget.controller.currentUrl == (widget.url ?? '').trim());
+    final isPlaying =
+        isCurrent && widget.controller.state == PlayerState.playing;
 
     final duration =
-        controller.duration.inMilliseconds == 0
+        widget.controller.duration.inMilliseconds == 0
             ? const Duration(seconds: 1)
-            : controller.duration;
-    final position = controller.position;
+            : widget.controller.duration;
+    final position = widget.controller.position;
 
     return Container(
       padding: const EdgeInsets.all(14),
@@ -2127,9 +2213,9 @@ class _AudioPromptTile extends StatelessWidget {
             children: [
               InkWell(
                 onTap:
-                    (!isLocked && hasUrl)
+                    (!widget.isLocked && hasUrl)
                         ? () async {
-                          await controller.playOrPause(url!);
+                          await widget.controller.playOrPause(widget.url!);
                         }
                         : null,
                 borderRadius: BorderRadius.circular(999),
@@ -2142,7 +2228,7 @@ class _AudioPromptTile extends StatelessWidget {
                     border: Border.all(color: AppColors.border),
                   ),
                   child: Icon(
-                    isLocked
+                    widget.isLocked
                         ? Icons.lock_rounded
                         : hasUrl
                         ? (isPlaying
@@ -2150,7 +2236,9 @@ class _AudioPromptTile extends StatelessWidget {
                             : Icons.play_arrow_rounded)
                         : Icons.mic_off_rounded,
                     color:
-                        isLocked ? AppColors.textSecondary : AppColors.primary,
+                        widget.isLocked
+                            ? AppColors.textSecondary
+                            : AppColors.primary,
                   ),
                 ),
               ),
@@ -2159,14 +2247,14 @@ class _AudioPromptTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(prompt, style: AppTextStyles.bodyMedium),
+                    Text(widget.prompt, style: AppTextStyles.bodyMedium),
                     const SizedBox(height: 4),
                     Text(
-                      isLocked
+                      widget.isLocked
                           ? 'Audio recordings cannot be changed after profile creation'
                           : hasUrl
                           ? ((isCurrent &&
-                                  (controller.lastError ?? '')
+                                  (widget.controller.lastError ?? '')
                                       .trim()
                                       .isNotEmpty)
                               ? 'Unable to play audio'
@@ -2181,7 +2269,7 @@ class _AudioPromptTile extends StatelessWidget {
               ),
             ],
           ),
-          if (!isLocked && hasUrl) ...[
+          if (!widget.isLocked && hasUrl) ...[
             const SizedBox(height: 12),
             Slider(
               value:
@@ -2193,7 +2281,7 @@ class _AudioPromptTile extends StatelessWidget {
               max: duration.inMilliseconds.toDouble(),
               onChanged: (v) async {
                 if (!isCurrent) return;
-                await controller.seek(Duration(milliseconds: v.toInt()));
+                await widget.controller.seek(Duration(milliseconds: v.toInt()));
               },
             ),
             Row(
@@ -2490,10 +2578,12 @@ class _AccountTiles extends StatelessWidget {
 
             if (!context.mounted) return;
 
-            // Route to login (not guest mode / app shell)
-            Navigator.of(
+            // Route to welcome screen (with background image)
+            Navigator.pushAndRemoveUntil(
               context,
-            ).pushNamedAndRemoveUntil('/login', (_) => false);
+              MaterialPageRoute(builder: (_) => const AppLaunchGate()),
+              (_) => false,
+            );
           },
         ),
       ],
@@ -2616,7 +2706,10 @@ class _GuestProfileGate extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             OutlinedButton(
-              onPressed: () => Navigator.of(context).pushNamed('/login'),
+              onPressed:
+                  () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const AppLaunchGate()),
+                  ),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 18,

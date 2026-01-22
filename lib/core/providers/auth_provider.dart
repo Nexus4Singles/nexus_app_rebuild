@@ -160,6 +160,13 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
       final user = credential.user;
       if (user != null) {
+        // Send email verification
+        await _authService.sendEmailVerification();
+
+        // Update Firebase Auth displayName with username
+        await user.updateDisplayName(username);
+        await user.reload();
+
         await _ensureUserDocNormalized(user);
 
         // Create doc only if it doesn't exist (FirestoreService.createUser is hardened)
@@ -303,10 +310,25 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
     state = const AsyncValue.data(null);
   }
 
-  /// Delete account
+  /// Delete account (deletes both Firestore document and Auth user)
   Future<void> deleteAccount() async {
-    await _authService.deleteAccount();
-    state = const AsyncValue.data(null);
+    final user = _authService.currentUser;
+    if (user == null) return;
+
+    try {
+      // First delete Firestore document
+      // This triggers Cloud Function to delete Auth user
+      await _firestoreService.deleteUser(user.uid);
+
+      // Then delete Auth user (redundant but ensures deletion even if Cloud Function fails)
+      await _authService.deleteAccount();
+
+      state = const AsyncValue.data(null);
+    } catch (e) {
+      // Even if there's an error, set state to null to log user out
+      state = const AsyncValue.data(null);
+      rethrow;
+    }
   }
 }
 

@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:nexus_app_min_test/core/storage/providers/media_storage_provider.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
+import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
 
 class DatingPhotosScreen extends ConsumerStatefulWidget {
@@ -202,8 +203,8 @@ class _ProgressHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(stepLabel, style: AppTextStyles.caption),
-        const SizedBox(height: 8),
+        const DatingProfileProgressBar(currentStep: 5, totalSteps: 8),
+        const SizedBox(height: 18),
         Text(title, style: AppTextStyles.headlineLarge),
         const SizedBox(height: 10),
         Text(

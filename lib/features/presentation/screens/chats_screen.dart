@@ -7,6 +7,7 @@ import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/core/user/dating_opt_in_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nexus_app_min_test/core/models/user_model.dart';
+import 'package:nexus_app_min_test/features/launch/presentation/app_launch_gate.dart';
 
 final _userDocByIdProvider =
     StreamProvider.family<Map<String, dynamic>?, String>((ref, uid) {
@@ -153,7 +154,11 @@ class ChatsScreen extends ConsumerWidget {
                       height: 48,
                       child: OutlinedButton(
                         onPressed:
-                            () => Navigator.of(context).pushNamed('/login'),
+                            () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const AppLaunchGate(),
+                              ),
+                            ),
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
@@ -305,19 +310,74 @@ class ChatsScreen extends ConsumerWidget {
             Expanded(
               child: conversationsAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error:
-                    (err, __) => Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          'Could not load chats.\n${err.toString()}',
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.textSecondary,
+                error: (err, __) {
+                  // Permission-denied errors for v1 users are expected
+                  // (they have no v2 chats). Treat as empty state.
+                  final errStr = err.toString().toLowerCase();
+                  if (errStr.contains('permission-denied') ||
+                      errStr.contains('permission denied')) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.chat_bubble_outline,
+                            size: 56,
+                            color: AppColors.primary.withOpacity(0.5),
                           ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'You don\'t have any conversations yet',
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.titleLarge,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Start connecting with other members.\nNew conversations will appear here.',
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            height: 46,
+                            child: ElevatedButton(
+                              onPressed:
+                                  () => Navigator.of(
+                                    context,
+                                  ).pushNamed('/search'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 32,
+                                  vertical: 12,
+                                ),
+                              ),
+                              child: const FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text('Start Connecting'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  // For other errors, show error message
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        'Could not load chats.\n${err.toString()}',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.textSecondary,
                         ),
                       ),
                     ),
+                  );
+                },
                 data: (conversations) {
                   final me = uid;
                   if (me == null) {
@@ -345,21 +405,44 @@ class ChatsScreen extends ConsumerWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          Icon(
+                            Icons.chat_bubble_outline,
+                            size: 56,
+                            color: AppColors.primary.withOpacity(0.5),
+                          ),
+                          const SizedBox(height: 16),
                           Text(
-                            'No conversations yet.',
+                            'You don\'t have any conversations yet',
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.titleLarge,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Start connecting with other members.\nNew conversations will appear here.',
+                            textAlign: TextAlign.center,
                             style: AppTextStyles.bodyMedium.copyWith(
                               color: AppColors.textSecondary,
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 20),
                           SizedBox(
                             height: 46,
-                            child: OutlinedButton(
+                            child: ElevatedButton(
                               onPressed:
                                   () => Navigator.of(
                                     context,
                                   ).pushNamed('/search'),
-                              child: const Text('Go to Search'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 32,
+                                  vertical: 12,
+                                ),
+                              ),
+                              child: const FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text('Start Connecting'),
+                              ),
                             ),
                           ),
                         ],

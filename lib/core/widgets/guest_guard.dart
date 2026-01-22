@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../auth/auth_providers.dart';
 import '../session/is_guest_provider.dart';
 import 'auth_gate_modal.dart';
+import '../../features/launch/presentation/app_launch_gate.dart';
 
 class GuestGuard {
   static Future<void> requireSignedIn(
@@ -39,7 +40,9 @@ class GuestGuard {
       onLogin:
           onLogin ??
           () {
-            Navigator.of(context).pushNamed('/login');
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const AppLaunchGate()));
           },
     );
   }

@@ -7,6 +7,7 @@ import 'package:nexus_app_min_test/core/lists/nexus_lists_provider.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/data/church_list_provider.dart';
 import 'package:nexus_app_min_test/core/widgets/nexus_country_picker.dart';
+import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
 
 class DatingExtraInfoScreen extends ConsumerStatefulWidget {
   const DatingExtraInfoScreen({super.key});
@@ -156,9 +157,12 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
                               });
                             },
                           ),
+                      onOtherChurchChanged: () => setState(() {}),
                       onContinue: () {
                         _saveDraft();
-                        Navigator.of(context).pop(); // next screen wiring later
+                        Navigator.of(
+                          context,
+                        ).pushNamed('/dating/setup/hobbies');
                       },
                       isValid: _valid,
                     ),
@@ -193,6 +197,7 @@ class _Body extends StatelessWidget {
   final VoidCallback onPickEducation;
   final VoidCallback onPickProfession;
   final VoidCallback onPickChurch;
+  final VoidCallback onOtherChurchChanged;
 
   final VoidCallback onContinue;
   final bool isValid;
@@ -214,6 +219,7 @@ class _Body extends StatelessWidget {
     required this.onPickEducation,
     required this.onPickProfession,
     required this.onPickChurch,
+    required this.onOtherChurchChanged,
     required this.onContinue,
     required this.isValid,
   });
@@ -224,6 +230,8 @@ class _Body extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 10, 16, 18),
       child: Column(
         children: [
+          const DatingProfileProgressBar(currentStep: 2, totalSteps: 8),
+          const SizedBox(height: 16),
           _InfoCard(
             text:
                 'To select your church below, search with the full name. If your church is not listed, kindly select “Other” and type the full name of your Church in the text box displayed.',
@@ -301,6 +309,7 @@ class _Body extends StatelessWidget {
                       controller: otherChurchCtrl,
                       style: AppTextStyles.bodyMedium,
                       decoration: _inputDeco(hint: 'Type full church name'),
+                      onChanged: (_) => onOtherChurchChanged(),
                     ),
                   ),
                 ],
