@@ -250,13 +250,25 @@ class DatingOnboardingDraftNotifier
 
   /// Clear all audio recordings (paths and URLs) to start over
   void clearAudios() {
-    state = state.copyWith(
+    state = DatingOnboardingDraft(
+      age: state.age,
+      city: state.city,
+      countryOfResidence: state.countryOfResidence,
+      nationality: state.nationality,
+      educationLevel: state.educationLevel,
+      profession: state.profession,
+      churchName: state.churchName,
+      otherChurchName: state.otherChurchName,
+      hobbies: state.hobbies,
+      desiredQualities: state.desiredQualities,
+      photoPaths: state.photoPaths,
       audio1Path: null,
       audio2Path: null,
       audio3Path: null,
       audio1Url: null,
       audio2Url: null,
       audio3Url: null,
+      contactInfo: state.contactInfo,
     );
     _saveDraft();
   }
@@ -265,13 +277,70 @@ class DatingOnboardingDraftNotifier
   void clearSingleAudio(int questionNumber) {
     switch (questionNumber) {
       case 1:
-        state = state.copyWith(audio1Path: null, audio1Url: null);
+        state = DatingOnboardingDraft(
+          age: state.age,
+          city: state.city,
+          countryOfResidence: state.countryOfResidence,
+          nationality: state.nationality,
+          educationLevel: state.educationLevel,
+          profession: state.profession,
+          churchName: state.churchName,
+          otherChurchName: state.otherChurchName,
+          hobbies: state.hobbies,
+          desiredQualities: state.desiredQualities,
+          photoPaths: state.photoPaths,
+          audio1Path: null, // Clear
+          audio2Path: state.audio2Path,
+          audio3Path: state.audio3Path,
+          audio1Url: null, // Clear
+          audio2Url: state.audio2Url,
+          audio3Url: state.audio3Url,
+          contactInfo: state.contactInfo,
+        );
         break;
       case 2:
-        state = state.copyWith(audio2Path: null, audio2Url: null);
+        state = DatingOnboardingDraft(
+          age: state.age,
+          city: state.city,
+          countryOfResidence: state.countryOfResidence,
+          nationality: state.nationality,
+          educationLevel: state.educationLevel,
+          profession: state.profession,
+          churchName: state.churchName,
+          otherChurchName: state.otherChurchName,
+          hobbies: state.hobbies,
+          desiredQualities: state.desiredQualities,
+          photoPaths: state.photoPaths,
+          audio1Path: state.audio1Path,
+          audio2Path: null, // Clear
+          audio3Path: state.audio3Path,
+          audio1Url: state.audio1Url,
+          audio2Url: null, // Clear
+          audio3Url: state.audio3Url,
+          contactInfo: state.contactInfo,
+        );
         break;
       case 3:
-        state = state.copyWith(audio3Path: null, audio3Url: null);
+        state = DatingOnboardingDraft(
+          age: state.age,
+          city: state.city,
+          countryOfResidence: state.countryOfResidence,
+          nationality: state.nationality,
+          educationLevel: state.educationLevel,
+          profession: state.profession,
+          churchName: state.churchName,
+          otherChurchName: state.otherChurchName,
+          hobbies: state.hobbies,
+          desiredQualities: state.desiredQualities,
+          photoPaths: state.photoPaths,
+          audio1Path: state.audio1Path,
+          audio2Path: state.audio2Path,
+          audio3Path: null, // Clear
+          audio1Url: state.audio1Url,
+          audio2Url: state.audio2Url,
+          audio3Url: null, // Clear
+          contactInfo: state.contactInfo,
+        );
         break;
     }
     _saveDraft();
