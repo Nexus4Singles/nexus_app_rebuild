@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
@@ -45,13 +46,23 @@ class _DatingAudioSummaryScreenState
         '[AudioSummary] URLs: audio1Url=${draft.audio1Url}, audio2Url=${draft.audio2Url}, audio3Url=${draft.audio3Url}',
       );
 
-      // Skip if already uploaded
+      // Check if existing URLs are valid before skipping
       if (draft.audio1Url != null &&
           draft.audio2Url != null &&
           draft.audio3Url != null) {
-        debugPrint('[AudioSummary] All audios already uploaded, skipping');
-        setState(() => _isUploading = false);
-        return;
+        debugPrint('[AudioSummary] Checking existing URLs for validity...');
+        final url1Valid = await _isUrlValid(draft.audio1Url!);
+        final url2Valid = await _isUrlValid(draft.audio2Url!);
+        final url3Valid = await _isUrlValid(draft.audio3Url!);
+        
+        if (url1Valid && url2Valid && url3Valid) {
+          debugPrint('[AudioSummary] All URLs valid, skipping upload');
+          setState(() => _isUploading = false);
+          return;
+        }
+        
+        debugPrint('[AudioSummary] One or more URLs invalid, clearing and reuploading');
+        ref.read(datingOnboardingDraftProvider.notifier).clearAudios();
       }
 
       if (a1 == null || a2 == null || a3 == null) {
@@ -261,6 +272,23 @@ class _DatingAudioSummaryScreenState
   void _showSnackBar(String msg) {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    }
+  }
+
+  /// Check if a URL is valid (accessible and has reasonable file size)
+  Future<bool> _isUrlValid(String url) async {
+    try {
+      final response = await http.head(Uri.parse(url));
+      final statusCode = response.statusCode;
+      final contentLength = int.tryParse(response.headers['content-length'] ?? '0') ?? 0;
+      
+      debugPrint('[AudioSummary] URL check: $url -> status=$statusCode, size=$contentLength');
+      
+      // Valid if 200 OK and file is larger than 10KB (reasonable audio minimum)
+      return statusCode == 200 && contentLength > 10240;
+    } catch (e) {
+      debugPrint('[AudioSummary] URL validation failed: $e');
+      return false;
     }
   }
 }
