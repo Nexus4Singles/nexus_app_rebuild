@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'dart:io';
 
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
@@ -39,10 +40,14 @@ class _DatingAudioSummaryScreenState
       final a2 = draft.audio2Path;
       final a3 = draft.audio3Path;
 
+      debugPrint('[AudioSummary] Upload check: a1=$a1, a2=$a2, a3=$a3');
+      debugPrint('[AudioSummary] URLs: audio1Url=${draft.audio1Url}, audio2Url=${draft.audio2Url}, audio3Url=${draft.audio3Url}');
+
       // Skip if already uploaded
       if (draft.audio1Url != null &&
           draft.audio2Url != null &&
           draft.audio3Url != null) {
+        debugPrint('[AudioSummary] All audios already uploaded, skipping');
         setState(() => _isUploading = false);
         return;
       }
@@ -51,10 +56,33 @@ class _DatingAudioSummaryScreenState
         throw Exception('One or more audio files are missing');
       }
 
+      // Validate files exist before uploading
+      final file1 = File(a1);
+      final file2 = File(a2);
+      final file3 = File(a3);
+      
+      debugPrint('[AudioSummary] File 1 exists: ${await file1.exists()}, size: ${await file1.length()}');
+      debugPrint('[AudioSummary] File 2 exists: ${await file2.exists()}, size: ${await file2.length()}');
+      debugPrint('[AudioSummary] File 3 exists: ${await file3.exists()}, size: ${await file3.length()}');
+      
+      if (!await file1.exists() || !await file2.exists() || !await file3.exists()) {
+        throw Exception('One or more audio files do not exist on disk');
+      }
+
+      debugPrint('[AudioSummary] Uploading audio files...');
       final storage = ref.read(mediaStorageProvider) as DoSpacesStorageService;
+      
+      debugPrint('[AudioSummary] Uploading audio 1: $a1');
       final url1 = await storage.uploadFile(localPath: a1);
+      debugPrint('[AudioSummary] Audio 1 uploaded: $url1');
+      
+      debugPrint('[AudioSummary] Uploading audio 2: $a2');
       final url2 = await storage.uploadFile(localPath: a2);
+      debugPrint('[AudioSummary] Audio 2 uploaded: $url2');
+      
+      debugPrint('[AudioSummary] Uploading audio 3: $a3');
       final url3 = await storage.uploadFile(localPath: a3);
+      debugPrint('[AudioSummary] Audio 3 uploaded: $url3');
 
       ref
           .read(datingOnboardingDraftProvider.notifier)
@@ -254,10 +282,7 @@ class _DatingAudioSummaryScreenState
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           backgroundColor: AppColors.surface,
-          title: Text(
-            'Clear Recordings?',
-            style: AppTextStyles.titleMedium,
-          ),
+          title: Text('Clear Recordings?', style: AppTextStyles.titleMedium),
           content: Text(
             'This will delete all your current recordings and start over.',
             style: AppTextStyles.bodyMedium.copyWith(
