@@ -245,6 +245,10 @@ class _DatingAudioQuestionScreenState
         return;
       }
 
+      // Clear previous recording (both path and URL) to force fresh upload
+      ref.read(datingOnboardingDraftProvider.notifier)
+          .clearSingleAudio(widget.questionNumber);
+
       final dir = await getApplicationDocumentsDirectory();
       final path =
           '${dir.path}/dating_audio_q${widget.questionNumber}_${DateTime.now().millisecondsSinceEpoch}.m4a';

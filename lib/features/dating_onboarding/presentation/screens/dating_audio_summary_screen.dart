@@ -41,7 +41,9 @@ class _DatingAudioSummaryScreenState
       final a3 = draft.audio3Path;
 
       debugPrint('[AudioSummary] Upload check: a1=$a1, a2=$a2, a3=$a3');
-      debugPrint('[AudioSummary] URLs: audio1Url=${draft.audio1Url}, audio2Url=${draft.audio2Url}, audio3Url=${draft.audio3Url}');
+      debugPrint(
+        '[AudioSummary] URLs: audio1Url=${draft.audio1Url}, audio2Url=${draft.audio2Url}, audio3Url=${draft.audio3Url}',
+      );
 
       // Skip if already uploaded
       if (draft.audio1Url != null &&
@@ -60,26 +62,34 @@ class _DatingAudioSummaryScreenState
       final file1 = File(a1);
       final file2 = File(a2);
       final file3 = File(a3);
-      
-      debugPrint('[AudioSummary] File 1 exists: ${await file1.exists()}, size: ${await file1.length()}');
-      debugPrint('[AudioSummary] File 2 exists: ${await file2.exists()}, size: ${await file2.length()}');
-      debugPrint('[AudioSummary] File 3 exists: ${await file3.exists()}, size: ${await file3.length()}');
-      
-      if (!await file1.exists() || !await file2.exists() || !await file3.exists()) {
+
+      debugPrint(
+        '[AudioSummary] File 1 exists: ${await file1.exists()}, size: ${await file1.length()}',
+      );
+      debugPrint(
+        '[AudioSummary] File 2 exists: ${await file2.exists()}, size: ${await file2.length()}',
+      );
+      debugPrint(
+        '[AudioSummary] File 3 exists: ${await file3.exists()}, size: ${await file3.length()}',
+      );
+
+      if (!await file1.exists() ||
+          !await file2.exists() ||
+          !await file3.exists()) {
         throw Exception('One or more audio files do not exist on disk');
       }
 
       debugPrint('[AudioSummary] Uploading audio files...');
       final storage = ref.read(mediaStorageProvider) as DoSpacesStorageService;
-      
+
       debugPrint('[AudioSummary] Uploading audio 1: $a1');
       final url1 = await storage.uploadFile(localPath: a1);
       debugPrint('[AudioSummary] Audio 1 uploaded: $url1');
-      
+
       debugPrint('[AudioSummary] Uploading audio 2: $a2');
       final url2 = await storage.uploadFile(localPath: a2);
       debugPrint('[AudioSummary] Audio 2 uploaded: $url2');
-      
+
       debugPrint('[AudioSummary] Uploading audio 3: $a3');
       final url3 = await storage.uploadFile(localPath: a3);
       debugPrint('[AudioSummary] Audio 3 uploaded: $url3');
@@ -222,28 +232,6 @@ class _DatingAudioSummaryScreenState
                 ),
               ),
             ),
-            const SizedBox(height: 10),
-            SizedBox(
-              width: double.infinity,
-              height: 54,
-              child: OutlinedButton(
-                onPressed: _showReRecordConfirmation,
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.primary,
-                  elevation: 0,
-                  side: BorderSide(color: AppColors.primary, width: 1.5),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                ),
-                child: Text(
-                  'Clear & Re-record',
-                  style: AppTextStyles.labelLarge.copyWith(
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -274,52 +262,6 @@ class _DatingAudioSummaryScreenState
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
     }
-  }
-
-  void _showReRecordConfirmation() {
-    showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          backgroundColor: AppColors.surface,
-          title: Text('Clear Recordings?', style: AppTextStyles.titleMedium),
-          content: Text(
-            'This will delete all your current recordings and start over.',
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext),
-              child: Text(
-                'Cancel',
-                style: AppTextStyles.labelLarge.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(dialogContext);
-                _clearAndReRecord();
-              },
-              child: Text(
-                'Clear & Re-record',
-                style: AppTextStyles.labelLarge.copyWith(
-                  color: AppColors.primary,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _clearAndReRecord() {
-    ref.read(datingOnboardingDraftProvider.notifier).clearAudios();
-    Navigator.of(context).pushReplacementNamed('/dating/setup/audio/q1');
   }
 }
 

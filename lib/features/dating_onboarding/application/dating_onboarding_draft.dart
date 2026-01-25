@@ -261,6 +261,22 @@ class DatingOnboardingDraftNotifier
     _saveDraft();
   }
 
+  /// Clear a single audio recording (path and URL) for re-recording
+  void clearSingleAudio(int questionNumber) {
+    switch (questionNumber) {
+      case 1:
+        state = state.copyWith(audio1Path: null, audio1Url: null);
+        break;
+      case 2:
+        state = state.copyWith(audio2Path: null, audio2Url: null);
+        break;
+      case 3:
+        state = state.copyWith(audio3Path: null, audio3Url: null);
+        break;
+    }
+    _saveDraft();
+  }
+
   void setContactInfo(Map<String, String> info) {
     state = state.copyWith(contactInfo: info);
     _saveDraft();
