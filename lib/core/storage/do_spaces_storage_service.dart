@@ -89,15 +89,14 @@ class DoSpacesStorageService implements MediaStorageService {
 
     // 2) upload
     try {
+
       final putResp = await http.put(
         Uri.parse(uploadUrl),
         headers: <String, String>{
           'Content-Type': contentType,
-          'x-amz-acl': 'public-read',
         },
         body: bytes,
       );
-
       final preview =
           putResp.body.length > 200
               ? '${putResp.body.substring(0, 200)}...'

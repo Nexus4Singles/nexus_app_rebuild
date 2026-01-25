@@ -716,13 +716,13 @@ exports.getPresignedUploadUrl = functions.https.onRequest(async (req, res) => {
       },
     });
 
+
     const cmd = new PutObjectCommand({
       Bucket: SPACES_BUCKET,
       Key: objectKey,
       ContentType: contentType,
-      // ACL parameter must be included in presigned URL, not just command
+      ACL: 'public-read',
     });
-
     const uploadUrl = await getSignedUrl(client, cmd, { expiresIn: 300 });
 
     // Stable public URL
