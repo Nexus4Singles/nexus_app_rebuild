@@ -84,22 +84,41 @@ class DoSpacesStorageService implements MediaStorageService {
       );
     }
 
+    // Use print instead of log so it always shows up in flutter run output.
+    print('[Spaces] Presign successful: uploadUrl=$uploadUrl');
+
     // 2) upload
-    final putResp = await http.put(
-      Uri.parse(uploadUrl),
-      headers: <String, String>{'Content-Type': contentType},
-      body: bytes,
-    );
-
-    if (putResp.statusCode < 200 || putResp.statusCode >= 300) {
-      throw StateError(
-        'Upload failed (${putResp.statusCode}): ${putResp.body}',
+    try {
+      final putResp = await http.put(
+        Uri.parse(uploadUrl),
+        headers: <String, String>{
+          'Content-Type': contentType,
+          'x-amz-acl': 'public-read',
+        },
+        body: bytes,
       );
-    }
 
-    onProgress?.call(1.0);
-    log(publicUrl, name: 'Spaces public URL');
-    return publicUrl;
+      final preview =
+          putResp.body.length > 200
+              ? '${putResp.body.substring(0, 200)}...'
+              : putResp.body;
+      print(
+        '[Spaces] PUT response: status=${putResp.statusCode}, body=$preview',
+      );
+
+      if (putResp.statusCode < 200 || putResp.statusCode >= 300) {
+        throw StateError(
+          'Upload failed (${putResp.statusCode}): ${putResp.body}',
+        );
+      }
+
+      onProgress?.call(1.0);
+      print('[Spaces] Upload success: $publicUrl');
+      return publicUrl;
+    } catch (e) {
+      print('[Spaces] PUT error: $e');
+      rethrow;
+    }
   }
 
   @override

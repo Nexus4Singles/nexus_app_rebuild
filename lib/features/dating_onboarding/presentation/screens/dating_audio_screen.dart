@@ -11,21 +11,25 @@ class DatingAudioScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
         elevation: 0,
+        titleSpacing: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Dating Profile', style: AppTextStyles.titleLarge),
+        title: Text(
+          'Audio Recordings',
+          style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700),
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const DatingProfileProgressBar(currentStep: 6, totalSteps: 8),
             const SizedBox(height: 18),
-            Text('Audio Recordings', style: AppTextStyles.headlineLarge),
+            Text('Instructions', style: AppTextStyles.headlineMedium),
             const SizedBox(height: 12),
 
             Container(
@@ -36,16 +40,61 @@ class DatingAudioScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(18),
                 border: Border.all(color: AppColors.border),
               ),
-              child: Text(
-                'Instructions\n\n'
-                'Please record genuine responses to the questions you see on the subsequent screens. These three (3) questions are centered around your christian faith, marriage beliefs & personality. \n'
-                'Each response has a limit of 60 seconds and you will not be able to change \n'
-                'your responses after your profile is completed. Your responses don´t need to \n'
-                'be perfect, they just need to be audible & authentic. \n'
-                'Remember that people value authenticity and most people can tell when a response feels rehearsed or scripted, so we recommend reflecting deeply on each question & responding from your heart, to avoid wondering why you’re not getting matches, despite saying impressive things in your responses. \n'
-                'It is also obvious that any user who records gibberish or submits empty recordings will not be taken seriously by other users,  and such profiles will be deleted.\n\n'
-                'Happy Recording!',
-                style: AppTextStyles.bodyMedium.copyWith(height: 1.45),
+              child: Text.rich(
+                TextSpan(
+                  style: AppTextStyles.bodyMedium.copyWith(height: 1.45),
+                  children: [
+                    const TextSpan(
+                      text:
+                          'Please record genuine responses to the questions you see on the subsequent screens. These three (3) questions are centered around your ',
+                    ),
+                    TextSpan(
+                      text: 'Christian Faith, Marriage Beliefs & Personality',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        height: 1.45,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: '. \n\nEach recording has a minimum duration of ',
+                    ),
+                    TextSpan(
+                      text: '45 seconds',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        height: 1.45,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const TextSpan(text: ' and a maximum of '),
+                    TextSpan(
+                      text: '60 seconds',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        height: 1.45,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const TextSpan(
+                      text:
+                          'and you will not be able to change your responses after \n'
+                          'your profile is completed. \nYour responses don´t need to be perfect, \n'
+                          'they just need to be audible & authentic. \n\n',
+                    ),
+                    TextSpan(
+                      text:
+                          'Remember that people value authenticity and most people can tell when a response feels rehearsed or scripted, so we recommend reflecting deeply on each question & responding from your heart.',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        height: 1.45,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const TextSpan(
+                      text:
+                          ' \n\n'
+                          'Lastly, any user who records gibberish or submits empty recordings will not be verified and such profiles will be deleted.\n\n'
+                          'Happy Recording!',
+                    ),
+                  ],
+                ),
               ),
             ),
 

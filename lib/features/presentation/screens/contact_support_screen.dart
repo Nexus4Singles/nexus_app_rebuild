@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nexus_app_min_test/core/theme/theme.dart';
 
 class ContactSupportScreen extends StatefulWidget {
   const ContactSupportScreen({super.key});
@@ -34,15 +35,29 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Contact Support')),
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
+        elevation: 0,
+        titleSpacing: 0,
+        title: Text(
+          'Contact Support',
+          style: AppTextStyles.headlineLarge.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
           children: [
-            const Text(
-              'Tell us what happened and we’ll help you out.',
-              style: TextStyle(fontSize: 14),
+            Text(
+              'Tell us what happened and we\'ll help you out.',
+              style: AppTextStyles.bodyLarge.copyWith(
+                color: AppColors.textSecondary,
+              ),
             ),
             const SizedBox(height: 12),
 

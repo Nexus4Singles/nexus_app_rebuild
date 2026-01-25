@@ -18,15 +18,12 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
 
   late FixedExtentScrollController _controller;
   int _selectedAge = 21;
+  bool _syncedFromDraft = false;
 
   @override
   void initState() {
     super.initState();
-    final draft = ref.read(datingOnboardingDraftProvider);
-    _selectedAge = (draft.age ?? _minAge).clamp(_minAge, _maxAge);
-    _controller = FixedExtentScrollController(
-      initialItem: _selectedAge - _minAge,
-    );
+    _controller = FixedExtentScrollController();
   }
 
   @override
@@ -75,6 +72,20 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Sync wheel once when draft age becomes available
+    final draft = ref.watch(datingOnboardingDraftProvider);
+    final draftAge = draft.age;
+    if (!_syncedFromDraft && draftAge != null) {
+      final clamped = draftAge.clamp(_minAge, _maxAge);
+      _syncedFromDraft = true;
+      _selectedAge = clamped;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _controller.jumpToItem(clamped - _minAge);
+        setState(() {});
+      });
+    }
+
     return WillPopScope(
       onWillPop: () async {
         await _onBackPressed();
@@ -85,24 +96,31 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: AppColors.background,
+          surfaceTintColor: AppColors.background,
           foregroundColor: AppColors.textPrimary,
+          titleSpacing: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_rounded),
             onPressed: _onBackPressed,
           ),
-          title: Text('Step 1 of 8', style: AppTextStyles.titleMedium),
+          title: Text(
+            'Age',
+            style: AppTextStyles.titleLarge.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
           centerTitle: true,
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Progress bar
-                const DatingProfileProgressBar(currentStep: 1, totalSteps: 8),
+                const DatingProfileProgressBar(currentStep: 1, totalSteps: 9),
                 const SizedBox(height: 24),
-                Text('How old are you?', style: AppTextStyles.headlineLarge),
+                Text('How old are you?', style: AppTextStyles.titleLarge),
                 const SizedBox(height: 10),
                 Text(
                   'Nexus is for users between the ages of 21 to 70 years',
@@ -152,6 +170,10 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
                             physics: const FixedExtentScrollPhysics(),
                             onSelectedItemChanged: (i) {
                               setState(() => _selectedAge = _minAge + i);
+                              // Auto-save on selection change
+                              ref
+                                  .read(datingOnboardingDraftProvider.notifier)
+                                  .setAge(_selectedAge);
                             },
                             perspective: 0.003,
                             diameterRatio: 1.5,

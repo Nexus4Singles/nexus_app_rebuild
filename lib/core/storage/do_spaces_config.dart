@@ -32,6 +32,12 @@ class DoSpacesConfig {
   );
 
   static void validate() {
+    // Debug: print config values
+    print('[DO_SPACES_CONFIG] endpoint: $endpoint');
+    print('[DO_SPACES_CONFIG] region: $region');
+    print('[DO_SPACES_CONFIG] bucket: $bucket');
+    print('[DO_SPACES_CONFIG] presignUrl: $presignUrl');
+
     if (endpoint.isEmpty ||
         region.isEmpty ||
         bucket.isEmpty ||
@@ -40,6 +46,7 @@ class DoSpacesConfig {
         'DigitalOcean Spaces is not configured. Provide DO_SPACES_ENDPOINT/DO_SPACES_REGION/DO_SPACES_BUCKET and SPACES_PRESIGN_URL via --dart-define.',
       );
     }
+    print('[DO_SPACES_CONFIG] ✅ Configuration is valid!');
   }
 
   static String publicUrlFor(String objectKey) {

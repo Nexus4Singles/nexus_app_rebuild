@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
 import 'package:nexus_app_min_test/features/stories/data/poll_repository.dart';
 import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
@@ -95,7 +96,19 @@ class _StoryPollScreenState extends ConsumerState<StoryPollScreen> {
     final poll = _poll;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Weekly Poll')),
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
+        elevation: 0,
+        titleSpacing: 0,
+        title: Text(
+          'Weekly Poll',
+          style: AppTextStyles.headlineLarge.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
       body:
           _loading
               ? const Center(child: CircularProgressIndicator())

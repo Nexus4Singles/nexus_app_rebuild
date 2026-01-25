@@ -29,7 +29,28 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
   bool _showOtherChurch = false;
 
   @override
+  void initState() {
+    super.initState();
+    // Load existing draft values
+    final draft = ref.read(datingOnboardingDraftProvider);
+    _cityCtrl.text = draft.city ?? '';
+    _otherChurchCtrl.text = draft.otherChurchName ?? '';
+    _countryOfResidence = draft.countryOfResidence;
+    _nationality = draft.nationality;
+    _education = draft.educationLevel;
+    _profession = draft.profession;
+    _church = draft.churchName;
+    _showOtherChurch = _church == 'Other';
+
+    // Add listeners for auto-save on text changes
+    _cityCtrl.addListener(_saveDraft);
+    _otherChurchCtrl.addListener(_saveDraft);
+  }
+
+  @override
   void dispose() {
+    _cityCtrl.removeListener(_saveDraft);
+    _otherChurchCtrl.removeListener(_saveDraft);
     _cityCtrl.dispose();
     _otherChurchCtrl.dispose();
     super.dispose();
@@ -101,8 +122,13 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
         elevation: 0,
-        title: Text('Extra Information', style: AppTextStyles.headlineLarge),
+        titleSpacing: 0,
+        title: Text(
+          'Extra Information',
+          style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700),
+        ),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -125,25 +151,36 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
                       onPickCountry:
                           () => _pickCountry(
                             title: 'Country of Residence',
-                            onPicked:
-                                (v) => setState(() => _countryOfResidence = v),
+                            onPicked: (v) {
+                              setState(() => _countryOfResidence = v);
+                              _saveDraft();
+                            },
                           ),
                       onPickNationality:
                           () => _pickCountry(
                             title: 'Nationality',
-                            onPicked: (v) => setState(() => _nationality = v),
+                            onPicked: (v) {
+                              setState(() => _nationality = v);
+                              _saveDraft();
+                            },
                           ),
                       onPickEducation:
                           () => _pickFromList(
                             title: 'Education Level',
                             items: lists.educationalLevels,
-                            onPicked: (v) => setState(() => _education = v),
+                            onPicked: (v) {
+                              setState(() => _education = v);
+                              _saveDraft();
+                            },
                           ),
                       onPickProfession:
                           () => _pickFromList(
                             title: 'Profession',
                             items: lists.professions,
-                            onPicked: (v) => setState(() => _profession = v),
+                            onPicked: (v) {
+                              setState(() => _profession = v);
+                              _saveDraft();
+                            },
                           ),
                       onPickChurch:
                           () => _pickFromList(
@@ -155,11 +192,12 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
                                 _showOtherChurch = v == 'Other';
                                 if (!_showOtherChurch) _otherChurchCtrl.clear();
                               });
+                              _saveDraft();
                             },
                           ),
                       onOtherChurchChanged: () => setState(() {}),
                       onContinue: () {
-                        _saveDraft();
+                        // Draft is already saved via auto-save
                         Navigator.of(
                           context,
                         ).pushNamed('/dating/setup/hobbies');
@@ -230,13 +268,13 @@ class _Body extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 10, 16, 18),
       child: Column(
         children: [
-          const DatingProfileProgressBar(currentStep: 2, totalSteps: 8),
-          const SizedBox(height: 16),
+          const DatingProfileProgressBar(currentStep: 2, totalSteps: 9),
+          const SizedBox(height: 20),
           _InfoCard(
             text:
-                'To select your church below, search with the full name. If your church is not listed, kindly select “Other” and type the full name of your Church in the text box displayed.',
+                'To select your church below, search with the full name. If your church is not listed, kindly select "Other" and type the full name of your Church in the text box displayed.',
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
 
           Expanded(
             child: ListView(
@@ -339,16 +377,17 @@ class _Body extends StatelessWidget {
     fillColor: AppColors.surface,
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
-      borderSide: BorderSide(color: AppColors.border),
+      borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
-      borderSide: BorderSide(color: AppColors.border),
+      borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
       borderSide: BorderSide(color: AppColors.primary, width: 1.4),
     ),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
   );
 }
 
@@ -360,18 +399,23 @@ class _InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.08),
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.primary.withOpacity(0.18)),
+        border: Border.all(color: AppColors.border),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.info_outline, color: AppColors.primary),
-          const SizedBox(width: 10),
-          Expanded(child: Text(text, style: AppTextStyles.bodyMedium)),
+          Icon(Icons.info_outline, color: AppColors.primary, size: 24),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: AppTextStyles.bodyMedium.copyWith(height: 1.5),
+            ),
+          ),
         ],
       ),
     );

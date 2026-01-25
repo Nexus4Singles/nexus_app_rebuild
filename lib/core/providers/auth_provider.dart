@@ -52,7 +52,40 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
   AuthNotifier(this._ref, this._authService, this._firestoreService)
     : super(const AsyncValue.loading()) {
-    _authService.authStateChanges.listen((user) {
+    _authService.authStateChanges.listen((user) async {
+      // ignore: avoid_print
+      print(
+        '[AuthNotifier] authStateChanges -> ${user?.uid ?? "null"} verified=${user?.emailVerified} anon=${user?.isAnonymous}',
+      );
+
+      if (user != null && !user.isAnonymous) {
+        // Check if user document exists in Firestore
+        try {
+          final userDoc = await _firestoreService.getUser(user.uid);
+          if (userDoc == null) {
+            // During email verification the user doc may not exist yet. Keep session alive.
+            if (!user.emailVerified) {
+              // ignore: avoid_print
+              print(
+                '[AuthNotifier] Missing user doc but email not verified yet; keeping session.',
+              );
+              state = AsyncValue.data(user);
+              return;
+            }
+
+            // If verified but missing doc, create a minimal normalized doc instead of signing out.
+            // ignore: avoid_print
+            print(
+              '[AuthNotifier] Missing user doc for verified user; creating normalized doc.',
+            );
+            await _ensureUserDocNormalized(user);
+          }
+        } catch (e) {
+          // If error checking user document, still allow them to stay signed in
+          // but log the error
+          print('Error checking user document: $e');
+        }
+      }
       state = AsyncValue.data(user);
     });
   }
@@ -114,6 +147,15 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
     // If missing doc entirely, create a minimal v2-compatible base doc (merge-safe).
     if (!snap.exists) {
+      // Try to load pending username from SharedPreferences (set during signup)
+      String? pendingUsername;
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        pendingUsername = prefs.getString('pending_username_$uid');
+      } catch (_) {
+        // Ignore prefs errors
+      }
+
       final base = <String, dynamic>{
         'uid': uid,
         'email': (user.email ?? '').trim().isEmpty ? null : user.email,
@@ -125,7 +167,23 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         'updatedAt': FieldValue.serverTimestamp(),
       };
 
+      // Add username if available from signup
+      if (pendingUsername != null && pendingUsername.trim().isNotEmpty) {
+        base['username'] = pendingUsername.trim();
+        base['name'] = pendingUsername.trim();
+        base['displayName'] = pendingUsername.trim();
+      }
+
       await docRef.set(base, SetOptions(merge: true));
+
+      // Clean up the pending username from prefs now that it's persisted
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.remove('pending_username_$uid');
+      } catch (_) {
+        // Ignore cleanup errors
+      }
+
       return;
     }
 
@@ -150,6 +208,16 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
   }) async {
     state = const AsyncValue.loading();
     try {
+      // If there's an anonymous user, delete it first
+      final currentUser = _authService.currentUser;
+      if (currentUser != null && currentUser.isAnonymous) {
+        try {
+          await currentUser.delete();
+        } catch (_) {
+          // Ignore deletion errors, proceed with signup
+        }
+      }
+
       final credential = await _authService.signUpWithEmail(
         email: email,
         password: password,
@@ -159,32 +227,24 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
       await prefs.remove('force_guest');
 
       final user = credential.user;
-      if (user != null) {
-        // Send email verification
-        await _authService.sendEmailVerification();
-
-        // Update Firebase Auth displayName with username
-        await user.updateDisplayName(username);
-        await user.reload();
-
-        await _ensureUserDocNormalized(user);
-
-        // Create doc only if it doesn't exist (FirestoreService.createUser is hardened)
-        await _firestoreService.createUser(
-          UserModel(
-            id: user.uid,
-            name: username,
-            username: username,
-            email: email,
-            profileUrl: null,
-          ),
-        );
-
-        // Attach presurvey -> nexus fields (merge-safe)
-        await _ensureUserDocNormalized(user);
-        await _persistPresurveyToFirestore(user.uid);
+      if (user == null) {
+        throw Exception('Signup succeeded but user is null');
       }
 
+      // Send email verification
+      await _authService.sendEmailVerification();
+
+      // Store username in SharedPreferences for later (when creating Firestore document)
+      await prefs.setString('pending_username_${user.uid}', username);
+
+      // Create the Firestore document immediately so profile screen can access it
+      await _ensureUserDocNormalized(user);
+
+      // Also persist presurvey data
+      await _persistPresurveyToFirestore(user.uid);
+
+      // IMPORTANT: Keep user signed in so EmailVerificationScreen can detect when verified
+      // Don't sign out yet - user session stays active for verification detection
       state = AsyncValue.data(user);
     } catch (e, st) {
       state = AsyncValue.error(e, st);
@@ -239,7 +299,24 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
       final user = credential.user;
       if (user != null) {
+        // Check if there's a pending username from signup
+        final pendingUsername = prefs.getString('pending_username_${user.uid}');
+
         await _ensureUserDocNormalized(user);
+
+        // Create user document if it doesn't exist (for new signups)
+        if (pendingUsername != null) {
+          await _firestoreService.createUser(
+            UserModel(
+              id: user.uid,
+              name: pendingUsername,
+              username: pendingUsername,
+              email: user.email ?? '',
+              profileUrl: null,
+            ),
+          );
+          await prefs.remove('pending_username_${user.uid}');
+        }
 
         await _persistPresurveyToFirestore(user.uid);
       }

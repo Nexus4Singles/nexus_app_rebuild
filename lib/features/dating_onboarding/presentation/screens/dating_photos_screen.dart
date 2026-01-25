@@ -20,6 +20,7 @@ class DatingPhotosScreen extends ConsumerStatefulWidget {
 
 class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
   static const int _minPhotos = 2;
+  static const int _maxPhotos = 5;
 
   final _picker = ImagePicker();
   late final FaceDetector _faceDetector;
@@ -52,49 +53,70 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
   @override
   Widget build(BuildContext context) {
     final canContinue = _photoPaths.length >= _minPhotos;
+    final maxReached = _photoPaths.length >= _maxPhotos;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
         elevation: 0,
+        titleSpacing: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Dating Profile', style: AppTextStyles.titleLarge),
+        title: Text(
+          'Photos',
+          style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700),
+        ),
       ),
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const _ProgressHeader(
-                  stepLabel: 'Step 5 of 8',
-                  title: 'Add photos',
+                  title: 'Add Photos',
                   subtitle:
-                      'Add at least 2 photos of yourself. We highly recommend uploading your best pictures because first impressions really matter. Profiles with indecent pictures will be deleted.',
+                      'Add at least 2 Photos of yourself. We highly recommend uploading your best pictures because first impressions really matter. Profiles with indecent pictures will not be approved.',
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
 
                 _PhotoGrid(
                   photoPaths: _photoPaths,
-                  onAdd: _busy ? null : _pickPhoto,
+                  onAdd: (_busy || maxReached) ? null : _pickPhoto,
                   onRemove: _removePhoto,
                 ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 18),
                 SizedBox(
                   width: double.infinity,
+                  height: 54,
                   child: ElevatedButton(
                     onPressed:
                         (!canContinue || _busy)
                             ? null
                             : () => _onContinue(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
                     child: Text(
-                      canContinue ? 'Continue' : 'Add at least 2 photos',
+                      maxReached
+                          ? 'Maximum 5 Photos'
+                          : canContinue
+                          ? 'Continue'
+                          : 'Add at least 2 Photos',
+                      style: AppTextStyles.labelLarge.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -116,6 +138,11 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
 
   Future<void> _pickPhoto() async {
     try {
+      if (_photoPaths.length >= _maxPhotos) {
+        _toast('Maximum 5 photos allowed.');
+        return;
+      }
+
       setState(() => _busy = true);
 
       final img = await _picker.pickImage(
@@ -137,6 +164,11 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
       setState(() {
         _photoPaths.add(img.path);
       });
+
+      // Auto-save on photo add
+      ref
+          .read(datingOnboardingDraftProvider.notifier)
+          .setPhotos(List.of(_photoPaths));
     } catch (e) {
       _toast('Failed to pick photo: $e');
     } finally {
@@ -156,30 +188,40 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
     setState(() {
       _photoPaths.removeAt(index);
     });
-  }
 
-  Future<void> _onContinue(BuildContext context) async {
-    // Save local paths into draft
+    // Auto-save on photo removal
     ref
         .read(datingOnboardingDraftProvider.notifier)
         .setPhotos(List.of(_photoPaths));
+  }
 
-    // ✅ Stub upload: show we can call storage provider without hardcoding Firebase Storage.
-    // (We will do real upload later)
-    final storage = ref.read(mediaStorageProvider);
+  Future<void> _onContinue(BuildContext context) async {
+    // Draft is already saved via auto-save
 
-    for (var i = 0; i < _photoPaths.length; i++) {
-      final path = _photoPaths[i];
-      final key =
-          'dating/photos/${DateTime.now().millisecondsSinceEpoch}_$i.jpg';
-      try {
-        await storage.uploadImage(localPath: path, objectKey: key);
-      } catch (_) {
-        // ignore upload errors for now; will wire real handling later
+    setState(() => _busy = true);
+
+    try {
+      final storage = ref.read(mediaStorageProvider);
+
+      for (var i = 0; i < _photoPaths.length; i++) {
+        final path = _photoPaths[i];
+        final key =
+            'dating/photos/${DateTime.now().millisecondsSinceEpoch}_$i.jpg';
+        try {
+          await storage.uploadImage(localPath: path, objectKey: key);
+        } catch (e) {
+          _toast('Failed to upload photo ${i + 1}: $e');
+          setState(() => _busy = false);
+          return;
+        }
       }
-    }
 
-    Navigator.of(context).pushNamed('/dating/setup/audio');
+      if (!context.mounted) return;
+      Navigator.of(context).pushNamed('/dating/setup/audio');
+    } catch (e) {
+      _toast('Upload error: $e');
+      setState(() => _busy = false);
+    }
   }
 
   void _toast(String msg) {
@@ -188,24 +230,19 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
 }
 
 class _ProgressHeader extends StatelessWidget {
-  final String stepLabel;
   final String title;
   final String subtitle;
 
-  const _ProgressHeader({
-    required this.stepLabel,
-    required this.title,
-    required this.subtitle,
-  });
+  const _ProgressHeader({required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const DatingProfileProgressBar(currentStep: 5, totalSteps: 8),
+        const DatingProfileProgressBar(currentStep: 5, totalSteps: 9),
         const SizedBox(height: 18),
-        Text(title, style: AppTextStyles.headlineLarge),
+        Text(title, style: AppTextStyles.titleLarge),
         const SizedBox(height: 10),
         Text(
           subtitle,

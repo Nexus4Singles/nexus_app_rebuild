@@ -81,7 +81,7 @@ class _PresurveySplashScreenState extends ConsumerState<PresurveySplashScreen>
     _c.forward();
 
     // Auto-route after 5 seconds
-    _timer = Timer(const Duration(seconds: 5), _goNext);
+    _timer = Timer(const Duration(seconds: 10), _goNext);
   }
 
   void _goNext() {
@@ -122,7 +122,7 @@ class _PresurveySplashScreenState extends ConsumerState<PresurveySplashScreen>
                         'Nexus',
                         style: AppTextStyles.headlineLarge.copyWith(
                           color: Colors.white,
-                          fontSize: 40,
+                          fontSize: 30,
                           fontWeight: FontWeight.w800,
                           letterSpacing: -0.4,
                         ),

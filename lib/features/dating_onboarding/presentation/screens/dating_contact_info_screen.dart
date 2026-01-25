@@ -35,7 +35,7 @@ class _DatingContactInfoScreenState
     _ContactField(
       keyName: 'Facebook',
       hint: 'username',
-      icon: Icons.people_rounded,
+      iconPath: 'assets/images/social_icons/facebook.png',
     ),
     _ContactField(
       keyName: 'Email',
@@ -84,6 +84,15 @@ class _DatingContactInfoScreenState
     _phoneNumberController = TextEditingController(text: phoneNumber);
     _whatsappCountryCodeController = TextEditingController(text: whatsappCode);
     _whatsappNumberController = TextEditingController(text: whatsappNumber);
+
+    // Attach listeners for auto-save
+    _phoneCountryCodeController.addListener(_saveDraft);
+    _phoneNumberController.addListener(_saveDraft);
+    _whatsappCountryCodeController.addListener(_saveDraft);
+    _whatsappNumberController.addListener(_saveDraft);
+    for (final c in _controllers.values) {
+      c.addListener(_saveDraft);
+    }
   }
 
   @override
@@ -108,6 +117,35 @@ class _DatingContactInfoScreenState
     return textFieldsFilled || phoneFilled;
   }
 
+  void _saveDraft() {
+    final info = <String, String>{};
+
+    for (final f in _fields) {
+      final v = _controllers[f.keyName]!.text.trim();
+      if (v.isNotEmpty) info[f.keyName] = v;
+    }
+
+    // Concatenate phone number with country code
+    final phoneCode = _phoneCountryCodeController.text.trim();
+    final phoneNumber = _phoneNumberController.text.trim();
+    if (phoneNumber.isNotEmpty) {
+      info['Phone'] =
+          phoneCode.isEmpty ? phoneNumber : '$phoneCode$phoneNumber';
+    }
+
+    // Concatenate WhatsApp with country code
+    final whatsappCode = _whatsappCountryCodeController.text.trim();
+    final whatsappNumber = _whatsappNumberController.text.trim();
+    if (whatsappNumber.isNotEmpty) {
+      info['WhatsApp'] =
+          whatsappCode.isEmpty
+              ? whatsappNumber
+              : '$whatsappCode$whatsappNumber';
+    }
+
+    ref.read(datingOnboardingDraftProvider.notifier).setContactInfo(info);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,12 +165,10 @@ class _DatingContactInfoScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const _ProgressHeader(
-              stepLabel: 'Step 7 of 8',
-              title: 'Contact Information',
               subtitle:
                   "Kindly provide the details of the social media platforms you feel comfortable sharing, where users can easily contact you in case you're away from the app and unable to see messages.",
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 14),
             Expanded(
               child: ListView.builder(
                 itemCount: _fields.length + 2, // +2 for Phone and WhatsApp
@@ -176,12 +212,24 @@ class _DatingContactInfoScreenState
             const SizedBox(height: 14),
             SizedBox(
               width: double.infinity,
+              height: 54,
               child: ElevatedButton(
                 onPressed:
                     _hasAtLeastOneFilled
-                        ? () async => await _onContinue()
+                        ? () async => await _completeProfile()
                         : null,
-                child: const Text('Continue'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                ),
+                child: Text(
+                  'Complete Profile',
+                  style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
+                ),
               ),
             ),
             const SizedBox(height: 10),
@@ -195,7 +243,7 @@ class _DatingContactInfoScreenState
     );
   }
 
-  Future<void> _onContinue() async {
+  Future<void> _completeProfile() async {
     final info = <String, String>{};
 
     for (final f in _fields) {
@@ -230,35 +278,26 @@ class _DatingContactInfoScreenState
       return;
     }
 
-    // Persist in local onboarding draft (Phase 1 + smooth migration later).
+    // Persist contact info and navigate to completion
     ref.read(datingOnboardingDraftProvider.notifier).setContactInfo(info);
 
-    // Route to profile completion screen
     if (!mounted) return;
     Navigator.of(context).pushNamed('/dating/setup/complete');
   }
 }
 
 class _ProgressHeader extends StatelessWidget {
-  final String stepLabel;
-  final String title;
   final String subtitle;
 
-  const _ProgressHeader({
-    required this.stepLabel,
-    required this.title,
-    required this.subtitle,
-  });
+  const _ProgressHeader({required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const DatingProfileProgressBar(currentStep: 7, totalSteps: 8),
-        const SizedBox(height: 18),
-        Text(title, style: AppTextStyles.headlineLarge),
-        const SizedBox(height: 10),
+        const DatingProfileProgressBar(currentStep: 9, totalSteps: 9),
+        const SizedBox(height: 12),
         Text(
           subtitle,
           style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),

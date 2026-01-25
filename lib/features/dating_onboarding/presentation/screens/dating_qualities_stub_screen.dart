@@ -169,7 +169,7 @@ class _ProgressHeader extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: AppTextStyles.headlineLarge),
+                  Text(title, style: AppTextStyles.titleLarge),
                   const SizedBox(height: 10),
                   Text(
                     subtitle,

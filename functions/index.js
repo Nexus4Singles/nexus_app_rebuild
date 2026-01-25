@@ -14,6 +14,9 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const crypto = require('crypto');
 
 admin.initializeApp();
 
@@ -362,3 +365,380 @@ exports.onUserDeleted = functions.firestore
       return { success: false, userId, error: error.message };
     }
   });
+
+// ============================================================================
+// PUSH NOTIFICATION FUNCTIONS
+// ============================================================================
+
+/**
+ * Send FCM notification when notification document is created
+ * Triggers on: users/{userId}/notifications/{notificationId}
+ */
+exports.sendPushNotification = functions.firestore
+  .document('users/{userId}/notifications/{notificationId}')
+  .onCreate(async (snapshot, context) => {
+    const { userId, notificationId } = context.params;
+    const notification = snapshot.data();
+
+    try {
+      // Get user's FCM token
+      const userDoc = await admin.firestore().collection('users').doc(userId).get();
+      const userData = userDoc.data();
+      
+      if (!userData || !userData.fcmToken || !userData.fcmToken.token) {
+        console.log(`No FCM token found for user: ${userId}`);
+        return null;
+      }
+
+      const fcmToken = userData.fcmToken.token;
+      const payload = notification.payload;
+
+      // Build FCM message
+      const message = {
+        token: fcmToken,
+        notification: {
+          title: payload.title || 'Nexus',
+          body: payload.body || '',
+        },
+        data: {
+          type: payload.type,
+          route: payload.route || '/',
+          notificationId: notificationId,
+          ...Object.fromEntries(
+            Object.entries(payload.data || {}).map(([key, value]) => [key, String(value)])
+          ),
+        },
+        apns: {
+          payload: {
+            aps: {
+              sound: 'default',
+              badge: 1,
+            },
+          },
+        },
+        android: {
+          priority: 'high',
+          notification: {
+            sound: 'default',
+            channelId: 'nexus_default_channel',
+          },
+        },
+      };
+
+      // Send notification via FCM
+      const response = await admin.messaging().send(message);
+      console.log(`✅ Push notification sent successfully: ${response}`);
+
+      // Mark notification as sent
+      await snapshot.ref.update({ isSent: true });
+
+      return response;
+    } catch (error) {
+      console.error('❌ Error sending push notification:', error);
+      
+      // Mark notification as failed
+      await snapshot.ref.update({
+        isSent: false,
+        error: error.message,
+      });
+
+      return null;
+    }
+  });
+
+/**
+ * Send notification when new chat message is received
+ * Triggers on: chats/{chatId}/messages/{messageId}
+ */
+exports.onNewChatMessage = functions.firestore
+  .document('chats/{chatId}/messages/{messageId}')
+  .onCreate(async (snapshot, context) => {
+    const { chatId } = context.params;
+    const message = snapshot.data();
+    const senderId = message.senderId;
+    const messageText = message.text || 'Sent a message';
+
+    try {
+      // Get chat participants
+      const chatDoc = await admin.firestore().collection('chats').doc(chatId).get();
+      const chatData = chatDoc.data();
+      
+      if (!chatData || !chatData.participants) {
+        console.log(`Chat not found: ${chatId}`);
+        return null;
+      }
+
+      const participants = chatData.participants;
+      const recipientId = participants.find((id) => id !== senderId);
+
+      if (!recipientId) {
+        console.log('No recipient found');
+        return null;
+      }
+
+      // Get sender's name
+      const senderDoc = await admin.firestore().collection('users').doc(senderId).get();
+      const senderName = senderDoc.data()?.firstName || 'Someone';
+
+      // Create notification payload
+      const notificationRef = admin
+        .firestore()
+        .collection('users')
+        .doc(recipientId)
+        .collection('notifications')
+        .doc();
+
+      const notification = {
+        id: notificationRef.id,
+        userId: recipientId,
+        payload: {
+          type: 'chat_message',
+          title: `Message from ${senderName}`,
+          body: messageText.length > 50 ? `${messageText.substring(0, 50)}...` : messageText,
+          route: `/chats/${chatId}`,
+          data: {
+            chatId: chatId,
+            senderId: senderId,
+            senderName: senderName,
+          },
+        },
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        isRead: false,
+        isSent: false,
+      };
+
+      await notificationRef.set(notification);
+      console.log(`✅ Chat notification queued for user: ${recipientId}`);
+
+      return null;
+    } catch (error) {
+      console.error('❌ Error creating chat notification:', error);
+      return null;
+    }
+  });
+
+/**
+ * Send notification when user profile is verified by admin
+ * Triggers on: users/{userId} (when moderationStatus changes to verified)
+ */
+exports.onProfileVerified = functions.firestore
+  .document('users/{userId}')
+  .onUpdate(async (change, context) => {
+    const { userId } = context.params;
+    const before = change.before.data();
+    const after = change.after.data();
+
+    // Check if moderationStatus changed from pending to verified
+    if (
+      before.moderationStatus === 'pending' &&
+      after.moderationStatus === 'verified'
+    ) {
+      try {
+        // Create notification payload
+        const notificationRef = admin
+          .firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('notifications')
+          .doc();
+
+        const notification = {
+          id: notificationRef.id,
+          userId: userId,
+          payload: {
+            type: 'profile_verified',
+            title: 'Profile Verified! ✓',
+            body: 'Your profile has been verified and is now visible to other users in the dating section.',
+            route: '/dating',
+            data: {},
+          },
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          isRead: false,
+          isSent: false,
+        };
+
+        await notificationRef.set(notification);
+        console.log(`✅ Profile verified notification queued for user: ${userId}`);
+
+        return null;
+      } catch (error) {
+        console.error('❌ Error creating profile verified notification:', error);
+        return null;
+      }
+    }
+
+    return null;
+  });
+
+/**
+ * Send notification for subscription expiring (runs daily)
+ * Checks for subscriptions expiring in 3 days
+ */
+exports.checkExpiringSubscriptions = functions.pubsub
+  .schedule('every 24 hours')
+  .onRun(async (context) => {
+    const now = new Date();
+
+    try {
+      // Query users with subscriptions expiring in 3 days
+      const usersSnapshot = await admin
+        .firestore()
+        .collection('users')
+        .where('subscription.isActive', '==', true)
+        .get();
+
+      const notifications = [];
+
+      for (const userDoc of usersSnapshot.docs) {
+        const userData = userDoc.data();
+        const subscription = userData.subscription;
+
+        if (!subscription || !subscription.expiryDate) continue;
+
+        const expiryDate = subscription.expiryDate.toDate();
+        const daysLeft = Math.ceil((expiryDate - now) / (1000 * 60 * 60 * 24));
+
+        // Send notification if expiring in exactly 3 days
+        if (daysLeft === 3 && subscription.autoRenew === false) {
+          const notificationRef = admin
+            .firestore()
+            .collection('users')
+            .doc(userDoc.id)
+            .collection('notifications')
+            .doc();
+
+          const notification = {
+            id: notificationRef.id,
+            userId: userDoc.id,
+            payload: {
+              type: 'subscription_expiring',
+              title: 'Subscription Expiring Soon',
+              body: `Your premium subscription expires in ${daysLeft} days. Renew to keep your benefits!`,
+              route: '/subscription',
+              data: { daysLeft: daysLeft.toString() },
+            },
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            isRead: false,
+            isSent: false,
+          };
+
+          notifications.push(notificationRef.set(notification));
+        }
+      }
+
+      await Promise.all(notifications);
+      console.log(`✅ Checked subscriptions, sent ${notifications.length} expiry notifications`);
+
+      return null;
+    } catch (error) {
+      console.error('❌ Error checking expiring subscriptions:', error);
+      return null;
+    }
+  });
+
+// ============================================================================
+// DO SPACES PRESIGNED URL FUNCTION
+// ============================================================================
+
+/**
+ * POST /getPresignedUploadUrl
+ * Headers: Authorization: Bearer <Firebase ID token>
+ * Body: { type: "photo" | "audio", contentType: string }
+ * Response: { uploadUrl, publicUrl, objectKey }
+ */
+exports.getPresignedUploadUrl = functions.https.onRequest(async (req, res) => {
+  try {
+    if (req.method !== 'POST') {
+      res.status(405).send('Method not allowed');
+      return;
+    }
+
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      res.status(401).send('Missing auth token');
+      return;
+    }
+
+    const token = authHeader.slice('Bearer '.length);
+    const decoded = await admin.auth().verifyIdToken(token);
+    const uid = decoded.uid;
+
+    const body = req.body || {};
+    const type = body.type;
+    const contentType = body.contentType;
+
+    if (type !== 'photo' && type !== 'audio') {
+      res.status(400).send("Invalid type. Use 'photo' or 'audio'.");
+      return;
+    }
+
+    if (!contentType || typeof contentType !== 'string') {
+      res.status(400).send('Missing contentType.');
+      return;
+    }
+
+    // Read from environment (via runtime config or env vars)
+    const SPACES_KEY = process.env.SPACES_KEY || functions.config().spaces?.key;
+    const SPACES_SECRET = process.env.SPACES_SECRET || functions.config().spaces?.secret;
+    const SPACES_ENDPOINT = process.env.SPACES_ENDPOINT || functions.config().spaces?.endpoint;
+    const SPACES_BUCKET = process.env.SPACES_BUCKET || functions.config().spaces?.bucket;
+    const SPACES_REGION = process.env.SPACES_REGION || functions.config().spaces?.region;
+
+    if (!SPACES_KEY || !SPACES_SECRET || !SPACES_ENDPOINT || !SPACES_BUCKET || !SPACES_REGION) {
+      console.error('Missing Spaces config:', {
+        key: !!SPACES_KEY,
+        secret: !!SPACES_SECRET,
+        endpoint: !!SPACES_ENDPOINT,
+        bucket: !!SPACES_BUCKET,
+        region: !!SPACES_REGION,
+      });
+      res.status(500).send('Missing Spaces configuration');
+      return;
+    }
+
+    const ext = type === 'photo'
+      ? (contentType.includes('png') ? 'png' : 'jpg')
+      : (contentType.includes('mpeg') ? 'mp3' : 'm4a');
+
+    const rand = crypto.randomBytes(8).toString('hex');
+    const objectKey = `users/${uid}/${type}s/${type}_${Date.now()}_${rand}.${ext}`;
+
+    const client = new S3Client({
+      region: SPACES_REGION,
+      endpoint: SPACES_ENDPOINT,
+      // DigitalOcean Spaces does not support the newer AWS flexible checksum
+      // params (e.g., x-amz-sdk-checksum-algorithm) that the JS SDK may add by
+      // default. Disable request checksums to avoid connection resets.
+      requestChecksumCalculation: 'NEVER',
+      credentials: {
+        accessKeyId: SPACES_KEY,
+        secretAccessKey: SPACES_SECRET,
+      },
+    });
+
+    const cmd = new PutObjectCommand({
+      Bucket: SPACES_BUCKET,
+      Key: objectKey,
+      ContentType: contentType,
+      // ACL parameter must be included in presigned URL, not just command
+    });
+
+    const uploadUrl = await getSignedUrl(client, cmd, { expiresIn: 300 });
+
+    // Stable public URL
+    const ep = SPACES_ENDPOINT.replace(/\/$/, '');
+    const publicUrl = `${ep}/${SPACES_BUCKET}/${objectKey}`;
+
+    console.log('[getPresignedUploadUrl] Generated presigned URL', { 
+      uid, 
+      type, 
+      objectKey,
+      uploadUrl: uploadUrl.substring(0, 200) + '...',
+      publicUrl,
+    });
+    res.json({ uploadUrl, publicUrl, objectKey });
+  } catch (e) {
+    console.error('[getPresignedUploadUrl] Error:', e);
+    res.status(500).send('Failed to generate upload URL');
+  }
+});

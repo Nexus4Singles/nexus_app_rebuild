@@ -1,11 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'package:nexus_app_min_test/core/theme/theme.dart';
+import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
+import 'package:nexus_app_min_test/core/storage/do_spaces_storage_service.dart';
+import 'package:nexus_app_min_test/core/storage/providers/media_storage_provider.dart';
 
 class DatingAudioSummaryScreen extends ConsumerStatefulWidget {
   const DatingAudioSummaryScreen({super.key});
@@ -18,6 +19,56 @@ class DatingAudioSummaryScreen extends ConsumerStatefulWidget {
 class _DatingAudioSummaryScreenState
     extends ConsumerState<DatingAudioSummaryScreen> {
   final _player = AudioPlayer();
+  bool _isUploading = false;
+  bool _uploadError = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _uploadAudios();
+  }
+
+  Future<void> _uploadAudios() async {
+    if (_isUploading) return;
+
+    setState(() => _isUploading = true);
+
+    try {
+      final draft = ref.read(datingOnboardingDraftProvider);
+      final a1 = draft.audio1Path;
+      final a2 = draft.audio2Path;
+      final a3 = draft.audio3Path;
+
+      // Skip if already uploaded
+      if (draft.audio1Url != null &&
+          draft.audio2Url != null &&
+          draft.audio3Url != null) {
+        setState(() => _isUploading = false);
+        return;
+      }
+
+      if (a1 == null || a2 == null || a3 == null) {
+        throw Exception('One or more audio files are missing');
+      }
+
+      final storage = ref.read(mediaStorageProvider) as DoSpacesStorageService;
+      final url1 = await storage.uploadFile(localPath: a1);
+      final url2 = await storage.uploadFile(localPath: a2);
+      final url3 = await storage.uploadFile(localPath: a3);
+
+      ref
+          .read(datingOnboardingDraftProvider.notifier)
+          .updateAudioUrls(audio1Url: url1, audio2Url: url2, audio3Url: url3);
+
+      setState(() => _isUploading = false);
+    } catch (e) {
+      debugPrint('Audio upload error: $e');
+      setState(() {
+        _isUploading = false;
+        _uploadError = true;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -28,6 +79,58 @@ class _DatingAudioSummaryScreenState
   @override
   Widget build(BuildContext context) {
     final draft = ref.watch(datingOnboardingDraftProvider);
+
+    if (_isUploading) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CircularProgressIndicator(),
+              const SizedBox(height: 16),
+              Text('Uploading recordings...', style: AppTextStyles.bodyMedium),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (_uploadError) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(backgroundColor: AppColors.background, elevation: 0),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.error_outline, size: 64, color: AppColors.primary),
+                const SizedBox(height: 16),
+                Text('Upload Failed', style: AppTextStyles.headlineMedium),
+                const SizedBox(height: 8),
+                Text(
+                  'Unable to upload recordings. Please check your connection and try again.',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() => _uploadError = false);
+                    _uploadAudios();
+                  },
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -45,39 +148,50 @@ class _DatingAudioSummaryScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Your Responses', style: AppTextStyles.headlineLarge),
+            const DatingProfileProgressBar(currentStep: 8, totalSteps: 9),
+            const SizedBox(height: 18),
+            Text('Your Responses', style: AppTextStyles.titleLarge),
             const SizedBox(height: 16),
-
             _Row(
               n: 1,
               q: 'How would you describe your current relationship with God & why is this relationship important to you?',
-              path: draft.audio1Path,
-              onPlay: () => _play(draft.audio1Path),
+              url: draft.audio1Url,
+              onPlay: () => _play(draft.audio1Url),
             ),
             const SizedBox(height: 14),
             _Row(
               n: 2,
               q: 'What are your thoughts on the role of a husband and a wife in marriage?',
-              path: draft.audio2Path,
-              onPlay: () => _play(draft.audio2Path),
+              url: draft.audio2Url,
+              onPlay: () => _play(draft.audio2Url),
             ),
             const SizedBox(height: 14),
             _Row(
               n: 3,
               q: 'What are your favorite qualities or traits about yourself?',
-              path: draft.audio3Path,
-              onPlay: () => _play(draft.audio3Path),
+              url: draft.audio3Url,
+              onPlay: () => _play(draft.audio3Url),
             ),
-
             const Spacer(),
             SizedBox(
               width: double.infinity,
+              height: 54,
               child: ElevatedButton(
                 onPressed: () {
-                  // next step will be contact info
                   Navigator.of(context).pushNamed('/dating/setup/contact-info');
                 },
-                child: const Text('Complete Profile'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                ),
+                child: Text(
+                  'Continue',
+                  style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
+                ),
               ),
             ),
           ],
@@ -86,36 +200,55 @@ class _DatingAudioSummaryScreenState
     );
   }
 
-  Future<void> _play(String? path) async {
-    if (path == null) return;
-    if (!File(path).existsSync()) return;
-    await _player.setFilePath(path);
-    await _player.play();
+  Future<void> _play(String? url) async {
+    if (url == null) {
+      _showSnackBar('Recording not available');
+      return;
+    }
+
+    try {
+      debugPrint('[AudioSummary] Playing URL: $url');
+      try {
+        await _player.stop();
+      } catch (_) {}
+
+      await _player.setUrl(url);
+      await _player.play();
+    } catch (e) {
+      debugPrint('Play error: $e');
+      _showSnackBar('Unable to play recording');
+    }
+  }
+
+  void _showSnackBar(String msg) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    }
   }
 }
 
 class _Row extends StatelessWidget {
   final int n;
   final String q;
-  final String? path;
+  final String? url;
   final VoidCallback onPlay;
 
   const _Row({
     required this.n,
     required this.q,
-    required this.path,
+    required this.url,
     required this.onPlay,
   });
 
   @override
   Widget build(BuildContext context) {
-    final ok = path != null && File(path!).existsSync();
+    final ok = url != null;
 
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(color: AppColors.border),
       ),
       child: Row(
@@ -155,7 +288,7 @@ class _Row extends StatelessWidget {
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            ok ? 'Play recording' : 'Missing recording',
+                            ok ? 'Play Recording' : 'Uploading...',
                             style: AppTextStyles.bodyMedium.copyWith(
                               color:
                                   ok ? AppColors.primary : AppColors.textMuted,

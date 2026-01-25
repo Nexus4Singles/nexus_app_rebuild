@@ -712,7 +712,7 @@ class ChatService {
   }) async {
     final meRef = _fs.collection('users').doc(senderId);
     final snap = await meRef.get();
-    final data = snap.data() as Map<String, dynamic>?;
+    final data = snap.data();
 
     final chatMap = (data?['chat'] as Map?)?.cast<String, dynamic>();
     final rawList = chatMap?['freeChatPartnerIds'];

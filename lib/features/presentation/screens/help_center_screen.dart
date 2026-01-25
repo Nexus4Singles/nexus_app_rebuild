@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nexus_app_min_test/core/theme/theme.dart';
 
 class HelpCenterScreen extends StatelessWidget {
   const HelpCenterScreen({super.key});
@@ -6,9 +7,21 @@ class HelpCenterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Help Center')),
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
+        elevation: 0,
+        titleSpacing: 0,
+        title: Text(
+          'Help Center',
+          style: AppTextStyles.headlineLarge.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
         children: [
           const _SectionTitle('Quick actions'),
           ListTile(
@@ -106,7 +119,7 @@ class HelpCenterScreen extends StatelessWidget {
                 const SizedBox(height: 12),
                 const Text(
                   'About Nexus',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 8),
                 const Text(

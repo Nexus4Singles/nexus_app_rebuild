@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../../core/theme/theme.dart';
 import '../../../../core/providers/auth_provider.dart';
+import '../../../../core/providers/firestore_service_provider.dart';
 import '../../../../core/bootstrap/bootstrap_gate.dart';
+import '../../../../core/models/user_model.dart';
 import '../../../guest/guest_entry_gate.dart';
 
 class EmailVerificationScreen extends ConsumerStatefulWidget {
@@ -31,6 +35,8 @@ class _EmailVerificationScreenState
     _timer = Timer.periodic(const Duration(seconds: 3), (_) {
       _checkEmailVerified();
     });
+    // Check immediately on screen load
+    _checkEmailVerified();
   }
 
   @override
@@ -45,10 +51,58 @@ class _EmailVerificationScreenState
     setState(() => _isCheckingVerification = true);
 
     try {
-      final authService = ref.read(authServiceProvider);
-      await authService.reloadUser();
+      // Get Firebase Auth directly for the most up-to-date user state
+      final auth = FirebaseAuth.instance;
+      final user = auth.currentUser;
 
-      if (authService.isEmailVerified) {
+      if (user == null) {
+        // ignore: avoid_print
+        print('[EmailVerification] No user found!');
+        return;
+      }
+
+      // Force reload from Firebase to get latest verification status
+      try {
+        await auth.currentUser?.reload();
+      } on FirebaseAuthException catch (e) {
+        // ignore: avoid_print
+        print('[EmailVerification] reload failed: ${e.code}');
+        if (e.code == 'no-current-user') {
+          return;
+        }
+        rethrow;
+      }
+
+      // Get fresh user reference after reload
+      final freshUser = auth.currentUser;
+      if (freshUser == null) {
+        // ignore: avoid_print
+        print(
+          '[EmailVerification] User disappeared after reload (likely signed out).',
+        );
+        return;
+      }
+
+      final isVerified = freshUser.emailVerified;
+
+      // ignore: avoid_print
+      print(
+        '[EmailVerification] Checking... isEmailVerified: $isVerified (uid: ${freshUser.uid})',
+      );
+      // ignore: avoid_print
+      print(
+        '[EmailVerification] User email: ${freshUser.email}, Metadata: ${freshUser.metadata}',
+      );
+
+      if (isVerified) {
+        // ignore: avoid_print
+        print('[EmailVerification] ✅ EMAIL VERIFIED! Auto-logging in...');
+
+        if (!mounted) return;
+
+        // Small delay to ensure auth state is propagated
+        await Future.delayed(const Duration(milliseconds: 500));
+
         if (!mounted) return;
 
         // Email verified! Navigate to app
@@ -61,7 +115,8 @@ class _EmailVerificationScreenState
         );
       }
     } catch (e) {
-      // Silently fail - user might not be online
+      // ignore: avoid_print
+      print('[EmailVerification] ❌ Error checking verification: $e');
     } finally {
       if (mounted) {
         setState(() => _isCheckingVerification = false);
@@ -122,8 +177,15 @@ class _EmailVerificationScreenState
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
         elevation: 0,
-        title: Text('Verify Email', style: AppTextStyles.titleLarge),
+        titleSpacing: 0,
+        title: Text(
+          'Verify Email',
+          style: AppTextStyles.headlineLarge.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -216,28 +278,29 @@ class _EmailVerificationScreenState
                     ],
                   ),
                   const SizedBox(height: 12),
-                  if (_isCheckingVerification)
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColors.primary,
-                            ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            AppColors.primary,
                           ),
                         ),
-                        const SizedBox(width: 12),
-                        Text(
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
                           'Checking verification status...',
                           style: AppTextStyles.bodySmall.copyWith(
                             color: AppColors.textSecondary,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

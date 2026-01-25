@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nexus_app_min_test/core/theme/theme.dart';
+import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
 
 class DatingProfileCompleteScreen extends ConsumerStatefulWidget {
   const DatingProfileCompleteScreen({super.key});
@@ -16,9 +17,15 @@ class _DatingProfileCompleteScreenState
   @override
   void initState() {
     super.initState();
+
+    // Clear the saved draft since profile is now complete
+    Future.microtask(() {
+      ref.read(datingOnboardingDraftProvider.notifier).reset();
+    });
+
     // Immediately route to compatibility quiz after a brief celebration
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(milliseconds: 1500), () {
+      Future.delayed(const Duration(seconds: 8), () {
         if (mounted) {
           Navigator.of(context).pushReplacementNamed('/compatibility-quiz');
         }
@@ -40,10 +47,8 @@ class _DatingProfileCompleteScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Step 8 of 8', style: AppTextStyles.caption),
-            const SizedBox(height: 10),
-            Text('Profile completed 🎉', style: AppTextStyles.headlineLarge),
-            const SizedBox(height: 18),
+            Text('Profile completed 🎉', style: AppTextStyles.titleLarge),
+            const SizedBox(height: 14),
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -60,11 +65,7 @@ class _DatingProfileCompleteScreenState
               ),
             ),
             const Spacer(),
-            Center(
-              child: CircularProgressIndicator(
-                color: AppColors.primary,
-              ),
-            ),
+            Center(child: CircularProgressIndicator(color: AppColors.primary)),
           ],
         ),
       ),

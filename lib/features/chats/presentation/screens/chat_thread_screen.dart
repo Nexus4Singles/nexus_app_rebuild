@@ -14,6 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'package:nexus_app_min_test/core/constants/app_constants.dart';
+import 'package:nexus_app_min_test/features/subscription/presentation/screens/subscription_screen.dart';
 
 final _userDocByIdProvider =
     StreamProvider.family<Map<String, dynamic>?, String>((ref, uid) {
@@ -1034,15 +1035,36 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
 
     await showDialog<void>(
       context: context,
-      barrierDismissible: true, // user can tap outside to close
+      barrierDismissible: true,
       builder: (ctx) {
         return AlertDialog(
-          titlePadding: const EdgeInsets.fromLTRB(20, 16, 8, 0),
-          contentPadding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-          actionsPadding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          titlePadding: const EdgeInsets.fromLTRB(24, 20, 20, 12),
+          contentPadding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+          actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
           title: Row(
             children: [
-              const Expanded(child: Text('Subscription required')),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.workspace_premium,
+                  color: AppColors.primary,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Text(
+                  'Premium Required',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
               IconButton(
                 tooltip: 'Close',
                 icon: const Icon(Icons.close),
@@ -1050,18 +1072,90 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
               ),
             ],
           ),
-          content: Text(message),
-          actions: [
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                  // TODO: route to your subscription screen
-                  // Navigator.of(context).pushNamed('/subscribe');
-                },
-                child: const Text('Subscribe'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(message, style: const TextStyle(fontSize: 15, height: 1.4)),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.primary.withOpacity(0.2)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Premium includes:',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const _PremiumFeatureRow(
+                      icon: Icons.chat_bubble_outline,
+                      text: 'Unlimited messaging',
+                    ),
+                    const SizedBox(height: 6),
+                    const _PremiumFeatureRow(
+                      icon: Icons.favorite_outline,
+                      text: 'View compatibility data',
+                    ),
+                    const SizedBox(height: 6),
+                    const _PremiumFeatureRow(
+                      icon: Icons.contact_page_outlined,
+                      text: 'Access contact information',
+                    ),
+                  ],
+                ),
               ),
+            ],
+          ),
+          actions: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    child: const Text('Maybe Later'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                      // Navigate to subscription screen
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const SubscriptionScreen(),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      'View Plans',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         );
@@ -2204,6 +2298,30 @@ class _UiMessage {
       replyToId: replyToId,
       replyToSnippet: replyToSnippet,
       replyToWasMine: replyToWasMine,
+    );
+  }
+}
+
+// ============================================================================
+// PREMIUM FEATURE ROW WIDGET
+// ============================================================================
+
+class _PremiumFeatureRow extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const _PremiumFeatureRow({required this.icon, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: AppColors.primary),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(text, style: const TextStyle(fontSize: 13, height: 1.2)),
+        ),
+      ],
     );
   }
 }

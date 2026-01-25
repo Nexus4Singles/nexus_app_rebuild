@@ -12,10 +12,13 @@ import 'package:nexus_app_min_test/core/widgets/disabled_account_gate.dart';
 import 'package:nexus_app_min_test/core/dating/dating_profile_gate.dart';
 import 'package:nexus_app_min_test/features/compatibility_quiz/application/compatibility_status_provider.dart';
 import 'package:nexus_app_min_test/features/dating_search/application/dating_search_results_provider.dart';
+import 'package:nexus_app_min_test/features/dating_search/application/saved_profiles_provider.dart';
 import 'package:nexus_app_min_test/features/dating_search/domain/dating_search_filters.dart';
 import 'package:nexus_app_min_test/features/dating_search/domain/dating_profile.dart';
 import 'package:nexus_app_min_test/features/profile/presentation/screens/profile_screen.dart';
 import 'package:nexus_app_min_test/features/launch/presentation/app_launch_gate.dart';
+import 'package:nexus_app_min_test/features/auth/presentation/screens/login_screen.dart';
+import 'package:nexus_app_min_test/features/auth/presentation/screens/signup_screen.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -51,6 +54,80 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     });
   }
 
+  void _showAuthModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder:
+          (context) => Container(
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(24),
+              ),
+            ),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: AppColors.border,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  'Sign in to Search',
+                  style: AppTextStyles.titleLarge.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Create an account or log in to search and view dating profiles.',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const SignupScreen()),
+                      );
+                    },
+                    child: const Text('Create Account'),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const LoginScreen()),
+                      );
+                    },
+                    child: const Text('Log In'),
+                  ),
+                ),
+                const SizedBox(height: 12),
+              ],
+            ),
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Use the canonical guest logic (automatically watches auth state)
@@ -60,7 +137,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       orElse: () => true, // Default to guest while loading
     );
 
-    final compatAsync = ref.watch(compatibilityStatusProvider);
     final listsAsync = ref.watch(searchFilterListsProvider);
 
     final lists = listsAsync.maybeWhen(data: (v) => v, orElse: () => null);
@@ -80,33 +156,37 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           backgroundColor: AppColors.background,
           surfaceTintColor: AppColors.background,
           elevation: 0,
-          title: Text('Search', style: AppTextStyles.headlineLarge),
+          titleSpacing: 20,
+          title: Text(
+            'Search',
+            style: AppTextStyles.headlineLarge.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _SearchGateBanner(guest: isGuest, compatAsync: compatAsync),
-                const SizedBox(height: 14),
-
                 Text(
                   'Find a compatible partner',
                   style: AppTextStyles.titleLarge.copyWith(
-                    fontWeight: FontWeight.w900,
+                    fontWeight: FontWeight.w600,
+                    height: 1.1,
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 10),
                 Text(
                   'Select your preferences and explore profiles of Christian singles across the world.',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textMuted,
-                    height: 1.35,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.5,
                   ),
                 ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
 
                 // Filters directly on page (NOT behind top-right icon)
                 Expanded(
@@ -118,26 +198,49 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           children: [
                             Row(
                               children: [
-                                Text(
-                                  'Search filters',
-                                  style: AppTextStyles.labelLarge,
+                                Container(
+                                  width: 44,
+                                  height: 44,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Icon(
+                                    Icons.tune,
+                                    color: AppColors.primary,
+                                    size: 22,
+                                  ),
                                 ),
-                                const Spacer(),
+                                const SizedBox(width: 14),
+                                Expanded(
+                                  child: Text(
+                                    'SEARCH FILTERS',
+                                    style: AppTextStyles.labelLarge.copyWith(
+                                      letterSpacing: 1.2,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
                                 TextButton(
                                   onPressed: _clearFilters,
                                   style: TextButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 6,
+                                      horizontal: 14,
+                                      vertical: 8,
                                     ),
                                     minimumSize: Size.zero,
                                     tapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
                                     visualDensity: VisualDensity.compact,
+                                    backgroundColor: AppColors.primary
+                                        .withOpacity(0.1),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(999),
+                                    ),
                                   ),
                                   child: Text(
                                     'Clear',
-                                    style: AppTextStyles.bodySmall.copyWith(
+                                    style: AppTextStyles.labelSmall.copyWith(
                                       color: AppColors.primary,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -145,10 +248,23 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: 24),
 
-                            Text('Age range', style: AppTextStyles.bodyMedium),
-                            const SizedBox(height: 8),
+                            Text(
+                              'Age Range',
+                              style: AppTextStyles.titleMedium.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '$_minAge - $_maxAge years',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
                             RangeSlider(
                               values: RangeValues(
                                 _minAge.toDouble(),
@@ -165,7 +281,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 });
                               },
                             ),
-                            const SizedBox(height: 6),
+                            const SizedBox(height: 16),
 
                             _DropdownTile(
                               label: 'Country of Residence',
@@ -221,19 +337,16 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 12),
+                const SizedBox(height: 20),
 
                 SizedBox(
                   width: double.infinity,
-                  height: 46,
+                  height: 50,
                   child: ElevatedButton(
                     onPressed: () async {
                       if (isGuest) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => const AppLaunchGate(),
-                          ),
-                        );
+                        // Show auth modal for guests
+                        _showAuthModal(context);
                         return;
                       }
 
@@ -415,12 +528,12 @@ class SearchResultsScreen extends ConsumerWidget {
   }
 }
 
-class _SearchResultRow extends StatelessWidget {
+class _SearchResultRow extends ConsumerWidget {
   final DatingProfile profile;
   const _SearchResultRow({required this.profile});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final photo = profile.photos.isNotEmpty ? profile.photos.first : null;
     final subtitle = [
       if (profile.displayLocation.trim().isNotEmpty) profile.displayLocation,
@@ -430,6 +543,9 @@ class _SearchResultRow extends StatelessWidget {
 
     final displayName =
         (profile.name).trim().isNotEmpty ? profile.name.trim() : 'User';
+
+    final isSaved = ref.watch(isProfileSavedProvider(profile.uid));
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: InkWell(
@@ -459,7 +575,13 @@ class _SearchResultRow extends StatelessWidget {
                   child:
                       photo == null
                           ? const Icon(Icons.person, size: 24)
-                          : Image.network(photo, fit: BoxFit.cover),
+                          : Image.network(
+                            photo,
+                            fit: BoxFit.cover,
+                            errorBuilder:
+                                (_, __, ___) =>
+                                    const Icon(Icons.person, size: 24),
+                          ),
                 ),
               ),
               const SizedBox(width: 8),
@@ -487,6 +609,48 @@ class _SearchResultRow extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
+
+              // Bookmark button
+              InkWell(
+                borderRadius: BorderRadius.circular(10),
+                onTap: () async {
+                  await ref
+                      .read(savedProfilesNotifierProvider)
+                      .toggleSave(profile.uid);
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          isSaved ? 'Removed from saved' : 'Profile saved!',
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor:
+                            isSaved
+                                ? AppColors.textSecondary
+                                : AppColors.primary,
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color:
+                        isSaved
+                            ? AppColors.primary.withOpacity(0.1)
+                            : Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    isSaved ? Icons.bookmark : Icons.bookmark_border,
+                    color: isSaved ? AppColors.primary : AppColors.textMuted,
+                    size: 22,
+                  ),
+                ),
+              ),
+
+              const SizedBox(width: 4),
               const Icon(
                 Icons.chevron_right_rounded,
                 color: AppColors.textMuted,
@@ -506,11 +670,18 @@ class _SectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.border),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.border.withOpacity(0.5)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: child,
     );
@@ -551,110 +722,6 @@ class _DropdownTile extends StatelessWidget {
             vertical: 12,
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _SearchGateBanner extends StatelessWidget {
-  final bool guest;
-  final AsyncValue<CompatibilityStatus> compatAsync;
-
-  const _SearchGateBanner({required this.guest, required this.compatAsync});
-
-  @override
-  Widget build(BuildContext context) {
-    if (guest) {
-      return _BannerCard(
-        title: 'Guest mode',
-        body:
-            'You can set filters now. To run a search and view profiles, please sign in.',
-        cta: 'Create account',
-        onTap: () => Navigator.of(context).pushNamed('/signup'),
-      );
-    }
-
-    return compatAsync.when(
-      data: (status) {
-        if (status == CompatibilityStatus.incomplete) {
-          return _BannerCard(
-            title: 'Compatibility quiz required',
-            body:
-                'Complete your compatibility quiz before you can browse or search profiles.',
-            cta: 'Take quiz',
-            onTap: () => Navigator.of(context).pushNamed('/compatibility-quiz'),
-          );
-        }
-        return const SizedBox.shrink();
-      },
-      loading: () => const SizedBox.shrink(),
-      error: (_, __) => const SizedBox.shrink(),
-    );
-  }
-}
-
-class _BannerCard extends StatelessWidget {
-  final String title;
-  final String body;
-  final String cta;
-  final VoidCallback onTap;
-
-  const _BannerCard({
-    required this.title,
-    required this.body,
-    required this.cta,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.10),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.lock_outline, color: AppColors.primary),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: AppTextStyles.labelLarge),
-                const SizedBox(height: 4),
-                Text(
-                  body,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textMuted,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
-                    onPressed: onTap,
-                    child: Text(
-                      cta,
-                      style: const TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

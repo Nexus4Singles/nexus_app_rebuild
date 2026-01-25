@@ -11,6 +11,7 @@ import 'core/bootstrap/firebase_ready_provider.dart';
 import 'core/router/app_router.dart';
 import 'core/services/push_notification_service.dart';
 import 'core/session/guest_session_provider.dart';
+import 'core/theme/theme_provider.dart';
 import 'features/launch/presentation/app_launch_gate.dart';
 import 'safe_imports.dart';
 
@@ -39,11 +40,13 @@ Future<void> appEntry() async {
   );
 }
 
-class _RootApp extends StatelessWidget {
+class _RootApp extends ConsumerWidget {
   const _RootApp();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
+
     return MaterialApp(
       localizationsDelegates: const [
         CountryLocalizations.delegate,
@@ -54,8 +57,9 @@ class _RootApp extends StatelessWidget {
       supportedLocales: const [Locale('en')],
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light,
+      themeMode: themeMode,
       theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       onGenerateRoute: onGenerateRoute,
       home: const AppLaunchGate(),
     );

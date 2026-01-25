@@ -1,6 +1,6 @@
 name: nexus_app_min_test
-version: 1.0.0+1
-description: Minimal build to validate iOS simulator setup.
+version: 2.0.0+20
+description: Nexus Dating App - v2 with enhanced features and dating profiles.
 publish_to: "none"
 
 environment:
@@ -29,6 +29,7 @@ dependencies:
   firebase_auth: ^6.1.3
   cloud_firestore: ^6.1.1
   firebase_messaging: ^16.1.0
+  flutter_local_notifications: ^18.0.1
   image_picker: ^1.2.1
   image_cropper: ^11.0.0
   record: ^6.1.2
@@ -51,6 +52,7 @@ dependencies:
 flutter:
   assets:
     - assets/images/stories/
+    - assets/images/social_icons/
     - assets/config/journeys/
     - assets/config/assessments/
     - assets/images/

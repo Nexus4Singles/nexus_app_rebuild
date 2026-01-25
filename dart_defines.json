@@ -1,0 +1,6 @@
+{
+  "DO_SPACES_ENDPOINT": "ams3.digitaloceanspaces.com",
+  "DO_SPACES_REGION": "ams3",
+  "DO_SPACES_BUCKET": "nexus-v2-users",
+  "SPACES_PRESIGN_URL": "https://us-central1-nexus-visibility-app.cloudfunctions.net/getPresignedUploadUrl"
+}

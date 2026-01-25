@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
+import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
 import 'package:nexus_app_min_test/features/stories/domain/story_models.dart';
 import 'package:nexus_app_min_test/features/stories/presentation/screens/story_poll_screen.dart';
@@ -15,7 +16,19 @@ class StoriesScreen extends ConsumerWidget {
     const repo = StoryRepository();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Story of the Week')),
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
+        elevation: 0,
+        titleSpacing: 20,
+        title: Text(
+          'Story of the Week',
+          style: AppTextStyles.headlineLarge.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
       body: FutureBuilder<Story?>(
         future: repo.loadCurrentStory(),
         builder: (context, snapshot) {
@@ -49,10 +62,8 @@ class _StoryOfWeekView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
       children: [
         _HeroCover(
           imageAsset: story.heroImageAsset,
@@ -65,46 +76,54 @@ class _StoryOfWeekView extends ConsumerWidget {
             ],
           ),
         ),
-        const SizedBox(height: 18),
+        const SizedBox(height: 24),
 
         _Card(
           child: Text(
             story.intro,
-            style: theme.textTheme.bodyLarge?.copyWith(height: 1.4),
+            style: AppTextStyles.bodyLarge.copyWith(
+              color: AppColors.textPrimary,
+              height: 1.5,
+            ),
           ),
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: 16),
 
         ...story.sections.map(
           (s) => Padding(
-            padding: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.only(bottom: 16),
             child: _SectionCard(heading: s.heading, body: s.body),
           ),
         ),
 
-        const SizedBox(height: 6),
+        const SizedBox(height: 8),
         Text(
           story.takeawayTitle,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w800,
+          style: AppTextStyles.headlineMedium.copyWith(
+            fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         _Card(
           child:
               story.takeaways.isEmpty
-                  ? Text('Coming soon.', style: theme.textTheme.bodyMedium)
+                  ? Text(
+                    'Coming soon.',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  )
                   : Column(
                     children:
                         story.takeaways.map((t) => _CheckRow(text: t)).toList(),
                   ),
         ),
 
-        const SizedBox(height: 18),
+        const SizedBox(height: 24),
         Text(
           'Reflection',
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w800,
+          style: AppTextStyles.headlineMedium.copyWith(
+            fontWeight: FontWeight.w900,
           ),
         ),
         const SizedBox(height: 10),
@@ -112,7 +131,13 @@ class _StoryOfWeekView extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(story.reflectionPrompt, style: theme.textTheme.bodyMedium),
+              Text(
+                story.reflectionPrompt,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.textPrimary,
+                  height: 1.5,
+                ),
+              ),
               const SizedBox(height: 12),
               TextField(
                 maxLines: 5,
@@ -127,7 +152,9 @@ class _StoryOfWeekView extends ConsumerWidget {
               const SizedBox(height: 10),
               Text(
                 'Tip: you can keep this private. Later we’ll save it on-device (and sync when you sign in).',
-                style: theme.textTheme.bodySmall,
+                style: AppTextStyles.labelSmall.copyWith(
+                  color: AppColors.textMuted,
+                ),
               ),
             ],
           ),
@@ -140,8 +167,8 @@ class _StoryOfWeekView extends ConsumerWidget {
         const SizedBox(height: 18),
         Text(
           'Weekly Poll',
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w800,
+          style: AppTextStyles.headlineMedium.copyWith(
+            fontWeight: FontWeight.w900,
           ),
         ),
         const SizedBox(height: 10),
@@ -156,7 +183,9 @@ class _StoryOfWeekView extends ConsumerWidget {
                   canInteract
                       ? 'Share your answer (vote to see results).'
                       : 'Create an account to vote and see results.',
-                  style: theme.textTheme.bodyMedium,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ),
             ],
@@ -185,7 +214,7 @@ class _StoryOfWeekView extends ConsumerWidget {
         const SizedBox(height: 8),
         Text(
           'Guests can read stories. Voting/results are for signed-in users.',
-          style: theme.textTheme.bodySmall,
+          style: AppTextStyles.labelSmall.copyWith(color: AppColors.textMuted),
         ),
       ],
     );
@@ -615,8 +644,21 @@ class _Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(padding: const EdgeInsets.all(14), child: child),
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.border.withOpacity(0.5)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: child,
     );
   }
 }

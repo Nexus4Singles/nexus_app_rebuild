@@ -18,7 +18,7 @@ class ChallengesScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Journeys'),
+        title: Text('Journeys', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: AppColors.background,
         surfaceTintColor: AppColors.background,
         elevation: 0,

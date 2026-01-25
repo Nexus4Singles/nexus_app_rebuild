@@ -10,6 +10,7 @@ import 'package:record/record.dart';
 
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
+import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
 
 class DatingAudioQuestionScreen extends ConsumerStatefulWidget {
   final int questionNumber;
@@ -31,6 +32,7 @@ class _DatingAudioQuestionScreenState
 
   Timer? _timer;
   int _elapsed = 0;
+  int _recordedDuration = 0; // Track completed recording duration
 
   bool _isRecording = false;
   bool _isPaused = false;
@@ -52,7 +54,7 @@ class _DatingAudioQuestionScreenState
     super.dispose();
   }
 
-  void _loadExisting() {
+  void _loadExisting() async {
     final d = ref.read(datingOnboardingDraftProvider);
     switch (widget.questionNumber) {
       case 1:
@@ -65,6 +67,15 @@ class _DatingAudioQuestionScreenState
         _filePath = d.audio3Path;
         break;
     }
+
+    // Just check if file exists - don't assume it meets 45s minimum
+    if (_filePath != null) {
+      final file = File(_filePath!);
+      if (!await file.exists() || await file.length() == 0) {
+        _filePath = null;
+      }
+    }
+    // _recordedDuration stays 0 - user must record to enable Continue
   }
 
   String get _questionText {
@@ -92,8 +103,10 @@ class _DatingAudioQuestionScreenState
 
   @override
   Widget build(BuildContext context) {
-    final hasRecording = _filePath != null && File(_filePath!).existsSync();
-    final canNext = hasRecording && _elapsed >= _minSeconds && !_isRecording;
+    // Strict timer: only enable Continue when timer reaches 45+ seconds
+    final canNext =
+        (_isRecording && _elapsed >= _minSeconds) ||
+        (_recordedDuration >= _minSeconds && !_isRecording);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -104,19 +117,10 @@ class _DatingAudioQuestionScreenState
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          if (widget.questionNumber < 3)
-            TextButton(
-              onPressed: canNext ? () => _goNext(context) : null,
-              child: Text(
-                'Next',
-                style: AppTextStyles.labelLarge.copyWith(
-                  color: canNext ? AppColors.primary : AppColors.textMuted,
-                ),
-              ),
-            ),
-        ],
-        title: Text('Audio Recordings', style: AppTextStyles.titleLarge),
+        title: Text(
+          'Audio Recordings',
+          style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700),
+        ),
       ),
       body: Stack(
         children: [
@@ -125,6 +129,11 @@ class _DatingAudioQuestionScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                DatingProfileProgressBar(
+                  currentStep: 5 + widget.questionNumber,
+                  totalSteps: 9,
+                ),
+                const SizedBox(height: 18),
                 _StepIndicator(step: widget.questionNumber),
                 const SizedBox(height: 18),
                 Text(
@@ -151,7 +160,7 @@ class _DatingAudioQuestionScreenState
                 ),
                 const SizedBox(height: 24),
                 _Waveform(active: _isRecording && !_isPaused),
-                const Spacer(),
+                const SizedBox(height: 44),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -166,27 +175,39 @@ class _DatingAudioQuestionScreenState
                       isPaused: _isPaused,
                       onTap: _busy ? null : _toggleRecord,
                     ),
-                    _CircleIconButton(
-                      icon: Icons.play_arrow_rounded,
-                      label: 'Play',
-                      onTap:
-                          (!_busy && hasRecording && !_isRecording)
-                              ? _play
-                              : null,
-                    ),
                   ],
                 ),
 
-                const SizedBox(height: 24),
+                const Spacer(),
 
-                if (widget.questionNumber == 3)
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: canNext ? () => _goSummary(context) : null,
-                      child: const Text('Next'),
+                SizedBox(
+                  width: double.infinity,
+                  height: 54,
+                  child: ElevatedButton(
+                    onPressed:
+                        canNext
+                            ? () =>
+                                (widget.questionNumber == 3
+                                    ? _goSummary(context)
+                                    : _goNext(context))
+                            : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                    child: Text(
+                      'Continue',
+                      style: AppTextStyles.labelLarge.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
+                ),
+                const SizedBox(height: 18),
               ],
             ),
           ),
@@ -273,12 +294,21 @@ class _DatingAudioQuestionScreenState
     } catch (_) {}
     _timer?.cancel();
 
+    // Save the recorded duration
+    _recordedDuration = _elapsed;
+
     setState(() {
       _isRecording = false;
       _isPaused = false;
     });
 
-    _saveDraftPath();
+    // Only save if minimum duration met
+    if (_recordedDuration >= _minSeconds) {
+      _saveDraftPath();
+    } else {
+      _toast('Recording must be at least ${_minSeconds}s long');
+      await _restart();
+    }
   }
 
   Future<void> _restart() async {
@@ -296,6 +326,7 @@ class _DatingAudioQuestionScreenState
 
     setState(() {
       _elapsed = 0;
+      _recordedDuration = 0;
       _filePath = null;
     });
 
@@ -327,16 +358,6 @@ class _DatingAudioQuestionScreenState
     if (widget.questionNumber == 1) notifier.setAudio(a1: _filePath);
     if (widget.questionNumber == 2) notifier.setAudio(a2: _filePath);
     if (widget.questionNumber == 3) notifier.setAudio(a3: _filePath);
-  }
-
-  Future<void> _play() async {
-    if (_filePath == null) return;
-    try {
-      await _player.setFilePath(_filePath!);
-      await _player.play();
-    } catch (e) {
-      _toast('Failed to play: $e');
-    }
   }
 
   void _goNext(BuildContext context) async {
@@ -497,8 +518,8 @@ class _CircleIconButton extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(999),
           child: Container(
-            width: 44,
-            height: 44,
+            width: 48,
+            height: 48,
             decoration: BoxDecoration(
               color:
                   enabled
@@ -509,12 +530,13 @@ class _CircleIconButton extends StatelessWidget {
             ),
             child: Icon(
               icon,
+              size: 22,
               color: enabled ? AppColors.textPrimary : AppColors.textMuted,
             ),
           ),
         ),
-        const SizedBox(height: 6),
-        Text(label, style: AppTextStyles.caption),
+        const SizedBox(height: 4),
+        Text(label, style: AppTextStyles.caption.copyWith(fontSize: 12)),
       ],
     );
   }

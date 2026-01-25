@@ -36,61 +36,64 @@ DateTime? _asDate(dynamic v) {
   return null;
 }
 
-final pendingReviewUsersProvider = FutureProvider<List<AdminReviewItem>>((
-  ref,
-) async {
+// Real-time stream for pending reviews - updates automatically when other admins approve/reject
+final pendingReviewUsersProvider = StreamProvider<List<AdminReviewItem>>((ref) {
   final firebaseReady = ref.watch(firebaseReadyProvider);
-  if (!firebaseReady) return const [];
+  if (!firebaseReady) return Stream.value(const []);
 
   final fs = ref.watch(firestoreInstanceProvider);
-  if (fs == null) return const [];
+  if (fs == null) return Stream.value(const []);
 
-  final q =
-      await fs
+  // Real-time Firestore snapshots - updates when any admin approves/rejects
+  final stream =
+      fs
           .collection('users')
           .where('dating.verificationStatus', isEqualTo: 'pending')
           .orderBy('dating.verificationQueuedAt', descending: true)
           .limit(200)
-          .get();
+          .snapshots();
 
-  return q.docs.map((d) {
-    final data = d.data();
-    final dating = (data['dating'] is Map) ? data['dating'] as Map : null;
-    final rp =
-        (dating?['reviewPack'] is Map) ? dating!['reviewPack'] as Map : null;
+  return stream.map((snapshot) {
+    return snapshot.docs.map((d) {
+      final data = d.data();
+      final dating = (data['dating'] is Map) ? data['dating'] as Map : null;
+      final rp =
+          (dating?['reviewPack'] is Map) ? dating!['reviewPack'] as Map : null;
 
-    final photos =
-        (rp?['photoUrls'] is List)
-            ? (rp!['photoUrls'] as List)
-                .map((e) => e.toString())
-                .take(2)
-                .toList()
-            : <String>[];
+      final photos =
+          (rp?['photoUrls'] is List)
+              ? (rp!['photoUrls'] as List)
+                  .map((e) => e.toString())
+                  .take(2)
+                  .toList()
+              : <String>[];
 
-    final audios =
-        (rp?['audioUrls'] is List)
-            ? (rp!['audioUrls'] as List)
-                .map((e) => e.toString())
-                .take(2)
-                .toList()
-            : <String>[];
+      final audios =
+          (rp?['audioUrls'] is List)
+              ? (rp!['audioUrls'] as List)
+                  .map((e) => e.toString())
+                  .take(2)
+                  .toList()
+              : <String>[];
 
-    final name = (data['name'] ?? data['username'] ?? 'User').toString();
+      final name = (data['name'] ?? data['username'] ?? 'User').toString();
 
-    // Stored mirrors
-    final gender = dating?['gender']?.toString() ?? data['gender']?.toString();
-    final rel = dating?['relationshipStatus']?.toString();
+      // Stored mirrors
+      final gender =
+          dating?['gender']?.toString() ?? data['gender']?.toString();
+      final rel = dating?['relationshipStatus']?.toString();
 
-    final queuedAt = _asDate(dating?['verificationQueuedAt']);
+      final queuedAt = _asDate(dating?['verificationQueuedAt']);
 
-    return AdminReviewItem(
-      uid: d.id,
-      name: name,
-      gender: gender,
-      relationshipStatus: rel,
-      queuedAt: queuedAt,
-      photoUrls: photos,
-      audioUrls: audios,
-    );
-  }).toList();
+      return AdminReviewItem(
+        uid: d.id,
+        name: name,
+        gender: gender,
+        relationshipStatus: rel,
+        queuedAt: queuedAt,
+        photoUrls: photos,
+        audioUrls: audios,
+      );
+    }).toList();
+  });
 });

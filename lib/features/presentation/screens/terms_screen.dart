@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nexus_app_min_test/core/theme/theme.dart';
 
 class TermsScreen extends StatelessWidget {
   const TermsScreen({super.key});
@@ -10,11 +11,29 @@ class TermsScreen extends StatelessWidget {
     final text = buildTermsText(lastUpdated);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Terms of Service')),
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
+        elevation: 0,
+        titleSpacing: 0,
+        title: Text(
+          'Terms of Service',
+          style: AppTextStyles.headlineLarge.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
+          padding: const EdgeInsets.all(20),
+          child: Text(
+            text,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textPrimary,
+              height: 1.6,
+            ),
+          ),
         ),
       ),
     );

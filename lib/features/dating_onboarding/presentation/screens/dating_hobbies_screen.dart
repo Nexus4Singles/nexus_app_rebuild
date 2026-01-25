@@ -18,7 +18,6 @@ class DatingHobbiesScreen extends ConsumerStatefulWidget {
 class _DatingHobbiesScreenState extends ConsumerState<DatingHobbiesScreen> {
   static const int _max = 5;
 
-  final _search = TextEditingController();
   final Set<String> _selected = {};
 
   @override
@@ -30,7 +29,6 @@ class _DatingHobbiesScreenState extends ConsumerState<DatingHobbiesScreen> {
 
   @override
   void dispose() {
-    _search.dispose();
     super.dispose();
   }
 
@@ -42,12 +40,17 @@ class _DatingHobbiesScreenState extends ConsumerState<DatingHobbiesScreen> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
         elevation: 0,
+        titleSpacing: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Dating Profile', style: AppTextStyles.titleLarge),
+        title: Text(
+          'Hobbies & Interests',
+          style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700),
+        ),
       ),
       body: listsAsync.when(
         data: (lists) => _buildContent(context, lists),
@@ -64,29 +67,19 @@ class _DatingHobbiesScreenState extends ConsumerState<DatingHobbiesScreen> {
   }
 
   Widget _buildContent(BuildContext context, OnboardingLists lists) {
-    final q = _search.text.trim().toLowerCase();
-    final items =
-        lists.hobbies
-            .where((h) => q.isEmpty || h.toLowerCase().contains(q))
-            .toList();
+    final items = lists.hobbies;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // ✅ COPY MUST MATCH MOCKUP INSTRUCTIONS (we will replace with exact text once you paste it)
           _ProgressHeader(
-            stepLabel: 'Step 3 of 8',
-            title: 'Select your hobbies',
-            subtitle:
-                'Select up to $_max hobbies. This helps us match you better.',
+            subtitle: 'Select up to $_max Hobbies or Interests.',
             counter: '${_selected.length} / $_max',
           ),
-          const SizedBox(height: 14),
-
-          _SearchField(controller: _search, onChanged: (_) => setState(() {})),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
 
           Expanded(
             child: _SelectableGrid(
@@ -100,15 +93,22 @@ class _DatingHobbiesScreenState extends ConsumerState<DatingHobbiesScreen> {
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
+            height: 54,
             child: ElevatedButton(
               onPressed: _selected.isEmpty ? null : () => _onContinue(context),
-              child: const Text('Continue'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+              ),
+              child: Text(
+                'Continue',
+                style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            'You can update this later.',
-            style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
           ),
         ],
       ),
@@ -119,68 +119,54 @@ class _DatingHobbiesScreenState extends ConsumerState<DatingHobbiesScreen> {
     setState(() {
       if (_selected.contains(hobby)) {
         _selected.remove(hobby);
-        return;
-      }
-
-      if (_selected.length >= _max) {
+      } else if (_selected.length >= _max) {
         HapticFeedback.mediumImpact();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('You can only select up to $_max hobbies.')),
         );
         return;
+      } else {
+        _selected.add(hobby);
       }
 
-      _selected.add(hobby);
+      // Auto-save on every toggle
+      ref
+          .read(datingOnboardingDraftProvider.notifier)
+          .setHobbies(_selected.toList());
     });
   }
 
   void _onContinue(BuildContext context) {
-    ref
-        .read(datingOnboardingDraftProvider.notifier)
-        .setHobbies(_selected.toList());
+    // Draft is already saved via auto-save
     Navigator.of(context).pushNamed('/dating/setup/qualities');
   }
 }
 
 class _ProgressHeader extends StatelessWidget {
-  final String stepLabel;
-  final String title;
   final String subtitle;
   final String counter;
 
-  const _ProgressHeader({
-    required this.stepLabel,
-    required this.title,
-    required this.subtitle,
-    required this.counter,
-  });
+  const _ProgressHeader({required this.subtitle, required this.counter});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const DatingProfileProgressBar(currentStep: 3, totalSteps: 8),
-        const SizedBox(height: 18),
+        const DatingProfileProgressBar(currentStep: 3, totalSteps: 9),
+        const SizedBox(height: 12),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: AppTextStyles.headlineLarge),
-                  const SizedBox(height: 10),
-                  Text(
-                    subtitle,
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textMuted,
-                    ),
-                  ),
-                ],
+              child: Text(
+                subtitle,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.textMuted,
+                ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 10),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
@@ -193,52 +179,6 @@ class _ProgressHeader extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-}
-
-class _SearchField extends StatelessWidget {
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
-
-  const _SearchField({required this.controller, required this.onChanged});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Row(
-        children: [
-          Icon(Icons.search, color: AppColors.textMuted),
-          const SizedBox(width: 10),
-          Expanded(
-            child: TextField(
-              controller: controller,
-              onChanged: onChanged,
-              decoration: InputDecoration(
-                hintText: 'Search hobbies',
-                hintStyle: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textMuted,
-                ),
-                border: InputBorder.none,
-              ),
-            ),
-          ),
-          if (controller.text.isNotEmpty)
-            IconButton(
-              onPressed: () {
-                controller.clear();
-                onChanged('');
-              },
-              icon: Icon(Icons.close, color: AppColors.textMuted),
-            ),
-        ],
-      ),
     );
   }
 }

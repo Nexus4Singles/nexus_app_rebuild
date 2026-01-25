@@ -96,62 +96,98 @@ class ChatsScreen extends ConsumerWidget {
         backgroundColor: AppColors.background,
         appBar: AppBar(
           backgroundColor: AppColors.background,
+          surfaceTintColor: AppColors.background,
           elevation: 0,
-          title: Text('Chats', style: AppTextStyles.headlineLarge),
+          titleSpacing: 20,
+          title: Text(
+            'Chats',
+            style: AppTextStyles.headlineLarge.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(20),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 520),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: AppColors.border),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: AppColors.border.withOpacity(0.5)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.03),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Container(
+                      width: 64,
+                      height: 64,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Icon(
+                        Icons.chat_bubble_outline,
+                        color: AppColors.primary,
+                        size: 32,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     Text(
                       'Create an account to chat',
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.headlineLarge,
+                      style: AppTextStyles.titleLarge.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 10),
                     Text(
                       'Create an account to send and receive messages.',
                       textAlign: TextAlign.center,
                       style: AppTextStyles.bodyLarge.copyWith(
                         color: AppColors.textSecondary,
+                        height: 1.5,
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 24),
                     SizedBox(
                       width: double.infinity,
-                      height: 48,
+                      height: 50,
                       child: ElevatedButton(
                         onPressed:
                             () => Navigator.of(context).pushNamed('/signup'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
                         ),
-                        child: const FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text('Create an account'),
+                        child: Text(
+                          'Create an account',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 12),
                     SizedBox(
                       width: double.infinity,
-                      height: 48,
+                      height: 50,
                       child: OutlinedButton(
                         onPressed:
                             () => Navigator.of(context).push(
@@ -160,13 +196,18 @@ class ChatsScreen extends ConsumerWidget {
                               ),
                             ),
                         style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: AppColors.border),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
                         ),
-                        child: const FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text('Log in'),
+                        child: Text(
+                          'Log in',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
                       ),
                     ),
@@ -297,16 +338,28 @@ class ChatsScreen extends ConsumerWidget {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
         elevation: 0,
-        title: Text('Chats', style: AppTextStyles.headlineLarge),
+        titleSpacing: 20,
+        title: Text(
+          'Chats',
+          style: AppTextStyles.headlineLarge.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Recent conversations', style: AppTextStyles.titleLarge),
-            const SizedBox(height: 12),
+            Text(
+              'Recent conversations',
+              style: AppTextStyles.titleLarge.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 16),
             Expanded(
               child: conversationsAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
@@ -561,32 +614,39 @@ class _ChatRow extends StatelessWidget {
     final Widget avatar =
         url.isNotEmpty
             ? CircleAvatar(
-              radius: 23,
+              radius: 28,
               backgroundImage: NetworkImage(url),
               backgroundColor: AppColors.border,
             )
             : CircleAvatar(
-              radius: 23,
-              backgroundColor: AppColors.primary.withOpacity(0.10),
-              child: Icon(Icons.person, color: AppColors.primary),
+              radius: 28,
+              backgroundColor: AppColors.primary.withOpacity(0.1),
+              child: Icon(Icons.person, color: AppColors.primary, size: 28),
             );
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         child: Container(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppColors.surface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.border),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: AppColors.border.withOpacity(0.5)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.02),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
           child: Row(
             children: [
               avatar,
-              const SizedBox(width: 12),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -596,14 +656,22 @@ class _ChatRow extends StatelessWidget {
                         Expanded(
                           child: Text(
                             name,
-                            style: AppTextStyles.labelLarge,
+                            style: AppTextStyles.titleMedium.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Text(time, style: AppTextStyles.caption),
+                        const SizedBox(width: 8),
+                        Text(
+                          time,
+                          style: AppTextStyles.labelSmall.copyWith(
+                            color: AppColors.textMuted,
+                          ),
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 6),
                     Text(
                       message,
                       style: AppTextStyles.bodyMedium.copyWith(
@@ -611,23 +679,27 @@ class _ChatRow extends StatelessWidget {
                             unread
                                 ? AppColors.textPrimary
                                 : AppColors.textSecondary,
+                        fontWeight:
+                            unread ? FontWeight.w600 : FontWeight.normal,
+                        height: 1.4,
                       ),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 12),
-              if (unread)
+              if (unread) ...[
+                const SizedBox(width: 12),
                 Container(
-                  width: 10,
-                  height: 10,
+                  width: 12,
+                  height: 12,
                   decoration: const BoxDecoration(
                     color: AppColors.primary,
                     shape: BoxShape.circle,
                   ),
                 ),
+              ],
             ],
           ),
         ),

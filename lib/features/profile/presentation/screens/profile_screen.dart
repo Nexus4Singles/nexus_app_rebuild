@@ -33,6 +33,7 @@ import 'package:nexus_app_min_test/core/bootstrap/bootstrap_gate.dart';
 import 'package:nexus_app_min_test/features/guest/guest_entry_gate.dart';
 import 'package:nexus_app_min_test/core/providers/service_providers.dart';
 import '../../../../core/user/dating_opt_in_provider.dart';
+import '../../../subscription/presentation/screens/subscription_screen.dart';
 
 Future<void> handleLogout(BuildContext context, WidgetRef ref) async {
   final ok = await showDialog<bool>(
@@ -168,11 +169,16 @@ class ProfileScreen extends ConsumerWidget {
     final authAsync = ref.watch(authStateProvider);
     final me = authAsync.maybeWhen(data: (u) => u, orElse: () => null);
 
+    // ignore: avoid_print
+    print('[ProfileScreen] BUILD - me=$me, authAsync=$authAsync');
+
     final isSignedIn = me != null;
     // Guard: guests cannot view || edit dating profiles.
     // Debug-only bypass allows UI testing without accounts (release builds unaffected).
     // TEMP: bypass guest gate for UI testing until auth/firebase is connected
     if (!isSignedIn) {
+      // ignore: avoid_print
+      print('[ProfileScreen] NOT SIGNED IN');
       return _GuestProfileGate(
         onCreateAccount: () => Navigator.of(context).pushNamed('/signup'),
       );
@@ -187,8 +193,15 @@ class ProfileScreen extends ConsumerWidget {
             ? ref.watch(userDocByIdProvider(effectiveUid))
             : ref.watch(currentUserDocProvider);
 
+    // ignore: avoid_print
+    print('[ProfileScreen] userDocAsync=$userDocAsync');
+
     return userDocAsync.when(
-      loading: () => const _ProfileLoading(),
+      loading: () {
+        // ignore: avoid_print
+        print('[ProfileScreen] LOADING STATE');
+        return const _ProfileLoading();
+      },
       error:
           (e, st) => _ProfileError(
             message: 'Unable to load profile right now.',
@@ -200,7 +213,31 @@ class ProfileScreen extends ConsumerWidget {
                 ),
           ),
       data: (map) {
-        // If the document is missing, treat as "not found" (migration/creation handled elsewhere).
+        // If the document is missing for current user (not viewing other user), create minimal profile
+        if (map == null && !isViewingOtherUser) {
+          // Create a minimal UserModel with just auth data - show basic profile
+          final minimalProfile = UserModel.fromMap(me.uid, {
+            'uid': me.uid,
+            'email': me.email ?? '',
+            'schemaVersion': 2,
+            'isGuest': false,
+            'isAdmin': false,
+          });
+
+          return _BasicProfileScreen(
+            profile: minimalProfile,
+            ref: ref,
+            messageTitle: 'Your Profile',
+            messageBody:
+                'If you would like to join the dating pool of Nexus, create a dating profile to get started.',
+            showCreateDatingProfileCta: true,
+            onCreateDatingProfile: () {
+              Navigator.of(context).pushNamed('/dating/setup/age');
+            },
+          );
+        }
+
+        // For viewing other users with missing docs, show not found
         if (map == null) return const _ProfileNotFound();
 
         // Build a proper UserModel from Firestore data.
@@ -263,9 +300,9 @@ class ProfileScreen extends ConsumerWidget {
           return _BasicProfileScreen(
             profile: profile,
             ref: ref,
-            messageTitle: 'Create your dating profile',
+            messageTitle: 'Dating Profile',
             messageBody:
-                'You can use Nexus without dating, but you need a dating profile to view other users in the pool && to appear in Search.',
+                'If you would like to join the dating pool, you would need a profile to view other users in the pool & to appear in Search results.',
             showCreateDatingProfileCta: true,
             onCreateDatingProfile: () {
               Navigator.of(context).pushNamed('/dating/setup/age');
@@ -362,7 +399,12 @@ class ProfileScreen extends ConsumerWidget {
                       if (!isViewingOtherUser) ...[
                         Text('Your Account', style: AppTextStyles.titleLarge),
                         const SizedBox(height: 12),
-                        _AccountTiles(context, ref, profile),
+                        _AccountTiles(
+                          context,
+                          ref,
+                          profile,
+                          showEditProfile: true,
+                        ),
                       ],
                     ],
                   ),
@@ -402,111 +444,253 @@ class _BasicProfileScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
-        title: Text('Profile', style: AppTextStyles.titleLarge),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.border),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 240,
+            backgroundColor: AppColors.background,
+            elevation: 0,
+            pinned: true,
+            foregroundColor: Colors.white,
+            actions: [
+              if (kDebugMode)
+                IconButton(
+                  tooltip: 'Copy Firebase ID token',
+                  icon: const Icon(Icons.vpn_key_rounded),
+                  onPressed: () async {
+                    try {
+                      final token = await FirebaseAuth.instance.currentUser
+                          ?.getIdToken(true);
+                      if (token == null || token.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('No ID token found. Please sign in.'),
+                          ),
+                        );
+                        return;
+                      }
+                      await Clipboard.setData(ClipboardData(text: token));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('ID token copied to clipboard.'),
+                        ),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Failed to get token: $e')),
+                      );
+                    }
+                  },
+                ),
+            ],
+            flexibleSpace: FlexibleSpaceBar(
+              background: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.primary,
+                      AppColors.primary.withOpacity(0.8),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: SafeArea(
+                  bottom: false,
+                  child: Stack(
+                    children: [
+                      // Top title
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Text(
+                            'Profile',
+                            style: AppTextStyles.titleLarge.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // Centered avatar + name
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 44, 24, 12),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 72,
+                                height: 72,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.2),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.3),
+                                    width: 3,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 16,
+                                      offset: const Offset(0, 8),
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    _initialsFromName(name),
+                                    style: const TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 14),
+                              Text(
+                                name,
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              if (email.isNotEmpty) ...[
+                                const SizedBox(height: 6),
+                                Text(
+                                  email,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white.withOpacity(0.85),
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              collapseMode: CollapseMode.pin,
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 28),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _InitialsAvatar(name: name),
-                  const SizedBox(width: 12),
-                  Expanded(
+                  // Status Message Card
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.primary.withOpacity(0.08),
+                          AppColors.primary.withOpacity(0.04),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      color: AppColors.surface,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: AppColors.primary.withOpacity(0.15),
+                        width: 1.5,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withOpacity(0.05),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(name, style: AppTextStyles.titleLarge),
-                        if (email.isNotEmpty) ...[
-                          const SizedBox(height: 4),
-                          Text(
-                            email,
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.textSecondary,
+                        // Status icon + title
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Icon(
+                                Icons.info_outline,
+                                color: AppColors.primary,
+                                size: 20,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                messageTitle,
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.titleMedium.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          messageBody,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.5,
+                          ),
+                        ),
+                        if (showCreateDatingProfileCta) ...[
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: onCreateDatingProfile,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              child: Text(
+                                'Create a Dating Profile',
+                                style: AppTextStyles.labelLarge.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 18),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(messageTitle, style: AppTextStyles.titleMedium),
-                  const SizedBox(height: 6),
-                  Text(
-                    messageBody,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                  if (showCreateDatingProfileCta) ...[
-                    const SizedBox(height: 14),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: onCreateDatingProfile,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 18,
-                            vertical: 14,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          'Create a Profile',
-                          style: AppTextStyles.labelLarge.copyWith(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            const SizedBox(height: 18),
-            Text('Your Account', style: AppTextStyles.titleLarge),
-            const SizedBox(height: 12),
-            _AccountTiles(context, ref, p),
-            const SizedBox(height: 18),
+                  const SizedBox(height: 24),
 
-            _ProfileTile(
-              icon: Icons.logout_rounded,
-              title: 'Log out',
-              subtitle: 'Sign out of your account',
-              onTap: () => _showComingSoon(context, 'Log out'),
+                  // Account Settings Section
+                  Text('Your Account', style: AppTextStyles.titleLarge),
+                  const SizedBox(height: 12),
+                  _AccountTiles(context, ref, p, showEditProfile: false),
+                  const SizedBox(height: 32),
+                ],
+              ),
             ),
-            const SizedBox(height: 32),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -2503,25 +2687,33 @@ class _AccountTiles extends StatelessWidget {
   final BuildContext context;
   final WidgetRef ref;
   final UserModel profile;
-  const _AccountTiles(this.context, this.ref, this.profile);
+  final bool showEditProfile;
+  const _AccountTiles(
+    this.context,
+    this.ref,
+    this.profile, {
+    this.showEditProfile = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _ProfileTile(
-          icon: Icons.edit_outlined,
-          title: 'Edit Profile',
-          subtitle: 'Update your profile information',
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => EditProfileScreen(profile: profile),
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: 10),
+        if (showEditProfile) ...[
+          _ProfileTile(
+            icon: Icons.edit_outlined,
+            title: 'Edit Profile',
+            subtitle: 'Update your profile information',
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => EditProfileScreen(profile: profile),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 10),
+        ],
         _ProfileTile(
           icon: Icons.settings_outlined,
           title: 'Settings',
@@ -2535,10 +2727,12 @@ class _AccountTiles extends StatelessWidget {
 
         _ProfileTile(
           icon: Icons.workspace_premium_outlined,
-          title: 'Premium',
+          title: 'Subscriptions',
           subtitle: 'Upgrade for more features',
           onTap: () {
-            _showComingSoon(context, 'Premium');
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const SubscriptionScreen()),
+            );
           },
         ),
         const SizedBox(height: 10),
@@ -2615,10 +2809,7 @@ class _DatingProfileRequiredGate extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Create your dating profile',
-              style: AppTextStyles.headlineLarge,
-            ),
+            Text('Dating Profile', style: AppTextStyles.headlineLarge),
             const SizedBox(height: 10),
             Text(
               'You need a dating profile to view other users in the pool.',
@@ -4470,6 +4661,7 @@ class _InputField extends StatelessWidget {
   }
 }
 
+// ignore: unused_element
 void _showComingSoon(BuildContext context, String feature) {
   _toast(context, '$feature is coming soon.');
 }

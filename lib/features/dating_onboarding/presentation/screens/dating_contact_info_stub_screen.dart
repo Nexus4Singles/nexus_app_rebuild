@@ -155,7 +155,7 @@ class _ProgressHeader extends StatelessWidget {
       children: [
         Text(stepLabel, style: AppTextStyles.caption),
         const SizedBox(height: 8),
-        Text(title, style: AppTextStyles.headlineLarge),
+        Text(title, style: AppTextStyles.titleLarge),
         const SizedBox(height: 10),
         Text(
           subtitle,

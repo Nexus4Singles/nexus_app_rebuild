@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/auth/auth_providers.dart';
 import '../../../../core/constants/app_constants.dart';
@@ -53,6 +54,11 @@ Future<void> _persistPresurveyForSignedInUser({
       .collection('users')
       .doc(uid)
       .set(payload, SetOptions(merge: true));
+}
+
+Future<void> _markPresurveyDoneLocally() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('presurvey_local_done', true);
 }
 
 class PresurveyGenderScreen extends ConsumerWidget {
@@ -173,6 +179,8 @@ class PresurveyGenderScreen extends ConsumerWidget {
                         relationshipStatus: rel,
                       );
 
+                      await _markPresurveyDoneLocally();
+
                       if (!context.mounted) return;
 
                       Navigator.pushAndRemoveUntil(
@@ -206,7 +214,7 @@ class PresurveyGenderScreen extends ConsumerWidget {
                     SizedBox(
                       height: 54,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           final g = guest?.gender;
                           if (g == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -216,6 +224,8 @@ class PresurveyGenderScreen extends ConsumerWidget {
                             );
                             return;
                           }
+
+                          await _markPresurveyDoneLocally();
 
                           Navigator.push(
                             context,
@@ -242,7 +252,9 @@ class PresurveyGenderScreen extends ConsumerWidget {
                     SizedBox(
                       height: 54,
                       child: OutlinedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          await _markPresurveyDoneLocally();
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -262,7 +274,7 @@ class PresurveyGenderScreen extends ConsumerWidget {
                     const SizedBox(height: 10),
                     Center(
                       child: TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           final g = guest?.gender;
                           if (g == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -272,6 +284,8 @@ class PresurveyGenderScreen extends ConsumerWidget {
                             );
                             return;
                           }
+
+                          await _markPresurveyDoneLocally();
 
                           Navigator.pushAndRemoveUntil(
                             context,

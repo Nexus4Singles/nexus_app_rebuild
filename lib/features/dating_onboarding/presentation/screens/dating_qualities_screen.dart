@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_min_test/core/lists/onboarding_lists.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
+import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
 
 class DatingQualitiesScreen extends ConsumerStatefulWidget {
   const DatingQualitiesScreen({super.key});
@@ -41,12 +42,17 @@ class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
         elevation: 0,
+        titleSpacing: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Dating Profile', style: AppTextStyles.titleLarge),
+        title: Text(
+          'Desired Qualities',
+          style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700),
+        ),
       ),
       body: listsAsync.when(
         data: (lists) => _buildContent(context, lists),
@@ -74,14 +80,13 @@ class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const DatingProfileProgressBar(currentStep: 4, totalSteps: 9),
+          const SizedBox(height: 18),
           _ProgressHeader(
-            stepLabel: 'Step 4 of 8',
-            title: 'Desired Qualities',
-            subtitle:
-                'Select up to $_max qualities you seek in a partner. This helps us find better matches.',
+            subtitle: 'Select up to $_max qualities you seek in a partner.',
             counter: '${_selected.length} / $_max',
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
 
           _SearchField(controller: _search, onChanged: (_) => setState(() {})),
           const SizedBox(height: 14),
@@ -98,15 +103,22 @@ class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
+            height: 54,
             child: ElevatedButton(
               onPressed: _selected.isEmpty ? null : () => _onContinue(context),
-              child: const Text('Continue'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+              ),
+              child: Text(
+                'Continue',
+                style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            'You can update this later.',
-            style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
           ),
         ],
       ),
@@ -117,41 +129,34 @@ class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
     setState(() {
       if (_selected.contains(quality)) {
         _selected.remove(quality);
-        return;
-      }
-
-      if (_selected.length >= _max) {
+      } else if (_selected.length >= _max) {
         HapticFeedback.mediumImpact();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('You can only select up to $_max qualities.')),
         );
         return;
+      } else {
+        _selected.add(quality);
       }
 
-      _selected.add(quality);
+      // Auto-save on every toggle
+      ref
+          .read(datingOnboardingDraftProvider.notifier)
+          .setDesiredQualities(_selected.toList());
     });
   }
 
   void _onContinue(BuildContext context) {
-    ref
-        .read(datingOnboardingDraftProvider.notifier)
-        .setDesiredQualities(_selected.toList());
+    // Draft is already saved via auto-save
     Navigator.of(context).pushNamed('/dating/setup/photos');
   }
 }
 
 class _ProgressHeader extends StatelessWidget {
-  final String stepLabel;
-  final String title;
   final String subtitle;
   final String counter;
 
-  const _ProgressHeader({
-    required this.stepLabel,
-    required this.title,
-    required this.subtitle,
-    required this.counter,
-  });
+  const _ProgressHeader({required this.subtitle, required this.counter});
 
   @override
   Widget build(BuildContext context) {
@@ -159,20 +164,11 @@ class _ProgressHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(stepLabel, style: AppTextStyles.caption),
-              const SizedBox(height: 8),
-              Text(title, style: AppTextStyles.headlineLarge),
-              const SizedBox(height: 10),
-              Text(
-                subtitle,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textMuted,
-                ),
-              ),
-            ],
+          child: Text(
+            subtitle,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textMuted,
+            ),
           ),
         ),
         const SizedBox(width: 12),

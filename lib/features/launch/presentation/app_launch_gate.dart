@@ -9,6 +9,8 @@ import '../../../core/user/current_user_doc_provider.dart';
 import '../../../core/bootstrap/bootstrap_gate.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/notifications/notification_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../guest/guest_entry_gate.dart';
 import '../../presurvey/presentation/splash/presurvey_splash_screen.dart';
@@ -22,6 +24,9 @@ class AppLaunchGate extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Initialize FCM for push notifications
+    ref.watch(fcmInitializationProvider);
+
     // Always show splash first. Splash decides where to go next.
     return const _AppSplashRouter();
   }
@@ -91,12 +96,10 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
       data: (user) {
         _retryCount = 0; // Reset retry count on data
 
-        // Logged out (or anonymous) -> auth entry screen (with guest option).
+        // Logged out (or anonymous) -> Welcome screen with auth options
         if (user == null || user.isAnonymous) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (_) => const GuestEntryGate(child: _AuthEntryScreen()),
-            ),
+            MaterialPageRoute(builder: (_) => const _AuthEntryScreen()),
           );
           return;
         }
@@ -254,9 +257,7 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
         // Still no auth info; keep splash visible and try again.
         if (_retryCount >= _maxRetries) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (_) => const GuestEntryGate(child: _AuthEntryScreen()),
-            ),
+            MaterialPageRoute(builder: (_) => const _AuthEntryScreen()),
           );
           return;
         }
@@ -268,9 +269,7 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
       error: (_, __) {
         // If auth stream errors, fall back to auth entry.
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => const GuestEntryGate(child: _AuthEntryScreen()),
-          ),
+          MaterialPageRoute(builder: (_) => const _AuthEntryScreen()),
         );
       },
     );
@@ -437,11 +436,28 @@ class _AuthEntryScreen extends StatelessWidget {
                         SizedBox(
                           height: 54,
                           child: OutlinedButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              // First-time only: run presurvey before signup.
+                              // Subsequent visits skip if local flag is set.
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              final done =
+                                  prefs.getBool('presurvey_local_done') == true;
+
+                              if (done) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const SignupScreen(),
+                                  ),
+                                );
+                                return;
+                              }
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => const SignupScreen(),
+                                  builder: (_) => const PresurveySplashScreen(),
                                 ),
                               );
                             },

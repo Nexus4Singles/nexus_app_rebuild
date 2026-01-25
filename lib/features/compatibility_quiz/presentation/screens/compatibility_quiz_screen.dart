@@ -18,13 +18,26 @@ class CompatibilityQuizScreen extends ConsumerWidget {
     final canNext = selected != null && selected.trim().isNotEmpty;
 
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async {
+        if (step > 0) {
+          notifier.goBack();
+          return false;
+        }
+        return true;
+      },
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
           backgroundColor: AppColors.background,
+          surfaceTintColor: AppColors.background,
           elevation: 0,
-          title: Text('Compatibility Quiz', style: AppTextStyles.headlineLarge),
+          titleSpacing: 20,
+          title: Text(
+            'Compatibility Quiz',
+            style: AppTextStyles.headlineLarge.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -37,19 +50,21 @@ class CompatibilityQuizScreen extends ConsumerWidget {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _ProgressBar(step: step),
-              const SizedBox(height: 18),
+              const SizedBox(height: 24),
               Text(
                 'Question ${step + 1} of ${_quizSteps.length}',
-                style: AppTextStyles.caption.copyWith(
+                style: AppTextStyles.labelMedium.copyWith(
                   color: AppColors.textMuted,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.5,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 16),
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 260),
                 switchInCurve: Curves.easeOut,
@@ -74,8 +89,18 @@ class CompatibilityQuizScreen extends ConsumerWidget {
                   children: [
                     Expanded(
                       child: SizedBox(
-                        height: 54,
+                        height: 56,
                         child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            disabledBackgroundColor: AppColors.border,
+                            disabledForegroundColor: AppColors.textMuted,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
                           onPressed:
                               (!canNext || state.isSubmitting)
                                   ? null
@@ -101,6 +126,10 @@ class CompatibilityQuizScreen extends ConsumerWidget {
                                     step < _quizSteps.length - 1
                                         ? 'Next'
                                         : 'Finish',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 17,
+                                    ),
                                   ),
                         ),
                       ),
@@ -126,29 +155,38 @@ class _QuizStepView extends ConsumerWidget {
     final notifier = ref.read(compatibilityQuizProvider.notifier);
     final q = _quizSteps[step];
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(q.title, style: AppTextStyles.titleLarge),
-        const SizedBox(height: 18),
-        Expanded(
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Wrap(
-              spacing: 10,
-              runSpacing: 10,
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            q.title,
+            style: AppTextStyles.titleLarge.copyWith(
+              fontWeight: FontWeight.w700,
+              height: 1.2,
+            ),
+          ),
+          const SizedBox(height: 24),
+          Expanded(
+            child: ListView(
               children: [
-                for (final opt in q.options)
-                  _OptionButton(
-                    text: opt,
-                    selected: selected == opt,
-                    onTap: () => notifier.setAnswer(q.key, opt),
-                  ),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: [
+                    for (final opt in q.options)
+                      _OptionButton(
+                        text: opt,
+                        selected: selected == opt,
+                        onTap: () => notifier.setAnswer(q.key, opt),
+                      ),
+                  ],
+                ),
               ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -167,26 +205,43 @@ class _OptionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final bg =
         selected ? AppColors.primary.withOpacity(0.12) : AppColors.surface;
-    final border = selected ? AppColors.primary : AppColors.border;
+    final border =
+        selected ? AppColors.primary : AppColors.border.withOpacity(0.5);
     final txt = selected ? AppColors.primary : AppColors.textPrimary;
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(20),
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
           decoration: BoxDecoration(
             color: bg,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: border),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: border, width: selected ? 2 : 1),
+            boxShadow:
+                selected
+                    ? [
+                      BoxShadow(
+                        color: AppColors.primary.withOpacity(0.15),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ]
+                    : [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.02),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
           ),
           child: Text(
             text,
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: AppTextStyles.bodyLarge.copyWith(
               color: txt,
-              fontWeight: FontWeight.w600,
+              fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
             ),
           ),
         ),
@@ -203,11 +258,12 @@ class _ProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final progress = (step + 1) / _quizSteps.length;
     return ClipRRect(
-      borderRadius: BorderRadius.circular(99),
+      borderRadius: BorderRadius.circular(999),
       child: LinearProgressIndicator(
         value: progress,
-        minHeight: 6,
-        backgroundColor: AppColors.border.withOpacity(0.4),
+        minHeight: 8,
+        backgroundColor: AppColors.surfaceLight,
+        valueColor: AlwaysStoppedAnimation(AppColors.primary),
       ),
     );
   }
