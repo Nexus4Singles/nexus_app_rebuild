@@ -248,6 +248,19 @@ class DatingOnboardingDraftNotifier
     _saveDraft();
   }
 
+  /// Clear all audio recordings (paths and URLs) to start over
+  void clearAudios() {
+    state = state.copyWith(
+      audio1Path: null,
+      audio2Path: null,
+      audio3Path: null,
+      audio1Url: null,
+      audio2Url: null,
+      audio3Url: null,
+    );
+    _saveDraft();
+  }
+
   void setContactInfo(Map<String, String> info) {
     state = state.copyWith(contactInfo: info);
     _saveDraft();

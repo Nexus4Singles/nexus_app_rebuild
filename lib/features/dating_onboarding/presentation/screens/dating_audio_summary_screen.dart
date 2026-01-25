@@ -194,6 +194,28 @@ class _DatingAudioSummaryScreenState
                 ),
               ),
             ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: double.infinity,
+              height: 54,
+              child: OutlinedButton(
+                onPressed: _showReRecordConfirmation,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColors.primary,
+                  elevation: 0,
+                  side: BorderSide(color: AppColors.primary, width: 1.5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                ),
+                child: Text(
+                  'Clear & Re-record',
+                  style: AppTextStyles.labelLarge.copyWith(
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -224,6 +246,55 @@ class _DatingAudioSummaryScreenState
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
     }
+  }
+
+  void _showReRecordConfirmation() {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          backgroundColor: AppColors.surface,
+          title: Text(
+            'Clear Recordings?',
+            style: AppTextStyles.titleMedium,
+          ),
+          content: Text(
+            'This will delete all your current recordings and start over.',
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textSecondary,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: Text(
+                'Cancel',
+                style: AppTextStyles.labelLarge.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+                _clearAndReRecord();
+              },
+              child: Text(
+                'Clear & Re-record',
+                style: AppTextStyles.labelLarge.copyWith(
+                  color: AppColors.primary,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _clearAndReRecord() {
+    ref.read(datingOnboardingDraftProvider.notifier).clearAudios();
+    Navigator.of(context).pushReplacementNamed('/dating/setup/audio/q1');
   }
 }
 
