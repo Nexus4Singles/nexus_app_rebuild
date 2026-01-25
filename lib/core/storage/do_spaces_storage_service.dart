@@ -93,7 +93,6 @@ class DoSpacesStorageService implements MediaStorageService {
         Uri.parse(uploadUrl),
         headers: <String, String>{
           'Content-Type': contentType,
-          'x-amz-acl': 'public-read',
         },
         body: bytes,
       );
