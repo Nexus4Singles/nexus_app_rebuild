@@ -297,8 +297,9 @@ match /chats/{chatId} {
 
     match /storyComments/{storyId}/comments/{commentId} {
       allow read: if true;
-      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
     }
 
     match /storyLikes/{storyId}/likes/{likeId} {

@@ -101,9 +101,7 @@ class _StoryOfWeekView extends ConsumerWidget {
         const SizedBox(height: 24),
         Text(
           story.takeawayTitle,
-          style: AppTextStyles.titleLarge.copyWith(
-            fontWeight: FontWeight.w700,
-          ),
+          style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 16),
         _Card(
@@ -212,16 +210,18 @@ class _StoryActionsCard extends ConsumerWidget {
               style: TextStyle(fontWeight: FontWeight.w900),
             ),
             const SizedBox(height: 10),
-            Row(
-              children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
                 _ActionChip(
                   icon: liked ? Icons.favorite : Icons.favorite_border,
                   label:
                       liked
                           ? 'Liked ($likeCount)'
                           : likeCount > 0
-                              ? 'Like ($likeCount)'
-                              : 'Like',
+                          ? 'Like ($likeCount)'
+                          : 'Like',
                   onTap: () {
                     if (!canInteract) {
                       _showGuestGateDialog(context);
@@ -255,14 +255,9 @@ class _StoryActionsCard extends ConsumerWidget {
                   },
                 ),
               ],
+              ),
             ),
             const SizedBox(height: 10),
-            Text(
-              canInteract
-                  ? 'Likes and comments will become public when accounts are fully enabled.'
-                  : 'Create an account to like, comment, share, and vote.',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
           ],
         ),
       ),
@@ -333,14 +328,15 @@ class _StoryActionsCard extends ConsumerWidget {
                     ValueListenableBuilder<StoryComment?>(
                       valueListenable: replyTarget,
                       builder: (context, replyTo, __) {
-                        List<StoryComment> topLevel = comments
-                            .where((c) => !c.isReply)
-                            .toList()
-                          ..sort((a, b) {
-                            final likeCmp = b.likeCount.compareTo(a.likeCount);
-                            if (likeCmp != 0) return likeCmp;
-                            return b.createdAt.compareTo(a.createdAt);
-                          });
+                        List<StoryComment> topLevel =
+                            comments.where((c) => !c.isReply).toList()
+                              ..sort((a, b) {
+                                final likeCmp = b.likeCount.compareTo(
+                                  a.likeCount,
+                                );
+                                if (likeCmp != 0) return likeCmp;
+                                return b.createdAt.compareTo(a.createdAt);
+                              });
                         final repliesByParent = <String, List<StoryComment?>>{};
                         for (final cm in comments.where((c) => c.isReply)) {
                           final key = cm.parentId ?? '';
@@ -373,7 +369,8 @@ class _StoryActionsCard extends ConsumerWidget {
                                       (_, __) => const Divider(height: 18),
                                   itemBuilder: (c, i) {
                                     final cm = topLevel[i];
-                                    final replies = repliesByParent[cm.id] ?? [];
+                                    final replies =
+                                        repliesByParent[cm.id] ?? [];
                                     final liked = controller.isCommentLiked(
                                       story.id,
                                       cm.id,
@@ -398,9 +395,10 @@ class _StoryActionsCard extends ConsumerWidget {
                                                 children: [
                                                   Text(
                                                     cm.userName,
-                                                    style: Theme.of(ctx)
-                                                        .textTheme
-                                                        .labelLarge,
+                                                    style:
+                                                        Theme.of(
+                                                          ctx,
+                                                        ).textTheme.labelLarge,
                                                   ),
                                                   const SizedBox(height: 2),
                                                   Text(cm.text),
@@ -409,21 +407,22 @@ class _StoryActionsCard extends ConsumerWidget {
                                                     children: [
                                                       Text(
                                                         _fmtTime(cm.createdAt),
-                                                        style: Theme.of(ctx)
-                                                            .textTheme
-                                                            .bodySmall,
+                                                        style:
+                                                            Theme.of(ctx)
+                                                                .textTheme
+                                                                .bodySmall,
                                                       ),
                                                       const SizedBox(width: 12),
                                                       Text(
                                                         '${cm.likeCount} likes',
-                                                        style: Theme.of(ctx)
-                                                            .textTheme
-                                                            .bodySmall,
+                                                        style:
+                                                            Theme.of(ctx)
+                                                                .textTheme
+                                                                .bodySmall,
                                                       ),
                                                       const SizedBox(width: 12),
                                                       TextButton(
-                                                        style: TextButton
-                                                            .styleFrom(
+                                                        style: TextButton.styleFrom(
                                                           padding:
                                                               EdgeInsets.zero,
                                                           minimumSize:
@@ -439,7 +438,8 @@ class _StoryActionsCard extends ConsumerWidget {
                                                             );
                                                             return;
                                                           }
-                                                          replyTarget.value = cm;
+                                                          replyTarget.value =
+                                                              cm;
                                                         },
                                                         child: const Text(
                                                           'Reply',
@@ -447,8 +447,7 @@ class _StoryActionsCard extends ConsumerWidget {
                                                       ),
                                                       const SizedBox(width: 8),
                                                       TextButton.icon(
-                                                        style: TextButton
-                                                            .styleFrom(
+                                                        style: TextButton.styleFrom(
                                                           padding:
                                                               EdgeInsets.zero,
                                                           minimumSize:
@@ -466,9 +465,9 @@ class _StoryActionsCard extends ConsumerWidget {
                                                           }
                                                           controller
                                                               .toggleCommentLike(
-                                                            story.id,
-                                                            cm.id,
-                                                          );
+                                                                story.id,
+                                                                cm.id,
+                                                              );
                                                         },
                                                         icon: Icon(
                                                           liked
@@ -477,7 +476,9 @@ class _StoryActionsCard extends ConsumerWidget {
                                                                   .favorite_border,
                                                           size: 16,
                                                         ),
-                                                        label: const Text('Like'),
+                                                        label: const Text(
+                                                          'Like',
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -487,11 +488,12 @@ class _StoryActionsCard extends ConsumerWidget {
                                             if (canInteract)
                                               IconButton(
                                                 tooltip: 'Delete',
-                                                onPressed: () => controller
-                                                    .deleteComment(
-                                                  story.id,
-                                                  cm.id,
-                                                ),
+                                                onPressed:
+                                                    () => controller
+                                                        .deleteComment(
+                                                          story.id,
+                                                          cm.id,
+                                                        ),
                                                 icon: const Icon(
                                                   Icons.delete_outline,
                                                 ),
@@ -503,24 +505,25 @@ class _StoryActionsCard extends ConsumerWidget {
                                           ValueListenableBuilder<Set<String>>(
                                             valueListenable: expandedReplies,
                                             builder: (context, expanded, _) {
-                                              final isExpanded =
-                                                  expanded.contains(cm.id);
+                                              final isExpanded = expanded
+                                                  .contains(cm.id);
                                               return Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                    CrossAxisAlignment.center,
                                                 children: [
                                                   TextButton(
                                                     style: TextButton.styleFrom(
-                                                      padding:
-                                                          EdgeInsets.zero,
+                                                      padding: EdgeInsets.zero,
                                                       minimumSize: Size.zero,
                                                       tapTargetSize:
                                                           MaterialTapTargetSize
                                                               .shrinkWrap,
                                                     ),
                                                     onPressed: () {
-                                                      final next = Set<String>
-                                                          .from(expanded);
+                                                      final next =
+                                                          Set<String>.from(
+                                                            expanded,
+                                                          );
                                                       if (isExpanded) {
                                                         next.remove(cm.id);
                                                       } else {
@@ -535,138 +538,135 @@ class _StoryActionsCard extends ConsumerWidget {
                                                           : 'View ${replies.length} repl${replies.length == 1 ? 'y' : 'ies'}',
                                                       style: TextStyle(
                                                         fontSize: 12,
-                                                        color: Theme.of(ctx)
-                                                            .colorScheme
-                                                            .primary,
+                                                        color:
+                                                            Theme.of(ctx)
+                                                                .colorScheme
+                                                                .primary,
                                                       ),
                                                     ),
                                                   ),
                                                   if (isExpanded)
                                                     Column(
-                                                      children: replies
-                                                          .map(
-                                                            (rc) => Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                left: 32,
-                                                                top: 8,
-                                                              ),
-                                                              child: rc == null
-                                                                  ? const SizedBox()
-                                                                  : Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              const Icon(
-                                                                Icons
-                                                                    .account_circle_outlined,
-                                                                size: 18,
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 8,
-                                                              ),
-                                                              Expanded(
-                                                                child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                      rc.userName,
-                                                                      style: Theme
-                                                                              .of(
-                                                                        ctx,
-                                                                      )
-                                                                          .textTheme
-                                                                          .labelMedium,
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      height: 2,
-                                                                    ),
-                                                                    Text(
-                                                                      rc.text,
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      height: 4,
-                                                                    ),
-                                                                    Row(
-                                                                      children: [
-                                                                        Text(
-                                                                          _fmtTime(
-                                                                            rc.createdAt,
+                                                      children:
+                                                          replies
+                                                              .map(
+                                                                (rc) => Padding(
+                                                                  padding:
+                                                                      const EdgeInsets.only(
+                                                                        left:
+                                                                            32,
+                                                                        top: 8,
+                                                                      ),
+                                                                  child:
+                                                                      rc == null
+                                                                          ? const SizedBox()
+                                                                          : Row(
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              const Icon(
+                                                                                Icons.account_circle_outlined,
+                                                                                size:
+                                                                                    18,
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                width:
+                                                                                    8,
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Column(
+                                                                                  crossAxisAlignment:
+                                                                                      CrossAxisAlignment.start,
+                                                                                  children: [
+                                                                                    Text(
+                                                                                      rc.userName,
+                                                                                      style:
+                                                                                          Theme.of(
+                                                                                            ctx,
+                                                                                          ).textTheme.labelMedium,
+                                                                                    ),
+                                                                                    const SizedBox(
+                                                                                      height:
+                                                                                          2,
+                                                                                    ),
+                                                                                    Text(
+                                                                                      rc.text,
+                                                                                    ),
+                                                                                    const SizedBox(
+                                                                                      height:
+                                                                                          4,
+                                                                                    ),
+                                                                                    Row(
+                                                                                      children: [
+                                                                                        Text(
+                                                                                          _fmtTime(
+                                                                                            rc.createdAt,
+                                                                                          ),
+                                                                                          style:
+                                                                                              Theme.of(
+                                                                                                ctx,
+                                                                                              ).textTheme.bodySmall,
+                                                                                        ),
+                                                                                        const SizedBox(
+                                                                                          width:
+                                                                                              12,
+                                                                                        ),
+                                                                                        Text(
+                                                                                          '${rc.likeCount} likes',
+                                                                                          style:
+                                                                                              Theme.of(
+                                                                                                ctx,
+                                                                                              ).textTheme.bodySmall,
+                                                                                        ),
+                                                                                        const SizedBox(
+                                                                                          width:
+                                                                                              8,
+                                                                                        ),
+                                                                                        TextButton.icon(
+                                                                                          style: TextButton.styleFrom(
+                                                                                            padding:
+                                                                                                EdgeInsets.zero,
+                                                                                            minimumSize:
+                                                                                                Size.zero,
+                                                                                            tapTargetSize:
+                                                                                                MaterialTapTargetSize.shrinkWrap,
+                                                                                          ),
+                                                                                          onPressed: () {
+                                                                                            if (!canInteract) {
+                                                                                              _showGuestGateDialog(
+                                                                                                context,
+                                                                                              );
+                                                                                              return;
+                                                                                            }
+                                                                                            controller.toggleCommentLike(
+                                                                                              story.id,
+                                                                                              rc.id,
+                                                                                            );
+                                                                                          },
+                                                                                          icon: Icon(
+                                                                                            controller.isCommentLiked(
+                                                                                                  story.id,
+                                                                                                  rc.id,
+                                                                                                )
+                                                                                                ? Icons.favorite
+                                                                                                : Icons.favorite_border,
+                                                                                            size:
+                                                                                                14,
+                                                                                          ),
+                                                                                          label: const Text(
+                                                                                            'Like',
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            ],
                                                                           ),
-                                                                          style: Theme.of(
-                                                                            ctx,
-                                                                          )
-                                                                              .textTheme
-                                                                              .bodySmall,
-                                                                        ),
-                                                                        const SizedBox(
-                                                                          width: 12,
-                                                                        ),
-                                                                        Text(
-                                                                          '${rc.likeCount} likes',
-                                                                          style: Theme.of(
-                                                                            ctx,
-                                                                          )
-                                                                              .textTheme
-                                                                              .bodySmall,
-                                                                        ),
-                                                                        const SizedBox(
-                                                                          width: 8,
-                                                                        ),
-                                                                        TextButton
-                                                                            .icon(
-                                                                          style: TextButton
-                                                                              .styleFrom(
-                                                                            padding:
-                                                                                EdgeInsets.zero,
-                                                                            minimumSize:
-                                                                                Size.zero,
-                                                                            tapTargetSize:
-                                                                                MaterialTapTargetSize.shrinkWrap,
-                                                                          ),
-                                                                          onPressed:
-                                                                              () {
-                                                                            if (!canInteract) {
-                                                                              _showGuestGateDialog(
-                                                                                context,
-                                                                              );
-                                                                              return;
-                                                                            }
-                                                                            controller.toggleCommentLike(
-                                                                              story.id,
-                                                                              rc.id,
-                                                                            );
-                                                                          },
-                                                                          icon:
-                                                                              Icon(
-                                                                            controller.isCommentLiked(
-                                                                              story.id,
-                                                                              rc.id,
-                                                                            )
-                                                                                ? Icons.favorite
-                                                                                : Icons.favorite_border,
-                                                                            size:
-                                                                                14,
-                                                                          ),
-                                                                          label:
-                                                                              const Text(
-                                                                            'Like',
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ],
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                  ),
-                                                )
-                                                .toList(),
+                                                              )
+                                                              .toList(),
                                                     ),
                                                 ],
                                               );
@@ -687,8 +687,9 @@ class _StoryActionsCard extends ConsumerWidget {
                                     Navigator.of(ctx).pop();
                                     _showGuestGateDialog(context);
                                   },
-                                  child:
-                                      const Text('Create an account to comment'),
+                                  child: const Text(
+                                    'Create an account to comment',
+                                  ),
                                 ),
                               )
                             else ...[
@@ -701,9 +702,10 @@ class _StoryActionsCard extends ConsumerWidget {
                                     vertical: 8,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Theme.of(ctx)
-                                        .colorScheme
-                                        .surfaceVariant,
+                                    color:
+                                        Theme.of(
+                                          ctx,
+                                        ).colorScheme.surfaceVariant,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Row(
@@ -711,14 +713,14 @@ class _StoryActionsCard extends ConsumerWidget {
                                       Expanded(
                                         child: Text(
                                           'Replying to ${replyTo.userName}',
-                                          style: Theme.of(ctx)
-                                              .textTheme
-                                              .bodySmall,
+                                          style:
+                                              Theme.of(ctx).textTheme.bodySmall,
                                         ),
                                       ),
                                       IconButton(
                                         icon: const Icon(Icons.close, size: 18),
-                                        onPressed: () => replyTarget.value = null,
+                                        onPressed:
+                                            () => replyTarget.value = null,
                                       ),
                                     ],
                                   ),
@@ -877,8 +879,7 @@ class _HeroCover extends StatelessWidget {
             aspectRatio: 16 / 10,
             child: _AdaptiveStoryImage(
               imagePath: imagePath,
-              placeholder:
-                  'assets/images/stories/placeholder_couple.jpg',
+              placeholder: 'assets/images/stories/placeholder_couple.jpg',
             ),
           ),
           Positioned.fill(
@@ -925,7 +926,10 @@ class _AdaptiveStoryImage extends StatelessWidget {
   final String imagePath;
   final String placeholder;
 
-  const _AdaptiveStoryImage({required this.imagePath, required this.placeholder});
+  const _AdaptiveStoryImage({
+    required this.imagePath,
+    required this.placeholder,
+  });
 
   bool get _isRemote => imagePath.startsWith('http');
 
@@ -935,10 +939,8 @@ class _AdaptiveStoryImage extends StatelessWidget {
       return Image.network(
         imagePath,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => Image.asset(
-          placeholder,
-          fit: BoxFit.cover,
-        ),
+        errorBuilder:
+            (_, __, ___) => Image.asset(placeholder, fit: BoxFit.cover),
       );
     }
 
@@ -946,10 +948,7 @@ class _AdaptiveStoryImage extends StatelessWidget {
     return Image.asset(
       asset,
       fit: BoxFit.cover,
-      errorBuilder: (_, __, ___) => Image.asset(
-        placeholder,
-        fit: BoxFit.cover,
-      ),
+      errorBuilder: (_, __, ___) => Image.asset(placeholder, fit: BoxFit.cover),
     );
   }
 }

@@ -29,12 +29,15 @@ class RemoteContentService {
 
       final data = doc.data() as Map<String, dynamic>;
       final rawV = data['version'];
-      final version = rawV is int
-          ? rawV
-          : int.tryParse(
-            rawV == null ? '' : rawV.toString().replaceAll(RegExp(r'[^0-9]'), ''),
-          ) ??
-          1;
+      final version =
+          rawV is int
+              ? rawV
+              : int.tryParse(
+                    rawV == null
+                        ? ''
+                        : rawV.toString().replaceAll(RegExp(r'[^0-9]'), ''),
+                  ) ??
+                  1;
 
       // Cache it
       await _cache.cacheStories(jsonEncode(data), version);
@@ -65,12 +68,15 @@ class RemoteContentService {
 
       final data = doc.data() as Map<String, dynamic>;
       final rawV = data['version'];
-      final version = rawV is int
-          ? rawV
-          : int.tryParse(
-            rawV == null ? '' : rawV.toString().replaceAll(RegExp(r'[^0-9]'), ''),
-          ) ??
-          1;
+      final version =
+          rawV is int
+              ? rawV
+              : int.tryParse(
+                    rawV == null
+                        ? ''
+                        : rawV.toString().replaceAll(RegExp(r'[^0-9]'), ''),
+                  ) ??
+                  1;
 
       await _cache.cachePolls(jsonEncode(data), version);
 

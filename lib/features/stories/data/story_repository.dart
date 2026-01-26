@@ -51,7 +51,8 @@ class StoryRepository {
   }
 
   Story _mapRemoteStory(remote.Story s) {
-    final contentText = s.contentText ??
+    final contentText =
+        s.contentText ??
         s.contentBlocks
             .where((b) => b.text != null)
             .map((b) => b.text!)

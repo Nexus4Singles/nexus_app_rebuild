@@ -137,20 +137,20 @@ class _StoryPollScreenState extends ConsumerState<StoryPollScreen> {
                 child:
                     _canShowResults
                         ? _ResultsView(
-                            poll: poll,
-                            votedOptionId:
-                                _selectedOptionId ??
-                                _existingVote?.selectedOptionId ??
-                                '',
-                            aggregate: _aggregate,
-                          )
+                          poll: poll,
+                          votedOptionId:
+                              _selectedOptionId ??
+                              _existingVote?.selectedOptionId ??
+                              '',
+                          aggregate: _aggregate,
+                        )
                         : _VoteView(
-                            poll: poll,
-                            selectedOptionId: _selectedOptionId,
-                            onSelect:
-                                (v) => setState(() => _selectedOptionId = v),
-                            onVote: _onVotePressed,
-                          ),
+                          poll: poll,
+                          selectedOptionId: _selectedOptionId,
+                          onSelect:
+                              (v) => setState(() => _selectedOptionId = v),
+                          onVote: _onVotePressed,
+                        ),
               ),
     );
   }
@@ -329,9 +329,7 @@ class _ResultsView extends StatelessWidget {
               Text(poll.question, style: theme.textTheme.bodyLarge),
               const SizedBox(height: 6),
               Text(
-                total == 0
-                    ? 'Be the first to vote.'
-                    : 'Total votes: $total',
+                total == 0 ? 'Be the first to vote.' : 'Total votes: $total',
                 style: theme.textTheme.bodySmall,
               ),
             ],

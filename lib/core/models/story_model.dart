@@ -283,14 +283,14 @@ class StoriesCatalog extends Equatable {
 
   factory StoriesCatalog.fromJson(Map<String, dynamic> json) {
     final rawV = json['version'];
-    final versionStr = rawV == null
-        ? 'v1'
-        : (rawV is String ? rawV : 'v${rawV.toString()}');
+    final versionStr =
+        rawV == null ? 'v1' : (rawV is String ? rawV : 'v${rawV.toString()}');
     return StoriesCatalog(
       version: versionStr,
-      stories: (json['stories'] as List<dynamic>)
-          .map((e) => Story.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      stories:
+          (json['stories'] as List<dynamic>)
+              .map((e) => Story.fromJson(e as Map<String, dynamic>))
+              .toList(),
     );
   }
 
@@ -441,7 +441,8 @@ class Poll extends Equatable {
     return Poll(
       pollId: json['pollId'] as String? ?? json['id'] as String? ?? '',
       storyId: json['storyId'] as String? ?? '',
-      weekNumber: json['weekNumber'] as int? ?? 0,
+      weekNumber:
+          int.tryParse(json['weekNumber'].toString()) ?? 0,
       question: json['question'] as String,
       options:
           (json['options'] as List<dynamic>)

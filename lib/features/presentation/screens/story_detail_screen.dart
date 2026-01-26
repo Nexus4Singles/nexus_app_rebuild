@@ -223,7 +223,10 @@ class _Card extends StatelessWidget {
 class _AdaptiveDetailImage extends StatelessWidget {
   final String imagePath;
   final String placeholder;
-  const _AdaptiveDetailImage({required this.imagePath, required this.placeholder});
+  const _AdaptiveDetailImage({
+    required this.imagePath,
+    required this.placeholder,
+  });
 
   bool get _isRemote => imagePath.startsWith('http');
 
@@ -233,20 +236,15 @@ class _AdaptiveDetailImage extends StatelessWidget {
       return Image.network(
         imagePath,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => Image.asset(
-          placeholder,
-          fit: BoxFit.cover,
-        ),
+        errorBuilder:
+            (_, __, ___) => Image.asset(placeholder, fit: BoxFit.cover),
       );
     }
     final asset = imagePath.isNotEmpty ? imagePath : placeholder;
     return Image.asset(
       asset,
       fit: BoxFit.cover,
-      errorBuilder: (_, __, ___) => Image.asset(
-        placeholder,
-        fit: BoxFit.cover,
-      ),
+      errorBuilder: (_, __, ___) => Image.asset(placeholder, fit: BoxFit.cover),
     );
   }
 }

@@ -120,7 +120,7 @@ class FirestoreService {
       final doc = await _userDocRef(uid).get();
       final data = doc.data();
       if (data == null) return null;
-      
+
       final username = data['username'] as String?;
       if (username != null && username.trim().isNotEmpty) {
         return username.trim();
@@ -714,11 +714,11 @@ class FirestoreService {
   CollectionReference<Map<String, dynamic>> _storyCommentsRef(String storyId) =>
       _db!.collection("storyComments").doc(storyId).collection("comments");
 
-    DocumentReference<Map<String, dynamic>> _storyCommentLikesDoc(
+  DocumentReference<Map<String, dynamic>> _storyCommentLikesDoc(
     String storyId,
     String commentId,
     String userId,
-    ) => _db!
+  ) => _db!
       .collection("storyCommentLikes")
       .doc(storyId)
       .collection("likes")
@@ -845,10 +845,10 @@ class FirestoreService {
     }, SetOptions(merge: true));
 
     if (parentId != null && parentId.isNotEmpty) {
-      await _storyCommentsRef(storyId).doc(parentId).set({
+      await _storyCommentsRef(storyId).doc(parentId).update({
         "replyCount": FieldValue.increment(1),
         "updatedAt": FieldValue.serverTimestamp(),
-      }, SetOptions(merge: true));
+      });
     }
 
     // Local return (server timestamp will resolve later)
@@ -878,10 +878,10 @@ class FirestoreService {
     }, SetOptions(merge: true));
 
     if (parentId != null && parentId.isNotEmpty) {
-      await _storyCommentsRef(storyId).doc(parentId).set({
+      await _storyCommentsRef(storyId).doc(parentId).update({
         "replyCount": FieldValue.increment(-1),
         "updatedAt": FieldValue.serverTimestamp(),
-      }, SetOptions(merge: true));
+      });
     }
   }
 

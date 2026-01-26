@@ -22,11 +22,11 @@ class StoryReactionsState {
   });
 
   factory StoryReactionsState.initial() => const StoryReactionsState(
-        engagementByStoryId: {},
-        commentsByStoryId: {},
-        likedStoryIds: {},
-        likedCommentsByStoryId: {},
-      );
+    engagementByStoryId: {},
+    commentsByStoryId: {},
+    likedStoryIds: {},
+    likedCommentsByStoryId: {},
+  );
 
   StoryReactionsState copyWith({
     Map<String, StoryEngagement>? engagementByStoryId,
@@ -46,7 +46,7 @@ class StoryReactionsState {
 
 class StoryReactionsController extends StateNotifier<StoryReactionsState> {
   StoryReactionsController(this._ref, this._firestore)
-      : super(StoryReactionsState.initial());
+    : super(StoryReactionsState.initial());
 
   final Ref _ref;
   final FirestoreService _firestore;
@@ -73,8 +73,9 @@ class StoryReactionsController extends StateNotifier<StoryReactionsState> {
   }
 
   void ensureStory(String storyId) {
-    _engagementSubs[storyId] ??=
-        _firestore.watchStoryEngagement(storyId).listen((engagement) {
+    _engagementSubs[storyId] ??= _firestore
+        .watchStoryEngagement(storyId)
+        .listen((engagement) {
           if (engagement == null) return;
           final next = Map<String, StoryEngagement>.from(
             state.engagementByStoryId,
@@ -83,27 +84,29 @@ class StoryReactionsController extends StateNotifier<StoryReactionsState> {
           state = state.copyWith(engagementByStoryId: next);
         });
 
-    _commentsSubs[storyId] ??=
-        _firestore.watchStoryComments(storyId).listen((comments) {
-          final next = Map<String, List<StoryComment>>.from(
-            state.commentsByStoryId,
-          );
-          next[storyId] = comments;
-          state = state.copyWith(commentsByStoryId: next);
-        });
+    _commentsSubs[storyId] ??= _firestore.watchStoryComments(storyId).listen((
+      comments,
+    ) {
+      final next = Map<String, List<StoryComment>>.from(
+        state.commentsByStoryId,
+      );
+      next[storyId] = comments;
+      state = state.copyWith(commentsByStoryId: next);
+    });
 
     final uid = _userId;
     if (uid != null && !_likeSubs.containsKey(storyId)) {
-      _likeSubs[storyId] =
-          _firestore.watchUserLikedStory(storyId, uid).listen((liked) {
-            final next = Set<String>.from(state.likedStoryIds);
-            if (liked) {
-              next.add(storyId);
-            } else {
-              next.remove(storyId);
-            }
-            state = state.copyWith(likedStoryIds: next);
-          });
+      _likeSubs[storyId] = _firestore.watchUserLikedStory(storyId, uid).listen((
+        liked,
+      ) {
+        final next = Set<String>.from(state.likedStoryIds);
+        if (liked) {
+          next.add(storyId);
+        } else {
+          next.remove(storyId);
+        }
+        state = state.copyWith(likedStoryIds: next);
+      });
     }
   }
 
@@ -164,9 +167,7 @@ class StoryReactionsController extends StateNotifier<StoryReactionsState> {
       text: trimmed,
     );
 
-    final next = Map<String, List<StoryComment>>.from(
-      state.commentsByStoryId,
-    );
+    final next = Map<String, List<StoryComment>>.from(state.commentsByStoryId);
     final list = List<StoryComment>.from(next[storyId] ?? const []);
     list.insert(0, comment);
     next[storyId] = list;
@@ -182,10 +183,7 @@ class StoryReactionsController extends StateNotifier<StoryReactionsState> {
   }
 
   Future<void> deleteComment(String storyId, String commentId) async {
-    await _firestore.deleteStoryComment(
-      storyId: storyId,
-      commentId: commentId,
-    );
+    await _firestore.deleteStoryComment(storyId: storyId, commentId: commentId);
   }
 
   Future<void> toggleCommentLike(String storyId, String commentId) async {
@@ -243,9 +241,7 @@ class StoryReactionsController extends StateNotifier<StoryReactionsState> {
 }
 
 final storyReactionsProvider =
-    StateNotifierProvider<StoryReactionsController, StoryReactionsState>(
-      (ref) {
-        final firestore = ref.watch(firestoreServiceProvider);
-        return StoryReactionsController(ref, firestore);
-      },
-    );
+    StateNotifierProvider<StoryReactionsController, StoryReactionsState>((ref) {
+      final firestore = ref.watch(firestoreServiceProvider);
+      return StoryReactionsController(ref, firestore);
+    });
