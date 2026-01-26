@@ -441,8 +441,7 @@ class Poll extends Equatable {
     return Poll(
       pollId: json['pollId'] as String? ?? json['id'] as String? ?? '',
       storyId: json['storyId'] as String? ?? '',
-      weekNumber:
-          int.tryParse(json['weekNumber'].toString()) ?? 0,
+      weekNumber: int.tryParse(json['weekNumber'].toString()) ?? 0,
       question: json['question'] as String,
       options:
           (json['options'] as List<dynamic>)
@@ -496,7 +495,7 @@ class PollsCatalog extends Equatable {
 
   factory PollsCatalog.fromJson(Map<String, dynamic> json) {
     return PollsCatalog(
-      version: json['version'] as String? ?? 'v1',
+      version: json['version'].toString(),
       polls:
           (json['polls'] as List<dynamic>)
               .map((e) => Poll.fromJson(e as Map<String, dynamic>))

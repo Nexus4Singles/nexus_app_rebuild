@@ -214,47 +214,51 @@ class _StoryActionsCard extends ConsumerWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                _ActionChip(
-                  icon: liked ? Icons.favorite : Icons.favorite_border,
-                  label:
-                      liked
-                          ? 'Liked ($likeCount)'
-                          : likeCount > 0
-                          ? 'Like ($likeCount)'
-                          : 'Like',
-                  onTap: () {
-                    if (!canInteract) {
-                      _showGuestGateDialog(context);
-                      return;
-                    }
-                    controller.toggleLike(story.id);
-                  },
-                ),
-                const SizedBox(width: 10),
-                _ActionChip(
-                  icon: Icons.mode_comment_outlined,
-                  label:
-                      commentsCount == 0
-                          ? 'Comment'
-                          : 'Comments ($commentsCount)',
-                  onTap:
-                      () =>
-                          _showCommentsSheet(context, ref, story, canInteract),
-                ),
-                const SizedBox(width: 10),
-                _ActionChip(
-                  icon: Icons.ios_share,
-                  label: 'Share',
-                  onTap: () {
-                    if (!canInteract) {
-                      _showGuestGateDialog(context);
-                      return;
-                    }
-                    controller.incrementShare(story.id);
-                    _shareStory(story);
-                  },
-                ),
-              ],
+                  _ActionChip(
+                    icon: liked ? Icons.favorite : Icons.favorite_border,
+                    label:
+                        liked
+                            ? 'Liked ($likeCount)'
+                            : likeCount > 0
+                            ? 'Like ($likeCount)'
+                            : 'Like',
+                    onTap: () {
+                      if (!canInteract) {
+                        _showGuestGateDialog(context);
+                        return;
+                      }
+                      controller.toggleLike(story.id);
+                    },
+                  ),
+                  const SizedBox(width: 10),
+                  _ActionChip(
+                    icon: Icons.mode_comment_outlined,
+                    label:
+                        commentsCount == 0
+                            ? 'Comment'
+                            : 'Comments ($commentsCount)',
+                    onTap:
+                        () => _showCommentsSheet(
+                          context,
+                          ref,
+                          story,
+                          canInteract,
+                        ),
+                  ),
+                  const SizedBox(width: 10),
+                  _ActionChip(
+                    icon: Icons.ios_share,
+                    label: 'Share',
+                    onTap: () {
+                      if (!canInteract) {
+                        _showGuestGateDialog(context);
+                        return;
+                      }
+                      controller.incrementShare(story.id);
+                      _shareStory(story);
+                    },
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 10),
@@ -511,37 +515,40 @@ class _StoryActionsCard extends ConsumerWidget {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  TextButton(
-                                                    style: TextButton.styleFrom(
-                                                      padding: EdgeInsets.zero,
-                                                      minimumSize: Size.zero,
-                                                      tapTargetSize:
-                                                          MaterialTapTargetSize
-                                                              .shrinkWrap,
-                                                    ),
-                                                    onPressed: () {
-                                                      final next =
-                                                          Set<String>.from(
-                                                            expanded,
-                                                          );
-                                                      if (isExpanded) {
-                                                        next.remove(cm.id);
-                                                      } else {
-                                                        next.add(cm.id);
-                                                      }
-                                                      expandedReplies.value =
-                                                          next;
-                                                    },
-                                                    child: Text(
-                                                      isExpanded
-                                                          ? 'Hide replies'
-                                                          : 'View ${replies.length} repl${replies.length == 1 ? 'y' : 'ies'}',
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        color:
-                                                            Theme.of(ctx)
-                                                                .colorScheme
-                                                                .primary,
+                                                  Center(
+                                                    child: TextButton(
+                                                      style: TextButton.styleFrom(
+                                                        padding:
+                                                            EdgeInsets.zero,
+                                                        minimumSize: Size.zero,
+                                                        tapTargetSize:
+                                                            MaterialTapTargetSize
+                                                                .shrinkWrap,
+                                                      ),
+                                                      onPressed: () {
+                                                        final next =
+                                                            Set<String>.from(
+                                                              expanded,
+                                                            );
+                                                        if (isExpanded) {
+                                                          next.remove(cm.id);
+                                                        } else {
+                                                          next.add(cm.id);
+                                                        }
+                                                        expandedReplies.value =
+                                                            next;
+                                                      },
+                                                      child: Text(
+                                                        isExpanded
+                                                            ? 'Hide replies'
+                                                            : 'View ${replies.length} repl${replies.length == 1 ? 'y' : 'ies'}',
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                          color:
+                                                              Theme.of(ctx)
+                                                                  .colorScheme
+                                                                  .primary,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
