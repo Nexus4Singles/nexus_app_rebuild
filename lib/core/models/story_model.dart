@@ -17,9 +17,11 @@ class ContentBlock extends Equatable {
   });
 
   factory ContentBlock.fromJson(Map<String, dynamic> json) {
+    // Accept both 'text' (legacy) and 'content' (remote) field names
+    final blockText = (json['content'] ?? json['text']) as String?;
     return ContentBlock(
       type: json['type'] as String,
-      text: json['text'] as String?,
+      text: blockText,
       attribution: json['attribution'] as String?,
       items:
           (json['items'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
@@ -280,12 +282,15 @@ class StoriesCatalog extends Equatable {
   const StoriesCatalog({required this.version, required this.stories});
 
   factory StoriesCatalog.fromJson(Map<String, dynamic> json) {
+    final rawV = json['version'];
+    final versionStr = rawV == null
+        ? 'v1'
+        : (rawV is String ? rawV : 'v${rawV.toString()}');
     return StoriesCatalog(
-      version: json['version'] as String? ?? 'v1',
-      stories:
-          (json['stories'] as List<dynamic>)
-              .map((e) => Story.fromJson(e as Map<String, dynamic>))
-              .toList(),
+      version: versionStr,
+      stories: (json['stories'] as List<dynamic>)
+          .map((e) => Story.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
   }
 
@@ -787,6 +792,9 @@ class StoryComment extends Equatable {
   final String userId;
   final String userName;
   final String? userPhotoUrl;
+  final String? parentId;
+  final int likeCount;
+  final int replyCount;
   final String text;
   final DateTime createdAt;
 
@@ -796,6 +804,9 @@ class StoryComment extends Equatable {
     required this.userId,
     required this.userName,
     this.userPhotoUrl,
+    this.parentId,
+    this.likeCount = 0,
+    this.replyCount = 0,
     required this.text,
     required this.createdAt,
   });
@@ -809,6 +820,9 @@ class StoryComment extends Equatable {
       userId: json['userId'] as String,
       userName: json['userName'] as String? ?? 'Anonymous',
       userPhotoUrl: json['userPhotoUrl'] as String?,
+      parentId: json['parentId'] as String?,
+      likeCount: json['likeCount'] as int? ?? 0,
+      replyCount: json['replyCount'] as int? ?? 0,
       text: json['text'] as String,
       createdAt:
           json['createdAt'] != null
@@ -823,9 +837,14 @@ class StoryComment extends Equatable {
     'userId': userId,
     'userName': userName,
     if (userPhotoUrl != null) 'userPhotoUrl': userPhotoUrl,
+    if (parentId != null) 'parentId': parentId,
+    'likeCount': likeCount,
+    'replyCount': replyCount,
     'text': text,
     'createdAt': Timestamp.fromDate(createdAt),
   };
+
+  bool get isReply => parentId != null && parentId!.isNotEmpty;
 
   @override
   List<Object?> get props => [
@@ -834,6 +853,9 @@ class StoryComment extends Equatable {
     userId,
     userName,
     userPhotoUrl,
+    parentId,
+    likeCount,
+    replyCount,
     text,
     createdAt,
   ];

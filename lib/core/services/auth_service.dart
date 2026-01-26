@@ -73,47 +73,82 @@ class AuthService {
 
       // If not an email format, look up username in Firestore
       if (!emailOrUsername.contains('@')) {
+        print('🔍 DEBUG: Looking up username: "$emailOrUsername"');
         try {
           final usersRef = firestore.collection('users');
 
           // Try exact match first (case-sensitive)
+          print(
+            '🔍 DEBUG: Querying exact match for username: "$emailOrUsername"',
+          );
           var query =
               await usersRef
                   .where('username', isEqualTo: emailOrUsername)
                   .limit(1)
                   .get();
 
+          print(
+            '🔍 DEBUG: Exact match query returned ${query.docs.length} documents',
+          );
+
           // If not found, try lowercase (for compatibility)
           if (query.docs.isEmpty) {
+            final lowerUsername = emailOrUsername.toLowerCase();
+            print('🔍 DEBUG: Trying lowercase match: "$lowerUsername"');
             query =
                 await usersRef
-                    .where('username', isEqualTo: emailOrUsername.toLowerCase())
+                    .where('username', isEqualTo: lowerUsername)
                     .limit(1)
                     .get();
+            print(
+              '🔍 DEBUG: Lowercase query returned ${query.docs.length} documents',
+            );
           }
 
           if (query.docs.isEmpty) {
+            print('❌ DEBUG: No user found with username: "$emailOrUsername"');
             throw AuthException('Username not found');
           }
 
-          final userEmail = query.docs.first.data()['email'] as String?;
+          final userData = query.docs.first.data();
+          print('🔍 DEBUG: Found user doc: ${query.docs.first.id}');
+          print('🔍 DEBUG: User data keys: ${userData.keys.toList()}');
+          print('🔍 DEBUG: Username in doc: "${userData['username']}"');
+
+          final userEmail = userData['email'] as String?;
+          print('🔍 DEBUG: Email from doc: "$userEmail"');
+
           if (userEmail == null) {
+            print('❌ DEBUG: Email field is null in user doc');
             throw AuthException('User email not found');
           }
           actualEmail = userEmail;
+          print(
+            '✅ DEBUG: Username lookup successful, using email: "$actualEmail"',
+          );
         } catch (e) {
+          print('❌ DEBUG: Username lookup error: $e');
           if (e is AuthException) rethrow;
           throw AuthException('Failed to look up username: $e');
         }
+      } else {
+        print(
+          '✅ DEBUG: Input is email format, using directly: "$emailOrUsername"',
+        );
       }
 
+      print(
+        '🔐 DEBUG: Attempting Firebase Auth sign-in with email: "$actualEmail"',
+      );
       return await _auth.signInWithEmailAndPassword(
         email: actualEmail,
         password: password,
       );
     } on FirebaseAuthException catch (e) {
+      print('❌ DEBUG: Firebase Auth error: ${e.code} - ${e.message}');
       throw AuthException.fromFirebaseAuth(e);
     } catch (e) {
+      print('❌ DEBUG: Sign in failed: $e');
       if (e is AuthException) rethrow;
       throw AuthException('Sign in failed: $e');
     }

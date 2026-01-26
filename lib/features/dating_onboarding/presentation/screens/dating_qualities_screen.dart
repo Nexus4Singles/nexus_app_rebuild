@@ -76,12 +76,10 @@ class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
             .toList();
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const DatingProfileProgressBar(currentStep: 4, totalSteps: 9),
-          const SizedBox(height: 18),
           _ProgressHeader(
             subtitle: 'Select up to $_max qualities you seek in a partner.',
             counter: '${_selected.length} / $_max',
@@ -100,24 +98,34 @@ class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
             ),
           ),
 
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            height: 54,
-            child: ElevatedButton(
-              onPressed: _selected.isEmpty ? null : () => _onContinue(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
+          SafeArea(
+            top: false,
+            child: Column(
+              children: [
+                const SizedBox(height: 18),
+                SizedBox(
+                  width: double.infinity,
+                  height: 54,
+                  child: ElevatedButton(
+                    onPressed:
+                        _selected.isEmpty ? null : () => _onContinue(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                    child: Text(
+                      'Continue',
+                      style: AppTextStyles.labelLarge.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              child: Text(
-                'Continue',
-                style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
-              ),
+              ],
             ),
           ),
         ],
@@ -260,9 +268,9 @@ class _SelectableGrid extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 2.6,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 3.4,
       ),
       itemCount: items.length,
       itemBuilder: (context, i) {
@@ -274,13 +282,13 @@ class _SelectableGrid extends StatelessWidget {
           onTap: () => onToggle(value),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 180),
-            padding: const EdgeInsets.symmetric(horizontal: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(
               color:
                   isSelected
                       ? AppColors.primary.withOpacity(0.10)
                       : AppColors.surface,
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(14),
               border: Border.all(
                 color: isSelected ? AppColors.primary : AppColors.border,
                 width: isSelected ? 1.4 : 1,

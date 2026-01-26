@@ -65,14 +65,16 @@ class CompatibilityQuizScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 260),
-                switchInCurve: Curves.easeOut,
-                switchOutCurve: Curves.easeIn,
-                child: _QuizStepView(
-                  key: ValueKey(step),
-                  step: step,
-                  selected: selected,
+              Expanded(
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 260),
+                  switchInCurve: Curves.easeOut,
+                  switchOutCurve: Curves.easeIn,
+                  child: _QuizStepView(
+                    key: ValueKey(step),
+                    step: step,
+                    selected: selected,
+                  ),
                 ),
               ),
               if (state.error != null) ...[
@@ -109,8 +111,12 @@ class CompatibilityQuizScreen extends ConsumerWidget {
                                       notifier.goNext();
                                     } else {
                                       await notifier.submit();
-                                      if (context.mounted)
-                                        Navigator.pop(context);
+                                      if (context.mounted) {
+                                        // Route to user's own dating profile after completion
+                                        Navigator.of(
+                                          context,
+                                        ).pushReplacementNamed('/profile');
+                                      }
                                     }
                                   },
                           child:
@@ -155,38 +161,36 @@ class _QuizStepView extends ConsumerWidget {
     final notifier = ref.read(compatibilityQuizProvider.notifier);
     final q = _quizSteps[step];
 
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            q.title,
-            style: AppTextStyles.titleLarge.copyWith(
-              fontWeight: FontWeight.w700,
-              height: 1.2,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          q.title,
+          style: AppTextStyles.titleLarge.copyWith(
+            fontWeight: FontWeight.w700,
+            height: 1.2,
           ),
-          const SizedBox(height: 24),
-          Expanded(
-            child: ListView(
-              children: [
-                Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
-                  children: [
-                    for (final opt in q.options)
-                      _OptionButton(
-                        text: opt,
-                        selected: selected == opt,
-                        onTap: () => notifier.setAnswer(q.key, opt),
-                      ),
-                  ],
-                ),
-              ],
-            ),
+        ),
+        const SizedBox(height: 24),
+        Expanded(
+          child: ListView(
+            children: [
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: [
+                  for (final opt in q.options)
+                    _OptionButton(
+                      text: opt,
+                      selected: selected == opt,
+                      onTap: () => notifier.setAnswer(q.key, opt),
+                    ),
+                ],
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

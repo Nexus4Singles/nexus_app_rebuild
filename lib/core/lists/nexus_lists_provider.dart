@@ -47,8 +47,6 @@ final searchFilterListsProvider = FutureProvider<SearchFilterListsModel>((
 
   // Guards: search filters should not be empty.
   if (model.countryOfResidenceFilters.isEmpty ||
-      model.educationLevelFilters.isEmpty ||
-      model.incomeSourceFilters.isEmpty ||
       model.relationshipDistanceFilters.isEmpty ||
       model.maritalStatusFilters.isEmpty ||
       model.hasKidsFilters.isEmpty ||

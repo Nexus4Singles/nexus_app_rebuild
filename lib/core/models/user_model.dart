@@ -378,10 +378,12 @@ class UserModel extends Equatable {
 
     // Audio prompts:
     // - v2 preferred: dating.reviewPack.audioUrls
+    // - v2 new onboarding: dating.audioPrompts
     // - v1 fallback: audioPrompts
     // - legacy fallback: audio1Url/audio2Url/audio3Url
     final audioUrls = <String>[
       ...(_parseStringList(reviewPack?['audioUrls']) ?? const <String>[]),
+      ...(_parseStringList(dating?['audioPrompts']) ?? const <String>[]),
       ...(_parseStringList(data['audioPrompts']) ?? const <String>[]),
     ];
 
@@ -481,6 +483,7 @@ class UserModel extends Equatable {
         ['photos'],
         ['nexus2', 'profile', 'photos'],
         ['dating', 'profile', 'photos'],
+        ['dating', 'photos'],
       ]),
       audioPrompts: audioUrls,
       likeMe: _parseStringList(data['likeMe']),

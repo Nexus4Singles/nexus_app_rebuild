@@ -37,7 +37,7 @@ class DatingAudioScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: AppColors.surface,
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(24),
                 border: Border.all(color: AppColors.border),
               ),
               child: Text.rich(
@@ -102,13 +102,37 @@ class DatingAudioScreen extends StatelessWidget {
 
             const Spacer(),
 
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/dating/setup/audio/q1');
-                },
-                child: const Text('Start Recording'),
+            SafeArea(
+              top: false,
+              child: Column(
+                children: [
+                  const SizedBox(height: 18),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 54,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(
+                          context,
+                        ).pushNamed('/dating/setup/audio/q1');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                      ),
+                      child: Text(
+                        'Start Recording',
+                        style: AppTextStyles.labelLarge.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

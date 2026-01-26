@@ -5,6 +5,8 @@ import '../models/journey_model.dart';
 import '../models/story_model.dart';
 import '../models/onboarding_config_model.dart';
 import '../constants/app_constants.dart';
+import 'remote_content_service.dart';
+import 'content_cache_service.dart';
 
 /// Service for loading JSON configuration files from assets.
 /// All content (assessments, journeys, stories, polls) is JSON-driven.
@@ -204,22 +206,45 @@ class ConfigLoaderService {
 
   // ==================== STORIES & POLLS CONFIGS ====================
 
-  /// Load Stories Catalog
+  /// Load Stories Catalog (tries remote first, falls back to cache/assets)
   Future<StoriesCatalog> loadStoriesCatalog() async {
     if (_storiesCatalog != null) return _storiesCatalog!;
 
+    // Try to fetch from Firestore first
+    final remote = await RemoteContentService().fetchStories();
+    if (remote != null) {
+      _storiesCatalog = remote;
+      return _storiesCatalog!;
+    }
+
+    // Fall back to asset JSON
     final jsonData = await _loadJsonAsset(AppConfig.storiesPath);
     _storiesCatalog = StoriesCatalog.fromJson(jsonData);
     return _storiesCatalog!;
   }
 
-  /// Load Polls Catalog
+  /// Load Polls Catalog (tries remote first, falls back to cache/assets)
   Future<PollsCatalog> loadPollsCatalog() async {
     if (_pollsCatalog != null) return _pollsCatalog!;
 
+    // Try to fetch from Firestore first
+    final remote = await RemoteContentService().fetchPolls();
+    if (remote != null) {
+      _pollsCatalog = remote;
+      return _pollsCatalog!;
+    }
+
+    // Fall back to asset JSON
     final jsonData = await _loadJsonAsset(AppConfig.pollsPath);
     _pollsCatalog = PollsCatalog.fromJson(jsonData);
     return _pollsCatalog!;
+  }
+
+  /// Force refresh content from Firestore
+  Future<void> refreshContent() async {
+    _storiesCatalog = null;
+    _pollsCatalog = null;
+    await Future.wait([loadStoriesCatalog(), loadPollsCatalog()]);
   }
 
   /// Get stories filtered by audience

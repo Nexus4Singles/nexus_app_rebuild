@@ -4,8 +4,6 @@ class DatingSearchFilters {
 
   final String? countryOfResidence;
   final List<String>? countryOptions;
-  final String? educationLevel;
-  final String? regularSourceOfIncome;
   final String? longDistance;
   final String? maritalStatus;
   final String? hasKids;
@@ -16,8 +14,6 @@ class DatingSearchFilters {
     required this.maxAge,
     this.countryOfResidence,
     this.countryOptions,
-    this.educationLevel,
-    this.regularSourceOfIncome,
     this.longDistance,
     this.maritalStatus,
     this.hasKids,
@@ -29,8 +25,6 @@ class DatingSearchFilters {
     int? maxAge,
     String? countryOfResidence,
     List<String>? countryOptions,
-    String? educationLevel,
-    String? regularSourceOfIncome,
     String? longDistance,
     String? maritalStatus,
     String? hasKids,
@@ -41,9 +35,6 @@ class DatingSearchFilters {
       maxAge: maxAge ?? this.maxAge,
       countryOfResidence: countryOfResidence ?? this.countryOfResidence,
       countryOptions: countryOptions ?? this.countryOptions,
-      educationLevel: educationLevel ?? this.educationLevel,
-      regularSourceOfIncome:
-          regularSourceOfIncome ?? this.regularSourceOfIncome,
       longDistance: longDistance ?? this.longDistance,
       maritalStatus: maritalStatus ?? this.maritalStatus,
       hasKids: hasKids ?? this.hasKids,
@@ -56,8 +47,6 @@ class DatingSearchFilters {
     return 'DatingSearchFilters('
         'minAge=$minAge, maxAge=$maxAge, '
         'countryOfResidence=$countryOfResidence, '
-        'educationLevel=$educationLevel, '
-        'regularSourceOfIncome=$regularSourceOfIncome, '
         'longDistance=$longDistance, '
         'maritalStatus=$maritalStatus, '
         'hasKids=$hasKids, '

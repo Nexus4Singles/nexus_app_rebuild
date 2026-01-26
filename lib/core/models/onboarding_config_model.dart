@@ -40,16 +40,17 @@ class OnboardingConfig extends Equatable {
     );
   }
 
+  /// Basic parser for simple string lists
   static List<String> _parseStringList(dynamic data) {
-    if (data == null) return [];
+    if (data == null) return const <String>[];
     if (data is List) {
       return data
           .whereType<String>()
-          .where((s) => s.isNotEmpty && !s.contains('\\n') && s.length > 2)
+          .where((s) => s.isNotEmpty)
           .map((s) => s.trim())
           .toList();
     }
-    return [];
+    return const <String>[];
   }
 
   /// Special parsing for church list which may have corrupted data
@@ -59,16 +60,9 @@ class OnboardingConfig extends Equatable {
       final parsed =
           data
               .whereType<String>()
-              .where(
-                (s) =>
-                    s.isNotEmpty &&
-                    s.length > 3 &&
-                    !s.contains('\\n') &&
-                    !s.contains('\\"'),
-              )
+              .where((s) => s.isNotEmpty && s.length > 3 && !s.contains('\\n'))
               .map((s) => s.trim())
               .toList();
-
       // If parsed list is too short or corrupted, use defaults
       if (parsed.length < 10) return defaultChurches;
       return parsed;
@@ -84,8 +78,6 @@ class OnboardingConfig extends Equatable {
     'Deeper Christian Life Ministry',
     'Mountain of Fire & Miracles Ministries',
     'Christ Embassy / Believers LoveWorld',
-    'Dunamis International Gospel Centre',
-    'Omega Fire Ministries International',
     'Salvation Ministries',
     'Streams of Joy International',
     'Koinonia Global / Eternity Network',
@@ -170,8 +162,6 @@ class OnboardingConfig extends Equatable {
 /// These are filter options for the Explore/Search page
 class SearchFiltersConfig extends Equatable {
   final List<String> countryOfResidenceFilters;
-  final List<String> educationLevelFilters;
-  final List<String> incomeSourceFilters;
   final List<String> relationshipDistanceFilters;
   final List<String> maritalStatusFilters;
   final List<String> hasKidsFilters;
@@ -179,8 +169,6 @@ class SearchFiltersConfig extends Equatable {
 
   const SearchFiltersConfig({
     required this.countryOfResidenceFilters,
-    required this.educationLevelFilters,
-    required this.incomeSourceFilters,
     required this.relationshipDistanceFilters,
     required this.maritalStatusFilters,
     required this.hasKidsFilters,
@@ -194,14 +182,6 @@ class SearchFiltersConfig extends Equatable {
       countryOfResidenceFilters: _parseFilterList(
         lists['countryOfResidenceFilters'],
         defaultCountryFilters,
-      ),
-      educationLevelFilters: _parseFilterList(
-        lists['educationLevelFilters'],
-        defaultEducationFilters,
-      ),
-      incomeSourceFilters: _parseFilterList(
-        lists['incomeSourceFilters'],
-        defaultIncomeFilters,
       ),
       relationshipDistanceFilters: _parseFilterList(
         lists['relationshipDistanceFilters'],
@@ -238,8 +218,6 @@ class SearchFiltersConfig extends Equatable {
     'Diaspora',
     'Any',
   ];
-  static const List<String> defaultEducationFilters = ['Graduate', 'Any Level'];
-  static const List<String> defaultIncomeFilters = ['Yes', 'Not Compulsory'];
   static const List<String> defaultDistanceFilters = ['Yes', 'No', 'Any'];
   static const List<String> defaultMaritalStatusFilters = [
     'Never Married',
@@ -255,8 +233,6 @@ class SearchFiltersConfig extends Equatable {
   @override
   List<Object?> get props => [
     countryOfResidenceFilters,
-    educationLevelFilters,
-    incomeSourceFilters,
     relationshipDistanceFilters,
     maritalStatusFilters,
     hasKidsFilters,

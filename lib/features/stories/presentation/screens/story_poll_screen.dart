@@ -1,11 +1,17 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nexus_app_min_test/core/models/story_model.dart' as remote;
+import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
+import 'package:nexus_app_min_test/core/providers/firestore_service_provider.dart';
+import 'package:nexus_app_min_test/core/services/firestore_service.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
 import 'package:nexus_app_min_test/features/stories/data/poll_repository.dart';
 import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
 import 'package:nexus_app_min_test/features/stories/domain/poll_models.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class StoryPollScreen extends ConsumerStatefulWidget {
   final String storyId;
@@ -19,24 +25,33 @@ class _StoryPollScreenState extends ConsumerState<StoryPollScreen> {
   final _storyRepo = const StoryRepository();
   final _pollRepo = const PollRepository();
 
+  late final FirestoreService _firestore;
+
   bool _loading = true;
   String? _error;
 
   Poll? _poll;
-  String? _pollId;
 
   String? _selectedOptionId;
+  String? _userId;
 
-  /// If user voted in this session (signed-in path or dev bypass), we show results.
+  /// Signed-in users: existing vote or new vote in this session unlocks results.
   bool _hasVotedThisSession = false;
-
-  /// Stored vote exists on device. Results are still gated for guests unless dev bypass is ON.
-  String? _storedVoteOptionId;
+  remote.PollVote? _existingVote;
+  remote.PollAggregate? _aggregate;
+  StreamSubscription<remote.PollAggregate?>? _aggSub;
 
   @override
   void initState() {
     super.initState();
+    _firestore = ref.read(firestoreServiceProvider);
     _bootstrap();
+  }
+
+  @override
+  void dispose() {
+    _aggSub?.cancel();
+    super.dispose();
   }
 
   Future<void> _bootstrap() async {
@@ -60,14 +75,23 @@ class _StoryPollScreenState extends ConsumerState<StoryPollScreen> {
         return;
       }
 
-      final prefs = await SharedPreferences.getInstance();
-      final stored = prefs.getString(_voteKey(poll.id));
+      _userId = ref.read(currentUserIdProvider);
+
+      remote.PollVote? existing;
+      if (_userId != null) {
+        existing = await _firestore.getUserPollVote(_userId!, poll.id);
+      }
+
+      _aggSub = _firestore.watchPollAggregate(poll.id).listen((agg) {
+        if (!mounted) return;
+        setState(() => _aggregate = agg);
+      });
 
       setState(() {
-        _pollId = pollId;
         _poll = poll;
-        _storedVoteOptionId = stored;
-        _selectedOptionId = stored; // preselect if exists
+        _selectedOptionId = existing?.selectedOptionId;
+        _existingVote = existing;
+        _hasVotedThisSession = existing != null;
         _loading = false;
       });
     } catch (e) {
@@ -78,18 +102,10 @@ class _StoryPollScreenState extends ConsumerState<StoryPollScreen> {
     }
   }
 
-  String _voteKey(String pollId) => 'poll_vote:$pollId';
+  bool get _allowVoting => _userId != null;
 
-  bool get _allowVoting {
-    // Voting is for signed-in users only (no dev bypass).
-    return false;
-  }
-
-  bool get _canShowResults {
-    // Results are shown only after a signed-in vote in this session.
-    // Stored votes on device do not unlock results in guest mode.
-    return _hasVotedThisSession;
-  }
+  bool get _canShowResults =>
+      _allowVoting && (_hasVotedThisSession || _existingVote != null);
 
   @override
   Widget build(BuildContext context) {
@@ -121,70 +137,74 @@ class _StoryPollScreenState extends ConsumerState<StoryPollScreen> {
                 child:
                     _canShowResults
                         ? _ResultsView(
-                          poll: poll,
-                          votedOptionId:
-                              _selectedOptionId ?? _storedVoteOptionId ?? '',
-                          counts: _mergeCounts(
-                            poll.seedCounts,
-                            _selectedOptionId,
-                          ),
-                        )
+                            poll: poll,
+                            votedOptionId:
+                                _selectedOptionId ??
+                                _existingVote?.selectedOptionId ??
+                                '',
+                            aggregate: _aggregate,
+                          )
                         : _VoteView(
-                          poll: poll,
-                          selectedOptionId: _selectedOptionId,
-                          onSelect:
-                              (v) => setState(() => _selectedOptionId = v),
-                          onVote: _onVotePressed,
-                          hasStoredVote: _storedVoteOptionId != null,
-                          pollId: _pollId ?? poll.id,
-                        ),
+                            poll: poll,
+                            selectedOptionId: _selectedOptionId,
+                            onSelect:
+                                (v) => setState(() => _selectedOptionId = v),
+                            onVote: _onVotePressed,
+                          ),
               ),
     );
-  }
-
-  Map<String, int> _mergeCounts(Map<String, int> seed, String? selected) {
-    // For local/dev results we add +1 to the chosen option if voted this session.
-    final counts = Map<String, int>.from(seed);
-    if (_hasVotedThisSession && selected != null && selected.isNotEmpty) {
-      counts[selected] = (counts[selected] ?? 0) + 1;
-    }
-    return counts;
   }
 
   void _onVotePressed() {
     if (_selectedOptionId == null || _selectedOptionId!.isEmpty) return;
 
-    if (_allowVoting) {
-      _voteAndPersist();
+    if (!_allowVoting) {
+      GuestGuard.requireSignedIn(
+        context,
+        ref,
+        title: 'Create an account to vote',
+        message:
+            'You\'re currently in guest mode. Create an account to vote and see poll results.',
+        primaryText: 'Create an account',
+        onCreateAccount: () => Navigator.of(context).pushNamed('/signup'),
+        onAllowed: () async {
+          await _voteAndPersist();
+        },
+      );
       return;
     }
 
-    // Guests cannot vote. Signed-in users can.
-    GuestGuard.requireSignedIn(
-      context,
-      ref,
-      title: 'Create an account to vote',
-      message:
-          'You\'re currently in guest mode. Create an account to vote and see poll results.',
-      primaryText: 'Create an account',
-      onCreateAccount: () => Navigator.of(context).pushNamed('/signup'),
-      onAllowed: () async {
-        _voteAndPersist();
-      },
-    );
+    if (_existingVote != null) {
+      setState(() => _hasVotedThisSession = true);
+      return;
+    }
+
+    _voteAndPersist();
   }
 
   Future<void> _voteAndPersist() async {
     final poll = _poll;
     final selected = _selectedOptionId;
-    if (poll == null || selected == null || selected.isEmpty) return;
+    final uid = _userId ?? FirebaseAuth.instance.currentUser?.uid;
+    if (poll == null || selected == null || selected.isEmpty || uid == null) {
+      return;
+    }
 
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_voteKey(poll.id), selected);
+    final vote = remote.PollVote(
+      visitorId: uid,
+      pollId: poll.id,
+      storyId: widget.storyId,
+      userId: uid,
+      selectedOptionId: selected,
+      inferredTags: const [],
+      createdAt: DateTime.now(),
+    );
+
+    await _firestore.savePollVote(vote);
 
     if (!mounted) return;
     setState(() {
-      _storedVoteOptionId = selected;
+      _existingVote = vote;
       _hasVotedThisSession = true;
     });
   }
@@ -195,16 +215,12 @@ class _VoteView extends StatelessWidget {
   final String? selectedOptionId;
   final ValueChanged<String?> onSelect;
   final VoidCallback onVote;
-  final bool hasStoredVote;
-  final String pollId;
 
   const _VoteView({
     required this.poll,
     required this.selectedOptionId,
     required this.onSelect,
     required this.onVote,
-    required this.hasStoredVote,
-    required this.pollId,
   });
 
   @override
@@ -230,13 +246,6 @@ class _VoteView extends StatelessWidget {
                 'Guests can read stories, but voting/results are for signed-in users.',
                 style: theme.textTheme.bodySmall,
               ),
-              if (hasStoredVote) ...[
-                const SizedBox(height: 6),
-                Text(
-                  'A vote exists on this device (poll: $pollId), but results are locked until you sign in.',
-                  style: theme.textTheme.bodySmall,
-                ),
-              ],
             ],
           ),
         ),
@@ -274,9 +283,7 @@ class _VoteView extends StatelessWidget {
                       (selectedOptionId == null || selectedOptionId!.isEmpty)
                           ? null
                           : onVote,
-                  child: Text(
-                    hasStoredVote ? 'Vote again' : 'Vote to see results',
-                  ),
+                  child: const Text('Vote to see results'),
                 ),
               ),
             ],
@@ -290,18 +297,20 @@ class _VoteView extends StatelessWidget {
 class _ResultsView extends StatelessWidget {
   final Poll poll;
   final String votedOptionId;
-  final Map<String, int> counts;
+  final remote.PollAggregate? aggregate;
 
   const _ResultsView({
     required this.poll,
     required this.votedOptionId,
-    required this.counts,
+    required this.aggregate,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final total = counts.values.fold<int>(0, (a, b) => a + b).clamp(1, 999999);
+    final counts = aggregate?.optionCounts ?? const <String, int>{};
+    final total = aggregate?.totalVotes ?? 0;
+    final safeTotal = total == 0 ? 1 : total;
     final insight = poll.insights[votedOptionId] ?? 'Thanks for sharing.';
 
     return ListView(
@@ -318,6 +327,13 @@ class _ResultsView extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(poll.question, style: theme.textTheme.bodyLarge),
+              const SizedBox(height: 6),
+              Text(
+                total == 0
+                    ? 'Be the first to vote.'
+                    : 'Total votes: $total',
+                style: theme.textTheme.bodySmall,
+              ),
             ],
           ),
         ),
@@ -327,7 +343,7 @@ class _ResultsView extends StatelessWidget {
             children: [
               ...poll.options.map((o) {
                 final c = counts[o.id] ?? 0;
-                final pct = (c / total) * 100;
+                final pct = (c / safeTotal) * 100;
                 final isMine = o.id == votedOptionId;
 
                 return Padding(

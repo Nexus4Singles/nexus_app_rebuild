@@ -72,6 +72,8 @@ app.*.map.json
 
 # Secrets (optional)
 *.env
+dart_defines.json
+dart_defines.*.json
 
 # ---- Local exports / dumps ----
 assets/data/Nexus_2_0_Engagement_JSON_Schemas_and_Templates 2/

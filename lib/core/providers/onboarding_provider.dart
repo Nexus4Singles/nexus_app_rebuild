@@ -66,18 +66,6 @@ final countryFiltersProvider = FutureProvider<List<String>>((ref) async {
   return config.countryOfResidenceFilters;
 });
 
-/// Provider for education level filter options
-final educationFiltersProvider = FutureProvider<List<String>>((ref) async {
-  final config = await ref.watch(searchFiltersConfigProvider.future);
-  return config.educationLevelFilters;
-});
-
-/// Provider for income source filter options
-final incomeFiltersProvider = FutureProvider<List<String>>((ref) async {
-  final config = await ref.watch(searchFiltersConfigProvider.future);
-  return config.incomeSourceFilters;
-});
-
 /// Provider for relationship distance filter options
 final distanceFiltersProvider = FutureProvider<List<String>>((ref) async {
   final config = await ref.watch(searchFiltersConfigProvider.future);

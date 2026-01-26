@@ -114,6 +114,23 @@ class FirestoreService {
     return doc.exists;
   }
 
+  /// Get the username for a user, with fallback to displayName if not found
+  Future<String?> getUserUsername(String uid) async {
+    try {
+      final doc = await _userDocRef(uid).get();
+      final data = doc.data();
+      if (data == null) return null;
+      
+      final username = data['username'] as String?;
+      if (username != null && username.trim().isNotEmpty) {
+        return username.trim();
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<void> createUser(UserModel user) async {
     if (_db == null) return;
 
@@ -697,6 +714,16 @@ class FirestoreService {
   CollectionReference<Map<String, dynamic>> _storyCommentsRef(String storyId) =>
       _db!.collection("storyComments").doc(storyId).collection("comments");
 
+    DocumentReference<Map<String, dynamic>> _storyCommentLikesDoc(
+    String storyId,
+    String commentId,
+    String userId,
+    ) => _db!
+      .collection("storyCommentLikes")
+      .doc(storyId)
+      .collection("likes")
+      .doc("$commentId:$userId");
+
   DocumentReference<Map<String, dynamic>> _storyLikesDoc(
     String storyId,
     String userId,
@@ -736,6 +763,7 @@ class FirestoreService {
 
   Stream<List<StoryComment>> watchStoryComments(String storyId) {
     return _storyCommentsRef(storyId)
+        .orderBy("likeCount", descending: true)
         .orderBy("createdAt", descending: true)
         .snapshots()
         .map(
@@ -791,6 +819,7 @@ class FirestoreService {
     required String userId,
     required String userName,
     String? userPhotoUrl,
+    String? parentId,
     required String text,
   }) async {
     final ref = _storyCommentsRef(storyId).doc();
@@ -800,6 +829,9 @@ class FirestoreService {
       "userId": userId,
       "userName": userName,
       if (userPhotoUrl != null) "userPhotoUrl": userPhotoUrl,
+      if (parentId != null) "parentId": parentId,
+      "likeCount": 0,
+      "replyCount": 0,
       "text": text,
       "createdAt": FieldValue.serverTimestamp(),
     };
@@ -812,10 +844,19 @@ class FirestoreService {
       "updatedAt": FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
 
+    if (parentId != null && parentId.isNotEmpty) {
+      await _storyCommentsRef(storyId).doc(parentId).set({
+        "replyCount": FieldValue.increment(1),
+        "updatedAt": FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    }
+
     // Local return (server timestamp will resolve later)
     return StoryComment.fromJson({
       ...payload,
       "createdAt": Timestamp.fromDate(DateTime.now()),
+      "replyCount": 0,
+      "likeCount": 0,
     });
   }
 
@@ -825,6 +866,9 @@ class FirestoreService {
   }) async {
     if (_db == null) return;
 
+    final snapshot = await _storyCommentsRef(storyId).doc(commentId).get();
+    final parentId = snapshot.data()?['parentId'] as String?;
+
     await _storyCommentsRef(storyId).doc(commentId).delete();
 
     await _storyEngagementDoc(storyId).set({
@@ -832,6 +876,57 @@ class FirestoreService {
       "commentCount": FieldValue.increment(-1),
       "updatedAt": FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
+
+    if (parentId != null && parentId.isNotEmpty) {
+      await _storyCommentsRef(storyId).doc(parentId).set({
+        "replyCount": FieldValue.increment(-1),
+        "updatedAt": FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    }
+  }
+
+  Future<void> likeComment({
+    required String storyId,
+    required String commentId,
+    required String userId,
+  }) async {
+    if (_db == null) return;
+
+    await _storyCommentLikesDoc(storyId, commentId, userId).set({
+      "storyId": storyId,
+      "commentId": commentId,
+      "userId": userId,
+      "createdAt": FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+
+    await _storyCommentsRef(storyId).doc(commentId).set({
+      "likeCount": FieldValue.increment(1),
+      "updatedAt": FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+  }
+
+  Future<void> unlikeComment({
+    required String storyId,
+    required String commentId,
+    required String userId,
+  }) async {
+    if (_db == null) return;
+
+    await _storyCommentLikesDoc(storyId, commentId, userId).delete();
+
+    await _storyCommentsRef(storyId).doc(commentId).set({
+      "likeCount": FieldValue.increment(-1),
+      "updatedAt": FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+  }
+
+  Future<bool> hasUserLikedComment({
+    required String storyId,
+    required String commentId,
+    required String userId,
+  }) async {
+    final doc = await _storyCommentLikesDoc(storyId, commentId, userId).get();
+    return doc.exists;
   }
 
   Future<void> incrementShareCount(String storyId) async {

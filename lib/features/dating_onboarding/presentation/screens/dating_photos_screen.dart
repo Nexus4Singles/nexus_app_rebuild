@@ -10,6 +10,10 @@ import 'package:nexus_app_min_test/core/storage/providers/media_storage_provider
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
+import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
+import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatingPhotosScreen extends ConsumerStatefulWidget {
   const DatingPhotosScreen({super.key});
@@ -32,7 +36,13 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
   void initState() {
     super.initState();
     final draft = ref.read(datingOnboardingDraftProvider);
-    _photoPaths.addAll(draft.photoPaths);
+
+    // Only load existing paths if the files actually exist
+    for (final path in draft.photoPaths) {
+      if (File(path).existsSync()) {
+        _photoPaths.add(path);
+      }
+    }
 
     _faceDetector = FaceDetector(
       options: FaceDetectorOptions(
@@ -74,50 +84,59 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const _ProgressHeader(
                   title: 'Add Photos',
                   subtitle:
-                      'Add at least 2 Photos of yourself. We highly recommend uploading your best pictures because first impressions really matter. Profiles with indecent pictures will not be approved.',
+                      'Add at least 2 Photos of yourself. We highly recommend uploading your best pictures because first impressions really matter. Profiles with \nAI-generated or indecent pictures will not be approved.',
                 ),
                 const SizedBox(height: 12),
 
-                _PhotoGrid(
-                  photoPaths: _photoPaths,
-                  onAdd: (_busy || maxReached) ? null : _pickPhoto,
-                  onRemove: _removePhoto,
+                Expanded(
+                  child: _PhotoGrid(
+                    photoPaths: _photoPaths,
+                    onAdd: (_busy || maxReached) ? null : _pickPhoto,
+                    onRemove: _removePhoto,
+                  ),
                 ),
 
-                const SizedBox(height: 18),
-                SizedBox(
-                  width: double.infinity,
-                  height: 54,
-                  child: ElevatedButton(
-                    onPressed:
-                        (!canContinue || _busy)
-                            ? null
-                            : () => _onContinue(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
+                SafeArea(
+                  top: false,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 18),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 54,
+                        child: ElevatedButton(
+                          onPressed:
+                              (!canContinue || _busy)
+                                  ? null
+                                  : () => _onContinue(context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                          ),
+                          child: Text(
+                            maxReached
+                                ? 'Maximum 5 Photos'
+                                : canContinue
+                                ? 'Continue'
+                                : 'Add at least 2 Photos',
+                            style: AppTextStyles.labelLarge.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      maxReached
-                          ? 'Maximum 5 Photos'
-                          : canContinue
-                          ? 'Continue'
-                          : 'Add at least 2 Photos',
-                      style: AppTextStyles.labelLarge.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
+                    ],
                   ),
                 ),
               ],
@@ -145,25 +164,32 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
 
       setState(() => _busy = true);
 
-      final img = await _picker.pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 90,
-      );
+      // Enable multi-selection
+      final images = await _picker.pickMultiImage(imageQuality: 90);
 
-      if (img == null) return;
+      if (images.isEmpty) return;
 
-      final ok = await _isHumanPhoto(img.path);
-      if (!ok) {
-        HapticFeedback.mediumImpact();
-        _toast(
-          'Please upload a clear photo of yourself (human face required).',
-        );
-        return;
+      // Check how many photos we can add
+      final remainingSlots = _maxPhotos - _photoPaths.length;
+      final imagesToProcess = images.take(remainingSlots).toList();
+
+      if (images.length > remainingSlots) {
+        _toast('Only adding $remainingSlots photo(s). Maximum 5 total.');
       }
 
-      setState(() {
-        _photoPaths.add(img.path);
-      });
+      // Validate each photo for human face
+      for (final img in imagesToProcess) {
+        final ok = await _isHumanPhoto(img.path);
+        if (!ok) {
+          HapticFeedback.mediumImpact();
+          _toast('Skipped ${img.name}: Please upload photos with human faces.');
+          continue;
+        }
+
+        setState(() {
+          _photoPaths.add(img.path);
+        });
+      }
 
       // Auto-save on photo add
       ref
@@ -196,19 +222,30 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
   }
 
   Future<void> _onContinue(BuildContext context) async {
-    // Draft is already saved via auto-save
-
     setState(() => _busy = true);
 
     try {
+      debugPrint(
+        '[Photos] Starting upload for ${_photoPaths.length} photos...',
+      );
+      debugPrint('[Photos] Uploading ${_photoPaths.length} photos...');
       final storage = ref.read(mediaStorageProvider);
+      final uploadedUrls = <String>[];
 
       for (var i = 0; i < _photoPaths.length; i++) {
         final path = _photoPaths[i];
         final key =
             'dating/photos/${DateTime.now().millisecondsSinceEpoch}_$i.jpg';
         try {
-          await storage.uploadImage(localPath: path, objectKey: key);
+          debugPrint('[Photos] Uploading photo ${i + 1}: $path');
+          final publicUrl = await storage.uploadImage(
+            localPath: path,
+            objectKey: key,
+          );
+          uploadedUrls.add(publicUrl);
+          debugPrint(
+            '[Photos] Photo ${i + 1} uploaded successfully: $publicUrl',
+          );
         } catch (e) {
           _toast('Failed to upload photo ${i + 1}: $e');
           setState(() => _busy = false);
@@ -216,6 +253,50 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
         }
       }
 
+      debugPrint('[Photos] All photos uploaded successfully');
+
+      // Update draft with new uploaded photo URLs (always overwrite)
+      ref
+          .read(datingOnboardingDraftProvider.notifier)
+          .setPhotos(List.of(_photoPaths));
+
+      // Persist photo URLs to Firestore under users/{uid}.dating.photos
+      try {
+        final ready = ref.read(firebaseReadyProvider);
+        final fs = ref.read(firestoreInstanceProvider);
+        final uid = FirebaseAuth.instance.currentUser?.uid;
+
+        debugPrint(
+          '[Photos] 🔍 Firebase ready: $ready, Firestore: ${fs != null}, UID: $uid',
+        );
+        debugPrint('[Photos] 🔍 Uploaded URLs to save: $uploadedUrls');
+
+        if (ready && fs != null && uid != null) {
+          final payload = {
+            'dating': {
+              'photos': uploadedUrls,
+              'profile': {
+                'profileUrl':
+                    uploadedUrls.isNotEmpty ? uploadedUrls.first : null,
+              },
+            },
+          };
+          debugPrint('[Photos] 🔍 Firestore payload: $payload');
+
+          await fs
+              .collection('users')
+              .doc(uid)
+              .set(payload, SetOptions(merge: true));
+          debugPrint('[Photos] ✅ Saved photo URLs to Firestore for $uid');
+        } else {
+          debugPrint(
+            '[Photos] ❌ Skipped Firestore save - ready: $ready, fs: ${fs != null}, uid: $uid',
+          );
+        }
+      } catch (e, stackTrace) {
+        debugPrint('[Photos] ❌ Firestore save failed: $e');
+        debugPrint('[Photos] Stack trace: $stackTrace');
+      }
       if (!context.mounted) return;
       Navigator.of(context).pushNamed('/dating/setup/audio');
     } catch (e) {
@@ -266,24 +347,22 @@ class _PhotoGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.builder(
-        padding: const EdgeInsets.only(bottom: 8),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-        ),
-        itemCount: photoPaths.length + 1,
-        itemBuilder: (context, i) {
-          if (i == photoPaths.length) {
-            return _AddTile(onTap: onAdd);
-          }
-
-          final path = photoPaths[i];
-          return _PhotoTile(path: path, onRemove: () => onRemove(i));
-        },
+    return GridView.builder(
+      padding: const EdgeInsets.only(bottom: 8),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
       ),
+      itemCount: photoPaths.length + 1,
+      itemBuilder: (context, i) {
+        if (i == photoPaths.length) {
+          return _AddTile(onTap: onAdd);
+        }
+
+        final path = photoPaths[i];
+        return _PhotoTile(path: path, onRemove: () => onRemove(i));
+      },
     );
   }
 }
@@ -319,20 +398,37 @@ class _PhotoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final file = File(path);
+    final fileExists = file.existsSync();
+
     return Stack(
       children: [
         Positioned.fill(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(18),
-            child: Image.file(
-              File(path),
-              fit: BoxFit.cover,
-              errorBuilder:
-                  (_, __, ___) => Container(
-                    color: AppColors.surface,
-                    child: Icon(Icons.broken_image, color: AppColors.textMuted),
-                  ),
-            ),
+            child:
+                fileExists
+                    ? Image.file(
+                      file,
+                      fit: BoxFit.cover,
+                      cacheHeight: 500,
+                      cacheWidth: 500,
+                      errorBuilder:
+                          (_, __, ___) => Container(
+                            color: AppColors.surface,
+                            child: Icon(
+                              Icons.broken_image,
+                              color: AppColors.textMuted,
+                            ),
+                          ),
+                    )
+                    : Container(
+                      color: AppColors.surface,
+                      child: Icon(
+                        Icons.broken_image,
+                        color: AppColors.textMuted,
+                      ),
+                    ),
           ),
         ),
         Positioned(

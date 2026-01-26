@@ -502,19 +502,10 @@ class _StoryOfWeekCard extends StatelessWidget {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        Image.asset(
-                          story?.heroImageAsset ??
+                        _AdaptiveImage(
+                          imagePath: story?.heroImageAsset,
+                          placeholder:
                               'assets/images/stories/placeholder_couple.jpg',
-                          fit: BoxFit.cover,
-                          errorBuilder:
-                              (_, __, ___) => Container(
-                                color: AppColors.surfaceLight,
-                                child: Icon(
-                                  Icons.image_not_supported_outlined,
-                                  color: AppColors.textMuted,
-                                  size: 40,
-                                ),
-                              ),
                         ),
                         // Gradient Overlay
                         Positioned.fill(
@@ -648,7 +639,7 @@ class _StoryOfWeekCard extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              'Read now',
+                              'Read Now',
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16,
@@ -665,6 +656,34 @@ class _StoryOfWeekCard extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+/// Loads either a network image (when the path is a URL) or an asset fallback.
+class _AdaptiveImage extends StatelessWidget {
+  final String? imagePath;
+  final String placeholder;
+
+  const _AdaptiveImage({required this.imagePath, required this.placeholder});
+
+  bool get _isRemote => (imagePath ?? '').startsWith('http');
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isRemote) {
+      return Image.network(
+        imagePath!,
+        fit: BoxFit.cover,
+        errorBuilder:
+            (_, __, ___) => Image.asset(placeholder, fit: BoxFit.cover),
+      );
+    }
+
+    return Image.asset(
+      imagePath?.isNotEmpty == true ? imagePath! : placeholder,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) => Image.asset(placeholder, fit: BoxFit.cover),
     );
   }
 }

@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
+import 'package:nexus_app_min_test/core/models/story_model.dart' hide Story;
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
 import 'package:nexus_app_min_test/features/stories/domain/story_models.dart';
@@ -43,9 +45,8 @@ class StoriesScreen extends ConsumerWidget {
             return const Center(child: Text('No story published yet.'));
           }
 
-          // TODO: Replace this with your real signed-in/guest detection.
-          // For now, keeping it FALSE prevents guest interactions (like/comment/share).
-          final canInteract = false;
+          // Check if user is signed in via Firebase Auth
+          final canInteract = FirebaseAuth.instance.currentUser != null;
 
           return _StoryOfWeekView(story: story, canInteract: canInteract);
         },
@@ -66,7 +67,7 @@ class _StoryOfWeekView extends ConsumerWidget {
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
       children: [
         _HeroCover(
-          imageAsset: story.heroImageAsset,
+          imagePath: story.heroImageAsset,
           title: story.title,
           chips: Row(
             children: [
@@ -81,9 +82,10 @@ class _StoryOfWeekView extends ConsumerWidget {
         _Card(
           child: Text(
             story.intro,
-            style: AppTextStyles.bodyLarge.copyWith(
+            style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.textPrimary,
-              height: 1.5,
+              height: 1.6,
+              fontWeight: FontWeight.w400,
             ),
           ),
         ),
@@ -96,11 +98,11 @@ class _StoryOfWeekView extends ConsumerWidget {
           ),
         ),
 
-        const SizedBox(height: 8),
+        const SizedBox(height: 24),
         Text(
           story.takeawayTitle,
-          style: AppTextStyles.headlineMedium.copyWith(
-            fontWeight: FontWeight.w900,
+          style: AppTextStyles.titleLarge.copyWith(
+            fontWeight: FontWeight.w700,
           ),
         ),
         const SizedBox(height: 16),
@@ -117,47 +119,6 @@ class _StoryOfWeekView extends ConsumerWidget {
                     children:
                         story.takeaways.map((t) => _CheckRow(text: t)).toList(),
                   ),
-        ),
-
-        const SizedBox(height: 24),
-        Text(
-          'Reflection',
-          style: AppTextStyles.headlineMedium.copyWith(
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-        const SizedBox(height: 10),
-        _Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                story.reflectionPrompt,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textPrimary,
-                  height: 1.5,
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                maxLines: 5,
-                decoration: InputDecoration(
-                  hintText: 'Write your thoughts here…',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  contentPadding: const EdgeInsets.all(14),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'Tip: you can keep this private. Later we’ll save it on-device (and sync when you sign in).',
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.textMuted,
-                ),
-              ),
-            ],
-          ),
         ),
 
         // ✅ Reactions card placed AFTER story content, BEFORE poll
@@ -232,8 +193,12 @@ class _StoryActionsCard extends ConsumerWidget {
     final reactions = ref.watch(storyReactionsProvider);
     final controller = ref.read(storyReactionsProvider.notifier);
 
-    final liked = reactions.likedStoryIds.contains(story.id);
+    controller.ensureStory(story.id);
+
+    final liked = controller.isLiked(story.id);
+    final likeCount = reactions.engagementByStoryId[story.id]?.likeCount ?? 0;
     final commentsCount =
+        reactions.engagementByStoryId[story.id]?.commentCount ??
         (reactions.commentsByStoryId[story.id] ?? const []).length;
 
     return Card(
@@ -251,7 +216,12 @@ class _StoryActionsCard extends ConsumerWidget {
               children: [
                 _ActionChip(
                   icon: liked ? Icons.favorite : Icons.favorite_border,
-                  label: liked ? 'Liked' : 'Like',
+                  label:
+                      liked
+                          ? 'Liked ($likeCount)'
+                          : likeCount > 0
+                              ? 'Like ($likeCount)'
+                              : 'Like',
                   onTap: () {
                     if (!canInteract) {
                       _showGuestGateDialog(context);
@@ -280,6 +250,7 @@ class _StoryActionsCard extends ConsumerWidget {
                       _showGuestGateDialog(context);
                       return;
                     }
+                    controller.incrementShare(story.id);
                     _shareStory(story);
                   },
                 ),
@@ -322,7 +293,11 @@ class _StoryActionsCard extends ConsumerWidget {
             final reactions = ref.watch(storyReactionsProvider);
             final comments = reactions.commentsByStoryId[story.id] ?? const [];
 
+            controller.ensureStory(story.id);
+
             final input = TextEditingController();
+            final replyTarget = ValueNotifier<StoryComment?>(null);
+            final expandedReplies = ValueNotifier<Set<String>>({});
 
             return SafeArea(
               top: false,
@@ -355,99 +330,440 @@ class _StoryActionsCard extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    if (comments.isEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Text(
-                          'No comments yet.',
-                          style: Theme.of(ctx).textTheme.bodyMedium,
-                        ),
-                      )
-                    else
-                      Flexible(
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          itemCount: comments.length,
-                          separatorBuilder:
-                              (_, __) => const Divider(height: 18),
-                          itemBuilder: (c, i) {
-                            final cm = comments[i];
-                            return Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Icon(
-                                  Icons.account_circle_outlined,
-                                  size: 22,
+                    ValueListenableBuilder<StoryComment?>(
+                      valueListenable: replyTarget,
+                      builder: (context, replyTo, __) {
+                        List<StoryComment> topLevel = comments
+                            .where((c) => !c.isReply)
+                            .toList()
+                          ..sort((a, b) {
+                            final likeCmp = b.likeCount.compareTo(a.likeCount);
+                            if (likeCmp != 0) return likeCmp;
+                            return b.createdAt.compareTo(a.createdAt);
+                          });
+                        final repliesByParent = <String, List<StoryComment?>>{};
+                        for (final cm in comments.where((c) => c.isReply)) {
+                          final key = cm.parentId ?? '';
+                          repliesByParent.putIfAbsent(key, () => []);
+                          repliesByParent[key]!.add(cm);
+                        }
+                        for (final entry in repliesByParent.entries) {
+                          entry.value.sort(
+                            (a, b) => (a?.createdAt ?? DateTime.now())
+                                .compareTo(b?.createdAt ?? DateTime.now()),
+                          );
+                        }
+
+                        return Column(
+                          children: [
+                            if (comments.isEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Text(
+                                  'No comments yet.',
+                                  style: Theme.of(ctx).textTheme.bodyMedium,
                                 ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                              )
+                            else
+                              SizedBox(
+                                height: MediaQuery.of(ctx).size.height * 0.6,
+                                child: ListView.separated(
+                                  itemCount: topLevel.length,
+                                  separatorBuilder:
+                                      (_, __) => const Divider(height: 18),
+                                  itemBuilder: (c, i) {
+                                    final cm = topLevel[i];
+                                    final replies = repliesByParent[cm.id] ?? [];
+                                    final liked = controller.isCommentLiked(
+                                      story.id,
+                                      cm.id,
+                                    );
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Icon(
+                                              Icons.account_circle_outlined,
+                                              size: 22,
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    cm.userName,
+                                                    style: Theme.of(ctx)
+                                                        .textTheme
+                                                        .labelLarge,
+                                                  ),
+                                                  const SizedBox(height: 2),
+                                                  Text(cm.text),
+                                                  const SizedBox(height: 6),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        _fmtTime(cm.createdAt),
+                                                        style: Theme.of(ctx)
+                                                            .textTheme
+                                                            .bodySmall,
+                                                      ),
+                                                      const SizedBox(width: 12),
+                                                      Text(
+                                                        '${cm.likeCount} likes',
+                                                        style: Theme.of(ctx)
+                                                            .textTheme
+                                                            .bodySmall,
+                                                      ),
+                                                      const SizedBox(width: 12),
+                                                      TextButton(
+                                                        style: TextButton
+                                                            .styleFrom(
+                                                          padding:
+                                                              EdgeInsets.zero,
+                                                          minimumSize:
+                                                              Size.zero,
+                                                          tapTargetSize:
+                                                              MaterialTapTargetSize
+                                                                  .shrinkWrap,
+                                                        ),
+                                                        onPressed: () {
+                                                          if (!canInteract) {
+                                                            _showGuestGateDialog(
+                                                              context,
+                                                            );
+                                                            return;
+                                                          }
+                                                          replyTarget.value = cm;
+                                                        },
+                                                        child: const Text(
+                                                          'Reply',
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 8),
+                                                      TextButton.icon(
+                                                        style: TextButton
+                                                            .styleFrom(
+                                                          padding:
+                                                              EdgeInsets.zero,
+                                                          minimumSize:
+                                                              Size.zero,
+                                                          tapTargetSize:
+                                                              MaterialTapTargetSize
+                                                                  .shrinkWrap,
+                                                        ),
+                                                        onPressed: () {
+                                                          if (!canInteract) {
+                                                            _showGuestGateDialog(
+                                                              context,
+                                                            );
+                                                            return;
+                                                          }
+                                                          controller
+                                                              .toggleCommentLike(
+                                                            story.id,
+                                                            cm.id,
+                                                          );
+                                                        },
+                                                        icon: Icon(
+                                                          liked
+                                                              ? Icons.favorite
+                                                              : Icons
+                                                                  .favorite_border,
+                                                          size: 16,
+                                                        ),
+                                                        label: const Text('Like'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            if (canInteract)
+                                              IconButton(
+                                                tooltip: 'Delete',
+                                                onPressed: () => controller
+                                                    .deleteComment(
+                                                  story.id,
+                                                  cm.id,
+                                                ),
+                                                icon: const Icon(
+                                                  Icons.delete_outline,
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                        if (replies.isNotEmpty) ...[
+                                          const SizedBox(height: 8),
+                                          ValueListenableBuilder<Set<String>>(
+                                            valueListenable: expandedReplies,
+                                            builder: (context, expanded, _) {
+                                              final isExpanded =
+                                                  expanded.contains(cm.id);
+                                              return Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  TextButton(
+                                                    style: TextButton.styleFrom(
+                                                      padding:
+                                                          EdgeInsets.zero,
+                                                      minimumSize: Size.zero,
+                                                      tapTargetSize:
+                                                          MaterialTapTargetSize
+                                                              .shrinkWrap,
+                                                    ),
+                                                    onPressed: () {
+                                                      final next = Set<String>
+                                                          .from(expanded);
+                                                      if (isExpanded) {
+                                                        next.remove(cm.id);
+                                                      } else {
+                                                        next.add(cm.id);
+                                                      }
+                                                      expandedReplies.value =
+                                                          next;
+                                                    },
+                                                    child: Text(
+                                                      isExpanded
+                                                          ? 'Hide replies'
+                                                          : 'View ${replies.length} repl${replies.length == 1 ? 'y' : 'ies'}',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: Theme.of(ctx)
+                                                            .colorScheme
+                                                            .primary,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  if (isExpanded)
+                                                    Column(
+                                                      children: replies
+                                                          .map(
+                                                            (rc) => Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                left: 32,
+                                                                top: 8,
+                                                              ),
+                                                              child: rc == null
+                                                                  ? const SizedBox()
+                                                                  : Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              const Icon(
+                                                                Icons
+                                                                    .account_circle_outlined,
+                                                                size: 18,
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 8,
+                                                              ),
+                                                              Expanded(
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                      rc.userName,
+                                                                      style: Theme
+                                                                              .of(
+                                                                        ctx,
+                                                                      )
+                                                                          .textTheme
+                                                                          .labelMedium,
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      height: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      rc.text,
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      height: 4,
+                                                                    ),
+                                                                    Row(
+                                                                      children: [
+                                                                        Text(
+                                                                          _fmtTime(
+                                                                            rc.createdAt,
+                                                                          ),
+                                                                          style: Theme.of(
+                                                                            ctx,
+                                                                          )
+                                                                              .textTheme
+                                                                              .bodySmall,
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          width: 12,
+                                                                        ),
+                                                                        Text(
+                                                                          '${rc.likeCount} likes',
+                                                                          style: Theme.of(
+                                                                            ctx,
+                                                                          )
+                                                                              .textTheme
+                                                                              .bodySmall,
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          width: 8,
+                                                                        ),
+                                                                        TextButton
+                                                                            .icon(
+                                                                          style: TextButton
+                                                                              .styleFrom(
+                                                                            padding:
+                                                                                EdgeInsets.zero,
+                                                                            minimumSize:
+                                                                                Size.zero,
+                                                                            tapTargetSize:
+                                                                                MaterialTapTargetSize.shrinkWrap,
+                                                                          ),
+                                                                          onPressed:
+                                                                              () {
+                                                                            if (!canInteract) {
+                                                                              _showGuestGateDialog(
+                                                                                context,
+                                                                              );
+                                                                              return;
+                                                                            }
+                                                                            controller.toggleCommentLike(
+                                                                              story.id,
+                                                                              rc.id,
+                                                                            );
+                                                                          },
+                                                                          icon:
+                                                                              Icon(
+                                                                            controller.isCommentLiked(
+                                                                              story.id,
+                                                                              rc.id,
+                                                                            )
+                                                                                ? Icons.favorite
+                                                                                : Icons.favorite_border,
+                                                                            size:
+                                                                                14,
+                                                                          ),
+                                                                          label:
+                                                                              const Text(
+                                                                            'Like',
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                  ),
+                                                )
+                                                .toList(),
+                                                    ),
+                                                ],
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                            const SizedBox(height: 12),
+                            if (!canInteract)
+                              SizedBox(
+                                width: double.infinity,
+                                child: OutlinedButton(
+                                  onPressed: () {
+                                    Navigator.of(ctx).pop();
+                                    _showGuestGateDialog(context);
+                                  },
+                                  child:
+                                      const Text('Create an account to comment'),
+                                ),
+                              )
+                            else ...[
+                              if (replyTo != null)
+                                Container(
+                                  width: double.infinity,
+                                  margin: const EdgeInsets.only(bottom: 6),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(ctx)
+                                        .colorScheme
+                                        .surfaceVariant,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
                                     children: [
-                                      Text(cm.text),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        _fmtTime(cm.createdAt),
-                                        style:
-                                            Theme.of(ctx).textTheme.bodySmall,
+                                      Expanded(
+                                        child: Text(
+                                          'Replying to ${replyTo.userName}',
+                                          style: Theme.of(ctx)
+                                              .textTheme
+                                              .bodySmall,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.close, size: 18),
+                                        onPressed: () => replyTarget.value = null,
                                       ),
                                     ],
                                   ),
                                 ),
-                                IconButton(
-                                  tooltip: 'Delete',
-                                  onPressed:
-                                      canInteract
-                                          ? () => controller.deleteComment(
-                                            story.id,
-                                            cm.id,
-                                          )
-                                          : null,
-                                  icon: const Icon(Icons.delete_outline),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    const SizedBox(height: 12),
-                    if (!canInteract)
-                      SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Navigator.of(ctx).pop();
-                            _showGuestGateDialog(context);
-                          },
-                          child: const Text('Create an account to comment'),
-                        ),
-                      )
-                    else
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: input,
-                              decoration: const InputDecoration(
-                                hintText: 'Write a comment…',
-                                border: OutlineInputBorder(),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      controller: input,
+                                      decoration: const InputDecoration(
+                                        hintText: 'Write a comment…',
+                                        border: OutlineInputBorder(),
+                                      ),
+                                      minLines: 1,
+                                      maxLines: 4,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  FilledButton(
+                                    onPressed: () {
+                                      if (replyTo != null) {
+                                        controller.addReply(
+                                          story.id,
+                                          replyTo.id,
+                                          input.text,
+                                        );
+                                      } else {
+                                        controller.addComment(
+                                          story.id,
+                                          input.text,
+                                        );
+                                      }
+                                      input.clear();
+                                      replyTarget.value = null;
+                                      FocusScope.of(ctx).unfocus();
+                                    },
+                                    child: const Text('Send'),
+                                  ),
+                                ],
                               ),
-                              minLines: 1,
-                              maxLines: 4,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          FilledButton(
-                            onPressed: () {
-                              controller.addComment(story.id, input.text);
-                              input.clear();
-                              FocusScope.of(ctx).unfocus();
-                            },
-                            child: const Text('Send'),
-                          ),
-                        ],
-                      ),
+                            ],
+                          ],
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -539,12 +855,12 @@ Future<void> _showGuestGateDialog(BuildContext context) async {
 }
 
 class _HeroCover extends StatelessWidget {
-  final String imageAsset;
+  final String imagePath;
   final String title;
   final Widget chips;
 
   const _HeroCover({
-    required this.imageAsset,
+    required this.imagePath,
     required this.title,
     required this.chips,
   });
@@ -559,16 +875,10 @@ class _HeroCover extends StatelessWidget {
         children: [
           AspectRatio(
             aspectRatio: 16 / 10,
-            child: Image.asset(
-              imageAsset,
-              fit: BoxFit.cover,
-              errorBuilder:
-                  (_, __, ___) => Container(
-                    color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
-                    child: const Center(
-                      child: Icon(Icons.image_not_supported_outlined),
-                    ),
-                  ),
+            child: _AdaptiveStoryImage(
+              imagePath: imagePath,
+              placeholder:
+                  'assets/images/stories/placeholder_couple.jpg',
             ),
           ),
           Positioned.fill(
@@ -606,6 +916,39 @@ class _HeroCover extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _AdaptiveStoryImage extends StatelessWidget {
+  final String imagePath;
+  final String placeholder;
+
+  const _AdaptiveStoryImage({required this.imagePath, required this.placeholder});
+
+  bool get _isRemote => imagePath.startsWith('http');
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isRemote) {
+      return Image.network(
+        imagePath,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => Image.asset(
+          placeholder,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+
+    final asset = imagePath.isNotEmpty ? imagePath : placeholder;
+    return Image.asset(
+      asset,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) => Image.asset(
+        placeholder,
+        fit: BoxFit.cover,
       ),
     );
   }

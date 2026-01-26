@@ -32,8 +32,6 @@ class OnboardingListsModel {
 
 class SearchFilterListsModel {
   final List<String> countryOfResidenceFilters;
-  final List<String> educationLevelFilters;
-  final List<String> incomeSourceFilters;
   final List<String> relationshipDistanceFilters;
   final List<String> maritalStatusFilters;
   final List<String> hasKidsFilters;
@@ -41,8 +39,6 @@ class SearchFilterListsModel {
 
   const SearchFilterListsModel({
     required this.countryOfResidenceFilters,
-    required this.educationLevelFilters,
-    required this.incomeSourceFilters,
     required this.relationshipDistanceFilters,
     required this.maritalStatusFilters,
     required this.hasKidsFilters,
@@ -58,8 +54,6 @@ class SearchFilterListsModel {
 
     return SearchFilterListsModel(
       countryOfResidenceFilters: _asStringList('countryOfResidenceFilters'),
-      educationLevelFilters: _asStringList('educationLevelFilters'),
-      incomeSourceFilters: _asStringList('incomeSourceFilters'),
       relationshipDistanceFilters: _asStringList('relationshipDistanceFilters'),
       maritalStatusFilters: _asStringList('maritalStatusFilters'),
       hasKidsFilters: _asStringList('hasKidsFilters'),

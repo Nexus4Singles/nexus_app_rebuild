@@ -308,11 +308,29 @@ match /chats/{chatId} {
       allow update: if false;
     }
 
+    // Comment likes for threaded comment system
+    match /storyCommentLikes/{storyId}/likes/{likeId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && likeId.matches('^[^:]+:' + request.auth.uid + '$');
+      allow delete: if isSignedIn() && likeId.matches('^[^:]+:' + request.auth.uid + '$');
+      allow update: if false;
+    }
+
     // datingProfiles referenced by dating_profile_status_provider.dart
     match /datingProfiles/{uid} {
       allow read: if isSignedIn();
       allow create, update: if isSignedIn() && request.auth.uid == uid;
       allow delete: if false;
+    }
+
+    // ============================================================================
+    // Content Management System (CMS) - Remote stories & polls (PUBLIC READ)
+    // ============================================================================
+    match /cms/{document=**} {
+      // All users can read stories, polls, versions
+      allow read: if true;
+      // Only admins can write (for update script)
+      allow write: if isAdmin();
     }
 
     // ============================================================================

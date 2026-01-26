@@ -230,52 +230,6 @@ class DatingSearchService {
     return s;
   }
 
-  String _canonEducation(String? v) {
-    final s = _normAlnum(v);
-    if (s.isEmpty) return '';
-
-    if (s.contains('phd') || s.contains('doctor')) return 'phd';
-    if (s.contains('master') || s.contains('msc') || s.contains('mba'))
-      return 'masters';
-    if (s.contains('postgraduate')) return 'graduate';
-    if (s.contains('graduate')) return 'graduate';
-
-    if (s.contains('undergraduate') ||
-        s.contains('bsc') ||
-        s.contains('ba') ||
-        s.contains('beng') ||
-        s.contains('b eng') ||
-        s.contains('hnd') ||
-        s.contains('ond') ||
-        s.contains('degree')) {
-      return 'undergraduate';
-    }
-
-    if (s.contains('secondary') || s.contains('high school'))
-      return 'secondary';
-    if (s.contains('primary')) return 'primary';
-
-    return s;
-  }
-
-  String _canonIncome(String? v) {
-    final s = _normAlnum(v);
-    if (s.isEmpty) return '';
-
-    if (s.contains('salary') || s.contains('employ')) return 'salary';
-    if (s.contains('business')) return 'business';
-    if (s.contains('self') && s.contains('employ')) return 'self employed';
-    if (s.contains('student')) return 'student';
-    if (s == 'none' ||
-        s == 'no' ||
-        s.contains('no income') ||
-        s.contains('unemploy')) {
-      return 'none';
-    }
-
-    return s;
-  }
-
   bool _eqCanon(
     String? value,
     String? selected,
@@ -320,12 +274,6 @@ class DatingSearchService {
     // Normal country match
     return _eqCanon(p.country, selected, _canonCountry);
   }
-
-  bool _matchEducation(DatingProfile p, DatingSearchFilters f) =>
-      _eqCanon(p.educationLevel, f.educationLevel, _canonEducation);
-
-  bool _matchIncome(DatingProfile p, DatingSearchFilters f) =>
-      _eqCanon(p.regularSourceOfIncome, f.regularSourceOfIncome, _canonIncome);
 
   bool _matchDistance(DatingProfile p, DatingSearchFilters f) =>
       _eqCanon(p.longDistance, f.longDistance, _canonYesNo);
@@ -533,7 +481,6 @@ class DatingSearchService {
       print(
         '[DatingSearchService] afterAge=${afterAge.length} '
         'filters: country="${filters.countryOfResidence}", '
-        'edu="${filters.educationLevel}", income="${filters.regularSourceOfIncome}", '
         'distance="${filters.longDistance}", marital="${filters.maritalStatus}", '
         'kids="${filters.hasKids}", geno="${filters.genotype}"',
       );
@@ -542,7 +489,7 @@ class DatingSearchService {
         // ignore: avoid_print
         print(
           '[DatingSearchService] sample: country="${p.country}", '
-          'income="${p.regularSourceOfIncome}", distance="${p.longDistance}", '
+          'distance="${p.longDistance}", '
           'marital="${p.maritalStatus}", kids="${p.haveKids}", geno="${p.genotype}"',
         );
       }
@@ -572,32 +519,6 @@ class DatingSearchService {
     );
     if (current.isEmpty) {
       captureEmptyHint('Country', filters.countryOfResidence);
-      return DatingSearchResult(items: current, emptyHint: emptyHint);
-    }
-
-    current = _step(
-      current,
-      'education',
-      (p) => _matchEducation(p, filters),
-      selectedRaw: filters.educationLevel,
-      selectedCanon: _canonEducation(filters.educationLevel),
-      sampleCanon: (p) => _canonEducation(p.educationLevel),
-    );
-    if (current.isEmpty) {
-      captureEmptyHint('Education', filters.educationLevel);
-      return DatingSearchResult(items: current, emptyHint: emptyHint);
-    }
-
-    current = _step(
-      current,
-      'income',
-      (p) => _matchIncome(p, filters),
-      selectedRaw: filters.regularSourceOfIncome,
-      selectedCanon: _canonIncome(filters.regularSourceOfIncome),
-      sampleCanon: (p) => _canonIncome(p.regularSourceOfIncome),
-    );
-    if (current.isEmpty) {
-      captureEmptyHint('Income', filters.regularSourceOfIncome);
       return DatingSearchResult(items: current, emptyHint: emptyHint);
     }
 

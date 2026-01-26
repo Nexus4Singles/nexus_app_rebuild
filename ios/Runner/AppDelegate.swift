@@ -1,5 +1,6 @@
 import Flutter
 import UIKit
+import AVFoundation
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -8,6 +9,16 @@ import UIKit
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
+    
+    // Configure audio session for recording and playback
+    do {
+      let audioSession = AVAudioSession.sharedInstance()
+      try audioSession.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetooth])
+      try audioSession.setActive(true)
+    } catch {
+      print("Failed to configure audio session: \(error)")
+    }
+    
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

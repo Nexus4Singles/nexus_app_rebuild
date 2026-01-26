@@ -301,6 +301,16 @@ match /chats/{chatId} {
     }
 
     // ============================================================================
+    // Content Management System (CMS) - Remote stories & polls
+    // ============================================================================
+    match /cms/{document=**} {
+      // Public read-only access to stories, polls, and versions
+      allow read: if true;
+      // Admin write access only
+      allow write: if isAdmin();
+    }
+
+    // ============================================================================
     // Default deny
     // ============================================================================
     match /{document=**} {

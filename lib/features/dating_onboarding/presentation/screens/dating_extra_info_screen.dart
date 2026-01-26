@@ -265,7 +265,7 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 10, 16, 18),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
       child: Column(
         children: [
           const DatingProfileProgressBar(currentStep: 2, totalSteps: 9),
@@ -278,6 +278,7 @@ class _Body extends StatelessWidget {
 
           Expanded(
             child: ListView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               children: [
                 _LabeledField(
                   label: 'City',
@@ -286,6 +287,8 @@ class _Body extends StatelessWidget {
                     textCapitalization: TextCapitalization.words,
                     style: AppTextStyles.bodyMedium,
                     decoration: _inputDeco(hint: 'Enter your city'),
+                    onEditingComplete: () => FocusScope.of(context).unfocus(),
+                    onSubmitted: (_) => FocusScope.of(context).unfocus(),
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -295,7 +298,10 @@ class _Body extends StatelessWidget {
                   child: _PickerTile(
                     value: countryOfResidence,
                     hint: 'Select country of residence',
-                    onTap: onPickCountry,
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      onPickCountry();
+                    },
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -305,7 +311,10 @@ class _Body extends StatelessWidget {
                   child: _PickerTile(
                     value: nationality,
                     hint: 'Select nationality',
-                    onTap: onPickNationality,
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      onPickNationality();
+                    },
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -315,7 +324,10 @@ class _Body extends StatelessWidget {
                   child: _PickerTile(
                     value: education,
                     hint: 'Select education level',
-                    onTap: onPickEducation,
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      onPickEducation();
+                    },
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -325,7 +337,10 @@ class _Body extends StatelessWidget {
                   child: _PickerTile(
                     value: profession,
                     hint: 'Select profession',
-                    onTap: onPickProfession,
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      onPickProfession();
+                    },
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -335,7 +350,10 @@ class _Body extends StatelessWidget {
                   child: _PickerTile(
                     value: church,
                     hint: 'Select your church',
-                    onTap: onPickChurch,
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      onPickChurch();
+                    },
                   ),
                 ),
 

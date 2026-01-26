@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
+import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
+import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DatingContactInfoScreen extends ConsumerStatefulWidget {
   const DatingContactInfoScreen({super.key});
@@ -152,21 +156,26 @@ class _DatingContactInfoScreenState
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
         elevation: 0,
+        titleSpacing: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Dating Profile', style: AppTextStyles.titleLarge),
+        title: Text(
+          'Contact Information',
+          style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700),
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const _ProgressHeader(
               subtitle:
-                  "Kindly provide the details of the social media platforms you feel comfortable sharing, where users can easily contact you in case you're away from the app and unable to see messages.",
+                  "Kindly provide the details of at least one social media platform you feel comfortable sharing, where users can easily contact you in case you're away from the app and unable to see messages.",
             ),
             const SizedBox(height: 14),
             Expanded(
@@ -278,8 +287,48 @@ class _DatingContactInfoScreenState
       return;
     }
 
-    // Persist contact info and navigate to completion
+    // Persist contact info in local draft
     ref.read(datingOnboardingDraftProvider.notifier).setContactInfo(info);
+
+    // Build dating profile payload from draft and save to Firestore
+    try {
+      final ready = ref.read(firebaseReadyProvider);
+      final fs = ref.read(firestoreInstanceProvider);
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (ready && fs != null && uid != null) {
+        final d = ref.read(datingOnboardingDraftProvider);
+        final payload = <String, dynamic>{
+          // Flat fields specific to dating flow
+          'countryOfResidence': d.countryOfResidence,
+          'contactInfo': d.contactInfo,
+          'profileCompleted': true,
+          'verificationStatus': 'pending',
+          // Profile sub-map (matches UserModel expectations)
+          'profile': {
+            'age': d.age,
+            'city': d.city,
+            'country': d.countryOfResidence,
+            'nationality': d.nationality,
+            'educationLevel': d.educationLevel,
+            'profession': d.profession,
+            'churchName': d.churchName ?? d.otherChurchName,
+            'hobbies': d.hobbies,
+            'desiredQualities': d.desiredQualities,
+          },
+        };
+
+        await fs.collection('users').doc(uid).set({
+          'dating': payload,
+        }, SetOptions(merge: true));
+        debugPrint('[ContactInfo] Saved dating profile to Firestore for $uid');
+      } else {
+        debugPrint(
+          '[ContactInfo] Skipped Firestore save (not ready or no uid).',
+        );
+      }
+    } catch (e) {
+      debugPrint('[ContactInfo] Firestore save failed: $e');
+    }
 
     if (!mounted) return;
     Navigator.of(context).pushNamed('/dating/setup/complete');
@@ -344,11 +393,10 @@ class _InputTile extends StatelessWidget {
                   width: 24,
                   height: 24,
                   fit: BoxFit.contain,
-                  color: AppColors.primary,
                 ),
                 const SizedBox(width: 10),
               ] else if (icon != null) ...[
-                Icon(icon, size: 24, color: AppColors.primary),
+                Icon(icon, size: 24),
                 const SizedBox(width: 10),
               ],
               Text(label, style: AppTextStyles.labelLarge),
@@ -425,7 +473,6 @@ class _PhoneInputTile extends StatelessWidget {
                     width: 24,
                     height: 24,
                     fit: BoxFit.contain,
-                    color: AppColors.primary,
                   )
                 else if (materialIcon != null)
                   Icon(materialIcon, size: 24, color: AppColors.primary),

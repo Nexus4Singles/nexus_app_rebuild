@@ -1,15 +1,13 @@
-import 'package:flutter/services.dart';
+import 'package:nexus_app_min_test/core/models/story_model.dart' as remote;
+import 'package:nexus_app_min_test/core/services/config_loader_service.dart';
 import 'package:nexus_app_min_test/features/stories/domain/poll_models.dart';
 
 class PollRepository {
-  static const String _assetPath = 'assets/config/engagement/polls.v1.json';
-
   const PollRepository();
 
   Future<List<Poll>> loadPolls() async {
-    final raw = await rootBundle.loadString(_assetPath);
-    final payload = PollsPayload.fromJsonString(raw);
-    return payload.polls;
+    final catalog = await ConfigLoaderService().loadPollsCatalog();
+    return catalog.polls.map(_mapRemotePoll).toList();
   }
 
   Future<Poll?> loadPollById(String id) async {
@@ -18,5 +16,16 @@ class PollRepository {
       if (p.id == id) return p;
     }
     return null;
+  }
+
+  Poll _mapRemotePoll(remote.Poll p) {
+    return Poll(
+      id: p.pollId,
+      question: p.question,
+      options:
+          p.options.map((o) => PollOption(id: o.id, text: o.text)).toList(),
+      insights: const {},
+      seedCounts: const {},
+    );
   }
 }

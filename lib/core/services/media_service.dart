@@ -417,12 +417,14 @@ class MediaService {
       final fileName = 'recording_${DateTime.now().millisecondsSinceEpoch}.m4a';
       _currentRecordingPath = p.join(directory.path, fileName);
 
-      // Configure and start recording
+      // Configure and start recording with iOS-compatible settings
       await _audioRecorder.start(
         const RecordConfig(
           encoder: AudioEncoder.aacLc,
           bitRate: 128000,
-          sampleRate: 44100,
+          sampleRate:
+              44100, // Standard CD quality, universally supported on iOS
+          numChannels: 1,
         ),
         path: _currentRecordingPath!,
       );
@@ -482,6 +484,10 @@ class MediaService {
       if (!_isRecording) return null;
 
       final path = await _audioRecorder.stop();
+
+      // CRITICAL: Wait for iOS to flush audio buffer to disk
+      await Future.delayed(const Duration(milliseconds: 500));
+
       _isRecording = false;
       _recordingStartTime = null;
       onRecordingDurationUpdate = null;

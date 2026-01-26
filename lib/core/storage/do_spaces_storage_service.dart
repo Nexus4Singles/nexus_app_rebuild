@@ -92,7 +92,9 @@ class DoSpacesStorageService implements MediaStorageService {
       final putResp = await http.put(
         Uri.parse(uploadUrl),
         headers: <String, String>{
+          // Spaces object must be public-read; header must match presigned signature.
           'Content-Type': contentType,
+          'x-amz-acl': 'public-read',
         },
         body: bytes,
       );

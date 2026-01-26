@@ -36,18 +36,9 @@ class StoryDetailScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(18),
                 child: AspectRatio(
                   aspectRatio: 16 / 10,
-                  child: Image.asset(
-                    story.heroImageAsset,
-                    fit: BoxFit.cover,
-                    errorBuilder:
-                        (_, __, ___) => Container(
-                          color: theme.colorScheme.surfaceVariant.withOpacity(
-                            0.5,
-                          ),
-                          child: const Center(
-                            child: Icon(Icons.image_not_supported_outlined),
-                          ),
-                        ),
+                  child: _AdaptiveDetailImage(
+                    imagePath: story.heroImageAsset,
+                    placeholder: 'assets/images/stories/placeholder_couple.jpg',
                   ),
                 ),
               ),
@@ -225,6 +216,37 @@ class _Card extends StatelessWidget {
         border: Border.all(color: theme.dividerColor.withOpacity(0.35)),
       ),
       child: child,
+    );
+  }
+}
+
+class _AdaptiveDetailImage extends StatelessWidget {
+  final String imagePath;
+  final String placeholder;
+  const _AdaptiveDetailImage({required this.imagePath, required this.placeholder});
+
+  bool get _isRemote => imagePath.startsWith('http');
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isRemote) {
+      return Image.network(
+        imagePath,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => Image.asset(
+          placeholder,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+    final asset = imagePath.isNotEmpty ? imagePath : placeholder;
+    return Image.asset(
+      asset,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) => Image.asset(
+        placeholder,
+        fit: BoxFit.cover,
+      ),
     );
   }
 }

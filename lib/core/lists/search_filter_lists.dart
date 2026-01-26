@@ -5,8 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchFilterLists {
   final List<String> countryOfResidence;
-  final List<String> educationLevels;
-  final List<String> incomeSources;
   final List<String> relationshipDistance;
   final List<String> maritalStatus;
   final List<String> hasKids;
@@ -14,8 +12,6 @@ class SearchFilterLists {
 
   const SearchFilterLists({
     required this.countryOfResidence,
-    required this.educationLevels,
-    required this.incomeSources,
     required this.relationshipDistance,
     required this.maritalStatus,
     required this.hasKids,
@@ -33,8 +29,6 @@ class SearchFilterLists {
 
     return SearchFilterLists(
       countryOfResidence: _asStringList('countryOfResidenceFilters'),
-      educationLevels: _asStringList('educationLevelFilters'),
-      incomeSources: _asStringList('incomeSourceFilters'),
       relationshipDistance: _asStringList('relationshipDistanceFilters'),
       maritalStatus: _asStringList('maritalStatusFilters'),
       hasKids: _asStringList('hasKidsFilters'),

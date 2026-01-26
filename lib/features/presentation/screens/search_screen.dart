@@ -33,8 +33,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   int _maxAge = 65;
 
   String? _countryOfResidence;
-  String? _education;
-  String? _sourceOfIncome;
   String? _longDistance;
   String? _maritalStatus;
   String? _kids;
@@ -45,8 +43,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       _maxAge = 65;
 
       _countryOfResidence = null;
-      _education = null;
-      _sourceOfIncome = null;
       _longDistance = null;
       _maritalStatus = null;
       _kids = null;
@@ -142,8 +138,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final lists = listsAsync.maybeWhen(data: (v) => v, orElse: () => null);
 
     final countries = lists?.countryOfResidenceFilters ?? const <String>[];
-    final educationLevels = lists?.educationLevelFilters ?? const <String>[];
-    final incomeSources = lists?.incomeSourceFilters ?? const <String>[];
     final distances = lists?.relationshipDistanceFilters ?? const <String>[];
     final maritalStatuses = lists?.maritalStatusFilters ?? const <String>[];
     final hasKids = lists?.hasKidsFilters ?? const <String>[];
@@ -292,19 +286,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                       setState(() => _countryOfResidence = v),
                             ),
                             _DropdownTile(
-                              label: 'Education Level',
-                              value: _education,
-                              options: educationLevels,
-                              onChanged: (v) => setState(() => _education = v),
-                            ),
-                            _DropdownTile(
-                              label: 'Regular Source of Income',
-                              value: _sourceOfIncome,
-                              options: incomeSources,
-                              onChanged:
-                                  (v) => setState(() => _sourceOfIncome = v),
-                            ),
-                            _DropdownTile(
                               label: 'Long Distance',
                               value: _longDistance,
                               options: distances,
@@ -357,8 +338,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           '[SearchScreen] applying filters: '
                           'age=$_minAge-$_maxAge, '
                           'country="$_countryOfResidence", '
-                          'edu="$_education", '
-                          'income="$_sourceOfIncome", '
                           'distance="$_longDistance", '
                           'marital="$_maritalStatus", '
                           'kids="$_kids", '
@@ -373,8 +352,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         maxAge: _maxAge,
                         countryOfResidence: _countryOfResidence,
                         countryOptions: countries,
-                        educationLevel: _education,
-                        regularSourceOfIncome: _sourceOfIncome,
                         longDistance: _longDistance,
                         maritalStatus: _maritalStatus,
                         hasKids: _kids,

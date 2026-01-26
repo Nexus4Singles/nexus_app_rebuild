@@ -19,8 +19,6 @@ class SearchFilterListsLoader {
 
     return SearchFilterLists(
       countriesOfResidence: _list('countryOfResidenceFilters'),
-      educationLevels: _list('educationLevelFilters'),
-      incomeSources: _list('incomeSourceFilters'),
       relationshipDistances: _list('relationshipDistanceFilters'),
       maritalStatuses: _list('maritalStatusFilters'),
       hasKids: _list('hasKidsFilters'),

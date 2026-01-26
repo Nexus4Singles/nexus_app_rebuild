@@ -13,7 +13,12 @@ class DatingProfileCompleteScreen extends ConsumerStatefulWidget {
 }
 
 class _DatingProfileCompleteScreenState
-    extends ConsumerState<DatingProfileCompleteScreen> {
+    extends ConsumerState<DatingProfileCompleteScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _fadeAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -23,7 +28,23 @@ class _DatingProfileCompleteScreenState
       ref.read(datingOnboardingDraftProvider.notifier).reset();
     });
 
-    // Immediately route to compatibility quiz after a brief celebration
+    // Setup animation
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(begin: 0.3, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.elasticOut),
+    );
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+
+    _animationController.forward();
+
+    // Route to compatibility quiz after celebration
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(seconds: 8), () {
         if (mounted) {
@@ -34,40 +55,217 @@ class _DatingProfileCompleteScreenState
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Dating Profile', style: AppTextStyles.titleLarge),
+        automaticallyImplyLeading: false,
+        centerTitle: false,
+        titleSpacing: 20,
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Profile completed 🎉', style: AppTextStyles.titleLarge),
-            const SizedBox(height: 14),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: Text(
-                'Great! Your dating profile is complete. '
-                'Before you can view other users in the pool, please take a short compatibility quiz. '
-                'This helps Nexus recommend better matches and improves the quality of the community.\n\n'
-                'Redirecting to compatibility quiz...',
-                style: AppTextStyles.bodyMedium.copyWith(height: 1.45),
+      body: Stack(
+        children: [
+          // Animated background gradient
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  AppColors.primary.withOpacity(0.05),
+                  AppColors.primary.withOpacity(0.02),
+                ],
               ),
             ),
-            const Spacer(),
-            Center(child: CircularProgressIndicator(color: AppColors.primary)),
-          ],
-        ),
+          ),
+          // Main content
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Animated checkmark circle
+                  ScaleTransition(
+                    scale: _scaleAnimation,
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            AppColors.primary,
+                            AppColors.primary.withOpacity(0.8),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primary.withOpacity(0.3),
+                            blurRadius: 30,
+                            spreadRadius: 5,
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.check_rounded,
+                        color: Colors.white,
+                        size: 60,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  // Main heading
+                  FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Profile Complete!',
+                          style: AppTextStyles.headlineLarge.copyWith(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 36,
+                            letterSpacing: -0.5,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Your dating profile is ready to shine',
+                          style: AppTextStyles.bodyLarge.copyWith(
+                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  // Info card with glassmorphism effect
+                  FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(28),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.5),
+                          width: 1.5,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary.withOpacity(0.12),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.quiz_rounded,
+                                  color: AppColors.primary,
+                                  size: 24,
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'One Final Step',
+                                      style: AppTextStyles.labelLarge.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'Compatibility quiz',
+                                      style: AppTextStyles.bodySmall.copyWith(
+                                        color: AppColors.textMuted,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'This Quiz helps to ensure opposite gender users find out how compatibile they are with you!',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.textSecondary,
+                              height: 1.5,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  // Loading indicator with enhanced styling
+                  FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 60,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withOpacity(0.08),
+                            shape: BoxShape.circle,
+                          ),
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(
+                              AppColors.primary,
+                            ),
+                            strokeWidth: 3,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Preparing your experience...',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.textMuted,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

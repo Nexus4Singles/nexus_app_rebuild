@@ -240,6 +240,17 @@ class ProfileScreen extends ConsumerWidget {
         // For viewing other users with missing docs, show not found
         if (map == null) return const _ProfileNotFound();
 
+        // Debug: Log raw Firestore data to verify photos are present
+        debugPrint('📄 Raw Firestore map for user $effectiveUid:');
+        debugPrint('  dating.photos: ${map['dating']?['photos']}');
+        debugPrint(
+          '  dating.profile.photos: ${map['dating']?['profile']?['photos']}',
+        );
+        debugPrint(
+          '  dating.profile.profileUrl: ${map['dating']?['profile']?['profileUrl']}',
+        );
+        debugPrint('  photos (root): ${map['photos']}');
+
         // Build a proper UserModel from Firestore data.
         final profile = UserModel.fromMap(effectiveUid, map);
 
@@ -302,7 +313,7 @@ class ProfileScreen extends ConsumerWidget {
             ref: ref,
             messageTitle: 'Dating Profile',
             messageBody:
-                'If you would like to join the dating pool, you would need a profile to view other users in the pool & to appear in Search results.',
+                'If you would like to join the dating pool, you would need a profile to view opposite gender users in the pool & to appear in Search results.',
             showCreateDatingProfileCta: true,
             onCreateDatingProfile: () {
               Navigator.of(context).pushNamed('/dating/setup/age');
@@ -314,6 +325,10 @@ class ProfileScreen extends ConsumerWidget {
           profile.profileUrl,
           profile.photos,
         );
+        debugPrint(
+          '🖼️ Profile photos - profileUrl: "${profile.profileUrl}", photos list: ${profile.photos}',
+        );
+        debugPrint('🖼️ Combined photos for display: $photos');
         final location = _buildLocation(profile.city, profile.country);
 
         return Scaffold(
@@ -966,10 +981,16 @@ class _ProfileHeroAppBar extends StatelessWidget {
       stretch: true,
       backgroundColor: AppColors.background,
       expandedHeight: 420,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
-        onPressed: () => Navigator.of(context).maybePop(),
-      ),
+      leading:
+          isViewingOtherUser
+              ? IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white,
+                ),
+                onPressed: () => Navigator.of(context).maybePop(),
+              )
+              : null,
       actions: [if (isViewingOtherUser) const SizedBox(width: 12)],
       flexibleSpace: LayoutBuilder(
         builder: (context, constraints) {
@@ -1012,26 +1033,19 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                     orElse: () => null,
                                   );
 
-                                  // Legacy v1 users may have null/missing status; treat as verified
-                                  // so they remain seamless/visible until they explicitly re-verify.
+                                  // For new profiles (null status), set to pending (awaiting admin review)
+                                  // For legacy v1 users with null status after schema migration, also treat as pending
                                   final resolvedStatus =
                                       (status == null || status.isEmpty)
-                                          ? 'verified'
+                                          ? 'pending'
                                           : status;
 
                                   final isVerified =
                                       resolvedStatus == 'verified';
                                   final isPending = resolvedStatus == 'pending';
 
-                                  // Product nuance:
-                                  // - For other users: only show "Verified" badge (verified status only)
-                                  // - For own profile: show all statuses (Verified, Pending review, Not verified)
-                                  if (isViewingOtherUser) {
-                                    // Only show verified badge to others
-                                    if (!isVerified)
-                                      return const SizedBox.shrink();
-                                  }
-                                  // For own profile, show all statuses, so don't filter here
+                                  // Show verification badge for both own and other users
+                                  // with accurate status (Verified / Unverified)
 
                                   IconData icon;
                                   String label;
@@ -1040,10 +1054,10 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                     label = 'Verified';
                                   } else if (isPending) {
                                     icon = Icons.hourglass_top_rounded;
-                                    label = 'Pending review';
+                                    label = 'Unverified';
                                   } else {
                                     icon = Icons.block_rounded;
-                                    label = 'Not verified';
+                                    label = 'Unverified';
                                   }
 
                                   return Row(
@@ -2090,6 +2104,20 @@ class _ProfileAudioController {
     });
   }
 
+  /// Get duration for a specific URL (returns cached or current duration)
+  Duration getDurationForUrl(String url) {
+    final u = url.trim();
+    if (u.isEmpty) return Duration.zero;
+
+    // If this is the current URL, return the live duration
+    if (currentUrl == u && duration != Duration.zero) {
+      return duration;
+    }
+
+    // Otherwise return cached duration
+    return _durationCache[u] ?? Duration.zero;
+  }
+
   /// Preload duration for a URL without playing it
   Future<void> preloadDuration(String url) async {
     final u = url.trim();
@@ -2377,11 +2405,18 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
     final isPlaying =
         isCurrent && widget.controller.state == PlayerState.playing;
 
+    // Get duration specific to this audio URL (not the shared controller duration)
+    final audioDuration =
+        hasUrl
+            ? widget.controller.getDurationForUrl(widget.url!)
+            : Duration.zero;
     final duration =
-        widget.controller.duration.inMilliseconds == 0
+        audioDuration.inMilliseconds == 0
             ? const Duration(seconds: 1)
-            : widget.controller.duration;
-    final position = widget.controller.position;
+            : audioDuration;
+
+    // Position is only relevant for the currently playing audio
+    final position = isCurrent ? widget.controller.position : Duration.zero;
 
     return Container(
       padding: const EdgeInsets.all(14),
