@@ -15,7 +15,7 @@ class AppTheme {
 
       // Colors
       primaryColor: AppColors.primary,
-      scaffoldBackgroundColor: AppColors.background,
+      scaffoldBackgroundColor: AppColors.backgroundLight,
 
       // Color Scheme
       colorScheme: const ColorScheme.light(
@@ -26,58 +26,90 @@ class AppTheme {
         onSecondary: AppColors.textOnSecondary,
         secondaryContainer: AppColors.secondaryLight,
         tertiary: AppColors.accent,
-        surface: AppColors.surface,
-        onSurface: AppColors.textPrimary,
-        surfaceContainerHighest: AppColors.surfaceVariant,
+        surface: AppColors.surfaceLightMode,
+        onSurface: AppColors.textPrimaryLight,
+        surfaceContainerHighest: AppColors.surfaceLightLight,
         error: AppColors.error,
         onError: Colors.white,
-        outline: AppColors.border,
+        outline: AppColors.borderLightMode,
       ),
 
       // Typography
       fontFamily: 'Poppins',
-      textTheme: const TextTheme(
-        displayLarge: AppTextStyles.displayLarge,
-        displayMedium: AppTextStyles.displayMedium,
-        displaySmall: AppTextStyles.displaySmall,
-        headlineLarge: AppTextStyles.headlineLarge,
-        headlineMedium: AppTextStyles.headlineMedium,
-        headlineSmall: AppTextStyles.headlineSmall,
-        titleLarge: AppTextStyles.titleLarge,
-        titleMedium: AppTextStyles.titleMedium,
-        titleSmall: AppTextStyles.titleSmall,
-        bodyLarge: AppTextStyles.bodyLarge,
-        bodyMedium: AppTextStyles.bodyMedium,
-        bodySmall: AppTextStyles.bodySmall,
-        labelLarge: AppTextStyles.labelLarge,
-        labelMedium: AppTextStyles.labelMedium,
-        labelSmall: AppTextStyles.labelSmall,
+      textTheme: TextTheme(
+        displayLarge: AppTextStyles.displayLarge.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        displayMedium: AppTextStyles.displayMedium.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        displaySmall: AppTextStyles.displaySmall.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        headlineLarge: AppTextStyles.headlineLarge.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        headlineMedium: AppTextStyles.headlineMedium.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        headlineSmall: AppTextStyles.headlineSmall.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        titleLarge: AppTextStyles.titleLarge.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        titleMedium: AppTextStyles.titleMedium.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        titleSmall: AppTextStyles.titleSmall.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        bodyLarge: AppTextStyles.bodyLarge.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        bodyMedium: AppTextStyles.bodyMedium.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        bodySmall: AppTextStyles.bodySmall.copyWith(
+          color: AppColors.textSecondaryLight,
+        ),
+        labelLarge: AppTextStyles.labelLarge.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        labelMedium: AppTextStyles.labelMedium.copyWith(
+          color: AppColors.textSecondaryLight,
+        ),
+        labelSmall: AppTextStyles.labelSmall.copyWith(
+          color: AppColors.textMutedLight,
+        ),
       ),
 
       // AppBar Theme
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: AppColors.surface,
-        foregroundColor: AppColors.textPrimary,
+        backgroundColor: AppColors.surfaceLightMode,
+        foregroundColor: AppColors.textPrimaryLight,
         surfaceTintColor: Colors.transparent,
-        systemOverlayStyle: SystemUiOverlayStyle(
+        systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.dark,
           statusBarBrightness: Brightness.light,
         ),
-        titleTextStyle: AppTextStyles.titleLarge,
-        iconTheme: IconThemeData(
-          color: AppColors.textPrimary,
+        titleTextStyle: AppTextStyles.titleLarge.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        iconTheme: const IconThemeData(
+          color: AppColors.textPrimaryLight,
           size: AppSpacing.iconMd,
         ),
       ),
 
       // Bottom Navigation Bar Theme
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: AppColors.surface,
+        backgroundColor: AppColors.surfaceLightMode,
         selectedItemColor: AppColors.primary,
-        unselectedItemColor: AppColors.textTertiary,
+        unselectedItemColor: AppColors.textSecondaryLight,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
         selectedLabelStyle: AppTextStyles.labelSmall,
@@ -86,7 +118,7 @@ class AppTheme {
 
       // Navigation Bar Theme (Material 3)
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: AppColors.surface,
+        backgroundColor: AppColors.surfaceLightMode,
         indicatorColor: AppColors.primaryLight.withOpacity(0.2),
         surfaceTintColor: Colors.transparent,
         elevation: 0,
@@ -96,24 +128,27 @@ class AppTheme {
             return AppTextStyles.labelSmall.copyWith(color: AppColors.primary);
           }
           return AppTextStyles.labelSmall.copyWith(
-            color: AppColors.textTertiary,
+            color: AppColors.textSecondaryLight,
           );
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
             return const IconThemeData(color: AppColors.primary, size: 24);
           }
-          return const IconThemeData(color: AppColors.textTertiary, size: 24);
+          return const IconThemeData(
+            color: AppColors.textSecondaryLight,
+            size: 24,
+          );
         }),
       ),
 
       // Card Theme
       cardTheme: CardThemeData(
-        color: AppColors.cardBackground,
+        color: AppColors.cardBackgroundLight,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: AppRadius.card,
-          side: const BorderSide(color: AppColors.border, width: 1),
+          side: const BorderSide(color: AppColors.borderLightMode, width: 1),
         ),
         margin: EdgeInsets.zero,
       ),
@@ -164,18 +199,18 @@ class AppTheme {
       // Input Decoration Theme
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.surface,
+        fillColor: AppColors.surfaceLightMode,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.inputHorizontalPadding,
           vertical: AppSpacing.inputVerticalPadding,
         ),
         border: OutlineInputBorder(
           borderRadius: AppRadius.input,
-          borderSide: const BorderSide(color: AppColors.inputBorder),
+          borderSide: const BorderSide(color: AppColors.inputBorderLight),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: AppRadius.input,
-          borderSide: const BorderSide(color: AppColors.inputBorder),
+          borderSide: const BorderSide(color: AppColors.inputBorderLight),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: AppRadius.input,
@@ -193,19 +228,19 @@ class AppTheme {
           borderSide: const BorderSide(color: AppColors.error, width: 2),
         ),
         hintStyle: AppTextStyles.bodyMedium.copyWith(
-          color: AppColors.textTertiary,
+          color: AppColors.textMutedLight,
         ),
         labelStyle: AppTextStyles.bodyMedium.copyWith(
-          color: AppColors.textSecondary,
+          color: AppColors.textSecondaryLight,
         ),
         errorStyle: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
       ),
 
       // Chip Theme
       chipTheme: ChipThemeData(
-        backgroundColor: AppColors.chipBackground,
-        selectedColor: AppColors.chipSelectedBackground,
-        disabledColor: AppColors.chipBackground.withOpacity(0.5),
+        backgroundColor: AppColors.chipBackgroundLight,
+        selectedColor: AppColors.chipSelectedBackgroundLight,
+        disabledColor: AppColors.chipBackgroundLight.withOpacity(0.5),
         labelStyle: AppTextStyles.labelMedium,
         secondaryLabelStyle: AppTextStyles.labelMedium.copyWith(
           color: AppColors.primary,
@@ -222,7 +257,7 @@ class AppTheme {
 
       // Dialog Theme
       dialogTheme: DialogThemeData(
-        backgroundColor: AppColors.surface,
+        backgroundColor: AppColors.surfaceLightMode,
         elevation: 24,
         shape: RoundedRectangleBorder(borderRadius: AppRadius.modal),
         titleTextStyle: AppTextStyles.headlineSmall,
@@ -231,16 +266,16 @@ class AppTheme {
 
       // Bottom Sheet Theme
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: AppColors.surface,
+        backgroundColor: AppColors.surfaceLightMode,
         elevation: 8,
         shape: RoundedRectangleBorder(borderRadius: AppRadius.bottomSheet),
-        modalBackgroundColor: AppColors.surface,
+        modalBackgroundColor: AppColors.surfaceLightMode,
         modalElevation: 8,
       ),
 
       // Divider Theme
       dividerTheme: const DividerThemeData(
-        color: AppColors.divider,
+        color: AppColors.dividerLight,
         thickness: 1,
         space: 0,
       ),
@@ -254,9 +289,9 @@ class AppTheme {
 
       // Snackbar Theme
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: AppColors.textPrimary,
+        backgroundColor: AppColors.textPrimaryLight,
         contentTextStyle: AppTextStyles.bodyMedium.copyWith(
-          color: AppColors.surface,
+          color: AppColors.surfaceLightMode,
         ),
         shape: RoundedRectangleBorder(borderRadius: AppRadius.borderRadiusSm),
         behavior: SnackBarBehavior.floating,
@@ -490,9 +525,7 @@ class AppTheme {
           if (states.contains(WidgetState.selected)) {
             return AppTextStyles.labelSmall.copyWith(color: AppColors.primary);
           }
-          return AppTextStyles.labelSmall.copyWith(
-            color: AppColors.textMuted,
-          );
+          return AppTextStyles.labelSmall.copyWith(color: AppColors.textMuted);
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {

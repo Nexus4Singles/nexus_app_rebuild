@@ -75,10 +75,6 @@ class _DatingAudioQuestionScreenState
   @override
   void dispose() {
     _timer?.cancel();
-    // Stop playback before disposing to prevent audio continuing after screen exit
-    if (_isPlaying) {
-      _player.stop();
-    }
     _player.dispose();
     _recorder.dispose();
     super.dispose();
@@ -98,7 +94,7 @@ class _DatingAudioQuestionScreenState
         break;
     }
 
-    // Check if file exists and load its duration
+    // Just check if file exists - don't assume it meets 45s minimum
     if (_filePath != null) {
       final file = File(_filePath!);
       if (!await file.exists() || await file.length() == 0) {
@@ -106,28 +102,9 @@ class _DatingAudioQuestionScreenState
       } else {
         // File exists and has data, mark as having a recording
         setState(() => _hasRecording = true);
-
-        // Load the actual duration from the audio file
-        try {
-          final tempPlayer = AudioPlayer();
-          await tempPlayer.setFilePath(_filePath!);
-          final duration = tempPlayer.duration;
-          await tempPlayer.dispose();
-
-          if (duration != null) {
-            final durationSeconds = duration.inSeconds;
-            debugPrint(
-              '[AudioRecord] Loaded existing recording duration: ${durationSeconds}s',
-            );
-            setState(() => _recordedDuration = durationSeconds);
-          }
-        } catch (e) {
-          debugPrint('[AudioRecord] Could not probe audio duration: $e');
-          // If we can't get duration, assume it's valid since file exists
-          setState(() => _recordedDuration = _minSeconds);
-        }
       }
     }
+    // _recordedDuration stays 0 - user must record to enable Continue
   }
 
   String get _questionText {
@@ -161,9 +138,9 @@ class _DatingAudioQuestionScreenState
         (_recordedDuration >= _minSeconds && !_isRecording);
 
     return Scaffold(
-      backgroundColor: AppColors.getBackground(context),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.getBackground(context),
+        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -199,7 +176,7 @@ class _DatingAudioQuestionScreenState
                     _helperText!,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.caption.copyWith(
-                      color: AppColors.getTextSecondary(context),
+                      color: AppColors.textMuted,
                     ),
                   ),
                 ],
@@ -233,14 +210,21 @@ class _DatingAudioQuestionScreenState
                     _RecordButton(
                       isRecording: _isRecording,
                       isPaused: _isPaused,
-                      onTap: _busy ? null : _toggleRecord,
+                      onTap: _busy || _hasRecording ? null : _toggleRecord,
                     ),
                     const SizedBox(width: 20),
                     _PlayButton(
                       isPlaying: _isPlaying,
                       hasRecording: _hasRecording,
-                      canPlayDuringRecording: false,
-                      onTap: _hasRecording && !_busy ? _playRecording : null,
+                      canPlayDuringRecording:
+                          _isRecording && _elapsed >= _minSeconds,
+                      onTap:
+                          (_hasRecording ||
+                                      (_isRecording &&
+                                          _elapsed >= _minSeconds)) &&
+                                  !_busy
+                              ? _playRecording
+                              : null,
                     ),
                   ],
                 ),
@@ -292,17 +276,14 @@ class _DatingAudioQuestionScreenState
 
   Future<void> _toggleRecord() async {
     if (_isRecording && !_isPaused) {
-      // If recording is active, stop it
-      await _stop();
+      await _pause();
       return;
     }
     if (_isRecording && _isPaused) {
-      // If paused, resume
       await _resume();
       return;
     }
 
-    // Start new recording
     await _start();
   }
 
@@ -389,6 +370,16 @@ class _DatingAudioQuestionScreenState
     } finally {
       setState(() => _busy = false);
     }
+  }
+
+  Future<void> _pause() async {
+    try {
+      await _recorder.pause();
+      _timer?.cancel();
+      setState(() {
+        _isPaused = true;
+      });
+    } catch (_) {}
   }
 
   Future<void> _resume() async {
@@ -652,13 +643,10 @@ class _RecordButton extends StatelessWidget {
     IconData icon;
 
     if (isRecording) {
-      // During recording: show stop icon (stop is the primary action)
-      icon = Icons.stop_circle_rounded;
-    } else if (isPaused) {
-      // If paused (shouldn't happen in current flow): show resume icon
-      icon = Icons.play_arrow_rounded;
+      // During recording: show pause icon if recording, mic icon if paused
+      icon = isPaused ? Icons.mic_rounded : Icons.pause_rounded;
     } else {
-      // Initial state or after recording: show record icon (mic)
+      // Initial state or after recording: show record icon
       icon = Icons.mic_rounded;
     }
 
@@ -752,37 +740,32 @@ class _CircleIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final enabled = onTap != null;
-    return SizedBox(
-      height: 86,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          InkWell(
-            onTap: onTap,
-            borderRadius: BorderRadius.circular(999),
-            child: Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color:
-                    enabled
-                        ? AppColors.surface
-                        : AppColors.surface.withOpacity(0.6),
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.getBorder(context)),
-              ),
-              child: Icon(
-                icon,
-                size: 22,
-                color: enabled ? AppColors.textPrimary : AppColors.textMuted,
-              ),
+    return Column(
+      children: [
+        InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(999),
+          child: Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color:
+                  enabled
+                      ? AppColors.surface
+                      : AppColors.surface.withOpacity(0.6),
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.border),
+            ),
+            child: Icon(
+              icon,
+              size: 22,
+              color: enabled ? AppColors.textPrimary : AppColors.textMuted,
             ),
           ),
-          const SizedBox(height: 4),
-          Text(label, style: AppTextStyles.caption.copyWith(fontSize: 12)),
-          const SizedBox(height: 2),
-        ],
-      ),
+        ),
+        const SizedBox(height: 4),
+        Text(label, style: AppTextStyles.caption.copyWith(fontSize: 12)),
+      ],
     );
   }
 }

@@ -426,4 +426,37 @@ class AppColors {
         ? dividerLight
         : divider;
   }
+
+  /// Get muted/tertiary text color based on current theme
+  static Color getTextMuted(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? textMutedLight
+        : textMuted;
+  }
+
+  /// Get text color on dark backgrounds (always white/light in dark mode, dark in light mode)
+  static Color getTextOnDark(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? textPrimaryLight
+        : Colors.white;
+  }
+
+  /// Get text color on primary/brand color backgrounds (always white/light)
+  static Color getTextOnPrimary(BuildContext context) {
+    return Colors.white;
+  }
+
+  /// Get overlay/semi-transparent dark color based on theme
+  static Color getOverlayDark(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? Colors.black.withOpacity(0.4)
+        : Colors.black.withOpacity(0.6);
+  }
+
+  /// Get overlay/semi-transparent light color based on theme
+  static Color getOverlayLight(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? Colors.black.withOpacity(0.05)
+        : Colors.white.withOpacity(0.1);
+  }
 }

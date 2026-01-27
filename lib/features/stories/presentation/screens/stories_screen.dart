@@ -197,9 +197,14 @@ class _StoryActionsCard extends ConsumerWidget {
 
     final liked = controller.isLiked(story.id);
     final likeCount = reactions.engagementByStoryId[story.id]?.likeCount ?? 0;
-    final commentsCount =
-        reactions.engagementByStoryId[story.id]?.commentCount ??
+    final engagementCommentCount =
+        reactions.engagementByStoryId[story.id]?.commentCount;
+    final actualCommentCount =
         (reactions.commentsByStoryId[story.id] ?? const []).length;
+    final commentsCount =
+        (engagementCommentCount == null || engagementCommentCount < 0)
+            ? actualCommentCount
+            : engagementCommentCount;
 
     return Card(
       child: Padding(

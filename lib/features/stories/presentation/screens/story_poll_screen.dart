@@ -341,7 +341,10 @@ class _ResultsView extends StatelessWidget {
             children: [
               ...poll.options.map((o) {
                 final c = counts[o.id] ?? 0;
-                final pct = (c / safeTotal) * 100;
+                final pct =
+                    safeTotal > 0
+                        ? ((c / safeTotal) * 100).clamp(0.0, 100.0)
+                        : 0.0;
                 final isMine = o.id == votedOptionId;
 
                 return Padding(

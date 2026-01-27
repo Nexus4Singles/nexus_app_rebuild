@@ -592,7 +592,7 @@ class ChatsScreen extends ConsumerWidget {
   }
 }
 
-class _ChatRow extends StatelessWidget {
+class _ChatRow extends StatefulWidget {
   final String name;
   final String message;
   final String time;
@@ -610,101 +610,290 @@ class _ChatRow extends StatelessWidget {
   });
 
   @override
+  State<_ChatRow> createState() => _ChatRowState();
+}
+
+class _ChatRowState extends State<_ChatRow>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _hoverController;
+  late Animation<double> _hoverScale;
+  late Animation<double> _shadowElev;
+
+  @override
+  void initState() {
+    super.initState();
+    _hoverController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+    _hoverScale = Tween<double>(
+      begin: 1.0,
+      end: 0.98,
+    ).animate(CurvedAnimation(parent: _hoverController, curve: Curves.easeOut));
+    _shadowElev = Tween<double>(
+      begin: 0,
+      end: 8,
+    ).animate(CurvedAnimation(parent: _hoverController, curve: Curves.easeOut));
+  }
+
+  @override
+  void dispose() {
+    _hoverController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final url = (avatarUrl ?? '').trim();
+    final url = (widget.avatarUrl ?? '').trim();
+    final initials = _getInitials(widget.name);
 
-    final Widget avatar =
-        url.isNotEmpty
-            ? CircleAvatar(
-              radius: 28,
-              backgroundImage: NetworkImage(url),
-              backgroundColor: AppColors.border,
-            )
-            : CircleAvatar(
-              radius: 28,
-              backgroundColor: AppColors.primary.withOpacity(0.1),
-              child: Icon(Icons.person, color: AppColors.primary, size: 28),
-            );
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          padding: const EdgeInsets.all(16),
+    final Widget avatar = Stack(
+      children: [
+        // Avatar background
+        Container(
           decoration: BoxDecoration(
-            color: AppColors.getSurface(context),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: AppColors.getBorder(context).withOpacity(0.5),
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: _getAvatarColors(initials),
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.02),
+                color: AppColors.primary.withOpacity(0.15),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
             ],
           ),
-          child: Row(
-            children: [
-              avatar,
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            name,
-                            style: AppTextStyles.titleMedium.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          time,
-                          style: AppTextStyles.labelSmall.copyWith(
-                            color: AppColors.getTextSecondary(context),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      message,
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color:
-                            unread
-                                ? AppColors.textPrimary
-                                : AppColors.textSecondary,
-                        fontWeight:
-                            unread ? FontWeight.w600 : FontWeight.normal,
-                        height: 1.4,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(28),
+            child:
+                url.isNotEmpty
+                    ? Image.network(
+                      url,
+                      fit: BoxFit.cover,
+                      width: 56,
+                      height: 56,
+                      errorBuilder:
+                          (_, __, ___) => _buildInitialAvatar(initials),
+                    )
+                    : _buildInitialAvatar(initials),
+          ),
+        ),
+        // Online indicator
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: Container(
+            width: 16,
+            height: 16,
+            decoration: BoxDecoration(
+              color: AppColors.success,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: AppColors.getSurface(context),
+                width: 2,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.success.withOpacity(0.4),
+                  blurRadius: 6,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+
+    return AnimatedBuilder(
+      animation: _hoverController,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _hoverScale.value,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: widget.onTap,
+              onHover: (isHover) {
+                if (isHover) {
+                  _hoverController.forward();
+                } else {
+                  _hoverController.reverse();
+                }
+              },
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
+                decoration: BoxDecoration(
+                  color:
+                      widget.unread
+                          ? AppColors.primary.withOpacity(0.06)
+                          : AppColors.getSurface(context),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color:
+                        widget.unread
+                            ? AppColors.primary.withOpacity(0.15)
+                            : AppColors.getBorder(context).withOpacity(0.4),
+                    width: widget.unread ? 1.5 : 1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(
+                        0.03 * _shadowElev.value / 8,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                      blurRadius: 8 * (_shadowElev.value / 8),
+                      offset: Offset(0, 2 * (_shadowElev.value / 8)),
                     ),
                   ],
                 ),
-              ),
-              if (unread) ...[
-                const SizedBox(width: 12),
-                Container(
-                  width: 12,
-                  height: 12,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary,
-                    shape: BoxShape.circle,
-                  ),
+                child: Row(
+                  children: [
+                    avatar,
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Name and time row
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  widget.name,
+                                  style: AppTextStyles.titleMedium.copyWith(
+                                    fontWeight:
+                                        widget.unread
+                                            ? FontWeight.w700
+                                            : FontWeight.w600,
+                                    fontSize: 16,
+                                    letterSpacing: 0.3,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                widget.time,
+                                style: AppTextStyles.labelSmall.copyWith(
+                                  color: AppColors.getTextSecondary(context),
+                                  fontSize: 12,
+                                  fontWeight:
+                                      widget.unread
+                                          ? FontWeight.w600
+                                          : FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 5),
+                          // Message preview
+                          Container(
+                            constraints: const BoxConstraints(maxHeight: 40),
+                            child: Text(
+                              widget.message,
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color:
+                                    widget.unread
+                                        ? AppColors.getTextPrimary(context)
+                                        : AppColors.getTextSecondary(context),
+                                fontWeight:
+                                    widget.unread
+                                        ? FontWeight.w500
+                                        : FontWeight.normal,
+                                height: 1.3,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (widget.unread) ...[
+                      const SizedBox(width: 12),
+                      ScaleTransition(
+                        scale: Tween<double>(begin: 0.8, end: 1.0).animate(
+                          CurvedAnimation(
+                            parent: _hoverController,
+                            curve: Curves.elasticOut,
+                          ),
+                        ),
+                        child: Container(
+                          width: 14,
+                          height: 14,
+                          decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.primary.withOpacity(0.3),
+                                blurRadius: 6,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
-              ],
-            ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  String _getInitials(String name) {
+    final parts = name.trim().split(' ');
+    if (parts.isEmpty) return '?';
+    if (parts.length == 1) return parts[0][0].toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+
+  List<Color> _getAvatarColors(String initials) {
+    final colors = [
+      [const Color(0xFF667EEA), const Color(0xFF764BA2)],
+      [const Color(0xFFF093FB), const Color(0xFFF5576C)],
+      [const Color(0xFF4facfe), const Color(0xFF00f2fe)],
+      [const Color(0xFFFA709A), const Color(0xFFFECE34)],
+      [const Color(0xFF30cfd0), const Color(0xFF330867)],
+      [const Color(0xFFa8edea), const Color(0xFFFED6E3)],
+      [const Color(0xFFFF9A56), const Color(0xFFFF6A88)],
+      [const Color(0xFF5ef8d9), const Color(0xFF3d84e7)],
+    ];
+    final hash = initials.codeUnitAt(0) % colors.length;
+    return colors[hash];
+  }
+
+  Widget _buildInitialAvatar(String initials) {
+    return Container(
+      width: 56,
+      height: 56,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: _getAvatarColors(initials),
+        ),
+      ),
+      child: Center(
+        child: Text(
+          initials,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+            fontSize: 20,
+            letterSpacing: 0.5,
           ),
         ),
       ),

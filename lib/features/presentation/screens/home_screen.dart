@@ -412,7 +412,9 @@ class _PremiumCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border:
             gradient == null
-                ? Border.all(color: AppColors.getBorder(context).withOpacity(0.5))
+                ? Border.all(
+                  color: AppColors.getBorder(context).withOpacity(0.5),
+                )
                 : null,
         boxShadow: [
           BoxShadow(
@@ -453,10 +455,12 @@ class _StoryOfWeekCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.getSurface(context),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.getBorder(context).withOpacity(0.5)),
+                border: Border.all(
+                  color: AppColors.getBorder(context).withOpacity(0.5),
+                ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
+                    color: AppColors.getOverlayLight(context),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -855,7 +859,9 @@ class _InfoChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.getBorder(context).withOpacity(0.3)),
+        border: Border.all(
+          color: AppColors.getBorder(context).withOpacity(0.3),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

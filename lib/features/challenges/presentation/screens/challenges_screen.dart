@@ -147,18 +147,29 @@ class _TagChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.08),
+        color:
+            isDark
+                ? AppColors.primary.withOpacity(0.35)
+                : AppColors.primary.withOpacity(0.08),
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: AppColors.primary.withOpacity(0.22)),
+        border: Border.all(
+          color:
+              isDark
+                  ? AppColors.primary.withOpacity(0.70)
+                  : AppColors.primary.withOpacity(0.22),
+        ),
       ),
       child: Text(
         label,
         style: AppTextStyles.bodySmall.copyWith(
           fontWeight: FontWeight.w900,
-          color: AppColors.primary,
+          color:
+              isDark ? AppColors.primary.withOpacity(1.0) : AppColors.primary,
         ),
       ),
     );
@@ -354,13 +365,24 @@ class _ClassyJourneyListCard extends ConsumerWidget {
               width: 42,
               height: 42,
               decoration: BoxDecoration(
-                color: tint.withOpacity(0.12),
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? tint.withOpacity(0.30)
+                        : tint.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: tint.withOpacity(0.22)),
+                border: Border.all(
+                  color:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? tint.withOpacity(0.65)
+                          : tint.withOpacity(0.22),
+                ),
               ),
               child: Icon(
                 iconFromKey(_iconKeyForJourney(journey)),
-                color: tint,
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? tint.withOpacity(1.0)
+                        : tint,
                 size: 20,
               ),
             ),

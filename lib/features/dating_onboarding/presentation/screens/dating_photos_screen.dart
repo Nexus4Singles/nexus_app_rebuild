@@ -10,10 +10,6 @@ import 'package:nexus_app_min_test/core/storage/providers/media_storage_provider
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
 import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
-import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
-import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatingPhotosScreen extends ConsumerStatefulWidget {
   const DatingPhotosScreen({super.key});
@@ -66,10 +62,10 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
     final maxReached = _photoPaths.length >= _maxPhotos;
 
     return Scaffold(
-      backgroundColor: AppColors.getBackground(context),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.getBackground(context),
-        surfaceTintColor: AppColors.getBackground(context),
+        backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
         elevation: 0,
         titleSpacing: 0,
         leading: IconButton(
@@ -91,7 +87,7 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
                 const _ProgressHeader(
                   title: 'Add Photos',
                   subtitle:
-                      'Add at least 2 Photos of yourself. We highly recommend uploading your best pictures because first impressions really matter. Profiles with \nAI-generated or indecent pictures will not be approved.',
+                      'Add at least 2 Photos of yourself. We highly recommend uploading your best pictures because first impressions really matter. Profiles with AI-generated or indecent pictures will not be approved.',
                 ),
                 const SizedBox(height: 12),
 
@@ -225,12 +221,22 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
     setState(() => _busy = true);
 
     try {
-      debugPrint(
-        '[Photos] Starting upload for ${_photoPaths.length} photos...',
-      );
+      // Check if we already uploaded these exact photos
+      final draft = ref.read(datingOnboardingDraftProvider);
+      final currentPhotoPaths = List<String>.from(_photoPaths);
+      final draftPhotoPaths = List<String>.from(draft.photoPaths);
+
+      // If the current photos match the draft photos, skip upload
+      if (currentPhotoPaths.length == draftPhotoPaths.length &&
+          currentPhotoPaths.every((path) => draftPhotoPaths.contains(path))) {
+        debugPrint('[Photos] Photos already in draft, skipping upload');
+        if (!context.mounted) return;
+        Navigator.of(context).pushNamed('/dating/setup/audio');
+        return;
+      }
+
       debugPrint('[Photos] Uploading ${_photoPaths.length} photos...');
       final storage = ref.read(mediaStorageProvider);
-      final uploadedUrls = <String>[];
 
       for (var i = 0; i < _photoPaths.length; i++) {
         final path = _photoPaths[i];
@@ -242,7 +248,6 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
             localPath: path,
             objectKey: key,
           );
-          uploadedUrls.add(publicUrl);
           debugPrint(
             '[Photos] Photo ${i + 1} uploaded successfully: $publicUrl',
           );
@@ -254,49 +259,6 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
       }
 
       debugPrint('[Photos] All photos uploaded successfully');
-
-      // Update draft with new uploaded photo URLs (always overwrite)
-      ref
-          .read(datingOnboardingDraftProvider.notifier)
-          .setPhotos(List.of(_photoPaths));
-
-      // Persist photo URLs to Firestore under users/{uid}.dating.photos
-      try {
-        final ready = ref.read(firebaseReadyProvider);
-        final fs = ref.read(firestoreInstanceProvider);
-        final uid = FirebaseAuth.instance.currentUser?.uid;
-
-        debugPrint(
-          '[Photos] 🔍 Firebase ready: $ready, Firestore: ${fs != null}, UID: $uid',
-        );
-        debugPrint('[Photos] 🔍 Uploaded URLs to save: $uploadedUrls');
-
-        if (ready && fs != null && uid != null) {
-          final payload = {
-            'dating': {
-              'photos': uploadedUrls,
-              'profile': {
-                'profileUrl':
-                    uploadedUrls.isNotEmpty ? uploadedUrls.first : null,
-              },
-            },
-          };
-          debugPrint('[Photos] 🔍 Firestore payload: $payload');
-
-          await fs
-              .collection('users')
-              .doc(uid)
-              .set(payload, SetOptions(merge: true));
-          debugPrint('[Photos] ✅ Saved photo URLs to Firestore for $uid');
-        } else {
-          debugPrint(
-            '[Photos] ❌ Skipped Firestore save - ready: $ready, fs: ${fs != null}, uid: $uid',
-          );
-        }
-      } catch (e, stackTrace) {
-        debugPrint('[Photos] ❌ Firestore save failed: $e');
-        debugPrint('[Photos] Stack trace: $stackTrace');
-      }
       if (!context.mounted) return;
       Navigator.of(context).pushNamed('/dating/setup/audio');
     } catch (e) {
@@ -327,7 +289,7 @@ class _ProgressHeader extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           subtitle,
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.getTextSecondary(context)),
+          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
         ),
       ],
     );
@@ -347,22 +309,24 @@ class _PhotoGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.only(bottom: 8),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-      ),
-      itemCount: photoPaths.length + 1,
-      itemBuilder: (context, i) {
-        if (i == photoPaths.length) {
-          return _AddTile(onTap: onAdd);
-        }
+    return Expanded(
+      child: GridView.builder(
+        padding: const EdgeInsets.only(bottom: 8),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+        ),
+        itemCount: photoPaths.length + 1,
+        itemBuilder: (context, i) {
+          if (i == photoPaths.length) {
+            return _AddTile(onTap: onAdd);
+          }
 
-        final path = photoPaths[i];
-        return _PhotoTile(path: path, onRemove: () => onRemove(i));
-      },
+          final path = photoPaths[i];
+          return _PhotoTile(path: path, onRemove: () => onRemove(i));
+        },
+      ),
     );
   }
 }
@@ -378,12 +342,12 @@ class _AddTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(18),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.getSurface(context),
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: AppColors.getBorder(context)),
+          border: Border.all(color: AppColors.border),
         ),
         child: Center(
-          child: Icon(Icons.add_a_photo_outlined, color: AppColors.getTextSecondary(context)),
+          child: Icon(Icons.add_a_photo_outlined, color: AppColors.textMuted),
         ),
       ),
     );
@@ -415,18 +379,18 @@ class _PhotoTile extends StatelessWidget {
                       cacheWidth: 500,
                       errorBuilder:
                           (_, __, ___) => Container(
-                            color: AppColors.getSurface(context),
+                            color: AppColors.surface,
                             child: Icon(
                               Icons.broken_image,
-                              color: AppColors.getTextSecondary(context),
+                              color: AppColors.textMuted,
                             ),
                           ),
                     )
                     : Container(
-                      color: AppColors.getSurface(context),
+                      color: AppColors.surface,
                       child: Icon(
                         Icons.broken_image,
-                        color: AppColors.getTextSecondary(context),
+                        color: AppColors.textMuted,
                       ),
                     ),
           ),

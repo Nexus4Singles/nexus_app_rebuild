@@ -61,6 +61,13 @@ class _RootApp extends ConsumerWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       onGenerateRoute: onGenerateRoute,
+      builder: (context, child) {
+        final scheme = Theme.of(context).colorScheme;
+        return DefaultTextStyle(
+          style: TextStyle(color: scheme.onSurface),
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       home: const AppLaunchGate(),
     );
   }

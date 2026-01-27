@@ -223,11 +223,11 @@
     "relationshipDistanceFilters": [
       "Yes",
       "No",
-      "Any"
+      "Any is fine"
     ],
     "maritalStatusFilters": [
       "Never Married",
-      "Any Status"
+      "Any Status is fine"
     ],
     "hasKidsFilters": [
       "No kids",

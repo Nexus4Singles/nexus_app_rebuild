@@ -1075,7 +1075,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
                           const SizedBox(height: 8),
                           Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.location_on_rounded,
                                 color: AppColors.getTextSecondary(context),
                                 size: 18,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'app_colors.dart';
 
 /// Nexus 2.0 Typography System
+/// Colors removed to allow theme system to control text colors
 class AppTextStyles {
   AppTextStyles._();
 
@@ -13,7 +13,6 @@ class AppTextStyles {
     fontSize: 32,
     fontWeight: FontWeight.bold,
     height: 1.2,
-    color: AppColors.textPrimary,
     letterSpacing: -0.5,
   );
 
@@ -22,7 +21,6 @@ class AppTextStyles {
     fontSize: 28,
     fontWeight: FontWeight.bold,
     height: 1.25,
-    color: AppColors.textPrimary,
     letterSpacing: -0.3,
   );
 
@@ -31,7 +29,6 @@ class AppTextStyles {
     fontSize: 24,
     fontWeight: FontWeight.w600,
     height: 1.3,
-    color: AppColors.textPrimary,
   );
 
   // Headline Styles
@@ -40,7 +37,6 @@ class AppTextStyles {
     fontSize: 22,
     fontWeight: FontWeight.w600,
     height: 1.3,
-    color: AppColors.textPrimary,
   );
 
   static const TextStyle headlineMedium = TextStyle(
@@ -48,7 +44,6 @@ class AppTextStyles {
     fontSize: 20,
     fontWeight: FontWeight.w600,
     height: 1.35,
-    color: AppColors.textPrimary,
   );
 
   static const TextStyle headlineSmall = TextStyle(
@@ -56,7 +51,6 @@ class AppTextStyles {
     fontSize: 18,
     fontWeight: FontWeight.w600,
     height: 1.4,
-    color: AppColors.textPrimary,
   );
 
   // Title Styles
@@ -65,7 +59,6 @@ class AppTextStyles {
     fontSize: 18,
     fontWeight: FontWeight.w500,
     height: 1.4,
-    color: AppColors.textPrimary,
   );
 
   static const TextStyle titleMedium = TextStyle(
@@ -73,7 +66,6 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.w500,
     height: 1.4,
-    color: AppColors.textPrimary,
   );
 
   static const TextStyle titleSmall = TextStyle(
@@ -81,7 +73,6 @@ class AppTextStyles {
     fontSize: 14,
     fontWeight: FontWeight.w500,
     height: 1.4,
-    color: AppColors.textPrimary,
   );
 
   // Body Styles
@@ -90,7 +81,6 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.normal,
     height: 1.5,
-    color: AppColors.textPrimary,
   );
 
   static const TextStyle bodyMedium = TextStyle(
@@ -98,7 +88,6 @@ class AppTextStyles {
     fontSize: 14,
     fontWeight: FontWeight.normal,
     height: 1.5,
-    color: AppColors.textPrimary,
   );
 
   static const TextStyle bodySmall = TextStyle(
@@ -106,7 +95,6 @@ class AppTextStyles {
     fontSize: 12,
     fontWeight: FontWeight.normal,
     height: 1.5,
-    color: AppColors.textSecondary,
   );
 
   // Label Styles
@@ -115,7 +103,6 @@ class AppTextStyles {
     fontSize: 14,
     fontWeight: FontWeight.w500,
     height: 1.4,
-    color: AppColors.textPrimary,
     letterSpacing: 0.1,
   );
 
@@ -124,7 +111,6 @@ class AppTextStyles {
     fontSize: 12,
     fontWeight: FontWeight.w500,
     height: 1.4,
-    color: AppColors.textSecondary,
     letterSpacing: 0.5,
   );
 
@@ -133,7 +119,6 @@ class AppTextStyles {
     fontSize: 10,
     fontWeight: FontWeight.w500,
     height: 1.4,
-    color: AppColors.textTertiary,
     letterSpacing: 0.5,
   );
 
@@ -168,7 +153,6 @@ class AppTextStyles {
     fontSize: 12,
     fontWeight: FontWeight.normal,
     height: 1.4,
-    color: AppColors.textTertiary,
   );
 
   static const TextStyle overline = TextStyle(
@@ -176,7 +160,6 @@ class AppTextStyles {
     fontSize: 10,
     fontWeight: FontWeight.w600,
     height: 1.4,
-    color: AppColors.textTertiary,
     letterSpacing: 1.5,
   );
 
@@ -186,7 +169,6 @@ class AppTextStyles {
     fontSize: 24,
     fontWeight: FontWeight.bold,
     height: 1.3,
-    color: AppColors.textPrimary,
   );
 
   static const TextStyle storySubtitle = TextStyle(
@@ -194,7 +176,6 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.normal,
     height: 1.5,
-    color: AppColors.textSecondary,
   );
 
   static const TextStyle storyParagraph = TextStyle(
@@ -202,7 +183,6 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.normal,
     height: 1.7,
-    color: AppColors.textPrimary,
   );
 
   static const TextStyle storyQuote = TextStyle(
@@ -211,7 +191,6 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
     height: 1.6,
     fontStyle: FontStyle.italic,
-    color: AppColors.primary,
   );
 
   static const TextStyle storyHeading = TextStyle(
@@ -219,7 +198,6 @@ class AppTextStyles {
     fontSize: 18,
     fontWeight: FontWeight.w600,
     height: 1.4,
-    color: AppColors.textPrimary,
   );
 
   // Assessment Styles
@@ -228,7 +206,6 @@ class AppTextStyles {
     fontSize: 18,
     fontWeight: FontWeight.w500,
     height: 1.5,
-    color: AppColors.textPrimary,
   );
 
   static const TextStyle assessmentOption = TextStyle(
@@ -236,7 +213,6 @@ class AppTextStyles {
     fontSize: 15,
     fontWeight: FontWeight.normal,
     height: 1.5,
-    color: AppColors.textPrimary,
   );
 
   // Challenge/Journey Styles
@@ -245,7 +221,6 @@ class AppTextStyles {
     fontSize: 20,
     fontWeight: FontWeight.w600,
     height: 1.3,
-    color: AppColors.textPrimary,
   );
 
   static const TextStyle sessionPrompt = TextStyle(
@@ -253,7 +228,6 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.normal,
     height: 1.6,
-    color: AppColors.textPrimary,
   );
 
   // Helper method to create custom styles
@@ -269,7 +243,7 @@ class AppTextStyles {
       fontFamily: _fontFamily,
       fontSize: fontSize ?? 14,
       fontWeight: fontWeight ?? FontWeight.normal,
-      color: color ?? AppColors.textPrimary,
+      color: color,
       height: height ?? 1.5,
       letterSpacing: letterSpacing,
       fontStyle: fontStyle,
