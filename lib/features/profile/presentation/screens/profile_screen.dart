@@ -1877,7 +1877,7 @@ class _Section extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
@@ -1908,7 +1908,7 @@ class _Section extends ConsumerWidget {
               ),
             ),
           ],
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           child,
         ],
       ),
@@ -2678,7 +2678,7 @@ class _GalleryGrid extends StatelessWidget {
     if (photos.isEmpty) {
       return Text(
         'No photos added yet.',
-        style: AppTextStyles.bodyMedium.copyWith(
+        style: AppTextStyles.bodySmall.copyWith(
           color: AppColors.textSecondary,
         ),
       );
@@ -2691,15 +2691,15 @@ class _GalleryGrid extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: items.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        childAspectRatio: 0.82,
+        crossAxisCount: 2,
+        mainAxisSpacing: 6,
+        crossAxisSpacing: 6,
+        childAspectRatio: 1.0,
       ),
       itemBuilder: (context, i) {
         final url = items[i];
         return ClipRRect(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           child: Container(
             color: Colors.black12,
             child: GestureDetector(
@@ -3509,14 +3509,14 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
         throw StateError('Firebase not ready. Please try again.');
       }
 
-      // Normalize photos: remove duplicates, remove empty, enforce max 4
+      // Normalize photos: remove duplicates, remove empty, enforce max 6
       final seen = <String>{};
       final cleanPhotos = <String>[];
       for (final p in _photos) {
         final v = p.trim();
         if (v.isEmpty) continue;
         if (seen.add(v)) cleanPhotos.add(v);
-        if (cleanPhotos.length == 4) break;
+        if (cleanPhotos.length == 6) break;
       }
 
       // Upload any new local photos to Spaces; keep existing remote URLs intact
@@ -3724,10 +3724,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
                   onAddPhoto: () async {
                     final service = MediaService();
 
-                    if (_photos.length >= 4) {
+                    if (_photos.length >= 6) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('You can only add up to 4 photos.'),
+                          content: Text('You can only add up to 6 photos.'),
                         ),
                       );
                       return;
@@ -3772,8 +3772,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
                     }
 
                     _photos.add(path);
-                    if (_photos.length > 4) {
-                      _photos = _photos.take(4).toList();
+                    if (_photos.length > 6) {
+                      _photos = _photos.take(6).toList();
                     }
 
                     _markDirty();
@@ -3857,7 +3857,7 @@ class _PhotosEditor extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final items = photos.take(4).toList();
+    final items = photos.take(6).toList();
     final showAdd = items.length < 4;
 
     return Padding(
@@ -4082,7 +4082,7 @@ class _AboutEditor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
