@@ -65,10 +65,10 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         title: Text(
@@ -109,7 +109,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               Text(
                 'Enter your email and we\'ll send you a link to reset your password',
                 style: AppTextStyles.bodyLarge.copyWith(
-                  color: AppColors.textSecondary,
+                  color: AppColors.getTextSecondary(context),
                   height: 1.5,
                 ),
               ),
@@ -123,18 +123,18 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   labelText: 'Email',
                   hintText: 'your.email@example.com',
                   labelStyle: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textMuted,
+                    color: AppColors.getTextSecondary(context),
                   ),
                   filled: true,
-                  fillColor: AppColors.surface,
+                  fillColor: AppColors.getSurface(context),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: AppColors.getBorder(context)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide(
-                      color: AppColors.border.withOpacity(0.5),
+                      color: AppColors.getBorder(context).withOpacity(0.5),
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(

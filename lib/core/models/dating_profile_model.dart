@@ -484,7 +484,7 @@ class SearchFilterOptions {
     'South Africa',
   ];
 
-  static const List<String> incomeOptions = ['Any', 'Yes', 'No', 'Sometimes'];
+  static const List<String> incomeOptions = ['Any', 'Yes', 'No'];
 
   static const List<String> yesNoOptions = ['Any', 'Yes', 'No'];
 

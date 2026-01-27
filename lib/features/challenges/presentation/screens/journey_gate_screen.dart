@@ -65,8 +65,8 @@ class _JourneyGateScreenState extends ConsumerState<JourneyGateScreen> {
       orElse: () => false,
     );
     if (!isSignedIn) {
-      return const Scaffold(
-        backgroundColor: AppColors.background,
+      return Scaffold(
+        backgroundColor: AppColors.getBackground(context),
         body: Center(child: CircularProgressIndicator()),
       );
     }
@@ -77,11 +77,11 @@ class _JourneyGateScreenState extends ConsumerState<JourneyGateScreen> {
 
     if (journey == null) {
       return Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
           title: const Text('Activity'),
-          backgroundColor: AppColors.background,
-          surfaceTintColor: AppColors.background,
+          backgroundColor: AppColors.getBackground(context),
+          surfaceTintColor: AppColors.getBackground(context),
           elevation: 0,
         ),
         body: const Center(child: Text('Journey not found')),
@@ -127,7 +127,7 @@ class _GateLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       body: const Center(child: CircularProgressIndicator()),
     );
   }
@@ -147,10 +147,10 @@ class _LockedView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         title: Text(
@@ -177,7 +177,7 @@ class _LockedView extends ConsumerWidget {
             Text(
               'This activity is part of a paid Journey. Unlock once to access all activities.',
               style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.textMuted,
+                color: AppColors.getTextSecondary(context),
                 height: 1.35,
               ),
             ),
@@ -192,7 +192,7 @@ class _LockedView extends ConsumerWidget {
                       onPressed: () => Navigator.of(context).pop(),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.textPrimary,
-                        side: BorderSide(color: AppColors.border),
+                        side: BorderSide(color: AppColors.getBorder(context)),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),

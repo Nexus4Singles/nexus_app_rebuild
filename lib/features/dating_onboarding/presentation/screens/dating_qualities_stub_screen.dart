@@ -40,9 +40,9 @@ class _DatingQualitiesStubScreenState
     final listsAsync = ref.watch(onboardingListsProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -108,7 +108,7 @@ class _DatingQualitiesStubScreenState
           const SizedBox(height: 10),
           Text(
             'You can update this later.',
-            style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+            style: AppTextStyles.caption.copyWith(color: AppColors.getTextSecondary(context)),
           ),
         ],
       ),
@@ -174,7 +174,7 @@ class _ProgressHeader extends StatelessWidget {
                   Text(
                     subtitle,
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textMuted,
+                      color: AppColors.getTextSecondary(context),
                     ),
                   ),
                 ],
@@ -184,9 +184,9 @@ class _ProgressHeader extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.getSurface(context),
                 borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: AppColors.getBorder(context)),
               ),
               child: Text(counter, style: AppTextStyles.labelLarge),
             ),
@@ -207,14 +207,14 @@ class _SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: AppColors.getBorder(context)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
         children: [
-          Icon(Icons.search, color: AppColors.textMuted),
+          Icon(Icons.search, color: AppColors.getTextSecondary(context)),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
@@ -223,7 +223,7 @@ class _SearchField extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: 'Search qualities',
                 hintStyle: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textMuted,
+                  color: AppColors.getTextSecondary(context),
                 ),
                 border: InputBorder.none,
               ),
@@ -235,7 +235,7 @@ class _SearchField extends StatelessWidget {
                 controller.clear();
                 onChanged('');
               },
-              icon: Icon(Icons.close, color: AppColors.textMuted),
+              icon: Icon(Icons.close, color: AppColors.getTextSecondary(context)),
             ),
         ],
       ),
@@ -262,7 +262,7 @@ class _SelectableGrid extends StatelessWidget {
       return Center(
         child: Text(
           'No matches found.',
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
+          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.getTextSecondary(context)),
         ),
       );
     }
@@ -290,7 +290,7 @@ class _SelectableGrid extends StatelessWidget {
               color:
                   isSelected
                       ? AppColors.primary.withOpacity(0.10)
-                      : AppColors.surface,
+                      : AppColors.getSurface(context),
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
                 color: isSelected ? AppColors.primary : AppColors.border,

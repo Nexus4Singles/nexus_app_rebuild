@@ -92,11 +92,11 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
         return false;
       },
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
-          surfaceTintColor: AppColors.background,
+          backgroundColor: AppColors.getBackground(context),
+          surfaceTintColor: AppColors.getBackground(context),
           foregroundColor: AppColors.textPrimary,
           titleSpacing: 0,
           leading: IconButton(
@@ -125,7 +125,7 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
                 Text(
                   'Nexus is for users between the ages of 21 to 70 years',
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.getTextSecondary(context),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -138,9 +138,9 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
                         vertical: 14,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: AppColors.getSurface(context),
                         borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: AppColors.getBorder(context)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.04),
@@ -189,10 +189,10 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
                                             ? AppTextStyles.headlineMedium
                                                 .copyWith(
                                                   fontWeight: FontWeight.w800,
-                                                  color: AppColors.textPrimary,
+                                                  color: AppColors.getTextPrimary(context),
                                                 )
                                             : AppTextStyles.titleLarge.copyWith(
-                                              color: AppColors.textMuted,
+                                              color: AppColors.getTextSecondary(context),
                                             ),
                                     child: Text('$age'),
                                   ),

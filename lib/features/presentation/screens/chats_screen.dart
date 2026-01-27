@@ -93,10 +93,10 @@ class ChatsScreen extends ConsumerWidget {
 
     if (!isSignedIn) {
       return Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
-          backgroundColor: AppColors.background,
-          surfaceTintColor: AppColors.background,
+          backgroundColor: AppColors.getBackground(context),
+          surfaceTintColor: AppColors.getBackground(context),
           elevation: 0,
           titleSpacing: 20,
           title: Text(
@@ -115,9 +115,11 @@ class ChatsScreen extends ConsumerWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: AppColors.getSurface(context),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.border.withOpacity(0.5)),
+                  border: Border.all(
+                    color: AppColors.getBorder(context).withOpacity(0.5),
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.03),
@@ -156,7 +158,7 @@ class ChatsScreen extends ConsumerWidget {
                       'Create an account to send and receive messages.',
                       textAlign: TextAlign.center,
                       style: AppTextStyles.bodyLarge.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.getTextSecondary(context),
                         height: 1.5,
                       ),
                     ),
@@ -196,7 +198,7 @@ class ChatsScreen extends ConsumerWidget {
                               ),
                             ),
                         style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: AppColors.border),
+                          side: BorderSide(color: AppColors.getBorder(context)),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
@@ -206,7 +208,7 @@ class ChatsScreen extends ConsumerWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 16,
-                            color: AppColors.textPrimary,
+                            color: AppColors.getTextPrimary(context),
                           ),
                         ),
                       ),
@@ -223,9 +225,9 @@ class ChatsScreen extends ConsumerWidget {
     // Dating opt-in gate
     if (isSignedIn && !optedIn) {
       return Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.getBackground(context),
           elevation: 0,
           title: Text('Chats', style: AppTextStyles.headlineLarge),
         ),
@@ -237,9 +239,9 @@ class ChatsScreen extends ConsumerWidget {
               constraints: const BoxConstraints(maxWidth: 520),
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.getSurface(context),
                 borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: AppColors.getBorder(context)),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -253,7 +255,7 @@ class ChatsScreen extends ConsumerWidget {
                   Text(
                     'Chats are part of the dating experience. Enable dating in your profile to continue.',
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.getTextSecondary(context),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -277,9 +279,9 @@ class ChatsScreen extends ConsumerWidget {
     // Dating profile completion gate
     if (isSignedIn && !isProfileComplete) {
       return Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.getBackground(context),
           elevation: 0,
           title: Text('Chats', style: AppTextStyles.headlineLarge),
         ),
@@ -291,9 +293,9 @@ class ChatsScreen extends ConsumerWidget {
               constraints: const BoxConstraints(maxWidth: 520),
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.getSurface(context),
                 borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: AppColors.getBorder(context)),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -308,7 +310,7 @@ class ChatsScreen extends ConsumerWidget {
                     'You need a completed dating profile to use chats.',
                     textAlign: TextAlign.center,
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.getTextSecondary(context),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -335,10 +337,10 @@ class ChatsScreen extends ConsumerWidget {
     final conversationsAsync = ref.watch(userConversationsProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 20,
         title: Text(
@@ -389,7 +391,7 @@ class ChatsScreen extends ConsumerWidget {
                             'Start connecting with other members.\nNew conversations will appear here.',
                             textAlign: TextAlign.center,
                             style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.textSecondary,
+                              color: AppColors.getTextSecondary(context),
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -425,7 +427,7 @@ class ChatsScreen extends ConsumerWidget {
                         'Could not load chats.\n${err.toString()}',
                         textAlign: TextAlign.center,
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.textSecondary,
+                          color: AppColors.getTextSecondary(context),
                         ),
                       ),
                     ),
@@ -438,7 +440,7 @@ class ChatsScreen extends ConsumerWidget {
                       child: Text(
                         'Please sign in to view your chats.',
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.textSecondary,
+                          color: AppColors.getTextSecondary(context),
                         ),
                       ),
                     );
@@ -474,7 +476,7 @@ class ChatsScreen extends ConsumerWidget {
                             'Start connecting with other members.\nNew conversations will appear here.',
                             textAlign: TextAlign.center,
                             style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.textSecondary,
+                              color: AppColors.getTextSecondary(context),
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -632,9 +634,11 @@ class _ChatRow extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: AppColors.getSurface(context),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.border.withOpacity(0.5)),
+            border: Border.all(
+              color: AppColors.getBorder(context).withOpacity(0.5),
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.02),
@@ -666,7 +670,7 @@ class _ChatRow extends StatelessWidget {
                         Text(
                           time,
                           style: AppTextStyles.labelSmall.copyWith(
-                            color: AppColors.textMuted,
+                            color: AppColors.getTextSecondary(context),
                           ),
                         ),
                       ],

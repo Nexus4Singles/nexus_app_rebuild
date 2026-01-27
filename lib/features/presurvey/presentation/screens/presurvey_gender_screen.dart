@@ -89,9 +89,9 @@ class PresurveyGenderScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         foregroundColor: AppColors.textPrimary,
         centerTitle: true,
@@ -115,7 +115,7 @@ class PresurveyGenderScreen extends ConsumerWidget {
                 child: Text(
                   'This helps us personalize your experience.',
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textMuted,
+                    color: AppColors.getTextSecondary(context),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -266,7 +266,7 @@ class PresurveyGenderScreen extends ConsumerWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          side: BorderSide(color: AppColors.border),
+                          side: BorderSide(color: AppColors.getBorder(context)),
                         ),
                         child: Text('Log In', style: AppTextStyles.labelLarge),
                       ),
@@ -301,7 +301,7 @@ class PresurveyGenderScreen extends ConsumerWidget {
                         child: Text(
                           'Continue as Guest',
                           style: AppTextStyles.labelLarge.copyWith(
-                            color: AppColors.textMuted,
+                            color: AppColors.getTextSecondary(context),
                             decoration: TextDecoration.underline,
                           ),
                         ),
@@ -342,7 +342,7 @@ class _OptionButton extends StatelessWidget {
           color:
               selected
                   ? AppColors.primary.withOpacity(0.12)
-                  : AppColors.surface,
+                  : AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: selected ? AppColors.primary : AppColors.border,

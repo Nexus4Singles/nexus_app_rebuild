@@ -120,10 +120,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         title: Text(
@@ -150,7 +150,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               Text(
                 'Sign in to continue your journey',
                 style: AppTextStyles.bodyLarge.copyWith(
-                  color: AppColors.textSecondary,
+                  color: AppColors.getTextSecondary(context),
                 ),
               ),
               const SizedBox(height: 16),
@@ -177,7 +177,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       child: Text(
                         'New user? Please verify your email first before logging in.',
                         style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.textPrimary,
+                          color: AppColors.getTextPrimary(context),
                           height: 1.4,
                         ),
                       ),
@@ -195,18 +195,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   labelText: 'Email or Username',
                   hintText: 'Enter your email or username',
                   labelStyle: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textMuted,
+                    color: AppColors.getTextSecondary(context),
                   ),
                   filled: true,
-                  fillColor: AppColors.surface,
+                  fillColor: AppColors.getSurface(context),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: AppColors.getBorder(context)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide(
-                      color: AppColors.border.withOpacity(0.5),
+                      color: AppColors.getBorder(context).withOpacity(0.5),
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -225,18 +225,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 decoration: InputDecoration(
                   labelText: 'Password',
                   labelStyle: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textMuted,
+                    color: AppColors.getTextSecondary(context),
                   ),
                   filled: true,
-                  fillColor: AppColors.surface,
+                  fillColor: AppColors.getSurface(context),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: AppColors.getBorder(context)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide(
-                      color: AppColors.border.withOpacity(0.5),
+                      color: AppColors.getBorder(context).withOpacity(0.5),
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -255,7 +255,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       _obscurePassword
                           ? Icons.visibility_outlined
                           : Icons.visibility_off_outlined,
-                      color: AppColors.textMuted,
+                      color: AppColors.getTextSecondary(context),
                     ),
                   ),
                 ),
@@ -326,7 +326,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: OutlinedButton(
                   onPressed: _busy ? null : _continueAsGuest,
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: AppColors.border),
+                    side: BorderSide(color: AppColors.getBorder(context)),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -336,7 +336,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 17,
-                      color: AppColors.textPrimary,
+                      color: AppColors.getTextPrimary(context),
                     ),
                   ),
                 ),

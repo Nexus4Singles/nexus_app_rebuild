@@ -51,9 +51,9 @@ class _DatingContactInfoStubScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -103,7 +103,7 @@ class _DatingContactInfoStubScreenState
             const SizedBox(height: 10),
             Text(
               'At least one contact method is required.',
-              style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+              style: AppTextStyles.caption.copyWith(color: AppColors.getTextSecondary(context)),
             ),
           ],
         ),
@@ -159,7 +159,7 @@ class _ProgressHeader extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           subtitle,
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
+          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.getTextSecondary(context)),
         ),
       ],
     );
@@ -184,9 +184,9 @@ class _InputTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,16 +199,16 @@ class _InputTile extends StatelessWidget {
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textMuted,
+                color: AppColors.getTextSecondary(context),
               ),
               filled: true,
-              fillColor: AppColors.background,
+              fillColor: AppColors.getBackground(context),
               border: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.border),
+                borderSide: BorderSide(color: AppColors.getBorder(context)),
                 borderRadius: BorderRadius.circular(14),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.border),
+                borderSide: BorderSide(color: AppColors.getBorder(context)),
                 borderRadius: BorderRadius.circular(14),
               ),
               focusedBorder: OutlineInputBorder(

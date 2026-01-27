@@ -17,16 +17,16 @@ class SettingsScreen extends ConsumerWidget {
     final isAdmin = isAdminAsync.maybeWhen(data: (v) => v, orElse: () => false);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         centerTitle: false,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new,
             size: 20,
-            color: AppColors.textPrimary,
+            color: AppColors.getTextPrimary(context),
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -153,14 +153,16 @@ class SettingsScreen extends ConsumerWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
-                color: AppColors.surfaceLight,
+                color: AppColors.getSurface(context),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.border.withOpacity(0.3)),
+                border: Border.all(
+                  color: AppColors.getBorder(context).withOpacity(0.3),
+                ),
               ),
               child: Text(
                 'Version 2.0.0',
                 style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.textMuted,
+                  color: AppColors.getTextSecondary(context),
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.5,
                 ),
@@ -190,7 +192,7 @@ class _SectionHeader extends StatelessWidget {
       child: Text(
         title.toUpperCase(),
         style: AppTextStyles.labelMedium.copyWith(
-          color: AppColors.textMuted,
+          color: AppColors.getTextSecondary(context),
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2,
         ),
@@ -211,9 +213,11 @@ class _SettingsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border.withOpacity(0.5)),
+        border: Border.all(
+          color: AppColors.getBorder(context).withOpacity(0.5),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.02),
@@ -289,7 +293,7 @@ class _SettingsTile extends StatelessWidget {
                     Text(
                       subtitle,
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.getTextSecondary(context),
                         height: 1.3,
                       ),
                     ),
@@ -303,7 +307,7 @@ class _SettingsTile extends StatelessWidget {
               trailing ??
                   Icon(
                     Icons.chevron_right,
-                    color: AppColors.textMuted,
+                    color: AppColors.getTextSecondary(context),
                     size: 20,
                   ),
             ],
@@ -323,7 +327,7 @@ class _Divider extends StatelessWidget {
     return Container(
       height: 1,
       margin: const EdgeInsets.only(left: 76),
-      color: AppColors.border.withOpacity(0.3),
+      color: AppColors.getBorder(context).withOpacity(0.3),
     );
   }
 }

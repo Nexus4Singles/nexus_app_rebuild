@@ -77,7 +77,7 @@ class AuthService {
         try {
           final usersRef = firestore.collection('users');
 
-          // Try exact match first (case-sensitive)
+          // Try exact match first (case-sensitive) by username
           print(
             '🔍 DEBUG: Querying exact match for username: "$emailOrUsername"',
           );
@@ -91,17 +91,48 @@ class AuthService {
             '🔍 DEBUG: Exact match query returned ${query.docs.length} documents',
           );
 
-          // If not found, try lowercase (for compatibility)
+          // If not found by username, try displayName
+          if (query.docs.isEmpty) {
+            print('🔍 DEBUG: Username not found, trying displayName...');
+            query =
+                await usersRef
+                    .where('displayName', isEqualTo: emailOrUsername)
+                    .limit(1)
+                    .get();
+            print(
+              '🔍 DEBUG: DisplayName query returned ${query.docs.length} documents',
+            );
+          }
+
+          // If not found, try lowercase username (for compatibility)
           if (query.docs.isEmpty) {
             final lowerUsername = emailOrUsername.toLowerCase();
-            print('🔍 DEBUG: Trying lowercase match: "$lowerUsername"');
+            print(
+              '🔍 DEBUG: Trying lowercase username match: "$lowerUsername"',
+            );
             query =
                 await usersRef
                     .where('username', isEqualTo: lowerUsername)
                     .limit(1)
                     .get();
             print(
-              '🔍 DEBUG: Lowercase query returned ${query.docs.length} documents',
+              '🔍 DEBUG: Lowercase username query returned ${query.docs.length} documents',
+            );
+          }
+
+          // If not found, try lowercase displayName (for compatibility)
+          if (query.docs.isEmpty) {
+            final lowerDisplayName = emailOrUsername.toLowerCase();
+            print(
+              '🔍 DEBUG: Trying lowercase displayName match: "$lowerDisplayName"',
+            );
+            query =
+                await usersRef
+                    .where('displayName', isEqualTo: lowerDisplayName)
+                    .limit(1)
+                    .get();
+            print(
+              '🔍 DEBUG: Lowercase displayName query returned ${query.docs.length} documents',
             );
           }
 

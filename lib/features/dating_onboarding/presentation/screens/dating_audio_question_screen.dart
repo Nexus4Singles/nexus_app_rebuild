@@ -161,9 +161,9 @@ class _DatingAudioQuestionScreenState
         (_recordedDuration >= _minSeconds && !_isRecording);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -199,7 +199,7 @@ class _DatingAudioQuestionScreenState
                     _helperText!,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.caption.copyWith(
-                      color: AppColors.textMuted,
+                      color: AppColors.getTextSecondary(context),
                     ),
                   ),
                 ],
@@ -769,7 +769,7 @@ class _CircleIconButton extends StatelessWidget {
                         ? AppColors.surface
                         : AppColors.surface.withOpacity(0.6),
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: AppColors.getBorder(context)),
               ),
               child: Icon(
                 icon,

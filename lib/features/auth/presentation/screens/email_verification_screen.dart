@@ -174,10 +174,10 @@ class _EmailVerificationScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         title: Text(
@@ -217,7 +217,7 @@ class _EmailVerificationScreenState
             Text(
               'We sent a verification link to',
               style: AppTextStyles.bodyLarge.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.getTextSecondary(context),
               ),
               textAlign: TextAlign.center,
             ),
@@ -234,9 +234,9 @@ class _EmailVerificationScreenState
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.getSurface(context),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: AppColors.getBorder(context)),
               ),
               child: Column(
                 children: [
@@ -252,7 +252,7 @@ class _EmailVerificationScreenState
                         child: Text(
                           'Click the link in the email to verify your account',
                           style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.textSecondary,
+                            color: AppColors.getTextSecondary(context),
                           ),
                         ),
                       ),
@@ -264,14 +264,14 @@ class _EmailVerificationScreenState
                       Icon(
                         Icons.folder_outlined,
                         size: 20,
-                        color: AppColors.textSecondary,
+                        color: AppColors.getTextSecondary(context),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           'Check your spam folder if you don\'t see it in your inbox',
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textSecondary,
+                            color: AppColors.getTextSecondary(context),
                           ),
                         ),
                       ),
@@ -295,7 +295,7 @@ class _EmailVerificationScreenState
                         child: Text(
                           'Checking verification status...',
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textSecondary,
+                            color: AppColors.getTextSecondary(context),
                           ),
                         ),
                       ),
@@ -308,7 +308,7 @@ class _EmailVerificationScreenState
             Text(
               "Didn't receive the email?",
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.getTextSecondary(context),
               ),
             ),
             const SizedBox(height: 12),
@@ -349,7 +349,7 @@ class _EmailVerificationScreenState
               child: Text(
                 'Back to Login',
                 style: AppTextStyles.labelLarge.copyWith(
-                  color: AppColors.textSecondary,
+                  color: AppColors.getTextSecondary(context),
                   decoration: TextDecoration.underline,
                 ),
               ),

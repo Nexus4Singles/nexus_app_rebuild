@@ -18,10 +18,10 @@ class StoriesScreen extends ConsumerWidget {
     const repo = StoryRepository();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 20,
         title: Text(
@@ -83,7 +83,7 @@ class _StoryOfWeekView extends ConsumerWidget {
           child: Text(
             story.intro,
             style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textPrimary,
+              color: AppColors.getTextPrimary(context),
               height: 1.6,
               fontWeight: FontWeight.w400,
             ),
@@ -110,7 +110,7 @@ class _StoryOfWeekView extends ConsumerWidget {
                   ? Text(
                     'Coming soon.',
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.getTextSecondary(context),
                     ),
                   )
                   : Column(
@@ -143,7 +143,7 @@ class _StoryOfWeekView extends ConsumerWidget {
                       ? 'Share your answer (vote to see results).'
                       : 'Create an account to vote and see results.',
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textPrimary,
+                    color: AppColors.getTextPrimary(context),
                   ),
                 ),
               ),
@@ -173,7 +173,9 @@ class _StoryOfWeekView extends ConsumerWidget {
         const SizedBox(height: 8),
         Text(
           'Guests can read stories. Voting/results are for signed-in users.',
-          style: AppTextStyles.labelSmall.copyWith(color: AppColors.textMuted),
+          style: AppTextStyles.labelSmall.copyWith(
+            color: AppColors.getTextSecondary(context),
+          ),
         ),
       ],
     );
@@ -996,9 +998,11 @@ class _Card extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border.withOpacity(0.5)),
+        border: Border.all(
+          color: AppColors.getBorder(context).withOpacity(0.5),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.03),

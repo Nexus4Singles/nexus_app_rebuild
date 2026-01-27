@@ -35,10 +35,10 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
     ];
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         title: Text(
@@ -56,7 +56,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
             Text(
               'Tell us what happened and we\'ll help you out.',
               style: AppTextStyles.bodyLarge.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.getTextSecondary(context),
               ),
             ),
             const SizedBox(height: 12),

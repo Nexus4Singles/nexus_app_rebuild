@@ -66,10 +66,10 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
     final maxReached = _photoPaths.length >= _maxPhotos;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         leading: IconButton(
@@ -327,7 +327,7 @@ class _ProgressHeader extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           subtitle,
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
+          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.getTextSecondary(context)),
         ),
       ],
     );
@@ -378,12 +378,12 @@ class _AddTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(18),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: AppColors.getBorder(context)),
         ),
         child: Center(
-          child: Icon(Icons.add_a_photo_outlined, color: AppColors.textMuted),
+          child: Icon(Icons.add_a_photo_outlined, color: AppColors.getTextSecondary(context)),
         ),
       ),
     );
@@ -415,18 +415,18 @@ class _PhotoTile extends StatelessWidget {
                       cacheWidth: 500,
                       errorBuilder:
                           (_, __, ___) => Container(
-                            color: AppColors.surface,
+                            color: AppColors.getSurface(context),
                             child: Icon(
                               Icons.broken_image,
-                              color: AppColors.textMuted,
+                              color: AppColors.getTextSecondary(context),
                             ),
                           ),
                     )
                     : Container(
-                      color: AppColors.surface,
+                      color: AppColors.getSurface(context),
                       child: Icon(
                         Icons.broken_image,
-                        color: AppColors.textMuted,
+                        color: AppColors.getTextSecondary(context),
                       ),
                     ),
           ),

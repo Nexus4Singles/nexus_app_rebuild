@@ -57,7 +57,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       builder:
           (context) => Container(
             decoration: BoxDecoration(
-              color: AppColors.surface,
+              color: AppColors.getSurface(context),
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(24),
               ),
@@ -70,7 +70,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: AppColors.border,
+                    color: AppColors.getBorder(context),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -85,7 +85,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 Text(
                   'Create an account or log in to search and view dating profiles.',
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.getTextSecondary(context),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -145,10 +145,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
     return DisabledAccountGate(
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
-          backgroundColor: AppColors.background,
-          surfaceTintColor: AppColors.background,
+          backgroundColor: AppColors.getBackground(context),
+          surfaceTintColor: AppColors.getBackground(context),
           elevation: 0,
           titleSpacing: 20,
           title: Text(
@@ -175,7 +175,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 Text(
                   'Select your preferences and explore profiles of Christian singles across the world.',
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.getTextSecondary(context),
                     height: 1.5,
                   ),
                 ),
@@ -388,10 +388,10 @@ class SearchResultsScreen extends ConsumerWidget {
 
     return DisabledAccountGate(
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
-          backgroundColor: AppColors.background,
-          surfaceTintColor: AppColors.background,
+          backgroundColor: AppColors.getBackground(context),
+          surfaceTintColor: AppColors.getBackground(context),
           elevation: 0,
           title: Text('Results', style: AppTextStyles.headlineLarge),
         ),
@@ -404,7 +404,7 @@ class SearchResultsScreen extends ConsumerWidget {
                   (e, _) => Text(
                     'Unable to load results right now. Please try again.',
                     style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textMuted,
+                      color: AppColors.getTextSecondary(context),
                       height: 1.35,
                     ),
                   ),
@@ -430,9 +430,11 @@ class SearchResultsScreen extends ConsumerWidget {
                       child: Container(
                         padding: const EdgeInsets.all(18),
                         decoration: BoxDecoration(
-                          color: AppColors.surface,
+                          color: AppColors.getSurface(context),
                           borderRadius: BorderRadius.circular(18),
-                          border: Border.all(color: AppColors.border),
+                          border: Border.all(
+                            color: AppColors.getBorder(context),
+                          ),
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -441,13 +443,15 @@ class SearchResultsScreen extends ConsumerWidget {
                               height: 48,
                               width: 48,
                               decoration: BoxDecoration(
-                                color: AppColors.background,
+                                color: AppColors.getBackground(context),
                                 borderRadius: BorderRadius.circular(999),
-                                border: Border.all(color: AppColors.border),
+                                border: Border.all(
+                                  color: AppColors.getBorder(context),
+                                ),
                               ),
                               child: Icon(
                                 Icons.search_off_rounded,
-                                color: AppColors.textMuted,
+                                color: AppColors.getTextSecondary(context),
                               ),
                             ),
                             const SizedBox(height: 12),
@@ -457,7 +461,7 @@ class SearchResultsScreen extends ConsumerWidget {
                               subtitle,
                               textAlign: TextAlign.center,
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.textMuted,
+                                color: AppColors.getTextSecondary(context),
                                 height: 1.35,
                               ),
                             ),
@@ -467,7 +471,7 @@ class SearchResultsScreen extends ConsumerWidget {
                                 'Tip: start with 1–2 filters, then narrow down.',
                                 textAlign: TextAlign.center,
                                 style: AppTextStyles.bodySmall.copyWith(
-                                  color: AppColors.textMuted,
+                                  color: AppColors.getTextSecondary(context),
                                   height: 1.35,
                                 ),
                               ),
@@ -537,9 +541,9 @@ class _SearchResultRow extends ConsumerWidget {
         child: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: AppColors.background,
+            color: AppColors.getBackground(context),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: AppColors.getBorder(context)),
           ),
           child: Row(
             children: [
@@ -577,7 +581,7 @@ class _SearchResultRow extends ConsumerWidget {
                       Text(
                         subtitle,
                         style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.textMuted,
+                          color: AppColors.getTextSecondary(context),
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -628,9 +632,9 @@ class _SearchResultRow extends ConsumerWidget {
               ),
 
               const SizedBox(width: 4),
-              const Icon(
+              Icon(
                 Icons.chevron_right_rounded,
-                color: AppColors.textMuted,
+                color: AppColors.getTextSecondary(context),
               ),
             ],
           ),
@@ -649,9 +653,11 @@ class _SectionCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border.withOpacity(0.5)),
+        border: Border.all(
+          color: AppColors.getBorder(context).withOpacity(0.5),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.03),
@@ -692,7 +698,7 @@ class _DropdownTile extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           filled: true,
-          fillColor: AppColors.background,
+          fillColor: AppColors.getBackground(context),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 12,

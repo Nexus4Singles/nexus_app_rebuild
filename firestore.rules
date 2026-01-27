@@ -97,7 +97,11 @@ service cloud.firestore {
       // - Signed-in users can read their own doc.
       // - Signed-in users can read other users ONLY if genders are opposite (male<->female).
       // - Optional admin override via custom claim: isAdmin()
-      allow read: if isSignedIn();
+      // - Unauthenticated users can query username field for login lookup (must be single equality filter)
+      allow read: if isSignedIn() || 
+                     (request.query.fieldFilters.size() == 1 && 
+                      (request.query.fieldFilters[0].field == 'username' ||
+                       request.query.fieldFilters[0].field == 'displayName'));
 
       allow create: if isSignedIn() && request.auth.uid == uid;
 
@@ -244,7 +248,8 @@ match /chats/{chatId} {
 
     match /pollAggregates/{pollId} {
       allow read: if true;
-      allow write: if false;
+      allow create, update: if isSignedIn();
+      allow delete: if false;
     }
 
     match /pollVotes/{pollId} {
@@ -277,7 +282,8 @@ match /chats/{chatId} {
     match /storyEngagement/{storyId} {
       allow read: if true;
       allow create: if isSignedIn();
-      allow update, delete: if false;
+      allow update: if isSignedIn();
+      allow delete: if false;
     }
 
     match /storyComments/{storyId}/comments/{commentId} {
@@ -308,6 +314,20 @@ match /chats/{chatId} {
       allow read: if true;
       // Admin write access only
       allow write: if isAdmin();
+    }
+
+    // ============================================================================
+    // User Reports & Moderation
+    // ============================================================================
+    match /reports/{reportId} {
+      // Admins can read all reports
+      allow read: if isAdmin();
+      
+      // Signed-in users can submit reports
+      allow create: if isSignedIn() && request.resource.data.reporterKey == request.auth.uid;
+      
+      // Only admins can update/delete (for status changes and cleanup)
+      allow update, delete: if isAdmin();
     }
 
     // ============================================================================

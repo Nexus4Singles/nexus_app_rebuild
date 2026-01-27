@@ -9,12 +9,56 @@ import 'package:nexus_app_min_test/core/services/media_service.dart';
 import 'package:nexus_app_min_test/core/providers/service_providers.dart';
 import 'package:nexus_app_min_test/core/services/duplicate_detection_service.dart';
 
-class AdminReviewDetailScreen extends ConsumerWidget {
+class AdminReviewDetailScreen extends ConsumerStatefulWidget {
   final String userId;
   const AdminReviewDetailScreen({super.key, required this.userId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AdminReviewDetailScreen> createState() =>
+      _AdminReviewDetailScreenState();
+}
+
+class _AdminReviewDetailScreenState
+    extends ConsumerState<AdminReviewDetailScreen> {
+  String? _currentlyPlayingUrl;
+  bool _isPlaying = false;
+
+  MediaService get _media => ref.read(mediaServiceProvider);
+
+  Future<void> _togglePlay(String url) async {
+    try {
+      if (_currentlyPlayingUrl == url && _isPlaying) {
+        await _media.pauseAudio();
+        setState(() => _isPlaying = false);
+        return;
+      }
+
+      // If switching tracks, stop then play the new one
+      await _media.stopAudio();
+      await _media.playAudioFromUrl(url);
+      setState(() {
+        _currentlyPlayingUrl = url;
+        _isPlaying = true;
+      });
+    } catch (_) {}
+  }
+
+  Future<void> _stopAll() async {
+    try {
+      await _media.stopAudio();
+    } catch (_) {}
+    if (mounted) setState(() => _isPlaying = false);
+  }
+
+  @override
+  void dispose() {
+    _stopAll();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ref = this.ref;
     final isAdmin = ref
         .watch(isAdminProvider)
         .maybeWhen(data: (v) => v, orElse: () => false);
@@ -27,7 +71,7 @@ class AdminReviewDetailScreen extends ConsumerWidget {
       return const Scaffold(body: Center(child: Text('Firestore not ready')));
     }
 
-    final docStream = fs.collection('users').doc(userId).snapshots();
+    final docStream = fs.collection('users').doc(widget.userId).snapshots();
 
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
       stream: docStream,
@@ -97,7 +141,7 @@ class AdminReviewDetailScreen extends ConsumerWidget {
                 'Profile rejected: ${reason?.trim() ?? 'Failed verification'}';
           }
 
-          await fs.collection('users').doc(userId).update(payload);
+          await fs.collection('users').doc(widget.userId).update(payload);
         }
 
         Future<String?> askRejectionReason() async {
@@ -185,7 +229,7 @@ class AdminReviewDetailScreen extends ConsumerWidget {
             }
           }
 
-          await fs.collection('users').doc(userId).update(payload);
+          await fs.collection('users').doc(widget.userId).update(payload);
         }
 
         return Scaffold(
@@ -329,13 +373,16 @@ class AdminReviewDetailScreen extends ConsumerWidget {
                     runSpacing: 12,
                     children: [
                       for (final url in photos)
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.network(
-                            url,
-                            width: 150,
-                            height: 150,
-                            fit: BoxFit.cover,
+                        GestureDetector(
+                          onTap: () => _showImageViewer(context, url),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.network(
+                              url,
+                              width: 150,
+                              height: 150,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                     ],
@@ -352,23 +399,13 @@ class AdminReviewDetailScreen extends ConsumerWidget {
                 else
                   Column(
                     children: [
-                      for (final url in audios)
-                        ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          leading: const Icon(Icons.mic_rounded),
-                          title: Text(
-                            url,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.play_arrow_rounded),
-                            onPressed: () async {
-                              try {
-                                await MediaService().playAudioFromUrl(url);
-                              } catch (_) {}
-                            },
-                          ),
+                      for (int i = 0; i < audios.length; i++)
+                        _AudioItem(
+                          index: i,
+                          url: audios[i],
+                          isPlaying:
+                              _isPlaying && _currentlyPlayingUrl == audios[i],
+                          onToggle: () => _togglePlay(audios[i]),
                         ),
                     ],
                   ),
@@ -377,7 +414,7 @@ class AdminReviewDetailScreen extends ConsumerWidget {
 
                 // Duplicate Detection Section
                 _DuplicateDetectionWidget(
-                  userId: userId,
+                  userId: widget.userId,
                   photoHashes:
                       (rp?['photoHashes'] as List?)
                           ?.map((e) => e.toString())
@@ -423,6 +460,93 @@ class AdminReviewDetailScreen extends ConsumerWidget {
           ),
         );
       },
+    );
+  }
+
+  void _showImageViewer(BuildContext context, String url) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (_) {
+        return GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: Container(
+            color: Colors.black.withOpacity(0.9),
+            child: Stack(
+              children: [
+                Center(
+                  child: InteractiveViewer(
+                    minScale: 0.5,
+                    maxScale: 4,
+                    child: Image.network(url, fit: BoxFit.contain),
+                  ),
+                ),
+                Positioned(
+                  top: 40,
+                  right: 20,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.black54,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.close_rounded,
+                        color: Colors.white,
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _AudioItem extends StatelessWidget {
+  final int index;
+  final String url;
+  final bool isPlaying;
+  final VoidCallback onToggle;
+
+  const _AudioItem({
+    required this.index,
+    required this.url,
+    required this.isPlaying,
+    required this.onToggle,
+  });
+
+  String get _title {
+    // Map known questions by index (0-based corresponding to Q1..Q3)
+    switch (index) {
+      case 0:
+        return 'Q1: Relationship with God';
+      case 1:
+        return 'Q2: Roles in Marriage';
+      case 2:
+        return 'Q3: Favorite Qualities';
+      default:
+        return 'Audio ${index + 1}';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: const Icon(Icons.mic_rounded),
+      title: Text(_title),
+      subtitle: Text(
+        url,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.bodySmall,
+      ),
+      trailing: IconButton(
+        icon: Icon(isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded),
+        onPressed: onToggle,
+      ),
     );
   }
 }

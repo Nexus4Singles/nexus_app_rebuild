@@ -62,8 +62,8 @@ class _JourneyDetailScreenState extends ConsumerState<JourneyDetailScreen> {
     );
 
     if (!isSignedIn) {
-      return const Scaffold(
-        backgroundColor: AppColors.background,
+      return Scaffold(
+        backgroundColor: AppColors.getBackground(context),
         body: Center(child: CircularProgressIndicator()),
       );
     }
@@ -72,11 +72,11 @@ class _JourneyDetailScreenState extends ConsumerState<JourneyDetailScreen> {
     final journey = ref.watch(journeyByIdProvider(id));
     if (journey == null) {
       return Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
           title: const Text('Journey'),
-          backgroundColor: AppColors.background,
-          surfaceTintColor: AppColors.background,
+          backgroundColor: AppColors.getBackground(context),
+          surfaceTintColor: AppColors.getBackground(context),
           elevation: 0,
         ),
         body: const Center(child: Text('Journey not found')),
@@ -131,10 +131,10 @@ class _Shell extends ConsumerWidget {
                 .id;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         title: Text(
@@ -260,7 +260,7 @@ class _Body extends ConsumerWidget {
   }) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
       ),
@@ -276,7 +276,7 @@ class _Body extends ConsumerWidget {
                 width: 44,
                 height: 5,
                 decoration: BoxDecoration(
-                  color: AppColors.border,
+                  color: AppColors.getBorder(context),
                   borderRadius: BorderRadius.circular(999),
                 ),
               ),
@@ -304,7 +304,7 @@ class _Body extends ConsumerWidget {
                         Text(
                           '$missionCount activities • One-time purchase',
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textMuted,
+                            color: AppColors.getTextSecondary(context),
                           ),
                         ),
                       ],
@@ -335,7 +335,7 @@ class _Body extends ConsumerWidget {
                       },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.textPrimary,
-                        side: BorderSide(color: AppColors.border),
+                        side: BorderSide(color: AppColors.getBorder(context)),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
@@ -620,7 +620,7 @@ class _ActivityCard extends StatelessWidget {
                         child: Text(
                           activity.subtitle,
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textMuted,
+                            color: AppColors.getTextSecondary(context),
                             height: 1.32,
                           ),
                         ),
@@ -656,7 +656,10 @@ class _ActivityCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 6),
-            Icon(Icons.chevron_right, color: AppColors.textMuted),
+            Icon(
+              Icons.chevron_right,
+              color: AppColors.getTextSecondary(context),
+            ),
           ],
         ),
       ),
@@ -751,7 +754,9 @@ class _UnlockCta extends ConsumerWidget {
           const SizedBox(height: 6),
           Text(
             '$missionCount activities • One-time purchase',
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted),
+            style: AppTextStyles.bodySmall.copyWith(
+              color: AppColors.getTextSecondary(context),
+            ),
           ),
           const SizedBox(height: 12),
           ElevatedButton(

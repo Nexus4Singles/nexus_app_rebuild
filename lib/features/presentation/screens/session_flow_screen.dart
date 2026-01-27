@@ -9,9 +9,9 @@ class SessionFlowScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         title: Text('Session', style: AppTextStyles.headlineLarge),
       ),
@@ -32,7 +32,7 @@ class SessionFlowScreen extends StatelessWidget {
               child: OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14),
-                  side: BorderSide(color: AppColors.border),
+                  side: BorderSide(color: AppColors.getBorder(context)),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
@@ -41,7 +41,7 @@ class SessionFlowScreen extends StatelessWidget {
                 child: Text(
                   'Back',
                   style: AppTextStyles.buttonMedium.copyWith(
-                    color: AppColors.textPrimary,
+                    color: AppColors.getTextPrimary(context),
                   ),
                 ),
               ),

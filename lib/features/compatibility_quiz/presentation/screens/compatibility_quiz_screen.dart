@@ -26,10 +26,10 @@ class CompatibilityQuizScreen extends ConsumerWidget {
         return true;
       },
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
-          backgroundColor: AppColors.background,
-          surfaceTintColor: AppColors.background,
+          backgroundColor: AppColors.getBackground(context),
+          surfaceTintColor: AppColors.getBackground(context),
           elevation: 0,
           titleSpacing: 20,
           title: Text(
@@ -59,7 +59,7 @@ class CompatibilityQuizScreen extends ConsumerWidget {
               Text(
                 'Question ${step + 1} of ${_quizSteps.length}',
                 style: AppTextStyles.labelMedium.copyWith(
-                  color: AppColors.textMuted,
+                  color: AppColors.getTextSecondary(context),
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.5,
                 ),
@@ -266,7 +266,7 @@ class _ProgressBar extends StatelessWidget {
       child: LinearProgressIndicator(
         value: progress,
         minHeight: 8,
-        backgroundColor: AppColors.surfaceLight,
+        backgroundColor: AppColors.getSurface(context),
         valueColor: AlwaysStoppedAnimation(AppColors.primary),
       ),
     );

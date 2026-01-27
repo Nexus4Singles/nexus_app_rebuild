@@ -69,10 +69,10 @@ class SavedProfilesScreen extends ConsumerWidget {
     final profilesAsync = ref.watch(savedProfileDetailsProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         leading: IconButton(
@@ -116,7 +116,7 @@ class SavedProfilesScreen extends ConsumerWidget {
                   Text(
                     error.toString(),
                     style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textMuted,
+                      color: AppColors.getTextSecondary(context),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -152,9 +152,9 @@ class _SavedProfileCard extends ConsumerWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: AppColors.getBorder(context)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.03),
@@ -220,7 +220,7 @@ class _SavedProfileCard extends ConsumerWidget {
                           Text(
                             subtitle,
                             style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.textMuted,
+                              color: AppColors.getTextSecondary(context),
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -336,14 +336,14 @@ class _EmptyState extends StatelessWidget {
               width: 100,
               height: 100,
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.getSurface(context),
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: AppColors.getBorder(context)),
               ),
               child: Icon(
                 Icons.bookmark_outline,
                 size: 48,
-                color: AppColors.textMuted,
+                color: AppColors.getTextSecondary(context),
               ),
             ),
             const SizedBox(height: 24),
@@ -357,7 +357,7 @@ class _EmptyState extends StatelessWidget {
             Text(
               'Profiles you bookmark will appear here for easy access later.',
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textMuted,
+                color: AppColors.getTextSecondary(context),
                 height: 1.4,
               ),
               textAlign: TextAlign.center,

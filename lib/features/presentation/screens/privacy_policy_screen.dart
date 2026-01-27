@@ -11,10 +11,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
     final text = buildPrivacyText(lastUpdated);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         title: Text(
@@ -30,7 +30,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           child: Text(
             text,
             style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textPrimary,
+              color: AppColors.getTextPrimary(context),
               height: 1.6,
             ),
           ),

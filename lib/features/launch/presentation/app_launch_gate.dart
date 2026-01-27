@@ -399,7 +399,7 @@ class _AuthEntryScreen extends StatelessWidget {
                           'Choose how you want to continue',
                           textAlign: TextAlign.center,
                           style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.textSecondary,
+                            color: AppColors.getTextSecondary(context),
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -498,7 +498,7 @@ class _AuthEntryScreen extends StatelessWidget {
                           child: Text(
                             'Continue as Guest',
                             style: AppTextStyles.labelLarge.copyWith(
-                              color: AppColors.textSecondary,
+                              color: AppColors.getTextSecondary(context),
                               decoration: TextDecoration.underline,
                             ),
                           ),

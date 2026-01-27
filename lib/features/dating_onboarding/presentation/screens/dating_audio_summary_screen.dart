@@ -198,7 +198,7 @@ class _DatingAudioSummaryScreenState
 
     if (_isUploading) {
       return Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -214,7 +214,7 @@ class _DatingAudioSummaryScreenState
 
     if (_uploadError) {
       return Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(backgroundColor: AppColors.background, elevation: 0),
         body: Center(
           child: Padding(
@@ -230,7 +230,7 @@ class _DatingAudioSummaryScreenState
                   'Unable to upload recordings. Please check your connection and try again.',
                   textAlign: TextAlign.center,
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.getTextSecondary(context),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -249,9 +249,9 @@ class _DatingAudioSummaryScreenState
     }
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -458,9 +458,9 @@ class _Row extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

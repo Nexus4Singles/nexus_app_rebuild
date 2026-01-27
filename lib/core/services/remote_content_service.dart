@@ -114,7 +114,7 @@ class RemoteContentService {
     final doc = await _firestore.doc('cms/versions').get();
     if (!doc.exists) return 0;
 
-    final data = doc.data() as Map<String, dynamic>?;
+    final data = doc.data();
     return (data?[type]?['version'] ?? 0) as int;
   }
 }

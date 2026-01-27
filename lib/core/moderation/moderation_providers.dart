@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../services/firestore_service.dart';
+import '../providers/firestore_service_provider.dart';
 import 'local_moderation_repositories.dart';
 import 'moderation_models.dart';
 
@@ -87,6 +89,8 @@ Future<void> submitLocalReport({
   String? notes,
 }) async {
   final repo = ref.read(localReportRepositoryProvider);
+  final firestoreService = ref.read(firestoreServiceProvider);
+
   final record = UserReportRecord(
     reporterKey: reporterKey,
     reportedUid: reportedUid,
@@ -94,5 +98,22 @@ Future<void> submitLocalReport({
     notes: notes?.trim().isEmpty == true ? null : notes?.trim(),
     createdAtMs: DateTime.now().millisecondsSinceEpoch,
   );
+
+  // Save locally
   await repo.submitReport(record);
+
+  // Sync to Firebase if available
+  if (firestoreService.isAvailable) {
+    try {
+      await firestoreService.submitUserReport(
+        reporterKey: reporterKey,
+        reportedUid: reportedUid,
+        reason: reason.wireValue,
+        notes: record.notes,
+      );
+    } catch (e) {
+      // Log error but don't fail - local save is already done
+      print('Warning: Failed to sync report to Firebase: $e');
+    }
+  }
 }

@@ -100,8 +100,8 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
       orElse: () => false,
     );
     if (!isSignedIn) {
-      return const Scaffold(
-        backgroundColor: AppColors.background,
+      return Scaffold(
+        backgroundColor: AppColors.getBackground(context),
         body: Center(child: CircularProgressIndicator()),
       );
     }
@@ -110,8 +110,8 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
 
     return catalogAsync.when(
       loading:
-          () => const Scaffold(
-            backgroundColor: AppColors.background,
+          () => Scaffold(
+            backgroundColor: AppColors.getBackground(context),
             body: Center(child: CircularProgressIndicator()),
           ),
       error:
@@ -154,7 +154,7 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
         final progressIndex = (_cardIndex + 1).clamp(1, totalCards);
 
         return Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.getBackground(context),
           appBar: AppBar(
             title: Text(
               'Activity ${m.missionNumber}',
@@ -162,8 +162,8 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                 fontWeight: FontWeight.w900,
               ),
             ),
-            backgroundColor: AppColors.background,
-            surfaceTintColor: AppColors.background,
+            backgroundColor: AppColors.getBackground(context),
+            surfaceTintColor: AppColors.getBackground(context),
             elevation: 0,
             actions: [
               if (totalCards > 0)
@@ -315,11 +315,11 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
 
   Scaffold _simpleScaffold({required String title, required Widget body}) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
         title: Text(title),
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
       ),
       body: body,
@@ -484,9 +484,9 @@ class _OutcomeButtons extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Row(
         children: [
@@ -496,7 +496,7 @@ class _OutcomeButtons extends StatelessWidget {
                 onPressed: onBack,
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.textPrimary,
-                  side: BorderSide(color: AppColors.border),
+                  side: BorderSide(color: AppColors.getBorder(context)),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
@@ -647,7 +647,7 @@ class _InfoCard extends StatelessWidget {
                   p,
                   style: AppTextStyles.bodyMedium.copyWith(
                     height: 1.55,
-                    color: AppColors.textPrimary,
+                    color: AppColors.getTextPrimary(context),
                   ),
                 ),
               ),
@@ -678,7 +678,7 @@ class _InfoCard extends StatelessWidget {
                         b.trim(),
                         style: AppTextStyles.bodyMedium.copyWith(
                           height: 1.55,
-                          color: AppColors.textPrimary,
+                          color: AppColors.getTextPrimary(context),
                         ),
                       ),
                     ),
@@ -712,7 +712,7 @@ class _ChoiceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final bodyStyle = AppTextStyles.bodyMedium.copyWith(
       height: 1.45,
-      color: AppColors.textPrimary,
+      color: AppColors.getTextPrimary(context),
     );
 
     final parsedPrompt = _parseRichContent(prompt);

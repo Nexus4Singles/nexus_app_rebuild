@@ -72,7 +72,7 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
     final picked = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -119,10 +119,10 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
     final churchesAsync = ref.watch(churchListProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         title: Text(
@@ -286,7 +286,7 @@ class _Body extends StatelessWidget {
                     controller: cityCtrl,
                     textCapitalization: TextCapitalization.words,
                     style: AppTextStyles.bodyMedium,
-                    decoration: _inputDeco(hint: 'Enter your city'),
+                    decoration: _inputDeco(context, hint: 'Enter your city'),
                     onEditingComplete: () => FocusScope.of(context).unfocus(),
                     onSubmitted: (_) => FocusScope.of(context).unfocus(),
                   ),
@@ -364,7 +364,10 @@ class _Body extends StatelessWidget {
                     child: TextField(
                       controller: otherChurchCtrl,
                       style: AppTextStyles.bodyMedium,
-                      decoration: _inputDeco(hint: 'Type full church name'),
+                      decoration: _inputDeco(
+                        context,
+                        hint: 'Type full church name',
+                      ),
                       onChanged: (_) => onOtherChurchChanged(),
                     ),
                   ),
@@ -388,25 +391,31 @@ class _Body extends StatelessWidget {
     );
   }
 
-  static InputDecoration _inputDeco({required String hint}) => InputDecoration(
-    hintText: hint,
-    hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
-    filled: true,
-    fillColor: AppColors.surface,
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
-      borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
-      borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
-      borderSide: BorderSide(color: AppColors.primary, width: 1.4),
-    ),
-    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-  );
+  InputDecoration _inputDeco(BuildContext context, {required String hint}) =>
+      InputDecoration(
+        hintText: hint,
+        hintStyle: AppTextStyles.bodyMedium.copyWith(
+          color: AppColors.getTextSecondary(context),
+        ),
+        filled: true,
+        fillColor: AppColors.getSurface(context),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: AppColors.primary, width: 1.4),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 14,
+        ),
+      );
 }
 
 class _InfoCard extends StatelessWidget {
@@ -419,9 +428,9 @@ class _InfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -473,7 +482,7 @@ class _PickerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.surface,
+      color: AppColors.getSurface(context),
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
@@ -482,7 +491,7 @@ class _PickerTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: AppColors.getBorder(context)),
           ),
           child: Row(
             children: [
@@ -492,15 +501,15 @@ class _PickerTile extends StatelessWidget {
                   style:
                       value == null
                           ? AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.textMuted,
+                            color: AppColors.getTextSecondary(context),
                           )
                           : AppTextStyles.bodyMedium,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const Icon(
+              Icon(
                 Icons.keyboard_arrow_down_rounded,
-                color: AppColors.textMuted,
+                color: AppColors.getTextSecondary(context),
               ),
             ],
           ),
@@ -593,18 +602,18 @@ class _PickerSheetState extends State<_PickerSheet> {
                 decoration: InputDecoration(
                   hintText: 'Search',
                   hintStyle: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textMuted,
+                    color: AppColors.getTextSecondary(context),
                   ),
                   prefixIcon: const Icon(Icons.search),
                   filled: true,
-                  fillColor: AppColors.surface,
+                  fillColor: AppColors.getSurface(context),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: AppColors.getBorder(context)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: AppColors.getBorder(context)),
                   ),
                 ),
                 onChanged: (v) => setState(() => q = v),
@@ -615,8 +624,9 @@ class _PickerSheetState extends State<_PickerSheet> {
                 shrinkWrap: true,
                 itemCount: filtered.length,
                 separatorBuilder:
-                    (_, __) =>
-                        Divider(color: AppColors.border.withOpacity(0.7)),
+                    (_, __) => Divider(
+                      color: AppColors.getBorder(context).withOpacity(0.7),
+                    ),
                 itemBuilder: (_, i) {
                   final v = filtered[i];
                   return ListTile(
@@ -641,7 +651,9 @@ class _ErrorState extends StatelessWidget {
     return Center(
       child: Text(
         'Unable to load lists',
-        style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
+        style: AppTextStyles.bodyMedium.copyWith(
+          color: AppColors.getTextSecondary(context),
+        ),
       ),
     );
   }

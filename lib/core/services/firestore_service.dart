@@ -938,6 +938,30 @@ class FirestoreService {
       "updatedAt": FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
   }
+
+  // ==================== REPORTS ====================
+
+  Future<void> submitUserReport({
+    required String reporterKey,
+    required String reportedUid,
+    required String reason,
+    String? notes,
+  }) async {
+    if (_db == null) return;
+
+    try {
+      await _db.collection('reports').add({
+        'reporterKey': reporterKey,
+        'reportedUid': reportedUid,
+        'reason': reason,
+        'notes': notes,
+        'createdAt': FieldValue.serverTimestamp(),
+        'status': 'pending',
+      });
+    } catch (e) {
+      throw FirestoreException('Failed to submit report: $e');
+    }
+  }
 }
 
 class FirestoreException implements Exception {

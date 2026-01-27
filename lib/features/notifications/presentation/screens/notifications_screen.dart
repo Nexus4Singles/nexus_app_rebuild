@@ -42,7 +42,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       body: SafeArea(
         child: Column(
           children: [
@@ -75,19 +75,19 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.surfaceLight,
+                color: AppColors.getSurface(context),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(Icons.arrow_back, size: 20),
             ),
           ),
           const SizedBox(width: 16),
-          const Text(
+          Text(
             'Notifications',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w800,
-              color: AppColors.textPrimary,
+              color: AppColors.getTextPrimary(context),
             ),
           ),
           const Spacer(),
@@ -111,7 +111,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(12),
       ),
       child: TabBar(
@@ -122,7 +122,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
         ),
         indicatorSize: TabBarIndicatorSize.tab,
         labelColor: Colors.white,
-        unselectedLabelColor: AppColors.textSecondary,
+        unselectedLabelColor: AppColors.getTextSecondary(context),
         labelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
         unselectedLabelStyle: const TextStyle(
           fontWeight: FontWeight.w500,
@@ -194,6 +194,7 @@ class _MessagesTab extends ConsumerWidget {
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return _buildEmptyState(
+            context,
             icon: Icons.chat_bubble_outline,
             title: 'No messages yet',
             subtitle: 'When someone messages you, it will appear here',
@@ -250,7 +251,8 @@ class _MessagesTab extends ConsumerWidget {
     }
   }
 
-  Widget _buildEmptyState({
+  Widget _buildEmptyState(
+    BuildContext context, {
     required IconData icon,
     required String title,
     required String subtitle,
@@ -265,24 +267,31 @@ class _MessagesTab extends ConsumerWidget {
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: AppColors.surfaceLight,
+                color: AppColors.getSurface(context),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, size: 40, color: AppColors.textMuted),
+              child: Icon(
+                icon,
+                size: 40,
+                color: AppColors.getTextSecondary(context),
+              ),
             ),
             const SizedBox(height: 24),
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
+                color: AppColors.getTextPrimary(context),
               ),
             ),
             const SizedBox(height: 8),
             Text(
               subtitle,
-              style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+              style: TextStyle(
+                fontSize: 14,
+                color: AppColors.getTextSecondary(context),
+              ),
               textAlign: TextAlign.center,
             ),
           ],
@@ -321,6 +330,7 @@ class _SystemTab extends ConsumerWidget {
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return _buildEmptyState(
+            context,
             icon: Icons.notifications_outlined,
             title: 'No notifications',
             subtitle: 'System updates and announcements will appear here',
@@ -389,7 +399,8 @@ class _SystemTab extends ConsumerWidget {
     }
   }
 
-  Widget _buildEmptyState({
+  Widget _buildEmptyState(
+    BuildContext context, {
     required IconData icon,
     required String title,
     required String subtitle,
@@ -404,24 +415,31 @@ class _SystemTab extends ConsumerWidget {
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: AppColors.surfaceLight,
+                color: AppColors.getSurface(context),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, size: 40, color: AppColors.textMuted),
+              child: Icon(
+                icon,
+                size: 40,
+                color: AppColors.getTextSecondary(context),
+              ),
             ),
             const SizedBox(height: 24),
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
+                color: AppColors.getTextPrimary(context),
               ),
             ),
             const SizedBox(height: 8),
             Text(
               subtitle,
-              style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+              style: TextStyle(
+                fontSize: 14,
+                color: AppColors.getTextSecondary(context),
+              ),
               textAlign: TextAlign.center,
             ),
           ],
@@ -473,7 +491,7 @@ class _MessageNotificationTile extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: AppColors.surfaceLight,
+                color: AppColors.getSurface(context),
                 shape: BoxShape.circle,
                 image:
                     senderPhoto != null
@@ -485,7 +503,11 @@ class _MessageNotificationTile extends StatelessWidget {
               ),
               child:
                   senderPhoto == null
-                      ? Icon(Icons.person, color: AppColors.textMuted, size: 24)
+                      ? Icon(
+                        Icons.person,
+                        color: AppColors.getTextSecondary(context),
+                        size: 24,
+                      )
                       : null,
             ),
             const SizedBox(width: 14),
@@ -499,7 +521,7 @@ class _MessageNotificationTile extends StatelessWidget {
                     text: TextSpan(
                       style: TextStyle(
                         fontSize: 15,
-                        color: AppColors.textPrimary,
+                        color: AppColors.getTextPrimary(context),
                       ),
                       children: [
                         TextSpan(
@@ -513,7 +535,10 @@ class _MessageNotificationTile extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     _formatTime(createdAt),
-                    style: TextStyle(fontSize: 13, color: AppColors.textMuted),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: AppColors.getTextSecondary(context),
+                    ),
                   ),
                 ],
               ),
@@ -532,7 +557,11 @@ class _MessageNotificationTile extends StatelessWidget {
 
             // Arrow
             const SizedBox(width: 8),
-            Icon(Icons.chevron_right, color: AppColors.textMuted, size: 20),
+            Icon(
+              Icons.chevron_right,
+              color: AppColors.getTextSecondary(context),
+              size: 20,
+            ),
           ],
         ),
       ),
@@ -582,7 +611,7 @@ class _SystemNotificationTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: isRead ? AppColors.surface : AppColors.surfaceLight,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: AppColors.getBorder(context)),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -613,7 +642,7 @@ class _SystemNotificationTile extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: isRead ? FontWeight.w500 : FontWeight.w700,
-                      color: AppColors.textPrimary,
+                      color: AppColors.getTextPrimary(context),
                     ),
                   ),
                   if (body.isNotEmpty) ...[
@@ -622,7 +651,7 @@ class _SystemNotificationTile extends StatelessWidget {
                       body,
                       style: TextStyle(
                         fontSize: 13,
-                        color: AppColors.textSecondary,
+                        color: AppColors.getTextSecondary(context),
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -631,7 +660,10 @@ class _SystemNotificationTile extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     _formatTime(createdAt),
-                    style: TextStyle(fontSize: 12, color: AppColors.textMuted),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.getTextSecondary(context),
+                    ),
                   ),
                 ],
               ),

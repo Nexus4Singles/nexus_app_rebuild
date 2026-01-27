@@ -7,9 +7,9 @@ class CompleteDatingProfilePlaceholderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         title: Text('Complete Profile', style: AppTextStyles.headlineLarge),
       ),
@@ -33,9 +33,9 @@ class CompleteDatingProfilePlaceholderScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.getSurface(context),
                 borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: AppColors.getBorder(context)),
               ),
               child: Text(
                 'Profile builder will be implemented next.\n\nMedia uploads will use DigitalOcean Spaces.',

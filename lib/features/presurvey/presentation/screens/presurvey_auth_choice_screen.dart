@@ -31,9 +31,9 @@ class PresurveyAuthChoiceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         centerTitle: true,
         title: Text('Almost done ✨', style: AppTextStyles.headlineLarge),
@@ -47,7 +47,7 @@ class PresurveyAuthChoiceScreen extends StatelessWidget {
               Text(
                 'Create an account to unlock full features, or continue as a guest.',
                 style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textMuted,
+                  color: AppColors.getTextSecondary(context),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -81,7 +81,7 @@ class PresurveyAuthChoiceScreen extends StatelessWidget {
                 child: Text(
                   'Continue as Guest',
                   style: AppTextStyles.labelLarge.copyWith(
-                    color: AppColors.textMuted,
+                    color: AppColors.getTextSecondary(context),
                     decoration: TextDecoration.underline,
                   ),
                 ),
@@ -137,7 +137,7 @@ class _OutlinedButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          side: BorderSide(color: AppColors.border),
+          side: BorderSide(color: AppColors.getBorder(context)),
         ),
         child: Text(label, style: AppTextStyles.labelLarge),
       ),

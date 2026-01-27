@@ -84,16 +84,18 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
     try {
       final email = _email.text.trim();
-      
+
       // ignore: avoid_print
       print('[SignupScreen] Starting signup for: $email');
 
       try {
-        await ref.read(authNotifierProvider.notifier).signUpWithEmail(
-          email: email,
-          password: _password.text,
-          username: _username.text.trim(),
-        );
+        await ref
+            .read(authNotifierProvider.notifier)
+            .signUpWithEmail(
+              email: email,
+              password: _password.text,
+              username: _username.text.trim(),
+            );
         // ignore: avoid_print
         print('[SignupScreen] Signup completed successfully');
       } catch (signupError, stackTrace) {
@@ -105,7 +107,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       }
 
       if (!mounted) return;
-      
+
       // ignore: avoid_print
       print('[SignupScreen] Routing to email verification screen');
 
@@ -198,10 +200,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         return true; // Allow normal back navigation
       },
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
-          backgroundColor: AppColors.background,
-          surfaceTintColor: AppColors.background,
+          backgroundColor: AppColors.getBackground(context),
+          surfaceTintColor: AppColors.getBackground(context),
           elevation: 0,
           titleSpacing: 0,
           title: Text(
@@ -231,7 +233,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   Text(
                     'Create your account to get started',
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.getTextSecondary(context),
                     ),
                   ),
                   const SizedBox(height: 32),
@@ -245,18 +247,20 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       labelText: 'Username',
                       hintText: 'Choose a username',
                       labelStyle: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textMuted,
+                        color: AppColors.getTextSecondary(context),
                       ),
                       filled: true,
-                      fillColor: AppColors.surface,
+                      fillColor: AppColors.getSurface(context),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: AppColors.border),
+                        borderSide: BorderSide(
+                          color: AppColors.getBorder(context),
+                        ),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide(
-                          color: AppColors.border.withOpacity(0.5),
+                          color: AppColors.getBorder(context).withOpacity(0.5),
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -288,18 +292,20 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       labelText: 'Email',
                       hintText: 'your.email@example.com',
                       labelStyle: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textMuted,
+                        color: AppColors.getTextSecondary(context),
                       ),
                       filled: true,
-                      fillColor: AppColors.surface,
+                      fillColor: AppColors.getSurface(context),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: AppColors.border),
+                        borderSide: BorderSide(
+                          color: AppColors.getBorder(context),
+                        ),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide(
-                          color: AppColors.border.withOpacity(0.5),
+                          color: AppColors.getBorder(context).withOpacity(0.5),
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -331,18 +337,20 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       labelText: 'Password',
                       hintText: 'Enter a strong password',
                       labelStyle: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textMuted,
+                        color: AppColors.getTextSecondary(context),
                       ),
                       filled: true,
-                      fillColor: AppColors.surface,
+                      fillColor: AppColors.getSurface(context),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: AppColors.border),
+                        borderSide: BorderSide(
+                          color: AppColors.getBorder(context),
+                        ),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide(
-                          color: AppColors.border.withOpacity(0.5),
+                          color: AppColors.getBorder(context).withOpacity(0.5),
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -372,7 +380,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                           _obscurePassword
                               ? Icons.visibility_outlined
                               : Icons.visibility_off_outlined,
-                          color: AppColors.textMuted,
+                          color: AppColors.getTextSecondary(context),
                         ),
                       ),
                     ),
@@ -381,10 +389,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.surfaceLight,
+                      color: AppColors.getSurface(context),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: AppColors.border.withOpacity(0.3),
+                        color: AppColors.getBorder(context).withOpacity(0.3),
                       ),
                     ),
                     child: Row(
@@ -393,14 +401,14 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         Icon(
                           Icons.info_outline,
                           size: 20,
-                          color: AppColors.textMuted,
+                          color: AppColors.getTextSecondary(context),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
                             '8 characters min., start with capital letter, include at least 1 special character',
                             style: AppTextStyles.labelSmall.copyWith(
-                              color: AppColors.textSecondary,
+                              color: AppColors.getTextSecondary(context),
                               height: 1.4,
                             ),
                           ),

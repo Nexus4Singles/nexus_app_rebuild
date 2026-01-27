@@ -132,9 +132,9 @@ class PresurveyRelationshipStatusScreen extends ConsumerWidget {
     final guest = ref.watch(guestSessionProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         centerTitle: true,
         title: Text('Relationship Status', style: AppTextStyles.headlineLarge),
@@ -148,7 +148,7 @@ class PresurveyRelationshipStatusScreen extends ConsumerWidget {
               Text(
                 'What is your relationship status?',
                 style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textMuted,
+                  color: AppColors.getTextSecondary(context),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -231,7 +231,7 @@ class _OptionButton extends StatelessWidget {
           color:
               selected
                   ? AppColors.primary.withOpacity(0.12)
-                  : AppColors.surface,
+                  : AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: selected ? AppColors.primary : AppColors.border,

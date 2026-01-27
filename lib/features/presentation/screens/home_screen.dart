@@ -119,9 +119,9 @@ class HomeScreen extends ConsumerWidget {
     final fallbackKey = relationshipStatusKeyFromString('');
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -155,7 +155,7 @@ class HomeScreen extends ConsumerWidget {
                     Text(
                       'You can read our weekly stories without an account!',
                       style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.getTextSecondary(context),
                         height: 1.4,
                       ),
                     ),
@@ -187,7 +187,7 @@ class HomeScreen extends ConsumerWidget {
                             Text(
                               'Welcome — continue where you left off',
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.textSecondary,
+                                color: AppColors.getTextSecondary(context),
                                 height: 1.4,
                               ),
                             ),
@@ -412,7 +412,7 @@ class _PremiumCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border:
             gradient == null
-                ? Border.all(color: AppColors.border.withOpacity(0.5))
+                ? Border.all(color: AppColors.getBorder(context).withOpacity(0.5))
                 : null,
         boxShadow: [
           BoxShadow(
@@ -451,9 +451,9 @@ class _StoryOfWeekCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: Container(
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.getSurface(context),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.border.withOpacity(0.5)),
+                border: Border.all(color: AppColors.getBorder(context).withOpacity(0.5)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.03),
@@ -611,7 +611,7 @@ class _StoryOfWeekCard extends StatelessWidget {
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.textSecondary,
+                              color: AppColors.getTextSecondary(context),
                               height: 1.5,
                             ),
                           ),
@@ -619,7 +619,7 @@ class _StoryOfWeekCard extends StatelessWidget {
                           Text(
                             'A fresh story to guide your dating, marriage, and relationship life this week.',
                             style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.textSecondary,
+                              color: AppColors.getTextSecondary(context),
                               height: 1.5,
                             ),
                           ),
@@ -853,19 +853,19 @@ class _InfoChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border.withOpacity(0.3)),
+        border: Border.all(color: AppColors.getBorder(context).withOpacity(0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: AppColors.textMuted),
+          Icon(icon, size: 14, color: AppColors.getTextSecondary(context)),
           const SizedBox(width: 6),
           Text(
             text,
             style: AppTextStyles.labelSmall.copyWith(
-              color: AppColors.textSecondary,
+              color: AppColors.getTextSecondary(context),
               fontWeight: FontWeight.w600,
             ),
           ),

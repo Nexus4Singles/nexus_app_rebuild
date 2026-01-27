@@ -12,10 +12,10 @@ class RelationshipStatusPickerScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 20,
       ),
@@ -35,7 +35,7 @@ class RelationshipStatusPickerScreen extends ConsumerWidget {
               Text(
                 'Select your relationship status to continue.',
                 style: AppTextStyles.bodyLarge.copyWith(
-                  color: AppColors.textSecondary,
+                  color: AppColors.getTextSecondary(context),
                 ),
               ),
               const SizedBox(height: 32),
@@ -81,7 +81,7 @@ class RelationshipStatusPickerScreen extends ConsumerWidget {
               Text(
                 'You can explore in guest mode. Some features will require creating an account.',
                 style: AppTextStyles.labelMedium.copyWith(
-                  color: AppColors.textSecondary,
+                  color: AppColors.getTextSecondary(context),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -122,7 +122,7 @@ class _OptionButton extends StatelessWidget {
             if (states.contains(WidgetState.pressed)) {
               return BorderSide(color: AppColors.primary, width: 2);
             }
-            return BorderSide(color: AppColors.border, width: 1);
+            return BorderSide(color: AppColors.getBorder(context), width: 1);
           }),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

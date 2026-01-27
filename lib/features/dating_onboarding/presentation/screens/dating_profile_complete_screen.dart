@@ -63,7 +63,7 @@ class _DatingProfileCompleteScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -146,7 +146,7 @@ class _DatingProfileCompleteScreenState
                         Text(
                           'Your dating profile is ready to shine',
                           style: AppTextStyles.bodyLarge.copyWith(
-                            color: AppColors.textSecondary,
+                            color: AppColors.getTextSecondary(context),
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                           ),
@@ -208,7 +208,7 @@ class _DatingProfileCompleteScreenState
                                     Text(
                                       'Compatibility quiz',
                                       style: AppTextStyles.bodySmall.copyWith(
-                                        color: AppColors.textMuted,
+                                        color: AppColors.getTextSecondary(context),
                                       ),
                                     ),
                                   ],
@@ -220,7 +220,7 @@ class _DatingProfileCompleteScreenState
                           Text(
                             'This Quiz helps to ensure opposite gender users find out how compatibile they are with you!',
                             style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.textSecondary,
+                              color: AppColors.getTextSecondary(context),
                               height: 1.5,
                             ),
                             textAlign: TextAlign.center,
@@ -254,7 +254,7 @@ class _DatingProfileCompleteScreenState
                         Text(
                           'Preparing your experience...',
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textMuted,
+                            color: AppColors.getTextSecondary(context),
                             fontWeight: FontWeight.w500,
                           ),
                         ),

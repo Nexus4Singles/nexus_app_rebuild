@@ -16,11 +16,11 @@ class ChallengesScreen extends ConsumerWidget {
     final catalogAsync = ref.watch(journeyCatalogProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
         title: Text('Journeys', style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
       ),
       body: catalogAsync.when(
@@ -71,7 +71,7 @@ class ChallengesScreen extends ConsumerWidget {
                       Text(
                         '${rest.length}',
                         style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.textMuted,
+                          color: AppColors.getTextSecondary(context),
                           fontWeight: FontWeight.w800,
                         ),
                       ),
@@ -117,7 +117,7 @@ class _PremiumHeader extends StatelessWidget {
         Text(
           'Short, practical activities that build consistency and strengthen love.',
           style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.textMuted,
+            color: AppColors.getTextSecondary(context),
             height: 1.35,
           ),
         ),
@@ -188,7 +188,7 @@ class _FeaturedHeroCarousel extends StatelessWidget {
               Text(
                 'Swipe',
                 style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.textMuted,
+                  color: AppColors.getTextSecondary(context),
                 ),
               ),
             ],
@@ -337,7 +337,7 @@ class _ClassyJourneyListCard extends ConsumerWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: AppColors.primary.withOpacity(0.22)),
           boxShadow: [

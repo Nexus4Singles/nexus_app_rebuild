@@ -153,10 +153,10 @@ class _DatingContactInfoScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         leading: IconButton(
@@ -244,7 +244,9 @@ class _DatingContactInfoScreenState
             const SizedBox(height: 10),
             Text(
               'At least one contact method is required.',
-              style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+              style: AppTextStyles.caption.copyWith(
+                color: AppColors.getTextSecondary(context),
+              ),
             ),
           ],
         ),
@@ -297,12 +299,41 @@ class _DatingContactInfoScreenState
       final uid = FirebaseAuth.instance.currentUser?.uid;
       if (ready && fs != null && uid != null) {
         final d = ref.read(datingOnboardingDraftProvider);
+
+        // Fetch current user doc to get uploaded photos
+        final userDoc = await fs.collection('users').doc(uid).get();
+        final userData = userDoc.data();
+        final datingData = userData?['dating'] as Map<String, dynamic>?;
+        final photoUrls =
+            (datingData?['photos'] as List<dynamic>?)?.cast<String>() ?? [];
+
+        // Collect audio URLs for review pack
+        final audioUrls = <String>[];
+        if (d.audio1Url?.isNotEmpty ?? false) audioUrls.add(d.audio1Url!);
+        if (d.audio2Url?.isNotEmpty ?? false) audioUrls.add(d.audio2Url!);
+        if (d.audio3Url?.isNotEmpty ?? false) audioUrls.add(d.audio3Url!);
+
+        // Get gender and relationship status from user data
+        final nexus2 = userData?['nexus2'] as Map<String, dynamic>?;
+        final gender = nexus2?['gender'] as String?;
+        final relationshipStatus = nexus2?['relationshipStatus'] as String?;
+
         final payload = <String, dynamic>{
           // Flat fields specific to dating flow
           'countryOfResidence': d.countryOfResidence,
           'contactInfo': d.contactInfo,
           'profileCompleted': true,
           'verificationStatus': 'pending',
+          'verificationQueuedAt': FieldValue.serverTimestamp(),
+          // Review pack for admin queue
+          'reviewPack': {
+            'photoUrls': photoUrls,
+            'audioUrls': audioUrls,
+            'submittedAt': FieldValue.serverTimestamp(),
+          },
+          // Mirror fields for admin query convenience
+          'gender': gender,
+          'relationshipStatus': relationshipStatus,
           // Profile sub-map (matches UserModel expectations)
           'profile': {
             'age': d.age,
@@ -349,7 +380,9 @@ class _ProgressHeader extends StatelessWidget {
         const SizedBox(height: 12),
         Text(
           subtitle,
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.getTextSecondary(context),
+          ),
         ),
       ],
     );
@@ -378,9 +411,9 @@ class _InputTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -409,16 +442,16 @@ class _InputTile extends StatelessWidget {
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textMuted,
+                color: AppColors.getTextSecondary(context),
               ),
               filled: true,
-              fillColor: AppColors.background,
+              fillColor: AppColors.getBackground(context),
               border: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.border),
+                borderSide: BorderSide(color: AppColors.getBorder(context)),
                 borderRadius: BorderRadius.circular(14),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.border),
+                borderSide: BorderSide(color: AppColors.getBorder(context)),
                 borderRadius: BorderRadius.circular(14),
               ),
               focusedBorder: OutlineInputBorder(
@@ -458,9 +491,9 @@ class _PhoneInputTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: AppColors.getBorder(context)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -493,16 +526,20 @@ class _PhoneInputTile extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: '+1',
                       hintStyle: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textMuted,
+                        color: AppColors.getTextSecondary(context),
                       ),
                       filled: true,
-                      fillColor: AppColors.background,
+                      fillColor: AppColors.getBackground(context),
                       border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.border),
+                        borderSide: BorderSide(
+                          color: AppColors.getBorder(context),
+                        ),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.border),
+                        borderSide: BorderSide(
+                          color: AppColors.getBorder(context),
+                        ),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -526,16 +563,20 @@ class _PhoneInputTile extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: 'phone number',
                       hintStyle: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textMuted,
+                        color: AppColors.getTextSecondary(context),
                       ),
                       filled: true,
-                      fillColor: AppColors.background,
+                      fillColor: AppColors.getBackground(context),
                       border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.border),
+                        borderSide: BorderSide(
+                          color: AppColors.getBorder(context),
+                        ),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.border),
+                        borderSide: BorderSide(
+                          color: AppColors.getBorder(context),
+                        ),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       focusedBorder: OutlineInputBorder(

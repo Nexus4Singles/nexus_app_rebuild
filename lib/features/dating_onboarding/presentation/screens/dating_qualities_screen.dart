@@ -39,10 +39,10 @@ class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
     final listsAsync = ref.watch(onboardingListsProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         leading: IconButton(
@@ -175,7 +175,7 @@ class _ProgressHeader extends StatelessWidget {
           child: Text(
             subtitle,
             style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textMuted,
+              color: AppColors.getTextSecondary(context),
             ),
           ),
         ),
@@ -183,9 +183,9 @@ class _ProgressHeader extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: AppColors.getSurface(context),
             borderRadius: BorderRadius.circular(999),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: AppColors.getBorder(context)),
           ),
           child: Text(counter, style: AppTextStyles.labelLarge),
         ),
@@ -204,14 +204,14 @@ class _SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: AppColors.getBorder(context)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
         children: [
-          Icon(Icons.search, color: AppColors.textMuted),
+          Icon(Icons.search, color: AppColors.getTextSecondary(context)),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
@@ -220,7 +220,7 @@ class _SearchField extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: 'Search qualities',
                 hintStyle: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textMuted,
+                  color: AppColors.getTextSecondary(context),
                 ),
                 border: InputBorder.none,
               ),
@@ -232,7 +232,7 @@ class _SearchField extends StatelessWidget {
                 controller.clear();
                 onChanged('');
               },
-              icon: Icon(Icons.close, color: AppColors.textMuted),
+              icon: Icon(Icons.close, color: AppColors.getTextSecondary(context)),
             ),
         ],
       ),
@@ -259,7 +259,7 @@ class _SelectableGrid extends StatelessWidget {
       return Center(
         child: Text(
           'No matches found.',
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
+          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.getTextSecondary(context)),
         ),
       );
     }
@@ -287,7 +287,7 @@ class _SelectableGrid extends StatelessWidget {
               color:
                   isSelected
                       ? AppColors.primary.withOpacity(0.10)
-                      : AppColors.surface,
+                      : AppColors.getSurface(context),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
                 color: isSelected ? AppColors.primary : AppColors.border,

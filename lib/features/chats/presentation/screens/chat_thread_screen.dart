@@ -72,9 +72,9 @@ class _ThreadEmptyStateCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -103,9 +103,9 @@ class _ThreadEmptyStateCard extends StatelessWidget {
           Text(
             'Be kind, specific, and start the conversation.',
             textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.getTextSecondary(context),
+            ),
           ),
         ],
       ),
@@ -140,9 +140,9 @@ class _ThreadErrorStateCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: AppColors.getSurface(context),
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: AppColors.getBorder(context)),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -166,7 +166,7 @@ class _ThreadErrorStateCard extends StatelessWidget {
               Text(
                 subtitle,
                 style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textMuted,
+                  color: AppColors.getTextSecondary(context),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -176,14 +176,14 @@ class _ThreadErrorStateCard extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AppColors.background,
+                    color: AppColors.getBackground(context),
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: AppColors.border),
+                    border: Border.all(color: AppColors.getBorder(context)),
                   ),
                   child: Text(
                     details,
                     style: AppTextStyles.caption.copyWith(
-                      color: AppColors.textMuted,
+                      color: AppColors.getTextSecondary(context),
                     ),
                   ),
                 ),
@@ -476,7 +476,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   Future<void> _openMessageActions(_UiMessage m) async {
     await showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.getSurface(context),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -491,7 +491,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                   width: 44,
                   height: 5,
                   decoration: BoxDecoration(
-                    color: AppColors.border,
+                    color: AppColors.getBorder(context),
                     borderRadius: BorderRadius.circular(999),
                   ),
                 ),
@@ -589,7 +589,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       if (!mounted) return;
       showModalBottomSheet(
         context: context,
-        backgroundColor: AppColors.surface,
+        backgroundColor: AppColors.getSurface(context),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
@@ -604,7 +604,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                     width: 44,
                     height: 5,
                     decoration: BoxDecoration(
-                      color: AppColors.border,
+                      color: AppColors.getBorder(context),
                       borderRadius: BorderRadius.circular(999),
                     ),
                   ),
@@ -1168,9 +1168,9 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         title: Consumer(
@@ -1257,7 +1257,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                                 Text(
                                   'Loading…',
                                   style: theme.textTheme.bodySmall?.copyWith(
-                                    color: AppColors.textMuted,
+                                    color: AppColors.getTextSecondary(context),
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -1289,7 +1289,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                                 Text(
                                   otherId,
                                   style: theme.textTheme.bodySmall?.copyWith(
-                                    color: AppColors.textMuted,
+                                    color: AppColors.getTextSecondary(context),
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -1341,7 +1341,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                                         ? 'Offline'
                                         : 'Tap to view profile'),
                                 style: theme.textTheme.bodySmall?.copyWith(
-                                  color: AppColors.textMuted,
+                                  color: AppColors.getTextSecondary(context),
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -1603,8 +1603,8 @@ class _Composer extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        border: Border(top: BorderSide(color: AppColors.border)),
+        color: AppColors.getSurface(context),
+        border: Border(top: BorderSide(color: AppColors.getBorder(context))),
       ),
       child: SafeArea(
         top: false,
@@ -1616,7 +1616,7 @@ class _Composer extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 8),
                 padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                 decoration: BoxDecoration(
-                  color: AppColors.background,
+                  color: AppColors.getBackground(context),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Row(
@@ -1639,7 +1639,7 @@ class _Composer extends StatelessWidget {
                                 ? 'Replying to you'
                                 : 'Replying',
                             style: AppTextStyles.caption.copyWith(
-                              color: AppColors.textMuted,
+                              color: AppColors.getTextSecondary(context),
                             ),
                           ),
                           const SizedBox(height: 2),
@@ -1680,7 +1680,7 @@ class _Composer extends StatelessWidget {
                         vertical: 16,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.background,
+                        color: AppColors.getBackground(context),
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: TextField(
@@ -1745,9 +1745,9 @@ class _AttachTile extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: AppColors.background,
+            color: AppColors.getBackground(context),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: AppColors.getBorder(context)),
           ),
           child: Row(
             children: [
@@ -1770,7 +1770,7 @@ class _AttachTile extends StatelessWidget {
                     Text(
                       subtitle,
                       style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textMuted,
+                        color: AppColors.getTextSecondary(context),
                       ),
                     ),
                   ],
@@ -1860,9 +1860,9 @@ class _Bubble extends ConsumerWidget {
                         color:
                             isMe
                                 ? AppColors.primary.withOpacity(0.14)
-                                : AppColors.surface,
+                                : AppColors.getSurface(context),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: AppColors.getBorder(context)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -1883,7 +1883,7 @@ class _Bubble extends ConsumerWidget {
                           Text(
                             message.timeLabel,
                             style: AppTextStyles.caption.copyWith(
-                              color: AppColors.textMuted,
+                              color: AppColors.getTextSecondary(context),
                             ),
                           ),
                         ],
@@ -1925,9 +1925,9 @@ class _Bubble extends ConsumerWidget {
                   color:
                       isMe
                           ? AppColors.primary.withOpacity(0.14)
-                          : AppColors.surface,
+                          : AppColors.getSurface(context),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.border),
+                  border: Border.all(color: AppColors.getBorder(context)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -1948,7 +1948,7 @@ class _Bubble extends ConsumerWidget {
                     Text(
                       message.timeLabel,
                       style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textMuted,
+                        color: AppColors.getTextSecondary(context),
                       ),
                     ),
                   ],
@@ -1981,12 +1981,12 @@ class _MessageBody extends StatelessWidget {
     required this.fmt,
   });
 
-  Widget _replyBlock() {
+  Widget _replyBlock(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: AppColors.getBackground(context),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -2007,7 +2007,7 @@ class _MessageBody extends StatelessWidget {
                 Text(
                   (message.replyToWasMine ?? false) ? 'You' : 'Them',
                   style: AppTextStyles.caption.copyWith(
-                    color: AppColors.textMuted,
+                    color: AppColors.getTextSecondary(context),
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -2039,7 +2039,7 @@ class _MessageBody extends StatelessWidget {
           if (!hasReply) return body;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [_replyBlock(), body],
+            children: [_replyBlock(context), body],
           );
         }
 
@@ -2059,7 +2059,7 @@ class _MessageBody extends StatelessWidget {
                     (_, __, ___) => Container(
                       height: 160,
                       alignment: Alignment.center,
-                      color: AppColors.background,
+                      color: AppColors.getBackground(context),
                       child: const Icon(Icons.broken_image_outlined),
                     ),
               ),
@@ -2068,7 +2068,7 @@ class _MessageBody extends StatelessWidget {
           if (!hasReply) return body;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [_replyBlock(), body],
+            children: [_replyBlock(context), body],
           );
         }
 
@@ -2082,9 +2082,9 @@ class _MessageBody extends StatelessWidget {
             body = Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               decoration: BoxDecoration(
-                color: AppColors.background,
+                color: AppColors.getBackground(context),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: AppColors.getBorder(context)),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -2136,7 +2136,7 @@ class _MessageBody extends StatelessWidget {
                                       ? '${fmt(pos)} / ${fmt(dur)}'
                                       : 'Voice note',
                                   style: AppTextStyles.caption.copyWith(
-                                    color: AppColors.textMuted,
+                                    color: AppColors.getTextSecondary(context),
                                   ),
                                 ),
                               ],
@@ -2154,7 +2154,7 @@ class _MessageBody extends StatelessWidget {
           if (!hasReply) return body;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [_replyBlock(), body],
+            children: [_replyBlock(context), body],
           );
         }
     }
@@ -2192,7 +2192,7 @@ class _Avatar extends StatelessWidget {
 
     return CircleAvatar(
       radius: 18,
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.getSurface(context),
       backgroundImage: hasUrl ? NetworkImage(u) : null,
       child:
           hasUrl

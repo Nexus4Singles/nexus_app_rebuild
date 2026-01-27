@@ -21,7 +21,7 @@ class DatingProfileProgressBar extends StatelessWidget {
           child: LinearProgressIndicator(
             value: currentStep / totalSteps,
             minHeight: 6,
-            backgroundColor: AppColors.surface,
+            backgroundColor: AppColors.getSurface(context),
             valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
           ),
         ),
@@ -30,7 +30,7 @@ class DatingProfileProgressBar extends StatelessWidget {
         Text(
           'Step $currentStep of $totalSteps',
           style: AppTextStyles.labelSmall.copyWith(
-            color: AppColors.textMuted,
+            color: AppColors.getTextSecondary(context),
             fontWeight: FontWeight.w600,
           ),
         ),

@@ -80,39 +80,39 @@ class AppColors {
   static const Color infoDark = Color(0xFF2563EB);
 
   // ============================================================================
-  // NEUTRAL COLORS
+  // NEUTRAL COLORS (DARK MODE AS DEFAULT)
   // ============================================================================
 
-  /// Text colors - Refined gray scale
-  static const Color textPrimary = Color(0xFF1A1A1A);
-  static const Color textSecondary = Color(0xFF6B7280);
-  static const Color textMuted = Color(0xFF9CA3AF);
-  static const Color textDisabled = Color(0xFFD1D5DB);
+  /// Text colors - Dark mode first
+  static const Color textPrimary = Color(0xFFF9FAFB);
+  static const Color textSecondary = Color(0xFF9CA3AF);
+  static const Color textMuted = Color(0xFF6B7280);
+  static const Color textDisabled = Color(0xFF4B5563);
   static const Color textOnPrimary = Color(0xFFFFFFFF);
   static const Color textOnSecondary = Color(0xFFFFFFFF);
   static const Color textOnDark = Color(0xFFFFFFFF);
   static const Color textTertiary = Color(0xFF9CA3AF);
 
-  /// Background colors
-  static const Color background = Color(0xFFFFFFFF);
-  static const Color backgroundSecondary = Color(0xFFFAFAFA);
-  static const Color backgroundTertiary = Color(0xFFF5F5F5);
-  static const Color backgroundWarm = Color(0xFFFFFBFA);
+  /// Background colors - Dark mode first
+  static const Color background = Color(0xFF111827);
+  static const Color backgroundSecondary = Color(0xFF1F2937);
+  static const Color backgroundTertiary = Color(0xFF374151);
+  static const Color backgroundWarm = Color(0xFF1F2937);
 
-  /// Surface colors
-  static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceLight = Color(0xFFFAFAFA);
-  static const Color surfaceDark = Color(0xFFF3F4F6);
-  static const Color surfaceElevated = Color(0xFFFFFFFF);
-  static const Color surfaceVariant = Color(0xFFF3F4F6);
-  static const Color cardBackground = Color(0xFFFFFFFF);
+  /// Surface colors - Dark mode first
+  static const Color surface = Color(0xFF1F2937);
+  static const Color surfaceLight = Color(0xFF374151);
+  static const Color surfaceDark = Color(0xFF111827);
+  static const Color surfaceElevated = Color(0xFF374151);
+  static const Color surfaceVariant = Color(0xFF374151);
+  static const Color cardBackground = Color(0xFF1F2937);
 
-  /// Border colors
-  static const Color border = Color(0xFFE5E7EB);
-  static const Color borderLight = Color(0xFFF3F4F6);
-  static const Color borderDark = Color(0xFFD1D5DB);
-  static const Color divider = Color(0xFFF3F4F6);
-  static const Color inputBorder = Color(0xFFE5E7EB);
+  /// Border colors - Dark mode first
+  static const Color border = Color(0xFF374151);
+  static const Color borderLight = Color(0xFF4B5563);
+  static const Color borderDark = Color(0xFF1F2937);
+  static const Color divider = Color(0xFF374151);
+  static const Color inputBorder = Color(0xFF4B5563);
   static const Color inputFocusBorder = primary;
 
   // ============================================================================
@@ -228,15 +228,15 @@ class AppColors {
   static const Color audienceMarried = secondary;
   static const Color audienceRemarriage = Color(0xFF8B5CF6);
 
-  /// Progress colors
-  static const Color progressBackground = Color(0xFFE5E7EB);
+  /// Progress colors - Dark mode first
+  static const Color progressBackground = Color(0xFF374151);
   static const Color progressFill = primary;
   static const Color streakActive = Color(0xFFFFB800);
-  static const Color streakInactive = Color(0xFFE5E7EB);
+  static const Color streakInactive = Color(0xFF374151);
 
-  /// Chip colors
-  static const Color chipBackground = Color(0xFFF3F4F6);
-  static const Color chipSelectedBackground = Color(0xFFFDF2F4);
+  /// Chip colors - Dark mode first
+  static const Color chipBackground = Color(0xFF374151);
+  static const Color chipSelectedBackground = Color(0xFF4C1D24);
   static const Color chipText = textSecondary;
   static const Color chipSelectedText = primary;
 
@@ -327,36 +327,103 @@ class AppColors {
   }
 
   // ============================================================================
-  // DARK MODE COLORS
+  // LIGHT MODE COLORS (for future light mode support)
   // ============================================================================
 
-  /// Dark mode text colors
-  static const Color textPrimaryDark = Color(0xFFF9FAFB);
-  static const Color textSecondaryDark = Color(0xFF9CA3AF);
-  static const Color textMutedDark = Color(0xFF6B7280);
-  static const Color textDisabledDark = Color(0xFF4B5563);
+  /// Light mode text colors
+  static const Color textPrimaryLight = Color(0xFF1A1A1A);
+  static const Color textSecondaryLight = Color(0xFF6B7280);
+  static const Color textMutedLight = Color(0xFF9CA3AF);
+  static const Color textDisabledLight = Color(0xFFD1D5DB);
 
-  /// Dark mode background colors
-  static const Color backgroundDark = Color(0xFF111827);
-  static const Color backgroundSecondaryDark = Color(0xFF1F2937);
-  static const Color backgroundTertiaryDark = Color(0xFF374151);
+  /// Light mode background colors
+  static const Color backgroundLight = Color(0xFFFFFFFF);
+  static const Color backgroundSecondaryLight = Color(0xFFFAFAFA);
+  static const Color backgroundTertiaryLight = Color(0xFFF5F5F5);
 
-  /// Dark mode surface colors
-  static const Color surfaceDarkMode = Color(0xFF1F2937);
-  static const Color surfaceLightDark = Color(0xFF374151);
-  static const Color surfaceElevatedDark = Color(0xFF374151);
-  static const Color cardBackgroundDark = Color(0xFF1F2937);
+  /// Light mode surface colors
+  static const Color surfaceLightMode = Color(0xFFFFFFFF);
+  static const Color surfaceLightLight = Color(0xFFFAFAFA);
+  static const Color surfaceElevatedLight = Color(0xFFFFFFFF);
+  static const Color cardBackgroundLight = Color(0xFFFFFFFF);
 
-  /// Dark mode border colors
-  static const Color borderDarkMode = Color(0xFF374151);
-  static const Color borderLightDark = Color(0xFF4B5563);
-  static const Color dividerDark = Color(0xFF374151);
-  static const Color inputBorderDark = Color(0xFF4B5563);
+  /// Light mode border colors
+  static const Color borderLightMode = Color(0xFFE5E7EB);
+  static const Color borderLightLight = Color(0xFFF3F4F6);
+  static const Color dividerLight = Color(0xFFF3F4F6);
+  static const Color inputBorderLight = Color(0xFFE5E7EB);
 
-  /// Dark mode chip colors
-  static const Color chipBackgroundDark = Color(0xFF374151);
-  static const Color chipSelectedBackgroundDark = Color(0xFF4C1D24);
+  /// Light mode chip colors
+  static const Color chipBackgroundLight = Color(0xFFF3F4F6);
+  static const Color chipSelectedBackgroundLight = Color(0xFFFDF2F4);
 
-  /// Dark mode progress colors
-  static const Color progressBackgroundDark = Color(0xFF374151);
+  /// Light mode progress colors
+  static const Color progressBackgroundLight = Color(0xFFE5E7EB);
+
+  // ============================================================================
+  // THEME-AWARE GETTERS (for future light mode toggle support)
+  // ============================================================================
+
+  /// Get background color based on current theme
+  static Color getBackground(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? backgroundLight
+        : background;
+  }
+
+  /// Get secondary background color based on current theme
+  static Color getBackgroundSecondary(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? backgroundSecondaryLight
+        : backgroundSecondary;
+  }
+
+  /// Get tertiary background color based on current theme
+  static Color getBackgroundTertiary(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? backgroundTertiaryLight
+        : backgroundTertiary;
+  }
+
+  /// Get surface color based on current theme
+  static Color getSurface(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? surfaceLightMode
+        : surface;
+  }
+
+  /// Get card background color based on current theme
+  static Color getCardBackground(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? cardBackgroundLight
+        : cardBackground;
+  }
+
+  /// Get primary text color based on current theme
+  static Color getTextPrimary(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? textPrimaryLight
+        : textPrimary;
+  }
+
+  /// Get secondary text color based on current theme
+  static Color getTextSecondary(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? textSecondaryLight
+        : textSecondary;
+  }
+
+  /// Get border color based on current theme
+  static Color getBorder(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? borderLightMode
+        : border;
+  }
+
+  /// Get divider color based on current theme
+  static Color getDivider(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? dividerLight
+        : divider;
+  }
 }

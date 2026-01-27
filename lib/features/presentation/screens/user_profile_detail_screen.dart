@@ -15,9 +15,9 @@ class UserProfileDetailScreen extends ConsumerWidget {
     final media = ref.read(mediaServiceProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         title: Text('Profile', style: AppTextStyles.headlineLarge),
       ),
@@ -29,9 +29,9 @@ class UserProfileDetailScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.getSurface(context),
                 borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: AppColors.getBorder(context)),
               ),
               child: Row(
                 children: [
@@ -79,9 +79,9 @@ class UserProfileDetailScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.getSurface(context),
                 borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: AppColors.getBorder(context)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,9 +136,9 @@ class UserProfileDetailScreen extends ConsumerWidget {
                           } catch (_) {}
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.surface,
+                          backgroundColor: AppColors.getSurface(context),
                           foregroundColor: AppColors.textPrimary,
-                          side: BorderSide(color: AppColors.border),
+                          side: BorderSide(color: AppColors.getBorder(context)),
                           padding: const EdgeInsets.symmetric(
                             vertical: 12,
                             horizontal: 14,

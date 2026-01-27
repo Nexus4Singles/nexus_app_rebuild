@@ -35,7 +35,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
     final purchasedJourneysAsync = ref.watch(purchasedJourneysProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       body: CustomScrollView(
         slivers: [
           // Premium App Bar
@@ -315,19 +315,19 @@ class _ActiveSubscriptionView extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.getSurface(context),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: AppColors.getBorder(context)),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.info_outline, color: AppColors.textMuted),
+                  Icon(Icons.info_outline, color: AppColors.getTextSecondary(context)),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       'Auto-renewal has been cancelled. Your subscription will expire on ${expiryDate != null ? DateFormat.yMMMd().format(expiryDate) : "expiry date"}.',
                       style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.getTextSecondary(context),
                       ),
                     ),
                   ),
@@ -389,7 +389,7 @@ class _NoSubscriptionView extends StatelessWidget {
                 Text(
                   'Unlock Premium Features',
                   style: AppTextStyles.titleLarge.copyWith(
-                    color: AppColors.textPrimary,
+                    color: AppColors.getTextPrimary(context),
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
@@ -398,7 +398,7 @@ class _NoSubscriptionView extends StatelessWidget {
                 Text(
                   'Get unlimited access to all dating features',
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.getTextSecondary(context),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -450,9 +450,9 @@ class _NoSubscriptionView extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.surface,
+              color: AppColors.getSurface(context),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.border),
+              border: Border.all(color: AppColors.getBorder(context)),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -463,7 +463,7 @@ class _NoSubscriptionView extends StatelessWidget {
                   child: Text(
                     'All subscriptions auto-renew. Cancel anytime from this screen. Prices may vary by country.',
                     style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.getTextSecondary(context),
                       height: 1.4,
                     ),
                   ),
@@ -518,14 +518,14 @@ class _EmptyJourneysView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(28),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.getSurface(context),
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.border, width: 2),
+                border: Border.all(color: AppColors.getBorder(context), width: 2),
               ),
               child: Icon(
                 Icons.school_outlined,
                 size: 64,
-                color: AppColors.textMuted,
+                color: AppColors.getTextSecondary(context),
               ),
             ),
             const SizedBox(height: 24),
@@ -539,7 +539,7 @@ class _EmptyJourneysView extends StatelessWidget {
             Text(
               'Purchase journeys to boost your knowledge about relationships and marriages.',
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.getTextSecondary(context),
                 height: 1.4,
               ),
               textAlign: TextAlign.center,
@@ -602,7 +602,7 @@ class _FeatureTile extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color:
-            isActive ? AppColors.primary.withOpacity(0.05) : AppColors.surface,
+            isActive ? AppColors.primary.withOpacity(0.05) : AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color:
@@ -641,7 +641,7 @@ class _FeatureTile extends StatelessWidget {
                 Text(
                   feature.description,
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.getTextSecondary(context),
                     height: 1.3,
                   ),
                 ),
@@ -694,7 +694,7 @@ class _SubscriptionPlanCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isMostPopular ? AppColors.primary : AppColors.border,
@@ -758,7 +758,7 @@ class _SubscriptionPlanCard extends StatelessWidget {
                       Text(
                         '₦$pricePerMonth/month',
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.textSecondary,
+                          color: AppColors.getTextSecondary(context),
                         ),
                       ),
                       if (savings != null) ...[
@@ -797,7 +797,7 @@ class _SubscriptionPlanCard extends StatelessWidget {
                     Text(
                       'total',
                       style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textMuted,
+                        color: AppColors.getTextSecondary(context),
                       ),
                     ),
                   ],
@@ -820,7 +820,7 @@ class _SubscriptionPlanCard extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor:
-                    isMostPopular ? AppColors.primary : AppColors.surface,
+                    isMostPopular ? AppColors.primary : AppColors.getSurface(context),
                 foregroundColor:
                     isMostPopular ? Colors.white : AppColors.primary,
                 elevation: 0,
@@ -870,9 +870,9 @@ class _JourneyPurchaseCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -902,7 +902,7 @@ class _JourneyPurchaseCard extends StatelessWidget {
                     Text(
                       'Purchased ${DateFormat.yMMMd().format(journey.purchaseDate)}',
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textMuted,
+                        color: AppColors.getTextSecondary(context),
                       ),
                     ),
                   ],
@@ -935,7 +935,7 @@ class _JourneyPurchaseCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.background,
+              color: AppColors.getBackground(context),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -944,7 +944,7 @@ class _JourneyPurchaseCard extends StatelessWidget {
                 Text(
                   'Amount Paid',
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.getTextSecondary(context),
                   ),
                 ),
                 Text(

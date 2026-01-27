@@ -12,10 +12,10 @@ class BlockedUsersScreen extends StatelessWidget {
     // For now, show a static empty state.
     final blocked = const <String>[];
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         title: Text(
@@ -35,20 +35,20 @@ class BlockedUsersScreen extends StatelessWidget {
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: AppColors.surfaceLight,
+                        color: AppColors.getSurface(context),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Icon(
                         Icons.block,
                         size: 40,
-                        color: AppColors.textMuted,
+                        color: AppColors.getTextSecondary(context),
                       ),
                     ),
                     const SizedBox(height: 24),
                     Text(
                       'You have not blocked anyone.',
                       style: AppTextStyles.titleLarge.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.getTextSecondary(context),
                       ),
                     ),
                   ],
