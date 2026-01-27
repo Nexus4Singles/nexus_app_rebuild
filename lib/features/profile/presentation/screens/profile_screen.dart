@@ -413,7 +413,7 @@ class ProfileScreen extends ConsumerWidget {
 
                       if (!isViewingOtherUser) ...[
                         Text('Your Account', style: AppTextStyles.titleLarge),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 8),
                         _AccountTiles(
                           context,
                           ref,
@@ -658,7 +658,7 @@ class _BasicProfileScreen extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 8),
                         Text(
                           messageBody,
                           style: AppTextStyles.bodyMedium.copyWith(
@@ -698,7 +698,7 @@ class _BasicProfileScreen extends ConsumerWidget {
 
                   // Account Settings Section
                   Text('Your Account', style: AppTextStyles.titleLarge),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   _AccountTiles(context, ref, p, showEditProfile: false),
                   const SizedBox(height: 32),
                 ],
@@ -1579,7 +1579,7 @@ Future<void> _showReportSheet({
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Text(
                     'Reason',
                     style: AppTextStyles.bodyMedium.copyWith(
@@ -1614,7 +1614,7 @@ Future<void> _showReportSheet({
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Text(
                     'Notes (optional)',
                     style: AppTextStyles.bodyMedium.copyWith(
@@ -1908,7 +1908,7 @@ class _Section extends ConsumerWidget {
               ),
             ),
           ],
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           child,
         ],
       ),
@@ -2489,7 +2489,7 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
             ],
           ),
           if (!widget.isLocked && hasUrl) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Slider(
               value:
                   isCurrent
@@ -2930,7 +2930,7 @@ class _GuestProfileGate extends StatelessWidget {
                 style: AppTextStyles.titleMedium.copyWith(color: Colors.white),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             OutlinedButton(
               onPressed:
                   () => Navigator.of(context).push(
@@ -3497,83 +3497,151 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
   }
 
   Future<void> _save() async {
-    if (!_dirty) return;
+    if (!_dirty || _isSaving) return;
     setState(() => _isSaving = true);
 
-    // Normalize photos: remove duplicates, remove empty, enforce max 4
-    final seen = <String>{};
-    final cleanPhotos = <String>[];
-    for (final p in _photos) {
-      final v = p.trim();
-      if (v.isEmpty) continue;
-      if (seen.add(v)) cleanPhotos.add(v);
-      if (cleanPhotos.length == 4) break;
+    try {
+      final firebaseReady = ref.read(firebaseReadyProvider);
+      final fs = ref.read(firestoreInstanceProvider);
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (!firebaseReady || fs == null || user == null) {
+        throw StateError('Firebase not ready. Please try again.');
+      }
+
+      // Normalize photos: remove duplicates, remove empty, enforce max 4
+      final seen = <String>{};
+      final cleanPhotos = <String>[];
+      for (final p in _photos) {
+        final v = p.trim();
+        if (v.isEmpty) continue;
+        if (seen.add(v)) cleanPhotos.add(v);
+        if (cleanPhotos.length == 4) break;
+      }
+
+      // Upload any new local photos to Spaces; keep existing remote URLs intact
+      final media = MediaService();
+      final uploadedPhotos = <String>[];
+      for (var i = 0; i < cleanPhotos.length; i++) {
+        final path = cleanPhotos[i];
+        if (path.startsWith('http')) {
+          uploadedPhotos.add(path);
+          continue;
+        }
+
+        final file = File(path);
+        if (!await file.exists()) {
+          throw StateError('Photo not found: $path');
+        }
+
+        final url = await media.uploadProfilePhoto(
+          widget.profile.id,
+          file,
+          photoIndex: i,
+        );
+        uploadedPhotos.add(url);
+      }
+
+      final profileUrl =
+          uploadedPhotos.isNotEmpty
+              ? uploadedPhotos.first
+              : widget.profile.profileUrl;
+
+      final updates = <String, dynamic>{
+        'name':
+            _name.trim().isEmpty ? widget.profile.name ?? '' : _name.trim(),
+        'age': _age,
+        'city': _city.trim(),
+        'country': _country.trim(),
+        'nationality': _nationality.trim(),
+        'educationLevel': _educationLevel.trim(),
+        'profession': _profession.trim(),
+        'churchName': _churchName.trim(),
+        'desiredQualities': _qualities.join(', '),
+        'hobbies': _hobbies,
+        'photos': uploadedPhotos,
+        'profileUrl': profileUrl,
+        'instagramUsername': _instagram.trim(),
+        'twitterUsername': _twitter.trim(),
+        // WhatsApp stored as phoneNumber on UserModel
+        'phoneNumber': _whatsapp.trim(),
+        'facebookUsername': _facebook.trim(),
+        'telegramUsername': _telegram.trim(),
+        'snapchatUsername': _snapchat.trim(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+
+      await fs
+          .collection('users')
+          .doc(widget.profile.id)
+          .set(updates, SetOptions(merge: true));
+
+      // Persist locally as a best-effort cache for offline reloads
+      final updatedProfile = widget.profile.copyWith(
+        name: updates['name'] as String?,
+        age: _age,
+        city: _city.trim(),
+        country: _country.trim(),
+        nationality: _nationality.trim(),
+        educationLevel: _educationLevel.trim(),
+        profession: _profession.trim(),
+        churchName: _churchName.trim(),
+        desiredQualities: _qualities.join(', '),
+        hobbies: _hobbies,
+        photos: uploadedPhotos,
+        profileUrl: profileUrl,
+        instagramUsername: _instagram.trim(),
+        twitterUsername: _twitter.trim(),
+        phoneNumber: _whatsapp.trim(),
+        facebookUsername: _facebook.trim(),
+        telegramUsername: _telegram.trim(),
+        snapchatUsername: _snapchat.trim(),
+      );
+
+      await ref
+          .read(_draftProfileProvider(widget.profile.id).notifier)
+          .setDraft(updatedProfile);
+
+      // Persist draft contact separately (until UserModel schema is unified)
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString('draft_profile_' + widget.profile.id);
+      final decoded =
+          raw != null
+              ? (jsonDecode(raw) as Map<String, dynamic>)
+              : <String, dynamic>{};
+      decoded['draftContact'] = {
+        'instagram': _instagram.trim(),
+        'twitter': _twitter.trim(),
+        'whatsappNumber': _whatsapp.trim(),
+        'facebook': _facebook.trim(),
+        'telegram': _telegram.trim(),
+        'snapchat': _snapchat.trim(),
+      };
+      await prefs.setString(
+        'draft_profile_' + widget.profile.id,
+        jsonEncode(decoded),
+      );
+
+      if (!mounted) return;
+      setState(() {
+        _photos
+          ..clear()
+          ..addAll(uploadedPhotos);
+        _isSaving = false;
+        _dirty = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile saved.')),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Save failed: $e')),
+      );
+    } finally {
+      if (mounted) setState(() => _isSaving = false);
     }
-
-    final updatedProfile = widget.profile.copyWith(
-      name: _name.trim().isEmpty ? widget.profile.name : _name.trim(),
-      age: _age,
-      city: _city.trim(),
-      country: _country.trim(),
-      nationality: _nationality.trim(),
-      educationLevel: _educationLevel.trim(),
-      profession: _profession.trim(),
-      churchName: _churchName.trim(),
-      desiredQualities: _qualities.join(', '),
-      hobbies: _hobbies,
-      photos: cleanPhotos,
-      profileUrl:
-          cleanPhotos.isNotEmpty
-              ? cleanPhotos.first
-              : widget.profile.profileUrl,
-      instagramUsername: _instagram.trim(),
-      twitterUsername: _twitter.trim(),
-      phoneNumber:
-          _whatsapp.trim(), // WhatsApp stored as phoneNumber on UserModel
-      facebookUsername: _facebook.trim(),
-      telegramUsername: _telegram.trim(),
-      snapchatUsername: _snapchat.trim(),
-    );
-
-    // Persist locally so profile updates immediately (Firebase pending)
-    await ref
-        .read(_draftProfileProvider(widget.profile.id).notifier)
-        .setDraft(updatedProfile);
-
-    // Persist draft contact separately (until UserModel schema is unified)
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString('draft_profile_' + widget.profile.id);
-    final decoded =
-        raw != null
-            ? (jsonDecode(raw) as Map<String, dynamic>)
-            : <String, dynamic>{};
-    decoded['draftContact'] = {
-      'instagram': _instagram.trim(),
-      'twitter': _twitter.trim(),
-      'whatsappNumber': _whatsapp.trim(),
-      'facebook': _facebook.trim(),
-      'telegram': _telegram.trim(),
-      'snapchat': _snapchat.trim(),
-    };
-    await prefs.setString(
-      'draft_profile_' + widget.profile.id,
-      jsonEncode(decoded),
-    );
-
-    // Small delay to feel responsive
-    await Future<void>.delayed(const Duration(milliseconds: 350));
-
-    if (!mounted) return;
-    setState(() {
-      _isSaving = false;
-      _dirty = false;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Saved locally (Firebase integration pending).'),
-      ),
-    );
   }
 
   @override
@@ -4036,7 +4104,7 @@ class _AboutEditor extends StatelessWidget {
                   ),
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _DropdownField(
             label: 'Age',
             value: (age ?? '').toString(),
@@ -4056,7 +4124,7 @@ class _AboutEditor extends StatelessWidget {
                   ),
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _InputField(
             label: 'City',
             initialValue: city,
@@ -4075,7 +4143,7 @@ class _AboutEditor extends StatelessWidget {
                   ),
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _InputField(
             label: 'Country',
             initialValue: country,
@@ -4094,7 +4162,7 @@ class _AboutEditor extends StatelessWidget {
                   ),
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _InputField(
             label: 'Nationality',
             initialValue: nationality,
@@ -4113,7 +4181,7 @@ class _AboutEditor extends StatelessWidget {
                   ),
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           FutureBuilder<Map<String, dynamic>>(
             future: _OnboardingListsCache.load(context),
             builder: (context, snap) {
@@ -4143,7 +4211,7 @@ class _AboutEditor extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           FutureBuilder<Map<String, dynamic>>(
             future: _OnboardingListsCache.load(context),
             builder: (context, snap) {
@@ -4173,8 +4241,8 @@ class _AboutEditor extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(height: 12),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
+          const SizedBox(height: 8),
           FutureBuilder<List<String>>(
             future: _OnboardingListsCache.loadChurches(context),
             builder: (context, snap) {
@@ -4329,13 +4397,13 @@ class _InterestsEditorState extends ConsumerState<_InterestsEditor> {
                   color: AppColors.textSecondary,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
               _SearchField(
                 controller: _hobbySearch,
                 hint: 'Search hobbies',
                 onChanged: (_) => setState(() {}),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
               _SelectableInterestGrid(
                 items: hobbyItems,
                 selected: _selectedHobbies,
@@ -4365,13 +4433,13 @@ class _InterestsEditorState extends ConsumerState<_InterestsEditor> {
                   color: AppColors.textSecondary,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
               _SearchField(
                 controller: _qualitySearch,
                 hint: 'Search qualities',
                 onChanged: (_) => setState(() {}),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
               _SelectableInterestGrid(
                 items: qualityItems,
                 selected: _selectedQualities,
@@ -4564,7 +4632,7 @@ class _ContactEditor extends StatelessWidget {
                   ),
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _InputField(
             label: 'Twitter/X',
             initialValue: twitter,
@@ -4580,7 +4648,7 @@ class _ContactEditor extends StatelessWidget {
                   ),
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _InputField(
             label: 'WhatsApp',
             initialValue: whatsapp,
@@ -4597,7 +4665,7 @@ class _ContactEditor extends StatelessWidget {
                   ),
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _InputField(
             label: 'Facebook',
             initialValue: facebook,
@@ -4613,7 +4681,7 @@ class _ContactEditor extends StatelessWidget {
                   ),
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _InputField(
             label: 'Telegram',
             initialValue: telegram,
@@ -4629,7 +4697,7 @@ class _ContactEditor extends StatelessWidget {
                   ),
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _InputField(
             label: 'Snapchat',
             initialValue: snapchat,
@@ -4668,24 +4736,26 @@ class _InputField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: AppTextStyles.titleMedium),
-        const SizedBox(height: 8),
+        Text(label, style: AppTextStyles.labelMedium.copyWith(fontSize: 12, fontWeight: FontWeight.w600)),
+        const SizedBox(height: 6),
         TextFormField(
           initialValue: initialValue,
           keyboardType: keyboardType,
+          style: AppTextStyles.bodySmall.copyWith(fontSize: 13),
           decoration: InputDecoration(
             filled: true,
             fillColor: AppColors.surface,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: AppColors.border),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: AppColors.border),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: AppColors.primary),
             ),
           ),
@@ -4727,13 +4797,13 @@ class _DropdownField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: AppTextStyles.titleMedium),
-        const SizedBox(height: 8),
+        Text(label, style: AppTextStyles.labelMedium.copyWith(fontSize: 12, fontWeight: FontWeight.w600)),
+        const SizedBox(height: 6),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             color: AppColors.surface,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(10),
             border: Border.all(color: AppColors.border),
           ),
           child: DropdownButtonHideUnderline(
@@ -4741,7 +4811,8 @@ class _DropdownField extends StatelessWidget {
               value: safeValue.isEmpty ? null : safeValue,
               hint: Text(
                 'Select $label',
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.bodySmall.copyWith(
+                  fontSize: 13,
                   color: AppColors.textSecondary,
                 ),
               ),
@@ -4750,7 +4821,7 @@ class _DropdownField extends StatelessWidget {
                       .map(
                         (e) => DropdownMenuItem<String>(
                           value: e,
-                          child: Text(e, overflow: TextOverflow.ellipsis),
+                          child: Text(e, overflow: TextOverflow.ellipsis, style: AppTextStyles.bodySmall.copyWith(fontSize: 13)),
                         ),
                       )
                       .toList(),
@@ -5013,7 +5084,7 @@ class _PremiumContactViewerScreen extends StatelessWidget {
                     Expanded(
                       child: ListView.separated(
                         itemCount: tiles.length,
-                        separatorBuilder: (_, __) => const SizedBox(height: 12),
+                        separatorBuilder: (_, __) => const SizedBox(height: 8),
                         itemBuilder: (_, i) => tiles[i],
                       ),
                     ),
@@ -5452,7 +5523,7 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                           child: ListView.separated(
                             itemCount: entries.length,
                             separatorBuilder:
-                                (_, __) => const SizedBox(height: 12),
+                                (_, __) => const SizedBox(height: 8),
                             itemBuilder: (context, i) {
                               final e = entries[i];
                               final label = _labelFor(e.key.toString());
