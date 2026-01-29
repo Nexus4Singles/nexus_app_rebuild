@@ -35,9 +35,13 @@ class JourneyCatalogV1 {
 class JourneyV1 {
   final String id;
   final String title;
+  final String subtitle;
   final String summary;
   final int priorityRank;
   final String icon;
+
+  /// Optional gender targeting. Example: ['male'], ['female'], or empty for all.
+  final List<String> allowedGenders;
 
   // cover (optional)
   final String? themeTag;
@@ -49,9 +53,11 @@ class JourneyV1 {
   JourneyV1({
     required this.id,
     required this.title,
+    required this.subtitle,
     required this.summary,
     required this.priorityRank,
     required this.icon,
+    this.allowedGenders = const [],
     this.themeTag,
     this.accentIcon,
     this.heroImage,
@@ -61,13 +67,19 @@ class JourneyV1 {
   factory JourneyV1.fromJson(Map<String, dynamic> json) {
     final missionsJson = (json['missions'] as List<dynamic>? ?? []);
     final cover = json['cover'] as Map<String, dynamic>?;
+    final genders =
+        (json['allowedGenders'] as List<dynamic>?)
+            ?.map((e) => e.toString().toLowerCase())
+            .toList();
 
     return JourneyV1(
       id: (json['id'] ?? '') as String,
       title: (json['title'] ?? '') as String,
+      subtitle: (json['subtitle'] ?? '') as String,
       summary: (json['summary'] ?? '') as String,
       priorityRank: (json['priorityRank'] ?? 9999) as int,
       icon: (json['icon'] ?? 'sparkles') as String,
+      allowedGenders: genders ?? const [],
       themeTag: cover?['themeTag'] as String?,
       accentIcon: cover?['accentIcon'] as String?,
       heroImage: cover?['heroImage'] as String?,
@@ -128,6 +140,7 @@ class MissionCardV1 {
   final String type; // mission_card, instruction_card, choice_card, tip_card
   final String icon;
   final String title;
+  final String? flavor; // e.g. teaching, reflection, action, question, tip
   final String? text;
   final List<String>? bullets;
   final String? prompt;
@@ -137,6 +150,7 @@ class MissionCardV1 {
     required this.type,
     required this.icon,
     required this.title,
+    this.flavor,
     this.text,
     this.bullets,
     this.prompt,
@@ -148,6 +162,7 @@ class MissionCardV1 {
       type: (json['type'] ?? 'instruction_card') as String,
       icon: (json['icon'] ?? 'sparkles') as String,
       title: (json['title'] ?? '') as String,
+      flavor: json['flavor'] as String?,
       text: json['text'] as String?,
       bullets:
           (json['bullets'] as List<dynamic>?)

@@ -53,12 +53,13 @@ flutter:
   assets:
     - assets/images/stories/
     - assets/images/social_icons/
+    - assets/images/journeys/
     - assets/config/journeys/
+    - assets/config/journeys/singles_catalog_FLAGSHIP_FINAL/
     - assets/config/assessments/
     - assets/images/
     - assets/data/churches_v1.json
     - assets/data/nexus1_onboarding_lists.v1.json
-
     - assets/config/engagement/
   uses-material-design: true
 

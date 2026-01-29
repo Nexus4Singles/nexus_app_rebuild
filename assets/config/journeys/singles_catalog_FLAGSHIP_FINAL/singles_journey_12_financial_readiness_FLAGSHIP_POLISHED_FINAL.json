@@ -1,0 +1,1020 @@
+{
+  "journeyId": "singles_financial_readiness",
+  "title": "Building Financial Readiness for Marriage",
+  "subtitle": "Preparing your finances for a healthy partnership",
+  "summary": "Money is one of the top sources of conflict in marriage. Yet most dating couples avoid discussing finances until problems arise. This journey helps you develop financial health now, addressing debt, building habits, understanding your money mindset, so you enter marriage as a financial asset rather than a liability. You'll also learn how to have crucial money conversations with a future spouse.",
+  "targetUserCategory": "singles",
+  "priorityRank": 12,
+  "estimatedDays": 12,
+  "totalActivities": 11,
+  "difficulty": "intermediate",
+  "themeColor": "#27AE60",
+  "cover": {
+    "themeTag": "Stewardship",
+    "accentIcon": "account_balance_wallet",
+    "heroImage": "assets/images/journeys/Singles_journey12.jpg",
+    "heroImageDescription": "Hands planting seeds in soil, representing financial growth and preparation for the future."
+  },
+  "frameworks": [
+    "biblical_stewardship",
+    "financial_literacy",
+    "money_mindset",
+    "partnership_preparation"
+  ],
+  "targetOutcomes": [
+    "Understand your current financial situation honestly",
+    "Identify and address your money mindset and habits",
+    "Develop a biblical framework for stewardship",
+    "Create a plan to eliminate debt and build savings",
+    "Learn to have productive money conversations",
+    "Prepare for financial partnership in marriage"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_money_marriage",
+      "isFree": true,
+      "title": "Why Money Matters for Marriage",
+      "subtitle": "Understanding the financial foundation of partnership",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "attach_money",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Financial stress is cited in 35% of divorces. Yet most couples avoid money conversations during dating. Preparing financially now is one of the most loving things you can do for your future marriage.",
+      "frameworkBasis": {
+        "conceptKey": "financial_foundation",
+        "explanation": "Marriage is an economic partnership as much as a romantic one. Shared resources require shared values."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "question",
+          "cardNumber": 1,
+          "title": "Your Money History",
+          "text": "Money conversations often carry more emotion than numbers.\nThey are shaped by fear, security, generosity, and the stories we learned growing up.\n\nIf thinking about finances brings anxiety, avoidance, or quiet shame, pause here.\nThis journey is not about perfection, but about becoming prepared with honesty and wisdom.\n\nThink back to your childhood. What messages did you receive about money? Was it abundant or scarce? Discussed openly or kept secret? What emotions come up when you think about your family's relationship with money?",
+          "prompts": [
+            "Money was always tight and stressful",
+            "We never discussed finances",
+            "My parents modeled good stewardship",
+            "Money caused conflict in my home"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Your early experiences shape your money instincts. Awareness is the first step toward intentional change."
+          },
+          "icon": "history"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Marriage-Money Connection",
+          "text": "Here's the reality:\n\n• Financial disagreements are the #1 predictor of divorce (Ramsey Solutions study)\n• 70% of couples report money causes tension in their relationship\n• Couples who discuss money weekly are happier than those who discuss it less frequently\n\nBut here's the good news: financial health is a skill that can be learned. And preparing now, while single, gives you a tremendous advantage.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Biblical Stewardship Foundation",
+          "text": "Scripture is clear that everything belongs to God:\n\n\"The earth is the Lord's, and everything in it.\" (Psalm 24:1)\n\n\"Remember the Lord your God, for it is he who gives you the ability to produce wealth.\" (Deuteronomy 8:18)\n\nWe are managers, not owners. This shifts everything, from how we earn, to how we spend, to how we give. Financial readiness for marriage means learning to steward resources together for God's purposes.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Current Financial Reality",
+          "text": "Be honest with yourself. Which statement best describes your current financial situation?",
+          "prompts": [
+            "I'm in significant debt and struggling",
+            "I'm getting by but not saving",
+            "I'm stable with some savings",
+            "I'm financially healthy and growing"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are, that's your starting point. What matters is the direction you're heading from here."
+          },
+          "icon": "assessment"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "The Gift of Preparation",
+          "text": "Imagine entering marriage with:\n• No consumer debt\n• An emergency fund\n• A clear budget you actually follow\n• Healthy money conversations already practiced\n\nThis isn't fantasy, it's achievable with intentional preparation. The work you do now is a gift to your future spouse and marriage.",
+          "icon": "card_giftcard",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Financial Preparation Commitment",
+          "text": "This journey will challenge you to get honest about money, develop new habits, and prepare for financial partnership. It requires courage and consistency.\n\nWrite one sentence about why financial readiness matters to you and your future marriage:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_money_mindset",
+      "isFree": false,
+      "title": "Understanding Your Money Mindset",
+      "subtitle": "Discovering the beliefs that drive your financial behavior",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "moderate",
+      "activityType": "exercise",
+      "whyThisMatters": "You don't just have money habits, you have money beliefs. These deep-seated mindsets, often formed in childhood, drive your financial decisions. Understanding yours is essential before merging finances with someone else.",
+      "frameworkBasis": {
+        "conceptKey": "money_mindset",
+        "explanation": "Our relationship with money is psychological and emotional, not just mathematical."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Four Money Mindsets",
+          "text": "Research identifies four primary money mindsets:\n\n**Security Seekers**: Save compulsively, fear scarcity, struggle to spend even when appropriate\n\n**Status Spenders**: Spend to impress, define worth by possessions, often in debt\n\n**Avoiders**: Ignore finances entirely, don't budget, hope things work out\n\n**Money Monks**: Feel guilt about having money, give excessively, struggle to receive\n\nMost people have a dominant mindset with elements of others.",
+          "icon": "category"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Identifying Your Mindset",
+          "text": "Which patterns do you recognize in yourself? Select all that apply:",
+          "prompts": [
+            "I feel anxious if my savings dip below a certain amount",
+            "I've bought things I couldn't afford to impress others",
+            "I avoid looking at my bank account",
+            "I feel guilty spending money on myself"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These patterns reveal your money mindset. Awareness allows you to respond intentionally rather than reactively."
+          },
+          "icon": "checklist"
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Money Story Inheritance",
+          "text": "Think back to how money was talked about and handled in your home growing up.\n\nWas it a source of tension, generosity, fear, secrecy, or stability?\n\nWrite a few sentences about the messages you absorbed, even without words.\nWhich of those patterns do you want to carry forward, and which do you want to change?",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Childhood Money Messages",
+          "text": "What phrases did you hear growing up? Select any that resonate:",
+          "prompts": [
+            "Money doesn't grow on trees",
+            "We can't afford that",
+            "Rich people are greedy",
+            "Save for a rainy day",
+            "You have to work hard for money",
+            "Money is the root of all evil"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These messages became internal beliefs. Some serve you well; others may be limiting your financial growth."
+          },
+          "icon": "family_restroom"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Biblical Money Truths",
+          "text": "Let's replace limiting beliefs with biblical truth:\n\n\"Money is evil\" → Money is neutral; the *love* of money is the problem (1 Timothy 6:10)\n\n\"I can't afford generosity\" → Give first, and God provides (Proverbs 3:9-10)\n\n\"I must hoard to be secure\" → Security comes from God, not savings (Matthew 6:19-21)\n\n\"My worth depends on wealth\" → Your worth is in Christ alone (Ephesians 2:10)",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "How This Affects Partnership",
+          "text": "Consider: If you marry someone with the opposite money mindset, a Security Seeker paired with an Avoider, for example, what conflicts might arise?\n\nUnderstanding your mindset helps you:\n• Communicate your needs clearly\n• Understand why a partner behaves differently\n• Find balance rather than extremes",
+          "icon": "people",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 7,
+          "title": "Mindset Transformation",
+          "text": "Identify one limiting money belief you want to change and the biblical truth that replaces it:\n\nLimiting belief I'm releasing:\nBiblical truth I'm embracing:",
+          "responseType": "open-text",
+          "icon": "swap_horiz"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_financial_snapshot",
+      "isFree": false,
+      "title": "Taking Your Financial Snapshot",
+      "subtitle": "Getting honest about where you actually stand",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "camera_alt",
+      "emotionalIntensity": "moderate",
+      "activityType": "exercise",
+      "whyThisMatters": "You can't create a map without knowing your starting point. Many people avoid looking at their financial reality, but clarity, even if uncomfortable, is the foundation of progress.",
+      "frameworkBasis": {
+        "conceptKey": "financial_awareness",
+        "explanation": "What gets measured gets managed. Honest assessment enables intentional change."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Power of Knowing",
+          "text": "Financial avoidance is common but costly. Research shows that people who track their finances are significantly more likely to:\n• Pay off debt faster\n• Build savings\n• Feel less financial stress\n\nThe discomfort of looking is temporary. The benefit of knowing is permanent.",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Income Assessment",
+          "text": "What is your approximate monthly take-home income (after taxes)?",
+          "prompts": [
+            "Under $2,000",
+            "$2,000 - $3,500",
+            "$3,500 - $5,000",
+            "$5,000 - $7,500",
+            "Over $7,500",
+            "Variable/irregular income"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Your income is your tool for building financial health. The key is how intentionally you direct it."
+          },
+          "icon": "payments"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Debt Reality Check",
+          "text": "Select all types of debt you currently carry:",
+          "prompts": [
+            "Credit card debt",
+            "Student loans",
+            "Car loan",
+            "Personal loans",
+            "Medical debt",
+            "Money owed to family/friends",
+            "No debt"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "contains",
+            "target": "No debt",
+            "reaction": "Being debt-free is a wonderful foundation. Your focus can be on building and giving."
+          },
+          "icon": "credit_card"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Savings Status",
+          "text": "How much do you have in savings (emergency fund, not retirement)?",
+          "prompts": [
+            "Less than $500",
+            "$500 - $1,000",
+            "$1,000 - $3,000",
+            "3-6 months of expenses",
+            "More than 6 months of expenses"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Your savings is your financial buffer. Building this provides peace and options."
+          },
+          "icon": "savings"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Calculate Your Net Worth",
+          "text": "Net worth = What you OWN minus what you OWE\n\nAssets (add up):\n• Savings accounts\n• Retirement accounts\n• Car value\n• Other valuables\n\nLiabilities (add up):\n• All debts\n\nSubtract liabilities from assets. This number, positive or negative, is your financial starting point.",
+          "icon": "calculate"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Financial Snapshot",
+          "text": "Take 10 minutes right now to calculate your approximate net worth. Then write:\n\n1. My approximate net worth: $_____\n2. How I feel about this number:\n3. One thing I want to change:",
+          "responseType": "open-text",
+          "icon": "edit_document"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_debt_freedom",
+      "isFree": false,
+      "title": "The Path to Debt Freedom",
+      "subtitle": "Creating your plan to eliminate debt",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "lock_open",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Bringing significant debt into marriage is like starting a race with weights on your ankles. Freedom from debt gives your future marriage options, flexibility, and peace.",
+      "frameworkBasis": {
+        "conceptKey": "debt_freedom",
+        "explanation": "The borrower is slave to the lender (Proverbs 22:7). Debt limits freedom; eliminating it expands possibilities."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What Scripture Says About Debt",
+          "text": "\"The rich rule over the poor, and the borrower is slave to the lender.\" (Proverbs 22:7)\n\n\"Let no debt remain outstanding, except the continuing debt to love one another.\" (Romans 13:8)\n\nDebt isn't always sin, but it always limits freedom. The goal isn't guilt about past borrowing, it's wisdom about moving forward.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Debt Snowball Method",
+          "text": "Here's a proven approach:\n\n1. List all debts smallest to largest\n2. Pay minimums on everything\n3. Attack the smallest debt with all extra money\n4. When it's paid, roll that payment to the next debt\n5. Repeat until debt-free\n\nWhy smallest first? Quick wins build momentum. The psychological boost of eliminating debts keeps you motivated.",
+          "icon": "trending_down"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Debt Elimination Priority",
+          "text": "If you have debt, which would you tackle first with the snowball method?",
+          "prompts": [
+            "Credit card (smallest balance)",
+            "Small personal loan",
+            "Medical bill",
+            "Store credit account",
+            "I need to list out my debts first",
+            "I'm already debt-free"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Having a target focuses your energy. One debt at a time, you'll build momentum."
+          },
+          "icon": "flag"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Finding Extra Money",
+          "text": "Accelerate debt payoff by:\n\n**Cutting**: Cancel subscriptions, reduce dining out, downgrade services\n\n**Earning**: Side gig, sell unused items, ask for a raise\n\n**Redirecting**: Put tax refunds, bonuses, and gifts toward debt\n\nEven an extra $200/month can cut years off your debt payoff timeline.",
+          "icon": "content_cut"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "The Marriage Impact",
+          "text": "Consider this: If you eliminate $15,000 in debt before marriage, that's:\n• $15,000 your spouse doesn't inherit\n• Hundreds saved in interest\n• Proof of financial discipline\n• Reduced stress in early marriage\n\nYour future spouse will thank you for the work you do now.",
+          "icon": "favorite",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Debt Freedom Plan",
+          "text": "Write out your debt freedom commitment:\n\n1. Total debt I want to eliminate: $_____\n2. My target debt-free date:\n3. One expense I'll cut to accelerate payoff:\n4. One way I could earn extra income:",
+          "responseType": "open-text",
+          "icon": "checklist_rtl"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_budgeting",
+      "isFree": false,
+      "title": "Building a Budget That Actually Works",
+      "subtitle": "Creating a spending plan you can follow",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "receipt_long",
+      "emotionalIntensity": "light",
+      "activityType": "exercise",
+      "whyThisMatters": "A budget isn't a restriction, it's a plan that tells your money where to go instead of wondering where it went. Couples who budget together report higher financial satisfaction and less conflict.",
+      "frameworkBasis": {
+        "conceptKey": "intentional_spending",
+        "explanation": "Budgeting is stewardship in action, directing resources purposefully rather than reactively."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "question",
+          "cardNumber": 1,
+          "title": "Your Budgeting History",
+          "text": "What has been your experience with budgeting?",
+          "prompts": [
+            "I've never really budgeted",
+            "I've tried but couldn't stick with it",
+            "I budget occasionally",
+            "I budget consistently and it works"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Whatever your history, today is a fresh start. A good budget is simply a plan that matches your income and values."
+          },
+          "icon": "history"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The 50/30/20 Framework",
+          "text": "A simple starting point:\n\n**50% Needs**: Housing, utilities, food, transportation, insurance, minimum debt payments\n\n**30% Wants**: Entertainment, dining out, hobbies, subscriptions, upgrades\n\n**20% Financial Goals**: Extra debt payment, savings, retirement, giving\n\nAdjust percentages based on your situation and values, this is a guide, not a rule.",
+          "icon": "pie_chart"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Zero-Based Budget",
+          "text": "Another approach: give every dollar a job.\n\nIncome - Expenses = $0\n\nThis doesn't mean spending everything. It means assigning every dollar:\n• $X to rent\n• $X to groceries\n• $X to savings\n• $X to giving\n\nNo money left unassigned. This level of intentionality transforms finances.",
+          "icon": "functions"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Identifying Budget Leaks",
+          "text": "Where does money tend to slip away unnoticed for you?",
+          "prompts": [
+            "Food (dining out, coffee, delivery)",
+            "Subscriptions I forget about",
+            "Impulse online shopping",
+            "Entertainment and hobbies",
+            "Keeping up with friends' spending",
+            "I'm honestly not sure"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These leaks add up. Awareness is the first step to redirecting that money purposefully."
+          },
+          "icon": "water_drop"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Tools That Help",
+          "text": "You don't need to budget perfectly, you need a system you'll actually use:\n\n• **Apps**: YNAB, EveryDollar, Mint\n• **Spreadsheet**: Simple but requires manual entry\n• **Envelope system**: Cash in physical or digital envelopes\n• **Automatic transfers**: Set and forget savings/giving\n\nThe best budget is the one you'll stick with.",
+          "icon": "build"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Create Your Budget",
+          "text": "Commit to creating a budget this week. Write:\n\n1. The method I'll try (app, spreadsheet, envelope):\n2. My top 3 expense categories:\n3. One spending leak I'll plug this month:\n4. When I'll review my budget (weekly check-in time):",
+          "responseType": "open-text",
+          "icon": "event_available"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_giving",
+      "isFree": false,
+      "title": "Generosity as a Financial Foundation",
+      "subtitle": "Building giving into your financial life",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "volunteer_activism",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Biblical financial health starts with generosity, not accumulation. Giving breaks the grip of money on our hearts and aligns our resources with God's purposes.",
+      "frameworkBasis": {
+        "conceptKey": "generous_living",
+        "explanation": "We give not because God needs our money, but because giving transforms our hearts and reflects God's character."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Giving Comes First",
+          "text": "Scripture is clear about priorities:\n\n\"Honor the Lord with your wealth, with the firstfruits of all your crops; then your barns will be filled to overflowing.\" (Proverbs 3:9-10)\n\nGiving isn't what we do with leftovers, it's the first allocation. This isn't about earning God's favor; it's about ordering our hearts correctly.",
+          "icon": "looks_one"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Giving Reality",
+          "text": "How would you describe your current giving practice?",
+          "prompts": [
+            "I rarely give financially",
+            "I give occasionally when moved",
+            "I give regularly but not systematically",
+            "I tithe (10%) consistently",
+            "I give beyond the tithe"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are, generosity is a journey. The heart behind giving matters as much as the amount."
+          },
+          "icon": "card_giftcard"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Tithe as a Starting Point",
+          "text": "The tithe (10%) appears throughout Scripture as a baseline for giving. It's not a ceiling but a floor, a training wheel for generosity.\n\n\"Bring the whole tithe into the storehouse, that there may be food in my house. Test me in this, \" says the Lord Almighty.\" (Malachi 3:10)\n\nWhether you start at 10% or work toward it, systematic giving transforms your relationship with money.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Generosity in Marriage",
+          "text": "Couples who give together build:\n• Shared values beyond consumption\n• Protection against materialism\n• Partnership in kingdom work\n• Financial margin (generous people tend to be more careful with remaining money)\n\nAligning on giving philosophy now prevents conflict later.",
+          "icon": "people",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Barriers to Generosity",
+          "text": "What holds you back from giving more generously?",
+          "prompts": [
+            "I don't feel like I have enough",
+            "Debt makes it feel impossible",
+            "I'm not sure where to give",
+            "I fear not having enough for myself",
+            "I haven't made it a priority"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These barriers are real but not insurmountable. Many people find that giving creates abundance rather than scarcity."
+          },
+          "icon": "block"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Generosity Commitment",
+          "text": "Take a step toward greater generosity:\n\n1. My current giving percentage: ___%\n2. My goal giving percentage: ___%\n3. Where I want to direct my giving:\n4. One step I'll take this month to increase generosity:",
+          "responseType": "open-text",
+          "icon": "favorite_border"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_emergency_fund",
+      "isFree": false,
+      "title": "Building Your Emergency Fund",
+      "subtitle": "Creating financial margin for the unexpected",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "savings",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Life happens, car repairs, medical bills, job loss. Without an emergency fund, unexpected expenses become debt. With one, they become inconveniences. This margin is crucial for marriage stability.",
+      "frameworkBasis": {
+        "conceptKey": "financial_margin",
+        "explanation": "Margin, the space between your resources and your expenses, provides peace and options."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Wisdom of Preparation",
+          "text": "\"The wise store up choice food and olive oil, but fools gulp theirs down.\" (Proverbs 21:20)\n\n\"Go to the ant... it stores its provisions in summer and gathers its food at harvest.\" (Proverbs 6:6-8)\n\nSaving for emergencies isn't lack of faith, it's wisdom. Even Joseph, guided by God, saved during abundance for coming famine.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Emergency Fund Stages",
+          "text": "Build in phases:\n\n**Starter Fund**: $1,000\n→ Covers minor emergencies while paying off debt\n\n**Full Fund**: 3-6 months of expenses\n→ Provides security for job loss, major repairs, health issues\n\n**Extended Fund**: 6-12 months\n→ For variable income or high-risk situations\n\nStart small; build consistently.",
+          "icon": "stairs"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Emergency Fund Status",
+          "text": "Where are you in building your emergency fund?",
+          "prompts": [
+            "I have no emergency fund",
+            "I have under $1,000",
+            "I have my starter fund ($1,000)",
+            "I have 1-3 months of expenses",
+            "I have 3-6 months of expenses",
+            "I have more than 6 months"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Knowing your current status helps you set the right goal. Any progress is progress."
+          },
+          "icon": "assessment"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Strategies to Build Faster",
+          "text": "Accelerate your emergency fund:\n\n• **Automate**: Set up automatic transfers on payday\n• **Windfalls**: Tax refunds, bonuses, gifts → emergency fund\n• **Cut temporarily**: Aggressive cutting while building\n• **Sell**: Items you don't need become security\n• **Side income**: Temporary extra work for temporary goals",
+          "icon": "speed"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Peace Over Panic",
+          "text": "Imagine your car breaks down and needs $800 in repairs.\n\nWithout emergency fund: Stress, credit card debt, payment plan, interest\n\nWith emergency fund: \"That's frustrating. Let me transfer the money.\"\n\nThis peace is available. It's built one deposit at a time.",
+          "icon": "spa",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Emergency Fund Plan",
+          "text": "Set your emergency fund goal and plan:\n\n1. My target emergency fund amount: $_____\n2. My monthly contribution: $_____\n3. Target date to reach goal:\n4. I'll automate savings on this day each month:",
+          "responseType": "open-text",
+          "icon": "event_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_money_conversations",
+      "isFree": false,
+      "title": "Having Money Conversations",
+      "subtitle": "Learning to discuss finances productively",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "forum",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Financial harmony in marriage comes from communication, not identical views. Learning to discuss money openly, honestly, and productively is a skill you can develop now.",
+      "frameworkBasis": {
+        "conceptKey": "financial_communication",
+        "explanation": "The goal isn't agreement on everything, it's productive dialogue about money that leads to mutual understanding."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Money Talks Are Hard",
+          "text": "Money conversations trigger:\n\n• **Shame**: About debt, mistakes, or income level\n• **Fear**: Of judgment, conflict, or loss of control\n• **Power dynamics**: Who earns more, who decides\n• **Old wounds**: Past experiences of financial betrayal or scarcity\n\nRecognizing these triggers helps you approach conversations with grace.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Money Talk Comfort",
+          "text": "How comfortable are you discussing finances with a romantic partner?",
+          "prompts": [
+            "Very uncomfortable, I avoid it",
+            "Uncomfortable but I push through",
+            "Somewhat comfortable with basics",
+            "Comfortable with most topics",
+            "Very comfortable and transparent"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Comfort grows with practice. Starting these conversations in dating prepares you for marriage."
+          },
+          "icon": "emoji_emotions"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "When to Have Money Talks While Dating",
+          "text": "Progressive disclosure:\n\n**Early dating**: General attitudes toward money, spending vs. saving tendencies, debt philosophy\n\n**Getting serious**: Actual debt amounts, income ranges, financial goals, credit issues\n\n**Pre-engagement**: Complete financial transparency, combined budget planning, roles and expectations\n\nDon't rush intimacy, but don't avoid it either.",
+          "icon": "timeline"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Productive Conversation Framework",
+          "text": "For difficult money conversations:\n\n1. **Schedule it**: Don't ambush; set a time to talk\n2. **Start soft**: \"I want us to be a team with money...\"\n3. **Share your story first**: Be vulnerable about your finances\n4. **Listen to understand**: Not to fix or judge\n5. **Focus on \"we\"**: How do WE want to handle this?",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Questions to Ask a Potential Spouse",
+          "text": "Before marriage, you should know:\n\n• What is your total debt?\n• What is your credit score?\n• What are your financial goals?\n• How do you feel about budgeting?\n• What did your parents teach you about money?\n• How do you feel about generosity and giving?\n\nThese conversations reveal character and compatibility.",
+          "icon": "help_outline",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Practice Your Money Story",
+          "text": "Write out what you would share with a serious partner about your finances:\n\n1. My financial history (briefly):\n2. My current situation (debt, savings, income range):\n3. My financial goals:\n4. What I've learned about money:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_financial_partnership",
+      "isFree": false,
+      "title": "Preparing for Financial Partnership",
+      "subtitle": "Understanding how married couples manage money",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "handshake",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Marriage creates financial union, but couples structure that union differently. Understanding the options helps you enter conversations prepared and form preferences before emotions run high.",
+      "frameworkBasis": {
+        "conceptKey": "financial_partnership",
+        "explanation": "There's no single right way to manage money in marriage, but there must be agreement on whatever system you choose."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The \"Ours\" Mindset",
+          "text": "Scripture presents marriage as union: \"The two will become one flesh\" (Genesis 2:24).\n\nThis includes financial union. Regardless of who earns more or how accounts are structured, the mindset should be: these are OUR resources, steward for OUR family, aligned with OUR values.\n\n\"Mine\" and \"yours\" thinking breeds division.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Common Account Structures",
+          "text": "Couples typically choose:\n\n**Fully Combined**: All money in joint accounts, everything shared\n\n**Hybrid**: Joint account for bills/goals, separate accounts for personal spending\n\n**Proportional**: Contribute to joint expenses based on income ratio\n\n**Separate with Visibility**: Individual accounts but full transparency\n\nNo structure is inherently right, but both partners must agree.",
+          "icon": "account_balance"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Initial Preference",
+          "text": "Without knowing your future spouse's preference, which approach appeals to you most?",
+          "prompts": [
+            "Fully combined, we're one unit",
+            "Hybrid, joint bills, separate fun money",
+            "I'm flexible and open",
+            "I'm not sure, I need to think more"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "This is a preference, not a final decision. You'll work this out together based on both partners' needs."
+          },
+          "icon": "thumbs_up_down"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Key Partnership Decisions",
+          "text": "Before marriage, decide together:\n\n• Who pays which bills (or is it joint)?\n• How much can each person spend without checking in?\n• How often will we budget together?\n• Who handles day-to-day management vs. big-picture planning?\n• How will we handle financial disagreements?\n\nProcess matters as much as structure.",
+          "icon": "rule"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Income Disparity Wisdom",
+          "text": "When one spouse earns significantly more:\n\n• The higher earner must avoid control dynamics\n• The lower earner must remain engaged, not passive\n• Both must see all income as \"ours\"\n• Decisions should be made together regardless of contribution\n\n\"I make more\" should never mean \"I decide.\" That's control, not partnership.",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Partnership Vision",
+          "text": "Describe your ideal financial partnership in marriage:\n\n1. How I want decisions to be made:\n2. What role I want to play:\n3. What I need from a partner:\n4. One non-negotiable for me:",
+          "responseType": "open-text",
+          "icon": "visibility"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_financial_red_flags",
+      "isFree": false,
+      "title": "Financial Red Flags in Dating",
+      "subtitle": "Recognizing warning signs before commitment",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "warning",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Financial incompatibility or dysfunction ruins marriages. Learning to recognize red flags during dating protects you from entering a partnership that will cause years of pain.",
+      "frameworkBasis": {
+        "conceptKey": "wise_evaluation",
+        "explanation": "Love doesn't ignore financial red flags, it addresses them honestly before commitment."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Red Flag Categories",
+          "text": "Financial warning signs fall into:\n\n**Behavior Red Flags**: What they do with money\n\n**Transparency Red Flags**: How they communicate about money\n\n**Values Red Flags**: What they believe about money\n\n**History Red Flags**: Patterns in their financial past\n\nOne issue isn't necessarily disqualifying. Patterns and responses matter.",
+          "icon": "category"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Behavior Red Flags",
+          "text": "Watch for:\n\n🚩 Lives far beyond their means\n🚩 Can't keep a job or always has excuses\n🚩 Gambling or compulsive shopping\n🚩 Expects you to pay for everything\n🚩 Makes major purchases impulsively\n🚩 Never has money for necessities but always has money for wants\n🚩 Borrows money constantly from friends/family",
+          "icon": "report_problem"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Transparency Red Flags",
+          "text": "Watch for:\n\n🚩 Refuses to discuss finances\n🚩 Gets defensive or angry when money comes up\n🚩 Lies about purchases or debt\n🚩 Hides accounts or income\n🚩 Dismisses your financial concerns\n🚩 Won't answer direct questions about their situation",
+          "icon": "visibility_off"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Values Red Flags",
+          "text": "Watch for:\n\n🚩 Defines worth by wealth or possessions\n🚩 Shows no concern for debt or consequences\n🚩 Opposes generosity or giving\n🚩 Expects lifestyle you can't afford together\n🚩 Views your money as \"ours\" but their money as \"theirs\"\n🚩 No interest in budgeting or planning",
+          "icon": "gpp_maybe"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Evaluation Without Judgment",
+          "text": "The goal isn't perfection, everyone has financial weaknesses. The key questions are:\n\n• Are they aware of their issues?\n• Are they actively working on them?\n• Are they honest and transparent?\n• Are they willing to grow together?\n\nA recovering spender who is honest and working on it is better than a saver who hides and controls.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Non-Negotiables",
+          "text": "Based on what you've learned, write out:\n\n1. Three financial behaviors that would be absolute red flags for me:\n2. One financial weakness I could work through with a partner:\n3. What healthy financial transparency looks like to me:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_action_plan",
+      "isFree": false,
+      "title": "Your Financial Readiness Action Plan",
+      "subtitle": "Consolidating your commitments into action",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "assignment_turned_in",
+      "emotionalIntensity": "light",
+      "activityType": "action",
+      "whyThisMatters": "Knowledge without action doesn't change anything. This activity consolidates everything you've learned into a concrete plan that prepares you for marriage-ready finances.",
+      "frameworkBasis": {
+        "conceptKey": "integrated_action",
+        "explanation": "Financial readiness isn't achieved by wanting it, it's built through consistent, intentional action."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "reflection",
+          "cardNumber": 1,
+          "title": "Your Financial Journey So Far",
+          "text": "Take a moment to acknowledge what you've learned:\n\n• You've examined your money mindset and history\n• You've assessed your current financial reality\n• You've created plans for debt, budget, savings, and giving\n• You've prepared for financial conversations\n• You know what partnership should look like\n• You can recognize red flags\n\nThis is significant work. Be proud of it.",
+          "icon": "emoji_events",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Biggest Financial Priority",
+          "text": "Of everything covered, what is your most urgent financial priority right now?",
+          "prompts": [
+            "Paying off debt",
+            "Building emergency fund",
+            "Creating a budget",
+            "Increasing giving",
+            "Earning more income",
+            "Having money conversations",
+            "Changing my money mindset"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Focus creates momentum. Tackle this one thing first before spreading your energy across everything."
+          },
+          "icon": "priority_high"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The 90-Day Focus",
+          "text": "Change happens in focused sprints:\n\n**Days 1-30**: Establish your system\n• Set up budget, automate savings, list debts\n\n**Days 31-60**: Build momentum\n• Track spending, make first debt payment, maintain giving\n\n**Days 61-90**: Solidify habits\n• Review progress, adjust budget, celebrate wins\n\nAfter 90 days, evaluate and set your next focus.",
+          "icon": "calendar_today"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "action",
+          "cardNumber": 4,
+          "title": "Your 90-Day Commitments",
+          "text": "Write your specific commitments for the next 90 days:\n\n1. DEBT: I will...\n2. BUDGET: I will...\n3. SAVINGS: I will...\n4. GIVING: I will...",
+          "responseType": "open-text",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Accountability",
+          "text": "Who will hold you accountable to these financial commitments?",
+          "prompts": [
+            "A trusted friend",
+            "A family member",
+            "A mentor",
+            "A small group",
+            "I'll set up self-accountability systems",
+            "I need to find someone"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Accountability multiplies success. Share your commitments with this person this week."
+          },
+          "icon": "people"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Financial Readiness Declaration",
+          "text": "Write a declaration of your commitment to financial readiness for marriage:\n\n\"I am committed to entering marriage financially prepared. Specifically, I will... Because I believe... With God's help, I trust that...\"",
+          "responseType": "open-text",
+          "icon": "verified"
+        }
+      ]
+    }
+  ]
+}

@@ -347,13 +347,39 @@ class _SessionHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final showProgress = total > 0;
+    final surface = AppColors.getSurface(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final gradient = LinearGradient(
+      colors: [
+        Color.alphaBlend(
+          AppColors.primary.withOpacity(isDark ? 0.90 : 0.12),
+          surface,
+        ),
+        Color.alphaBlend(
+          AppColors.primary.withOpacity(isDark ? 0.70 : 0.18),
+          surface,
+        ),
+      ],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    );
+
+    final textColor =
+        isDark
+            ? AppColors.getTextOnDark(context)
+            : AppColors.getTextPrimary(context);
+    final secondary =
+        isDark
+            ? AppColors.getTextOnDark(context).withOpacity(0.88)
+            : AppColors.getTextSecondary(context);
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.90),
+        gradient: gradient,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: AppColors.primary.withOpacity(0.25)),
+        border: Border.all(color: AppColors.primary.withOpacity(0.16)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.10),
@@ -368,66 +394,92 @@ class _SessionHero extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 40,
-                height: 40,
+                width: 42,
+                height: 42,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.16),
+                  color:
+                      isDark
+                          ? AppColors.getTextOnDark(context).withOpacity(0.16)
+                          : AppColors.primary.withOpacity(0.10),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: Icon(icon, color: Colors.white, size: 20),
+                child: Icon(
+                  icon,
+                  color:
+                      isDark
+                          ? AppColors.getTextOnDark(context)
+                          : AppColors.primary,
+                  size: 20,
+                ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 10),
               Expanded(
                 child: Text(
                   title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.bodyLarge.copyWith(
-                    color: Colors.white,
+                    color: textColor,
                     fontWeight: FontWeight.w900,
                     height: 1.12,
                   ),
                 ),
               ),
               if (showProgress)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.18),
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                  child: Text(
-                    '$index/$total',
-                    style: AppTextStyles.labelSmall.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w900,
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color:
+                          isDark
+                              ? AppColors.getTextOnDark(
+                                context,
+                              ).withOpacity(0.18)
+                              : AppColors.primary.withOpacity(0.14),
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                    child: Text(
+                      '$index/$total cards',
+                      style: AppTextStyles.labelSmall.copyWith(
+                        color:
+                            isDark
+                                ? AppColors.getTextOnDark(context)
+                                : AppColors.primary,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                   ),
                 ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           Text(
             subtitle,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.bodySmall.copyWith(
-              color: Colors.white.withOpacity(0.88),
+              color: secondary,
               height: 1.35,
             ),
           ),
           if (showProgress) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             ClipRRect(
               borderRadius: BorderRadius.circular(99),
               child: LinearProgressIndicator(
                 value: progress,
                 minHeight: 6,
-                backgroundColor: Colors.white.withOpacity(0.22),
-                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                backgroundColor:
+                    isDark
+                        ? AppColors.getTextOnDark(context).withOpacity(0.22)
+                        : AppColors.primary.withOpacity(0.16),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  isDark ? AppColors.getTextOnDark(context) : AppColors.primary,
+                ),
               ),
             ),
           ],
@@ -443,21 +495,31 @@ class _CardShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-      decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: AppColors.primary.withOpacity(0.18)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 18,
-            offset: const Offset(0, 14),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Container(
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          decoration: BoxDecoration(
+            color: AppColors.primary.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: AppColors.primary.withOpacity(0.18)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.06),
+                blurRadius: 18,
+                offset: const Offset(0, 14),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: child,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: child,
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -570,6 +632,7 @@ class _MissionCardRenderer extends StatelessWidget {
       case 'mission_card':
         return _InfoCard(
           title: card.title,
+          flavor: card.flavor,
           text: card.text ?? '',
           bullets: card.bullets,
         );
@@ -579,6 +642,7 @@ class _MissionCardRenderer extends StatelessWidget {
         final selected = choiceSelections[key];
         return _ChoiceCard(
           title: card.title,
+          flavor: card.flavor,
           prompt: card.prompt ?? '',
           options: card.options ?? const [],
           selected: selected,
@@ -597,10 +661,16 @@ class _MissionCardRenderer extends StatelessWidget {
 
 class _InfoCard extends StatelessWidget {
   final String title;
+  final String? flavor;
   final String text;
   final List<String>? bullets;
 
-  const _InfoCard({required this.title, required this.text, this.bullets});
+  const _InfoCard({
+    required this.title,
+    required this.text,
+    this.bullets,
+    this.flavor,
+  });
 
   List<String> _splitParagraphs(String input) {
     final trimmed = input.trim();
@@ -618,23 +688,33 @@ class _InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasBullets = bullets != null && bullets!.isNotEmpty;
     final paragraphs = _splitParagraphs(text);
+    final badge = _flavorBadge(flavor);
+    final bg = _flavorColor(flavor);
 
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.06),
+        color: bg.withOpacity(0.06),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primary.withOpacity(0.20)),
+        border: Border.all(color: bg.withOpacity(0.20)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: AppTextStyles.bodyLarge.copyWith(
-              fontWeight: FontWeight.w900,
-              height: 1.15,
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    fontWeight: FontWeight.w900,
+                    height: 1.15,
+                  ),
+                ),
+              ),
+              if (badge != null) badge,
+            ],
           ),
 
           const SizedBox(height: 10),
@@ -695,6 +775,7 @@ class _InfoCard extends StatelessWidget {
 
 class _ChoiceCard extends StatelessWidget {
   final String title;
+  final String? flavor;
   final String prompt;
   final List<String> options;
   final String? selected;
@@ -702,6 +783,7 @@ class _ChoiceCard extends StatelessWidget {
 
   const _ChoiceCard({
     required this.title,
+    this.flavor,
     required this.prompt,
     required this.options,
     required this.selected,
@@ -714,25 +796,34 @@ class _ChoiceCard extends StatelessWidget {
       height: 1.45,
       color: AppColors.getTextPrimary(context),
     );
+    final badge = _flavorBadge(flavor ?? 'question');
+    final bg = _flavorColor(flavor);
 
     final parsedPrompt = _parseRichContent(prompt);
 
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.06),
+        color: bg.withOpacity(0.06),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primary.withOpacity(0.20)),
+        border: Border.all(color: bg.withOpacity(0.20)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: AppTextStyles.bodyLarge.copyWith(
-              fontWeight: FontWeight.w900,
-              height: 1.15,
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    fontWeight: FontWeight.w900,
+                    height: 1.15,
+                  ),
+                ),
+              ),
+              if (badge != null) badge,
+            ],
           ),
           const SizedBox(height: 8),
 
@@ -780,7 +871,6 @@ class _ChoiceCard extends StatelessWidget {
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 140),
                         width: 20,
-                        height: 20,
                         decoration: BoxDecoration(
                           color:
                               isSelected
@@ -891,6 +981,68 @@ List<Widget> _buildBodyWidgets(List<_Block> blocks, TextStyle style) {
   }
 
   return widgets;
+}
+
+Color _flavorColor(String? flavor) {
+  final f = flavor?.toLowerCase().trim() ?? '';
+  if (f.contains('question')) return AppColors.primary;
+  if (f.contains('reflection')) return Colors.teal;
+  if (f.contains('action')) return Colors.orange;
+  if (f.contains('teaching')) return Colors.indigo;
+  if (f.contains('tip')) return Colors.green;
+  return AppColors.primary;
+}
+
+Widget? _flavorBadge(String? flavor) {
+  if (flavor == null || flavor.trim().isEmpty) return null;
+
+  String label;
+  IconData icon;
+  final f = flavor.toLowerCase();
+
+  if (f.contains('question')) {
+    label = 'Question';
+    icon = Icons.help_outline;
+  } else if (f.contains('reflection')) {
+    label = 'Reflection';
+    icon = Icons.self_improvement_outlined;
+  } else if (f.contains('action')) {
+    label = 'Action';
+    icon = Icons.bolt;
+  } else if (f.contains('teaching')) {
+    label = 'Teaching';
+    icon = Icons.menu_book_outlined;
+  } else if (f.contains('tip')) {
+    label = 'Tip';
+    icon = Icons.tips_and_updates_outlined;
+  } else {
+    label = flavor[0].toUpperCase() + flavor.substring(1);
+    icon = Icons.description_outlined;
+  }
+  final bg = _flavorColor(flavor);
+
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+    decoration: BoxDecoration(
+      color: bg.withOpacity(0.10),
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(color: bg.withOpacity(0.22)),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 14, color: bg),
+        const SizedBox(width: 6),
+        Text(
+          label,
+          style: AppTextStyles.labelSmall.copyWith(
+            fontWeight: FontWeight.w800,
+            color: bg,
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 /// Inline renderer supports:

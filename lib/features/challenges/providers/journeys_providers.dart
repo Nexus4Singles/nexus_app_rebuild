@@ -6,6 +6,7 @@ import '../../../core/services/journey_entitlements_service.dart';
 import '../../../core/services/journey_progress_service.dart';
 import '../../../core/services/journey_mission_response_service.dart';
 import '../../../core/session/effective_relationship_status_provider.dart';
+import '../../../core/user/current_user_gender_provider.dart';
 import '../domain/journey_v1_models.dart';
 
 final journeysServiceProvider = Provider((ref) => const JourneysService());
@@ -26,7 +27,28 @@ final journeyCatalogProvider = FutureProvider<JourneyCatalogV1>((ref) async {
 
   final service = ref.watch(journeysServiceProvider);
   final json = await service.loadCatalogForStatus(status);
-  return JourneyCatalogV1.fromJson(json);
+  var catalog = JourneyCatalogV1.fromJson(json);
+
+  // Gender-specific filtering for Singles: total per gender = 20, with 2 gender-specific.
+  if (status == RelationshipStatus.singleNeverMarried) {
+    String? gender;
+    try {
+      gender = await ref.watch(currentUserGenderProvider.future);
+      gender = gender?.trim().toLowerCase();
+    } catch (_) {}
+
+    if (gender == 'male' || gender == 'female') {
+      final filtered =
+          catalog.journeys.where((j) => _includeForGender(j, gender!)).toList();
+      catalog = JourneyCatalogV1(
+        version: catalog.version,
+        category: catalog.category,
+        journeys: filtered,
+      );
+    }
+  }
+
+  return catalog;
 });
 
 final journeyByIdProvider = Provider.family<JourneyV1?, String>((ref, id) {
@@ -77,3 +99,21 @@ final bestJourneysStreakProvider = FutureProvider<int>((ref) async {
   }
   return best;
 });
+
+bool _includeForGender(JourneyV1 j, String gender) {
+  // Prefer explicit allowedGenders from v2 schema.
+  if (j.allowedGenders.isNotEmpty) {
+    return j.allowedGenders.contains(gender.toLowerCase());
+  }
+
+  // Fallback heuristics from id/title.
+  final id = j.id.toLowerCase();
+  final title = j.title.toLowerCase();
+
+  final isFemaleOnly = id.contains('feminin') || title.contains('feminin');
+  final isMaleOnly = id.contains('masculin') || title.contains('masculin');
+
+  if (isFemaleOnly) return gender == 'female';
+  if (isMaleOnly) return gender == 'male';
+  return true;
+}

@@ -5,6 +5,7 @@ import '../../../../core/widgets/guest_guard.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/ui/icon_mapper.dart';
+import '../../../../core/providers/user_provider.dart';
 import '../../domain/journey_v1_models.dart';
 import '../../providers/journeys_providers.dart';
 
@@ -14,82 +15,150 @@ class ChallengesScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final catalogAsync = ref.watch(journeyCatalogProvider);
+    final userAsync = ref.watch(currentUserProvider);
+    String? userGender = userAsync.maybeWhen(
+      data: (user) => user?.gender,
+      orElse: () => null,
+    );
 
     return Scaffold(
-      backgroundColor: AppColors.getBackground(context),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text('Journeys', style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: AppColors.getBackground(context),
-        surfaceTintColor: AppColors.getBackground(context),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
+        title: Text(
+          'Journeys',
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
       ),
       body: catalogAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error:
-            (_, __) => _ErrorState(
-              message: 'Unable to load journeys.',
-              onRetry: () => ref.invalidate(journeyCatalogProvider),
-            ),
+        error: (_, __) => Center(child: Text('Unable to load journeys.')),
         data: (catalog) {
-          final featured = _pickFeaturedJourneys(catalog.journeys, limit: 5);
-          final featuredIds = featured.map((e) => e.id).toSet();
-          final rest =
-              catalog.journeys
-                  .where((j) => !featuredIds.contains(j.id))
+          var journeys = catalog.journeys;
+          // Filter gender-specific journeys
+          journeys =
+              journeys.where((j) {
+                if (j.id == 'singles_biblical_femininity' &&
+                    userGender == 'male')
+                  return false;
+                if (j.id == 'singles_biblical_masculinity' &&
+                    userGender == 'female')
+                  return false;
+                return true;
+              }).toList();
+          final featured =
+              journeys
+                  .where((j) => [1, 3, 9, 19, 20].contains(j.priorityRank))
                   .toList();
-
-          return CustomScrollView(
-            slivers: [
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 14, 20, 8),
-                  child: _PremiumHeader(),
+          return ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              // Intro Card
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
                 ),
-              ),
-
-              if (featured.isNotEmpty)
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 12, 0, 10),
-                    child: _FeaturedHeroCarousel(featured: featured),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(14),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                  border: Border.all(
+                    color: Theme.of(context).dividerColor.withOpacity(0.08),
+                    width: 1.0,
                   ),
                 ),
-
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 18, 20, 10),
-                  child: Row(
-                    children: [
-                      Text(
-                        'All journeys',
-                        style: AppTextStyles.titleMedium.copyWith(
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: -0.2,
-                        ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0, top: 2),
+                      child: Icon(
+                        Icons.emoji_events_rounded,
+                        size: 28,
+                        color: const Color(0xFFF6C244),
                       ),
-                      const Spacer(),
-                      Text(
-                        '${rest.length}',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.getTextSecondary(context),
-                          fontWeight: FontWeight.w800,
-                        ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Welcome to Journeys',
+                            style: Theme.of(
+                              context,
+                            ).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 17,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Journeys are guided experiences designed to help you grow in key areas of life, relationships & marriage. Each journey is crafted to bring real transformation, one step at a time. Start your journey today and unlock your best self!',
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodySmall?.copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withOpacity(0.80),
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              const SizedBox(height: 18),
+              // Featured Journeys Carousel
+              if (featured.isNotEmpty) ...[
+                Text(
+                  'Featured Journeys',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 6),
+                SizedBox(
+                  height: 100,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: featured.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 16),
+                    itemBuilder: (context, i) {
+                      final journey = featured[i];
+                      return _FeaturedJourneyCard(journey: journey);
+                    },
                   ),
                 ),
-              ),
-
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 28),
-                sliver: SliverList.separated(
-                  itemCount: rest.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 12),
-                  itemBuilder:
-                      (context, index) =>
-                          _ClassyJourneyListCard(journey: rest[index]),
+                const SizedBox(height: 18),
+              ],
+              // All Journeys List
+              Text(
+                'All Journeys',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  letterSpacing: 0.1,
                 ),
               ),
+              const SizedBox(height: 8),
+              ...journeys.map((j) => _JourneyListCard(journey: j)).toList(),
             ],
           );
         },
@@ -98,191 +167,114 @@ class ChallengesScreen extends ConsumerWidget {
   }
 }
 
-class _PremiumHeader extends StatelessWidget {
-  const _PremiumHeader();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Grow with guided journeys',
-          style: AppTextStyles.titleMedium.copyWith(
-            fontWeight: FontWeight.w900,
-            letterSpacing: -0.35,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          'Short, practical activities that build consistency and strengthen love.',
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.getTextSecondary(context),
-            height: 1.35,
-          ),
-        ),
-        const SizedBox(height: 12),
-        Wrap(
-          spacing: 10,
-          runSpacing: 10,
-          children: const [
-            _TagChip(label: 'Faith'),
-            _TagChip(label: 'Communication'),
-            _TagChip(label: 'Healing'),
-            _TagChip(label: 'Discernment'),
-            _TagChip(label: 'Intimacy'),
-            _TagChip(label: 'Boundaries'),
-            _TagChip(label: 'Purpose'),
-            _TagChip(label: 'Conflict'),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class _TagChip extends StatelessWidget {
-  final String label;
-  const _TagChip({required this.label});
+class _FeaturedJourneyCard extends StatelessWidget {
+  final JourneyV1 journey;
+  const _FeaturedJourneyCard({required this.journey});
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color:
-            isDark
-                ? AppColors.primary.withOpacity(0.35)
-                : AppColors.primary.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(
-          color:
-              isDark
-                  ? AppColors.primary.withOpacity(0.70)
-                  : AppColors.primary.withOpacity(0.22),
-        ),
-      ),
-      child: Text(
-        label,
-        style: AppTextStyles.bodySmall.copyWith(
-          fontWeight: FontWeight.w900,
-          color:
-              isDark ? AppColors.primary.withOpacity(1.0) : AppColors.primary,
-        ),
-      ),
-    );
-  }
-}
-
-class _FeaturedHeroCarousel extends StatelessWidget {
-  final List<JourneyV1> featured;
-  const _FeaturedHeroCarousel({required this.featured});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: Row(
-            children: [
-              Text(
-                'Featured',
-                style: AppTextStyles.titleMedium.copyWith(
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-              const Spacer(),
-              Text(
-                'Swipe',
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.getTextSecondary(context),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 12),
-        SizedBox(
-          height: 150,
-          child: ListView.separated(
-            padding: const EdgeInsets.only(right: 20),
-            scrollDirection: Axis.horizontal,
-            itemCount: featured.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 14),
-            itemBuilder:
-                (context, index) => _FeaturedHeroCard(journey: featured[index]),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _FeaturedHeroCard extends ConsumerWidget {
-  final JourneyV1 journey;
-  const _FeaturedHeroCard({required this.journey});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final tint = AppColors.primary;
+    final primary = Theme.of(context).colorScheme.primary;
+    final onPrimary = Theme.of(context).colorScheme.onPrimary;
+    final overlayColor =
+        isDark ? primary.withOpacity(0.90) : primary.withOpacity(0.93);
+    final textColor =
+        isDark ? onPrimary.withOpacity(0.97) : onPrimary.withOpacity(0.97);
+    final iconColor = textColor;
 
     return InkWell(
-      borderRadius: BorderRadius.circular(22),
-      onTap: () => _openDetail(context, ref, journey.id),
+      borderRadius: BorderRadius.circular(14),
+      onTap: () => Navigator.of(context).pushNamed('/journey/${journey.id}'),
       child: Container(
-        width: 280,
-        height: 150,
-        padding: const EdgeInsets.all(14),
+        width: 220,
+        // Removed fixed height to allow content to expand as needed
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(22),
-          color: tint.withOpacity(0.78),
+          color: overlayColor,
+          borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
-              color: tint.withOpacity(0.20),
-              blurRadius: 22,
-              offset: const Offset(0, 14),
+              color: Colors.black.withOpacity(0.07),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
-        child: Stack(
+        clipBehavior: Clip.hardEdge,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  children: [_HeroIcon(iconKey: journey.icon), const Spacer()],
-                ),
-
+                Icon(Icons.flag, color: iconColor, size: 16),
+                const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     journey.title,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: textColor,
+                      fontSize: 12,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.titleMedium.copyWith(
-                      fontWeight: FontWeight.w900,
-                      color: Colors.white,
-                      height: 1.12,
-                      letterSpacing: -0.2,
-                    ),
                   ),
-                ),
-
-                const Align(
-                  alignment: Alignment.centerRight,
-                  child: _GlassPill(text: 'Start'),
                 ),
               ],
             ),
-
-            Positioned(
-              top: 0,
-              right: 0,
-              child: _ThemePill(tag: journey.themeTag),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 7,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: textColor.withOpacity(0.10),
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.splitscreen, size: 12, color: iconColor),
+                      const SizedBox(width: 3),
+                      Text(
+                        '${journey.missions.length} activities',
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: iconColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                SizedBox(
+                  width: 54,
+                  height: 26,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: textColor,
+                      foregroundColor: primary,
+                      padding: EdgeInsets.zero,
+                      shape: StadiumBorder(),
+                      elevation: 0,
+                      textStyle: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    onPressed:
+                        () => Navigator.of(
+                          context,
+                        ).pushNamed('/journey/${journey.id}'),
+                    child: const Text('Start'),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -291,128 +283,116 @@ class _FeaturedHeroCard extends ConsumerWidget {
   }
 }
 
-class _HeroIcon extends StatelessWidget {
-  final String iconKey;
-  const _HeroIcon({required this.iconKey});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 42,
-      height: 42,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primary.withOpacity(0.22)),
-      ),
-      child: Icon(iconFromKey(iconKey), color: AppColors.primary, size: 22),
-    );
-  }
-}
-
-class _GlassPill extends StatelessWidget {
-  final String text;
-  const _GlassPill({required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.16),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.white.withOpacity(0.24)),
-      ),
-      child: Text(
-        text,
-        style: AppTextStyles.bodySmall.copyWith(
-          fontWeight: FontWeight.w900,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-}
-
-class _ClassyJourneyListCard extends ConsumerWidget {
+class _JourneyListCard extends StatelessWidget {
   final JourneyV1 journey;
-  const _ClassyJourneyListCard({required this.journey});
+  const _JourneyListCard({required this.journey});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final tint = AppColors.primary;
-
+  Widget build(BuildContext context) {
+    final accent = Theme.of(context).colorScheme.primary;
     return InkWell(
-      borderRadius: BorderRadius.circular(18),
-      onTap: () => _openDetail(context, ref, journey.id),
+      borderRadius: BorderRadius.circular(12),
+      onTap: () => Navigator.of(context).pushNamed('/journey/${journey.id}'),
       child: Container(
-        padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
-          color: AppColors.getSurface(context),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: AppColors.primary.withOpacity(0.22)),
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: accent.withOpacity(0.13), width: 1.2),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.035),
-              blurRadius: 18,
-              offset: const Offset(0, 12),
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
+        clipBehavior: Clip.hardEdge,
         child: Row(
           children: [
-            Container(
-              width: 42,
-              height: 42,
-              decoration: BoxDecoration(
-                color:
-                    Theme.of(context).brightness == Brightness.dark
-                        ? tint.withOpacity(0.30)
-                        : tint.withOpacity(0.12),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color:
-                      Theme.of(context).brightness == Brightness.dark
-                          ? tint.withOpacity(0.65)
-                          : tint.withOpacity(0.22),
-                ),
-              ),
-              child: Icon(
-                iconFromKey(_iconKeyForJourney(journey)),
-                color:
-                    Theme.of(context).brightness == Brightness.dark
-                        ? tint.withOpacity(1.0)
-                        : tint,
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: 12),
+            Icon(Icons.flag, color: accent, size: 15),
+            const SizedBox(width: 8),
             Expanded(
-              child: Text(
-                journey.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  fontWeight: FontWeight.w900,
-                  height: 1.15,
-                  letterSpacing: -0.15,
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-              decoration: BoxDecoration(
-                color: tint.withOpacity(0.10),
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: tint.withOpacity(0.22)),
-              ),
-              child: Text(
-                'Start',
-                style: AppTextStyles.bodySmall.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: tint.withOpacity(0.95),
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    journey.title,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: 14, // Reduced from default (usually 16)
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    journey.subtitle,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withOpacity(0.82),
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: accent.withOpacity(0.11),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.splitscreen, size: 11, color: accent),
+                            const SizedBox(width: 2),
+                            Text(
+                              '${journey.missions.length} activities',
+                              style: Theme.of(
+                                context,
+                              ).textTheme.labelSmall?.copyWith(
+                                color: accent,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Spacer(),
+                      SizedBox(
+                        width: 56,
+                        height: 26,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: accent,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
+                            padding: EdgeInsets.zero,
+                            shape: StadiumBorder(),
+                            elevation: 0,
+                            textStyle: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onPressed:
+                              () => Navigator.of(
+                                context,
+                              ).pushNamed('/journey/${journey.id}'),
+                          child: const Text('Start'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
@@ -420,98 +400,4 @@ class _ClassyJourneyListCard extends ConsumerWidget {
       ),
     );
   }
-}
-
-class _ThemePill extends StatelessWidget {
-  final String? tag;
-  const _ThemePill({required this.tag});
-
-  @override
-  Widget build(BuildContext context) {
-    final t = (tag ?? '').trim();
-    if (t.isEmpty) return const SizedBox.shrink();
-
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 120),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.20),
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: Colors.white.withOpacity(0.24)),
-        ),
-        child: Text(
-          _prettyTag(t),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: AppTextStyles.bodySmall.copyWith(
-            fontWeight: FontWeight.w900,
-            color: Colors.white,
-            letterSpacing: -0.2,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ErrorState extends StatelessWidget {
-  final String message;
-  final VoidCallback onRetry;
-
-  const _ErrorState({required this.message, required this.onRetry});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(message, style: AppTextStyles.bodyLarge),
-            const SizedBox(height: 12),
-            ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-void _openDetail(BuildContext context, WidgetRef ref, String journeyId) {
-  GuestGuard.requireSignedIn(
-    context,
-    ref,
-    title: 'Sign in required',
-    message: 'Create an account to start a Journey and track your progress.',
-    primaryText: 'Continue',
-    onCreateAccount: () {
-      Navigator.of(context).pushNamed(AppRoutes.login);
-    },
-    onAllowed: () async {
-      Navigator.of(context).pushNamed('/journey/$journeyId');
-    },
-  );
-}
-
-String _iconKeyForJourney(JourneyV1 journey) {
-  final k = journey.accentIcon;
-  if (k != null && k.trim().isNotEmpty) return k;
-  return journey.icon;
-}
-
-List<JourneyV1> _pickFeaturedJourneys(
-  List<JourneyV1> journeys, {
-  int limit = 5,
-}) {
-  final sorted = [...journeys];
-  sorted.sort((a, b) => a.priorityRank.compareTo(b.priorityRank));
-  return sorted.take(limit).toList();
-}
-
-String _prettyTag(String t) {
-  final s = t.trim();
-  if (s.isEmpty) return '';
-  return s[0].toUpperCase() + s.substring(1);
 }

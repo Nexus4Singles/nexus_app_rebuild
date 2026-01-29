@@ -26,6 +26,7 @@ class AppTheme {
         onSecondary: AppColors.textOnSecondary,
         secondaryContainer: AppColors.secondaryLight,
         tertiary: AppColors.accent,
+        background: AppColors.backgroundLight,
         surface: AppColors.surfaceLightMode,
         onSurface: AppColors.textPrimaryLight,
         surfaceContainerHighest: AppColors.surfaceLightLight,
@@ -119,27 +120,13 @@ class AppTheme {
       // Navigation Bar Theme (Material 3)
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: AppColors.surfaceLightMode,
-        indicatorColor: AppColors.primaryLight.withOpacity(0.2),
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        height: AppSpacing.bottomNavHeight,
-        labelTextStyle: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) {
-            return AppTextStyles.labelSmall.copyWith(color: AppColors.primary);
-          }
-          return AppTextStyles.labelSmall.copyWith(
-            color: AppColors.textSecondaryLight,
-          );
-        }),
-        iconTheme: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) {
-            return const IconThemeData(color: AppColors.primary, size: 24);
-          }
-          return const IconThemeData(
-            color: AppColors.textSecondaryLight,
-            size: 24,
-          );
-        }),
+        indicatorColor: AppColors.primary.withOpacity(0.1),
+        labelTextStyle: MaterialStateProperty.all(
+          AppTextStyles.labelMedium.copyWith(color: AppColors.textPrimaryLight),
+        ),
+        iconTheme: MaterialStateProperty.all(
+          const IconThemeData(color: AppColors.textPrimaryLight),
+        ),
       ),
 
       // Card Theme
@@ -631,9 +618,7 @@ class AppTheme {
         backgroundColor: AppColors.chipBackground,
         selectedColor: AppColors.chipSelectedBackground,
         disabledColor: AppColors.chipBackground.withOpacity(0.5),
-        labelStyle: AppTextStyles.labelMedium.copyWith(
-          color: AppColors.textSecondary,
-        ),
+        labelStyle: AppTextStyles.labelMedium,
         secondaryLabelStyle: AppTextStyles.labelMedium.copyWith(
           color: AppColors.primary,
         ),
