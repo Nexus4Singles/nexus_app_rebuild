@@ -1036,7 +1036,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
                   children: [
                     // All text widgets removed from hero card overlay
                     Positioned(
-                      top: -16,
+                      top: 0,
                       right: 0,
                       child: SafeArea(
                         minimum: const EdgeInsets.only(top: 0, right: 6),
@@ -1106,7 +1106,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                                             children: [
                                                               Expanded(
                                                                 child: Text(
-                                                                  'Relationship Status',
+                                                                  'Relationship status',
                                                                   style: AppTextStyles.titleLarge.copyWith(
                                                                     fontWeight:
                                                                         FontWeight
@@ -2650,30 +2650,48 @@ class _GalleryGrid extends StatelessWidget {
       );
     }
 
-    final items = photos.take(6).toList();
-
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: items.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 6,
-        crossAxisSpacing: 6,
-        childAspectRatio: 1.0,
-      ),
-      itemBuilder: (context, i) {
-        final url = items[i];
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            color: Colors.black12,
-            child: GestureDetector(
-              onTap: () {
-                _openPhotoViewer(context, photos: photos, initialIndex: i);
-              },
-              child: Image.network(url, fit: BoxFit.cover),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // 2 columns, auto-expand height
+        final crossAxisCount = 2;
+        final rowCount = (photos.length / crossAxisCount).ceil();
+        final spacing = 6.0;
+        final itemWidth =
+            (constraints.maxWidth - (spacing * (crossAxisCount - 1))) /
+            crossAxisCount;
+        final gridHeight = (itemWidth * rowCount) + (spacing * (rowCount - 1));
+        return SizedBox(
+          height: gridHeight,
+          child: GridView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: photos.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 6,
+              crossAxisSpacing: 6,
+              childAspectRatio: 1.0,
             ),
+            itemBuilder: (context, i) {
+              final url = photos[i];
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  color: Colors.black12,
+                  child: GestureDetector(
+                    onTap: () {
+                      _openPhotoViewer(
+                        context,
+                        photos: photos,
+                        initialIndex: i,
+                      );
+                    },
+                    child: Image.network(url, fit: BoxFit.cover),
+                  ),
+                ),
+              );
+            },
           ),
         );
       },
