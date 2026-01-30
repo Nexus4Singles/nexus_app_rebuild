@@ -163,7 +163,7 @@ final currentUserIsPremiumProvider = StreamProvider<bool>((ref) {
 
 class ProfileScreen extends ConsumerWidget {
   final String? userId;
-  const ProfileScreen({super.key, this.userId});
+  const ProfileScreen({Key? key, this.userId}) : super(key: key);
 
   bool get isViewingOtherUser => userId != null;
 
@@ -356,6 +356,7 @@ class ProfileScreen extends ConsumerWidget {
                   child: UserInfoSection(
                     profile: profile,
                     locationText: location,
+                    isVerified: profile.isVerified ?? false,
                   ),
                 ),
               ),
@@ -823,8 +824,6 @@ class _RelationshipStatusPill extends ConsumerWidget {
     final label = _relationshipStatusLabel(value);
     final canTap = onTap != null;
 
-    final theme = Theme.of(context);
-    final onSurface = theme.colorScheme.onSurface;
     final availableColor = Colors.green;
     final unavailableColor = Colors.redAccent;
     final pillBg =
@@ -1345,34 +1344,6 @@ class _DotsIndicator extends StatelessWidget {
   }
 }
 
-class _Badge extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  const _Badge({required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.35),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.white24),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 14, color: Colors.white),
-          const SizedBox(width: 46),
-          Text(
-            label,
-            style: AppTextStyles.bodySmall.copyWith(color: Colors.white),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _OverflowMenu extends ConsumerWidget {
   final String targetUid;
   const _OverflowMenu({required this.targetUid});
@@ -1642,78 +1613,6 @@ Future<void> _showReportSheet({
 /// ------------------------------
 /// PRIMARY INFO + QUICK CHIPS
 /// ------------------------------
-class _PrimaryInfo extends StatelessWidget {
-  final UserModel profile;
-  final String locationText;
-  const _PrimaryInfo({required this.profile, required this.locationText});
-
-  @override
-  Widget build(BuildContext context) {
-    final aboutRaw = profile.bestQualitiesOrTraits?.trim();
-    final about =
-        (aboutRaw == null || aboutRaw.isEmpty)
-            ? null
-            : (aboutRaw.startsWith('http') ||
-                aboutRaw.contains('digitaloceanspaces.com'))
-            ? null
-            : aboutRaw;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (about != null && about.isNotEmpty) ...[
-          Text(about, style: AppTextStyles.bodyLarge),
-          const SizedBox(height: 14),
-        ],
-      ],
-    );
-  }
-}
-
-class _QuickChips extends StatelessWidget {
-  final UserModel profile;
-  const _QuickChips({required this.profile});
-
-  @override
-  Widget build(BuildContext context) {
-    final chips =
-        <String>[
-          if ((profile.educationLevel ?? '').trim().isNotEmpty)
-            profile.educationLevel!,
-          if ((profile.profession ?? '').trim().isNotEmpty) profile.profession!,
-          if ((profile.churchName ?? '').trim().isNotEmpty) profile.churchName!,
-          if ((profile.nationality ?? '').trim().isNotEmpty)
-            profile.nationality!,
-        ].where((e) => e.trim().isNotEmpty).toList();
-
-    if (chips.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    final chipColor = Theme.of(context).colorScheme.surface;
-    final chipText = Theme.of(context).colorScheme.onSurface;
-    final chipBorder = Theme.of(context).dividerColor;
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        for (final c in chips)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: chipColor,
-              borderRadius: BorderRadius.circular(999),
-              border: Border.all(color: chipBorder),
-            ),
-            child: Text(
-              c,
-              style: AppTextStyles.bodySmall.copyWith(color: chipText),
-            ),
-          ),
-      ],
-    );
-  }
-}
 
 class _SendMessageCta extends ConsumerWidget {
   final UserModel profile;
@@ -4880,27 +4779,6 @@ class _DropdownField extends StatelessWidget {
     );
   }
 }
-
-final _verificationStatusProvider = StreamProvider.family<String?, String>((
-  ref,
-  uid,
-) {
-  final firebaseReady = ref.watch(firebaseReadyProvider);
-  if (!firebaseReady) return Stream.value(null);
-
-  final fs = ref.watch(firestoreInstanceProvider);
-  if (fs == null) return Stream.value(null);
-
-  return fs.collection('users').doc(uid).snapshots().map((doc) {
-    if (!doc.exists) return null;
-    final data = doc.data();
-    if (data == null) return null;
-
-    final dating = (data['dating'] is Map) ? data['dating'] as Map : null;
-    final status = dating?['verificationStatus']?.toString();
-    return status;
-  });
-});
 
 final _compatibilityMapProvider =
     StreamProvider.family<Map<String, dynamic>, String>((ref, uid) {

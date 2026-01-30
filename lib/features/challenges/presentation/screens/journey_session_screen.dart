@@ -701,14 +701,14 @@ class _InfoCard extends StatelessWidget {
     final hasBullets = bullets != null && bullets!.isNotEmpty;
     final paragraphs = _splitParagraphs(text);
     final badge = _flavorBadge(flavor);
-    final bg = _flavorColor(flavor);
+    final bgColor = _flavorColor(flavor);
 
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
       decoration: BoxDecoration(
-        color: bg.withOpacity(0.06),
+        color: bgColor.withOpacity(0.06),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: bg.withOpacity(0.20)),
+        border: Border.all(color: bgColor.withOpacity(0.20)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -809,7 +809,6 @@ class _ChoiceCard extends StatelessWidget {
       color: AppColors.getTextPrimary(context),
     );
     final badge = _flavorBadge(flavor ?? 'question');
-    final bg = _flavorColor(flavor);
 
     final parsedPrompt = _parseRichContent(prompt);
 

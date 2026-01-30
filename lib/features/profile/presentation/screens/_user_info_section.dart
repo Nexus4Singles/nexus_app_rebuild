@@ -1,27 +1,20 @@
 import 'package:flutter/material.dart';
-import '../../../../core/models/user_model.dart';
 import 'package:nexus_app_min_test/core/theme/app_text_styles.dart';
-import 'package:nexus_app_min_test/core/theme/app_colors.dart';
+import '../../../../core/models/user_model.dart';
 
 class UserInfoSection extends StatelessWidget {
   final UserModel profile;
   final String locationText;
-  const UserInfoSection({required this.profile, required this.locationText});
+  final bool isVerified;
+  const UserInfoSection({
+    Key? key,
+    required this.profile,
+    required this.locationText,
+    this.isVerified = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final name =
-        (profile.username ?? '').trim().isNotEmpty
-            ? profile.username!.trim()
-            : ((profile.name ?? '').trim().isNotEmpty
-                ? profile.name!.trim()
-                : 'User');
-    final age = profile.age;
-    final textPrimary = Theme.of(context).colorScheme.onBackground;
-    final textSecondary = Theme.of(
-      context,
-    ).colorScheme.onSurface.withOpacity(0.7);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -29,78 +22,79 @@ class UserInfoSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child: Text(
-                age != null ? '$name, $age' : name,
-                style: AppTextStyles.headlineLarge.copyWith(
-                  color: textPrimary,
-                  fontSize: 28,
-                  height: 1.1,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      text:
+                          profile.username != null &&
+                                  profile.username!.isNotEmpty
+                              ? profile.username!
+                              : (profile.name ?? ''),
+                      style: AppTextStyles.headlineLarge.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      children:
+                          profile.age != null
+                              ? [
+                                TextSpan(
+                                  text: ', ${profile.age}',
+                                  style: AppTextStyles.headlineLarge.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ]
+                              : [],
+                    ),
+                  ),
+                ],
               ),
             ),
-            VerificationTag(profile: profile),
+            _VerificationBadge(isVerified: isVerified),
           ],
         ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            Icon(Icons.location_on_rounded, color: textSecondary, size: 18),
-            const SizedBox(width: 8),
-            Flexible(
-              child: Text(
-                locationText,
-                style: AppTextStyles.bodyMedium.copyWith(color: textSecondary),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
+        if (locationText.isNotEmpty) ...[
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Icon(Icons.location_on, size: 16, color: Colors.grey),
+              const SizedBox(width: 4),
+              Text(locationText, style: Theme.of(context).textTheme.bodyMedium),
+            ],
+          ),
+        ],
       ],
     );
   }
 }
 
-class VerificationTag extends StatelessWidget {
-  final UserModel profile;
-  const VerificationTag({required this.profile});
+class _VerificationBadge extends StatelessWidget {
+  final bool isVerified;
+  const _VerificationBadge({required this.isVerified});
 
   @override
   Widget build(BuildContext context) {
-    // This logic should match the verification badge logic in the hero card
-    // For now, we use a placeholder. Replace with actual verification provider if needed.
-    // Use isVerified from UserModel, fallback to unverified if null
-    final isVerified = profile.isVerified == true;
-    IconData icon;
-    String label;
-    Color color;
-    if (isVerified) {
-      icon = Icons.verified_rounded;
-      label = 'Verified';
-      color = Colors.green;
-    } else {
-      icon = Icons.block_rounded;
-      label = 'Unverified';
-      color = Colors.redAccent;
-    }
     return Container(
-      margin: const EdgeInsets.only(left: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: color.withOpacity(0.3)),
+        color: isVerified ? Colors.green[100] : Colors.red[100],
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [
-          Icon(icon, size: 14, color: color),
-          const SizedBox(width: 6),
+          Icon(
+            isVerified ? Icons.verified : Icons.error_outline,
+            color: isVerified ? Colors.green : Colors.red,
+            size: 16,
+          ),
+          const SizedBox(width: 4),
           Text(
-            label,
-            style: AppTextStyles.bodySmall.copyWith(
-              color: color,
-              fontWeight: FontWeight.w700,
+            isVerified ? 'Verified' : 'Unverified',
+            style: TextStyle(
+              color: isVerified ? Colors.green[800] : Colors.red[800],
+              fontWeight: FontWeight.w600,
+              fontSize: 13,
             ),
           ),
         ],
