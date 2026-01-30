@@ -58,72 +58,72 @@ class ChallengesScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(20),
             children: [
               // Intro Card
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(14),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                  border: Border.all(
-                    color: Theme.of(context).dividerColor.withOpacity(0.08),
-                    width: 1.0,
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 4.0,
+                  bottom: 10.0,
+                ), // Move card up
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
                   ),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10.0, top: 2),
-                      child: Icon(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.primary.withOpacity(
+                        0.22,
+                      ), // More visible border
+                      width: 1.4,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
                         Icons.emoji_events_rounded,
                         size: 28,
-                        color: const Color(0xFFF6C244),
+                        color: AppColors.warning,
                       ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Welcome to Journeys',
-                            style: Theme.of(
-                              context,
-                            ).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 17,
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Journeys are guided experiences designed to help you grow in key areas of life, relationships & marriage. Each journey is crafted to bring real transformation, one step at a time. Start your journey today and unlock your best self!',
-                            style: Theme.of(
-                              context,
-                            ).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSurface.withOpacity(0.80),
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
+                      const SizedBox(height: 8),
+                      Text(
+                        'Welcome to Journeys',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 17,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 4),
+                      Text(
+                        'Journeys are guided experiences designed to help you grow in key areas of life, relationships & marriage. Each journey is crafted to bring real transformation, one step at a time. Start your journey today and unlock your best self!',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withOpacity(0.80),
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 24),
-              const SizedBox(height: 18),
+              const SizedBox(
+                height: 10,
+              ), // Featured Journeys closer to welcome card
               // Featured Journeys Carousel
               if (featured.isNotEmpty) ...[
                 Text(
@@ -187,7 +187,6 @@ class _FeaturedJourneyCard extends StatelessWidget {
       onTap: () => Navigator.of(context).pushNamed('/journey/${journey.id}'),
       child: Container(
         width: 220,
-        // Removed fixed height to allow content to expand as needed
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
           color: overlayColor,
@@ -224,7 +223,7 @@ class _FeaturedJourneyCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 18), // Increased spacing below title
             Row(
               children: [
                 Container(
@@ -319,7 +318,7 @@ class _JourneyListCard extends StatelessWidget {
                 children: [
                   Text(
                     journey.title,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).colorScheme.onSurface,
                       fontSize: 14, // Reduced from default (usually 16)

@@ -159,7 +159,7 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
             title: Text(
               'Activity ${m.missionNumber}',
               style: AppTextStyles.titleMedium.copyWith(
-                fontWeight: FontWeight.w900,
+                fontWeight: FontWeight.w700,
               ),
             ),
             backgroundColor: AppColors.getBackground(context),
@@ -184,7 +184,7 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                     '$progressIndex/$totalCards',
                     style: AppTextStyles.labelSmall.copyWith(
                       color: AppColors.primary,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
@@ -420,7 +420,7 @@ class _SessionHero extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.bodyLarge.copyWith(
                     color: textColor,
-                    fontWeight: FontWeight.w900,
+                    fontWeight: FontWeight.w600, // milder font weight
                     height: 1.12,
                   ),
                 ),
@@ -449,7 +449,7 @@ class _SessionHero extends StatelessWidget {
                             isDark
                                 ? AppColors.getTextOnDark(context)
                                 : AppColors.primary,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
@@ -473,13 +473,8 @@ class _SessionHero extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: progress,
                 minHeight: 6,
-                backgroundColor:
-                    isDark
-                        ? AppColors.getTextOnDark(context).withOpacity(0.22)
-                        : AppColors.primary.withOpacity(0.16),
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  isDark ? AppColors.getTextOnDark(context) : AppColors.primary,
-                ),
+                backgroundColor: AppColors.primary.withOpacity(0.18),
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
               ),
             ),
           ],
@@ -497,15 +492,16 @@ class _CardShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
         return Container(
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.05),
+            color: AppColors.getSurface(context),
             borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: AppColors.primary.withOpacity(0.18)),
+            border: Border.all(color: AppColors.getBorder(context)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.06),
+                color: isDark ? AppColors.shadowDark : AppColors.shadow,
                 blurRadius: 18,
                 offset: const Offset(0, 14),
               ),
@@ -557,14 +553,30 @@ class _OutcomeButtons extends StatelessWidget {
               child: OutlinedButton(
                 onPressed: onBack,
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.textPrimary,
-                  side: BorderSide(color: AppColors.getBorder(context)),
+                  backgroundColor:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.primary.withOpacity(0.18)
+                          : AppColors.primary.withOpacity(0.08),
+                  foregroundColor:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : AppColors.primary,
+                  side: BorderSide(color: AppColors.primary),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                child: const Text('Back'),
+                child: Text(
+                  'Back',
+                  style: TextStyle(
+                    color:
+                        Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
             ),
             const SizedBox(width: 10),
@@ -708,7 +720,7 @@ class _InfoCard extends StatelessWidget {
                 child: Text(
                   title,
                   style: AppTextStyles.bodyLarge.copyWith(
-                    fontWeight: FontWeight.w900,
+                    fontWeight: FontWeight.w600, // milder font weight
                     height: 1.15,
                   ),
                 ),
@@ -801,12 +813,13 @@ class _ChoiceCard extends StatelessWidget {
 
     final parsedPrompt = _parseRichContent(prompt);
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
       decoration: BoxDecoration(
-        color: bg.withOpacity(0.06),
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: bg.withOpacity(0.20)),
+        border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -817,7 +830,7 @@ class _ChoiceCard extends StatelessWidget {
                 child: Text(
                   title,
                   style: AppTextStyles.bodyLarge.copyWith(
-                    fontWeight: FontWeight.w900,
+                    fontWeight: FontWeight.w600, // milder font weight
                     height: 1.15,
                   ),
                 ),
@@ -846,14 +859,16 @@ class _ChoiceCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color:
                         isSelected
-                            ? AppColors.primary.withOpacity(0.14)
-                            : AppColors.background,
+                            ? (isDark
+                                ? AppColors.primary.withOpacity(0.22)
+                                : AppColors.primary.withOpacity(0.12))
+                            : AppColors.getSurface(context),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color:
                           isSelected
-                              ? AppColors.primary.withOpacity(0.55)
-                              : AppColors.border,
+                              ? AppColors.primary
+                              : AppColors.getBorder(context),
                       width: isSelected ? 1.6 : 1,
                     ),
                   ),
@@ -865,6 +880,12 @@ class _ChoiceCard extends StatelessWidget {
                           style: AppTextStyles.bodyMedium.copyWith(
                             fontWeight: FontWeight.w800,
                             height: 1.25,
+                            color:
+                                isSelected
+                                    ? (isDark
+                                        ? Colors.white
+                                        : AppColors.primary)
+                                    : AppColors.getTextPrimary(context),
                           ),
                         ),
                       ),
@@ -874,22 +895,25 @@ class _ChoiceCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           color:
                               isSelected
-                                  ? AppColors.primary
+                                  ? (isDark
+                                      ? Colors.white.withOpacity(0.18)
+                                      : AppColors.primary)
                                   : Colors.transparent,
                           borderRadius: BorderRadius.circular(999),
                           border: Border.all(
                             color:
                                 isSelected
                                     ? AppColors.primary
-                                    : AppColors.border,
+                                    : AppColors.getBorder(context),
                           ),
                         ),
                         child:
                             isSelected
-                                ? const Icon(
+                                ? Icon(
                                   Icons.check,
                                   size: 14,
-                                  color: Colors.white,
+                                  color:
+                                      isDark ? AppColors.primary : Colors.white,
                                 )
                                 : null,
                       ),
@@ -1070,7 +1094,7 @@ List<TextSpan> _buildInlineSpans(String text, TextStyle baseStyle) {
           children: [
             TextSpan(
               text: '$label: ',
-              style: baseStyle.copyWith(fontWeight: FontWeight.w900),
+              style: baseStyle.copyWith(fontWeight: FontWeight.w700),
             ),
             ..._buildEmphasisSpans(rest, baseStyle),
           ],
@@ -1112,7 +1136,7 @@ List<TextSpan> _buildEmphasisSpans(String input, TextStyle baseStyle) {
       spans.add(
         TextSpan(
           text: inner,
-          style: baseStyle.copyWith(fontWeight: FontWeight.w900),
+          style: baseStyle.copyWith(fontWeight: FontWeight.w700),
         ),
       );
     } else if (token.startsWith('*') &&

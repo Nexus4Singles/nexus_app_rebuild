@@ -596,14 +596,15 @@ class _HeroHeader extends ConsumerWidget {
                   Expanded(
                     child: Align(
                       alignment: Alignment.centerRight,
-                      child: (journey.themeTag ?? '').isNotEmpty
-                          ? _HeroPill(
-                              text: _prettyTag(journey.themeTag!),
-                              bg: pillBg,
-                              fg: AppColors.primary,
-                              borderColor: pillBorder,
-                            )
-                          : const SizedBox.shrink(),
+                      child:
+                          (journey.themeTag ?? '').isNotEmpty
+                              ? _HeroPill(
+                                text: _prettyTag(journey.themeTag!),
+                                bg: pillBg,
+                                fg: AppColors.primary,
+                                borderColor: pillBorder,
+                              )
+                              : const SizedBox.shrink(),
                     ),
                   ),
                 ],

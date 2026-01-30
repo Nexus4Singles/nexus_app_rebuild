@@ -268,7 +268,7 @@ class AppTheme {
       ),
 
       // Progress Indicator Theme
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
+      progressIndicatorTheme: ProgressIndicatorThemeData(
         color: AppColors.primary,
         linearTrackColor: AppColors.progressBackground,
         circularTrackColor: AppColors.progressBackground,
@@ -662,7 +662,7 @@ class AppTheme {
       ),
 
       // Progress Indicator Theme
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
+      progressIndicatorTheme: ProgressIndicatorThemeData(
         color: AppColors.primary,
         linearTrackColor: AppColors.progressBackground,
         circularTrackColor: AppColors.progressBackground,
