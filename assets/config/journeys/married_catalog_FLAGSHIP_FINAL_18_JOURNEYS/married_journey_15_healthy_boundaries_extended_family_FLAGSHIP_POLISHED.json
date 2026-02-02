@@ -1,0 +1,765 @@
+{
+  "journeyId": "married_inlaws_extended_family",
+  "title": "Healthy Boundaries with Extended Family",
+  "subtitle": "Building healthy relationships beyond your household",
+  "summary": "When you married your spouse, you also married into their family. These extended relationships can be sources of tremendous blessing or significant conflict. Boundary issues, loyalty tensions, differing expectations, and unresolved family dynamics all create challenges for married couples. This journey helps you navigate in-law relationships wisely, establish appropriate boundaries, honor both families while prioritizing your marriage, and build extended family connections that enrich rather than strain your relationship.",
+  "targetUserCategory": "married",
+  "priorityRank": 15,
+  "estimatedDays": 14,
+  "totalActivities": 10,
+  "difficulty": "intermediate",
+  "themeColor": "#5C6BC0",
+  "cover": {
+    "themeTag": "Extended Family",
+    "accentIcon": "groups",
+    "heroImage": "assets/images/journeys/married_inlaws_hero.jpg",
+    "heroImageDescription": "A couple standing together at the center with extended family members on either side, showing connection while maintaining their position as a united couple at the center of their own family."
+  },
+  "frameworks": [
+    "family_systems",
+    "boundary_setting",
+    "loyalty_navigation",
+    "healthy_differentiation"
+  ],
+  "targetOutcomes": [
+    "Understand the dynamics that make in-law relationships challenging",
+    "Establish appropriate boundaries that protect your marriage",
+    "Navigate loyalty tensions between spouse and family of origin",
+    "Address common in-law conflicts with wisdom and grace",
+    "Honor parents while prioritizing your marriage",
+    "Build extended family relationships that bless rather than burden"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_inlaw_challenge",
+      "isFree": true,
+      "title": "When Families Collide: Understanding the In-Law Challenge",
+      "subtitle": "Why these relationships are so complicated",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "groups",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "In-law relationships are among the most common sources of marital conflict. Understanding why these relationships are inherently challenging helps you navigate them with more wisdom and less frustration.",
+      "frameworkBasis": {
+        "conceptKey": "inlaw_dynamics",
+        "explanation": "In-law relationships involve complex dynamics of loyalty, boundaries, and family system adjustment that create predictable challenges."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "You Married a Family",
+          "text": "Extended family dynamics can strengthen or strain a marriage.\nBoundaries protect unity.\n\nThis journey helps couples establish boundaries with clarity and respect.\n\nWhen you said I do, you were not just marrying one person. You were entering into relationship with an entire family system, complete with its own history, patterns, expectations, and ways of doing things. Your spouse spent decades being shaped by their family. Their values, habits, expectations, and even their quirks were formed in that environment. You cannot fully understand your spouse without understanding where they came from. At the same time, you brought your own family system into the marriage. Your family has its own patterns and expectations that feel normal to you but may seem strange to your spouse. Marriage brings these two family systems together, and the collision is not always smooth. Different traditions, different boundaries, different ways of relating all have to be negotiated.",
+          "icon": "family_restroom"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why In-Laws Are Difficult",
+          "text": "In-law relationships are challenging for several specific reasons. Loyalty tensions arise because your spouse has deep bonds with their family that existed long before you. When you and your in-laws disagree, your spouse is caught between people they love. Boundary confusion happens because family of origin relationships operated without the boundaries marriage requires. Parents who had full access to their child must adjust to new limits. Different expectations emerge because your family and your in-laws have different ideas about how often families should gather, how involved parents should be, and countless other matters. Unresolved family issues do not disappear at marriage. Dysfunction, conflict, and painful history from your spouse's family become part of your life too. Competition for time and attention intensifies, especially around holidays, major events, and when grandchildren arrive. These dynamics make in-law relationships inherently complex, even in healthy families.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Story of James and Valentina",
+          "text": "James and Valentina came from very different family cultures. His family was reserved, independent, and gathered only for major holidays. Her family was warm, involved, and expected weekly Sunday dinners. After they married, Valentina's mother called daily and expected them at every family event. James felt suffocated and wanted his wife to set boundaries. Valentina felt James was asking her to reject her family. Meanwhile, James's parents rarely initiated contact, which Valentina interpreted as coldness or disapproval. She kept trying to build relationship and felt rebuffed. James saw nothing wrong because this was normal in his family. Neither family was bad. They were just different. But those differences created constant tension in the marriage as James and Valentina each felt the other did not understand or respect their family. Learning to navigate two different family cultures is one of the essential tasks of marriage.",
+          "icon": "people"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your In-Law Challenges",
+          "text": "What challenges do you face with in-laws or extended family?",
+          "prompts": [
+            "Boundary issues where in-laws are too involved in our lives",
+            "Feeling like my spouse prioritizes their family over me",
+            "Conflict or tension with specific in-law relationships",
+            "Different expectations about family involvement and gatherings",
+            "Criticism or disapproval from in-laws",
+            "My spouse does not support me in conflicts with their family",
+            "Distance or coldness that makes relationship difficult",
+            "Complicated family dynamics like divorce, remarriage, or estrangement"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These challenges are common and addressable. This journey will help you navigate them together."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Biblical Foundation",
+          "text": "Scripture provides a crucial principle for navigating extended family relationships. 'Therefore a man shall leave his father and his mother and hold fast to his wife, and they shall become one flesh.' (Genesis 2:24) Leave and cleave establishes the priority. While honoring parents remains a lifelong calling, the primary loyalty shifts at marriage. Your spouse becomes your first family, and your parents become extended family. This does not mean abandoning your family of origin or dishonoring parents. It means establishing your marriage as the central relationship and relating to extended family from that foundation. Many in-law problems stem from failure to fully leave, either because adult children remain too dependent on parents or because parents refuse to release their children into adulthood and marriage.",
+          "icon": "auto_stories"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Journey Ahead",
+          "text": "This journey will help you understand the leaving and cleaving process and establish boundaries that protect your marriage. You will learn to navigate loyalty tensions and handle common in-law conflicts wisely. You will discover how to honor both sets of parents while keeping your marriage the priority. You will build extended family relationships that enrich your life rather than creating constant stress. This week, pay attention to where extended family relationships create tension in your marriage. Notice what triggers conflict and what feels unresolved. This awareness will help you engage the journey more effectively.",
+          "icon": "route"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_leave_and_cleave",
+      "isFree": false,
+      "title": "Leaving and Cleaving: The Foundation for Healthy Boundaries",
+      "subtitle": "Understanding what it means to leave your family of origin",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "home",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "The biblical principle of leaving and cleaving is foundational for healthy in-law relationships. Understanding what this means in practice helps you establish appropriate boundaries and priorities.",
+      "frameworkBasis": {
+        "conceptKey": "leave_cleave",
+        "explanation": "The leave and cleave principle establishes marriage as the primary relationship while maintaining appropriate connection to extended family."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What Leaving Means",
+          "text": "Leaving your father and mother does not mean abandoning them or ceasing to care about them. It means establishing a new primary relationship and relating to your family of origin differently than before. Leaving means your spouse becomes your first loyalty. When there is tension between your spouse and your parents, you stand with your spouse even when your parents are unhappy about it. Leaving means establishing independence. You no longer depend on your parents for your primary emotional support, financial provision, or life direction. You and your spouse make your own decisions. Leaving means creating your own family culture. You take the best from both families of origin but create something new together rather than simply replicating one family's patterns. Leaving is not an event that happens at the wedding. It is a process that unfolds as you establish your marriage as your primary family.",
+          "icon": "directions_walk"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Cleaving Means",
+          "text": "Cleaving to your spouse means holding fast to them, being united with them, and making your marriage the central relationship in your life. Cleaving means emotional priority. Your spouse is your primary confidant, your closest companion, and the person you turn to first with joys and concerns. Cleaving means practical priority. Major decisions are made together as a couple, not with one spouse consulting their parents while the other waits for the verdict. Cleaving means defensive priority. You protect your spouse from criticism, even from your own family. You do not allow your parents to speak badly about your spouse without response. Cleaving creates a clear boundary around your marriage. Others can be close, but no one besides your spouse is inside the inner circle of your marriage.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Signs of Incomplete Leaving",
+          "text": "Many couples struggle because one or both spouses have not fully left their family of origin. Warning signs include several patterns. Running to parents with marital problems before talking to your spouse indicates divided loyalty. Your spouse should be the first to know about issues in your marriage. Allowing parents to make decisions for your household shows you have not established independence. Consulting parents for input is fine, but they should not have veto power. Prioritizing parents' preferences over spouse's needs demonstrates misplaced loyalty. When parents and spouse have competing needs, spouse generally comes first. Keeping secrets with parents that exclude your spouse creates divided intimacy. Your spouse should not be the outsider in your life. Defending parents against legitimate concerns from your spouse shows you are still more their child than your spouse's partner. If you recognize these patterns, leaving more fully is essential for your marriage to thrive.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "When Parents Have Not Released",
+          "text": "Sometimes the leaving problem is not the adult child but parents who have not released them into adulthood and marriage. Unreleasing parents may continue making decisions as if their child were still under their authority. They may criticize or undermine the marriage. They may demand the same access and involvement they had before the wedding. They may compete with the spouse for their child's attention and loyalty. This creates an impossible situation for your spouse, who is caught between partner and parents. If your parents have not released you, you must take the lead in establishing new boundaries. This is uncomfortable but necessary. Your parents may be hurt initially, but healthy parents will eventually adjust and respect your marriage. You cannot control whether your parents release you, but you can control whether you act as a released adult regardless of their posture.",
+          "icon": "lock_open"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Leaving Assessment",
+          "text": "Honestly assess how fully you and your spouse have left your families of origin. Have you established your spouse as your primary loyalty? Do you make decisions as a couple or with heavy parental involvement? Is your spouse ever caught between you and your parents? Are there ways you have not fully left? Are there ways your parents have not fully released you? Write your honest assessment for yourself and your perception of your spouse:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Completing the Leaving",
+          "text": "If you identified areas of incomplete leaving, begin addressing them. For yourself, identify one way you have not fully left that you will work to change. What specific shift in loyalty, independence, or boundary will you make? For your spouse, if you perceive incomplete leaving, plan how you will raise this conversation with grace. Approach with curiosity rather than accusation. For parents who have not released, consider what boundaries may need to be established and how you will communicate them respectfully. Leaving fully is not a rejection of your family. It is the necessary foundation for a healthy marriage that can then relate well to extended family.",
+          "icon": "directions_walk"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_boundaries",
+      "isFree": false,
+      "title": "Drawing the Lines: Establishing Healthy Boundaries",
+      "subtitle": "Creating appropriate limits that protect your marriage",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "active",
+      "icon": "fence",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Boundaries are not walls that keep people out. They are gates that regulate how people relate to you. This activity helps you establish boundaries with extended family that protect your marriage while maintaining healthy relationships.",
+      "frameworkBasis": {
+        "conceptKey": "boundary_setting",
+        "explanation": "Healthy boundaries with extended family protect the marriage while allowing appropriate connection and relationship."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What Boundaries Are and Are Not",
+          "text": "Boundaries are often misunderstood as rejection or punishment. They are actually about defining what is okay and what is not okay in how you relate to each other. Boundaries are not about controlling others. You cannot control what your in-laws do. Boundaries define what you will do in response to their choices. Boundaries are not ultimatums or threats. They are calm statements of what you need and what will happen if those needs are not respected. Boundaries are not mean or unloving. Healthy relationships require appropriate limits. Boundaryless relationships become enmeshed and dysfunctional. Boundaries are about taking responsibility for yourself. You define what you will accept, how you will respond, and what you will not allow into your marriage. Good boundaries make better relationships possible by clarifying expectations and preventing resentment from building.",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Common Boundary Areas",
+          "text": "Boundaries with extended family are often needed in specific areas. Time and availability addresses how often you will visit or host, how much notice is expected, and limits on unannounced visits. Decision involvement clarifies that while input may be welcome, decisions about your household are made by you and your spouse. Privacy establishes what information is shared and what stays between you and your spouse. Not everything is family business. Parenting sets limits on grandparent involvement and makes clear that parenting decisions belong to parents. Criticism and comments addresses how family members speak about you, your spouse, or your choices. Finances clarifies whether money comes with strings and what financial involvement is appropriate. Holidays and traditions establishes how you will handle competing family expectations. Each couple needs to determine what boundaries are necessary in their specific situation.",
+          "icon": "list"
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Where Boundaries Feel Weak",
+          "text": "Write one area where boundaries feel unclear.\n\nThen write one respectful boundary that would protect your marriage.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "How to Set Boundaries",
+          "text": "Setting boundaries effectively involves several principles. Be clear and specific. Vague boundaries are easily violated because no one knows exactly what they mean. We need more space is unclear. We will visit once a month and need twenty-four hours notice before you visit us is clear. Be calm and non-accusatory. Boundaries set in anger come across as attacks. Use a matter of fact tone rather than an emotional one. Own your boundary rather than blaming. Say we have decided rather than you make us feel. You are setting the boundary because you choose to, not because they forced you. Include consequences. A boundary without consequence is just a suggestion. Be prepared to enforce what you have stated. Be consistent. If you set a boundary and then do not maintain it, you teach people that your boundaries do not mean anything. Expect pushback but hold firm. People who are used to having no boundaries with you will not celebrate when you establish them. Maintain the boundary anyway.",
+          "icon": "gavel"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Boundaries You Need",
+          "text": "Reflect on what boundaries you need with extended family. Where do you feel your marriage is not adequately protected from extended family intrusion? What patterns cause repeated conflict? What do you need to change about how extended family relates to you? What boundaries have you been reluctant to set? Write the boundaries you believe are needed:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Creating Your Boundary Agreement",
+          "text": "Together with your spouse, discuss and agree on boundaries you will set with extended family. Share your individual reflections on needed boundaries. Discuss which are most important and most urgent. Agree on the specific boundaries you will establish together. For each boundary, clarify what the boundary is, how it will be communicated, who will communicate it, and what consequences will follow if it is violated. Write your agreed boundaries.",
+          "icon": "handshake"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "teaching",
+          "cardNumber": 7,
+          "title": "Presenting a United Front",
+          "text": "Boundaries with extended family must be set by you and your spouse together, presenting a united front. The spouse whose family is involved should take the lead in communicating boundaries to their own parents. It should not appear that the in-law is imposing restrictions. Never throw your spouse under the bus. Do not say my wife will not let us visit more often. Say we have decided that monthly visits work best for our family. Support each other when boundaries are tested. If your spouse sets a boundary with their family and it creates conflict, stand with your spouse rather than siding with your in-laws. Be prepared for the boundary to be unpopular. Your job is not to make everyone happy. Your job is to protect your marriage while treating others with respect.",
+          "icon": "group"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_loyalty_conflicts",
+      "isFree": false,
+      "title": "Caught in the Middle: Navigating Loyalty Conflicts",
+      "subtitle": "When your spouse and your family are at odds",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "sync_problem",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Few things are more painful than feeling caught between people you love. This activity helps you navigate situations where your spouse and your family are in conflict without betraying either relationship.",
+      "frameworkBasis": {
+        "conceptKey": "loyalty_navigation",
+        "explanation": "Loyalty conflicts require clear principles about priority while maintaining appropriate care for all relationships involved."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Pain of Being Caught",
+          "text": "When your spouse and your family are at odds, you are in an impossibly painful position. You love both. Both expect your loyalty. And whatever you do seems to hurt someone. If you side with your spouse, your parents may feel abandoned or betrayed. They may remind you that they raised you and were there long before your spouse. If you side with your family, your spouse feels abandoned by the person who vowed to put them first. They wonder if they will always come second to your parents. If you try to stay neutral, both sides feel you are not supporting them. Attempted neutrality often pleases no one. This painful position is common in marriage. Learning to navigate it well is essential for protecting your marriage while honoring your family.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Principle of First Loyalty",
+          "text": "While navigating these situations requires wisdom, one principle must be clear: your spouse holds first loyalty. This is not because your parents do not matter. It is because marriage created a new primary family. Your spouse is now your closest human relationship. First loyalty means when there is genuine conflict, you stand with your spouse. Not because they are always right, but because they are your spouse. First loyalty means you do not allow your family to mistreat your spouse. You address it directly rather than excusing it or expecting your spouse to just accept it. First loyalty means your spouse never has to wonder whose side you are on. They know you are with them even when you wish things were different. This does not mean your spouse is always right or that you agree with everything they do. It means your loyalty is clear even when the situation is complicated.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "When Your Spouse Is Right",
+          "text": "Sometimes your spouse has a legitimate complaint about your family, and you need to support them fully. Maybe your mother really is critical of your spouse. Maybe your father really does cross boundaries. Maybe your family really does exclude your spouse or treat them poorly. In these cases, your job is to address the problem with your family directly. Not just acknowledge it to your spouse and then do nothing. Not defend your family's behavior. Actually address it. This is uncomfortable. Your family may not appreciate your intervention. They may accuse you of taking sides or being disloyal to them. But protecting your spouse from mistreatment by your family is your responsibility. If you do not do it, no one will. And your marriage will suffer while you try to keep peace with people who are hurting your spouse.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "When Your Spouse Is Wrong",
+          "text": "Sometimes your spouse's complaint about your family is unfair, exaggerated, or based on misunderstanding. Maybe they are interpreting your family's behavior through a lens of their own family baggage. Maybe they are being overly sensitive. Maybe they are expecting your family to be something they are not. In these cases, you can gently help your spouse see another perspective without attacking them. You can explain your family's culture or intentions while validating that the experience felt hurtful. What you should not do is dismiss your spouse's feelings or immediately defend your family. Even if your spouse is wrong about the facts, their feelings are real and deserve respect. And even when your spouse is wrong, you still should not complain about them to your family. Handle your marital issues within your marriage, not by recruiting your family to your side.",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Loyalty Navigation",
+          "text": "Reflect on how you navigate loyalty conflicts in your marriage. When your spouse and your family are at odds, how do you typically respond? Does your spouse feel confident of your first loyalty, or do they feel like they come second to your family? Are there situations where you have sided with your family against your spouse? Are there complaints from your spouse about your family that you have not adequately addressed? Write your honest reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Strengthening Your Loyalty",
+          "text": "Based on your reflection, identify ways to strengthen your spouse's confidence in your loyalty. If there are unaddressed issues with your family that affect your spouse, plan how you will address them. Be specific about what you will say and when. If your spouse has felt second to your family, have a conversation acknowledging this and committing to change. Ask what would help them feel more confident of your loyalty. Remember that first loyalty to your spouse does not mean abandoning your family. It means being clear about your primary allegiance while maintaining appropriate care for all relationships. What specific step will you take to strengthen your spouse's confidence in your loyalty?",
+          "icon": "directions_walk"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_your_parents",
+      "isFree": false,
+      "title": "Honoring Your Parents: Navigating Your Own Family of Origin",
+      "subtitle": "Balancing adult independence with appropriate honor",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "elderly",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Scripture calls us to honor our parents, but this does not mean obedience without boundaries. This activity helps you navigate your relationship with your own parents as an adult while maintaining appropriate honor.",
+      "frameworkBasis": {
+        "conceptKey": "parent_honor",
+        "explanation": "Honoring parents as an adult means showing respect and care while maintaining appropriate independence and boundaries."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Honor Does Not Mean Obedience",
+          "text": "The command to honor your father and mother is one of the Ten Commandments and remains throughout life. But what honor looks like changes as you become an adult. As a child, honoring parents included obedience. You were under their authority and were called to submit to their direction. As an adult, you are no longer under their authority. You make your own decisions, set your own direction, and are responsible for your own household. Honor no longer means obedience. Adult honor means treating parents with respect, caring for their needs, valuing their input, maintaining relationship, and speaking well of them. It does not mean letting them control your life or make your decisions. Many parents struggle with this transition. They remember when their word was law and do not understand why it no longer is. Understanding that honor and obedience are different helps you navigate this gracefully.",
+          "icon": "auto_stories"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Maintaining Relationship",
+          "text": "Part of honoring parents is maintaining relationship with them. This means investing time and attention in staying connected. Regular contact through calls, visits, and communication maintains the bond. The frequency depends on your situation, but complete absence does not honor the relationship. Showing interest in their lives demonstrates that you value them. Asking about their health, activities, and concerns shows care. Including them appropriately in your life lets them share your joys and milestones. Grandchildren, accomplishments, and life events can be shared even while maintaining appropriate boundaries. Helping with needs as they age fulfills the care aspect of honor. Aging parents may need practical help that adult children are positioned to provide. Relationship can be maintained even with significant boundaries. You can see your parents monthly rather than weekly and still have a honoring relationship.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "When Parents Are Difficult",
+          "text": "Some parents are easy to honor because they respect your adulthood and support your marriage. Others make honoring them very difficult. Critical parents find fault with your choices, your spouse, or your parenting. Controlling parents try to direct your life despite your adulthood. Manipulative parents use guilt, money, or emotional tactics to get their way. Absent parents provide little to honor but may still expect relationship. Honoring difficult parents does not mean accepting mistreatment. You can set firm boundaries while still treating parents with basic respect. You can limit contact while still caring about their wellbeing. You can disagree with their behavior while not attacking their dignity. In extreme cases of abuse or toxicity, honor may be expressed through distance. Protecting your marriage and family from a destructive parent can be the most honoring choice for everyone involved.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Relationship with Your Parents",
+          "text": "Reflect on your current relationship with your own parents. How would you describe the relationship? Are appropriate boundaries in place? Do your parents respect your adulthood and marriage? Is there tension between honoring your parents and protecting your marriage? What would a healthier relationship look like? Write your reflection on your relationship with your own parents:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Helping Your Spouse with Your Parents",
+          "text": "Your relationship with your parents directly affects your spouse. Here is how you can help. Translate family culture. Help your spouse understand your family's ways of communicating, showing affection, and relating. What seems cold or intrusive may just be different. Advocate for your spouse. If your parents are not treating your spouse well, address it. Do not leave your spouse to fight that battle alone. Do not expect your spouse to love your parents like you do. You have decades of history and family bond. Your spouse is building relationship from scratch. Reasonable expectations make this easier. Set boundaries together. Your spouse should have significant input on how much involvement your parents have in your shared life. Do not triangulate. If you have complaints about your parents, talk to them directly rather than venting to your spouse in ways that create more conflict.",
+          "icon": "support"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Improving Your Parent Relationship",
+          "text": "Identify one way you will work to improve the relationship between your parents and your marriage. Maybe you need to address a boundary issue with your parents directly. Maybe you need to help your spouse understand your family better. Maybe you need to increase or decrease contact to find a healthier balance. Maybe you need to advocate for your spouse in a situation you have been avoiding. What specific step will you take regarding your relationship with your own parents?",
+          "icon": "directions_walk"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_your_inlaws",
+      "isFree": false,
+      "title": "Building Bridges: Relating Well to Your In-Laws",
+      "subtitle": "Creating positive relationships with your spouse's family",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "handshake",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Your relationship with your in-laws matters for your marriage. This activity helps you build the best possible relationship with your spouse's family while maintaining appropriate boundaries.",
+      "frameworkBasis": {
+        "conceptKey": "inlaw_relationship",
+        "explanation": "Intentional effort to build positive in-law relationships benefits the marriage and extended family system."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Relationship Worth Building",
+          "text": "Your relationship with your in-laws is worth intentional investment, even when it is difficult. Good in-law relationships enrich your marriage. Support from extended family, shared celebrations, and children who know their grandparents all add value to your life. Good in-law relationships honor your spouse. Your spouse loves their family. Making effort with their family communicates that you care about what matters to them. Good in-law relationships reduce stress. Conflictual in-law relationships create constant tension. Positive relationships make life easier. Good in-law relationships model healthy relating for your children. How you navigate extended family teaches your children about honoring parents, setting boundaries, and building relationships. Even when your in-laws are difficult, the effort to build the best relationship possible is worth making.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Strategies for Good In-Law Relationships",
+          "text": "Certain approaches help build positive in-law relationships. Show genuine interest in who they are. Ask questions about their lives, listen to their stories, and learn what matters to them. Look for common ground. You may have different backgrounds, but you share love for your spouse. Find other areas of connection too. Express appreciation. Thank them for raising your spouse. Acknowledge things they do for you. Express gratitude for their involvement in your lives. Give grace for imperfection. Your in-laws will not be perfect. Neither will you. Extend the grace you hope to receive. Do not compete with them. You and your in-laws both love your spouse. You are not rivals for their affection. There is room for everyone. Let your spouse handle conflicts with their family when possible. Addressing issues directly with in-laws often backfires. Work through your spouse instead.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "When In-Laws Are Difficult",
+          "text": "Some in-laws make relationship building genuinely hard. Critical in-laws may never think you are good enough for their child. Remember that their criticism says more about them than about you. Maintain dignity without absorbing their negativity. Interfering in-laws may insert themselves into your marriage uninvited. Hold boundaries firmly but calmly. Do not let their pushiness provoke you to harshness. Distant in-laws may be cold or uninterested in relationship. You cannot force closeness. Extend invitations, but do not take their distance as personal rejection. Manipulative in-laws may use guilt, money, or other tactics. Refuse to play the game. Respond to manipulation with calm clarity rather than emotional reactivity. In all cases, keep the relationship as positive as you can without sacrificing your marriage or dignity. You control your behavior even when you cannot control theirs.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your In-Law Relationships",
+          "text": "Reflect on your relationships with your in-laws. How would you describe these relationships currently? What is going well? What is challenging? Are there ways you could invest more in these relationships? Are there boundaries you need that would actually help the relationship? Write your reflection on your in-law relationships:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "What Your Spouse Needs from You",
+          "text": "Your spouse has a unique perspective on what would help in your relationships with their family. They know their family's quirks and can help you interpret behaviors that might otherwise frustrate you. They know what efforts would be most meaningful. A small gesture that matters to their family might go further than expensive gifts. They know where they feel caught in the middle and what would relieve that pressure. They know what complaints about their family are helpful versus what feels like attacks on people they love. Asking your spouse what would help and actually listening to their guidance improves your in-law relationships far more than trying to figure it out alone.",
+          "icon": "forum"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Investing in Your In-Law Relationships",
+          "text": "Choose one specific way you will invest in your relationship with your in-laws. Maybe you will initiate contact more often. Maybe you will find an area of common interest to build on. Maybe you will have a conversation with your spouse about what would help most. Also identify any boundaries that would actually help the relationship by reducing friction. Sometimes a clear boundary creates space for a better relationship than constant low-level conflict. What specific step will you take to build better in-law relationships?",
+          "icon": "directions_walk"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_holidays_events",
+      "isFree": false,
+      "title": "The Holiday Battle: Navigating Special Occasions",
+      "subtitle": "Creating peaceful approaches to holidays and family events",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "active",
+      "icon": "celebration",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Holidays and special events often become battlegrounds between competing family expectations. This activity helps you create approaches that honor both families while protecting your own family's wellbeing.",
+      "frameworkBasis": {
+        "conceptKey": "holiday_navigation",
+        "explanation": "Holiday conflicts require proactive planning and clear principles to navigate competing family expectations."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Holidays Create Conflict",
+          "text": "Holidays concentrate extended family challenges into high stakes moments. Competing expectations arise because both families may expect your presence at the same time. Someone will be disappointed. Traditional attachments mean that for each family, the way they have always done things carries emotional weight. Changing traditions feels like rejection. Logistical complexity increases when you try to satisfy everyone. Driving between locations, managing time, and coordinating schedules becomes exhausting. Emotional intensity heightens because holidays carry significance. Disappointments feel larger than they might at ordinary times. Accumulated resentment from past holidays can poison current celebrations. That time you chose their family over mine becomes a recurring wound. Navigating holidays well requires proactive planning rather than reactive scrambling.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Approaches That Work",
+          "text": "Several approaches can help navigate competing holiday expectations. Alternating years means spending certain holidays with one family one year and the other family the next. This provides equity over time. Splitting the day means visiting both families on the same holiday. This is exhausting but may work for local families. Dividing holidays means always spending certain holidays with one family and other holidays with the other. Thanksgiving with one, Christmas with the other. Hosting yourselves means establishing your home as the gathering place and inviting both families to come to you. Creating your own traditions means sometimes celebrating just your nuclear family, establishing your own holiday identity. There is no universally right answer. The right approach depends on your specific situation, distances involved, and family dynamics.",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Principles for Holiday Decisions",
+          "text": "Whatever specific approach you take, certain principles help. Decide together as a couple. Holiday plans should not be made by one spouse without the other's input. You face extended family as a united team. Communicate early and clearly. Telling families your plans well in advance reduces last minute drama. Vague commitments create false expectations. Be fair over time. Perfect fairness every single holiday may be impossible, but over time, the distribution should feel equitable to both families and both spouses. Protect your own family. You are not obligated to exhaust yourselves trying to make everyone happy. Sometimes staying home is the right choice. Remain flexible as circumstances change. What works when you are young without children may not work with small children or aging parents. Expect some disappointment. You cannot make everyone happy. Some disappointment is inevitable and does not make you bad children.",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Holiday History",
+          "text": "Reflect on how you have navigated holidays in your marriage. What approaches have you used? What has worked well? What has created conflict? Does one family consistently get more time than the other? Has the pressure of holiday navigation created resentment between you and your spouse? Write about your holiday history and what needs to change:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "action",
+          "cardNumber": 5,
+          "title": "Creating Your Holiday Plan",
+          "text": "Together with your spouse, create a clear approach to holidays and major events. List the major holidays and events that involve extended family expectations. For each one, discuss and decide your approach. Consider alternating, splitting, dividing, hosting, or creating your own traditions. Write your agreed holiday approach. This becomes your plan that you can communicate to families clearly. Remember that you may need to adjust this plan as circumstances change. But having a baseline approach prevents annual negotiation and conflict.",
+          "icon": "edit"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "teaching",
+          "cardNumber": 6,
+          "title": "Communicating Your Decisions",
+          "text": "Once you have decided your holiday approach, communicate it clearly to both families. Present it as a decision, not a negotiation. You are informing them of your plans, not asking permission. Present a united front. Both of you should be aligned so that families cannot play one spouse against the other. Be kind but firm. You can be warm and loving while still maintaining your decision. Expect pushback and hold firm. Families who are used to getting their way may test your resolve. Maintain your decision anyway. Offer alternatives when possible. If you cannot be there for the holiday itself, perhaps you can visit the week before or after. Your holiday decisions will not make everyone happy. That is not the goal. The goal is a sustainable approach that honors both families while protecting your own.",
+          "icon": "campaign"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_grandparents",
+      "isFree": false,
+      "title": "Grandparent Dynamics: When Children Add Complexity",
+      "subtitle": "Navigating extended family involvement with your children",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "escalator_warning",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Children add a new dimension to extended family relationships. Grandparent involvement can be wonderful or complicated. This activity helps you navigate this dynamic wisely.",
+      "frameworkBasis": {
+        "conceptKey": "grandparent_dynamics",
+        "explanation": "Grandparent relationships require clear boundaries about parenting authority while encouraging healthy extended family bonds."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Gift and Complexity of Grandparents",
+          "text": "Grandparents can be tremendous blessings to your children. They offer love, wisdom, connection to family history, and often practical help like childcare. But grandparents also add complexity to extended family dynamics. Questions arise that did not exist before. How much involvement is right? What happens when grandparenting styles differ from your parenting? How do you handle favoritism, spoiling, or boundary violations? The stakes feel higher because your children are involved. A boundary issue that you might tolerate for yourself feels intolerable when it affects your children. Navigating grandparent relationships well protects your children while giving them the benefit of these important relationships.",
+          "icon": "elderly"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Parents Make Parenting Decisions",
+          "text": "One principle must be clear: parents make parenting decisions. Grandparents can have input, but they do not have authority. This means you decide discipline approaches, and grandparents follow them even if they would do things differently. This means you decide food rules, screen time limits, and bedtimes, and grandparents respect those decisions. This means you decide what your children are exposed to, what topics are discussed with them, and what values are emphasized. Grandparents who raised their own children may struggle with this. They have experience and opinions. But their season of parenting authority is over. Now they are in a supporting role. Communicating this kindly but clearly prevents many conflicts. Most grandparents, when they understand the boundaries, will respect them.",
+          "icon": "gavel"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Common Grandparent Conflicts",
+          "text": "Several issues commonly arise with grandparents. Spoiling involves giving too many gifts, too much sugar, or too few limits. Some of this is grandparent privilege, but excessive spoiling can undermine your parenting. Overriding parental decisions happens when grandparents ignore your rules because they disagree. This undermines your authority and confuses children. Criticism of parenting means grandparents expressing disapproval of your choices, sometimes directly to your children. Competing for affection involves grandparents trying to be the favorite through gifts, permissiveness, or undermining the other set of grandparents. Unequal involvement happens when one set of grandparents is much more present than the other, creating imbalance. Boundary violations include sharing information you did not want shared, making promises without asking you, or taking children places without permission. Each of these requires clear communication and consistent boundaries.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Addressing Grandparent Issues",
+          "text": "When grandparent issues arise, address them promptly and clearly. The spouse whose parents are involved should take the lead. It should not appear that the in-law is creating the restriction. Be specific about the problem and what you need. Vague complaints are easy to dismiss. We need you to follow our bedtime rules when the kids stay over is clear. Explain why it matters. Grandparents may not understand the impact of their actions. Helping them see the consequence can motivate change. Hold the boundary consistently. If you set a limit and then do not enforce it, you teach grandparents that your boundaries are suggestions. Limit access if necessary. If grandparents will not respect your parenting, you may need to limit their unsupervised time with your children. This is a last resort but sometimes necessary.",
+          "icon": "record_voice_over"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Grandparent Dynamics",
+          "text": "If you have children, reflect on the grandparent relationships in your family. What is working well in these relationships? What challenges exist? Are there boundary issues that need to be addressed? Is there imbalance between the two sets of grandparents that needs attention? Write your reflection on grandparent dynamics in your family:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Improving Grandparent Relationships",
+          "text": "Based on your reflection, identify steps to improve grandparent dynamics. If there are boundary issues, plan how you will address them with the specific grandparents involved. If there is imbalance, consider whether anything can be done to help the less involved grandparents connect more. If things are going well, consider how you can express appreciation to grandparents who are blessing your family. Discuss with your spouse and create a unified approach to any grandparent issues that need attention. What specific steps will you take?",
+          "icon": "directions_walk"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_complicated_situations",
+      "isFree": false,
+      "title": "The Complicated Cases: Divorce, Remarriage, and Family Dysfunction",
+      "subtitle": "Navigating especially complex family situations",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "family_restroom",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Not all extended family situations are straightforward. Divorce, remarriage, estrangement, and dysfunction create additional complexity. This activity addresses these challenging situations.",
+      "frameworkBasis": {
+        "conceptKey": "complex_family",
+        "explanation": "Complex family situations require additional wisdom and flexibility while maintaining core principles of marriage priority and healthy boundaries."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "When Families Are Complicated",
+          "text": "Many couples navigate extended family situations that textbook advice does not address. Divorced and remarried parents multiply the number of family relationships and competing expectations. Holidays become even more complicated when there are multiple households to consider. Step-relationships add layers of complexity. Your spouse's relationship with their stepparent may be close, distant, or complicated. Knowing how to relate to these family members requires sensitivity. Estrangement means some family members may not be speaking to each other. You may need to navigate relationships with people who are in conflict with each other. Dysfunction including addiction, mental illness, or abusive patterns creates situations where normal advice does not apply. Protecting your family from harmful people may require significant distance. These situations require all the wisdom of simpler situations plus additional discernment for unique circumstances.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Navigating Divorced Families",
+          "text": "When parents are divorced, additional considerations apply. More relationships exist. Instead of two sets of parents, there may be four or more when remarriage is involved. This multiplies holiday logistics and relationship maintenance. Old wounds may persist. The divorce may have created hurt that still affects family gatherings. You may be navigating between people who do not want to be in the same room. Loyalty pressures intensify. Family members may expect you to take sides in conflicts that preceded your arrival. Different households have different cultures. Moving between divorced parents may feel like moving between different worlds with different rules and expectations. Grace is essential. These situations are messy through no fault of your own. Do the best you can without expecting perfection.",
+          "icon": "group"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "When Distance Is Necessary",
+          "text": "Sometimes the healthiest choice is significant distance from certain family members. Active abuse including physical, emotional, or sexual abuse of you, your spouse, or your children requires protection. Ongoing relationship with an abuser is not required and may be harmful. Active addiction that is not being addressed may require distance to avoid enabling or being harmed by addictive behavior. Persistent toxicity that damages everyone it touches may require limited contact. Some people create chaos wherever they go, and protecting your family from that chaos is legitimate. Refusal to respect boundaries after clear communication and consistent enforcement may result in reduced relationship. People who will not respect limits may not get access. Distance is not the same as unforgiveness. You can forgive someone and still maintain protective distance from them.",
+          "icon": "block"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Supporting Your Spouse with Their Family",
+          "text": "When your spouse has a complicated family of origin, they need your support. Listen without judgment. Their family situation may involve painful history. They need you to understand, not to fix or critique. Do not push reconciliation. If your spouse has distanced from certain family members, trust that they have reasons. Pushing them to reconcile can feel like minimizing their pain. Do not criticize their family excessively. Even when family members have hurt your spouse, they may not want to hear constant criticism from you. They can say negative things about their family that they do not want you to say. Support boundaries they set. If your spouse needs distance from certain people, support that even if it complicates your life. Be flexible. Complicated family situations require ongoing adjustment. What works now may need to change as circumstances evolve.",
+          "icon": "support"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Complicated Situations",
+          "text": "Reflect on any complicated extended family situations you navigate. What complexity exists in your or your spouse's family of origin? How have you handled it so far? What is working and what is not? Is there a situation where protective distance may be necessary? How can you better support each other in navigating family complexity? Write your reflection on complicated family situations:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Addressing Your Complex Situations",
+          "text": "Based on your reflection, identify how you will address complicated family situations. If there are specific issues that need attention, discuss with your spouse how you will handle them together. If one of you needs more support in dealing with family complexity, discuss what that support would look like. If protective distance is needed somewhere, decide together how you will implement and maintain it. Remember that complicated situations rarely have perfect solutions. The goal is the wisest path forward, not an ideal resolution. What steps will you take to navigate your complicated family situations?",
+          "icon": "directions_walk"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_family_commitment",
+      "isFree": false,
+      "title": "United Together: Your Extended Family Commitment",
+      "subtitle": "Building a shared approach to family relationships",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You have explored the challenges and strategies for navigating extended family. This final activity helps you consolidate your learning and commit to facing these relationships together.",
+      "frameworkBasis": {
+        "conceptKey": "family_commitment",
+        "explanation": "Lasting success with extended family requires commitment to shared principles and ongoing partnership in navigation."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Learned",
+          "text": "Through this journey, you have explored why in-law relationships are challenging and the foundational importance of leaving and cleaving. You have learned to establish boundaries that protect your marriage while maintaining appropriate relationships. You have navigated loyalty conflicts and learned to honor parents while prioritizing your marriage. You have developed strategies for holidays, grandparent dynamics, and complicated family situations. The common thread through all of this is that you face extended family together, as a united team, with your marriage as the clear priority. Extended family relationships will continue to present challenges. But you now have principles and tools to navigate them wisely.",
+          "icon": "school"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Gift of Extended Family",
+          "text": "Despite the challenges, extended family can be a tremendous gift. Connection to history and heritage gives your family roots and identity that extend beyond your immediate household. Support in difficult times provides practical help and emotional encouragement that strengthens your family. Rich relationships for your children give them the blessing of grandparents, aunts, uncles, and cousins who love them. Models of marriage longevity let you see couples who have navigated decades together, showing what is possible. Shared celebrations make holidays, milestones, and ordinary gatherings richer through the presence of people who care about you. The goal is not to minimize extended family involvement but to make that involvement healthy, bounded, and life-giving for everyone.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Greatest Insight",
+          "text": "What is the most important thing you learned about navigating extended family through this journey? What do you want to remember when extended family challenges arise? How has your understanding of these relationships changed? Write your greatest insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "What Will Change",
+          "text": "Based on this journey, what specific changes will you make in how you navigate extended family relationships? Consider boundaries you will establish, conversations you will have, approaches you will change, and ways you will support each other better. Write your specific commitments:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Your Extended Family Relationships",
+          "text": "Father, thank You for family, both the family we created in marriage and the families we came from. Help us navigate extended family relationships with wisdom and grace. Give us courage to set boundaries that protect our marriage. Give us compassion to maintain relationships even when difficult. Give us clarity to know what honor looks like in our specific situations. Help us stand together, united, when extended family pressures arise. May our marriage be the clear priority while we still love and care for the families we came from. Bless our extended families. Heal wounds where healing is needed. Build bridges where distance has grown. Create relationships that enrich all of our lives. Amen. 'Therefore a man shall leave his father and his mother and hold fast to his wife, and they shall become one flesh.' (Genesis 2:24)",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Extended Family Commitment",
+          "text": "Together, make a commitment to navigating extended family as a united team. We commit to making our marriage the clear priority while honoring our families of origin. We commit to setting and maintaining appropriate boundaries together. We commit to supporting each other in conflicts with extended family and presenting a united front. We commit to addressing issues with our own parents rather than leaving our spouse to fight those battles. We commit to building the best possible relationships with in-laws while protecting our marriage. We commit to regular communication about extended family matters and ongoing adjustment as needed. We face extended family together, as partners. Sign this commitment as your agreement to navigate extended family as a team.",
+          "icon": "handshake"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "United in Navigation",
+    "summaryText": "You have done important work understanding the dynamics of extended family relationships and developing strategies to navigate them together. Remember that your marriage is the priority, but healthy extended family relationships enrich your life. Keep communicating, keep adjusting, and keep facing these relationships as a united team.",
+    "keyTakeaways": [
+      "Marriage creates a new primary family, requiring a shift in loyalty and boundaries",
+      "Leaving and cleaving does not mean abandoning parents but establishing appropriate adult relationships",
+      "Boundaries protect your marriage while still allowing healthy extended family connection",
+      "Loyalty conflicts require clear commitment to spouse while maintaining care for family of origin",
+      "Holidays and major events require proactive planning rather than reactive scrambling",
+      "Complex family situations require additional wisdom but the same core principles apply"
+    ],
+    "nextRecommendedJourneys": [
+      "Aligning Roles and Expectations in Marriage",
+      "Communication and Conflict Resolution in Marriage",
+      "Building a Legacy as a Married Couple"
+    ]
+  }
+}

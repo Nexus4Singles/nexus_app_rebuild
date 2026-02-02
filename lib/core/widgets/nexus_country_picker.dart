@@ -8,38 +8,41 @@ class NexusCountryPicker {
     required String title,
     required void Function(String) onPicked,
   }) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = isDarkMode ? AppColors.border : Color(0xFFD1D5DB);
+    
     showCountryPicker(
       context: context,
       showPhoneCode: false,
       showWorldWide: false,
       countryListTheme: CountryListThemeData(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         textStyle: AppTextStyles.bodyMedium.copyWith(
-          color: AppColors.textPrimary,
+          color: AppColors.getTextPrimary(context),
         ),
         searchTextStyle: AppTextStyles.bodyMedium.copyWith(
-          color: AppColors.textPrimary,
+          color: AppColors.getTextPrimary(context),
         ),
         inputDecoration: InputDecoration(
           hintText: 'Search $title',
           hintStyle: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.textMuted,
+            color: AppColors.getTextSecondary(context),
           ),
           filled: true,
-          fillColor: AppColors.surface,
+          fillColor: AppColors.getSurface(context),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: AppColors.border),
+            borderSide: BorderSide(color: borderColor),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: AppColors.border),
+            borderSide: BorderSide(color: borderColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(color: AppColors.primary, width: 1.5),
           ),
-          prefixIcon: Icon(Icons.search, color: AppColors.textMuted),
+          prefixIcon: Icon(Icons.search, color: AppColors.getTextSecondary(context)),
         ),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),

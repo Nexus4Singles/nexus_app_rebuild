@@ -1,0 +1,834 @@
+{
+  "journeyId": "married_faith_spiritual_unity",
+  "title": "Faith and Spiritual Unity in Marriage",
+  "subtitle": "Growing together in your relationship with God",
+  "summary": "A shared faith can be the strongest foundation for marriage, but spiritual intimacy does not happen automatically. Many couples who both believe in God still struggle to pray together, discuss spiritual matters, or grow together in faith. This journey helps you build genuine spiritual connection, navigate differences in spiritual expression, establish rhythms of shared faith, and become true partners in following Christ together.",
+  "targetUserCategory": "married",
+  "priorityRank": 17,
+  "estimatedDays": 14,
+  "totalActivities": 10,
+  "difficulty": "intermediate",
+  "themeColor": "#1565C0",
+  "cover": {
+    "themeTag": "Faith",
+    "accentIcon": "church",
+    "heroImage": "assets/images/journeys/married_faith_spiritual_unity_hero.jpg",
+    "heroImageDescription": "A couple praying together, heads bowed, hands joined. Warm, reverent atmosphere conveying spiritual intimacy."
+  },
+  "frameworks": [
+    "spiritual_disciplines",
+    "couples_spirituality",
+    "biblical_marriage",
+    "faith_integration"
+  ],
+  "targetOutcomes": [
+    "Understand each other spiritual backgrounds and current faith",
+    "Develop comfortable ways to pray together",
+    "Establish shared spiritual rhythms and practices",
+    "Navigate differences in spiritual expression with grace",
+    "Support each other individual spiritual growth",
+    "Build a home centered on faith"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_spiritual_intimacy",
+      "isFree": true,
+      "title": "The Missing Piece: Why Spiritual Intimacy Matters",
+      "subtitle": "Understanding the unique power of shared faith in marriage",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "church",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Many Christian couples have emotional, intellectual, and physical connection but lack deep spiritual intimacy. Yet spiritual connection may be the most powerful bond of all. This activity explores why spiritual unity matters and what it looks like in practice.",
+      "frameworkBasis": {
+        "conceptKey": "spiritual_intimacy",
+        "explanation": "Spiritual intimacy is the experience of sharing your deepest beliefs, struggles, and encounters with God with your spouse."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Overlooked Dimension",
+          "text": "Spiritual unity grows through shared practice, not assumption.\nFaith expressed together deepens connection.\n\nThis journey helps couples build spiritual unity with intention and grace.\n\nMichael and Karen were both committed Christians. They attended church together, served in ministry, and agreed on core beliefs. But when asked about their spiritual life as a couple, they grew quiet. They rarely prayed together beyond meal times. They did not discuss their personal walks with God. They had never shared their spiritual struggles or questions with each other. They were spiritually active individuals who happened to be married, but they were not spiritually intimate as a couple. This is surprisingly common. Many couples who share faith on paper lack the deep spiritual connection that could be the strongest bond in their marriage.",
+          "icon": "visibility_off"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Spiritual Intimacy Is",
+          "text": "Spiritual intimacy goes beyond shared beliefs. It includes: Praying together regularly and meaningfully, not just at meals Sharing what God is teaching you, what you are struggling with, what you are learning in Scripture Discussing spiritual questions, doubts, and growth areas openly Supporting each other's individual walks with God Making decisions together with prayer and discernment Serving and ministering together as a team Holding each other accountable in faith Experiencing God's presence together This kind of intimacy creates a bond that goes deeper than emotional or physical connection alone.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Why It Matters",
+          "text": "A cord of three strands is not quickly broken. (Ecclesiastes 4:12) This verse is often quoted at weddings to describe marriage with God at the center. When both spouses are connected to God and to each other spiritually, the relationship has a strength that cannot be achieved otherwise. Spiritual intimacy provides a shared foundation for navigating life's challenges. It gives you a common ultimate purpose and direction. It creates accountability and growth. It connects you at the deepest level of your being. It invites God's active presence into your marriage. Your marriage can survive without spiritual intimacy. But it will never reach its fullest potential.",
+          "icon": "link"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Spiritual Connection",
+          "text": "How would you describe the current state of spiritual intimacy in your marriage?",
+          "prompts": [
+            "We have strong spiritual connection and regularly share our faith lives",
+            "We have some spiritual connection but could go deeper",
+            "We struggle to connect spiritually despite both having faith",
+            "One of us is more spiritually engaged than the other",
+            "We have never really developed spiritual intimacy as a couple",
+            "We come from different faith backgrounds which creates challenges"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are starting from, this journey will help you build deeper spiritual connection."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Barriers to Spiritual Intimacy",
+          "text": "Think about what has prevented deeper spiritual connection in your marriage. What makes it awkward or difficult to pray together?\nWhat keeps you from sharing your spiritual life with your spouse?\nWhat fears or barriers exist around spiritual intimacy?\nWhat would need to change for you to connect more deeply spiritually? Write about the barriers you face:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "One Step Closer",
+          "text": "This week, take one small step toward greater spiritual intimacy. Possibilities include praying together for five minutes before bed, sharing one thing God is teaching you, reading a short Scripture passage together and discussing it briefly, asking your spouse how you can pray for them specifically, or sharing a spiritual struggle or question you have been wrestling with. The goal is not perfection but starting somewhere. What one step will you take this week?",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_spiritual_histories",
+      "isFree": false,
+      "title": "Where You Come From: Understanding Each Other's Spiritual Journey",
+      "subtitle": "Sharing your faith backgrounds and how they shaped you",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "history",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Your spiritual backgrounds shape your expectations, practices, and comfort levels around faith. Understanding where each of you came from spiritually creates compassion and helps you build something together.",
+      "frameworkBasis": {
+        "conceptKey": "spiritual_formation",
+        "explanation": "Each person's approach to faith is shaped by their history of spiritual formation, including family background, church experiences, and personal encounters with God."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Faith Is Shaped by History",
+          "text": "David grew up in a home where faith was private. His parents believed deeply but rarely talked about spiritual things. Prayer was personal. Church was attendance, not community. His wife Maria grew up in a charismatic church where faith was demonstrative. People raised hands, prayed out loud, and shared openly about what God was doing. When David and Maria tried to pray together, it felt awkward for both. David was uncomfortable with Maria's expressiveness. Maria felt David was cold and distant. Neither was right or wrong. They were simply products of different spiritual formations. Understanding where your spouse came from spiritually helps you understand how they approach faith today.",
+          "icon": "history"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Elements of Spiritual History",
+          "text": "Your spiritual history includes your family faith background and how faith was expressed and modeled. It includes your church experiences, the traditions you were part of, what was positive, and what was harmful. It encompasses your conversion story, how and when you came to personal faith, and what that experience was like. Your spiritual highs and lows matter, those times when your faith was strongest and when it struggled. Formative experiences shaped you: encounters with God, mentors, and significant moments. Any wounds from religion, church hurt, or spiritual abuse are part of your story too. Finally, there is your current state: where your faith is now, what you believe, and what questions remain. All of this shapes how you approach spiritual intimacy in marriage.",
+          "icon": "account_tree"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Spiritual Journey",
+          "text": "Reflect on your own spiritual history. What was faith like in your family growing up?\nWhat church experiences shaped you, positively or negatively?\nHow did you come to personal faith, or are you still searching?\nWhat have been the highs and lows of your spiritual journey?\nWhere is your faith right now? Write a summary of your spiritual journey:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Understanding Differences",
+          "text": "When you understand your spouse's spiritual history, their current approach makes more sense. If they grew up with faith that was forced or legalistic, they may be cautious about structure. If they experienced church hurt, they may have walls around spiritual vulnerability. If they came to faith as an adult, they may be more enthusiastic than someone who grew up in the church. If their family never discussed faith, they may lack vocabulary or comfort with spiritual conversation. Understanding breeds compassion. Instead of judging your spouse's spiritual approach, you can appreciate how it was shaped by their experiences.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Sharing Your Stories",
+          "text": "Sharing spiritual histories requires vulnerability and good listening. When you share, be honest about your journey including struggles and doubts. Share formative experiences that shaped your faith. Explain why you approach spiritual things the way you do. When you listen, receive without judgment even if their experience is very different. Ask curious questions to understand better. Notice how their history explains their current approach. Honor their journey even if it differs from yours. This conversation builds understanding that makes spiritual intimacy easier.",
+          "icon": "forum"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Spiritual History Conversation",
+          "text": "Have a conversation with your spouse where you each share your spiritual journeys. Take turns sharing your family faith background, significant church experiences, how you came to faith or your current searching, spiritual highs and lows, and where your faith is now. Listen with curiosity and without judgment. Ask follow-up questions to understand more deeply. This conversation may take more than one sitting. That is fine. The goal is deep understanding of each other's spiritual formation.",
+          "icon": "forum"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_praying_together",
+      "isFree": false,
+      "title": "Breaking Through: Learning to Pray Together",
+      "subtitle": "Overcoming the awkwardness of shared prayer",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "essential",
+      "icon": "volunteer_activism",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Praying together is one of the most intimate and powerful things a couple can do, yet many couples find it awkward or rarely do it beyond mealtimes. This activity helps you break through the barriers and establish meaningful shared prayer.",
+      "frameworkBasis": {
+        "conceptKey": "couples_prayer",
+        "explanation": "Shared prayer creates unique spiritual connection but requires overcoming common barriers of discomfort and vulnerability."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Prayer Barrier",
+          "text": "Research suggests that fewer than ten percent of Christian couples pray together regularly beyond mealtimes. Why is something so simple so difficult? Prayer is intimate. When you pray aloud with your spouse, you reveal your heart, your fears, your needs. That vulnerability can feel uncomfortable. Different styles create awkwardness. If one spouse prays eloquently and the other feels tongue-tied, it creates self-consciousness. Busy lives crowd it out. Without intentionality, prayer gets lost in the rush of daily life. Past baggage affects it. Negative experiences with prayer or forced religiosity can create resistance. Yet couples who pray together consistently report stronger marriages, deeper connection, and greater spiritual growth. The barrier is worth breaking through.",
+          "icon": "block"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Starting Simple",
+          "text": "If praying together is new or uncomfortable, start simple. You do not need to pray for an hour. Five minutes is a meaningful start. You do not need eloquent words. God cares about your heart, not your vocabulary. You do not need to cover everything. One or two specific requests is enough. You do not need to match styles. One spouse can pray simply while the other is more expressive. Simple approaches to try include taking turns sharing one prayer request then praying briefly for each other, praying sentence prayers where each person adds one sentence at a time, having one person pray while the other listens and says Amen, or praying written prayers together until spontaneous prayer feels more natural.",
+          "icon": "looks_one"
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "How We Practice Faith Together",
+          "text": "Write how you and your spouse currently practice faith together.\n\nThen write one simple way to grow in spiritual unity.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Finding Your Rhythm",
+          "text": "Different couples find different prayer rhythms that work. Morning connection offers a brief prayer together before starting the day. Bedtime prayer means praying together before sleep, sharing the day's concerns. Weekly extended time provides a longer prayer session once a week for deeper matters. Crisis prayers happen in real time when challenges arise. Meal prayers can go deeper, using those times for more than rote blessings. Texted prayers involve sending prayer requests and praying for each other throughout the day. The best rhythm is one you will actually maintain. Consistency matters more than format.",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Prayer Current State",
+          "text": "Which best describes your current prayer life as a couple?",
+          "prompts": [
+            "We pray together regularly and it feels natural",
+            "We pray together sometimes but could be more consistent",
+            "We mainly pray at meals but rarely beyond that",
+            "We rarely or never pray together",
+            "One of us wants to pray together more than the other",
+            "We have tried but it always feels awkward"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are starting, you can build a meaningful prayer life together with small consistent steps."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "Your Prayer Barriers",
+          "text": "Think honestly about what makes praying together difficult for you. What feels awkward or uncomfortable about praying with your spouse?\nWhat fears do you have about shared prayer?\nWhat practical barriers get in the way?\nWhat would make prayer together feel more natural? Write about your prayer barriers:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 7,
+          "title": "Your First Step",
+          "text": "Commit to praying together this week. Discuss with your spouse: When will we pray together? Pick a specific time. How long? Start with five minutes if this is new. What format? Taking turns, sentence prayers, or one person leading. Then do it. Even if it feels awkward, follow through. After a week, evaluate: What worked? What was hard? What will we adjust? The goal is to establish a sustainable prayer rhythm, even if it starts small.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_spiritual_differences",
+      "isFree": false,
+      "title": "Different but United: Navigating Spiritual Differences",
+      "subtitle": "Finding unity when you express faith differently",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "compare_arrows",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Even two committed Christians can have very different spiritual temperaments, preferences, and practices. Learning to navigate these differences with grace rather than judgment strengthens both your marriage and your individual walks with God.",
+      "frameworkBasis": {
+        "conceptKey": "spiritual_temperaments",
+        "explanation": "People have different spiritual temperaments that shape how they best connect with God and express their faith."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Same Faith, Different Expression",
+          "text": "John loves structured liturgy, ancient prayers, and quiet contemplation. He connects with God through solitude and reflection. His wife Lisa loves contemporary worship, spontaneous prayer, and community. She connects with God through expressive praise and service. Both love Jesus. Both are growing in faith. But they experience and express that faith very differently. These differences can become sources of conflict or judgment. Why does she need all that emotion? Why is he so cold and formal? Or they can become sources of enrichment as each spouse expands the other's experience of God.",
+          "icon": "compare_arrows"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Types of Spiritual Differences",
+          "text": "Common areas where spouses differ spiritually include worship style, whether liturgical versus contemporary or contemplative versus expressive. Spiritual practices vary too, as some thrive on structure and discipline while others need flexibility and spontaneity. Learning approaches differ. Some are intellectual and study-oriented while others are experiential and feeling-oriented. Community needs vary, with some needing extensive church involvement and others preferring simpler engagement. Growth pace can differ, as one spouse may be in rapid growth while the other is on a plateau. Doctrinal emphasis may vary, with different aspects of faith resonating more with each spouse. These differences are normal and can be healthy if navigated with grace.",
+          "icon": "list"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Avoiding Judgment",
+          "text": "The temptation when spouses differ spiritually is to judge. My way of connecting with God is right. Theirs is inferior, immature, or misguided. But Scripture shows remarkable diversity in how people encountered God. David danced in worship. Elijah heard God in silence. Paul reasoned from Scripture. Peter acted impulsively. All were used by God. There is one body and one Spirit, one Lord, one faith, one baptism. (Ephesians 4:4-5) Unity does not require uniformity. You can share the same faith while expressing it differently. The goal is mutual respect and support, not making your spouse be spiritual in your way.",
+          "icon": "gavel"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Spiritual Differences",
+          "text": "Reflect on how you and your spouse differ spiritually. How do your worship preferences differ?\nHow do your spiritual practices differ?\nWhere do you approach faith differently?\nHave these differences caused tension?\nWhat could you learn from your spouse's spiritual approach? Write about your spiritual differences:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Unity Amid Difference",
+          "text": "You can navigate spiritual differences well by focusing on essentials, agreeing on core beliefs and extending grace on secondary matters. Respect different expressions by letting your spouse connect with God in ways that work for them. Learn from each other and let your spouse's approach stretch and enrich your own. Find common ground by identifying shared practices you can do together. Support individual growth by encouraging your spouse's spiritual practices even if they differ from yours. Avoid judgment by remembering that God is big enough for diverse expressions of worship and devotion. The goal is not sameness but unity in diversity.",
+          "icon": "handshake"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Differences Conversation",
+          "text": "Have a conversation with your spouse about your spiritual differences. Share openly: How do you best connect with God? What spiritual practices are most meaningful to you? Where do our differences create tension? What could we learn from each other's approach? What shared practices can we agree on despite our differences? The goal is understanding and finding workable unity, not changing each other.",
+          "icon": "forum"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_spiritual_rhythms",
+      "isFree": false,
+      "title": "Building Rhythms: Establishing Shared Spiritual Practices",
+      "subtitle": "Creating sustainable habits of shared faith",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "autorenew",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Spiritual intimacy requires more than good intentions. It requires rhythms, regular practices that keep you connected spiritually. This activity helps you establish sustainable shared spiritual habits.",
+      "frameworkBasis": {
+        "conceptKey": "spiritual_disciplines",
+        "explanation": "Spiritual growth and connection are sustained through regular practices and disciplines, not sporadic bursts of activity."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Power of Rhythm",
+          "text": "Intentions without rhythms fade. You might intend to pray together, study Scripture together, and grow spiritually as a couple. But without established rhythms, life crowds these intentions out. Rhythms are regular practices that become habitual. They remove the need to decide each time whether to do something. They create structure that sustains connection. Just as your marriage needs rhythms for quality time, communication, and physical intimacy, it needs rhythms for spiritual connection. The most spiritually connected couples are not necessarily the most spiritual. They are the ones who have established sustainable rhythms of shared faith.",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Possible Spiritual Rhythms",
+          "text": "Consider these potential shared spiritual rhythms. Daily options include praying together briefly each morning or evening, sharing one thing you read in Scripture, or texting prayer requests and encouragements. Weekly options include attending church together, having a longer time of prayer and discussion, or serving together in some capacity. Seasonally you might do a couples devotional or study together, plan a retreat or getaway with spiritual focus, or evaluate and adjust your spiritual rhythms. As needed, you can pray together when decisions arise, process life events through a spiritual lens, or seek counsel or wisdom together. You do not need to do all of these. Choose what fits your life.",
+          "icon": "list"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Making Rhythms Sustainable",
+          "text": "The best rhythms are ones you will actually maintain. Some principles for sustainability: Start small. Better to pray for five minutes daily than to plan for an hour and do nothing. Be realistic by considering your actual life, schedules, and energy levels. Build on existing habits by attaching spiritual practices to things you already do. Adjust seasonally because your rhythms may need to change with different life seasons. Choose grace over guilt, so when you miss, return without shame rather than giving up. Evaluate regularly by checking in periodically about what is working and what needs adjustment. An imperfect rhythm maintained is better than a perfect plan abandoned.",
+          "icon": "settings"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Current Rhythms",
+          "text": "Assess your current shared spiritual rhythms. What spiritual practices do you currently do together regularly?\nWhat have you tried that did not stick? Why?\nWhat gaps exist in your spiritual rhythms as a couple?\nWhat rhythms would you like to establish or strengthen? Write about your current rhythms and desired changes:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Priority Rhythm",
+          "text": "Which spiritual rhythm would be most valuable to establish or strengthen in your marriage right now?",
+          "prompts": [
+            "Daily prayer together",
+            "Regular Scripture reading or devotional time",
+            "Consistent church attendance together",
+            "Weekly spiritual check-in conversations",
+            "Serving together in ministry",
+            "A seasonal study or retreat together"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Starting with one priority rhythm and establishing it well is better than trying to do everything at once."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Rhythm Plan",
+          "text": "Together with your spouse, create a plan for shared spiritual rhythms. Discuss and decide: What daily rhythm will we establish? When will it happen? What weekly rhythm will we maintain? How will we handle weeks when our rhythm gets disrupted? When will we evaluate how our rhythms are working? Schedule a check-in in one month. Write your agreed-upon rhythm plan and commit to starting this week.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_scripture_together",
+      "isFree": false,
+      "title": "In the Word Together: Engaging Scripture as a Couple",
+      "subtitle": "Building your marriage on the foundation of God's Word",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "menu_book",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Scripture is meant to be the foundation for Christian life and marriage. Yet many couples rarely engage Scripture together beyond occasional church services. This activity helps you build meaningful shared engagement with God's Word.",
+      "frameworkBasis": {
+        "conceptKey": "biblical_foundation",
+        "explanation": "Scripture provides the shared foundation and wisdom that guides a Christ-centered marriage."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "More Than Individual Study",
+          "text": "Both Mark and Julie read their Bibles regularly. But they read separately, at different times, studying different passages. They rarely discussed what they were learning. There is nothing wrong with individual Bible study. It is essential. But something powerful happens when couples engage Scripture together. You see things your spouse sees that you would have missed. You wrestle with application together. You build shared language and understanding. You hold each other accountable to live what you learn. You develop a common foundation for decisions and values. Individual study plus shared engagement creates the richest experience.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Ways to Engage Scripture Together",
+          "text": "Several approaches work for couples. Reading together means reading the same passage aloud and discussing what stands out to each of you. A couples devotional uses a devotional book designed for couples that includes Scripture and discussion questions. Book study involves working through a book of the Bible together over time. Sharing insights means each person does individual study but shares one insight with their spouse regularly. Memorizing together means choosing verses to memorize as a couple. Applying together means searching Scripture together for wisdom when facing decisions or challenges. The format matters less than consistency and genuine engagement.",
+          "icon": "list"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Discussion That Goes Deep",
+          "text": "When discussing Scripture together, go beyond surface observations. Ask questions like: What does this passage reveal about God's character? What does it reveal about human nature? How does this apply to our marriage specifically? What would change if we took this seriously? What questions does this raise? How does this challenge or comfort us? Be willing to sit with difficult passages and questions together. You do not have to resolve everything immediately. The goal is not just information but transformation.",
+          "icon": "forum"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Scripture Engagement",
+          "text": "Reflect on how you currently engage Scripture as a couple. How often do you read or discuss Scripture together?\nWhat has worked well when you have done this?\nWhat barriers keep you from engaging Scripture together more?\nWhat format of shared Scripture engagement appeals to you? Write about your current Scripture engagement and what you would like:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Practical Suggestions",
+          "text": "Some practical ways to start or strengthen shared Scripture engagement: Start small by reading just a few verses together and discussing briefly. You can expand later. Use a plan because a reading plan or devotional gives structure and removes the question of what to read. Tie it to existing rhythms since morning coffee, bedtime, or meals can be natural attachment points. Take turns leading so if one spouse is more comfortable, let them lead initially, but work toward mutual engagement. Write down insights by keeping a shared journal of what you are learning together. Apply specifically by ending with one concrete application to your life or marriage.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Scripture Plan",
+          "text": "Create a plan for engaging Scripture together as a couple. Decide together: What format will we use such as reading together, devotional, book study, or sharing insights? What will we read or study first? When will we do this, being specific about day and time? How long will each session be? Start this week. Even one short session is a beginning. Write your Scripture engagement plan.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_supporting_growth",
+      "isFree": false,
+      "title": "Champions for Each Other: Supporting Individual Spiritual Growth",
+      "subtitle": "Encouraging your spouse's personal walk with God",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "support",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Spiritual unity includes shared practices, but it also means supporting each other's individual walks with God. Being a champion for your spouse's personal spiritual growth strengthens both of you.",
+      "frameworkBasis": {
+        "conceptKey": "mutual_support",
+        "explanation": "Healthy couples support each other's individual spiritual development as well as pursuing shared spiritual connection."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Individual and Shared",
+          "text": "Spiritual intimacy in marriage has two dimensions: what you do together and how you support each other's individual journeys. Your spouse needs time alone with God. They need personal prayer, personal study, personal wrestling with faith. You cannot do this for them, but you can support it. Some spouses subtly compete spiritually. Others feel threatened when their spouse pursues God independently. But healthy couples champion each other's individual growth, knowing it benefits the marriage. The goal is not identical spiritual lives but two individuals growing in God, which then enriches their shared spiritual life.",
+          "icon": "people"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Support Looks Like",
+          "text": "Supporting your spouse's spiritual growth includes protecting time to help create space for personal devotions, attending a study, or pursuing spiritual practices. Show interest by asking about what they are learning, reading, or experiencing with God. Encourage without pressuring by supporting their growth without making them feel guilty about where they are. Pray for them regularly for your spouse's spiritual life. Remove obstacles by noticing and addressing things that hinder their spiritual engagement. Celebrate growth by acknowledging when you see growth in them. You are not their Holy Spirit. You cannot convict or transform them. But you can create an environment where growth is easier.",
+          "icon": "support"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "When Growth Rates Differ",
+          "text": "It is common for spouses to be in different places spiritually. One may be hungry and growing rapidly while the other is in a dry season or struggling. The faster-growing spouse may feel frustrated or spiritually lonely. The slower-growing spouse may feel judged or pressured. Some wisdom for these seasons: Avoid comparison because your journeys are individual and comparison breeds resentment. Lead without condescension so if you are further along, invite without looking down. Be patient since growth happens in seasons and a current gap may shift over time. Keep inviting by gently continuing to invite shared spiritual engagement without demanding. Pray by entrusting your spouse's spiritual growth to God, who loves them even more than you do.",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "How You Support",
+          "text": "Reflect on how you currently support your spouse's spiritual growth. In what ways do you actively encourage their individual walk with God?\nWhat could you do better to support their spiritual life?\nDo you ever subtly compete or feel threatened by their spiritual growth?\nWhat specific encouragement or support does your spouse need from you right now? Write about how you can better support your spouse's spiritual growth:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Spouse's Needs",
+          "text": "What do you think your spouse most needs from you to support their spiritual growth?",
+          "prompts": [
+            "More protected time for personal devotions",
+            "Encouragement and expressed interest in their spiritual life",
+            "Freedom to pursue spiritual practices that differ from mine",
+            "Less pressure or judgment about where they are spiritually",
+            "Patience during a difficult spiritual season",
+            "Partnership in overcoming obstacles to spiritual growth",
+            "Prayer support"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Consider asking your spouse directly what support they need. They may confirm your intuition or reveal something different."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Support Conversation",
+          "text": "Have a conversation with your spouse about supporting each other's spiritual growth. Ask each other: What do you need from me to support your personal walk with God? What obstacles to spiritual growth can I help remove? How can I encourage you without pressuring you? What would help you know I am cheering for your spiritual life? Commit to specific ways you will support each other's individual spiritual growth.",
+          "icon": "forum"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_faith_centered_home",
+      "isFree": false,
+      "title": "A Faith-Centered Home: Creating Spiritual Environment",
+      "subtitle": "Building a home where faith permeates daily life",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "home",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Faith is not just about scheduled spiritual activities. It is about creating a home environment where God is honored and faith shapes daily life. This activity helps you build a faith-centered home.",
+      "frameworkBasis": {
+        "conceptKey": "faith_environment",
+        "explanation": "The environment of a home either supports or hinders spiritual growth and connection."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "More Than Activities",
+          "text": "A faith-centered home is not just about having devotions or going to church. It is about creating an environment where faith naturally permeates daily life. In such homes, conversations naturally reference faith and God's perspective. Decisions are filtered through biblical values. Hospitality and generosity are practiced. Grace and forgiveness are quick. Prayer happens not just at scheduled times but throughout life. Media and entertainment choices reflect values. Service to others is normal. Gratitude is expressed regularly. Faith is not compartmentalized to religious activities but integrated into the fabric of daily life.",
+          "icon": "home"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Practical Elements",
+          "text": "Building a faith-centered home includes practical elements. Physical environment includes Scripture displayed, books available, and visual reminders of faith. Conversation patterns involve talking about what God is doing and referencing faith naturally. Media choices mean being intentional about what you watch, read, and listen to. Hospitality means opening your home to serve others. Generosity makes giving and serving a family value. Sabbath creates rhythm of rest and worship. Mealtimes can be used for connection and spiritual conversation. Bedtime routines can incorporate prayer and blessing if you have children. These practical elements create an environment where faith thrives.",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Deuteronomy Model",
+          "text": "These commandments that I give you today are to be on your hearts. Impress them on your children. Talk about them when you sit at home and when you walk along the road, when you lie down and when you get up. (Deuteronomy 6:6-7) This passage describes faith woven into every part of life. It is not about adding more activities but about integrating faith into what you already do. When you sit: mealtimes, rest, conversation. When you walk: transitions, driving, daily activities. When you lie down: bedtime, rest, reflection. When you get up: morning routines, starting the day. Every part of life becomes an opportunity for faith to be present.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Home Environment",
+          "text": "Assess the current spiritual environment of your home. In what ways does your home currently reflect your faith?\nWhere is faith naturally integrated into daily life?\nWhat areas of home life are disconnected from faith?\nWhat would someone observe about your faith from spending a week in your home? Write about your current home environment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Priority Area",
+          "text": "Which area of your home environment would most benefit from intentional faith integration?",
+          "prompts": [
+            "Physical environment such as visual reminders and resources",
+            "Conversation patterns and talking about faith naturally",
+            "Media and entertainment choices",
+            "Hospitality and generosity practices",
+            "Sabbath and rest rhythms",
+            "Mealtimes and daily routines",
+            "Overall atmosphere and values"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Starting with one area and developing it well is more effective than trying to change everything at once."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Home Plan",
+          "text": "Discuss with your spouse how you want to strengthen the faith environment of your home. Choose one or two specific changes to make. What will you add, change, or emphasize? How will you implement this practically? When will you start? Examples include adding Scripture art to your home, starting a practice of sharing highs and lows at dinner with gratitude, being more intentional about Sabbath rest, or opening your home for hospitality monthly. Write your plan for strengthening your home environment.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_serving_together",
+      "isFree": false,
+      "title": "Partners in Mission: Serving and Ministering Together",
+      "subtitle": "Finding shared purpose in serving God and others",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "volunteer_activism",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Faith is not just about receiving from God but serving Him by serving others. Couples who serve together often find deep connection through shared mission and purpose.",
+      "frameworkBasis": {
+        "conceptKey": "shared_mission",
+        "explanation": "Couples who share a sense of mission and serve together experience deeper spiritual connection and purpose."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Bond of Shared Mission",
+          "text": "Something powerful happens when couples serve together. You move beyond just maintaining your own relationship to having a shared purpose outside yourselves. You experience each other in different contexts, seeing gifts and character in action. You face challenges together that build partnership. You participate in God's work in the world as a team. You create shared memories of meaningful impact. Service together is not just good for others. It is good for your marriage. Couples with shared mission report deeper connection and satisfaction.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Finding Your Fit",
+          "text": "Serving together works best when it fits both of you. Consider shared passions and what causes or needs you both care about. Think about complementary gifts and how your different abilities work together in service. Consider your season of life and what kind of serving fits your current capacity and constraints. Look at existing opportunities and what needs exist in your church or community. Possibilities include serving together in a church ministry, hospitality in your home, supporting a specific cause or organization, mentoring younger couples, community service projects, or short-term mission involvement. The specific form matters less than finding something you can do together.",
+          "icon": "search"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Avoiding Burnout",
+          "text": "A caution: service can become another source of stress if not managed wisely. Serve from overflow, not depletion. Make sure your marriage and spiritual lives are healthy before adding extensive service. Protect your marriage because service should enhance your relationship, not replace quality time together. Say no when needed because you cannot serve every need, so choose wisely. Evaluate regularly by asking whether this service is life-giving or draining and adjusting as needed. Serve together when possible since serving in completely separate ministries may not build your connection. Sustainable service over time is better than intense service that burns you out.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Service Together",
+          "text": "Reflect on serving together in your marriage. How do you currently serve together, if at all?\nWhat are you both passionate about?\nWhat gifts do you each bring that could complement each other in service?\nWhat opportunities exist that might fit you as a couple? Write about your current or potential service together:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Service Interest",
+          "text": "What type of shared service most interests you as a couple?",
+          "prompts": [
+            "Serving in church ministry together",
+            "Hospitality and opening our home",
+            "Mentoring or discipling others",
+            "Community service or justice work",
+            "Supporting a specific cause or organization",
+            "Mission or outreach involvement",
+            "We are not sure yet but want to explore"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Starting with an area of shared interest makes service together more sustainable and enjoyable."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Service Step",
+          "text": "Discuss with your spouse about serving together. Explore: What are we passionate about? What could we realistically do given our current season? What opportunities exist in our church or community? What would we need to adjust to make room for shared service? Commit to one step such as researching a specific opportunity, trying a one-time service project together, or talking to a church leader about where you could serve. Write your next step toward serving together.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_commitment",
+      "isFree": false,
+      "title": "United in Christ: Your Spiritual Unity Commitment",
+      "subtitle": "Committing to ongoing spiritual connection",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "essential",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "Knowledge without commitment fades. This activity helps you consolidate what you have learned and make specific commitments to ongoing spiritual unity in your marriage.",
+      "frameworkBasis": {
+        "conceptKey": "commitment_integration",
+        "explanation": "Lasting change requires explicit commitments that are revisited and renewed over time."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Explored",
+          "text": "Through this journey, you have explored why spiritual intimacy matters in marriage, understanding each other's spiritual journeys, learning to pray together, navigating spiritual differences with grace, establishing shared spiritual rhythms, engaging Scripture together, supporting each other's individual growth, creating a faith-centered home environment, and serving and ministering together. This is meaningful work. Now it is time to commit to continuing.",
+          "icon": "school"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Lifelong Journey",
+          "text": "Spiritual unity is not a destination you arrive at but a journey you continue. There will be seasons of deep connection and seasons of distance. There will be times of rapid growth and times of struggle. There will be rhythms that work and rhythms that need adjustment. The commitment is not to perfection but to ongoing pursuit. To keep seeking God together even when it is hard. To keep growing even when progress is slow. Let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up. (Galatians 6:9)",
+          "icon": "timeline"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Insight",
+          "text": "What is the most important thing you have learned or been reminded of through this journey about spiritual unity in marriage? What do you want to remember and apply going forward? Write your key insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Specific Commitments",
+          "text": "Based on what you have learned, what specific commitments will you make to spiritual unity? What rhythms will you establish?\nWhat practices will you maintain?\nHow will you support each other's growth? Write your specific commitments:",
+          "responseType": "open-text",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Unity",
+          "text": "Father, we thank You for the gift of marriage and the gift of shared faith. Forgive us for the ways we have neglected spiritual intimacy. We have been content with less than what You offer. Draw us closer to You and to each other. Help us pray together, study Your Word together, and grow together. When we differ in spiritual expression, give us grace and understanding. When we struggle to connect spiritually, give us perseverance. Make our home a place where Your presence is welcome and evident. Use us together for Your purposes. Bind us together with the cord that is not quickly broken: You at the center of our marriage. In Jesus' name, Amen.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Spiritual Unity Commitment",
+          "text": "Together, create a commitment to ongoing spiritual unity: We commit to pray together regularly.\nWe commit to engage Scripture together.\nWe commit to support each other's individual spiritual growth.\nWe commit to navigate our differences with grace.\nWe commit to build a faith-centered home.\nWe commit to serve God together.\nWe commit to keep pursuing spiritual intimacy throughout our marriage. Sign and date this commitment together.",
+          "icon": "handshake"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "United in Faith",
+    "summaryText": "You have completed an important journey toward deeper spiritual unity. Remember that spiritual intimacy is built over time through consistent small steps. Keep praying together, engaging Scripture together, supporting each other, and pursuing God together. Your shared faith can be the strongest foundation of your marriage.",
+    "keyTakeaways": [
+      "Spiritual intimacy requires intentional pursuit, not just shared beliefs",
+      "Understanding each other's spiritual histories creates compassion",
+      "Praying together is powerful but requires breaking through awkwardness",
+      "Different spiritual expressions can enrich rather than divide",
+      "Sustainable rhythms are better than ambitious plans that fail",
+      "Supporting individual spiritual growth strengthens the marriage",
+      "A faith-centered home integrates faith into daily life",
+      "Serving together creates deep connection through shared mission"
+    ],
+    "nextRecommendedJourneys": [
+      "Building Shared Purpose and Vision",
+      "Personal Growth and Emotional Maturity in Marriage",
+      "Restoring Friendship and Emotional Connection"
+    ]
+  }
+}

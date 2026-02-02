@@ -27,6 +27,21 @@ class DatingProfile {
   final String? regularSourceOfIncome;
   final String? longDistance;
 
+  // Compatibility quiz fields (v1/v2)
+  final String? personalityType;
+  final String? believeInCohabiting;
+  final String? shouldChristianSpeakInTongue;
+  final String? believeInTithing;
+
+  // Hobbies and qualities (from UserModel)
+  final List<String>? hobbies;
+  final String? desiredQualities;
+
+  // NEW: Compatibility scoring fields
+  final int? compatibilityScore; // 0-100
+  final Map<String, int>? scoreBreakdown; // faith, lifestyle, hobbies, values
+  final List<String>? badges; // "Faith Aligned", "Adventure Match"
+
   const DatingProfile({
     required this.uid,
     required this.name,
@@ -44,6 +59,15 @@ class DatingProfile {
     this.genotype,
     this.regularSourceOfIncome,
     this.longDistance,
+    this.personalityType,
+    this.believeInCohabiting,
+    this.shouldChristianSpeakInTongue,
+    this.believeInTithing,
+    this.hobbies,
+    this.desiredQualities,
+    this.compatibilityScore,
+    this.scoreBreakdown,
+    this.badges,
   });
 
   bool get isVerified => verificationStatus == 'verified';
@@ -383,6 +407,24 @@ class DatingProfile {
             'relationship_distance',
             'distance',
           ]),
+      // Compatibility quiz fields
+      personalityType:
+          _pickNullable(json, ['personalityType', 'personality_type']) ??
+          _pickStringFromMap(compat, ['personalityType', 'personality_type', 'mbti']),
+      believeInCohabiting:
+          _pickNullable(json, ['believeInCohabiting', 'believe_in_cohabiting']) ??
+          _pickStringFromMap(compat, ['believeInCohabiting', 'believe_in_cohabiting']),
+      shouldChristianSpeakInTongue:
+          _pickNullable(json, ['shouldChristianSpeakInTongue', 'should_christian_speak_in_tongue']) ??
+          _pickStringFromMap(compat, ['shouldChristianSpeakInTongue', 'should_christian_speak_in_tongue', 'tongues']),
+      believeInTithing:
+          _pickNullable(json, ['believeInTithing', 'believe_in_tithing']) ??
+          _pickStringFromMap(compat, ['believeInTithing', 'believe_in_tithing', 'tithing']),
+      // Hobbies and qualities
+      hobbies:
+          (json['hobbies'] is List) ? List<String>.from(json['hobbies'] as List) : null,
+      desiredQualities:
+          _pickNullable(json, ['desiredQualities', 'desired_qualities', 'qualities']),
     );
   }
 }

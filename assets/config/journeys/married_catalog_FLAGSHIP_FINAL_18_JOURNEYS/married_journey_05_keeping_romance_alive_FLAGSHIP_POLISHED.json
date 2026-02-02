@@ -1,0 +1,844 @@
+{
+  "journeyId": "married_keeping_romance_alive",
+  "title": "Keeping Romance Alive After Years Together",
+  "subtitle": "Rediscovering passion in a familiar love",
+  "summary": "Something shifted. The butterflies faded. The spark that once ignited effortlessly now requires kindling you're not sure how to find. You love each other, but somewhere along the way, you became more like roommates than lovers. This journey helps you understand what happened to romance, why it faded, and how to intentionally reignite the passion that brought you together, creating a love that deepens rather than dims with time.",
+  "targetUserCategory": "married",
+  "priorityRank": 5,
+  "estimatedDays": 14,
+  "totalActivities": 11,
+  "difficulty": "intermediate",
+  "themeColor": "#FF5722",
+  "cover": {
+    "themeTag": "Romance",
+    "accentIcon": "local_fire_department",
+    "heroImage": "assets/images/journeys/married_romance_hero.jpg",
+    "heroImageDescription": "A mature couple dancing together in their living room or kitchen, genuine smiles, playful energy, warm ambient lighting suggesting evening romance at home."
+  },
+  "frameworks": [
+    "gottman_romance",
+    "attachment_theory",
+    "novelty_research",
+    "biblical_passion"
+  ],
+  "targetOutcomes": [
+    "Understand why romance naturally fades and how to counteract it",
+    "Escape the roommate syndrome that plagues long-term marriages",
+    "Learn to see your spouse with fresh eyes again",
+    "Create rituals and practices that sustain romantic connection",
+    "Reignite playfulness, adventure, and passion",
+    "Build a romance that grows stronger with time"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_where_did_spark_go",
+      "isFree": true,
+      "title": "Where Did the Spark Go?",
+      "subtitle": "Understanding what happened to your romance",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "whatshot",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Most couples don't lose romance because something went wrong, they lose it because nothing went intentionally right. Understanding the natural forces that work against romance is the first step to fighting back.",
+      "frameworkBasis": {
+        "conceptKey": "romance_erosion",
+        "explanation": "Romance naturally fades due to habituation, competing priorities, and the transition from passionate to companionate love, unless intentionally maintained."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Slow Cooling",
+          "text": "Romance fades when attention and curiosity are crowded out by routine.\nLove remains, but expression weakens.\n\nThis journey helps revive romance through presence, not pressure.\n\nRemember when you couldn't stop thinking about them? When your heart raced at their name on your phone? When every moment together felt charged with electricity? That intensity was never meant to last. The human brain isn't designed to maintain that level of romantic obsession, we'd never get anything done. But somewhere between 'I can't live without you' and 'Did you pay the electric bill?' something important got lost. Not just the infatuation, but the romance itself. You still love each other. But the spark that once burned bright has faded to embers. And you're wondering if it's possible to fan those embers back into flame.",
+          "icon": "trending_down"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Science of Fading Romance",
+          "text": "Here's what happens neurologically: Early romance floods your brain with dopamine, norepinephrine, and phenylethylamine, chemicals that create obsession, excitement, and euphoria. This is the 'high' of new love. Over time, the brain adapts. The same person who once triggered fireworks now triggers... familiarity. Comfort replaces excitement. Predictability replaces anticipation. This isn't a flaw in your relationship, it's how the brain works. The problem is when we mistake this natural transition for 'falling out of love' or assume romance is something that either exists or doesn't. The truth is: early romance is automatic. Long-term romance is intentional. Couples who stay romantic after decades aren't lucky, they're deliberate.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Roommate Syndrome",
+          "text": "There's a name for what happens when romance dies but the marriage continues: Roommate Syndrome. Signs you've become roommates:\n• Conversations are mostly logistics, schedules, kids, bills\n• Physical touch has become rare or purely functional\n• You can't remember your last real date\n• You feel more like business partners than lovers\n• The thought of being romantic feels awkward or forced\n• You've stopped putting effort into how you look for each other\n• You know everything about their schedule but nothing about their inner world Roommate Syndrome doesn't mean you don't love each other. It means romance has been crowded out by everything else demanding your attention.",
+          "icon": "meeting_room"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Romance Temperature",
+          "text": "How would you describe the current state of romance in your marriage?",
+          "prompts": [
+            "Still strong, we prioritize romance and it shows",
+            "Flickering, moments of connection but inconsistent",
+            "Fading, we've noticed the decline and it concerns us",
+            "Cold, we feel more like roommates than lovers",
+            "Nearly gone, romance feels like a distant memory"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are, romance can be rekindled. It takes intention, but it's absolutely possible."
+          },
+          "icon": "thermostat"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "What Romance Used to Look Like",
+          "text": "Think back to when romance was alive in your relationship, whether that was early dating or a particularly connected season of marriage. What did you do together?\nHow did you treat each other?\nWhat made it feel romantic?\nWhat's missing now? Describe what romance used to look like for you:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Promise of This Journey",
+          "text": "Over the coming activities, you'll: • Understand the specific killers of romance in your marriage\n• Learn to see your spouse with fresh eyes again\n• Escape the roommate trap through intentional practices\n• Create rituals that sustain romantic connection\n• Rediscover playfulness and adventure together\n• Build a romance that deepens rather than fades **Your task this week:** Pay attention to moments when you feel even a flicker of romantic connection with your spouse. What created those moments? Start noticing what works. 'Many waters cannot quench love; rivers cannot sweep it away.' (Song of Solomon 8:7)",
+          "icon": "auto_awesome"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_romance_killers",
+      "isFree": false,
+      "title": "The Romance Killers: What's Stealing Your Spark",
+      "subtitle": "Identifying the specific thieves in your marriage",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "dangerous",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Romance doesn't just fade on its own, specific things kill it. Identifying the romance killers in your marriage helps you know exactly what you're fighting against.",
+      "frameworkBasis": {
+        "conceptKey": "romance_threats",
+        "explanation": "Specific, identifiable factors systematically erode romance in long-term relationships."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Usual Suspects",
+          "text": "Romance has enemies. They work quietly, persistently, and effectively. Understanding them is half the battle. The main romance killers: **1. Chronic busyness** - No margin in life means no space for romance **2. Taking each other for granted** - Assuming they'll always be there **3. Loss of mystery** - Knowing everything removes curiosity **4. Unresolved conflict** - Resentment poisons romantic feelings **5. Screens and distraction** - Attention that once went to your spouse now goes elsewhere **6. Physical letting go** - Stopping the effort you once made **7. Criticism and contempt** - Negativity destroys desire Which of these resonate with your marriage?",
+          "icon": "list"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Killer #1: The Busyness Trap",
+          "text": "Look at your average week. Between work, kids, household responsibilities, extended family, church, and whatever margin remains, where does romance fit? For most couples, the honest answer is: it doesn't. Romance gets the scraps, if there are any. You collapse into bed exhausted, exchange a few words about tomorrow's schedule, and fall asleep. There's nothing left for candlelight dinners, long conversations, spontaneous adventures, or the kind of presence that makes someone feel pursued. Busyness isn't just a schedule problem, it's a priority problem. And as long as romance is at the bottom of the list, it will continue to starve.",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Killer #2: The Familiarity Trap",
+          "text": "You know how they take their coffee. You can predict what they'll say. You've heard their stories a hundred times. Familiarity is comfortable. But it's also the enemy of romance. Romance thrives on mystery, surprise, and discovery. When you think you know everything about someone, you stop being curious. You stop asking questions. You stop seeing them. Here's the paradox: the person you think you know completely is actually constantly changing. They have thoughts you haven't heard, dreams you haven't discovered, layers you haven't explored. But familiarity makes us lazy. We assume we know them, so we stop looking.",
+          "icon": "visibility_off"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Killer #3: The Effort Collapse",
+          "text": "Think about how you pursued each other when you were dating: • You dressed to impress\n• You planned dates carefully\n• You put thought into gifts and gestures\n• You were on your best behavior\n• You made time no matter how busy Now think about last week. Somewhere between 'trying to win them' and 'having won them,' the effort collapsed. You stopped pursuing because you felt pursuit was complete. But here's the truth: your spouse needs to be pursued for a lifetime. Marriage isn't the finish line, it's the starting point of a different kind of romance. One that requires even more intentionality because the external motivation is gone.",
+          "icon": "trending_down"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Specific Killers",
+          "text": "Which romance killers are most active in your marriage? Be specific. Don't just name the category, describe how it shows up: • How does busyness affect your romance?\n• Where have you taken each other for granted?\n• When did effort collapse?\n• What distractions steal your attention?\n• Has negativity poisoned the atmosphere? Name your specific romance killers:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Choosing Your Battle",
+          "text": "You can't fight every romance killer at once. Choose the one that's doing the most damage right now. **This week's challenge:** Identify one romance killer you'll address. Then take one specific action to fight it:\n• If it's busyness, protect one evening for connection\n• If it's familiarity, ask a question you've never asked\n• If it's effort collapse, plan something romantic\n• If it's distraction, put phones away for an evening\n• If it's negativity, focus on genuine appreciation What's your one killer and one action?",
+          "icon": "gps_fixed"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_fresh_eyes",
+      "isFree": false,
+      "title": "The Fresh Eyes Exercise: Seeing Your Spouse Again",
+      "subtitle": "Rediscovering the person you've stopped noticing",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "visibility",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "You can't feel romantic toward someone you've stopped seeing. Years of familiarity create blindness, we see the role, the routine, the annoyances, but we stop seeing the person. This activity helps you see your spouse with fresh eyes.",
+      "frameworkBasis": {
+        "conceptKey": "perceptual_renewal",
+        "explanation": "Romance can be reignited by deliberately shifting perception, choosing to see your spouse as you once did, or as a stranger might."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Blindness of Familiarity",
+          "text": "A fascinating psychological phenomenon: we literally stop seeing things we're constantly exposed to. It's called habituation. The beautiful painting in your living room that once captivated you? You walk past it now without noticing. Your spouse is the same way. You see them every day, so your brain stops registering them as remarkable. The features that once made your heart skip become invisible. The personality that once fascinated you becomes predictable. This isn't because they've become less remarkable. It's because your brain has habituated. You've stopped actually seeing them.",
+          "icon": "remove_red_eye"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Stranger Exercise",
+          "text": "Try this thought experiment: Imagine you're meeting your spouse for the first time. At a coffee shop. A party. A friend's introduction. You know nothing about them except what you can observe right now. What would you notice?\n• Their smile, their laugh, the way they move\n• Their kindness, their humor, their intelligence\n• The qualities that would make you think: 'I want to know this person' Now realize: those qualities are still there. They haven't disappeared. You've just stopped looking. The person who once captivated you is still captivating. You've just been too familiar to notice.",
+          "icon": "person_search"
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "What Romance Used to Look Like",
+          "text": "Recall a time when romance felt natural between you.\n\nWhat made it feel alive then?\n\nWrite one small way to reintroduce that energy this week.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "What Others See",
+          "text": "Here's a humbling exercise: Think about how others see your spouse. Your spouse's coworkers see their competence and professionalism.\nYour spouse's friends see their humor and loyalty.\nA stranger might find them attractive. Why do others see these things while you've become blind to them? Because you've reduced your spouse to their role in your life, co-parent, bill-payer, household partner. You see what they do for you (or don't do) rather than who they are. Other people see a complete, interesting person. So can you, if you choose to look.",
+          "icon": "groups"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Rediscovery Questions",
+          "text": "Answer these questions as if you were discovering your spouse for the first time: • What is physically attractive about them, features you once noticed but have stopped seeing? • What personality traits would draw someone to them? • What have they accomplished that's impressive? • What are they passionate about that reveals something beautiful about who they are? • What would make someone else fall in love with them? Write your rediscovery:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 6,
+          "title": "The Daily Choice",
+          "text": "Seeing your spouse with fresh eyes isn't a one-time exercise, it's a daily choice. Every day, you can choose to see:\n• Another day with the same person (boredom)\n• A person who still has the power to surprise you (curiosity) Practical ways to cultivate fresh eyes:\n• Watch them when they don't know you're looking\n• Listen when they talk to others\n• Ask questions you've never asked\n• Notice small things: how they laugh, how they focus, how they care for others\n• Remember why you fell in love Romance begins with seeing. And seeing is a choice.",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 7,
+          "title": "The Fresh Eyes Week",
+          "text": "This week, practice seeing your spouse with fresh eyes: **Day 1-2**: Watch them when they don't know it. Notice their mannerisms, expressions, how they move. **Day 3-4**: Listen to them differently. Hear the sound of their voice, their laugh, how they express themselves. **Day 5-6**: Remember one thing that made you fall in love. Deliberately recall it when you see them. **Day 7**: Tell them one thing you've noticed this week, one thing you appreciate that you've stopped expressing. **At week's end:** Write down how this practice affected your feelings toward them.",
+          "icon": "event"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_pursuit_again",
+      "isFree": false,
+      "title": "The Art of Pursuit: Dating Your Spouse Again",
+      "subtitle": "Bringing back the intentionality that won their heart",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "You pursued your spouse once, with intentionality, creativity, and effort. Then you got married and the pursuit ended. But your spouse still needs to feel pursued. This activity helps you become a pursuer again.",
+      "frameworkBasis": {
+        "conceptKey": "continued_pursuit",
+        "explanation": "Long-term romantic satisfaction is strongly correlated with continued pursuit behaviors, actions that communicate ongoing desire and priority."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Pursuit That Stopped",
+          "text": "Before you were married, pursuit was constant. You planned dates, real dates, not just 'hanging out.' You dressed up. You thought about what would make them smile. You made time even when you were busy. You sent messages that said 'I'm thinking of you.' You tried to win them, every day. Then came the wedding. And slowly, unconsciously, pursuit ended. Why? Because in your mind, you'd won. The chase was over. Mission accomplished. But here's what you missed: your spouse didn't want the pursuit to end. Being pursued made them feel desired, valued, chosen. And now that it's gone, something important is missing.",
+          "icon": "favorite_border"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Pursuit Communicates",
+          "text": "Pursuit isn't just about dates and gifts. It's about what those actions communicate: **'You're worth my effort.'** When you plan something special, it says they're worth more than convenience. **'You're still my choice.'** Continued pursuit says: 'I could coast, but I choose to keep winning you.' **'You're not invisible to me.'** Pursuit requires seeing someone, noticing what they'd enjoy, what would make them feel loved. **'I still want you.'** Perhaps most importantly, pursuit communicates desire. Not obligation. Not routine. Actual wanting. Without pursuit, your spouse may feel like a roommate, a co-parent, a teammate, but not a desired lover. And that loss is devastating, even if they can't name it.",
+          "icon": "chat_bubble"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Date Night Myth",
+          "text": "Let's talk about date nights. Most marriage advice says 'have regular date nights.' Good advice. But there's a problem. Many couples have date nights that aren't romantic at all:\n• Dinner at the same restaurant, talking about kids and schedules\n• Movies where you sit silently next to each other\n• Going through the motions because you're 'supposed to' A date night without romantic intentionality is just two people eating together. It's better than nothing, but it's not pursuit. Real pursuit asks: 'What would make this feel special? What would make them feel desired? What would create connection, not just companionship?'",
+          "icon": "restaurant"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Elements of Romantic Pursuit",
+          "text": "Effective romantic pursuit includes: **Thoughtfulness**: Planning something based on what they'd enjoy, not what's convenient. **Effort**: Going beyond the minimum. Putting in work that shows they're worth it. **Surprise**: Breaking routine with something unexpected. **Presence**: Being fully there, not distracted, not rushed. **Physical expression**: Touch, closeness, physical affection that's romantic, not just functional. **Words**: Actually saying 'I love you,' 'You're beautiful,' 'I'm grateful for you', not assuming they know. **Priority**: Showing through your time and energy that they come before other things. Pursuit doesn't require expensive gestures. It requires intentional ones.",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Pursuit History",
+          "text": "Think honestly about your pursuit of your spouse: When did you last plan something romantic (not just convenient)? When did you last surprise them? When did you last express desire for them in words? When did you last make them feel chosen? If you're honest, how pursued does your spouse feel by you right now? Write your honest assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Pursuit Challenge",
+          "text": "This week, pursue your spouse like you did before you were married. **Plan one intentional date.** Not dinner and a movie autopilot. Something thoughtful, based on what they'd enjoy. **Do one unexpected gesture.** A note, a small gift, a text that says more than logistics. **Express desire in words.** Tell them you find them attractive. Tell them you're glad you married them. **Give them your full attention** for at least one evening, no phones, no distractions, just presence. Before the week ends, do all four. Note how they respond, and how you feel. **Write your pursuit plan:**",
+          "icon": "flag"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_adventure_novelty",
+      "isFree": false,
+      "title": "Breaking the Routine: Adventure and Novelty",
+      "subtitle": "Escaping the predictability that kills romance",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "explore",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "The brain associates novelty with romance. New experiences together trigger similar feelings to early love. Couples who share adventures maintain romance longer than those stuck in routine. This activity helps you break free from the predictability trap.",
+      "frameworkBasis": {
+        "conceptKey": "novelty_and_romance",
+        "explanation": "Research shows that couples who engage in novel, exciting activities together report higher romantic satisfaction than those who only do familiar activities."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Routine Kills Romance",
+          "text": "Routine is efficient. Predictable. Comfortable. Routine is also the death of romance. When every week looks the same, same restaurants, same activities, same conversations, same schedule, your brain stops registering your spouse as exciting. They become part of the furniture. Familiar. Expected. Research shows something fascinating: couples who do novel activities together actually feel more romantically attracted to each other. The excitement of the new experience gets associated with the partner. This is why early dating felt so romantic, everything was new. You were constantly having first experiences together. The good news: you can create that again.",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Adventure Effect",
+          "text": "In one famous study, couples were assigned to do either a familiar activity or a novel, challenging activity together. Those who did the novel activity reported significantly higher relationship satisfaction, not just enjoyment of the activity, but actual romantic feelings. Why does this work? **Shared adrenaline**: Excitement gets associated with your partner **Breaking scripts**: Novel situations require real interaction, not autopilot **Creating memories**: Adventures become stories you share **Seeing each other differently**: New contexts reveal new sides of your spouse **Feeling alive together**: Novelty reminds you that life is an adventure, and you're in it together Adventure doesn't mean skydiving. It means breaking routine.",
+          "icon": "hiking"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Adventure at Every Level",
+          "text": "Adventures come in all sizes: **Micro-adventures (hours)**:\n• Try a new restaurant neither of you has been to\n• Take a different route home and explore\n• Have an impromptu picnic somewhere unexpected\n• Try cooking a complicated new recipe together **Mini-adventures (a day)**:\n• Day trip to a town you've never visited\n• Take a class together, pottery, dancing, cooking\n• Go on a hike somewhere new\n• Do something from your 'we should try that' list **Bigger adventures (weekends+)**:\n• Weekend getaway without the kids\n• Bucket list experiences together\n• Trip to somewhere neither of you has been The key is new, together, and requiring real engagement.",
+          "icon": "category"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Adventure Audit",
+          "text": "When was your last adventure together, something new that broke routine? What's on your 'we should do that someday' list that you've never actually done? What did you used to do together before life got so busy and predictable? What would your spouse love to try if time and logistics weren't barriers? Write your answers:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Adventure Barrier",
+          "text": "Most couples don't lack ideas, they lack follow-through. 'We should try that restaurant.'\n'We should take a trip.'\n'We should do something different.' Should, should, should. But should never gets scheduled. The barrier is usually:\n• We're too busy (translation: we don't prioritize it)\n• It's too expensive (adventure doesn't require money)\n• We'll do it later (later never comes)\n• It seems like too much effort (effort is the point) What if you treated adventure as essential rather than optional? What if breaking routine was a commitment, not a someday dream?",
+          "icon": "block"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Adventure Commitment",
+          "text": "Make a concrete commitment to adventure: **This week**: One micro-adventure (2-3 hours, something new) **This month**: One mini-adventure (half-day or full day, somewhere or something new) **This quarter**: One bigger adventure (overnight, something memorable) **Together, brainstorm:**\n• 3 micro-adventures you could do this month\n• 2 mini-adventures you could do this season\n• 1 bigger adventure to put on the calendar Pick one from each list and schedule it now, before logistics and excuses win. **Write your adventure commitments:**",
+          "icon": "event_available"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_playfulness",
+      "isFree": false,
+      "title": "Rediscovering Playfulness: The Lightness Romance Needs",
+      "subtitle": "Bringing fun back into your marriage",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "sports_esports",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Romance thrives on playfulness. But adult responsibilities tend to squeeze out fun. Couples who laugh together, tease each other gently, and maintain a spirit of play report higher romantic satisfaction. This activity helps you rediscover the joy of being together.",
+      "frameworkBasis": {
+        "conceptKey": "playfulness_in_marriage",
+        "explanation": "Shared humor and playfulness strengthen bonds, reduce stress, and maintain the 'liking' component essential to lasting romance."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "When Did You Stop Playing?",
+          "text": "Think about early in your relationship. Remember the inside jokes? The silly nicknames? The games you played, the ways you made each other laugh? Playfulness was natural then. You weren't trying to be fun, you just were. Somewhere along the way, things got serious. Bills. Kids. Responsibilities. The weight of adult life pressed down, and play got squeezed out. Now your conversations are practical. Efficient. Task-oriented. The lightness is gone. But play isn't childish, it's essential. Couples who play together stay together, not just functionally, but romantically. They actually still like each other.",
+          "icon": "sentiment_very_dissatisfied"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Playfulness Does",
+          "text": "Playfulness in marriage: **Reduces stress**: Laughter literally lowers cortisol. Playing together is a reset. **Creates shared joy**: Positive emotions experienced together strengthen bonds. **Maintains liking**: It's hard to stay romantic with someone you don't enjoy being around. Play reminds you that you actually like each other. **Keeps things light**: Couples who can laugh at themselves and with each other navigate hard seasons better. **Creates memories**: Fun experiences become stories that reinforce your identity as a couple. **Counters negativity**: A spirit of play makes it harder for criticism and contempt to take root. Play isn't frivolous. It's medicine for your marriage.",
+          "icon": "health_and_safety"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Forms of Playfulness",
+          "text": "Playfulness shows up in many ways: **Humor**: Inside jokes, making each other laugh, not taking everything seriously **Affectionate teasing**: Gentle, loving ribbing that says 'I know you and I adore you' **Physical play**: Tickling, playful wrestling, dancing in the kitchen, spontaneous games **Competition**: Games, challenges, friendly rivalry **Silliness**: Being weird together, having voices or characters, letting your guard down **Shared entertainment**: Watching things that make you laugh together, sharing memes or videos Playfulness looks different for every couple. The key is that you're having fun together, not just existing together.",
+          "icon": "emoji_emotions"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Play Profile",
+          "text": "How would you describe playfulness in your marriage currently?",
+          "prompts": [
+            "We still laugh and play regularly, it's part of who we are",
+            "We have moments of fun, but they're less frequent than they used to be",
+            "Play is rare, life is serious and heavy most of the time",
+            "I honestly can't remember the last time we really laughed together",
+            "We used to be playful, but it's been a long time"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Whatever your current state, playfulness can be rekindled. It starts with permission to be fun again."
+          },
+          "icon": "quiz"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Play History",
+          "text": "Think back to the most fun you've had together as a couple. What were you doing?\nWhat made it so enjoyable?\nWhat inside jokes or memories came from those times? What kind of play came naturally to you as a couple before life got so heavy? Describe your play history:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Play Reboot",
+          "text": "This week, intentionally bring play back: **Laugh together**: Watch something funny together. Share things that make you laugh. Don't let a day pass without laughter. **Be silly**: Let your guard down. Be weird. Use a funny voice. Dance badly together. **Play a game**: Cards, board games, video games, anything competitive and fun. **Revive an old tradition**: Bring back something playful you used to do together. **Create a new inside joke**: Pay attention to funny moments and let them become references. The goal isn't forced fun, it's permission to be light together again. **What playful thing will you do this week?**",
+          "icon": "celebration"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_words_of_love",
+      "isFree": false,
+      "title": "The Words That Rekindle: Speaking Romance Back to Life",
+      "subtitle": "The power of verbal expression in keeping love alive",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "chat",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Words create reality in marriage. The things said, and unsaid, shape how your spouse feels about your relationship. Many couples stop saying the romantic things they once said freely. This activity helps you speak romance back into your marriage.",
+      "frameworkBasis": {
+        "conceptKey": "verbal_affirmation",
+        "explanation": "Expressed appreciation and verbal affection significantly impact romantic satisfaction, particularly when specific and frequent."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Things You Stopped Saying",
+          "text": "When you were dating, words flowed freely: 'You're beautiful.'\n'I'm so lucky to be with you.'\n'I can't stop thinking about you.'\n'Being with you makes everything better.' When did those words stop? For most couples, it's gradual. You assume they know. Saying it feels unnecessary, even awkward. The words that once came naturally now feel forced. But your spouse doesn't know how you feel unless you tell them. And silence, over time, communicates its own message: 'You're not worth mentioning anymore.'",
+          "icon": "voice_over_off"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Power of Spoken Love",
+          "text": "Words aren't just sounds, they're actions. Speaking love does something: **For your spouse**: Hearing 'I love you,' 'You're attractive,' 'I'm grateful for you' meets a real emotional need. It counters the internal voice that wonders if they're still wanted. **For you**: Speaking appreciation actually changes how you feel. You start to see more of what you've been speaking. Gratitude grows gratitude. **For your marriage**: Regular verbal affirmation creates a positive atmosphere. It's harder for negativity to dominate when appreciation is being spoken. One study found that happy couples have a 5:1 ratio of positive to negative statements. That's five appreciations, compliments, or loving words for every criticism or complaint.",
+          "icon": "record_voice_over"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Beyond 'I Love You'",
+          "text": "'I love you' matters. But specificity matters more. Compare:\n'I love you.'\nvs.\n'I love how you always know when I need encouragement.' 'You look nice.'\nvs.\n'That color makes your eyes look amazing.' 'Thanks for dinner.'\nvs.\n'That meal was incredible. You put so much thought into it, and I noticed.' Generic is fine. Specific is powerful. Specific words communicate: 'I see you. I notice you. I don't take you for granted.' This requires actually paying attention. Which is exactly the point.",
+          "icon": "format_quote"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Types of Words That Rekindle",
+          "text": "Different words meet different needs: **Words of attraction**: 'You're beautiful.' 'I still find you incredibly attractive.' 'I love your body.' **Words of appreciation**: 'I noticed you did [specific thing]. Thank you.' 'I'm grateful you're in my life.' **Words of admiration**: 'I respect how you handle [situation].' 'You're so good at [quality].' **Words of desire**: 'I want you.' 'I miss being close to you.' 'I'm glad I get to be with you.' **Words of commitment**: 'I'd choose you again.' 'I'm in this forever.' 'There's no one else I'd rather build a life with.' Your spouse may need some of these words more than others. Pay attention to what makes them light up.",
+          "icon": "category"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Word Inventory",
+          "text": "Be honest with yourself: When did you last tell your spouse you find them attractive? When did you last express specific gratitude for something they did? When did you last say something that made them feel desired, not just appreciated? What words does your spouse need to hear from you that you've stopped saying? Write your honest assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Words Challenge",
+          "text": "This week, speak romance back into your marriage: **Daily**: Say 'I love you' at least once, and mean it, don't just recite it. **Every other day**: Give one specific compliment or appreciation. **At least twice**: Express attraction. Tell them you find them beautiful/handsome/attractive. **At least once**: Say something that communicates desire and commitment: 'I'd choose you again.' 'I'm grateful I get to do life with you.' **Write a note or send a text** that says more than logistics. Track what you say. Notice how they respond. **What words will you speak this week?**",
+          "icon": "edit"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_physical_affection",
+      "isFree": false,
+      "title": "The Touch That Reconnects: Physical Affection as Romance",
+      "subtitle": "Rebuilding the language of physical connection",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "active",
+      "icon": "volunteer_activism",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Touch is its own language. Many couples let physical affection fade until touch only happens for practical purposes or as a lead-up to sex. Rebuilding non-sexual physical affection restores a vital dimension of romance.",
+      "frameworkBasis": {
+        "conceptKey": "physical_romance",
+        "explanation": "Non-sexual physical affection is strongly correlated with romantic satisfaction and creates neurochemical bonding effects."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "When Touch Faded",
+          "text": "Early in your relationship, touch was constant. Holding hands. Sitting close. Casual touches. Long embraces. You couldn't keep your hands off each other, not just sexually, but affectionately. Somewhere along the way, touch became less frequent. Then it became functional, a quick peck goodbye, a brief hug. Then even that became rare. Now you might go entire days without meaningful physical contact. You sit on opposite sides of the couch. You sleep on opposite sides of the bed. You've become physically disconnected. This matters more than you might think. Touch is how humans communicate love at a primal level. Without it, romance literally feels distant.",
+          "icon": "do_not_touch"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Chemistry of Touch",
+          "text": "Physical affection isn't just emotional, it's chemical. When you touch your spouse, both of your bodies release oxytocin, the bonding hormone. This creates feelings of connection, trust, and attachment. Regular physical affection:\n• Reduces stress hormones\n• Lowers blood pressure\n• Increases feelings of security\n• Makes you feel more connected even when you're not touching Couples who maintain frequent physical affection report higher relationship satisfaction, even if their sex life is average. Touch isn't optional for romance. It's foundational.",
+          "icon": "science"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Pressure Problem",
+          "text": "For some couples, physical affection has become loaded. One spouse (often the wife) pulls back from all touch because touch has become a signal for sex. If holding hands or embracing always leads to an expectation, she learns to avoid touch altogether. The other spouse (often the husband) stops initiating affection because it feels pointless. If it's not going to lead anywhere, why bother? Result: Touch disappears entirely. Breaking this requires separating affection from expectation, touch that's complete in itself, not a prelude to something else. Both partners need to trust that affection can just be affection.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Rebuilding the Touch Habit",
+          "text": "Romance needs regular, meaningful physical contact: **Greetings and partings**: A real kiss (6+ seconds) when leaving and reuniting. Not a quick peck. **Daily embraces**: At least one 20-second hug daily. Long enough for oxytocin to release. **Casual touch**: Sitting close. Holding hands. A touch on the arm or back as you pass. **In public**: Touch that signals 'we're together' to the world. **At rest**: Cuddling while watching TV. Physical closeness during downtime. **Before sleep**: Going to bed at the same time. A few minutes of connection before sleep. These aren't grand gestures. They're the fabric of physical romance.",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Touch Assessment",
+          "text": "Honestly assess physical affection in your marriage: How often do you have meaningful physical contact (not just functional touch)? Who initiates more? Has the other withdrawn? Has touch become loaded with expectation? What kind of touch does your spouse need that they're not getting? What kind of touch do you need? Write your assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Touch Reboot",
+          "text": "This week, rebuild physical affection intentionally: **Every departure and reunion**: A real kiss (count to 6) and a real embrace **Once daily**: A 20-second hug. Set a timer if you need to, it's longer than you think **Each evening**: Sit close. Make physical contact while doing ordinary things **At bedtime**: A few minutes of physical closeness before sleep **If touch has become loaded**: Have a conversation. Agree that this week, affection is just affection, no expectation. Build trust that touch can exist without pressure. **What will you do differently with touch this week?**",
+          "icon": "back_hand"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_rituals_of_romance",
+      "isFree": false,
+      "title": "Rituals That Sustain: Building Romance into Daily Life",
+      "subtitle": "Creating structures that keep connection alive",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "event_repeat",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Sporadic romance eventually fades. What sustains is ritual, regular, protected practices that maintain connection regardless of how busy or stressed life becomes. This activity helps you build romantic rituals into your daily, weekly, and monthly life.",
+      "frameworkBasis": {
+        "conceptKey": "rituals_of_connection",
+        "explanation": "Regular rituals of connection protect relationship quality during stressful periods and create predictable opportunities for romance."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Rituals Beat Intentions",
+          "text": "Intentions are weak. Life always overwhelms them. 'We should spend more quality time together.'\n'We should go on more dates.'\n'We should be more intentional.' Should, should, should. But 'should' doesn't survive busy weeks, sick kids, work deadlines, and exhaustion. Rituals are different. Rituals are scheduled. Protected. Non-negotiable. They happen even when you don't feel like it, even when life is crazy. Rituals create structure for romance so it doesn't depend on having energy or remembering. Romance becomes built into the architecture of your life.",
+          "icon": "architecture"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Daily Rituals",
+          "text": "Small daily rituals accumulate into big connection: **Morning ritual**: Before the day pulls you apart. Coffee together. A kiss and 'I love you.' Asking about their day ahead. **Departure ritual**: A real kiss. 'I'll be thinking about you.' Not just grabbing keys and walking out. **Reunion ritual**: Reconnect when you see each other again. Put down phones. A real embrace. 15 minutes of talk before diving into tasks. **Evening ritual**: Time when the day is processed together. Not parallel screen time, actual conversation. **Bedtime ritual**: Going to bed at the same time when possible. A few minutes of pillow talk. A goodnight kiss that means something. These daily touchpoints take minutes but build massive connection over time.",
+          "icon": "today"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Weekly Rituals",
+          "text": "Weekly rituals create space for deeper connection: **Date night**: Non-negotiable time for just the two of you. Protected from other commitments. Doesn't always need to be expensive or elaborate, just intentional. **Check-in conversation**: A weekly time to talk about the relationship, not just logistics. 'How are we doing? What do you need from me?' **Shared activity**: Something you do together weekly, watch a show, play a game, take a walk, worship together. **Phone-free time**: A scheduled period where devices are away and attention is on each other. Weekly rituals ensure that even in the busiest seasons, romance has protected space.",
+          "icon": "date_range"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Monthly and Seasonal Rituals",
+          "text": "Bigger rituals mark the passage of time together: **Monthly date adventure**: Once a month, something more than usual, a new restaurant, an activity, an adventure. **Anniversary monthly**: Some couples celebrate the monthly anniversary of their wedding with a small acknowledgment. **Seasonal getaways**: A quarterly overnight or weekend away, just the two of you. **Annual traditions**: Trip you always take. Place you always go. Thing you always do to mark your anniversary. These bigger rituals create memories and give you shared experiences to look forward to.",
+          "icon": "calendar_month"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Current Rituals",
+          "text": "What rituals of connection already exist in your marriage? What rituals did you used to have that have faded? Where are the gaps, daily, weekly, monthly? What rituals would your spouse most value that you're not currently doing? Write your ritual inventory:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Building Your Ritual Framework",
+          "text": "Together, build a ritual framework for your marriage: **Choose your daily rituals** (pick at least 2):\n• Morning connection ritual\n• Departure/reunion rituals • Evening conversation ritual\n• Bedtime ritual **Choose your weekly rituals** (pick at least 1):\n• Protected date time\n• Relationship check-in\n• Shared activity **Choose your monthly/quarterly rituals** (pick at least 1):\n• Monthly adventure date\n• Seasonal getaway **Write your ritual commitments:** Put these in your calendar. Protect them. Let them become non-negotiable architecture for romance.",
+          "icon": "construction"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_protecting_romance",
+      "isFree": false,
+      "title": "Defending Your Romance: Guarding Against the Threats",
+      "subtitle": "Proactive protection for what you're rebuilding",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "shield",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Romance isn't just built once, it must be continually protected. Understanding the ongoing threats and building defenses ensures that what you're rekindling doesn't fade again.",
+      "frameworkBasis": {
+        "conceptKey": "romance_protection",
+        "explanation": "Sustaining romance requires proactive protection against predictable threats, not just reactive restore after damage."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Romance Is Always Under Attack",
+          "text": "Here's the hard truth: the forces that killed your romance the first time are still present. They're not going away. Busyness will always threaten to crowd out connection.\nFamiliarity will always tempt you to stop seeing each other.\nScreens will always compete for your attention.\nLife will always offer excuses to postpone romance. What you've learned in this journey will fade unless you actively protect it. Romance doesn't maintain itself, it requires ongoing defense against the things that would steal it.",
+          "icon": "gpp_maybe"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Biggest Ongoing Threats",
+          "text": "Know your enemies: **Busyness creep**: It always grows. Commitments expand. Margin disappears. Without active resistance, busyness will reclaim every space you've carved out for romance. **Complacency**: 'We're doing better now. We can relax.' The moment you stop being intentional, drift begins. **Screens**: Phones are designed to capture attention. They will steal from your spouse if you let them. **Unresolved conflict**: Resentment builds silently. Small hurts that aren't addressed become walls. **Comparison**: Other relationships that seem more exciting. Fantasies that make your spouse seem less. **Taking shortcuts**: The ritual gets shortened. The date gets cancelled. The effort gets reduced. Small compromises accumulate.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Building Your Defenses",
+          "text": "Proactive protection for your romance: **Schedule defense**: Romance gets calendar priority. Not 'if we have time' but scheduled like important meetings. **Screen boundaries**: Designated phone-free times and spaces. Devices don't come to bed. Presence over scrolling. **Regular check-ins**: 'How are we doing?' conversations before small problems become big ones. **Third-party accountability**: A couple you can be honest with about your marriage. Someone who asks how you're really doing. **Prompt restore**: Addressing hurts quickly rather than letting them fester. **Gratitude practice**: Regularly expressing appreciation guards against taking each other for granted.",
+          "icon": "security"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Vulnerability Assessment",
+          "text": "Looking at your marriage specifically: What threats are most likely to steal your romance again? Where have you been vulnerable in the past? What early warning signs should you watch for, signals that romance is starting to fade? What defenses do you need to put in place? Write your vulnerability assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The 90-Day Review",
+          "text": "Consider building a quarterly review into your marriage: Every 90 days, ask each other:\n• How is our romance doing? (Scale of 1-10)\n• What's working well that we should keep doing?\n• What's slipped that we need to restore?\n• What threats have emerged that we need to address?\n• What new practices should we try? This regular review catches problems early and creates accountability for maintaining what you've built. Put a recurring calendar reminder for your first review.",
+          "icon": "rate_review"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Protection Plan",
+          "text": "Create a protection plan for your romance: **The threats we'll watch for:**\n(List 2-3 specific threats relevant to your marriage) **The boundaries we'll maintain:**\n(List specific boundaries around time, screens, etc.) **How we'll catch problems early:**\n(Regular check-in? Review schedule? Accountability?) **What we'll do when we notice drift:**\n(Your plan for course correction) **Write your protection plan together:** 'Above all else, guard your heart, for everything you do flows from it.' (Proverbs 4:23)",
+          "icon": "verified_user"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_romance_commitment",
+      "isFree": false,
+      "title": "A Lifetime of Romance: Your Commitment",
+      "subtitle": "Pledging to pursue passion for decades to come",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "all_inclusive",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "This journey has given you understanding and practices. But lasting change requires commitment, a decision to pursue romance not just this week or month, but for a lifetime together.",
+      "frameworkBasis": {
+        "conceptKey": "committed_romance",
+        "explanation": "Long-term romantic satisfaction requires ongoing commitment to the practices that maintain connection."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You've Learned",
+          "text": "Through this journey, you've discovered: • Why romance naturally fades, and that it's not a failure\n• The specific killers of romance in your marriage\n• How to see your spouse with fresh eyes again\n• The art of continued pursuit\n• The power of adventure and novelty\n• Rediscovering playfulness and joy\n• Speaking romance through words\n• Touch as the language of love\n• Rituals that sustain connection\n• How to protect what you're building This isn't information to consume, it's a way of life to embrace. The question is: will you?",
+          "icon": "school"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "A Vision for Decades",
+          "text": "Picture your marriage in 20 years. 30 years. 40 years. One possibility: Two people who endured. Stayed together but lost the spark. Going through motions. Comfortable but flat. Another possibility: Two people who chose each other again and again. Decades of dates, adventures, laughter. Friends who are still lovers. A romance that deepened rather than faded. The difference isn't luck. It's intention. Couples who stay romantic after decades aren't different from you. They just made different daily choices. They protected what matters. They didn't let romance become optional. That future is available to you. It starts with what you choose today.",
+          "icon": "elderly"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Scripture's Vision",
+          "text": "'Enjoy life with your wife, whom you love, all the days of this fleeting life that God has given you under the sun.' (Ecclesiastes 9:9) 'May your fountain be blessed, and may you rejoice in the wife of your youth... may you ever be intoxicated with her love.' (Proverbs 5:18-19) 'Place me like a seal over your heart, like a seal on your arm; for love is as strong as death... Many waters cannot quench love; rivers cannot sweep it away.' (Song of Solomon 8:6-7) God didn't design marriage for mere survival. He designed it for flourishing. For joy. For a love that burns for a lifetime. Choosing romance is choosing the marriage God envisioned for you.",
+          "icon": "auto_stories"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Greatest Insight",
+          "text": "What's the most important thing you've learned about romance in marriage through this journey? What do you want to remember when life gets busy and romance threatens to fade again? Write your key insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "What Will You Change?",
+          "text": "Based on this journey, what specific practices will you maintain? List 3-5 concrete commitments you're making about romance in your marriage: (Be specific, not 'be more romantic' but 'weekly date night every Thursday') Write your commitments:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Romance Commitment",
+          "text": "Together, make a commitment to lifelong romance: **We commit to:**\n• Seeing each other with fresh eyes, choosing curiosity over familiarity\n• Pursuing each other intentionally, not just coexisting\n• Protecting time for connection through daily and weekly rituals\n• Bringing adventure, play, and joy into our marriage\n• Speaking love, showing affection, and expressing desire\n• Guarding our romance against the threats that would steal it **Our specific commitments:**\n• [Daily practice]\n• [Weekly practice]\n• [Adventure/novelty commitment]\n• [How we'll protect against drift] 'We will choose romance for a lifetime.' **Sign and date this together.**",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Romance Rekindled",
+    "summaryText": "You've invested in something precious, the romantic heart of your marriage. The practices you've learned aren't complicated, but they require ongoing intention. Romance doesn't maintain itself; it's built and rebuilt through thousands of small choices. Keep choosing each other. Keep pursuing. Keep playing. Keep the spark alive for a lifetime.",
+    "keyTakeaways": [
+      "Early romance is automatic; long-term romance is intentional",
+      "The roommate syndrome is escaped through deliberate pursuit, not just coexistence",
+      "Seeing your spouse with fresh eyes is a choice you can make daily",
+      "Adventure and novelty trigger romantic feelings even in long-term relationships",
+      "Rituals protect romance when life gets busy, structure enables spontaneity",
+      "Romance must be actively defended against predictable threats"
+    ],
+    "nextRecommendedJourneys": [
+      "Reigniting Physical Attraction & Sexual Desire in Marriage",
+      "Strengthening Emotional and Physical Intimacy",
+      "Building Shared Purpose and Vision"
+    ]
+  }
+}

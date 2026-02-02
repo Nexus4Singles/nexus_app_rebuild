@@ -1,0 +1,811 @@
+{
+  "journeyId": "married_personal_growth",
+  "title": "Personal Growth and Emotional Maturity in Marriage",
+  "subtitle": "Becoming your best self for the sake of your marriage",
+  "summary": "The healthiest marriages are made up of two people committed to their own growth. Your unresolved issues, defensive patterns, and emotional blind spots do not just affect you. They affect your spouse every day. This journey helps you identify where you need to grow, take responsibility for your own emotional health, develop self-awareness and regulation, and become the kind of person who makes marriage flourish.",
+  "targetUserCategory": "married",
+  "priorityRank": 16,
+  "estimatedDays": 14,
+  "totalActivities": 10,
+  "difficulty": "intermediate",
+  "themeColor": "#5E35B1",
+  "cover": {
+    "themeTag": "Growth",
+    "accentIcon": "trending_up",
+    "heroImage": "assets/images/journeys/married_personal_growth_hero.jpg",
+    "heroImageDescription": "A person looking in a mirror with a thoughtful expression, symbolizing self-reflection and growth. Warm, contemplative lighting."
+  },
+  "frameworks": [
+    "emotional_intelligence",
+    "self_differentiation",
+    "attachment_healing",
+    "biblical_sanctification"
+  ],
+  "targetOutcomes": [
+    "Identify personal patterns that negatively affect your marriage",
+    "Develop greater emotional self-awareness",
+    "Learn to regulate emotions rather than react destructively",
+    "Take ownership of your growth rather than waiting for your spouse to change",
+    "Heal from past wounds that affect present relationships",
+    "Become a more mature, self-aware partner"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_your_growth_matters",
+      "isFree": true,
+      "title": "Your Growth Matters: Why Personal Development Is Marriage Work",
+      "subtitle": "Understanding how your individual health shapes your relationship",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Many people approach marriage problems by focusing on what their spouse needs to change. But the only person you can truly change is yourself. This activity establishes why your personal growth is one of the greatest gifts you can give your marriage.",
+      "frameworkBasis": {
+        "conceptKey": "self_differentiation",
+        "explanation": "Healthy relationships are formed by two individuals who each take responsibility for their own emotional health and growth."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "You Bring Yourself Everywhere",
+          "text": "Marriage exposes areas where growth is still needed.\nPersonal maturity strengthens the relationship as a whole.\n\nThis journey helps you grow intentionally for the sake of your marriage.\n\nJames had been married twice. Both marriages ended with similar complaints from his wives: he was emotionally unavailable, defensive, and quick to shut down during conflict. After his second divorce, a counselor asked him a hard question: 'What is the common factor in both failed marriages?' The answer was painful but obvious. James was the common factor. He had brought the same unresolved issues, the same defensive patterns, the same emotional limitations into both relationships. You cannot escape yourself by changing partners. You bring yourself, your patterns, your wounds, your blind spots, everywhere you go. The only path to a healthier marriage is becoming a healthier you.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Speck and the Log",
+          "text": "Jesus taught: 'Why do you see the speck that is in your brother's eye, but do not notice the log that is in your own eye?' (Matthew 7:3) This applies powerfully to marriage. It is remarkably easy to see your spouse's flaws clearly while remaining blind to your own. You can articulate exactly what they need to change while having little awareness of how you contribute to problems. But here is the truth: you cannot control your spouse's growth. You cannot force them to change. You can only control your own growth, your own choices, your own transformation. Focusing on the log in your own eye is not about self-condemnation. It is about taking responsibility for what you can actually change.",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Marriage as a Mirror",
+          "text": "Marriage has a way of exposing things about us that we might otherwise never see. Your spouse sees you in moments of stress, fatigue, and frustration. They experience your defensive reactions, your selfish tendencies, your communication failures. They know your blind spots sometimes better than you do. This can feel threatening. But it can also be a gift. Marriage becomes a mirror that shows us where we need to grow. The question is: will you look in the mirror honestly, or will you blame the mirror for showing you an uncomfortable reflection?",
+          "icon": "self_improvement"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "What Marriage Has Revealed",
+          "text": "Think honestly about what marriage has revealed about you. What weaknesses or patterns has marriage exposed that you might not have seen as a single person? What feedback has your spouse given you repeatedly that you have been resistant to hear? What do you know about yourself that you wish were different? Write about what marriage has shown you about yourself:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Growth Edge",
+          "text": "What area of personal growth would most benefit your marriage right now?",
+          "prompts": [
+            "Managing my emotions when I am upset",
+            "Being less defensive when criticized",
+            "Communicating more openly and honestly",
+            "Being more present and attentive",
+            "Taking responsibility instead of blaming",
+            "Healing from past wounds that affect my present",
+            "Being more patient and kind",
+            "Addressing my own anxiety or depression"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Identifying your growth edge is the first step toward real change. This journey will help you develop in this area."
+          },
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Growth Commitment",
+          "text": "Before going further, make a commitment to yourself and your marriage: I commit to focusing on my own growth, not just my spouse's. I commit to looking honestly at myself, even when it is uncomfortable. I commit to taking responsibility for my part in our marriage dynamics. I commit to becoming the kind of person who makes marriage flourish. Write this commitment in your own words and sign it.",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_emotional_awareness",
+      "isFree": false,
+      "title": "Knowing Yourself: Developing Emotional Self-Awareness",
+      "subtitle": "Understanding what you feel and why",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "You cannot change what you do not understand. Emotional self-awareness is the foundation of personal growth. It allows you to recognize your feelings, understand their sources, and respond thoughtfully rather than react impulsively.",
+      "frameworkBasis": {
+        "conceptKey": "emotional_intelligence",
+        "explanation": "Emotional intelligence begins with self-awareness, the ability to recognize and understand your own emotional states."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Gap Between Feeling and Knowing",
+          "text": "Marcus knew something was wrong. He was short-tempered with his wife, withdrawn, and easily frustrated. But when she asked what was going on, he said, 'Nothing. I am fine.' He was not lying intentionally. He genuinely did not have clear access to what he was feeling. Something was brewing under the surface, but he could not name it. This is common, especially for men but not exclusively so. Many people experience emotions without being able to identify them clearly. They know something is happening internally but cannot put words to it. This gap between feeling and knowing creates problems in marriage. If you cannot name what you feel, you cannot communicate it. If you cannot understand why you feel it, you cannot address the real issue.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Self-Awareness Looks Like",
+          "text": "Emotional self-awareness involves several skills: Recognizing what you are feeling in the moment. Being able to say 'I feel anxious' or 'I feel hurt' rather than just acting out the emotion. Understanding why you feel that way. Connecting your emotional state to its triggers and sources. Noticing your body's signals. Tension in your shoulders, a knot in your stomach, a racing heart. Your body often knows before your mind does. Recognizing patterns. Seeing that certain situations or topics consistently trigger certain emotional responses. Distinguishing between feelings. Knowing the difference between anger and fear, between sadness and disappointment, between loneliness and boredom. This awareness does not come naturally to everyone. But it can be developed with practice.",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Why It Matters in Marriage",
+          "text": "Self-awareness transforms marriage communication. Without it, conversations sound like: 'You always do this.' 'Why do you have to be like that?' Or there is withdrawal without explanation, or explosive reactions that seem to come from nowhere. With it, conversations become: 'I am feeling hurt because of what happened earlier.' 'I notice I get anxious when we talk about money.' 'I need a moment because I am feeling overwhelmed.' When you can name your internal experience, you can share it rather than act it out. You can invite understanding rather than trigger defensiveness. Your spouse is not a mind reader. They cannot know what you do not tell them. And you cannot tell them what you do not know yourself.",
+          "icon": "forum"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Emotional Awareness",
+          "text": "Honestly assess your emotional self-awareness. How easily can you identify what you are feeling in a given moment? How often do you react emotionally without understanding why? What emotions are easiest for you to recognize? Which are harder? How does your level of self-awareness affect your communication with your spouse? Write about your current level of emotional awareness:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Awareness",
+          "text": "You can develop greater emotional self-awareness through practice: Pause before reacting. When you notice an emotional charge, stop and ask yourself what you are actually feeling right now. Expand your emotional vocabulary. 'Angry' might actually be 'hurt,' 'afraid,' 'disappointed,' or 'embarrassed.' Get specific about what you feel. Notice body sensations. Where do you feel emotions physically? Learn to read your body's signals. Reflect afterward. After emotional moments, ask yourself what you were really feeling, what triggered it, and what was underneath the surface emotion. Journal regularly. Writing about your inner experience builds awareness over time and helps you see patterns.",
+          "icon": "school"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Awareness Practice",
+          "text": "This week, practice emotional check-ins three times per day: morning, afternoon, and evening. Pause and ask yourself: What am I feeling right now? Try to name specific emotions. Where do I feel it in my body? What might be causing this feeling? Keep a brief log of what you discover. At the end of the week, review for patterns. This simple practice, done consistently, dramatically increases emotional self-awareness.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_emotional_regulation",
+      "isFree": false,
+      "title": "Managing Your Emotions: From Reaction to Response",
+      "subtitle": "Learning to regulate rather than be controlled by your feelings",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Awareness of your emotions is only the first step. You also need the ability to manage them so they do not manage you. Emotional regulation allows you to feel strongly without acting destructively.",
+      "frameworkBasis": {
+        "conceptKey": "emotional_regulation",
+        "explanation": "Emotional regulation is the ability to influence which emotions you have, when you have them, and how you experience and express them."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "When Emotions Take Over",
+          "text": "Lisa did not mean to say those words. In the heat of the argument, her anger took over and she said things she knew would hurt her husband deeply. Afterward, she felt awful but the damage was done. This is what happens when emotions hijack behavior. The feeling becomes so intense that it overrides judgment, wisdom, and self-control. Words come out that cannot be taken back. Actions happen that cause lasting harm. Emotional flooding, that overwhelming state where rational thought becomes impossible, is one of the greatest threats to marriage. Research shows that when heart rate exceeds 100 beats per minute during conflict, productive conversation becomes nearly impossible. Learning to regulate emotions is not about suppressing them. It is about experiencing them without being controlled by them.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Space Between",
+          "text": "Viktor Frankl wrote: 'Between stimulus and response there is a space. In that space is our power to choose our response.' Emotional regulation is about expanding that space. Something happens. You feel something. But before you act, there is a moment where you can choose your response. Without regulation, that space is tiny or nonexistent. Trigger leads immediately to reaction. With regulation, the space expands. You can feel the anger and choose not to yell. You can feel the hurt and choose how to express it. You can feel the fear and still engage constructively. This does not mean emotions are bad or should be suppressed. It means you are in the driver's seat, not your emotions.",
+          "icon": "pause"
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Where I Need to Grow",
+          "text": "Write one area where you know growth is needed.\n\nThen write one practical step you can take this week toward maturity.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Regulation Strategies",
+          "text": "Several strategies help regulate intense emotions: Physiological calming: Deep breathing, physical movement, or cold water on your face can activate your body's calming system. Taking a break: Stepping away when flooded gives your nervous system time to settle. This is not avoidance if you commit to returning. Cognitive reframing: Asking yourself if there is another way to see this situation. Challenging catastrophic interpretations. Self-talk: Speaking calming, grounding truths to yourself in the moment. 'I can handle this.' 'This feeling will pass.' 'I do not have to react right now.' Grounding: Focusing on physical sensations or the present moment to interrupt escalating thoughts. Prayer: Inviting God into the emotional moment and asking for help.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Regulation Challenges",
+          "text": "Which emotions are hardest for you to regulate in your marriage?",
+          "prompts": [
+            "Anger - I say or do things I regret",
+            "Anxiety - I spiral into worst-case thinking",
+            "Hurt - I shut down or withdraw",
+            "Frustration - I become impatient and critical",
+            "Fear - I become controlling or avoidant",
+            "Sadness - I struggle to function or engage",
+            "Defensiveness - I cannot hear feedback without reacting"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Knowing which emotions challenge you most helps you prepare specific strategies for those situations."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "Your Flooding Triggers",
+          "text": "Think about times when your emotions have overwhelmed your ability to respond wisely. What situations or topics trigger emotional flooding for you? What does it feel like in your body when you are getting flooded? What do you typically do when flooded? What is the impact on your spouse? What would be different if you could stay regulated in those moments? Write about your flooding patterns:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 7,
+          "title": "Your Regulation Plan",
+          "text": "Create a personal regulation plan for when emotions get intense: My early warning signs that I am getting flooded are: [physical sensations, thoughts, behaviors] When I notice these signs, I will: [specific calming strategy] If I need to take a break, I will say: [a phrase that communicates need without attacking] I commit to returning to the conversation within: [timeframe] Write your regulation plan and share it with your spouse so they know what to expect.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_defensive_patterns",
+      "isFree": false,
+      "title": "Breaking Down Defenses: Becoming Open to Feedback",
+      "subtitle": "Recognizing and reducing your defensive reactions",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "shield",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Defensiveness is one of the biggest barriers to growth and connection in marriage. When you cannot hear feedback without defending yourself, you miss opportunities to learn and your spouse feels unheard.",
+      "frameworkBasis": {
+        "conceptKey": "defensiveness_patterns",
+        "explanation": "Defensiveness is a self-protective response that prevents genuine connection and blocks personal growth."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Defensive Wall",
+          "text": "When Sarah told her husband Mark that she felt lonely in their marriage, his immediate response was defensive: 'I work hard all day to provide for this family. What more do you want?' He heard her statement as an attack and responded by defending himself. But Sarah was not attacking. She was sharing her heart, hoping to be understood and to work together on the problem. Mark's defensiveness accomplished nothing positive. It shut down the conversation, left Sarah feeling more alone, and prevented any possibility of addressing the real issue. Defensiveness is a wall we put up to protect ourselves from feeling criticized or inadequate. But that wall also keeps out connection, growth, and understanding.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "How Defensiveness Shows Up",
+          "text": "Defensiveness takes many forms: Counter-attacking: Responding to feedback by criticizing back. 'Well, you do this thing that bothers me.' Making excuses: Explaining why you are not really at fault. 'I only did that because you did this first.' Denying: Refusing to acknowledge any validity in the feedback. 'That is not true at all.' Minimizing: Downplaying the significance. 'You are making a big deal out of nothing.' Playing victim: Turning it around so you are the injured party. 'I cannot believe you would say that to me.' Withdrawing: Shutting down the conversation entirely. Silence, leaving the room, refusing to engage. All of these prevent your spouse from being heard and block any possibility of change.",
+          "icon": "list"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Why We Get Defensive",
+          "text": "Defensiveness is usually about protection. Somewhere along the way, you learned that criticism means danger, rejection, or inadequacy. Possible roots include: Childhood criticism: If you were frequently criticized as a child, feedback can feel threatening to your core sense of worth. Perfectionism: If you need to be seen as competent or good, any suggestion otherwise feels like an attack on your identity. Shame: Deep-seated shame makes any negative feedback feel like confirmation that you are fundamentally flawed. Past relationship wounds: Previous partners or family members may have used criticism as a weapon. Understanding why you get defensive helps you recognize that your spouse's feedback is usually not the threat your nervous system perceives it to be.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Defensive Patterns",
+          "text": "Reflect honestly on your defensive reactions. What forms does your defensiveness typically take? What topics or types of feedback trigger defensiveness most? What do you fear will happen if you do not defend yourself? How has your defensiveness affected your spouse and your marriage? Write about your defensive patterns:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Alternative to Defense",
+          "text": "Instead of defending, try receiving. Listen first: Let your spouse finish without interrupting to defend yourself. Seek to understand: Ask clarifying questions. 'Can you help me understand what you mean?' Acknowledge their experience: 'I can see why you would feel that way.' This is not agreeing you are wrong. It is validating their perspective. Look for the kernel of truth: Even if the feedback feels unfair, is there anything valid in it? Respond, do not react: Take time to consider before responding. You do not have to agree with everything, but you can engage thoughtfully. Separate feedback from identity: Feedback about behavior is not a verdict on your worth as a person. This requires security in your identity in Christ, not in being perfect or always right.",
+          "icon": "hearing"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Openness Practice",
+          "text": "This week, practice receiving feedback without defending. When your spouse shares something difficult: 1. Notice your defensive impulse but do not act on it\n2. Take a breath\n3. Say: 'Thank you for telling me. Help me understand more.'\n4. Listen without interrupting\n5. Reflect back what you heard\n6. Ask: 'What would help?' This does not mean agreeing with everything. It means hearing before responding. Try this at least twice this week and notice what happens.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_past_wounds",
+      "isFree": false,
+      "title": "Healing Old Wounds: How Your Past Affects Your Present",
+      "subtitle": "Understanding how unresolved pain shapes your marriage",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "healing",
+      "emotionalIntensity": "very_high",
+      "activityType": "teaching",
+      "whyThisMatters": "We all bring wounds from our past into marriage. Childhood experiences, previous relationships, and old traumas shape how we relate today. Understanding and healing these wounds is essential for becoming a healthy partner.",
+      "frameworkBasis": {
+        "conceptKey": "attachment_wounds",
+        "explanation": "Early attachment experiences and relational wounds create patterns that persist into adult relationships unless consciously addressed."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Past Is Present",
+          "text": "David could not understand why he panicked every time his wife needed to travel for work. Her trips were brief and necessary, but he felt abandoned, anxious, even angry. In counseling, he discovered the connection. His mother had left the family when he was seven, without warning. He had never fully processed that abandonment. Now, every time his wife left, even temporarily, those old wounds were activated. He was not reacting to his wife. He was reacting to his mother, decades later. This is how the past shows up in the present. Old wounds, never fully healed, get triggered by current situations. We react with an intensity that does not match what is actually happening because we are responding to both the present and the past simultaneously.",
+          "icon": "history"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Common Wounds That Affect Marriage",
+          "text": "Several types of past wounds commonly affect marriages: Abandonment: Early experiences of being left, rejected, or not chosen create fear of loss and can lead to clinginess or preemptive withdrawal. Criticism: Growing up with constant criticism can make any feedback feel like an attack on your worth. Neglect: Emotional or physical neglect in childhood can create deep hunger for attention and difficulty believing you matter. Abuse: Physical, emotional, or sexual abuse leaves lasting impacts on trust, intimacy, and self-worth. Parental conflict: Witnessing intense parental fighting or divorce can create anxiety about conflict and relationship security. Previous relationship trauma: Betrayal, manipulation, or pain in past romantic relationships affects how you relate to your spouse. These wounds do not disappear when you get married. They come with you.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Signs Your Past Is Affecting Your Present",
+          "text": "How do you know when past wounds are being activated? Disproportionate reactions: Your emotional response is bigger than the situation warrants. Triggering patterns: Certain situations consistently provoke strong reactions in you. Repeating dynamics: You keep recreating similar relationship problems. Old familiar feelings: The emotions feel like ones you have felt before, perhaps from childhood. Physical symptoms: Your body reacts strongly with fight, flight, or freeze responses. Black-and-white thinking: You see your spouse as all bad in the moment, or yourself as completely worthless. When you notice these signs, it is worth asking: what from my past might be getting activated here?",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Wound Inventory",
+          "text": "Reflect on your own history and its impact on your marriage. What painful experiences from your past might be affecting how you relate to your spouse? What triggers strong reactions in you that might be connected to old wounds? How have past relationships shaped your expectations and fears in marriage? What healing do you sense you might need? Write about the past wounds that may be affecting your present:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Path to Healing",
+          "text": "Healing old wounds is possible, but it requires intentional work: Acknowledge the wounds: You cannot heal what you will not admit exists. Name what happened and how it affected you. Grieve the losses: Allow yourself to feel the pain of what you lost or never had. Grief is part of healing. Separate past from present: Practice recognizing when old wounds are being triggered so you can respond to the present situation rather than react from the past. Seek professional help: Some wounds require more than self-help. Therapy with a skilled counselor can facilitate deep healing. Invite God into the process: 'He heals the brokenhearted and binds up their wounds.' (Psalm 147:3) God is present in your healing journey. Be patient: Healing is a process, not an event. It takes time.",
+          "icon": "healing"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "One Step Toward Healing",
+          "text": "Choose one step to take toward healing past wounds: Acknowledge one specific wound and write about its impact on your marriage. Have a conversation with your spouse about how your past affects your present, helping them understand your triggers. Schedule an appointment with a counselor to begin working on deeper healing. Spend time in prayer, inviting God into your wounded places and asking for healing. What one step will you take this week toward healing?",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_taking_responsibility",
+      "isFree": false,
+      "title": "Owning Your Part: Taking Responsibility Without Excuses",
+      "subtitle": "Developing radical accountability for your contribution to problems",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "account_circle",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Mature people take responsibility for their actions and their impact. Blaming, excusing, and minimizing prevent growth and damage trust. Learning to own your part fully is essential for becoming a healthy partner.",
+      "frameworkBasis": {
+        "conceptKey": "personal_responsibility",
+        "explanation": "Taking full responsibility for your own behavior, regardless of what your partner does, is foundational to personal maturity and relationship health."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Blame Game",
+          "text": "It started in the Garden of Eden. When God asked Adam about eating the forbidden fruit, Adam said, 'The woman you gave me, she gave me fruit from the tree.' (Genesis 3:12) Notice what he did. He blamed Eve. He even subtly blamed God: the woman you gave me. He took no responsibility for his own choice. We have been doing the same thing ever since. When things go wrong in marriage, the instinct is to point outward rather than inward. 'I would not have yelled if you had not provoked me.'\n'I only did that because you did this first.'\n'If you would change, I would not act this way.' But this is the opposite of maturity. Mature people take responsibility for their own behavior regardless of what others do.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What True Responsibility Looks Like",
+          "text": "Taking responsibility means: Owning your behavior without excuses: 'I yelled at you. That was wrong.' Full stop. Not 'I yelled because you frustrated me.' Acknowledging impact: Understanding and naming how your actions affected your spouse, regardless of your intent. Not keeping score: Resisting the urge to bring up what your spouse did to justify what you did. Apologizing genuinely: Saying 'I am sorry' without adding qualifiers that shift blame. Committing to change: Taking concrete steps to behave differently, not just feeling bad. This is not about accepting blame for things that are not your fault. It is about fully owning what is your fault.",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Freedom of Responsibility",
+          "text": "Paradoxically, taking responsibility is liberating. When you blame others, you make yourself powerless. If the problem is their fault, you cannot fix it. You are stuck waiting for them to change. When you take responsibility, you reclaim agency. You may not be able to change your spouse, but you can change yourself. You can address your contribution to problems. You can grow. Responsibility also builds trust. When your spouse sees you own your mistakes fully, without deflection, they learn they can trust you with hard truths. When you always deflect, they learn to expect defensiveness and stop being honest. Owning your part is not weakness. It is strength.",
+          "icon": "fitness_center"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Responsibility Assessment",
+          "text": "Honestly assess how well you take responsibility in your marriage. When things go wrong, what is your first instinct: to look at your own contribution or to focus on what your spouse did? How often do your apologies include qualifiers or excuses? What feedback has your spouse given you that you have deflected rather than owned? What is one thing you know you do that negatively affects your marriage that you have not fully taken responsibility for? Write your honest assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Better Apology",
+          "text": "A mature, responsibility-taking apology includes: 1. Naming specifically what you did: Not 'I am sorry if I hurt you' but 'I am sorry I raised my voice and said hurtful things.' 2. Acknowledging the impact: 'I know that made you feel disrespected and hurt.' 3. Taking full responsibility: 'There is no excuse for that. I was wrong.' 4. Expressing genuine remorse: 'I feel terrible that I treated you that way.' 5. Committing to change: 'I am going to work on controlling my anger. Here is what I am going to do differently.' 6. Asking for forgiveness: 'Will you forgive me?' No deflection. No qualifiers. No bringing up what they did. Just owning your part fully.",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Responsibility Conversation",
+          "text": "Think of one area where you have not fully taken responsibility in your marriage. This week, have a conversation with your spouse where you: 1. Name what you have done wrong or how you have contributed to a problem\n2. Apologize using the full apology format\n3. Ask what else they have wanted you to take responsibility for\n4. Listen without defending\n5. Commit to specific change This conversation takes courage. But it can be transformative for your marriage.",
+          "icon": "forum"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_character_development",
+      "isFree": false,
+      "title": "Building Character: The Virtues That Make Marriage Work",
+      "subtitle": "Developing the qualities that lead to flourishing relationships",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "workspace_premium",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Marriage requires character. Patience, kindness, humility, self-control, and other virtues are not optional extras. They are essential equipment for loving another imperfect person for a lifetime.",
+      "frameworkBasis": {
+        "conceptKey": "virtue_development",
+        "explanation": "Character virtues are developed through intentional practice and become the foundation for healthy relationships."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "More Than Skills",
+          "text": "Marriage requires more than communication skills and conflict resolution techniques. It requires character. You can know all the right things to do and still lack the character to do them when it costs you something. You can understand the principles of healthy marriage and still be too selfish, too impatient, or too proud to apply them. Paul's description of love in 1 Corinthians 13 is essentially a character description: patient, kind, not envious, not boastful, not proud, not self-seeking, not easily angered, keeping no record of wrongs. These are not techniques. They are virtues. And virtues are developed over time through intentional practice.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Key Virtues for Marriage",
+          "text": "Several character virtues are particularly important for marriage: Patience: The ability to endure difficulty and delay without frustration. Marriage requires enormous patience. Humility: Putting others before yourself and being willing to admit when you are wrong. Self-control: Managing your impulses, emotions, and desires rather than being controlled by them. Kindness: Actively treating your spouse with warmth, generosity, and care. Forgiveness: Releasing resentment and choosing not to hold offenses against your spouse. Faithfulness: Keeping your commitments even when it is hard. Gratitude: Noticing and appreciating what is good rather than focusing on what is lacking. These virtues do not develop automatically. They require cultivation.",
+          "icon": "stars"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "How Character Grows",
+          "text": "Character development follows a pattern: Awareness: Recognizing where you fall short. You cannot grow in patience if you do not recognize your impatience. Desire: Genuinely wanting to develop the virtue, not just knowing you should. Practice: Deliberately exercising the virtue in small situations. Character is built through repeated action. Failure and recovery: You will fail. Growth comes from getting back up and trying again. Grace: Character development is not just self-improvement. It involves the Holy Spirit transforming you. 'The fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control.' (Galatians 5:22-23) Character growth is a lifetime project. The goal is progress, not perfection.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Character Growth Edge",
+          "text": "Which character virtue do you most need to develop for your marriage to flourish?",
+          "prompts": [
+            "Patience - I get frustrated too quickly",
+            "Humility - I struggle to admit I am wrong",
+            "Self-control - I give in to impulses that hurt my spouse",
+            "Kindness - I am not as warm and caring as I should be",
+            "Forgiveness - I hold onto resentment",
+            "Faithfulness - I struggle with keeping commitments",
+            "Gratitude - I focus more on negatives than positives"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Identifying your character growth edge gives you a clear target for development."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Virtue in Action",
+          "text": "Think about the virtue you identified as your growth edge. What would it look like in practice in your marriage? What situations trigger the opposite behavior? What small steps could you take to develop this virtue? How would your marriage be different if you grew significantly in this area? Write about how you will develop this virtue:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Virtue Practice",
+          "text": "Choose one virtue to focus on developing this week. Each morning: Pray for God's help in developing this virtue today. Throughout the day: Look for opportunities to practice it, especially small ones. Each evening: Reflect on how you did. Where did you succeed? Where did you fall short? What will you do tomorrow? At the end of the week: Evaluate your progress and decide whether to continue with this virtue or move to another. Small, consistent practice over time builds lasting character.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_identity_security",
+      "isFree": false,
+      "title": "Secure in Christ: Building a Stable Identity",
+      "subtitle": "Finding your worth in God rather than your spouse's opinion",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "anchor",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Many marriage problems stem from looking to your spouse for something only God can provide: your fundamental sense of worth and identity. When your identity is secure in Christ, you can engage in marriage from fullness rather than neediness.",
+      "frameworkBasis": {
+        "conceptKey": "identity_in_christ",
+        "explanation": "Security in one's identity in Christ provides a stable foundation that allows for healthy, non-desperate engagement in relationships."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Weight of Expectation",
+          "text": "When Jenny got married, she expected her husband to make her feel loved, valuable, and secure. When he failed to do this perfectly, which was inevitable, she felt devastated and angry. She was asking her husband to carry a weight no human can carry: the weight of being her primary source of identity and worth. This is an impossible burden. Your spouse is a flawed human being who will sometimes disappoint you, criticize you, be distracted, be selfish, and fail to see you accurately. If your worth depends on their constant affirmation, you will be perpetually unstable. No human relationship can bear the weight of being your fundamental source of identity. That weight belongs to God alone.",
+          "icon": "fitness_center"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Identity in Christ",
+          "text": "Scripture describes believers as: Children of God: 'See what kind of love the Father has given to us, that we should be called children of God; and so we are.' (1 John 3:1) Chosen and beloved: 'Put on then, as God's chosen ones, holy and beloved...' (Colossians 3:12) Completely accepted: 'There is therefore now no condemnation for those who are in Christ Jesus.' (Romans 8:1) Fully known and loved: 'I am convinced that neither death nor life...will be able to separate us from the love of God in Christ Jesus our Lord.' (Romans 8:38-39) When this identity is secure, you do not need your spouse to validate your worth. You already have it. You can receive their love as a gift rather than desperately needing it as a lifeline.",
+          "icon": "church"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "How Insecurity Affects Marriage",
+          "text": "When your identity is insecure, it shows up in marriage: Neediness: You demand constant reassurance and affirmation from your spouse. Jealousy: You feel threatened by anything that takes their attention. Defensiveness: Any criticism feels like an attack on your worth. People-pleasing: You sacrifice your own needs and values to keep your spouse happy with you. Controlling behavior: You try to manage your spouse's behavior to manage your own anxiety. Emotional volatility: Your mood depends entirely on how your spouse is treating you in the moment. When your identity is secure in Christ, you can engage your spouse from a place of fullness rather than emptiness, giving rather than demanding.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Identity Sources",
+          "text": "Reflect honestly on where you look for your sense of worth and identity. How much does your sense of value depend on your spouse's opinion of you? What happens to your emotional state when your spouse is critical or distant? In what ways do you look to your spouse for something that only God can provide? How would your marriage be different if your identity were fully secure in Christ? Write about your identity sources:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Identity Security",
+          "text": "Growing in identity security is a spiritual process: Know the truth: Study what Scripture says about who you are in Christ. Let it soak into your thinking. Practice preaching truth to yourself: When insecurity rises, remind yourself of what is true about your identity. Distinguish between feedback and identity: Your spouse's criticism of your behavior does not determine your worth. Cultivate your relationship with God: Time in prayer, Scripture, and worship reinforces your primary relationship and identity. Notice when you seek validation: Catch yourself looking to your spouse for what only God can give and redirect. This is ongoing work. Identity security grows over time as you practice living from the truth.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Identity Grounding Practice",
+          "text": "This week, practice grounding your identity in Christ: Each morning, spend five minutes meditating on a Scripture about your identity in Christ. Throughout the day, when you notice yourself seeking validation from your spouse, pause and remind yourself of your true identity. When criticism comes, practice separating the feedback from your fundamental worth. Journal about what you notice: when do you most seek validation? What triggers identity insecurity? This practice, done consistently, strengthens your identity foundation.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_ongoing_growth",
+      "isFree": false,
+      "title": "A Lifestyle of Growth: Sustaining Long-Term Development",
+      "subtitle": "Building habits that ensure continuous personal development",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "autorenew",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Personal growth is not a one-time event. It is a lifestyle. Building sustainable habits and rhythms of growth ensures you continue developing throughout your marriage rather than stagnating.",
+      "frameworkBasis": {
+        "conceptKey": "sustainable_growth",
+        "explanation": "Long-term personal development requires sustainable habits and practices rather than sporadic intense efforts."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Growth as a Lifestyle",
+          "text": "Many people approach personal growth in bursts. They read a book, attend a retreat, or do a journey like this one, make some changes, and then slowly drift back to old patterns. Real transformation requires something different: a lifestyle of growth. Consistent habits and rhythms that keep you developing over time. 'But grow in the grace and knowledge of our Lord and Savior Jesus Christ.' (2 Peter 3:18) Growth is not optional for Christians. It is expected. And it does not happen accidentally. It happens through intentional practices sustained over time.",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Elements of a Growth Lifestyle",
+          "text": "A sustainable growth lifestyle includes: Regular self-reflection: Time to honestly assess yourself, your behavior, and your growth edges. Ongoing learning: Reading, listening, and studying that expands your understanding and challenges you. Accountability: Relationships where others can speak into your life and hold you to your commitments. Spiritual practices: Prayer, Scripture, worship, and other habits that connect you to God. Professional help when needed: Willingness to see a counselor, therapist, or coach when you face challenges beyond self-help. Feedback receptivity: Remaining open to input from your spouse and others about where you need to grow. These elements work together to create an environment where growth naturally occurs.",
+          "icon": "list"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Small Consistent Steps",
+          "text": "Sustainable growth is usually not dramatic. It is small consistent steps over time. Fifteen minutes of reflection is better than an hour once a month. Reading a few pages daily is better than binging a book and then reading nothing for months. Regular small conversations about growth with your spouse are better than occasional intense discussions. The compound effect of small consistent actions is remarkable. One percent improvement daily leads to massive change over a year. Do not aim for dramatic transformation overnight. Aim for sustainable practices you can maintain for the long haul.",
+          "icon": "timeline"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Current Growth Practices",
+          "text": "Assess your current habits around personal growth. What practices do you currently have that support your growth? What growth habits have you started but not sustained? What gaps exist in your growth lifestyle? What is one sustainable practice you could add that would support ongoing development? Write about your current growth practices:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Next Growth Step",
+          "text": "What growth practice would you most benefit from adding to your life?",
+          "prompts": [
+            "Regular time for self-reflection",
+            "Consistent reading or learning",
+            "An accountability relationship",
+            "More intentional spiritual practices",
+            "Regular conversations with my spouse about growth",
+            "Working with a counselor or coach",
+            "Journaling about my inner life"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Adding even one sustainable growth practice can make a significant difference over time."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Growth Plan",
+          "text": "Create a simple, sustainable personal growth plan: Daily: What will you do each day? (Even five to ten minutes counts.) Weekly: What will you do each week to support your growth? Monthly: How will you review your progress and adjust? Accountability: Who will you share this plan with? Write your growth plan with specific, realistic commitments you can actually sustain.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_commitment",
+      "isFree": false,
+      "title": "The Growing Spouse: Your Commitment to Ongoing Development",
+      "subtitle": "Committing to a lifetime of personal growth for your marriage",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "Knowledge without commitment fades. This activity helps you consolidate what you have learned and make specific commitments to ongoing personal growth for the sake of your marriage.",
+      "frameworkBasis": {
+        "conceptKey": "commitment_integration",
+        "explanation": "Lasting change requires explicit commitments that are revisited and renewed over time."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Explored",
+          "text": "Through this journey, you have examined: Why your personal growth matters for your marriage\nDeveloping emotional self-awareness\nLearning to regulate emotions\nReducing defensiveness and becoming open to feedback\nHealing past wounds that affect your present\nTaking responsibility without excuses\nBuilding character virtues\nFinding identity security in Christ\nCreating sustainable growth habits This is meaningful work. Now it is time to commit to continuing.",
+          "icon": "school"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Gift to Your Spouse",
+          "text": "Your personal growth is one of the greatest gifts you can give your marriage. When you become more self-aware, your spouse gets a partner who understands themselves. When you regulate your emotions, your spouse gets a partner who does not react destructively. When you become less defensive, your spouse gets a partner who can hear them. When you heal old wounds, your spouse gets a partner who responds to the present, not the past. When you take responsibility, your spouse gets a partner they can trust. When you develop character, your spouse gets a partner who embodies love. Your growth blesses your spouse profoundly.",
+          "icon": "card_giftcard"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Insight",
+          "text": "What is the most important thing you have learned or been reminded of through this journey? What do you want to remember and apply going forward? Write your key insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Growth Commitment",
+          "text": "Based on what you have learned, what specific commitments will you make to ongoing personal growth? What will you work on?\nWhat practices will you adopt?\nHow will you stay accountable? Write your specific growth commitments:",
+          "responseType": "open-text",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Growth",
+          "text": "Father, thank You for caring about my growth. I confess that I have often focused on what my spouse needs to change while neglecting my own development. Forgive me. Open my eyes to see myself clearly. Give me courage to face uncomfortable truths about myself. Help me take responsibility for my part in our marriage dynamics. Heal the wounds from my past that affect my present. Develop in me the character of Christ: patience, kindness, humility, self-control. Ground my identity firmly in You so I can engage my spouse from fullness, not neediness. Make me the kind of person who helps my marriage flourish. I commit to ongoing growth for Your glory and for the blessing of my spouse. In Jesus' name, Amen.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Share With Your Spouse",
+          "text": "Share with your spouse what you have learned and committed to through this journey. Tell them: What you have realized about yourself\nWhat you are committing to work on\nHow they can support your growth\nHow you hope your growth will bless your marriage Ask them: What growth would they most appreciate seeing in you?\nHow can you be accountable to each other for growth? This vulnerability invites partnership in your development.",
+          "icon": "forum"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Committed to Growth",
+    "summaryText": "You have completed an important journey of self-examination and commitment to personal growth. Remember that growth is a lifelong process, not a destination. Keep working on yourself, keep inviting feedback, keep developing character. Your ongoing growth is one of the greatest gifts you can give your marriage.",
+    "keyTakeaways": [
+      "Your personal growth directly affects your marriage quality",
+      "Emotional self-awareness is the foundation for growth",
+      "Emotional regulation allows you to respond rather than react",
+      "Defensiveness blocks growth and connection",
+      "Past wounds affect present relationships until healed",
+      "Taking responsibility empowers change",
+      "Character virtues are developed through practice",
+      "Identity security in Christ frees you to love well",
+      "Sustainable growth habits are more valuable than dramatic moments"
+    ],
+    "nextRecommendedJourneys": [
+      "Communication and Conflict Resolution in Marriage",
+      "Restoring Friendship and Emotional Connection",
+      "Faith and Spiritual Unity in Marriage"
+    ]
+  }
+}

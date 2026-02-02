@@ -10,6 +10,7 @@ import '../../../../core/utils/image_utils.dart';
 import '../../../../core/providers/user_provider.dart';
 import '../../domain/journey_v1_models.dart';
 import '../../providers/journeys_providers.dart';
+import '../../../subscription/presentation/widgets/purchase_sheet_widget.dart';
 
 class JourneyDetailScreen extends ConsumerStatefulWidget {
   final String id;
@@ -382,22 +383,16 @@ class _Body extends ConsumerWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () async {
-                        final ent = ref.read(
-                          journeyEntitlementsServiceProvider,
-                        );
-                        await ent.markPurchased(journey.id);
-
-                        ref.invalidate(purchasedJourneyIdsProvider);
-                        ref.invalidate(isJourneyPurchasedProvider(journey.id));
-
-                        if (context.mounted) Navigator.pop(context);
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Unlocked. You can now access all activities.',
-                            ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (_) => PurchaseSheet(
+                            journeyId: journey.id,
+                            journey: journey,
+                            isSubscription: false,
                           ),
                         );
                       },
@@ -870,18 +865,15 @@ class _UnlockCta extends ConsumerWidget {
             onPressed:
                 isLoading
                     ? null
-                    : () async {
-                      final ent = ref.read(journeyEntitlementsServiceProvider);
-                      await ent.markPurchased(journey.id);
-
-                      ref.invalidate(purchasedJourneyIdsProvider);
-                      ref.invalidate(isJourneyPurchasedProvider(journey.id));
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Unlocked. You can now access all activities.',
-                          ),
+                    : () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (_) => PurchaseSheet(
+                          journeyId: journey.id,
+                          journey: journey,
+                          isSubscription: false,
                         ),
                       );
                     },

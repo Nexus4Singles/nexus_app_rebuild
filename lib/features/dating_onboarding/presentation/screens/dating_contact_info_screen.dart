@@ -9,6 +9,38 @@ import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.da
 import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+/// Canonicalize strings for consistent Firestore queries
+String _normBasic(String? v) =>
+    (v ?? '').trim().toLowerCase().replaceAll(RegExp(r'\s+'), ' ');
+
+String _normAlnum(String? v) {
+  final s = _normBasic(v);
+  return s
+      .replaceAll(RegExp(r'[^a-z0-9\s]'), '')
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .trim();
+}
+
+String _canonCountry(String? v) {
+  final s = _normAlnum(v);
+  if (s.isEmpty) return '';
+  if (s.contains('uk') || s.contains('united kingdom') ||
+      s.contains('great britain') || s.contains('britain')) return 'united kingdom';
+  if (s.contains('usa') || s.contains('united states')) return 'united states';
+  return s;
+}
+
+String _canonMarital(String? v) {
+  final s = _normAlnum(v);
+  if (s.isEmpty) return '';
+  if (s.contains('never') && s.contains('married')) return 'single';
+  if (s.contains('single')) return 'single';
+  if (s.contains('married')) return 'married';
+  if (s.contains('divorced')) return 'divorced';
+  if (s.contains('widowed')) return 'widowed';
+  return s;
+}
+
 class DatingContactInfoScreen extends ConsumerStatefulWidget {
   const DatingContactInfoScreen({super.key});
 
@@ -228,8 +260,8 @@ class _DatingContactInfoScreenState
                         ? () async => await _completeProfile()
                         : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),
@@ -237,7 +269,9 @@ class _DatingContactInfoScreenState
                 ),
                 child: Text(
                   'Complete Profile',
-                  style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
+                  style: AppTextStyles.labelLarge.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ),
               ),
             ),
@@ -318,13 +352,22 @@ class _DatingContactInfoScreenState
         final gender = nexus2?['gender'] as String?;
         final relationshipStatus = nexus2?['relationshipStatus'] as String?;
 
+        // Canonicalize all searchable fields for consistent Firestore queries
+        final canonCountry = _canonCountry(d.countryOfResidence);
+        final canonMaritalStatus = _canonMarital(relationshipStatus);
+
         final payload = <String, dynamic>{
           // Flat fields specific to dating flow
-          'countryOfResidence': d.countryOfResidence,
+          'countryOfResidence': canonCountry, // Store canonicalized for query consistency
           'contactInfo': d.contactInfo,
           'profileCompleted': true,
           'verificationStatus': 'pending',
           'verificationQueuedAt': FieldValue.serverTimestamp(),
+          // Profile searchable attributes (for dating.{field} queries)
+          'maritalStatus': canonMaritalStatus, // Use canonicalized value
+          'haveKids': null, // TODO: Collect in dedicated onboarding screen
+          'longDistance': null, // TODO: Collect in dedicated onboarding screen  
+          'genotype': null, // TODO: Collect in dedicated onboarding screen
           // Review pack for admin queue
           'reviewPack': {
             'photoUrls': photoUrls,
@@ -338,7 +381,7 @@ class _DatingContactInfoScreenState
           'profile': {
             'age': d.age,
             'city': d.city,
-            'country': d.countryOfResidence,
+            'country': canonCountry, // Also canonicalized for consistency
             'nationality': d.nationality,
             'educationLevel': d.educationLevel,
             'profession': d.profession,
@@ -455,7 +498,7 @@ class _InputTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.primary),
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
                 borderRadius: BorderRadius.circular(14),
               ),
             ),
@@ -508,7 +551,7 @@ class _PhoneInputTile extends StatelessWidget {
                     fit: BoxFit.contain,
                   )
                 else if (materialIcon != null)
-                  Icon(materialIcon, size: 24, color: AppColors.primary),
+                  Icon(materialIcon, size: 24, color: Theme.of(context).colorScheme.primary),
                 const SizedBox(width: 10),
                 Text(label, style: AppTextStyles.labelLarge),
               ],
@@ -543,7 +586,7 @@ class _PhoneInputTile extends StatelessWidget {
                         borderRadius: BorderRadius.circular(14),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.primary),
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       contentPadding: const EdgeInsets.symmetric(

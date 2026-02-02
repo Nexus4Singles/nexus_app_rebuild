@@ -253,26 +253,25 @@ class DatingSearchService {
     final isOthers = selNorm == 'others' || selNorm.startsWith('other');
 
     if (isOthers) {
-      final pc = _canonCountry(p.country);
-      if (pc.isEmpty) return false;
+      final profileCountry = p.country;
+      if (profileCountry == null || profileCountry.isEmpty) return false;
 
       final options = f.countryOptions ?? const <String>[];
-      final canonSet = <String>{};
+      final countriesInList = <String>{};
 
       for (final o in options) {
         final on = _normBasic(o);
         if (on.isEmpty) continue;
         if (on == 'others' || on.startsWith('other')) continue;
-        final oc = _canonCountry(o);
-        if (oc.isNotEmpty) canonSet.add(oc);
+        countriesInList.add(o); // Store exact value
       }
 
       // Keep only profiles whose country isn't in the main list.
-      return !canonSet.contains(pc);
+      return !countriesInList.contains(profileCountry);
     }
 
-    // Normal country match
-    return _eqCanon(p.country, selected, _canonCountry);
+    // Exact match (both should be properly capitalized)
+    return p.country == selected;
   }
 
   bool _matchDistance(DatingProfile p, DatingSearchFilters f) =>
@@ -335,12 +334,61 @@ class DatingSearchService {
     return out;
   }
 
+  /// Quick check to see if any profiles exist for a country without doing full search
+  /// Returns true if at least one profile exists in the country (for any gender)
+  Future<bool> countryHasProfiles({
+    required String country,
+  }) async {
+    if (country.isEmpty) return false;
+
+    // Canonicalize the country name to match stored format
+    final canonCountry = _canonCountry(country);
+    if (canonCountry.isEmpty) return false;
+
+    final genders = {'male', 'Male', 'female', 'Female', 'man', 'Man', 'woman', 'Woman'};
+    
+    try {
+      // Quick check: look for ANY profile in this country (v2 or v1)
+      for (final g in genders) {
+        // Check v2 verified profiles
+        final v2Snap = await _fs
+            .collection('users')
+            .where('gender', isEqualTo: g)
+            .where('dating.verificationStatus', isEqualTo: 'verified')
+            .where('dating.countryOfResidence', isEqualTo: canonCountry)
+            .limit(1)
+            .get();
+        
+        if (v2Snap.docs.isNotEmpty) return true;
+
+        // Check v1 legacy profiles
+        final v1Snap = await _fs
+            .collection('users')
+            .where('gender', isEqualTo: g)
+            .where('registration_progress', isEqualTo: 'completed')
+            .where('country', isEqualTo: canonCountry)
+            .limit(1)
+            .get();
+        
+        if (v1Snap.docs.isNotEmpty) return true;
+      }
+
+      return false;
+    } catch (e) {
+      if (kDebugMode) {
+        // ignore: avoid_print
+        print('[DatingSearchService] Error checking country: $e');
+      }
+      return false;
+    }
+  }
+
   /// Assumption based on Nexus 1.0: dating profiles live in users collection.
   /// We filter on gender at query-level and apply the rest in-memory safely.
   Future<DatingSearchResult> search({
     required String genderToShow,
     required DatingSearchFilters filters,
-    int limit = kDebugMode ? 1000 : 60,
+    int limit = kDebugMode ? 1000 : 10,
   }) async {
     final genders = _genderQueryValues(genderToShow);
     if (genders.isEmpty)
@@ -348,30 +396,96 @@ class DatingSearchService {
 
     final futures = <Future<QuerySnapshot<Map<String, dynamic>>>>[];
     for (final g in genders) {
-      final verifiedQ = _fs
+      // Build v2 verified query with server-side filters
+      var verifiedQ = _fs
           .collection('users')
           .where('gender', isEqualTo: g)
-          .where('dating.verificationStatus', isEqualTo: 'verified')
-          .limit(limit);
+          .where('dating.verificationStatus', isEqualTo: 'verified');
+      
+      // Apply server-side filters before fetching
+      if (!_selectedMeansAny(filters.countryOfResidence)) {
+        final country = filters.countryOfResidence; // Use exact value (already capitalized)
+        if (country != null && country.isNotEmpty) {
+          if (kDebugMode) {
+            // ignore: avoid_print
+            print('[DatingSearchService] V2 query filter: country="$country" (exact match)');
+          }
+          verifiedQ = verifiedQ.where('dating.countryOfResidence', isEqualTo: country);
+        }
+      }
+      
+      // IMPORTANT: Don't filter on optional fields (marital, kids, distance, genotype) at server level
+      // because v1 profiles may not have these fields, causing Firestore to return 0 results.
+      // Filter these in-memory after fetching by country and gender.
+      
+      verifiedQ = verifiedQ.limit(limit);
 
       final regValues = _registrationProgressQueryValues('completed');
 
-      // v2 verified query (kept as-is)
+      // v2 verified query (with filters applied)
       futures.add(verifiedQ.get());
 
-      // v1 legacy query: only pull registration_progress == completed (case variants)
+      // v1 legacy query: only filter by gender, registration_progress, and country
       for (final reg in regValues) {
-        final legacyQ = _fs
+        var legacyQ = _fs
             .collection('users')
             .where('gender', isEqualTo: g)
-            .where('registration_progress', isEqualTo: reg)
-            .limit(limit);
-
+            .where('registration_progress', isEqualTo: reg);
+        
+        // Apply country filter to legacy profiles
+        if (!_selectedMeansAny(filters.countryOfResidence)) {
+          final country = filters.countryOfResidence; // Use exact value (already capitalized)
+          if (country != null && country.isNotEmpty) {
+            if (kDebugMode) {
+              // ignore: avoid_print
+              print('[DatingSearchService] V1 query filter: country="$country" (exact match)');
+            }
+            // V1 legacy profiles store country in location.country with capitalization
+            legacyQ = legacyQ.where('location.country', isEqualTo: country);
+          }
+        }
+        
+        // IMPORTANT: Don't filter on optional fields (marital, kids, distance, genotype) at server level
+        // because v1 profiles may not have these fields, causing Firestore to return 0 results.
+        // Filter these in-memory after fetching by country and gender.
+        
+        legacyQ = legacyQ.limit(limit);
         futures.add(legacyQ.get());
       }
     }
 
     final snaps = await Future.wait(futures);
+    
+    if (kDebugMode) {
+      int totalSnapDocs = 0;
+      for (final s in snaps) {
+        totalSnapDocs += s.docs.length;
+      }
+      // ignore: avoid_print
+      print('[DatingSearchService] Firestore query returned $totalSnapDocs total documents from ${snaps.length} queries');
+      
+      // If 0 documents, do a diagnostic query to see if ANY profiles exist
+      if (totalSnapDocs == 0) {
+        final diagnosticSnap = await _fs
+            .collection('users')
+            .where('gender', isEqualTo: 'female')
+            .limit(5)
+            .get();
+        // ignore: avoid_print
+        print('[DatingSearchService] DIAGNOSTIC: Querying users with gender=female found ${diagnosticSnap.docs.length} documents');
+        for (int i = 0; i < diagnosticSnap.docs.length && i < 2; i++) {
+          final data = diagnosticSnap.docs[i].data();
+          final dating = data['dating'];
+          final profile = data['profile'];
+          // ignore: avoid_print
+          print('[DatingSearchService] SAMPLE DOC: uid=${diagnosticSnap.docs[i].id}, '
+              'dating.country=${dating is Map ? dating['countryOfResidence'] : 'N/A'}, '
+              'profile.country=${profile is Map ? profile['country'] : 'N/A'}, '
+              'flat country=${data['country']}, '
+              'dating.verif=${dating is Map ? dating['verificationStatus'] : 'N/A'}');
+        }
+      }
+    }
 
     final combined = <String, DatingProfile>{};
     int seenDocs = 0;
@@ -386,6 +500,18 @@ class DatingSearchService {
         final data = d.data();
 
         seenDocs++;
+
+        // DEBUG: Log first 3 documents to see actual field structure
+        if (seenDocs <= 3 && kDebugMode) {
+          final dating = data['dating'];
+          final profile = data['profile'];
+          // ignore: avoid_print
+          print('[DatingSearchService] Doc #$seenDocs structure: '
+              'dating.countryOfResidence=${dating is Map ? dating['countryOfResidence'] : 'N/A'}, '
+              'profile.country=${profile is Map ? profile['country'] : 'N/A'}, '
+              'country=${data['country']}, '
+              'uid=${d.id}');
+        }
 
         // Enforce: disabled accounts are NOT visible in search results.
         if (_isDisabledUserDoc(data)) {
@@ -500,6 +626,7 @@ class DatingSearchService {
 
     // Capture the *first* filter that turns results to zero (non-random UI hint).
     String? emptyHint;
+    bool noProfilesInCountry = false;
 
     void captureEmptyHint(String label, String? selected) {
       if (emptyHint != null) return;
@@ -519,7 +646,13 @@ class DatingSearchService {
     );
     if (current.isEmpty) {
       captureEmptyHint('Country', filters.countryOfResidence);
-      return DatingSearchResult(items: current, emptyHint: emptyHint);
+      // If we have 0 results after country filter, no profiles exist in this country
+      noProfilesInCountry = true;
+      return DatingSearchResult(
+        items: current,
+        emptyHint: emptyHint,
+        noProfilesInCountry: noProfilesInCountry,
+      );
     }
 
     current = _step(
@@ -532,7 +665,12 @@ class DatingSearchService {
     );
     if (current.isEmpty) {
       captureEmptyHint('Long distance', filters.longDistance);
-      return DatingSearchResult(items: current, emptyHint: emptyHint);
+      // Profiles exist in country but don't match distance preference
+      return DatingSearchResult(
+        items: current,
+        emptyHint: emptyHint,
+        noProfilesInCountry: false,
+      );
     }
 
     current = _step(
@@ -545,7 +683,12 @@ class DatingSearchService {
     );
     if (current.isEmpty) {
       captureEmptyHint('Marital status', filters.maritalStatus);
-      return DatingSearchResult(items: current, emptyHint: emptyHint);
+      // Profiles exist in country but don't match marital status preference
+      return DatingSearchResult(
+        items: current,
+        emptyHint: emptyHint,
+        noProfilesInCountry: false,
+      );
     }
 
     current = _step(
@@ -558,7 +701,12 @@ class DatingSearchService {
     );
     if (current.isEmpty) {
       captureEmptyHint('Marital status', filters.maritalStatus);
-      return DatingSearchResult(items: current, emptyHint: emptyHint);
+      // Profiles exist in country but don't match kids preference
+      return DatingSearchResult(
+        items: current,
+        emptyHint: emptyHint,
+        noProfilesInCountry: false,
+      );
     }
 
     current = _step(
@@ -571,10 +719,29 @@ class DatingSearchService {
     );
 
     if (kDebugMode) {
+      // Diagnostic: show genotype breakdown if filtered to 0
+      if (current.isEmpty && afterAge.isNotEmpty && !_selectedMeansAny(filters.genotype)) {
+        final genotypeBreakdown = <String, int>{};
+        for (final p in afterAge) {
+          final g = _canonGenotype(p.genotype);
+          genotypeBreakdown[g] = (genotypeBreakdown[g] ?? 0) + 1;
+        }
+        // ignore: avoid_print
+        print('[DatingSearchService] GENOTYPE BREAKDOWN after age filter: $genotypeBreakdown');
+        // ignore: avoid_print
+        print('[DatingSearchService] Looking for: "${_canonGenotype(filters.genotype)}"');
+      }
+      
       // ignore: avoid_print
       print('[DatingSearchService] filtered=${current.length}');
     }
 
-    return DatingSearchResult(items: current, emptyHint: emptyHint);
+    // If we reach here with 0 results, it means profiles exist in the country
+    // but got filtered out by genotype or other preferences
+    return DatingSearchResult(
+      items: current,
+      emptyHint: emptyHint,
+      noProfilesInCountry: false,
+    );
   }
 }

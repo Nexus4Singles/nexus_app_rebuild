@@ -7,6 +7,7 @@ import '../constants/app_constants.dart';
 
 import '../../features/presentation/screens/home_screen.dart';
 import '../../features/presentation/screens/search_screen.dart';
+import '../../features/dating_search/presentation/screens/new_dating_search_screen.dart';
 import '../../features/presentation/screens/chats_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/dating_onboarding/presentation/screens/dating_age_screen.dart';
@@ -143,7 +144,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case '/search':
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const SearchScreen(),
+        builder: (_) => const NewDatingSearchScreen(),
       );
 
     case '/chats':

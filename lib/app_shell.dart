@@ -5,6 +5,7 @@ import 'core/constants/app_constants.dart';
 import 'core/session/effective_relationship_status_provider.dart';
 import 'safe_imports.dart';
 import 'features/stories/presentation/screens/stories_screen.dart';
+import 'features/dating_search/presentation/screens/new_dating_search_screen.dart';
 
 class AppShell extends ConsumerStatefulWidget {
   const AppShell({super.key});
@@ -21,7 +22,7 @@ class _AppShellState extends ConsumerState<AppShell> {
       case NavTab.home:
         return const HomeScreen();
       case NavTab.search:
-        return const SearchScreen();
+        return const NewDatingSearchScreen();
       case NavTab.chats:
         return const ChatsScreen();
       case NavTab.stories:

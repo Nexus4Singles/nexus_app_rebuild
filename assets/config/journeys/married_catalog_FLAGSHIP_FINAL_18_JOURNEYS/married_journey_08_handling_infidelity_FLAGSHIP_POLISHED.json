@@ -1,0 +1,762 @@
+{
+  "journeyId": "married_handling_infidelity",
+  "title": "Handling Infidelity in Marriage",
+  "subtitle": "Navigating the aftermath of the deepest betrayal",
+  "summary": "Discovering that your spouse has been unfaithful is one of the most devastating experiences a person can face. The world you thought you knew collapses. Whether you are the betrayed spouse trying to survive, or the unfaithful spouse facing the wreckage of your choices, this journey provides guidance for the long road ahead. Healing is possible, but it requires truth, time, and tremendous courage from both of you.",
+  "targetUserCategory": "married",
+  "priorityRank": 8,
+  "estimatedDays": 18,
+  "totalActivities": 10,
+  "difficulty": "advanced",
+  "themeColor": "#37474F",
+  "cover": {
+    "themeTag": "Infidelity Recovery",
+    "accentIcon": "heart_broken",
+    "heroImage": "assets/images/journeys/married_infidelity_hero.jpg",
+    "heroImageDescription": "A broken heart being held together by two pairs of hands, symbolizing the painful work of restore after infidelity. Muted tones suggesting gravity with subtle warmth suggesting hope."
+  },
+  "frameworks": [
+    "infidelity_recovery",
+    "attachment_repair",
+    "trauma_informed",
+    "biblical_restoration"
+  ],
+  "targetOutcomes": [
+    "Understand the unique devastation of infidelity and why it cuts so deep",
+    "Process the trauma of discovery in healthy ways",
+    "Navigate the decision about whether to stay or leave",
+    "Learn what genuine healing requires from both partners",
+    "Understand what the unfaithful spouse must do to rebuild",
+    "Find the path toward forgiveness and possible restoration"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_aftermath",
+      "isFree": true,
+      "title": "The Day Everything Changed: Surviving the Aftermath",
+      "subtitle": "Making sense of the devastation you are experiencing",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "thunderstorm",
+      "emotionalIntensity": "very_high",
+      "activityType": "teaching",
+      "whyThisMatters": "If you have recently discovered infidelity, you are likely in shock. Nothing makes sense. This activity helps you understand what you are experiencing and provides immediate guidance for surviving the initial crisis.",
+      "frameworkBasis": {
+        "conceptKey": "discovery_crisis",
+        "explanation": "The discovery of infidelity creates acute trauma that requires specific support and understanding to navigate safely."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The World That Collapsed",
+          "text": "Infidelity reshapes safety and stability in marriage.\nHealing takes honesty, boundaries, and time.\n\nThis journey guides couples toward restoration with clarity and care.\n\nThere is a before and an after in your life now. Before you knew, and after you found out. The discovery of infidelity is unlike any other pain. It is not just that your spouse did something wrong. It is that the person who was supposed to be your safe place, your partner, your one person, became the source of the deepest wound you have ever received. You are not just grieving what they did. You are grieving who you thought they were. You are questioning everything you believed about your marriage, your judgment, yourself. If you feel like you are going crazy right now, you are not. You are responding normally to an abnormal situation.",
+          "icon": "landscape"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What You Might Be Experiencing",
+          "text": "In the aftermath of discovery, you may experience intense waves of emotion that shift rapidly. One moment rage, the next sobbing grief, the next eerie numbness. This emotional whiplash is exhausting but normal. You may find yourself obsessing over details, wanting to know everything and then wishing you knew nothing. You may replay moments looking for signs you missed. Your body may respond with physical symptoms like inability to eat or sleep, nausea, chest pain, or shaking. These are trauma responses and they are real. You may have intrusive mental images that you cannot stop, scenes your mind creates that torture you. These images are one of the cruelest aspects of this particular trauma.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Immediate Survival Guidance",
+          "text": "Right now, your only job is to survive. Not to make major decisions. Not to know what you will do. Just to get through each day. Take care of your physical body even when you do not want to. Force yourself to eat something small. Try to sleep, even if you need help. Move your body, even just a short walk around the block. Limit who you tell initially because you cannot untell people. Choose one or two safe confidants rather than broadcasting to everyone while you are in crisis. Do not make permanent decisions in the acute phase. Whether to divorce, whether to tell the children, whether to expose the affair publicly can all wait until you are thinking more clearly.",
+          "icon": "medical_services"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "For the Unfaithful Spouse",
+          "text": "If you are the one who was unfaithful and you are doing this journey, that takes courage. What follows will be hard to hear, but it is necessary. You did this. Whatever problems existed in your marriage, whatever needs were unmet, whatever circumstances seemed to justify your choices, you chose to betray your spouse. That choice was yours and the consequences are yours to bear. Your spouse's pain right now is not manipulation or punishment. It is the natural consequence of what you did. They are not overreacting. If you want any chance of saving this marriage, you need to understand that the next months and years will require you to face uncomfortable truths, answer painful questions, and demonstrate change through sustained action rather than just words.",
+          "icon": "gavel"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Current Position",
+          "text": "Which best describes your situation right now?",
+          "prompts": [
+            "I recently discovered my spouse was unfaithful and I am in crisis",
+            "I discovered the infidelity a while ago and I am still processing",
+            "I am the unfaithful spouse trying to understand the damage I caused",
+            "We are both trying to work through this together",
+            "I am still discovering the full extent of what happened"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Whatever your position, this journey has content for you. The path is long, but many couples have walked it before you."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Road Ahead",
+          "text": "This journey will address the unique devastation of infidelity and why it cuts so deep. It will help the betrayed spouse process trauma and make decisions about the future. It will guide the unfaithful spouse through genuine repentance and change. Not all marriages survive infidelity. Not all should. But many do, and some emerge stronger than before. Whether your marriage survives or not, you can survive and eventually thrive. For now, focus on getting through today, one hour at a time if needed. 'The Lord is close to the brokenhearted and saves those who are crushed in spirit.' (Psalm 34:18)",
+          "icon": "route"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_why_it_hurts",
+      "isFree": false,
+      "title": "Why Infidelity Cuts So Deep: Understanding the Wound",
+      "subtitle": "Making sense of pain that seems unbearable",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "heart_broken",
+      "emotionalIntensity": "very_high",
+      "activityType": "teaching",
+      "whyThisMatters": "Understanding why infidelity hurts so deeply can actually help in the healing process. This is not ordinary pain, and knowing why helps you be patient with yourself.",
+      "frameworkBasis": {
+        "conceptKey": "infidelity_trauma",
+        "explanation": "Infidelity creates unique trauma because it attacks core aspects of attachment, identity, and reality simultaneously."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "More Than Broken Rules",
+          "text": "Infidelity is not just about sex. It is not even primarily about sex. That is why it hurts so much more than other betrayals. Infidelity attacks your attachment bond. Your spouse was supposed to be your primary attachment figure, the person you turn to for safety and comfort. When they become the source of your deepest wound, your attachment system goes haywire. Infidelity shatters your reality. You thought you knew your marriage, your spouse, your life. Now you discover you were living in a false reality without knowing it. Infidelity wounds your identity. If they could do this, what does that mean about you? Were you not enough? These questions attack your very sense of self.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Layers of Loss",
+          "text": "When you discover infidelity, you experience multiple losses at the same time. You lose your sense of the past. Memories that felt precious are now tainted. Was that anniversary trip real love, or were they already involved with someone else? You lose your sense of the present. The person standing in front of you is not who you thought they were. You have to figure out who they actually are. You lose your sense of the future. The plans you made together, the dreams you shared, the future you envisioned is gone or at least radically uncertain. You lose your sense of safety. If this could happen, what else could happen? Trust in the goodness of life itself can be shattered.",
+          "icon": "layers"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Trauma Response",
+          "text": "What you are experiencing is not weakness or inability to cope. It is trauma. Your brain and body are responding to infidelity the way they respond to any serious threat. The intrusive thoughts and images are your brain trying to process something that does not fit your understanding of reality. It keeps replaying the information trying to make sense of it. The hypervigilance and constantly checking for more evidence is your nervous system trying to protect you from further harm. The physical symptoms are real. Emotional trauma creates physical responses. Chest pain, nausea, inability to eat or sleep are common. Knowing this is trauma does not make it hurt less, but it helps you understand that you are not falling apart. You are having a normal response to an abnormal situation.",
+          "icon": "medical_services"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Question of Why",
+          "text": "You will ask why countless times. Why did they do this? Why was I not enough? Why our marriage? Here is a hard truth: there is no answer to the why question that will make this make sense. No explanation will be satisfying. Even if you understand every factor that contributed, you will still think they could have made different choices. Eventually, if the unfaithful spouse is genuinely repentant, understanding why can be part of healing. But in the acute phase, the why question often just creates more pain. For now, it may help to accept that you may never fully understand why, and your healing does not depend on understanding why.",
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Naming Your Pain",
+          "text": "Take a moment to name what you are experiencing. Not to analyze it, just to acknowledge it. What emotions are present right now? What have you lost? What questions torment you? What hurts the most? Sometimes putting pain into words helps it feel slightly more manageable. You are not just in pain. You are experiencing specific griefs that can be named. Write what you are experiencing:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Being Gentle with Yourself",
+          "text": "This week, practice being gentle with yourself in the midst of this pain. Do not expect yourself to function normally. You are in crisis and your capacity is reduced. Do not judge yourself for what you are feeling because there is no wrong way to respond to this kind of betrayal. Do something small each day that is kind to yourself. A bath, a walk, time with a friend, whatever brings even momentary relief. Remember that the intensity of what you are feeling now will not last forever. The acute phase does ease with time, even though it does not feel that way right now. What one kind thing will you do for yourself today?",
+          "icon": "spa"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_unfaithful_work",
+      "isFree": false,
+      "title": "The Unfaithful Spouse's Work: What Real Change Requires",
+      "subtitle": "For the one who strayed and wants to make it right",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "engineering",
+      "emotionalIntensity": "very_high",
+      "activityType": "teaching",
+      "whyThisMatters": "If you are the unfaithful spouse and you want to save your marriage, you need to understand what genuine change requires. Half measures will not work. This activity outlines the real work you must do.",
+      "frameworkBasis": {
+        "conceptKey": "unfaithful_recovery",
+        "explanation": "The unfaithful spouse must take specific actions and adopt specific postures for any chance of genuine recovery."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Weight of What You Did",
+          "text": "Before anything else, you need to sit with the full weight of what you did. Not to wallow in shame, but to truly understand the impact of your choices. You did not just break a rule. You shattered your spouse's reality. You made them question everything they believed about you, about themselves, about your marriage. You gave something sacred to someone else. You lived a double life while they trusted you completely. Every time they looked at you with love during the affair, they did not know who they were really looking at. Every time they trusted you, they were trusting a lie. You need to feel this weight because understanding the impact is essential for genuine change.",
+          "icon": "fitness_center"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Complete Termination",
+          "text": "If you are still in contact with the affair partner in any way, recovery cannot begin. Complete termination is non-negotiable. This means no contact whatsoever. Not to check on them. Not to explain why you are ending it. Not to say goodbye properly. Nothing at all. If you work with the person, you need to change jobs or departments. If they are in your social circle, you need to remove them completely. If they contact you, do not respond and tell your spouse immediately. Your spouse needs to see the termination. A written no contact message that your spouse witnesses can provide assurance that it is truly over. You cannot hold on to even a thread of the affair and expect your spouse to heal.",
+          "icon": "block"
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "What Safety Means Now",
+          "text": "Describe what safety would look like for you at this stage.\n\nWhat boundaries or actions would help restore emotional steadiness?",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Radical Transparency",
+          "text": "After infidelity, you lose the right to privacy for a season. You lived a secret life, so now you must live a completely open one. This means full access to your phone, email, social media, and any other accounts. Not grudging access, but freely offered access that your spouse can use anytime. This means your spouse knows where you are at all times through location sharing, check ins, and no unexplained absences. This means answering questions honestly, even when they ask the same questions repeatedly. Their need to ask again is part of their processing, not an attack on you. This level of transparency feels invasive because it is supposed to. You created a situation where your word cannot be trusted, so transparency provides the verification your spouse needs.",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Patient Endurance",
+          "text": "Recovery takes years, not months. During that time, you will need to endure things that feel unbearable. You will need to endure your spouse's pain without becoming defensive. They are not attacking you. They are bleeding from a wound you caused. You will need to endure the same questions over and over without getting frustrated. Their need to ask repeatedly is about trauma processing. You will need to endure setbacks when things seem to be improving and then suddenly your spouse is back in intense pain. Healing is not linear. You will need to endure the uncertainty of not knowing if this will work. Your spouse cannot promise they will eventually forgive you. You have to do the work without guaranteed outcomes.",
+          "icon": "hourglass_empty"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "Your Honest Assessment",
+          "text": "If you are the unfaithful spouse, honestly assess where you are in this process. Have you completely terminated contact with the affair partner? Have you offered radical transparency? Are you demonstrating patient endurance or are you pushing for faster healing? What aspects of this work are you struggling with? What excuses or justifications are you still holding onto? Write your honest assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 7,
+          "title": "The Work Begins Now",
+          "text": "If you want any chance of saving this marriage, the work begins now. Not when it is convenient. Not when you feel ready. If you have not completely terminated contact, do it today. If you have not offered full transparency, offer it today. If you have been defensive or impatient, acknowledge it to your spouse today. Your spouse is watching to see if you are serious. Every day you delay, every half measure you take, tells them you are not fully committed to change. What will you do today to demonstrate that you are serious about the work of recovery?",
+          "icon": "play_arrow"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_disclosure",
+      "isFree": false,
+      "title": "The Whole Truth: Navigating Disclosure",
+      "subtitle": "Understanding what needs to be told and how",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "description",
+      "emotionalIntensity": "very_high",
+      "activityType": "teaching",
+      "whyThisMatters": "One of the most difficult aspects of infidelity recovery is disclosure. How much does the betrayed spouse need to know? How much is helpful versus harmful? This activity helps navigate these painful questions.",
+      "frameworkBasis": {
+        "conceptKey": "disclosure_process",
+        "explanation": "Therapeutic disclosure requires balancing the betrayed spouse's need for truth with protection from unnecessary traumatic details."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Need to Know",
+          "text": "After discovering infidelity, the betrayed spouse typically has an overwhelming need to know the details. This can feel like obsession, but it serves an important purpose. You were living in a false reality. Your spouse controlled the narrative by hiding the truth. Now you need to know what actually happened so you can reconstruct an accurate understanding of your life. This need to know is also about testing. Can your spouse now tell you the truth? If they trickle out information or minimize what happened, it tells you they are still being deceptive. The need to know typically decreases over time as the betrayed spouse integrates the information. But in the early stages, it can feel insatiable.",
+          "icon": "search"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Danger of Trickle Truth",
+          "text": "One of the most damaging things an unfaithful spouse can do is reveal information slowly over time. This is called trickle truth. Trickle truth happens when the unfaithful spouse admits only to what they think their spouse already knows, then reveals more when confronted, then more again when evidence appears. Each new revelation restarts the trauma. The betrayed spouse starts to heal from what they know, then discovers there was more. They heal from that, then discover there was still more. This cycle can be more damaging than the affair itself. Complete disclosure, while painful, allows healing to begin from a stable foundation of truth rather than constantly shifting ground.",
+          "icon": "water_drop"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What to Share",
+          "text": "Experts differ on exactly how much detail should be disclosed. Some advocate for complete disclosure of everything while others suggest sharing the full truth without graphic sexual details. Generally, the betrayed spouse needs to know the nature and extent of the affair, whether it was emotional or physical or both, and how long it lasted. They need to know who the affair partner is, especially if it is someone they know. They need the basic facts of when, where, and how often. What may be optional are graphic sexual details that serve no purpose except to create painful images that cannot be erased. Discuss together what level of detail feels right. The betrayed spouse should have significant say in this decision.",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Formal Disclosure Process",
+          "text": "Many counselors recommend a formal disclosure process. This typically involves the unfaithful spouse writing out a complete account of everything that happened. A therapist reviews it first, then the disclosure is shared in a therapeutic setting with support present. This formal process has several advantages. It forces the unfaithful spouse to account for everything at once. It provides a controlled environment with professional support. It creates a clear moment where the betrayed spouse knows they now have the full truth. If disclosure has been handled poorly with trickle truth or continued deception, a formal disclosure process may be necessary to establish that now, finally, everything is on the table. Consider seeking a counselor who specializes in infidelity recovery to guide this process.",
+          "icon": "assignment"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Disclosure Situation",
+          "text": "Reflect on how disclosure has been handled in your situation. If you are the betrayed spouse, do you feel you have the full truth? Are there questions you still need answered? Has there been trickle truth? If you are the unfaithful spouse, have you disclosed everything? Are you still hiding anything? What needs to happen with disclosure for you to move forward? Write your reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Getting to Full Truth",
+          "text": "If disclosure has not been complete and honest, this needs to be addressed. For the unfaithful spouse: Is there anything you have not disclosed? Anything you minimized or left out? If so, you need to come clean. More trickle truth will only deepen the damage. For the betrayed spouse: What do you still need to know? Consider whether graphic details will help your healing or harm it. This week, have an honest conversation about the state of disclosure. Is everything on the table? What else is needed? The goal is to reach a point where the betrayed spouse can say I may not know every detail, but I believe I now know the truth.",
+          "icon": "fact_check"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_stay_or_go",
+      "isFree": false,
+      "title": "The Impossible Question: Should I Stay or Should I Go?",
+      "subtitle": "Navigating the decision about your marriage's future",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "call_split",
+      "emotionalIntensity": "very_high",
+      "activityType": "teaching",
+      "whyThisMatters": "If your spouse was unfaithful, you face an agonizing decision. Do you stay and try to rebuild, or do you leave? This activity helps you think through this decision without pressure or judgment.",
+      "frameworkBasis": {
+        "conceptKey": "decision_process",
+        "explanation": "The decision to stay or leave after infidelity is deeply personal and should be made thoughtfully rather than reactively."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "No Easy Answers",
+          "text": "There is no formula for this decision. People you respect will give you conflicting advice. Some will say once a cheater, always a cheater. Others will say marriage is sacred and you must fight for it. The truth is that some marriages can and should survive infidelity. Others cannot and should not. Knowing which category yours falls into requires discernment, not dogma. You do not have to decide today. In fact, you probably should not. Making permanent decisions in the acute phase of trauma often leads to regret either way. Give yourself time to move out of crisis before committing to a final decision.",
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Factors That Favor Staying",
+          "text": "Some situations are more amenable to recovery than others. Your spouse is genuinely remorseful, not just sorry they got caught, but deeply grieved by what they did to you. They take full responsibility without excuses. They have completely ended the affair and are willing to be radically transparent. They are patient with your pain and not pushing you to heal faster. This was out of character. They have otherwise been trustworthy and this was a terrible failure rather than a pattern. You both want to save the marriage and are willing to do the hard work required. None of these factors guarantee success, but their presence makes recovery more possible.",
+          "icon": "thumb_up"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Factors That Favor Leaving",
+          "text": "Some situations make recovery unlikely or inadvisable. Your spouse is not truly remorseful. They are defensive, blame shifting, or more concerned about consequences than about hurting you. They have not completely ended the affair or are unwilling to be transparent. They resist accountability measures. This is part of a pattern. There have been multiple affairs or a history of deception. They are pushing you to move on and get over it rather than patiently supporting your healing. You have tried before and they promised to change but did not. If multiple factors from this list are present, the marriage may not be salvageable regardless of how much you want to save it.",
+          "icon": "thumb_down"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "What Scripture Says",
+          "text": "Scripture speaks to both the seriousness of infidelity and the possibility of restoration. Jesus named sexual immorality as legitimate grounds for divorce. You are not sinning if you choose to leave. 'I tell you that anyone who divorces his wife, except for sexual immorality, and marries another woman commits adultery.' (Matthew 19:9) At the same time, Scripture is full of themes of forgiveness, redemption, and restoration. God Himself describes His relationship with unfaithful Israel using marriage imagery. You are not required to stay. You are not required to leave. You have freedom to make this decision based on your situation and what you believe God is leading you toward.",
+          "icon": "auto_stories"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Where You Are Leaning",
+          "text": "You do not have to have a final answer, but it can be helpful to acknowledge where you are leaning right now. What factors are making you consider staying? What factors are making you consider leaving? What would need to be true for you to choose to stay and work on this marriage? What would need to be true for you to choose to leave? Write your honest reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Taking the Pressure Off",
+          "text": "You do not have to decide right now. Many counselors recommend committing to a period of time, perhaps three to six months, where you focus on healing and assessing rather than deciding. During this time, the unfaithful spouse should be doing the work of recovery. You are watching to see if they are serious. You are processing your own pain. At the end of that period, you reassess. Is your spouse doing the work? Is there genuine change? Do you want to continue trying? This approach gives you time without committing you to a path you might regret. Consider committing to a defined period of active assessment rather than forcing yourself to decide before you are ready.",
+          "icon": "schedule"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_rebuilding_safety",
+      "isFree": false,
+      "title": "Creating Safety Again: Boundaries and Accountability",
+      "subtitle": "Establishing the structures that make recovery possible",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "security",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "If you are choosing to work on the marriage, you need clear boundaries and accountability structures. These create the safety necessary for the betrayed spouse to begin risking trust again.",
+      "frameworkBasis": {
+        "conceptKey": "safety_structures",
+        "explanation": "Clear boundaries and accountability measures provide the betrayed spouse with needed security while trust rebuilds."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Boundaries Are Essential",
+          "text": "After infidelity, the betrayed spouse needs to know that specific measures are in place to prevent recurrence. Vague promises to do better are not enough. These boundaries serve multiple purposes. They physically prevent certain situations from arising. They provide verifiable evidence that the unfaithful spouse is doing what they say. They demonstrate that the unfaithful spouse takes this seriously enough to accept significant restrictions. For the unfaithful spouse, accepting these boundaries is part of taking responsibility. You created a situation where your word cannot be trusted. These structures provide the proof your words cannot.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Boundaries Around the Affair Partner",
+          "text": "The most essential boundary is complete separation from the affair partner. No contact means no contact whatsoever. No checking their social media. No responding if they reach out. No one last conversation. If contact is truly unavoidable due to work, then interactions must be limited to absolutely necessary logistics, documented, and shared with the spouse. If the affair partner reaches out, the unfaithful spouse tells their spouse immediately and does not respond. The affair partner should be blocked on all platforms and their number blocked on the phone. Any accidental encounter must be reported right away. These boundaries are not negotiable. Any resistance is a major red flag.",
+          "icon": "block"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Transparency Boundaries",
+          "text": "The unfaithful spouse needs to live an open book life for as long as the betrayed spouse needs it. Device transparency means open access to phone, computer, and all accounts. Passwords shared. Nothing hidden. The betrayed spouse can look at any time without asking permission. Location transparency means the unfaithful spouse's location is always known through shared location on phones and check ins when arriving places. Schedule transparency means the betrayed spouse knows how the unfaithful spouse is spending their time with calendar shared and changes communicated. These measures feel invasive because they are the cost of rebuilding trust after breaking it so thoroughly.",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Lifestyle Boundaries",
+          "text": "Depending on how the affair happened, certain lifestyle boundaries may be necessary. Travel boundaries might limit solo business trips or require extra accountability during travel. Social boundaries might limit time alone with opposite sex friends or coworkers. Technology boundaries might involve internet filters, accountability software, or restrictions on certain apps. Work boundaries might involve changing jobs if the affair partner is a coworker. Alcohol boundaries might limit drinking if alcohol played a role in lowering inhibitions. These boundaries should be discussed and agreed upon together with the betrayed spouse's need for safety as the primary consideration.",
+          "icon": "tune"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "What Boundaries Do You Need?",
+          "text": "If you are the betrayed spouse, what boundaries would help you feel safer? If you are the unfaithful spouse, what boundaries are you willing to accept? Is there anything you are resisting, and if so, why? What boundaries are already in place? What is missing? Write your reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Creating Your Boundary Agreement",
+          "text": "This week, have a conversation to establish clear boundaries for the recovery period. Discuss boundaries around the affair partner, transparency measures, and lifestyle restrictions. Write these down as a formal agreement that both of you commit to. Also discuss what happens if a boundary is broken. These boundaries are not forever. As trust rebuilds, they can be gradually relaxed. But for now, they provide the structure that makes recovery possible. What boundaries will you establish?",
+          "icon": "handshake"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_triggers",
+      "isFree": false,
+      "title": "When the Pain Returns: Managing Triggers and Setbacks",
+      "subtitle": "Surviving the waves that keep crashing over you",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "waves",
+      "emotionalIntensity": "high",
+      "activityType": "practical",
+      "whyThisMatters": "Healing from infidelity is not linear. There will be triggers and setbacks that bring the pain flooding back. Learning to navigate these moments is essential for both partners.",
+      "frameworkBasis": {
+        "conceptKey": "trigger_management",
+        "explanation": "Triggers are unavoidable after infidelity, and both partners need strategies for navigating them together."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Waves Keep Coming",
+          "text": "Just when you think you are making progress, something happens and the pain is back as intense as the day you found out. A song comes on that reminds you. You drive past a place that was significant. A date on the calendar carries weight. You see something on social media. Your spouse is late and your mind goes to the worst place. These triggers are not a sign that you are failing to heal. They are a normal part of the process. The trauma is stored in your brain and body, and certain cues bring it flooding back. Over time, the triggers become less frequent and less intense. But in the early months, they can hit without warning.",
+          "icon": "water"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Common Triggers",
+          "text": "While triggers are individual, some are common after infidelity. Dates and times can trigger you, such as the anniversary of discovery or times of day when the affair was happening. Places can trigger you, like restaurants, hotels, or locations associated with the affair. People can trigger you, especially the affair partner or anyone who knew and did not tell you. Media can trigger you, such as movies depicting affairs, certain songs, or social media encounters. Behaviors can trigger you, like when your spouse is late, on their phone, or does something that reminds you of the affair period. Knowing your specific triggers can help you prepare for them and communicate them to your spouse.",
+          "icon": "list"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What the Betrayed Spouse Needs During Triggers",
+          "text": "When triggers hit, the betrayed spouse needs several things. They need acknowledgment that this is hard and their pain is valid. Not you should be over this by now but I understand this hurts. They need presence. Often they do not need words. They need you to sit with them in the pain without trying to fix it or rush them through it. They need reassurance that you are here, you are not going anywhere, and you are committed to recovery. They need patience. The trigger will pass, but it needs to run its course. They may need space to process alone, or they may need closeness. Ask what they need rather than assuming.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "What the Unfaithful Spouse Can Do",
+          "text": "When your spouse is triggered, here is what helps. Do not get defensive or frustrated. This is not about you in the moment, even though you caused it. Do not minimize by saying it was months ago or we have been doing so well. Do ask what they need. I can see you are hurting. What do you need from me right now? Do offer reassurance. I am so sorry this happened. I am here. I love you. I am not going anywhere. Do be patient. Hold space for the emotion to pass without trying to fix it or rush it. Your response to triggers tells your spouse whether you are truly in this with them.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Mapping Your Triggers",
+          "text": "If you are the betrayed spouse, what are your main triggers? What brings the pain flooding back? What do you typically need when triggered? If you are the unfaithful spouse, how have you been responding when your spouse is triggered? What could you do differently? Write your reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Creating a Trigger Plan",
+          "text": "This week, discuss triggers and create a plan for handling them together. Identify the main triggers. Can any be avoided? If not, how will you handle them when they occur? Discuss what the betrayed spouse needs during a trigger. Words? Presence? Space? Physical comfort? Create a phrase or signal that means I am triggered right now to allow quick communication without having to explain. Having a plan does not make triggers painless, but it helps you navigate them as partners rather than having them drive you apart. Write your trigger plan:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_forgiveness",
+      "isFree": false,
+      "title": "The Long Road to Forgiveness: Releasing Without Forgetting",
+      "subtitle": "Understanding forgiveness in the context of infidelity",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "spa",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Forgiveness after infidelity is one of the most difficult things a person can do. Understanding what forgiveness really means and how to move toward it is essential for your own healing, whether the marriage survives or not.",
+      "frameworkBasis": {
+        "conceptKey": "infidelity_forgiveness",
+        "explanation": "Forgiveness after infidelity is a process that unfolds over time and does not require forgetting or immediately restoring trust."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Weight of This Forgiveness",
+          "text": "Forgiving a spouse for infidelity may be the hardest forgiveness you will ever offer. This is not forgiving someone who cut you off in traffic. This is forgiving the person who was supposed to protect your heart and instead shattered it. This is forgiving deliberate choices made over time, not a momentary lapse. If you are struggling to forgive, that does not make you a bad Christian or a bitter person. It makes you human. The weight of this forgiveness is enormous. But unforgiveness also carries a weight. It keeps you chained to the offense and poisons your present. For your own sake, moving toward forgiveness matters.",
+          "icon": "fitness_center"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Forgiving Infidelity Is Not",
+          "text": "Forgiving infidelity does not mean pretending it did not happen or minimizing its impact. The affair was real and terrible. It does not mean the pain disappears. You can forgive and still hurt. Forgiveness does not erase the wound. It does not mean immediately trusting again. Forgiveness and trust are different. You can release the debt while still requiring your spouse to rebuild trust through demonstrated behavior. It does not mean staying in the marriage. You can forgive and still decide to leave. Forgiveness is about releasing bitterness, not about what happens to the relationship. It does not mean the relationship returns to what it was. What existed before is gone.",
+          "icon": "block"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What Forgiving Infidelity Is",
+          "text": "Forgiving infidelity is a choice to release the debt. It says you owe me more than you can ever repay, and I am choosing to stop demanding payment. It is refusing to use the affair as a permanent weapon, not bringing it up in every argument or punishing your spouse indefinitely. It is choosing not to let the affair define your identity or your future. You are more than a person who was cheated on. It is an act of faith, trusting God to bring justice and healing. It is a process that unfolds over time. You may need to choose forgiveness again and again as anger resurfaces. That is not failure. That is how forgiveness works with wounds this deep.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Moving Toward Forgiveness",
+          "text": "Moving toward forgiveness often involves stages. First, fully acknowledge the wound. You cannot forgive what you have not faced. Let yourself feel the full weight of what was done. Second, grieve what was lost. The marriage you thought you had. The innocence. The trust. Third, make the choice to forgive. This is a decision, not a feeling. You may not feel forgiving. Fourth, repeat as needed. Anger and pain will resurface. When they do, you choose forgiveness again. Fifth, over time, experience freedom. The affair loses its grip. You can remember without being destroyed. This process takes years, not months. Be patient with yourself.",
+          "icon": "route"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Where Are You with Forgiveness?",
+          "text": "Honestly assess where you are in the forgiveness journey. Are you still acknowledging the wound and grieving? Have you made a choice to forgive? Do you find yourself choosing forgiveness repeatedly as anger resurfaces? What would help you move forward? Write your honest reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "One Step Toward Forgiveness",
+          "text": "You cannot force yourself to the end of the forgiveness journey, but you can take one step. If you are still acknowledging and grieving, give yourself permission to feel what you feel. If you are ready to make a choice, consider writing out what your spouse did, how it hurt, and your choice to release the debt. If you have chosen forgiveness but it keeps resurfacing, that is normal. When anger rises, choose again. Pray for the grace to forgive, even if you do not feel it yet. 'Bear with each other and forgive one another if any of you has a grievance against someone. Forgive as the Lord forgave you.' (Colossians 3:13)",
+          "icon": "directions_walk"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_rebuilding_intimacy",
+      "isFree": false,
+      "title": "Reclaiming What Was Stolen: Rebuilding Sexual Intimacy",
+      "subtitle": "Navigating physical closeness after betrayal",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "favorite",
+      "emotionalIntensity": "high",
+      "activityType": "practical",
+      "whyThisMatters": "Sexual infidelity creates unique wounds around physical intimacy. Rebuilding a healthy sexual relationship after an affair is complex and requires patience and sensitivity from both partners.",
+      "frameworkBasis": {
+        "conceptKey": "sexual_recovery",
+        "explanation": "Sexual intimacy after infidelity must be rebuilt gradually with attention to the betrayed spouse's safety and the unique triggers involved."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Unique Wound",
+          "text": "Sexual infidelity creates a specific wound around physical intimacy that is unlike any other. The act that was supposed to be yours alone, that was meant to express the exclusive bond of your marriage, was given to someone else. Something sacred was violated. The betrayed spouse often experiences complicated feelings about sex afterward. They may feel intense desire to reclaim their spouse physically, or they may feel revulsion at the thought. Often both. They may experience intrusive thoughts during intimacy, images of the affair partner, questions about comparison. These thoughts are torturous and unwanted. Rebuilding sexual intimacy is not just about resuming physical activity. It is about healing a specific wound.",
+          "icon": "heart_broken"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Different Responses",
+          "text": "People respond differently to sexual intimacy after discovering infidelity. Some experience hysterical bonding, an intense drive toward sexual connection in the immediate aftermath. This may be an attempt to reclaim the spouse or prove desirability. This phase usually passes. Some experience complete shutdown. They cannot bear the thought of physical intimacy. Some fluctuate between these extremes, wanting closeness one moment and feeling repulsed the next. All of these responses are normal. There is no right way to feel about sex after infidelity. What matters is communicating your feelings and navigating them together.",
+          "icon": "sync_alt"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Rebuilding Slowly",
+          "text": "Sexual intimacy after infidelity often needs to be rebuilt gradually. Start with non-sexual physical affection like holding hands, embracing, and sitting close. Rebuild comfort with physical closeness before moving to sexual intimacy. Communicate before, during, and after. Check in with each other. Is this okay? How are you feeling? Go at the pace of the betrayed spouse. They get to decide when they are ready. Pushing before they are ready will backfire. Handle triggers with grace. If something triggers the betrayed spouse during intimacy, stop, acknowledge, and comfort. Create new experiences rather than trying to recreate old ones. This is a new chapter.",
+          "icon": "hourglass_empty"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Sexual Intimacy Journey",
+          "text": "Reflect on where you are with sexual intimacy since the affair. If you are the betrayed spouse, what are you feeling about physical intimacy? What triggers exist? What do you need from your spouse? If you are the unfaithful spouse, how have you been handling this aspect of recovery? Have you been patient and sensitive? Write your reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "action",
+          "cardNumber": 5,
+          "title": "Talking About Sex After Infidelity",
+          "text": "Have an honest conversation about sexual intimacy in your recovery. Discuss where you each are emotionally with physical intimacy. What feels safe? What does not? Discuss specific triggers. Are there acts, times, or contexts that are particularly difficult? Discuss what you each need. More patience? More communication? More initiative? Less pressure? This conversation may feel awkward. Have it anyway. The alternative is two people guessing and potentially hurting each other. What do you need to communicate about sexual intimacy?",
+          "icon": "forum"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "teaching",
+          "cardNumber": 6,
+          "title": "Patience in the Process",
+          "text": "Rebuilding sexual intimacy takes time. There is no timeline that applies to everyone. Some couples resume physical intimacy quickly but find emotional connection takes longer. Others need extensive time before any physical intimacy feels safe. The goal is not to get back to normal as quickly as possible. The goal is to build something healthy, connected, and meaningful. Be patient with yourselves and each other. This is one of the most tender areas of recovery, and it deserves all the gentleness you can give it.",
+          "icon": "schedule"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_new_marriage",
+      "isFree": false,
+      "title": "A New Marriage: Building Something Different",
+      "subtitle": "Creating a relationship worth fighting for",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "construction",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "If you are choosing to rebuild after infidelity, you are not going back to the old marriage. That marriage is gone. You are building something new. This activity helps you envision and commit to that new marriage.",
+      "frameworkBasis": {
+        "conceptKey": "new_marriage",
+        "explanation": "Couples who successfully recover from infidelity report building a fundamentally different and often stronger relationship than what existed before."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Old Marriage Is Gone",
+          "text": "One of the painful truths of infidelity recovery is that you cannot go back to the marriage you had. That marriage is over. The affair ended it. This is hard because part of you may want to rewind to before, to recapture the innocence of the early days. But that is not possible. However, this truth also holds hope. The old marriage had vulnerabilities that allowed the affair to happen. The old marriage was not as solid as you thought. The new marriage you build can be different. More honest. More intentional. More resilient. Not because of the affair, but because of what you learned through recovering from it.",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Makes the New Marriage Different",
+          "text": "Couples who successfully rebuild describe their new marriage as having qualities the old one lacked. Deeper honesty is possible because everything has been exposed. There are no more illusions. You know each other at your worst and you are still choosing each other. Greater intentionality is present because you can no longer take the marriage for granted. You know how fragile it can be. Better communication has developed because you have had to talk about the hardest things. Stronger boundaries exist because you have learned where the vulnerabilities were. More appreciation is felt because you almost lost this. You value what you have in a way you did not before.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Vision for the New Marriage",
+          "text": "If you are choosing to rebuild, what do you want the new marriage to look like? What was missing from the old marriage that needs to be present in the new one? What patterns need to change? What kind of couple do you want to become? Write your vision:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "A Prayer for Your New Marriage",
+          "text": "Father, we come to You as broken people, our marriage shattered by choices that never should have been made. But we also come with hope, because You are the God of redemption. You make all things new. You bring beauty from ashes. Help us build a new marriage, one marked by honesty, intentionality, and faithfulness. Help the one who strayed to become fully trustworthy. Help the one who was wounded to find healing. Protect this new marriage from the forces that destroyed the old one. Keep us close to each other and close to You. Amen. 'See, I am doing a new thing! Now it springs up; do you not perceive it?' (Isaiah 43:19)",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "action",
+          "cardNumber": 5,
+          "title": "Your New Marriage Commitment",
+          "text": "If you are choosing to rebuild, make a commitment to your new marriage together. The unfaithful spouse commits to complete faithfulness, radical transparency, patient endurance, and becoming fully trustworthy through sustained action. The betrayed spouse commits to working toward forgiveness, communicating needs, acknowledging progress, and remaining open to trust being rebuilt. Both commit to building a marriage better than what existed before, seeking help when needed, and never giving up during hard seasons. We are not going back to the old marriage. We are building something new. Sign this commitment together.",
+          "icon": "handshake"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "teaching",
+          "cardNumber": 6,
+          "title": "The Road Continues",
+          "text": "Completing this journey does not mean the work is done. Recovery from infidelity takes years, and you are still in the process. There will be hard days ahead. There will also be moments of hope and healing that surprise you. Keep communicating. Keep doing the work. Keep choosing each other. Many couples who have walked this path report that their marriage after infidelity is stronger than it was before. That can be your story too. The road is long, but you do not walk it alone. God walks with you, and you walk with each other.",
+          "icon": "route"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Surviving and Rebuilding",
+    "summaryText": "You have walked through some of the most difficult content in this entire app. Infidelity is one of the most painful experiences a marriage can face. Whether your marriage survives or not, you can survive and eventually thrive. If you are choosing to rebuild, know that many couples have walked this path before you and built marriages stronger than what they lost. The road is long, but hope is real.",
+    "keyTakeaways": [
+      "Infidelity creates unique trauma that requires time and proper support to heal",
+      "The unfaithful spouse must demonstrate genuine change through sustained action rather than just words",
+      "Forgiveness is a journey that unfolds over years rather than a one time decision",
+      "The old marriage is gone and what you build now is something new",
+      "Triggers and setbacks are normal and do not mean recovery is failing",
+      "Professional help is often essential and should not be delayed"
+    ],
+    "nextRecommendedJourneys": [
+      "Rebuilding Trust After Hurt or Betrayal in Marriage",
+      "Strengthening Emotional and Physical Intimacy",
+      "Communication and Conflict Resolution in Marriage"
+    ]
+  }
+}

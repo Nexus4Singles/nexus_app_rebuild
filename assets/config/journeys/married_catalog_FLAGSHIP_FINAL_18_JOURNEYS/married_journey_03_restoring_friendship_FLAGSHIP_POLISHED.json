@@ -1,0 +1,883 @@
+{
+  "journeyId": "married_restoring_friendship",
+  "title": "Restoring Friendship and Emotional Connection",
+  "subtitle": "Rediscovering the person you fell in love with",
+  "summary": "Somewhere between 'I do' and today, something got lost. The laughter. The deep conversations. The feeling of being truly known. This journey helps you rebuild the friendship at the heart of your marriage, the connection that makes everything else work.",
+  "targetUserCategory": "married",
+  "priorityRank": 3,
+  "estimatedDays": 14,
+  "totalActivities": 11,
+  "difficulty": "intermediate",
+  "themeColor": "#9B59B6",
+  "cover": {
+    "themeTag": "Connection",
+    "accentIcon": "favorite",
+    "heroImage": "assets/images/journeys/married_friendship_hero.jpg",
+    "heroImageDescription": "A couple laughing together, genuine joy and connection visible."
+  },
+  "frameworks": [
+    "gottman_friendship",
+    "emotional_intimacy",
+    "attachment_theory",
+    "biblical_oneness"
+  ],
+  "targetOutcomes": [
+    "Understand why friendship is the foundation of lasting marriage",
+    "Identify what eroded your connection",
+    "Rebuild habits of turning toward each other",
+    "Create rituals that maintain connection",
+    "Develop deeper emotional intimacy",
+    "Reignite genuine enjoyment of each other"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_lost_friend",
+      "isFree": true,
+      "title": "What Happened to My Best Friend?",
+      "subtitle": "Understanding how you lost your connection",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "sentiment_dissatisfied",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Most couples start as friends who genuinely enjoyed each other. Over time, that friendship can erode until you feel like roommates. Understanding what happened is the first step to rebuilding.",
+      "frameworkBasis": {
+        "conceptKey": "friendship_erosion",
+        "explanation": "Marriage friendship erodes gradually through neglect, not usually through dramatic events."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Slow Fade",
+          "text": "Many couples think intimacy disappears because romance fades.\nMost times, it fades because friendship gets neglected under stress, pressure, and responsibilities.\n\nIf you miss the sense of being on the same team, this journey will help you rebuild warmth, playfulness, and emotional closeness in practical ways.\n\nIt rarely happens all at once. You didn't wake up one day as strangers. It was gradual: • Conversations became logistics\n• Date nights became occasional, then rare\n• Inside jokes faded from memory\n• You stopped asking about their inner world\n• Phones replaced eye contact\n• Responsibilities crowded out connection The fade was so slow you didn't notice until you looked up and realized: we're not friends anymore.",
+          "icon": "trending_down"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why Friendship Matters",
+          "text": "Dr. John found that friendship is the foundation of lasting marriage. Couples with strong friendship:\n• Handle conflict better\n• Have better intimacy\n• Report higher satisfaction\n• Stay together longer Without friendship, marriage becomes all obligation and no joy.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Remembering What Was",
+          "text": "Think back to when you first fell in love. What did you do together? What did you talk about? What made you laugh? Why did you enjoy being together? Write about what your friendship used to look like:",
+          "responseType": "open-text",
+          "icon": "history"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "What Changed",
+          "text": "When did things shift? What filled the space where friendship used to be? What got in the way? Be specific:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "It Can Be Rebuilt",
+          "text": "Here's the hope: friendship can be rebuilt. You're the same two people who once laughed together and chose each other. Those people are still there. What's needed is intention. Friendship doesn't just happen, it has to be cultivated.",
+          "icon": "auto_awesome"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Observe Your Friendship",
+          "text": "This week, pay attention to your friendship temperature: • Do you laugh together?\n• Do you share things beyond logistics?\n• Do you look forward to time together?\n• Do you know what's happening in their inner world? Just observe for now.",
+          "icon": "visibility"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_love_maps",
+      "isFree": false,
+      "title": "Rebuilding Your Love Map",
+      "subtitle": "Learning to know your spouse again",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "map",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "calls it a 'Love Map', your knowledge of your spouse's inner world. Over time, love maps become outdated. Rebuilding this knowledge is essential for rekindling friendship.",
+      "frameworkBasis": {
+        "conceptKey": "love_maps",
+        "explanation": "Strong couples continually update their knowledge of each other's world."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Changing Inner World",
+          "text": "People change. Your spouse isn't the same person they were five years ago. Do you know:\n• What they're most worried about right now?\n• What they're hoping for this year?\n• What stresses them most at work?\n• What would make them feel loved this week? Many spouses are operating on outdated maps of each other.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Love Map Assessment",
+          "text": "How well do you know your spouse's current inner world?",
+          "prompts": [
+            "Very well, I know their current fears, dreams, and stresses",
+            "Fairly well, but there's a lot I've lost touch with",
+            "Not well, I know basics but not what's really going on inside",
+            "Poorly, I don't really know who they are anymore"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are, love maps can be updated."
+          },
+          "icon": "quiz"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Love Map Questions",
+          "text": "To rebuild your love map, start asking: • What's been on your mind that you haven't told me?\n• If you could change one thing about your work, what would it be?\n• What's something you're looking forward to?\n• What's something you're dreading?\n• What's a dream you have that I might not know about?",
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Genuine Curiosity",
+          "text": "The goal isn't to interrogate, it's to be genuinely curious. When you were dating, you wanted to know everything about them. That curiosity can be recaptured. Remember: your spouse is a person with an inner world, not just a co-manager of your household.",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "What You Want to Know",
+          "text": "What have you lost touch with about your spouse? What would you like to understand better? Write 3-5 things you'd genuinely like to know:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Love Map Conversation",
+          "text": "Have a love map conversation together this week. Take turns asking:\n1. What's been on your mind lately?\n2. What's your biggest stress right now?\n3. What's something you're hoping for?\n4. What's something about you that I've lost touch with? **Complete this activity together.**",
+          "icon": "group"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_turning_toward",
+      "isFree": false,
+      "title": "The Magic of Turning Toward",
+      "subtitle": "Why small moments matter more than grand gestures",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "sync_alt",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Research shows relationship health is predicted by how partners respond to small everyday bids for connection, not grand gestures.",
+      "frameworkBasis": {
+        "conceptKey": "bids_for_connection",
+        "explanation": "Bids are small attempts to connect. Response to bids predicts relationship success."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Bids for Connection",
+          "text": "A 'bid' is any attempt to connect: • 'Look at this article'\n• 'How was your day?'\n• A touch on the shoulder\n• Sharing a random thought Each bid is an invitation. It's your spouse saying, 'I want a moment of connection with you.' What you do next matters enormously.",
+          "icon": "touch_app"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Three Responses",
+          "text": "When your spouse makes a bid, you can: **Turn Toward**: Engage, respond. 'Oh, what is it?' **Turn Away**: Ignore, stay absorbed. (Silence, continued scrolling) **Turn Against**: Respond negatively. 'Can't you see I'm busy?' Couples who turn toward 86% of the time are still together after 6 years. Those at 33% are divorced.",
+          "icon": "call_split"
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "The Smallest Moment You Miss",
+          "text": "Think back to a season when you felt close as friends.\n\nWrite one small moment you miss most, a laugh in the kitchen, a shared joke, a long talk, or simple affection.\n\nThen write one tiny action you can take this week to recreate a similar moment.\nFriendship returns through small, consistent choices.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Why Small Moments Matter",
+          "text": "Small moments add up. Every 'turn toward' deposits into your emotional bank account. Every 'turn away' withdraws. Over years, these tiny moments build a marriage, or erode one.",
+          "icon": "account_balance"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Typical Response",
+          "text": "When your spouse makes a bid, what do you typically do?",
+          "prompts": [
+            "Usually turn toward, I engage",
+            "Often turn away, distracted or don't notice",
+            "Sometimes turn against, respond with irritation",
+            "Depends on my mood"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Awareness is the first step to improving."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "Missed Bids",
+          "text": "Think about times you turned away from or against your spouse's bids. What were they reaching for? How might they have felt? Reflect honestly:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 7,
+          "title": "Turning Toward Practice",
+          "text": "This week, turn toward every bid you notice: 1. Stop what you're doing\n2. Make eye contact\n3. Respond with interest Even brief engagement counts. Track how many bids you notice each day.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_rituals",
+      "isFree": false,
+      "title": "Rituals of Connection",
+      "subtitle": "Building friendship into your daily rhythm",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "event_repeat",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Friendship doesn't survive on spontaneity alone. Rituals create predictable touchpoints that maintain connection even in busy seasons.",
+      "frameworkBasis": {
+        "conceptKey": "connection_rituals",
+        "explanation": "Rituals provide structure for connection that survives the chaos of daily life."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Rituals Matter",
+          "text": "When life gets busy, connection is the first thing to go. We assume we'll connect 'when things slow down.' They never slow down. Rituals solve this by making connection non-negotiable. Not when you feel like it, not when you have time, but at set, protected times. Structure creates freedom.",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Daily Rituals",
+          "text": "Small daily rituals maintain baseline connection: • Morning: A 2-minute connection before leaving, hug, kiss, 'what's your day look like?'\n• Reunion: A 20-minute 'stress-reducing conversation' when you reunite, no problem-solving, just listening\n• Bedtime: A few minutes of pillow talk, how are you, really? These small touches prevent the slow drift into stranger territory.",
+          "icon": "today"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Weekly Rituals",
+          "text": "Weekly rituals provide deeper connection: • Date night: Regular time for just the two of you, even if it's coffee after kids are in bed\n• State of the union: A weekly check-in, how are we doing? What do you need from me?\n• Shared activity: Something you enjoy doing together, a show, a walk, a hobby Weekly rhythms say: our relationship is a priority, not an afterthought.",
+          "icon": "date_range"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Current Rituals",
+          "text": "Which connection rituals do you currently have?",
+          "prompts": [
+            "Morning connection ritual",
+            "Reunion/coming home ritual",
+            "Bedtime ritual",
+            "Weekly date or quality time",
+            "Weekly check-in conversation",
+            "None of these, we need to build them"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Whatever you have is a foundation to build on."
+          },
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Rituals to Build",
+          "text": "What rituals would help your marriage? Consider your schedule, your personalities, what you both enjoy. What daily and weekly rituals could work for you?",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Design Your Rituals",
+          "text": "Together, choose at least:\n• One daily micro-ritual (under 5 minutes)\n• One weekly connection ritual Be specific: when, where, what. Put it in your calendars. Protect it like a meeting with your boss, because your marriage matters more.",
+          "icon": "event"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_admiration",
+      "isFree": false,
+      "title": "Reigniting Fondness and Admiration",
+      "subtitle": "Remembering why you chose each other",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "found that fondness and admiration are the antidote to contempt. Couples who still feel warmth for each other weather storms that destroy couples who have lost it.",
+      "frameworkBasis": {
+        "conceptKey": "fondness_admiration",
+        "explanation": "Fondness and admiration form a reservoir of positive sentiment that protects against negativity."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Fondness Reservoir",
+          "text": "When you first fell in love, your reservoir of fondness was overflowing. You saw your spouse through rose-colored glasses, their quirks were charming, their strengths impressive. Over time, that reservoir can drain. Quirks become annoying. Strengths go unnoticed. Failures get catalogued. When the reservoir is empty, there's no cushion. Everything your spouse does is interpreted negatively. The reservoir needs to be refilled.",
+          "icon": "water_drop"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The History You Tell",
+          "text": "One predictor of divorce: how couples tell their history. Struggling couples rewrite history negatively: 'We were never really happy' or 'I should have known from the start.' Healthy couples maintain positive history: 'We've been through hard times, but we started with something real.' How you remember your past affects how you see your present.",
+          "icon": "history"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Why You Chose Them",
+          "text": "Go back to the beginning. What attracted you to your spouse? What made you think 'this is the one'? Not what you wish they were, what actually drew you to them? Write specifically:",
+          "responseType": "open-text",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "What You Still Admire",
+          "text": "Despite whatever struggles you face, what do you genuinely admire about your spouse today? Their character? Abilities? How they handle certain things? Be honest and specific:",
+          "responseType": "open-text",
+          "icon": "star"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Practice of Appreciation",
+          "text": "Fondness doesn't just happen, it's practiced. Notice what your spouse does well.\nLook for things to appreciate rather than critique.\nExpress admiration out loud, not just internally. 'Let no corrupting talk come out of your mouths, but only such as is good for building up.' (Ephesians 4:29) What you look for, you'll find. Look for good.",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Daily Appreciation",
+          "text": "For the next week, tell your spouse one specific thing you appreciate about them each day. Not generic ('you're great') but specific ('I appreciated how you handled that situation with patience'). This practice trains your brain to notice the positive.",
+          "icon": "thumb_up"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_emotional_intimacy",
+      "isFree": false,
+      "title": "Deepening Emotional Intimacy",
+      "subtitle": "Beyond the surface to true knowing",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Emotional intimacy, feeling truly known and accepted, is what distinguishes marriage from any other relationship. Many couples never go beyond surface conversation, missing the deepest form of connection.",
+      "frameworkBasis": {
+        "conceptKey": "emotional_intimacy",
+        "explanation": "True intimacy requires vulnerability, sharing not just facts but feelings, fears, and dreams."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Levels of Conversation",
+          "text": "Most conversations stay shallow: **Level 1 - Facts**: 'The meeting is at 3.'\n**Level 2 - Opinions**: 'I think we should save more.'\n**Level 3 - Feelings**: 'I'm worried about our finances.'\n**Level 4 - Needs/Fears**: 'I'm scared we're not providing enough. I feel like a failure.' Friendship requires getting to Levels 3 and 4. Most couples rarely go past Level 2.",
+          "icon": "layers"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Risk of Vulnerability",
+          "text": "Deeper conversation requires vulnerability, sharing things that could be used against you, rejected, or misunderstood. That feels risky. So we stay safe on the surface. But marriage is supposed to be the safest place for vulnerability. 'This person knows everything about me and still loves me.' When that safety is missing, friendship can't deepen.",
+          "icon": "lock_open"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Creating Safety for Vulnerability",
+          "text": "To invite vulnerability: • Listen without fixing or judging\n• Don't weaponize what's shared\n• Share your own vulnerabilities first\n• Respond with empathy, not advice\n• Protect what's shared, don't repeat it to others Safety is earned through consistency. One violation can close doors for years.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Conversation Depth",
+          "text": "Where do your conversations with your spouse typically stay?",
+          "prompts": [
+            "Mostly facts and logistics",
+            "Facts plus opinions",
+            "Sometimes feelings",
+            "Regularly share feelings, fears, and needs",
+            "We're deeply emotionally connected"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are, you can go deeper."
+          },
+          "icon": "quiz"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "What You Haven't Shared",
+          "text": "What feelings, fears, or needs have you not shared with your spouse? What keeps you from sharing them? Reflect honestly (this is just for you):",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "One Deeper Share",
+          "text": "This week, share one thing at Level 3 or 4 with your spouse: • A fear you haven't expressed\n• A feeling about your relationship\n• A need you haven't articulated\n• Something you feel vulnerable about Start with 'I want to share something that's hard for me to say...'",
+          "icon": "chat"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_fun_together",
+      "isFree": false,
+      "title": "Having Fun Again",
+      "subtitle": "Rediscovering play and enjoyment",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "celebration",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Couples who play together stay together. Fun creates positive experiences that build your friendship reservoir and remind you why you chose each other.",
+      "frameworkBasis": {
+        "conceptKey": "shared_play",
+        "explanation": "Play and shared enjoyment create positive sentiment and build friendship capital."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "When Did You Stop Playing?",
+          "text": "Remember when being together was fun? When you laughed, tried new things, had adventures, even small ones? When did that stop? For most couples, play gets squeezed out by responsibilities. Life becomes serious. Marriage becomes work. But play isn't optional for friendship. It's how friendship is maintained.",
+          "icon": "sports_esports"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Research on Play",
+          "text": "Couples who have fun together:\n• Feel more satisfied in their marriage\n• Handle stress better\n• Report feeling more 'in love'\n• Have more positive interactions overall Fun isn't a luxury, it's maintenance. Without it, your marriage runs on fumes.",
+          "icon": "science"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "What You Used to Enjoy",
+          "text": "What did you enjoy doing together when you were dating? In the early years? What brought you joy? What made you laugh? List specific activities:",
+          "responseType": "open-text",
+          "icon": "history"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "What You'd Like to Try",
+          "text": "What would be fun to do together now? Consider: adventure activities, creative pursuits, new experiences, returning to old favorites. Brainstorm without filtering:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Making Fun Happen",
+          "text": "Fun doesn't happen spontaneously anymore, you have to plan it. This feels unromantic, but it's practical. Schedule fun like you schedule everything else. And protect that time. 'Date night' isn't a luxury, it's a necessity.",
+          "icon": "event"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Plan Something Fun",
+          "text": "Together, plan one fun activity in the next two weeks. It doesn't have to be expensive or elaborate. It just has to be:\n• Something you both enjoy (or are willing to try)\n• Focused on enjoyment, not productivity\n• Protected time, phones away, responsibilities paused Write it down. Put it in the calendar. Make it happen.",
+          "icon": "event_available"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_repair_disconnection",
+      "isFree": false,
+      "title": "Repairing Disconnection",
+      "subtitle": "What to do when you've drifted apart",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "build",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Even with good intentions, disconnection happens. The question isn't whether you'll drift, it's whether you know how to come back together when you do.",
+      "frameworkBasis": {
+        "conceptKey": "reconnection_repair",
+        "explanation": "Healthy couples know how to restore after disconnection, which is inevitable in busy lives."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Disconnection Is Normal",
+          "text": "Every couple experiences seasons of disconnection: • New baby exhaustion\n• Work stress consuming attention\n• Extended family demands\n• Health challenges\n• Just getting busy and distracted Disconnection doesn't mean something is wrong with your marriage. It means you're human. What matters is whether you notice it and restore it.",
+          "icon": "link_off"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Signs You've Drifted",
+          "text": "How do you know you've drifted? • You feel like roommates\n• Conversations are only logistics\n• You don't know what's going on in their inner world\n• Physical affection has dropped off\n• You'd rather be on your phone than together\n• You feel lonely even when they're right there If you recognize these signs, it's time to restore.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Restore Conversation",
+          "text": "When you've drifted, name it and restore it: 1. 'I've noticed we've been disconnected lately.'\n2. 'I miss you.' (Not 'you've been distant')\n3. 'Can we talk about what's been going on?'\n4. 'What do we need to do to reconnect?' This conversation doesn't have to be heavy. It can be hopeful: 'I want us back.'",
+          "icon": "chat"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Current Disconnection",
+          "text": "Are you currently in a season of disconnection? What's contributed to it? Work? Kids? Stress? Just busyness? What would restore look like? Reflect honestly:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Quick Reconnection",
+          "text": "Sometimes you can't do a deep restore right away. Quick reconnection helps: • A long hug (20+ seconds releases oxytocin)\n• Eye contact while saying 'I love you'\n• A 6-second kiss\n• Holding hands while talking\n• A quick walk together Physical connection can jumpstart emotional connection.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Initiate Restore",
+          "text": "If you're currently disconnected, initiate restore this week. You might say:\n• 'I miss feeling close to you.'\n• 'I've been distracted, and I don't want to be.'\n• 'Can we spend some time really connecting?' Don't wait for your spouse to notice. Take initiative.",
+          "icon": "handshake"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_shared_meaning",
+      "isFree": false,
+      "title": "Creating Shared Meaning",
+      "subtitle": "Building a life together, not just living together",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "auto_stories",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "The deepest friendships are built on shared purpose and meaning. Couples who create a life together, not just manage one, have something that holds them through any storm.",
+      "frameworkBasis": {
+        "conceptKey": "shared_meaning",
+        "explanation": "Couples who create shared meaning have deeper connection and greater resilience."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Beyond Managing Life",
+          "text": "Many marriages become management operations: • Who's picking up the kids?\n• Did we pay the bills?\n• What's for dinner? These are necessary, but they're not enough. You're not business partners, you're building a life together. What is that life about? What are you creating together? What does it all mean?",
+          "icon": "apartment"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Shared Meaning Looks Like",
+          "text": "Couples with shared meaning have: • Shared dreams: 'We want to...'\n• Shared values: 'We believe...'\n• Shared purpose: 'Our family is about...'\n• Shared traditions: 'This is how we do...'\n• Shared legacy: 'We're building...' This doesn't mean you're identical. It means you've created something together that's bigger than just getting through the day.",
+          "icon": "diversity_1"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Power of Dreams",
+          "text": "Do you know your spouse's dreams? The deep ones, not just 'a nicer house' but what they really want their life to mean? Sharing and supporting dreams creates profound connection. 'Where there is no vision, the people perish.' (Proverbs 29:18) This applies to marriages too. Without shared vision, marriages slowly die.",
+          "icon": "auto_awesome"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Dreams",
+          "text": "What are your dreams for your life and marriage? Not just practical goals, what do you want your life to mean? What do you want to create together? Write honestly:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Spouse's Dreams",
+          "text": "What do you think your spouse's dreams are? What do they want your life together to mean? If you're not sure, that's important information too. Write what you know or guess:",
+          "responseType": "open-text",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Dreams Conversation",
+          "text": "Have a dreams conversation with your spouse: • What do you want our life together to be about?\n• What dreams do you have that I might not know about?\n• How can we support each other's dreams?\n• What do we want to create together? This conversation can open doors that logistics never touch. **Complete this activity together.**",
+          "icon": "chat"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_protecting_friendship",
+      "isFree": false,
+      "title": "Protecting Your Friendship",
+      "subtitle": "Guarding against the things that erode connection",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "security",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Friendship doesn't just erode by accident, there are specific threats. Identifying and guarding against these threats protects what you're building.",
+      "frameworkBasis": {
+        "conceptKey": "friendship_threats",
+        "explanation": "Identifying specific threats to connection enables proactive protection."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Enemies of Friendship",
+          "text": "What erodes friendship? • Screens: Phones that consume attention meant for each other\n• Busyness: Schedules that leave no margin for connection\n• Criticism: Constant negativity that drains the reservoir\n• Neglect: Assuming friendship maintains itself\n• Outside relationships: Emotional energy invested elsewhere These enemies work gradually. You don't notice until the damage is done.",
+          "icon": "dangerous"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Screen Problem",
+          "text": "Phones are one of the biggest threats to modern marriage. You're in the same room but in different worlds. Your spouse shares something; you half-listen while scrolling. Research shows that just having a phone visible during conversation reduces connection. The enemy isn't technology, it's the attention it steals.",
+          "icon": "smartphone"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Emotional Affairs",
+          "text": "Friendships outside marriage are healthy. But emotional affairs are dangerous. Signs of an emotional affair:\n• Sharing things with someone else that you don't share with your spouse\n• Looking forward to seeing/talking to them more than your spouse\n• Hiding the depth of the relationship\n• Comparing them favorably to your spouse Emotional energy is finite. What goes elsewhere doesn't go to your marriage.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Biggest Threat",
+          "text": "What's the biggest threat to your friendship with your spouse?",
+          "prompts": [
+            "Screens and technology",
+            "Busyness and lack of time",
+            "Criticism and negativity",
+            "Neglect, we just don't prioritize it",
+            "Outside relationships taking energy",
+            "Something else"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Naming the threat helps you guard against it."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Protection Plan",
+          "text": "How will you guard your friendship against the threats you've identified? Be specific about what you'll do differently:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Set a Boundary",
+          "text": "Choose one boundary to implement this week: • Phone-free zones or times\n• Protecting connection time in your schedule\n• Addressing a pattern of criticism\n• Redirecting emotional energy back to your marriage What boundary will you set?",
+          "icon": "block"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_commitment",
+      "isFree": false,
+      "title": "Your Friendship Commitment",
+      "subtitle": "Pledging to prioritize your connection",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "handshake",
+      "emotionalIntensity": "light",
+      "activityType": "commitment",
+      "whyThisMatters": "Intentions are good. Commitments are better. This activity helps you cement what you've learned into ongoing practice.",
+      "frameworkBasis": {
+        "conceptKey": "intentional_friendship",
+        "explanation": "Lasting change requires intentional commitment, not just good intentions."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You've Learned",
+          "text": "In this journey, you've: • Understood how friendship erodes\n• Rebuilt your love map\n• Learned the power of turning toward\n• Created connection rituals\n• Reignited fondness and admiration\n• Deepened emotional intimacy\n• Rediscovered fun together\n• Learned to restore disconnection\n• Explored shared meaning\n• Identified threats to protect against This is significant work. Now it needs to become ongoing practice.",
+          "icon": "school"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "A Biblical Picture",
+          "text": "'Enjoy life with your wife, whom you love, all the days of this fleeting life.' (Ecclesiastes 9:9) God didn't design marriage to be endured, He designed it to be enjoyed. The friendship at its heart is a gift. Tending that friendship honors God's design and brings the joy He intended.",
+          "icon": "auto_stories"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Takeaway",
+          "text": "What's the most important thing you've learned about friendship in marriage? What do you want to remember?",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "What You'll Do Differently",
+          "text": "Based on this journey, what specific practices will you maintain? List 2-3 concrete commitments:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Your Friendship",
+          "text": "Father, thank You for this marriage, for the friendship at its heart. Help us to be curious about each other, to turn toward each other, to prioritize connection over convenience. May our friendship deepen over years, not fade. May we enjoy the life together that You've given us. Protect us from the things that erode connection. Draw us closer to each other and to You. Amen.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Friendship Pledge",
+          "text": "Create a friendship pledge together: 'We commit to:\n• [Daily practice]\n• [Weekly practice]\n• [How we'll handle disconnection]\n• [What we'll protect against] Our friendship is the foundation of our marriage. We will tend it with care.' **Sign this together and keep it somewhere visible.**",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Friends Again",
+    "summaryText": "You've invested in rebuilding the friendship at the heart of your marriage. The practices you've learned, turning toward, rituals, emotional intimacy, shared meaning, are the stuff of lasting marriages. Keep tending this friendship.",
+    "keyTakeaways": [
+      "Friendship is the foundation of lasting marriage",
+      "Love maps need constant updating",
+      "Small bids for connection matter more than grand gestures",
+      "Rituals protect connection during busy seasons",
+      "Fondness and admiration must be practiced, not just felt"
+    ],
+    "nextRecommendedJourneys": [
+      "Strengthening Emotional and Physical Intimacy",
+      "Creating Shared Vision and Goals",
+      "Building Daily Rhythms of Connection"
+    ]
+  }
+}

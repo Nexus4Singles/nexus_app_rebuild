@@ -591,6 +591,24 @@ class _SearchResultRow extends ConsumerWidget {
               ),
               const SizedBox(width: 8),
 
+              // Compatibility score badge
+              if (profile.compatibilityScore != null)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: _getScoreColor(profile.compatibilityScore!),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Text(
+                    '${profile.compatibilityScore}%',
+                    style: AppTextStyles.labelSmall.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              const SizedBox(width: 8),
+
               // Bookmark button
               InkWell(
                 borderRadius: BorderRadius.circular(10),
@@ -641,6 +659,13 @@ class _SearchResultRow extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// Get badge color based on compatibility score
+  Color _getScoreColor(int score) {
+    if (score >= 75) return const Color(0xFF4CAF50); // Green
+    if (score >= 50) return const Color(0xFFFFC107); // Yellow/Amber
+    return const Color(0xFFF44336); // Red
   }
 }
 

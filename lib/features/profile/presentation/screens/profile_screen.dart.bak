@@ -1106,7 +1106,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                                             children: [
                                                               Expanded(
                                                                 child: Text(
-                                                                  'Relationship status',
+                                                                  'Relationship Status',
                                                                   style: AppTextStyles.titleLarge.copyWith(
                                                                     fontWeight:
                                                                         FontWeight

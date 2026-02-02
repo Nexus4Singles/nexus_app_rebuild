@@ -1,0 +1,855 @@
+{
+  "journeyId": "married_emotional_physical_intimacy",
+  "title": "Strengthening Emotional and Physical Intimacy",
+  "subtitle": "Building the closeness your marriage was designed for",
+  "summary": "Intimacy is more than a feeling. It is the sacred space where two souls meet without masks. Yet for many couples, that space has become cluttered with busyness, unspoken hurts, and the weight of daily life. This journey helps you clear the path back to each other, rebuilding the emotional safety that makes physical closeness natural and the physical connection that deepens emotional bonds.",
+  "targetUserCategory": "married",
+  "priorityRank": 4,
+  "estimatedDays": 14,
+  "totalActivities": 11,
+  "difficulty": "intermediate",
+  "themeColor": "#E91E63",
+  "cover": {
+    "themeTag": "Intimacy",
+    "accentIcon": "favorite",
+    "heroImage": "assets/images/journeys/married_intimacy_hero.jpg",
+    "heroImageDescription": "A couple in a tender embrace with foreheads touching, eyes closed, conveying deep emotional and physical connection. Warm soft lighting. Intimate but tasteful."
+  },
+  "frameworks": [
+    "attachment_theory",
+    "gottman_intimacy",
+    "biblical_oneness",
+    "emotional_safety"
+  ],
+  "targetOutcomes": [
+    "Understand the connection between emotional safety and physical intimacy",
+    "Identify and address specific intimacy blockers in your marriage",
+    "Learn how men and women experience intimacy differently",
+    "Develop practices that build emotional closeness",
+    "Create an environment where physical intimacy can flourish",
+    "Rebuild trust and vulnerability with your spouse"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_intimacy_gap",
+      "isFree": true,
+      "title": "The Intimacy Gap: What Happened to Us?",
+      "subtitle": "Understanding how distance crept into your closest relationship",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "heart_broken",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Most couples do not plan for distance. It sneaks in gradually through small moments of disconnection that pile up over time. Understanding how the intimacy gap forms is the first step toward closing it and finding your way back to each other.",
+      "frameworkBasis": {
+        "conceptKey": "intimacy_erosion",
+        "explanation": "Intimacy erodes through a combination of unaddressed hurts, competing priorities, and gradual emotional withdrawal."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Space Between You",
+          "text": "Intimacy weakens when emotional safety fades.\nPhysical distance often follows emotional distance.\n\nThis journey helps restore closeness by rebuilding trust, affection, and intentional connection.\n\nThere is a space in every marriage, the distance between two people who share a life but sometimes feel worlds apart. For some couples, that space is small and warm. It is filled with knowing glances, easy touch, and the comfort of being truly seen by someone who loves you deeply. For others, the space has grown wide and cold. You sleep in the same bed but feel alone. You go through the motions of married life but something essential is missing. If you find yourself in the second group, you are not failing at marriage. You are experiencing something millions of couples face, an intimacy gap that formed so gradually you did not see it happening until you were already far apart.",
+          "icon": "distance"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "How the Gap Forms",
+          "text": "Intimacy gaps rarely come from dramatic betrayals or explosive fights. They form through small, daily moments that seem insignificant at the time. The hurts that accumulated over months and years. That dismissive comment when you were sharing something important. The time they were not there when you really needed them. The criticism that cut deeper than they realized. The conversations that never happened. The feelings you swallowed because it felt pointless to bring them up again. The needs you stopped expressing because you got tired of asking. The touch that slowly disappeared. First it was just less frequent. Then it became purely functional. Then even that started to feel awkward. One brick at a time, a wall gets built between two people who once had none.",
+          "icon": "layers"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Locked Room",
+          "text": "Think of intimacy like a room at the center of your marriage. When you first got together, the door to that room was wide open. You walked in and out freely, sharing your thoughts, your fears, your bodies, your dreams. But every time you got hurt and did not talk about it, you added a lock to the door. Every time you felt rejected and pulled back, another lock. Every time life got busy and you stopped prioritizing each other, another lock. Now the door has so many locks that neither of you remembers how to open it. You stand on opposite sides, both wanting to get in, but the locks feel overwhelming. This journey is about removing those locks, one at a time, until you can walk freely into that room again.",
+          "icon": "lock"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Tracing Your Gap",
+          "text": "Think honestly about your marriage right now. When did you start feeling distant from each other? What contributed to the gap between you? This is not about assigning blame. It is about understanding what happened so you can address it together. Consider specific hurts that created distance between you. Think about seasons of life that pulled you apart. Notice patterns that gradually eroded your closeness over time. Describe how the intimacy gap formed in your marriage:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Where Are You Now?",
+          "text": "How would you describe the current state of intimacy in your marriage?",
+          "prompts": [
+            "Deeply connected, we are emotionally and physically close",
+            "Somewhat connected, good in some areas but lacking in others",
+            "Distant, going through motions but not truly connecting",
+            "Very disconnected, feeling like roommates or strangers",
+            "In crisis, there is significant hurt or distance between us"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are right now, the path back to intimacy is possible. It takes intention and effort, but it can absolutely be rebuilt."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Journey Ahead",
+          "text": "Over the coming activities, you will identify specific blockers preventing intimacy in your marriage. You will understand how emotional and physical intimacy connect and influence each other. You will learn how men and women often experience intimacy differently. You will also rebuild emotional safety with your spouse and develop practices that nurture both emotional and physical closeness in practical ways. This is not about quick fixes or techniques. It is about rebuilding the foundation that makes deep connection possible. Your one task this week is to notice when you feel close to your spouse and when you feel distant. What creates each feeling? Pay attention without trying to change anything yet.",
+          "icon": "route"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_intimacy_blockers",
+      "isFree": false,
+      "title": "The Invisible Walls: Identifying Your Intimacy Blockers",
+      "subtitle": "Naming what stands between you and your spouse",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "block",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "You cannot remove obstacles you cannot see. This activity helps you identify the specific blockers preventing intimacy in your marriage. Not generic issues, but the real barriers standing between you and your spouse right now.",
+      "frameworkBasis": {
+        "conceptKey": "intimacy_barriers",
+        "explanation": "Intimacy is blocked by specific, identifiable factors that must be named before they can be addressed."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Blockers Nobody Talks About",
+          "text": "When couples struggle with intimacy, they often focus on surface symptoms. They notice less frequent sex, fewer deep conversations, or a general feeling of disconnection. But underneath these symptoms are specific blockers doing the real damage. These blockers are like invisible walls in your home. You bump into them constantly but you cannot quite see what is stopping you from getting where you want to go. Naming these blockers is the first step to dismantling them. Once you can see the wall clearly, you can start figuring out how to take it down. The most common intimacy blockers fall into several categories: unresolved hurt, competing priorities, fear and self protection, and physical or mental barriers.",
+          "icon": "visibility_off"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Blocker Category One: Unresolved Hurt",
+          "text": "Resentment is intimacy poison. When you are holding onto anger about something your spouse did or did not do, part of you stays closed off to protect yourself from being hurt again. Common sources of this resentment include past betrayals whether emotional or physical, feeling unsupported during hard seasons of life, hurtful words that were never properly addressed, unmet expectations that bred deep disappointment, and feeling taken for granted day after day. Resentment sends a message that says, you hurt me so I am not giving you access to my heart again. The problem is that walls which protect also isolate. You cannot have real intimacy while guarding yourself against the very person you are trying to connect with.",
+          "icon": "heart_broken"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Blocker Category Two: Life Crowding Out Connection",
+          "text": "Sometimes the barrier is not emotional at all. It is purely practical. Exhaustion is a major blocker. You are running on empty from work, kids, and responsibilities. By the time you are finally alone together, you have nothing left to give each other. Competing demands also crowd out intimacy. Work deadlines, children's needs, aging parents, financial stress, church commitments. Intimacy gets whatever scraps remain after everything else takes its share. Different schedules create distance too. You are like ships passing in the night, rarely in the same space with energy at the same time. Screen addiction has become a silent killer of connection. The phone in your hand captures attention that once went to your spouse. You are physically present but mentally somewhere else entirely.",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Blocker Category Three: Fear and Self Protection",
+          "text": "Some of the most powerful blockers live in our own hearts rather than in our circumstances. Fear of rejection whispers, if I initiate and get turned down again it will crush me. So you stop reaching out altogether. Body shame tells you that you do not feel attractive, so how can you be intimate when you are uncomfortable in your own skin? Performance anxiety creates worry about whether you are good enough or whether you will disappoint your spouse. Vulnerability feels terrifying when you believe that if you really let them in, they will see who you truly are and leave. Past trauma from sexual abuse, assault, or painful experiences can make physical intimacy feel unsafe even with someone you love and trust. These internal blockers are often invisible to your spouse. They may think you are uninterested when really you are deeply afraid.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Honest Inventory",
+          "text": "This requires courage. Be honest about what is actually blocking intimacy in your marriage right now. From your side, not your spouse's side, what barriers are you aware of? Consider any resentment or unresolved hurt you are carrying. Think about life factors that are crowding out connection. Examine any fears or self protection patterns you have developed. Consider physical or mental health factors that might be playing a role. Write your honest inventory of what is blocking intimacy from your end:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "From Inventory to Action",
+          "text": "You have identified your blockers. That is significant progress. This journey will address many of these over the coming activities. But right now, choose one blocker that feels most urgent or most damaging to your connection. Ask yourself whether this is something you can work on yourself, something you need to address together with your spouse, or something that might need outside help like counseling or medical support. Write down the one blocker you will focus on first and what type of work it requires. You do not have to solve everything today. But naming the first step matters more than you realize.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_emotional_physical_link",
+      "isFree": false,
+      "title": "The Sacred Connection: How Emotional and Physical Intimacy Intertwine",
+      "subtitle": "Understanding the dance between heart and body",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "link",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Many couples treat emotional and physical intimacy as separate issues to solve independently. In reality, they are deeply connected and each one affects the other in powerful ways. Understanding this connection changes how you approach closeness with your spouse.",
+      "frameworkBasis": {
+        "conceptKey": "intimacy_integration",
+        "explanation": "Emotional and physical intimacy exist in a reciprocal relationship, each enabling and deepening the other."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Two Rivers, One Ocean",
+          "text": "Think of emotional intimacy and physical intimacy as two rivers that flow into one ocean, the deep connection your marriage was designed for. When both rivers flow freely, the ocean is full and strong. Your conversations feel connected, your touch feels meaningful, and you experience the oneness that Scripture describes when it says two become one flesh. When one river gets blocked, the whole ocean suffers. Emotional distance makes physical touch feel hollow and mechanical. Lack of physical connection makes emotional conversations feel incomplete and unsatisfying. This is why addressing only one type of intimacy rarely works in the long run. The rivers are connected at the source, and both need to flow for your marriage to thrive.",
+          "icon": "water"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Emotional Foundation",
+          "text": "For most people, and especially for many women though certainly not exclusively, emotional intimacy creates the safety necessary for physical vulnerability. When you feel emotionally seen and understood by your spouse, when you feel safe from criticism and judgment, when you feel valued beyond just your physical presence, and when you feel connected through meaningful conversation, your body relaxes. Walls come down. Physical closeness becomes natural rather than forced. On the other hand, when emotional connection is broken, physical intimacy can feel like a demand rather than a gift. Your body knows what your heart is experiencing, and it responds accordingly.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Where Intimacy Feels Blocked",
+          "text": "Write one area where closeness feels hardest right now.\n\nWhat emotions show up there?\n\nThen write one small step that would make intimacy feel safer again.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Physical Pathway",
+          "text": "Physical touch does something that words simply cannot accomplish. Research shows that non-sexual physical affection like holding hands, embracing, and sitting close together releases oxytocin, which is often called the bonding hormone. This means physical closeness actually creates emotional connection, not just the other way around. Couples who maintain regular affectionate touch report feeling more emotionally secure with each other. They have easier conversations about difficult topics. They recover from conflict faster. They experience higher overall relationship satisfaction. The pathway works both directions. Emotional safety enables physical closeness, and physical closeness deepens emotional bonds. Each one feeds the other.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "When the Rivers Cross",
+          "text": "Conflict often happens when couples have different primary pathways to intimacy. In one common scenario, one spouse needs emotional connection before physical intimacy feels right. The other spouse connects emotionally through physical intimacy. This creates a frustrating standoff where one says I need to talk first and the other says I need touch first. Neither moves, and both feel rejected. In another scenario, one spouse uses physical intimacy to restore after conflict while the other needs verbal resolution first. One reaches out for physical connection, the other pulls away, and both end up hurt. Neither approach is wrong. They are just different. Understanding your spouse's pathway, and communicating your own clearly, can break these painful cycles.",
+          "icon": "swap_horiz"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 6,
+          "title": "Your Primary Pathway",
+          "text": "Which statement resonates more with your typical experience of intimacy?",
+          "prompts": [
+            "I need emotional connection to feel open to physical intimacy",
+            "Physical closeness helps me feel emotionally connected",
+            "I need both equally and neither really comes first for me",
+            "It varies depending on the situation and how I am feeling"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Understanding your pathway and your spouse's pathway helps you stop taking things personally and start meeting each other more effectively."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 7,
+          "title": "A Conversation About Pathways",
+          "text": "This week, have a conversation with your spouse about your intimacy pathways. Share openly about your own experience. Tell them whether feeling emotionally or physically close typically comes first for you. Explain what helps you reconnect when you are stressed or hurt. Describe what sometimes blocks you from feeling close. Listen to their answers without defending yourself or debating whose pathway is right. The goal is not to prove a point. It is to understand each other better so you can work together. This conversation is preparation for the deeper work ahead in this journey.",
+          "icon": "forum"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_men_women_different",
+      "isFree": false,
+      "title": "Different Worlds: How Men and Women Experience Intimacy",
+      "subtitle": "Understanding your spouse's inner experience",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "wc",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Men and women often approach intimacy with different needs, assumptions, and experiences. These differences are not problems to overcome. They are realities to understand. This activity helps you see intimacy through your spouse's eyes rather than expecting them to experience it the way you do.",
+      "frameworkBasis": {
+        "conceptKey": "gender_intimacy_differences",
+        "explanation": "Research indicates general patterns in how men and women experience intimacy, though individual variation certainly exists."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Not Wrong, Just Different",
+          "text": "One of the biggest sources of conflict in marriage is expecting your spouse to experience intimacy the way you do. When they do not respond the way you would, it is easy to interpret their behavior as rejection, selfishness, or lack of love. But often they are simply operating from a different internal experience, one that is just as valid as yours. Understanding these differences does not excuse harmful behavior. But it does create compassion. And compassion opens doors that frustration keeps slamming shut. The goal is not to change how your spouse is wired. The goal is to understand their wiring well enough to connect with them where they actually are.",
+          "icon": "diversity_3"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Many Women Experience",
+          "text": "While every woman is unique, research reveals some common patterns worth understanding. For many women, intimacy starts in the mind. Stress from work, unresolved conflict with her spouse, feeling unappreciated, or carrying the mental load of managing household and family can shut down desire before anything physical even begins. Emotional connection typically comes first. Feeling heard, valued, and emotionally safe usually needs to happen before physical desire rises. The saying that foreplay starts in the morning reflects this reality. Context matters deeply to many women. The state of the relationship, the tone of the day, and whether she feels pursued or pressured all shape her experience of physical intimacy. Touch does not always mean sex to her. Non-sexual affection like holding hands, embraces, and gentle touch builds connection. When all touch becomes sexual pursuit, she may pull back from touch altogether to avoid pressure.",
+          "icon": "female"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What Many Men Experience",
+          "text": "Men's internal experience of intimacy is often misunderstood, sometimes even by men themselves. For many men, physical intimacy is emotional expression. Sex is not just physical release. It is how many men feel emotionally close, valued, and connected to their wives. When physical intimacy is rejected, it can feel like rejection of him as a person. Men are often more visually oriented when it comes to attraction. This is not shallow. It is neurological. Understanding this without shame is important for both spouses. Physical intimacy often reduces stress for men. While many women need stress reduced before desire rises, many men experience physical intimacy as a stress reliever. This creates a frustrating mismatch that couples need to navigate. Respect connects directly to intimacy for many men. Feeling respected and admired by his wife often links closely to his emotional and physical openness.",
+          "icon": "male"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Great Mismatch",
+          "text": "Here is why many couples struggle with intimacy even when they love each other deeply. She thinks he only wants one thing. She believes he does not care about emotional connection and just wants physical release. She feels used rather than loved. He thinks she never wants to be close. He believes he must be unattractive or unimportant to her. He feels rejected rather than desired. Both are hurting. Both are misreading the other. She does not see that his physical pursuit is often an attempt at emotional connection. For many men, physical intimacy is the primary way they know how to feel close and loved. He does not see that her withdrawal is not rejection of him. It is her need for emotional safety before physical vulnerability. She wants to be close. She just needs a different path to get there. Breaking this cycle requires both partners understanding the other's experience, not demanding they feel differently.",
+          "icon": "sync_problem"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Seeing Through Their Eyes",
+          "text": "Think about your spouse's experience of intimacy. Not what you wish it was, but what it actually seems to be based on what you have observed over the years. What do you think they need to feel truly intimate with you? What helps them feel connected? What might they be experiencing that you have misread or dismissed in the past? Write what you are coming to understand about your spouse's experience of intimacy:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "An Empathy Conversation",
+          "text": "This week, have a curious conversation with your spouse about their experience of intimacy. Do not ask why they do not want to be intimate more often. Instead, ask them to help you understand what intimacy feels like for them. Ask what makes them feel close to you. Ask what makes it hard for them to feel close. Listen to understand, not to debate or defend yourself. Their experience is their experience. Your job is not to correct it but to understand it. The goal of this conversation is not to agree on everything. It is to understand each other deeply enough to bridge the gap between your different worlds.",
+          "icon": "hearing"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_emotional_safety",
+      "isFree": false,
+      "title": "Building the Container: Creating Emotional Safety",
+      "subtitle": "The foundation that makes vulnerability possible",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "shield",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Intimacy requires vulnerability. Vulnerability requires safety. Without emotional safety, your spouse will remain guarded no matter how much they want to be close to you. This activity helps you build the safety that makes deep connection possible.",
+      "frameworkBasis": {
+        "conceptKey": "emotional_safety",
+        "explanation": "Emotional safety, which is the confidence that you will not be hurt, judged, or rejected, is the prerequisite for vulnerability and intimacy."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Safety Comes First",
+          "text": "Imagine being asked to fall backward, trusting someone to catch you. If you have been dropped before, if you are not sure they will really be there, every muscle in your body tenses. You cannot relax. You cannot let go. This is what intimacy feels like without emotional safety. Your spouse may genuinely want to be close. They may wish they could let their guard down with you. But if they have been hurt, criticized, dismissed, or rejected in the past, their nervous system is screaming at them not to let you in because it does not feel safe. You cannot force intimacy into existence. You can only create the conditions where it can grow naturally.",
+          "icon": "security"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Destroys Safety",
+          "text": "Emotional safety erodes through specific behaviors that many couples fall into without realizing the damage they cause. Criticism attacks character rather than addressing behavior. Phrases like you always and you never and what is wrong with you make your spouse feel fundamentally flawed rather than simply disagreed with. Contempt communicates disgust or superiority through eye rolling, mockery, sarcasm, and name calling. The message is clear: I am better than you. Defensiveness means never taking responsibility and always having an excuse. Nothing is ever your fault. Stonewalling involves shutting down completely, walking away, or refusing to engage at all. Weaponizing vulnerability means using something they shared in a tender moment against them later in an argument. Each of these behaviors teaches your spouse that it is not safe to be open with you.",
+          "icon": "dangerous"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What Builds Safety",
+          "text": "Safety is built through consistent, small actions repeated over time. Responsive presence means that when your spouse shares something with you, you are truly there. Not distracted. Not dismissive. Fully present and engaged. Gentleness with weakness means that when they are vulnerable with you, you handle what they share with care. No mocking. No bringing it up in anger later. Predictable warmth means they know what to expect from you. Consistency builds trust because they are not walking on eggshells wondering which version of you they will encounter. restore after hurt means that when you mess up, you acknowledge it genuinely, apologize sincerely, and actually try to do better next time. Curiosity over judgment means saying help me understand instead of what is wrong with you. Safety is not built in grand gestures. It is built in hundreds of small moments over months and years.",
+          "icon": "verified_user"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Trust Jar",
+          "text": "Think of trust in your marriage like a jar that holds coins. Every positive interaction, every kept promise, every moment of kindness and presence adds a coin to the jar. Every harsh word, every broken commitment, every dismissive response takes coins out. When the jar is full, your spouse feels safe to be vulnerable. They know there is enough goodwill stored up that even if you have a bad day or make a mistake, the jar will not empty completely. When the jar is low or empty, they are constantly on guard. One wrong move and they expect the jar to go completely empty, so they protect themselves by never letting you get too close. The question is not just whether you love your spouse. The question is whether your daily actions are filling the jar or draining it. What did you put in the jar today?",
+          "icon": "savings"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "The Safety Audit",
+          "text": "Honestly assess the emotional safety in your marriage, specifically how safe you have made it for your spouse to be vulnerable with you. Does your spouse seem comfortable being vulnerable with you, or do they keep their guard up? Have you done things that made it unsafe for them to be open? Do they know they can tell you hard things without you exploding or shutting down? Have you ever used their vulnerability against them? What has your spouse experienced with you that might have eroded their sense of safety? Write your honest assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "One Safety Deposit",
+          "text": "This week, make one intentional safety deposit with your spouse. Choose something that clearly shows them that you are safe and they can trust you. You might respond gently when they share something difficult instead of getting defensive. You might apologize for something you have been avoiding taking responsibility for. You might ask about their inner world and really listen without trying to fix anything. You might handle a frustrating situation without criticism or contempt. You might let them be imperfect without commenting on it. What one action will you take to build safety this week? 'There is no fear in love. But perfect love drives out fear.' (1 John 4:18)",
+          "icon": "add_circle"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_healing_hurts",
+      "isFree": false,
+      "title": "Clearing the Wreckage: Healing Hurts That Block Intimacy",
+      "subtitle": "Addressing the wounds standing between you",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "healing",
+      "emotionalIntensity": "very_high",
+      "activityType": "healing",
+      "whyThisMatters": "Unhealed hurts are intimacy's greatest enemy. You can learn every technique in the world, but if there is a wound festering between you, closeness remains blocked. This activity guides you through the tender work of addressing past hurt so you can move forward together.",
+      "frameworkBasis": {
+        "conceptKey": "wound_healing",
+        "explanation": "Intimacy restoration requires addressing accumulated hurts through acknowledgment, empathy, and genuine restore."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Wound in the Room",
+          "text": "Sometimes there is something specific standing between you and your spouse. A hurt that was never fully addressed. A betrayal that healed on the surface but still aches underneath. An accumulation of smaller wounds that added up to create real distance. You both know it is there even if you do not talk about it. You work around it. You have learned to function despite it. But every time you try to get close, really close, you bump into it. These wounds do not heal with time alone. They need attention. They need acknowledgment. They need restore. Until that happens, true intimacy remains out of reach.",
+          "icon": "report_problem"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Wounds Need",
+          "text": "Healing wounds in marriage requires specific elements that many couples skip over. Acknowledgment without defensiveness sounds like this: I see that what I did hurt you and I am not going to explain it away or minimize it. Empathy for impact means genuinely understanding why it was painful: I understand why that would have been painful for you and I get what it cost you. Genuine remorse goes beyond saying I am sorry you felt that way. It says I am sorry I did that to you. Changed behavior matters because apologies without change are just words. Real restore shows up in action over time. Patience with the process recognizes that forgiveness is not instant. The wounded partner needs time, and the wounding partner needs to give it without demanding quicker healing.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Wounds You Have Caused",
+          "text": "This is difficult but essential. Think about hurts you have caused your spouse, not their sensitivity but your actual actions or words that wounded them. What have you done that hurt them deeply? What might still be affecting them today? Be specific because this is not about general guilt. It is about real impact that you caused. Write honestly about wounds you have caused:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Wounds You Carry",
+          "text": "Now consider the other direction. What hurts from your spouse are you still carrying? What happened that you have never fully healed from? This is not about building a case against them or keeping score. It is about naming what is true so it can actually be addressed and you can move forward. What wounds are you carrying that affect your ability to be intimate with your spouse?",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Healing Conversation",
+          "text": "When you are both ready, have a healing conversation using this framework. The wounded spouse shares by saying: When you did this specific action, it made me feel this way. What it cost me was this. What I needed and did not get was this. The wounding spouse responds by saying: I hear that you felt this feeling when I did this action. I can see why that would hurt. I am truly sorry. What can I do now to help restore this? No defending. No explaining. No responding with accusations of your own. Just acknowledgment, empathy, and restore. This conversation is hard. But it is the path to freedom from wounds that have been blocking your intimacy.",
+          "icon": "forum"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Beginning the restore",
+          "text": "If there is a wound between you that needs addressing, take the first step this week. If you need to apologize, offer genuine acknowledgment without excuses or explanations that minimize what you did. If you need to share a wound, find a calm moment to express what you have been carrying. Choose a time when you can both be present and not rushed. If the wounds are deep, consider whether a counselor could help you navigate this conversation safely. Sometimes having a third party in the room makes it possible to say things that feel too risky otherwise. What step will you take toward healing this week? 'He heals the brokenhearted and binds up their wounds.' (Psalm 147:3)",
+          "icon": "directions_walk"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_non_sexual_touch",
+      "isFree": false,
+      "title": "The Power of Touch: Rebuilding Physical Connection",
+      "subtitle": "Restoring the bridge between your bodies",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "active",
+      "icon": "pan_tool",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "For couples who have grown distant, physical touch often becomes either nonexistent or loaded with expectation. This activity helps you rebuild a foundation of non-sexual physical affection, touch that connects without pressure and reminds you both that you belong to each other.",
+      "frameworkBasis": {
+        "conceptKey": "affectionate_touch",
+        "explanation": "Non-sexual physical affection builds oxytocin, maintains connection, and creates safety for deeper physical intimacy."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "When Touch Disappears",
+          "text": "In distant marriages, touch often follows a sad pattern. First, sexual intimacy becomes less frequent. Then, because touch has become associated only with sexual pursuit, the spouse who feels pressured starts avoiding all touch to avoid that pressure. Then the pursuing spouse stops initiating any touch at all because it seems pointless if it is not going to lead anywhere. The result is two people sharing a home who barely touch at all anymore. They sit on opposite sides of the couch. They sleep on opposite sides of the bed. They have become physically disconnected even though they live together. Or sometimes the opposite happens. All touch becomes sexual pursuit. There is no affection that does not lead to something more. And the spouse who needs non-sexual connection starts pulling away from all physical contact to protect themselves from constant pressure.",
+          "icon": "do_not_touch"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Science of Non-Sexual Touch",
+          "text": "Physical affection is not just nice to have. It is powerful on a biological level. Non-sexual touch releases oxytocin, which is sometimes called the bonding hormone. This creates feelings of connection, trust, calm, and safety between two people. Couples who maintain regular affectionate touch report higher relationship satisfaction even when their sex life is infrequent. The touch itself creates connection independent of where it leads. Touch is its own language. When it disappears from your marriage, you lose a vital way of communicating love, comfort, and belonging to each other.",
+          "icon": "science"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Touch Without Agenda",
+          "text": "Rebuilding physical connection often requires separating touch from sexual expectation, at least temporarily. This means holding hands without it leading anywhere else. It means embracing just to embrace, not as a first step toward something more. It means physical closeness that says I love you without saying I want sex. For the spouse who has pulled away, this creates safety. Touch is not always a demand or a signal. For the spouse who has felt rejected, this creates connection. Touch happens and means something even without sex. Both partners benefit when affection can flow freely without pressure or expectation attached to every touch.",
+          "icon": "handshake"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Touch Pattern",
+          "text": "Which best describes physical affection in your marriage currently?",
+          "prompts": [
+            "We touch often with both affectionate and sexual touch",
+            "We have sexual contact but little affectionate touch between those times",
+            "We have some affectionate touch but rarely sexual intimacy",
+            "We barely touch at all anymore",
+            "Touch has become a source of tension and conflict between us"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Whatever your current pattern, rebuilding healthy touch is possible. It starts with intentional practice."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "action",
+          "cardNumber": 5,
+          "title": "The Seven Day Touch Reset",
+          "text": "Try this practice for one week with your spouse. Every morning, share a twenty second hug before leaving for the day. Not a quick squeeze but a real embrace that you hold for a full twenty seconds. When you reunite, share a six second kiss. Longer than a peck. Long enough to actually feel each other. Every evening, spend ten minutes of physical closeness. Sit together, hold hands, offer gentle touch. No phones and no agenda beyond connection. Before sleep, share another twenty second embrace. Commit to this regardless of how your day went or how you feel about each other in the moment. It is an investment in your connection that pays dividends.",
+          "icon": "event"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "teaching",
+          "cardNumber": 6,
+          "title": "A Note About Different Touch Needs",
+          "text": "You and your spouse may have different touch needs, and that is okay. One of you may crave more physical affection than the other. One may feel touched out from caring for kids and need personal space. One may have sensory sensitivities that make certain kinds of touch uncomfortable. The goal is not identical preferences. The goal is understanding and compromise. Have a conversation about touch. Ask what kind of touch feels connecting to your spouse. Ask if there is touch that feels overwhelming or unwanted. Discuss how you can both get what you need. Understanding each other's touch language is as important as speaking it.",
+          "icon": "forum"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_emotional_intimacy_practices",
+      "isFree": false,
+      "title": "Soul Access: Deepening Emotional Intimacy",
+      "subtitle": "Creating the closeness that goes beyond words",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "psychology",
+      "emotionalIntensity": "high",
+      "activityType": "practical",
+      "whyThisMatters": "Emotional intimacy means knowing and being known at the deepest level. It means sharing fears, dreams, failures, and hopes with someone who holds them with care. This activity gives you practical ways to deepen that sacred knowing with your spouse.",
+      "frameworkBasis": {
+        "conceptKey": "emotional_depth",
+        "explanation": "Emotional intimacy deepens through intentional practices of sharing, listening, and creating space for vulnerability."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Beyond the Surface",
+          "text": "Most couples talk plenty. But there is a difference between talking and truly connecting. Surface talk covers logistics, schedules, decisions, and news about other people. It is necessary but it does not create intimacy. Deeper talk gets into how you are really doing, what you are struggling with, and what you are dreaming about. This starts to build connection. Intimate talk goes to your fears, your longings, and the parts of yourself you rarely show anyone. This is where souls meet. Many marriages have plenty of surface talk but starve at the deeper levels. You can know your spouse's schedule perfectly and still not know their soul.",
+          "icon": "layers"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why Depth Requires Intention",
+          "text": "Deep conversation does not happen accidentally. It requires specific conditions that most couples do not create. It requires time without distraction. You cannot go deep in stolen moments between tasks while checking your phone. It requires questions that invite depth. Asking how was your day rarely gets to the soul. You need questions that open doors to deeper places. It requires listening that creates safety. Your response needs to honor what was shared, not dismiss it or try to fix it. It requires willingness to go first. Someone has to be vulnerable first. Often it takes one person modeling openness before the other feels safe to follow. Depth is intentional. It is chosen. It does not just happen because you share a house.",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Questions That Open Doors",
+          "text": "Better questions lead to deeper conversations. Instead of asking how was your day, try asking what was the hardest part of today. Ask what they are most worried about right now. Ask when they felt most like themselves this week. To go even deeper, ask what they have been thinking about but have not told you. Ask what they need from you that they are not getting. Ask what fear they are carrying right now. Ask what they are hoping for that feels vulnerable to say out loud. These questions are invitations. They say I want to know the real you, not just the version you show the world.",
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "action",
+          "cardNumber": 4,
+          "title": "The Soul Access Practice",
+          "text": "This week, try the Soul Access practice with your spouse. Set aside thirty minutes without phones, kids, or distractions. Go somewhere you will not be interrupted. Take turns asking and answering one deep question each. The listener's only job is to understand, not fix or defend. Ask follow up questions like tell me more about that. End with thank you for sharing that with me. Sample questions for this week: What is something you wish I understood better about you? What is a dream or hope you have that we do not talk about? This practice builds the muscle of emotional intimacy over time.",
+          "icon": "event"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "When Depth Feels Scary",
+          "text": "Some people avoid emotional intimacy because it feels genuinely dangerous. They worry that if their spouse really knew them, they might not love them anymore. They remember a time they were vulnerable and it got used against them later. They do not even know how to access those deeper parts of themselves. If this describes you or your spouse, go slow. Depth is not built in one conversation. Start with smaller vulnerabilities. Notice how they are received. Build trust gradually over weeks and months. And if you are the one receiving vulnerability, treat it like gold. How you respond to small shares determines whether you will ever receive larger ones.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "Your Emotional Intimacy Edge",
+          "text": "What is your growing edge with emotional intimacy? Where do you need to stretch? Maybe you need to ask better questions instead of settling for surface conversation. Maybe you need to listen better when your spouse shares instead of jumping to fix or defend. Maybe you need to be more vulnerable yourself instead of waiting for them to go first. Maybe you need to create more time for deep conversation instead of letting busyness crowd it out. Identify one thing you will do differently to deepen emotional intimacy in your marriage:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_physical_intimacy_environment",
+      "isFree": false,
+      "title": "Setting the Stage: Creating Space for Physical Intimacy",
+      "subtitle": "Building an environment where closeness can flourish",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "bedroom_parent",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Physical intimacy does not happen in a vacuum. The environment, both practical and emotional, shapes whether closeness feels possible. This activity helps you create conditions where physical intimacy can naturally flourish rather than feeling forced.",
+      "frameworkBasis": {
+        "conceptKey": "intimacy_environment",
+        "explanation": "Physical intimacy is influenced by environmental factors including timing, energy, privacy, and relational climate."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Environment Matters So Much",
+          "text": "Think about conditions that work against physical intimacy. Exhaustion from impossible schedules that leave you drained. Kids who might walk in at any moment. Resentment simmering from an unresolved conflict earlier in the week. A bedroom that has become an office, laundry room, and screen zone. Phones constantly competing for attention. No transition time between work mode and connection mode. Now think about conditions that invite intimacy. Enough rest to actually show up. Privacy and time without interruption. Emotional goodwill from positive interactions earlier in the day. A space that feels romantic rather than chaotic. Presence with each other instead of devices. You cannot force desire into existence. But you can create conditions where it is much more likely to grow.",
+          "icon": "landscape"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Practical Barriers",
+          "text": "Let us be honest about practical barriers many couples face. Exhaustion is real. By bedtime you are running on empty. Sex becomes one more thing on the to-do list instead of something you look forward to. Kids create challenges. Little ones who do not sleep through the night, or bigger ones who stay up late, leave almost no privacy for parents. Mismatched schedules make things harder. Night owl and early bird rarely meet with energy at the same time. The bedroom problem affects many couples. When your bedroom is full of laundry, work papers, and screens, it stops feeling like a sanctuary for rest and connection. It just feels like another room where stuff piles up. These are not excuses. They are real obstacles that require real solutions.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Practical Barriers",
+          "text": "What practical factors are working against physical intimacy in your marriage? Be specific about time constraints you face, energy levels at the times you are typically together, privacy issues in your home, problems with your physical environment, and scheduling mismatches between you and your spouse. Name your specific barriers:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Creating Space",
+          "text": "Solutions require creativity and prioritization. Protect energy by recognizing that intimacy may need to happen earlier in the evening or in the morning before exhaustion sets in. Stop waiting until bedtime when you are both depleted. Schedule it. This sounds unromantic, but planned intimacy actually happens. Spontaneity is wonderful when it works, but planning ensures connection does not disappear entirely. Secure privacy. Put locks on doors. Enforce kids' bedtimes. Occasionally arrange for kids to stay with grandparents or friends overnight. Reclaim the bedroom. Remove screens, work materials, and chaos. Make it a space dedicated to rest and connection. Create transitions. You cannot go from work stress to intimacy without some kind of bridge. What helps you shift gears?",
+          "icon": "construction"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Relational Climate",
+          "text": "Beyond practical factors, the relational climate matters enormously. It is hard to want physical closeness when you have been fighting all week, when you feel more like coworkers than lovers, when there has been criticism or contempt between you, or when you have not had meaningful conversation in days. Physical intimacy grows in a climate of emotional goodwill, regular non-sexual affection, kindness and appreciation, and feeling like teammates rather than opponents. How you treat each other on Tuesday afternoon affects what is possible on Saturday night. The emotional atmosphere you create throughout the week shapes your physical connection.",
+          "icon": "thermostat"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Environment Action Plan",
+          "text": "Based on what you have identified, what changes will you make? Discuss with your spouse one practical change you will make together around timing, privacy, or your bedroom environment. Discuss one relational climate improvement you will both focus on this week. Discuss how you will protect time and energy for connection instead of letting everything else take priority. Remember that you are not scheduling obligation. You are protecting space for something valuable that keeps getting crowded out by less important things. Write your environment action plan:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_initiating_responding",
+      "isFree": false,
+      "title": "The Dance of Pursuit: Initiating and Responding with Grace",
+      "subtitle": "Navigating the delicate rhythm of desire",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "sync",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "How you initiate physical intimacy, and how you respond to your spouse's initiation, can either build connection or create deep hurt. This activity helps you develop healthy patterns in both roles so that reaching for each other feels safe.",
+      "frameworkBasis": {
+        "conceptKey": "initiation_response",
+        "explanation": "The patterns of initiating and responding to physical intimacy significantly impact desire, connection, and feelings of desirability."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Risk of Reaching",
+          "text": "Initiating physical intimacy is inherently vulnerable. You are essentially asking do you want me right now? And that question carries real risk. Every initiation risks rejection. If you have been rejected repeatedly over time, initiating starts to feel too costly. You stop reaching out to protect yourself from more pain. Many couples fall into a pattern where one person always initiates and one always responds or declines. The constant initiator feels unwanted and undesirable. The constant responder feels pressured and pursued. Both end up hurt. Both end up disconnected. Breaking this pattern requires understanding what is happening beneath the surface for both people.",
+          "icon": "pan_tool"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "When Initiation Becomes Pressure",
+          "text": "There is a real difference between invitation and pressure. Invitation says I desire you and I would love to connect. Are you open to that? Invitation accepts not tonight gracefully and does not punish. Pressure says you should want this and something is wrong with you if you do not. Pressure makes not tonight into a battleground. Signs that initiation has become pressure include pouting, anger, or guilt trips when declined. It includes making your spouse feel like a bad person for not being in the mood. It includes keeping score and bringing up how long it has been. It includes initiating in ways that ignore their current state, like when they are exhausted or upset. Pressure kills desire. It makes physical intimacy feel like obligation, which is the opposite of what either person actually wants.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "When Declining Becomes Rejection",
+          "text": "The other side matters too. How you decline makes an enormous difference. Saying not tonight with kindness sounds like I am not in the space for that right now, but I love you and want you to know it is not about you. Rejection sounds like not this again, why do you always want that, can we just watch TV? Signs that declining has become rejection include disgust, eye rolling, or contempt in your response. It includes never being available and always having an excuse. It includes making your spouse feel like their desire for you is a problem. It includes showing no alternative affection or connection when you decline. Repeated rejection teaches your spouse do not risk reaching for me because you will only get hurt. Eventually they stop reaching altogether.",
+          "icon": "do_not_disturb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "A Better Way",
+          "text": "Healthy initiation reads the room first. Is this a realistic moment given their energy level and emotional state? It invites rather than demands. It accepts not tonight without punishment. It expresses desire in ways your spouse finds appealing, not just what you would want. Healthy declining responds with kindness because your spouse just took a risk in reaching for you. It communicates that this is about timing, not about them. It offers alternative connection when possible rather than just shutting down. It takes responsibility to initiate sometimes instead of always being the one responding. Both partners need to feel that my desire is welcome here, even when the timing does not work out.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Initiation Patterns",
+          "text": "Reflect honestly on your patterns around initiation. If you are usually the initiator, how do you handle rejection? Have you created pressure instead of invitation? Does your response to not tonight punish your spouse? If you are usually the responder or decliner, how do you decline? Is it kind? Do you ever initiate? Does your spouse actually know they are desired by you? What patterns do you recognize in yourself that might be contributing to problems?",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Initiation Conversation",
+          "text": "Have an honest conversation with your spouse about initiation and response patterns in your marriage. Share what makes initiation feel safe or scary for you. Share how rejection or perceived rejection affects you. Share what you need when you decline so it does not feel like you are rejecting them. Share how you could both do better. Aim for this question: How can we both feel desired? How can we both feel respected when the timing does not work? This conversation has the power to transform your physical relationship. Make time for it this week.",
+          "icon": "forum"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_intimacy_commitment",
+      "isFree": false,
+      "title": "Closer Than Ever: Your Intimacy Commitment",
+      "subtitle": "Pledging to pursue connection for a lifetime",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "Knowledge without application fades quickly. This activity helps you consolidate what you have learned and create a commitment to ongoing intimacy, both emotional and physical, in your marriage for years to come.",
+      "frameworkBasis": {
+        "conceptKey": "intentional_intimacy",
+        "explanation": "Lasting intimacy requires ongoing intentionality, not just initial effort during a focused season."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Learned",
+          "text": "Through this journey, you have explored how the intimacy gap forms and how to close it. You have identified the specific blockers in your marriage. You have learned how emotional and physical intimacy connect and feed each other. You have seen how men and women often experience intimacy differently. You have also worked on building emotional safety for vulnerability, healing hurts that block closeness, understanding the power of non-sexual touch, developing practices for emotional depth, creating an environment for physical intimacy, and learning healthy patterns of initiating and responding. This is significant work. The question now is what will you continue doing?",
+          "icon": "school"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "A Biblical Vision",
+          "text": "Scripture uses the word know to describe sexual intimacy. Adam knew his wife Eve. This is not just physical act. It is deep knowing, the intertwining of souls, not just bodies. God designed marriage for this kind of intimacy. Emotional nakedness. Physical closeness. Two becoming one. This is not an optional feature of marriage. It is central to its design. And it is worth fighting for, protecting, and nurturing for a lifetime. 'Therefore a man shall leave his father and his mother and hold fast to his wife, and they shall become one flesh.' (Genesis 2:24)",
+          "icon": "auto_stories"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Greatest Insight",
+          "text": "What is the most important thing you have learned about intimacy through this journey? What do you want to remember and apply going forward? What insight do you not want to lose?",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "What Your Spouse Needs",
+          "text": "Based on what you have learned, what does your spouse most need from you to feel emotionally and physically intimate? Be specific about what you will give them:",
+          "responseType": "open-text",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Your Intimacy",
+          "text": "Father, thank You for designing marriage for deep connection, souls and bodies intertwined. Forgive us for the ways we have let distance grow. For the walls we have built. For the hurts we have caused. Help us create safety for vulnerability. Help us pursue each other, emotionally and physically, with tenderness and patience. May our marriage reflect the intimate love Christ has for His church. May we know and be known, fully and without shame. Protect our intimacy from the things that would erode it. Draw us closer to each other and to You. Amen.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Intimacy Commitment",
+          "text": "Create a commitment together as husband and wife. We commit to one emotional intimacy practice we will maintain. We commit to one physical affection practice we will maintain. We commit to how we will address hurts before they become walls. We commit to how we will protect time and energy for connection. We commit to how we will initiate and respond with grace. Our intimacy is worth protecting. We will pursue each other, heart and body, for a lifetime. Sign this together as your commitment to deeper intimacy.",
+          "icon": "handshake"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Closer Than Ever",
+    "summaryText": "You have done deep work in this journey. You identified blockers, built safety, healed hurts, and developed practices for both emotional and physical closeness. Intimacy is not a destination but a lifelong pursuit. Keep choosing each other, and your marriage will reflect the oneness God designed it for.",
+    "keyTakeaways": [
+      "Intimacy requires emotional safety plus vulnerability, you cannot have one without the other",
+      "Emotional and physical intimacy are deeply connected, each enabling the other",
+      "Men and women often experience intimacy differently, understanding this creates compassion",
+      "Unhealed hurts are the greatest blockers to intimacy and must be addressed",
+      "Environment matters, both practical and relational conditions shape what is possible",
+      "How you initiate and respond to intimacy affects desire and connection"
+    ],
+    "nextRecommendedJourneys": [
+      "Keeping Romance Alive After Years Together",
+      "Reigniting Physical Attraction and Sexual Desire in Marriage",
+      "Rebuilding Trust After Hurt or Betrayal in Marriage"
+    ]
+  }
+}

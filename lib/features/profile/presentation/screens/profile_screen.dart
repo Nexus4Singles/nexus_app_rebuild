@@ -17,6 +17,7 @@ import 'package:nexus_app_min_test/core/constants/app_constants.dart';
 import 'package:nexus_app_min_test/core/session/effective_relationship_status_provider.dart';
 import 'package:nexus_app_min_test/core/user/dating_profile_completed_provider.dart';
 import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
+import 'package:nexus_app_min_test/core/providers/user_provider.dart';
 import 'package:nexus_app_min_test/core/moderation/moderation_models.dart';
 import 'package:nexus_app_min_test/core/moderation/moderation_providers.dart';
 
@@ -37,6 +38,7 @@ import '../../../../core/user/dating_opt_in_provider.dart';
 import '../../../subscription/presentation/screens/subscription_screen.dart';
 import '../../../dating_search/presentation/screens/saved_profiles_screen.dart';
 import '../../../dating_search/application/saved_profiles_provider.dart';
+import '../../../dating_search/domain/enhanced_compatibility_scorer.dart';
 
 Future<void> handleLogout(BuildContext context, WidgetRef ref) async {
   final ok = await showDialog<bool>(
@@ -362,17 +364,20 @@ class ProfileScreen extends ConsumerWidget {
               ),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (isViewingOtherUser)
+                      if (isViewingOtherUser) ...[
+                        const SizedBox(height: 4),
                         _SendMessageCta(profile: profile, viewerUid: me.uid),
+                        const SizedBox(height: 8),
+                      ],
                       _Section(
                         title: 'About',
                         child: _AboutSection(profile: profile),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 14),
 
                       _Section(
                         title: 'Hobbies / Interests',
@@ -1105,7 +1110,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                                             children: [
                                                               Expanded(
                                                                 child: Text(
-                                                                  'Relationship status',
+                                                                  'Relationship Status',
                                                                   style: AppTextStyles.titleLarge.copyWith(
                                                                     fontWeight:
                                                                         FontWeight
@@ -1991,7 +1996,7 @@ class _ProfileAudioController {
     }
 
     try {
-      // Create a temporary player just to load duration
+      // Create a temporary player just to load duration metadata
       final tempPlayer = AudioPlayer();
 
       // Set up a one-time listener for duration
@@ -2000,22 +2005,25 @@ class _ProfileAudioController {
         if (!durationLoaded && d != Duration.zero) {
           durationLoaded = true;
           _durationCache[u] = d;
-          duration = d;
+          if (currentUrl == u) {
+            duration = d;
+          }
           _notify?.call();
-          tempPlayer.dispose();
         }
       });
 
-      // Start playing to trigger duration detection
+      // Start playback to trigger duration loading (then stop immediately)
       await tempPlayer.play(UrlSource(u));
+      await Future.delayed(const Duration(milliseconds: 50));
+      await tempPlayer.stop();
 
-      // Dispose after a short delay if duration wasn't loaded
+      // Dispose after a timeout
       Future.delayed(const Duration(seconds: 2), () {
-        if (!durationLoaded) {
-          try {
+        try {
+          if (tempPlayer.state != PlayerState.disposed) {
             tempPlayer.dispose();
-          } catch (_) {}
-        }
+          }
+        } catch (_) {}
       });
     } catch (e) {
       debugPrint('Error preloading duration for $u: $e');
@@ -2289,6 +2297,17 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Audio prompt question
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Text(
+              widget.prompt,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
           Row(
             children: [
               InkWell(
@@ -2314,39 +2333,10 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
                         ? (isPlaying
                             ? Icons.pause_rounded
                             : Icons.play_arrow_rounded)
-                        : Icons.mic_off_rounded,
-                    color:
-                        widget.isLocked
-                            ? Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withOpacity(0.5)
-                            : Theme.of(context).colorScheme.primary,
+                        : Icons.mic_none_rounded,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 22,
                   ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.prompt, style: AppTextStyles.bodyMedium),
-                    const SizedBox(height: 4),
-                    Text(
-                      widget.isLocked
-                          ? 'Audio recordings cannot be changed after profile creation'
-                          : hasUrl
-                          ? ((isCurrent &&
-                                  (widget.controller.lastError ?? '')
-                                      .trim()
-                                      .isNotEmpty)
-                              ? 'Unable to play audio'
-                              : (isPlaying ? 'Playing…' : 'Tap to play'))
-                          : 'Not recorded yet',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ],
@@ -2430,6 +2420,10 @@ class _PremiumActionsRow extends ConsumerWidget {
 
     final canViewPremiumGates = isPremium || (kDebugMode && debugUnlockPremium);
 
+    // TODO: Re-lock when user is not premium
+    // Temporarily unlocking premium buttons for UI testing
+    const temporarilyUnlocked = true;
+
     return Row(
       children: [
         Expanded(
@@ -2437,7 +2431,7 @@ class _PremiumActionsRow extends ConsumerWidget {
             icon: Icons.favorite_rounded,
             title: 'Compatibility Data',
             onTap: () {
-              if (!canViewPremiumGates) {
+              if (!canViewPremiumGates && temporarilyUnlocked != true) {
                 _toast(context, 'Upgrade to Premium to view compatibility.');
                 return;
               }
@@ -2457,7 +2451,7 @@ class _PremiumActionsRow extends ConsumerWidget {
             icon: Icons.chat_bubble_rounded,
             title: 'Contact Info',
             onTap: () {
-              if (!canViewPremiumGates) {
+              if (!canViewPremiumGates && temporarilyUnlocked != true) {
                 _toast(context, 'Upgrade to Premium to view contact info.');
                 return;
               }
@@ -4837,9 +4831,9 @@ class _PremiumContactViewerScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: Row(
         children: [
@@ -4847,11 +4841,11 @@ class _PremiumContactViewerScreen extends StatelessWidget {
             height: 38,
             width: 38,
             decoration: BoxDecoration(
-              color: AppColors.background,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.border),
+              border: Border.all(color: Theme.of(context).colorScheme.outline),
             ),
-            child: Icon(icon, color: AppColors.primary, size: 20),
+            child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 20),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -4861,7 +4855,7 @@ class _PremiumContactViewerScreen extends StatelessWidget {
                 Text(
                   label,
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     height: 1.1,
                   ),
                 ),
@@ -4880,9 +4874,9 @@ class _PremiumContactViewerScreen extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               decoration: BoxDecoration(
-                color: AppColors.background,
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: Theme.of(context).colorScheme.outline),
               ),
               child: Text(
                 'Copy',
@@ -4942,10 +4936,10 @@ class _PremiumContactViewerScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
         title: Text('Contact info', style: AppTextStyles.headlineLarge),
       ),
@@ -4968,7 +4962,7 @@ class _PremiumContactViewerScreen extends StatelessWidget {
                   Text(
                     'Use these details to connect respectfully.\nTap Copy to save a detail.',
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textMuted,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       height: 1.35,
                     ),
                   ),
@@ -4978,22 +4972,22 @@ class _PremiumContactViewerScreen extends StatelessWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: Theme.of(context).colorScheme.surfaceContainer,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: Theme.of(context).colorScheme.outline),
                       ),
                       child: Row(
                         children: [
                           Icon(
                             Icons.info_outline_rounded,
-                            color: AppColors.textSecondary,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               'No contact info available yet.',
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.textSecondary,
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
                                 height: 1.25,
                               ),
                             ),
@@ -5198,7 +5192,11 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
     // Marital status
     if (k.contains('marital')) {
       if (v.isEmpty) return '$subj has not shared marital status.';
-      return '$subj is ${v.toLowerCase()}.';
+      final status = v.toLowerCase();
+      if (status.contains('never married')) {
+        return '$subj has never been married.';
+      }
+      return '$subj is $status.';
     }
 
     // Kids
@@ -5314,10 +5312,10 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
     final uid = _profileUid();
     if (uid.isEmpty) {
       return Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
-          backgroundColor: AppColors.background,
-          surfaceTintColor: AppColors.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          surfaceTintColor: Theme.of(context).colorScheme.surface,
           elevation: 0,
           title: Text('Compatibility', style: AppTextStyles.headlineLarge),
         ),
@@ -5330,14 +5328,14 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: Theme.of(context).colorScheme.surfaceContainer,
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.border),
+                    border: Border.all(color: Theme.of(context).colorScheme.outline),
                   ),
                   child: Text(
                     'Unable to load compatibility right now (missing profile id).',
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textSecondary,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       height: 1.3,
                     ),
                   ),
@@ -5350,15 +5348,17 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
     }
 
     final compatAsync = ref.watch(_compatibilityMapProvider(uid));
+    final currentUserAsync = ref.watch(currentUserProvider);
+    final currentUser = currentUserAsync.valueOrNull;
     final p = _pronouns();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
-        title: Text('Compatibility', style: AppTextStyles.headlineLarge),
+        title: Text('Compatibility Data', style: AppTextStyles.headlineLarge),
       ),
       body: SafeArea(
         child: Padding(
@@ -5373,20 +5373,63 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: Theme.of(context).colorScheme.surfaceContainer,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: Theme.of(context).colorScheme.outline),
                       ),
                       child: Text(
                         'Unable to load compatibility right now. Please try again.',
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.textSecondary,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           height: 1.3,
                         ),
                       ),
                     ),
                 data: (compat) {
                   final entries = _sortedEntries(compat);
+                  
+                  // Build compatibility insights summary if current user available
+                  Widget? insightsSummary;
+                  if (currentUser != null) {
+                    try {
+                      final score = EnhancedCompatibilityScorer.scoreMatch(
+                        // Current user
+                        userAMaritalStatus: currentUser.compatibility?.getCompatibilityField('maritalStatus'),
+                        userAHaveKids: currentUser.compatibility?.getCompatibilityField('haveKids'),
+                        userAGenotype: currentUser.compatibility?.getCompatibilityField('genotype'),
+                        userAPersonalityType: currentUser.compatibility?.getCompatibilityField('personalityType'),
+                        userARegularIncome: currentUser.compatibility?.getCompatibilityField('regularSourceOfIncome'),
+                        userALongDistance: currentUser.compatibility?.getCompatibilityField('longDistance'),
+                        userABeliefInCohabiting: currentUser.compatibility?.getCompatibilityField('believeInCohabiting'),
+                        userAShouldSpeakTongues: currentUser.compatibility?.getCompatibilityField('shouldChristianSpeakInTongue'),
+                        userABeliefInTithing: currentUser.compatibility?.getCompatibilityField('believeInTithing'),
+                        userAHobbies: currentUser.hobbies,
+                        userADesiredQualities: currentUser.desiredQualities?.split(',').map((s) => s.trim()).toList() ?? [],
+                        // This profile
+                        userBMaritalStatus: profile.compatibility?['maritalStatus']?.toString(),
+                        userBHaveKids: profile.compatibility?['haveKids']?.toString(),
+                        userBGenotype: profile.compatibility?['genotype']?.toString(),
+                        userBPersonalityType: profile.compatibility?['personalityType']?.toString(),
+                        userBRegularIncome: profile.compatibility?['regularSourceOfIncome']?.toString(),
+                        userBLongDistance: profile.compatibility?['longDistance']?.toString(),
+                        userBBeliefInCohabiting: profile.compatibility?['believeInCohabiting']?.toString(),
+                        userBShouldSpeakTongues: profile.compatibility?['shouldChristianSpeakInTongue']?.toString(),
+                        userBBeliefInTithing: profile.compatibility?['believeInTithing']?.toString(),
+                        userBHobbies: profile.hobbies,
+                        userBDesiredQualities: profile.desiredQualities?.split(',').map((s) => s.trim()).toList() ?? [],
+                      );
+                      
+                      // Only show "Why You Match" summary if compatibility score is >= 70%
+                      if (score.score >= 70) {
+                        insightsSummary = _CompatibilityInsightsSummary(score: score);
+                      }
+                    } catch (e) {
+                      if (kDebugMode) {
+                        // ignore: avoid_print
+                        print('[ProfileScreen] Error computing compatibility score: $e');
+                      }
+                    }
+                  }
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -5403,34 +5446,41 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                       Text(
                         'These insights are based on questionnaire data stored on the profile.',
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.textMuted,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           height: 1.35,
                         ),
                       ),
                       const SizedBox(height: 16),
+                      
+                      // Compatibility insights summary (if available)
+                      if (insightsSummary != null) ...[
+                        insightsSummary,
+                        const SizedBox(height: 20),
+                      ],
+                      
                       if (entries.isEmpty)
                         Expanded(
                           child: Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: AppColors.surface,
+                              color: Theme.of(context).colorScheme.surfaceContainer,
                               borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: AppColors.border),
+                              border: Border.all(color: Theme.of(context).colorScheme.outline),
                             ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Icon(
                                   Icons.auto_awesome_rounded,
-                                  color: AppColors.primary,
+                                  color: Theme.of(context).colorScheme.primary,
                                 ),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
                                     'No compatibility data available yet for this profile.\n\nIf this is unexpected, the profile may not have completed the compatibility questionnaire.',
                                     style: AppTextStyles.bodyMedium.copyWith(
-                                      color: AppColors.textSecondary,
+                                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                                       height: 1.3,
                                     ),
                                   ),
@@ -5458,9 +5508,9 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                               return Container(
                                 padding: const EdgeInsets.all(14),
                                 decoration: BoxDecoration(
-                                  color: AppColors.surface,
+                                  color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(color: AppColors.border),
+                                  border: Border.all(color: Theme.of(context).colorScheme.outline),
                                 ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -5469,15 +5519,15 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                                       height: 38,
                                       width: 38,
                                       decoration: BoxDecoration(
-                                        color: AppColors.background,
+                                        color: Theme.of(context).colorScheme.surfaceContainerHighest,
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
-                                          color: AppColors.border,
+                                          color: Theme.of(context).colorScheme.outline,
                                         ),
                                       ),
                                       child: Icon(
                                         Icons.insights_rounded,
-                                        color: AppColors.primary,
+                                        color: Theme.of(context).colorScheme.primary,
                                         size: 20,
                                       ),
                                     ),
@@ -5492,7 +5542,7 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                                             style: AppTextStyles.bodySmall
                                                 .copyWith(
                                                   color:
-                                                      AppColors.textSecondary,
+                                                      Theme.of(context).colorScheme.onSurfaceVariant,
                                                   height: 1.1,
                                                 ),
                                           ),
@@ -5520,5 +5570,163 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+/// Extension to extract compatibility fields from UserModel
+extension CompatibilityDataExtension on dynamic {
+  String? getCompatibilityField(String key) {
+    if (this == null) return null;
+    if (this is Map<String, dynamic>) {
+      final value = this[key];
+      return value != null ? value.toString().trim() : null;
+    }
+    return null;
+  }
+}
+
+/// Widget to display compatibility insights summary
+class _CompatibilityInsightsSummary extends StatelessWidget {
+  final CompatibilityScore score;
+  
+  const _CompatibilityInsightsSummary({required this.score});
+  
+  Color _getScoreColor(int scoreValue, BuildContext context) {
+    if (scoreValue >= 75) {
+      return Theme.of(context).colorScheme.primary;
+    }
+    if (scoreValue >= 50) {
+      return Theme.of(context).brightness == Brightness.dark
+          ? const Color(0xFFFFD54F)
+          : const Color(0xFFFBC02D);
+    }
+    return Theme.of(context).colorScheme.error;
+  }
+  
+  String _getCategoryLabel(String category) {
+    final map = {
+      'faith': '💎 Faith',
+      'life': '💑 Life',
+      'practical': '💼 Practical',
+      'personality': '🎯 Personality',
+      'hobbies': '🎵 Hobbies',
+      'values': '✨ Values',
+    };
+    return map[category] ?? category;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Score header
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: _getScoreColor(score.score, context),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  '${score.score}%',
+                  style: AppTextStyles.labelMedium.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Why You Match',
+                  style: AppTextStyles.titleMedium.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          
+          // Category breakdown
+          ...score.fieldScores.entries.map((entry) {
+            final category = entry.key;
+            final points = entry.value;
+            final maxPoints = _getMaxPoints(category);
+            
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                children: [
+                  Text(
+                    _getCategoryLabel(category),
+                    style: AppTextStyles.bodyMedium,
+                  ),
+                  const Spacer(),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      '$points/$maxPoints',
+                      style: AppTextStyles.labelSmall.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          
+          // Top matches (optional)
+          if (score.topMatches.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            const Divider(height: 1),
+            const SizedBox(height: 12),
+            Text(
+              'What You Have in Common:',
+              style: AppTextStyles.labelMedium.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 6),
+            ...score.topMatches.take(3).map((match) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                  '✓ $match',
+                  style: AppTextStyles.bodySmall,
+                ),
+              );
+            }).toList(),
+          ],
+        ],
+      ),
+    );
+  }
+  
+  int _getMaxPoints(String category) {
+    final maxMap = {
+      'faith': 25,
+      'life': 35,
+      'practical': 15,
+      'personality': 10,
+      'hobbies': 5,
+      'values': 5,
+    };
+    return maxMap[category] ?? 5;
   }
 }

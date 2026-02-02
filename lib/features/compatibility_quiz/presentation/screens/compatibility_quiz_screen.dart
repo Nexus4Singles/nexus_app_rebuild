@@ -81,7 +81,9 @@ class CompatibilityQuizScreen extends ConsumerWidget {
                 const SizedBox(height: 10),
                 Text(
                   state.error!,
-                  style: AppTextStyles.bodyMedium.copyWith(color: Colors.red),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
                 ),
               ],
               const SizedBox(height: 14),
@@ -94,11 +96,11 @@ class CompatibilityQuizScreen extends ConsumerWidget {
                         height: 56,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: Colors.white,
+                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
                             elevation: 0,
-                            disabledBackgroundColor: AppColors.border,
-                            disabledForegroundColor: AppColors.textMuted,
+                            disabledBackgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                            disabledForegroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
@@ -207,11 +209,14 @@ class _OptionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bg =
-        selected ? AppColors.primary.withOpacity(0.12) : AppColors.surface;
-    final border =
-        selected ? AppColors.primary : AppColors.border.withOpacity(0.5);
-    final txt = selected ? AppColors.primary : AppColors.textPrimary;
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
+    final onSurfaceColor = Theme.of(context).colorScheme.onSurface;
+    final outlineColor = Theme.of(context).colorScheme.outline;
+    
+    final bg = selected ? primaryColor.withOpacity(0.12) : surfaceColor;
+    final border = selected ? primaryColor : outlineColor.withOpacity(0.5);
+    final txt = selected ? primaryColor : onSurfaceColor;
 
     return Material(
       color: Colors.transparent,
@@ -228,14 +233,16 @@ class _OptionButton extends StatelessWidget {
                 selected
                     ? [
                       BoxShadow(
-                        color: AppColors.primary.withOpacity(0.15),
+                        color: primaryColor.withOpacity(0.15),
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
                     ]
                     : [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.02),
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white.withOpacity(0.02)
+                            : Colors.black.withOpacity(0.02),
                         blurRadius: 6,
                         offset: const Offset(0, 2),
                       ),
@@ -266,8 +273,8 @@ class _ProgressBar extends StatelessWidget {
       child: LinearProgressIndicator(
         value: progress,
         minHeight: 8,
-        backgroundColor: AppColors.getSurface(context),
-        valueColor: AlwaysStoppedAnimation(AppColors.primary),
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+        valueColor: AlwaysStoppedAnimation(Theme.of(context).colorScheme.primary),
       ),
     );
   }

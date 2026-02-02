@@ -1,0 +1,751 @@
+{
+  "journeyId": "married_masculinity_femininity",
+  "title": "Honoring Masculinity and Femininity in Marriage",
+  "subtitle": "Celebrating the differences that make you stronger together",
+  "summary": "Men and women are different, and those differences are not problems to solve but gifts to celebrate. Yet many couples struggle to understand and honor what is unique about their spouse. This journey explores the beauty of masculine and feminine design, helps you appreciate what your spouse brings that you cannot, and shows how these differences can strengthen rather than divide your marriage when properly understood and valued.",
+  "targetUserCategory": "married",
+  "priorityRank": 10,
+  "estimatedDays": 14,
+  "totalActivities": 10,
+  "difficulty": "intermediate",
+  "themeColor": "#8E24AA",
+  "cover": {
+    "themeTag": "Gender Differences",
+    "accentIcon": "diversity_3",
+    "heroImage": "assets/images/journeys/married_masculinity_femininity_hero.jpg",
+    "heroImageDescription": "A husband and wife standing together confidently, each with distinct posture suggesting strength in their differences while clearly united. Warm lighting suggesting harmony and mutual respect."
+  },
+  "frameworks": [
+    "gender_appreciation",
+    "complementarity",
+    "biblical_design",
+    "strength_differences"
+  ],
+  "targetOutcomes": [
+    "Understand and appreciate the unique strengths masculine and feminine bring to marriage",
+    "Move beyond stereotypes to see the real person you married",
+    "Learn what your spouse needs that may differ from what you need",
+    "Honor your spouse's design rather than trying to change them into you",
+    "Build a marriage that draws on both masculine and feminine strengths",
+    "Celebrate differences as complementary gifts rather than sources of conflict"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_different_by_design",
+      "isFree": true,
+      "title": "Different by Design: Celebrating What Makes You Unique",
+      "subtitle": "Understanding why your differences are gifts not problems",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "diversity_3",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Many couples treat their differences as problems to overcome rather than gifts to appreciate. This activity helps you see that God designed men and women to be different, and those differences make your marriage stronger when honored rather than resented.",
+      "frameworkBasis": {
+        "conceptKey": "complementary_design",
+        "explanation": "Masculine and feminine differences are intentional aspects of human design that create complementary strengths in marriage."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Frustration of Difference",
+          "text": "Differences between husband and wife are meant to strengthen a marriage, not divide it.\nTension grows when differences are misunderstood or misused.\n\nThis journey helps you honor strength, vulnerability, and partnership with wisdom and respect.\n\nAt some point in your marriage, you have probably thought why can you not just be more like me? You think differently. You process emotions differently. You approach problems differently. You have different needs and different ways of expressing love. Sometimes it feels like you are from different planets. These differences can be frustrating. You want your spouse to understand you, but they seem wired in a completely different way. You explain something that seems obvious to you, and they look at you like you are speaking another language. But what if these differences are not mistakes to fix but designs to appreciate? What if the very things that frustrate you are actually gifts that make your marriage stronger?",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Created Male and Female",
+          "text": "Scripture tells us that God created humanity in two forms: male and female. This was not an accident or an afterthought. It was intentional design. 'So God created mankind in his own image, in the image of God he created them; male and female he created them.' (Genesis 1:27) Both men and women bear God's image, but they bear it differently. Together, male and female reflect aspects of God that neither could reflect alone. This is why marriage between a man and woman creates something unique, a union of complementary designs that is greater than either individual. Your differences are not flaws in the design. They are the design. And when you learn to honor rather than fight these differences, something beautiful emerges.",
+          "icon": "auto_stories"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Beyond Stereotypes",
+          "text": "Before we go further, an important clarification is needed. Discussing masculine and feminine does not mean every man is one way and every woman is another. Stereotypes are lazy shortcuts that miss the real person in front of you. Some women are more analytical than their husbands. Some men are more emotionally expressive than their wives. Individual personality varies enormously within each gender. What we are exploring are general patterns and tendencies, not absolute rules. The goal is not to put your spouse in a box but to understand patterns that may help you appreciate them better. Always prioritize knowing the actual person you married over assumptions based on their gender. Your spouse is not a stereotype. They are a unique individual who happens to also be shaped by their masculine or feminine design.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Complement Not Compete",
+          "text": "The word complement means to complete or make whole. Complementary colors bring out the best in each other. Complementary skills on a team cover different needs. Masculine and feminine are designed to complement each other. Where one tends to be strong, the other often brings a different strength. Where one might have blind spots, the other often sees clearly. This does not mean one is better and the other is worse. It means they are different in ways that work together beautifully when honored. The problem comes when we see differences as competition rather than complement. When we rank masculine and feminine traits rather than appreciating both. When we try to make our spouse more like us rather than celebrating what they uniquely bring. Your marriage is strongest when you draw on both masculine and feminine strengths rather than fighting over whose way is right.",
+          "icon": "handshake"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Experience of Difference",
+          "text": "Think about the differences between you and your spouse. What differences have been sources of frustration in your marriage? Have you ever wished your spouse would just think or act more like you do? Are there differences you have learned to appreciate over time? What might your spouse bring to your marriage that you could not provide yourself? Write your reflection on how you experience and respond to differences in your marriage:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Journey Ahead",
+          "text": "This journey will explore masculine and feminine design and how these differences can strengthen your marriage. You will learn about what many men need that their wives may not naturally understand, and what many women need that their husbands may miss. You will discover how to honor your spouse's design rather than resenting it. The goal is not to put anyone in a box but to provide frameworks that might help you understand and appreciate your spouse more deeply. This week, begin noticing differences between you and your spouse with curiosity rather than frustration. Ask yourself what might my spouse bring to our marriage that I could not provide on my own?",
+          "icon": "route"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_understanding_him",
+      "isFree": false,
+      "title": "Understanding Him: What Many Husbands Need",
+      "subtitle": "Seeing the world through masculine eyes",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "male",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Many wives genuinely want to understand their husbands but find them confusing. This activity explores common masculine needs and experiences that may help wives understand what their husbands need even when he struggles to articulate it himself.",
+      "frameworkBasis": {
+        "conceptKey": "masculine_needs",
+        "explanation": "Understanding common masculine needs helps wives connect with their husbands in ways that resonate with how many men are wired."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Respect Question",
+          "text": "Research consistently shows that while both men and women need love and respect, many men experience respect as their primary emotional need in the same way many women experience love as their primary need. For many husbands, feeling respected by their wife is foundational to feeling loved. When a wife expresses respect for her husband's judgment, abilities, and leadership, he often feels deeply loved even if she has not used the word love. Conversely, when a husband feels disrespected, criticized, or belittled by his wife, he may struggle to feel her love even when she genuinely does love him. The disrespect creates a barrier that blocks everything else. This does not mean wives should never disagree or give input. It means that how input is given matters enormously. The same concern can be expressed in a way that feels respectful or in a way that feels emasculating, and the difference shapes how he receives it.",
+          "icon": "thumb_up"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Provider Identity",
+          "text": "Many men carry a deep internal sense that they should provide for and protect their families. This is not simply cultural conditioning. It runs deeper than that for many husbands. When a man cannot provide adequately, whether due to job loss, financial struggles, or other circumstances, he often experiences profound shame that goes beyond practical concern. He may feel like he is failing at being a man, not just failing at a task. Wives who understand this can support their husbands through difficult seasons with compassion rather than adding to his shame. This does not mean pretending financial struggles do not exist. It means recognizing that for many men, these struggles attack their core identity. It also means that when things are going well, acknowledging his provision matters. Noticing and appreciating what he contributes financially and practically speaks deeply to many husbands.",
+          "icon": "work"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Physical Connection",
+          "text": "Many husbands experience physical intimacy as a primary way of feeling emotionally connected to their wives. This is often misunderstood as men just wanting sex for physical pleasure. But for many men, sexual intimacy is emotional intimacy. It is how they feel close, loved, accepted, and desired. When physical intimacy is absent or treated as a chore, many husbands feel emotionally disconnected from their wives even if conversation and other connection is happening. This does not obligate wives to provide sex on demand. But it does help explain why many husbands pursue physical intimacy so persistently. They are not just seeking physical release. They are seeking emotional connection in the language that speaks most deeply to them. Understanding this can help wives see their husband's sexual interest as a desire for closeness rather than just a physical appetite to manage.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Processing and Silence",
+          "text": "Many men process stress and problems differently than many women. While many women process by talking through their feelings, many men process internally through silence, distraction, or activity. When a husband comes home stressed and wants to watch television or work in the garage rather than talk, he may not be avoiding his wife or shutting her out. He may be processing in the way that works for him. This can be confusing for wives who process by talking and want to help by discussing the problem. Her attempts to help may actually feel intrusive to him when he needs space to process. Learning to give him room to process in his way, then being available when he is ready to engage, often works better than pushing for immediate conversation. Many men will talk eventually, but they need decompression time first.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Understanding Your Husband",
+          "text": "If you are a wife, reflect on what you have learned about your husband. Does the respect framework resonate with what you have observed in him? How does he respond to feeling respected versus feeling criticized? What role does physical intimacy play in his sense of connection? How does he process stress or problems? What do you think he needs from you that you may not have fully understood? Write your reflection on understanding your husband:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Speaking His Language",
+          "text": "This week, focus on speaking to your husband in ways that resonate with masculine needs. Express respect explicitly. Tell him something you admire about him, appreciate about his provision, or trust about his judgment. Initiate physical affection. Not necessarily sex, but physical connection that communicates desire and acceptance. Give him space to decompress when he is stressed without taking it personally. Notice how he responds when you speak in these ways versus when you default to speaking the way you would want to be spoken to. What specific action will you take this week to connect with your husband in his language?",
+          "icon": "record_voice_over"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_understanding_her",
+      "isFree": false,
+      "title": "Understanding Her: What Many Wives Need",
+      "subtitle": "Seeing the world through feminine eyes",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "female",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Many husbands genuinely want to make their wives happy but feel like they cannot figure out what she actually needs. This activity explores common feminine needs and experiences that may help husbands understand what their wives need even when she struggles to articulate it herself.",
+      "frameworkBasis": {
+        "conceptKey": "feminine_needs",
+        "explanation": "Understanding common feminine needs helps husbands connect with their wives in ways that resonate with how many women are wired."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Security Question",
+          "text": "For many women, emotional security is foundational to everything else in the relationship. She needs to know that your love is stable, that you are committed, that she is safe with you emotionally and physically. This security is not established once and then assumed. It needs ongoing reinforcement. Many wives need to hear that they are loved, that you choose them, that you are not going anywhere. What feels like excessive reassurance to a husband may be essential maintenance to a wife. When a wife does not feel secure, she may become anxious, clingy, or constantly seeking reassurance in ways that confuse her husband. He thinks I already told her I love her, why does she keep asking? But for her, yesterday's assurance does not cover today's need. Consistent, repeated expressions of love and commitment are not redundant to many wives. They are the foundation she needs to feel safe in the relationship.",
+          "icon": "security"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Emotional Connection",
+          "text": "Many women experience emotional intimacy as the foundation for all other intimacy including physical. She needs to feel emotionally close before physical closeness feels right. Emotional intimacy for many wives involves feeling understood, having deep conversations, being asked about her inner world, and having a husband who shares his own inner world with her. When emotional connection is missing, physical intimacy can feel hollow or even invasive to many wives. She may pull back from sex not because she does not love her husband but because she does not feel emotionally connected enough for physical vulnerability. Husbands who prioritize emotional connection often find that physical intimacy improves as a result. The conversation and closeness she craves creates the safety she needs to open up physically.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "What I Bring Into the Marriage",
+          "text": "Write one strength you bring into your marriage.\n\nThen write one area where you need your spouse’s strength.\n\nHealthy partnership grows through mutual honor.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Being Truly Known",
+          "text": "Many women have a deep desire to be truly known by their husbands, not just the surface facts but who they really are underneath. She wants you to know her fears, dreams, struggles, and joys. She wants you to remember what she told you and follow up later. She wants you to notice changes in her mood and care enough to ask about them. When a wife says you do not understand me, she is often expressing this unmet need to be known. She does not just want practical problems solved. She wants to feel that her husband sees her, really sees her, and values what he sees. This requires attention and memory that many husbands do not naturally prioritize. But learning to know your wife deeply, to remember what matters to her, to notice her inner world, speaks powerfully to her heart.",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Words and Tone",
+          "text": "Many women are highly attuned to words and tone, often more so than many men realize. What a husband says and how he says it lands differently than he might expect. A comment intended as neutral observation may feel like criticism to her. A tone that seems normal to him may feel harsh to her. She is not being oversensitive. She is processing communication through a different filter. This is why many wives want their husbands to talk to them more gently. It is not about walking on eggshells or never disagreeing. It is about recognizing that your words and tone have more impact than you might assume. Husbands who learn to communicate with awareness of this impact often find their wives much more receptive. The same content delivered with gentleness lands completely differently than content delivered bluntly.",
+          "icon": "record_voice_over"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "Understanding Your Wife",
+          "text": "If you are a husband, reflect on what you have learned about your wife. Does the security framework resonate with what you have observed in her? How does she respond when she feels emotionally connected versus disconnected? What makes her feel truly known by you? How does your tone affect how she receives what you say? What do you think she needs from you that you may not have fully understood? Write your reflection on understanding your wife:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 7,
+          "title": "Speaking Her Language",
+          "text": "This week, focus on speaking to your wife in ways that resonate with feminine needs. Express love and commitment explicitly and repeatedly. Tell her you love her, you choose her, you are not going anywhere. Prioritize emotional connection. Have a real conversation where you ask about her inner world and share something from yours. Show that you know her by remembering something she mentioned and following up on it. Pay attention to your tone. Deliver even practical information with warmth. Notice how she responds when you speak in these ways versus when you communicate in your default style. What specific action will you take this week to connect with your wife in her language?",
+          "icon": "record_voice_over"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_respect_love",
+      "isFree": false,
+      "title": "The Respect and Love Dance: Meeting Each Other's Core Needs",
+      "subtitle": "Breaking the cycle that leaves both feeling empty",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "sync",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Research suggests many husbands primarily need respect while many wives primarily need love. When these needs go unmet, couples often enter a destructive cycle where both feel increasingly empty. This activity helps you break that cycle.",
+      "frameworkBasis": {
+        "conceptKey": "love_respect_cycle",
+        "explanation": "The love and respect dynamic creates either a positive cycle of mutual fulfillment or a negative cycle of mutual deprivation."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Two Primary Needs",
+          "text": "Extensive research has revealed a pattern that transforms many marriages once understood. Many husbands have respect as their primary emotional need. They need to feel that their wife admires them, trusts their judgment, and values their contribution. Without this respect, they feel unloved no matter what else their wife does. Many wives have love as their primary emotional need. They need to feel cherished, prioritized, and emotionally close to their husband. Without this love, they feel disrespected no matter how much their husband says he values them. The trap is that each partner naturally gives what they would want to receive. The husband shows respect to his wife, thinking this demonstrates love. The wife shows love to her husband, thinking this demonstrates respect. Both give sincerely but miss what the other actually needs.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Crazy Cycle",
+          "text": "When these needs go unmet, couples often enter what has been called the crazy cycle. She feels unloved, so she reacts in ways that feel disrespectful to him, perhaps with criticism, contempt, or withdrawal. He feels disrespected, so he reacts in ways that feel unloving to her, perhaps with harshness, distance, or defensiveness. His unloving reaction makes her feel more unloved, so she acts more disrespectfully. Her disrespectful reaction makes him feel more disrespected, so he acts more unlovingly. Round and round they go, each feeling justified in their reaction because of what the other did first. Neither sees that their own reaction is perpetuating the cycle. This cycle can spin for years, with both spouses feeling increasingly empty and resentful, neither understanding why the other will not just change.",
+          "icon": "sync_problem"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Breaking the Cycle",
+          "text": "The cycle breaks when one person decides to give what their spouse needs regardless of whether they are receiving what they need. When a wife chooses to show respect even when she does not feel loved, something often shifts. Her husband feels respected and begins to respond with love. When a husband chooses to show love even when he does not feel respected, something often shifts. His wife feels loved and begins to respond with respect. This is not about being a doormat or accepting mistreatment. It is about recognizing that your spouse's negative behavior may be a reaction to their unmet need, and meeting that need can change their behavior. Someone has to go first. Someone has to give before they receive. This is the costly love that Scripture calls us to, love that does not wait for the other person to earn it.",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "What Respect and Love Look Like",
+          "text": "Respect and love are not just feelings. They are expressed through specific actions. Respect looks like speaking well of him to others, valuing his opinion and seeking his input, expressing appreciation for his work and provision, trusting his judgment even when you would do it differently, and avoiding criticism, contempt, and belittling especially in public. Love looks like prioritizing time and attention for her, expressing affection verbally and physically, being emotionally present and engaged in conversation, remembering what matters to her and acting on it, speaking gently and kindly even in conflict, and protecting and providing for her needs. Both spouses need both love and respect. But understanding which is primary for your spouse helps you know where to focus your energy for maximum impact.",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Recognizing Your Cycle",
+          "text": "Think honestly about the cycles in your marriage. Do you see evidence of the crazy cycle, where one person's reaction triggers the other's reaction in an escalating pattern? What does your spouse need from you that you may not be providing? How might your own behavior be a reaction to your unmet need? What would it look like for you to give what your spouse needs even before you receive what you need? Write your reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Starting the Positive Cycle",
+          "text": "This week, commit to starting a positive cycle by giving what your spouse needs regardless of what you are receiving. If you are a wife, focus on expressing respect to your husband in concrete ways. Find something to admire and tell him. Express trust in his judgment. Speak well of him to others. If you are a husband, focus on expressing love to your wife in concrete ways. Prioritize time with her. Express affection verbally and physically. Be emotionally present. Do this consistently for a week and notice what shifts. Often the spouse who receives what they need begins naturally giving what you need in return. What specific actions will you take to start the positive cycle this week?",
+          "icon": "play_arrow"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_strength_in_difference",
+      "isFree": false,
+      "title": "Two Strengths Are Better Than One: How Differences Complete You",
+      "subtitle": "Seeing your spouse's differences as assets not obstacles",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "group",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Your spouse's different perspective, approach, and strengths are not obstacles to overcome but assets to leverage. This activity helps you see how masculine and feminine differences work together to create a stronger whole.",
+      "frameworkBasis": {
+        "conceptKey": "complementary_strengths",
+        "explanation": "Masculine and feminine strengths complement each other, creating partnerships stronger than either individual alone."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Two Perspectives See More",
+          "text": "Imagine you and your spouse are both looking at a complex situation, but from different angles. You each see things the other misses. Together you see more than either could alone. This is what masculine and feminine perspectives offer each other. Your different ways of seeing the world are not one right and one wrong. They are two angles that together create depth perception. When facing a major decision, her attention to relationships and emotional impact combined with his attention to practical logistics and risk creates better decisions than either would make alone. When navigating a family crisis, his steadiness under pressure combined with her attunement to everyone's emotional needs creates more complete care than either could provide alone. Your differences are not problems to resolve but perspectives to integrate.",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Story of James and Elena",
+          "text": "James approached problems like an engineer, which made sense because that was his profession. When their daughter struggled socially at school, he immediately started researching solutions and developing a plan. Elena approached the same situation by sitting with their daughter and listening to her feelings. She did not try to fix anything. She just helped their daughter feel understood and less alone. At first James was frustrated that Elena was not being productive. At first Elena was frustrated that James was not being empathetic. Then they realized they needed both approaches. Their daughter needed to feel heard and she needed practical strategies. James's solutions without Elena's connection would feel cold. Elena's empathy without James's problem solving would leave the situation unchanged. When they combined their approaches, their daughter got exactly what she needed. Two different strengths created something neither could have provided alone.",
+          "icon": "people"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Common Complementary Patterns",
+          "text": "While individuals vary, some complementary patterns commonly appear when masculine and feminine work together. Many men bring focused problem solving while many women bring holistic context awareness. Together they address problems without losing sight of bigger picture. Many men bring action orientation while many women bring reflection orientation. Together they act wisely without either rushing or overthinking. Many men bring protective instincts while many women bring nurturing instincts. Together they create environments that are both safe and warm. Many men bring linear thinking while many women bring connective thinking. Together they see both the direct path and the relational implications. These are tendencies, not absolutes. But recognizing the patterns helps you appreciate what your spouse naturally brings.",
+          "icon": "compare_arrows"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Complementary Strengths",
+          "text": "Think about areas where you and your spouse bring different strengths. What do you bring to your marriage that your spouse does not naturally provide? What does your spouse bring that you do not naturally provide? Where have your different approaches combined to create something better than either could alone? What differences have you fought against that might actually be complementary strengths? Write your reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "From Competition to Integration",
+          "text": "Many couples treat their different perspectives as competition. One must be right and one must be wrong. They argue about whose approach is better rather than integrating both. But marriage is not a debate competition. You are not opponents. You are teammates with different skills. Integration asks how can we combine our perspectives to create something better? What does your viewpoint add that mine misses? How can we both be partly right? This requires humility to admit your perspective is incomplete. It requires respect for your spouse's way of seeing things even when it differs from yours. It requires patience to work toward integration rather than demanding surrender. When you make this shift, conflicts about who is right transform into collaborations that leverage both perspectives.",
+          "icon": "handshake"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Practicing Integration",
+          "text": "This week, practice integrating your different perspectives rather than competing. When you face a decision or problem together, instead of arguing for your approach, ask your spouse what they see that you might be missing. Share what you see and explicitly ask how you can combine both viewpoints. When you disagree, resist the urge to prove you are right. Instead ask how might we both be partly right? What would a solution that integrates both perspectives look like? Notice how this approach changes the dynamic from adversarial to collaborative. What upcoming decision or conversation could you approach with an integration mindset this week?",
+          "icon": "merge"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_masculine_strength",
+      "isFree": false,
+      "title": "Honoring Masculine Strength: What Healthy Masculinity Looks Like",
+      "subtitle": "Celebrating the strength men are designed to bring",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "fitness_center",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Masculinity is often either attacked as toxic or distorted into domination. This activity explores what healthy masculinity looks like and how wives can honor it while husbands pursue it.",
+      "frameworkBasis": {
+        "conceptKey": "healthy_masculinity",
+        "explanation": "Healthy masculinity involves strength directed toward protection, provision, and service rather than domination."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Strength Is Not the Problem",
+          "text": "Masculinity has gotten a bad reputation in many circles. When people talk about toxic masculinity, they are usually describing strength that has become selfish, domineering, or abusive. But strength itself is not toxic. Strength directed toward good is desperately needed. The problem is not masculine strength. The problem is when that strength is used to exploit rather than protect, to dominate rather than serve. Healthy masculinity channels strength toward purposes that bless others. The strong man who uses his strength to protect his family, provide for their needs, and create safety for vulnerability is living masculinity as it was designed. Wives do not need their husbands to be less masculine. They need them to direct their masculine strength toward good.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Protector",
+          "text": "One aspect of masculine design is the instinct to protect. Many husbands feel a deep drive to keep their families safe from physical, financial, and emotional harm. This protective instinct can manifest as vigilance about security, willingness to confront threats, and concern about risks that might harm the family. When honored, this instinct creates safety. When frustrated, it can create controlling behavior as the husband tries to protect against every possible threat. Wives can honor this instinct by appreciating their husband's protective concern rather than dismissing it as overreaction. Husbands can channel this instinct well by protecting without controlling, creating safety without suffocating. The family needs someone willing to stand between them and danger. This is masculine strength put to good use.",
+          "icon": "security"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Provider",
+          "text": "Many men carry a deep sense that they should provide for their families. This goes beyond cultural expectation. It is often experienced as core to their identity as men. This provider instinct drives many husbands to work hard, sacrifice personal desires, and take on burdens so their families can thrive. It is strength channeled into sustained effort for others' benefit. When honored, this instinct creates stability and abundance. When ignored or belittled, it can create shame that manifests as overwork, withdrawal, or defensiveness. Wives can honor this instinct by expressing appreciation for his provision rather than taking it for granted. A simple acknowledgment that you notice and value his contribution speaks deeply to many husbands. Provision is not just about money. It includes providing leadership, stability, and presence.",
+          "icon": "work"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Strength Under Control",
+          "text": "True masculine strength is not about domination. It is about power under control, strength in service of others. The strongest men are not those who throw their weight around. They are those who have great capacity but use it gently. They could dominate but choose to serve. They have power but wield it for others' benefit. This is the picture Scripture paints of godly masculinity. Christ had all power in heaven and earth yet used it to wash feet, heal the sick, and ultimately lay down his life. Husbands who pursue this kind of strength become safe for their wives and children to be vulnerable around. Their strength creates protection, not fear. Their power serves rather than controls. This is masculinity at its best, and it is worth celebrating when you see it.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Honoring Masculine Strength",
+          "text": "Reflect on masculine strength in your marriage. If you are a wife, how does your husband express protective and provider instincts? Do you honor and appreciate these expressions? Have you inadvertently dismissed or belittled his masculine contributions? If you are a husband, are you channeling your strength toward protection and service or toward control and domination? How can you use your masculine strength to bless your wife and family? Write your reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Celebrating Masculine Strength",
+          "text": "This week, intentionally honor healthy masculinity in your marriage. If you are a wife, find a specific way your husband expresses masculine strength and verbally appreciate it. Tell him you notice his protection, provision, or strength used in service. Do not be vague but point to something specific. If you are a husband, evaluate whether your strength is being used for service or for control. Identify one way you can use your masculine strength this week to bless rather than burden your wife. Masculine strength is a gift when directed toward good. Celebrate it when you see it.",
+          "icon": "celebration"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_feminine_beauty",
+      "isFree": false,
+      "title": "Honoring Feminine Beauty: What Healthy Femininity Looks Like",
+      "subtitle": "Celebrating the beauty women are designed to bring",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "spa",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Femininity is often either reduced to appearance or dismissed as weakness. This activity explores what healthy femininity looks like and how husbands can honor it while wives pursue it.",
+      "frameworkBasis": {
+        "conceptKey": "healthy_femininity",
+        "explanation": "Healthy femininity involves relational strength, nurturing capacity, and beauty that invites life rather than just physical appearance."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Beauty Beyond Appearance",
+          "text": "When people think of feminine beauty, they often think only of physical appearance. But feminine beauty runs much deeper than that. Feminine beauty includes the warmth that makes a house feel like home. It includes the nurturing that helps others grow and flourish. It includes the relational intelligence that builds and maintains connections. It includes the emotional depth that brings color to life. This beauty is not weakness. Nurturing a child, maintaining family relationships, creating environments where people feel welcome and loved, these require enormous strength and skill. Reducing feminine beauty to physical appearance misses everything that makes it powerful. A wife brings beauty to her marriage in countless ways beyond how she looks.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Nurturer",
+          "text": "Many women carry a deep instinct to nurture, to help things grow and flourish. This shows up in caring for children, tending relationships, creating warm environments, and noticing who needs attention. This nurturing instinct creates life. Not just biological life through childbearing, though that is certainly included, but life in the sense of vitality and flourishing. Where nurturing is present, things grow. Where it is absent, things wither. When honored, this instinct creates families and communities where people thrive. When ignored or taken for granted, the nurturer becomes depleted and resentful. Husbands can honor this instinct by expressing appreciation for the life their wife brings. Noticing the countless ways she nurtures, whether with children, in the home, or in relationships, speaks deeply to many wives. Nurturing is powerful work even though it often goes unseen.",
+          "icon": "child_care"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Relational Intelligence",
+          "text": "Many women possess remarkable relational intelligence, an ability to read social situations, sense emotional dynamics, and navigate complex interpersonal waters. This might look like knowing exactly what to say when someone is hurting. It might show up as maintaining the family's social connections. It might manifest as sensing tension that others miss and addressing it before it escalates. This is not just being nice. It is sophisticated skill that keeps relationships healthy and communities functioning. Many husbands rely on their wives' relational intelligence even when they do not realize it. When honored, this gift strengthens marriages, families, and communities. When dismissed as unnecessary social fussing, it is diminished. Husbands can honor this gift by trusting their wife's relational read on situations and valuing her input on interpersonal matters.",
+          "icon": "group"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Inviting Presence",
+          "text": "Healthy femininity has an inviting quality. It welcomes rather than repels. It draws people in rather than keeping them out. This inviting presence is not about being a pushover or having no boundaries. It is about creating space where others can be themselves, where vulnerability is safe, where connection is possible. A wife who brings this inviting presence makes her home a place others want to be. Her warmth and welcome create environments where relationships flourish. This is a profound gift. Many husbands married their wives in part because of this inviting quality, the sense that life would be richer, warmer, more connected with her in it. Husbands can honor this gift by letting themselves be invited in. Not remaining distant and self-sufficient, but actually receiving the warmth and connection she offers.",
+          "icon": "door_front"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Honoring Feminine Beauty",
+          "text": "Reflect on feminine beauty in your marriage. If you are a husband, how does your wife express nurturing, relational intelligence, and inviting presence? Do you honor and appreciate these expressions? Have you inadvertently dismissed or taken for granted her feminine contributions? If you are a wife, are you stewarding your feminine gifts well? How can you bring beauty, nurture, and warmth to your marriage and home? Write your reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Celebrating Feminine Beauty",
+          "text": "This week, intentionally honor healthy femininity in your marriage. If you are a husband, find a specific way your wife expresses feminine beauty beyond physical appearance and verbally appreciate it. Tell her you notice her nurturing, her relational gifts, or the warmth she brings. Be specific rather than vague. If you are a wife, consider how you can steward your feminine gifts well this week. Where can you bring nurture, beauty, and warmth to your husband and home? Feminine beauty is a gift when stewarded well. Celebrate it when you see it.",
+          "icon": "celebration"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_avoiding_extremes",
+      "isFree": false,
+      "title": "Avoiding the Ditches: When Gender Differences Get Distorted",
+      "subtitle": "Navigating between unhealthy extremes",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "warning",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Discussions of masculinity and femininity can go wrong in either direction. This activity helps you navigate between rigid stereotyping on one hand and denying meaningful differences on the other.",
+      "frameworkBasis": {
+        "conceptKey": "balanced_approach",
+        "explanation": "A healthy view of gender differences avoids both rigid stereotyping and denial of meaningful distinctions."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Two Ditches to Avoid",
+          "text": "When navigating gender differences in marriage, there are ditches on both sides of the road. On one side is rigid stereotyping that puts every man and woman into predetermined boxes. Men must be this way. Women must be that way. No exceptions. This approach ignores individual variation and can trap people in roles that do not fit them. On the other side is denial that meaningful differences exist at all. Men and women are exactly the same. Any perceived difference is just social conditioning. This approach ignores both biology and common experience. The road between these ditches acknowledges that real patterns exist while respecting individual variation. It takes gender seriously without making it a prison. It celebrates differences without stereotyping.",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "When Masculinity Goes Wrong",
+          "text": "Masculine strength can go wrong in several ways. Domination happens when strength is used to control rather than protect. The husband demands submission, makes unilateral decisions, and treats his wife as subordinate rather than partner. Passivity happens when strength is never expressed at all. The husband avoids leadership, checks out of family life, and leaves his wife to handle everything alone. Harshness happens when strength lacks gentleness. The husband is blunt, dismissive, and rough in ways that wound rather than bless. Provision obsession happens when providing financially becomes the only way a husband engages. He works constantly but is absent emotionally. Healthy masculinity finds the middle path: strength that protects without controlling, provides without neglecting emotional presence, and leads while honoring his wife as equal partner.",
+          "icon": "dangerous"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "When Femininity Goes Wrong",
+          "text": "Feminine beauty and nurture can go wrong in several ways. Manipulation happens when relational intelligence is used to control rather than connect. The wife uses emotional tactics to get her way rather than honest communication. Doormat syndrome happens when nurturing becomes loss of self. The wife has no boundaries, never expresses her own needs, and disappears into serving others. Criticism happens when insight into problems becomes constant fault finding. The wife notices everything that is wrong and points it all out. Nurture hoarding happens when a wife nurtures everyone except her husband. Children and others get her warmth while her husband gets her frustration. Healthy femininity finds the middle path: nurturing that gives without disappearing, relational skill that connects without manipulating, and voice that speaks truth with love.",
+          "icon": "dangerous"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Knowing Your Specific Spouse",
+          "text": "General patterns about men and women are only useful if they help you understand your specific spouse better. If they become a rigid template you force your spouse into, they become harmful. Your husband may not fit every description of typical masculinity. That does not make him less of a man. It makes him the specific man you married. Your wife may not fit every description of typical femininity. That does not make her less of a woman. It makes her the specific woman you married. Use these frameworks as starting points for curiosity, not ending points for assumption. Ask yourself whether this pattern fits your specific spouse rather than assuming it must. The goal is understanding the real person in front of you, not fitting them into a predetermined box.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Checking Your Extremes",
+          "text": "Reflect on whether you have fallen into any ditches in how you think about gender in your marriage. Have you put your spouse in a rigid box based on their gender? Have you denied meaningful differences between you? Have you distorted healthy masculinity or femininity into something unhealthy? Where might you need to adjust your approach? Write your reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Finding the Middle Road",
+          "text": "This week, practice staying on the road between ditches. When you catch yourself stereotyping your spouse, stop and consider who they actually are as an individual. When you catch yourself denying real differences, stop and consider how your different perspectives might both be valid. When you see unhealthy patterns in yourself, acknowledge them and take one step toward health. The goal is neither rigid gender roles nor gender blindness. It is honoring how God designed male and female while respecting the unique person you married. What adjustment will you make this week to stay on the middle road?",
+          "icon": "directions"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_appreciating_spouse",
+      "isFree": false,
+      "title": "Seeing Your Spouse Clearly: Appreciation in Action",
+      "subtitle": "Practicing gratitude for who they are",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "visibility",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Understanding masculine and feminine differences is only valuable if it leads to greater appreciation for your actual spouse. This activity moves from theory to practice by helping you see and express gratitude for who your spouse really is.",
+      "frameworkBasis": {
+        "conceptKey": "specific_appreciation",
+        "explanation": "Abstract understanding of gender differences must translate into concrete appreciation for the specific spouse in front of you."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "From Understanding to Appreciation",
+          "text": "Understanding differences is step one. Appreciating them is step two. And expressing that appreciation is step three. Many couples understand that men and women are different but still feel unappreciated by their spouse. The understanding never translated into felt appreciation. Your spouse needs to know that you see what they bring to your marriage and that you value it. Not generic appreciation, but specific acknowledgment of the particular gifts they offer. This is where everything you have learned in this journey becomes real. Can you look at your spouse and genuinely appreciate what their masculine or feminine design brings to your life together?",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Appreciation Sounds Like",
+          "text": "Effective appreciation is specific rather than generic. It names exactly what you value. Generic appreciation sounds like thanks for all you do or you are a great wife or husband. It is nice but forgettable. Specific appreciation sounds like I love how you always notice when someone in our family is struggling and reach out to them. That is a gift I do not have, and our family is stronger because of it. Or it sounds like the way you handled that difficult situation at work with such calm focus reminded me why I trust your judgment so much. Specific appreciation tells your spouse exactly what you see and value. It proves you are actually paying attention, and it names the specific contribution they make.",
+          "icon": "record_voice_over"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "What Your Spouse Brings",
+          "text": "Think carefully about what your specific spouse brings to your marriage that you could not provide yourself. What masculine or feminine strengths do they contribute? What would be missing if they were not there? What gifts do they have that complement your weaknesses? What do they do well that you do not naturally do? Be specific. Not just they are a good person but the particular ways their design blesses you. Write a detailed inventory of what your spouse specifically brings to your marriage:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "action",
+          "cardNumber": 4,
+          "title": "The Appreciation Exercise",
+          "text": "Using what you wrote in the previous card, prepare to share specific appreciation with your spouse. Choose three to five specific things your spouse brings to your marriage that reflect their masculine or feminine design. For each one, prepare a specific statement of appreciation that names what you observe and why you value it. Then find a time to share these appreciations with your spouse face to face. Not in passing, but with eye contact and focused attention. This may feel awkward, especially if you are not used to expressing appreciation this specifically. Do it anyway. Your spouse needs to hear what you see and value in them.",
+          "icon": "chat"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Making Appreciation a Habit",
+          "text": "Specific appreciation should not be a one time exercise but an ongoing practice. Make it a habit to notice what your spouse contributes and tell them. Not constant flattery, but genuine acknowledgment when you observe their gifts in action. This becomes a positive cycle. When your spouse feels appreciated, they bring even more of their gifts. When they bring more, you have more to appreciate. Appreciation begets contribution which begets more appreciation. The opposite cycle is equally real. When your spouse feels taken for granted, they withdraw their gifts. When they withdraw, you have less to appreciate. Taking for granted begets withdrawal which begets more taking for granted. Choose which cycle you want to feed through your daily attention and words.",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Appreciation Commitment",
+          "text": "Commit to making specific appreciation an ongoing practice in your marriage. Decide how often you will express specific appreciation to your spouse. Daily is ideal, but at least weekly is essential. Create a way to remember. Maybe a daily alarm, a note in your calendar, or a habit stacked on something you already do. Pay attention to what your spouse does so you have specific things to appreciate rather than resorting to generics. Your spouse cannot feel appreciated if you do not express appreciation. Make expressing it a non-negotiable part of your marriage. What is your plan for ongoing specific appreciation?",
+          "icon": "event_repeat"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_celebration_commitment",
+      "isFree": false,
+      "title": "Stronger Together: Celebrating Your Differences",
+      "subtitle": "Committing to honor masculine and feminine in your marriage",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "celebration",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You have explored how masculine and feminine differences can strengthen your marriage. This final activity helps you consolidate what you have learned and commit to ongoing celebration of what each of you uniquely brings.",
+      "frameworkBasis": {
+        "conceptKey": "celebration_commitment",
+        "explanation": "Lasting change requires commitment to ongoing appreciation and honor of masculine and feminine gifts in marriage."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Learned",
+          "text": "Through this journey, you have explored how God designed male and female with different strengths that complement each other. You have learned what many husbands need and what many wives need, and how the love and respect dynamic shapes your connection. You have seen how two different perspectives create better decisions than either alone. You have explored healthy masculinity and healthy femininity while learning to avoid unhealthy extremes. Most importantly, you have moved from abstract understanding to specific appreciation for your actual spouse. Your differences are not problems to solve. They are gifts to celebrate. Your marriage is stronger because it includes both masculine and feminine rather than two of the same.",
+          "icon": "school"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Vision of Partnership",
+          "text": "Scripture paints a picture of man and woman working together as partners who complete each other. 'The Lord God said, It is not good for the man to be alone. I will make a helper suitable for him.' (Genesis 2:18) The word helper here is the same word used for God himself when he helps Israel. It is not a word of subordination but of strength coming alongside. God saw that man alone was incomplete. He needed someone different from himself, someone whose different design would make the partnership stronger than the individual. This is your marriage. Two different people, designed differently, coming together to create something neither could build alone. Different by design. Stronger together.",
+          "icon": "auto_stories"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Greatest Insight",
+          "text": "What is the most important thing you learned about masculine and feminine differences through this journey? How has your appreciation for your spouse grown? What do you see in them now that you may have missed or undervalued before? What will you carry forward from this experience? Write your greatest insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "What You Will Give",
+          "text": "Based on what you have learned, what will you give your spouse that honors their masculine or feminine design? If you are a wife, how will you honor your husband's masculinity and meet his need for respect? If you are a husband, how will you honor your wife's femininity and meet her need for love? Be specific about what you commit to giving. Write your commitment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Your Marriage",
+          "text": "Father, thank You for designing us male and female, different yet complementary. Forgive us for the times we have resented our differences rather than celebrating them. Forgive us for trying to make our spouse more like ourselves rather than appreciating who they are. Help us honor what You have built into each of us. Help husbands use their masculine strength for protection and service. Help wives steward their feminine beauty for nurture and connection. May our differences make us stronger rather than driving us apart. May we see what our spouse brings as a gift and tell them often that we are grateful. Make our marriage a reflection of Your creative design, two becoming one while remaining beautifully different. Amen.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Celebration Commitment",
+          "text": "Together, make a commitment to celebrate your differences. We commit to seeing our differences as gifts rather than problems. We commit to meeting each other's core needs for love and respect. We commit to expressing specific appreciation for what each of us brings. We commit to integrating our perspectives rather than competing. We commit to honoring healthy masculinity and healthy femininity. We commit to knowing our specific spouse rather than assuming based on stereotypes. Our differences make us stronger together. Sign this commitment together as your agreement to celebrate masculine and feminine in your marriage. Different by design. Stronger together.",
+          "icon": "handshake"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Different by Design, Stronger Together",
+    "summaryText": "You have explored the beautiful design of masculine and feminine and how these differences strengthen your marriage when honored. Remember that your spouse brings gifts you cannot provide yourself, and your combination creates something greater than either of you alone. Keep celebrating what makes you different, and your marriage will continue to grow stronger.",
+    "keyTakeaways": [
+      "Masculine and feminine differences are intentional design meant to complement each other",
+      "Many husbands primarily need respect while many wives primarily need love",
+      "Your different perspectives together see more than either could alone",
+      "Healthy masculinity channels strength toward protection and service not domination",
+      "Healthy femininity brings nurture and relational beauty not weakness",
+      "General patterns about gender should always be held loosely and tested against your specific spouse"
+    ],
+    "nextRecommendedJourneys": [
+      "Aligning Roles and Expectations in Marriage",
+      "Strengthening Emotional and Physical Intimacy",
+      "Communication and Conflict Resolution in Marriage"
+    ]
+  }
+}

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import 'package:nexus_app_min_test/core/theme/theme.dart';
+import 'package:nexus_app_min_test/core/constants/app_constants.dart';
+import 'package:nexus_app_min_test/core/session/effective_relationship_status_provider.dart';
 import 'package:nexus_app_min_test/features/subscription/application/subscription_provider.dart';
 import 'package:nexus_app_min_test/features/subscription/domain/subscription_models.dart';
 
@@ -33,6 +35,10 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
   Widget build(BuildContext context) {
     final subscriptionAsync = ref.watch(subscriptionStatusProvider);
     final purchasedJourneysAsync = ref.watch(purchasedJourneysProvider);
+    final relationshipStatus = ref.watch(effectiveRelationshipStatusProvider);
+    
+    // Married users should only see Journey Purchases tab
+    final isMarried = relationshipStatus == RelationshipStatus.married;
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
@@ -53,7 +59,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
             ),
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
-                'Subscriptions',
+                isMarried ? 'Journey Purchases' : 'Subscriptions',
                 style: AppTextStyles.titleLarge.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -96,51 +102,55 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
             ),
           ),
 
-          // Tab Bar
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: _SliverAppBarDelegate(
-              TabBar(
-                controller: _tabController,
-                labelColor: AppColors.primary,
-                unselectedLabelColor: AppColors.textMuted,
-                indicatorColor: AppColors.primary,
-                indicatorWeight: 3,
-                labelStyle: AppTextStyles.labelLarge.copyWith(
-                  fontWeight: FontWeight.bold,
+          // Tab Bar (hide for married users)
+          if (!isMarried)
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: _SliverAppBarDelegate(
+                TabBar(
+                  controller: _tabController,
+                  labelColor: AppColors.primary,
+                  unselectedLabelColor: AppColors.textMuted,
+                  indicatorColor: AppColors.primary,
+                  indicatorWeight: 3,
+                  labelStyle: AppTextStyles.labelLarge.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  tabs: const [
+                    Tab(text: 'Dating Features'),
+                    Tab(text: 'Journey Purchases'),
+                  ],
                 ),
-                tabs: const [
-                  Tab(text: 'Dating Features'),
-                  Tab(text: 'Journey Purchases'),
-                ],
               ),
             ),
-          ),
 
           // Content
           SliverFillRemaining(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                // Dating Subscription Tab
-                subscriptionAsync.when(
-                  data:
-                      (subscription) =>
-                          _DatingSubscriptionTab(subscription: subscription),
-                  loading:
-                      () => const Center(child: CircularProgressIndicator()),
-                  error: (error, _) => Center(child: Text('Error: $error')),
-                ),
+            child: isMarried
+                ? purchasedJourneysAsync.when(
+                    data: (journeys) => _JourneyPurchasesTab(journeys: journeys),
+                    loading: () => const Center(child: CircularProgressIndicator()),
+                    error: (error, _) => Center(child: Text('Error: $error')),
+                  )
+                : TabBarView(
+                    controller: _tabController,
+                    children: [
+                      // Dating Subscription Tab
+                      subscriptionAsync.when(
+                        data: (subscription) =>
+                            _DatingSubscriptionTab(subscription: subscription),
+                        loading: () => const Center(child: CircularProgressIndicator()),
+                        error: (error, _) => Center(child: Text('Error: $error')),
+                      ),
 
-                // Journey Purchases Tab
-                purchasedJourneysAsync.when(
-                  data: (journeys) => _JourneyPurchasesTab(journeys: journeys),
-                  loading:
-                      () => const Center(child: CircularProgressIndicator()),
-                  error: (error, _) => Center(child: Text('Error: $error')),
-                ),
-              ],
-            ),
+                      // Journey Purchases Tab
+                      purchasedJourneysAsync.when(
+                        data: (journeys) => _JourneyPurchasesTab(journeys: journeys),
+                        loading: () => const Center(child: CircularProgressIndicator()),
+                        error: (error, _) => Center(child: Text('Error: $error')),
+                      ),
+                    ],
+                  ),
           ),
         ],
       ),
