@@ -208,30 +208,11 @@ final getOrCreateChatProvider = FutureProvider.family<String, String>((
 /// State notifier for chat operations
 class ChatNotifier extends StateNotifier<AsyncValue<void>> {
   final ChatService _chatService;
-  final MediaService _mediaService;
   final String _currentUserId;
   final Future<bool> Function() _isDisabled;
 
-  ChatNotifier(
-    this._chatService,
-    this._mediaService,
-    this._currentUserId,
-    this._isDisabled,
-  ) : super(const AsyncValue.data(null));
-
-  bool _looksLikeHttpUrl(String s) {
-    final v = s.trim().toLowerCase();
-    return v.startsWith('http://') || v.startsWith('https://');
-  }
-
-  bool _isLocalFilePath(String s) {
-    if (_looksLikeHttpUrl(s)) return false;
-    try {
-      return File(s).existsSync();
-    } catch (_) {
-      return false;
-    }
-  }
+  ChatNotifier(this._chatService, this._currentUserId, this._isDisabled)
+    : super(const AsyncValue.data(null));
 
   /// Send a text message (optionally includes metadata e.g. reply info)
   Future<ChatMessage?> sendMessage({
@@ -263,7 +244,7 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
     }
   }
 
-  /// Send an image message (content is a URL for prod; can be a local path in dev)
+  /// Send an image message (stored as local file path in Firestore)
   Future<ChatMessage?> sendImage({
     required String chatId,
     required String receiverId,
@@ -282,21 +263,13 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
         if (caption != null) 'caption': caption,
       };
 
-      // If caller passed a local file path, upload to Spaces and store the public URL in Firestore.
-      String finalImageUrl = imageUrl;
-      if (_isLocalFilePath(imageUrl)) {
-        finalImageUrl = await _mediaService.uploadChatImage(
-          userId: _currentUserId,
-          chatId: chatId,
-          imageFile: File(imageUrl),
-        );
-      }
-
+      // Store image as local file path in Firestore
+      // No cloud upload needed for chat images
       final message = await _chatService.sendMessage(
         chatId: chatId,
         senderId: _currentUserId,
         receiverId: receiverId,
-        content: finalImageUrl,
+        content: imageUrl, // Store local path directly
         type: MessageType.image,
         metadata: merged.isEmpty ? null : merged,
       );
@@ -328,21 +301,13 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
         'duration': durationSeconds,
       };
 
-      // If caller passed a local file path, upload to Spaces and store the public URL in Firestore.
-      String finalAudioUrl = audioUrl;
-      if (_isLocalFilePath(audioUrl)) {
-        finalAudioUrl = await _mediaService.uploadChatAudio(
-          userId: _currentUserId,
-          chatId: chatId,
-          filePath: audioUrl,
-        );
-      }
-
+      // Store audio as local file path in Firestore
+      // No cloud upload needed for chat audio
       final message = await _chatService.sendMessage(
         chatId: chatId,
         senderId: _currentUserId,
         receiverId: receiverId,
-        content: finalAudioUrl,
+        content: audioUrl, // Store local path directly
         type: MessageType.audio,
         metadata: merged,
       );
@@ -385,8 +350,7 @@ final chatNotifierProvider =
       }
 
       Future<bool> isDisabled() => ref.read(currentUserDisabledProvider.future);
-      final mediaService = ref.watch(mediaServiceProvider);
-      return ChatNotifier(chatService, mediaService, userId, isDisabled);
+      return ChatNotifier(chatService, userId, isDisabled);
     });
 
 // ============================================================================

@@ -219,16 +219,37 @@ class _Body extends ConsumerWidget {
           isPurchased: isPurchased,
           totalMinutes: totalMinutes,
         ),
-        const SizedBox(height: 8),
-        Text(
-          'Activities',
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w800,
-            color: Theme.of(context).colorScheme.onBackground,
-            fontSize: 16,
+        const SizedBox(height: 14),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.list_rounded,
+              size: 18,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              'ACTIVITIES',
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w800,
+                fontSize: 12,
+                letterSpacing: 0.5,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        Container(
+          height: 2,
+          width: 30,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            borderRadius: BorderRadius.circular(1),
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 12),
         ...activities.asMap().entries.map((entry) {
           final idx = entry.key;
           final m = entry.value;
@@ -370,7 +391,8 @@ class _Body extends ConsumerWidget {
                         side: BorderSide(
                           color: Theme.of(
                             context,
-                          ).dividerColor.withOpacity(0.18),
+                          ).colorScheme.primary.withOpacity(0.28),
+                          width: 1.4,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -389,11 +411,12 @@ class _Body extends ConsumerWidget {
                           context: context,
                           isScrollControlled: true,
                           backgroundColor: Colors.transparent,
-                          builder: (_) => PurchaseSheet(
-                            journeyId: journey.id,
-                            journey: journey,
-                            isSubscription: false,
-                          ),
+                          builder:
+                              (_) => PurchaseSheet(
+                                journeyId: journey.id,
+                                journey: journey,
+                                isSubscription: false,
+                              ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -486,23 +509,22 @@ class _HeroHeader extends ConsumerWidget {
     final pillBg =
         hasImage
             ? (isDark
-                ? Colors.white.withOpacity(0.18)
+                ? AppColors.primary.withOpacity(0.15)
                 : AppColors.primary.withOpacity(0.10))
             : AppColors.primary.withOpacity(0.10);
     final pillBorder =
         hasImage
             ? (isDark
-                ? Colors.white.withOpacity(0.24)
+                ? AppColors.primary.withOpacity(0.30)
                 : AppColors.primary.withOpacity(0.16))
             : AppColors.primary.withOpacity(0.16);
     final progressTrack =
         hasImage
             ? (isDark
                 ? Colors.white.withOpacity(0.22)
-                : AppColors.primary.withOpacity(0.12))
-            : AppColors.primary.withOpacity(0.12);
-    final progressFill =
-        hasImage ? AppColors.getTextOnDark(context) : AppColors.primary;
+                : Theme.of(context).colorScheme.primary.withOpacity(0.12))
+            : Theme.of(context).colorScheme.primary.withOpacity(0.12);
+    final progressFill = Theme.of(context).colorScheme.primary;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(18),
@@ -572,6 +594,7 @@ class _HeroHeader extends ConsumerWidget {
                       alignment: Alignment.centerLeft,
                       child: _HeroPill(
                         text: '$total activities',
+                        icon: Icons.splitscreen,
                         bg: pillBg,
                         fg: AppColors.primary,
                         borderColor: pillBorder,
@@ -582,6 +605,7 @@ class _HeroHeader extends ConsumerWidget {
                     child: Center(
                       child: _HeroPill(
                         text: '${totalMinutes}m total',
+                        icon: Icons.timer_outlined,
                         bg: pillBg,
                         fg: AppColors.primary,
                         borderColor: pillBorder,
@@ -595,6 +619,7 @@ class _HeroHeader extends ConsumerWidget {
                           (journey.themeTag ?? '').isNotEmpty
                               ? _HeroPill(
                                 text: _prettyTag(journey.themeTag!),
+                                icon: Icons.bookmark_outline,
                                 bg: pillBg,
                                 fg: AppColors.primary,
                                 borderColor: pillBorder,
@@ -733,21 +758,22 @@ class _ActivityCard extends StatelessWidget {
                         )
                       else if (isLocked)
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 6,
-                            vertical: 2,
-                          ),
+                          width: 28,
+                          height: 28,
                           decoration: BoxDecoration(
-                            color: theme.colorScheme.error.withOpacity(0.09),
-                            borderRadius: BorderRadius.circular(7),
-                          ),
-                          child: Text(
-                            'Locked',
-                            style: theme.textTheme.labelSmall?.copyWith(
-                              color: theme.colorScheme.error,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 11,
+                            color: theme.colorScheme.primary.withOpacity(0.10),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: theme.colorScheme.primary.withOpacity(
+                                0.20,
+                              ),
+                              width: 0.8,
                             ),
+                          ),
+                          child: Icon(
+                            Icons.lock_rounded,
+                            size: 14,
+                            color: theme.colorScheme.primary,
                           ),
                         ),
                     ],
@@ -870,16 +896,17 @@ class _UnlockCta extends ConsumerWidget {
                         context: context,
                         isScrollControlled: true,
                         backgroundColor: Colors.transparent,
-                        builder: (_) => PurchaseSheet(
-                          journeyId: journey.id,
-                          journey: journey,
-                          isSubscription: false,
-                        ),
+                        builder:
+                            (_) => PurchaseSheet(
+                              journeyId: journey.id,
+                              journey: journey,
+                              isSubscription: false,
+                            ),
                       );
                     },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -925,11 +952,13 @@ class _HeroPill extends StatelessWidget {
   final Color bg;
   final Color fg;
   final Color borderColor;
+  final IconData? icon;
   const _HeroPill({
     required this.text,
     required this.bg,
     required this.fg,
     required this.borderColor,
+    this.icon,
   });
 
   @override
@@ -941,12 +970,21 @@ class _HeroPill extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: borderColor),
       ),
-      child: Text(
-        text,
-        style: AppTextStyles.labelSmall.copyWith(
-          color: fg,
-          fontWeight: FontWeight.w900,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 13, color: fg),
+            const SizedBox(width: 4),
+          ],
+          Text(
+            text,
+            style: AppTextStyles.labelSmall.copyWith(
+              color: fg,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+        ],
       ),
     );
   }

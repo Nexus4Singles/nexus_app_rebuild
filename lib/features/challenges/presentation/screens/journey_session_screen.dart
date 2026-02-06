@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/auth/auth_providers.dart';
+import '../../../../core/providers/user_provider.dart';
 
 import '../../../../core/theme/theme.dart';
 import '../../../../core/router/app_routes.dart';
@@ -166,28 +167,6 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
             surfaceTintColor: AppColors.getBackground(context),
             elevation: 0,
             actions: [
-              if (totalCards > 0)
-                Container(
-                  margin: const EdgeInsets.only(right: 6),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.10),
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(
-                      color: AppColors.primary.withOpacity(0.18),
-                    ),
-                  ),
-                  child: Text(
-                    '$progressIndex/$totalCards',
-                    style: AppTextStyles.labelSmall.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
               IconButton(
                 onPressed: () => Navigator.pop(context),
                 icon: const Icon(Icons.close),
@@ -264,13 +243,23 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
 
                       if (_cardIndex >= totalCards - 1) {
                         // mark completed
-                        final progressSvc = ref.read(
-                          journeyProgressServiceProvider,
+                        final currentUserAsync = ref.watch(currentUserProvider);
+                        final uid = currentUserAsync.maybeWhen(
+                          data: (user) => user?.id ?? '',
+                          orElse: () => '',
                         );
-                        await progressSvc.markMissionCompleted(
-                          widget.journeyId,
-                          m.id,
-                        );
+
+                        if (uid.isNotEmpty) {
+                          final progressSvc = ref.read(
+                            journeyProgressServiceProvider,
+                          );
+                          await progressSvc.markMissionCompleted(
+                            widget.journeyId,
+                            m.id,
+                            uid,
+                          );
+                        }
+
                         if (!mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Activity completed')),
@@ -282,10 +271,22 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                       setState(() => _cardIndex += 1);
                     },
                     onReset: () async {
-                      final progressSvc = ref.read(
-                        journeyProgressServiceProvider,
+                      final currentUserAsync = ref.watch(currentUserProvider);
+                      final uid = currentUserAsync.maybeWhen(
+                        data: (user) => user?.id ?? '',
+                        orElse: () => '',
                       );
-                      await progressSvc.resetMission(widget.journeyId, m.id);
+
+                      if (uid.isNotEmpty) {
+                        final progressSvc = ref.read(
+                          journeyProgressServiceProvider,
+                        );
+                        await progressSvc.resetMission(
+                          widget.journeyId,
+                          m.id,
+                          uid,
+                        );
+                      }
 
                       final responseSvc = ref.read(
                         journeyMissionResponseServiceProvider,
@@ -430,8 +431,8 @@ class _SessionHero extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 10),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 6,
+                      horizontal: 11,
+                      vertical: 7,
                     ),
                     decoration: BoxDecoration(
                       color:
@@ -441,29 +442,55 @@ class _SessionHero extends StatelessWidget {
                               ).withOpacity(0.18)
                               : AppColors.primary.withOpacity(0.14),
                       borderRadius: BorderRadius.circular(999),
-                    ),
-                    child: Text(
-                      '$index/$total cards',
-                      style: AppTextStyles.labelSmall.copyWith(
+                      border: Border.all(
                         color:
                             isDark
-                                ? AppColors.getTextOnDark(context)
-                                : AppColors.primary,
-                        fontWeight: FontWeight.w700,
+                                ? AppColors.getTextOnDark(
+                                  context,
+                                ).withOpacity(0.25)
+                                : AppColors.primary.withOpacity(0.20),
+                        width: 0.8,
                       ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.window_outlined,
+                          size: 13,
+                          color:
+                              isDark
+                                  ? AppColors.getTextOnDark(context)
+                                  : AppColors.primary,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '$index/$total',
+                          style: AppTextStyles.labelSmall.copyWith(
+                            color:
+                                isDark
+                                    ? AppColors.getTextOnDark(context)
+                                    : AppColors.primary,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.1,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 8),
           Text(
             subtitle,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.bodySmall.copyWith(
               color: secondary,
-              height: 1.35,
+              height: 1.5,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.2,
             ),
           ),
           if (showProgress) ...[
@@ -474,7 +501,9 @@ class _SessionHero extends StatelessWidget {
                 value: progress,
                 minHeight: 6,
                 backgroundColor: AppColors.primary.withOpacity(0.18),
-                valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  isDark ? Colors.white : AppColors.primary,
+                ),
               ),
             ),
           ],
@@ -720,8 +749,10 @@ class _InfoCard extends StatelessWidget {
                 child: Text(
                   title,
                   style: AppTextStyles.bodyLarge.copyWith(
-                    fontWeight: FontWeight.w600, // milder font weight
-                    height: 1.15,
+                    fontWeight: FontWeight.w700,
+                    height: 1.25,
+                    fontSize: 15,
+                    letterSpacing: 0.2,
                   ),
                 ),
               ),
@@ -729,24 +760,30 @@ class _InfoCard extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
 
           if (paragraphs.isNotEmpty)
             ...paragraphs.map(
               (p) => Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Text(
-                  p,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    height: 1.55,
-                    color: AppColors.getTextPrimary(context),
+                padding: const EdgeInsets.only(bottom: 12),
+                child: RichText(
+                  text: TextSpan(
+                    children: _buildInlineSpans(
+                      p,
+                      AppTextStyles.bodyMedium.copyWith(
+                        height: 1.65,
+                        letterSpacing: 0.25,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.getTextPrimary(context),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
 
           if (hasBullets) ...[
-            if (paragraphs.isNotEmpty) const SizedBox(height: 2),
+            if (paragraphs.isNotEmpty) const SizedBox(height: 4),
             ...bullets!.map(
               (b) => Padding(
                 padding: const EdgeInsets.only(bottom: 12),
@@ -754,23 +791,29 @@ class _InfoCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 7),
+                      padding: const EdgeInsets.only(top: 9),
                       child: Container(
-                        width: 6,
-                        height: 6,
+                        width: 7,
+                        height: 7,
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.75),
+                          color: AppColors.primary.withOpacity(0.85),
                           borderRadius: BorderRadius.circular(99),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 13),
                     Expanded(
-                      child: Text(
-                        b.trim(),
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          height: 1.55,
-                          color: AppColors.getTextPrimary(context),
+                      child: RichText(
+                        text: TextSpan(
+                          children: _buildInlineSpans(
+                            b.trim(),
+                            AppTextStyles.bodyMedium.copyWith(
+                              height: 1.65,
+                              letterSpacing: 0.25,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.getTextPrimary(context),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -859,16 +902,20 @@ class _ChoiceCard extends StatelessWidget {
                     color:
                         isSelected
                             ? (isDark
-                                ? AppColors.primary.withOpacity(0.22)
+                                ? AppColors.primary.withOpacity(0.32)
                                 : AppColors.primary.withOpacity(0.12))
-                            : AppColors.getSurface(context),
+                            : (isDark
+                                ? AppColors.primary.withOpacity(0.14)
+                                : AppColors.primary.withOpacity(0.06)),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color:
                           isSelected
                               ? AppColors.primary
-                              : AppColors.getBorder(context),
-                      width: isSelected ? 1.6 : 1,
+                              : (isDark
+                                  ? AppColors.primary.withOpacity(0.5)
+                                  : AppColors.primary.withOpacity(0.25)),
+                      width: isSelected ? 1.6 : 1.2,
                     ),
                   ),
                   child: Row(
@@ -895,7 +942,7 @@ class _ChoiceCard extends StatelessWidget {
                           color:
                               isSelected
                                   ? (isDark
-                                      ? Colors.white.withOpacity(0.18)
+                                      ? AppColors.primary.withOpacity(0.32)
                                       : AppColors.primary)
                                   : Colors.transparent,
                           borderRadius: BorderRadius.circular(999),
@@ -1007,12 +1054,7 @@ List<Widget> _buildBodyWidgets(List<_Block> blocks, TextStyle style) {
 }
 
 Color _flavorColor(String? flavor) {
-  final f = flavor?.toLowerCase().trim() ?? '';
-  if (f.contains('question')) return AppColors.primary;
-  if (f.contains('reflection')) return Colors.teal;
-  if (f.contains('action')) return Colors.orange;
-  if (f.contains('teaching')) return Colors.indigo;
-  if (f.contains('tip')) return Colors.green;
+  // Return primary for most cases - this ensures consistent theming
   return AppColors.primary;
 }
 

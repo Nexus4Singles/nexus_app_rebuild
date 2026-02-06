@@ -410,21 +410,47 @@ class DatingProfile {
       // Compatibility quiz fields
       personalityType:
           _pickNullable(json, ['personalityType', 'personality_type']) ??
-          _pickStringFromMap(compat, ['personalityType', 'personality_type', 'mbti']),
+          _pickStringFromMap(compat, [
+            'personalityType',
+            'personality_type',
+            'mbti',
+          ]),
       believeInCohabiting:
-          _pickNullable(json, ['believeInCohabiting', 'believe_in_cohabiting']) ??
-          _pickStringFromMap(compat, ['believeInCohabiting', 'believe_in_cohabiting']),
+          _pickNullable(json, [
+            'believeInCohabiting',
+            'believe_in_cohabiting',
+          ]) ??
+          _pickStringFromMap(compat, [
+            'believeInCohabiting',
+            'believe_in_cohabiting',
+          ]),
       shouldChristianSpeakInTongue:
-          _pickNullable(json, ['shouldChristianSpeakInTongue', 'should_christian_speak_in_tongue']) ??
-          _pickStringFromMap(compat, ['shouldChristianSpeakInTongue', 'should_christian_speak_in_tongue', 'tongues']),
+          _pickNullable(json, [
+            'shouldChristianSpeakInTongue',
+            'should_christian_speak_in_tongue',
+          ]) ??
+          _pickStringFromMap(compat, [
+            'shouldChristianSpeakInTongue',
+            'should_christian_speak_in_tongue',
+            'tongues',
+          ]),
       believeInTithing:
           _pickNullable(json, ['believeInTithing', 'believe_in_tithing']) ??
-          _pickStringFromMap(compat, ['believeInTithing', 'believe_in_tithing', 'tithing']),
+          _pickStringFromMap(compat, [
+            'believeInTithing',
+            'believe_in_tithing',
+            'tithing',
+          ]),
       // Hobbies and qualities
       hobbies:
-          (json['hobbies'] is List) ? List<String>.from(json['hobbies'] as List) : null,
-      desiredQualities:
-          _pickNullable(json, ['desiredQualities', 'desired_qualities', 'qualities']),
+          (json['hobbies'] is List)
+              ? List<String>.from(json['hobbies'] as List)
+              : null,
+      desiredQualities: _pickNullable(json, [
+        'desiredQualities',
+        'desired_qualities',
+        'qualities',
+      ]),
     );
   }
 }

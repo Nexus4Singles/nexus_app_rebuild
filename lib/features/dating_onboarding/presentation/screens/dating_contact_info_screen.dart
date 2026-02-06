@@ -24,8 +24,11 @@ String _normAlnum(String? v) {
 String _canonCountry(String? v) {
   final s = _normAlnum(v);
   if (s.isEmpty) return '';
-  if (s.contains('uk') || s.contains('united kingdom') ||
-      s.contains('great britain') || s.contains('britain')) return 'united kingdom';
+  if (s.contains('uk') ||
+      s.contains('united kingdom') ||
+      s.contains('great britain') ||
+      s.contains('britain'))
+    return 'united kingdom';
   if (s.contains('usa') || s.contains('united states')) return 'united states';
   return s;
 }
@@ -358,7 +361,8 @@ class _DatingContactInfoScreenState
 
         final payload = <String, dynamic>{
           // Flat fields specific to dating flow
-          'countryOfResidence': canonCountry, // Store canonicalized for query consistency
+          'countryOfResidence':
+              canonCountry, // Store canonicalized for query consistency
           'contactInfo': d.contactInfo,
           'profileCompleted': true,
           'verificationStatus': 'pending',
@@ -366,7 +370,7 @@ class _DatingContactInfoScreenState
           // Profile searchable attributes (for dating.{field} queries)
           'maritalStatus': canonMaritalStatus, // Use canonicalized value
           'haveKids': null, // TODO: Collect in dedicated onboarding screen
-          'longDistance': null, // TODO: Collect in dedicated onboarding screen  
+          'longDistance': null, // TODO: Collect in dedicated onboarding screen
           'genotype': null, // TODO: Collect in dedicated onboarding screen
           // Review pack for admin queue
           'reviewPack': {
@@ -498,7 +502,9 @@ class _InputTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 borderRadius: BorderRadius.circular(14),
               ),
             ),
@@ -551,7 +557,11 @@ class _PhoneInputTile extends StatelessWidget {
                     fit: BoxFit.contain,
                   )
                 else if (materialIcon != null)
-                  Icon(materialIcon, size: 24, color: Theme.of(context).colorScheme.primary),
+                  Icon(
+                    materialIcon,
+                    size: 24,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 const SizedBox(width: 10),
                 Text(label, style: AppTextStyles.labelLarge),
               ],
@@ -586,7 +596,9 @@ class _PhoneInputTile extends StatelessWidget {
                         borderRadius: BorderRadius.circular(14),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       contentPadding: const EdgeInsets.symmetric(

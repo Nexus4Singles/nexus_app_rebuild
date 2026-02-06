@@ -8,10 +8,7 @@ class DismissedProfileEntry {
   final String profileId;
   final DateTime dismissedAt;
 
-  DismissedProfileEntry({
-    required this.profileId,
-    required this.dismissedAt,
-  });
+  DismissedProfileEntry({required this.profileId, required this.dismissedAt});
 
   factory DismissedProfileEntry.fromMap(Map<String, dynamic> map) {
     return DismissedProfileEntry(
@@ -43,18 +40,22 @@ final dismissedProfilesProvider = FutureProvider<List<String>>((ref) async {
   if (fs == null || uid == null) return [];
 
   try {
-    final doc = await fs
-        .collection('users')
-        .doc(uid)
-        .collection('dating')
-        .doc('dismissedProfiles')
-        .get();
+    final doc =
+        await fs
+            .collection('users')
+            .doc(uid)
+            .collection('dating')
+            .doc('dismissedProfiles')
+            .get();
 
     if (!doc.exists) return [];
 
     final data = doc.data() ?? {};
-    final entries = (data['entries'] as List<dynamic>?)
-            ?.map((e) => DismissedProfileEntry.fromMap(e as Map<String, dynamic>))
+    final entries =
+        (data['entries'] as List<dynamic>?)
+            ?.map(
+              (e) => DismissedProfileEntry.fromMap(e as Map<String, dynamic>),
+            )
             .toList() ??
         [];
 
@@ -90,8 +91,11 @@ class DismissedProfilesNotifier
           .doc('dismissedProfiles');
 
       final doc = await docRef.get();
-      final entries = (doc.data()?['entries'] as List<dynamic>?)
-              ?.map((e) => DismissedProfileEntry.fromMap(e as Map<String, dynamic>))
+      final entries =
+          (doc.data()?['entries'] as List<dynamic>?)
+              ?.map(
+                (e) => DismissedProfileEntry.fromMap(e as Map<String, dynamic>),
+              )
               .toList() ??
           [];
 
@@ -133,8 +137,11 @@ class DismissedProfilesNotifier
           .doc('dismissedProfiles');
 
       final doc = await docRef.get();
-      var entries = (doc.data()?['entries'] as List<dynamic>?)
-              ?.map((e) => DismissedProfileEntry.fromMap(e as Map<String, dynamic>))
+      var entries =
+          (doc.data()?['entries'] as List<dynamic>?)
+              ?.map(
+                (e) => DismissedProfileEntry.fromMap(e as Map<String, dynamic>),
+              )
               .toList() ??
           [];
 
@@ -179,9 +186,10 @@ class DismissedProfilesNotifier
 }
 
 /// StateNotifier provider for managing dismissed profiles
-final dismissedProfilesNotifierProvider = StateNotifierProvider<
-    DismissedProfilesNotifier,
-    AsyncValue<List<String>>>((ref) {
-  final fs = ref.watch(firestoreInstanceProvider);
-  return DismissedProfilesNotifier(fs);
-});
+final dismissedProfilesNotifierProvider =
+    StateNotifierProvider<DismissedProfilesNotifier, AsyncValue<List<String>>>((
+      ref,
+    ) {
+      final fs = ref.watch(firestoreInstanceProvider);
+      return DismissedProfilesNotifier(fs);
+    });

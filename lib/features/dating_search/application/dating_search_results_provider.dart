@@ -104,47 +104,58 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     loading: () => throw Exception('Preferences still loading'),
     error: (err, stack) => null,
   );
-  
+
   if (kDebugMode) {
     // ignore: avoid_print
-    print('[DatingSearchResultsProvider] Preferences: '
-        'country=${preferences?.countryOfResidence}, '
-        'allowLongDistance=${preferences?.allowLongDistance}, '
-        'openToKids=${preferences?.openToKids}, '
-        'openToMarriedBefore=${preferences?.openToMarriedBefore}, '
-        'genotype=${preferences?.genotypePreference}');
+    print(
+      '[DatingSearchResultsProvider] Preferences: '
+      'country=${preferences?.countryOfResidence}, '
+      'allowLongDistance=${preferences?.allowLongDistance}, '
+      'openToKids=${preferences?.openToKids}, '
+      'openToMarriedBefore=${preferences?.openToMarriedBefore}, '
+      'genotype=${preferences?.genotypePreference}',
+    );
   }
-  
+
   // Watch dismissed profiles to exclude them
   final dismissedAsync = ref.watch(dismissedProfilesProvider);
   final dismissedIds = dismissedAsync.valueOrNull ?? [];
-  
+
   // Convert saved preferences to search filters
   // PATTERN: null (not set) = no filter; true (yes) = no filter; false (no) = apply filter
-  final filters = preferences != null
-      ? DatingSearchFilters(
-          minAge: preferences.minAge,
-          maxAge: preferences.maxAge,
-          countryOfResidence: preferences.countryOfResidence,
-          // allowLongDistance: null/true = any distance; false = local only
-          longDistance: preferences.allowLongDistance == true ? 'Yes' : (preferences.allowLongDistance == false ? 'No' : null),
-          // openToMarriedBefore: null/true = any marital status; false = never married only
-          maritalStatus: preferences.openToMarriedBefore == false ? 'Never married' : null,
-          // openToKids: null/true = any kid status; false = no kids only
-          hasKids: preferences.openToKids == false ? 'No' : null,
-          // genotypePreference: null = any genotype; value = specific genotype
-          genotype: preferences.genotypePreference,
-        )
-      : ref.watch(datingSearchFiltersProvider);
-  
+  final filters =
+      preferences != null
+          ? DatingSearchFilters(
+            minAge: preferences.minAge,
+            maxAge: preferences.maxAge,
+            countryOfResidence: preferences.countryOfResidence,
+            // allowLongDistance: null/true = any distance; false = local only
+            longDistance:
+                preferences.allowLongDistance == true
+                    ? 'Yes'
+                    : (preferences.allowLongDistance == false ? 'No' : null),
+            // openToMarriedBefore: null/true = any marital status; false = never married only
+            maritalStatus:
+                preferences.openToMarriedBefore == false
+                    ? 'Never married'
+                    : null,
+            // openToKids: null/true = any kid status; false = no kids only
+            hasKids: preferences.openToKids == false ? 'No' : null,
+            // genotypePreference: null = any genotype; value = specific genotype
+            genotype: preferences.genotypePreference,
+          )
+          : ref.watch(datingSearchFiltersProvider);
+
   if (kDebugMode) {
     // ignore: avoid_print
-    print('[DatingSearchResultsProvider] Built filters: '
-        'country=${filters.countryOfResidence}, '
-        'distance=${filters.longDistance}, '
-        'marital=${filters.maritalStatus}, '
-        'kids=${filters.hasKids}, '
-        'genotype=${filters.genotype}');
+    print(
+      '[DatingSearchResultsProvider] Built filters: '
+      'country=${filters.countryOfResidence}, '
+      'distance=${filters.longDistance}, '
+      'marital=${filters.maritalStatus}, '
+      'kids=${filters.hasKids}, '
+      'genotype=${filters.genotype}',
+    );
   }
 
   final service = ref.read(datingSearchServiceProvider);
@@ -156,46 +167,64 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     );
   }
 
-  var results = await service.search(
-    genderToShow: genderToShow,
-    filters: filters,
-  ).timeout(
-    const Duration(seconds: 30),
-    onTimeout: () {
-      if (kDebugMode) {
-        // ignore: avoid_print
-        print('[DatingSearchResults] Search query timed out after 30 seconds - returning empty');
-      }
-      // On timeout, return empty results to show no-profiles screen
-      return const DatingSearchResult(items: []);
-    },
-  );
+  var results = await service
+      .search(genderToShow: genderToShow, filters: filters)
+      .timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          if (kDebugMode) {
+            // ignore: avoid_print
+            print(
+              '[DatingSearchResults] Search query timed out after 30 seconds - returning empty',
+            );
+          }
+          // On timeout, return empty results to show no-profiles screen
+          return const DatingSearchResult(items: []);
+        },
+      );
 
   // Filter dismissed profiles only (service already applied all other filters)
   if (results.items.isNotEmpty) {
-    final filtered = results.items
-        .where((profile) => !dismissedIds.contains(profile.uid))
-        .toList();
-    
+    final filtered =
+        results.items
+            .where((profile) => !dismissedIds.contains(profile.uid))
+            .toList();
+
     results = DatingSearchResult(items: filtered, emptyHint: results.emptyHint);
   }
 
   // Compute compatibility scores if current user data available
   // Skip scoring if there are too many results (>200) to avoid timeout
-  if (currentUser != null && results.items.isNotEmpty && results.items.length <= 200) {
+  if (currentUser != null &&
+      results.items.isNotEmpty &&
+      results.items.length <= 200) {
     final scoredProfiles = <DatingProfile>[];
-    
+
     // Extract current user compatibility data
-    final userAMaritalStatus = currentUser.compatibility?.getCompatibilityField('maritalStatus');
-    final userAHaveKids = currentUser.compatibility?.getCompatibilityField('haveKids');
-    final userAGenotype = currentUser.compatibility?.getCompatibilityField('genotype');
-    final userAPersonalityType = currentUser.compatibility?.getCompatibilityField('personalityType');
-    final userARegularIncome = currentUser.compatibility?.getCompatibilityField('regularSourceOfIncome');
-    final userALongDistance = currentUser.compatibility?.getCompatibilityField('longDistance');
-    final userABelieveInCohabiting = currentUser.compatibility?.getCompatibilityField('believeInCohabiting');
-    final userAShouldSpeakTongues = currentUser.compatibility?.getCompatibilityField('shouldChristianSpeakInTongue');
-    final userABeliefInTithing = currentUser.compatibility?.getCompatibilityField('believeInTithing');
-    
+    final userAMaritalStatus = currentUser.compatibility?.getCompatibilityField(
+      'maritalStatus',
+    );
+    final userAHaveKids = currentUser.compatibility?.getCompatibilityField(
+      'haveKids',
+    );
+    final userAGenotype = currentUser.compatibility?.getCompatibilityField(
+      'genotype',
+    );
+    final userAPersonalityType = currentUser.compatibility
+        ?.getCompatibilityField('personalityType');
+    final userARegularIncome = currentUser.compatibility?.getCompatibilityField(
+      'regularSourceOfIncome',
+    );
+    final userALongDistance = currentUser.compatibility?.getCompatibilityField(
+      'longDistance',
+    );
+    final userABelieveInCohabiting = currentUser.compatibility
+        ?.getCompatibilityField('believeInCohabiting');
+    final userAShouldSpeakTongues = currentUser.compatibility
+        ?.getCompatibilityField('shouldChristianSpeakInTongue');
+    final userABeliefInTithing = currentUser.compatibility
+        ?.getCompatibilityField('believeInTithing');
+
     for (final profile in results.items) {
       try {
         final score = EnhancedCompatibilityScorer.scoreMatch(
@@ -210,7 +239,12 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
           userAShouldSpeakTongues: userAShouldSpeakTongues,
           userABeliefInTithing: userABeliefInTithing,
           userAHobbies: currentUser.hobbies,
-          userADesiredQualities: currentUser.desiredQualities?.split(',').map((s) => s.trim()).toList() ?? [],
+          userADesiredQualities:
+              currentUser.desiredQualities
+                  ?.split(',')
+                  .map((s) => s.trim())
+                  .toList() ??
+              [],
           // Match profile fields
           userBMaritalStatus: profile.maritalStatus,
           userBHaveKids: profile.haveKids,
@@ -222,7 +256,12 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
           userBShouldSpeakTongues: profile.shouldChristianSpeakInTongue,
           userBBeliefInTithing: profile.believeInTithing,
           userBHobbies: profile.hobbies,
-          userBDesiredQualities: profile.desiredQualities?.split(',').map((s) => s.trim()).toList() ?? [],
+          userBDesiredQualities:
+              profile.desiredQualities
+                  ?.split(',')
+                  .map((s) => s.trim())
+                  .toList() ??
+              [],
         );
 
         // Create new profile with scores
@@ -258,7 +297,9 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
       } catch (e) {
         if (kDebugMode) {
           // ignore: avoid_print
-          print('[DatingSearchResults] Error scoring profile ${profile.uid}: $e');
+          print(
+            '[DatingSearchResults] Error scoring profile ${profile.uid}: $e',
+          );
         }
         // If scoring fails, include profile without score
         scoredProfiles.add(profile);
@@ -284,16 +325,16 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
 
   // Check if user is premium
   final isPremium = currentUser?.onPremium == true;
-  
+
   // Apply daily limit for free users (10 profiles per day)
   // Check if there's a stored timestamp for when the limit was hit
   DateTime? limitHitAt;
-  
+
   if (!isPremium && results.items.length >= 10) {
     // Check if user has a stored timestamp for daily limit
     // If no timestamp, this is the first time hitting the limit today
     limitHitAt = DateTime.now();
-    
+
     // Limit to 10 profiles for free users
     results = DatingSearchResult(
       items: results.items.take(10).toList(),

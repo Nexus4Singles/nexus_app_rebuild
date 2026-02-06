@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +11,8 @@ import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/core/services/chat_service.dart';
 import 'package:nexus_app_min_test/core/widgets/disabled_account_gate.dart';
 import 'package:nexus_app_min_test/core/providers/service_providers.dart';
+import 'package:nexus_app_min_test/core/moderation/moderation_providers.dart';
+import 'package:nexus_app_min_test/core/moderation/moderation_models.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
@@ -56,8 +59,8 @@ String? _bestAvatarUrl(Map<String, dynamic>? u) {
 }
 
 // Audio recording duration constraints (in seconds)
-const int _minAudioDuration = 45;
-const int _maxAudioDuration = 60;
+const int _minAudioDuration = 1; // Minimum 1 second
+const int _maxAudioDuration = 600; // Maximum 10 minutes for chat voice notes
 
 enum _MessageKind { text, image, audio }
 
@@ -343,6 +346,9 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
 
   bool _isRecording = false;
   String? _recordingPath;
+  Timer? _recordingTimer;
+  Duration _recordingDuration = Duration.zero;
+  double _recordingDragOffset = 0; // Track horizontal drag for slide-to-cancel
 
   String? _playingMessageId;
 
@@ -551,6 +557,26 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
         return;
       }
 
+      // Check if you have blocked this user
+      final blockedUsers = ref.read(blockedUsersProvider(me));
+      final amBlocked = blockedUsers.maybeWhen(
+        data: (set) => set.contains(otherId),
+        orElse: () => false,
+      );
+
+      if (amBlocked) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'You have blocked this user. Unblock them to send messages.',
+            ),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+        return;
+      }
+
       final reply = _replyTo;
       final metadata =
           reply == null
@@ -584,107 +610,20 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
     });
   }
 
-  Future<void> _openAttachSheet() async {
-    await _ensureSignedInThen(() async {
-      if (!mounted) return;
-      showModalBottomSheet(
-        context: context,
-        backgroundColor: AppColors.getSurface(context),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        builder: (_) {
-          return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 44,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: AppColors.getBorder(context),
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Text('Attach', style: AppTextStyles.titleLarge),
-                      const Spacer(),
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  _AttachTile(
-                    icon: Icons.image_outlined,
-                    title: 'Photo',
-                    subtitle: 'Pick an image to send',
-                    onTap: () async {
-                      Navigator.of(context).pop();
-                      await _pickAndSendImage();
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  _AttachTile(
-                    icon: Icons.attach_file,
-                    title: 'File',
-                    subtitle: 'Attach a document (coming soon)',
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Files: add file_picker later.'),
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  _AttachTile(
-                    icon: Icons.mic_none,
-                    title: 'Voice note',
-                    subtitle:
-                        _isRecording
-                            ? 'Recording… tap mic to stop'
-                            : 'Tap mic to start recording',
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      _toggleRecording();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    });
-  }
-
   Future<void> _pickAndSendImage() async {
     await _ensureSignedInThen(() async {
-      final okPhotos = await _ensurePhotosPermission();
-      if (!okPhotos) {
-        _toast('Photo permission is required to attach images.');
-        return;
-      }
-
-      final ok = await _ensurePhotoPermission();
-      if (!ok) {
-        _toast('Photo permission is required to attach images.');
-        return;
-      }
-
+      // image_picker handles permissions internally, so we call it directly
       final picked = await _picker.pickImage(
         source: ImageSource.gallery,
         imageQuality: 85,
       );
+
       if (picked == null) {
-        _toast('No photo selected.');
+        // User cancelled or permission denied by image_picker
+        if (!mounted) return;
+        _toast(
+          'No photo selected. Please enable photo library access in Settings.',
+        );
         return;
       }
 
@@ -718,23 +657,18 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                 'replyToSnippet': _replySnippet(reply),
                 'replyToWasMine': reply.isMe,
               };
-      final media = ref.read(mediaServiceProvider);
-      final imageUrl = await _runOp(
-        () => media.uploadChatImage(
-          chatId: widget.chatId,
-          userId: me,
-          imageFile: File(picked.path),
-        ),
-        failMessage: 'Could not upload photo. Please try again.',
-      );
-      if (imageUrl == null || imageUrl.trim().isEmpty) return;
+
+      // For now, store image locally without cloud upload
+      // In production, this would upload to cloud storage
+      final imagePath = picked.path;
+
       final sent = await _runOp(() async {
         await ref
             .read(chatNotifierProvider.notifier)
             .sendImage(
               chatId: widget.chatId,
               receiverId: otherId,
-              imageUrl: imageUrl,
+              imageUrl: imagePath, // Store local path instead of cloud URL
               metadata: metadata,
             );
         return true;
@@ -745,56 +679,6 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       setState(() => _replyTo = null);
       _scrollToBottomSoon();
     });
-  }
-
-  Future<bool> _ensureMicPermission() async {
-    final before = await Permission.microphone.status;
-    debugPrint('[perm] mic before: $before');
-
-    final requested = await Permission.microphone.request();
-    debugPrint('[perm] mic requested: $requested');
-
-    final after = await Permission.microphone.status;
-    debugPrint('[perm] mic after: $after');
-
-    return requested.isGranted;
-  }
-
-  Future<bool> _ensurePhotoPermission() async {
-    final before = await Permission.photos.status;
-    debugPrint('[perm] photos before: $before');
-
-    final requested = await Permission.photos.request();
-    debugPrint('[perm] photos requested: $requested');
-
-    final after = await Permission.photos.status;
-    debugPrint('[perm] photos after: $after');
-
-    return requested.isGranted || requested.isLimited;
-  }
-
-  Future<bool> _ensurePhotosPermission() async {
-    // iOS: Permission.photos; Android: permission_handler maps appropriately, but manifest still matters.
-    final status = await Permission.photos.request();
-
-    if (status.isGranted || status.isLimited) return true;
-
-    if (status.isPermanentlyDenied) {
-      _toast(
-        'Photo permission is disabled. Please enable it in app Settings to attach images.',
-      );
-      // Don't automatically open app settings - let user decide if they want to go there
-      // await openAppSettings();
-      return false;
-    }
-
-    if (status.isRestricted) {
-      _toast('Photo permission is restricted on this device.');
-      return false;
-    }
-
-    _toast('Photo permission was denied.');
-    return false;
   }
 
   Future<String> _nextRecordingPath() async {
@@ -817,55 +701,118 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   }
 
   Future<void> _startRecording() async {
-    final ok = await _ensureMicPermission();
-    if (!ok) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Microphone permission is required to record voice notes.',
-          ),
-        ),
-      );
-      return;
-    }
+    // Request permission using the record package, which handles it properly
+    final isGranted = await _recorder.hasPermission();
 
-    final canRecord = await _recorder.hasPermission();
-    if (!canRecord) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Microphone permission not granted.')),
-      );
-      return;
+    if (!isGranted) {
+      // If not granted, try to request it
+      final requestGranted = await Permission.microphone.request();
+
+      if (requestGranted.isPermanentlyDenied) {
+        if (!mounted) return;
+        _toast(
+          'Microphone permission is permanently disabled. Please enable it in app Settings.',
+        );
+        return;
+      }
+
+      if (!requestGranted.isGranted) {
+        if (!mounted) return;
+        _toast('Microphone permission is required to record voice notes.');
+        return;
+      }
     }
 
     final path = await _nextRecordingPath();
 
-    await _recorder.start(
-      const RecordConfig(
-        encoder: AudioEncoder.aacLc,
-        bitRate: 128000,
-        sampleRate: 44100,
-      ),
-      path: path,
-    );
+    try {
+      await _recorder.start(
+        const RecordConfig(
+          encoder: AudioEncoder.aacLc,
+          bitRate: 128000,
+          sampleRate: 44100,
+        ),
+        path: path,
+      );
+
+      setState(() {
+        _isRecording = true;
+        _recordingPath = path;
+        _recordingDuration = Duration.zero;
+      });
+
+      // Start timer to update recording duration
+      _recordingTimer?.cancel();
+      _recordingTimer = Timer.periodic(const Duration(milliseconds: 100), (_) {
+        if (mounted) {
+          setState(() {
+            _recordingDuration = Duration(
+              milliseconds: _recordingDuration.inMilliseconds + 100,
+            );
+          });
+        }
+      });
+
+      // No SnackBar messages - let the UI speak for itself
+    } catch (e) {
+      if (!mounted) return;
+      _toast('Failed to start recording: $e');
+      setState(() {
+        _isRecording = false;
+      });
+    }
+  }
+
+  Future<void> _cancelRecording() async {
+    // Cancel the timer
+    _recordingTimer?.cancel();
+    _recordingTimer = null;
+
+    // Stop recording but don't send
+    await _recorder.stop();
+
+    // Delete the file
+    if (_recordingPath != null) {
+      try {
+        final file = File(_recordingPath!);
+        if (file.existsSync()) {
+          file.deleteSync();
+        }
+      } catch (_) {
+        // Silent fail
+      }
+    }
 
     setState(() {
-      _isRecording = true;
-      _recordingPath = path;
+      _isRecording = false;
+      _recordingPath = null;
+      _recordingDuration = Duration.zero;
+      _recordingDragOffset = 0;
     });
+  }
 
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Recording… tap the mic again to stop.')),
-    );
+  void _updateRecordingDrag(double delta) {
+    setState(() {
+      _recordingDragOffset += delta;
+    });
+  }
+
+  void _resetRecordingDrag() {
+    setState(() {
+      _recordingDragOffset = 0;
+    });
   }
 
   Future<void> _stopRecordingAndSend() async {
+    // Cancel the timer
+    _recordingTimer?.cancel();
+    _recordingTimer = null;
+
     final stoppedPath = await _recorder.stop();
 
     setState(() {
       _isRecording = false;
+      _recordingDuration = Duration.zero;
     });
 
     final path = stoppedPath ?? _recordingPath;
@@ -936,7 +883,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Recording too short. Minimum duration is $_minAudioDuration seconds. You recorded ${durationSeconds}s.',
+            'Recording too short. Please record at least $_minAudioDuration second. You recorded ${durationSeconds}s.',
           ),
         ),
       );
@@ -956,20 +903,14 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       return;
     }
 
-    final media = ref.read(mediaServiceProvider);
-    final audioUrl = await media.uploadChatAudio(
-      chatId: widget.chatId,
-      userId: me,
-      filePath: path,
-    );
-
+    // Store audio as local file path - no cloud upload
     final sent = await _runOp(() async {
       await ref
           .read(chatNotifierProvider.notifier)
           .sendAudio(
             chatId: widget.chatId,
             receiverId: otherId,
-            audioUrl: audioUrl,
+            audioUrl: path, // Store local path directly
             durationSeconds: durationSeconds,
             metadata: metadata,
           );
@@ -980,16 +921,6 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
     if (!mounted) return;
     setState(() => _replyTo = null);
     _scrollToBottomSoon();
-  }
-
-  Future<void> _startAudioCall() async {
-    await _ensureSignedInThen(() async {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Audio call (TODO). Needs WebRTC/signalling later.'),
-        ),
-      );
-    });
   }
 
   Future<void> _togglePlay(_UiMessage msg) async {
@@ -1161,6 +1092,231 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
         );
       },
     );
+  }
+
+  Future<void> _showReportSheetChat({
+    required BuildContext context,
+    required WidgetRef ref,
+    required String reporterKey,
+    required String reportedUid,
+  }) async {
+    ReportReason reason = ReportReason.harassment;
+    final notesController = TextEditingController();
+    bool isSubmitting = false;
+
+    try {
+      await showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (sheetContext) {
+          final bottomInset = MediaQuery.of(sheetContext).viewInsets.bottom;
+          final theme = Theme.of(sheetContext);
+          final colors = theme.colorScheme;
+
+          return StatefulBuilder(
+            builder: (ctx, setState) {
+              return Padding(
+                padding: EdgeInsets.only(bottom: bottomInset),
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
+                  decoration: BoxDecoration(
+                    color: colors.surface,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: colors.outline),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Report User',
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap:
+                                isSubmitting
+                                    ? null
+                                    : () => Navigator.of(sheetContext).pop(),
+                            borderRadius: BorderRadius.circular(999),
+                            child: Container(
+                              height: 36,
+                              width: 36,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: colors.surfaceVariant,
+                                borderRadius: BorderRadius.circular(999),
+                                border: Border.all(color: colors.outline),
+                              ),
+                              child: Icon(
+                                Icons.close_rounded,
+                                size: 18,
+                                color: colors.onSurface,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Reason',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: colors.surfaceVariant,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: colors.outline),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<ReportReason>(
+                            value: reason,
+                            isExpanded: true,
+                            items:
+                                ReportReason.values
+                                    .map(
+                                      (r) => DropdownMenuItem(
+                                        value: r,
+                                        child: Text(r.label),
+                                      ),
+                                    )
+                                    .toList(),
+                            onChanged:
+                                isSubmitting
+                                    ? null
+                                    : (v) {
+                                      if (v == null) return;
+                                      setState(() => reason = v);
+                                    },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Notes (optional)',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: notesController,
+                        maxLines: 4,
+                        enabled: !isSubmitting,
+                        style: theme.textTheme.bodyMedium,
+                        decoration: InputDecoration(
+                          hintText: 'Add more details (optional)',
+                          filled: true,
+                          fillColor: colors.surfaceVariant,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: colors.outline),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: colors.outline),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: colors.primary),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed:
+                              isSubmitting
+                                  ? null
+                                  : () async {
+                                    setState(() => isSubmitting = true);
+                                    try {
+                                      print(
+                                        'DEBUG: Starting report submission...',
+                                      );
+                                      await submitLocalReport(
+                                        ref: ref,
+                                        reporterKey: reporterKey,
+                                        reportedUid: reportedUid,
+                                        reason: reason,
+                                        notes: notesController.text,
+                                      );
+                                      print(
+                                        'DEBUG: Report submitted successfully',
+                                      );
+                                      if (sheetContext.mounted) {
+                                        Navigator.of(sheetContext).pop();
+                                      }
+                                      if (context.mounted) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              'Report submitted successfully',
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    } catch (e) {
+                                      print(
+                                        'DEBUG: Report submission error: $e',
+                                      );
+                                      if (context.mounted) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text('Report failed: $e'),
+                                          ),
+                                        );
+                                      }
+                                      if (sheetContext.mounted && mounted) {
+                                        setState(() => isSubmitting = false);
+                                      }
+                                    }
+                                  },
+                          child:
+                              isSubmitting
+                                  ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                  : const Text('Submit Report'),
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        'Reports are reviewed. Please avoid sharing sensitive personal information.',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colors.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      );
+    } finally {
+      notesController.dispose();
+    }
   }
 
   @override
@@ -1357,10 +1513,193 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
           },
         ),
         actions: [
-          IconButton(
-            tooltip: 'Audio call',
-            icon: const Icon(Icons.call_outlined),
-            onPressed: _startAudioCall,
+          Consumer(
+            builder: (context, ref, _) {
+              final otherIdAsync = ref.watch(
+                _chatOtherUserIdProvider(widget.chatId),
+              );
+
+              return otherIdAsync.maybeWhen(
+                data: (otherId) {
+                  if (otherId == null || otherId.trim().isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  return PopupMenuButton<String>(
+                    icon: const Icon(Icons.more_vert_rounded),
+                    onSelected: (v) async {
+                      final authAsync = ref.read(authStateProvider);
+                      final me = authAsync.maybeWhen(
+                        data: (a) => a.user?.uid,
+                        orElse: () => null,
+                      );
+                      final viewerKey = (me ?? 'guest').trim();
+
+                      if (v == 'block') {
+                        final ok = await showDialog<bool>(
+                          context: context,
+                          builder: (ctx) {
+                            return Dialog(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Block User?',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        const Text(
+                                          'Are you sure you want to block this user?\n\nThey will be hidden from you and you won\'t be able to start a chat with them.',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      TextButton(
+                                        onPressed:
+                                            () => Navigator.of(ctx).pop(false),
+                                        child: const Text('Cancel'),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      TextButton(
+                                        onPressed:
+                                            () => Navigator.of(ctx).pop(true),
+                                        child: const Text('Block'),
+                                      ),
+                                      const SizedBox(width: 8),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+
+                        if (ok == true) {
+                          await ref
+                              .read(blockedUsersProvider(viewerKey).notifier)
+                              .block(otherId);
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('User blocked')),
+                            );
+                          }
+                        }
+                      } else if (v == 'unblock') {
+                        final ok = await showDialog<bool>(
+                          context: context,
+                          builder: (ctx) {
+                            return Dialog(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Unblock User?',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        const Text(
+                                          'They will be visible to you again.',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      TextButton(
+                                        onPressed:
+                                            () => Navigator.of(ctx).pop(false),
+                                        child: const Text('Cancel'),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      TextButton(
+                                        onPressed:
+                                            () => Navigator.of(ctx).pop(true),
+                                        child: const Text('Unblock'),
+                                      ),
+                                      const SizedBox(width: 8),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+
+                        if (ok == true) {
+                          await ref
+                              .read(blockedUsersProvider(viewerKey).notifier)
+                              .unblock(otherId);
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('User unblocked')),
+                            );
+                          }
+                        }
+                      } else if (v == 'report') {
+                        await _showReportSheetChat(
+                          context: context,
+                          ref: ref,
+                          reporterKey: viewerKey,
+                          reportedUid: otherId,
+                        );
+                      }
+                    },
+                    itemBuilder: (context) {
+                      final authAsync = ref.watch(authStateProvider);
+                      final me = authAsync.maybeWhen(
+                        data: (a) => a.user?.uid,
+                        orElse: () => null,
+                      );
+                      final viewerKey = (me ?? 'guest').trim();
+
+                      final isBlocked = ref.watch(
+                        isBlockedProvider((
+                          viewerKey: viewerKey,
+                          targetUid: otherId,
+                        )),
+                      );
+
+                      return [
+                        PopupMenuItem(
+                          value: isBlocked ? 'unblock' : 'block',
+                          child: Text(
+                            isBlocked ? 'Unblock User' : 'Block User',
+                          ),
+                        ),
+                        const PopupMenuItem(
+                          value: 'report',
+                          child: Text('Report User'),
+                        ),
+                      ];
+                    },
+                  );
+                },
+                orElse: () => const SizedBox.shrink(),
+              );
+            },
           ),
           const SizedBox(width: 4),
         ],
@@ -1543,13 +1882,77 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
               },
             ),
           ),
+          // Block status indicator
+          Consumer(
+            builder: (context, ref, _) {
+              final authAsync = ref.watch(authStateProvider);
+              final me = authAsync.maybeWhen(
+                data: (a) => a.user?.uid,
+                orElse: () => null,
+              );
+
+              if (me == null) return const SizedBox.shrink();
+
+              final convoAsync = ref.watch(
+                chatConversationProvider(widget.chatId),
+              );
+
+              return convoAsync.maybeWhen(
+                data: (convo) {
+                  final otherId = _resolveOtherId(convo, me);
+                  if (otherId.isEmpty) return const SizedBox.shrink();
+
+                  final blockedUsers = ref.watch(blockedUsersProvider(me));
+                  final amBlocked = blockedUsers.maybeWhen(
+                    data: (set) => set.contains(otherId),
+                    orElse: () => false,
+                  );
+
+                  if (amBlocked) {
+                    return Container(
+                      padding: const EdgeInsets.all(12),
+                      color: Colors.red.shade100,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.block,
+                            color: Colors.red.shade700,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'You have blocked this user. They cannot send you messages.',
+                              style: TextStyle(
+                                color: Colors.red.shade700,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return const SizedBox.shrink();
+                },
+                orElse: () => const SizedBox.shrink(),
+              );
+            },
+          ),
           _Composer(
             controller: _controller,
             hintText: 'Message',
             isRecording: _isRecording,
+            recordingDuration: _recordingDuration,
+            recordingDragOffset: _recordingDragOffset,
+            onCancelRecording: _cancelRecording,
+            onRecordingDragUpdate: _updateRecordingDrag,
+            onRecordingDragEnd: _resetRecordingDrag,
             onTextChanged: () => setState(() {}),
-            onAttach: () async {
-              await _openAttachSheet();
+            onPhoto: () async {
+              await _pickAndSendImage();
             },
             onMic: () async {
               await _toggleRecording();
@@ -1573,9 +1976,14 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
 class _Composer extends StatelessWidget {
   final TextEditingController controller;
   final bool isRecording;
+  final Duration recordingDuration;
+  final double recordingDragOffset;
+  final VoidCallback onCancelRecording;
+  final Function(double) onRecordingDragUpdate;
+  final VoidCallback onRecordingDragEnd;
   final String? hintText;
   final VoidCallback onTextChanged;
-  final VoidCallback onAttach;
+  final VoidCallback onPhoto;
   final VoidCallback onMic;
   final VoidCallback? onSend;
 
@@ -1586,9 +1994,14 @@ class _Composer extends StatelessWidget {
   const _Composer({
     required this.controller,
     required this.isRecording,
+    required this.recordingDuration,
+    required this.recordingDragOffset,
+    required this.onCancelRecording,
+    required this.onRecordingDragUpdate,
+    required this.onRecordingDragEnd,
     this.hintText,
     required this.onTextChanged,
-    required this.onAttach,
+    required this.onPhoto,
     required this.onMic,
     required this.onSend,
     this.replySnippet,
@@ -1662,43 +2075,127 @@ class _Composer extends StatelessWidget {
               ),
             Row(
               children: [
-                IconButton(
-                  tooltip: 'Attach',
-                  icon: const Icon(Icons.add_circle_outline),
-                  onPressed: onAttach,
-                ),
-                Expanded(
-                  child: ConstrainedBox(
-                    // Bigger so cursor never clips; expands up to 5 lines.
-                    constraints: const BoxConstraints(
-                      minHeight: 62,
-                      maxHeight: 180,
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 16,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.getBackground(context),
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: TextField(
-                        controller: controller,
-                        onChanged: (_) => onTextChanged(),
-                        minLines: 1,
-                        maxLines: 5,
-                        keyboardType: TextInputType.multiline,
-                        textInputAction: TextInputAction.newline,
-                        decoration: InputDecoration(
-                          hintText: hintText ?? 'Message',
-                          border: InputBorder.none,
-                          isDense: true,
-                          contentPadding: EdgeInsets.zero,
-                        ),
-                      ),
-                    ),
+                if (!isRecording) ...[
+                  IconButton(
+                    tooltip: 'Attach photo',
+                    icon: const Icon(Icons.image_outlined),
+                    onPressed: onPhoto,
                   ),
+                ] else ...[
+                  const SizedBox(width: 8),
+                ],
+                Expanded(
+                  child:
+                      isRecording
+                          ? GestureDetector(
+                            onHorizontalDragUpdate: (details) {
+                              onRecordingDragUpdate(details.delta.dx);
+
+                              // If slid more than 100px to the left, cancel
+                              if (recordingDragOffset < -100) {
+                                onCancelRecording();
+                              }
+                            },
+                            onHorizontalDragEnd: (_) {
+                              onRecordingDragEnd();
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              height: 76,
+                              decoration: BoxDecoration(
+                                color:
+                                    recordingDragOffset < -50
+                                        ? Colors.red.withOpacity(0.1)
+                                        : AppColors.getBackground(context),
+                                borderRadius: BorderRadius.circular(24),
+                                border: Border.all(
+                                  color:
+                                      recordingDragOffset < -50
+                                          ? Colors.red
+                                          : AppColors.primary,
+                                  width: 2,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  const SizedBox(width: 16),
+                                  // Animated recording indicator
+                                  _AnimatedRecordingDot(),
+                                  const SizedBox(width: 12),
+                                  // Duration
+                                  Text(
+                                    '${recordingDuration.inMinutes}:${(recordingDuration.inSeconds % 60).toString().padLeft(2, '0')}',
+                                    style: AppTextStyles.bodyLarge.copyWith(
+                                      color:
+                                          recordingDragOffset < -50
+                                              ? Colors.red
+                                              : AppColors.primary,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  // Slide to cancel instruction
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 16),
+                                    child: AnimatedOpacity(
+                                      opacity:
+                                          recordingDragOffset < -50 ? 0.3 : 1.0,
+                                      duration: const Duration(
+                                        milliseconds: 200,
+                                      ),
+                                      child: Text(
+                                        recordingDragOffset < -50
+                                            ? 'Release to cancel'
+                                            : 'Slide to cancel',
+                                        style: AppTextStyles.caption.copyWith(
+                                          color:
+                                              recordingDragOffset < -50
+                                                  ? Colors.red
+                                                  : AppColors.getTextSecondary(
+                                                    context,
+                                                  ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                          : ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minHeight: 76,
+                              maxHeight: 200,
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 18,
+                                vertical: 16,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.getBackground(context),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              child: TextField(
+                                controller: controller,
+                                onChanged: (_) => onTextChanged(),
+                                minLines: 1,
+                                maxLines: 5,
+                                keyboardType: TextInputType.multiline,
+                                textInputAction: TextInputAction.newline,
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                decoration: InputDecoration(
+                                  hintText: hintText ?? 'Message',
+                                  border: InputBorder.none,
+                                  isDense: false,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 8,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                 ),
                 const SizedBox(width: 8),
                 IconButton(
@@ -1722,63 +2219,93 @@ class _Composer extends StatelessWidget {
   }
 }
 
-class _AttachTile extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
+/// Network image with error handling for avatars
+class _NetworkAvatarImage extends StatelessWidget {
+  final String imageUrl;
 
-  const _AttachTile({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-  });
+  const _NetworkAvatarImage(this.imageUrl);
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: AppColors.getBackground(context),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.getBorder(context)),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.10),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Icon(icon, color: AppColors.primary),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: AppTextStyles.labelLarge),
-                    const SizedBox(height: 3),
-                    Text(
-                      subtitle,
-                      style: AppTextStyles.caption.copyWith(
-                        color: AppColors.getTextSecondary(context),
-                      ),
-                    ),
-                  ],
+    return ClipOval(
+      child: Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+        width: 32,
+        height: 32,
+        errorBuilder:
+            (_, __, ___) => Container(
+              color: AppColors.primary.withOpacity(0.1),
+              child: Icon(Icons.person, size: 14, color: AppColors.primary),
+            ),
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) {
+            return child;
+          }
+          return Container(
+            color: AppColors.primary.withOpacity(0.05),
+            child: Center(
+              child: SizedBox(
+                width: 8,
+                height: 8,
+                child: CircularProgressIndicator(
+                  strokeWidth: 1,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    AppColors.primary.withOpacity(0.5),
+                  ),
                 ),
               ),
-              const Icon(Icons.chevron_right),
-            ],
-          ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// Animated recording indicator dot
+class _AnimatedRecordingDot extends StatefulWidget {
+  const _AnimatedRecordingDot();
+
+  @override
+  State<_AnimatedRecordingDot> createState() => _AnimatedRecordingDotState();
+}
+
+class _AnimatedRecordingDotState extends State<_AnimatedRecordingDot>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _scaleAnimation = Tween<double>(
+      begin: 0.7,
+      end: 1.2,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: _scaleAnimation,
+      child: Container(
+        width: 10,
+        height: 10,
+        decoration: BoxDecoration(
+          color: AppColors.primary,
+          shape: BoxShape.circle,
         ),
       ),
     );
@@ -1838,17 +2365,15 @@ class _Bubble extends ConsumerWidget {
                       padding: const EdgeInsets.only(right: 8),
                       child: CircleAvatar(
                         radius: 16,
-                        backgroundImage:
-                            avatarUrl != null ? NetworkImage(avatarUrl) : null,
                         backgroundColor: AppColors.primary.withOpacity(0.10),
                         child:
-                            avatarUrl == null
-                                ? const Icon(
+                            avatarUrl != null
+                                ? _NetworkAvatarImage(avatarUrl)
+                                : const Icon(
                                   Icons.person,
                                   size: 14,
                                   color: AppColors.primary,
-                                )
-                                : null,
+                                ),
                       ),
                     ),
                   ConstrainedBox(
@@ -1859,7 +2384,7 @@ class _Bubble extends ConsumerWidget {
                       decoration: BoxDecoration(
                         color:
                             isMe
-                                ? AppColors.primary.withOpacity(0.14)
+                                ? AppColors.getSentMessageBackground(context)
                                 : AppColors.getSurface(context),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: AppColors.getBorder(context)),
@@ -1877,13 +2402,14 @@ class _Bubble extends ConsumerWidget {
                               durationStream: durationStream,
                               onAudioTap: onAudioTap,
                               fmt: _fmt,
+                              isMe: isMe,
                             ),
                           ),
                           const SizedBox(height: 6),
                           Text(
                             message.timeLabel,
                             style: AppTextStyles.caption.copyWith(
-                              color: AppColors.getTextSecondary(context),
+                              color: AppColors.getTextOnPrimary(context),
                             ),
                           ),
                         ],
@@ -1895,17 +2421,15 @@ class _Bubble extends ConsumerWidget {
                       padding: const EdgeInsets.only(left: 8),
                       child: CircleAvatar(
                         radius: 16,
-                        backgroundImage:
-                            avatarUrl != null ? NetworkImage(avatarUrl) : null,
                         backgroundColor: AppColors.primary.withOpacity(0.10),
                         child:
-                            avatarUrl == null
-                                ? const Icon(
+                            avatarUrl != null
+                                ? _NetworkAvatarImage(avatarUrl)
+                                : const Icon(
                                   Icons.person,
                                   size: 14,
                                   color: AppColors.primary,
-                                )
-                                : null,
+                                ),
                       ),
                     ),
                 ],
@@ -1924,7 +2448,7 @@ class _Bubble extends ConsumerWidget {
                 decoration: BoxDecoration(
                   color:
                       isMe
-                          ? AppColors.primary.withOpacity(0.14)
+                          ? AppColors.getSentMessageBackground(context)
                           : AppColors.getSurface(context),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: AppColors.getBorder(context)),
@@ -1942,13 +2466,14 @@ class _Bubble extends ConsumerWidget {
                         durationStream: durationStream,
                         onAudioTap: onAudioTap,
                         fmt: _fmt,
+                        isMe: isMe,
                       ),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       message.timeLabel,
                       style: AppTextStyles.caption.copyWith(
-                        color: AppColors.getTextSecondary(context),
+                        color: AppColors.getTextOnPrimary(context),
                       ),
                     ),
                   ],
@@ -1970,6 +2495,7 @@ class _MessageBody extends StatelessWidget {
   final Stream<Duration?> durationStream;
   final VoidCallback onAudioTap;
   final String Function(Duration) fmt;
+  final bool isMe;
 
   const _MessageBody({
     required this.message,
@@ -1979,6 +2505,7 @@ class _MessageBody extends StatelessWidget {
     required this.durationStream,
     required this.onAudioTap,
     required this.fmt,
+    required this.isMe,
   });
 
   Widget _replyBlock(BuildContext context) {
@@ -2032,9 +2559,13 @@ class _MessageBody extends StatelessWidget {
     switch (message.kind) {
       case _MessageKind.text:
         {
+          final textColor =
+              isMe
+                  ? AppColors.getTextOnPrimary(context)
+                  : AppColors.getTextPrimary(context);
           final body = Text(
             message.text ?? '',
-            style: AppTextStyles.bodyMedium,
+            style: AppTextStyles.bodyMedium.copyWith(color: textColor),
           );
           if (!hasReply) return body;
           return Column(
@@ -2193,10 +2724,9 @@ class _Avatar extends StatelessWidget {
     return CircleAvatar(
       radius: 18,
       backgroundColor: AppColors.getSurface(context),
-      backgroundImage: hasUrl ? NetworkImage(u) : null,
       child:
           hasUrl
-              ? null
+              ? _NetworkAvatarImage(u)
               : Text(
                 _initials(label),
                 style: const TextStyle(fontWeight: FontWeight.w800),

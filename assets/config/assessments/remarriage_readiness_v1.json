@@ -8,32 +8,68 @@
     {
       "id": "accountability",
       "name": "Accountability",
-      "insights": {}
+      "insights": {
+        "low": "You may struggle to take responsibility for your part in past relationship challenges. Accountability is essential for breaking cycles and building trust in remarriage.",
+        "medium": "You can recognize your contributions to past issues but might sometimes blame external factors. Growing in full accountability prevents repeating patterns.",
+        "high": "You take genuine responsibility for your past and how you contributed to relationship problems. This maturity attracts trustworthy partners and builds stronger marriages.",
+        "microStep": "Write one way you contributed to your previous marriage's challenges. What would you do differently now?",
+        "recommendedJourney": "building_accountability_remarriage"
+      }
     },
     {
       "id": "change_basis",
       "name": "Change Basis",
-      "insights": {}
+      "insights": {
+        "low": "You may be seeking remarriage to escape pain rather than because you're genuinely ready. Marrying to fix or replace what you lost often creates new problems.",
+        "medium": "You're moving forward but some healing and self-reflection work remains. Solid internal change strengthens your readiness for a healthy second marriage.",
+        "high": "Your desire to remarry comes from genuine healing and positive growth, not escape or replacement. This healthy foundation supports lasting love.",
+        "microStep": "Reflect: Are you running toward something healthy or away from pain? Write your honest answer.",
+        "recommendedJourney": "healing_from_loss_remarriage"
+      }
     },
     {
       "id": "comparison_risk",
       "name": "Comparison Risk",
-      "insights": {}
+      "insights": {
+        "low": "You may frequently compare your new partner to your ex, which strains new relationships. Each person and marriage is unique. Letting go of comparisons opens your heart.",
+        "medium": "You occasionally compare but mostly accept your new partner on their own terms. Continuing to release the past helps you be fully present.",
+        "high": "You honor your past without being trapped by it. You see your new partner as a unique person, not a replacement or comparison. This freedom deepens love.",
+        "microStep": "When you notice comparison thoughts, pause and appreciate one unique quality your new partner has that your ex didn't.",
+        "recommendedJourney": "releasing_the_past_remarriage"
+      }
     },
     {
       "id": "conflict_fear",
       "name": "Conflict Fear",
-      "insights": {}
+      "insights": {
+        "low": "You may fear conflict intensely, worrying that any disagreement means the relationship is doomed. This fear often prevents healthy communication and resolution.",
+        "medium": "You can face some conflict but may avoid deeper issues. Building confidence in your ability to navigate disagreements strengthens remarriage.",
+        "high": "You see conflict as manageable and even healthy. You can address problems directly without fear. This courage creates safer, more honest marriages.",
+        "microStep": "Bring up one small concern with your partner this week. Practice staying present and working through it together.",
+        "recommendedJourney": "mastering_conflict_skills_remarriage"
+      }
     },
     {
       "id": "disclosure_boundaries",
       "name": "Disclosure Boundaries",
-      "insights": {}
+      "insights": {
+        "low": "You may struggle with what and how much to share about your past marriage. Poor boundaries here create confusion or pain in your new relationship.",
+        "medium": "You're learning healthy disclosure but may sometimes overshare or undershare. Clear boundaries about past relationships protect and honor your new marriage.",
+        "high": "You share your past honestly but appropriately. You've set healthy boundaries about what gets discussed and when. This honesty builds trust without burdening.",
+        "microStep": "Reflect on what about your past marriage feels important to share with a new partner, and what should stay private.",
+        "recommendedJourney": "healthy_disclosure_remarriage"
+      }
     },
     {
       "id": "emotional_state",
       "name": "Emotional State",
-      "insights": {}
+      "insights": {
+        "low": "You still experience significant pain or bitterness about your previous marriage. Healing from these deep wounds is necessary before remarriage.",
+        "medium": "You've made progress in emotional healing but still have tender spots. Continued healing work will strengthen your capacity for healthy love.",
+        "high": "You've achieved emotional peace about your past. You can remember without bitterness. This emotional freedom allows you to love fully again.",
+        "microStep": "Notice one emotion that comes up when thinking about your previous marriage. What do you need to process or release?",
+        "recommendedJourney": "emotional_healing_remarriage"
+      }
     },
     {
       "id": "family_patterns_future_home",
@@ -49,62 +85,134 @@
     {
       "id": "god_s_role_framing",
       "name": "God’s Role Framing",
-      "insights": {}
+      "insights": {
+        "low": "You may feel abandoned by God or struggle to see Him working in your past marriage's ending. Reframing His role brings peace and hope for remarriage.",
+        "medium": "You have some faith perspective but questions remain about God's goodness in your loss. Continuing to wrestle with faith deepens trust.",
+        "high": "You see God's faithfulness even through your marriage's end. You trust His plan and direction for your future. This faith foundation brings peace.",
+        "microStep": "Write one way you've seen God's care or provision since your previous marriage ended.",
+        "recommendedJourney": "trusting_gods_plan_remarriage"
+      }
     },
     {
       "id": "growth_domain",
       "name": "Growth Domain",
-      "insights": {}
+      "insights": {
+        "low": "You may not see clear areas where you've grown or learned from your previous marriage. Identifying growth shows readiness for different outcomes.",
+        "medium": "You recognize some growth areas but haven't fully integrated lessons. Continuing to extract wisdom from experience strengthens future relationships.",
+        "high": "You've identified specific areas where you've grown and learned. You understand what you'll do differently. This wisdom is your greatest asset for remarriage.",
+        "microStep": "List 3 specific ways you've grown or changed since your previous marriage ended.",
+        "recommendedJourney": "extracting_wisdom_remarriage"
+      }
     },
     {
       "id": "healing_progress",
       "name": "Healing Progress",
-      "insights": {}
+      "insights": {
+        "low": "You're early in your healing journey. Taking time to grieve, process, and heal before remarriage prevents carrying old wounds into new love.",
+        "medium": "You've made significant progress in healing. Continue this work to ensure you're entering remarriage from wholeness, not wounds.",
+        "high": "You've done meaningful healing work and feel genuinely ready to move forward. Your healing journey has prepared you well for remarriage.",
+        "microStep": "What's one area of healing that still feels in progress? What step could help you move forward this month?",
+        "recommendedJourney": "completing_healing_remarriage"
+      }
     },
     {
       "id": "loneliness_driver",
       "name": "Loneliness Driver",
-      "insights": {}
+      "insights": {
+        "low": "You may be seeking remarriage primarily to escape loneliness. While connection is healthy, marrying to fix loneliness often creates problems.",
+        "medium": "You desire connection but you're also building a satisfying single life. This balance indicates healthy readiness for remarriage.",
+        "high": "You're emotionally whole and can be content alone, yet you genuinely desire partnership. This healthiness attracts and sustains strong marriages.",
+        "microStep": "Spend one day this week doing something meaningful alone. Notice how you feel about your own company.",
+        "recommendedJourney": "wholeness_before_partnership_remarriage"
+      }
     },
     {
       "id": "marriage_understanding",
       "name": "Marriage Understanding",
-      "insights": {}
+      "insights": {
+        "low": "Your understanding of what makes marriage work may be limited or idealized. Realistic expectations prevent disappointment in remarriage.",
+        "medium": "You have a reasonable understanding but haven't thought deeply about all aspects. Reflecting on marriage's realities strengthens readiness.",
+        "high": "You have a realistic, mature understanding of marriage—work, grace, sacrifice, joy, and growth. This wisdom supports lasting love.",
+        "microStep": "Write down 5 realities of marriage you want to remember as you enter a new relationship.",
+        "recommendedJourney": "mature_marriage_understanding_remarriage"
+      }
     },
     {
       "id": "meaning_making",
       "name": "Meaning-Making",
-      "insights": {}
+      "insights": {
+        "low": "You may struggle to find meaning or purpose in your previous marriage's ending. Finding meaning helps you move forward, not backward.",
+        "medium": "You see some purpose in what happened but the bigger picture still feels unclear. Continued reflection brings clarity and peace.",
+        "high": "You've found meaning in your experience. You see how it's shaped you, taught you, and prepared you for the future. This perspective brings peace.",
+        "microStep": "Write one potential purpose or lesson from your previous marriage's ending.",
+        "recommendedJourney": "finding_purpose_in_loss_remarriage"
+      }
     },
     {
       "id": "memory_intrusion",
       "name": "Memory Intrusion",
-      "insights": {}
+      "insights": {
+        "low": "Memories from your previous marriage frequently intrude into present moments. While memories are normal, intrusive patterns need processing before remarriage.",
+        "medium": "You remember your past but can mostly stay present. Continuing to work with these memories helps you be fully available to a new partner.",
+        "high": "You can remember your past without being hijacked by it. You're emotionally present with your new partner. This presence strengthens intimacy.",
+        "microStep": "When a memory from your previous marriage intrudes, notice it, acknowledge it, and gently return focus to the present moment.",
+        "recommendedJourney": "releasing_intrusive_memories_remarriage"
+      }
     },
     {
       "id": "readiness_orientation",
       "name": "Readiness Orientation",
-      "insights": {}
+      "insights": {
+        "low": "You may not feel genuinely ready for remarriage yet. Waiting until you feel truly ready prevents hasty decisions and relationship struggles.",
+        "medium": "You're leaning toward readiness but some hesitation remains. Continuing your work on specific areas will build genuine readiness.",
+        "high": "You feel genuinely ready for remarriage. You've done your healing, you're clear on your needs, and you're excited about the future. This readiness is healthy.",
+        "microStep": "Rate your readiness 1-10. What would move you one point higher? Focus on that this month.",
+        "recommendedJourney": "confirming_readiness_remarriage"
+      }
     },
     {
       "id": "remarriage_posture",
       "name": "Remarriage Posture",
-      "insights": {}
+      "insights": {
+        "low": "You may approach remarriage with fear, desperation, or defensiveness. A healthier posture—open, wise, and hopeful—leads to better outcomes.",
+        "medium": "You're generally hopeful but some protective walls remain. Balancing openness with wisdom strengthens your capacity to love again.",
+        "high": "You approach remarriage with realistic hope, openness, and wisdom. You're neither desperate nor defensive. This healthy posture attracts healthy partnerships.",
+        "microStep": "Write your ideal posture toward remarriage. What would it look like to be both open and wise?",
+        "recommendedJourney": "healthy_remarriage_posture"
+      }
     },
     {
       "id": "spiritual_peace",
       "name": "Spiritual Peace",
-      "insights": {}
+      "insights": {
+        "low": "You may feel spiritually troubled or uncertain about remarriage. Spiritual peace provides guidance, hope, and confidence for this next chapter.",
+        "medium": "You have some spiritual peace but questions or doubts remain. Deepening your spiritual foundation strengthens your readiness.",
+        "high": "You feel spiritually at peace about remarriage. You sense God's blessing and guidance. This peace sustains you through the journey ahead.",
+        "microStep": "Spend time in prayer or reflection this week about your remarriage journey. What peace or guidance do you sense?",
+        "recommendedJourney": "spiritual_peace_remarriage"
+      }
     },
     {
       "id": "trigger_response",
       "name": "Trigger Response",
-      "insights": {}
+      "insights": {
+        "low": "Past hurts easily trigger strong reactions that can overwhelm current relationships. Understanding and managing triggers prevents repeating old patterns.",
+        "medium": "You're aware of some triggers but others catch you off-guard. Growing in trigger awareness helps you respond wisely rather than react defensively.",
+        "high": "You recognize your triggers and can pause before reacting. You communicate your needs clearly. This awareness transforms potential conflict into connection.",
+        "microStep": "Identify 3 triggers from your previous marriage. What underlying wound does each one represent?",
+        "recommendedJourney": "understanding_your_triggers_remarriage"
+      }
     },
     {
       "id": "trust_capacity",
       "name": "Trust Capacity",
-      "insights": {}
+      "insights": {
+        "low": "You may struggle to trust after being hurt. While caution is wise, excessive distrust prevents the vulnerability needed for healthy marriage.",
+        "medium": "You can trust but carry some protective walls. Gradually opening your heart while maintaining healthy boundaries strengthens relationships.",
+        "high": "You trust wisely—you're open to a new partner while maintaining healthy discernment. You can be vulnerable without being reckless. This balance creates intimacy.",
+        "microStep": "Identify one way you could take a small trust risk with someone safe this week.",
+        "recommendedJourney": "rebuilding_trust_capacity_remarriage"
+      }
     }
   ],
   "questions": [

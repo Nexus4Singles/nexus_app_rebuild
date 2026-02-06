@@ -10,7 +10,7 @@ class NexusCountryPicker {
   }) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final borderColor = isDarkMode ? AppColors.border : Color(0xFFD1D5DB);
-    
+
     showCountryPicker(
       context: context,
       showPhoneCode: false,
@@ -42,7 +42,10 @@ class NexusCountryPicker {
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(color: AppColors.primary, width: 1.5),
           ),
-          prefixIcon: Icon(Icons.search, color: AppColors.getTextSecondary(context)),
+          prefixIcon: Icon(
+            Icons.search,
+            color: AppColors.getTextSecondary(context),
+          ),
         ),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),

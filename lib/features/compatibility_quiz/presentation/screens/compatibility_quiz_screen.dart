@@ -96,11 +96,17 @@ class CompatibilityQuizScreen extends ConsumerWidget {
                         height: 56,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
                             elevation: 0,
-                            disabledBackgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                            disabledForegroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                            disabledBackgroundColor:
+                                Theme.of(
+                                  context,
+                                ).colorScheme.surfaceContainerHighest,
+                            disabledForegroundColor:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
@@ -213,7 +219,7 @@ class _OptionButton extends StatelessWidget {
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final onSurfaceColor = Theme.of(context).colorScheme.onSurface;
     final outlineColor = Theme.of(context).colorScheme.outline;
-    
+
     final bg = selected ? primaryColor.withOpacity(0.12) : surfaceColor;
     final border = selected ? primaryColor : outlineColor.withOpacity(0.5);
     final txt = selected ? primaryColor : onSurfaceColor;
@@ -240,9 +246,10 @@ class _OptionButton extends StatelessWidget {
                     ]
                     : [
                       BoxShadow(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white.withOpacity(0.02)
-                            : Colors.black.withOpacity(0.02),
+                        color:
+                            Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white.withOpacity(0.02)
+                                : Colors.black.withOpacity(0.02),
                         blurRadius: 6,
                         offset: const Offset(0, 2),
                       ),
@@ -274,7 +281,9 @@ class _ProgressBar extends StatelessWidget {
         value: progress,
         minHeight: 8,
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-        valueColor: AlwaysStoppedAnimation(Theme.of(context).colorScheme.primary),
+        valueColor: AlwaysStoppedAnimation(
+          Theme.of(context).colorScheme.primary,
+        ),
       ),
     );
   }

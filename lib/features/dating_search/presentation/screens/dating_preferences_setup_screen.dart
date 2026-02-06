@@ -11,7 +11,7 @@ import 'no_profiles_screen.dart';
 class DatingPreferencesSetupScreen extends ConsumerStatefulWidget {
   final VoidCallback? onComplete;
   final DatingPreferences? existingPreferences;
-  
+
   const DatingPreferencesSetupScreen({
     Key? key,
     this.onComplete,
@@ -32,7 +32,7 @@ class _DatingPreferencesSetupScreenState
   bool? _openToKids;
   bool? _openToMarriedBefore;
   String? _genotype;
-  
+
   bool _isLoading = false;
 
   @override
@@ -83,22 +83,22 @@ class _DatingPreferencesSetupScreenState
       await ref
           .read(datingPreferencesNotifierProvider.notifier)
           .savePreferences(prefs);
-      
+
       if (!mounted) return;
-      
+
       // Wait a bit for Firestore to sync
       await Future.delayed(const Duration(milliseconds: 300));
-      
+
       // Invalidate both preferences and search results to force fresh fetch
       ref.invalidate(datingPreferencesProvider);
       ref.invalidate(datingSearchResultsProvider);
-      
+
       // If editing existing preferences, just pop back to results
       if (widget.existingPreferences != null) {
         if (mounted) Navigator.of(context).pop();
         return;
       }
-      
+
       // Check if there are any matching profiles for the new preferences
       // Skip this check if we're editing existing preferences
       if (widget.existingPreferences == null) {
@@ -122,27 +122,30 @@ class _DatingPreferencesSetupScreenState
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (dialogContext) => Dialog(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+      builder:
+          (dialogContext) => Dialog(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      AppColors.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Finding matches...',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 16),
-              Text(
-                'Finding matches...',
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
     );
 
     try {
@@ -178,18 +181,20 @@ class _DatingPreferencesSetupScreenState
       if (resultsAsync.items.isEmpty) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (_) => NoProfilesScreen(
-              onRetry: () => ref.invalidate(datingSearchResultsProvider),
-              onEditPreferences: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (_) => DatingPreferencesSetupScreen(
-                      existingPreferences: prefs,
-                    ),
-                  ),
-                );
-              },
-            ),
+            builder:
+                (_) => NoProfilesScreen(
+                  onRetry: () => ref.invalidate(datingSearchResultsProvider),
+                  onEditPreferences: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder:
+                            (_) => DatingPreferencesSetupScreen(
+                              existingPreferences: prefs,
+                            ),
+                      ),
+                    );
+                  },
+                ),
           ),
         );
       } else {
@@ -222,25 +227,28 @@ class _DatingPreferencesSetupScreenState
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.existingPreferences != null;
-    
+
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
         backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         toolbarHeight: 56,
-        leading: isEditing ? IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ) : null,
+        leading:
+            isEditing
+                ? IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+                : null,
         title: Text(
           isEditing ? 'Edit Preferences' : 'Your Preferences',
           style: AppTextStyles.headlineLarge,
@@ -284,7 +292,10 @@ class _DatingPreferencesSetupScreenState
                     const SizedBox(width: 12),
                     Expanded(
                       child: RangeSlider(
-                        values: RangeValues(_minAge.toDouble(), _maxAge.toDouble()),
+                        values: RangeValues(
+                          _minAge.toDouble(),
+                          _maxAge.toDouble(),
+                        ),
                         min: 21,
                         max: 65,
                         divisions: 44,
@@ -325,7 +336,8 @@ class _DatingPreferencesSetupScreenState
 
               // Long Distance
               _PreferenceSection(
-                title: 'Do you mind connecting with people outside your country?',
+                title:
+                    'Do you mind connecting with people outside your country?',
                 child: _YesNoButtons(
                   value: _allowLongDistance,
                   onChanged: (value) {
@@ -349,7 +361,8 @@ class _DatingPreferencesSetupScreenState
 
               // Married Before
               _PreferenceSection(
-                title: 'Do you mind connecting with people who have been married before?',
+                title:
+                    'Do you mind connecting with people who have been married before?',
                 child: _YesNoButtons(
                   value: _openToMarriedBefore,
                   onChanged: (value) {
@@ -384,22 +397,25 @@ class _DatingPreferencesSetupScreenState
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  child:
+                      _isLoading
+                          ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.white,
+                              ),
+                            ),
+                          )
+                          : Text(
+                            'Save Preferences',
+                            style: AppTextStyles.labelLarge.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        )
-                      : Text(
-                          'Save Preferences',
-                          style: AppTextStyles.labelLarge.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -437,16 +453,18 @@ class _PreferenceSection extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         Container(
-          padding: compact 
-              ? const EdgeInsets.symmetric(vertical: 4, horizontal: 10)
-              : const EdgeInsets.all(10),
+          padding:
+              compact
+                  ? const EdgeInsets.symmetric(vertical: 4, horizontal: 10)
+                  : const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: AppColors.getSurface(context),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: Theme.of(context).brightness == Brightness.light
-                  ? Color(0xFFD1D5DB)
-                  : AppColors.border,
+              color:
+                  Theme.of(context).brightness == Brightness.light
+                      ? Color(0xFFD1D5DB)
+                      : AppColors.border,
             ),
           ),
           child: child,
@@ -461,10 +479,7 @@ class _YesNoButtons extends StatelessWidget {
   final bool? value;
   final ValueChanged<bool?> onChanged;
 
-  const _YesNoButtons({
-    required this.value,
-    required this.onChanged,
-  });
+  const _YesNoButtons({required this.value, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -526,9 +541,10 @@ class _CountrySelector extends StatelessWidget {
           color: AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: Theme.of(context).brightness == Brightness.light
-                ? Color(0xFFD1D5DB)
-                : AppColors.border,
+            color:
+                Theme.of(context).brightness == Brightness.light
+                    ? Color(0xFFD1D5DB)
+                    : AppColors.border,
           ),
         ),
         child: Row(
@@ -537,13 +553,17 @@ class _CountrySelector extends StatelessWidget {
             Text(
               selectedCountry ?? 'Select country',
               style: AppTextStyles.bodyMedium.copyWith(
-                color: selectedCountry != null
-                    ? AppColors.getTextPrimary(context)
-                    : AppColors.getTextSecondary(context),
+                color:
+                    selectedCountry != null
+                        ? AppColors.getTextPrimary(context)
+                        : AppColors.getTextSecondary(context),
               ),
             ),
-            Icon(Icons.arrow_forward_ios,
-                size: 16, color: AppColors.getTextSecondary(context)),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: AppColors.getTextSecondary(context),
+            ),
           ],
         ),
       ),
@@ -611,16 +631,15 @@ class _PreferenceButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
         decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primary
-              : AppColors.getSurface(context),
+          color: isSelected ? AppColors.primary : AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected
-                ? AppColors.primary
-                : (Theme.of(context).brightness == Brightness.light
-                    ? Color(0xFFD1D5DB)
-                    : AppColors.border),
+            color:
+                isSelected
+                    ? AppColors.primary
+                    : (Theme.of(context).brightness == Brightness.light
+                        ? Color(0xFFD1D5DB)
+                        : AppColors.border),
             width: 2,
           ),
         ),
@@ -628,9 +647,10 @@ class _PreferenceButton extends StatelessWidget {
           child: Text(
             label,
             style: AppTextStyles.labelSmall.copyWith(
-              color: isSelected
-                  ? Colors.white
-                  : AppColors.getTextSecondary(context),
+              color:
+                  isSelected
+                      ? Colors.white
+                      : AppColors.getTextSecondary(context),
               fontWeight: FontWeight.w600,
             ),
             textAlign: TextAlign.center,
@@ -660,24 +680,22 @@ class _PreferenceChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primary
-              : AppColors.getSurface(context),
+          color: isSelected ? AppColors.primary : AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected
-                ? AppColors.primary
-                : (Theme.of(context).brightness == Brightness.light
-                    ? Color(0xFFD1D5DB)
-                    : AppColors.border),
+            color:
+                isSelected
+                    ? AppColors.primary
+                    : (Theme.of(context).brightness == Brightness.light
+                        ? Color(0xFFD1D5DB)
+                        : AppColors.border),
           ),
         ),
         child: Text(
           label,
           style: AppTextStyles.labelSmall.copyWith(
-            color: isSelected
-                ? Colors.white
-                : AppColors.getTextPrimary(context),
+            color:
+                isSelected ? Colors.white : AppColors.getTextPrimary(context),
             fontWeight: FontWeight.w600,
           ),
         ),

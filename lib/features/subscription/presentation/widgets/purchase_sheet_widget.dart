@@ -88,13 +88,11 @@ class _PurchaseSheetState extends ConsumerState<PurchaseSheet>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _animationController,
-      builder: (context, child) => Transform.translate(
-        offset: Offset(0, 100 * (1 - _animationController.value)),
-        child: Opacity(
-          opacity: _animationController.value,
-          child: child,
-        ),
-      ),
+      builder:
+          (context, child) => Transform.translate(
+            offset: Offset(0, 100 * (1 - _animationController.value)),
+            child: Opacity(opacity: _animationController.value, child: child),
+          ),
       child: DraggableScrollableSheet(
         expand: false,
         initialChildSize: 0.75,
@@ -128,10 +126,9 @@ class _PurchaseSheetState extends ConsumerState<PurchaseSheet>
                         width: 48,
                         height: 4,
                         decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withOpacity(0.2),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -174,13 +171,12 @@ class _PurchaseSheetState extends ConsumerState<PurchaseSheet>
                               widget.isSubscription
                                   ? 'Unlimited access to all premium features'
                                   : 'Permanent access. Buy once, access forever.',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall
-                                  ?.copyWith(
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.labelSmall?.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ],
@@ -193,70 +189,72 @@ class _PurchaseSheetState extends ConsumerState<PurchaseSheet>
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: _isPurchasing
-                            ? null
-                            : () async {
-                                // Attempt actual purchase with RevenueCat
-                                setState(() => _isPurchasing = true);
-                                try {
-                                  // Fetch offerings to get available packages
-                                  final offerings =
-                                      await RevenueCatService.getOfferings();
-                                  
-                                  if (offerings?.current == null) {
-                                    if (mounted) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                            'No offerings available. Try again later.',
+                        onPressed:
+                            _isPurchasing
+                                ? null
+                                : () async {
+                                  // Attempt actual purchase with RevenueCat
+                                  setState(() => _isPurchasing = true);
+                                  try {
+                                    // Fetch offerings to get available packages
+                                    final offerings =
+                                        await RevenueCatService.getOfferings();
+
+                                    if (offerings?.current == null) {
+                                      if (mounted) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              'No offerings available. Try again later.',
+                                            ),
+                                            backgroundColor: Colors.orange,
                                           ),
-                                          backgroundColor: Colors.orange,
+                                        );
+                                      }
+                                      return;
+                                    }
+
+                                    final packages =
+                                        offerings!.current!.availablePackages;
+                                    if (packages.isEmpty) {
+                                      if (mounted) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              'No packages available.',
+                                            ),
+                                            backgroundColor: Colors.orange,
+                                          ),
+                                        );
+                                      }
+                                      return;
+                                    }
+
+                                    // Purchase first available package
+                                    await _handlePurchase(packages.first);
+                                  } catch (e) {
+                                    if (mounted) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Error: ${e.toString()}',
+                                          ),
+                                          backgroundColor: Colors.red,
                                         ),
                                       );
                                     }
-                                    return;
-                                  }
-
-                                  final packages =
-                                      offerings!.current!.availablePackages;
-                                  if (packages.isEmpty) {
+                                  } finally {
                                     if (mounted) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                            'No packages available.',
-                                          ),
-                                          backgroundColor: Colors.orange,
-                                        ),
-                                      );
+                                      setState(() => _isPurchasing = false);
                                     }
-                                    return;
                                   }
-
-                                  // Purchase first available package
-                                  await _handlePurchase(packages.first);
-                                } catch (e) {
-                                  if (mounted) {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Error: ${e.toString()}',
-                                        ),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                  }
-                                } finally {
-                                  if (mounted) {
-                                    setState(
-                                      () => _isPurchasing = false,
-                                    );
-                                  }
-                                }
-                              },
+                                },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           foregroundColor: Colors.white,
@@ -265,23 +263,25 @@ class _PurchaseSheetState extends ConsumerState<PurchaseSheet>
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: _isPurchasing
-                            ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
-                                strokeWidth: 2,
-                              ),
-                            )
-                            : const Text(
-                              'Continue to Payment',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                              ),
-                            ),
+                        child:
+                            _isPurchasing
+                                ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white,
+                                    ),
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                                : const Text(
+                                  'Continue to Payment',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16,
+                                  ),
+                                ),
                       ),
                     ),
 
@@ -292,9 +292,7 @@ class _PurchaseSheetState extends ConsumerState<PurchaseSheet>
                       width: double.infinity,
                       child: OutlinedButton(
                         onPressed:
-                            _isPurchasing
-                                ? null
-                                : () => Navigator.pop(context),
+                            _isPurchasing ? null : () => Navigator.pop(context),
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
@@ -325,13 +323,12 @@ class _PurchaseSheetState extends ConsumerState<PurchaseSheet>
                         child: Text(
                           '🧪 Test Mode - Use sandbox accounts',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall
-                              ?.copyWith(
-                                color: Colors.orange,
-                                fontWeight: FontWeight.w600,
-                              ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.labelSmall?.copyWith(
+                            color: Colors.orange,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                   ],
@@ -380,10 +377,9 @@ class _SubscriptionHeader extends StatelessWidget {
                   Text(
                     'Unlimited messaging & advanced features',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.7),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withOpacity(0.7),
                     ),
                   ),
                 ],
@@ -402,10 +398,7 @@ class _JourneyPurchaseHeader extends StatelessWidget {
   final JourneyV1? journey;
   final String? journeyId;
 
-  const _JourneyPurchaseHeader({
-    this.journey,
-    this.journeyId,
-  });
+  const _JourneyPurchaseHeader({this.journey, this.journeyId});
 
   @override
   Widget build(BuildContext context) {
@@ -420,11 +413,7 @@ class _JourneyPurchaseHeader extends StatelessWidget {
                 color: AppColors.primary.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(
-                Icons.lock_open,
-                color: AppColors.primary,
-                size: 28,
-              ),
+              child: Icon(Icons.lock_open, color: AppColors.primary, size: 28),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -441,13 +430,11 @@ class _JourneyPurchaseHeader extends StatelessWidget {
                   if (journey != null)
                     Text(
                       journey!.title,
-                      style:
-                          Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withOpacity(0.7),
-                          ),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withOpacity(0.7),
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -463,24 +450,18 @@ class _JourneyPurchaseHeader extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.primary.withOpacity(0.06),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: AppColors.primary.withOpacity(0.2),
-              ),
+              border: Border.all(color: AppColors.primary.withOpacity(0.2)),
             ),
             child: Row(
               children: [
-                Icon(
-                  Icons.info_outline,
-                  size: 18,
-                  color: AppColors.primary,
-                ),
+                Icon(Icons.info_outline, size: 18, color: AppColors.primary),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     '${journey!.missions.length} activities • One-time purchase',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.primary,
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelSmall?.copyWith(color: AppColors.primary),
                   ),
                 ),
               ],
@@ -502,29 +483,26 @@ class _BenefitsList extends StatelessWidget {
     ];
 
     return Column(
-      children: benefits
-          .map(
-            (benefit) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.check_circle,
-                    color: Colors.green,
-                    size: 18,
+      children:
+          benefits
+              .map(
+                (benefit) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    children: [
+                      Icon(Icons.check_circle, color: Colors.green, size: 18),
+                      const SizedBox(width: 12),
+                      Text(
+                        benefit,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 12),
-                  Text(
-                    benefit,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
-          .toList(),
+                ),
+              )
+              .toList(),
     );
   }
 }

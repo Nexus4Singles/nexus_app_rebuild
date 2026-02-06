@@ -99,21 +99,27 @@ Future<void> submitLocalReport({
     createdAtMs: DateTime.now().millisecondsSinceEpoch,
   );
 
+  print(
+    'DEBUG: Submitting report - reporterKey=$reporterKey, reportedUid=$reportedUid',
+  );
+
   // Save locally
   await repo.submitReport(record);
+  print('DEBUG: Report saved locally');
 
-  // Sync to Firebase if available
-  if (firestoreService.isAvailable) {
-    try {
-      await firestoreService.submitUserReport(
-        reporterKey: reporterKey,
-        reportedUid: reportedUid,
-        reason: reason.wireValue,
-        notes: record.notes,
-      );
-    } catch (e) {
-      // Log error but don't fail - local save is already done
-      print('Warning: Failed to sync report to Firebase: $e');
-    }
+  // Sync to Firebase - always attempt (don't check isAvailable)
+  try {
+    print('DEBUG: Attempting Firestore sync...');
+    await firestoreService.submitUserReport(
+      reporterKey: reporterKey,
+      reportedUid: reportedUid,
+      reason: reason.wireValue,
+      notes: record.notes,
+    );
+    print('DEBUG: Report synced to Firestore successfully');
+  } catch (e) {
+    print('DEBUG: Firestore sync failed: $e');
+    // Re-throw so the caller knows submission failed
+    rethrow;
   }
 }

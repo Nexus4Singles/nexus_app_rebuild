@@ -8,27 +8,57 @@
     {
       "id": "attachment_security",
       "name": "Emotional Security",
-      "insights": {}
+      "insights": {
+        "low": "You may struggle with feeling secure in relationships. Building a stronger sense of your own worth and value is foundational for a healthy marriage.",
+        "medium": "You have a reasonable sense of security but may experience doubt in certain situations. Continuing to build confidence in your emotional foundation strengthens relationships.",
+        "high": "You feel secure and valued. This emotional foundation allows you to be vulnerable and trusting in marriage, which is essential for intimacy.",
+        "microStep": "Identify one person you trust deeply and share something meaningful with them this week. Notice how their response affects your sense of security.",
+        "recommendedJourney": "building_emotional_security_singles"
+      }
     },
     {
       "id": "conflict_posture",
       "name": "Conflict Posture",
-      "insights": {}
+      "insights": {
+        "low": "Conflict may trigger withdrawal, aggression, or avoidance in you. Marriage requires facing disagreements directly. Learning healthy conflict patterns is crucial.",
+        "medium": "You can handle some conflict but may avoid difficult conversations or escalate tensions. Growing in this area will strengthen your marriage significantly.",
+        "high": "You approach conflict as a chance to understand your partner better. This perspective creates safety and deepens intimacy even during disagreements.",
+        "microStep": "Bring up one small concern with someone you trust this week. Practice stating your perspective calmly without blame.",
+        "recommendedJourney": "mastering_conflict_skills_singles"
+      }
     },
     {
       "id": "conflict_resolution_pattern",
       "name": "Conflict Repair Skills",
-      "insights": {}
+      "insights": {
+        "low": "You may struggle to move past conflict or rebuild connection after disagreements. Learning repair strategies is key—every marriage has conflict, but healthy marriages recover well.",
+        "medium": "You can usually patch things up but may not fully rebuild emotional connection. Deepening your repair skills will prevent resentment from building.",
+        "high": "You know how to repair ruptures, apologize meaningfully, and reconnect after conflict. This skill is one of the strongest predictors of lasting marriage.",
+        "microStep": "If there's unresolved tension from a recent disagreement, reach out and have a genuine conversation about how both of you felt.",
+        "recommendedJourney": "conflict_recovery_roadmap_singles"
+      }
     },
     {
       "id": "decision_making_alignment",
       "name": "Decision-Making Alignment",
-      "insights": {}
+      "insights": {
+        "low": "Your values and priorities may differ significantly from those in your typical circle. Alignment on core life decisions is essential before marriage.",
+        "medium": "You generally align on important decisions but might differ on some values. Having open conversations about major life choices will help.",
+        "high": "Your values and priorities align well. Shared vision on finances, faith, family, and life goals creates a strong foundation for marriage.",
+        "microStep": "Write down your top 5 life priorities. Imagine sharing these with a potential partner and notice which areas feel non-negotiable.",
+        "recommendedJourney": "clarifying_shared_values_singles"
+      }
     },
     {
       "id": "emotional_regulation",
       "name": "Emotional Regulation",
-      "insights": {}
+      "insights": {
+        "low": "Emotions may feel overwhelming or out of control at times. Marriage amplifies all feelings. Developing emotional management tools is vital before committing.",
+        "medium": "You manage emotions reasonably well but may lose composure under stress. Building consistency in how you handle big feelings will strengthen relationships.",
+        "high": "You understand your emotions and can express them constructively. This maturity allows you to navigate marriage's ups and downs with grace.",
+        "microStep": "The next time you feel strong emotion, pause and name it specifically. Notice where you feel it in your body and what triggered it.",
+        "recommendedJourney": "emotional_mastery_singles"
+      }
     },
     {
       "id": "family_background_learned_patterns",
@@ -44,67 +74,145 @@
     {
       "id": "hard_season_coping",
       "name": "Handling Stress",
-      "insights": {}
+      "insights": {
+        "low": "Stress tends to overwhelm you or lead to unhealthy coping. Marriage involves seasons of real stress—financial, health, relational. Resilience can be built.",
+        "medium": "You handle typical stress but might struggle with multiple pressures. Expanding your coping toolkit will help you and your spouse weather life's storms.",
+        "high": "You manage stress well and maintain perspective during hard times. Your stability is a gift to your marriage and your partner.",
+        "microStep": "Identify two healthy stress-management practices (walk, journal, talk, pray, exercise) and commit to using one this week.",
+        "recommendedJourney": "building_resilience_singles"
+      }
     },
     {
       "id": "hurt_response",
       "name": "Hurt Response",
-      "insights": {}
+      "insights": {
+        "low": "When hurt, you may withdraw, retaliate, or shut down emotionally. Learning to communicate pain without damaging the relationship is essential.",
+        "medium": "You can express when you're hurt but might need to work on staying connected during those moments. Vulnerability during hurt deepens intimacy.",
+        "high": "You can share hurt feelings constructively and stay open to your partner's perspective. This openness is rare and invaluable in marriage.",
+        "microStep": "Next time you're hurt by someone, instead of withdrawing, share honestly: 'I felt hurt when... and here's why it mattered to me.'",
+        "recommendedJourney": "navigating_hurt_with_grace_singles"
+      }
     },
     {
       "id": "long_term_orientation",
       "name": "Long-Term Orientation",
-      "insights": {}
+      "insights": {
+        "low": "You may be more focused on immediate satisfaction than building something lasting. Consider what long-term stability and commitment mean to you.",
+        "medium": "You balance present happiness with future goals, though you might sometimes prioritize the now over long-term plans. Clarifying your vision helps guide choices.",
+        "high": "You naturally think ahead and make choices aligned with long-term goals. This stability helps you build a marriage that thrives through seasons.",
+        "microStep": "Write down one long-term goal you have for your life and relationship, then identify one action this week to move toward it.",
+        "recommendedJourney": "building_long_term_vision_singles"
+      }
     },
     {
       "id": "marriage_expectations",
       "name": "Marriage Expectations",
-      "insights": {}
+      "insights": {
+        "low": "Your expectations may be unrealistic or poorly defined. Unmet expectations are a major source of disappointment. Clarifying your vision prevents disillusionment.",
+        "medium": "You have a general sense of what marriage should be like but haven't deeply examined your specific expectations. Reflection strengthens your readiness.",
+        "high": "You have realistic, thoughtful expectations rooted in your values. You understand marriage requires work and grace. This wisdom prevents preventable conflict.",
+        "microStep": "Write down 5-10 expectations you have for marriage. Circle which are realistic and which might need adjustment.",
+        "recommendedJourney": "reframing_marriage_expectations_singles"
+      }
     },
     {
       "id": "partner_discernment",
       "name": "Partner Discernment",
-      "insights": {}
+      "insights": {
+        "low": "You may struggle to evaluate whether a partner is right for you, or you might choose based mainly on attraction or chemistry. Developing discernment prevents poor choices.",
+        "medium": "You consider some important factors when choosing a partner but might overlook red flags or become blind to certain incompatibilities.",
+        "high": "You evaluate partners thoughtfully, balancing attraction with values, character, and compatibility. This wise discernment leads to healthier relationships.",
+        "microStep": "Create a list of non-negotiable qualities in a partner—not just nice-to-haves, but dealbreakers for you.",
+        "recommendedJourney": "choosing_wisely_for_marriage_singles"
+      }
     },
     {
       "id": "past_relationship_integration",
       "name": "Past Relationship Integration",
-      "insights": {}
+      "insights": {
+        "low": "Past relationships may still significantly influence you. Unprocessed hurt or patterns repeat into new relationships. Healing work strengthens your readiness.",
+        "medium": "You've learned from past relationships but some patterns may still surface. Continued reflection helps you move forward without repeating history.",
+        "high": "You've integrated lessons from past relationships without being defined by them. You bring wisdom rather than wounds into new relationships.",
+        "microStep": "Reflect on your last significant relationship: What patterns do you see? Which do you want to avoid? Which strengths do you want to keep?",
+        "recommendedJourney": "healing_from_past_relationships_singles"
+      }
     },
     {
       "id": "priority_management",
       "name": "Priority Management",
-      "insights": {}
+      "insights": {
+        "low": "Juggling responsibilities is difficult for you. Marriage adds complexity—balancing work, home, relationship, and personal needs requires intentional prioritization.",
+        "medium": "You manage most things reasonably well but might struggle when competing demands arise. Developing systems helps prevent overwhelm in marriage.",
+        "high": "You prioritize what matters most and make intentional choices about how you spend time and energy. This discipline creates a healthy marriage.",
+        "microStep": "This week, identify your top 3 priorities. Spend 30 minutes on each. Notice how intentionality changes your week.",
+        "recommendedJourney": "intentional_living_for_couples_singles"
+      }
     },
     {
       "id": "relational_self_awareness",
       "name": "Relational Self-Awareness",
-      "insights": {}
+      "insights": {
+        "low": "You may not see how your behavior affects others or understand your relational patterns. Self-awareness is the foundation for changing unhealthy dynamics.",
+        "medium": "You have some insight into how you relate but blind spots remain. Continuing to reflect on your impact strengthens relationships.",
+        "high": "You understand your relational patterns, triggers, and tendencies. This self-knowledge allows you to communicate and connect authentically.",
+        "microStep": "Ask someone you trust: 'When we're together, how do I make you feel?' Listen without defending. Notice patterns.",
+        "recommendedJourney": "deepening_self_awareness_singles"
+      }
     },
     {
       "id": "sacrifice_readiness",
       "name": "Sacrifice Readiness",
-      "insights": {}
+      "insights": {
+        "low": "You may prioritize your comfort over your partner's needs. Marriage requires flexibility and genuine sacrifice. Cultivating this willingness prepares you.",
+        "medium": "You're willing to sacrifice sometimes but might struggle when it costs you significantly. Growth here deepens your capacity for love.",
+        "high": "You understand sacrifice as an act of love, not burden. Your willingness to give generously creates a marriage where both people feel valued and cherished.",
+        "microStep": "Make one sacrifice this week—choose something your partner wants over what you want. Notice how it affects your connection.",
+        "recommendedJourney": "cultivating_sacrificial_love_singles"
+      }
     },
     {
       "id": "spiritual_consistency",
       "name": "Spiritual Consistency",
-      "insights": {}
+      "insights": {
+        "low": "Your spiritual life may be inconsistent or passive. Faith difference or lack of shared spiritual foundation creates significant marital stress.",
+        "medium": "You have a spiritual foundation but it fluctuates. Building consistency creates a strong anchor for your marriage through all seasons.",
+        "high": "Your faith is consistent and integrated into how you live. A shared spiritual foundation provides guidance, hope, and resilience in marriage.",
+        "microStep": "Commit to one spiritual practice this week—prayer, Scripture, meditation, or service. Notice how it centers you.",
+        "recommendedJourney": "strengthening_spiritual_foundation_singles"
+      }
     },
     {
       "id": "spiritual_leadership_understanding",
       "name": "Spiritual Leadership Understanding",
-      "insights": {}
+      "insights": {
+        "low": "Your understanding of spiritual leadership may be limited or unclear. Whether leading or following spiritually, clarity prevents conflict and confusion.",
+        "medium": "You have a basic understanding but haven't deeply thought through roles. Discussing this with a partner prevents misalignment.",
+        "high": "You understand spiritual leadership as mutual growth and service, not power or control. This maturity creates a healthy spiritual partnership.",
+        "microStep": "Reflect on what spiritual leadership means to you. How have you seen it modeled well? Poorly? What do you want in marriage?",
+        "recommendedJourney": "building_spiritual_leadership_singles"
+      }
     },
     {
       "id": "trigger_handling",
       "name": "Trigger Handling",
-      "insights": {}
+      "insights": {
+        "low": "Certain situations easily trigger strong reactions. Understanding your triggers helps you respond wisely rather than react defensively.",
+        "medium": "You're aware of some triggers but might be caught off-guard occasionally. Growing in trigger awareness prevents unnecessary conflict.",
+        "high": "You recognize your triggers and can pause before reacting. You communicate your needs clearly. This skill transforms potential conflict into connection.",
+        "microStep": "Identify 3 situations that reliably trigger strong emotions in you. What's the underlying fear or need beneath each trigger?",
+        "recommendedJourney": "understanding_your_triggers_singles"
+      }
     },
     {
       "id": "unresolved_wounds",
       "name": "Healing From Past Hurt",
-      "insights": {}
+      "insights": {
+        "low": "You carry unresolved wounds from your past. These often surface in relationships. Healing work before marriage prevents past hurt from damaging future love.",
+        "medium": "You've worked on healing but some wounds remain active. Continuing this work strengthens your capacity for healthy love and trust.",
+        "high": "You've processed past hurt and integrated those experiences wisely. You bring healing energy to your relationships rather than unresolved pain.",
+        "microStep": "Identify one past hurt that still affects you. Consider talking to a counselor, trusted friend, or spiritual mentor about it this month.",
+        "recommendedJourney": "healing_deep_wounds_singles"
+      }
     }
   ],
   "questions": [

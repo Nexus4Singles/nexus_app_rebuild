@@ -19,7 +19,13 @@ class CompatibilityScore extends Equatable {
   String get displayScore => '$score%';
 
   @override
-  List<Object?> get props => [score, fieldScores, topMatches, differences, badges];
+  List<Object?> get props => [
+    score,
+    fieldScores,
+    topMatches,
+    differences,
+    badges,
+  ];
 }
 
 /// Hobbies-to-traits mapping for quality inference
@@ -79,7 +85,7 @@ class EnhancedCompatibilityScorer {
     required String? userAGenotype,
     required List<String>? userAHobbies,
     required List<String>? userADesiredQualities,
-    
+
     // User B's data (candidate)
     required String? userBMaritalStatus,
     required String? userBHaveKids,
@@ -101,7 +107,7 @@ class EnhancedCompatibilityScorer {
     // ==== FAITH ALIGNMENT (25 points) ====
     // Christian-only platform: only tithing + tongues beliefs matter
     int faithScore = 0;
-    
+
     if (_isExactMatch(userABeliefInTithing, userBBeliefInTithing)) {
       faithScore += 12; // 25/2
       topMatches.add('Same beliefs on tithing');
@@ -112,7 +118,8 @@ class EnhancedCompatibilityScorer {
     if (_isExactMatch(userAShouldSpeakTongues, userBShouldSpeakTongues)) {
       faithScore += 13; // 25/2, rounded up
       topMatches.add('Same beliefs on speaking in tongues');
-    } else if (userAShouldSpeakTongues != null && userBShouldSpeakTongues != null) {
+    } else if (userAShouldSpeakTongues != null &&
+        userBShouldSpeakTongues != null) {
       differences.add('Different views on speaking in tongues');
     }
 
@@ -144,7 +151,8 @@ class EnhancedCompatibilityScorer {
     if (_isExactMatch(userABeliefInCohabiting, userBBeliefInCohabiting)) {
       lifeScore += 12;
       topMatches.add('Same beliefs on cohabiting');
-    } else if (userABeliefInCohabiting != null && userBBeliefInCohabiting != null) {
+    } else if (userABeliefInCohabiting != null &&
+        userBBeliefInCohabiting != null) {
       differences.add('Different views on cohabiting');
     }
 
@@ -196,7 +204,10 @@ class EnhancedCompatibilityScorer {
     }
 
     // ==== VALUES ALIGNMENT (5 points, proportional) ====
-    final valuesScore = _calculateValuesScore(userADesiredQualities, userBHobbies);
+    final valuesScore = _calculateValuesScore(
+      userADesiredQualities,
+      userBHobbies,
+    );
     fieldScores['values'] = valuesScore;
     totalScore += valuesScore;
 
@@ -224,8 +235,14 @@ class EnhancedCompatibilityScorer {
   /// Calculate hobby overlap score (0-5 points, proportional)
   /// If 2 out of 5 hobbies match: 2 points
   /// If 3 out of 5 match: 3 points, etc.
-  static int _calculateHobbyScore(List<String>? hobbiesA, List<String>? hobbiesB) {
-    if (hobbiesA == null || hobbiesB == null || hobbiesA.isEmpty || hobbiesB.isEmpty) {
+  static int _calculateHobbyScore(
+    List<String>? hobbiesA,
+    List<String>? hobbiesB,
+  ) {
+    if (hobbiesA == null ||
+        hobbiesB == null ||
+        hobbiesA.isEmpty ||
+        hobbiesB.isEmpty) {
       return 0;
     }
 
@@ -236,16 +253,20 @@ class EnhancedCompatibilityScorer {
     if (shared.isEmpty) return 0;
 
     // Proportional: (shared count / max possible) * 5
-    final maxPossible = (normalizedA.length > normalizedB.length)
-        ? normalizedA.length
-        : normalizedB.length;
+    final maxPossible =
+        (normalizedA.length > normalizedB.length)
+            ? normalizedA.length
+            : normalizedB.length;
 
     final score = ((shared.length / maxPossible) * 5).round();
     return score > 5 ? 5 : score;
   }
 
   /// Get shared hobbies for display
-  static List<String> _getSharedHobbies(List<String>? hobbiesA, List<String>? hobbiesB) {
+  static List<String> _getSharedHobbies(
+    List<String>? hobbiesA,
+    List<String>? hobbiesB,
+  ) {
     if (hobbiesA == null || hobbiesB == null) return [];
 
     final normalizedA = hobbiesA.map((h) => h.toLowerCase().trim()).toSet();
@@ -256,15 +277,20 @@ class EnhancedCompatibilityScorer {
 
   /// Calculate values score based on desired qualities vs. inferred traits
   /// 0-5 points proportional to match quality
-  static int _calculateValuesScore(List<String>? desiredQualities, List<String>? hobbies) {
+  static int _calculateValuesScore(
+    List<String>? desiredQualities,
+    List<String>? hobbies,
+  ) {
     if (desiredQualities == null || desiredQualities.isEmpty) return 0;
     if (hobbies == null || hobbies.isEmpty) return 0;
 
     // Extract traits from candidate's hobbies
     final inferredTraits = <String>{};
     for (final hobby in hobbies) {
-      final traits = hobbiesToTraitsMapping[hobby] ?? 
-                    hobbiesToTraitsMapping[_findMatchingKey(hobby)] ?? [];
+      final traits =
+          hobbiesToTraitsMapping[hobby] ??
+          hobbiesToTraitsMapping[_findMatchingKey(hobby)] ??
+          [];
       inferredTraits.addAll(traits.map((t) => t.toLowerCase().trim()));
     }
 
@@ -296,7 +322,10 @@ class EnhancedCompatibilityScorer {
   }
 
   /// Generate achievement badges based on scores
-  static List<String> _generateBadges(Map<String, int> fieldScores, int totalScore) {
+  static List<String> _generateBadges(
+    Map<String, int> fieldScores,
+    int totalScore,
+  ) {
     final badges = <String>[];
 
     // Faith aligned badge (both fields score >= 10)

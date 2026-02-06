@@ -459,4 +459,12 @@ class AppColors {
         ? Colors.black.withOpacity(0.05)
         : Colors.white.withOpacity(0.1);
   }
+
+  /// Get sent message background color (theme-aware)
+  /// Bright red in light mode, darker red in dark mode for better contrast
+  static Color getSentMessageBackground(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? primary // Bright red in light mode
+        : primaryDark; // Darker red in dark mode for white text contrast
+  }
 }

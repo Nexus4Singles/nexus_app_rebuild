@@ -8,9 +8,7 @@ import 'package:equatable/equatable.dart';
 /// Subscription tier/plan
 enum SubscriptionTier {
   free('free', 'Free', 0),
-  monthly('monthly_premium', 'Monthly Premium', 2999),
-  quarterly('quarterly_premium', 'Quarterly Premium', 7999),
-  yearly('yearly_premium', 'Yearly Premium', 24999);
+  monthly('monthly_premium', 'Monthly Premium', 2999);
 
   final String id;
   final String displayName;
@@ -225,7 +223,8 @@ class PremiumFeatures {
     PremiumFeature(
       id: unlimitedSearchResults,
       title: 'Unlimited Daily Profiles',
-      description: 'View all matching profiles every day. Free users see only 10 per day.',
+      description:
+          'View all matching profiles every day. Free users see only 10 per day.',
       icon: 'explore',
     ),
   ];

@@ -528,6 +528,11 @@ exports.onProfileVerified = functions.firestore
     const before = change.before.data();
     const after = change.after.data();
 
+    // Skip if either doc is missing required fields (v1 compatibility)
+    if (!before || !after) {
+      return null;
+    }
+
     // Check if moderationStatus changed from pending to verified
     if (
       before.moderationStatus === 'pending' &&

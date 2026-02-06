@@ -5,27 +5,32 @@ import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.da
 import '../domain/dating_preferences.dart';
 
 /// Provider to watch dating preferences for current user
-final datingPreferencesProvider = FutureProvider<DatingPreferences?>((ref) async {
+final datingPreferencesProvider = FutureProvider<DatingPreferences?>((
+  ref,
+) async {
   final fs = ref.watch(firestoreInstanceProvider);
   final uid = FirebaseAuth.instance.currentUser?.uid;
-  
+
   if (fs == null || uid == null) return null;
 
   try {
-    final doc = await fs
-        .collection('users')
-        .doc(uid)
-        .collection('dating')
-        .doc('preferences')
-        .get();
+    final doc =
+        await fs
+            .collection('users')
+            .doc(uid)
+            .collection('dating')
+            .doc('preferences')
+            .get();
 
     if (!doc.exists) {
       print('[DatingPreferencesProvider] No prefs doc found in Firestore');
       return null;
     }
-    
+
     final prefs = DatingPreferences.fromFirestore(doc.data() ?? {});
-    print('[DatingPreferencesProvider] Loaded prefs: country=${prefs.countryOfResidence}');
+    print(
+      '[DatingPreferencesProvider] Loaded prefs: country=${prefs.countryOfResidence}',
+    );
     return prefs;
   } catch (e) {
     print('[DatingPreferencesProvider] Error loading prefs: $e');
@@ -34,21 +39,22 @@ final datingPreferencesProvider = FutureProvider<DatingPreferences?>((ref) async
 });
 
 /// Notifier to manage dating preferences
-class DatingPreferencesNotifier extends StateNotifier<AsyncValue<DatingPreferences?>> {
+class DatingPreferencesNotifier
+    extends StateNotifier<AsyncValue<DatingPreferences?>> {
   final FirebaseFirestore? _fs;
-  
+
   DatingPreferencesNotifier(this._fs) : super(const AsyncValue.loading());
 
   /// Save preferences to Firestore
   Future<void> savePreferences(DatingPreferences prefs) async {
     if (_fs == null) return;
-    
+
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
 
     try {
       state = const AsyncValue.loading();
-      
+
       final now = DateTime.now();
       final updatedPrefs = prefs.copyWith(
         createdAt: prefs.createdAt ?? now,
@@ -56,7 +62,7 @@ class DatingPreferencesNotifier extends StateNotifier<AsyncValue<DatingPreferenc
       );
 
       final firestoreData = updatedPrefs.toFirestore();
-      
+
       print('[DatingPreferencesNotifier] Saving prefs: $firestoreData');
 
       await _fs
@@ -78,30 +84,33 @@ class DatingPreferencesNotifier extends StateNotifier<AsyncValue<DatingPreferenc
   /// Load preferences from Firestore
   Future<void> loadPreferences() async {
     if (_fs == null) return;
-    
+
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
 
     try {
       state = const AsyncValue.loading();
-      
-      final doc = await _fs
-          .collection('users')
-          .doc(uid)
-          .collection('dating')
-          .doc('preferences')
-          .get();
-      
+
+      final doc =
+          await _fs
+              .collection('users')
+              .doc(uid)
+              .collection('dating')
+              .doc('preferences')
+              .get();
+
       print('[DatingPreferencesNotifier] Loaded doc: ${doc.data()}');
-      
+
       if (!doc.exists) {
         print('[DatingPreferencesNotifier] No prefs doc found');
         state = const AsyncValue.data(null);
         return;
       }
-      
+
       final prefs = DatingPreferences.fromFirestore(doc.data() ?? {});
-      print('[DatingPreferencesNotifier] Parsed prefs: country=${prefs.countryOfResidence}');
+      print(
+        '[DatingPreferencesNotifier] Parsed prefs: country=${prefs.countryOfResidence}',
+      );
       state = AsyncValue.data(prefs);
     } catch (e, st) {
       print('[DatingPreferencesNotifier] Load error: $e');
@@ -112,7 +121,7 @@ class DatingPreferencesNotifier extends StateNotifier<AsyncValue<DatingPreferenc
   /// Update last refresh timestamp (for 24-hr cycle)
   Future<void> updateLastRefresh() async {
     if (_fs == null) return;
-    
+
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
 
@@ -126,7 +135,9 @@ class DatingPreferencesNotifier extends StateNotifier<AsyncValue<DatingPreferenc
 
       final current = state.valueOrNull;
       if (current != null) {
-        state = AsyncValue.data(current.copyWith(lastRefreshedAt: DateTime.now()));
+        state = AsyncValue.data(
+          current.copyWith(lastRefreshedAt: DateTime.now()),
+        );
       }
     } catch (_) {
       // Silently fail - not critical
@@ -135,8 +146,10 @@ class DatingPreferencesNotifier extends StateNotifier<AsyncValue<DatingPreferenc
 }
 
 /// StateNotifier provider for dating preferences
-final datingPreferencesNotifierProvider = 
-    StateNotifierProvider<DatingPreferencesNotifier, AsyncValue<DatingPreferences?>>((ref) {
+final datingPreferencesNotifierProvider = StateNotifierProvider<
+  DatingPreferencesNotifier,
+  AsyncValue<DatingPreferences?>
+>((ref) {
   final fs = ref.watch(firestoreInstanceProvider);
   return DatingPreferencesNotifier(fs);
 });

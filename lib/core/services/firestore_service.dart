@@ -57,7 +57,7 @@ class FirestoreService {
 
   CollectionReference<Map<String, dynamic>> _journeyProgressRef(String uid) {
     _requireDb();
-    return _db!.collection('journeyProgress').doc(uid).collection('progress');
+    return _userDocRef(uid).collection('journeys');
   }
 
   CollectionReference<Map<String, dynamic>> _sessionResponsesRef(

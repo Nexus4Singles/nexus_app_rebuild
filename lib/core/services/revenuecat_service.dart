@@ -6,9 +6,11 @@ class RevenueCatService {
   static Future<void> init() async {
     // Determine platform and configure RevenueCat
     final configuration = PurchasesConfiguration(
-      Platform.isIOS ? RevenueCatConfig.iosApiKey : RevenueCatConfig.androidApiKey,
+      Platform.isIOS
+          ? RevenueCatConfig.iosApiKey
+          : RevenueCatConfig.androidApiKey,
     );
-    
+
     await Purchases.configure(configuration);
   }
 

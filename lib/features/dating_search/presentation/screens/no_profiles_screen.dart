@@ -18,15 +18,18 @@ class NoProfilesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final displayCountry = countryName ?? 'this location';
-    final heading = noProfilesInCountry
-        ? 'No one is available in $displayCountry'
-        : 'No profiles match your preferences';
-    final description = noProfilesInCountry
-        ? 'There are no active profiles in $displayCountry at the moment.'
-        : 'Try adjusting your filters to find more matches.';
-    final primaryMessage = noProfilesInCountry
-        ? 'New members join every day - check back soon!'
-        : 'Expand your preferences to see more profiles.';
+    final heading =
+        noProfilesInCountry
+            ? 'No Profiles Found'
+            : 'No profiles match your preferences';
+    final description =
+        noProfilesInCountry
+            ? 'There are no active profiles in $displayCountry at the moment.'
+            : 'Try adjusting your filters to find more matches.';
+    final primaryMessage =
+        noProfilesInCountry
+            ? 'New members join every day - check back soon!'
+            : 'Expand your preferences to see more profiles.';
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),

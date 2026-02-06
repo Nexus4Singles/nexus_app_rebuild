@@ -5,14 +5,18 @@ import '../../../core/services/journeys_service.dart';
 import '../../../core/services/journey_entitlements_service.dart';
 import '../../../core/services/journey_progress_service.dart';
 import '../../../core/services/journey_mission_response_service.dart';
+import '../../../core/services/firestore_service.dart';
 import '../../../core/session/effective_relationship_status_provider.dart';
 import '../../../core/user/current_user_gender_provider.dart';
+import '../../../core/providers/firestore_service_provider.dart';
+import '../../../core/providers/user_provider.dart';
 import '../domain/journey_v1_models.dart';
 
 final journeysServiceProvider = Provider((ref) => const JourneysService());
-final journeyProgressServiceProvider = Provider(
-  (ref) => JourneyProgressService(),
-);
+final journeyProgressServiceProvider = Provider((ref) {
+  final firestore = ref.watch(firestoreServiceProvider);
+  return JourneyProgressService(firestore);
+});
 final journeyEntitlementsServiceProvider = Provider(
   (ref) => JourneyEntitlementsService(),
 );
@@ -63,16 +67,32 @@ final completedMissionIdsProvider = FutureProvider.family<Set<String>, String>((
   ref,
   journeyId,
 ) async {
+  final currentUserAsync = ref.watch(currentUserProvider);
+  final uid = currentUserAsync.maybeWhen(
+    data: (user) => user?.id ?? '',
+    orElse: () => '',
+  );
+
+  if (uid.isEmpty) return <String>{};
+
   final svc = ref.watch(journeyProgressServiceProvider);
-  return svc.loadCompletedMissionIds(journeyId);
+  return svc.loadCompletedMissionIds(journeyId, uid);
 });
 
 final journeyStreakProvider = FutureProvider.family<int, String>((
   ref,
   journeyId,
 ) async {
+  final currentUserAsync = ref.watch(currentUserProvider);
+  final uid = currentUserAsync.maybeWhen(
+    data: (user) => user?.id ?? '',
+    orElse: () => '',
+  );
+
+  if (uid.isEmpty) return 0;
+
   final svc = ref.watch(journeyProgressServiceProvider);
-  return svc.loadStreak(journeyId);
+  return svc.loadStreak(journeyId, uid);
 });
 
 final purchasedJourneyIdsProvider = FutureProvider<Set<String>>((ref) async {
@@ -89,12 +109,20 @@ final isJourneyPurchasedProvider = FutureProvider.family<bool, String>((
 });
 
 final bestJourneysStreakProvider = FutureProvider<int>((ref) async {
+  final currentUserAsync = ref.watch(currentUserProvider);
+  final uid = currentUserAsync.maybeWhen(
+    data: (user) => user?.id ?? '',
+    orElse: () => '',
+  );
+
+  if (uid.isEmpty) return 0;
+
   final catalog = await ref.watch(journeyCatalogProvider.future);
   final svc = ref.watch(journeyProgressServiceProvider);
 
   var best = 0;
   for (final j in catalog.journeys) {
-    final s = await svc.loadStreak(j.id);
+    final s = await svc.loadStreak(j.id, uid);
     if (s > best) best = s;
   }
   return best;

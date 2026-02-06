@@ -36,7 +36,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
     final subscriptionAsync = ref.watch(subscriptionStatusProvider);
     final purchasedJourneysAsync = ref.watch(purchasedJourneysProvider);
     final relationshipStatus = ref.watch(effectiveRelationshipStatusProvider);
-    
+
     // Married users should only see Journey Purchases tab
     final isMarried = relationshipStatus == RelationshipStatus.married;
 
@@ -126,31 +126,50 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
 
           // Content
           SliverFillRemaining(
-            child: isMarried
-                ? purchasedJourneysAsync.when(
-                    data: (journeys) => _JourneyPurchasesTab(journeys: journeys),
-                    loading: () => const Center(child: CircularProgressIndicator()),
-                    error: (error, _) => Center(child: Text('Error: $error')),
-                  )
-                : TabBarView(
-                    controller: _tabController,
-                    children: [
-                      // Dating Subscription Tab
-                      subscriptionAsync.when(
-                        data: (subscription) =>
-                            _DatingSubscriptionTab(subscription: subscription),
-                        loading: () => const Center(child: CircularProgressIndicator()),
-                        error: (error, _) => Center(child: Text('Error: $error')),
-                      ),
+            child:
+                isMarried
+                    ? purchasedJourneysAsync.when(
+                      data:
+                          (journeys) =>
+                              _JourneyPurchasesTab(journeys: journeys),
+                      loading:
+                          () =>
+                              const Center(child: CircularProgressIndicator()),
+                      error: (error, _) => Center(child: Text('Error: $error')),
+                    )
+                    : TabBarView(
+                      controller: _tabController,
+                      children: [
+                        // Dating Subscription Tab
+                        subscriptionAsync.when(
+                          data:
+                              (subscription) => _DatingSubscriptionTab(
+                                subscription: subscription,
+                              ),
+                          loading:
+                              () => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                          error:
+                              (error, _) =>
+                                  Center(child: Text('Error: $error')),
+                        ),
 
-                      // Journey Purchases Tab
-                      purchasedJourneysAsync.when(
-                        data: (journeys) => _JourneyPurchasesTab(journeys: journeys),
-                        loading: () => const Center(child: CircularProgressIndicator()),
-                        error: (error, _) => Center(child: Text('Error: $error')),
-                      ),
-                    ],
-                  ),
+                        // Journey Purchases Tab
+                        purchasedJourneysAsync.when(
+                          data:
+                              (journeys) =>
+                                  _JourneyPurchasesTab(journeys: journeys),
+                          loading:
+                              () => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                          error:
+                              (error, _) =>
+                                  Center(child: Text('Error: $error')),
+                        ),
+                      ],
+                    ),
           ),
         ],
       ),
@@ -331,7 +350,10 @@ class _ActiveSubscriptionView extends ConsumerWidget {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.info_outline, color: AppColors.getTextSecondary(context)),
+                  Icon(
+                    Icons.info_outline,
+                    color: AppColors.getTextSecondary(context),
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -446,13 +468,6 @@ class _NoSubscriptionView extends StatelessWidget {
           const SizedBox(height: 16),
 
           _SubscriptionPlanCard(tier: SubscriptionTier.monthly),
-          const SizedBox(height: 12),
-          _SubscriptionPlanCard(
-            tier: SubscriptionTier.quarterly,
-            isMostPopular: true,
-          ),
-          const SizedBox(height: 12),
-          _SubscriptionPlanCard(tier: SubscriptionTier.yearly),
 
           const SizedBox(height: 24),
 
@@ -530,7 +545,10 @@ class _EmptyJourneysView extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.getSurface(context),
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.getBorder(context), width: 2),
+                border: Border.all(
+                  color: AppColors.getBorder(context),
+                  width: 2,
+                ),
               ),
               child: Icon(
                 Icons.school_outlined,
@@ -612,7 +630,9 @@ class _FeatureTile extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color:
-            isActive ? AppColors.primary.withOpacity(0.05) : AppColors.getSurface(context),
+            isActive
+                ? AppColors.primary.withOpacity(0.05)
+                : AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color:
@@ -688,19 +708,8 @@ class _SubscriptionPlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pricePerMonth =
-        tier == SubscriptionTier.monthly
-            ? tier.priceNGN
-            : tier == SubscriptionTier.quarterly
-            ? (tier.priceNGN / 3).round()
-            : (tier.priceNGN / 12).round();
-
-    final savings =
-        tier == SubscriptionTier.quarterly
-            ? 'Save ₦${(2999 * 3) - tier.priceNGN}'
-            : tier == SubscriptionTier.yearly
-            ? 'Save ₦${(2999 * 12) - tier.priceNGN}'
-            : null;
+    final pricePerMonth = tier.priceNGN;
+    final savings = null;
 
     return Container(
       decoration: BoxDecoration(
@@ -830,7 +839,9 @@ class _SubscriptionPlanCard extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor:
-                    isMostPopular ? AppColors.primary : AppColors.getSurface(context),
+                    isMostPopular
+                        ? AppColors.primary
+                        : AppColors.getSurface(context),
                 foregroundColor:
                     isMostPopular ? Colors.white : AppColors.primary,
                 elevation: 0,

@@ -242,11 +242,9 @@ match /chats/{chatId} {
           allow read, write: if isSignedIn() && request.auth.uid == uid;
         }
       }
-    }
 
-    match /journeyProgress/{uid} {
-      allow read, write: if isSignedIn() && request.auth.uid == uid;
-      match /progress/{progressId} {
+      // Journeys - now stored under user
+      match /journeys/{journeyId} {
         allow read, write: if isSignedIn() && request.auth.uid == uid;
         match /responses/{responseId} {
           allow read, write: if isSignedIn() && request.auth.uid == uid;
@@ -338,6 +336,20 @@ match /chats/{chatId} {
       allow read: if true;
       // Only admins can write (for update script)
       allow write: if isAdmin();
+    }
+
+    // ============================================================================
+    // User Reports & Moderation
+    // ============================================================================
+    match /reports/{reportId} {
+      // Admins can read all reports
+      allow read: if isAdmin();
+      
+      // Signed-in users can submit reports
+      allow create: if isSignedIn();
+      
+      // Only admins can update/delete (for status changes and cleanup)
+      allow update, delete: if isAdmin();
     }
 
     // ============================================================================

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/constants/app_constants.dart';
 import 'core/session/effective_relationship_status_provider.dart';
+import 'core/notifications/notification_provider.dart';
 import 'safe_imports.dart';
 import 'features/stories/presentation/screens/stories_screen.dart';
 import 'features/dating_search/presentation/screens/new_dating_search_screen.dart';
@@ -53,6 +54,9 @@ class _AppShellState extends ConsumerState<AppShell> {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize FCM for push notifications
+    ref.watch(fcmInitializationProvider);
+
     final status = ref.watch(effectiveRelationshipStatusProvider);
     final tabConfigs = NavConfig.getTabsForStatus(status);
 

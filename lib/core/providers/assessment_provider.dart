@@ -50,6 +50,31 @@ final recommendedAssessmentProvider = FutureProvider<AssessmentConfig?>((
   return ref.watch(assessmentConfigProvider(type).future);
 });
 
+/// Provider for loading the latest assessment result (any type) for current user
+final latestAnyAssessmentProvider = FutureProvider<AssessmentResult?>((
+  ref,
+) async {
+  final user = ref.watch(currentUserProvider).valueOrNull;
+  if (user == null) return null;
+
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  final allResults = await firestoreService.getAllAssessmentResults(user.id);
+
+  // Return the most recently updated assessment
+  if (allResults.isEmpty) return null;
+  return allResults.first; // Already sorted by updatedAt desc
+});
+
+/// Provider for loading the latest assessment result for a given user and assessment type
+final latestAssessmentResultProvider =
+    FutureProvider.family<AssessmentResult?, String>((ref, assessmentId) async {
+      final user = ref.watch(currentUserProvider).valueOrNull;
+      if (user == null) return null;
+
+      final firestoreService = ref.watch(firestoreServiceProvider);
+      return firestoreService.getLatestAssessmentResult(user.id, assessmentId);
+    });
+
 // ============================================================================
 // ASSESSMENT STATE
 // ============================================================================
@@ -61,6 +86,7 @@ class AssessmentState {
   final Map<int, AssessmentAnswer> answers;
   final bool isSubmitting;
   final AssessmentResult? result;
+  final bool isNewlySubmitted; // Track if just submitted (first time viewing)
   final String? error;
 
   const AssessmentState({
@@ -69,6 +95,7 @@ class AssessmentState {
     this.answers = const {},
     this.isSubmitting = false,
     this.result,
+    this.isNewlySubmitted = false,
     this.error,
   });
 
@@ -78,6 +105,7 @@ class AssessmentState {
     Map<int, AssessmentAnswer>? answers,
     bool? isSubmitting,
     AssessmentResult? result,
+    bool? isNewlySubmitted,
     String? error,
   }) {
     return AssessmentState(
@@ -86,6 +114,7 @@ class AssessmentState {
       answers: answers ?? this.answers,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       result: result ?? this.result,
+      isNewlySubmitted: isNewlySubmitted ?? this.isNewlySubmitted,
       error: error,
     );
   }
@@ -251,7 +280,12 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
         await _firestoreService.saveAssessmentResult(userId, result);
       }
 
-      state = state.copyWith(isSubmitting: false, result: result);
+      // Mark as newly submitted so result screen shows "Done" button
+      state = state.copyWith(
+        isSubmitting: false,
+        result: result,
+        isNewlySubmitted: true,
+      );
     } catch (e) {
       state = state.copyWith(
         isSubmitting: false,
@@ -288,11 +322,3 @@ final assessmentHistoryProvider = StreamProvider<List<AssessmentResult>>((ref) {
   if (user == null) return const Stream.empty();
   return firestoreService.watchAssessmentResults(user.id);
 });
-
-final latestAssessmentResultProvider =
-    FutureProvider.family<AssessmentResult?, String>((ref, assessmentId) async {
-      final firestoreService = ref.watch(firestoreServiceProvider);
-      final user = ref.watch(currentUserProvider).valueOrNull;
-      if (user == null) return null;
-      return firestoreService.getLatestAssessmentResult(user.id, assessmentId);
-    });

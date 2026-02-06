@@ -336,40 +336,49 @@ class DatingSearchService {
 
   /// Quick check to see if any profiles exist for a country without doing full search
   /// Returns true if at least one profile exists in the country (for any gender)
-  Future<bool> countryHasProfiles({
-    required String country,
-  }) async {
+  Future<bool> countryHasProfiles({required String country}) async {
     if (country.isEmpty) return false;
 
     // Canonicalize the country name to match stored format
     final canonCountry = _canonCountry(country);
     if (canonCountry.isEmpty) return false;
 
-    final genders = {'male', 'Male', 'female', 'Female', 'man', 'Man', 'woman', 'Woman'};
-    
+    final genders = {
+      'male',
+      'Male',
+      'female',
+      'Female',
+      'man',
+      'Man',
+      'woman',
+      'Woman',
+    };
+
     try {
       // Quick check: look for ANY profile in this country (v2 or v1)
       for (final g in genders) {
         // Check v2 verified profiles
-        final v2Snap = await _fs
-            .collection('users')
-            .where('gender', isEqualTo: g)
-            .where('dating.verificationStatus', isEqualTo: 'verified')
-            .where('dating.countryOfResidence', isEqualTo: canonCountry)
-            .limit(1)
-            .get();
-        
+        final v2Snap =
+            await _fs
+                .collection('users')
+                .where('gender', isEqualTo: g)
+                .where('dating.verificationStatus', isEqualTo: 'verified')
+                .where('dating.countryOfResidence', isEqualTo: canonCountry)
+                .limit(1)
+                .get();
+
         if (v2Snap.docs.isNotEmpty) return true;
 
         // Check v1 legacy profiles
-        final v1Snap = await _fs
-            .collection('users')
-            .where('gender', isEqualTo: g)
-            .where('registration_progress', isEqualTo: 'completed')
-            .where('country', isEqualTo: canonCountry)
-            .limit(1)
-            .get();
-        
+        final v1Snap =
+            await _fs
+                .collection('users')
+                .where('gender', isEqualTo: g)
+                .where('registration_progress', isEqualTo: 'completed')
+                .where('country', isEqualTo: canonCountry)
+                .limit(1)
+                .get();
+
         if (v1Snap.docs.isNotEmpty) return true;
       }
 
@@ -401,23 +410,29 @@ class DatingSearchService {
           .collection('users')
           .where('gender', isEqualTo: g)
           .where('dating.verificationStatus', isEqualTo: 'verified');
-      
+
       // Apply server-side filters before fetching
       if (!_selectedMeansAny(filters.countryOfResidence)) {
-        final country = filters.countryOfResidence; // Use exact value (already capitalized)
+        final country =
+            filters.countryOfResidence; // Use exact value (already capitalized)
         if (country != null && country.isNotEmpty) {
           if (kDebugMode) {
             // ignore: avoid_print
-            print('[DatingSearchService] V2 query filter: country="$country" (exact match)');
+            print(
+              '[DatingSearchService] V2 query filter: country="$country" (exact match)',
+            );
           }
-          verifiedQ = verifiedQ.where('dating.countryOfResidence', isEqualTo: country);
+          verifiedQ = verifiedQ.where(
+            'dating.countryOfResidence',
+            isEqualTo: country,
+          );
         }
       }
-      
+
       // IMPORTANT: Don't filter on optional fields (marital, kids, distance, genotype) at server level
       // because v1 profiles may not have these fields, causing Firestore to return 0 results.
       // Filter these in-memory after fetching by country and gender.
-      
+
       verifiedQ = verifiedQ.limit(limit);
 
       final regValues = _registrationProgressQueryValues('completed');
@@ -431,58 +446,69 @@ class DatingSearchService {
             .collection('users')
             .where('gender', isEqualTo: g)
             .where('registration_progress', isEqualTo: reg);
-        
+
         // Apply country filter to legacy profiles
         if (!_selectedMeansAny(filters.countryOfResidence)) {
-          final country = filters.countryOfResidence; // Use exact value (already capitalized)
+          final country =
+              filters
+                  .countryOfResidence; // Use exact value (already capitalized)
           if (country != null && country.isNotEmpty) {
             if (kDebugMode) {
               // ignore: avoid_print
-              print('[DatingSearchService] V1 query filter: country="$country" (exact match)');
+              print(
+                '[DatingSearchService] V1 query filter: country="$country" (exact match)',
+              );
             }
             // V1 legacy profiles store country in location.country with capitalization
             legacyQ = legacyQ.where('location.country', isEqualTo: country);
           }
         }
-        
+
         // IMPORTANT: Don't filter on optional fields (marital, kids, distance, genotype) at server level
         // because v1 profiles may not have these fields, causing Firestore to return 0 results.
         // Filter these in-memory after fetching by country and gender.
-        
+
         legacyQ = legacyQ.limit(limit);
         futures.add(legacyQ.get());
       }
     }
 
     final snaps = await Future.wait(futures);
-    
+
     if (kDebugMode) {
       int totalSnapDocs = 0;
       for (final s in snaps) {
         totalSnapDocs += s.docs.length;
       }
       // ignore: avoid_print
-      print('[DatingSearchService] Firestore query returned $totalSnapDocs total documents from ${snaps.length} queries');
-      
+      print(
+        '[DatingSearchService] Firestore query returned $totalSnapDocs total documents from ${snaps.length} queries',
+      );
+
       // If 0 documents, do a diagnostic query to see if ANY profiles exist
       if (totalSnapDocs == 0) {
-        final diagnosticSnap = await _fs
-            .collection('users')
-            .where('gender', isEqualTo: 'female')
-            .limit(5)
-            .get();
+        final diagnosticSnap =
+            await _fs
+                .collection('users')
+                .where('gender', isEqualTo: 'female')
+                .limit(5)
+                .get();
         // ignore: avoid_print
-        print('[DatingSearchService] DIAGNOSTIC: Querying users with gender=female found ${diagnosticSnap.docs.length} documents');
+        print(
+          '[DatingSearchService] DIAGNOSTIC: Querying users with gender=female found ${diagnosticSnap.docs.length} documents',
+        );
         for (int i = 0; i < diagnosticSnap.docs.length && i < 2; i++) {
           final data = diagnosticSnap.docs[i].data();
           final dating = data['dating'];
           final profile = data['profile'];
           // ignore: avoid_print
-          print('[DatingSearchService] SAMPLE DOC: uid=${diagnosticSnap.docs[i].id}, '
-              'dating.country=${dating is Map ? dating['countryOfResidence'] : 'N/A'}, '
-              'profile.country=${profile is Map ? profile['country'] : 'N/A'}, '
-              'flat country=${data['country']}, '
-              'dating.verif=${dating is Map ? dating['verificationStatus'] : 'N/A'}');
+          print(
+            '[DatingSearchService] SAMPLE DOC: uid=${diagnosticSnap.docs[i].id}, '
+            'dating.country=${dating is Map ? dating['countryOfResidence'] : 'N/A'}, '
+            'profile.country=${profile is Map ? profile['country'] : 'N/A'}, '
+            'flat country=${data['country']}, '
+            'dating.verif=${dating is Map ? dating['verificationStatus'] : 'N/A'}',
+          );
         }
       }
     }
@@ -506,11 +532,13 @@ class DatingSearchService {
           final dating = data['dating'];
           final profile = data['profile'];
           // ignore: avoid_print
-          print('[DatingSearchService] Doc #$seenDocs structure: '
-              'dating.countryOfResidence=${dating is Map ? dating['countryOfResidence'] : 'N/A'}, '
-              'profile.country=${profile is Map ? profile['country'] : 'N/A'}, '
-              'country=${data['country']}, '
-              'uid=${d.id}');
+          print(
+            '[DatingSearchService] Doc #$seenDocs structure: '
+            'dating.countryOfResidence=${dating is Map ? dating['countryOfResidence'] : 'N/A'}, '
+            'profile.country=${profile is Map ? profile['country'] : 'N/A'}, '
+            'country=${data['country']}, '
+            'uid=${d.id}',
+          );
         }
 
         // Enforce: disabled accounts are NOT visible in search results.
@@ -720,18 +748,24 @@ class DatingSearchService {
 
     if (kDebugMode) {
       // Diagnostic: show genotype breakdown if filtered to 0
-      if (current.isEmpty && afterAge.isNotEmpty && !_selectedMeansAny(filters.genotype)) {
+      if (current.isEmpty &&
+          afterAge.isNotEmpty &&
+          !_selectedMeansAny(filters.genotype)) {
         final genotypeBreakdown = <String, int>{};
         for (final p in afterAge) {
           final g = _canonGenotype(p.genotype);
           genotypeBreakdown[g] = (genotypeBreakdown[g] ?? 0) + 1;
         }
         // ignore: avoid_print
-        print('[DatingSearchService] GENOTYPE BREAKDOWN after age filter: $genotypeBreakdown');
+        print(
+          '[DatingSearchService] GENOTYPE BREAKDOWN after age filter: $genotypeBreakdown',
+        );
         // ignore: avoid_print
-        print('[DatingSearchService] Looking for: "${_canonGenotype(filters.genotype)}"');
+        print(
+          '[DatingSearchService] Looking for: "${_canonGenotype(filters.genotype)}"',
+        );
       }
-      
+
       // ignore: avoid_print
       print('[DatingSearchService] filtered=${current.length}');
     }

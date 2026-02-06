@@ -97,11 +97,11 @@ service cloud.firestore {
       // - Signed-in users can read their own doc.
       // - Signed-in users can read other users ONLY if genders are opposite (male<->female).
       // - Optional admin override via custom claim: isAdmin()
-      // - Unauthenticated users can query username field for login lookup (must be single equality filter)
-      allow read: if isSignedIn() || 
-                     (request.query.fieldFilters.size() == 1 && 
-                      (request.query.fieldFilters[0].field == 'username' ||
-                       request.query.fieldFilters[0].field == 'displayName'));
+      allow get: if isSignedIn();
+      
+      // List policy: Allow username lookups for login (unauthenticated users need this)
+      // Note: This is for login flow where users query by username to get email
+      allow list: if true;
 
       allow create: if isSignedIn() && request.auth.uid == uid;
 
@@ -231,11 +231,9 @@ match /chats/{chatId} {
           allow read, write: if isSignedIn() && request.auth.uid == uid;
         }
       }
-    }
 
-    match /journeyProgress/{uid} {
-      allow read, write: if isSignedIn() && request.auth.uid == uid;
-      match /progress/{progressId} {
+      // Journeys - now stored under user
+      match /journeys/{journeyId} {
         allow read, write: if isSignedIn() && request.auth.uid == uid;
         match /responses/{responseId} {
           allow read, write: if isSignedIn() && request.auth.uid == uid;
@@ -328,7 +326,7 @@ match /chats/{chatId} {
       allow read: if isAdmin();
       
       // Signed-in users can submit reports
-      allow create: if isSignedIn() && request.resource.data.reporterKey == request.auth.uid;
+      allow create: if isSignedIn();
       
       // Only admins can update/delete (for status changes and cleanup)
       allow update, delete: if isAdmin();

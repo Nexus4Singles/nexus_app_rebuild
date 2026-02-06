@@ -6,11 +6,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
 import 'package:nexus_app_min_test/core/theme/app_colors.dart';
 import 'package:nexus_app_min_test/core/theme/app_text_styles.dart';
+import 'package:nexus_app_min_test/core/constants/app_constants.dart';
 
 import 'package:nexus_app_min_test/core/session/is_guest_provider.dart';
 import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
+import 'package:nexus_app_min_test/core/providers/assessment_provider.dart';
+import 'package:nexus_app_min_test/core/providers/user_provider.dart';
 
 import 'package:nexus_app_min_test/core/session/relationship_status_key.dart';
+import 'package:nexus_app_min_test/core/models/assessment_model.dart';
 
 import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
 import 'package:nexus_app_min_test/features/stories/domain/story_models.dart';
@@ -104,6 +108,13 @@ class HomeScreen extends ConsumerWidget {
       return 'Find steady guidance and practical support as you navigate life, healing, and relationships after spousal loss';
     }
     return 'Equip yourself with the practical knowledge, clarity, and confidence you need to choose a life partner and navigate marriage';
+  }
+
+  AssessmentType _assessmentTypeForKey(String key) {
+    if (key == 'married') return AssessmentType.marriageHealthCheck;
+    if (key == 'divorced' || key == 'widowed')
+      return AssessmentType.remarriageReadiness;
+    return AssessmentType.singlesReadiness;
   }
 
   @override
@@ -200,108 +211,12 @@ class HomeScreen extends ConsumerWidget {
 
               const SizedBox(height: 24),
 
-              // Assessment Card
-              _PremiumCard(
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.primary,
-                    AppColors.primary.withOpacity(0.85),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.3),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.psychology_outlined,
-                            size: 16,
-                            color: Colors.white,
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            'Assessment',
-                            style: AppTextStyles.labelSmall.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      _assessmentTitleForKey(statusKey),
-                      style: AppTextStyles.titleMedium.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        height: 1.2,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      _assessmentDescForKey(statusKey),
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: Colors.white.withOpacity(0.9),
-                        height: 1.4,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          await GuestGuard.requireSignedIn(
-                            context,
-                            ref,
-                            title: 'Create an account',
-                            message:
-                                'Create an account to start your assessment and unlock personalized recommendations.',
-                            primaryText: 'Create an account',
-                            onCreateAccount:
-                                () =>
-                                    Navigator.of(context).pushNamed('/signup'),
-                            onAllowed: () async {
-                              Navigator.of(context).pushNamed('/assessment');
-                            },
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: AppColors.primary,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                        ),
-                        child: Text(
-                          'Start Assessment',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              // Assessment Card - Dynamic based on completion status
+              _AssessmentCard(
+                statusKey: statusKey,
+                assessmentType: _assessmentTypeForKey(statusKey),
+                titleBuilder: (ctx, key) => _assessmentTitleForKey(key),
+                descBuilder: (ctx, key) => _assessmentDescForKey(key),
               ),
 
               const SizedBox(height: 20),
@@ -387,6 +302,281 @@ class HomeScreen extends ConsumerWidget {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// ASSESSMENT CARD WIDGET - Dynamic based on completion status
+// ============================================================================
+class _AssessmentCard extends ConsumerWidget {
+  final String statusKey;
+  final AssessmentType assessmentType;
+  final String Function(BuildContext, String) titleBuilder;
+  final String Function(BuildContext, String) descBuilder;
+
+  const _AssessmentCard({
+    required this.statusKey,
+    required this.assessmentType,
+    required this.titleBuilder,
+    required this.descBuilder,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentUser = ref.watch(currentUserProvider).valueOrNull;
+    final userId = currentUser?.id ?? '';
+
+    if (userId.isEmpty) {
+      // For guests, show Start Assessment
+      return _StartAssessmentCard(
+        statusKey: statusKey,
+        titleBuilder: titleBuilder,
+        descBuilder: descBuilder,
+      );
+    }
+
+    // Watch latest assessment result for this type
+    final latestResultAsync = ref.watch(
+      latestAssessmentResultProvider(assessmentType.id),
+    );
+
+    return latestResultAsync.when(
+      data: (result) {
+        if (result != null) {
+          // User has completed assessment - show View Result
+          return _ViewAssessmentResultCard(
+            statusKey: statusKey,
+            titleBuilder: titleBuilder,
+            descBuilder: descBuilder,
+            result: result,
+          );
+        } else {
+          // No result yet - show Start Assessment
+          return _StartAssessmentCard(
+            statusKey: statusKey,
+            titleBuilder: titleBuilder,
+            descBuilder: descBuilder,
+          );
+        }
+      },
+      loading: () {
+        // While loading, show Start Assessment as default
+        return _StartAssessmentCard(
+          statusKey: statusKey,
+          titleBuilder: titleBuilder,
+          descBuilder: descBuilder,
+        );
+      },
+      error: (error, stack) {
+        // On error, show Start Assessment
+        return _StartAssessmentCard(
+          statusKey: statusKey,
+          titleBuilder: titleBuilder,
+          descBuilder: descBuilder,
+        );
+      },
+    );
+  }
+}
+
+// ============================================================================
+// START ASSESSMENT CARD - For first-time or no result
+// ============================================================================
+class _StartAssessmentCard extends ConsumerWidget {
+  final String statusKey;
+  final String Function(BuildContext, String) titleBuilder;
+  final String Function(BuildContext, String) descBuilder;
+
+  const _StartAssessmentCard({
+    required this.statusKey,
+    required this.titleBuilder,
+    required this.descBuilder,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return _PremiumCard(
+      gradient: LinearGradient(
+        colors: [AppColors.primary, AppColors.primary.withOpacity(0.85)],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.white.withOpacity(0.3)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.psychology_outlined, size: 16, color: Colors.white),
+                const SizedBox(width: 6),
+                Text(
+                  'Assessment',
+                  style: AppTextStyles.labelSmall.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            titleBuilder(context, statusKey),
+            style: AppTextStyles.titleMedium.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              height: 1.2,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            descBuilder(context, statusKey),
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: Colors.white.withOpacity(0.9),
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: () async {
+                await GuestGuard.requireSignedIn(
+                  context,
+                  ref,
+                  title: 'Create an account',
+                  message:
+                      'Create an account to start your assessment and unlock personalized recommendations.',
+                  primaryText: 'Create an account',
+                  onCreateAccount:
+                      () => Navigator.of(context).pushNamed('/signup'),
+                  onAllowed: () async {
+                    Navigator.of(context).pushNamed('/assessment');
+                  },
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: AppColors.primary,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+              child: Text(
+                'Start Assessment',
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// VIEW ASSESSMENT RESULT CARD - When user has completed assessment
+// ============================================================================
+class _ViewAssessmentResultCard extends StatelessWidget {
+  final String statusKey;
+  final String Function(BuildContext, String) titleBuilder;
+  final String Function(BuildContext, String) descBuilder;
+  final AssessmentResult result;
+
+  const _ViewAssessmentResultCard({
+    required this.statusKey,
+    required this.titleBuilder,
+    required this.descBuilder,
+    required this.result,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return _PremiumCard(
+      gradient: LinearGradient(
+        colors: [AppColors.primary, AppColors.primary.withOpacity(0.85)],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.white.withOpacity(0.3)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.psychology_outlined, size: 16, color: Colors.white),
+                const SizedBox(width: 6),
+                Text(
+                  'Assessment',
+                  style: AppTextStyles.labelSmall.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            titleBuilder(context, statusKey),
+            style: AppTextStyles.titleMedium.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              height: 1.2,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Score: ${(result.percentage * 100).round()}% - ${result.overallTier.displayName}',
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: Colors.white.withOpacity(0.9),
+              height: 1.4,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/assessment/result');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: AppColors.primary,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+              child: Text(
+                'View Assessment Result',
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

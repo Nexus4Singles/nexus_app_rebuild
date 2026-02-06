@@ -41,8 +41,7 @@ final journeyOfferingProvider = FutureProvider<Offering?>((ref) async {
 });
 
 /// Provider to get specific package from journey offering
-final journeyPackageProvider =
-    FutureProvider<Package?>((ref) async {
+final journeyPackageProvider = FutureProvider<Package?>((ref) async {
   try {
     final offering = await ref.watch(journeyOfferingProvider.future);
     if (offering == null) return null;
@@ -55,12 +54,13 @@ final journeyPackageProvider =
 });
 
 /// Provider to get subscription packages
-final subscriptionPackagesProvider =
-    FutureProvider<Map<String, Package?>>((ref) async {
+final subscriptionPackagesProvider = FutureProvider<Map<String, Package?>>((
+  ref,
+) async {
   try {
     final offering = await ref.watch(subscriptionOfferingProvider.future);
     if (offering == null) return {};
-    
+
     return {
       'monthly': offering.getPackage('\$rc_monthly'),
       'quarterly': offering.getPackage('\$rc_quarterly'),

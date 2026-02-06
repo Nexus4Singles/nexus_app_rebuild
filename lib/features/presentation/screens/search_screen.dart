@@ -594,7 +594,10 @@ class _SearchResultRow extends ConsumerWidget {
               // Compatibility score badge
               if (profile.compatibilityScore != null)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: _getScoreColor(profile.compatibilityScore!),
                     borderRadius: BorderRadius.circular(16),

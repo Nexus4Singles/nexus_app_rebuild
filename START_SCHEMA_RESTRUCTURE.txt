@@ -1,0 +1,221 @@
+================================================================================
+                     SCHEMA RESTRUCTURE - READY TO START
+================================================================================
+
+Status: ✅ All planning documents and scripts created
+Next: Approval to proceed with Phase 1 execution
+
+================================================================================
+                              WHAT'S READY
+================================================================================
+
+✅ Documentation Complete:
+   - SCHEMA_RESTRUCTURE_INDEX.md .................. Complete guide index
+   - SCHEMA_RESTRUCTURE_SUMMARY.md ............... High-level overview
+   - SCHEMA_RESTRUCTURE_GUIDE.md ................. Step-by-step execution guide
+   - DUPLICATE_REMOVAL_REFERENCE.md ............. Fields being removed
+   - CODE_UPDATE_PLAN.md ......................... Code changes needed after
+   - SCHEMA_RESTRUCTURE_EXECUTION_PLAN.md ....... Two-phase plan
+
+✅ Scripts Ready:
+   - scripts/remove_duplicate_fields.js ......... Remove 7 unused duplicates
+   - scripts/restructure_schema.js .............. Reorganize to subcollections
+
+✅ Code Audit Complete:
+   - FIRESTORE_USER_SCHEMA_ANALYSIS.md .......... Why each decision made
+
+================================================================================
+                          QUICK START GUIDE
+================================================================================
+
+STEP 1: Understand the Plan
+   Read: SCHEMA_RESTRUCTURE_INDEX.md (2 min overview)
+
+STEP 2: Review What's Being Removed
+   Read: DUPLICATE_REMOVAL_REFERENCE.md (exact field list)
+
+STEP 3: Backup Firestore
+   ```
+   gcloud firestore export gs://nexus-app-backups/backup-$(date +%Y%m%d)
+   ```
+
+STEP 4: Execute Phase 1 (Remove Duplicates)
+   Test first:
+   ```
+   node scripts/remove_duplicate_fields.js --dry-run
+   ```
+
+   Then execute:
+   ```
+   node scripts/remove_duplicate_fields.js
+   ```
+
+STEP 5: Execute Phase 2 (Restructure)
+   Test first:
+   ```
+   node scripts/restructure_schema.js --dry-run
+   ```
+
+   Then execute:
+   ```
+   node scripts/restructure_schema.js
+   ```
+
+STEP 6: Update Code (Next Phase)
+   Follow: CODE_UPDATE_PLAN.md (4-6 hours of code work)
+
+STEP 7: Test & Deploy
+   - Unit tests
+   - Integration tests
+   - Staging validation
+   - Production deploy
+
+================================================================================
+                        WHAT'S BEING DONE
+================================================================================
+
+PHASE 1: Remove Duplicate Fields
+   Removing (7 fields):
+   - photos[] (top-level)
+   - dating.gender
+   - dating.contactInfo.Instagram
+   - dating.contactInfo.countryOfResidence
+   - nexus.relationshipStatus
+   - nexus.gender
+   - nexus.photos
+
+   Keeping (NOT duplicates):
+   - maritalStatus (used 6+ times)
+   - dating.reviewPack.* (verification audit trail)
+   - All other identity and dating fields
+
+   Time: ~5 minutes
+
+PHASE 2: Restructure Schema
+   Current (Flat):
+   users/{uid} with all fields at root
+
+   New (Organized):
+   users/{uid}/
+   ├── profile/data ........... Identity fields
+   ├── dating/data ............ Dating profile
+   ├── compatibility/data ..... Preferences
+   ├── verification/data ...... Verification state
+   ├── settings/data .......... Settings
+   ├── assessments/ ........... Assessment records
+   ├── journeys/ .............. Journey progress
+   ├── stories/ ............... Stories
+   └── polls/ ................. Polls
+
+   Time: ~15 minutes
+
+PHASE 3: Update App Code
+   - Update firestore_service.dart
+   - Update user_model.dart
+   - Update all service paths
+   - Update Firestore rules
+
+   Time: 4-6 hours
+
+================================================================================
+                           KEY DECISIONS
+================================================================================
+
+❌ NOT Removing (Even Though Similar):
+   maritalStatus:
+   - Used 6+ times in compatibility code
+   - Not a duplicate - it's a required field
+   
+   dating.reviewPack.*:
+   - Different from dating.audioPrompts[]
+   - reviewPack is immutable snapshot for verification
+   - audioPrompts[] are live/changeable user data
+   - Verification workflow depends on immutability
+
+✅ Removing (Unused Duplicates):
+   All 7 fields listed above have:
+   - Primary field exists elsewhere
+   - Not referenced in any Dart code
+   - Safe to remove with zero app impact
+
+================================================================================
+                          RISK MITIGATION
+================================================================================
+
+✅ Firestore Backup
+   - Will be created before any changes
+   - Can restore instantly if needed
+
+✅ Dry-Run Mode
+   - Both scripts support --dry-run
+   - Test first, execute second
+
+✅ Gradual Rollout
+   - Can use dual-write during Phase 3
+   - Read from old, write to both
+   - Switch reads after verification
+
+✅ Monitoring
+   - Cloud Logging will show any issues
+   - Can quickly roll back if needed
+
+================================================================================
+                         ESTIMATED TIMING
+================================================================================
+
+Phase 1 (Remove Duplicates):  5 min
+Phase 2 (Restructure):        15 min  
+Phase 3 (Code Updates):       4-6 hours
+Testing:                      2-3 hours
+Deploy to Production:         1-2 hours
+─────────────────────────────────────
+TOTAL:                        7-9 hours
+
+Can be split across multiple days if needed.
+
+================================================================================
+                       READY TO START?
+================================================================================
+
+If you're ready to proceed:
+
+1. Read SCHEMA_RESTRUCTURE_INDEX.md (quick overview)
+2. Confirm you approve the duplicate removal list
+3. Create Firestore backup
+4. Run Phase 1: remove_duplicate_fields.js
+5. Run Phase 2: restructure_schema.js
+6. Follow CODE_UPDATE_PLAN.md for code changes
+
+If you have questions:
+
+1. Check SCHEMA_RESTRUCTURE_GUIDE.md (step-by-step)
+2. Check FIRESTORE_USER_SCHEMA_ANALYSIS.md (why decisions)
+3. Check CODE_UPDATE_PLAN.md (code changes needed)
+
+================================================================================
+                        FILES CREATED
+================================================================================
+
+Documentation:
+✅ SCHEMA_RESTRUCTURE_INDEX.md ................. Start here
+✅ SCHEMA_RESTRUCTURE_SUMMARY.md .............. Overview
+✅ SCHEMA_RESTRUCTURE_GUIDE.md ................ Detailed execution
+✅ DUPLICATE_REMOVAL_REFERENCE.md ............ Field reference
+✅ SCHEMA_RESTRUCTURE_EXECUTION_PLAN.md ..... Two-phase overview
+✅ CODE_UPDATE_PLAN.md ........................ Code updates needed
+
+Scripts:
+✅ scripts/remove_duplicate_fields.js ........ Phase 1 execution
+✅ scripts/restructure_schema.js ............. Phase 2 execution
+
+This File:
+✅ START_SCHEMA_RESTRUCTURE.txt .............. (You're reading it!)
+
+Reference:
+✅ FIRESTORE_USER_SCHEMA_ANALYSIS.md ........ Code audit findings
+
+================================================================================
+
+👉 NEXT STEP: Read SCHEMA_RESTRUCTURE_INDEX.md to get started
+
+================================================================================

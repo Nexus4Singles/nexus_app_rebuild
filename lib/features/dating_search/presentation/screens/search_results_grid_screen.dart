@@ -21,11 +21,45 @@ int _getHoursUntilReset(DateTime limitHitAt) {
   return hoursRemaining > 0 ? hoursRemaining : 0;
 }
 
-class SearchResultsGridScreen extends ConsumerWidget {
+class SearchResultsGridScreen extends ConsumerStatefulWidget {
   const SearchResultsGridScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SearchResultsGridScreen> createState() =>
+      _SearchResultsGridScreenState();
+}
+
+class _SearchResultsGridScreenState
+    extends ConsumerState<SearchResultsGridScreen> {
+  late ScrollController _scrollController;
+  bool _showDailyLimitCard = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 100) {
+      if (!_showDailyLimitCard) {
+        setState(() => _showDailyLimitCard = true);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ref = this.ref;
     final resultsAsync = ref.watch(datingSearchResultsProvider);
 
     return Scaffold(
@@ -107,52 +141,57 @@ class SearchResultsGridScreen extends ConsumerWidget {
             ),
         data: (result) {
           if (result.items.isEmpty) {
-            return ref.watch(datingPreferencesProvider).when(
-              data: (preferences) {
-                return NoProfilesScreen(
-                  noProfilesInCountry: result.noProfilesInCountry,
-                  countryName: preferences?.countryOfResidence,
-                  onRetry: () => ref.invalidate(datingSearchResultsProvider),
-                  onEditPreferences: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder:
-                            (_) => ref
-                                .watch(datingPreferencesProvider)
-                                .when(
-                                  data:
-                                      (prefs) => DatingPreferencesSetupScreen(
-                                        existingPreferences: prefs,
-                                      ),
-                                  loading:
-                                      () => const Scaffold(
-                                        body: Center(
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      ),
-                                  error:
-                                      (e, st) => const Scaffold(
-                                        body: Center(
-                                          child: Text('Error loading preferences'),
-                                        ),
-                                      ),
-                                ),
-                      ),
+            return ref
+                .watch(datingPreferencesProvider)
+                .when(
+                  data: (preferences) {
+                    return NoProfilesScreen(
+                      noProfilesInCountry: result.noProfilesInCountry,
+                      countryName: preferences?.countryOfResidence,
+                      onRetry:
+                          () => ref.invalidate(datingSearchResultsProvider),
+                      onEditPreferences: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder:
+                                (_) => ref
+                                    .watch(datingPreferencesProvider)
+                                    .when(
+                                      data:
+                                          (prefs) =>
+                                              DatingPreferencesSetupScreen(
+                                                existingPreferences: prefs,
+                                              ),
+                                      loading:
+                                          () => const Scaffold(
+                                            body: Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                          ),
+                                      error:
+                                          (e, st) => const Scaffold(
+                                            body: Center(
+                                              child: Text(
+                                                'Error loading preferences',
+                                              ),
+                                            ),
+                                          ),
+                                    ),
+                          ),
+                        );
+                      },
                     );
                   },
+                  loading:
+                      () => const Scaffold(
+                        body: Center(child: CircularProgressIndicator()),
+                      ),
+                  error:
+                      (e, st) => const Scaffold(
+                        body: Center(child: Text('Error loading preferences')),
+                      ),
                 );
-              },
-              loading: () => const Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-              error: (e, st) => const Scaffold(
-                body: Center(
-                  child: Text('Error loading preferences'),
-                ),
-              ),
-            );
           }
 
           return RefreshIndicator(
@@ -163,6 +202,7 @@ class SearchResultsGridScreen extends ConsumerWidget {
             child: Stack(
               children: [
                 GridView.builder(
+                  controller: _scrollController,
                   padding: const EdgeInsets.all(12),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -175,8 +215,8 @@ class SearchResultsGridScreen extends ConsumerWidget {
                     return _ProfileCard(profile: result.items[index]);
                   },
                 ),
-                // Premium upsell footer (compact) if daily limit hit
-                if (result.hitDailyLimit)
+                // Premium upsell footer (compact) if daily limit hit AND user scrolled to bottom
+                if (result.hitDailyLimit && _showDailyLimitCard)
                   Positioned(
                     bottom: 0,
                     left: 0,

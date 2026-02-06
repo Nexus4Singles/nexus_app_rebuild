@@ -9,8 +9,9 @@ class DatingPreferences extends Equatable {
   final bool? allowLongDistance; // open to connecting outside country
   final bool? openToKids; // open to people with kids
   final bool? openToMarriedBefore; // open to people married before
-  final String? genotypePreference; // 'AA', 'AS', 'SS', or null for no preference
-  
+  final String?
+  genotypePreference; // 'AA', 'AS', 'SS', or null for no preference
+
   // Metadata
   final DateTime? createdAt;
   final DateTime? lastRefreshedAt;
@@ -86,12 +87,14 @@ class DatingPreferences extends Equatable {
       openToKids: data['openToKids'] as bool?,
       openToMarriedBefore: data['openToMarriedBefore'] as bool?,
       genotypePreference: data['genotypePreference'] as String?,
-      createdAt: data['createdAt'] != null
-          ? DateTime.parse(data['createdAt'] as String)
-          : null,
-      lastRefreshedAt: data['lastRefreshedAt'] != null
-          ? DateTime.parse(data['lastRefreshedAt'] as String)
-          : null,
+      createdAt:
+          data['createdAt'] != null
+              ? DateTime.parse(data['createdAt'] as String)
+              : null,
+      lastRefreshedAt:
+          data['lastRefreshedAt'] != null
+              ? DateTime.parse(data['lastRefreshedAt'] as String)
+              : null,
     );
   }
 

@@ -3,9 +3,7 @@ import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/dating_search/presentation/screens/search_results_grid_screen.dart';
 
 class DatingPreferencesConfirmationScreen extends StatefulWidget {
-  const DatingPreferencesConfirmationScreen({
-    Key? key,
-  }) : super(key: key);
+  const DatingPreferencesConfirmationScreen({Key? key}) : super(key: key);
 
   @override
   State<DatingPreferencesConfirmationScreen> createState() =>
@@ -158,9 +156,10 @@ class _DatingPreferencesConfirmationScreenState
                           color: AppColors.primary.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Icon(Icons.star_rounded, 
-                          color: AppColors.primary, 
-                          size: 24
+                        child: Icon(
+                          Icons.star_rounded,
+                          color: AppColors.primary,
+                          size: 24,
                         ),
                       ),
                       const SizedBox(width: 16),

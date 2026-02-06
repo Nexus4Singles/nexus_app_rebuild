@@ -8,37 +8,79 @@
     {
       "id": "appreciation_encouragement",
       "name": "Appreciation & Encouragement",
-      "insights": {}
+      "insights": {
+        "low": "Your spouse may not feel seen or valued right now. Expressing appreciation is like oxygen for relationships—without it, marriage starves.",
+        "medium": "You appreciate your spouse sometimes, but they might need to hear it more consistently. Regular appreciation strengthens connection and security.",
+        "high": "You consistently affirm and encourage your spouse. Your words build them up and strengthen your marriage. This generosity is a gift.",
+        "microStep": "Tell your spouse one specific thing you appreciate about them today. Be genuine and specific.",
+        "recommendedJourney": "cultivating_appreciation_marriage"
+      }
     },
     {
       "id": "commitment_to_growth",
       "name": "Commitment to Growth",
-      "insights": {}
+      "insights": {
+        "low": "One or both of you may resist change or personal growth. Marriage thrives when both partners are committed to growing individually and together.",
+        "medium": "You're both somewhat open to growth but might resist in certain areas. Embracing growth mindset strengthens your marriage's resilience.",
+        "high": "You both actively invest in personal and relational growth. This commitment signals love and creates momentum for continued improvement.",
+        "microStep": "Identify one area where you want to grow as a spouse this quarter. Share this with your partner.",
+        "recommendedJourney": "growing_together_marriage"
+      }
     },
     {
       "id": "conflict_navigation",
       "name": "Conflict Navigation",
-      "insights": {}
+      "insights": {
+        "low": "Conflict may feel destructive or unmanageable right now. Learning healthier conflict patterns can transform these moments from threats into opportunities.",
+        "medium": "You can navigate some conflict but certain types or situations escalate quickly. Building skills prevents small issues from becoming big divides.",
+        "high": "You handle conflict constructively, staying respectful even in disagreement. This skill is one of the strongest predictors of lasting, thriving marriages.",
+        "microStep": "Next conflict, pause before responding. Take a breath and ask: 'What does my spouse really need from me right now?'",
+        "recommendedJourney": "mastering_conflict_skills_marriage"
+      }
     },
     {
       "id": "connection_communication",
       "name": "Connection & Communication",
-      "insights": {}
+      "insights": {
+        "low": "You may feel disconnected or find communication difficult right now. Rebuilding connection requires intentional time and vulnerability.",
+        "medium": "You have a friendly connection but deeper communication could deepen intimacy. Small moments of openness create big shifts in marriages.",
+        "high": "Your friendship is strong and communication flows naturally. You genuinely enjoy each other's company and thoughts. This is a treasure to protect.",
+        "microStep": "Schedule 15 minutes this week with no phones. Ask your spouse: 'What's one thing on your mind right now?'",
+        "recommendedJourney": "deepening_connection_marriage"
+      }
     },
     {
       "id": "emotional_intimacy",
       "name": "Emotional Intimacy",
-      "insights": {}
+      "insights": {
+        "low": "Emotional distance may be significant right now. Rebuilding emotional intimacy requires vulnerability, time, and willingness from both partners.",
+        "medium": "You're emotionally connected in some areas but may hold back in others. Greater openness deepens your bond and strengthens resilience.",
+        "high": "You share deeply with each other, feeling truly known and understood. This emotional intimacy is the heartbeat of a thriving marriage.",
+        "microStep": "Share one fear or hope with your spouse this week. Let yourself be vulnerable and known.",
+        "recommendedJourney": "deepening_emotional_intimacy_marriage"
+      }
     },
     {
       "id": "emotional_safety_to_share_hurt",
       "name": "Emotional Safety to Share Hurt",
-      "insights": {}
+      "insights": {
+        "low": "Your spouse may not feel safe sharing pain with you, or vice versa. Creating safety is foundational—it allows healing and deepens trust.",
+        "medium": "There's some safety but maybe not complete openness about hurt. Growing trust allows vulnerable conversations that strengthen marriage.",
+        "high": "Your spouse can share hurt without fear. You listen with compassion. This safety creates resilience and deepens your bond through hard seasons.",
+        "microStep": "Ask your spouse: 'Is there something that's been hurting you that you haven't shared?' Listen without defending.",
+        "recommendedJourney": "creating_emotional_safety_marriage"
+      }
     },
     {
       "id": "faith_in_daily_conduct",
       "name": "Faith in Daily Conduct",
-      "insights": {}
+      "insights": {
+        "low": "Faith may feel disconnected from your daily life right now. Integrating faith into everyday decisions and interactions strengthens marriage.",
+        "medium": "You live out some faith values but inconsistently. Greater consistency brings peace and alignment to your marriage.",
+        "high": "Your faith shapes how you treat each other daily. You live your values visibly. This integrity builds trust and models faith for others.",
+        "microStep": "Choose one faith value (kindness, patience, forgiveness) to practice intentionally with your spouse this week.",
+        "recommendedJourney": "living_faith_daily_marriage"
+      }
     },
     {
       "id": "family_leadership_parenting_alignment",
@@ -54,57 +96,123 @@
     {
       "id": "financial_alignment",
       "name": "Financial Alignment",
-      "insights": {}
+      "insights": {
+        "low": "Financial disagreement may be a significant source of stress. Getting on the same page about money reduces conflict and increases peace.",
+        "medium": "You generally agree on finances but some tension areas remain. Clarifying goals and values around money helps alignment.",
+        "high": "You work together as a financial team with shared goals and values. You can discuss money without conflict. This alignment reduces major stress.",
+        "microStep": "Have a 20-minute money conversation: What's one financial goal you both want to work toward together?",
+        "recommendedJourney": "financial_teamwork_marriage"
+      }
     },
     {
       "id": "physical_affection_intimacy",
       "name": "Physical Affection & Intimacy",
-      "insights": {}
+      "insights": {
+        "low": "Physical connection may feel distant right now. Rebuilding physical affection—from hand-holding to intimacy—strengthens emotional bonds.",
+        "medium": "You share physical affection sometimes but it could deepen. Small gestures of touch throughout the day can reconnect you.",
+        "high": "Your physical affection is healthy and consistent. You feel connected through touch. This physical bond supports emotional intimacy and satisfaction.",
+        "microStep": "This week, initiate one gesture of physical affection (hug, kiss, hand-holding, or intimate time) with intention.",
+        "recommendedJourney": "rekindling_physical_connection_marriage"
+      }
     },
     {
       "id": "quality_time",
       "name": "Quality Time",
-      "insights": {}
+      "insights": {
+        "low": "You may lack dedicated, distraction-free time together. Regular one-on-one connection is vital for relationship health.",
+        "medium": "You spend time together but it could be more intentional or protected. Prioritizing quality time shows your spouse they matter.",
+        "high": "You consistently protect time together without distractions. You're fully present with each other. This investment strengthens your foundation.",
+        "microStep": "Schedule one date or uninterrupted time this week. Put phones away and truly focus on each other.",
+        "recommendedJourney": "protecting_quality_time_marriage"
+      }
     },
     {
       "id": "repair_reconnection",
       "name": "Repair & Reconnection",
-      "insights": {}
+      "insights": {
+        "low": "You may struggle to reconnect after conflicts. The ability to repair and move forward is crucial for long-term marriage health.",
+        "medium": "You can usually patch things up but emotional reconnection could be deeper. True repair restores intimacy after rupture.",
+        "high": "You repair well after conflict, rebuilding emotional safety and connection. This skill is one of the strongest predictors of lasting marriage.",
+        "microStep": "If there's unresolved hurt from a recent conflict, initiate a repair conversation. Share how you felt and listen to them.",
+        "recommendedJourney": "mastering_repair_reconnection_marriage"
+      }
     },
     {
       "id": "respect_during_conflict",
       "name": "Respect During Conflict",
-      "insights": {}
+      "insights": {
+        "low": "Conflict may involve disrespect or contempt. Maintaining respect even during disagreement is essential for healthy marriage.",
+        "medium": "You're mostly respectful but sometimes lose it under pressure. Building consistency here prevents damage and maintains the relationship's foundation.",
+        "high": "You disagree without being disrespectful. You maintain love and respect even when frustrated. This maturity transforms conflict into growth.",
+        "microStep": "Next disagreement, pause if you feel disrespect rising. Take a break and return when you can engage respectfully.",
+        "recommendedJourney": "maintaining_respect_conflict_marriage"
+      }
     },
     {
       "id": "responsiveness_to_concerns",
       "name": "Responsiveness to Concerns",
-      "insights": {}
+      "insights": {
+        "low": "Your spouse may feel unheard or dismissed when they express concerns. Responsive listening builds security and shows they matter to you.",
+        "medium": "You listen sometimes but your spouse might need you to engage more consistently. Regular responsiveness demonstrates love and commitment.",
+        "high": "Your spouse knows you'll listen and take their concerns seriously. You respond with care. This responsiveness is foundational to trust.",
+        "microStep": "When your spouse shares a concern this week, resist the urge to fix or defend. Just listen and say: 'I hear you. Tell me more.'",
+        "recommendedJourney": "developing_responsive_listening_marriage"
+      }
     },
     {
       "id": "safety_wellbeing",
       "name": "Safety & Wellbeing",
-      "insights": {}
+      "insights": {
+        "low": "One or both of you may not feel physically or emotionally safe. Safety is non-negotiable—all other growth depends on it.",
+        "medium": "You generally feel safe but some situations trigger concern. Strengthening safety creates the foundation for deeper connection.",
+        "high": "You both feel genuinely safe—physically and emotionally. You can be yourselves without fear. This safety allows love to flourish.",
+        "microStep": "Ask your spouse: 'Do you feel safe with me?' Listen to their answer without defending. Take any concerns seriously.",
+        "recommendedJourney": "building_safety_marriage"
+      }
     },
     {
       "id": "shared_spiritual_practices",
       "name": "Shared Spiritual Practices",
-      "insights": {}
+      "insights": {
+        "low": "Your spiritual practices may feel disconnected or nonexistent. Shared faith practices create alignment and strength during hard seasons.",
+        "medium": "You share some spiritual practices but could strengthen them. Regular prayer, worship, or reflection together deepens spiritual connection.",
+        "high": "You practice faith together regularly—prayer, study, service. This spiritual partnership grounds your marriage and provides guidance.",
+        "microStep": "Start one shared spiritual practice this week: pray together, read Scripture together, or serve together.",
+        "recommendedJourney": "deepening_spiritual_partnership_marriage"
+      }
     },
     {
       "id": "teamwork_responsibilities",
       "name": "Teamwork & Responsibilities",
-      "insights": {}
+      "insights": {
+        "low": "Responsibilities may feel unfairly distributed or create resentment. Working as a true team reduces burden and builds partnership.",
+        "medium": "You work together generally well but some imbalance may exist. Discussing expectations creates fairness and appreciation.",
+        "high": "You function as a true team. Responsibilities are discussed, shared, and appreciated. You each feel supported. This partnership is powerful.",
+        "microStep": "Discuss: What responsibility do you wish your spouse understood or helped with more? Listen to their answer.",
+        "recommendedJourney": "building_teamwork_marriage"
+      }
     },
     {
       "id": "trust_integrity",
       "name": "Trust & Integrity",
-      "insights": {}
+      "insights": {
+        "low": "Trust may have been broken and needs rebuilding. Integrity in words and actions is essential for restoring trust.",
+        "medium": "You generally trust each other but some wariness remains. Continued consistency rebuilds full confidence.",
+        "high": "You trust each other deeply. Both of you follow through on commitments. Your integrity is reliable. This trust is the foundation of everything.",
+        "microStep": "Identify one commitment you've made to your spouse recently. Make sure you're following through consistently.",
+        "recommendedJourney": "rebuilding_trust_marriage"
+      }
     },
     {
       "id": "trust_repair_practices",
       "name": "Trust Repair Practices",
-      "insights": {}
+      "insights": {
+        "low": "Trust may have been damaged and repair feels difficult or impossible. With the right practices, trust can be rebuilt stronger than before.",
+        "medium": "You're trying to rebuild trust but the process feels unclear. Learning specific repair practices accelerates healing.",
+        "high": "When trust breaks, you both know how to repair it. You can apologize, listen, and rebuild. This skill makes your marriage resilient.",
+        "microStep": "If trust has been broken, identify one trust repair practice (honest conversation, consistency, transparency) to rebuild.",
+        "recommendedJourney": "trust_repair_practices_marriage"
+      }
     }
   ],
   "questions": [

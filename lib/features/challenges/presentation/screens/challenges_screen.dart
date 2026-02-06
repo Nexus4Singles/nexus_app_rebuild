@@ -60,9 +60,9 @@ class ChallengesScreen extends ConsumerWidget {
               // Intro Card
               Padding(
                 padding: const EdgeInsets.only(
-                  top: 4.0,
-                  bottom: 10.0,
-                ), // Move card up
+                  top: 8.0,
+                  bottom: 14.0,
+                ), // Card closer to header
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(
@@ -89,24 +89,29 @@ class ChallengesScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.emoji_events_rounded,
-                        size: 28,
-                        color: AppColors.warning,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.emoji_events_rounded,
+                            size: 22,
+                            color: AppColors.warning,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Welcome to Journeys',
+                            style: Theme.of(
+                              context,
+                            ).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        'Welcome to Journeys',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 17,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
                       Text(
                         'Journeys are guided experiences designed to help you grow in key areas of life, relationships & marriage. Each journey is crafted to bring real transformation, one step at a time. Start a journey today and unlock your best self!',
                         textAlign: TextAlign.center,
@@ -126,13 +131,36 @@ class ChallengesScreen extends ConsumerWidget {
               ), // Featured Journeys closer to welcome card
               // Featured Journeys Carousel
               if (featured.isNotEmpty) ...[
-                Text(
-                  'Featured Journeys',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.flag,
+                      size: 18,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'FEATURED JOURNEYS',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 12,
+                        letterSpacing: 0.5,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 6),
+                Container(
+                  height: 2,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(1),
+                  ),
+                ),
+                const SizedBox(height: 12),
                 SizedBox(
                   height: 100,
                   child: ListView.separated(
@@ -148,16 +176,36 @@ class ChallengesScreen extends ConsumerWidget {
                 const SizedBox(height: 18),
               ],
               // All Journeys List
-              Text(
-                'All Journeys',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  letterSpacing: 0.1,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.list,
+                    size: 18,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'ALL JOURNEYS',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 12,
+                      letterSpacing: 0.5,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 6),
+              Container(
+                height: 2,
+                width: 30,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(1),
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               ...journeys.map((j) => _JourneyListCard(journey: j)).toList(),
             ],
           );
@@ -223,28 +271,34 @@ class _FeaturedJourneyCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 18), // Increased spacing below title
+            const SizedBox(height: 12), // Reduced spacing to prevent overflow
             Row(
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 7,
+                    horizontal: 8,
                     vertical: 3,
                   ),
                   decoration: BoxDecoration(
-                    color: textColor.withOpacity(0.10),
-                    borderRadius: BorderRadius.circular(7),
+                    color: textColor.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: iconColor.withOpacity(0.18),
+                      width: 0.8,
+                    ),
                   ),
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.splitscreen, size: 12, color: iconColor),
-                      const SizedBox(width: 3),
+                      Icon(Icons.splitscreen, size: 14, color: iconColor),
+                      const SizedBox(width: 5),
                       Text(
                         '${journey.missions.length} activities',
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: iconColor,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                           fontSize: 12,
+                          letterSpacing: 0.12,
                         ),
                       ),
                     ],
@@ -289,6 +343,12 @@ class _JourneyListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accent = Theme.of(context).colorScheme.primary;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // Dynamic tag background: higher opacity in dark mode for better contrast
+    final tagBg = isDark ? accent.withOpacity(0.18) : accent.withOpacity(0.13);
+    final tagBorder =
+        isDark ? accent.withOpacity(0.30) : accent.withOpacity(0.20);
+
     return InkWell(
       borderRadius: BorderRadius.circular(12),
       onTap: () => Navigator.of(context).pushNamed('/journey/${journey.id}'),
@@ -342,17 +402,19 @@ class _JourneyListCard extends StatelessWidget {
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 2,
+                          horizontal: 8,
+                          vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: accent.withOpacity(0.11),
+                          color: tagBg,
                           borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: tagBorder, width: 0.75),
                         ),
                         child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.splitscreen, size: 11, color: accent),
-                            const SizedBox(width: 2),
+                            Icon(Icons.splitscreen, size: 13, color: accent),
+                            const SizedBox(width: 4),
                             Text(
                               '${journey.missions.length} activities',
                               style: Theme.of(
@@ -360,6 +422,8 @@ class _JourneyListCard extends StatelessWidget {
                               ).textTheme.labelSmall?.copyWith(
                                 color: accent,
                                 fontWeight: FontWeight.w700,
+                                fontSize: 11,
+                                letterSpacing: 0.10,
                               ),
                             ),
                           ],

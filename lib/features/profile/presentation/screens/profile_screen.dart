@@ -624,7 +624,7 @@ class _BasicProfileScreen extends ConsumerWidget {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 20, 16, 28),
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -951,6 +951,7 @@ class _StatusOptionTile extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(width: 12),
             Icon(
               selected ? Icons.check_circle_rounded : Icons.circle_outlined,
               color:
@@ -1040,7 +1041,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
                   children: [
                     // All text widgets removed from hero card overlay
                     Positioned(
-                      top: 0,
+                      top: 8,
                       right: 0,
                       child: SafeArea(
                         minimum: const EdgeInsets.only(top: 0, right: 6),
@@ -1249,8 +1250,6 @@ class _ProfileHeroAppBar extends StatelessWidget {
                                 );
                               },
                             ),
-                            if (isViewingOtherUser)
-                              _OverflowMenu(targetUid: profile.id),
                           ],
                         ),
                       ),
@@ -1349,272 +1348,6 @@ class _DotsIndicator extends StatelessWidget {
   }
 }
 
-class _OverflowMenu extends ConsumerWidget {
-  final String targetUid;
-  const _OverflowMenu({required this.targetUid});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authAsync = ref.watch(authStateProvider);
-    final me = authAsync.maybeWhen(data: (u) => u, orElse: () => null);
-
-    // Phase 1 local-only viewer identity:
-    // - signed-in: uid
-    // - guest/safe mode: 'guest'
-    final viewerKey = (me?.uid ?? 'guest').trim();
-
-    final isBlocked = ref.watch(
-      isBlockedProvider((viewerKey: viewerKey, targetUid: targetUid)),
-    );
-
-    return PopupMenuButton<String>(
-      icon: const Icon(Icons.more_vert_rounded, color: Colors.white),
-      color: AppColors.surface,
-      onSelected: (v) async {
-        if (v == 'block') {
-          final ok = await showDialog<bool>(
-            context: context,
-            builder: (ctx) {
-              return AlertDialog(
-                title: const Text('Block user?'),
-                content: const Text(
-                  'They will be hidden from you && you won’t be able to start a chat with them.',
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(false),
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(true),
-                    child: const Text('Block'),
-                  ),
-                ],
-              );
-            },
-          );
-
-          if (ok == true) {
-            await ref
-                .read(blockedUsersProvider(viewerKey).notifier)
-                .block(targetUid);
-            _toast(context, 'User blocked');
-          }
-        } else if (v == 'unblock') {
-          final ok = await showDialog<bool>(
-            context: context,
-            builder: (ctx) {
-              return AlertDialog(
-                title: const Text('Unblock user?'),
-                content: const Text('They will be visible to you again.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(false),
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(true),
-                    child: const Text('Unblock'),
-                  ),
-                ],
-              );
-            },
-          );
-
-          if (ok == true) {
-            await ref
-                .read(blockedUsersProvider(viewerKey).notifier)
-                .unblock(targetUid);
-            _toast(context, 'User unblocked');
-          }
-        } else if (v == 'report') {
-          await _showReportSheet(
-            context: context,
-            ref: ref,
-            reporterKey: viewerKey,
-            reportedUid: targetUid,
-          );
-        }
-      },
-      itemBuilder:
-          (context) => [
-            PopupMenuItem(
-              value: isBlocked ? 'unblock' : 'block',
-              child: Text(isBlocked ? 'Unblock User' : 'Block User'),
-            ),
-            const PopupMenuItem(value: 'report', child: Text('Report User')),
-          ],
-    );
-  }
-}
-
-Future<void> _showReportSheet({
-  required BuildContext context,
-  required WidgetRef ref,
-  required String reporterKey,
-  required String reportedUid,
-}) async {
-  ReportReason reason = ReportReason.harassment;
-  final notesController = TextEditingController();
-
-  await showModalBottomSheet<void>(
-    context: context,
-    backgroundColor: Colors.transparent,
-    isScrollControlled: true,
-    builder: (sheetContext) {
-      final bottomInset = MediaQuery.of(sheetContext).viewInsets.bottom;
-
-      return StatefulBuilder(
-        builder: (ctx, setState) {
-          return Padding(
-            padding: EdgeInsets.only(bottom: bottomInset),
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Report user',
-                          style: AppTextStyles.titleLarge.copyWith(
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () => Navigator.of(sheetContext).pop(),
-                        borderRadius: BorderRadius.circular(999),
-                        child: Container(
-                          height: 36,
-                          width: 36,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: AppColors.background,
-                            borderRadius: BorderRadius.circular(999),
-                            border: Border.all(color: AppColors.border),
-                          ),
-                          child: const Icon(Icons.close_rounded, size: 18),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Reason',
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: AppColors.background,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.border),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<ReportReason>(
-                        value: reason,
-                        isExpanded: true,
-                        items:
-                            ReportReason.values
-                                .map(
-                                  (r) => DropdownMenuItem(
-                                    value: r,
-                                    child: Text(r.label),
-                                  ),
-                                )
-                                .toList(),
-                        onChanged: (v) {
-                          if (v == null) return;
-                          setState(() => reason = v);
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Notes (optional)',
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: notesController,
-                    maxLines: 4,
-                    decoration: InputDecoration(
-                      hintText: 'Add more details (optional)',
-                      filled: true,
-                      fillColor: AppColors.background,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.border),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.border),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.border),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          await submitLocalReport(
-                            ref: ref,
-                            reporterKey: reporterKey,
-                            reportedUid: reportedUid,
-                            reason: reason,
-                            notes: notesController.text,
-                          );
-                          if (context.mounted) {
-                            Navigator.of(sheetContext).pop();
-                            _toast(context, 'Report submitted');
-                          }
-                        } catch (_) {
-                          if (context.mounted) {
-                            _toast(context, 'Unable to submit report');
-                          }
-                        }
-                      },
-                      child: const Text('Submit report'),
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'Reports are reviewed. Please avoid sharing sensitive personal information.',
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    },
-  );
-
-  notesController.dispose();
-}
-
 /// ------------------------------
 /// PRIMARY INFO + QUICK CHIPS
 /// ------------------------------
@@ -1674,30 +1407,30 @@ class _SendMessageCta extends ConsumerWidget {
             }
           },
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
                 // LEFT: chat icon container (same as yours)
                 Container(
-                  height: 34,
-                  width: 34,
+                  height: 32,
+                  width: 32,
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.18),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: Colors.white.withOpacity(0.35)),
                   ),
                   child: const Icon(
                     Icons.chat_bubble_rounded,
                     color: Colors.white,
-                    size: 18,
+                    size: 16,
                   ),
                 ),
 
                 // CENTER: take remaining space and center the text
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
                       'Chat with $name',
                       maxLines: 1,
@@ -1706,6 +1439,7 @@ class _SendMessageCta extends ConsumerWidget {
                       style: AppTextStyles.titleSmall.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
+                        fontSize: 14,
                       ),
                     ),
                   ),
@@ -1714,7 +1448,7 @@ class _SendMessageCta extends ConsumerWidget {
                 // RIGHT: arrow icon pinned to right
                 Icon(
                   Icons.arrow_forward_ios_rounded,
-                  size: 14,
+                  size: 12,
                   color: Colors.white.withOpacity(0.95),
                 ),
               ],
@@ -3550,9 +3284,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
     return WillPopScope(
       onWillPop: _confirmExitIfDirty,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.getBackground(context),
           elevation: 0,
           title: Text('Edit Profile', style: AppTextStyles.headlineLarge),
           leading: IconButton(
@@ -3805,7 +3539,7 @@ class _PhotosEditor extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: Container(
-                          color: Colors.black12,
+                          color: Colors.grey[200],
                           child: _SmartImage(url: url, fit: BoxFit.cover),
                         ),
                       ),
@@ -3911,9 +3645,9 @@ class _AddPhotoTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: AppColors.getBorder(context)),
         ),
         child: Center(
           child: Column(
@@ -4391,15 +4125,15 @@ class _SearchField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
-        fillColor: AppColors.surface,
+        fillColor: AppColors.getSurface(context),
         prefixIcon: const Icon(Icons.search),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.border),
+          borderSide: BorderSide(color: AppColors.getBorder(context)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.border),
+          borderSide: BorderSide(color: AppColors.getBorder(context)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
@@ -4460,16 +4194,16 @@ class _SelectableChip extends StatelessWidget {
           color:
               selected
                   ? AppColors.primary.withOpacity(0.12)
-                  : AppColors.surface,
+                  : AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(999),
           border: Border.all(
-            color: selected ? AppColors.primary : AppColors.border,
+            color: selected ? AppColors.primary : AppColors.getBorder(context),
           ),
         ),
         child: Text(
           label,
           style: AppTextStyles.bodySmall.copyWith(
-            color: selected ? AppColors.primary : AppColors.textPrimary,
+            color: selected ? AppColors.primary : AppColors.getTextPrimary(context),
             fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
           ),
         ),
@@ -4665,18 +4399,18 @@ class _InputField extends StatelessWidget {
           style: AppTextStyles.bodySmall.copyWith(fontSize: 13),
           decoration: InputDecoration(
             filled: true,
-            fillColor: AppColors.surface,
+            fillColor: AppColors.getSurface(context),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 12,
               vertical: 10,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: AppColors.border),
+              borderSide: BorderSide(color: AppColors.getBorder(context)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: AppColors.border),
+              borderSide: BorderSide(color: AppColors.getBorder(context)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
@@ -4732,9 +4466,9 @@ class _DropdownField extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: AppColors.getSurface(context),
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: AppColors.getBorder(context)),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
@@ -4845,7 +4579,11 @@ class _PremiumContactViewerScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Theme.of(context).colorScheme.outline),
             ),
-            child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 20),
+            child: Icon(
+              icon,
+              color: Theme.of(context).colorScheme.primary,
+              size: 20,
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -4876,7 +4614,9 @@ class _PremiumContactViewerScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: Theme.of(context).colorScheme.outline),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outline,
+                ),
               ),
               child: Text(
                 'Copy',
@@ -4974,20 +4714,26 @@ class _PremiumContactViewerScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.surfaceContainer,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Theme.of(context).colorScheme.outline),
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
                       ),
                       child: Row(
                         children: [
                           Icon(
                             Icons.info_outline_rounded,
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               'No contact info available yet.',
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                                 height: 1.25,
                               ),
                             ),
@@ -5330,7 +5076,9 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surfaceContainer,
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Theme.of(context).colorScheme.outline),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
                   ),
                   child: Text(
                     'Unable to load compatibility right now (missing profile id).',
@@ -5375,7 +5123,9 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.surfaceContainer,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Theme.of(context).colorScheme.outline),
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
                       ),
                       child: Text(
                         'Unable to load compatibility right now. Please try again.',
@@ -5387,46 +5137,86 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                     ),
                 data: (compat) {
                   final entries = _sortedEntries(compat);
-                  
+
                   // Build compatibility insights summary if current user available
                   Widget? insightsSummary;
                   if (currentUser != null) {
                     try {
                       final score = EnhancedCompatibilityScorer.scoreMatch(
                         // Current user
-                        userAMaritalStatus: currentUser.compatibility?.getCompatibilityField('maritalStatus'),
-                        userAHaveKids: currentUser.compatibility?.getCompatibilityField('haveKids'),
-                        userAGenotype: currentUser.compatibility?.getCompatibilityField('genotype'),
-                        userAPersonalityType: currentUser.compatibility?.getCompatibilityField('personalityType'),
-                        userARegularIncome: currentUser.compatibility?.getCompatibilityField('regularSourceOfIncome'),
-                        userALongDistance: currentUser.compatibility?.getCompatibilityField('longDistance'),
-                        userABeliefInCohabiting: currentUser.compatibility?.getCompatibilityField('believeInCohabiting'),
-                        userAShouldSpeakTongues: currentUser.compatibility?.getCompatibilityField('shouldChristianSpeakInTongue'),
-                        userABeliefInTithing: currentUser.compatibility?.getCompatibilityField('believeInTithing'),
+                        userAMaritalStatus: currentUser.compatibility
+                            ?.getCompatibilityField('maritalStatus'),
+                        userAHaveKids: currentUser.compatibility
+                            ?.getCompatibilityField('haveKids'),
+                        userAGenotype: currentUser.compatibility
+                            ?.getCompatibilityField('genotype'),
+                        userAPersonalityType: currentUser.compatibility
+                            ?.getCompatibilityField('personalityType'),
+                        userARegularIncome: currentUser.compatibility
+                            ?.getCompatibilityField('regularSourceOfIncome'),
+                        userALongDistance: currentUser.compatibility
+                            ?.getCompatibilityField('longDistance'),
+                        userABeliefInCohabiting: currentUser.compatibility
+                            ?.getCompatibilityField('believeInCohabiting'),
+                        userAShouldSpeakTongues: currentUser.compatibility
+                            ?.getCompatibilityField(
+                              'shouldChristianSpeakInTongue',
+                            ),
+                        userABeliefInTithing: currentUser.compatibility
+                            ?.getCompatibilityField('believeInTithing'),
                         userAHobbies: currentUser.hobbies,
-                        userADesiredQualities: currentUser.desiredQualities?.split(',').map((s) => s.trim()).toList() ?? [],
+                        userADesiredQualities:
+                            currentUser.desiredQualities
+                                ?.split(',')
+                                .map((s) => s.trim())
+                                .toList() ??
+                            [],
                         // This profile
-                        userBMaritalStatus: profile.compatibility?['maritalStatus']?.toString(),
-                        userBHaveKids: profile.compatibility?['haveKids']?.toString(),
-                        userBGenotype: profile.compatibility?['genotype']?.toString(),
-                        userBPersonalityType: profile.compatibility?['personalityType']?.toString(),
-                        userBRegularIncome: profile.compatibility?['regularSourceOfIncome']?.toString(),
-                        userBLongDistance: profile.compatibility?['longDistance']?.toString(),
-                        userBBeliefInCohabiting: profile.compatibility?['believeInCohabiting']?.toString(),
-                        userBShouldSpeakTongues: profile.compatibility?['shouldChristianSpeakInTongue']?.toString(),
-                        userBBeliefInTithing: profile.compatibility?['believeInTithing']?.toString(),
+                        userBMaritalStatus:
+                            profile.compatibility?['maritalStatus']?.toString(),
+                        userBHaveKids:
+                            profile.compatibility?['haveKids']?.toString(),
+                        userBGenotype:
+                            profile.compatibility?['genotype']?.toString(),
+                        userBPersonalityType:
+                            profile.compatibility?['personalityType']
+                                ?.toString(),
+                        userBRegularIncome:
+                            profile.compatibility?['regularSourceOfIncome']
+                                ?.toString(),
+                        userBLongDistance:
+                            profile.compatibility?['longDistance']?.toString(),
+                        userBBeliefInCohabiting:
+                            profile.compatibility?['believeInCohabiting']
+                                ?.toString(),
+                        userBShouldSpeakTongues:
+                            profile
+                                .compatibility?['shouldChristianSpeakInTongue']
+                                ?.toString(),
+                        userBBeliefInTithing:
+                            profile.compatibility?['believeInTithing']
+                                ?.toString(),
                         userBHobbies: profile.hobbies,
-                        userBDesiredQualities: profile.desiredQualities?.split(',').map((s) => s.trim()).toList() ?? [],
+                        userBDesiredQualities:
+                            profile.desiredQualities
+                                ?.split(',')
+                                .map((s) => s.trim())
+                                .toList() ??
+                            [],
                       );
-                      
+
                       // Only show "Why You Match" summary if compatibility score is >= 70%
                       if (score.score >= 70) {
-                        insightsSummary = _CompatibilityInsightsSummary(score: score);
+                        insightsSummary = _CompatibilityInsightsSummary(
+                          score: score,
+                        );
                       }
                     } catch (e) {
                       if (kDebugMode) {
                         // ignore: avoid_print
-                        print('[ProfileScreen] Error computing compatibility score: $e');
+                        print(
+                          '[ProfileScreen] Error computing compatibility score: $e',
+                        );
                       }
                     }
                   }
@@ -5451,22 +5241,27 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      
+
                       // Compatibility insights summary (if available)
                       if (insightsSummary != null) ...[
                         insightsSummary,
                         const SizedBox(height: 20),
                       ],
-                      
+
                       if (entries.isEmpty)
                         Expanded(
                           child: Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surfaceContainer,
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.surfaceContainer,
                               borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: Theme.of(context).colorScheme.outline),
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.outline,
+                              ),
                             ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -5480,7 +5275,10 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                                   child: Text(
                                     'No compatibility data available yet for this profile.\n\nIf this is unexpected, the profile may not have completed the compatibility questionnaire.',
                                     style: AppTextStyles.bodyMedium.copyWith(
-                                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                      color:
+                                          Theme.of(
+                                            context,
+                                          ).colorScheme.onSurfaceVariant,
                                       height: 1.3,
                                     ),
                                   ),
@@ -5510,7 +5308,10 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(color: Theme.of(context).colorScheme.outline),
+                                  border: Border.all(
+                                    color:
+                                        Theme.of(context).colorScheme.outline,
+                                  ),
                                 ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -5519,15 +5320,24 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                                       height: 38,
                                       width: 38,
                                       decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                        color:
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .surfaceContainerHighest,
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
-                                          color: Theme.of(context).colorScheme.outline,
+                                          color:
+                                              Theme.of(
+                                                context,
+                                              ).colorScheme.outline,
                                         ),
                                       ),
                                       child: Icon(
                                         Icons.insights_rounded,
-                                        color: Theme.of(context).colorScheme.primary,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.primary,
                                         size: 20,
                                       ),
                                     ),
@@ -5542,7 +5352,9 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                                             style: AppTextStyles.bodySmall
                                                 .copyWith(
                                                   color:
-                                                      Theme.of(context).colorScheme.onSurfaceVariant,
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .onSurfaceVariant,
                                                   height: 1.1,
                                                 ),
                                           ),
@@ -5588,9 +5400,9 @@ extension CompatibilityDataExtension on dynamic {
 /// Widget to display compatibility insights summary
 class _CompatibilityInsightsSummary extends StatelessWidget {
   final CompatibilityScore score;
-  
+
   const _CompatibilityInsightsSummary({required this.score});
-  
+
   Color _getScoreColor(int scoreValue, BuildContext context) {
     if (scoreValue >= 75) {
       return Theme.of(context).colorScheme.primary;
@@ -5602,7 +5414,7 @@ class _CompatibilityInsightsSummary extends StatelessWidget {
     }
     return Theme.of(context).colorScheme.error;
   }
-  
+
   String _getCategoryLabel(String category) {
     final map = {
       'faith': '💎 Faith',
@@ -5631,7 +5443,10 @@ class _CompatibilityInsightsSummary extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: _getScoreColor(score.score, context),
                   borderRadius: BorderRadius.circular(20),
@@ -5656,13 +5471,13 @@ class _CompatibilityInsightsSummary extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          
+
           // Category breakdown
           ...score.fieldScores.entries.map((entry) {
             final category = entry.key;
             final points = entry.value;
             final maxPoints = _getMaxPoints(category);
-            
+
             return Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Row(
@@ -5673,9 +5488,13 @@ class _CompatibilityInsightsSummary extends StatelessWidget {
                   ),
                   const Spacer(),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      color:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
@@ -5689,7 +5508,7 @@ class _CompatibilityInsightsSummary extends StatelessWidget {
               ),
             );
           }).toList(),
-          
+
           // Top matches (optional)
           if (score.topMatches.isNotEmpty) ...[
             const SizedBox(height: 12),
@@ -5706,10 +5525,7 @@ class _CompatibilityInsightsSummary extends StatelessWidget {
             ...score.topMatches.take(3).map((match) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 4),
-                child: Text(
-                  '✓ $match',
-                  style: AppTextStyles.bodySmall,
-                ),
+                child: Text('✓ $match', style: AppTextStyles.bodySmall),
               );
             }).toList(),
           ],
@@ -5717,7 +5533,7 @@ class _CompatibilityInsightsSummary extends StatelessWidget {
       ),
     );
   }
-  
+
   int _getMaxPoints(String category) {
     final maxMap = {
       'faith': 25,
