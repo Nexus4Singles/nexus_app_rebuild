@@ -10,7 +10,6 @@ import '../../../../core/utils/image_utils.dart';
 import '../../../../core/providers/user_provider.dart';
 import '../../domain/journey_v1_models.dart';
 import '../../providers/journeys_providers.dart';
-import '../../../subscription/presentation/widgets/purchase_sheet_widget.dart';
 
 class JourneyDetailScreen extends ConsumerStatefulWidget {
   final String id;
@@ -407,16 +406,11 @@ class _Body extends ConsumerWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder:
-                              (_) => PurchaseSheet(
-                                journeyId: journey.id,
-                                journey: journey,
-                                isSubscription: false,
-                              ),
+                        // Navigate to journey purchase screen
+                        Navigator.pushNamed(
+                          context,
+                          '/journey-purchase',
+                          arguments: journey,
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -604,7 +598,7 @@ class _HeroHeader extends ConsumerWidget {
                   Expanded(
                     child: Center(
                       child: _HeroPill(
-                        text: '${totalMinutes}m total',
+                        text: '${(totalMinutes / 60).ceil()} Hours',
                         icon: Icons.timer_outlined,
                         bg: pillBg,
                         fg: AppColors.primary,
@@ -892,16 +886,11 @@ class _UnlockCta extends ConsumerWidget {
                 isLoading
                     ? null
                     : () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder:
-                            (_) => PurchaseSheet(
-                              journeyId: journey.id,
-                              journey: journey,
-                              isSubscription: false,
-                            ),
+                      // Navigate to journey purchase screen
+                      Navigator.pushNamed(
+                        context,
+                        '/journey-purchase',
+                        arguments: journey,
                       );
                     },
             style: ElevatedButton.styleFrom(

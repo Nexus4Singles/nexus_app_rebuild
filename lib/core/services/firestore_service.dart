@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import '../models/user_model.dart';
 import '../models/assessment_model.dart';
 import '../models/journey_model.dart';
@@ -570,15 +571,19 @@ class FirestoreService {
       // Save the vote
       batch.set(_pollVotesRef(vote.pollId).doc(vote.userId), vote.toJson());
 
-      // Update aggregate
+      // Update aggregate - use nested map structure to ensure optionCounts is properly created
       batch.set(_pollAggregateRef(vote.pollId), {
         'pollId': vote.pollId,
         'totalVotes': FieldValue.increment(1),
-        'optionCounts.${vote.selectedOptionId}': FieldValue.increment(1),
+        'optionCounts': {vote.selectedOptionId: FieldValue.increment(1)},
         'updatedAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
 
       await batch.commit();
+
+      debugPrint(
+        'Poll vote saved: pollId=${vote.pollId}, option=${vote.selectedOptionId}',
+      );
     } catch (e) {
       throw FirestoreException('Failed to save poll vote: $e');
     }

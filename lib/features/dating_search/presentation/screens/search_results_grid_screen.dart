@@ -275,7 +275,11 @@ class _SearchResultsGridScreenState
                               onPressed: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (_) => const SubscriptionScreen(),
+                                    builder:
+                                        (_) => const SubscriptionScreen(
+                                          initialTabIndex:
+                                              0, // Show Dating Features tab
+                                        ),
                                   ),
                                 );
                               },

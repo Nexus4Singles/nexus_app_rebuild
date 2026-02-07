@@ -8,7 +8,9 @@ import 'package:equatable/equatable.dart';
 /// Subscription tier/plan
 enum SubscriptionTier {
   free('free', 'Free', 0),
-  monthly('monthly_premium', 'Monthly Premium', 2999);
+  monthly('monthly_premium', 'Monthly Premium', 2999),
+  quarterly('quarterly_premium', 'Quarterly Premium', 7999),
+  yearly('yearly_premium', 'Yearly Premium', 24999);
 
   final String id;
   final String displayName;

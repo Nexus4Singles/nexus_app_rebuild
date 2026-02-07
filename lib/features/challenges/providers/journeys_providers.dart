@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../core/services/journeys_service.dart';
@@ -63,6 +64,20 @@ final journeyByIdProvider = Provider.family<JourneyV1?, String>((ref, id) {
   );
 });
 
+/// Returns a tuple of (JourneyV1, category) for purchase navigation
+final journeyWithCategoryProvider = Provider.family<(JourneyV1, String)?, String>(
+  (ref, id) {
+    final catalogAsync = ref.watch(journeyCatalogProvider);
+    return catalogAsync.maybeWhen(
+      data: (catalog) {
+        final journey = catalog.findById(id);
+        return journey != null ? (journey, catalog.category) : null;
+      },
+      orElse: () => null,
+    );
+  },
+);
+
 final completedMissionIdsProvider = FutureProvider.family<Set<String>, String>((
   ref,
   journeyId,
@@ -104,8 +119,30 @@ final isJourneyPurchasedProvider = FutureProvider.family<bool, String>((
   ref,
   journeyId,
 ) async {
-  final svc = ref.watch(journeyEntitlementsServiceProvider);
-  return svc.isPurchased(journeyId);
+  // Get current user ID from user provider
+  final userAsync = ref.watch(currentUserProvider);
+  final userId = userAsync.maybeWhen(
+    data: (user) => user?.id,
+    orElse: () => null,
+  );
+
+  if (userId == null) return false;
+
+  try {
+    // Check if journey is in user's purchases collection
+    final doc =
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('purchases')
+            .doc(journeyId)
+            .get();
+    return doc.exists;
+  } catch (e) {
+    // Fall back to shared preferences as backup
+    final svc = ref.watch(journeyEntitlementsServiceProvider);
+    return svc.isPurchased(journeyId);
+  }
 });
 
 final bestJourneysStreakProvider = FutureProvider<int>((ref) async {

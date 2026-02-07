@@ -55,19 +55,35 @@ final isPremiumUserProvider = Provider<bool>((ref) {
 /// Provider for purchased journeys
 final purchasedJourneysProvider = StreamProvider<List<PurchasedJourney>>((ref) {
   final userId = ref.watch(currentUserIdProvider);
-  if (userId == null) return Stream.value([]);
 
+  if (userId == null) {
+    return Stream.value([]);
+  }
+
+  // Read from purchases subcollection - stores journey purchase records
   return FirebaseFirestore.instance
       .collection('users')
       .doc(userId)
       .collection('purchases')
-      .where('type', isEqualTo: 'journey')
-      .orderBy('purchaseDate', descending: true)
       .snapshots()
       .map((snapshot) {
-        return snapshot.docs
-            .map((doc) => PurchasedJourney.fromFirestore(doc.data()))
-            .toList();
+        final journeys =
+            snapshot.docs
+                .map((doc) => PurchasedJourney.fromFirestore(doc.data()))
+                .toList();
+
+        // Sort by purchaseDate descending on Dart side
+        journeys.sort((a, b) => b.purchaseDate.compareTo(a.purchaseDate));
+
+        return journeys;
+      })
+      .handleError((error) {
+        // If collection doesn't exist yet, return empty list instead of error
+        if (error.toString().contains('permission-denied') ||
+            error.toString().contains('not-found')) {
+          return <PurchasedJourney>[];
+        }
+        throw error;
       });
 });
 

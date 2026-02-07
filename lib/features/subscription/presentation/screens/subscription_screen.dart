@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/core/constants/app_constants.dart';
 import 'package:nexus_app_min_test/core/session/effective_relationship_status_provider.dart';
+import 'package:nexus_app_min_test/core/config/revenuecat_config.dart';
+import 'package:nexus_app_min_test/core/services/revenuecat_service.dart';
 import 'package:nexus_app_min_test/features/subscription/application/subscription_provider.dart';
 import 'package:nexus_app_min_test/features/subscription/domain/subscription_models.dart';
 
 class SubscriptionScreen extends ConsumerStatefulWidget {
-  const SubscriptionScreen({super.key});
+  /// Optional: set initial tab index (0 = Dating Features, 1 = Journey Purchases)
+  final int? initialTabIndex;
+
+  const SubscriptionScreen({super.key, this.initialTabIndex});
 
   @override
   ConsumerState<SubscriptionScreen> createState() => _SubscriptionScreenState();
@@ -22,7 +28,11 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(
+      length: 2,
+      vsync: this,
+      initialIndex: widget.initialTabIndex ?? 0,
+    );
   }
 
   @override
@@ -374,11 +384,11 @@ class _ActiveSubscriptionView extends ConsumerWidget {
 }
 
 // No Subscription View
-class _NoSubscriptionView extends StatelessWidget {
+class _NoSubscriptionView extends ConsumerWidget {
   const _NoSubscriptionView();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -467,7 +477,12 @@ class _NoSubscriptionView extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          _SubscriptionPlanCard(tier: SubscriptionTier.monthly),
+          _SubscriptionPlanCard(
+            tier: SubscriptionTier.monthly,
+            onSubscribePressed: () {
+              _handleSubscriptionPurchase(context, ref);
+            },
+          ),
 
           const SizedBox(height: 24),
 
@@ -498,6 +513,84 @@ class _NoSubscriptionView extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _handleSubscriptionPurchase(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    try {
+      // Show loading dialog
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
+
+      // Get offerings from RevenueCat
+      final offerings = await RevenueCatService.getOfferings();
+
+      if (!context.mounted) return;
+      Navigator.pop(context); // Close loading dialog
+
+      if (offerings == null || offerings.current == null) {
+        _showError(
+          context,
+          'Unable to load subscription options. Please try again.',
+        );
+        return;
+      }
+
+      // Find the monthly subscription package
+      final packages = offerings.current!.availablePackages;
+      final monthlyPackage = packages.firstWhere(
+        (p) => p.storeProduct.identifier.toLowerCase().contains(
+          RevenueCatConfig.subscriptionMonthlyId.toLowerCase(),
+        ),
+        orElse: () => packages.first,
+      );
+
+      // Show loading again during purchase
+      if (!context.mounted) return;
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
+
+      // Make purchase
+      await RevenueCatService.purchasePackage(monthlyPackage);
+
+      if (!context.mounted) return;
+      Navigator.pop(context); // Close loading dialog
+
+      // Record purchase in Firestore
+      await ref
+          .read(subscriptionNotifierProvider.notifier)
+          .updateSubscription(isActive: true, tier: SubscriptionTier.monthly);
+
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('🎉 Subscription activated! Enjoy premium features.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      if (context.mounted) {
+        final navigator = Navigator.of(context);
+        if (navigator.canPop()) {
+          navigator.pop();
+        }
+      }
+      _showError(context, 'Purchase failed: ${e.toString()}');
+    }
+  }
+
+  void _showError(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
   }
 }
@@ -700,14 +793,14 @@ class _FeatureTile extends StatelessWidget {
 }
 
 // Subscription Plan Card
-class _SubscriptionPlanCard extends StatelessWidget {
+class _SubscriptionPlanCard extends ConsumerWidget {
   final SubscriptionTier tier;
-  final bool isMostPopular;
+  final VoidCallback? onSubscribePressed;
 
-  const _SubscriptionPlanCard({required this.tier, this.isMostPopular = false});
+  const _SubscriptionPlanCard({required this.tier, this.onSubscribePressed});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final pricePerMonth = tier.priceNGN;
     final savings = null;
 
@@ -715,50 +808,10 @@ class _SubscriptionPlanCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: isMostPopular ? AppColors.primary : AppColors.border,
-          width: isMostPopular ? 2 : 1,
-        ),
-        boxShadow:
-            isMostPopular
-                ? [
-                  BoxShadow(
-                    color: AppColors.primary.withOpacity(0.2),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-                : null,
+        border: Border.all(color: AppColors.border, width: 1),
       ),
       child: Column(
         children: [
-          if (isMostPopular)
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(19),
-                  topRight: Radius.circular(19),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.star, color: Colors.amber, size: 16),
-                  const SizedBox(width: 6),
-                  Text(
-                    'MOST POPULAR',
-                    style: AppTextStyles.caption.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                ],
-              ),
-            ),
           Padding(
             padding: const EdgeInsets.all(20),
             child: Row(
@@ -827,31 +880,18 @@ class _SubscriptionPlanCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
             child: ElevatedButton(
-              onPressed: () {
-                // TODO: Implement RevenueCat purchase flow
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      'Purchase flow coming soon with RevenueCat integration',
-                    ),
-                  ),
-                );
+              onPressed: () async {
+                if (onSubscribePressed != null) {
+                  onSubscribePressed!();
+                }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    isMostPopular
-                        ? AppColors.primary
-                        : AppColors.getSurface(context),
-                foregroundColor:
-                    isMostPopular ? Colors.white : AppColors.primary,
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
                 elevation: 0,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
-                  side:
-                      isMostPopular
-                          ? BorderSide.none
-                          : BorderSide(color: AppColors.primary),
                 ),
               ),
               child: Row(
@@ -860,15 +900,15 @@ class _SubscriptionPlanCard extends StatelessWidget {
                   Text(
                     'Subscribe Now',
                     style: AppTextStyles.labelLarge.copyWith(
-                      color: isMostPopular ? Colors.white : AppColors.primary,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Icon(
+                  const Icon(
                     Icons.arrow_forward,
                     size: 18,
-                    color: isMostPopular ? Colors.white : AppColors.primary,
+                    color: Colors.white,
                   ),
                 ],
               ),

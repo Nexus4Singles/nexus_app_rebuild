@@ -2154,10 +2154,6 @@ class _PremiumActionsRow extends ConsumerWidget {
 
     final canViewPremiumGates = isPremium || (kDebugMode && debugUnlockPremium);
 
-    // TODO: Re-lock when user is not premium
-    // Temporarily unlocking premium buttons for UI testing
-    const temporarilyUnlocked = true;
-
     return Row(
       children: [
         Expanded(
@@ -2165,8 +2161,11 @@ class _PremiumActionsRow extends ConsumerWidget {
             icon: Icons.favorite_rounded,
             title: 'Compatibility Data',
             onTap: () {
-              if (!canViewPremiumGates && temporarilyUnlocked != true) {
-                _toast(context, 'Upgrade to Premium to view compatibility.');
+              if (!canViewPremiumGates) {
+                _toast(
+                  context,
+                  'This is a premium feature. Subscribe to view compatibility data.',
+                );
                 return;
               }
               Navigator.of(context).push(
@@ -2185,8 +2184,11 @@ class _PremiumActionsRow extends ConsumerWidget {
             icon: Icons.chat_bubble_rounded,
             title: 'Contact Info',
             onTap: () {
-              if (!canViewPremiumGates && temporarilyUnlocked != true) {
-                _toast(context, 'Upgrade to Premium to view contact info.');
+              if (!canViewPremiumGates) {
+                _toast(
+                  context,
+                  'This is a premium feature. Subscribe to view contact information.',
+                );
                 return;
               }
               Navigator.of(context).push(
@@ -2235,11 +2237,7 @@ class _PremiumButton extends StatelessWidget {
                 color: Colors.white.withOpacity(0.18),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(
-                Icons.lock_rounded,
-                size: 18,
-                color: Colors.white,
-              ),
+              child: Icon(icon, size: 18, color: Colors.white),
             ),
             const SizedBox(width: 10),
             Flexible(
@@ -4203,7 +4201,10 @@ class _SelectableChip extends StatelessWidget {
         child: Text(
           label,
           style: AppTextStyles.bodySmall.copyWith(
-            color: selected ? AppColors.primary : AppColors.getTextPrimary(context),
+            color:
+                selected
+                    ? AppColors.primary
+                    : AppColors.getTextPrimary(context),
             fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
           ),
         ),

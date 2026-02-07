@@ -1,4 +1,5 @@
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:io' show Platform;
 import '../config/revenuecat_config.dart';
 
@@ -42,11 +43,22 @@ class RevenueCatService {
     }
   }
 
+  static Future<CustomerInfo> purchasePackage(Package package) async {
+    try {
+      return await Purchases.purchasePackage(package);
+    } catch (e) {
+      print('Error purchasing package: $e');
+      rethrow;
+    }
+  }
+
   static Future<Offerings?> getOfferings() async {
     try {
-      return await Purchases.getOfferings();
+      final offerings = await Purchases.getOfferings();
+      return offerings;
     } catch (e) {
-      print('Error fetching offerings: $e');
+      debugPrint('Error fetching offerings: $e');
+      debugPrint('Stack trace: ${StackTrace.current}');
       return null;
     }
   }

@@ -1,0 +1,166 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "7E307D87",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "6758738108",
+      "localizations" : [
+        {
+          "description" : "Journey purchases",
+          "displayName" : "Journey Purchases",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "journey_divorced",
+      "referenceName" : "Divorced Journeys",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "6758737989",
+      "localizations" : [
+        {
+          "description" : "Journey purchases",
+          "displayName" : "Journey Purchases",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "journey_married",
+      "referenceName" : "Married Journeys",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "6758738069",
+      "localizations" : [
+        {
+          "description" : "Journey purchases",
+          "displayName" : "Journey Purchases",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "journey_singles",
+      "referenceName" : "Single Journeys",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "6758738214",
+      "localizations" : [
+        {
+          "description" : "Journey purchases",
+          "displayName" : "Journey Purchases",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "journey_widowed",
+      "referenceName" : "Widowed Journeys",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6587567583",
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_developerTeamID" : "YR4UBJ23J4",
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 792145284.91036105,
+    "_locale" : "en_US",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ],
+    "_timeRate" : 0
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21518444",
+      "localizations" : [
+
+      ],
+      "name" : "Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "6.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6587569660",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Monthly Subscription",
+              "displayName" : "Premium",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "Monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Nexus Premium",
+          "subscriptionGroupID" : "21518444",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "6.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6758861830",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Monthly Premium",
+              "displayName" : "Nexus Premium",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "nexus_premium_v2",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Nexus Premium2",
+          "subscriptionGroupID" : "21518444",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

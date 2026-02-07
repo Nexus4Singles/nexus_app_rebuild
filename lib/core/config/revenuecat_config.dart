@@ -5,8 +5,8 @@ class RevenueCatConfig {
   // ============================================================================
   // API KEYS (SDK Keys - safe to expose in client code)
   // ============================================================================
-  static const String androidApiKey = 'sk_YnnxCarcQLFoUrMMacmTfCUsgqeqU';
-  static const String iosApiKey = 'sk_YnnxCarcQLFoUrMMacmTfCUsgqeqU';
+  static const String androidApiKey = 'goog_mjvhTsGNNSzgnXyRVrIGjCmXwol';
+  static const String iosApiKey = 'appl_dfjYQwnRsUjojfOSnYGqciVcGzx';
 
   // ============================================================================
   // SUBSCRIPTION ENTITLEMENTS & PRODUCT IDs
@@ -14,10 +14,8 @@ class RevenueCatConfig {
   /// Entitlement for premium dating features (subscriptions only)
   static const String premiumEntitlement = 'premium';
 
-  /// Subscription product IDs (same as v1, reuse existing)
-  static const String subscriptionMonthlyId = 'nexus_premium_monthly';
-  static const String subscriptionQuarterlyId = 'nexus_premium_quarterly';
-  static const String subscriptionYearlyId = 'nexus_premium_yearly';
+  /// Subscription product IDs
+  static const String subscriptionMonthlyId = 'nexus_premium_v2';
 
   // ============================================================================
   // JOURNEY PURCHASE PRODUCT IDs & ENTITLEMENTS

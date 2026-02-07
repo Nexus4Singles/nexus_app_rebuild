@@ -309,7 +309,33 @@ class _ResultsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final counts = aggregate?.optionCounts ?? const <String, int>{};
-    final total = aggregate?.totalVotes ?? 0;
+    var total = aggregate?.totalVotes ?? 0;
+
+    // DEBUG: Log the aggregate data
+    debugPrint('=== POLL RESULTS DEBUG ===');
+    debugPrint('Poll ID: ${poll.id}');
+    debugPrint('Total Votes (from aggregate): $total');
+    debugPrint('Option Counts Map: $counts');
+    debugPrint(
+      'Poll Options: ${poll.options.map((o) => '${o.id}: ${o.text}').join(', ')}',
+    );
+    debugPrint('User Voted Option ID: $votedOptionId');
+
+    // If no aggregate votes yet, calculate from seedCounts
+    if (total == 0 && poll.seedCounts.isNotEmpty) {
+      debugPrint('Fallback: Using seedCounts: ${poll.seedCounts}');
+      total = poll.seedCounts.values.fold(0, (sum, count) => sum + count);
+    }
+
+    // If still 0, calculate from counts map (in case totalVotes wasn't set properly)
+    if (total == 0 && counts.isNotEmpty) {
+      debugPrint('Fallback: Calculating total from counts map');
+      total = counts.values.fold(0, (sum, count) => sum + count);
+    }
+
+    debugPrint('Final Total Votes: $total');
+    debugPrint('=====================');
+
     final safeTotal = total == 0 ? 1 : total;
     final insight = poll.insights[votedOptionId] ?? 'Thanks for sharing.';
 
@@ -340,12 +366,28 @@ class _ResultsView extends StatelessWidget {
           child: Column(
             children: [
               ...poll.options.map((o) {
-                final c = counts[o.id] ?? 0;
+                // Use aggregate counts first, fall back to seedCounts
+                var c = counts[o.id] ?? poll.seedCounts[o.id] ?? 0;
+                final isMine = o.id == votedOptionId;
+
+                // DEBUG: Log per-option calculation
+                debugPrint('Option ${o.id}: count=$c, isMine=$isMine');
+
+                // If this is the user's voted option and total is 1 but count is 0,
+                // that means the vote was just recorded. Show 100%.
+                if (isMine && c == 0 && total == 1) {
+                  debugPrint(
+                    '  -> Using workaround: c=1 (was 0, isMine=true, total=1)',
+                  );
+                  c = 1;
+                }
+
                 final pct =
                     safeTotal > 0
                         ? ((c / safeTotal) * 100).clamp(0.0, 100.0)
                         : 0.0;
-                final isMine = o.id == votedOptionId;
+
+                debugPrint('  -> Final pct: ${pct.toStringAsFixed(1)}%');
 
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 12),

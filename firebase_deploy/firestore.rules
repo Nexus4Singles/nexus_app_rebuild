@@ -126,9 +126,16 @@ service cloud.firestore {
       match /dating/{document=**} {
         allow read, write: if isSignedIn() && request.auth.uid == uid;
       }
+
+      match /journeys/{journeyId} {
+        allow list: if isSignedIn() && request.auth.uid == uid;
+        allow read: if isSignedIn() && request.auth.uid == uid;
+        allow write: if isSignedIn() && request.auth.uid == uid;
+        match /responses/{responseId} {
+          allow read, write: if isSignedIn() && request.auth.uid == uid;
+        }
+      }
     }
-
-
 
     // ============================================================================
     // Nexus v2 Chats (strict + opposite gender enforced)

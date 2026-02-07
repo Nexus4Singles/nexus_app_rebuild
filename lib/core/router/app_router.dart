@@ -36,6 +36,9 @@ import '../../features/stories/presentation/screens/story_detail_screen.dart';
 import '../../features/challenges/presentation/screens/challenges_screen.dart';
 import '../../features/challenges/presentation/screens/journey_detail_screen.dart';
 import '../../features/challenges/presentation/screens/journey_gate_screen.dart';
+import '../../features/challenges/domain/journey_v1_models.dart';
+
+import '../../features/subscription/presentation/screens/journey_purchase_screen.dart';
 
 import '../../features/assessment/presentation/screens/assessments_hub_screen.dart';
 import '../../features/assessment/presentation/screens/assessment_intro_screen.dart';
@@ -110,6 +113,15 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     return MaterialPageRoute(
       settings: settings,
       builder: (_) => JourneyDetailScreen(id: journeyId),
+    );
+  }
+
+  // /journey-purchase - Receives journey as argument
+  if (uri.path == '/journey-purchase') {
+    final journey = settings.arguments as JourneyV1;
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => JourneyPurchaseScreen(journey: journey),
     );
   }
 
