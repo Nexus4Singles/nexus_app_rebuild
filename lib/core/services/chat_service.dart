@@ -301,7 +301,8 @@ class ChatService {
 
       bool flag(String k) => (data[k] == true);
 
-      return flag('isPremium') ||
+      return flag('onPremium') ||
+          flag('isPremium') ||
           flag('premium') ||
           flag('subscriptionActive') ||
           flag('hasActiveSubscription');

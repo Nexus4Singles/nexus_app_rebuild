@@ -23,9 +23,7 @@ final assessmentConfigProvider =
 
 /// Provider for getting recommended assessment based on user's relationship status
 final recommendedAssessmentTypeProvider = Provider<AssessmentType?>((ref) {
-  final status =
-      ref.watch(effectiveRelationshipStatusProvider) ??
-      ref.watch(devRelationshipStatusProvider);
+  final status = ref.watch(effectiveRelationshipStatusProvider);
 
   switch (status) {
     case RelationshipStatus.singleNeverMarried:
@@ -35,9 +33,6 @@ final recommendedAssessmentTypeProvider = Provider<AssessmentType?>((ref) {
       return AssessmentType.remarriageReadiness;
     case RelationshipStatus.married:
       return AssessmentType.marriageHealthCheck;
-
-    case null:
-      return AssessmentType.singlesReadiness;
   }
 });
 

@@ -27,24 +27,24 @@ RelationshipStatus? _parseRelationshipStatusKey(String? key) {
 /// - Signed-in users: Firestore `users/{uid}` doc (nexus.relationshipStatus; nexus2 mirror)
 /// - Guests: guestSessionProvider
 ///
-/// If signed in but missing relationshipStatus (v1 user pre-presurvey), returns null.
-/// NavConfig already treats null as singles (so tabs don't disappear).
-final effectiveRelationshipStatusProvider = Provider<RelationshipStatus?>((
+/// If signed in but missing relationshipStatus (v1 user pre-presurvey), returns singleNeverMarried as fallback.
+/// NavConfig already treats this default as singles (so tabs don't disappear).
+final effectiveRelationshipStatusProvider = Provider<RelationshipStatus>((
   ref,
 ) {
   final authAsync = ref.watch(authStateProvider);
   final user = authAsync.maybeWhen(data: (u) => u, orElse: () => null);
 
-  // Signed out / anonymous -> guest session status
+  // Signed out / anonymous -> guest session status (or default to singles)
   if (user == null || user.isAnonymous) {
     final guest = ref.watch(guestSessionProvider);
-    return guest?.relationshipStatus;
+    return guest?.relationshipStatus ?? RelationshipStatus.singleNeverMarried;
   }
 
   // Signed in -> Firestore-backed status
   final docAsync = ref.watch(currentUserDocProvider);
   final doc = docAsync.maybeWhen(data: (d) => d, orElse: () => null);
-  if (doc == null) return null;
+  if (doc == null) return RelationshipStatus.singleNeverMarried;
 
   final nexus = (doc['nexus'] as Map?)?.cast<String, dynamic>();
   final nexus2 = (doc['nexus2'] as Map?)?.cast<String, dynamic>();
@@ -53,5 +53,5 @@ final effectiveRelationshipStatusProvider = Provider<RelationshipStatus?>((
       (nexus?['relationshipStatus'] ?? nexus2?['relationshipStatus'])
           ?.toString();
 
-  return _parseRelationshipStatusKey(key);
+  return _parseRelationshipStatusKey(key) ?? RelationshipStatus.singleNeverMarried;
 });

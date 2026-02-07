@@ -29,7 +29,7 @@ final datingPreferencesProvider = FutureProvider<DatingPreferences?>((
 
     final prefs = DatingPreferences.fromFirestore(doc.data() ?? {});
     print(
-      '[DatingPreferencesProvider] Loaded prefs: country=${prefs.countryOfResidence}',
+      '[DatingPreferencesProvider] Loaded prefs: minAge=${prefs.minAge}, maxAge=${prefs.maxAge}, country=${prefs.countryOfResidence}',
     );
     return prefs;
   } catch (e) {

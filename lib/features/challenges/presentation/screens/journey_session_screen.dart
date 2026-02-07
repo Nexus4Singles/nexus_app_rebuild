@@ -188,6 +188,18 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                         totalCards == 0 ? 0.0 : progressIndex / totalCards,
                     icon: iconFromKey(m.icon),
                   ),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
+                    child: Text(
+                      'We highly recommend using a journal to document as you go on this journey!',
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.getTextSecondary(context),
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   Expanded(
                     child:

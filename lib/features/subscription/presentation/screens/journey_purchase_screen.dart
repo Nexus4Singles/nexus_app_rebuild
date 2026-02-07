@@ -281,32 +281,53 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
       final offerings = await RevenueCatService.getOfferings();
 
       if (offerings == null || offerings.current == null) {
-        _showError('Unable to load purchase options. RevenueCat offerings not configured. Please check your RevenueCat dashboard.');
+        _showError(
+          'Unable to load purchase options. RevenueCat offerings not configured. Please check your RevenueCat dashboard.',
+        );
         setState(() => _isPurchasing = false);
         return;
       }
 
       // Get journey category from provider
-      final journeyWithCategory = ref.watch(journeyWithCategoryProvider(widget.journey.id));
+      final journeyWithCategory = ref.watch(
+        journeyWithCategoryProvider(widget.journey.id),
+      );
       final category = journeyWithCategory?.$2 ?? 'singles';
-      
+
       // Get the product ID based on journey category
       final productId = _getProductIdForCategory(category);
-      
-      // Find package matching the journey's category
-      final packages = offerings.current!.availablePackages;
+
+      // Search for package in all offerings (not just current)
       Package? journeyPackage;
       
-      for (final p in packages) {
-        if (p.storeProduct.identifier.toLowerCase() == productId.toLowerCase()) {
-          journeyPackage = p;
-          break;
+      // First try current offering if it exists
+      if (offerings.current != null) {
+        for (final p in offerings.current!.availablePackages) {
+          if (p.storeProduct.identifier.toLowerCase() ==
+              productId.toLowerCase()) {
+            journeyPackage = p;
+            break;
+          }
+        }
+      }
+
+      // If not found in current, search all offerings
+      if (journeyPackage == null) {
+        for (final offering in offerings.all.values) {
+          for (final p in offering.availablePackages) {
+            if (p.storeProduct.identifier.toLowerCase() ==
+                productId.toLowerCase()) {
+              journeyPackage = p;
+              break;
+            }
+          }
+          if (journeyPackage != null) break;
         }
       }
 
       if (journeyPackage == null) {
         _showError(
-          'Journey for $category is not available for purchase. Please check RevenueCat dashboard.',
+          'Journey for $category (product: $productId) is not available for purchase. Please check RevenueCat dashboard.',
         );
         setState(() => _isPurchasing = false);
         return;
@@ -359,15 +380,16 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
   /// Maps journey category to RevenueCat product ID
   String _getProductIdForCategory(String category) {
     final categoryLower = category.toLowerCase();
-    
+
     const categoryToProductId = {
       'singles': 'journey_singles',
       'married': 'journey_married',
       'divorced': 'journey_divorced',
       'widowed': 'journey_widowed',
     };
-    
-    return categoryToProductId[categoryLower] ?? 'journey_singles'; // Default to singles
+
+    return categoryToProductId[categoryLower] ??
+        'journey_singles'; // Default to singles
   }
 }
 

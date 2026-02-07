@@ -39,6 +39,7 @@ import '../../../subscription/presentation/screens/subscription_screen.dart';
 import '../../../dating_search/presentation/screens/saved_profiles_screen.dart';
 import '../../../dating_search/application/saved_profiles_provider.dart';
 import '../../../dating_search/domain/enhanced_compatibility_scorer.dart';
+import '../widgets/relationship_status_editor.dart';
 
 Future<void> handleLogout(BuildContext context, WidgetRef ref) async {
   final ok = await showDialog<bool>(
@@ -155,13 +156,6 @@ final userDocByIdProvider =
             return doc.data();
           });
     });
-
-final currentUserIsPremiumProvider = StreamProvider<bool>((ref) {
-  return ref.watch(currentUserDocProvider.stream).map((doc) {
-    final v = doc?['onPremium'];
-    return v == true;
-  });
-});
 
 class ProfileScreen extends ConsumerWidget {
   final String? userId;
@@ -719,6 +713,24 @@ class _BasicProfileScreen extends ConsumerWidget {
                           ),
                         ],
                       ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Relationship Status Editor
+                  GestureDetector(
+                    onTap: () {
+                      showRelationshipStatusDialog(
+                        context,
+                        ref,
+                        p.nexus2?.relationshipStatus ?? '',
+                        onSuccess: () {
+                          // Profile will refresh automatically via providers
+                        },
+                      );
+                    },
+                    child: RelationshipStatusEditor(
+                      currentStatus: p.nexus2?.relationshipStatus ?? '',
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -2141,9 +2153,10 @@ class _PremiumActionsRow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (!isViewingOtherUser) return const SizedBox.shrink();
 
-    final isPremium = ref
-        .watch(currentUserIsPremiumProvider)
-        .maybeWhen(data: (v) => v, orElse: () => false);
+    // Check if user is premium using the same logic as daily profiles
+    final currentUserAsync = ref.watch(currentUserProvider);
+    final currentUser = currentUserAsync.valueOrNull;
+    final isPremium = currentUser?.onPremium == true;
 
     // DEV ONLY: bypass premium gating for UI testing.
     // Run with: flutter run --dart-define=NEXUS_DEBUG_UNLOCK_PREMIUM=true

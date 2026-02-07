@@ -20,112 +20,103 @@ import 'package:nexus_app_min_test/features/launch/presentation/app_launch_gate.
 import 'package:nexus_app_min_test/features/auth/presentation/screens/login_screen.dart';
 import 'package:nexus_app_min_test/features/auth/presentation/screens/signup_screen.dart';
 
-class SearchScreen extends ConsumerStatefulWidget {
+// Export the explore screen filters provider
+export 'package:nexus_app_min_test/features/dating_search/application/dating_search_results_provider.dart';
+
+class SearchScreen extends ConsumerWidget {
   const SearchScreen({super.key});
 
   @override
-  ConsumerState<SearchScreen> createState() => _SearchScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Use the persistent explore screen filters provider
+    final filters = ref.watch(exploreScreenFiltersProvider);
 
-class _SearchScreenState extends ConsumerState<SearchScreen> {
-  // Defaults
-  int _minAge = 21;
-  int _maxAge = 65;
+    final minAge = filters['minAge'] as int? ?? 21;
+    final maxAge = filters['maxAge'] as int? ?? 65;
+    final countryOfResidence = filters['countryOfResidence'] as String?;
+    final longDistance = filters['longDistance'] as String?;
+    final maritalStatus = filters['maritalStatus'] as String?;
+    final kids = filters['kids'] as String?;
+    final genotype = filters['genotype'] as String?;
 
-  String? _countryOfResidence;
-  String? _longDistance;
-  String? _maritalStatus;
-  String? _kids;
-  String? _genotype;
-  void _clearFilters() {
-    setState(() {
-      _minAge = 21;
-      _maxAge = 65;
+    void clearFilters() {
+      ref.read(exploreScreenFiltersProvider.notifier).clearAll();
+    }
 
-      _countryOfResidence = null;
-      _longDistance = null;
-      _maritalStatus = null;
-      _kids = null;
-      _genotype = null;
-    });
-  }
-
-  void _showAuthModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder:
-          (context) => Container(
-            decoration: BoxDecoration(
-              color: AppColors.getSurface(context),
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(24),
+    void showAuthModal() {
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder:
+            (context) => Container(
+              decoration: BoxDecoration(
+                color: AppColors.getSurface(context),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(24),
+                ),
+              ),
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: AppColors.getBorder(context),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'Sign in to Search',
+                    style: AppTextStyles.titleLarge.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Create an account or log in to search and view dating profiles.',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.getTextSecondary(context),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const SignupScreen()),
+                        );
+                      },
+                      child: const Text('Create Account'),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const LoginScreen()),
+                        );
+                      },
+                      child: const Text('Log In'),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
               ),
             ),
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: AppColors.getBorder(context),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  'Sign in to Search',
-                  style: AppTextStyles.titleLarge.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'Create an account or log in to search and view dating profiles.',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.getTextSecondary(context),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const SignupScreen()),
-                      );
-                    },
-                    child: const Text('Create Account'),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const LoginScreen()),
-                      );
-                    },
-                    child: const Text('Log In'),
-                  ),
-                ),
-                const SizedBox(height: 12),
-              ],
-            ),
-          ),
-    );
-  }
+      );
+    }
 
-  @override
-  Widget build(BuildContext context) {
     // Use the canonical guest logic (automatically watches auth state)
     final isGuestAsync = ref.watch(isGuestProvider);
     final isGuest = isGuestAsync.maybeWhen(
@@ -216,7 +207,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   ),
                                 ),
                                 TextButton(
-                                  onPressed: _clearFilters,
+                                  onPressed: clearFilters,
                                   style: TextButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 14,
@@ -252,7 +243,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              '$_minAge - $_maxAge years',
+                              '$minAge - $maxAge years',
                               style: AppTextStyles.bodySmall.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w700,
@@ -261,55 +252,51 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             const SizedBox(height: 12),
                             RangeSlider(
                               values: RangeValues(
-                                _minAge.toDouble(),
-                                _maxAge.toDouble(),
+                                minAge.toDouble(),
+                                maxAge.toDouble(),
                               ),
                               min: 21,
                               max: 65,
                               divisions: 44,
-                              labels: RangeLabels('$_minAge', '$_maxAge'),
+                              labels: RangeLabels('$minAge', '$maxAge'),
                               onChanged: (v) {
-                                setState(() {
-                                  _minAge = v.start.round();
-                                  _maxAge = v.end.round();
-                                });
+                                ref.read(exploreScreenFiltersProvider.notifier).setAgeRange(v.start.round(), v.end.round());
                               },
                             ),
                             const SizedBox(height: 16),
 
                             _DropdownTile(
                               label: 'Country of Residence',
-                              value: _countryOfResidence,
+                              value: countryOfResidence,
                               options: countries,
                               onChanged:
-                                  (v) =>
-                                      setState(() => _countryOfResidence = v),
+                                  (v) => ref.read(exploreScreenFiltersProvider.notifier).setCountryOfResidence(v),
                             ),
                             _DropdownTile(
                               label: 'Long Distance',
-                              value: _longDistance,
+                              value: longDistance,
                               options: distances,
                               onChanged:
-                                  (v) => setState(() => _longDistance = v),
+                                  (v) => ref.read(exploreScreenFiltersProvider.notifier).setLongDistance(v),
                             ),
                             _DropdownTile(
                               label: 'Marital Status',
-                              value: _maritalStatus,
+                              value: maritalStatus,
                               options: maritalStatuses,
                               onChanged:
-                                  (v) => setState(() => _maritalStatus = v),
+                                  (v) => ref.read(exploreScreenFiltersProvider.notifier).setMaritalStatus(v),
                             ),
                             _DropdownTile(
                               label: 'Has Kids',
-                              value: _kids,
+                              value: kids,
                               options: hasKids,
-                              onChanged: (v) => setState(() => _kids = v),
+                              onChanged: (v) => ref.read(exploreScreenFiltersProvider.notifier).setKids(v),
                             ),
                             _DropdownTile(
                               label: 'Genotype',
-                              value: _genotype,
+                              value: genotype,
                               options: genotypes,
-                              onChanged: (v) => setState(() => _genotype = v),
+                              onChanged: (v) => ref.read(exploreScreenFiltersProvider.notifier).setGenotype(v),
                             ),
                           ],
                         ),
@@ -327,7 +314,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     onPressed: () async {
                       if (isGuest) {
                         // Show auth modal for guests
-                        _showAuthModal(context);
+                        showAuthModal();
                         return;
                       }
 
@@ -336,31 +323,28 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         // ignore: avoid_print
                         print(
                           '[SearchScreen] applying filters: '
-                          'age=$_minAge-$_maxAge, '
-                          'country="$_countryOfResidence", '
-                          'distance="$_longDistance", '
-                          'marital="$_maritalStatus", '
-                          'kids="$_kids", '
-                          'geno="$_genotype"',
+                          'age=$minAge-$maxAge, '
+                          'country="$countryOfResidence", '
+                          'distance="$longDistance", '
+                          'marital="$maritalStatus", '
+                          'kids="$kids", '
+                          'geno="$genotype"',
                         );
                       }
 
                       ref
                           .read(datingSearchFiltersProvider.notifier)
                           .state = DatingSearchFilters(
-                        minAge: _minAge,
-                        maxAge: _maxAge,
-                        countryOfResidence: _countryOfResidence,
+                        minAge: minAge,
+                        maxAge: maxAge,
+                        countryOfResidence: countryOfResidence,
                         countryOptions: countries,
-                        longDistance: _longDistance,
-                        maritalStatus: _maritalStatus,
-                        hasKids: _kids,
-                        genotype: _genotype,
+                        longDistance: longDistance,
+                        maritalStatus: maritalStatus,
+                        hasKids: kids,
+                        genotype: genotype,
                       );
 
-                      ref.invalidate(datingSearchResultsProvider);
-
-                      if (!mounted) return;
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => const SearchResultsScreen(),
@@ -384,7 +368,7 @@ class SearchResultsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final resultsAsync = ref.watch(datingSearchResultsProvider);
+    final resultsAsync = ref.watch(cachedDatingSearchResultsProvider);
 
     return DisabledAccountGate(
       child: Scaffold(
@@ -399,13 +383,39 @@ class SearchResultsScreen extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
             child: resultsAsync.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
               error:
-                  (e, _) => Text(
-                    'Unable to load results right now. Please try again.',
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.getTextSecondary(context),
-                      height: 1.35,
+                  (e, _) => Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          size: 48,
+                          color: AppColors.getTextSecondary(context),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Unable to load results',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.getTextPrimary(context),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        SizedBox(
+                          width: 120,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              ref.invalidate(datingSearchResultsProvider);
+                              ref.read(searchResultsCacheProvider.notifier).clear();
+                            },
+                            icon: const Icon(Icons.refresh, size: 18),
+                            label: const Text('Retry'),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
               data: (result) {
@@ -491,7 +501,8 @@ class SearchResultsScreen extends ConsumerWidget {
                 return RefreshIndicator(
                   onRefresh: () async {
                     ref.invalidate(datingSearchResultsProvider);
-                    await ref.read(datingSearchResultsProvider.future);
+                    ref.read(searchResultsCacheProvider.notifier).clear();
+                    await ref.read(cachedDatingSearchResultsProvider.future);
                   },
                   child: ListView.builder(
                     physics: const AlwaysScrollableScrollPhysics(),

@@ -194,12 +194,11 @@ class _SavedProfileCard extends ConsumerWidget {
                               : Image.network(
                                 photo,
                                 fit: BoxFit.cover,
-                                errorBuilder:
-                                    (_, __, ___) => Icon(
-                                      Icons.person,
-                                      size: 32,
-                                      color: AppColors.primary,
-                                    ),
+                                errorBuilder: (_, __, ___) => Icon(
+                                  Icons.person,
+                                  size: 32,
+                                  color: AppColors.primary,
+                                ),
                               ),
                     ),
                   ),

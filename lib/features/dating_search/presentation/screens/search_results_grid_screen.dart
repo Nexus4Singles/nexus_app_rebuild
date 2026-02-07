@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/features/profile/presentation/screens/profile_screen.dart';
 import 'package:nexus_app_min_test/features/subscription/presentation/screens/subscription_screen.dart';
 import 'package:nexus_app_min_test/features/dating_search/application/saved_profiles_provider.dart';
 import '../../domain/dating_profile.dart';
+import '../../domain/dating_search_result.dart';
 import '../../application/dating_search_results_provider.dart';
 import '../../application/dating_preferences_provider.dart';
 import '../../application/dating_dismissed_profiles_provider.dart';
@@ -60,7 +62,8 @@ class _SearchResultsGridScreenState
   @override
   Widget build(BuildContext context) {
     final ref = this.ref;
-    final resultsAsync = ref.watch(datingSearchResultsProvider);
+    final resultsAsync = ref.watch(cachedDatingSearchResultsProvider);
+    final preferencesAsync = ref.watch(datingPreferencesProvider);
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
@@ -72,46 +75,26 @@ class _SearchResultsGridScreenState
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder:
-                      (_) => ref
-                          .watch(datingPreferencesProvider)
-                          .when(
-                            data:
-                                (prefs) => DatingPreferencesSetupScreen(
-                                  existingPreferences: prefs,
-                                ),
-                            loading:
-                                () => const Scaffold(
-                                  body: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                ),
-                            error:
-                                (e, st) => const Scaffold(
-                                  body: Center(
-                                    child: Text('Error loading preferences'),
-                                  ),
-                                ),
-                          ),
-                ),
-              );
+              // Get preferences value before navigating
+              preferencesAsync.whenData((prefs) {
+                if (!mounted) return;
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder:
+                        (_) => DatingPreferencesSetupScreen(
+                          existingPreferences: prefs,
+                        ),
+                  ),
+                );
+              });
             },
           ),
         ],
       ),
       body: resultsAsync.when(
         loading:
-            () => Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CircularProgressIndicator(),
-                  const SizedBox(height: 16),
-                  Text('Finding Matches...', style: AppTextStyles.bodyMedium),
-                ],
-              ),
+            () => const Center(
+              child: CircularProgressIndicator(),
             ),
         error:
             (e, st) => Center(
@@ -130,11 +113,19 @@ class _SearchResultsGridScreenState
                       color: AppColors.getTextPrimary(context),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed:
-                        () => ref.invalidate(datingSearchResultsProvider),
-                    child: const Text('Retry'),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        if (!mounted) return;
+                        ref.invalidate(datingSearchResultsProvider);
+                        ref.read(searchResultsCacheProvider.notifier).clear();
+                        ref.read(searchResultsOffsetProvider.notifier).state = 0;
+                      },
+                      icon: const Icon(Icons.refresh, size: 18),
+                      label: const Text('Retry'),
+                    ),
                   ),
                 ],
               ),
@@ -148,38 +139,24 @@ class _SearchResultsGridScreenState
                     return NoProfilesScreen(
                       noProfilesInCountry: result.noProfilesInCountry,
                       countryName: preferences?.countryOfResidence,
-                      onRetry:
-                          () => ref.invalidate(datingSearchResultsProvider),
+                      onRetry: () {
+                        if (!mounted) return;
+                        ref.invalidate(datingSearchResultsProvider);
+                        ref.read(searchResultsCacheProvider.notifier).clear();
+                        ref.read(searchResultsOffsetProvider.notifier).state = 0;
+                      },
                       onEditPreferences: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder:
-                                (_) => ref
-                                    .watch(datingPreferencesProvider)
-                                    .when(
-                                      data:
-                                          (prefs) =>
-                                              DatingPreferencesSetupScreen(
-                                                existingPreferences: prefs,
-                                              ),
-                                      loading:
-                                          () => const Scaffold(
-                                            body: Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            ),
-                                          ),
-                                      error:
-                                          (e, st) => const Scaffold(
-                                            body: Center(
-                                              child: Text(
-                                                'Error loading preferences',
-                                              ),
-                                            ),
-                                          ),
-                                    ),
-                          ),
-                        );
+                        preferencesAsync.whenData((prefs) {
+                          if (!mounted) return;
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder:
+                                  (_) => DatingPreferencesSetupScreen(
+                                    existingPreferences: prefs,
+                                  ),
+                            ),
+                          );
+                        });
                       },
                     );
                   },
@@ -196,122 +173,205 @@ class _SearchResultsGridScreenState
 
           return RefreshIndicator(
             onRefresh: () async {
+              if (!mounted) return;
               ref.invalidate(datingSearchResultsProvider);
-              await ref.read(datingSearchResultsProvider.future);
+              ref.read(searchResultsCacheProvider.notifier).clear();
+              ref.read(searchResultsOffsetProvider.notifier).state = 0;
+              if (!mounted) return;
+              await ref.read(cachedDatingSearchResultsProvider.future);
             },
-            child: Stack(
-              children: [
-                GridView.builder(
-                  controller: _scrollController,
-                  padding: const EdgeInsets.all(12),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 0.75,
-                  ),
-                  itemCount: result.items.length,
-                  itemBuilder: (context, index) {
-                    return _ProfileCard(profile: result.items[index]);
-                  },
-                ),
-                // Premium upsell footer (compact) if daily limit hit AND user scrolled to bottom
-                if (result.hitDailyLimit && _showDailyLimitCard)
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      margin: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            AppColors.primary.withOpacity(0.9),
-                            AppColors.primary,
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.star_rounded,
-                            color: Colors.white,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  'Daily Limit Reached',
-                                  style: AppTextStyles.labelMedium.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                if (result.dailyLimitHitAt != null)
-                                  Text(
-                                    'Resets in ${_getHoursUntilReset(result.dailyLimitHitAt!)}h',
-                                    style: AppTextStyles.bodySmall.copyWith(
-                                      color: Colors.white70,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          SizedBox(
-                            width: 70,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder:
-                                        (_) => const SubscriptionScreen(
-                                          initialTabIndex:
-                                              0, // Show Dating Features tab
-                                        ),
-                                  ),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                elevation: 0,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: Text(
-                                'Upgrade',
-                                style: AppTextStyles.labelSmall.copyWith(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-              ],
+            child: _PaginatedGridView(
+              allResults: result,
+              scrollController: _scrollController,
+              onLoadMore: () {
+                if (!mounted) return;
+                final currentOffset = ref.read(searchResultsOffsetProvider);
+                ref.read(searchResultsOffsetProvider.notifier).state =
+                    currentOffset + 20;
+              },
             ),
           );
         },
       ),
+    );
+  }
+}
+
+/// Custom widget to handle paginated grid display with load-more indicator
+class _PaginatedGridView extends ConsumerStatefulWidget {
+  final DatingSearchResult allResults;
+  final ScrollController scrollController;
+  final VoidCallback onLoadMore;
+
+  const _PaginatedGridView({
+    required this.allResults,
+    required this.scrollController,
+    required this.onLoadMore,
+  });
+
+  @override
+  ConsumerState<_PaginatedGridView> createState() =>
+      _PaginatedGridViewState();
+}
+
+class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
+  bool _showDailyLimitCard = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    widget.scrollController.removeListener(_onScroll);
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final position = widget.scrollController.position;
+    
+    // Show daily limit card when user reaches bottom
+    if (!_showDailyLimitCard &&
+        position.pixels >= position.maxScrollExtent - 100) {
+      setState(() => _showDailyLimitCard = true);
+    }
+    
+    // Pagination removed - no more load more logic needed
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Pagination removed - all profiles now load at once
+    // No need to watch offset or load more
+    
+    final List<DatingProfile> displayItems = [...widget.allResults.items];
+
+    if (kDebugMode) {
+      // ignore: avoid_print
+      print(
+        '[SearchResultsGrid] displayItems=${displayItems.length}',
+      );
+    }
+
+    return Stack(
+      children: [
+        CustomScrollView(
+          controller: widget.scrollController,
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.all(12),
+              sliver: SliverGrid(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return _ProfileCard(profile: displayItems[index]);
+                  },
+                  childCount: displayItems.length,
+                ),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 0.75,
+                ),
+              ),
+            ),
+            // Pagination removed - all profiles now load at once
+          ],
+        ),
+        // Premium upsell footer (compact) if daily limit hit AND user scrolled to bottom
+        if (widget.allResults.hitDailyLimit && _showDailyLimitCard)
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
+              ),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColors.primary.withOpacity(0.9),
+                    AppColors.primary,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.star_rounded,
+                    color: Colors.white,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Daily Limit Reached',
+                          style: AppTextStyles.labelMedium.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        if (widget.allResults.dailyLimitHitAt != null)
+                          Text(
+                            'Resets in ${_getHoursUntilReset(widget.allResults.dailyLimitHitAt!)}h',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: Colors.white70,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  SizedBox(
+                    width: 70,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder:
+                                (_) => const SubscriptionScreen(
+                                  initialTabIndex: 0, // Show Dating Features tab
+                                ),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        'Upgrade',
+                        style: AppTextStyles.labelSmall.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
@@ -369,12 +429,43 @@ class _ProfileCard extends ConsumerWidget {
             Positioned.fill(
               child:
                   photo != null
-                      ? Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          image: DecorationImage(
-                            image: NetworkImage(photo),
+                      ? ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: AppColors.getBackground(context),
+                          ),
+                          child: Image.network(
+                            photo,
                             fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              // Show placeholder icon if image fails to load
+                              return Container(
+                                color: AppColors.getBackground(context),
+                                child: Icon(
+                                  Icons.image_not_supported_outlined,
+                                  size: 40,
+                                  color: AppColors.getTextSecondary(context),
+                                ),
+                              );
+                            },
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: SizedBox(
+                                  width: 30,
+                                  height: 30,
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       )

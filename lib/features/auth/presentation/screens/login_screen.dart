@@ -86,37 +86,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
-  Future<void> _continueAsGuest() async {
-    FocusScope.of(context).unfocus();
-
-    setState(() {
-      _busy = true;
-      _error = null;
-    });
-
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('force_guest', true);
-
-      // Ensure FirebaseAuth doesn't re-hydrate an old signed-in user.
-      await FirebaseAuth.instance.signOut();
-
-      if (!mounted) return;
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const GuestEntryGate(child: BootstrapGate()),
-        ),
-        (_) => false,
-      );
-    } catch (e) {
-      if (!mounted) return;
-      setState(() => _error = e.toString());
-    } finally {
-      if (mounted) setState(() => _busy = false);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -317,28 +286,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               fontSize: 17,
                             ),
                           ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: OutlinedButton(
-                  onPressed: _busy ? null : _continueAsGuest,
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: AppColors.getBorder(context)),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: Text(
-                    _busy ? 'Please wait…' : 'Continue as Guest',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 17,
-                      color: AppColors.getTextPrimary(context),
-                    ),
-                  ),
                 ),
               ),
               const SizedBox(height: 16),

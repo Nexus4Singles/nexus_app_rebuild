@@ -14,7 +14,7 @@ final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((
 class ThemeModeNotifier extends StateNotifier<ThemeMode> {
   static const String _themeKey = 'theme_mode';
 
-  ThemeModeNotifier() : super(ThemeMode.light) {
+  ThemeModeNotifier() : super(ThemeMode.system) {
     _loadTheme();
   }
 

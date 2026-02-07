@@ -33,6 +33,76 @@ final datingSearchFiltersProvider = StateProvider<DatingSearchFilters>((ref) {
   return const DatingSearchFilters(minAge: 21, maxAge: 70);
 });
 
+// ============================================================================
+// EXPLORE/SEARCH SCREEN PERSISTENT FILTERS
+// ============================================================================
+// This provider persists the filter state on the explore/search screen
+// so it doesn't reset when navigating away and back
+
+class ExploreScreenFiltersNotifier extends StateNotifier<Map<String, dynamic>> {
+  ExploreScreenFiltersNotifier()
+      : super({
+          'minAge': 21,
+          'maxAge': 65,
+          'countryOfResidence': null,
+          'longDistance': null,
+          'maritalStatus': null,
+          'kids': null,
+          'genotype': null,
+        });
+
+  void setAgeRange(int min, int max) {
+    state = {...state, 'minAge': min, 'maxAge': max};
+  }
+
+  void setCountryOfResidence(String? value) {
+    state = {...state, 'countryOfResidence': value};
+  }
+
+  void setLongDistance(String? value) {
+    state = {...state, 'longDistance': value};
+  }
+
+  void setMaritalStatus(String? value) {
+    state = {...state, 'maritalStatus': value};
+  }
+
+  void setKids(String? value) {
+    state = {...state, 'kids': value};
+  }
+
+  void setGenotype(String? value) {
+    state = {...state, 'genotype': value};
+  }
+
+  void clearAll() {
+    state = {
+      'minAge': 21,
+      'maxAge': 65,
+      'countryOfResidence': null,
+      'longDistance': null,
+      'maritalStatus': null,
+      'kids': null,
+      'genotype': null,
+    };
+  }
+}
+
+final exploreScreenFiltersProvider = StateNotifierProvider<
+    ExploreScreenFiltersNotifier,
+    Map<String, dynamic>>((ref) {
+  return ExploreScreenFiltersNotifier();
+});
+
+// ============================================================================
+// PAGINATION STATE
+// ============================================================================
+// Tracks the current offset for lazy-loading search results
+
+final searchResultsOffsetProvider = StateProvider<int>((ref) {
+  return 0;
+});
+
 final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   ref,
 ) async {
@@ -122,18 +192,22 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   final dismissedIds = dismissedAsync.valueOrNull ?? [];
 
   // Convert saved preferences to search filters
-  // PATTERN: null (not set) = no filter; true (yes) = no filter; false (no) = apply filter
+  // PATTERN: null (not set) = no filter; true (yes) = show all; false (no) = apply restriction
   final filters =
       preferences != null
           ? DatingSearchFilters(
             minAge: preferences.minAge,
             maxAge: preferences.maxAge,
             countryOfResidence: preferences.countryOfResidence,
-            // allowLongDistance: null/true = any distance; false = local only
+            // allowLongDistance:
+            // Question: "Would you like to connect with people outside your location?"
+            // - true (Yes) = show profiles willing to do long distance (outside location)
+            // - false (No) = show only local profiles (Not willing to do long distance)
+            // - null (No Preference) = don't filter by distance
             longDistance:
                 preferences.allowLongDistance == true
-                    ? 'Yes'
-                    : (preferences.allowLongDistance == false ? 'No' : null),
+                    ? 'Yes' // "Yes" = show profiles open to long distance (outside location)
+                    : (preferences.allowLongDistance == false ? 'No' : null), // "No" = show local only
             // openToMarriedBefore: null/true = any marital status; false = never married only
             maritalStatus:
                 preferences.openToMarriedBefore == false
@@ -150,6 +224,7 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     // ignore: avoid_print
     print(
       '[DatingSearchResultsProvider] Built filters: '
+      'age=${filters.minAge}-${filters.maxAge}, '
       'country=${filters.countryOfResidence}, '
       'distance=${filters.longDistance}, '
       'marital=${filters.maritalStatus}, '
@@ -167,21 +242,38 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     );
   }
 
-  var results = await service
-      .search(genderToShow: genderToShow, filters: filters)
-      .timeout(
-        const Duration(seconds: 30),
-        onTimeout: () {
-          if (kDebugMode) {
-            // ignore: avoid_print
-            print(
-              '[DatingSearchResults] Search query timed out after 30 seconds - returning empty',
-            );
-          }
-          // On timeout, return empty results to show no-profiles screen
-          return const DatingSearchResult(items: []);
-        },
+  // Search with saved preferences (will fall back to age-only if exhausted)
+  // Load all matching profiles at once instead of paginating
+  DatingSearchResult results;
+  try {
+    results = await service
+        .search(
+          genderToShow: genderToShow,
+          filters: filters,
+          limit: 10000, // Load all at once
+        )
+        .timeout(
+          const Duration(seconds: 30),
+          onTimeout: () {
+            if (kDebugMode) {
+              // ignore: avoid_print
+              print(
+                '[DatingSearchResults] Search query timed out after 30 seconds - returning empty',
+              );
+            }
+            // On timeout, return empty results to show no-profiles screen
+            return const DatingSearchResult(items: []);
+          },
+        );
+  } catch (e, st) {
+    if (kDebugMode) {
+      // ignore: avoid_print
+      print(
+        '[DatingSearchResults] Search ERROR: $e\n$st',
       );
+    }
+    rethrow;
+  }
 
   // Filter dismissed profiles only (service already applied all other filters)
   if (results.items.isNotEmpty) {
@@ -306,17 +398,22 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
       }
     }
 
-    // Sort by compatibility score (highest first)
+    // Sort by profile creation date (newest first) - single sort for all results
     scoredProfiles.sort((a, b) {
-      final scoreA = a.compatibilityScore ?? 0;
-      final scoreB = b.compatibilityScore ?? 0;
-      return scoreB.compareTo(scoreA);
+      // Sort by date descending (newest first)
+      return b.createdAt.compareTo(a.createdAt);
     });
 
     results = DatingSearchResult(
       items: scoredProfiles,
       emptyHint: results.emptyHint,
     );
+  } else if (results.items.isNotEmpty) {
+    // If no scoring (too many profiles or missing user data), sort by creation date
+    results.items.sort((a, b) {
+      // Sort by date descending (newest first)
+      return b.createdAt.compareTo(a.createdAt);
+    });
   }
 
   if (kDebugMode) {
@@ -358,3 +455,50 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
 
   return results;
 });
+
+/// Notifier to cache the last successful search results
+class SearchResultsCacheNotifier extends StateNotifier<DatingSearchResult?> {
+  SearchResultsCacheNotifier() : super(null);
+
+  void setResults(DatingSearchResult results) {
+    state = results;
+  }
+
+  void clear() {
+    state = null;
+  }
+}
+
+final searchResultsCacheProvider =
+    StateNotifierProvider<SearchResultsCacheNotifier, DatingSearchResult?>(
+        (ref) {
+  return SearchResultsCacheNotifier();
+});
+
+/// Provider that returns cached results when available,
+/// or fetches fresh results and caches them
+final cachedDatingSearchResultsProvider =
+    FutureProvider<DatingSearchResult>((ref) async {
+  // Watch the cache
+  final cachedResults = ref.watch(searchResultsCacheProvider);
+  
+  // If we have cached results, return them immediately without refetching
+  if (cachedResults != null && cachedResults.items.isNotEmpty) {
+    return cachedResults;
+  }
+
+  // Otherwise, fetch fresh results
+  try {
+    final result = await ref.watch(datingSearchResultsProvider.future);
+    // Cache the successful result
+    ref.read(searchResultsCacheProvider.notifier).setResults(result);
+    return result;
+  } catch (e) {
+    rethrow;
+  }
+});
+
+// ============================================================================
+// PAGINATION REMOVED - All profiles now load at once
+// This simplifies UX and avoids pagination bugs
+// ============================================================================

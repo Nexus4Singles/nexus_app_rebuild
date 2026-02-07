@@ -394,14 +394,44 @@ class DatingSearchService {
 
   /// Assumption based on Nexus 1.0: dating profiles live in users collection.
   /// We filter on gender at query-level and apply the rest in-memory safely.
+  /// 
+  /// [offset]: Number of filtered profiles to skip (for pagination)
+  /// [limit]: Number of filtered profiles per page
+  /// 
+  /// IMPORTANT: Offset is applied AFTER all filtering (age, country, distance, etc.),
+  /// not at the Firestore query level. This ensures that pagination always returns
+  /// profiles that match the saved preferences and age bracket.
+  /// 
+  /// Search strategy:
+  /// 1. Query Firestore by gender + country (server-side only)
+  /// 2. Apply in-memory filters step-by-step (age → country → distance → marital → kids → genotype)
+  /// 3. If results are empty at any step, fall back to age-bracket-only profiles
+  /// 4. Apply offset/limit to the fully-filtered results
+  /// 5. Return appropriate message for UI to display
   Future<DatingSearchResult> search({
     required String genderToShow,
     required DatingSearchFilters filters,
-    int limit = kDebugMode ? 1000 : 10,
+    int offset = 0,
+    int limit = 20,
   }) async {
     final genders = _genderQueryValues(genderToShow);
     if (genders.isEmpty)
       return const DatingSearchResult(items: <DatingProfile>[]);
+    
+    if (kDebugMode) {
+      // ignore: avoid_print
+      print(
+        '[DatingSearchService] SEARCH START: age=${filters.minAge}-${filters.maxAge}, '
+        'country=${filters.countryOfResidence}, distance=${filters.longDistance}, '
+        'marital=${filters.maritalStatus}, kids=${filters.hasKids}',
+      );
+    }
+    
+    // Optimization: Dynamically set Firestore query limit based on pagination offset
+    // This reduces unnecessary re-fetching on subsequent pages
+    // Calculate how many profiles we need to fetch to serve offset + limit
+    // Add 20% buffer for profiles that will be filtered out by age/preferences
+    final fsLimit = ((offset + limit) * 1.2).ceil().clamp(500, 10000).toInt();
 
     final futures = <Future<QuerySnapshot<Map<String, dynamic>>>>[];
     for (final g in genders) {
@@ -433,7 +463,10 @@ class DatingSearchService {
       // because v1 profiles may not have these fields, causing Firestore to return 0 results.
       // Filter these in-memory after fetching by country and gender.
 
-      verifiedQ = verifiedQ.limit(limit);
+      // NOTE: We fetch extra profiles to account for in-memory filtering (age, distance, etc.)
+      // offset/limit will be applied AFTER all in-memory filtering is complete
+      // NOTE: Removed orderBy to avoid composite index requirement - will sort in-memory instead
+      verifiedQ = verifiedQ.limit(fsLimit);
 
       final regValues = _registrationProgressQueryValues('completed');
 
@@ -468,7 +501,10 @@ class DatingSearchService {
         // because v1 profiles may not have these fields, causing Firestore to return 0 results.
         // Filter these in-memory after fetching by country and gender.
 
-        legacyQ = legacyQ.limit(limit);
+        // NOTE: We fetch extra profiles to account for in-memory filtering (age, distance, etc.)
+        // offset/limit will be applied AFTER all in-memory filtering is complete
+        // NOTE: Removed orderBy to avoid composite index requirement - will sort in-memory instead
+        legacyQ = legacyQ.limit(fsLimit);
         futures.add(legacyQ.get());
       }
     }
@@ -624,11 +660,68 @@ class DatingSearchService {
       }
     }
 
-    // Age filter first
+    // Sort combined profiles by creation date (most recent first)
+    // Done in-memory instead of at Firestore level to avoid composite index requirement
+    final sortedProfiles = combined.values.toList()
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    
+    // Age filter first (always applied, even in unlimited mode)
     final afterAge =
-        combined.values
+        sortedProfiles
             .where((p) => p.age >= filters.minAge && p.age <= filters.maxAge)
             .toList();
+
+    if (kDebugMode && combined.isNotEmpty) {
+      // Log creation dates to verify newest profiles are first
+      final firstFew = combined.values.take(5).toList();
+      final creationDates = firstFew.map((p) => '${p.name}(${p.createdAt})').join(', ');
+      // ignore: avoid_print
+      print(
+        '[DatingSearchService] Profile creation order (newest first): $creationDates',
+      );
+    }
+
+    if (kDebugMode) {
+      // Debug: Show age range being filtered
+      final agesInCombined = combined.values.map((p) => p.age).toList()..sort();
+      final minAgeInCombined = agesInCombined.isNotEmpty ? agesInCombined.first : 0;
+      final maxAgeInCombined = agesInCombined.isNotEmpty ? agesInCombined.last : 0;
+      
+      // ignore: avoid_print
+      print(
+        '[DatingSearchService] AGE FILTER: minAge=${filters.minAge}, maxAge=${filters.maxAge} '
+        '| combined has ages: $minAgeInCombined - $maxAgeInCombined | Result: ${afterAge.length} profiles',
+      );
+      if (afterAge.isNotEmpty) {
+        final agesInAfterAge = afterAge.map((p) => p.age).toList()..sort();
+        // ignore: avoid_print
+        print(
+          '[DatingSearchService] afterAge ages: ${agesInAfterAge.first} - ${agesInAfterAge.last}',
+        );
+      }
+      if (afterAge.isNotEmpty && afterAge.length < 20) {
+        final sampleAges = afterAge.map((p) => '${p.name}(${p.age})').join(', ');
+        // ignore: avoid_print
+        print('[DatingSearchService] Sample profiles after age filter: $sampleAges');
+      }
+    }
+
+    // CRITICAL: If no profiles in entire age bracket, stop here - cannot fall back further
+    if (afterAge.isEmpty) {
+      if (kDebugMode) {
+        // ignore: avoid_print
+        print(
+          '[DatingSearchService] NO PROFILES IN AGE BRACKET: age range ${filters.minAge}-${filters.maxAge} has no profiles.',
+        );
+      }
+      return DatingSearchResult(
+        items: [],
+        emptyHint:
+            'No profiles found in your selected age bracket (${filters.minAge}-${filters.maxAge}). '
+            'Try expanding your age range.',
+        noProfilesInCountry: false,
+      );
+    }
 
     if (kDebugMode) {
       // ignore: avoid_print
@@ -693,7 +786,17 @@ class DatingSearchService {
     );
     if (current.isEmpty) {
       captureEmptyHint('Long distance', filters.longDistance);
-      // Profiles exist in country but don't match distance preference
+      // Fallback to age-only when preferences exhausted
+      if (afterAge.isNotEmpty) {
+        return DatingSearchResult(
+          items: afterAge,
+          emptyHint:
+              'No more profiles matching your preferences. '
+              'Showing other profiles in your age bracket.',
+          noProfilesInCountry: false,
+        );
+      }
+      // No profiles even in age bracket
       return DatingSearchResult(
         items: current,
         emptyHint: emptyHint,
@@ -711,7 +814,17 @@ class DatingSearchService {
     );
     if (current.isEmpty) {
       captureEmptyHint('Marital status', filters.maritalStatus);
-      // Profiles exist in country but don't match marital status preference
+      // Fallback to age-only when preferences exhausted
+      if (afterAge.isNotEmpty) {
+        return DatingSearchResult(
+          items: afterAge,
+          emptyHint:
+              'No more profiles matching your preferences. '
+              'Showing other profiles in your age bracket.',
+          noProfilesInCountry: false,
+        );
+      }
+      // No profiles even in age bracket
       return DatingSearchResult(
         items: current,
         emptyHint: emptyHint,
@@ -728,8 +841,18 @@ class DatingSearchService {
       sampleCanon: (p) => _canonKids(p.haveKids),
     );
     if (current.isEmpty) {
-      captureEmptyHint('Marital status', filters.maritalStatus);
-      // Profiles exist in country but don't match kids preference
+      captureEmptyHint('Kids preference', filters.hasKids);
+      // Fallback to age-only when preferences exhausted
+      if (afterAge.isNotEmpty) {
+        return DatingSearchResult(
+          items: afterAge,
+          emptyHint:
+              'No more profiles matching your preferences. '
+              'Showing other profiles in your age bracket.',
+          noProfilesInCountry: false,
+        );
+      }
+      // No profiles even in age bracket
       return DatingSearchResult(
         items: current,
         emptyHint: emptyHint,
@@ -770,10 +893,77 @@ class DatingSearchService {
       print('[DatingSearchService] filtered=${current.length}');
     }
 
-    // If we reach here with 0 results, it means profiles exist in the country
-    // but got filtered out by genotype or other preferences
+    // If preferences filtering resulted in 0 results, fall back to age-only
+    if (current.isEmpty && afterAge.isNotEmpty) {
+      // CRITICAL: Only return profiles in the age bracket, nothing else
+      // Re-validate that all items in fallback are within age range
+      final validatedFallback = afterAge
+          .where((p) => p.age >= filters.minAge && p.age <= filters.maxAge)
+          .toList();
+      
+      // Apply offset/limit to age-only fallback results
+      final paginatedFallback =
+          validatedFallback.skip(offset).take(limit).toList();
+      
+      if (kDebugMode) {
+        // ignore: avoid_print
+        print(
+          '[DatingSearchService] FALLBACK: Returning age-bracket-only results '
+          '(age range: ${filters.minAge}-${filters.maxAge}, offset=$offset, limit=$limit, total available=${validatedFallback.length}, returning=${paginatedFallback.length})',
+        );
+        if (paginatedFallback.isNotEmpty) {
+          final ages = paginatedFallback.map((p) => p.age).join(', ');
+          // ignore: avoid_print
+          print('[DatingSearchService] FALLBACK ages: $ages');
+          
+          // Safety check: validate all returned ages are in range
+          final outOfRange = paginatedFallback.where((p) => p.age < filters.minAge || p.age > filters.maxAge).toList();
+          if (outOfRange.isNotEmpty) {
+            // ignore: avoid_print
+            print('[DatingSearchService] ERROR: Found out-of-range ages in fallback! ${outOfRange.map((p) => '${p.name}(${p.age})').join(', ')}');
+          }
+        }
+      }
+      
+      // Determine hint message based on whether pagination within age bracket is exhausted
+      final hint = paginatedFallback.isEmpty
+          ? 'No more profiles within your age bracket (${filters.minAge}-${filters.maxAge}). '
+              'Expand your search or check back later.'
+          : 'No more profiles matching your preferences. '
+              'Showing other profiles in your age bracket.';
+      
+      return DatingSearchResult(
+        items: paginatedFallback,
+        emptyHint: hint,
+        noProfilesInCountry: false,
+      );
+    }
+
+    // Apply offset/limit to the fully-filtered results
+    final paginatedResults = current.skip(offset).take(limit).toList();
+    
+    if (kDebugMode) {
+      // ignore: avoid_print
+      print(
+        '[DatingSearchService] FINAL RETURN: (age range: ${filters.minAge}-${filters.maxAge}, offset=$offset, limit=$limit, total available=${current.length}, returning=${paginatedResults.length})',
+      );
+      if (paginatedResults.isNotEmpty) {
+        final ages = paginatedResults.map((p) => p.age).join(', ');
+        // ignore: avoid_print
+        print('[DatingSearchService] FINAL ages: $ages');
+        
+        // Safety check: validate all returned ages are in range
+        final outOfRange = paginatedResults.where((p) => p.age < filters.minAge || p.age > filters.maxAge).toList();
+        if (outOfRange.isNotEmpty) {
+          // ignore: avoid_print
+          print('[DatingSearchService] ERROR: Found out-of-range ages in final results! ${outOfRange.map((p) => '${p.name}(${p.age})').join(', ')}');
+        }
+      }
+    }
+
+    // Return results (either with preferences applied or indication that nothing matches)
     return DatingSearchResult(
-      items: current,
+      items: paginatedResults,
       emptyHint: emptyHint,
       noProfilesInCountry: false,
     );

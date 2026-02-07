@@ -79,6 +79,8 @@ class _DatingPreferencesSetupScreenState
       lastRefreshedAt: DateTime.now(),
     );
 
+    print('[DatingPreferencesSetup] SAVING preferences: minAge=$_minAge, maxAge=$_maxAge, country=$_country');
+
     try {
       await ref
           .read(datingPreferencesNotifierProvider.notifier)
@@ -92,6 +94,7 @@ class _DatingPreferencesSetupScreenState
       // Invalidate both preferences and search results to force fresh fetch
       ref.invalidate(datingPreferencesProvider);
       ref.invalidate(datingSearchResultsProvider);
+      ref.read(searchResultsCacheProvider.notifier).clear();
 
       // If editing existing preferences, just pop back to results
       if (widget.existingPreferences != null) {
@@ -159,9 +162,12 @@ class _DatingPreferencesSetupScreenState
 
       // Invalidate search results to force refresh
       ref.invalidate(datingSearchResultsProvider);
+      ref.read(searchResultsCacheProvider.notifier).clear();
 
       // Get the search results
-      final resultsAsync = await ref.read(datingSearchResultsProvider.future);
+      final resultsAsync = await ref.read(
+        cachedDatingSearchResultsProvider.future,
+      );
 
       if (!mounted) {
         try {
@@ -183,7 +189,10 @@ class _DatingPreferencesSetupScreenState
           MaterialPageRoute(
             builder:
                 (_) => NoProfilesScreen(
-                  onRetry: () => ref.invalidate(datingSearchResultsProvider),
+                  onRetry: () {
+                    ref.invalidate(datingSearchResultsProvider);
+                    ref.read(searchResultsCacheProvider.notifier).clear();
+                  },
                   onEditPreferences: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
@@ -337,7 +346,7 @@ class _DatingPreferencesSetupScreenState
               // Long Distance
               _PreferenceSection(
                 title:
-                    'Do you mind connecting with people outside your country?',
+                    'Would you like to connect with people outside your country of residence?',
                 child: _YesNoButtons(
                   value: _allowLongDistance,
                   onChanged: (value) {
@@ -349,7 +358,7 @@ class _DatingPreferencesSetupScreenState
 
               // Kids
               _PreferenceSection(
-                title: 'Are you open to people with kids?',
+                title: 'Would you like to connect with people who have kids?',
                 child: _YesNoButtons(
                   value: _openToKids,
                   onChanged: (value) {
@@ -362,7 +371,7 @@ class _DatingPreferencesSetupScreenState
               // Married Before
               _PreferenceSection(
                 title:
-                    'Do you mind connecting with people who have been married before?',
+                    'Would you like to connect with people who have been married before?',
                 child: _YesNoButtons(
                   value: _openToMarriedBefore,
                   onChanged: (value) {

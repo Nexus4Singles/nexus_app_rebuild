@@ -10,6 +10,8 @@ dependencies:
   crypto: ^3.0.3
 
   http: ^1.2.2
+  cached_network_image: ^3.4.1
+  sqflite: ^2.3.0
 
   # DigitalOcean Spaces (S3-compatible)
   just_audio: ^0.9.38

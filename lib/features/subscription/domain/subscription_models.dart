@@ -101,7 +101,8 @@ class SubscriptionStatus extends Equatable {
   }
 
   bool get isExpired {
-    if (!isActive || expiryDate == null) return true;
+    if (!isActive) return true;
+    if (expiryDate == null) return false; // No expiry date = never expires
     return DateTime.now().isAfter(expiryDate!);
   }
 

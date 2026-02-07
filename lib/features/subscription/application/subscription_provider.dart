@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
 import 'package:nexus_app_min_test/features/subscription/domain/subscription_models.dart';
@@ -54,36 +55,64 @@ final isPremiumUserProvider = Provider<bool>((ref) {
 
 /// Provider for purchased journeys
 final purchasedJourneysProvider = StreamProvider<List<PurchasedJourney>>((ref) {
+  print('🔴 [purchasedJourneysProvider] PROVIDER FUNCTION CALLED');
+  
   final userId = ref.watch(currentUserIdProvider);
 
+  print('🔴 [purchasedJourneysProvider] ===== PROVIDER INIT =====');
+  print('🔴 [purchasedJourneysProvider] userId: "$userId"');
+  print('🔴 [purchasedJourneysProvider] userId is null: ${userId == null}');
+  print('🔴 [purchasedJourneysProvider] userId type: ${userId.runtimeType}');
+
   if (userId == null) {
+    print('🔴 [purchasedJourneysProvider] ❌ userId IS NULL, returning empty list stream');
     return Stream.value([]);
   }
 
+  print('🔴 [purchasedJourneysProvider] ✅ userId is NOT null: "$userId"');
+  print('🔴 [purchasedJourneysProvider] Creating Firestore listener for /users/$userId/purchases');
+
   // Read from purchases subcollection - stores journey purchase records
-  return FirebaseFirestore.instance
+  final stream = FirebaseFirestore.instance
       .collection('users')
       .doc(userId)
       .collection('purchases')
-      .snapshots()
-      .map((snapshot) {
-        final journeys =
-            snapshot.docs
-                .map((doc) => PurchasedJourney.fromFirestore(doc.data()))
-                .toList();
+      .snapshots();
 
-        // Sort by purchaseDate descending on Dart side
-        journeys.sort((a, b) => b.purchaseDate.compareTo(a.purchaseDate));
+  print('🔴 [purchasedJourneysProvider] Stream created, waiting for first event...');
 
-        return journeys;
-      })
-      .handleError((error) {
+  return stream.map((snapshot) {
+    print('🔴 [purchasedJourneysProvider] 📦 Snapshot received: ${snapshot.docs.length} documents');
+    final journeys =
+        snapshot.docs
+            .map((doc) {
+              try {
+                return PurchasedJourney.fromFirestore(doc.data());
+              } catch (e) {
+                print('🔴 [purchasedJourneysProvider] Error parsing journey ${doc.id}: $e');
+                return null;
+              }
+            })
+            .whereType<PurchasedJourney>()
+            .toList();
+
+    // Sort by purchaseDate descending on Dart side
+    journeys.sort((a, b) => b.purchaseDate.compareTo(a.purchaseDate));
+
+    print('🔴 [purchasedJourneysProvider] ✅ Loaded ${journeys.length} purchased journeys');
+    return journeys;
+  }).handleError((error, stackTrace) {
+    print('🔴 [purchasedJourneysProvider] ❌ Stream error: $error');
+    print('🔴 [purchasedJourneysProvider] Stack: $stackTrace');
         // If collection doesn't exist yet, return empty list instead of error
         if (error.toString().contains('permission-denied') ||
             error.toString().contains('not-found')) {
+          debugPrint('[purchasedJourneysProvider] Collection not found, returning empty list');
           return <PurchasedJourney>[];
         }
-        throw error;
+        // For other errors, still return empty list to avoid infinite loading
+        debugPrint('[purchasedJourneysProvider] Unknown error, returning empty list');
+        return <PurchasedJourney>[];
       });
 });
 
@@ -122,6 +151,9 @@ class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
     state = const AsyncValue.loading();
 
     try {
+      debugPrint('📝 [updateSubscription] Starting update for userId: $userId');
+      debugPrint('   isActive: $isActive, tier: ${tier.name}');
+
       final subscription = SubscriptionStatus(
         isActive: isActive,
         tier: tier,
@@ -132,14 +164,19 @@ class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
         revenueCatSubscriptionId: revenueCatSubscriptionId,
       );
 
+      debugPrint('📝 [updateSubscription] Writing to Firestore...');
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
         'subscription': subscription.toFirestore(),
         'onPremium': isActive, // Legacy flag for backward compatibility
         'updatedAt': FieldValue.serverTimestamp(),
       });
 
+      debugPrint('✅ [updateSubscription] Firestore update completed successfully');
+      debugPrint('   onPremium: $isActive, subscription: ${subscription.toFirestore()}');
+
       // Send notification for new subscription activation
       if (isActive && tier != SubscriptionTier.free) {
+        debugPrint('📲 [updateSubscription] Sending subscription activated notification');
         await NotificationHelpers.sendSubscriptionActivatedNotification(
           userId: userId,
           tier: tier.name,
@@ -148,6 +185,8 @@ class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
 
       state = const AsyncValue.data(null);
     } catch (e, stack) {
+      debugPrint('❌ [updateSubscription] Error: $e');
+      debugPrint('Stack trace: $stack');
       state = AsyncValue.error(e, stack);
       rethrow;
     }

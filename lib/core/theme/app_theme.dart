@@ -247,8 +247,12 @@ class AppTheme {
         backgroundColor: AppColors.surfaceLightMode,
         elevation: 24,
         shape: RoundedRectangleBorder(borderRadius: AppRadius.modal),
-        titleTextStyle: AppTextStyles.headlineSmall,
-        contentTextStyle: AppTextStyles.bodyMedium,
+        titleTextStyle: AppTextStyles.headlineSmall.copyWith(
+          color: AppColors.textPrimaryLight,
+        ),
+        contentTextStyle: AppTextStyles.bodyMedium.copyWith(
+          color: AppColors.textSecondaryLight,
+        ),
       ),
 
       // Bottom Sheet Theme

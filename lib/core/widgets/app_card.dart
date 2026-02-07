@@ -181,9 +181,8 @@ class AppImageCard extends StatelessWidget {
                           ? Image.network(
                             imageUrl!,
                             fit: BoxFit.cover,
-                            errorBuilder:
-                                (_, __, ___) =>
-                                    imagePlaceholder ?? _defaultPlaceholder(),
+                            errorBuilder: (_, __, ___) =>
+                                imagePlaceholder ?? _defaultPlaceholder(),
                           )
                           : imagePlaceholder ?? _defaultPlaceholder(),
                 ),

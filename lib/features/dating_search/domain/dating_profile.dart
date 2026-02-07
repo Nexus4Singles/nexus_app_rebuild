@@ -21,6 +21,9 @@ class DatingProfile {
   /// Normalized to lowercase. 'legacy' if missing.
   final String verificationStatus;
 
+  /// Whether the dating profile is active (used for toggling on relationship status change)
+  final bool isActive;
+
   final String? maritalStatus;
   final String? haveKids;
   final String? genotype;
@@ -54,6 +57,7 @@ class DatingProfile {
     required this.photos,
     required this.createdAt,
     required this.verificationStatus,
+    this.isActive = true,
     this.maritalStatus,
     this.haveKids,
     this.genotype,
@@ -347,6 +351,7 @@ class DatingProfile {
       createdAt: _asDate(json['createdAt']),
 
       verificationStatus: normalizedVerificationStatus,
+      isActive: (json['isActive'] as bool?) ?? true,
 
       // Filters (IMPORTANT): hydrate from v1 + v2 keys (root first, then compatibility map)
       educationLevel:

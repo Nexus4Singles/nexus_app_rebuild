@@ -155,15 +155,34 @@ class _Shell extends ConsumerWidget {
         ),
       ),
       body: completedAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
         error:
-            (_, __) => _Body(
-              journey: journey,
-              activities: activities,
-              completedMissionIds: const {},
-              isPurchased: isPurchased,
-              isLoading: isLoading,
-              freeMissionId: freeMissionId,
+            (e, __) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 48,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Unable to load journey'),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        ref.invalidate(completedMissionIdsProvider(journey.id));
+                      },
+                      icon: const Icon(Icons.refresh, size: 18),
+                      label: const Text('Retry'),
+                    ),
+                  ),
+                ],
+              ),
             ),
         data:
             (completed) => _Body(

@@ -5,6 +5,7 @@ import 'package:nexus_app_min_test/core/providers/service_providers.dart';
 import 'package:nexus_app_min_test/core/user/dating_profile_completed_provider.dart';
 import 'package:nexus_app_min_test/core/theme/theme.dart';
 import 'package:nexus_app_min_test/core/user/dating_opt_in_provider.dart';
+import 'package:nexus_app_min_test/core/widgets/cached_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nexus_app_min_test/core/models/user_model.dart';
 import 'package:nexus_app_min_test/features/launch/presentation/app_launch_gate.dart';
@@ -675,8 +676,7 @@ class _ChatRowState extends State<_ChatRow>
                       fit: BoxFit.cover,
                       width: 56,
                       height: 56,
-                      errorBuilder:
-                          (_, __, ___) => _buildInitialAvatar(initials),
+                      errorBuilder: (_, __, ___) => _buildInitialAvatar(initials),
                     )
                     : _buildInitialAvatar(initials),
           ),

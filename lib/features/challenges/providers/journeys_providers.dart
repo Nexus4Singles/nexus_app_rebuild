@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../core/constants/app_constants.dart';
@@ -26,22 +27,43 @@ final journeyMissionResponseServiceProvider = Provider(
 );
 
 final journeyCatalogProvider = FutureProvider<JourneyCatalogV1>((ref) async {
-  final status =
-      ref.watch(effectiveRelationshipStatusProvider) ??
-      RelationshipStatus.singleNeverMarried;
+  final status = ref.watch(effectiveRelationshipStatusProvider);
+
+  debugPrint('[journeyCatalogProvider] Loading catalog for status: $status');
 
   final service = ref.watch(journeysServiceProvider);
   final json = await service.loadCatalogForStatus(status);
   var catalog = JourneyCatalogV1.fromJson(json);
 
+  debugPrint('[journeyCatalogProvider] Loaded ${catalog.journeys.length} journeys');
+
   // Gender-specific filtering for Singles: total per gender = 20, with 2 gender-specific.
   if (status == RelationshipStatus.singleNeverMarried) {
     String? gender;
     try {
-      gender = await ref.watch(currentUserGenderProvider.future);
-      gender = gender?.trim().toLowerCase();
-    } catch (_) {}
+      // Wait for gender with 3-second timeout to avoid hanging
+      // If gender determination takes too long, proceed without filtering
+      final genderFuture = ref.watch(currentUserGenderProvider.future);
+      gender = await genderFuture.timeout(
+        const Duration(seconds: 3),
+        onTimeout: () {
+          debugPrint('[journeyCatalogProvider] Gender loading timed out after 3 seconds');
+          return null; // Proceed without gender filtering
+        },
+      );
+      
+      if (gender != null) {
+        gender = gender.trim().toLowerCase();
+        debugPrint('[journeyCatalogProvider] User gender resolved: $gender');
+      } else {
+        debugPrint('[journeyCatalogProvider] No gender available, showing all journeys');
+      }
+    } catch (e) {
+      debugPrint('[journeyCatalogProvider] Error loading gender: $e, proceeding without filtering');
+      gender = null;
+    }
 
+    // Only filter if gender was successfully determined
     if (gender == 'male' || gender == 'female') {
       final filtered =
           catalog.journeys.where((j) => _includeForGender(j, gender!)).toList();
@@ -50,9 +72,11 @@ final journeyCatalogProvider = FutureProvider<JourneyCatalogV1>((ref) async {
         category: catalog.category,
         journeys: filtered,
       );
+      debugPrint('[journeyCatalogProvider] Filtered to ${filtered.length} journeys for gender: $gender');
     }
   }
 
+  debugPrint('[journeyCatalogProvider] Returning catalog successfully with ${catalog.journeys.length} journeys');
   return catalog;
 });
 
@@ -65,18 +89,17 @@ final journeyByIdProvider = Provider.family<JourneyV1?, String>((ref, id) {
 });
 
 /// Returns a tuple of (JourneyV1, category) for purchase navigation
-final journeyWithCategoryProvider = Provider.family<(JourneyV1, String)?, String>(
-  (ref, id) {
-    final catalogAsync = ref.watch(journeyCatalogProvider);
-    return catalogAsync.maybeWhen(
-      data: (catalog) {
-        final journey = catalog.findById(id);
-        return journey != null ? (journey, catalog.category) : null;
-      },
-      orElse: () => null,
-    );
-  },
-);
+final journeyWithCategoryProvider =
+    Provider.family<(JourneyV1, String)?, String>((ref, id) {
+      final catalogAsync = ref.watch(journeyCatalogProvider);
+      return catalogAsync.maybeWhen(
+        data: (catalog) {
+          final journey = catalog.findById(id);
+          return journey != null ? (journey, catalog.category) : null;
+        },
+        orElse: () => null,
+      );
+    });
 
 final completedMissionIdsProvider = FutureProvider.family<Set<String>, String>((
   ref,

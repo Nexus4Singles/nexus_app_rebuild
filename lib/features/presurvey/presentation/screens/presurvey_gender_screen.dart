@@ -208,106 +208,44 @@ class PresurveyGenderScreen extends ConsumerWidget {
                   ),
                 ),
               ] else ...[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(
-                      height: 54,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          final g = guest?.gender;
-                          if (g == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please select your gender'),
-                              ),
-                            );
-                            return;
-                          }
-
-                          await _markPresurveyDoneLocally();
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const SignupScreen(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                SizedBox(
+                  height: 54,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final g = guest?.gender;
+                      if (g == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select your gender'),
                           ),
+                        );
+                        return;
+                      }
+
+                      await _markPresurveyDoneLocally();
+
+                      if (!context.mounted) return;
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const SignupScreen(),
                         ),
-                        child: Text(
-                          'Create Account',
-                          style: AppTextStyles.labelLarge.copyWith(
-                            color: Colors.white,
-                          ),
-                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      height: 54,
-                      child: OutlinedButton(
-                        onPressed: () async {
-                          await _markPresurveyDoneLocally();
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const AppLaunchGate(),
-                            ),
-                          );
-                        },
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          side: BorderSide(color: AppColors.getBorder(context)),
-                        ),
-                        child: Text('Log In', style: AppTextStyles.labelLarge),
+                    child: Text(
+                      'Create Account',
+                      style: AppTextStyles.labelLarge.copyWith(
+                        color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Center(
-                      child: TextButton(
-                        onPressed: () async {
-                          final g = guest?.gender;
-                          if (g == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please select your gender'),
-                              ),
-                            );
-                            return;
-                          }
-
-                          await _markPresurveyDoneLocally();
-
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (_) => const GuestEntryGate(
-                                    child: BootstrapGate(),
-                                  ),
-                            ),
-                            (_) => false,
-                          );
-                        },
-                        child: Text(
-                          'Continue as Guest',
-                          style: AppTextStyles.labelLarge.copyWith(
-                            color: AppColors.getTextSecondary(context),
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
               const SizedBox(height: 8),

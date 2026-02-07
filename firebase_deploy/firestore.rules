@@ -135,6 +135,14 @@ service cloud.firestore {
           allow read, write: if isSignedIn() && request.auth.uid == uid;
         }
       }
+
+      match /purchases/{purchaseId} {
+        allow list: if isSignedIn() && request.auth.uid == uid;
+        allow read: if isSignedIn() && request.auth.uid == uid;
+        allow create: if isSignedIn() && request.auth.uid == uid;
+        allow update: if isSignedIn() && request.auth.uid == uid;
+        allow delete: if false;
+      }
     }
 
     // ============================================================================

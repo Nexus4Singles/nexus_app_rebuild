@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -8,6 +9,7 @@ import 'package:nexus_app_min_test/core/constants/app_constants.dart';
 import 'package:nexus_app_min_test/core/session/effective_relationship_status_provider.dart';
 import 'package:nexus_app_min_test/core/config/revenuecat_config.dart';
 import 'package:nexus_app_min_test/core/services/revenuecat_service.dart';
+import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
 import 'package:nexus_app_min_test/features/subscription/application/subscription_provider.dart';
 import 'package:nexus_app_min_test/features/subscription/domain/subscription_models.dart';
 
@@ -33,6 +35,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
       vsync: this,
       initialIndex: widget.initialTabIndex ?? 0,
     );
+    print('🟢 [SubscriptionScreen] initState called - TabController created');
   }
 
   @override
@@ -46,6 +49,21 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
     final subscriptionAsync = ref.watch(subscriptionStatusProvider);
     final purchasedJourneysAsync = ref.watch(purchasedJourneysProvider);
     final relationshipStatus = ref.watch(effectiveRelationshipStatusProvider);
+
+    // Debug: Check userId being watched
+    final userId = ref.watch(currentUserIdProvider);
+    print('🟢 [SubscriptionScreen] BUILD called');
+    print('🟢 [SubscriptionScreen] userId=$userId');
+    print('🟢 [SubscriptionScreen] relationshipStatus=$relationshipStatus');
+
+    // Log states for debugging
+    subscriptionAsync.whenData((sub) {
+      debugPrint('[SubscriptionScreen] Subscription: isActive=${sub.isActive}, isExpired=${sub.isExpired}, tier=${sub.tier}');
+    });
+    
+    purchasedJourneysAsync.whenData((journeys) {
+      debugPrint('[SubscriptionScreen] Purchased journeys: ${journeys.length} items');
+    });
 
     // Married users should only see Journey Purchases tab
     final isMarried = relationshipStatus == RelationshipStatus.married;
@@ -139,13 +157,44 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
             child:
                 isMarried
                     ? purchasedJourneysAsync.when(
-                      data:
-                          (journeys) =>
-                              _JourneyPurchasesTab(journeys: journeys),
-                      loading:
-                          () =>
-                              const Center(child: CircularProgressIndicator()),
-                      error: (error, _) => Center(child: Text('Error: $error')),
+                      data: (journeys) {
+                        debugPrint('[SubscriptionScreen] Journey purchases DATA: ${journeys.length} items');
+                        return _JourneyPurchasesTab(journeys: journeys);
+                      },
+                      loading: () {
+                        debugPrint('[SubscriptionScreen] Journey purchases LOADING...');
+                        return const Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(),
+                              SizedBox(height: 16),
+                              Text('Loading purchased journeys...'),
+                            ],
+                          ),
+                        );
+                      },
+                      error: (error, stackTrace) {
+                        debugPrint('[SubscriptionScreen] Journey purchases ERROR: $error');
+                        debugPrint('[SubscriptionScreen] Stack: $stackTrace');
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'Error loading journeys: $error',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
                     )
                     : TabBarView(
                       controller: _tabController,
@@ -167,16 +216,44 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
 
                         // Journey Purchases Tab
                         purchasedJourneysAsync.when(
-                          data:
-                              (journeys) =>
-                                  _JourneyPurchasesTab(journeys: journeys),
-                          loading:
-                              () => const Center(
-                                child: CircularProgressIndicator(),
+                          data: (journeys) {
+                            debugPrint('[SubscriptionScreen-TabBar] Journey purchases DATA: ${journeys.length} items');
+                            return _JourneyPurchasesTab(journeys: journeys);
+                          },
+                          loading: () {
+                            debugPrint('[SubscriptionScreen-TabBar] Journey purchases LOADING...');
+                            return const Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircularProgressIndicator(),
+                                  SizedBox(height: 16),
+                                  Text('Loading purchased journeys...'),
+                                ],
                               ),
-                          error:
-                              (error, _) =>
-                                  Center(child: Text('Error: $error')),
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            debugPrint('[SubscriptionScreen-TabBar] Journey purchases ERROR: $error');
+                            debugPrint('[SubscriptionScreen-TabBar] Stack: $stackTrace');
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                                    const SizedBox(height: 16),
+                                    Text(
+                                      'Error loading journeys: $error',
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(color: Colors.red),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -222,10 +299,10 @@ class _ActiveSubscriptionView extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Premium Badge Card
+          // Premium Badge Card (compact horizontal layout)
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [AppColors.primary, AppColors.primary.withOpacity(0.7)],
@@ -239,80 +316,84 @@ class _ActiveSubscriptionView extends ConsumerWidget {
                 ),
               ],
             ),
-            child: Column(
+            child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.workspace_premium,
-                    size: 48,
+                    size: 40,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 16),
-                Text(
-                  'Premium Active',
-                  style: AppTextStyles.headlineMedium.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  subscription.tier.displayName,
-                  style: AppTextStyles.titleMedium.copyWith(
-                    color: Colors.white.withOpacity(0.9),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.schedule, color: Colors.white, size: 18),
-                      const SizedBox(width: 8),
                       Text(
-                        expiryDate != null
-                            ? 'Expires: ${DateFormat.yMMMd().format(expiryDate)}'
-                            : 'Active subscription',
-                        style: AppTextStyles.bodyMedium.copyWith(
+                        'Premium Active',
+                        style: AppTextStyles.titleLarge.copyWith(
                           color: Colors.white,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        subscription.tier.displayName,
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: Colors.white.withOpacity(0.9),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.check_circle, color: Colors.white, size: 14),
+                            const SizedBox(width: 6),
+                            Text(
+                              expiryDate != null
+                                  ? 'Expires: ${DateFormat.yMMMd().format(expiryDate)}'
+                                  : 'Active',
+                              style: AppTextStyles.caption.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
                 if (daysLeft > 0 && daysLeft <= 7)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        '$daysLeft days left',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: Colors.black87,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      '$daysLeft d',
+                      style: AppTextStyles.caption.copyWith(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -341,42 +422,14 @@ class _ActiveSubscriptionView extends ConsumerWidget {
           const SizedBox(height: 28),
 
           // Manage Subscription
-          if (subscription.autoRenew) ...[
-            Text(
-              'Manage Subscription',
-              style: AppTextStyles.titleMedium.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          Text(
+            'Manage Subscription',
+            style: AppTextStyles.titleMedium.copyWith(
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 12),
-            _CancelAutoRenewalButton(),
-          ] else ...[
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.getSurface(context),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.getBorder(context)),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.info_outline,
-                    color: AppColors.getTextSecondary(context),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'Auto-renewal has been cancelled. Your subscription will expire on ${expiryDate != null ? DateFormat.yMMMd().format(expiryDate) : "expiry date"}.',
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.getTextSecondary(context),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
+          const SizedBox(height: 12),
+          _CancelAutoRenewalButton(),
         ],
       ),
     );
@@ -394,7 +447,7 @@ class _NoSubscriptionView extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Premium Card
+          // Premium Card (compact horizontal layout)
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16),
@@ -413,7 +466,7 @@ class _NoSubscriptionView extends ConsumerWidget {
                 width: 1.5,
               ),
             ),
-            child: Column(
+            child: Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(12),
@@ -423,26 +476,31 @@ class _NoSubscriptionView extends ConsumerWidget {
                   ),
                   child: Icon(
                     Icons.workspace_premium,
-                    size: 40,
+                    size: 32,
                     color: AppColors.primary,
                   ),
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  'Unlock Premium Features',
-                  style: AppTextStyles.titleLarge.copyWith(
-                    color: AppColors.getTextPrimary(context),
-                    fontWeight: FontWeight.bold,
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Unlock Premium Features',
+                        style: AppTextStyles.titleMedium.copyWith(
+                          color: AppColors.getTextPrimary(context),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Get unlimited access to all dating features',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.getTextSecondary(context),
+                        ),
+                      ),
+                    ],
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Get unlimited access to all dating features',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.getTextSecondary(context),
-                  ),
-                  textAlign: TextAlign.center,
                 ),
               ],
             ),
@@ -1028,65 +1086,34 @@ class _JourneyPurchaseCard extends StatelessWidget {
 class _CancelAutoRenewalButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return OutlinedButton.icon(
+    return ElevatedButton.icon(
       onPressed: () async {
-        final confirm = await showDialog<bool>(
-          context: context,
-          builder:
-              (ctx) => AlertDialog(
-                title: const Text('Cancel Auto-Renewal?'),
-                content: const Text(
-                  'Your subscription will remain active until the end of the current billing period, but it will not renew automatically.',
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(ctx, false),
-                    child: const Text('Keep Subscription'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.pop(ctx, true),
-                    style: TextButton.styleFrom(
-                      foregroundColor: AppColors.error,
-                    ),
-                    child: const Text('Cancel Auto-Renewal'),
-                  ),
-                ],
+        try {
+          // Open the native subscription management UI via RevenueCat
+          await RevenueCatService.manageSubscriptions();
+        } catch (e) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error opening subscription settings: $e'),
+                backgroundColor: Colors.red,
               ),
-        );
-
-        if (confirm == true && context.mounted) {
-          try {
-            await ref
-                .read(subscriptionNotifierProvider.notifier)
-                .cancelAutoRenewal();
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Auto-renewal cancelled successfully'),
-                  backgroundColor: AppColors.success,
-                ),
-              );
-            }
-          } catch (e) {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Error: $e'),
-                  backgroundColor: AppColors.error,
-                ),
-              );
-            }
+            );
           }
         }
       },
-      icon: const Icon(Icons.cancel_outlined),
-      label: const Text('Cancel Auto-Renewal'),
-      style: OutlinedButton.styleFrom(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.error.withOpacity(0.1),
         foregroundColor: AppColors.error,
-        side: BorderSide(color: AppColors.error),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        elevation: 0,
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+        ),
+        side: BorderSide(color: AppColors.error.withOpacity(0.3)),
       ),
+      icon: const Icon(Icons.manage_accounts_rounded),
+      label: const Text('Manage Subscription'),
     );
   }
 }

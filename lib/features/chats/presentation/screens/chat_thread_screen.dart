@@ -2233,31 +2233,10 @@ class _NetworkAvatarImage extends StatelessWidget {
         fit: BoxFit.cover,
         width: 32,
         height: 32,
-        errorBuilder:
-            (_, __, ___) => Container(
-              color: AppColors.primary.withOpacity(0.1),
-              child: Icon(Icons.person, size: 14, color: AppColors.primary),
-            ),
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) {
-            return child;
-          }
-          return Container(
-            color: AppColors.primary.withOpacity(0.05),
-            child: Center(
-              child: SizedBox(
-                width: 8,
-                height: 8,
-                child: CircularProgressIndicator(
-                  strokeWidth: 1,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    AppColors.primary.withOpacity(0.5),
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
+        errorBuilder: (_, __, ___) => Container(
+          color: AppColors.primary.withOpacity(0.1),
+          child: Icon(Icons.person, size: 14, color: AppColors.primary),
+        ),
       ),
     );
   }
