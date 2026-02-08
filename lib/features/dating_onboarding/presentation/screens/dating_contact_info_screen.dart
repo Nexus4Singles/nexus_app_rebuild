@@ -398,14 +398,9 @@ class _DatingContactInfoScreenState
         await fs.collection('users').doc(uid).set({
           'dating': payload,
         }, SetOptions(merge: true));
-        debugPrint('[ContactInfo] Saved dating profile to Firestore for $uid');
       } else {
-        debugPrint(
-          '[ContactInfo] Skipped Firestore save (not ready or no uid).',
-        );
       }
     } catch (e) {
-      debugPrint('[ContactInfo] Firestore save failed: $e');
     }
 
     if (!mounted) return;

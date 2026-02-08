@@ -192,9 +192,7 @@ class StreakService {
         },
       });
 
-      debugPrint('🔥 Streak updated: $newStreak days (best: $newLongest)');
     } catch (e) {
-      debugPrint('Error recording activity: $e');
     }
   }
 
@@ -213,7 +211,6 @@ class StreakService {
         },
       });
     } catch (e) {
-      debugPrint('Error resetting streak: $e');
     }
   }
 }

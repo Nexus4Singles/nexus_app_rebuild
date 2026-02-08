@@ -57,29 +57,19 @@ class _DatingAudioSummaryScreenState
       final a2 = draft.audio2Path;
       final a3 = draft.audio3Path;
 
-      debugPrint('[AudioSummary] Upload check: a1=$a1, a2=$a2, a3=$a3');
-      debugPrint(
-        '[AudioSummary] URLs: audio1Url=${draft.audio1Url}, audio2Url=${draft.audio2Url}, audio3Url=${draft.audio3Url}',
-      );
-
       // Check if existing URLs are valid before skipping
       if (draft.audio1Url != null &&
           draft.audio2Url != null &&
           draft.audio3Url != null) {
-        debugPrint('[AudioSummary] Checking existing URLs for validity...');
         final url1Valid = await _isUrlValid(draft.audio1Url!);
         final url2Valid = await _isUrlValid(draft.audio2Url!);
         final url3Valid = await _isUrlValid(draft.audio3Url!);
 
         if (url1Valid && url2Valid && url3Valid) {
-          debugPrint('[AudioSummary] All URLs valid, skipping upload');
           setState(() => _isUploading = false);
           return;
         }
 
-        debugPrint(
-          '[AudioSummary] One or more URLs invalid, clearing and reuploading',
-        );
         ref.read(datingOnboardingDraftProvider.notifier).clearAudios();
       }
 
@@ -91,16 +81,6 @@ class _DatingAudioSummaryScreenState
       final file1 = File(a1);
       final file2 = File(a2);
       final file3 = File(a3);
-
-      debugPrint(
-        '[AudioSummary] File 1 exists: ${await file1.exists()}, size: ${await file1.length()}',
-      );
-      debugPrint(
-        '[AudioSummary] File 2 exists: ${await file2.exists()}, size: ${await file2.length()}',
-      );
-      debugPrint(
-        '[AudioSummary] File 3 exists: ${await file3.exists()}, size: ${await file3.length()}',
-      );
 
       if (!await file1.exists() ||
           !await file2.exists() ||
@@ -123,29 +103,15 @@ class _DatingAudioSummaryScreenState
       final d1 = await _probeLocalDuration(a1);
       final d2 = await _probeLocalDuration(a2);
       final d3 = await _probeLocalDuration(a3);
-      debugPrint(
-        '[AudioSummary] Local durations: a1=${d1?.inMilliseconds ?? -1}ms, a2=${d2?.inMilliseconds ?? -1}ms, a3=${d3?.inMilliseconds ?? -1}ms',
-      );
       _showSnackBar(
         'Local audio sizes: a1=${await file1.length()} bytes, a2=${await file2.length()} bytes, a3=${await file3.length()} bytes. Durations: a1=${d1?.inSeconds ?? -1}s, a2=${d2?.inSeconds ?? -1}s, a3=${d3?.inSeconds ?? -1}s',
       );
 
-      debugPrint('[AudioSummary] Uploading audio files...');
       final storage = ref.read(mediaStorageProvider) as DoSpacesStorageService;
 
-      debugPrint('[AudioSummary] Uploading audio 1: $a1');
       final url1 = await storage.uploadFile(localPath: a1);
-      debugPrint('[AudioSummary] Audio 1 uploaded: $url1');
-
-      debugPrint('[AudioSummary] Uploading audio 2: $a2');
       final url2 = await storage.uploadFile(localPath: a2);
-      debugPrint('[AudioSummary] Audio 2 uploaded: $url2');
-
-      debugPrint('[AudioSummary] Uploading audio 3: $a3');
       final url3 = await storage.uploadFile(localPath: a3);
-      debugPrint('[AudioSummary] Audio 3 uploaded: $url3');
-
-      debugPrint('[AudioSummary] Saving URLs to draft: $url1, $url2, $url3');
       ref
           .read(datingOnboardingDraftProvider.notifier)
           .updateAudioUrls(audio1Url: url1, audio2Url: url2, audio3Url: url3);
@@ -154,13 +120,8 @@ class _DatingAudioSummaryScreenState
       await Future.delayed(const Duration(milliseconds: 500));
 
       final updatedDraft = ref.read(datingOnboardingDraftProvider);
-      debugPrint(
-        '[AudioSummary] Draft after save: audio1Url=${updatedDraft.audio1Url}, audio2Url=${updatedDraft.audio2Url}, audio3Url=${updatedDraft.audio3Url}',
-      );
-
       setState(() => _isUploading = false);
     } catch (e) {
-      debugPrint('Audio upload error: $e');
       setState(() {
         _isUploading = false;
         _uploadError = true;
@@ -347,8 +308,6 @@ class _DatingAudioSummaryScreenState
     }
 
     try {
-      debugPrint('[AudioSummary] Playing URL: $url');
-
       // If already playing this track, pause it
       if (_playingIndex == index && _isPlaying) {
         await _player.pause();
@@ -375,7 +334,6 @@ class _DatingAudioSummaryScreenState
         _isPlaying = true;
       });
     } catch (e) {
-      debugPrint('Play error: $e');
       _showSnackBar('Unable to play recording');
     }
   }
@@ -394,14 +352,9 @@ class _DatingAudioSummaryScreenState
       final contentLength =
           int.tryParse(response.headers['content-length'] ?? '0') ?? 0;
 
-      debugPrint(
-        '[AudioSummary] URL check: $url -> status=$statusCode, size=$contentLength',
-      );
-
       // Valid if 200 OK and file is larger than 10KB (reasonable audio minimum)
       return statusCode == 200 && contentLength > 10240;
     } catch (e) {
-      debugPrint('[AudioSummary] URL validation failed: $e');
       return false;
     }
   }
@@ -414,7 +367,6 @@ class _DatingAudioSummaryScreenState
       final dur = p.duration;
       return dur;
     } catch (e) {
-      debugPrint('[AudioSummary] Probe failed for "$path": $e');
       return null;
     } finally {
       await p.dispose();

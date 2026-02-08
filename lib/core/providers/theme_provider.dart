@@ -64,7 +64,6 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
       }
       await prefs.setString(_themeKey, themeString);
     } catch (e) {
-      debugPrint('Error saving theme preference: $e');
     }
   }
 

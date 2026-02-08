@@ -229,13 +229,11 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
       // If the current photos match the draft photos, skip upload
       if (currentPhotoPaths.length == draftPhotoPaths.length &&
           currentPhotoPaths.every((path) => draftPhotoPaths.contains(path))) {
-        debugPrint('[Photos] Photos already in draft, skipping upload');
         if (!context.mounted) return;
         Navigator.of(context).pushNamed('/dating/setup/audio');
         return;
       }
 
-      debugPrint('[Photos] Uploading ${_photoPaths.length} photos...');
       final storage = ref.read(mediaStorageProvider);
 
       for (var i = 0; i < _photoPaths.length; i++) {
@@ -243,13 +241,9 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
         final key =
             'dating/photos/${DateTime.now().millisecondsSinceEpoch}_$i.jpg';
         try {
-          debugPrint('[Photos] Uploading photo ${i + 1}: $path');
           final publicUrl = await storage.uploadImage(
             localPath: path,
             objectKey: key,
-          );
-          debugPrint(
-            '[Photos] Photo ${i + 1} uploaded successfully: $publicUrl',
           );
         } catch (e) {
           _toast('Failed to upload photo ${i + 1}: $e');
@@ -258,7 +252,6 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
         }
       }
 
-      debugPrint('[Photos] All photos uploaded successfully');
       if (!context.mounted) return;
       Navigator.of(context).pushNamed('/dating/setup/audio');
     } catch (e) {

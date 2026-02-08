@@ -199,17 +199,11 @@ class PushNotificationService {
   /// Initialize the push notification service
   /// Call this during app startup
   Future<void> initialize(String? userId) async {
-    debugPrint('🔔 Initializing Push Notification Service...');
-
     // Request permission
     final settings = await requestPermission();
-    debugPrint('🔔 Push enabled: ${settings.pushEnabled}');
-
     if (settings.pushEnabled) {
       // Get FCM token
       final token = await getToken();
-      debugPrint('🔔 FCM Token: ${token?.substring(0, 20)}...');
-
       // Save token to Firestore if user is logged in
       if (userId != null && token != null) {
         await saveTokenToFirestore(userId, token);
@@ -226,7 +220,6 @@ class PushNotificationService {
       _configureMessageHandlers();
     }
 
-    debugPrint('🔔 Push Notification Service initialized');
   }
 
   /// Request notification permission
@@ -260,7 +253,6 @@ class PushNotificationService {
     try {
       return await _messaging.getToken();
     } catch (e) {
-      debugPrint('Error getting FCM token: $e');
       return null;
     }
   }
@@ -269,9 +261,7 @@ class PushNotificationService {
   Future<void> deleteToken() async {
     try {
       await _messaging.deleteToken();
-      debugPrint('🔔 FCM Token deleted');
     } catch (e) {
-      debugPrint('Error deleting FCM token: $e');
     }
   }
 
@@ -284,9 +274,7 @@ class PushNotificationService {
         'tokenUpdatedAt': FieldValue.serverTimestamp(),
         'platform': Platform.isIOS ? 'ios' : 'android',
       });
-      debugPrint('🔔 FCM Token saved to Firestore');
     } catch (e) {
-      debugPrint('Error saving FCM token: $e');
     }
   }
 
@@ -297,9 +285,7 @@ class PushNotificationService {
         'fcmToken': FieldValue.delete(),
         'notificationToken': FieldValue.delete(),
       });
-      debugPrint('🔔 FCM Token removed from Firestore');
     } catch (e) {
-      debugPrint('Error removing FCM token: $e');
     }
   }
 
@@ -317,10 +303,6 @@ class PushNotificationService {
 
   /// Handle message received while app is in foreground
   void _handleForegroundMessage(RemoteMessage message) {
-    debugPrint(
-      '🔔 Foreground message received: ${message.notification?.title}',
-    );
-
     final notification = AppNotification.fromRemoteMessage(message);
     _notificationController.add(notification);
 
@@ -330,8 +312,6 @@ class PushNotificationService {
 
   /// Handle notification tap (app opened from notification)
   void _handleNotificationTap(RemoteMessage message) {
-    debugPrint('🔔 Notification tapped: ${message.notification?.title}');
-
     final notification = AppNotification.fromRemoteMessage(message);
     _notificationController.add(notification);
 
@@ -343,7 +323,6 @@ class PushNotificationService {
   Future<void> _checkInitialMessage() async {
     final initialMessage = await _messaging.getInitialMessage();
     if (initialMessage != null) {
-      debugPrint('🔔 App opened from terminated state via notification');
       _handleNotificationTap(initialMessage);
     }
   }
@@ -353,16 +332,13 @@ class PushNotificationService {
     // NOTE: Deep-link navigation disabled for MVP stability.
     // Tapping a notification should only launch the app.
     // We keep this method as a no-op to avoid crashes during cold starts.
-    debugPrint('🔔 Notification tapped (navigation disabled): \$data');
   }
 
   /// Subscribe to a topic (e.g., "weekly_stories", "all_users")
   Future<void> subscribeToTopic(String topic) async {
     try {
       await _messaging.subscribeToTopic(topic);
-      debugPrint('🔔 Subscribed to topic: $topic');
     } catch (e) {
-      debugPrint('Error subscribing to topic: $e');
     }
   }
 
@@ -370,9 +346,7 @@ class PushNotificationService {
   Future<void> unsubscribeFromTopic(String topic) async {
     try {
       await _messaging.unsubscribeFromTopic(topic);
-      debugPrint('🔔 Unsubscribed from topic: $topic');
     } catch (e) {
-      debugPrint('Error unsubscribing from topic: $e');
     }
   }
 
@@ -385,7 +359,6 @@ class PushNotificationService {
         return AppNotificationSettings.fromJson(jsonDecode(json));
       }
     } catch (e) {
-      debugPrint('Error loading notification settings: $e');
     }
     return const AppNotificationSettings();
   }
@@ -395,9 +368,7 @@ class PushNotificationService {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_settingsKey, jsonEncode(settings.toJson()));
-      debugPrint('🔔 Notification settings saved');
     } catch (e) {
-      debugPrint('Error saving notification settings: $e');
     }
   }
 
@@ -428,8 +399,6 @@ class PushNotificationService {
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // Note: You may need to initialize Firebase here if not already done
   // await Firebase.initializeApp();
-
-  debugPrint('🔔 Background message received: ${message.notification?.title}');
 
   // Process the message (e.g., update local database, show notification)
   // Be careful: this runs in a separate isolate, so you can't access

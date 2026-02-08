@@ -58,11 +58,9 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
 
     // Log states for debugging
     subscriptionAsync.whenData((sub) {
-      debugPrint('[SubscriptionScreen] Subscription: isActive=${sub.isActive}, isExpired=${sub.isExpired}, tier=${sub.tier}');
     });
     
     purchasedJourneysAsync.whenData((journeys) {
-      debugPrint('[SubscriptionScreen] Purchased journeys: ${journeys.length} items');
     });
 
     // Married users should only see Journey Purchases tab
@@ -158,11 +156,9 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                 isMarried
                     ? purchasedJourneysAsync.when(
                       data: (journeys) {
-                        debugPrint('[SubscriptionScreen] Journey purchases DATA: ${journeys.length} items');
                         return _JourneyPurchasesTab(journeys: journeys);
                       },
                       loading: () {
-                        debugPrint('[SubscriptionScreen] Journey purchases LOADING...');
                         return const Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -175,8 +171,6 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                         );
                       },
                       error: (error, stackTrace) {
-                        debugPrint('[SubscriptionScreen] Journey purchases ERROR: $error');
-                        debugPrint('[SubscriptionScreen] Stack: $stackTrace');
                         return Center(
                           child: Padding(
                             padding: const EdgeInsets.all(20),
@@ -217,11 +211,9 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                         // Journey Purchases Tab
                         purchasedJourneysAsync.when(
                           data: (journeys) {
-                            debugPrint('[SubscriptionScreen-TabBar] Journey purchases DATA: ${journeys.length} items');
                             return _JourneyPurchasesTab(journeys: journeys);
                           },
                           loading: () {
-                            debugPrint('[SubscriptionScreen-TabBar] Journey purchases LOADING...');
                             return const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -234,8 +226,6 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                             );
                           },
                           error: (error, stackTrace) {
-                            debugPrint('[SubscriptionScreen-TabBar] Journey purchases ERROR: $error');
-                            debugPrint('[SubscriptionScreen-TabBar] Stack: $stackTrace');
                             return Center(
                               child: Padding(
                                 padding: const EdgeInsets.all(20),

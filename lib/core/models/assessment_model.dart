@@ -472,7 +472,6 @@ class AssessmentResult extends Equatable {
   }) {
     // Calculate total score
     final totalScore = answers.fold<int>(0, (sum, a) => sum + a.weight);
-    debugPrint("RESULT total= max=");
     final maxScore = answers.length * AppConfig.maxScorePerQuestion;
     final percentage = maxScore > 0 ? totalScore / maxScore : 0.0;
 

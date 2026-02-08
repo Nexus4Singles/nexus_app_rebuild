@@ -215,7 +215,6 @@ class _DatingPreferencesSetupScreenState
         );
       }
     } catch (e) {
-      debugPrint('Error checking search results: $e');
       if (!mounted) return;
 
       try {

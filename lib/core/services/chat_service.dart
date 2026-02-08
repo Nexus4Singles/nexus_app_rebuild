@@ -572,37 +572,20 @@ class ChatService {
     };
 
     try {
-      debugPrint(
-        '[CHAT][createConversation] Checking if users are disabled...',
-      );
       await _assertUsersNotDisabled([a, b]);
 
-      debugPrint(
-        '[CHAT][createConversation] Checking if genders are opposite...',
-      );
       await _assertOppositeGender(a, b);
 
-      debugPrint(
-        '[CHAT][createConversation] Running transaction to create chat...',
-      );
-      debugPrint('[CHAT][createConversation] chatDoc=$chatDoc');
-      debugPrint(
-        '[CHAT][createConversation] participantIds type=${chatDoc['participantIds'].runtimeType}',
-      );
       return await _fs.runTransaction((tx) async {
         final existing = await tx.get(chatRef);
         if (existing.exists) return chatId;
 
         // Premium gating is enforced ONLY on send, not on opening/creating chats.
 
-        debugPrint('[CHAT][createConversation] Setting chat document...');
         tx.set(chatRef, chatDoc);
         return chatId;
       });
     } catch (e) {
-      debugPrint(
-        '[CHAT][createConversation] FAILED chatId=$chatId a=$a b=$b error=$e',
-      );
       rethrow;
     }
   }
@@ -628,7 +611,6 @@ class ChatService {
         query.docs.first.id,
       );
     } catch (e) {
-      debugPrint('Error getting conversation: $e');
       return null;
     }
   }
@@ -640,7 +622,6 @@ class ChatService {
       if (!doc.exists || doc.data() == null) return null;
       return ChatConversation.fromFirestore(doc.data()!, doc.id);
     } catch (e) {
-      debugPrint('Error getting conversation: $e');
       return null;
     }
   }
@@ -949,7 +930,6 @@ class ChatService {
       }
       await batch.commit();
     } catch (e) {
-      debugPrint('Error marking messages as read: $e');
     }
   }
 
@@ -991,7 +971,6 @@ class ChatService {
     try {
       await _chatsRef.doc(chatId).update({'typingUsers.$userId': isTyping});
     } catch (e) {
-      debugPrint('Error setting typing status: $e');
     }
   }
 

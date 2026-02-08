@@ -240,16 +240,6 @@ class ProfileScreen extends ConsumerWidget {
         if (map == null) return const _ProfileNotFound();
 
         // Debug: Log raw Firestore data to verify photos are present
-        debugPrint('📄 Raw Firestore map for user $effectiveUid:');
-        debugPrint('  dating.photos: ${map['dating']?['photos']}');
-        debugPrint(
-          '  dating.profile.photos: ${map['dating']?['profile']?['photos']}',
-        );
-        debugPrint(
-          '  dating.profile.profileUrl: ${map['dating']?['profile']?['profileUrl']}',
-        );
-        debugPrint('  photos (root): ${map['photos']}');
-
         // Build a proper UserModel from Firestore data.
         final profile = UserModel.fromMap(effectiveUid, map);
 
@@ -324,10 +314,6 @@ class ProfileScreen extends ConsumerWidget {
           profile.profileUrl,
           profile.photos,
         );
-        debugPrint(
-          '🖼️ Profile photos - profileUrl: "${profile.profileUrl}", photos list: ${profile.photos}',
-        );
-        debugPrint('🖼️ Combined photos for display: $photos');
         final location = _buildLocation(profile.city, profile.country);
 
         return Scaffold(
@@ -1754,7 +1740,6 @@ class _ProfileAudioController {
         } catch (_) {}
       });
     } catch (e) {
-      debugPrint('Error preloading duration for $u: $e');
     }
   }
 

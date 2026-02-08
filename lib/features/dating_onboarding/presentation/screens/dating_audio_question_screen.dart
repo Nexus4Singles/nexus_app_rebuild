@@ -300,7 +300,6 @@ class _DatingAudioQuestionScreenState
         await _player.play();
       }
     } catch (e) {
-      debugPrint('[AudioRecord] Error playing recording: $e');
       _toast('Failed to play recording: $e');
     }
   }
@@ -320,10 +319,8 @@ class _DatingAudioQuestionScreenState
           final oldFile = File(_filePath!);
           if (await oldFile.exists()) {
             await oldFile.delete();
-            debugPrint('[AudioRecord] Deleted old file: $_filePath');
           }
         } catch (e) {
-          debugPrint('[AudioRecord] Error deleting old file: $e');
         }
       }
 
@@ -336,7 +333,6 @@ class _DatingAudioQuestionScreenState
       final path =
           '${dir.path}/dating_audio_q${widget.questionNumber}_${DateTime.now().millisecondsSinceEpoch}.m4a';
 
-      debugPrint('[AudioRecord] Starting recording to: $path');
       _elapsed = 0;
       _filePath = path;
 
@@ -352,17 +348,12 @@ class _DatingAudioQuestionScreenState
 
       // Verify recording actually started
       final isRecording = await _recorder.isRecording();
-      debugPrint('[AudioRecord] Recorder started successfully: $isRecording');
-
       _isRecording = true;
       _isPaused = false;
       _startTimer();
 
       // Early guard: if simulator, warn once because iOS sims often produce empty audio.
       if (defaultTargetPlatform == TargetPlatform.iOS && !kIsWeb) {
-        debugPrint(
-          '[AudioRecord] Running on iOS simulator? If mic is unavailable, recordings may stay 28 bytes.',
-        );
       }
       setState(() {});
     } catch (e) {
@@ -395,10 +386,7 @@ class _DatingAudioQuestionScreenState
   Future<void> _stop() async {
     int finalSize = 0;
     try {
-      debugPrint('[AudioRecord] Stopping recorder...');
       final path = await _recorder.stop();
-      debugPrint('[AudioRecord] Recorder stopped, returned path: $path');
-
       // CRITICAL: Wait for iOS to flush audio buffer to disk
       await Future.delayed(const Duration(milliseconds: 500));
 
@@ -407,13 +395,9 @@ class _DatingAudioQuestionScreenState
         final file = File(path);
         if (await file.exists()) {
           finalSize = await file.length();
-          debugPrint(
-            '[AudioRecord] File size after recording: $finalSize bytes',
-          );
         }
       }
     } catch (e) {
-      debugPrint('[AudioRecord] Error stopping recorder: $e');
     }
     _timer?.cancel();
 
@@ -427,7 +411,6 @@ class _DatingAudioQuestionScreenState
 
     // Only save if minimum duration met and file is not tiny
     if (_recordedDuration >= _minSeconds && finalSize > 2048) {
-      debugPrint('[AudioRecord] Recording valid. Setting _hasRecording = true');
       setState(() => _hasRecording = true);
       _saveDraftPath();
     } else {
@@ -476,19 +459,11 @@ class _DatingAudioQuestionScreenState
           final file = File(_filePath!);
           if (await file.exists()) {
             final size = await file.length();
-            debugPrint(
-              '[AudioRecord] Recording in progress - file size: $size bytes at ${_elapsed}s',
-            );
-
             // If file is still header-only after 15s, warn in logs.
             if (_elapsed >= 15 && size <= 64) {
-              debugPrint(
-                '[AudioRecord][WARN] Still 0-byte audio after 15s. Mic/input may be unavailable (common on iOS simulator).',
-              );
             }
           }
         } catch (e) {
-          debugPrint('[AudioRecord] Error checking file size: $e');
         }
       }
 

@@ -434,7 +434,6 @@ class DatingProfileService {
         'lastUpdatedAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
     } catch (e) {
-      debugPrint('Error tracking nationality: $e');
     }
   }
 
@@ -450,7 +449,6 @@ class DatingProfileService {
         'lastUpdatedAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
     } catch (e) {
-      debugPrint('Error tracking country of residence: $e');
     }
   }
 
@@ -462,7 +460,6 @@ class DatingProfileService {
         trackCountryOfResidence(country),
       ]);
     } catch (e) {
-      debugPrint('Error tracking nationality and country: $e');
     }
   }
 }

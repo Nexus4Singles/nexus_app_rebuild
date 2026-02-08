@@ -222,17 +222,10 @@ class ErrorHandlerService {
   /// Log error for debugging
   void logError(dynamic error, [StackTrace? stackTrace]) {
     // In debug mode, print to console
-    debugPrint('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    debugPrint('ERROR: $error');
     if (error is AppError && error.code != null) {
-      debugPrint('CODE: ${error.code}');
     }
     if (stackTrace != null) {
-      debugPrint('STACK TRACE:');
-      debugPrint(stackTrace.toString());
     }
-    debugPrint('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-
     // TODO: In production, send to Firebase Crashlytics:
     // FirebaseCrashlytics.instance.recordError(error, stackTrace);
   }

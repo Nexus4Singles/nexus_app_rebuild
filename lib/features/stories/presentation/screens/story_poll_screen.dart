@@ -312,29 +312,15 @@ class _ResultsView extends StatelessWidget {
     var total = aggregate?.totalVotes ?? 0;
 
     // DEBUG: Log the aggregate data
-    debugPrint('=== POLL RESULTS DEBUG ===');
-    debugPrint('Poll ID: ${poll.id}');
-    debugPrint('Total Votes (from aggregate): $total');
-    debugPrint('Option Counts Map: $counts');
-    debugPrint(
-      'Poll Options: ${poll.options.map((o) => '${o.id}: ${o.text}').join(', ')}',
-    );
-    debugPrint('User Voted Option ID: $votedOptionId');
-
     // If no aggregate votes yet, calculate from seedCounts
     if (total == 0 && poll.seedCounts.isNotEmpty) {
-      debugPrint('Fallback: Using seedCounts: ${poll.seedCounts}');
       total = poll.seedCounts.values.fold(0, (sum, count) => sum + count);
     }
 
     // If still 0, calculate from counts map (in case totalVotes wasn't set properly)
     if (total == 0 && counts.isNotEmpty) {
-      debugPrint('Fallback: Calculating total from counts map');
       total = counts.values.fold(0, (sum, count) => sum + count);
     }
-
-    debugPrint('Final Total Votes: $total');
-    debugPrint('=====================');
 
     final safeTotal = total == 0 ? 1 : total;
     final insight = poll.insights[votedOptionId] ?? 'Thanks for sharing.';
@@ -371,14 +357,9 @@ class _ResultsView extends StatelessWidget {
                 final isMine = o.id == votedOptionId;
 
                 // DEBUG: Log per-option calculation
-                debugPrint('Option ${o.id}: count=$c, isMine=$isMine');
-
                 // If this is the user's voted option and total is 1 but count is 0,
                 // that means the vote was just recorded. Show 100%.
                 if (isMine && c == 0 && total == 1) {
-                  debugPrint(
-                    '  -> Using workaround: c=1 (was 0, isMine=true, total=1)',
-                  );
                   c = 1;
                 }
 
@@ -386,8 +367,6 @@ class _ResultsView extends StatelessWidget {
                     safeTotal > 0
                         ? ((c / safeTotal) * 100).clamp(0.0, 100.0)
                         : 0.0;
-
-                debugPrint('  -> Final pct: ${pct.toStringAsFixed(1)}%');
 
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 12),

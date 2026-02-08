@@ -134,7 +134,6 @@ final userConversationsProvider = StreamProvider<List<ChatConversation>>((ref) {
         StreamTransformer.fromHandlers(
           handleData: (data, sink) => sink.add(data),
           handleError: (error, stackTrace, sink) {
-            debugPrint('[Chats][userConversationsProvider] error=$error');
             // Convert any error (especially permission-denied) to empty list
             sink.add(<ChatConversation>[]);
           },

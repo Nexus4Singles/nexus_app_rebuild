@@ -113,7 +113,6 @@ class MediaService {
 
       return File(pickedFile.path);
     } catch (e) {
-      debugPrint('Error picking image from gallery: $e');
       return null;
     }
   }
@@ -147,7 +146,6 @@ class MediaService {
 
       return File(pickedFile.path);
     } catch (e) {
-      debugPrint('Error picking image from camera: $e');
       return null;
     }
   }
@@ -252,7 +250,6 @@ class MediaService {
 
       return faces.isNotEmpty;
     } catch (e) {
-      debugPrint('Face detection failed (fail-open): $e');
       return null;
     }
   }
@@ -284,7 +281,6 @@ class MediaService {
       if (croppedFile == null) return null;
       return File(croppedFile.path);
     } catch (e) {
-      debugPrint('Error cropping image: $e');
       return File(sourcePath); // Return original if crop fails
     }
   }
@@ -454,7 +450,6 @@ class MediaService {
 
       return true;
     } catch (e) {
-      debugPrint('Error starting recording: $e');
       _isRecording = false;
       return false;
     }
@@ -495,7 +490,6 @@ class MediaService {
 
       return path ?? _currentRecordingPath;
     } catch (e) {
-      debugPrint('Error stopping recording: $e');
       _isRecording = false;
       return null;
     }
@@ -511,7 +505,6 @@ class MediaService {
           await file.delete();
         }
       } catch (e) {
-        debugPrint('Error deleting cancelled recording: $e');
       }
     }
   }

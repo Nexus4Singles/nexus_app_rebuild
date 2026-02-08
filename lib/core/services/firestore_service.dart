@@ -581,9 +581,6 @@ class FirestoreService {
 
       await batch.commit();
 
-      debugPrint(
-        'Poll vote saved: pollId=${vote.pollId}, option=${vote.selectedOptionId}',
-      );
     } catch (e) {
       throw FirestoreException('Failed to save poll vote: $e');
     }

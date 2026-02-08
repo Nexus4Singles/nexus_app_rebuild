@@ -611,7 +611,6 @@ class _DuplicateDetectionWidgetState
         suspiciousPatterns: suspiciousPatterns,
       );
     } catch (e) {
-      debugPrint('Error checking duplicates: $e');
       return _DuplicateCheckResult(
         photoMatches: [],
         audioMatches: [],

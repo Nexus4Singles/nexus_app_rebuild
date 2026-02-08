@@ -186,13 +186,8 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
   /// Answer current question
   void answerQuestion(String optionId) {
     if (optionId.trim().isEmpty) return;
-    debugPrint("ANSWER TAP: optionId=[]");
     final question = state.currentQuestion;
     if (question == null) return;
-
-    debugPrint(
-      "CURRENT OPTIONS: ${question.options.map((o) => o.id).toList()}",
-    );
 
     final selectedOption = question.options.firstWhere(
       (o) => o.id.toLowerCase() == optionId.toLowerCase(),
@@ -207,14 +202,8 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
       weight: selectedOption.weight,
     );
 
-    debugPrint("ANSWERED Q option= weight= tier=");
-
     final newAnswers = Map<int, AssessmentAnswer>.from(state.answers);
     newAnswers[state.currentQuestionIndex] = answer;
-
-    debugPrint(
-      "ANSWERED Q option=[$optionId] weight=[${answer.weight}] tier=[${answer.signalTier}]",
-    );
 
     state = state.copyWith(answers: newAnswers);
   }
@@ -264,10 +253,6 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
         userId: userId,
         config: state.config!,
         answers: state.answers.values.toList(),
-      );
-
-      debugPrint(
-        "RESULT total=${result.totalScore} max=${result.maxScore} pct=${(result.percentage * 100).round()} tier=${result.overallTier.value}",
       );
 
       // Save to Firestore (skip in dev mode if Firebase is unavailable)

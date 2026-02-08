@@ -15,10 +15,7 @@ class RevenueCatService {
       );
 
       await Purchases.configure(configuration);
-      debugPrint('✅ RevenueCat SDK initialized successfully');
     } catch (e) {
-      debugPrint('❌ RevenueCat SDK initialization failed: $e');
-      debugPrint('Stack trace: ${StackTrace.current}');
       rethrow;
     }
   }
@@ -65,8 +62,6 @@ class RevenueCatService {
       final offerings = await Purchases.getOfferings();
       return offerings;
     } catch (e) {
-      debugPrint('Error fetching offerings: $e');
-      debugPrint('Stack trace: ${StackTrace.current}');
       return null;
     }
   }
@@ -79,17 +74,13 @@ class RevenueCatService {
   /// (iOS: App Store, Android: Google Play)
   static Future<void> manageSubscriptions() async {
     try {
-      debugPrint('🔧 Opening subscription management...');
-      
       if (Platform.isIOS) {
         // iOS - Open App Store app to manage subscriptions
         // The URL scheme opens the subscriptions section in Settings
         const url = 'https://apps.apple.com/account/subscriptions';
         if (await canLaunchUrl(Uri.parse(url))) {
           await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-          debugPrint('✅ Opened App Store subscriptions');
         } else {
-          debugPrint('⚠️ Could not launch App Store');
         }
       } else if (Platform.isAndroid) {
         // Android - Open Google Play app to manage subscriptions
@@ -98,13 +89,10 @@ class RevenueCatService {
         const url = 'https://play.google.com/store/account/subscriptions?package=$appPackage';
         if (await canLaunchUrl(Uri.parse(url))) {
           await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-          debugPrint('✅ Opened Google Play subscriptions');
         } else {
-          debugPrint('⚠️ Could not launch Google Play');
         }
       }
     } catch (e) {
-      debugPrint('❌ Error opening subscription management: $e');
       rethrow;
     }
   }

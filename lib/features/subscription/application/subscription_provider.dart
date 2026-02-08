@@ -107,11 +107,9 @@ final purchasedJourneysProvider = StreamProvider<List<PurchasedJourney>>((ref) {
         // If collection doesn't exist yet, return empty list instead of error
         if (error.toString().contains('permission-denied') ||
             error.toString().contains('not-found')) {
-          debugPrint('[purchasedJourneysProvider] Collection not found, returning empty list');
           return <PurchasedJourney>[];
         }
         // For other errors, still return empty list to avoid infinite loading
-        debugPrint('[purchasedJourneysProvider] Unknown error, returning empty list');
         return <PurchasedJourney>[];
       });
 });
@@ -151,9 +149,6 @@ class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
     state = const AsyncValue.loading();
 
     try {
-      debugPrint('📝 [updateSubscription] Starting update for userId: $userId');
-      debugPrint('   isActive: $isActive, tier: ${tier.name}');
-
       final subscription = SubscriptionStatus(
         isActive: isActive,
         tier: tier,
@@ -164,19 +159,14 @@ class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
         revenueCatSubscriptionId: revenueCatSubscriptionId,
       );
 
-      debugPrint('📝 [updateSubscription] Writing to Firestore...');
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
         'subscription': subscription.toFirestore(),
         'onPremium': isActive, // Legacy flag for backward compatibility
         'updatedAt': FieldValue.serverTimestamp(),
       });
 
-      debugPrint('✅ [updateSubscription] Firestore update completed successfully');
-      debugPrint('   onPremium: $isActive, subscription: ${subscription.toFirestore()}');
-
       // Send notification for new subscription activation
       if (isActive && tier != SubscriptionTier.free) {
-        debugPrint('📲 [updateSubscription] Sending subscription activated notification');
         await NotificationHelpers.sendSubscriptionActivatedNotification(
           userId: userId,
           tier: tier.name,
@@ -185,8 +175,6 @@ class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
 
       state = const AsyncValue.data(null);
     } catch (e, stack) {
-      debugPrint('❌ [updateSubscription] Error: $e');
-      debugPrint('Stack trace: $stack');
       state = AsyncValue.error(e, stack);
       rethrow;
     }
