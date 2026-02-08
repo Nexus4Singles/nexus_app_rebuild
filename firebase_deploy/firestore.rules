@@ -344,6 +344,23 @@ match /chats/{chatId} {
     }
 
     // ============================================================================
+    // Unique Nationalities and Countries of Residence (For Analytics/Tracking)
+    // ============================================================================
+    match /nationalities/{document=**} {
+      // All signed-in users can read nationalities
+      allow read: if isSignedIn();
+      // Admins can read/manage (for analytics and data cleanup)
+      allow write: if isAdmin();
+    }
+
+    match /countriesOfResidence/{document=**} {
+      // All signed-in users can read countries of residence
+      allow read: if isSignedIn();
+      // Admins can read/manage (for analytics and data cleanup)
+      allow write: if isAdmin();
+    }
+
+    // ============================================================================
     // Content Management System (CMS) - Remote stories & polls (PUBLIC READ)
     // ============================================================================
     match /cms/{document=**} {

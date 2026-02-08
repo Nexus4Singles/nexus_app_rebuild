@@ -272,11 +272,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                       errorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Colors.red),
+                        borderSide: BorderSide(color: AppColors.error),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Colors.red, width: 2),
+                        borderSide: BorderSide(color: AppColors.error, width: 2),
                       ),
                       contentPadding: const EdgeInsets.all(18),
                     ),
@@ -317,11 +317,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                       errorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Colors.red),
+                        borderSide: BorderSide(color: AppColors.error),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Colors.red, width: 2),
+                        borderSide: BorderSide(color: AppColors.error, width: 2),
                       ),
                       contentPadding: const EdgeInsets.all(18),
                     ),
@@ -362,11 +362,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                       errorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Colors.red),
+                        borderSide: BorderSide(color: AppColors.error),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Colors.red, width: 2),
+                        borderSide: BorderSide(color: AppColors.error, width: 2),
                       ),
                       contentPadding: const EdgeInsets.all(18),
                       suffixIcon: IconButton(
@@ -421,15 +421,15 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.red.withOpacity(0.1),
+                        color: AppColors.error.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.red.withOpacity(0.3)),
+                        border: Border.all(color: AppColors.error.withOpacity(0.3)),
                       ),
                       child: Row(
                         children: [
                           Icon(
                             Icons.error_outline,
-                            color: Colors.red,
+                            color: AppColors.error,
                             size: 20,
                           ),
                           const SizedBox(width: 12),
@@ -437,7 +437,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                             child: Text(
                               _error ?? 'Unknown error',
                               style: AppTextStyles.bodySmall.copyWith(
-                                color: Colors.red,
+                                color: AppColors.error,
                               ),
                             ),
                           ),
@@ -467,7 +467,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                                 height: 24,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation(
+                                  valueColor: const AlwaysStoppedAnimation<Color>(
                                     Colors.white,
                                   ),
                                 ),

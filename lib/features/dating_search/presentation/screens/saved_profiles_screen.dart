@@ -157,7 +157,7 @@ class _SavedProfileCard extends ConsumerWidget {
           border: Border.all(color: AppColors.getBorder(context)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: AppColors.shadowLight,
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -306,7 +306,7 @@ class _SavedProfileCard extends ConsumerWidget {
                   label: Text('Chat with $displayName'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppColors.textOnPrimary,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),

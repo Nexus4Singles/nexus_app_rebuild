@@ -234,19 +234,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.1),
+                    color: AppColors.error.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.red.withOpacity(0.3)),
+                    border: Border.all(color: AppColors.error.withOpacity(0.3)),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.error_outline, color: Colors.red, size: 20),
+                      Icon(Icons.error_outline, color: AppColors.error, size: 20),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           _error!,
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: Colors.red,
+                            color: AppColors.error,
                           ),
                         ),
                       ),

@@ -648,64 +648,35 @@ class _ChatRowState extends State<_ChatRow>
     final url = (widget.avatarUrl ?? '').trim();
     final initials = _getInitials(widget.name);
 
-    final Widget avatar = Stack(
-      children: [
-        // Avatar background
-        Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: _getAvatarColors(initials),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primary.withOpacity(0.15),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(28),
-            child:
-                url.isNotEmpty
-                    ? Image.network(
-                      url,
-                      fit: BoxFit.cover,
-                      width: 56,
-                      height: 56,
-                      errorBuilder: (_, __, ___) => _buildInitialAvatar(initials),
-                    )
-                    : _buildInitialAvatar(initials),
-          ),
+    final Widget avatar = Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: _getAvatarColors(initials),
         ),
-        // Online indicator
-        Positioned(
-          bottom: 0,
-          right: 0,
-          child: Container(
-            width: 16,
-            height: 16,
-            decoration: BoxDecoration(
-              color: AppColors.success,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppColors.getSurface(context),
-                width: 2,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.success.withOpacity(0.4),
-                  blurRadius: 6,
-                  offset: const Offset(0, 1),
-                ),
-              ],
-            ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withOpacity(0.15),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
-        ),
-      ],
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(28),
+        child:
+            url.isNotEmpty
+                ? Image.network(
+                  url,
+                  fit: BoxFit.cover,
+                  width: 56,
+                  height: 56,
+                  errorBuilder: (_, __, ___) => _buildInitialAvatar(initials),
+                )
+                : _buildInitialAvatar(initials),
+      ),
     );
 
     return AnimatedBuilder(

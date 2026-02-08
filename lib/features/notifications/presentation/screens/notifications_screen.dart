@@ -121,7 +121,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
           borderRadius: BorderRadius.circular(10),
         ),
         indicatorSize: TabBarIndicatorSize.tab,
-        labelColor: Colors.white,
+        labelColor: AppColors.textOnPrimary,
         unselectedLabelColor: AppColors.getTextSecondary(context),
         labelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
         unselectedLabelStyle: const TextStyle(

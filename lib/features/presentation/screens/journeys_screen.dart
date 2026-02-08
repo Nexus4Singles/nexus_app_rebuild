@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nexus_app_min_test/core/theme/app_colors.dart';
 import '../../journeys/domain/journey_models.dart';
 
 class JourneysScreen extends StatelessWidget {
@@ -14,14 +15,14 @@ class JourneysScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Journeys',
           style: TextStyle(
-            color: Colors.black,
+            color: AppColors.textPrimary,
             fontWeight: FontWeight.bold,
             fontSize: 24,
           ),
@@ -111,11 +112,11 @@ class _FeaturedJourneyCard extends StatelessWidget {
       width: 260,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.07),
+            color: AppColors.shadowLight,
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -137,10 +138,10 @@ class _FeaturedJourneyCard extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             journey.title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF3A215D),
+              color: AppColors.primary,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -148,7 +149,7 @@ class _FeaturedJourneyCard extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             journey.summary,
-            style: const TextStyle(fontSize: 13, color: Color(0xFF3A215D)),
+            style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -168,11 +169,11 @@ class _JourneyListCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppColors.shadowLight,
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -197,10 +198,10 @@ class _JourneyListCard extends StatelessWidget {
               children: [
                 Text(
                   journey.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF3A215D),
+                    color: AppColors.primary,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -208,9 +209,9 @@ class _JourneyListCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   journey.summary,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
-                    color: Color(0xFF3A215D),
+                    color: AppColors.textSecondary,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

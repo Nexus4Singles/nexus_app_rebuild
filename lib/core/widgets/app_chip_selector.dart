@@ -29,7 +29,7 @@ class AppChip extends StatelessWidget {
         isSelected
             ? (selectedColor ?? AppColors.primary)
             : (unselectedColor ?? AppColors.surfaceDark);
-    final textColor = isSelected ? Colors.white : AppColors.textPrimary;
+    final textColor = isSelected ? AppColors.textOnPrimary : AppColors.textPrimary;
     final borderColor =
         isSelected ? (selectedColor ?? AppColors.primary) : AppColors.border;
 
@@ -318,7 +318,7 @@ class AppOptionCard extends StatelessWidget {
                 ),
                 child:
                     isSelected
-                        ? const Icon(Icons.check, size: 16, color: Colors.white)
+                        ? const Icon(Icons.check, size: 16, color: AppColors.textOnPrimary)
                         : null,
               ),
             ],

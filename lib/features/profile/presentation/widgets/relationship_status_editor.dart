@@ -12,10 +12,12 @@ import 'package:nexus_app_min_test/core/session/effective_relationship_status_pr
 class RelationshipStatusEditor extends ConsumerWidget {
   final String currentStatus;
   final VoidCallback? onStatusChanged;
+  final String? customSubtitle;
 
   const RelationshipStatusEditor({
     required this.currentStatus,
     this.onStatusChanged,
+    this.customSubtitle,
     Key? key,
   }) : super(key: key);
 
@@ -60,7 +62,7 @@ class RelationshipStatusEditor extends ConsumerWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        _getStatusLabel(currentStatus),
+                        customSubtitle ?? _getStatusLabel(currentStatus),
                         style: AppTextStyles.bodySmall.copyWith(
                           color: AppColors.getTextSecondary(context),
                         ),

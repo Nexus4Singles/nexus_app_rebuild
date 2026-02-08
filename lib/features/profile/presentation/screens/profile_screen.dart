@@ -563,7 +563,7 @@ class _BasicProfileScreen extends ConsumerWidget {
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
+                                      color: AppColors.shadow,
                                       blurRadius: 16,
                                       offset: const Offset(0, 8),
                                     ),
@@ -696,7 +696,7 @@ class _BasicProfileScreen extends ConsumerWidget {
                               onPressed: onCreateDatingProfile,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primary,
-                                foregroundColor: Colors.white,
+                                foregroundColor: AppColors.textOnPrimary,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
@@ -705,7 +705,7 @@ class _BasicProfileScreen extends ConsumerWidget {
                               child: Text(
                                 'Create a Dating Profile',
                                 style: AppTextStyles.labelLarge.copyWith(
-                                  color: Colors.white,
+                                  color: AppColors.textOnPrimary,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
@@ -713,24 +713,6 @@ class _BasicProfileScreen extends ConsumerWidget {
                           ),
                         ],
                       ],
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Relationship Status Editor
-                  GestureDetector(
-                    onTap: () {
-                      showRelationshipStatusDialog(
-                        context,
-                        ref,
-                        p.nexus2?.relationshipStatus ?? '',
-                        onSuccess: () {
-                          // Profile will refresh automatically via providers
-                        },
-                      );
-                    },
-                    child: RelationshipStatusEditor(
-                      currentStatus: p.nexus2?.relationshipStatus ?? '',
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -841,18 +823,18 @@ class _RelationshipStatusPill extends ConsumerWidget {
     final label = _relationshipStatusLabel(value);
     final canTap = onTap != null;
 
-    final availableColor = Colors.green;
-    final unavailableColor = Colors.redAccent;
+    final availableColor = AppColors.success;
+    final unavailableColor = AppColors.error;
     final pillBg =
-        canTap ? Colors.white.withOpacity(0.85) : Colors.white.withOpacity(0.7);
-    final pillBorder = Colors.black.withOpacity(canTap ? 0.10 : 0.07);
+        canTap ? AppColors.textOnPrimary.withOpacity(0.85) : AppColors.textOnPrimary.withOpacity(0.7);
+    final pillBorder = AppColors.textMuted.withOpacity(canTap ? 0.10 : 0.07);
     final pillShadow =
         canTap
             ? [
               BoxShadow(
                 blurRadius: 14,
                 offset: const Offset(0, 6),
-                color: Colors.black.withOpacity(0.08),
+                color: AppColors.shadowLight,
               ),
             ]
             : null;
@@ -860,10 +842,10 @@ class _RelationshipStatusPill extends ConsumerWidget {
         value == RelationshipStatusTag.available
             ? availableColor
             : unavailableColor;
-    final textColor = Colors.black87;
-    final editBg = Colors.grey.withOpacity(0.10);
-    final editBorder = Colors.grey.withOpacity(0.22);
-    final editIconColor = Colors.black.withOpacity(0.85);
+    final textColor = AppColors.textPrimary;
+    final editBg = AppColors.border.withOpacity(0.10);
+    final editBorder = AppColors.border.withOpacity(0.22);
+    final editIconColor = AppColors.textPrimary.withOpacity(0.85);
 
     return Semantics(
       button: canTap,
@@ -1428,13 +1410,13 @@ class _SendMessageCta extends ConsumerWidget {
                   height: 32,
                   width: 32,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.18),
+                    color: AppColors.textOnPrimary.withOpacity(0.18),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white.withOpacity(0.35)),
+                    border: Border.all(color: AppColors.textOnPrimary.withOpacity(0.35)),
                   ),
                   child: const Icon(
                     Icons.chat_bubble_rounded,
-                    color: Colors.white,
+                    color: AppColors.textOnPrimary,
                     size: 16,
                   ),
                 ),
@@ -1449,7 +1431,7 @@ class _SendMessageCta extends ConsumerWidget {
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
                       style: AppTextStyles.titleSmall.copyWith(
-                        color: Colors.white,
+                        color: AppColors.textOnPrimary,
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                       ),
@@ -1461,7 +1443,7 @@ class _SendMessageCta extends ConsumerWidget {
                 Icon(
                   Icons.arrow_forward_ios_rounded,
                   size: 12,
-                  color: Colors.white.withOpacity(0.95),
+                  color: AppColors.textOnPrimary.withOpacity(0.95),
                 ),
               ],
             ),
@@ -1645,7 +1627,7 @@ class _RedChipWrap extends StatelessWidget {
               ),
               child: Text(
                 c,
-                style: AppTextStyles.bodySmall.copyWith(color: Colors.white),
+                style: AppTextStyles.bodySmall.copyWith(color: AppColors.textOnPrimary),
               ),
             ),
         ],
@@ -2247,10 +2229,10 @@ class _PremiumButton extends StatelessWidget {
               height: 32,
               width: 32,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.18),
+                color: AppColors.textOnPrimary.withOpacity(0.18),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, size: 18, color: Colors.white),
+              child: Icon(icon, size: 18, color: AppColors.textOnPrimary),
             ),
             const SizedBox(width: 10),
             Flexible(
@@ -2259,7 +2241,7 @@ class _PremiumButton extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.bodySmall.copyWith(
-                  color: Colors.white,
+                  color: AppColors.textOnPrimary,
                   fontWeight: FontWeight.w800,
                   height: 1.1,
                 ),
@@ -2316,7 +2298,7 @@ class _GalleryGrid extends StatelessWidget {
               return ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
-                  color: Colors.black12,
+                  color: AppColors.border,
                   child: GestureDetector(
                     onTap: () {
                       _openPhotoViewer(
@@ -2403,16 +2385,184 @@ class _AccountTiles extends StatelessWidget {
           },
         ),
         const SizedBox(height: 10),
-        const SizedBox(height: 10),
-
         _ProfileTile(
           icon: Icons.workspace_premium_outlined,
-          title: 'Subscriptions',
+          title: 'Subscriptions & Purchases',
           subtitle: 'Upgrade for more features',
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const SubscriptionScreen()),
             );
+          },
+        ),
+        const SizedBox(height: 10),
+        _ProfileTile(
+          icon: Icons.delete_rounded,
+          title: 'Delete Account',
+          subtitle: 'Delete your account',
+          onTap: () async {
+            // Step 1: Confirm deletion intent
+            final confirm = await showDialog<bool>(
+              context: context,
+              builder:
+                  (ctx) => AlertDialog(
+                    title: const Text('Delete Account?'),
+                    content: const Text(
+                      'This action cannot be undone. All your data will be permanently deleted.',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(ctx).pop(false),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(ctx).pop(true),
+                        child: const Text(
+                          'Delete',
+                          style: TextStyle(color: AppColors.error),
+                        ),
+                      ),
+                    ],
+                  ),
+            );
+
+            if (confirm != true) return;
+
+            if (!context.mounted) return;
+
+            // Step 2: Prompt for password verification
+            final passwordController = TextEditingController();
+            final password = await showDialog<String>(
+              context: context,
+              builder:
+                  (ctx) => AlertDialog(
+                    title: const Text('Verify Your Password'),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          'Enter your password to confirm account deletion:',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: passwordController,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            hintText: 'Enter your password',
+                          ),
+                        ),
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(ctx).pop(null),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed:
+                            () =>
+                                Navigator.of(ctx).pop(passwordController.text),
+                        child: const Text('Verify'),
+                      ),
+                    ],
+                  ),
+            );
+
+            passwordController.dispose();
+
+            if (password == null || password.isEmpty) return;
+
+            if (!context.mounted) return;
+
+            // Show loading dialog
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder:
+                  (ctx) => const AlertDialog(
+                    content: SizedBox(
+                      height: 50,
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                  ),
+            );
+
+            try {
+              final user = FirebaseAuth.instance.currentUser;
+              final email = user?.email;
+              final uid = user?.uid;
+
+              if (user == null || email == null || uid == null) {
+                throw Exception('User not found');
+              }
+
+              // Step 3: Re-authenticate with password
+              try {
+                final credential = EmailAuthProvider.credential(
+                  email: email,
+                  password: password,
+                );
+                await user.reauthenticateWithCredential(credential);
+              } catch (e) {
+                if (!context.mounted) return;
+                Navigator.of(context).pop(); // Close loading dialog
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Incorrect password. Account deletion cancelled.',
+                    ),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+                return;
+              }
+
+              final fs = FirebaseFirestore.instance;
+
+              // Step 4: Delete Firestore document
+              await fs.collection('users').doc(uid).delete();
+
+              // Step 5: Delete authentication user
+              await user.delete();
+
+              if (!context.mounted) return;
+              Navigator.of(context).pop(); // Close loading dialog
+
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.remove('force_guest');
+
+              // Navigate to welcome screen
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const AppLaunchGate()),
+                (_) => false,
+              );
+
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Account successfully deleted'),
+                    backgroundColor: AppColors.success,
+                  ),
+                );
+              }
+            } catch (e) {
+              if (!context.mounted) return;
+              Navigator.of(context).pop(); // Close loading dialog
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Error deleting account: $e'),
+                  backgroundColor: AppColors.error,
+                ),
+              );
+            }
           },
         ),
         const SizedBox(height: 10),
@@ -2512,7 +2662,7 @@ class _DatingProfileRequiredGate extends StatelessWidget {
               ),
               child: Text(
                 'Create a Profile',
-                style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
+                style: AppTextStyles.labelLarge.copyWith(color: AppColors.textOnPrimary),
               ),
             ),
           ],
@@ -2572,7 +2722,7 @@ class _GuestProfileGate extends StatelessWidget {
               ),
               child: Text(
                 'Create an account',
-                style: AppTextStyles.titleMedium.copyWith(color: Colors.white),
+                style: AppTextStyles.titleMedium.copyWith(color: AppColors.textOnPrimary),
               ),
             ),
             const SizedBox(height: 8),
@@ -2657,7 +2807,7 @@ class _ProfileError extends StatelessWidget {
               ),
               child: Text(
                 'Retry',
-                style: AppTextStyles.titleMedium.copyWith(color: Colors.white),
+                style: AppTextStyles.titleMedium.copyWith(color: AppColors.textOnPrimary),
               ),
             ),
           ],
@@ -2789,10 +2939,10 @@ class _InitialsAvatar extends StatelessWidget {
     return Center(
       child: CircleAvatar(
         radius: 44,
-        backgroundColor: Colors.white10,
+        backgroundColor: AppColors.surface,
         child: Text(
           initials,
-          style: AppTextStyles.headlineLarge.copyWith(color: Colors.white),
+          style: AppTextStyles.headlineLarge.copyWith(color: AppColors.textOnPrimary),
         ),
       ),
     );
@@ -2878,7 +3028,7 @@ void _openPhotoViewer(
   Navigator.of(context).push(
     PageRouteBuilder(
       opaque: false,
-      barrierColor: Colors.black,
+      barrierColor: AppColors.overlay,
       pageBuilder:
           (_, __, ___) => _PhotoViewerScreen(
             photos: photos,
@@ -2926,7 +3076,7 @@ class _PhotoViewerScreenState extends State<_PhotoViewerScreen> {
     final photos = widget.photos;
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Stack(
           children: [
@@ -2960,14 +3110,14 @@ class _PhotoViewerScreenState extends State<_PhotoViewerScreen> {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.4),
+                      color: AppColors.overlay,
                       borderRadius: BorderRadius.circular(999),
-                      border: Border.all(color: Colors.white24),
+                      border: Border.all(color: AppColors.border.withOpacity(0.24)),
                     ),
                     child: Text(
                       '${_index + 1}/${photos.length}',
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: Colors.white,
+                        color: AppColors.textOnPrimary,
                       ),
                     ),
                   ),
@@ -3004,11 +3154,11 @@ class _ViewerIconButton extends StatelessWidget {
         height: 44,
         width: 46,
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.4),
+          color: AppColors.overlay,
           borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: Colors.white24),
+          border: Border.all(color: AppColors.border.withOpacity(0.24)),
         ),
-        child: Icon(icon, color: Colors.white),
+        child: Icon(icon, color: AppColors.textOnPrimary),
       ),
     );
   }
@@ -3481,7 +3631,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
             ),
             if (_isSaving)
               Container(
-                color: Colors.black.withOpacity(0.2),
+                color: AppColors.shadowDark,
                 child: const Center(child: CircularProgressIndicator()),
               ),
           ],
@@ -3550,7 +3700,7 @@ class _PhotosEditor extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: Container(
-                          color: Colors.grey[200],
+                          color: AppColors.textSecondary,
                           child: _SmartImage(url: url, fit: BoxFit.cover),
                         ),
                       ),
@@ -3563,9 +3713,9 @@ class _PhotosEditor extends StatelessWidget {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.5),
+                            color: AppColors.overlay,
                             borderRadius: BorderRadius.circular(999),
-                            border: Border.all(color: Colors.white24),
+                            border: Border.all(color: AppColors.border.withOpacity(0.24)),
                           ),
                           child: Row(
                             children: [
@@ -3573,14 +3723,14 @@ class _PhotosEditor extends StatelessWidget {
                                 isProfile
                                     ? Icons.star_rounded
                                     : Icons.image_rounded,
-                                color: Colors.white,
+                                color: AppColors.textOnPrimary,
                                 size: 16,
                               ),
                               const SizedBox(width: 46),
                               Text(
                                 isProfile ? 'Profile' : 'Tap to set',
                                 style: AppTextStyles.bodySmall.copyWith(
-                                  color: Colors.white,
+                                  color: AppColors.textOnPrimary,
                                 ),
                               ),
                             ],
@@ -3596,13 +3746,13 @@ class _PhotosEditor extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.5),
+                              color: AppColors.overlay,
                               borderRadius: BorderRadius.circular(999),
-                              border: Border.all(color: Colors.white24),
+                              border: Border.all(color: AppColors.border.withOpacity(0.24)),
                             ),
                             child: const Icon(
                               Icons.delete_outline_rounded,
-                              color: Colors.white,
+                              color: AppColors.textOnPrimary,
                               size: 20,
                             ),
                           ),

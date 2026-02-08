@@ -255,13 +255,13 @@ class ErrorHandlerService {
           children: [
             Row(
               children: [
-                const Icon(Icons.error_outline, color: Colors.white, size: 20),
+                const Icon(Icons.error_outline, color: AppColors.textOnPrimary, size: 20),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     message,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textOnPrimary,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -275,7 +275,7 @@ class ErrorHandlerService {
                 child: Text(
                   userAction,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.85),
+                    color: AppColors.textOnPrimary.withOpacity(0.85),
                     fontSize: 12,
                   ),
                 ),

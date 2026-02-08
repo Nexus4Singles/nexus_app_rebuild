@@ -17,6 +17,7 @@ const nodemailer = require('nodemailer');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const crypto = require('crypto');
+const { Parser } = require('json2csv');
 
 admin.initializeApp();
 
@@ -747,3 +748,107 @@ exports.getPresignedUploadUrl = functions.https.onRequest(async (req, res) => {
     res.status(500).send('Failed to generate upload URL');
   }
 });
+
+// ============================================================================
+// MARKETING: WEEKLY USER REPORT
+// ============================================================================
+
+/**
+ * Scheduled Cloud Function that runs every Monday at 9 AM UTC
+ * Generates a CSV report of new users from the past 7 days
+ * Report includes: email, username, nationality, country of residence
+ * Stores the CSV file in Cloud Storage for download
+ */
+exports.weeklyUserReport = functions.pubsub
+  .schedule('0 9 * * 1')
+  .timeZone('UTC')
+  .onRun(async (context) => {
+    try {
+      console.log('🚀 Starting weekly user report generation...');
+      
+      // Calculate date range (past 7 days)
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      
+      console.log(`📅 Querying users created since: ${sevenDaysAgo.toISOString()}`);
+      
+      // Query users created in past 7 days
+      const snapshot = await admin.firestore()
+        .collection('users')
+        .where('createdAt', '>=', admin.firestore.Timestamp.fromDate(sevenDaysAgo))
+        .orderBy('createdAt', 'desc')
+        .get();
+      
+      if (snapshot.empty) {
+        console.log('ℹ️  No new users this week');
+        return { success: true, message: 'No new users this week', usersCount: 0 };
+      }
+      
+      console.log(`✅ Found ${snapshot.size} new users`);
+      
+      // Map user data to CSV format
+      const users = [];
+      snapshot.forEach(doc => {
+        const userData = doc.data();
+        users.push({
+          email: userData.email || 'N/A',
+          username: userData.username || 'N/A',
+          nationality: userData.nationality || 'N/A',
+          countryOfResidence: userData.country || 'N/A',
+          dateJoined: userData.createdAt 
+            ? new Date(userData.createdAt.toDate()).toLocaleDateString('en-US')
+            : 'N/A',
+          createdAt: userData.createdAt
+            ? userData.createdAt.toDate().toISOString()
+            : new Date().toISOString(),
+        });
+      });
+      
+      console.log('📝 Converting to CSV format...');
+      
+      // Convert to CSV
+      const json2csvParser = new Parser({
+        fields: [
+          'email',
+          'username',
+          'nationality',
+          'countryOfResidence',
+          'dateJoined',
+          'createdAt'
+        ]
+      });
+      const csv = json2csvParser.parse(users);
+      
+      // Generate filename with current date
+      const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+      const filename = `user-reports/new-users-${today}.csv`;
+      
+      console.log(`💾 Uploading to Cloud Storage: ${filename}`);
+      
+      // Upload to Cloud Storage
+      const bucket = admin.storage().bucket();
+      const file = bucket.file(filename);
+      
+      await file.save(csv, {
+        metadata: {
+          contentType: 'text/csv',
+          cacheControl: 'public, max-age=3600',
+        },
+      });
+      
+      console.log(`✅ Report successfully uploaded: ${filename}`);
+      console.log(`📊 Total new users: ${users.length}`);
+      
+      return {
+        success: true,
+        message: 'Weekly user report generated successfully',
+        usersCount: users.length,
+        filename,
+        period: `${sevenDaysAgo.toLocaleDateString()} - ${new Date().toLocaleDateString()}`,
+      };
+      
+    } catch (error) {
+      console.error('❌ Error generating weekly user report:', error);
+      throw error;
+    }
+  });

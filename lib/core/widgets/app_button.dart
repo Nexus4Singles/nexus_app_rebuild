@@ -180,9 +180,9 @@ class AppButton extends StatelessWidget {
       case AppButtonVariant.primary:
         return ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
+          foregroundColor: AppColors.textOnPrimary,
           disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
-          disabledForegroundColor: Colors.white70,
+          disabledForegroundColor: AppColors.textOnPrimary.withOpacity(0.7),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
@@ -191,9 +191,9 @@ class AppButton extends StatelessWidget {
       case AppButtonVariant.secondary:
         return ElevatedButton.styleFrom(
           backgroundColor: AppColors.secondary,
-          foregroundColor: Colors.white,
+          foregroundColor: AppColors.textOnPrimary,
           disabledBackgroundColor: AppColors.secondary.withOpacity(0.5),
-          disabledForegroundColor: Colors.white70,
+          disabledForegroundColor: AppColors.textOnPrimary.withOpacity(0.7),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
@@ -219,9 +219,9 @@ class AppButton extends StatelessWidget {
       case AppButtonVariant.danger:
         return ElevatedButton.styleFrom(
           backgroundColor: AppColors.error,
-          foregroundColor: Colors.white,
+          foregroundColor: AppColors.textOnPrimary,
           disabledBackgroundColor: AppColors.error.withOpacity(0.5),
-          disabledForegroundColor: Colors.white70,
+          disabledForegroundColor: AppColors.textOnPrimary.withOpacity(0.7),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
@@ -288,7 +288,7 @@ class AppButton extends StatelessWidget {
       case AppButtonVariant.primary:
       case AppButtonVariant.secondary:
       case AppButtonVariant.danger:
-        return Colors.white;
+        return AppColors.textOnPrimary;
       case AppButtonVariant.outline:
       case AppButtonVariant.text:
         return AppColors.primary;

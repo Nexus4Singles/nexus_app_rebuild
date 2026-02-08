@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:nexus_app_min_test/core/theme/app_colors.dart';
 
 // Simple in-memory cache manager that doesn't require sqflite
 class _SimpleCacheManager extends CacheManager {
@@ -78,7 +79,7 @@ class CachedImage extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: AppColors.border,
         borderRadius: borderRadius,
       ),
       child: const Center(
@@ -91,7 +92,7 @@ class CachedImage extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      color: Colors.grey[300],
+      color: AppColors.border,
       child: const Center(
         child: CircularProgressIndicator(strokeWidth: 2),
       ),
@@ -102,7 +103,7 @@ class CachedImage extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      color: Colors.grey[300],
+      color: AppColors.border,
       child: const Center(
         child: Icon(Icons.image_not_supported, size: 32),
       ),
@@ -148,13 +149,13 @@ class CachedDecorationImage extends StatelessWidget {
       progressIndicatorBuilder: (context, url, progress) => Container(
         width: width,
         height: height,
-        color: Colors.grey[300],
+        color: AppColors.border,
         child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
       ),
       errorWidget: (context, url, error) => Container(
         width: width,
         height: height,
-        color: Colors.grey[300],
+        color: AppColors.border,
         child: const Center(child: Icon(Icons.image_not_supported)),
       ),
     );
@@ -196,7 +197,7 @@ class CachedAvatarImage extends StatelessWidget {
       ),
       placeholder: (context, url) => CircleAvatar(
         radius: size / 2,
-        backgroundColor: Colors.grey[300],
+        backgroundColor: AppColors.border,
         child: const Icon(Icons.person, size: 24),
       ),
       errorWidget: (context, url, error) => _buildInitialCircle(),
@@ -210,7 +211,7 @@ class CachedAvatarImage extends StatelessWidget {
   Widget _buildInitialCircle() {
     return CircleAvatar(
       radius: size / 2,
-      backgroundColor: backgroundColor ?? Colors.grey[400],
+      backgroundColor: backgroundColor ?? AppColors.border,
       child: fallbackInitial != null
           ? Text(
               fallbackInitial!,
@@ -218,7 +219,7 @@ class CachedAvatarImage extends StatelessWidget {
                   const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: AppColors.textOnPrimary,
                   ),
             )
           : const Icon(Icons.person, size: 24),

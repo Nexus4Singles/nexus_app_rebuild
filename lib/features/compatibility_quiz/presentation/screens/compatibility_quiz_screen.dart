@@ -170,33 +170,36 @@ class _QuizStepView extends ConsumerWidget {
     final q = _quizSteps[step];
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          q.title,
-          style: AppTextStyles.titleLarge.copyWith(
-            fontWeight: FontWeight.w700,
-            height: 1.2,
+        // Question title - centered in viewport
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            q.title,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.titleLarge.copyWith(
+              fontWeight: FontWeight.w700,
+              height: 1.2,
+            ),
           ),
         ),
-        const SizedBox(height: 24),
-        Expanded(
-          child: ListView(
-            children: [
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: [
-                  for (final opt in q.options)
-                    _OptionButton(
-                      text: opt,
-                      selected: selected == opt,
-                      onTap: () => notifier.setAnswer(q.key, opt),
-                    ),
-                ],
+        const SizedBox(height: 32),
+        // Options - centered wrap
+        Wrap(
+          alignment: WrapAlignment.center,
+          runAlignment: WrapAlignment.center,
+          spacing: 10,
+          runSpacing: 10,
+          children: [
+            for (final opt in q.options)
+              _OptionButton(
+                text: opt,
+                selected: selected == opt,
+                onTap: () => notifier.setAnswer(q.key, opt),
               ),
-            ],
-          ),
+          ],
         ),
       ],
     );
@@ -248,8 +251,8 @@ class _OptionButton extends StatelessWidget {
                       BoxShadow(
                         color:
                             Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white.withOpacity(0.02)
-                                : Colors.black.withOpacity(0.02),
+                                ? AppColors.shadowLight
+                                : AppColors.shadowLight,
                         blurRadius: 6,
                         offset: const Offset(0, 2),
                       ),

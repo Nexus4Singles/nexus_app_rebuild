@@ -234,6 +234,9 @@ class DatingProfileService {
     );
 
     await userRef.set(updateData, SetOptions(merge: true));
+    
+    // Track unique nationality and country
+    await trackNationalityAndCountry(nationality, country);
   }
 
   Future<void> saveAge(String uid, int age) async {
@@ -260,6 +263,9 @@ class DatingProfileService {
       'church': church,
       'updatedAt': FieldValue.serverTimestamp(),
     });
+    
+    // Track unique nationality and country
+    await trackNationalityAndCountry(nationality, country);
   }
 
   Future<void> saveHobbies(String uid, List<String> hobbies) async {
@@ -410,6 +416,54 @@ class DatingProfileService {
       'dating.verifiedAt': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
     });
+  }
+
+  // ============================================================================
+  // TRACK UNIQUE NATIONALITIES AND COUNTRIES OF RESIDENCE
+  // ============================================================================
+
+  /// Add a nationality to the unique nationalities collection
+  Future<void> trackNationality(String nationality) async {
+    if (nationality.trim().isEmpty) return;
+    
+    try {
+      final normalized = nationality.trim();
+      await _fs.collection('nationalities').doc(normalized).set({
+        'name': normalized,
+        'count': FieldValue.increment(1),
+        'lastUpdatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    } catch (e) {
+      debugPrint('Error tracking nationality: $e');
+    }
+  }
+
+  /// Add a country of residence to the unique countries collection
+  Future<void> trackCountryOfResidence(String country) async {
+    if (country.trim().isEmpty) return;
+    
+    try {
+      final normalized = country.trim();
+      await _fs.collection('countriesOfResidence').doc(normalized).set({
+        'name': normalized,
+        'count': FieldValue.increment(1),
+        'lastUpdatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    } catch (e) {
+      debugPrint('Error tracking country of residence: $e');
+    }
+  }
+
+  /// Track both nationality and country when user completes profile
+  Future<void> trackNationalityAndCountry(String nationality, String country) async {
+    try {
+      await Future.wait([
+        trackNationality(nationality),
+        trackCountryOfResidence(country),
+      ]);
+    } catch (e) {
+      debugPrint('Error tracking nationality and country: $e');
+    }
   }
 }
 

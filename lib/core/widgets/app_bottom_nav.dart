@@ -167,7 +167,7 @@ class AppBottomNavBar extends StatelessWidget {
         color: NavBarTokens.backgroundColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColors.shadowLight,
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -328,7 +328,7 @@ class _Badge extends StatelessWidget {
               ? Text(
                 count! > 99 ? '99+' : count.toString(),
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textOnPrimary,
                   fontSize: NavBarTokens.badgeFontSize,
                   fontWeight: FontWeight.bold,
                 ),

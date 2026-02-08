@@ -142,7 +142,7 @@ class _DatingPreferencesSetupScreenState
                   Text(
                     'Finding matches...',
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: Colors.white,
+                      color: AppColors.textOnPrimary,
                     ),
                   ),
                 ],
@@ -408,20 +408,33 @@ class _DatingPreferencesSetupScreenState
                   ),
                   child:
                       _isLoading
-                          ? const SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.white,
+                          ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    AppColors.textOnPrimary,
+                                  ),
+                                ),
                               ),
-                            ),
+                              const SizedBox(width: 12),
+                              Text(
+                                'Finding Matches',
+                                style: AppTextStyles.labelLarge.copyWith(
+                                  color: AppColors.textOnPrimary,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
                           )
                           : Text(
                             'Save Preferences',
                             style: AppTextStyles.labelLarge.copyWith(
-                              color: Colors.white,
+                              color: AppColors.textOnPrimary,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -658,7 +671,7 @@ class _PreferenceButton extends StatelessWidget {
             style: AppTextStyles.labelSmall.copyWith(
               color:
                   isSelected
-                      ? Colors.white
+                      ? AppColors.textOnPrimary
                       : AppColors.getTextSecondary(context),
               fontWeight: FontWeight.w600,
             ),
@@ -704,7 +717,7 @@ class _PreferenceChip extends StatelessWidget {
           label,
           style: AppTextStyles.labelSmall.copyWith(
             color:
-                isSelected ? Colors.white : AppColors.getTextPrimary(context),
+                isSelected ? AppColors.textOnPrimary : AppColors.getTextPrimary(context),
             fontWeight: FontWeight.w600,
           ),
         ),

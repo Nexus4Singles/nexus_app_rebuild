@@ -69,7 +69,7 @@ class _DatingPreferencesConfirmationScreenState
                     ),
                     child: const Icon(
                       Icons.check_rounded,
-                      color: Colors.white,
+                      color: AppColors.textOnPrimary,
                       size: 48,
                     ),
                   ),
@@ -214,7 +214,7 @@ class _DatingPreferencesConfirmationScreenState
                     child: Text(
                       'See Your Matches',
                       style: AppTextStyles.labelLarge.copyWith(
-                        color: Colors.white,
+                        color: AppColors.textOnPrimary,
                         fontWeight: FontWeight.w700,
                       ),
                     ),

@@ -237,42 +237,7 @@ String _bestDisplayName(Map<String, dynamic>? u) {
   return 'Chat';
 }
 
-bool? _bestIsOnline(Map<String, dynamic>? u) {
-  if (u == null) return null;
 
-  // Try a few common patterns. If none exist, return null (no indicator).
-  final direct = u['isOnline'];
-  if (direct is bool) return direct;
-
-  final online = u['online'];
-  if (online is bool) return online;
-
-  final presence = u['presence'];
-  if (presence is Map) {
-    final p = presence['isOnline'];
-    if (p is bool) return p;
-  }
-
-  return null;
-}
-
-class _OnlineDot extends StatelessWidget {
-  final bool isOnline;
-  const _OnlineDot({required this.isOnline});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 10,
-      height: 10,
-      decoration: BoxDecoration(
-        color: isOnline ? Colors.green : AppColors.textMuted,
-        shape: BoxShape.circle,
-        border: Border.all(color: AppColors.background, width: 2),
-      ),
-    );
-  }
-}
 
 class ChatThreadScreen extends ConsumerStatefulWidget {
   final String chatId;
@@ -1457,7 +1422,6 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                   data: (u) {
                     final name = _bestDisplayName(u);
                     final avatarUrl = _bestAvatarUrl(u);
-                    final isOnline = _bestIsOnline(u);
 
                     return Row(
                       children: [
@@ -1465,18 +1429,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                         InkWell(
                           onTap: () => _openOtherUserProfile(otherId),
                           borderRadius: BorderRadius.circular(14),
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              _Avatar(label: name, imageUrl: avatarUrl),
-                              if (isOnline != null)
-                                Positioned(
-                                  right: -2,
-                                  bottom: -2,
-                                  child: _OnlineDot(isOnline: isOnline),
-                                ),
-                            ],
-                          ),
+                          child: _Avatar(label: name, imageUrl: avatarUrl),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -1491,11 +1444,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
-                                isOnline == true
-                                    ? 'Online'
-                                    : (isOnline == false
-                                        ? 'Offline'
-                                        : 'Tap to view profile'),
+                                'Tap to view profile',
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: AppColors.getTextSecondary(context),
                                 ),

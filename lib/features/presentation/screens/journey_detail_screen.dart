@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nexus_app_min_test/core/theme/app_colors.dart';
 import '../../journeys/domain/journey_models.dart';
 
 class JourneyDetailScreen extends StatelessWidget {
@@ -8,15 +9,14 @@ class JourneyDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Color(0xFF3A215D)),
+        iconTheme: IconThemeData(color: AppColors.primary),
         title: const Text(
           'Journey Details',
           style: TextStyle(
-            color: Color(0xFF3A215D),
             fontWeight: FontWeight.bold,
             fontSize: 22,
           ),
@@ -31,7 +31,7 @@ class JourneyDetailScreen extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: const Color(0xFFF7F3FF),
+              color: AppColors.primarySoft,
               borderRadius: BorderRadius.circular(18),
             ),
             child: Column(
@@ -50,18 +50,18 @@ class JourneyDetailScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   journey.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF3A215D),
+                    color: AppColors.primary,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   journey.summary,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
-                    color: Color(0xFF3A215D),
+                    color: AppColors.textSecondary,
                   ),
                 ),
               ],
@@ -79,12 +79,12 @@ class JourneyDetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 28),
           // Activities Placeholder
-          const Text(
+          Text(
             'Activities',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF3A215D),
+              color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 12),
@@ -92,12 +92,12 @@ class JourneyDetailScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Color(0xFFF7F3FF),
+              color: AppColors.primarySoft,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Text(
+            child: Text(
               'Activities for this journey will be listed here.',
-              style: TextStyle(color: Color(0xFF3A215D)),
+              style: TextStyle(color: AppColors.textSecondary),
             ),
           ),
         ],
@@ -115,13 +115,13 @@ class _DetailChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
       decoration: BoxDecoration(
-        color: const Color(0xFF3A215D),
+        color: AppColors.primary,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         label,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: AppColors.textOnPrimary,
           fontWeight: FontWeight.w600,
           fontSize: 13,
         ),

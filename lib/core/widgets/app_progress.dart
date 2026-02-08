@@ -199,11 +199,11 @@ class AppStepProgress extends StatelessWidget {
 
     if (isCompleted) {
       bgColor = completedColor ?? AppColors.accent;
-      textColor = Colors.white;
+      textColor = AppColors.textOnPrimary;
       content = Icon(Icons.check, size: stepSize * 0.5, color: textColor);
     } else if (isActive) {
       bgColor = activeColor ?? AppColors.primary;
-      textColor = Colors.white;
+      textColor = AppColors.textOnPrimary;
       content = Text(
         stepNumber.toString(),
         style: TextStyle(

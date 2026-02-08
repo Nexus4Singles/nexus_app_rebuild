@@ -30,6 +30,10 @@ class DatingSearchService {
     final disabled = data['disabled'];
     if (disabled == true) return true;
 
+    // Exclude admin profiles from dating search results
+    final isAdmin = data['isAdmin'];
+    if (isAdmin == true) return true;
+
     return false;
   }
 

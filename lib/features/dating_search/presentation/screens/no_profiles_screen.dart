@@ -180,7 +180,7 @@ class NoProfilesScreen extends StatelessWidget {
                         child: Text(
                           'Edit Preferences',
                           style: AppTextStyles.labelLarge.copyWith(
-                            color: Colors.white,
+                            color: AppColors.textOnPrimary,
                             fontWeight: FontWeight.w700,
                           ),
                         ),

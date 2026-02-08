@@ -200,6 +200,20 @@ class UserModel extends Equatable {
     return int.tryParse(v.toString());
   }
 
+  /// Check if user is verified based on dating.verificationStatus
+  /// Priority: dating.verificationStatus == 'verified' > root level isVerified field
+  static bool _isUserVerified(Map<String, dynamic> data) {
+    // Check new dating.verificationStatus field (v2)
+    final dating = data['dating'];
+    if (dating is Map) {
+      final status = dating['verificationStatus'];
+      if (status == 'verified') return true;
+    }
+    
+    // Fallback to old root-level isVerified field (v1 compatibility)
+    return _boolFrom(data['isVerified']) ?? false;
+  }
+
   static String? _firstString(
     Map<String, dynamic> root,
     List<List<String>> paths,
@@ -522,7 +536,7 @@ class UserModel extends Equatable {
         ['stateOfOrigin'],
         ['nexus2', 'profile', 'stateOfOrigin'],
       ]),
-      isVerified: UserModel._boolFrom(data['isVerified']),
+      isVerified: _isUserVerified(data),
       notificationToken: _stringFrom(data['notificationToken']),
       phoneNumber: _firstString(data, [
         ['phoneNumber'],

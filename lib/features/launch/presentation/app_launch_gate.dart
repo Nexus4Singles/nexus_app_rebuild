@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../guest/guest_entry_gate.dart';
 import '../../presurvey/presentation/splash/presurvey_splash_screen.dart';
+import '../../presurvey/presentation/screens/presurvey_relationship_status_screen.dart';
 
 import '../../auth/presentation/screens/login_screen.dart';
 import '../../auth/presentation/screens/signup_screen.dart';
@@ -335,6 +336,12 @@ class _AuthEntryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Clear presurvey flag so users see it again if they're new
+    Future.microtask(() async {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('presurvey_local_done');
+    });
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -457,7 +464,7 @@ class _AuthEntryScreen extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => const PresurveySplashScreen(),
+                                  builder: (_) => const PresurveyRelationshipStatusScreen(),
                                 ),
                               );
                             },
