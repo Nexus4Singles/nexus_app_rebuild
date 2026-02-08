@@ -56,7 +56,7 @@ final isPremiumUserProvider = Provider<bool>((ref) {
 /// Provider for purchased journeys
 final purchasedJourneysProvider = StreamProvider<List<PurchasedJourney>>((ref) {
   print('🔴 [purchasedJourneysProvider] PROVIDER FUNCTION CALLED');
-  
+
   final userId = ref.watch(currentUserIdProvider);
 
   print('🔴 [purchasedJourneysProvider] ===== PROVIDER INIT =====');
@@ -65,45 +65,60 @@ final purchasedJourneysProvider = StreamProvider<List<PurchasedJourney>>((ref) {
   print('🔴 [purchasedJourneysProvider] userId type: ${userId.runtimeType}');
 
   if (userId == null) {
-    print('🔴 [purchasedJourneysProvider] ❌ userId IS NULL, returning empty list stream');
+    print(
+      '🔴 [purchasedJourneysProvider] ❌ userId IS NULL, returning empty list stream',
+    );
     return Stream.value([]);
   }
 
   print('🔴 [purchasedJourneysProvider] ✅ userId is NOT null: "$userId"');
-  print('🔴 [purchasedJourneysProvider] Creating Firestore listener for /users/$userId/purchases');
+  print(
+    '🔴 [purchasedJourneysProvider] Creating Firestore listener for /users/$userId/purchases',
+  );
 
   // Read from purchases subcollection - stores journey purchase records
-  final stream = FirebaseFirestore.instance
-      .collection('users')
-      .doc(userId)
-      .collection('purchases')
-      .snapshots();
+  final stream =
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('purchases')
+          .snapshots();
 
-  print('🔴 [purchasedJourneysProvider] Stream created, waiting for first event...');
+  print(
+    '🔴 [purchasedJourneysProvider] Stream created, waiting for first event...',
+  );
 
-  return stream.map((snapshot) {
-    print('🔴 [purchasedJourneysProvider] 📦 Snapshot received: ${snapshot.docs.length} documents');
-    final journeys =
-        snapshot.docs
-            .map((doc) {
-              try {
-                return PurchasedJourney.fromFirestore(doc.data());
-              } catch (e) {
-                print('🔴 [purchasedJourneysProvider] Error parsing journey ${doc.id}: $e');
-                return null;
-              }
-            })
-            .whereType<PurchasedJourney>()
-            .toList();
+  return stream
+      .map((snapshot) {
+        print(
+          '🔴 [purchasedJourneysProvider] 📦 Snapshot received: ${snapshot.docs.length} documents',
+        );
+        final journeys =
+            snapshot.docs
+                .map((doc) {
+                  try {
+                    return PurchasedJourney.fromFirestore(doc.data());
+                  } catch (e) {
+                    print(
+                      '🔴 [purchasedJourneysProvider] Error parsing journey ${doc.id}: $e',
+                    );
+                    return null;
+                  }
+                })
+                .whereType<PurchasedJourney>()
+                .toList();
 
-    // Sort by purchaseDate descending on Dart side
-    journeys.sort((a, b) => b.purchaseDate.compareTo(a.purchaseDate));
+        // Sort by purchaseDate descending on Dart side
+        journeys.sort((a, b) => b.purchaseDate.compareTo(a.purchaseDate));
 
-    print('🔴 [purchasedJourneysProvider] ✅ Loaded ${journeys.length} purchased journeys');
-    return journeys;
-  }).handleError((error, stackTrace) {
-    print('🔴 [purchasedJourneysProvider] ❌ Stream error: $error');
-    print('🔴 [purchasedJourneysProvider] Stack: $stackTrace');
+        print(
+          '🔴 [purchasedJourneysProvider] ✅ Loaded ${journeys.length} purchased journeys',
+        );
+        return journeys;
+      })
+      .handleError((error, stackTrace) {
+        print('🔴 [purchasedJourneysProvider] ❌ Stream error: $error');
+        print('🔴 [purchasedJourneysProvider] Stack: $stackTrace');
         // If collection doesn't exist yet, return empty list instead of error
         if (error.toString().contains('permission-denied') ||
             error.toString().contains('not-found')) {

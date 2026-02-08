@@ -929,8 +929,7 @@ class ChatService {
         });
       }
       await batch.commit();
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   /// Get total unread count for a user across all chats
@@ -970,8 +969,7 @@ class ChatService {
   ) async {
     try {
       await _chatsRef.doc(chatId).update({'typingUsers.$userId': isTyping});
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   /// Stream typing users

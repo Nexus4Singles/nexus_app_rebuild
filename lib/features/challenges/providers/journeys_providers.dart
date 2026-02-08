@@ -46,11 +46,10 @@ final journeyCatalogProvider = FutureProvider<JourneyCatalogV1>((ref) async {
           return null; // Proceed without gender filtering
         },
       );
-      
+
       if (gender != null) {
         gender = gender.trim().toLowerCase();
-      } else {
-      }
+      } else {}
     } catch (e) {
       gender = null;
     }

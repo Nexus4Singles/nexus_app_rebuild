@@ -36,6 +36,12 @@ class _PresurveySplashScreenState extends ConsumerState<PresurveySplashScreen>
     // Always reset guest session at the start of presurvey
     Future.microtask(() => ref.read(guestSessionProvider.notifier).clear());
 
+    // Preload image to display immediately
+    precacheImage(
+      const AssetImage('assets/images/nexus_logo.png'),
+      context,
+    );
+
     _c = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 4500),
@@ -80,8 +86,8 @@ class _PresurveySplashScreenState extends ConsumerState<PresurveySplashScreen>
 
     _c.forward();
 
-    // Auto-route after 5 seconds
-    _timer = Timer(const Duration(seconds: 10), _goNext);
+    // Auto-route after 15 seconds
+    _timer = Timer(const Duration(seconds: 80), _goNext);
   }
 
   void _goNext() {
@@ -122,8 +128,8 @@ class _PresurveySplashScreenState extends ConsumerState<PresurveySplashScreen>
                         'Nexus',
                         style: AppTextStyles.headlineLarge.copyWith(
                           color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w800,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700,
                           letterSpacing: -0.4,
                         ),
                       ),
@@ -134,7 +140,8 @@ class _PresurveySplashScreenState extends ConsumerState<PresurveySplashScreen>
                       position: _logoSlide,
                       child: Image.asset(
                         'assets/images/nexus_logo.png',
-                        height: 132,
+                        height: 50,
+                        width: 70,
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -151,6 +158,7 @@ class _PresurveySplashScreenState extends ConsumerState<PresurveySplashScreen>
                         ),
                       ),
                     ),
+                    const SizedBox(height: 32),
                   ],
                 ),
               ),

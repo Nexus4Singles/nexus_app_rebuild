@@ -57,11 +57,9 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
     print('🟢 [SubscriptionScreen] relationshipStatus=$relationshipStatus');
 
     // Log states for debugging
-    subscriptionAsync.whenData((sub) {
-    });
-    
-    purchasedJourneysAsync.whenData((journeys) {
-    });
+    subscriptionAsync.whenData((sub) {});
+
+    purchasedJourneysAsync.whenData((journeys) {});
 
     // Married users should only see Journey Purchases tab
     final isMarried = relationshipStatus == RelationshipStatus.married;
@@ -177,7 +175,11 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                                const Icon(
+                                  Icons.error_outline,
+                                  size: 64,
+                                  color: Colors.red,
+                                ),
                                 const SizedBox(height: 16),
                                 Text(
                                   'Error loading journeys: $error',
@@ -232,7 +234,11 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                                    const Icon(
+                                      Icons.error_outline,
+                                      size: 64,
+                                      color: Colors.red,
+                                    ),
                                     const SizedBox(height: 16),
                                     Text(
                                       'Error loading journeys: $error',
@@ -352,7 +358,11 @@ class _ActiveSubscriptionView extends ConsumerWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.check_circle, color: Colors.white, size: 14),
+                            const Icon(
+                              Icons.check_circle,
+                              color: Colors.white,
+                              size: 14,
+                            ),
                             const SizedBox(width: 6),
                             Text(
                               expiryDate != null
@@ -1097,9 +1107,7 @@ class _CancelAutoRenewalButton extends ConsumerWidget {
         foregroundColor: AppColors.error,
         elevation: 0,
         padding: const EdgeInsets.symmetric(vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         side: BorderSide(color: AppColors.error.withOpacity(0.3)),
       ),
       icon: const Icon(Icons.manage_accounts_rounded),

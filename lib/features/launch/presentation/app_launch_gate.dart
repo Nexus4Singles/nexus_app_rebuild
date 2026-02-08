@@ -320,8 +320,6 @@ class _NexusSplashScreen extends StatelessWidget {
                     height: 1.35,
                   ),
                 ),
-                const SizedBox(height: 22),
-                const CircularProgressIndicator(),
               ],
             ),
           ),

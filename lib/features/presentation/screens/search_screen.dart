@@ -90,7 +90,9 @@ class SearchScreen extends ConsumerWidget {
                       onPressed: () {
                         Navigator.pop(context);
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const SignupScreen()),
+                          MaterialPageRoute(
+                            builder: (_) => const SignupScreen(),
+                          ),
                         );
                       },
                       child: const Text('Create Account'),
@@ -104,7 +106,9 @@ class SearchScreen extends ConsumerWidget {
                       onPressed: () {
                         Navigator.pop(context);
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const LoginScreen()),
+                          MaterialPageRoute(
+                            builder: (_) => const LoginScreen(),
+                          ),
                         );
                       },
                       child: const Text('Log In'),
@@ -260,7 +264,12 @@ class SearchScreen extends ConsumerWidget {
                               divisions: 44,
                               labels: RangeLabels('$minAge', '$maxAge'),
                               onChanged: (v) {
-                                ref.read(exploreScreenFiltersProvider.notifier).setAgeRange(v.start.round(), v.end.round());
+                                ref
+                                    .read(exploreScreenFiltersProvider.notifier)
+                                    .setAgeRange(
+                                      v.start.round(),
+                                      v.end.round(),
+                                    );
                               },
                             ),
                             const SizedBox(height: 16),
@@ -270,33 +279,55 @@ class SearchScreen extends ConsumerWidget {
                               value: countryOfResidence,
                               options: countries,
                               onChanged:
-                                  (v) => ref.read(exploreScreenFiltersProvider.notifier).setCountryOfResidence(v),
+                                  (v) => ref
+                                      .read(
+                                        exploreScreenFiltersProvider.notifier,
+                                      )
+                                      .setCountryOfResidence(v),
                             ),
                             _DropdownTile(
                               label: 'Long Distance',
                               value: longDistance,
                               options: distances,
                               onChanged:
-                                  (v) => ref.read(exploreScreenFiltersProvider.notifier).setLongDistance(v),
+                                  (v) => ref
+                                      .read(
+                                        exploreScreenFiltersProvider.notifier,
+                                      )
+                                      .setLongDistance(v),
                             ),
                             _DropdownTile(
                               label: 'Marital Status',
                               value: maritalStatus,
                               options: maritalStatuses,
                               onChanged:
-                                  (v) => ref.read(exploreScreenFiltersProvider.notifier).setMaritalStatus(v),
+                                  (v) => ref
+                                      .read(
+                                        exploreScreenFiltersProvider.notifier,
+                                      )
+                                      .setMaritalStatus(v),
                             ),
                             _DropdownTile(
                               label: 'Has Kids',
                               value: kids,
                               options: hasKids,
-                              onChanged: (v) => ref.read(exploreScreenFiltersProvider.notifier).setKids(v),
+                              onChanged:
+                                  (v) => ref
+                                      .read(
+                                        exploreScreenFiltersProvider.notifier,
+                                      )
+                                      .setKids(v),
                             ),
                             _DropdownTile(
                               label: 'Genotype',
                               value: genotype,
                               options: genotypes,
-                              onChanged: (v) => ref.read(exploreScreenFiltersProvider.notifier).setGenotype(v),
+                              onChanged:
+                                  (v) => ref
+                                      .read(
+                                        exploreScreenFiltersProvider.notifier,
+                                      )
+                                      .setGenotype(v),
                             ),
                           ],
                         ),
@@ -383,9 +414,7 @@ class SearchResultsScreen extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
             child: resultsAsync.when(
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
+              loading: () => const Center(child: CircularProgressIndicator()),
               error:
                   (e, _) => Center(
                     child: Column(
@@ -409,7 +438,9 @@ class SearchResultsScreen extends ConsumerWidget {
                           child: ElevatedButton.icon(
                             onPressed: () {
                               ref.invalidate(datingSearchResultsProvider);
-                              ref.read(searchResultsCacheProvider.notifier).clear();
+                              ref
+                                  .read(searchResultsCacheProvider.notifier)
+                                  .clear();
                             },
                             icon: const Icon(Icons.refresh, size: 18),
                             label: const Text('Retry'),

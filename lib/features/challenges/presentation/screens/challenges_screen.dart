@@ -35,34 +35,33 @@ class ChallengesScreen extends ConsumerWidget {
         centerTitle: true,
       ),
       body: catalogAsync.when(
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
-        error: (error, stack) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline,
-                size: 48,
-                color: Theme.of(context).colorScheme.error,
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error:
+            (error, stack) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 48,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Unable to load journeys'),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        ref.invalidate(journeyCatalogProvider);
+                      },
+                      icon: const Icon(Icons.refresh, size: 18),
+                      label: const Text('Retry'),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 16),
-              const Text('Unable to load journeys'),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: 120,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    ref.invalidate(journeyCatalogProvider);
-                  },
-                  icon: const Icon(Icons.refresh, size: 18),
-                  label: const Text('Retry'),
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
         data: (catalog) {
           var journeys = catalog.journeys;
           // Filter gender-specific journeys

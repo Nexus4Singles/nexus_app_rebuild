@@ -80,17 +80,17 @@ class RevenueCatService {
         const url = 'https://apps.apple.com/account/subscriptions';
         if (await canLaunchUrl(Uri.parse(url))) {
           await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-        } else {
-        }
+        } else {}
       } else if (Platform.isAndroid) {
         // Android - Open Google Play app to manage subscriptions
         // Use the app package name to open Play Store subscriptions
-        const appPackage = 'com.nexusapp'; // Replace with your actual package name
-        const url = 'https://play.google.com/store/account/subscriptions?package=$appPackage';
+        const appPackage =
+            'com.nexusapp'; // Replace with your actual package name
+        const url =
+            'https://play.google.com/store/account/subscriptions?package=$appPackage';
         if (await canLaunchUrl(Uri.parse(url))) {
           await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-        } else {
-        }
+        } else {}
       }
     } catch (e) {
       rethrow;

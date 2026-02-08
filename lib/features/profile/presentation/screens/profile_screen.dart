@@ -809,18 +809,18 @@ class _RelationshipStatusPill extends ConsumerWidget {
     final label = _relationshipStatusLabel(value);
     final canTap = onTap != null;
 
-    final availableColor = AppColors.success;
-    final unavailableColor = AppColors.error;
+    final availableColor = Colors.green;
+    final unavailableColor = Colors.redAccent;
     final pillBg =
-        canTap ? AppColors.textOnPrimary.withOpacity(0.85) : AppColors.textOnPrimary.withOpacity(0.7);
-    final pillBorder = AppColors.textMuted.withOpacity(canTap ? 0.10 : 0.07);
+        canTap ? Colors.white.withOpacity(0.85) : Colors.white.withOpacity(0.7);
+    final pillBorder = Colors.black.withOpacity(canTap ? 0.10 : 0.07);
     final pillShadow =
         canTap
             ? [
               BoxShadow(
                 blurRadius: 14,
                 offset: const Offset(0, 6),
-                color: AppColors.shadowLight,
+                color: Colors.black.withOpacity(0.08),
               ),
             ]
             : null;
@@ -828,10 +828,10 @@ class _RelationshipStatusPill extends ConsumerWidget {
         value == RelationshipStatusTag.available
             ? availableColor
             : unavailableColor;
-    final textColor = AppColors.textPrimary;
-    final editBg = AppColors.border.withOpacity(0.10);
-    final editBorder = AppColors.border.withOpacity(0.22);
-    final editIconColor = AppColors.textPrimary.withOpacity(0.85);
+    final textColor = Colors.black87;
+    final editBg = Colors.grey.withOpacity(0.10);
+    final editBorder = Colors.grey.withOpacity(0.22);
+    final editIconColor = Colors.black.withOpacity(0.85);
 
     return Semantics(
       button: canTap,
@@ -1398,7 +1398,9 @@ class _SendMessageCta extends ConsumerWidget {
                   decoration: BoxDecoration(
                     color: AppColors.textOnPrimary.withOpacity(0.18),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppColors.textOnPrimary.withOpacity(0.35)),
+                    border: Border.all(
+                      color: AppColors.textOnPrimary.withOpacity(0.35),
+                    ),
                   ),
                   child: const Icon(
                     Icons.chat_bubble_rounded,
@@ -1613,7 +1615,9 @@ class _RedChipWrap extends StatelessWidget {
               ),
               child: Text(
                 c,
-                style: AppTextStyles.bodySmall.copyWith(color: AppColors.textOnPrimary),
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.textOnPrimary,
+                ),
               ),
             ),
         ],
@@ -1739,8 +1743,7 @@ class _ProfileAudioController {
           }
         } catch (_) {}
       });
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   Future<void> playOrPause(String url) async {
@@ -2647,7 +2650,9 @@ class _DatingProfileRequiredGate extends StatelessWidget {
               ),
               child: Text(
                 'Create a Profile',
-                style: AppTextStyles.labelLarge.copyWith(color: AppColors.textOnPrimary),
+                style: AppTextStyles.labelLarge.copyWith(
+                  color: AppColors.textOnPrimary,
+                ),
               ),
             ),
           ],
@@ -2707,7 +2712,9 @@ class _GuestProfileGate extends StatelessWidget {
               ),
               child: Text(
                 'Create an account',
-                style: AppTextStyles.titleMedium.copyWith(color: AppColors.textOnPrimary),
+                style: AppTextStyles.titleMedium.copyWith(
+                  color: AppColors.textOnPrimary,
+                ),
               ),
             ),
             const SizedBox(height: 8),
@@ -2792,7 +2799,9 @@ class _ProfileError extends StatelessWidget {
               ),
               child: Text(
                 'Retry',
-                style: AppTextStyles.titleMedium.copyWith(color: AppColors.textOnPrimary),
+                style: AppTextStyles.titleMedium.copyWith(
+                  color: AppColors.textOnPrimary,
+                ),
               ),
             ),
           ],
@@ -2927,7 +2936,9 @@ class _InitialsAvatar extends StatelessWidget {
         backgroundColor: AppColors.surface,
         child: Text(
           initials,
-          style: AppTextStyles.headlineLarge.copyWith(color: AppColors.textOnPrimary),
+          style: AppTextStyles.headlineLarge.copyWith(
+            color: AppColors.textOnPrimary,
+          ),
         ),
       ),
     );
@@ -3097,7 +3108,9 @@ class _PhotoViewerScreenState extends State<_PhotoViewerScreen> {
                     decoration: BoxDecoration(
                       color: AppColors.overlay,
                       borderRadius: BorderRadius.circular(999),
-                      border: Border.all(color: AppColors.border.withOpacity(0.24)),
+                      border: Border.all(
+                        color: AppColors.border.withOpacity(0.24),
+                      ),
                     ),
                     child: Text(
                       '${_index + 1}/${photos.length}',
@@ -3700,7 +3713,9 @@ class _PhotosEditor extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: AppColors.overlay,
                             borderRadius: BorderRadius.circular(999),
-                            border: Border.all(color: AppColors.border.withOpacity(0.24)),
+                            border: Border.all(
+                              color: AppColors.border.withOpacity(0.24),
+                            ),
                           ),
                           child: Row(
                             children: [
@@ -3733,7 +3748,9 @@ class _PhotosEditor extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: AppColors.overlay,
                               borderRadius: BorderRadius.circular(999),
-                              border: Border.all(color: AppColors.border.withOpacity(0.24)),
+                              border: Border.all(
+                                color: AppColors.border.withOpacity(0.24),
+                              ),
                             ),
                             child: const Icon(
                               Icons.delete_outline_rounded,

@@ -299,7 +299,7 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
 
       // Search for package in all offerings (not just current)
       Package? journeyPackage;
-      
+
       // First try current offering if it exists
       if (offerings.current != null) {
         for (final p in offerings.current!.availablePackages) {

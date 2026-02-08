@@ -155,9 +155,7 @@ class _Shell extends ConsumerWidget {
         ),
       ),
       body: completedAsync.when(
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error:
             (e, __) => Center(
               child: Column(

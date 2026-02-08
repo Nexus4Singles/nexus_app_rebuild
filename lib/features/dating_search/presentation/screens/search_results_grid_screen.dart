@@ -92,10 +92,7 @@ class _SearchResultsGridScreenState
         ],
       ),
       body: resultsAsync.when(
-        loading:
-            () => const Center(
-              child: CircularProgressIndicator(),
-            ),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error:
             (e, st) => Center(
               child: Column(
@@ -121,7 +118,8 @@ class _SearchResultsGridScreenState
                         if (!mounted) return;
                         ref.invalidate(datingSearchResultsProvider);
                         ref.read(searchResultsCacheProvider.notifier).clear();
-                        ref.read(searchResultsOffsetProvider.notifier).state = 0;
+                        ref.read(searchResultsOffsetProvider.notifier).state =
+                            0;
                       },
                       icon: const Icon(Icons.refresh, size: 18),
                       label: const Text('Retry'),
@@ -143,7 +141,8 @@ class _SearchResultsGridScreenState
                         if (!mounted) return;
                         ref.invalidate(datingSearchResultsProvider);
                         ref.read(searchResultsCacheProvider.notifier).clear();
-                        ref.read(searchResultsOffsetProvider.notifier).state = 0;
+                        ref.read(searchResultsOffsetProvider.notifier).state =
+                            0;
                       },
                       onEditPreferences: () {
                         preferencesAsync.whenData((prefs) {
@@ -210,8 +209,7 @@ class _PaginatedGridView extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<_PaginatedGridView> createState() =>
-      _PaginatedGridViewState();
+  ConsumerState<_PaginatedGridView> createState() => _PaginatedGridViewState();
 }
 
 class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
@@ -231,13 +229,13 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
 
   void _onScroll() {
     final position = widget.scrollController.position;
-    
+
     // Show daily limit card when user reaches bottom
     if (!_showDailyLimitCard &&
         position.pixels >= position.maxScrollExtent - 100) {
       setState(() => _showDailyLimitCard = true);
     }
-    
+
     // Pagination removed - no more load more logic needed
   }
 
@@ -245,14 +243,12 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
   Widget build(BuildContext context) {
     // Pagination removed - all profiles now load at once
     // No need to watch offset or load more
-    
+
     final List<DatingProfile> displayItems = [...widget.allResults.items];
 
     if (kDebugMode) {
       // ignore: avoid_print
-      print(
-        '[SearchResultsGrid] displayItems=${displayItems.length}',
-      );
+      print('[SearchResultsGrid] displayItems=${displayItems.length}');
     }
 
     return Stack(
@@ -263,12 +259,9 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
             SliverPadding(
               padding: const EdgeInsets.all(12),
               sliver: SliverGrid(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return _ProfileCard(profile: displayItems[index]);
-                  },
-                  childCount: displayItems.length,
-                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  return _ProfileCard(profile: displayItems[index]);
+                }, childCount: displayItems.length),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 12,
@@ -288,10 +281,7 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
             right: 0,
             child: Container(
               margin: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 8,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -305,11 +295,7 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
               ),
               child: Row(
                 children: [
-                  const Icon(
-                    Icons.star_rounded,
-                    color: Colors.white,
-                    size: 18,
-                  ),
+                  const Icon(Icons.star_rounded, color: Colors.white, size: 18),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Column(
@@ -342,7 +328,8 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
                           MaterialPageRoute(
                             builder:
                                 (_) => const SubscriptionScreen(
-                                  initialTabIndex: 0, // Show Dating Features tab
+                                  initialTabIndex:
+                                      0, // Show Dating Features tab
                                 ),
                           ),
                         );
@@ -457,10 +444,14 @@ class _ProfileCard extends ConsumerWidget {
                                   width: 30,
                                   height: 30,
                                   child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null
-                                        ? loadingProgress.cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                        : null,
+                                    value:
+                                        loadingProgress.expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
                                     strokeWidth: 2,
                                   ),
                                 ),

@@ -29,9 +29,7 @@ RelationshipStatus? _parseRelationshipStatusKey(String? key) {
 ///
 /// If signed in but missing relationshipStatus (v1 user pre-presurvey), returns singleNeverMarried as fallback.
 /// NavConfig already treats this default as singles (so tabs don't disappear).
-final effectiveRelationshipStatusProvider = Provider<RelationshipStatus>((
-  ref,
-) {
+final effectiveRelationshipStatusProvider = Provider<RelationshipStatus>((ref) {
   final authAsync = ref.watch(authStateProvider);
   final user = authAsync.maybeWhen(data: (u) => u, orElse: () => null);
 
@@ -53,5 +51,6 @@ final effectiveRelationshipStatusProvider = Provider<RelationshipStatus>((
       (nexus?['relationshipStatus'] ?? nexus2?['relationshipStatus'])
           ?.toString();
 
-  return _parseRelationshipStatusKey(key) ?? RelationshipStatus.singleNeverMarried;
+  return _parseRelationshipStatusKey(key) ??
+      RelationshipStatus.singleNeverMarried;
 });
