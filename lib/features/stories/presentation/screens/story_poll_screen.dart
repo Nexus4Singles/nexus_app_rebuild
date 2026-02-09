@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/models/story_model.dart' as remote;
-import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
-import 'package:nexus_app_min_test/core/providers/firestore_service_provider.dart';
-import 'package:nexus_app_min_test/core/services/firestore_service.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
-import 'package:nexus_app_min_test/features/stories/data/poll_repository.dart';
-import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
-import 'package:nexus_app_min_test/features/stories/domain/poll_models.dart';
+import 'package:nexus_app_v2/core/models/story_model.dart' as remote;
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
+import 'package:nexus_app_v2/core/providers/firestore_service_provider.dart';
+import 'package:nexus_app_v2/core/services/firestore_service.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/widgets/guest_guard.dart';
+import 'package:nexus_app_v2/features/stories/data/poll_repository.dart';
+import 'package:nexus_app_v2/features/stories/data/story_repository.dart';
+import 'package:nexus_app_v2/features/stories/domain/poll_models.dart';
 
 class StoryPollScreen extends ConsumerStatefulWidget {
   final String storyId;

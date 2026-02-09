@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:nexus_app_min_test/core/user/is_admin_provider.dart';
+import 'package:nexus_app_v2/core/user/is_admin_provider.dart';
 import '../../application/admin_review_providers.dart';
 import 'admin_review_detail_screen.dart';
 

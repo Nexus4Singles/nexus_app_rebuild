@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/core/widgets/nexus_country_picker.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/widgets/nexus_country_picker.dart';
 import '../../domain/dating_preferences.dart';
 import '../../application/dating_preferences_provider.dart';
 import '../../application/dating_search_results_provider.dart';

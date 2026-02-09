@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
-import 'package:nexus_app_min_test/core/providers/service_providers.dart';
-import 'package:nexus_app_min_test/core/constants/app_constants.dart';
-import 'package:nexus_app_min_test/features/dating_search/application/saved_profiles_provider.dart';
-import 'package:nexus_app_min_test/features/dating_search/domain/dating_profile.dart';
-import 'package:nexus_app_min_test/features/profile/presentation/screens/profile_screen.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
+import 'package:nexus_app_v2/core/providers/service_providers.dart';
+import 'package:nexus_app_v2/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/features/dating_search/application/saved_profiles_provider.dart';
+import 'package:nexus_app_v2/features/dating_search/domain/dating_profile.dart';
+import 'package:nexus_app_v2/features/profile/presentation/screens/profile_screen.dart';
 
 /// Provider for fetching saved profile details
 final savedProfileDetailsProvider = FutureProvider<List<DatingProfile>>((

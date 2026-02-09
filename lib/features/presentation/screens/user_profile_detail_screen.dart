@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/core/providers/auth_status_provider.dart';
-import 'package:nexus_app_min_test/core/providers/service_providers.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/providers/auth_status_provider.dart';
+import 'package:nexus_app_v2/core/providers/service_providers.dart';
 
 class UserProfileDetailScreen extends ConsumerWidget {
   final String name;

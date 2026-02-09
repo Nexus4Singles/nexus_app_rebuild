@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
+import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
 import '../domain/dating_profile.dart';
 import '../domain/dating_search_filters.dart';
 import '../domain/dating_search_result.dart';

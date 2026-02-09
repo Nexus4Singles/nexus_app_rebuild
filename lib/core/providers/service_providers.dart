@@ -1,18 +1,18 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
-import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
+import 'package:nexus_app_v2/core/bootstrap/firebase_ready_provider.dart';
+import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/foundation.dart';
-import 'package:nexus_app_min_test/core/services/chat_service.dart';
-import 'package:nexus_app_min_test/core/services/duplicate_detection_service.dart';
+import 'package:nexus_app_v2/core/services/chat_service.dart';
+import 'package:nexus_app_v2/core/services/duplicate_detection_service.dart';
 
 import '../services/media_service.dart';
 import '../services/dating_profile_service.dart';
 import 'auth_provider.dart';
 import 'user_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:nexus_app_min_test/core/user/current_user_disabled_provider.dart';
+import 'package:nexus_app_v2/core/user/current_user_disabled_provider.dart';
 
 // Note: firestoreServiceProvider is in firestore_service_provider.dart
 

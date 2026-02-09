@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 // To prevent inconsistent navigation while migrating to Firebase,
 // it now delegates to the real Firestore-backed ChatsScreen.
 
-import 'package:nexus_app_min_test/features/presentation/screens/chats_screen.dart'
+import 'package:nexus_app_v2/features/presentation/screens/chats_screen.dart'
     as real;
 
 class ChatsScreen extends StatelessWidget {

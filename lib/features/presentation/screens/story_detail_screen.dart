@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
-import 'package:nexus_app_min_test/features/stories/domain/story_models.dart';
-import 'package:nexus_app_min_test/features/stories/presentation/screens/story_poll_screen.dart';
+import 'package:nexus_app_v2/features/stories/data/story_repository.dart';
+import 'package:nexus_app_v2/features/stories/domain/story_models.dart';
+import 'package:nexus_app_v2/features/stories/presentation/screens/story_poll_screen.dart';
 
 class StoryDetailScreen extends StatelessWidget {
   final String storyId;

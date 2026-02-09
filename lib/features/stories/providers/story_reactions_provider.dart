@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:nexus_app_min_test/core/models/story_model.dart';
-import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
-import 'package:nexus_app_min_test/core/providers/firestore_service_provider.dart';
-import 'package:nexus_app_min_test/core/services/firestore_service.dart';
+import 'package:nexus_app_v2/core/models/story_model.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
+import 'package:nexus_app_v2/core/providers/firestore_service_provider.dart';
+import 'package:nexus_app_v2/core/services/firestore_service.dart';
 
 class StoryReactionsState {
   final Map<String, StoryEngagement> engagementByStoryId;

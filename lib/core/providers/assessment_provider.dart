@@ -1,4 +1,4 @@
-import "package:nexus_app_min_test/core/session/effective_relationship_status_provider.dart";
+import "package:nexus_app_v2/core/session/effective_relationship_status_provider.dart";
 import 'dev_relationship_status_provider.dart';
 import "firestore_service_provider.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import '../models/assessment_model.dart';
 import '../constants/app_constants.dart';
 import '../services/config_loader_service.dart';
-import 'package:nexus_app_min_test/core/services/firestore_service.dart';
+import 'package:nexus_app_v2/core/services/firestore_service.dart';
 import 'config_provider.dart';
 import 'user_provider.dart';
 

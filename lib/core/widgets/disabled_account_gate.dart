@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/core/user/current_user_disabled_provider.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/user/current_user_disabled_provider.dart';
 
 /// Wrap any screen with this gate to block usage for disabled accounts.
 ///

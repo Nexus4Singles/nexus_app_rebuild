@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/features/dating_onboarding/application/dating_onboarding_draft.dart';
 
 class DatingContactInfoStubScreen extends ConsumerStatefulWidget {
   const DatingContactInfoStubScreen({super.key});

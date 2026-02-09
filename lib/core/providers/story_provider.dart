@@ -3,7 +3,7 @@ import '../models/story_model.dart';
 import '../constants/app_constants.dart';
 import '../services/config_loader_service.dart';
 import 'firestore_service_provider.dart';
-import 'package:nexus_app_min_test/core/services/firestore_service.dart';
+import 'package:nexus_app_v2/core/services/firestore_service.dart';
 import 'config_provider.dart';
 import 'user_provider.dart';
 

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/models/user_model.dart';
-import 'package:nexus_app_min_test/core/providers/user_provider.dart';
-import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
+import 'package:nexus_app_v2/core/models/user_model.dart';
+import 'package:nexus_app_v2/core/providers/user_provider.dart';
+import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
 
 /// Provider for updating relationship status and handling profile archiving
 final relationshipStatusUpdaterProvider =

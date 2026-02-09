@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nexus_app_min_test/core/theme/app_colors.dart';
+import 'package:nexus_app_v2/core/theme/app_colors.dart';
 import '../../journeys/domain/journey_models.dart';
 
 class JourneysScreen extends StatelessWidget {

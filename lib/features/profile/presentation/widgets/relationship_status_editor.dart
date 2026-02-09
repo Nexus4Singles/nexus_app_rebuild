@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:nexus_app_min_test/core/constants/app_constants.dart';
-import 'package:nexus_app_min_test/core/providers/relationship_status_provider.dart';
-import 'package:nexus_app_min_test/core/providers/user_provider.dart';
-import 'package:nexus_app_min_test/core/theme/app_colors.dart';
-import 'package:nexus_app_min_test/core/theme/app_text_styles.dart';
-import 'package:nexus_app_min_test/core/user/current_user_doc_provider.dart';
-import 'package:nexus_app_min_test/core/session/effective_relationship_status_provider.dart';
+import 'package:nexus_app_v2/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/core/providers/relationship_status_provider.dart';
+import 'package:nexus_app_v2/core/providers/user_provider.dart';
+import 'package:nexus_app_v2/core/theme/app_colors.dart';
+import 'package:nexus_app_v2/core/theme/app_text_styles.dart';
+import 'package:nexus_app_v2/core/user/current_user_doc_provider.dart';
+import 'package:nexus_app_v2/core/session/effective_relationship_status_provider.dart';
 
 class RelationshipStatusEditor extends ConsumerWidget {
   final String currentStatus;

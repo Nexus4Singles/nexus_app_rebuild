@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
-import 'package:nexus_app_min_test/core/models/story_model.dart' hide Story;
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
-import 'package:nexus_app_min_test/features/stories/domain/story_models.dart';
-import 'package:nexus_app_min_test/features/stories/presentation/screens/story_poll_screen.dart';
-import 'package:nexus_app_min_test/features/stories/providers/story_reactions_provider.dart';
+import 'package:nexus_app_v2/core/models/story_model.dart' hide Story;
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/features/stories/data/story_repository.dart';
+import 'package:nexus_app_v2/features/stories/domain/story_models.dart';
+import 'package:nexus_app_v2/features/stories/presentation/screens/story_poll_screen.dart';
+import 'package:nexus_app_v2/features/stories/providers/story_reactions_provider.dart';
 
 class StoriesScreen extends ConsumerWidget {
   const StoriesScreen({super.key});

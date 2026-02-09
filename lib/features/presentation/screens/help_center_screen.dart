@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
 
 class HelpCenterScreen extends StatelessWidget {
   const HelpCenterScreen({super.key});

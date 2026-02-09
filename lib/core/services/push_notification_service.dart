@@ -1,5 +1,5 @@
-import 'package:nexus_app_min_test/core/router/safe_nav.dart';
-import 'package:nexus_app_min_test/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/core/router/safe_nav.dart';
+import 'package:nexus_app_v2/core/constants/app_constants.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -8,7 +8,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
+import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Global navigator key for push notification navigation

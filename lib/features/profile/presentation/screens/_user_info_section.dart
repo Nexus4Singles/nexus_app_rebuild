@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nexus_app_min_test/core/theme/app_text_styles.dart';
+import 'package:nexus_app_v2/core/theme/app_text_styles.dart';
 import '../../../../core/models/user_model.dart';
 
 class UserInfoSection extends StatelessWidget {

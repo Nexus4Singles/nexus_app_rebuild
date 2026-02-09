@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:nexus_app_min_test/app_shell.dart';
+import 'package:nexus_app_v2/app_shell.dart';
 
 class BootstrapGate extends StatelessWidget {
   const BootstrapGate({super.key});

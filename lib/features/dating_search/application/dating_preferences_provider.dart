@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
+import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
 import '../domain/dating_preferences.dart';
 
 /// Provider to watch dating preferences for current user

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
 
 class DatingAudioScreen extends StatelessWidget {
   const DatingAudioScreen({super.key});

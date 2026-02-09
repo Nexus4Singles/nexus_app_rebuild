@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/features/profile/presentation/screens/profile_screen.dart';
-import 'package:nexus_app_min_test/features/subscription/presentation/screens/subscription_screen.dart';
-import 'package:nexus_app_min_test/features/dating_search/application/saved_profiles_provider.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/features/profile/presentation/screens/profile_screen.dart';
+import 'package:nexus_app_v2/features/subscription/presentation/screens/subscription_screen.dart';
+import 'package:nexus_app_v2/features/dating_search/application/saved_profiles_provider.dart';
 import '../../domain/dating_profile.dart';
 import '../../domain/dating_search_result.dart';
 import '../../application/dating_search_results_provider.dart';

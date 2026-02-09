@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
+import 'package:nexus_app_v2/core/widgets/guest_guard.dart';
 
 class ProfileViewStubScreen extends ConsumerWidget {
   final String userId;

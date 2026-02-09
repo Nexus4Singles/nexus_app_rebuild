@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:nexus_app_min_test/features/journeys/domain/journey_models.dart';
+import 'package:nexus_app_v2/features/journeys/domain/journey_models.dart';
 
 class JourneyRepository {
   const JourneyRepository();

@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
-import 'package:nexus_app_min_test/core/lists/nexus_lists_provider.dart';
-import 'package:nexus_app_min_test/core/session/guest_session_provider.dart';
-import 'package:nexus_app_min_test/core/session/is_guest_provider.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
-import 'package:nexus_app_min_test/core/widgets/disabled_account_gate.dart';
-import 'package:nexus_app_min_test/core/dating/dating_profile_gate.dart';
-import 'package:nexus_app_min_test/features/compatibility_quiz/application/compatibility_status_provider.dart';
-import 'package:nexus_app_min_test/features/dating_search/application/dating_search_results_provider.dart';
-import 'package:nexus_app_min_test/features/dating_search/application/saved_profiles_provider.dart';
-import 'package:nexus_app_min_test/features/dating_search/domain/dating_search_filters.dart';
-import 'package:nexus_app_min_test/features/dating_search/domain/dating_profile.dart';
-import 'package:nexus_app_min_test/features/profile/presentation/screens/profile_screen.dart';
-import 'package:nexus_app_min_test/features/launch/presentation/app_launch_gate.dart';
-import 'package:nexus_app_min_test/features/auth/presentation/screens/login_screen.dart';
-import 'package:nexus_app_min_test/features/auth/presentation/screens/signup_screen.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
+import 'package:nexus_app_v2/core/lists/nexus_lists_provider.dart';
+import 'package:nexus_app_v2/core/session/guest_session_provider.dart';
+import 'package:nexus_app_v2/core/session/is_guest_provider.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/widgets/guest_guard.dart';
+import 'package:nexus_app_v2/core/widgets/disabled_account_gate.dart';
+import 'package:nexus_app_v2/core/dating/dating_profile_gate.dart';
+import 'package:nexus_app_v2/features/compatibility_quiz/application/compatibility_status_provider.dart';
+import 'package:nexus_app_v2/features/dating_search/application/dating_search_results_provider.dart';
+import 'package:nexus_app_v2/features/dating_search/application/saved_profiles_provider.dart';
+import 'package:nexus_app_v2/features/dating_search/domain/dating_search_filters.dart';
+import 'package:nexus_app_v2/features/dating_search/domain/dating_profile.dart';
+import 'package:nexus_app_v2/features/profile/presentation/screens/profile_screen.dart';
+import 'package:nexus_app_v2/features/launch/presentation/app_launch_gate.dart';
+import 'package:nexus_app_v2/features/auth/presentation/screens/login_screen.dart';
+import 'package:nexus_app_v2/features/auth/presentation/screens/signup_screen.dart';
 
 // Export the explore screen filters provider
-export 'package:nexus_app_min_test/features/dating_search/application/dating_search_results_provider.dart';
+export 'package:nexus_app_v2/features/dating_search/application/dating_search_results_provider.dart';
 
 class SearchScreen extends ConsumerWidget {
   const SearchScreen({super.key});

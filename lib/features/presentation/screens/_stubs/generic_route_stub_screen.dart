@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nexus_app_min_test/safe_imports.dart';
+import 'package:nexus_app_v2/safe_imports.dart';
 
 class GenericRouteStubScreen extends StatelessWidget {
   final String title;

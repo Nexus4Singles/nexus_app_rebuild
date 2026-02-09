@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
-import 'package:nexus_app_min_test/features/compatibility_quiz/data/compatibility_quiz_service.dart';
+import 'package:nexus_app_v2/core/bootstrap/firebase_ready_provider.dart';
+import 'package:nexus_app_v2/features/compatibility_quiz/data/compatibility_quiz_service.dart';
 
 enum CompatibilityStatus { unknown, incomplete, complete }
 

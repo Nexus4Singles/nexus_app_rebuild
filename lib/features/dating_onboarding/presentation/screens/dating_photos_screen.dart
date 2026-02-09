@@ -6,10 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:nexus_app_min_test/core/storage/providers/media_storage_provider.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
-import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
+import 'package:nexus_app_v2/core/storage/providers/media_storage_provider.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
+import 'package:nexus_app_v2/features/dating_onboarding/application/dating_onboarding_draft.dart';
 
 class DatingPhotosScreen extends ConsumerStatefulWidget {
   const DatingPhotosScreen({super.key});

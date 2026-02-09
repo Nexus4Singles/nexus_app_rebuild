@@ -1,10 +1,10 @@
-import 'package:nexus_app_min_test/core/router/safe_nav.dart';
-import 'package:nexus_app_min_test/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/core/router/safe_nav.dart';
+import 'package:nexus_app_v2/core/constants/app_constants.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/stubs/firebase_exceptions_stub.dart';
+import 'package:nexus_app_v2/core/stubs/firebase_exceptions_stub.dart';
 // firebase removed (stubbed)
 
 import '../theme/app_colors.dart';

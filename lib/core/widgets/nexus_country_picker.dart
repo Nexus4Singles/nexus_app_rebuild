@@ -1,6 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
 
 class NexusCountryPicker {
   static void show({

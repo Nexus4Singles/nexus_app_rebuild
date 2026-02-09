@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 
 /// Provider for saved/bookmarked profiles
 final savedProfilesProvider = StreamProvider<Set<String>>((ref) {

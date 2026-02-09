@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/theme/app_colors.dart';
-import 'package:nexus_app_min_test/core/theme/app_text_styles.dart';
-import 'package:nexus_app_min_test/core/theme/theme_provider.dart';
-import 'package:nexus_app_min_test/core/user/is_admin_provider.dart';
-import 'package:nexus_app_min_test/core/user/current_user_doc_provider.dart';
-import 'package:nexus_app_min_test/features/admin_review/presentation/screens/admin_review_queue_screen.dart';
-import 'package:nexus_app_min_test/features/profile/presentation/widgets/relationship_status_editor.dart';
-import 'package:nexus_app_min_test/features/profile/presentation/screens/profile_screen.dart';
+import 'package:nexus_app_v2/core/theme/app_colors.dart';
+import 'package:nexus_app_v2/core/theme/app_text_styles.dart';
+import 'package:nexus_app_v2/core/theme/theme_provider.dart';
+import 'package:nexus_app_v2/core/user/is_admin_provider.dart';
+import 'package:nexus_app_v2/core/user/current_user_doc_provider.dart';
+import 'package:nexus_app_v2/features/admin_review/presentation/screens/admin_review_queue_screen.dart';
+import 'package:nexus_app_v2/features/profile/presentation/widgets/relationship_status_editor.dart';
+import 'package:nexus_app_v2/features/profile/presentation/screens/profile_screen.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});

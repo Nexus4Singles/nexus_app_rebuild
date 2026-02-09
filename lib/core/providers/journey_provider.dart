@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/services/journey_local_progress_storage.dart';
+import 'package:nexus_app_v2/core/services/journey_local_progress_storage.dart';
 import '../models/assessment_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/journey_model.dart';
 import '../constants/app_constants.dart';
 import '../services/config_loader_service.dart';
-import 'package:nexus_app_min_test/core/services/firestore_service.dart';
+import 'package:nexus_app_v2/core/services/firestore_service.dart';
 import 'firestore_service_provider.dart';
 import 'config_provider.dart';
 import 'user_provider.dart';

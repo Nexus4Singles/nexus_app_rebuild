@@ -9,9 +9,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
-import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/features/dating_onboarding/application/dating_onboarding_draft.dart';
+import 'package:nexus_app_v2/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
 
 class DatingAudioQuestionScreen extends ConsumerStatefulWidget {
   final int questionNumber;

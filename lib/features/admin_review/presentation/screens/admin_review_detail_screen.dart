@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:nexus_app_min_test/core/user/is_admin_provider.dart';
-import 'package:nexus_app_min_test/core/bootstrap/firestore_instance_provider.dart';
-import 'package:nexus_app_min_test/core/services/media_service.dart';
-import 'package:nexus_app_min_test/core/providers/service_providers.dart';
-import 'package:nexus_app_min_test/core/services/duplicate_detection_service.dart';
+import 'package:nexus_app_v2/core/user/is_admin_provider.dart';
+import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
+import 'package:nexus_app_v2/core/services/media_service.dart';
+import 'package:nexus_app_v2/core/providers/service_providers.dart';
+import 'package:nexus_app_v2/core/services/duplicate_detection_service.dart';
 
 class AdminReviewDetailScreen extends ConsumerStatefulWidget {
   final String userId;

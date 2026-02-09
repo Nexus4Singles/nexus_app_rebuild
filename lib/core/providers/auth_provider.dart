@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:nexus_app_min_test/core/constants/app_constants.dart';
-import 'package:nexus_app_min_test/core/session/guest_session_provider.dart';
-import 'package:nexus_app_min_test/core/user/user_schema_migrator.dart';
-import 'package:nexus_app_min_test/core/services/firestore_service.dart';
+import 'package:nexus_app_v2/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/core/session/guest_session_provider.dart';
+import 'package:nexus_app_v2/core/user/user_schema_migrator.dart';
+import 'package:nexus_app_v2/core/services/firestore_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user_model.dart';

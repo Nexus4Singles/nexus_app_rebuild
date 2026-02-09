@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/features/dating_search/presentation/screens/search_results_grid_screen.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/features/dating_search/presentation/screens/search_results_grid_screen.dart';
 
 class DatingPreferencesConfirmationScreen extends StatefulWidget {
   const DatingPreferencesConfirmationScreen({Key? key}) : super(key: key);

@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'notification_service.dart';
 import 'notification_models.dart';
-import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 
 // ============================================================================
 // NOTIFICATION PROVIDERS

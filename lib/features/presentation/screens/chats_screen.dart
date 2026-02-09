@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
-import 'package:nexus_app_min_test/core/providers/service_providers.dart';
-import 'package:nexus_app_min_test/core/user/dating_profile_completed_provider.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/core/user/dating_opt_in_provider.dart';
-import 'package:nexus_app_min_test/core/widgets/cached_image.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
+import 'package:nexus_app_v2/core/providers/service_providers.dart';
+import 'package:nexus_app_v2/core/user/dating_profile_completed_provider.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/user/dating_opt_in_provider.dart';
+import 'package:nexus_app_v2/core/widgets/cached_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:nexus_app_min_test/core/models/user_model.dart';
-import 'package:nexus_app_min_test/features/launch/presentation/app_launch_gate.dart';
+import 'package:nexus_app_v2/core/models/user_model.dart';
+import 'package:nexus_app_v2/features/launch/presentation/app_launch_gate.dart';
 
 final _userDocByIdProvider =
     StreamProvider.family<Map<String, dynamic>?, String>((ref, uid) {

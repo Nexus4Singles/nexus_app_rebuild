@@ -3,25 +3,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:nexus_app_min_test/core/widgets/guest_guard.dart';
-import 'package:nexus_app_min_test/core/theme/app_colors.dart';
-import 'package:nexus_app_min_test/core/theme/app_text_styles.dart';
-import 'package:nexus_app_min_test/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/core/widgets/guest_guard.dart';
+import 'package:nexus_app_v2/core/theme/app_colors.dart';
+import 'package:nexus_app_v2/core/theme/app_text_styles.dart';
+import 'package:nexus_app_v2/core/constants/app_constants.dart';
 
-import 'package:nexus_app_min_test/core/session/is_guest_provider.dart';
-import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
-import 'package:nexus_app_min_test/core/providers/assessment_provider.dart';
-import 'package:nexus_app_min_test/core/providers/user_provider.dart';
+import 'package:nexus_app_v2/core/session/is_guest_provider.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
+import 'package:nexus_app_v2/core/providers/assessment_provider.dart';
+import 'package:nexus_app_v2/core/providers/user_provider.dart';
 
-import 'package:nexus_app_min_test/core/session/relationship_status_key.dart';
-import 'package:nexus_app_min_test/core/models/assessment_model.dart';
+import 'package:nexus_app_v2/core/session/relationship_status_key.dart';
+import 'package:nexus_app_v2/core/models/assessment_model.dart';
 
-import 'package:nexus_app_min_test/features/stories/data/story_repository.dart';
-import 'package:nexus_app_min_test/features/stories/domain/story_models.dart';
-import 'package:nexus_app_min_test/features/stories/presentation/screens/stories_screen.dart';
+import 'package:nexus_app_v2/features/stories/data/story_repository.dart';
+import 'package:nexus_app_v2/features/stories/domain/story_models.dart';
+import 'package:nexus_app_v2/features/stories/presentation/screens/stories_screen.dart';
 
-import 'package:nexus_app_min_test/features/journeys/data/journey_repository.dart';
-import 'package:nexus_app_min_test/features/journeys/domain/journey_models.dart';
+import 'package:nexus_app_v2/features/journeys/data/journey_repository.dart';
+import 'package:nexus_app_v2/features/journeys/domain/journey_models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<String> _homeDisplayNameForUser(User? u) async {

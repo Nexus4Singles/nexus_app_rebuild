@@ -6,18 +6,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:nexus_app_min_test/core/auth/auth_providers.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/core/services/chat_service.dart';
-import 'package:nexus_app_min_test/core/widgets/disabled_account_gate.dart';
-import 'package:nexus_app_min_test/core/providers/service_providers.dart';
-import 'package:nexus_app_min_test/core/moderation/moderation_providers.dart';
-import 'package:nexus_app_min_test/core/moderation/moderation_models.dart';
+import 'package:nexus_app_v2/core/auth/auth_providers.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/services/chat_service.dart';
+import 'package:nexus_app_v2/core/widgets/disabled_account_gate.dart';
+import 'package:nexus_app_v2/core/providers/service_providers.dart';
+import 'package:nexus_app_v2/core/moderation/moderation_providers.dart';
+import 'package:nexus_app_v2/core/moderation/moderation_models.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
-import 'package:nexus_app_min_test/core/constants/app_constants.dart';
-import 'package:nexus_app_min_test/features/subscription/presentation/screens/subscription_screen.dart';
+import 'package:nexus_app_v2/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/features/subscription/presentation/screens/subscription_screen.dart';
 
 final _userDocByIdProvider =
     StreamProvider.family<Map<String, dynamic>?, String>((ref, uid) {

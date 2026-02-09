@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:country_picker/country_picker.dart';
 
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/core/lists/nexus_lists_provider.dart';
-import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
-import 'package:nexus_app_min_test/features/dating_onboarding/data/church_list_provider.dart';
-import 'package:nexus_app_min_test/core/widgets/nexus_country_picker.dart';
-import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/lists/nexus_lists_provider.dart';
+import 'package:nexus_app_v2/features/dating_onboarding/application/dating_onboarding_draft.dart';
+import 'package:nexus_app_v2/features/dating_onboarding/data/church_list_provider.dart';
+import 'package:nexus_app_v2/core/widgets/nexus_country_picker.dart';
+import 'package:nexus_app_v2/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
 
 class DatingExtraInfoScreen extends ConsumerStatefulWidget {
   const DatingExtraInfoScreen({super.key});

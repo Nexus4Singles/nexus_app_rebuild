@@ -4,11 +4,11 @@ import 'package:just_audio/just_audio.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
-import 'package:nexus_app_min_test/features/dating_onboarding/application/dating_onboarding_draft.dart';
-import 'package:nexus_app_min_test/core/storage/do_spaces_storage_service.dart';
-import 'package:nexus_app_min_test/core/storage/providers/media_storage_provider.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
+import 'package:nexus_app_v2/features/dating_onboarding/application/dating_onboarding_draft.dart';
+import 'package:nexus_app_v2/core/storage/do_spaces_storage_service.dart';
+import 'package:nexus_app_v2/core/storage/providers/media_storage_provider.dart';
 
 class DatingAudioSummaryScreen extends ConsumerStatefulWidget {
   const DatingAudioSummaryScreen({super.key});

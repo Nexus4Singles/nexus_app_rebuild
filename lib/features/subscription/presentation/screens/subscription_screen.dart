@@ -4,14 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
-import 'package:nexus_app_min_test/core/theme/theme.dart';
-import 'package:nexus_app_min_test/core/constants/app_constants.dart';
-import 'package:nexus_app_min_test/core/session/effective_relationship_status_provider.dart';
-import 'package:nexus_app_min_test/core/config/revenuecat_config.dart';
-import 'package:nexus_app_min_test/core/services/revenuecat_service.dart';
-import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
-import 'package:nexus_app_min_test/features/subscription/application/subscription_provider.dart';
-import 'package:nexus_app_min_test/features/subscription/domain/subscription_models.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/core/session/effective_relationship_status_provider.dart';
+import 'package:nexus_app_v2/core/config/revenuecat_config.dart';
+import 'package:nexus_app_v2/core/services/revenuecat_service.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
+import 'package:nexus_app_v2/features/subscription/application/subscription_provider.dart';
+import 'package:nexus_app_v2/features/subscription/domain/subscription_models.dart';
 
 class SubscriptionScreen extends ConsumerStatefulWidget {
   /// Optional: set initial tab index (0 = Dating Features, 1 = Journey Purchases)

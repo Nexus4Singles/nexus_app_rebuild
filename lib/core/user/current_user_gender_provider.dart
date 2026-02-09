@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:nexus_app_min_test/core/session/guest_session_provider.dart';
+import 'package:nexus_app_v2/core/session/guest_session_provider.dart';
 import 'current_user_doc_provider.dart';
 
 final currentUserGenderProvider = StreamProvider<String?>((ref) {

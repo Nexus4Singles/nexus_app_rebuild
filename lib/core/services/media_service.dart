@@ -10,8 +10,8 @@ import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 
-import 'package:nexus_app_min_test/core/storage/do_spaces_storage_service.dart';
-import 'package:nexus_app_min_test/core/storage/do_spaces_config.dart';
+import 'package:nexus_app_v2/core/storage/do_spaces_storage_service.dart';
+import 'package:nexus_app_v2/core/storage/do_spaces_config.dart';
 
 import '../theme/app_colors.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';

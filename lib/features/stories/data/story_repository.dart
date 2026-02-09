@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
-import 'package:nexus_app_min_test/core/services/config_loader_service.dart';
-import 'package:nexus_app_min_test/features/stories/domain/story_models.dart';
-import 'package:nexus_app_min_test/core/models/story_model.dart' as remote;
+import 'package:nexus_app_v2/core/services/config_loader_service.dart';
+import 'package:nexus_app_v2/features/stories/domain/story_models.dart';
+import 'package:nexus_app_v2/core/models/story_model.dart' as remote;
 
 class StoryRepository {
   static const String _assetPath = 'assets/config/engagement/stories.v1.json';

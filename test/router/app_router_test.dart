@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/router/app_router.dart';
-import 'package:nexus_app_min_test/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/core/router/app_router.dart';
+import 'package:nexus_app_v2/core/constants/app_constants.dart';
 
 Widget _buildAppWithRoute(String routeName) {
   return ProviderScope(

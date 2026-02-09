@@ -1,4 +1,4 @@
-import 'package:nexus_app_min_test/core/stubs/firebase_auth_import.dart';
+import 'package:nexus_app_v2/core/stubs/firebase_auth_import.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Service for Firebase Authentication operations.

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_min_test/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
 import '../../application/dating_preferences_provider.dart';
 import 'dating_preferences_setup_screen.dart';
 import 'search_results_grid_screen.dart';

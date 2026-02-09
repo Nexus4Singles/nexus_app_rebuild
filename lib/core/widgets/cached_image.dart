@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:nexus_app_min_test/core/theme/app_colors.dart';
+import 'package:nexus_app_v2/core/theme/app_colors.dart';
 
 // Simple in-memory cache manager that doesn't require sqflite
 class _SimpleCacheManager extends CacheManager {

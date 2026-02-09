@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:nexus_app_min_test/core/providers/auth_provider.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 
 /// Guest rules (v2):
 /// - If FirebaseAuth has a real signed-in user (non-anonymous), you are NOT a guest,

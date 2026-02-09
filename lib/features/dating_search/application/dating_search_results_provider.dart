@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nexus_app_min_test/core/bootstrap/firebase_ready_provider.dart';
-import 'package:nexus_app_min_test/core/session/guest_session_provider.dart';
-import 'package:nexus_app_min_test/core/user/current_user_gender_provider.dart';
-import 'package:nexus_app_min_test/core/user/current_user_disabled_provider.dart';
-import 'package:nexus_app_min_test/core/providers/user_provider.dart';
+import 'package:nexus_app_v2/core/bootstrap/firebase_ready_provider.dart';
+import 'package:nexus_app_v2/core/session/guest_session_provider.dart';
+import 'package:nexus_app_v2/core/user/current_user_gender_provider.dart';
+import 'package:nexus_app_v2/core/user/current_user_disabled_provider.dart';
+import 'package:nexus_app_v2/core/providers/user_provider.dart';
 import '../data/dating_search_service.dart';
 import '../domain/dating_profile.dart';
 import '../domain/dating_search_filters.dart';
