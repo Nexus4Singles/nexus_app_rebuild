@@ -16,16 +16,7 @@ class NewDatingSearchScreen extends ConsumerStatefulWidget {
 }
 
 class _NewDatingSearchScreenState extends ConsumerState<NewDatingSearchScreen> {
-  @override
-  void initState() {
-    super.initState();
-    // Immediately invalidate and reload preferences on every mount (including hot reload)
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        ref.invalidate(datingPreferencesProvider);
-      }
-    });
-  }
+  // Removed forced invalidation of datingPreferencesProvider in initState
 
   @override
   Widget build(BuildContext context) {

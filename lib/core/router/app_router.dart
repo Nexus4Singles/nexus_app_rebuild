@@ -7,6 +7,8 @@ import '../constants/app_constants.dart';
 
 import '../../features/presentation/screens/home_screen.dart';
 import '../../features/presentation/screens/search_screen.dart';
+import '../../features/presentation/screens/_stubs/onboarding_stub_screen.dart';
+import '../../features/presentation/screens/_stubs/notifications_stub_screen.dart';
 import '../../features/dating_search/presentation/screens/new_dating_search_screen.dart';
 import '../../features/presentation/screens/chats_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
@@ -39,6 +41,7 @@ import '../../features/challenges/presentation/screens/journey_gate_screen.dart'
 import '../../features/challenges/domain/journey_v1_models.dart';
 
 import '../../features/subscription/presentation/screens/journey_purchase_screen.dart';
+import '../../features/subscription/presentation/screens/book_marriage_coach_screen.dart';
 
 import '../../features/assessment/presentation/screens/assessments_hub_screen.dart';
 import '../../features/assessment/presentation/screens/assessment_intro_screen.dart';
@@ -52,8 +55,7 @@ import '../../features/auth/presentation/screens/signup_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 
-import '../../features/presentation/screens/_stubs/onboarding_stub_screen.dart';
-import '../../features/presentation/screens/_stubs/notifications_stub_screen.dart';
+import '../../features/admin_review/presentation/screens/admin_review_queue_screen.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   final name = settings.name ?? '/';
@@ -331,6 +333,11 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         settings: settings,
 
         builder: (_) => const AssessmentResultScreen(),
+      );
+    case AppRoutes.bookMarriageCoach:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const BookMarriageCoachScreen(),
       );
     case '/compatibility-quiz':
       return MaterialPageRoute(

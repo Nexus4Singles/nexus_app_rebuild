@@ -70,7 +70,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
         slivers: [
           // Premium App Bar
           SliverAppBar(
-            expandedHeight: 200,
+            expandedHeight: 120,
             floating: false,
             pinned: true,
             backgroundColor: AppColors.primary,
@@ -103,21 +103,21 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                 child: Stack(
                   children: [
                     Positioned(
-                      top: 40,
-                      right: -30,
+                      top: 0,
+                      right: -50,
                       child: Icon(
                         Icons.workspace_premium,
-                        size: 180,
-                        color: Colors.white.withOpacity(0.1),
+                        size: 140,
+                        color: Colors.white.withOpacity(0.08),
                       ),
                     ),
                     Positioned(
-                      bottom: 20,
-                      left: 20,
+                      bottom: 5,
+                      left: 10,
                       child: Icon(
                         Icons.star,
-                        size: 60,
-                        color: Colors.amber.withOpacity(0.3),
+                        size: 40,
+                        color: Colors.amber.withOpacity(0.2),
                       ),
                     ),
                   ],
@@ -1089,7 +1089,8 @@ class _CancelAutoRenewalButton extends ConsumerWidget {
     return ElevatedButton.icon(
       onPressed: () async {
         try {
-          // Open the native subscription management UI via RevenueCat
+          // Open native subscription management UI (iOS: App Store, Android: Google Play)
+          // Users must manage subscriptions through the app store's native UI
           await RevenueCatService.manageSubscriptions();
         } catch (e) {
           if (context.mounted) {
@@ -1110,7 +1111,7 @@ class _CancelAutoRenewalButton extends ConsumerWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         side: BorderSide(color: AppColors.error.withOpacity(0.3)),
       ),
-      icon: const Icon(Icons.manage_accounts_rounded),
+      icon: const Icon(Icons.settings_outlined),
       label: const Text('Manage Subscription'),
     );
   }

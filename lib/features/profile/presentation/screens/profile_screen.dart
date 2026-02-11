@@ -1276,12 +1276,19 @@ class _HeroCarouselState extends State<_HeroCarousel> {
           onPageChanged: (i) => setState(() => _index = i),
           itemBuilder: (context, i) {
             final url = photos[i];
-            return Container(
-              color: Theme.of(context).colorScheme.surface,
-              child:
-                  url.isEmpty
-                      ? _InitialsAvatar(name: 'User')
-                      : Image.network(url, fit: BoxFit.cover),
+            return RepaintBoundary(
+              child: Container(
+                color: Theme.of(context).colorScheme.surface,
+                child:
+                    url.isEmpty
+                        ? _InitialsAvatar(name: 'User')
+                        : Image.network(
+                          url,
+                          fit: BoxFit.cover,
+                          cacheWidth: 1080,
+                          cacheHeight: 1080,
+                        ),
+              ),
             );
           },
         ),
@@ -2283,19 +2290,26 @@ class _GalleryGrid extends StatelessWidget {
             ),
             itemBuilder: (context, i) {
               final url = photos[i];
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Container(
-                  color: AppColors.border,
-                  child: GestureDetector(
-                    onTap: () {
-                      _openPhotoViewer(
-                        context,
-                        photos: photos,
-                        initialIndex: i,
-                      );
-                    },
-                    child: Image.network(url, fit: BoxFit.cover),
+              return RepaintBoundary(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    color: AppColors.border,
+                    child: GestureDetector(
+                      onTap: () {
+                        _openPhotoViewer(
+                          context,
+                          photos: photos,
+                          initialIndex: i,
+                        );
+                      },
+                      child: Image.network(
+                        url,
+                        fit: BoxFit.cover,
+                        cacheWidth: 400,
+                        cacheHeight: 400,
+                      ),
+                    ),
                   ),
                 ),
               );
@@ -2375,7 +2389,7 @@ class _AccountTiles extends StatelessWidget {
         const SizedBox(height: 10),
         _ProfileTile(
           icon: Icons.workspace_premium_outlined,
-          title: 'Subscriptions & Purchases',
+          title: 'Subscriptions',
           subtitle: 'Upgrade for more features',
           onTap: () {
             Navigator.of(context).push(
@@ -3699,7 +3713,9 @@ class _PhotosEditor extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                         child: Container(
                           color: AppColors.textSecondary,
-                          child: _SmartImage(url: url, fit: BoxFit.cover),
+                          child: RepaintBoundary(
+                            child: _SmartImage(url: url, fit: BoxFit.cover),
+                          ),
                         ),
                       ),
                       Positioned(
@@ -3786,6 +3802,8 @@ class _SmartImage extends StatelessWidget {
         fit: fit,
         width: double.infinity,
         height: double.infinity,
+        cacheWidth: 500,
+        cacheHeight: 500,
       );
     }
     return Image.file(

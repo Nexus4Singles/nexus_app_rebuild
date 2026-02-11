@@ -19,7 +19,8 @@ class ConfigLoaderService {
 
   // Cached configs
   AssessmentConfig? _singlesReadinessConfig;
-  AssessmentConfig? _remarriageReadinessConfig;
+  AssessmentConfig? _remarriageDivorcedConfig;
+  AssessmentConfig? _remarriageWidowedConfig;
   AssessmentConfig? _marriageHealthCheckConfig;
 
   // Journey catalogs by relationship status
@@ -56,13 +57,22 @@ class ConfigLoaderService {
     return _singlesReadinessConfig!;
   }
 
-  /// Load Remarriage Readiness Assessment config
-  Future<AssessmentConfig> loadRemarriageReadinessConfig() async {
-    if (_remarriageReadinessConfig != null) return _remarriageReadinessConfig!;
+  /// Load Remarriage Readiness Assessment config for Divorced users
+  Future<AssessmentConfig> loadRemarriageDivorcedConfig() async {
+    if (_remarriageDivorcedConfig != null) return _remarriageDivorcedConfig!;
 
-    final jsonData = await _loadJsonAsset(AppConfig.remarriageReadinessPath);
-    _remarriageReadinessConfig = AssessmentConfig.fromJson(jsonData);
-    return _remarriageReadinessConfig!;
+    final jsonData = await _loadJsonAsset(AppConfig.remarriageDivorcedPath);
+    _remarriageDivorcedConfig = AssessmentConfig.fromJson(jsonData);
+    return _remarriageDivorcedConfig!;
+  }
+
+  /// Load Remarriage Readiness Assessment config for Widowed users
+  Future<AssessmentConfig> loadRemarriageWidowedConfig() async {
+    if (_remarriageWidowedConfig != null) return _remarriageWidowedConfig!;
+
+    final jsonData = await _loadJsonAsset(AppConfig.remarriageWidowedPath);
+    _remarriageWidowedConfig = AssessmentConfig.fromJson(jsonData);
+    return _remarriageWidowedConfig!;
   }
 
   /// Load Marriage Health Check Assessment config
@@ -82,20 +92,24 @@ class ConfigLoaderService {
       case RelationshipStatus.singleNeverMarried:
         return loadSinglesReadinessConfig();
       case RelationshipStatus.divorced:
+        return loadRemarriageDivorcedConfig();
       case RelationshipStatus.widowed:
-        return loadRemarriageReadinessConfig();
+        return loadRemarriageWidowedConfig();
       case RelationshipStatus.married:
         return loadMarriageHealthCheckConfig();
     }
   }
 
   /// Load assessment config by type
+  /// Note: For remarriageReadiness, this returns the divorced version by default.
+  /// Use getAssessmentForStatus() if you need to distinguish between divorced/widowed.
   Future<AssessmentConfig?> loadAssessment(AssessmentType type) async {
     switch (type) {
       case AssessmentType.singlesReadiness:
         return loadSinglesReadinessConfig();
       case AssessmentType.remarriageReadiness:
-        return loadRemarriageReadinessConfig();
+        // Default to divorced - callers should use getAssessmentForStatus for accurate loading
+        return loadRemarriageDivorcedConfig();
       case AssessmentType.marriageHealthCheck:
         return loadMarriageHealthCheckConfig();
     }
@@ -359,7 +373,8 @@ class ConfigLoaderService {
   /// Clear all cached configs (useful for testing or refresh)
   void clearCache() {
     _singlesReadinessConfig = null;
-    _remarriageReadinessConfig = null;
+    _remarriageDivorcedConfig = null;
+    _remarriageWidowedConfig = null;
     _marriageHealthCheckConfig = null;
     _singlesNeverMarriedJourneyCatalog = null;
     _divorcedWidowedJourneyCatalog = null;
@@ -375,7 +390,8 @@ class ConfigLoaderService {
   Future<void> preloadAllConfigs() async {
     await Future.wait([
       loadSinglesReadinessConfig(),
-      loadRemarriageReadinessConfig(),
+      loadRemarriageDivorcedConfig(),
+      loadRemarriageWidowedConfig(),
       loadMarriageHealthCheckConfig(),
       loadSinglesNeverMarriedJourneyCatalog(),
       loadDivorcedWidowedJourneyCatalog(),

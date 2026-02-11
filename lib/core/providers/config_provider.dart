@@ -21,12 +21,20 @@ final singlesReadinessConfigProvider = FutureProvider<AssessmentConfig>((
   return configLoader.loadSinglesReadinessConfig();
 });
 
-/// Provider for Remarriage Readiness Assessment config
-final remarriageReadinessConfigProvider = FutureProvider<AssessmentConfig>((
+/// Provider for Remarriage Readiness Assessment config (Divorced)
+final remarriageDivorcedConfigProvider = FutureProvider<AssessmentConfig>((
   ref,
 ) async {
   final configLoader = ref.watch(configLoaderProvider);
-  return configLoader.loadRemarriageReadinessConfig();
+  return configLoader.loadRemarriageDivorcedConfig();
+});
+
+/// Provider for Remarriage Readiness Assessment config (Widowed)
+final remarriageWidowedConfigProvider = FutureProvider<AssessmentConfig>((
+  ref,
+) async {
+  final configLoader = ref.watch(configLoaderProvider);
+  return configLoader.loadRemarriageWidowedConfig();
 });
 
 /// Provider for Marriage Health Check Assessment config

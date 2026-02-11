@@ -422,8 +422,8 @@ class AppConfig {
 
   // Config file names
   static const String singlesReadinessConfig = 'singles_readiness_v1.json';
-  static const String remarriageReadinessConfig =
-      'remarriage_readiness_v1.json';
+  static const String remarriageDivorcedConfig = 'remarriage_divorced_final.json';
+  static const String remarriageWidowedConfig = 'remarriage_widowed_final.json';
   static const String marriageHealthCheckConfig =
       'marriage_health_check_v1.json';
   static const String storiesConfig = 'stories_v1.json';
@@ -447,8 +447,10 @@ class AppConfig {
   // Full config paths - Assessments
   static const String singlesReadinessPath =
       '$assessmentsConfigPath/$singlesReadinessConfig';
-  static const String remarriageReadinessPath =
-      '$assessmentsConfigPath/$remarriageReadinessConfig';
+  static const String remarriageDivorcedPath =
+      '$assessmentsConfigPath/$remarriageDivorcedConfig';
+  static const String remarriageWidowedPath =
+      '$assessmentsConfigPath/$remarriageWidowedConfig';
   static const String marriageHealthCheckPath =
       '$assessmentsConfigPath/$marriageHealthCheckConfig';
 
@@ -504,7 +506,7 @@ class AppConfig {
 // ============================================================================
 
 /// Navigation tab identifiers - ADD NEW TABS HERE
-enum NavTab { home, search, chats, stories, challenges, profile }
+enum NavTab { home, search, chats, stories, challenges, counselling, profile }
 
 /// Configuration for a navigation tab
 class NavTabConfig {
@@ -566,6 +568,8 @@ class AppNavRoutes {
 
   static const String assessment = '/assessment';
   static const String assessmentResult = '/assessment/result';
+  static const String bookMarriageCoach = '/book-marriage-coach';
+  static const String coachApplication = '/coach-application';
 
   static const String editProfile = '/profile/edit';
   static const String settings = '/profile/settings';
@@ -615,6 +619,13 @@ class NavConfig {
       activeIconName: 'challenges_filled',
       route: AppNavRoutes.challenges,
     ),
+    NavTab.counselling: NavTabConfig(
+      id: NavTab.counselling,
+      label: 'Counselling',
+      iconName: 'counselling_outlined',
+      activeIconName: 'counselling_filled',
+      route: AppNavRoutes.bookMarriageCoach,
+    ),
     NavTab.profile: NavTabConfig(
       id: NavTab.profile,
       label: 'Profile',
@@ -640,6 +651,7 @@ class NavConfig {
     NavTab.home,
     NavTab.stories,
     NavTab.challenges,
+    NavTab.counselling,
     NavTab.profile,
   ];
 

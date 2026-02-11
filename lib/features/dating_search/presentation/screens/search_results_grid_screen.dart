@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/widgets/cached_image.dart';
 import 'package:nexus_app_v2/features/profile/presentation/screens/profile_screen.dart';
 import 'package:nexus_app_v2/features/subscription/presentation/screens/subscription_screen.dart';
 import 'package:nexus_app_v2/features/dating_search/application/saved_profiles_provider.dart';
@@ -51,6 +52,19 @@ class _SearchResultsGridScreenState
   }
 
   void _onScroll() {
+    // FIXED: Trigger load-more when user scrolls near bottom
+    // This loads the next batch of 30 profiles
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 500) {
+      // Trigger load more
+      if (!_showDailyLimitCard) {
+        final currentOffset = ref.read(searchResultsOffsetProvider);
+        ref.read(searchResultsOffsetProvider.notifier).state =
+            currentOffset + 30;  // Load 30 more profiles
+      }
+    }
+
+    // Show daily limit card when user reaches very bottom
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 100) {
       if (!_showDailyLimitCard) {
@@ -62,7 +76,8 @@ class _SearchResultsGridScreenState
   @override
   Widget build(BuildContext context) {
     final ref = this.ref;
-    final resultsAsync = ref.watch(cachedDatingSearchResultsProvider);
+    // FIXED: Use accumulating provider that shows results incrementally
+    final resultsAsync = ref.watch(accumulatedSearchResultsProvider);
     final preferencesAsync = ref.watch(datingPreferencesProvider);
 
     return Scaffold(
@@ -92,42 +107,74 @@ class _SearchResultsGridScreenState
         ],
       ),
       body: resultsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () {
+          // FIXED: Don't show spinner - show empty state with loading indicator
+          // User will see results start appearing as they load
+          return const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 16),
+                Text(
+                  'Loading Matches...',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
         error:
-            (e, st) => Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 48,
+            (e, st) {
+          final isTimeout = e.toString().contains('Timeout');
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  isTimeout ? Icons.schedule_rounded : Icons.error_outline,
+                  size: 48,
+                  color: AppColors.getTextSecondary(context),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  isTimeout ? 'Search Took Too Long' : 'Unable to load results',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.getTextPrimary(context),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  isTimeout
+                      ? 'Network may be slow. Try again.'
+                      : 'Something went wrong. Please try again.',
+                  style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.getTextSecondary(context),
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Unable to load results',
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.getTextPrimary(context),
-                    ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: 120,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      if (!mounted) return;
+                      ref.invalidate(datingSearchResultsProvider);
+                      ref.read(searchResultsCacheProvider.notifier).clear();
+                      ref.read(searchResultsOffsetProvider.notifier).state =
+                          0;
+                    },
+                    icon: const Icon(Icons.refresh, size: 18),
+                    label: const Text('Retry'),
                   ),
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    width: 120,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        if (!mounted) return;
-                        ref.invalidate(datingSearchResultsProvider);
-                        ref.read(searchResultsCacheProvider.notifier).clear();
-                        ref.read(searchResultsOffsetProvider.notifier).state =
-                            0;
-                      },
-                      icon: const Icon(Icons.refresh, size: 18),
-                      label: const Text('Retry'),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+          );
+        },
         data: (result) {
           if (result.items.isEmpty) {
             return ref
@@ -177,7 +224,7 @@ class _SearchResultsGridScreenState
               ref.read(searchResultsCacheProvider.notifier).clear();
               ref.read(searchResultsOffsetProvider.notifier).state = 0;
               if (!mounted) return;
-              await ref.read(cachedDatingSearchResultsProvider.future);
+              await ref.read(accumulatedSearchResultsProvider.future);
             },
             child: _PaginatedGridView(
               allResults: result,
@@ -414,63 +461,40 @@ class _ProfileCard extends ConsumerWidget {
           children: [
             // Background image
             Positioned.fill(
-              child:
-                  photo != null
-                      ? ClipRRect(
+              child: photo != null
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: CachedImage(
+                        photo,
+                        fit: BoxFit.cover,
+                        width: 200,
+                        height: 300,
                         borderRadius: BorderRadius.circular(16),
-                        child: Container(
+                        cacheDuration: const Duration(days: 30),
+                        errorWidget: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
                             color: AppColors.getBackground(context),
                           ),
-                          child: Image.network(
-                            photo,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              // Show placeholder icon if image fails to load
-                              return Container(
-                                color: AppColors.getBackground(context),
-                                child: Icon(
-                                  Icons.image_not_supported_outlined,
-                                  size: 40,
-                                  color: AppColors.getTextSecondary(context),
-                                ),
-                              );
-                            },
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: SizedBox(
-                                  width: 30,
-                                  height: 30,
-                                  child: CircularProgressIndicator(
-                                    value:
-                                        loadingProgress.expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                loadingProgress
-                                                    .expectedTotalBytes!
-                                            : null,
-                                    strokeWidth: 2,
-                                  ),
-                                ),
-                              );
-                            },
+                          child: Icon(
+                            Icons.image_not_supported_outlined,
+                            size: 40,
+                            color: AppColors.getTextSecondary(context),
                           ),
                         ),
-                      )
-                      : Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: AppColors.getBackground(context),
-                        ),
-                        child: Icon(
-                          Icons.person,
-                          size: 40,
-                          color: AppColors.getTextSecondary(context),
-                        ),
                       ),
+                    )
+                  : Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: AppColors.getBackground(context),
+                      ),
+                      child: Icon(
+                        Icons.person,
+                        size: 40,
+                        color: AppColors.getTextSecondary(context),
+                      ),
+                    ),
             ),
 
             // Gradient overlay for readability

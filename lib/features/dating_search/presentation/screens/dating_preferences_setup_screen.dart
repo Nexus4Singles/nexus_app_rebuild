@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/widgets/nexus_country_picker.dart';
+import 'dart:async';
 import '../../domain/dating_preferences.dart';
 import '../../application/dating_preferences_provider.dart';
 import '../../application/dating_search_results_provider.dart';
@@ -88,13 +89,22 @@ class _DatingPreferencesSetupScreenState
 
       if (!mounted) return;
 
-      // Wait a bit for Firestore to sync
-      await Future.delayed(const Duration(milliseconds: 300));
+      // FIXED: Wait longer for Firestore to complete the write
+      // This ensures the new preferences are available before we invalidate
+      await Future.delayed(const Duration(milliseconds: 800));
 
       // Invalidate both preferences and search results to force fresh fetch
       ref.invalidate(datingPreferencesProvider);
       ref.invalidate(datingSearchResultsProvider);
       ref.read(searchResultsCacheProvider.notifier).clear();
+
+      // FIXED: Wait for preferences to actually reload from Firestore
+      // Don't proceed until new preferences are loaded
+      try {
+        await ref.read(datingPreferencesProvider.future);
+      } catch (_) {
+        // If preferences fail to reload, proceed anyway
+      }
 
       // If editing existing preferences, just pop back to results
       if (widget.existingPreferences != null) {
@@ -152,21 +162,38 @@ class _DatingPreferencesSetupScreenState
     );
 
     try {
-      // Wait a bit for Firestore to sync
-      await Future.delayed(const Duration(milliseconds: 500));
+      // FIXED: Wait longer for preferences to sync to Firestore
+      // This ensures search results use the new preferences
+      await Future.delayed(const Duration(milliseconds: 1000));
 
       if (!mounted) {
         Navigator.of(context).pop();
         return;
       }
 
-      // Invalidate search results to force refresh
+      // FIXED: Ensure preferences are reloaded before invalidating search
+      try {
+        await ref.read(datingPreferencesProvider.future);
+      } catch (_) {
+        // If preferences reload fails, still proceed with search
+      }
+
+      // Invalidate search results to force refresh with new preferences
       ref.invalidate(datingSearchResultsProvider);
       ref.read(searchResultsCacheProvider.notifier).clear();
 
-      // Get the search results
+      // FIXED: Add timeout to prevent endless loading spinner
+      // If search takes >20 seconds, assume something is wrong and show error
       final resultsAsync = await ref.read(
         cachedDatingSearchResultsProvider.future,
+      ).timeout(
+        const Duration(seconds: 20),
+        onTimeout: () {
+          throw TimeoutException(
+            'Search took too long',
+            const Duration(seconds: 20),
+          );
+        },
       );
 
       if (!mounted) {
@@ -274,13 +301,13 @@ class _DatingPreferencesSetupScreenState
                   fontWeight: FontWeight.w700,
                   color: AppColors.getTextPrimary(context),
                 ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                'Answer a few questions about what you\'re looking for',
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.getTextSecondary(context),
-                ),
+              //),
+              //const SizedBox(height: 2),
+              //Text(
+               // 'Answer a few questions about what you\'re looking for',
+               // style: AppTextStyles.bodyMedium.copyWith(
+                // color: AppColors.getTextSecondary(context),
+                //),
               ),
               const SizedBox(height: 16),
 

@@ -16,6 +16,9 @@ class AppRoutes {
   static const assessment = '/assessment';
   static const assessmentResult = '/assessment/result';
 
+  // Marriage Coach
+  static const bookMarriageCoach = '/book-marriage-coach';
+
   // Auth
   static const login = '/login';
 }

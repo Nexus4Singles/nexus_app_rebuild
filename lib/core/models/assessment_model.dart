@@ -37,7 +37,7 @@ class AssessmentDimension extends Equatable {
   List<Object?> get props => [id, name, insights];
 }
 
-/// Insights for a dimension (low/medium/high feedback)
+/// Insights for a dimension (low/medium/high feedback with optional gender personalization)
 class DimensionInsights extends Equatable {
   final String? low;
   final String? medium;
@@ -45,12 +45,22 @@ class DimensionInsights extends Equatable {
   final String? microStep;
   final String? recommendedJourney;
 
+  /// Gender-specific insight variants: {"male": "...", "female": "..."}
+  final Map<String, String>? genderLow;
+  final Map<String, String>? genderMedium;
+  final Map<String, String>? genderHigh;
+  final Map<String, String>? genderMicroStep;
+
   const DimensionInsights({
     this.low,
     this.medium,
     this.high,
     this.microStep,
     this.recommendedJourney,
+    this.genderLow,
+    this.genderMedium,
+    this.genderHigh,
+    this.genderMicroStep,
   });
 
   factory DimensionInsights.fromJson(Map<String, dynamic> json) {
@@ -60,6 +70,18 @@ class DimensionInsights extends Equatable {
       high: json['high'] as String?,
       microStep: json['microStep'] as String?,
       recommendedJourney: json['recommendedJourney'] as String?,
+      genderLow: json['genderLow'] != null
+          ? Map<String, String>.from(json['genderLow'] as Map)
+          : null,
+      genderMedium: json['genderMedium'] != null
+          ? Map<String, String>.from(json['genderMedium'] as Map)
+          : null,
+      genderHigh: json['genderHigh'] != null
+          ? Map<String, String>.from(json['genderHigh'] as Map)
+          : null,
+      genderMicroStep: json['genderMicroStep'] != null
+          ? Map<String, String>.from(json['genderMicroStep'] as Map)
+          : null,
     );
   }
 
@@ -69,35 +91,102 @@ class DimensionInsights extends Equatable {
     if (high != null) 'high': high,
     if (microStep != null) 'microStep': microStep,
     if (recommendedJourney != null) 'recommendedJourney': recommendedJourney,
+    if (genderLow != null) 'genderLow': genderLow,
+    if (genderMedium != null) 'genderMedium': genderMedium,
+    if (genderHigh != null) 'genderHigh': genderHigh,
+    if (genderMicroStep != null) 'genderMicroStep': genderMicroStep,
   };
 
+  /// Get insight for score (generic fallback)
   String? getInsightForScore(double percentage) {
     if (percentage >= AppConfig.strongThreshold) return high;
     if (percentage >= AppConfig.developingThreshold) return medium;
     return low;
   }
 
+  /// Get gender-personalized insight, falling back to generic
+  String? getInsightForScoreAndGender(double percentage, String? gender) {
+    final g = gender?.toLowerCase();
+    if (percentage >= AppConfig.strongThreshold) {
+      return (g != null ? genderHigh?[g] : null) ?? high;
+    }
+    if (percentage >= AppConfig.developingThreshold) {
+      return (g != null ? genderMedium?[g] : null) ?? medium;
+    }
+    return (g != null ? genderLow?[g] : null) ?? low;
+  }
+
+  /// Get gender-personalized micro step, falling back to generic
+  String? getMicroStepForGender(String? gender) {
+    final g = gender?.toLowerCase();
+    return (g != null ? genderMicroStep?[g] : null) ?? microStep;
+  }
+
   @override
-  List<Object?> get props => [low, medium, high, microStep, recommendedJourney];
+  List<Object?> get props => [
+    low, medium, high, microStep, recommendedJourney,
+    genderLow, genderMedium, genderHigh, genderMicroStep,
+  ];
 }
 
-/// Profile config per tier
+/// Profile config per tier with optional gender personalization and narrative framing
 class AssessmentProfile extends Equatable {
   final String title;
   final String summary;
 
-  const AssessmentProfile({required this.title, required this.summary});
+  /// Gender-specific profile text: {"male": "...", "female": "..."}
+  final Map<String, String>? genderTitle;
+  final Map<String, String>? genderSummary;
+
+  /// A narrative paragraph that frames the result in the context of the user's journey
+  final String? narrativeFrame;
+
+  const AssessmentProfile({
+    required this.title,
+    required this.summary,
+    this.genderTitle,
+    this.genderSummary,
+    this.narrativeFrame,
+  });
 
   factory AssessmentProfile.fromJson(Map<String, dynamic> json) {
     return AssessmentProfile(
       title: (json["title"] as String?) ?? "",
       summary: (json["summary"] as String?) ?? "",
+      genderTitle: json['genderTitle'] != null
+          ? Map<String, String>.from(json['genderTitle'] as Map)
+          : null,
+      genderSummary: json['genderSummary'] != null
+          ? Map<String, String>.from(json['genderSummary'] as Map)
+          : null,
+      narrativeFrame: json['narrativeFrame'] as String?,
     );
   }
 
-  Map<String, dynamic> toJson() => {"title": title, "summary": summary};
+  Map<String, dynamic> toJson() => {
+    "title": title,
+    "summary": summary,
+    if (genderTitle != null) 'genderTitle': genderTitle,
+    if (genderSummary != null) 'genderSummary': genderSummary,
+    if (narrativeFrame != null) 'narrativeFrame': narrativeFrame,
+  };
 
-  List<Object?> get props => [title, summary];
+  /// Get gender-personalized title, falling back to generic
+  String getTitleForGender(String? gender) {
+    final g = gender?.toLowerCase();
+    return (g != null ? genderTitle?[g] : null) ?? title;
+  }
+
+  /// Get gender-personalized summary, falling back to generic
+  String getSummaryForGender(String? gender) {
+    final g = gender?.toLowerCase();
+    return (g != null ? genderSummary?[g] : null) ?? summary;
+  }
+
+  @override
+  List<Object?> get props => [
+    title, summary, genderTitle, genderSummary, narrativeFrame,
+  ];
 }
 
 /// Root profiles map (STRONG/DEVELOPING/GUARDED/AT_RISK)
@@ -133,6 +222,8 @@ class AssessmentOption extends Equatable {
   final String signalTier;
   final int weight;
   final String outcomeSignal;
+  final String? outcomeLabel; // Human-readable label e.g. "anxious attachment pattern"
+  final Map<String, String>? genderInsight; // {"male": "...", "female": "..."}
 
   const AssessmentOption({
     required this.id,
@@ -140,6 +231,8 @@ class AssessmentOption extends Equatable {
     required this.signalTier,
     required this.weight,
     required this.outcomeSignal,
+    this.outcomeLabel,
+    this.genderInsight,
   });
 
   factory AssessmentOption.fromJson(Map<String, dynamic> json) {
@@ -149,6 +242,10 @@ class AssessmentOption extends Equatable {
       signalTier: json['signalTier'] as String,
       weight: json['weight'] as int,
       outcomeSignal: json['outcomeSignal'] as String,
+      outcomeLabel: json['outcomeLabel'] as String?,
+      genderInsight: json['genderInsight'] != null
+          ? Map<String, String>.from(json['genderInsight'] as Map)
+          : null,
     );
   }
 
@@ -158,12 +255,20 @@ class AssessmentOption extends Equatable {
     'signalTier': signalTier,
     'weight': weight,
     'outcomeSignal': outcomeSignal,
+    if (outcomeLabel != null) 'outcomeLabel': outcomeLabel,
+    if (genderInsight != null) 'genderInsight': genderInsight,
   };
 
   SignalTier get tier => SignalTier.fromValue(signalTier);
 
+  /// Get gender-specific insight if available, otherwise return null
+  String? getInsightForGender(String? gender) {
+    if (genderInsight == null || gender == null) return null;
+    return genderInsight![gender.toLowerCase()];
+  }
+
   @override
-  List<Object?> get props => [id, text, signalTier, weight, outcomeSignal];
+  List<Object?> get props => [id, text, signalTier, weight, outcomeSignal, outcomeLabel, genderInsight];
 }
 
 /// Assessment question
@@ -172,12 +277,14 @@ class AssessmentQuestion extends Equatable {
   final String dimension;
   final String text;
   final List<AssessmentOption> options;
+  final Map<String, String>? genderVariant; // {"male": "...", "female": "..."}
 
   const AssessmentQuestion({
     required this.number,
     required this.dimension,
     required this.text,
     required this.options,
+    this.genderVariant,
   });
 
   factory AssessmentQuestion.fromJson(Map<String, dynamic> json) {
@@ -189,6 +296,9 @@ class AssessmentQuestion extends Equatable {
           (json['options'] as List<dynamic>)
               .map((e) => AssessmentOption.fromJson(e as Map<String, dynamic>))
               .toList(),
+      genderVariant: json['genderVariant'] != null
+          ? Map<String, String>.from(json['genderVariant'] as Map)
+          : null,
     );
   }
 
@@ -197,10 +307,17 @@ class AssessmentQuestion extends Equatable {
     'dimension': dimension,
     'text': text,
     'options': options.map((e) => e.toJson()).toList(),
+    if (genderVariant != null) 'genderVariant': genderVariant,
   };
 
+  /// Get gender-specific question text if available, otherwise return default text
+  String getTextForGender(String? gender) {
+    if (genderVariant == null || gender == null) return text;
+    return genderVariant![gender.toLowerCase()] ?? text;
+  }
+
   @override
-  List<Object?> get props => [number, dimension, text, options];
+  List<Object?> get props => [number, dimension, text, options, genderVariant];
 }
 
 /// Complete assessment configuration

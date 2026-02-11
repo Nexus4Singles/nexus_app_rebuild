@@ -8,7 +8,7 @@ import '../../../../core/services/revenuecat_service.dart';
 import '../../../../core/providers/auth_provider.dart';
 import '../../../challenges/domain/journey_v1_models.dart';
 import '../../../challenges/providers/journeys_providers.dart';
-import '../../application/subscription_provider.dart';
+import '../../application/subscription_provider.dart' hide isJourneyPurchasedProvider;
 
 /// Minimal journey purchase screen - shows ONE selected journey with price & purchase button
 /// Navigated to from challenges_screen when user clicks "Unlock Journey"
@@ -24,11 +24,132 @@ class JourneyPurchaseScreen extends ConsumerStatefulWidget {
 
 class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
   bool _isPurchasing = false;
+  double _actualPrice = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch the actual price from RevenueCat when screen loads
+    _loadActualPrice();
+  }
+
+  Future<void> _loadActualPrice() async {
+    try {
+      print('🟡 [JourneyPurchase] _loadActualPrice starting...');
+      
+      final offerings = await RevenueCatService.getOfferings();
+      if (offerings == null || offerings.current == null) {
+        print('🔴 [JourneyPurchase] No offerings available from RevenueCat');
+        // If RevenueCat not available, keep price at 0 (won't show pricing card)
+        return;
+      }
+
+      print('🟢 [JourneyPurchase] Offerings loaded from RevenueCat');
+
+      // Get journey category from provider to find the right product
+      final journeyWithCategory = ref.watch(
+        journeyWithCategoryProvider(widget.journey.id),
+      );
+      final category = journeyWithCategory?.$2 ?? 'singles';
+      final productId = _getProductIdForCategory(category);
+      
+      print('🟡 [JourneyPurchase] Looking for product: $productId (category: $category)');
+
+      // Search for package
+      Package? journeyPackage;
+
+      // First try current offering
+      if (offerings.current != null) {
+        print('🟡 [JourneyPurchase] Current offering packages: ${offerings.current!.availablePackages.map((p) => p.storeProduct.identifier).toList()}');
+        
+        for (final p in offerings.current!.availablePackages) {
+          if (p.storeProduct.identifier.toLowerCase() ==
+              productId.toLowerCase()) {
+            journeyPackage = p;
+            print('🟢 [JourneyPurchase] Found package in current offering: ${p.storeProduct.identifier}');
+            break;
+          }
+        }
+      }
+
+      // If not found in current, search all offerings
+      if (journeyPackage == null) {
+        print('🟡 [JourneyPurchase] Not in current, searching all offerings...');
+        for (final offering in offerings.all.values) {
+          for (final p in offering.availablePackages) {
+            if (p.storeProduct.identifier.toLowerCase() ==
+                productId.toLowerCase()) {
+              journeyPackage = p;
+              print('🟢 [JourneyPurchase] Found package in offering: ${p.storeProduct.identifier}');
+              break;
+            }
+          }
+          if (journeyPackage != null) break;
+        }
+      }
+
+      if (journeyPackage != null && mounted) {
+        print('🟢 [JourneyPurchase] Setting price to: ${journeyPackage.storeProduct.price}');
+        setState(() {
+          _actualPrice = journeyPackage!.storeProduct.price;
+        });
+      } else {
+        print('🔴 [JourneyPurchase] Package not found for productId: $productId');
+      }
+      // If package not found, price remains 0 and pricing card won't show
+    } catch (e) {
+      print('🔴 [JourneyPurchase] Error loading price: $e');
+      // If error occurs, price remains 0 and pricing card won't show
+    }
+  }
+
+  /// Maps journey category to RevenueCat product ID
+  String _getProductIdForCategory(String category) {
+    final categoryLower = category.toLowerCase();
+
+    const categoryToProductId = {
+      'singles': 'journey_singles',
+      'married': 'journey_married',
+      'divorced': 'journey_divorced',
+      'widowed': 'journey_widowed',
+    };
+
+    return categoryToProductId[categoryLower] ??
+        'journey_singles'; // Default to singles
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Fetch real price from RevenueCat based on journey ID and user location
-    const priceNGN = 3000; // Hardcoded for testing
+    // Check if journey is already purchased
+    final isPurchasedAsync = ref.watch(isJourneyPurchasedProvider(widget.journey.id));
+    
+    return isPurchasedAsync.when(
+      loading: () => _buildScaffold(
+        context,
+        isPurchased: false,
+        isLoading: true,
+      ),
+      error: (_, __) => _buildScaffold(
+        context,
+        isPurchased: false,
+        isLoading: false,
+      ),
+      data: (isPurchased) => _buildScaffold(
+        context,
+        isPurchased: isPurchased,
+        isLoading: false,
+      ),
+    );
+  }
+
+  Widget _buildScaffold(
+    BuildContext context, {
+    required bool isPurchased,
+    required bool isLoading,
+  }) {
+    // Note: priceNGN is fetched from RevenueCat and stored in _actualPrice
+    // during the purchase flow. Display price will come from the package.
+    final priceNGN = _actualPrice.toInt();
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
@@ -142,128 +263,135 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
 
                   const SizedBox(height: 28),
 
-                  // Pricing Card
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: AppColors.getSurface(context),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.getBorder(context)),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'One-Time Purchase',
-                          style: AppTextStyles.labelMedium.copyWith(
-                            color: AppColors.getTextSecondary(context),
+                  // Pricing Card (only show if price was loaded from RevenueCat)
+                  if (_actualPrice > 0)
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: AppColors.getSurface(context),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppColors.getBorder(context)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'One-Time Purchase',
+                            style: AppTextStyles.labelMedium.copyWith(
+                              color: AppColors.getTextSecondary(context),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            Text(
-                              '₦',
-                              style: AppTextStyles.titleSmall.copyWith(
-                                fontWeight: FontWeight.bold,
+                          const SizedBox(height: 12),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            textBaseline: TextBaseline.alphabetic,
+                            children: [
+                              Text(
+                                '₦',
+                                style: AppTextStyles.titleSmall.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Text(
-                              priceNGN.toString(),
-                              style: AppTextStyles.headlineMedium.copyWith(
-                                fontWeight: FontWeight.bold,
+                              Text(
+                                priceNGN.toString(),
+                                style: AppTextStyles.headlineMedium.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'NGN',
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.getTextSecondary(context),
+                              const SizedBox(width: 8),
+                              Text(
+                                'NGN',
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  color: AppColors.getTextSecondary(context),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Full access to all sessions',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.getTextSecondary(context),
+                            ],
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 8),
+                          Text(
+                            'Full access to all sessions',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.getTextSecondary(context),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
 
                   const SizedBox(height: 32),
 
-                  // Purchase Button
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _isPurchasing ? null : _handlePurchase,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
+                  // Purchase Button or Purchased Status
+                  if (isPurchased)
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.green.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: Colors.green.withOpacity(0.3)),
                       ),
-                      child:
-                          _isPurchasing
-                              ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white,
+                      child: Row(
+                        children: [
+                          Icon(Icons.check_circle, color: Colors.green, size: 24),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Journey Purchased',
+                                  style: AppTextStyles.labelLarge.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green,
                                   ),
                                 ),
-                              )
-                              : const Text(
-                                'Purchase Journey',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                                Text(
+                                  'You have access to all sessions',
+                                  style: AppTextStyles.bodySmall.copyWith(
+                                    color: AppColors.getTextSecondary(context),
+                                  ),
                                 ),
-                              ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // Info box
-                  Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: AppColors.getSurface(context),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.getBorder(context)),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.info_outline,
-                          color: AppColors.primary,
-                          size: 18,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Prices vary by country. You can preview the first session free before purchasing.',
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.getTextSecondary(context),
-                              height: 1.5,
+                              ],
                             ),
                           ),
+                        ],
+                      ),
+                    )
+                  else
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _isPurchasing || isLoading ? null : _handlePurchase,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                         ),
-                      ],
+                        child:
+                            _isPurchasing
+                                ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white,
+                                    ),
+                                  ),
+                                )
+                                : const Text(
+                                  'Purchase Journey',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                      ),
                     ),
-                  ),
+
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
@@ -333,22 +461,47 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
         return;
       }
 
-      // Make purchase
+      // Extract actual price from the package
+      final actualPrice = journeyPackage.storeProduct.price;
+      final priceCurrency = journeyPackage.storeProduct.currencyCode;
+      
+      print('🟡 [JourneyPurchase] Package details:');
+      print('   - Product ID: ${journeyPackage.storeProduct.identifier}');
+      print('   - Price: $actualPrice');
+      print('   - Currency: $priceCurrency');
+      print('   - Category: $category');
+      
       await RevenueCatService.purchasePackage(journeyPackage);
 
       if (!mounted) return;
 
-      // Record journey purchase in Firestore
+      print('🟢 [JourneyPurchase] Purchase completed, now recording to Firestore...');
+      
+      // Record journey purchase in Firestore with actual price paid
       final userId = ref.read(currentUserIdProvider);
       if (userId != null) {
+        print('🟡 [JourneyPurchase] Recording purchase with:');
+        print('   - journeyId: ${widget.journey.id}');
+        print('   - pricePaid: $actualPrice');
+        print('   - currency: $priceCurrency');
+        
         await ref
             .read(subscriptionNotifierProvider.notifier)
             .recordJourneyPurchase(
               journeyId: widget.journey.id,
               journeyTitle: widget.journey.title,
-              pricePaid: 3000.0, // Use the hardcoded price
+              pricePaid: actualPrice,
+              currency: priceCurrency,
+              revenueCatTransactionId: journeyPackage.storeProduct.identifier,
             );
+        
+        print('🟢 [JourneyPurchase] Successfully recorded to Firestore');
+      } else {
+        print('🔴 [JourneyPurchase] ERROR: userId is null');
       }
+
+      // Invalidate the purchased journeys provider to refresh UI immediately
+      ref.invalidate(purchasedJourneysProvider);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -370,26 +523,10 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
       }
     }
   }
-
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
-  }
-
-  /// Maps journey category to RevenueCat product ID
-  String _getProductIdForCategory(String category) {
-    final categoryLower = category.toLowerCase();
-
-    const categoryToProductId = {
-      'singles': 'journey_singles',
-      'married': 'journey_married',
-      'divorced': 'journey_divorced',
-      'widowed': 'journey_widowed',
-    };
-
-    return categoryToProductId[categoryLower] ??
-        'journey_singles'; // Default to singles
   }
 }
 

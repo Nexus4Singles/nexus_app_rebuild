@@ -467,3 +467,187 @@ exports.weeklyUserReport = functions.pubsub
       throw error;
     }
   });
+
+// ============================================================================
+// COACH APPLICATION EMAIL FUNCTION
+// ============================================================================
+
+/**
+ * Triggered when a new document is created in the 'coachApplications' collection.
+ * Sends a comprehensive email to contact@nexus4singles.com with all application details
+ * and attachments (profile photo + credentials PDF if provided).
+ */
+exports.onCoachApplicationSubmitted = functions.firestore
+  .document('coachApplications/{applicationId}')
+  .onCreate(async (snapshot, context) => {
+    try {
+      const data = snapshot.data();
+      const applicationId = context.params.applicationId;
+      const bucket = admin.storage().bucket();
+
+      console.log(`📝 Processing coach application: ${applicationId}`);
+
+      // Download attachments from Storage
+      let attachments = [];
+
+      // Download profile photo
+      if (data.profilePhoto?.url) {
+        try {
+          const photoFile = await bucket.file(
+            `coachApplications/${applicationId}/profilePhoto`
+          ).download();
+          attachments.push({
+            filename: data.profilePhoto.filename || 'profile-photo.jpg',
+            content: photoFile[0],
+            contentType: 'image/jpeg',
+          });
+          console.log('✅ Profile photo downloaded');
+        } catch (err) {
+          console.warn('⚠️  Could not download profile photo:', err.message);
+        }
+      }
+
+      // Download credentials PDF
+      if (data.credentialsPdf?.url) {
+        try {
+          const pdfFile = await bucket.file(
+            `coachApplications/${applicationId}/credentials.pdf`
+          ).download();
+          attachments.push({
+            filename: 'credentials.pdf',
+            content: pdfFile[0],
+            contentType: 'application/pdf',
+          });
+          console.log('✅ Credentials PDF downloaded');
+        } catch (err) {
+          console.warn('⚠️  Could not download credentials PDF:', err.message);
+        }
+      }
+
+      // Format application data for email
+      const applicationDetails = `
+Full Name: ${data.fullName || 'N/A'}
+Email: ${data.email || 'N/A'}
+Phone: ${data.phoneNumber || 'N/A'}
+Gender: ${data.gender || 'N/A'}
+Nationality: ${data.nationality || 'N/A'}
+Residence: ${data.residenceLocation || 'N/A'}
+Title: ${data.title || 'N/A'}
+Years of Experience: ${data.yearsOfExperience || 'N/A'}
+Marital Status: ${data.maritalStatus || 'N/A'}
+
+CREDENTIALS & EXPERTISE:
+${data.credentials || 'N/A'}
+
+COACHING PHILOSOPHY:
+${data.coachingPhilosophy || 'N/A'}
+
+SOCIAL MEDIA:
+Instagram: ${data.instagramHandle || 'Not provided'}
+LinkedIn: ${data.linkedinProfile || 'Not provided'}
+
+---
+Application ID: ${applicationId}
+Submitted: ${new Date(data.submittedAt.toDate()).toLocaleString()}
+Status: ${data.status}
+      `;
+
+      // Prepare email
+      const mailOptions = {
+        from: 'nexusgodlydating@gmail.com',
+        to: 'contact@nexus4singles.com',
+        cc: 'contact@nexus4singles.com', // CC to ensure receipt
+        subject: `🎯 New Coach Application: ${data.fullName}`,
+        text: `New marriage counselor application received.\n\n${applicationDetails}`,
+        html: `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 24px; border-radius: 8px 8px 0 0; text-align: center;">
+              <h1 style="margin: 0; font-size: 24px;">🎯 New Coach Application</h1>
+              <p style="margin: 8px 0 0 0; font-size: 14px; opacity: 0.9;">Review applicant details below</p>
+            </div>
+            
+            <div style="background: #f9fafb; padding: 24px; border-radius: 0 0 8px 8px; border: 1px solid #e5e7eb;">
+              <h2 style="margin: 0 0 16px 0; font-size: 18px; color: #111;">Applicant Information</h2>
+              
+              <table style="width: 100%; margin-bottom: 24px; border-collapse: collapse;">
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <td style="padding: 12px 0; font-weight: 600; width: 40%; color: #667eea;">Name:</td>
+                  <td style="padding: 12px 0;">${data.fullName || 'N/A'}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <td style="padding: 12px 0; font-weight: 600; color: #667eea;">Email:</td>
+                  <td style="padding: 12px 0;"><a href="mailto:${data.email}" style="color: #667eea; text-decoration: none;">${data.email || 'N/A'}</a></td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <td style="padding: 12px 0; font-weight: 600; color: #667eea;">Phone:</td>
+                  <td style="padding: 12px 0;">${data.phoneNumber || 'N/A'}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <td style="padding: 12px 0; font-weight: 600; color: #667eea;">Location:</td>
+                  <td style="padding: 12px 0;">${data.residenceLocation || 'N/A'}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <td style="padding: 12px 0; font-weight: 600; color: #667eea;">Experience:</td>
+                  <td style="padding: 12px 0;">${data.yearsOfExperience || 0} years</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-weight: 600; color: #667eea;">Status:</td>
+                  <td style="padding: 12px 0;">${data.maritalStatus || 'N/A'}</td>
+                </tr>
+              </table>
+
+              <h3 style="margin: 16px 0 12px 0; font-size: 16px; color: #111;">Professional Background</h3>
+              <p style="margin: 0 0 16px 0; padding: 12px; background: white; border-left: 4px solid #667eea; border-radius: 4px; color: #555; line-height: 1.6;">
+                <strong>Credentials:</strong><br>${data.credentials || 'Not provided'}
+              </p>
+
+              <h3 style="margin: 16px 0 12px 0; font-size: 16px; color: #111;">Coaching Philosophy</h3>
+              <p style="margin: 0 0 16px 0; padding: 12px; background: white; border-left: 4px solid #764ba2; border-radius: 4px; color: #555; line-height: 1.6;">
+                ${data.coachingPhilosophy || 'Not provided'}
+              </p>
+
+              ${data.instagramHandle || data.linkedinProfile ? `
+              <h3 style="margin: 16px 0 12px 0; font-size: 16px; color: #111;">Social Media</h3>
+              <ul style="margin: 0 0 16px 0; padding-left: 20px;">
+                ${data.instagramHandle ? `<li style="margin-bottom: 8px;"><strong>Instagram:</strong> ${data.instagramHandle}</li>` : ''}
+                ${data.linkedinProfile ? `<li><strong>LinkedIn:</strong> <a href="${data.linkedinProfile}" style="color: #667eea;">${data.linkedinProfile}</a></li>` : ''}
+              </ul>
+              ` : ''}
+
+              <hr style="margin: 24px 0; border: none; border-top: 1px solid #e5e7eb;">
+              
+              <div style="background: white; padding: 12px; border-radius: 4px; font-size: 12px; color: #666;">
+                <strong>Application ID:</strong> ${applicationId}<br>
+                <strong>Submitted:</strong> ${new Date(data.submittedAt.toDate()).toLocaleString()}<br>
+                <strong>Status:</strong> <span style="color: #667eea; font-weight: 600;">PENDING REVIEW</span>
+              </div>
+            </div>
+
+            <div style="padding: 16px; text-align: center; font-size: 12px; color: #999;">
+              <p style="margin: 0;">This is an automated email from the Nexus coaching application system.</p>
+            </div>
+          </div>
+        `,
+        attachments: attachments,
+      };
+
+      // Send email
+      await transporter.sendMail(mailOptions);
+      console.log(`✅ Application email sent for ${data.fullName}`);
+
+      // Update Firestore document with email sent timestamp and admin review status
+      await snapshot.ref.update({
+        emailSentAt: admin.firestore.FieldValue.serverTimestamp(),
+        status: 'pending', // Set status to pending for admin review queue
+      });
+
+      return { success: true, applicationId };
+
+    } catch (error) {
+      console.error('❌ Error processing coach application:', error);
+      throw new functions.https.HttpsError(
+        'internal',
+        `Failed to process application: ${error.message}`
+      );
+    }
+  });

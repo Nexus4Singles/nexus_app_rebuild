@@ -232,12 +232,23 @@ class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
         revenueCatTransactionId: revenueCatTransactionId,
       );
 
+      print('🟡 [SubscriptionNotifier] recordJourneyPurchase called');
+      print('   - journeyId: $journeyId');
+      print('   - pricePaid: $pricePaid');
+      print('   - currency: $currency');
+      
+      final firestoreData = {...purchase.toFirestore(), 'type': 'journey'};
+      print('🟡 [SubscriptionNotifier] Firestore data being written:');
+      print('   - $firestoreData');
+
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .collection('purchases')
           .doc(journeyId)
-          .set({...purchase.toFirestore(), 'type': 'journey'});
+          .set(firestoreData);
+
+      print('🟢 [SubscriptionNotifier] Successfully written to Firestore');
 
       // Send journey purchased notification
       await NotificationHelpers.sendJourneyPurchasedNotification(
@@ -247,6 +258,7 @@ class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
 
       state = const AsyncValue.data(null);
     } catch (e, stack) {
+      print('🔴 [SubscriptionNotifier] Error: $e');
       state = AsyncValue.error(e, stack);
       rethrow;
     }

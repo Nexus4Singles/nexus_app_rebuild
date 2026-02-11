@@ -45,6 +45,40 @@ final recommendedAssessmentProvider = FutureProvider<AssessmentConfig?>((
   return ref.watch(assessmentConfigProvider(type).future);
 });
 
+/// Provider for loading assessment based on relationship status (divorced vs widowed)
+final relationshipAwareAssessmentProvider =
+    FutureProvider<AssessmentConfig?>((ref) async {
+  final status = ref.watch(effectiveRelationshipStatusProvider);
+  final configLoader = ref.watch(configLoaderProvider);
+
+  switch (status) {
+    case RelationshipStatus.singleNeverMarried:
+      return configLoader.loadSinglesReadinessConfig();
+    case RelationshipStatus.divorced:
+      return configLoader.loadRemarriageDivorcedConfig();
+    case RelationshipStatus.widowed:
+      return configLoader.loadRemarriageWidowedConfig();
+    case RelationshipStatus.married:
+      return configLoader.loadMarriageHealthCheckConfig();
+  }
+});
+
+/// Provider for getting user's gender
+final userGenderProvider = Provider<String?>((ref) {
+  final user = ref.watch(currentUserProvider).valueOrNull;
+  return user?.nexus2?.gender;
+});
+
+/// Provider for personalizing assessment question with gender-aware text
+final genderAwareQuestionProvider =
+    Provider.family<String, int>((ref, questionNumber) {
+  // This will be used in screens to get the gender-specific question text
+  // Returns question text for the given question number
+  final gender = ref.watch(userGenderProvider);
+  // The actual logic will be handled in the screen when displaying questions
+  return gender ?? 'male'; // Default to male if gender not set
+});
+
 /// Provider for loading the latest assessment result (any type) for current user
 final latestAnyAssessmentProvider = FutureProvider<AssessmentResult?>((
   ref,

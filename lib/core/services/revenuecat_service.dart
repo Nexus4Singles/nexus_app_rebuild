@@ -75,24 +75,63 @@ class RevenueCatService {
   static Future<void> manageSubscriptions() async {
     try {
       if (Platform.isIOS) {
-        // iOS - Open App Store app to manage subscriptions
-        // The URL scheme opens the subscriptions section in Settings
-        const url = 'https://apps.apple.com/account/subscriptions';
-        if (await canLaunchUrl(Uri.parse(url))) {
-          await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-        } else {}
+        // iOS - Try multiple URL schemes in order of preference
+        const urls = [
+          // Primary: Settings app deep link (iOS 15.1+)
+          'itms-apps://apps.apple.com/account/subscriptions',
+          // Fallback: Web URL
+          'https://apps.apple.com/account/subscriptions',
+        ];
+
+        for (final url in urls) {
+          try {
+            print('🟡 [RevenueCatService] Trying iOS URL: $url');
+            final uri = Uri.parse(url);
+            if (await canLaunchUrl(uri)) {
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+              print('🟢 [RevenueCatService] Successfully opened: $url');
+              return;
+            } else {
+              print('🔴 [RevenueCatService] Cannot launch URL: $url');
+            }
+          } catch (e) {
+            print('🔴 [RevenueCatService] Error with URL $url: $e');
+          }
+        }
+
+        throw Exception(
+            'Failed to open App Store subscriptions management on iOS. None of the URL schemes worked.');
       } else if (Platform.isAndroid) {
-        // Android - Open Google Play app to manage subscriptions
-        // Use the app package name to open Play Store subscriptions
-        const appPackage =
-            'com.nexusapp'; // Replace with your actual package name
-        const url =
-            'https://play.google.com/store/account/subscriptions?package=$appPackage';
-        if (await canLaunchUrl(Uri.parse(url))) {
-          await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-        } else {}
+        // Android - Try multiple approaches
+        const appPackage = 'com.nexusapp';
+        const urls = [
+          // Primary: Google Play subscriptions
+          'https://play.google.com/store/account/subscriptions?package=$appPackage',
+          // Fallback: Direct Google Play Store link
+          'https://play.google.com/store/apps/details?id=$appPackage',
+        ];
+
+        for (final url in urls) {
+          try {
+            print('🟡 [RevenueCatService] Trying Android URL: $url');
+            final uri = Uri.parse(url);
+            if (await canLaunchUrl(uri)) {
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+              print('🟢 [RevenueCatService] Successfully opened: $url');
+              return;
+            } else {
+              print('🔴 [RevenueCatService] Cannot launch URL: $url');
+            }
+          } catch (e) {
+            print('🔴 [RevenueCatService] Error with URL $url: $e');
+          }
+        }
+
+        throw Exception(
+            'Failed to open Google Play subscriptions management on Android. None of the URL schemes worked.');
       }
     } catch (e) {
+      print('🔴 [RevenueCatService] manageSubscriptions error: $e');
       rethrow;
     }
   }

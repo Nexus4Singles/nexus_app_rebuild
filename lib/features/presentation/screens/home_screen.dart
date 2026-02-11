@@ -259,11 +259,11 @@ class HomeScreen extends ConsumerWidget {
                       _JourneyCard(
                         title: 'Journeys',
                         subtitle: _journeysCopyForKey(statusKey),
-                        pillText: 'New',
-                        pillColor: AppColors.primary,
-                        pillBgColor: AppColors.primarySoft,
+                        pillText: 'Journeys',
+                        pillColor: Colors.white,
+                        pillBgColor: Colors.white.withOpacity(0.2),
                         progress: null,
-                        ctaText: 'Start Now',
+                        ctaText: 'Explore Journeys',
                         onTap: () async {
                           await GuestGuard.requireSignedIn(
                             context,
@@ -279,6 +279,14 @@ class HomeScreen extends ConsumerWidget {
                               Navigator.of(context).pushNamed('/challenges');
                             },
                           );
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      _MarriageCoachCard(
+                        onTap: () {
+                          Navigator.of(
+                            context,
+                          ).pushNamed('/book-marriage-coach');
                         },
                       ),
                       const SizedBox(height: 16),
@@ -936,17 +944,24 @@ class _JourneyCard extends StatelessWidget {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: pillBgColor,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: Colors.white.withOpacity(0.3)),
                 ),
-                child: Text(
-                  pillText,
-                  style: AppTextStyles.labelSmall.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.5,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.school_outlined, size: 16, color: pillColor),
+                    const SizedBox(width: 6),
+                    Text(
+                      pillText,
+                      style: AppTextStyles.labelSmall.copyWith(
+                        color: pillColor,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 12),
@@ -1066,6 +1081,138 @@ class _InfoChip extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// MARRIAGE COACH CARD WIDGET
+// ============================================================================
+
+class _MarriageCoachCard extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _MarriageCoachCard({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AppColors.getSurface(context),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.getBorder(context), width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Icon and Badge
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppColors.primary.withOpacity(0.2),
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.waving_hand_rounded,
+                    color: AppColors.primary,
+                    size: 24,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: AppColors.primary.withOpacity(0.2),
+                    ),
+                  ),
+                  child: Text(
+                    'Coming Soon',
+                    style: AppTextStyles.labelSmall.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // Title
+            Text(
+              'Speak to a Marriage Coach',
+              style: AppTextStyles.headlineSmall.copyWith(
+                color: AppColors.getTextPrimary(context),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // Description
+            Text(
+              'Get expert guidance from licensed coaches to strengthen your relationship',
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.getTextSecondary(context),
+                height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // CTA
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Explore Now',
+                          style: AppTextStyles.labelLarge.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

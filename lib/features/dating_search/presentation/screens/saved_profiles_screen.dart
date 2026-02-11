@@ -194,6 +194,8 @@ class _SavedProfileCard extends ConsumerWidget {
                               : Image.network(
                                 photo,
                                 fit: BoxFit.cover,
+                                cacheWidth: 128,
+                                cacheHeight: 128,
                                 errorBuilder: (_, __, ___) => Icon(
                                   Icons.person,
                                   size: 32,

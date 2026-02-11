@@ -33,14 +33,16 @@ class _PresurveySplashScreenState extends ConsumerState<PresurveySplashScreen>
   void initState() {
     super.initState();
 
+    // Pre-cache logo image to load immediately
+    Future.microtask(() {
+      precacheImage(
+        const AssetImage('assets/images/nexus_logo.png'),
+        context,
+      );
+    });
+
     // Always reset guest session at the start of presurvey
     Future.microtask(() => ref.read(guestSessionProvider.notifier).clear());
-
-    // Preload image to display immediately
-    precacheImage(
-      const AssetImage('assets/images/nexus_logo.png'),
-      context,
-    );
 
     _c = AnimationController(
       vsync: this,

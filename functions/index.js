@@ -852,3 +852,155 @@ exports.weeklyUserReport = functions.pubsub
       throw error;
     }
   });
+
+// ============================================================================
+// COACH APPLICATION EMAIL FUNCTION
+// ============================================================================
+
+/**
+ * Triggered when a new coach application is submitted.
+ * Sends notification email to admin and confirmation to applicant.
+ */
+exports.onCoachApplicationSubmitted = functions.firestore
+  .document('coachApplications/{applicationId}')
+  .onCreate(async (snap, context) => {
+    const applicationId = context.params.applicationId;
+    const applicationData = snap.data();
+
+    console.log(`📧 Processing coach application: ${applicationId}`);
+
+    try {
+      // Email to Admin
+      const adminEmailContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+            <h2 style="margin: 0;">🎓 New Coach Application Received</h2>
+          </div>
+          
+          <div style="background: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-radius: 0 0 8px 8px;">
+            <h3>Application Details</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr style="background: #fff;">
+                <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 40%;">Full Name:</td>
+                <td style="padding: 8px; border-bottom: 1px solid #eee;">${applicationData.fullName || 'N/A'}</td>
+              </tr>
+              <tr style="background: #fff;">
+                <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Email:</td>
+                <td style="padding: 8px; border-bottom: 1px solid #eee;">${applicationData.email || 'N/A'}</td>
+              </tr>
+              <tr style="background: #fff;">
+                <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Phone:</td>
+                <td style="padding: 8px; border-bottom: 1px solid #eee;">${applicationData.phoneNumber || 'N/A'}</td>
+              </tr>
+              <tr style="background: #fff;">
+                <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Title:</td>
+                <td style="padding: 8px; border-bottom: 1px solid #eee;">${applicationData.title || 'N/A'}</td>
+              </tr>
+              <tr style="background: #fff;">
+                <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Years of Experience:</td>
+                <td style="padding: 8px; border-bottom: 1px solid #eee;">${applicationData.yearsOfExperience || 'N/A'}</td>
+              </tr>
+              <tr style="background: #fff;">
+                <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Credentials:</td>
+                <td style="padding: 8px; border-bottom: 1px solid #eee;">${applicationData.credentials?.substring(0, 100) || 'N/A'}...</td>
+              </tr>
+            </table>
+
+            <div style="background: #e3f2fd; padding: 15px; border-radius: 5px; margin-top: 20px;">
+              <p style="margin: 0;">
+                <strong>Application ID:</strong> ${applicationId}<br>
+                <strong>Status:</strong> Pending Review<br>
+                <strong>Submitted:</strong> ${new Date().toLocaleString()}
+              </p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Send email to admin
+      await transporter.sendMail({
+        from: 'nexusgodlydating@gmail.com',
+        to: 'nexusadmin@nexusapp.com',
+        subject: `🎓 New Coach Application: ${applicationData.fullName}`,
+        html: adminEmailContent,
+      });
+
+      console.log(`✅ Admin notification sent for application: ${applicationId}`);
+
+      // Email to Applicant
+      const applicantEmailContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+            <h2 style="margin: 0;">✅ Application Received!</h2>
+          </div>
+          
+          <div style="background: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-radius: 0 0 8px 8px;">
+            <p>Dear ${applicationData.fullName},</p>
+            
+            <p>Thank you for submitting your coach application to Nexus! We're excited to review your qualifications and experience.</p>
+
+            <div style="background: #e8f5e9; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #4caf50;">
+              <p style="margin: 0;">
+                <strong>Application ID:</strong> ${applicationId}<br>
+                We'll use this ID to track your application status.
+              </p>
+            </div>
+
+            <h3>What Happens Next?</h3>
+            <ol style="line-height: 1.8;">
+              <li>Our team will review your qualifications and experience</li>
+              <li>We'll verify your credentials and professional background</li>
+              <li>You'll receive an email with the outcome of your application</li>
+              <li>If approved, we'll provide onboarding instructions</li>
+            </ol>
+
+            <p style="color: #666; font-size: 14px;">
+              This typically takes 5-10 business days. Thank you for your patience!
+            </p>
+
+            <div style="background: #fff3e0; padding: 15px; border-radius: 5px; margin-top: 20px; border-left: 4px solid #ff9800;">
+              <p style="margin: 0;">
+                <strong>Have questions?</strong> Reply to this email or contact us at support@nexusapp.com
+              </p>
+            </div>
+          </div>
+
+          <div style="text-align: center; padding: 20px; font-size: 12px; color: #999;">
+            <p>© ${new Date().getFullYear()} Nexus Dating. All rights reserved.</p>
+          </div>
+        </div>
+      `;
+
+      // Send confirmation email to applicant
+      await transporter.sendMail({
+        from: 'nexusgodlydating@gmail.com',
+        to: applicationData.email,
+        subject: `Application Received - Application ID: ${applicationId}`,
+        html: applicantEmailContent,
+      });
+
+      console.log(`✅ Confirmation email sent to applicant: ${applicationData.email}`);
+
+      // Update document to mark emails as sent
+      await snap.ref.update({
+        emailNotificationSent: true,
+        emailSentAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      return {
+        success: true,
+        applicationId,
+        message: 'Coach application emails sent successfully',
+      };
+    } catch (error) {
+      console.error(`❌ Error processing coach application ${applicationId}:`, error);
+      
+      // Still update the document to note the error
+      await snap.ref.update({
+        emailNotificationError: error.message,
+        emailErrorAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+      
+      throw error;
+    }
+  });

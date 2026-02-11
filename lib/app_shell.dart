@@ -7,6 +7,7 @@ import 'core/notifications/notification_provider.dart';
 import 'safe_imports.dart';
 import 'features/stories/presentation/screens/stories_screen.dart';
 import 'features/dating_search/presentation/screens/new_dating_search_screen.dart';
+import 'features/subscription/presentation/screens/book_marriage_coach_screen.dart';
 
 class AppShell extends ConsumerStatefulWidget {
   const AppShell({super.key});
@@ -30,6 +31,8 @@ class _AppShellState extends ConsumerState<AppShell> {
         return const StoriesScreen();
       case NavTab.challenges:
         return const ChallengesScreen();
+      case NavTab.counselling:
+        return const BookMarriageCoachScreen();
       case NavTab.profile:
         return const ProfileScreen();
     }
@@ -47,6 +50,8 @@ class _AppShellState extends ConsumerState<AppShell> {
         return Icons.auto_stories_outlined;
       case NavTab.challenges:
         return Icons.emoji_events_outlined;
+      case NavTab.counselling:
+        return Icons.phone_in_talk_outlined;
       case NavTab.profile:
         return Icons.person_outline;
     }

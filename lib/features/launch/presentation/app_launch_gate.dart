@@ -462,7 +462,9 @@ class _AuthEntryScreen extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => const PresurveyRelationshipStatusScreen(),
+                                  builder:
+                                      (_) =>
+                                          const PresurveyRelationshipStatusScreen(),
                                 ),
                               );
                             },

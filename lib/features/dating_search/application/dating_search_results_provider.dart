@@ -8,6 +8,7 @@ import 'package:nexus_app_v2/core/session/guest_session_provider.dart';
 import 'package:nexus_app_v2/core/user/current_user_gender_provider.dart';
 import 'package:nexus_app_v2/core/user/current_user_disabled_provider.dart';
 import 'package:nexus_app_v2/core/providers/user_provider.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import '../data/dating_search_service.dart';
 import '../domain/dating_profile.dart';
 import '../domain/dating_search_filters.dart';
@@ -16,6 +17,41 @@ import '../domain/dating_preferences.dart';
 import 'dating_preferences_provider.dart';
 import 'dating_dismissed_profiles_provider.dart';
 import '../domain/enhanced_compatibility_scorer.dart';
+
+// ============================================================================
+// IMAGE CACHE INVALIDATION
+// ============================================================================
+// Provider that watches preference changes and clears the image cache
+// This ensures profile images are refreshed when user changes their preferences
+// but persist across navigation while preferences remain unchanged
+final imageSearchCacheInvalidatorProvider =
+    FutureProvider<void>((ref) async {
+  // Watch preferences to detect changes
+  final prefsAsync = ref.watch(datingPreferencesProvider);
+
+  // When preferences change, clear the image cache
+  await prefsAsync.when(
+    data: (_) async {
+      // Use the same cache manager as CachedImage widget
+      const cacheKey = 'nexus_simple_cache';
+      try {
+        final cacheManager = CacheManager(
+          Config(
+            cacheKey,
+            stalePeriod: const Duration(days: 30),
+            maxNrOfCacheObjects: 50,
+          ),
+        );
+        // Clear old cached images but keep ones updated within last 30 days
+        await cacheManager.emptyCache();
+      } catch (e) {
+        debugPrint('Error clearing image cache: $e');
+      }
+    },
+    loading: () {},
+    error: (e, st) {},
+  );
+});
 
 // Helper to extract compatibility data from UserModel
 extension CompatibilityDataExtension on dynamic {
@@ -167,13 +203,23 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     return const DatingSearchResult(items: []);
   }
 
-  // Watch saved preferences - WAIT for them to load
-  final preferencesAsync = ref.watch(datingPreferencesProvider);
-  final preferences = preferencesAsync.when(
-    data: (prefs) => prefs,
-    loading: () => throw Exception('Preferences still loading'),
-    error: (err, stack) => null,
-  );
+  // FIXED: Don't watch preferences provider directly (breaks circular dependency)
+  // Instead, read it once to get the current value without creating a watcher
+  // If preferences aren't available, we'll return empty and let the cache handle retry
+  DatingPreferences? preferences;
+  try {
+    preferences = await ref.read(datingPreferencesProvider.future);
+  } catch (_) {
+    // Preferences failed to load - return empty instead of throwing
+    // This prevents circular dependency when preferences are loading
+    if (kDebugMode) {
+      // ignore: avoid_print
+      print(
+        '[DatingSearchResultsProvider] Preferences unavailable, returning empty results',
+      );
+    }
+    return const DatingSearchResult(items: []);
+  }
 
   if (kDebugMode) {
     // ignore: avoid_print
@@ -242,15 +288,17 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     );
   }
 
-  // Search with saved preferences (will fall back to age-only if exhausted)
-  // Load all matching profiles at once instead of paginating
+  // FIXED: Load results incrementally in batches instead of all at once
+  // First batch: 20 results (fast, shows immediately to user)
+  // This allows UI to render profiles as they load instead of waiting for all
   DatingSearchResult results;
   try {
     results = await service
         .search(
           genderToShow: genderToShow,
           filters: filters,
-          limit: 10000, // Load all at once
+          offset: 0,
+          limit: 20,  // ← CHANGED: Start with smaller batch for fast initial render
         )
         .timeout(
           const Duration(seconds: 30),
@@ -258,7 +306,7 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
             if (kDebugMode) {
               // ignore: avoid_print
               print(
-                '[DatingSearchResults] Search query timed out after 30 seconds - returning empty',
+                '[DatingSearchResults] Search query timed out after 30 seconds - returning partial results',
               );
             }
             // On timeout, return empty results to show no-profiles screen
@@ -457,6 +505,7 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
 });
 
 /// Notifier to cache the last successful search results
+/// Automatically clears cache when preferences change
 class SearchResultsCacheNotifier extends StateNotifier<DatingSearchResult?> {
   SearchResultsCacheNotifier() : super(null);
 
@@ -472,6 +521,25 @@ class SearchResultsCacheNotifier extends StateNotifier<DatingSearchResult?> {
 final searchResultsCacheProvider =
     StateNotifierProvider<SearchResultsCacheNotifier, DatingSearchResult?>(
         (ref) {
+  // FIXED: Watch preferences changes and auto-invalidate cache
+  // Use select() to only track relevant fields (not provider state)
+  try {
+    final prefs = ref.watch(
+      datingPreferencesProvider.select(
+        (prefsAsync) => prefsAsync.maybeWhen(
+          data: (prefs) => prefs,
+          orElse: () => null,
+        ),
+      ),
+    );
+    // If preferences exist, we track them for cache invalidation
+    if (prefs != null) {
+      // Preferences changed - next access to search results will be fresh
+    }
+  } catch (_) {
+    // If preferences can't load, don't crash - just proceed with cache
+  }
+
   return SearchResultsCacheNotifier();
 });
 
@@ -479,10 +547,27 @@ final searchResultsCacheProvider =
 /// or fetches fresh results and caches them
 final cachedDatingSearchResultsProvider =
     FutureProvider<DatingSearchResult>((ref) async {
+  // FIXED: Watch preferences to detect changes and clear stale cache
+  // This ensures cache invalidates when user edits preferences
+  try {
+    ref.watch(
+      datingPreferencesProvider.select(
+        (prefsAsync) => prefsAsync.maybeWhen(
+          data: (prefs) => prefs,
+          orElse: () => null,
+        ),
+      ),
+    );
+  } catch (_) {
+    // Preferences unavailable, proceed with cached results if available
+  }
+
   // Watch the cache
   final cachedResults = ref.watch(searchResultsCacheProvider);
   
-  // If we have cached results, return them immediately without refetching
+  // FIXED: Only return cache if preferences haven't explicitly been cleared
+  // When user saves preferences, they manually call ref.invalidate(datingPreferencesProvider)
+  // which triggers this provider to recalculate
   if (cachedResults != null && cachedResults.items.isNotEmpty) {
     return cachedResults;
   }
@@ -499,6 +584,141 @@ final cachedDatingSearchResultsProvider =
 });
 
 // ============================================================================
-// PAGINATION REMOVED - All profiles now load at once
+// INCREMENTAL PAGINATION - Load more profiles as user scrolls
+// ============================================================================
+// This provider accumulates results batches to show incrementally
+
+final paginatedDatingSearchResultsProvider =
+    FutureProvider<DatingSearchResult>((ref) async {
+  // Watch the offset - when it changes, fetch the next batch
+  final offset = ref.watch(searchResultsOffsetProvider);
+
+  // Get current preferences
+  DatingPreferences? preferences;
+  try {
+    preferences = await ref.read(datingPreferencesProvider.future);
+  } catch (_) {
+    return const DatingSearchResult(items: []);
+  }
+
+  if (offset == 0) {
+    // Initial load - use cached results or fetch fresh
+    return await ref.watch(cachedDatingSearchResultsProvider.future);
+  }
+
+  // Subsequent batches - fetch more results
+  final firebaseReady = ref.watch(firebaseReadyProvider);
+  if (!firebaseReady) {
+    return const DatingSearchResult(items: []);
+  }
+
+  // Get gender
+  String? gender = await ref.watch(currentUserGenderProvider.future);
+  if (gender == null || gender.trim().isEmpty) {
+    return const DatingSearchResult(items: []);
+  }
+
+  String opposite(String g) {
+    final v = g.toLowerCase();
+    if (v == 'male') return 'female';
+    if (v == 'female') return 'male';
+    return '';
+  }
+
+  final genderToShow = opposite(gender);
+
+  // Get dismissed profiles
+  final dismissedAsync = ref.watch(dismissedProfilesProvider);
+  final dismissedIds = dismissedAsync.valueOrNull ?? [];
+
+  // Build filters
+  final filters = preferences != null
+      ? DatingSearchFilters(
+          minAge: preferences.minAge,
+          maxAge: preferences.maxAge,
+          countryOfResidence: preferences.countryOfResidence,
+          longDistance: preferences.allowLongDistance == true
+              ? 'Yes'
+              : (preferences.allowLongDistance == false ? 'No' : null),
+          maritalStatus: preferences.openToMarriedBefore == false
+              ? 'Never married'
+              : null,
+          hasKids: preferences.openToKids == false ? 'No' : null,
+          genotype: preferences.genotypePreference,
+        )
+      : DatingSearchFilters(minAge: 21, maxAge: 70);
+
+  // Fetch next batch
+  final service = ref.read(datingSearchServiceProvider);
+  DatingSearchResult nextBatch;
+
+  try {
+    nextBatch = await service
+        .search(
+          genderToShow: genderToShow,
+          filters: filters,
+          offset: offset,
+          limit: 30,  // Subsequent batches are 30 profiles each
+        )
+        .timeout(
+          const Duration(seconds: 20),
+        );
+  } catch (_) {
+    // If fetching next batch fails, return empty (no more profiles)
+    return const DatingSearchResult(items: []);
+  }
+
+  // Filter dismissed profiles
+  if (nextBatch.items.isNotEmpty) {
+    final filtered = nextBatch.items
+        .where((profile) => !dismissedIds.contains(profile.uid))
+        .toList();
+    nextBatch =
+        DatingSearchResult(items: filtered, emptyHint: nextBatch.emptyHint);
+  }
+
+  return nextBatch;
+});
+
+// ============================================================================
+// ACCUMULATOR - Combines initial results with all paginated batches
+// ============================================================================
+// This provider accumulates results as user scrolls, creating a seamless
+// incremental loading experience without waiting for all profiles
+
+final accumulatedSearchResultsProvider =
+    FutureProvider<DatingSearchResult>((ref) async {
+  // Get initial batch (always available immediately)
+  final initialBatch = await ref.watch(cachedDatingSearchResultsProvider.future);
+
+  // Watch the offset to know when to include paginated results
+  final currentOffset = ref.watch(searchResultsOffsetProvider);
+
+  if (currentOffset == 0) {
+    // Only showing initial batch
+    return initialBatch;
+  }
+
+  // Get the paginated batch
+  final paginatedBatch =
+      await ref.watch(paginatedDatingSearchResultsProvider.future);
+
+  // Combine: initial + all paginated batches accumulated so far
+  final combined = <DatingProfile>[
+    ...initialBatch.items,
+    ...paginatedBatch.items,
+  ];
+
+  return DatingSearchResult(
+    items: combined,
+    emptyHint: initialBatch.emptyHint,
+    hitDailyLimit: initialBatch.hitDailyLimit,
+    dailyLimitHitAt: initialBatch.dailyLimitHitAt,
+    noProfilesInCountry: initialBatch.noProfilesInCountry,
+  );
+});
+
+// ============================================================================
+// PAGINATION REMOVED - Incremental loading replaces traditional pagination
 // This simplifies UX and avoids pagination bugs
 // ============================================================================

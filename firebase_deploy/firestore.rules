@@ -385,6 +385,26 @@ match /chats/{chatId} {
     }
 
     // ============================================================================
+    // COACH APPLICATIONS
+    // ============================================================================
+    match /coachApplications/{applicationId} {
+      // Any signed-in user can create (submit) an application
+      allow create: if isSignedIn();
+
+      // Applicant can read their own application
+      allow get: if isSignedIn() && request.auth.uid == resource.data.userId;
+
+      // Admins can read and update any application for review
+      allow get, list, update: if isAdmin();
+
+      // Admins can delete applications (if needed for cleanup)
+      allow delete: if isAdmin();
+
+      // No direct write access for non-admins except create
+      allow list: if false;  // Prevent non-admins from listing all applications
+    }
+
+    // ============================================================================
     // Default deny
     // ============================================================================
     match /{document=**} {
