@@ -32,7 +32,7 @@ class CoachRequirementsScreen extends StatelessWidget {
               // Hero Section
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -44,45 +44,75 @@ class CoachRequirementsScreen extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Icon(
                         Icons.verified_user_rounded,
                         color: Colors.white,
-                        size: 28,
+                        size: 24,
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Join Our Coaching Team',
-                      style: AppTextStyles.headlineMedium.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Help couples strengthen their relationships',
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: Colors.white.withOpacity(0.9),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Join Our Coaching Team',
+                            style: AppTextStyles.titleMedium.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Help people navigate their relationship or marriage journeys',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: Colors.white.withOpacity(0.9),
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 20),
+
+              // Introduction Text
+              Text(
+                'Becoming one of our certified marriage or family therapists will provide you with the visibility you need to get more clients from our users, while you earn money, based on the number of online counseling sessions you hold.',
+                style: AppTextStyles.bodyMedium.copyWith(
+                  height: 1.6,
+                  color: AppColors.getTextSecondary(context),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Calendar Availability Text
+              Text(
+                'You will be required to add your availability dates and times to your calendar on this app, to enable individuals or couples book slots from your calendar.',
+                style: AppTextStyles.bodyMedium.copyWith(
+                  height: 1.6,
+                  color: AppColors.getTextSecondary(context),
+                ),
+              ),
+
+              const SizedBox(height: 28),
 
               // Requirements Title
               Text(
-                'Eligibility Requirements',
+                'Eligibility Requirements:',
                 style: AppTextStyles.titleMedium.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -90,58 +120,105 @@ class CoachRequirementsScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // Requirements List
-              ..._buildRequirements(context),
-
-              const SizedBox(height: 32),
-
-              // Important Note
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppColors.primary.withOpacity(0.2),
-                  ),
-                ),
-                child: Column(
+              // Requirement 1: Spirit-filled Christian
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.info_rounded,
-                          color: AppColors.primary,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          'What We Provide',
-                          style: AppTextStyles.labelMedium.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        Icons.check_circle_rounded,
+                        color: AppColors.primary,
+                        size: 20,
+                      ),
                     ),
-                    const SizedBox(height: 12),
-                    Text(
-                      '• Professional platform to reach couples seeking relationship guidance\n'
-                      '• Competitive compensation and incentive structure\n'
-                      '• Ongoing support and professional development opportunities\n'
-                      '• Access to Nexus community resources',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        height: 1.6,
-                        color: AppColors.getTextSecondary(context),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Be a spirit-filled Christian',
+                        style: AppTextStyles.bodyMedium.copyWith(height: 1.5),
                       ),
                     ),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 24),
+              // Requirement 2: License & Experience
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        Icons.check_circle_rounded,
+                        color: AppColors.primary,
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Show at least 1 evidence that you are a licensed family/marriage/relationship coach practicing for at least 5 years.\n(Acceptable evidences include certifications, Social Media page with a decent following, licenses etc.)',
+                        style: AppTextStyles.bodyMedium.copyWith(height: 1.5),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
-              // CTA Button
+              // Requirement 3: NDA
+              Padding(
+                padding: const EdgeInsets.only(bottom: 24),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        Icons.check_circle_rounded,
+                        color: AppColors.primary,
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'You must be willing to sign a NDA to keep all conversations between you and clients private',
+                        style: AppTextStyles.bodyMedium.copyWith(height: 1.5),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Closing Text
+              Text(
+                'We look forward to your application',
+                style: AppTextStyles.bodyMedium.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primary,
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // CTA Button (moved closer to text)
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -162,33 +239,7 @@ class CoachRequirementsScreen extends StatelessWidget {
                   ),
                   child: const Text(
                     'Start Application',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              // Back Button
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                  child: const Text(
-                    'Back',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -197,123 +248,6 @@ class CoachRequirementsScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  List<Widget> _buildRequirements(BuildContext context) {
-    final requirements = [
-      {
-        'icon': Icons.school_rounded,
-        'title': 'Licensed Professional',
-        'description':
-            'Be a licensed marriage/relationship coach with valid credentials and certifications',
-      },
-      {
-        'icon': Icons.work_history_rounded,
-        'title': '5+ Years Experience',
-        'description': 'Have at least 5 years of professional coaching experience',
-      },
-      {
-        'icon': Icons.verified_user_rounded,
-        'title': 'Background Verification',
-        'description':
-            'Pass background verification and professional reference checks',
-      },
-      {
-        'icon': Icons.description_rounded,
-        'title': 'Documentation',
-        'description':
-            'Provide certifications, qualifications, and professional credentials',
-      },
-      {
-        'icon': Icons.diversity_3_rounded,
-        'title': 'Professional Ethics',
-        'description':
-            'Commit to maintaining professional boundaries and ethical standards',
-      },
-      {
-        'icon': Icons.assignment_ind_rounded,
-        'title': 'NDA Agreement',
-        'description':
-            'Be willing to sign a Non-Disclosure Agreement to keep all conversations private',
-      },
-    ];
-
-    return requirements.map((req) {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 16),
-        child: _RequirementCard(
-          icon: req['icon'] as IconData,
-          title: req['title'] as String,
-          description: req['description'] as String,
-        ),
-      );
-    }).toList();
-  }
-}
-
-class _RequirementCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String description;
-
-  const _RequirementCard({
-    required this.icon,
-    required this.title,
-    required this.description,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.getBorder(context),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(
-              icon,
-              color: AppColors.primary,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  title,
-                  style: AppTextStyles.labelLarge.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.getTextSecondary(context),
-                    height: 1.4,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

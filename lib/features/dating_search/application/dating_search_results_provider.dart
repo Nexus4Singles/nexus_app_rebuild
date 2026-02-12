@@ -143,25 +143,30 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   ref,
 ) async {
   final firebaseReady = ref.watch(firebaseReadyProvider);
+  if (kDebugMode) {
+    print('[DatingSearchResultsProvider] firebaseReady=$firebaseReady');
+  }
   if (!firebaseReady) {
-    if (kDebugMode) {
-      // ignore: avoid_print
-    }
+    print('[DatingSearchResultsProvider] Firestore not ready, returning empty');
     return const DatingSearchResult(items: []);
   }
 
   // Hard gate: disabled users cannot search.
   final isDisabled = await ref.watch(currentUserDisabledProvider.future);
+  if (kDebugMode) {
+    print('[DatingSearchResultsProvider] isDisabled=$isDisabled');
+  }
   if (isDisabled) {
-    if (kDebugMode) {
-      // ignore: avoid_print
-    }
+    print('[DatingSearchResultsProvider] User is disabled, returning empty');
     return const DatingSearchResult(items: []);
   }
 
   // Get current user for compatibility scoring
   final currentUserAsync = ref.watch(currentUserProvider);
   final currentUser = currentUserAsync.valueOrNull;
+  if (kDebugMode) {
+    print('[DatingSearchResultsProvider] currentUser loaded: ${currentUser?.uid ?? "null"}');
+  }
 
   // Debug-only override: lets you test search even if gender isn't resolved yet.
   // Remove/disable later once onboarding is stable.
@@ -171,17 +176,18 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   );
 
   String? gender = await ref.watch(currentUserGenderProvider.future);
+  if (kDebugMode) {
+    print('[DatingSearchResultsProvider] gender=$gender');
+  }
   if (kDebugMode && (gender == null || gender.trim().isEmpty)) {
     if (debugGenderOverride.trim().isNotEmpty) {
       gender = debugGenderOverride.trim();
-      // ignore: avoid_print
+      print('[DatingSearchResultsProvider] Using debug gender override: $gender');
     }
   }
 
   if (gender == null || gender.trim().isEmpty) {
-    if (kDebugMode) {
-      // ignore: avoid_print
-    }
+    print('[DatingSearchResultsProvider] Gender not resolved, returning empty');
     return const DatingSearchResult(items: []);
   }
 
@@ -193,13 +199,11 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   }
 
   final genderToShow = opposite(gender);
+  if (kDebugMode) {
+    print('[DatingSearchResultsProvider] genderToShow=$genderToShow');
+  }
   if (genderToShow.isEmpty) {
-    if (kDebugMode) {
-      // ignore: avoid_print
-      print(
-        '[DatingSearchResults] gender="$gender" -> opposite empty -> returning []',
-      );
-    }
+    print('[DatingSearchResultsProvider] Opposite gender empty, returning empty');
     return const DatingSearchResult(items: []);
   }
 
@@ -209,33 +213,24 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   DatingPreferences? preferences;
   try {
     preferences = await ref.read(datingPreferencesProvider.future);
-  } catch (_) {
-    // Preferences failed to load - return empty instead of throwing
-    // This prevents circular dependency when preferences are loading
     if (kDebugMode) {
-      // ignore: avoid_print
-      print(
-        '[DatingSearchResultsProvider] Preferences unavailable, returning empty results',
-      );
+      print('[DatingSearchResultsProvider] preferences loaded: $preferences');
     }
+  } catch (_) {
+    print('[DatingSearchResultsProvider] Preferences unavailable, returning empty results');
     return const DatingSearchResult(items: []);
   }
 
   if (kDebugMode) {
-    // ignore: avoid_print
-    print(
-      '[DatingSearchResultsProvider] Preferences: '
-      'country=${preferences?.countryOfResidence}, '
-      'allowLongDistance=${preferences?.allowLongDistance}, '
-      'openToKids=${preferences?.openToKids}, '
-      'openToMarriedBefore=${preferences?.openToMarriedBefore}, '
-      'genotype=${preferences?.genotypePreference}',
-    );
+    print('[DatingSearchResultsProvider] Preferences: country=${preferences?.countryOfResidence}, allowLongDistance=${preferences?.allowLongDistance}, openToKids=${preferences?.openToKids}, openToMarriedBefore=${preferences?.openToMarriedBefore}, genotype=${preferences?.genotypePreference}');
   }
 
   // Watch dismissed profiles to exclude them
   final dismissedAsync = ref.watch(dismissedProfilesProvider);
   final dismissedIds = dismissedAsync.valueOrNull ?? [];
+  if (kDebugMode) {
+    print('[DatingSearchResultsProvider] dismissedIds loaded: ${dismissedIds.length}');
+  }
 
   // Convert saved preferences to search filters
   // PATTERN: null (not set) = no filter; true (yes) = show all; false (no) = apply restriction
@@ -245,26 +240,21 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
             minAge: preferences.minAge,
             maxAge: preferences.maxAge,
             countryOfResidence: preferences.countryOfResidence,
-            // allowLongDistance:
-            // Question: "Would you like to connect with people outside your location?"
-            // - true (Yes) = show profiles willing to do long distance (outside location)
-            // - false (No) = show only local profiles (Not willing to do long distance)
-            // - null (No Preference) = don't filter by distance
             longDistance:
                 preferences.allowLongDistance == true
-                    ? 'Yes' // "Yes" = show profiles open to long distance (outside location)
-                    : (preferences.allowLongDistance == false ? 'No' : null), // "No" = show local only
-            // openToMarriedBefore: null/true = any marital status; false = never married only
+                    ? 'Yes'
+                    : (preferences.allowLongDistance == false ? 'No' : null),
             maritalStatus:
                 preferences.openToMarriedBefore == false
                     ? 'Never married'
                     : null,
-            // openToKids: null/true = any kid status; false = no kids only
             hasKids: preferences.openToKids == false ? 'No' : null,
-            // genotypePreference: null = any genotype; value = specific genotype
             genotype: preferences.genotypePreference,
           )
           : ref.watch(datingSearchFiltersProvider);
+  if (kDebugMode) {
+    print('[DatingSearchResultsProvider] Built filters: age=${filters.minAge}-${filters.maxAge}, country=${filters.countryOfResidence}, distance=${filters.longDistance}, marital=${filters.maritalStatus}, kids=${filters.hasKids}, genotype=${filters.genotype}');
+  }
 
   if (kDebugMode) {
     // ignore: avoid_print
@@ -280,12 +270,8 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   }
 
   final service = ref.read(datingSearchServiceProvider);
-
   if (kDebugMode) {
-    // ignore: avoid_print
-    print(
-      '[DatingSearchResults] searching genderToShow=$genderToShow, filters=$filters',
-    );
+    print('[DatingSearchResultsProvider] Ready to search Firestore: genderToShow=$genderToShow, filters=$filters');
   }
 
   // FIXED: Load results incrementally in batches instead of all at once
@@ -293,43 +279,35 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   // This allows UI to render profiles as they load instead of waiting for all
   DatingSearchResult results;
   try {
+    print('[DatingSearchResultsProvider] Starting Firestore search...');
     results = await service
         .search(
           genderToShow: genderToShow,
           filters: filters,
           offset: 0,
-          limit: 20,  // ← CHANGED: Start with smaller batch for fast initial render
+          limit: 20,
         )
         .timeout(
           const Duration(seconds: 30),
           onTimeout: () {
-            if (kDebugMode) {
-              // ignore: avoid_print
-              print(
-                '[DatingSearchResults] Search query timed out after 30 seconds - returning partial results',
-              );
-            }
-            // On timeout, return empty results to show no-profiles screen
+            print('[DatingSearchResultsProvider] Search query timed out after 30 seconds - returning partial results');
             return const DatingSearchResult(items: []);
           },
         );
+    print('[DatingSearchResultsProvider] Firestore search complete, results: ${results.items.length} profiles');
   } catch (e, st) {
-    if (kDebugMode) {
-      // ignore: avoid_print
-      print(
-        '[DatingSearchResults] Search ERROR: $e\n$st',
-      );
-    }
+    print('[DatingSearchResultsProvider] Search ERROR: $e\n$st');
     rethrow;
   }
 
   // Filter dismissed profiles only (service already applied all other filters)
   if (results.items.isNotEmpty) {
+    print('[DatingSearchResultsProvider] Filtering dismissed profiles...');
     final filtered =
         results.items
             .where((profile) => !dismissedIds.contains(profile.uid))
             .toList();
-
+    print('[DatingSearchResultsProvider] After dismissed filter: ${filtered.length} profiles');
     results = DatingSearchResult(items: filtered, emptyHint: results.emptyHint);
   }
 
@@ -338,37 +316,21 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   if (currentUser != null &&
       results.items.isNotEmpty &&
       results.items.length <= 200) {
+    print('[DatingSearchResultsProvider] Scoring compatibility for profiles...');
     final scoredProfiles = <DatingProfile>[];
-
     // Extract current user compatibility data
-    final userAMaritalStatus = currentUser.compatibility?.getCompatibilityField(
-      'maritalStatus',
-    );
-    final userAHaveKids = currentUser.compatibility?.getCompatibilityField(
-      'haveKids',
-    );
-    final userAGenotype = currentUser.compatibility?.getCompatibilityField(
-      'genotype',
-    );
-    final userAPersonalityType = currentUser.compatibility
-        ?.getCompatibilityField('personalityType');
-    final userARegularIncome = currentUser.compatibility?.getCompatibilityField(
-      'regularSourceOfIncome',
-    );
-    final userALongDistance = currentUser.compatibility?.getCompatibilityField(
-      'longDistance',
-    );
-    final userABelieveInCohabiting = currentUser.compatibility
-        ?.getCompatibilityField('believeInCohabiting');
-    final userAShouldSpeakTongues = currentUser.compatibility
-        ?.getCompatibilityField('shouldChristianSpeakInTongue');
-    final userABeliefInTithing = currentUser.compatibility
-        ?.getCompatibilityField('believeInTithing');
-
+    final userAMaritalStatus = currentUser.compatibility?.getCompatibilityField('maritalStatus');
+    final userAHaveKids = currentUser.compatibility?.getCompatibilityField('haveKids');
+    final userAGenotype = currentUser.compatibility?.getCompatibilityField('genotype');
+    final userAPersonalityType = currentUser.compatibility?.getCompatibilityField('personalityType');
+    final userARegularIncome = currentUser.compatibility?.getCompatibilityField('regularSourceOfIncome');
+    final userALongDistance = currentUser.compatibility?.getCompatibilityField('longDistance');
+    final userABelieveInCohabiting = currentUser.compatibility?.getCompatibilityField('believeInCohabiting');
+    final userAShouldSpeakTongues = currentUser.compatibility?.getCompatibilityField('shouldChristianSpeakInTongue');
+    final userABeliefInTithing = currentUser.compatibility?.getCompatibilityField('believeInTithing');
     for (final profile in results.items) {
       try {
         final score = EnhancedCompatibilityScorer.scoreMatch(
-          // Current user fields
           userAMaritalStatus: userAMaritalStatus,
           userAHaveKids: userAHaveKids,
           userAGenotype: userAGenotype,
@@ -379,13 +341,7 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
           userAShouldSpeakTongues: userAShouldSpeakTongues,
           userABeliefInTithing: userABeliefInTithing,
           userAHobbies: currentUser.hobbies,
-          userADesiredQualities:
-              currentUser.desiredQualities
-                  ?.split(',')
-                  .map((s) => s.trim())
-                  .toList() ??
-              [],
-          // Match profile fields
+          userADesiredQualities: currentUser.desiredQualities?.split(',').map((s) => s.trim()).toList() ?? [],
           userBMaritalStatus: profile.maritalStatus,
           userBHaveKids: profile.haveKids,
           userBGenotype: profile.genotype,
@@ -396,15 +352,8 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
           userBShouldSpeakTongues: profile.shouldChristianSpeakInTongue,
           userBBeliefInTithing: profile.believeInTithing,
           userBHobbies: profile.hobbies,
-          userBDesiredQualities:
-              profile.desiredQualities
-                  ?.split(',')
-                  .map((s) => s.trim())
-                  .toList() ??
-              [],
+          userBDesiredQualities: profile.desiredQualities?.split(',').map((s) => s.trim()).toList() ?? [],
         );
-
-        // Create new profile with scores
         scoredProfiles.add(
           DatingProfile(
             uid: profile.uid,
@@ -435,33 +384,23 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
           ),
         );
       } catch (e) {
-        if (kDebugMode) {
-          // ignore: avoid_print
-          print(
-            '[DatingSearchResults] Error scoring profile ${profile.uid}: $e',
-          );
-        }
-        // If scoring fails, include profile without score
+        print('[DatingSearchResultsProvider] Error scoring profile ${profile.uid}: $e');
         scoredProfiles.add(profile);
       }
     }
-
-    // Sort by profile creation date (newest first) - single sort for all results
     scoredProfiles.sort((a, b) {
-      // Sort by date descending (newest first)
       return b.createdAt.compareTo(a.createdAt);
     });
-
+    print('[DatingSearchResultsProvider] After scoring: ${scoredProfiles.length} profiles');
     results = DatingSearchResult(
       items: scoredProfiles,
       emptyHint: results.emptyHint,
     );
   } else if (results.items.isNotEmpty) {
-    // If no scoring (too many profiles or missing user data), sort by creation date
     results.items.sort((a, b) {
-      // Sort by date descending (newest first)
       return b.createdAt.compareTo(a.createdAt);
     });
+    print('[DatingSearchResultsProvider] After sort: ${results.items.length} profiles');
   }
 
   if (kDebugMode) {
@@ -691,17 +630,26 @@ final accumulatedSearchResultsProvider =
   // Get initial batch (always available immediately)
   final initialBatch = await ref.watch(cachedDatingSearchResultsProvider.future);
 
-  // Watch the offset to know when to include paginated results
-  final currentOffset = ref.watch(searchResultsOffsetProvider);
-
-  if (currentOffset == 0) {
-    // Only showing initial batch
+  // If no profiles in initial batch, return immediately (show 'No Profiles')
+  if (initialBatch.items.isEmpty) {
     return initialBatch;
   }
 
-  // Get the paginated batch
-  final paginatedBatch =
-      await ref.watch(paginatedDatingSearchResultsProvider.future);
+  // Watch the offset to know when to include paginated results
+  final currentOffset = ref.watch(searchResultsOffsetProvider);
+
+  // If offset is 0, show only initial batch
+  if (currentOffset == 0) {
+    return initialBatch;
+  }
+
+  // Try to get paginated batch, but if it fails or is empty, just return initial batch
+  DatingSearchResult paginatedBatch;
+  try {
+    paginatedBatch = await ref.watch(paginatedDatingSearchResultsProvider.future);
+  } catch (_) {
+    paginatedBatch = const DatingSearchResult(items: []);
+  }
 
   // Combine: initial + all paginated batches accumulated so far
   final combined = <DatingProfile>[

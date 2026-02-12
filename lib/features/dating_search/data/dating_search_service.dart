@@ -21,7 +21,7 @@ class DatingSearchService {
 
   bool _isDisabledUserDoc(Map<String, dynamic> data) {
     final accountStatus =
-        (data['accountStatus'] ?? '').toString().toLowerCase();
+      (data['accountStatus'] ?? '').toString().toLowerCase();
     if (accountStatus == 'disabled') return true;
 
     final status = (data['status'] ?? '').toString().toLowerCase();
@@ -30,10 +30,7 @@ class DatingSearchService {
     final disabled = data['disabled'];
     if (disabled == true) return true;
 
-    // Exclude admin profiles from dating search results
-    final isAdmin = data['isAdmin'];
-    if (isAdmin == true) return true;
-
+    // Do NOT exclude admin users from searching; only exclude them from appearing in other users' results.
     return false;
   }
 
@@ -581,8 +578,18 @@ class DatingSearchService {
           );
         }
 
+
         // Enforce: disabled accounts are NOT visible in search results.
+        // Exclude admin profiles from appearing in search results (but allow them to search)
         if (_isDisabledUserDoc(data)) {
+          skippedDisabled++;
+          continue;
+        }
+        final isAdmin = data['isAdmin'] == true;
+        // Exclude admin profiles from appearing in search results for other users
+        // (but allow current admin user to see their own profile if needed)
+        // If you want admins to see themselves, remove this check
+        if (isAdmin) {
           skippedDisabled++;
           continue;
         }

@@ -26,16 +26,20 @@ class CoachApplicationReviewItem {
     this.profilePhotoUrl,
   });
 
-  factory CoachApplicationReviewItem.fromFirestore(String docId, Map<String, dynamic> data) {
+  factory CoachApplicationReviewItem.fromFirestore(
+    String docId,
+    Map<String, dynamic> data,
+  ) {
     return CoachApplicationReviewItem(
       applicationId: data['applicationId'] ?? docId,
       fullName: data['fullName'] ?? 'Unknown',
       email: data['email'] ?? '',
       gender: data['gender'] ?? 'Not specified',
       yearsOfExperience: (data['yearsOfExperience'] as num?)?.toInt() ?? 0,
-      profilePhotoUrl: (data['profilePhoto'] is Map)
-          ? (data['profilePhoto'] as Map)['url'] as String?
-          : null,
+      profilePhotoUrl:
+          (data['profilePhoto'] is Map)
+              ? (data['profilePhoto'] as Map)['url'] as String?
+              : null,
       submittedAt: _asDate(data['submittedAt']) ?? DateTime.now(),
       status: data['status'] ?? 'pending',
     );
@@ -92,9 +96,14 @@ class CoachApplicationDetail {
     this.reviewedAt,
   });
 
-  factory CoachApplicationDetail.fromFirestore(String docId, Map<String, dynamic> data) {
-    final profilePhoto = (data['profilePhoto'] is Map) ? data['profilePhoto'] as Map : null;
-    final credentialsPdf = (data['credentialsPdf'] is Map) ? data['credentialsPdf'] as Map : null;
+  factory CoachApplicationDetail.fromFirestore(
+    String docId,
+    Map<String, dynamic> data,
+  ) {
+    final profilePhoto =
+        (data['profilePhoto'] is Map) ? data['profilePhoto'] as Map : null;
+    final credentialsPdf =
+        (data['credentialsPdf'] is Map) ? data['credentialsPdf'] as Map : null;
 
     return CoachApplicationDetail(
       applicationId: data['applicationId'] ?? docId,
@@ -108,7 +117,10 @@ class CoachApplicationDetail {
       yearsOfExperience: (data['yearsOfExperience'] as num?)?.toInt() ?? 0,
       maritalStatus: data['maritalStatus'] ?? '',
       credentials: data['credentials'] ?? '',
-      specializations: (data['specializations'] is List) ? List<String>.from(data['specializations']) : [],
+      specializations:
+          (data['specializations'] is List)
+              ? List<String>.from(data['specializations'])
+              : [],
       coachingPhilosophy: data['coachingPhilosophy'] ?? '',
       instagramHandle: data['instagramHandle'] as String?,
       linkedinProfile: data['linkedinProfile'] as String?,
@@ -136,7 +148,9 @@ DateTime? _asDate(dynamic v) {
 }
 
 /// Stream of pending coach applications
-final pendingCoachApplicationsProvider = StreamProvider<List<CoachApplicationReviewItem>>((ref) {
+final pendingCoachApplicationsProvider = StreamProvider<
+  List<CoachApplicationReviewItem>
+>((ref) {
   final firebaseReady = ref.watch(firebaseReadyProvider);
   if (!firebaseReady) return Stream.value(const []);
 
@@ -144,23 +158,34 @@ final pendingCoachApplicationsProvider = StreamProvider<List<CoachApplicationRev
   if (fs == null) return Stream.value(const []);
 
   // Real-time stream of pending coach applications
-  final stream = fs
-      .collection('coachApplications')
-      .where('status', isEqualTo: 'pending')
-      .orderBy('submittedAt', descending: true)
-      .limit(200)
-      .snapshots();
+  // Note: We remove orderBy to avoid needing a composite index, and sort in code instead
+  final stream =
+      fs
+          .collection('coachApplications')
+          .where('status', isEqualTo: 'pending')
+          .limit(200)
+          .snapshots();
 
   return stream.map((snapshot) {
-    return snapshot.docs
-        .map((d) => CoachApplicationReviewItem.fromFirestore(d.id, d.data()))
-        .toList();
+    final items =
+        snapshot.docs
+            .map(
+              (d) => CoachApplicationReviewItem.fromFirestore(d.id, d.data()),
+            )
+            .toList();
+
+    // Sort by submittedAt descending (newest first)
+    items.sort((a, b) => b.submittedAt.compareTo(a.submittedAt));
+
+    return items;
   });
 });
 
 /// Get full details for a coach application
-final coachApplicationDetailProvider =
-    FutureProvider.family<CoachApplicationDetail, String>((ref, applicationId) async {
+final coachApplicationDetailProvider = FutureProvider.family<
+  CoachApplicationDetail,
+  String
+>((ref, applicationId) async {
   final fs = ref.watch(firestoreInstanceProvider);
   if (fs == null) {
     throw Exception('Firestore not initialized');
@@ -175,28 +200,31 @@ final coachApplicationDetailProvider =
 });
 
 /// Update coach application status (approve/reject)
-final updateCoachApplicationStatusProvider =
-    FutureProvider.family<void, (String applicationId, String status, String? rejectionReason)>(
-  (ref, params) async {
-    final fs = ref.watch(firestoreInstanceProvider);
-    if (fs == null) {
-      throw Exception('Firestore not initialized');
-    }
+final updateCoachApplicationStatusProvider = FutureProvider.family<
+  void,
+  (String applicationId, String status, String? rejectionReason)
+>((ref, params) async {
+  final fs = ref.watch(firestoreInstanceProvider);
+  if (fs == null) {
+    throw Exception('Firestore not initialized');
+  }
 
-    final (applicationId, status, rejectionReason) = params;
+  final (applicationId, status, rejectionReason) = params;
 
-    final updateData = <String, dynamic>{
-      'status': status,
-      'reviewedAt': FieldValue.serverTimestamp(),
-    };
+  final updateData = <String, dynamic>{
+    'status': status,
+    'reviewedAt': FieldValue.serverTimestamp(),
+  };
 
-    if (status == 'rejected' && rejectionReason != null) {
-      updateData['rejectionReason'] = rejectionReason;
-    }
+  if (status == 'rejected' && rejectionReason != null) {
+    updateData['rejectionReason'] = rejectionReason;
+  }
 
-    await fs.collection('coachApplications').doc(applicationId).update(updateData);
+  await fs
+      .collection('coachApplications')
+      .doc(applicationId)
+      .update(updateData);
 
-    // Invalidate the stream so UI updates
-    ref.invalidate(pendingCoachApplicationsProvider);
-  },
-);
+  // Invalidate the stream so UI updates
+  ref.invalidate(pendingCoachApplicationsProvider);
+});

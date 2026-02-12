@@ -18,17 +18,13 @@ class CoachReviewQueueScreen extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.inbox,
-                  size: 64,
-                  color: Colors.grey[400],
-                ),
+                Icon(Icons.inbox, size: 64, color: Colors.grey[400]),
                 const SizedBox(height: 16),
                 Text(
                   'No pending applications',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.grey[600],
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
                 ),
               ],
             ),
@@ -43,12 +39,10 @@ class CoachReviewQueueScreen extends ConsumerWidget {
           },
         );
       },
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
-      error: (error, stack) => Center(
-        child: Text('Error loading applications: $error'),
-      ),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error:
+          (error, stack) =>
+              Center(child: Text('Error loading applications: $error')),
     );
   }
 }
@@ -56,10 +50,8 @@ class CoachReviewQueueScreen extends ConsumerWidget {
 class _CoachApplicationListTile extends ConsumerWidget {
   final CoachApplicationReviewItem application;
 
-  const _CoachApplicationListTile({
-    Key? key,
-    required this.application,
-  }) : super(key: key);
+  const _CoachApplicationListTile({Key? key, required this.application})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -67,12 +59,16 @@ class _CoachApplicationListTile extends ConsumerWidget {
       leading: CircleAvatar(
         radius: 28,
         backgroundColor: Colors.grey[300],
-        backgroundImage: application.profilePhotoUrl != null
-            ? NetworkImage(application.profilePhotoUrl!)
-            : null,
-        child: application.profilePhotoUrl == null
-            ? const Icon(Icons.person, size: 28)
-            : null,
+        backgroundImage:
+            (application.profilePhotoUrl != null &&
+                    application.profilePhotoUrl!.isNotEmpty)
+                ? NetworkImage(application.profilePhotoUrl!)
+                : null,
+        child:
+            (application.profilePhotoUrl == null ||
+                    application.profilePhotoUrl!.isEmpty)
+                ? const Icon(Icons.person, size: 28)
+                : null,
       ),
       title: Text(application.fullName),
       subtitle: Text(
@@ -84,7 +80,10 @@ class _CoachApplicationListTile extends ConsumerWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => CoachReviewDetailScreen(applicationId: application.applicationId),
+            builder:
+                (_) => CoachReviewDetailScreen(
+                  applicationId: application.applicationId,
+                ),
           ),
         );
       },

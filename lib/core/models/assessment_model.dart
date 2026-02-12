@@ -108,18 +108,30 @@ class DimensionInsights extends Equatable {
   String? getInsightForScoreAndGender(double percentage, String? gender) {
     final g = gender?.toLowerCase();
     if (percentage >= AppConfig.strongThreshold) {
-      return (g != null ? genderHigh?[g] : null) ?? high;
+      if (g != null && genderHigh != null && genderHigh!.containsKey(g)) {
+        return genderHigh![g];
+      }
+      return high;
     }
     if (percentage >= AppConfig.developingThreshold) {
-      return (g != null ? genderMedium?[g] : null) ?? medium;
+      if (g != null && genderMedium != null && genderMedium!.containsKey(g)) {
+        return genderMedium![g];
+      }
+      return medium;
     }
-    return (g != null ? genderLow?[g] : null) ?? low;
+    if (g != null && genderLow != null && genderLow!.containsKey(g)) {
+      return genderLow![g];
+    }
+    return low;
   }
 
   /// Get gender-personalized micro step, falling back to generic
   String? getMicroStepForGender(String? gender) {
     final g = gender?.toLowerCase();
-    return (g != null ? genderMicroStep?[g] : null) ?? microStep;
+    if (g != null && genderMicroStep != null && genderMicroStep!.containsKey(g)) {
+      return genderMicroStep![g];
+    }
+    return microStep;
   }
 
   @override
@@ -174,13 +186,19 @@ class AssessmentProfile extends Equatable {
   /// Get gender-personalized title, falling back to generic
   String getTitleForGender(String? gender) {
     final g = gender?.toLowerCase();
-    return (g != null ? genderTitle?[g] : null) ?? title;
+    if (g != null && genderTitle != null && genderTitle!.containsKey(g)) {
+      return genderTitle![g]!;
+    }
+    return title;
   }
 
   /// Get gender-personalized summary, falling back to generic
   String getSummaryForGender(String? gender) {
     final g = gender?.toLowerCase();
-    return (g != null ? genderSummary?[g] : null) ?? summary;
+    if (g != null && genderSummary != null && genderSummary!.containsKey(g)) {
+      return genderSummary![g]!;
+    }
+    return summary;
   }
 
   @override

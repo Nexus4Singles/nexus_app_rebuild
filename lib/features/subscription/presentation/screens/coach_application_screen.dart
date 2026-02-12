@@ -1,18 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:typed_data';
+
 import '../../../../core/theme/theme.dart';
 import '../../application/coach_application_service.dart';
+
+/// Widget for uploading a PDF file (credentials, certifications, etc.)
+Widget _buildPdfUploadWidget({
+  required String label,
+  required File? file,
+  required VoidCallback onTap,
+  required VoidCallback onRemove,
+  required BuildContext context,
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label,
+        style: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w600),
+      ),
+      const SizedBox(height: 8),
+      if (file == null)
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            height: 60,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: AppColors.primary.withOpacity(0.3),
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(12),
+              color: AppColors.primary.withOpacity(0.05),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.upload_file,
+                  color: AppColors.primary.withOpacity(0.6),
+                  size: 24,
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'Tap to upload PDF',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.primary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
+      else
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.primary),
+            borderRadius: BorderRadius.circular(10),
+            color: AppColors.primary.withOpacity(0.05),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.picture_as_pdf, color: Colors.red, size: 24),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  file.path.split('/').last,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              GestureDetector(
+                onTap: onRemove,
+                child: Icon(Icons.close, color: Colors.red.shade400, size: 20),
+              ),
+            ],
+          ),
+        ),
+    ],
+  );
+}
 
 // State Management
 final coachApplicationProvider =
     StateNotifierProvider<CoachApplicationNotifier, CoachApplication>((ref) {
-  return CoachApplicationNotifier();
-});
+      return CoachApplicationNotifier();
+    });
 
 class CoachApplicationNotifier extends StateNotifier<CoachApplication> {
   CoachApplicationNotifier() : super(CoachApplication());
@@ -21,8 +107,18 @@ class CoachApplicationNotifier extends StateNotifier<CoachApplication> {
     state = newApplication;
   }
 
-  void setFullName(String value) =>
-      state = state.copyWith(fullName: value.isEmpty ? null : value);
+  void setFullName(String value) {
+    if (value.isEmpty) {
+      state = state.copyWith(fullName: null);
+    } else {
+      final filtered = value.replaceAll(RegExp(r'[^a-zA-Z ]'), '');
+      final cap =
+          filtered.isNotEmpty
+              ? filtered[0].toUpperCase() + filtered.substring(1)
+              : '';
+      state = state.copyWith(fullName: cap);
+    }
+  }
 
   void setEmail(String value) =>
       state = state.copyWith(email: value.isEmpty ? null : value);
@@ -32,10 +128,32 @@ class CoachApplicationNotifier extends StateNotifier<CoachApplication> {
 
   void setGender(String? value) => state = state.copyWith(gender: value);
 
-  void setNationality(String? value) => state = state.copyWith(nationality: value);
+  void setNationality(String? value) {
+    if (value == null || value.isEmpty) {
+      state = state.copyWith(nationality: null);
+    } else {
+      final cap = value[0].toUpperCase() + value.substring(1);
+      state = state.copyWith(nationality: cap);
+    }
+  }
 
-  void setCity(String value) =>
-      state = state.copyWith(residenceLocation: value.isEmpty ? null : value);
+  void setCity(String value) {
+    if (value.isEmpty) {
+      state = state.copyWith(residenceLocation: null);
+    } else {
+      final filtered = value.replaceAll(RegExp(r'[^a-zA-Z ]'), '');
+      final cap =
+          filtered.isNotEmpty
+              ? filtered[0].toUpperCase() + filtered.substring(1)
+              : '';
+      state = state.copyWith(residenceLocation: cap);
+    }
+  }
+
+  void setYearsOfExperience(int value) {
+    final safeValue = value < 5 ? 5 : value;
+    state = state.copyWith(yearsOfExperience: safeValue);
+  }
 
   void setCountryOfResidence(String? value) {
     // Store country separately
@@ -44,19 +162,29 @@ class CoachApplicationNotifier extends StateNotifier<CoachApplication> {
 
   void setTitle(String? value) => state = state.copyWith(title: value);
 
-  void setYearsOfExperience(int value) =>
-      state = state.copyWith(yearsOfExperience: value);
+  void setMaritalStatus(String? value) =>
+      state = state.copyWith(maritalStatus: value);
 
-  void setMaritalStatus(String? value) => state = state.copyWith(maritalStatus: value);
-
-  void setCredentials(String value) =>
-      state = state.copyWith(credentials: value.isEmpty ? null : value);
+  void setCredentials(String value) {
+    if (value.isEmpty) {
+      state = state.copyWith(credentials: null);
+    } else {
+      final cap = value[0].toUpperCase() + value.substring(1);
+      state = state.copyWith(credentials: cap);
+    }
+  }
 
   void setSpecializations(List<String> value) =>
       state = state.copyWith(specializations: value);
 
-  void setCareerAchievements(String value) =>
-      state = state.copyWith(coachingPhilosophy: value.isEmpty ? null : value);
+  void setCareerAchievements(String value) {
+    if (value.isEmpty) {
+      state = state.copyWith(coachingPhilosophy: null);
+    } else {
+      final cap = value[0].toUpperCase() + value.substring(1);
+      state = state.copyWith(coachingPhilosophy: cap);
+    }
+  }
 
   void setInstagramHandle(String value) =>
       state = state.copyWith(instagramHandle: value.isEmpty ? null : value);
@@ -188,9 +316,10 @@ class _CoachApplicationScreenState
                     margin: const EdgeInsets.symmetric(horizontal: 4),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(2),
-                      color: isCompleted || isCurrent
-                          ? AppColors.primary
-                          : AppColors.getBorder(context),
+                      color:
+                          isCompleted || isCurrent
+                              ? AppColors.primary
+                              : AppColors.getBorder(context),
                     ),
                   ),
                 );
@@ -223,13 +352,43 @@ class _CoachApplicationScreenState
 }
 
 // Page 1: Personal Information
-class _PersonalInfoPage extends ConsumerWidget {
+class _PersonalInfoPage extends ConsumerStatefulWidget {
   final VoidCallback onNext;
 
   const _PersonalInfoPage({required this.onNext});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_PersonalInfoPage> createState() => _PersonalInfoPageState();
+}
+
+class _PersonalInfoPageState extends ConsumerState<_PersonalInfoPage> {
+  late TextEditingController _fullNameController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneController;
+
+  @override
+  void initState() {
+    super.initState();
+    final application = ref.read(coachApplicationProvider);
+    _fullNameController = TextEditingController(
+      text: application.fullName ?? '',
+    );
+    _emailController = TextEditingController(text: application.email ?? '');
+    _phoneController = TextEditingController(
+      text: application.phoneNumber ?? '',
+    );
+  }
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final application = ref.watch(coachApplicationProvider);
     final notifier = ref.read(coachApplicationProvider.notifier);
 
@@ -264,9 +423,9 @@ class _PersonalInfoPage extends ConsumerWidget {
           const SizedBox(height: 16),
 
           // Full Name
-          _buildTextField(
+          _buildTextFieldWithController(
             label: 'Full Name',
-            initialValue: application.fullName ?? '',
+            controller: _fullNameController,
             onChanged: (value) => notifier.setFullName(value),
             hint: 'Your full name',
             context: context,
@@ -274,9 +433,9 @@ class _PersonalInfoPage extends ConsumerWidget {
           const SizedBox(height: 16),
 
           // Email
-          _buildTextField(
+          _buildTextFieldWithController(
             label: 'Email Address',
-            initialValue: application.email ?? '',
+            controller: _emailController,
             onChanged: (value) => notifier.setEmail(value),
             hint: 'your.email@example.com',
             keyboardType: TextInputType.emailAddress,
@@ -285,9 +444,9 @@ class _PersonalInfoPage extends ConsumerWidget {
           const SizedBox(height: 16),
 
           // Phone Number with validation
-          _buildPhoneNumberField(
+          _buildPhoneNumberFieldWithController(
             label: 'Phone Number',
-            initialValue: application.phoneNumber ?? '',
+            controller: _phoneController,
             onChanged: (value) => notifier.setPhoneNumber(value),
             context: context,
           ),
@@ -309,20 +468,23 @@ class _PersonalInfoPage extends ConsumerWidget {
             child: ElevatedButton(
               onPressed: () {
                 final isEmailValid = notifier._isValidEmail(application.email);
-                final isPhoneValid = notifier._isValidPhoneNumber(application.phoneNumber);
+                final isPhoneValid = notifier._isValidPhoneNumber(
+                  application.phoneNumber,
+                );
                 if (application.title != null &&
                     application.fullName != null &&
                     application.fullName!.isNotEmpty &&
                     isEmailValid &&
                     isPhoneValid &&
                     application.gender != null) {
-                  onNext();
+                  widget.onNext();
                 } else {
                   String errorMsg = 'Please fill all fields correctly.';
                   if (!isEmailValid && application.email != null) {
                     errorMsg = 'Please enter a valid email address.';
                   } else if (!isPhoneValid && application.phoneNumber != null) {
-                    errorMsg = 'Please enter a valid phone number with at least 10 digits and country code.';
+                    errorMsg =
+                        'Please enter a valid phone number with at least 10 digits and country code.';
                   }
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -342,10 +504,7 @@ class _PersonalInfoPage extends ConsumerWidget {
               ),
               child: const Text(
                 'Next',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -356,7 +515,7 @@ class _PersonalInfoPage extends ConsumerWidget {
 }
 
 // Page 2: Professional Background
-class _ProfessionalBackgroundPage extends ConsumerWidget {
+class _ProfessionalBackgroundPage extends ConsumerStatefulWidget {
   final VoidCallback onNext;
   final VoidCallback onPrev;
 
@@ -366,7 +525,31 @@ class _ProfessionalBackgroundPage extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_ProfessionalBackgroundPage> createState() =>
+      _ProfessionalBackgroundPageState();
+}
+
+class _ProfessionalBackgroundPageState
+    extends ConsumerState<_ProfessionalBackgroundPage> {
+  late TextEditingController _cityController;
+
+  @override
+  void initState() {
+    super.initState();
+    final application = ref.read(coachApplicationProvider);
+    _cityController = TextEditingController(
+      text: application.residenceLocation ?? '',
+    );
+  }
+
+  @override
+  void dispose() {
+    _cityController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final application = ref.watch(coachApplicationProvider);
     final notifier = ref.read(coachApplicationProvider.notifier);
 
@@ -400,9 +583,9 @@ class _ProfessionalBackgroundPage extends ConsumerWidget {
           const SizedBox(height: 16),
 
           // City
-          _buildTextField(
+          _buildTextFieldWithController(
             label: 'City',
-            initialValue: application.residenceLocation ?? '',
+            controller: _cityController,
             onChanged: (value) => notifier.setCity(value),
             hint: 'Your city',
             context: context,
@@ -413,7 +596,8 @@ class _ProfessionalBackgroundPage extends ConsumerWidget {
           _buildCountryPickerField(
             label: 'Country of Residence',
             value: application.country,
-            onChanged: (country) => notifier.setCountryOfResidence(country?.name),
+            onChanged:
+                (country) => notifier.setCountryOfResidence(country?.name),
             context: context,
           ),
           const SizedBox(height: 16),
@@ -442,7 +626,7 @@ class _ProfessionalBackgroundPage extends ConsumerWidget {
             children: [
               Expanded(
                 child: OutlinedButton(
-                  onPressed: onPrev,
+                  onPressed: widget.onPrev,
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     side: BorderSide(color: AppColors.primary),
@@ -468,7 +652,7 @@ class _ProfessionalBackgroundPage extends ConsumerWidget {
                         application.residenceLocation != null &&
                         application.yearsOfExperience != null &&
                         application.maritalStatus != null) {
-                      onNext();
+                      widget.onNext();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -488,10 +672,7 @@ class _ProfessionalBackgroundPage extends ConsumerWidget {
                   ),
                   child: const Text(
                     'Next',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -504,17 +685,52 @@ class _ProfessionalBackgroundPage extends ConsumerWidget {
 }
 
 // Page 3: Qualifications & Philosophy
-class _QualificationsPage extends ConsumerWidget {
+class _QualificationsPage extends ConsumerStatefulWidget {
   final VoidCallback onNext;
   final VoidCallback onPrev;
 
-  const _QualificationsPage({
-    required this.onNext,
-    required this.onPrev,
-  });
+  const _QualificationsPage({required this.onNext, required this.onPrev});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_QualificationsPage> createState() =>
+      _QualificationsPageState();
+}
+
+class _QualificationsPageState extends ConsumerState<_QualificationsPage> {
+  late TextEditingController _credentialsController;
+  late TextEditingController _achievementsController;
+  late TextEditingController _instagramController;
+  late TextEditingController _linkedinController;
+
+  @override
+  void initState() {
+    super.initState();
+    final application = ref.read(coachApplicationProvider);
+    _credentialsController = TextEditingController(
+      text: application.credentials ?? '',
+    );
+    _achievementsController = TextEditingController(
+      text: application.coachingPhilosophy ?? '',
+    );
+    _instagramController = TextEditingController(
+      text: application.instagramHandle ?? '',
+    );
+    _linkedinController = TextEditingController(
+      text: application.linkedinProfile ?? '',
+    );
+  }
+
+  @override
+  void dispose() {
+    _credentialsController.dispose();
+    _achievementsController.dispose();
+    _instagramController.dispose();
+    _linkedinController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final application = ref.watch(coachApplicationProvider);
     final notifier = ref.read(coachApplicationProvider.notifier);
 
@@ -539,10 +755,17 @@ class _QualificationsPage extends ConsumerWidget {
           const SizedBox(height: 24),
 
           // Credentials
-          _buildTextField(
+          _buildTextFieldWithController(
             label: 'Credentials & Certifications',
-            initialValue: application.credentials ?? '',
-            onChanged: (value) => notifier.setCredentials(value),
+            controller: _credentialsController,
+            onChanged: (value) {
+              if (value.isNotEmpty) {
+                final capitalized = value[0].toUpperCase() + value.substring(1);
+                notifier.setCredentials(capitalized);
+              } else {
+                notifier.setCredentials(value);
+              }
+            },
             hint: 'e.g., M.A. in Marriage & Family Therapy, LMFT License #...',
             maxLines: 3,
             context: context,
@@ -550,11 +773,19 @@ class _QualificationsPage extends ConsumerWidget {
           const SizedBox(height: 16),
 
           // Career Achievements (optional)
-          _buildTextField(
+          _buildTextFieldWithController(
             label: 'Career Achievements',
-            initialValue: application.coachingPhilosophy ?? '',
-            onChanged: (value) => notifier.setCareerAchievements(value),
-            hint: 'Write a compelling description of any achievements or milestones you have had in your coaching career, if any.',
+            controller: _achievementsController,
+            onChanged: (value) {
+              if (value.isNotEmpty) {
+                final capitalized = value[0].toUpperCase() + value.substring(1);
+                notifier.setCareerAchievements(capitalized);
+              } else {
+                notifier.setCareerAchievements(value);
+              }
+            },
+            hint:
+                'Write a compelling description of any achievements or milestones you have had in your coaching career, if any.',
             maxLines: 4,
             context: context,
             isOptional: true,
@@ -562,25 +793,19 @@ class _QualificationsPage extends ConsumerWidget {
           const SizedBox(height: 16),
 
           // Social Media (Optional)
-          Text(
-            'Social Media (Optional)',
-            style: AppTextStyles.labelLarge.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
-          ),
           const SizedBox(height: 12),
-          _buildTextField(
-            label: 'Instagram Handle',
-            initialValue: application.instagramHandle ?? '',
+          _buildTextFieldWithController(
+            label: 'Social Media Handles',
+            controller: _instagramController,
             onChanged: (value) => notifier.setInstagramHandle(value),
             hint: '@yourhandle',
             context: context,
             isOptional: true,
           ),
           const SizedBox(height: 12),
-          _buildTextField(
+          _buildTextFieldWithController(
             label: 'LinkedIn Profile URL',
-            initialValue: application.linkedinProfile ?? '',
+            controller: _linkedinController,
             onChanged: (value) => notifier.setLinkedinProfile(value),
             hint: 'https://linkedin.com/in/yourprofile',
             keyboardType: TextInputType.url,
@@ -594,7 +819,7 @@ class _QualificationsPage extends ConsumerWidget {
             children: [
               Expanded(
                 child: OutlinedButton(
-                  onPressed: onPrev,
+                  onPressed: widget.onPrev,
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     side: BorderSide(color: AppColors.primary),
@@ -618,7 +843,7 @@ class _QualificationsPage extends ConsumerWidget {
                   onPressed: () {
                     if (application.credentials != null &&
                         application.credentials!.isNotEmpty) {
-                      onNext();
+                      widget.onNext();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -638,10 +863,7 @@ class _QualificationsPage extends ConsumerWidget {
                   ),
                   child: const Text(
                     'Next',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -665,6 +887,51 @@ class _MediaPage extends ConsumerStatefulWidget {
 
 class _MediaPageState extends ConsumerState<_MediaPage> {
   bool _isSubmitting = false;
+
+  Future<void> _testDirectUpload() async {
+    print('[DEBUG] Starting direct upload test...');
+    try {
+      final storage = FirebaseStorage.instance;
+      final testData = Uint8List.fromList(
+        List.generate(1024, (i) => i % 256),
+      ); // 1KB dummy data
+      final ref = storage.ref().child(
+        'test_uploads/test_${DateTime.now().millisecondsSinceEpoch}.bin',
+      );
+      print(
+        '[DEBUG] Test upload ref: \'${ref.fullPath}\', bucket: \'${ref.bucket}\'',
+      );
+
+      final uploadTask = ref.putData(testData);
+      uploadTask.snapshotEvents.listen((event) {
+        print(
+          '[DEBUG] Upload event: \'${event.state}\', bytes transferred: \'${event.bytesTransferred}\' / \'${event.totalBytes}\'',
+        );
+      });
+      final snapshot = await uploadTask;
+      final url = await snapshot.ref.getDownloadURL();
+      print('[DEBUG] Direct upload success! Download URL: $url');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Direct upload test succeeded!'),
+            backgroundColor: Colors.green.shade400,
+          ),
+        );
+      }
+    } catch (e, stack) {
+      print('[ERROR] Direct upload test failed: $e');
+      print(stack);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Direct upload test failed: $e'),
+            backgroundColor: Colors.red.shade400,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -702,11 +969,15 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
             ),
             child: Row(
               children: [
-                Icon(Icons.warning_rounded, color: Colors.orange.shade700, size: 20),
+                Icon(
+                  Icons.warning_rounded,
+                  color: Colors.orange.shade700,
+                  size: 20,
+                ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'AI-generated pictures are not acceptable for applications',
+                    'Please upload a nice picture as this would be used to create your profile. AI-generated pictures are not acceptable and could invalidate your application.',
                     style: TextStyle(
                       color: Colors.orange.shade700,
                       fontSize: 12,
@@ -741,31 +1012,36 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
             file: application.credentialsPdf,
             onTap: () async {
               try {
-                final result = await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowedExtensions: ['pdf'],
-                ).timeout(
-                  const Duration(seconds: 30),
-                  onTimeout: () {
-                    if (mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('File picker timed out. Please try again.'),
-                          backgroundColor: Color(0xFFD32F2F),
-                        ),
-                      );
-                    }
-                    return null;
-                  },
-                );
+                final result = await FilePicker.platform
+                    .pickFiles(
+                      type: FileType.custom,
+                      allowedExtensions: ['pdf'],
+                    )
+                    .timeout(
+                      const Duration(seconds: 30),
+                      onTimeout: () {
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'File picker timed out. Please try again.',
+                              ),
+                              backgroundColor: Color(0xFFD32F2F),
+                            ),
+                          );
+                        }
+                        return null;
+                      },
+                    );
                 if (result != null && result.files.isNotEmpty) {
                   notifier.setCredentialsPdf(File(result.files.first.path!));
                 }
               } catch (e) {
                 if (mounted) {
-                  final errorMsg = e.toString().contains('MissingPluginException')
-                      ? 'File picker not available on this platform. Try uploading from device storage.'
-                      : 'Error selecting PDF: $e';
+                  final errorMsg =
+                      e.toString().contains('MissingPluginException')
+                          ? 'File picker not available on this platform. Try uploading from device storage.'
+                          : 'Error selecting PDF: $e';
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(errorMsg),
@@ -786,22 +1062,16 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
             decoration: BoxDecoration(
               color: AppColors.primary.withOpacity(0.08),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: AppColors.primary.withOpacity(0.2),
-              ),
+              border: Border.all(color: AppColors.primary.withOpacity(0.2)),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  Icons.info_outline,
-                  color: AppColors.primary,
-                  size: 20,
-                ),
+                Icon(Icons.info_outline, color: AppColors.primary, size: 20),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Your application will be reviewed by our team. We\'ll contact you within 5 business days.',
+                    'Your application will be reviewed by our team. We\'ll provide a feedback you within 10 business days.',
                     style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.getTextSecondary(context),
                     ),
@@ -816,53 +1086,69 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: _isSubmitting
-                  ? null
-                  : () async {
-                      if (application.profilePhoto == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text('Please upload a profile photo'),
-                            backgroundColor: Colors.red.shade400,
-                          ),
-                        );
-                        return;
-                      }
-
-                      setState(() => _isSubmitting = true);
-
-                      try {
-                        // TODO: Call submission provider
-                        // await ref.read(coachApplicationSubmissionProvider(application).future);
-
-                        if (mounted) {
+              onPressed:
+                  _isSubmitting
+                      ? null
+                      : () async {
+                        print('[DEBUG] Submit button pressed.');
+                        if (application.profilePhoto == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: const Text(
-                                'Application submitted successfully!',
+                                'Please upload a profile photo',
                               ),
-                              backgroundColor: Colors.green.shade400,
-                            ),
-                          );
-                          Future.delayed(const Duration(seconds: 2), () {
-                            if (mounted) Navigator.pop(context);
-                          });
-                        }
-                      } catch (e) {
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Error: $e'),
                               backgroundColor: Colors.red.shade400,
                             ),
                           );
+                          print(
+                            '[DEBUG] Submission blocked: profile photo missing.',
+                          );
+                          return;
                         }
-                      } finally {
-                        if (mounted) {
-                          setState(() => _isSubmitting = false);
+
+                        setState(() => _isSubmitting = true);
+
+                        try {
+                          print('[DEBUG] Starting async submission...');
+                          await ref.read(
+                            coachApplicationSubmissionProvider(
+                              application,
+                            ).future,
+                          );
+
+                          if (mounted) {
+                            print(
+                              '[DEBUG] Submission success, showing snackbar.',
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: const Text(
+                                  'Application submitted successfully!',
+                                ),
+                                backgroundColor: Colors.green.shade400,
+                              ),
+                            );
+                            Future.delayed(const Duration(seconds: 2), () {
+                              if (mounted) Navigator.pop(context);
+                            });
+                          }
+                        } catch (e, stack) {
+                          print('[ERROR] Submission failed: $e');
+                          print(stack);
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Error: $e'),
+                                backgroundColor: Colors.red.shade400,
+                              ),
+                            );
+                          }
+                        } finally {
+                          if (mounted) {
+                            setState(() => _isSubmitting = false);
+                          }
                         }
-                      }
-                    },
+                      },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
@@ -872,23 +1158,47 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: _isSubmitting
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.white),
+              child:
+                  _isSubmitting
+                      ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white,
+                          ),
+                        ),
+                      )
+                      : const Text(
+                        'Submit Application',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    )
-                  : const Text(
-                      'Submit Application',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: _isSubmitting ? null : _testDirectUpload,
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                side: BorderSide(color: Colors.deepPurple),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text(
+                'Test Direct Upload',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.deepPurple,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 12),
@@ -920,9 +1230,10 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
 }
 
 // Helper Widgets
-Widget _buildTextField({
+
+Widget _buildTextFieldWithController({
   required String label,
-  required String initialValue,
+  required TextEditingController controller,
   required Function(String) onChanged,
   required BuildContext context,
   String? hint,
@@ -930,44 +1241,118 @@ Widget _buildTextField({
   int maxLines = 1,
   bool isOptional = false,
 }) {
+  // Determine inputFormatters and onChanged for specific fields
+  List<TextInputFormatter>? inputFormatters;
+  Function(String)? effectiveOnChanged = onChanged;
+  if (label == 'Full Name' || label == 'City') {
+    // Only allow alphabetic and space, and auto-capitalize first letter
+    inputFormatters = [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z ]'))];
+    effectiveOnChanged = (value) {
+      String filtered = value.replaceAll(RegExp(r'[^a-zA-Z ]'), '');
+      String cap =
+          filtered.isNotEmpty
+              ? filtered[0].toUpperCase() + filtered.substring(1)
+              : '';
+      controller.value = controller.value.copyWith(
+        text: cap,
+        selection: TextSelection.collapsed(offset: cap.length),
+      );
+      onChanged(cap);
+    };
+  } else if (label == 'Credentials & Certifications' ||
+      label == 'Career Achievements') {
+    // Auto-capitalize first letter only
+    effectiveOnChanged = (value) {
+      String cap =
+          value.isNotEmpty ? value[0].toUpperCase() + value.substring(1) : '';
+      controller.value = controller.value.copyWith(
+        text: cap,
+        selection: TextSelection.collapsed(offset: cap.length),
+      );
+      onChanged(cap);
+    };
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
         isOptional ? '$label (Optional)' : label,
-        style: AppTextStyles.labelLarge.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
+        style: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w600),
       ),
       const SizedBox(height: 8),
       TextField(
-        onChanged: onChanged,
+        controller: controller,
+        onChanged: effectiveOnChanged,
         keyboardType: keyboardType,
         maxLines: maxLines,
         textDirection: TextDirection.ltr,
         textAlignVertical: TextAlignVertical.center,
+        inputFormatters: inputFormatters,
         decoration: InputDecoration(
           hintText: hint,
           filled: true,
           fillColor: AppColors.getSurface(context),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: AppColors.getBorder(context),
-            ),
+            borderSide: BorderSide(color: AppColors.getBorder(context)),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: AppColors.getBorder(context),
-            ),
+            borderSide: BorderSide(color: AppColors.getBorder(context)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: AppColors.primary,
-              width: 2,
-            ),
+            borderSide: BorderSide(color: AppColors.primary, width: 2),
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 14,
+          ),
+        ),
+        style: AppTextStyles.bodyMedium,
+      ),
+    ],
+  );
+}
+
+Widget _buildPhoneNumberFieldWithController({
+  required String label,
+  required TextEditingController controller,
+  required Function(String) onChanged,
+  required BuildContext context,
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label,
+        style: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w600),
+      ),
+      const SizedBox(height: 8),
+      TextField(
+        controller: controller,
+        onChanged: onChanged,
+        keyboardType: TextInputType.phone,
+        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9+]'))],
+        maxLength: 20,
+        decoration: InputDecoration(
+          hintText: '+1 (555) 123-4567',
+          helperText:
+              'Include country code (e.g., +1 for USA, +234 for Nigeria)',
+          counterText: '',
+          filled: true,
+          fillColor: AppColors.getSurface(context),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: AppColors.getBorder(context)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: AppColors.getBorder(context)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: AppColors.primary, width: 2),
           ),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,
@@ -992,30 +1377,27 @@ Widget _buildDropdown({
     children: [
       Text(
         label,
-        style: AppTextStyles.labelLarge.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
+        style: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w600),
       ),
       const SizedBox(height: 8),
       Container(
         decoration: BoxDecoration(
           color: AppColors.getSurface(context),
-          border: Border.all(
-            color: AppColors.getBorder(context),
-          ),
+          border: Border.all(color: AppColors.getBorder(context)),
           borderRadius: BorderRadius.circular(10),
         ),
         child: DropdownButton<String>(
           value: value,
-          items: items.map((item) {
-            return DropdownMenuItem<String>(
-              value: item,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(item, style: AppTextStyles.bodyMedium),
-              ),
-            );
-          }).toList(),
+          items:
+              items.map((item) {
+                return DropdownMenuItem<String>(
+                  value: item,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(item, style: AppTextStyles.bodyMedium),
+                  ),
+                );
+              }).toList(),
           onChanged: onChanged,
           isExpanded: true,
           underline: const SizedBox(),
@@ -1034,61 +1416,6 @@ Widget _buildDropdown({
   );
 }
 
-Widget _buildPhoneNumberField({
-  required String label,
-  required String initialValue,
-  required Function(String) onChanged,
-  required BuildContext context,
-}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label,
-        style: AppTextStyles.labelLarge.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      const SizedBox(height: 8),
-      TextField(
-        onChanged: onChanged,
-        keyboardType: TextInputType.phone,
-        decoration: InputDecoration(
-          hintText: '+1 (555) 123-4567',
-          helperText: 'Include country code (e.g., +1 for USA, +234 for Nigeria)',
-          filled: true,
-          fillColor: AppColors.getSurface(context),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: AppColors.getBorder(context),
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: AppColors.getBorder(context),
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: AppColors.primary,
-              width: 2,
-            ),
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 14,
-          ),
-        ),
-        style: AppTextStyles.bodyMedium,
-        controller: TextEditingController(text: initialValue),
-      ),
-    ],
-  );
-}
-
 Widget _buildCountryPickerField({
   required String label,
   required String? value,
@@ -1100,9 +1427,7 @@ Widget _buildCountryPickerField({
     children: [
       Text(
         label,
-        style: AppTextStyles.labelLarge.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
+        style: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w600),
       ),
       const SizedBox(height: 8),
       GestureDetector(
@@ -1114,15 +1439,10 @@ Widget _buildCountryPickerField({
           );
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 14,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           decoration: BoxDecoration(
             color: AppColors.getSurface(context),
-            border: Border.all(
-              color: AppColors.getBorder(context),
-            ),
+            border: Border.all(color: AppColors.getBorder(context)),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
@@ -1131,22 +1451,22 @@ Widget _buildCountryPickerField({
               Text(
                 value ?? 'Select country',
                 style: AppTextStyles.bodyMedium.copyWith(
-                  color: value == null
-                      ? AppColors.getTextSecondary(context)
-                      : null,
+                  color:
+                      value == null
+                          ? AppColors.getTextSecondary(context)
+                          : null,
                 ),
               ),
-              Icon(
-                Icons.arrow_drop_down,
-                color: AppColors.primary,
-              ),
+              Icon(Icons.arrow_drop_down, color: AppColors.primary),
             ],
           ),
         ),
       ),
     ],
   );
-}Widget _buildNumberField({
+}
+
+Widget _buildNumberField({
   required String label,
   required int value,
   required Function(int) onChanged,
@@ -1157,15 +1477,13 @@ Widget _buildCountryPickerField({
     children: [
       Text(
         label,
-        style: AppTextStyles.labelLarge.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
+        style: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w600),
       ),
       const SizedBox(height: 8),
       Row(
         children: [
           IconButton(
-            onPressed: value > 0 ? () => onChanged(value - 1) : null,
+            onPressed: value > 5 ? () => onChanged(value - 1) : null,
             icon: const Icon(Icons.remove_circle_outline),
             color: AppColors.primary,
           ),
@@ -1173,7 +1491,8 @@ Widget _buildCountryPickerField({
             child: TextField(
               controller: TextEditingController(text: value.toString()),
               onChanged: (val) {
-                final intVal = int.tryParse(val) ?? 0;
+                int intVal = int.tryParse(val) ?? 5;
+                if (intVal < 5) intVal = 5;
                 onChanged(intVal);
               },
               keyboardType: TextInputType.number,
@@ -1183,9 +1502,7 @@ Widget _buildCountryPickerField({
                 fillColor: AppColors.getSurface(context),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: AppColors.getBorder(context),
-                  ),
+                  borderSide: BorderSide(color: AppColors.getBorder(context)),
                 ),
               ),
               style: AppTextStyles.bodyMedium,
@@ -1214,178 +1531,75 @@ Widget _buildPhotoUploadWidget({
     children: [
       Text(
         label,
-        style: AppTextStyles.labelLarge.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
+        style: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w600),
       ),
       const SizedBox(height: 8),
-      if (file == null)
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            height: 150,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.primary.withOpacity(0.3),
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(12),
-              color: AppColors.primary.withOpacity(0.05),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.image_outlined,
-                  size: 48,
-                  color: AppColors.primary.withOpacity(0.6),
-                ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  width: 120,
-                  child: Text(
-                    'Tap to upload photo',
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        )
-      else
-        Stack(
-          children: [
-            Container(
+      file == null
+          ? GestureDetector(
+            onTap: onTap,
+            child: Container(
               height: 150,
               decoration: BoxDecoration(
+                border: Border.all(
+                  color: AppColors.primary.withOpacity(0.3),
+                  width: 2,
+                ),
                 borderRadius: BorderRadius.circular(12),
-                image: DecorationImage(
-                  image: FileImage(file),
+                color: AppColors.primary.withOpacity(0.05),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.image_outlined,
+                    size: 48,
+                    color: AppColors.primary.withOpacity(0.6),
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Tap to upload photo',
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+          : Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.file(
+                  file,
+                  height: 150,
+                  width: double.infinity,
                   fit: BoxFit.cover,
                 ),
               ),
-            ),
-            Positioned(
-              top: 8,
-              right: 8,
-              child: GestureDetector(
-                onTap: onRemove,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.red.shade400,
-                    shape: BoxShape.circle,
-                  ),
-                  padding: const EdgeInsets.all(4),
-                  child: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-    ],
-  );
-}
-
-Widget _buildPdfUploadWidget({
-  required String label,
-  required File? file,
-  required VoidCallback onTap,
-  required VoidCallback onRemove,
-  required BuildContext context,
-}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label,
-        style: AppTextStyles.labelLarge.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      const SizedBox(height: 12),
-      if (file == null)
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.getBorder(context),
-              ),
-              borderRadius: BorderRadius.circular(10),
-              color: AppColors.getSurface(context),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.upload_file,
-                  color: AppColors.primary.withOpacity(0.6),
-                  size: 24,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    'Tap to upload PDF',
-                    maxLines: 2,
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.primary,
+              Positioned(
+                top: 8,
+                right: 8,
+                child: GestureDetector(
+                  onTap: onRemove,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      shape: BoxShape.circle,
                     ),
+                    child: Icon(Icons.close, color: Colors.white, size: 20),
                   ),
-                ),
-              ],
-            ),
-          ),
-        )
-      else
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: AppColors.primary,
-            ),
-            borderRadius: BorderRadius.circular(10),
-            color: AppColors.primary.withOpacity(0.05),
-          ),
-          child: Row(
-            children: [
-              Icon(
-                Icons.picture_as_pdf,
-                color: Colors.red,
-                size: 24,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  file.path.split('/').last,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              GestureDetector(
-                onTap: onRemove,
-                child: Icon(
-                  Icons.close,
-                  color: Colors.red.shade400,
-                  size: 20,
                 ),
               ),
             ],
           ),
-        ),
     ],
   );
 }

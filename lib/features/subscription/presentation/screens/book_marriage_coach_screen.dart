@@ -11,7 +11,8 @@ class CounselingType {
   final String title;
   final String type; // 'online' or 'physical'
   final IconData icon;
-  final String category; // 'Individual', 'Couple', 'Premarital', 'PostMarital', 'Parental'
+  final String
+  category; // 'Individual', 'Couple', 'Premarital', 'PostMarital', 'Parental'
 
   const CounselingType({
     required this.title,
@@ -24,25 +25,25 @@ class CounselingType {
 final counselingTypesProvider = Provider<List<CounselingType>>((ref) {
   return [
     const CounselingType(
-      title: 'Individual Counseling',
+      title: 'Individual\nCounseling',
       type: 'Online',
       icon: Icons.person_outline,
       category: 'Individual',
     ),
     const CounselingType(
-      title: 'Premarital Counseling',
+      title: 'Premarital\nCounseling',
       type: 'Online',
       icon: Icons.favorite_border_outlined,
       category: 'Premarital',
     ),
     const CounselingType(
-      title: 'Post Marital Counseling',
+      title: 'Post Marital\nCounseling',
       type: 'Online',
       icon: Icons.home_outlined,
       category: 'PostMarital',
     ),
     const CounselingType(
-      title: 'Parental Counseling',
+      title: 'Parental\nCounseling',
       type: 'Online',
       icon: Icons.family_restroom,
       category: 'Parental',
@@ -132,7 +133,7 @@ class _BookMarriageCoachScreenState
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          'Connect with licensed marriage coaches to strengthen your relationship and overcome challenges together.',
+                          'Connect with licensed marriage coaches or family therapists to strengthen your relationship or marriage and overcome challenges together.',
                           style: AppTextStyles.bodySmall.copyWith(
                             color: Colors.white.withOpacity(0.9),
                             height: 1.4,
@@ -166,32 +167,34 @@ class _BookMarriageCoachScreenState
                   ),
                   const SizedBox(height: 16),
 
-                  // Counseling Cards Grid
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.85,
-                    ),
-                    itemCount: counselingTypes.length,
-                    itemBuilder: (context, index) {
-                      final counseling = counselingTypes[index];
-                      final isSelected = selectedIndex == index;
+                  // Counseling Cards Grid - 2 per line, centered
+                  Center(
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                            childAspectRatio: 1.3,
+                          ),
+                      itemCount: counselingTypes.length,
+                      itemBuilder: (context, index) {
+                        final counseling = counselingTypes[index];
+                        final isSelected = selectedIndex == index;
 
-                      return _CounselingCard(
-                        counseling: counseling,
-                        isSelected: isSelected,
-                        onTap: () {
-                          setState(() {
-                            selectedIndex = isSelected ? null : index;
-                          });
-                        },
-                      );
-                    },
+                        return _CounselingCard(
+                          counseling: counseling,
+                          isSelected: isSelected,
+                          onTap: () {
+                            setState(() {
+                              selectedIndex = isSelected ? null : index;
+                            });
+                          },
+                        );
+                      },
+                    ),
                   ),
 
                   const SizedBox(height: 20),
@@ -202,7 +205,9 @@ class _BookMarriageCoachScreenState
                     decoration: BoxDecoration(
                       color: AppColors.primary.withOpacity(0.08),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.primary.withOpacity(0.2)),
+                      border: Border.all(
+                        color: AppColors.primary.withOpacity(0.2),
+                      ),
                     ),
                     child: Row(
                       children: [
@@ -231,19 +236,24 @@ class _BookMarriageCoachScreenState
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: selectedIndex != null
-                          ? () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const CoachRequirementsScreen(),
-                                ),
-                              );
-                            }
-                          : null,
+                      onPressed:
+                          selectedIndex != null
+                              ? () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'This feature is coming soon!',
+                                    ),
+                                  ),
+                                );
+                              }
+                              : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
-                        disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
+                        disabledBackgroundColor: AppColors.primary.withOpacity(
+                          0.5,
+                        ),
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -286,92 +296,95 @@ class _BookMarriageCoachScreenState
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.getSurface(context),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                Icons.access_time_rounded,
-                color: AppColors.primary,
-                size: 24,
-              ),
+      builder:
+          (context) => AlertDialog(
+            backgroundColor: AppColors.getSurface(context),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
-            const SizedBox(width: 12),
-            Text(
-              'Coming Soon',
-              style: AppTextStyles.titleMedium.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 12),
-            Text(
-              'We\'re excited to bring ${selectedCounseling.title} (${selectedCounseling.type}) to you soon!',
-              style: AppTextStyles.bodyMedium,
-            ),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.08),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: AppColors.primary.withOpacity(0.2),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.notifications_outlined,
-                    color: AppColors.primary,
-                    size: 18,
+            title: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      'Check back soon for updates',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.primary,
-                      ),
+                  child: Icon(
+                    Icons.access_time_rounded,
+                    color: AppColors.primary,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'Coming Soon',
+                  style: AppTextStyles.titleMedium.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 12),
+                Text(
+                  'We\'re excited to bring ${selectedCounseling.title} (${selectedCounseling.type}) to you soon!',
+                  style: AppTextStyles.bodyMedium,
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: AppColors.primary.withOpacity(0.2),
                     ),
                   ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Navigate to requirements screen when user clicks "Got it"
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const CoachRequirementsScreen(),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.notifications_outlined,
+                        color: AppColors.primary,
+                        size: 18,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Check back soon for updates',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              );
-            },
-            child: Text(
-              'Got it',
-              style: AppTextStyles.labelLarge.copyWith(
-                color: AppColors.primary,
-              ),
+              ],
             ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  // Navigate to requirements screen when user clicks "Got it"
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const CoachRequirementsScreen(),
+                    ),
+                  );
+                },
+                child: Text(
+                  'Got it',
+                  style: AppTextStyles.labelLarge.copyWith(
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
@@ -439,7 +452,7 @@ class _BookMarriageCoachScreenState
 
           // Description
           Text(
-            'Are you a licensed marriage counselor or relationship coach? We\'re looking for experienced professionals to join our network and help couples strengthen their relationships.',
+            'Are you a licensed marriage counselor, family therapist or relationship coach? Enroll as one of our experienced professionals providing expert guidance to people who need help in navigating relationships and marriage.',
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.getTextSecondary(context),
               height: 1.5,
@@ -452,7 +465,7 @@ class _BookMarriageCoachScreenState
           ...[
             ('Flexible Schedule', 'Set your own availability and rates'),
             ('Professional Growth', 'Build your coaching practice'),
-            ('Verified Community', 'Work with vetted clients'),
+            ('Earn Per Session', 'You get paid for every session with clients'),
           ].map((item) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
@@ -501,12 +514,13 @@ class _BookMarriageCoachScreenState
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const CoachApplicationScreen(),
-                ),
-              ),
+              onPressed:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CoachRequirementsScreen(),
+                    ),
+                  ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
@@ -518,10 +532,7 @@ class _BookMarriageCoachScreenState
               icon: const Icon(Icons.arrow_forward, size: 18),
               label: const Text(
                 'Submit Your Application',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -550,29 +561,29 @@ class _CounselingCard extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primary.withOpacity(0.1)
-              : AppColors.getSurface(context),
+          color:
+              isSelected
+                  ? AppColors.primary.withOpacity(0.1)
+                  : AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected
-                ? AppColors.primary
-                : AppColors.getBorder(context),
+            color:
+                isSelected ? AppColors.primary : AppColors.getBorder(context),
             width: isSelected ? 2 : 1,
           ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Icon Container - smaller
+            // Icon Container - push to top
             Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: isSelected
-                    ? AppColors.primary
-                    : AppColors.primary.withOpacity(0.1),
+                color:
+                    isSelected
+                        ? AppColors.primary
+                        : AppColors.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
@@ -581,35 +592,28 @@ class _CounselingCard extends StatelessWidget {
                 size: 16,
               ),
             ),
-            const SizedBox(height: 12),
 
-            // Title - centered, with more vertical space
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    counseling.title,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.labelSmall.copyWith(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      height: 1.2,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+            // Title - centered
+            Text(
+              counseling.title,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.labelSmall.copyWith(
+                fontWeight: FontWeight.w600,
+                fontSize: 15, // Increased font size
+                height: 1.25,
               ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
 
-            const SizedBox(height: 4),
-
-            // Type Badge - more compact
+            // Type Badge - push to bottom
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
               decoration: BoxDecoration(
-                color: _getTypeColor(counseling.type, context).withOpacity(0.15),
+                color: _getTypeColor(
+                  counseling.type,
+                  context,
+                ).withOpacity(0.15),
                 borderRadius: BorderRadius.circular(3),
               ),
               child: Text(
@@ -618,7 +622,6 @@ class _CounselingCard extends StatelessWidget {
                   color: _getTypeColor(counseling.type, context),
                   fontWeight: FontWeight.w600,
                   fontSize: 9,
-                  height: 1.0,
                 ),
               ),
             ),

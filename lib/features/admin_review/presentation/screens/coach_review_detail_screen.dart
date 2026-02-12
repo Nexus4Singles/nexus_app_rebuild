@@ -7,22 +7,24 @@ import 'package:nexus_app_v2/features/admin_review/application/coach_application
 class CoachReviewDetailScreen extends ConsumerStatefulWidget {
   final String applicationId;
 
-  const CoachReviewDetailScreen({
-    Key? key,
-    required this.applicationId,
-  }) : super(key: key);
+  const CoachReviewDetailScreen({Key? key, required this.applicationId})
+    : super(key: key);
 
   @override
-  ConsumerState<CoachReviewDetailScreen> createState() => _CoachReviewDetailScreenState();
+  ConsumerState<CoachReviewDetailScreen> createState() =>
+      _CoachReviewDetailScreenState();
 }
 
-class _CoachReviewDetailScreenState extends ConsumerState<CoachReviewDetailScreen> {
+class _CoachReviewDetailScreenState
+    extends ConsumerState<CoachReviewDetailScreen> {
   bool _isApproving = false;
   bool _isRejecting = false;
 
   @override
   Widget build(BuildContext context) {
-    final applicationAsync = ref.watch(coachApplicationDetailProvider(widget.applicationId));
+    final applicationAsync = ref.watch(
+      coachApplicationDetailProvider(widget.applicationId),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +38,8 @@ class _CoachReviewDetailScreenState extends ConsumerState<CoachReviewDetailScree
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Profile Photo
-                if (application.profilePhotoUrl != null)
+                if (application.profilePhotoUrl != null &&
+                    application.profilePhotoUrl!.isNotEmpty)
                   Container(
                     width: double.infinity,
                     height: 300,
@@ -74,64 +77,85 @@ class _CoachReviewDetailScreenState extends ConsumerState<CoachReviewDetailScree
                       // Professional Information Section
                       _buildSectionTitle('Professional Information'),
                       _buildInfoRow('Title', application.title),
-                      _buildInfoRow('Years of Experience', '${application.yearsOfExperience} years'),
+                      _buildInfoRow(
+                        'Years of Experience',
+                        '${application.yearsOfExperience} years',
+                      ),
                       _buildInfoRow('Nationality', application.nationality),
-                      _buildInfoRow('Residence Location', application.residenceLocation),
-                      _buildInfoRow('Marital Status', application.maritalStatus),
+                      _buildInfoRow(
+                        'Residence Location',
+                        application.residenceLocation,
+                      ),
+                      _buildInfoRow(
+                        'Marital Status',
+                        application.maritalStatus,
+                      ),
                       const SizedBox(height: 16),
 
                       // Qualifications Section
                       _buildSectionTitle('Qualifications'),
-                      _buildExpandableText('Credentials', application.credentials),
+                      _buildExpandableText(
+                        'Credentials',
+                        application.credentials,
+                      ),
                       if (application.specializations.isNotEmpty)
                         _buildInfoRow(
                           'Specializations',
                           application.specializations.join(', '),
                         ),
-                      _buildExpandableText('Coaching Philosophy', application.coachingPhilosophy),
+                      _buildExpandableText(
+                        'Coaching Philosophy',
+                        application.coachingPhilosophy,
+                      ),
                       const SizedBox(height: 16),
 
                       // Social Media Section
-                      if (application.instagramHandle != null || application.linkedinProfile != null)
-                        ...[
-                          _buildSectionTitle('Social Media'),
-                          if (application.instagramHandle != null)
-                            _buildLinkRow(
-                              'Instagram',
-                              application.instagramHandle!,
-                              () async {
-                                final url = 'https://instagram.com/${application.instagramHandle}';
-                                if (await canLaunchUrl(Uri.parse(url))) {
-                                  await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-                                }
-                              },
-                            ),
-                          if (application.linkedinProfile != null)
-                            _buildLinkRow(
-                              'LinkedIn',
-                              application.linkedinProfile!,
-                              () async {
-                                if (await canLaunchUrl(Uri.parse(application.linkedinProfile!))) {
-                                  await launchUrl(
-                                    Uri.parse(application.linkedinProfile!),
-                                    mode: LaunchMode.externalApplication,
-                                  );
-                                }
-                              },
-                            ),
-                          const SizedBox(height: 16),
-                        ],
+                      if (application.instagramHandle != null ||
+                          application.linkedinProfile != null) ...[
+                        _buildSectionTitle('Social Media'),
+                        if (application.instagramHandle != null)
+                          _buildLinkRow(
+                            'Instagram',
+                            application.instagramHandle!,
+                            () async {
+                              final url =
+                                  'https://instagram.com/${application.instagramHandle}';
+                              if (await canLaunchUrl(Uri.parse(url))) {
+                                await launchUrl(
+                                  Uri.parse(url),
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              }
+                            },
+                          ),
+                        if (application.linkedinProfile != null)
+                          _buildLinkRow(
+                            'LinkedIn',
+                            application.linkedinProfile!,
+                            () async {
+                              if (await canLaunchUrl(
+                                Uri.parse(application.linkedinProfile!),
+                              )) {
+                                await launchUrl(
+                                  Uri.parse(application.linkedinProfile!),
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              }
+                            },
+                          ),
+                        const SizedBox(height: 16),
+                      ],
 
                       // Attachments Section
-                      if (application.credentialsPdfUrl != null)
-                        ...[
-                          _buildSectionTitle('Attachments'),
-                          _buildAttachmentButton(
-                            'Download Credentials PDF',
-                            application.credentialsPdfUrl!,
-                          ),
-                          const SizedBox(height: 16),
-                        ],
+                      if (application.credentialsPdfUrl != null &&
+                          application.credentialsPdfUrl!.isNotEmpty) ...[
+                        _buildSectionTitle('Attachments'),
+                        _buildAttachmentButton(
+                          'Download Credentials PDF',
+                          application.credentialsPdfUrl!,
+                        ),
+                        const SizedBox(height: 16),
+                      ],
 
                       // Submission Info
                       _buildSectionTitle('Submission Info'),
@@ -159,36 +183,46 @@ class _CoachReviewDetailScreenState extends ConsumerState<CoachReviewDetailScree
                           children: [
                             Expanded(
                               child: FilledButton.tonal(
-                                onPressed: _isRejecting
-                                    ? null
-                                    : () => _showRejectDialog(context, ref),
+                                onPressed:
+                                    _isRejecting
+                                        ? null
+                                        : () => _showRejectDialog(context, ref),
                                 style: FilledButton.styleFrom(
                                   backgroundColor: Colors.red[100],
                                   foregroundColor: Colors.red[900],
                                 ),
-                                child: _isRejecting
-                                    ? const SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: CircularProgressIndicator(strokeWidth: 2),
-                                      )
-                                    : const Text('Reject'),
+                                child:
+                                    _isRejecting
+                                        ? const SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
+                                        )
+                                        : const Text('Reject'),
                               ),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
                               child: FilledButton(
-                                onPressed: _isApproving ? null : () => _approveApplication(ref),
-                                child: _isApproving
-                                    ? const SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          valueColor: AlwaysStoppedAnimation(Colors.white),
-                                        ),
-                                      )
-                                    : const Text('Approve'),
+                                onPressed:
+                                    _isApproving
+                                        ? null
+                                        : () => _approveApplication(ref),
+                                child:
+                                    _isApproving
+                                        ? const SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            valueColor: AlwaysStoppedAnimation(
+                                              Colors.white,
+                                            ),
+                                          ),
+                                        )
+                                        : const Text('Approve'),
                               ),
                             ),
                           ],
@@ -198,11 +232,14 @@ class _CoachReviewDetailScreenState extends ConsumerState<CoachReviewDetailScree
                           child: Chip(
                             label: Text(
                               'Status: ${application.status.toUpperCase()}',
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            backgroundColor: application.status == 'approved'
-                                ? Colors.green[100]
-                                : Colors.red[100],
+                            backgroundColor:
+                                application.status == 'approved'
+                                    ? Colors.green[100]
+                                    : Colors.red[100],
                           ),
                         ),
                       const SizedBox(height: 24),
@@ -213,19 +250,18 @@ class _CoachReviewDetailScreenState extends ConsumerState<CoachReviewDetailScree
             ),
           );
         },
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
-        error: (error, stack) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.error_outline, size: 64, color: Colors.red[300]),
-              const SizedBox(height: 16),
-              Text('Error loading application: $error'),
-            ],
-          ),
-        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error:
+            (error, stack) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline, size: 64, color: Colors.red[300]),
+                  const SizedBox(height: 16),
+                  Text('Error loading application: $error'),
+                ],
+              ),
+            ),
       ),
     );
   }
@@ -234,9 +270,11 @@ class _CoachReviewDetailScreenState extends ConsumerState<CoachReviewDetailScree
     setState(() => _isApproving = true);
     try {
       await ref.read(
-        updateCoachApplicationStatusProvider(
-          (widget.applicationId, 'approved', null),
-        ).future,
+        updateCoachApplicationStatusProvider((
+          widget.applicationId,
+          'approved',
+          null,
+        )).future,
       );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -246,9 +284,9 @@ class _CoachReviewDetailScreenState extends ConsumerState<CoachReviewDetailScree
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error approving: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error approving: $e')));
       }
     } finally {
       if (mounted) setState(() => _isApproving = false);
@@ -261,43 +299,42 @@ class _CoachReviewDetailScreenState extends ConsumerState<CoachReviewDetailScree
 
     showDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text('Reject Application'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('Please provide a reason for rejection:'),
-            const SizedBox(height: 16),
-            TextField(
-              controller: reasonController,
-              decoration: InputDecoration(
-                hintText: 'Rejection reason...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+      builder:
+          (dialogContext) => AlertDialog(
+            title: const Text('Reject Application'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('Please provide a reason for rejection:'),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: reasonController,
+                  decoration: InputDecoration(
+                    hintText: 'Rejection reason...',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding: const EdgeInsets.all(12),
+                  ),
+                  maxLines: 3,
                 ),
-                contentPadding: const EdgeInsets.all(12),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: const Text('Cancel'),
               ),
-              maxLines: 3,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Cancel'),
+              FilledButton(
+                style: FilledButton.styleFrom(backgroundColor: Colors.red),
+                onPressed: () async {
+                  Navigator.pop(dialogContext);
+                  await _rejectApplication(ref, reasonController.text);
+                },
+                child: const Text('Reject'),
+              ),
+            ],
           ),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: Colors.red,
-            ),
-            onPressed: () async {
-              Navigator.pop(dialogContext);
-              await _rejectApplication(ref, reasonController.text);
-            },
-            child: const Text('Reject'),
-          ),
-        ],
-      ),
     );
   }
 
@@ -305,21 +342,23 @@ class _CoachReviewDetailScreenState extends ConsumerState<CoachReviewDetailScree
     setState(() => _isRejecting = true);
     try {
       await ref.read(
-        updateCoachApplicationStatusProvider(
-          (widget.applicationId, 'rejected', reason.isNotEmpty ? reason : null),
-        ).future,
+        updateCoachApplicationStatusProvider((
+          widget.applicationId,
+          'rejected',
+          reason.isNotEmpty ? reason : null,
+        )).future,
       );
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Application rejected')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Application rejected')));
         Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error rejecting: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error rejecting: $e')));
       }
     } finally {
       if (mounted) setState(() => _isRejecting = false);
@@ -332,9 +371,9 @@ class _CoachReviewDetailScreenState extends ConsumerState<CoachReviewDetailScree
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Colors.blue[700],
-            ),
+          fontWeight: FontWeight.bold,
+          color: Colors.blue[700],
+        ),
       ),
     );
   }
@@ -355,9 +394,7 @@ class _CoachReviewDetailScreenState extends ConsumerState<CoachReviewDetailScree
               ),
             ),
           ),
-          Expanded(
-            child: Text(value),
-          ),
+          Expanded(child: Text(value)),
         ],
       ),
     );
@@ -431,7 +468,10 @@ class _CoachReviewDetailScreenState extends ConsumerState<CoachReviewDetailScree
       child: FilledButton.tonal(
         onPressed: () async {
           if (await canLaunchUrl(Uri.parse(url))) {
-            await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+            await launchUrl(
+              Uri.parse(url),
+              mode: LaunchMode.externalApplication,
+            );
           }
         },
         child: Row(

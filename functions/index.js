@@ -731,9 +731,9 @@ exports.getPresignedUploadUrl = functions.https.onRequest(async (req, res) => {
     });
     const uploadUrl = await getSignedUrl(client, cmd, { expiresIn: 300 });
 
-    // Stable public URL
-    const ep = SPACES_ENDPOINT.replace(/\/$/, '');
-    const publicUrl = `${ep}/${SPACES_BUCKET}/${objectKey}`;
+    // Stable public URL: virtual-hosted style for DO Spaces
+    // Format: https://{bucket}.{region}.digitaloceanspaces.com/{objectKey}
+    const publicUrl = `https://${SPACES_BUCKET}.${SPACES_REGION}.digitaloceanspaces.com/${objectKey}`;
 
     console.log('[getPresignedUploadUrl] Generated presigned URL', { 
       uid, 
@@ -920,7 +920,7 @@ exports.onCoachApplicationSubmitted = functions.firestore
       // Send email to admin
       await transporter.sendMail({
         from: 'nexusgodlydating@gmail.com',
-        to: 'nexusadmin@nexusapp.com',
+        to: 'contact@nexus4singles.com',
         subject: `🎓 New Coach Application: ${applicationData.fullName}`,
         html: adminEmailContent,
       });

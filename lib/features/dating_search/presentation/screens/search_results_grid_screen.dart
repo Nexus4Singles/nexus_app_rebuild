@@ -439,6 +439,11 @@ class _ProfileCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isSaved = ref.watch(isProfileSavedProvider(profile.uid));
     final photo = profile.photos.isNotEmpty ? profile.photos.first : null;
+    if (photo == null || photo.isEmpty) {
+      print('[SearchResultsGrid] No photo for profile: uid=${profile.uid}, name=${profile.name}');
+    } else {
+      print('[SearchResultsGrid] Photo URL for profile: uid=${profile.uid}, name=${profile.name}, url=$photo');
+    }
 
     return GestureDetector(
       onTap: () {

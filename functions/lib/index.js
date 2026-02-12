@@ -114,9 +114,9 @@ exports.getPresignedUploadUrl = (0, https_1.onRequest)({ secrets: [SPACES_SECRET
             ACL: "public-read",
         });
         const uploadUrl = await (0, s3_request_presigner_1.getSignedUrl)(client, cmd, { expiresIn: 300 });
-        // Stable public URL: endpoint + bucket + objectKey (strip trailing slash).
-        const ep = endpoint.replace(/\/$/, "");
-        const publicUrl = `${ep}/${bucket}/${objectKey}`;
+        // Stable public URL: virtual-hosted style for DO Spaces
+        // Format: https://{bucket}.{region}.digitaloceanspaces.com/{objectKey}
+        const publicUrl = `https://${bucket}.${region}.digitaloceanspaces.com/${objectKey}`;
         logger.info("Presigned upload issued", { uid, type, objectKey });
         res.json({ uploadUrl, publicUrl, objectKey });
     }

@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Models for coach application
@@ -85,8 +88,8 @@ class CoachApplication {
 
 final coachApplicationSubmissionProvider =
     FutureProvider.family<String, CoachApplication>((ref, application) async {
-  return CoachApplicationService().submitApplication(application);
-});
+      return CoachApplicationService().submitApplication(application);
+    });
 
 class CoachApplicationService {
   static final _instance = CoachApplicationService._internal();
@@ -102,12 +105,12 @@ class CoachApplicationService {
   /// Submit a coach application with file uploads to Firestore
   /// The Cloud Function will handle downloading and emailing attachments
   Future<String> submitApplication(CoachApplication application) async {
+    print('[DEBUG] Starting coach application submission...');
     try {
-      final applicationId =
-          _firestore.collection('coachApplications').doc().id;
+      final applicationId = _firestore.collection('coachApplications').doc().id;
 
       // Create Firestore document with application data
-      final submissionData = {
+      final submissionData = <String, dynamic>{
         'applicationId': applicationId,
         'status': 'pending',
         'submittedAt': FieldValue.serverTimestamp(),
@@ -125,50 +128,154 @@ class CoachApplicationService {
         'coachingPhilosophy': application.coachingPhilosophy,
         'instagramHandle': application.instagramHandle,
         'linkedinProfile': application.linkedinProfile,
-        'profilePhoto': {
+        'profilePhoto': <String, dynamic>{
+          'url': '', // Will be updated after upload
           'filename': application.profilePhoto?.path.split('/').last,
           'uploadedAt': FieldValue.serverTimestamp(),
         },
-        if (application.credentialsPdf != null)
-          'credentialsPdf': {
-            'filename': 'credentials.pdf',
-            'uploadedAt': FieldValue.serverTimestamp(),
-          },
         'submissionNotes': '',
         'tags': [],
       };
 
-      // Upload profile photo to storage using a simple method
-      if (application.profilePhoto != null) {
-        await _uploadProfilePhoto(applicationId, application.profilePhoto!);
-      }
-
-      // Upload credentials PDF if provided
       if (application.credentialsPdf != null) {
-        await _uploadCredentialsPdf(applicationId, application.credentialsPdf!);
+        submissionData['credentialsPdf'] = <String, dynamic>{
+          'url': '', // Will be updated after upload
+          'filename': 'credentials.pdf',
+          'uploadedAt': FieldValue.serverTimestamp(),
+        };
       }
 
-      // Create the document
+      // Upload profile photo to Firebase Storage with timeout
+      if (application.profilePhoto != null) {
+        final user = FirebaseAuth.instance.currentUser;
+        print('[DEBUG] Uploading profile photo...');
+        if (user == null) {
+          print('[ERROR] No authenticated user. Cannot upload.');
+        } else {
+          print('[DEBUG] Authenticated user UID: \'${user.uid}\'');
+        }
+        try {
+          final photoUrl = await _uploadProfilePhoto(
+            applicationId,
+            application.profilePhoto!,
+          ).timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              throw Exception(
+                'Profile photo upload timed out. Please check your connection and try again.',
+              );
+            },
+          );
+          print('[DEBUG] Profile photo uploaded: $photoUrl');
+          (submissionData['profilePhoto'] as Map<String, dynamic>)['url'] =
+              photoUrl;
+        } catch (e) {
+          print('[ERROR] Profile photo upload failed: $e');
+          rethrow;
+        }
+      }
+
+      // Upload credentials PDF if provided, with timeout
+      if (application.credentialsPdf != null) {
+        print('[DEBUG] Uploading credentials PDF...');
+        try {
+          final pdfUrl = await _uploadCredentialsPdf(
+            applicationId,
+            application.credentialsPdf!,
+          ).timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              throw Exception(
+                'Credentials PDF upload timed out. Please check your connection and try again.',
+              );
+            },
+          );
+          print('[DEBUG] Credentials PDF uploaded: $pdfUrl');
+          (submissionData['credentialsPdf'] as Map<String, dynamic>)['url'] =
+              pdfUrl;
+        } catch (e) {
+          print('[ERROR] Credentials PDF upload failed: $e');
+          rethrow;
+        }
+      }
+
+      print('[DEBUG] Creating Firestore document for application...');
       await _firestore
           .collection('coachApplications')
           .doc(applicationId)
           .set(submissionData);
 
+      print('[DEBUG] Application submitted successfully!');
       return applicationId;
-    } catch (e) {
+    } catch (e, stack) {
+      print('[ERROR] Application submission failed: $e');
+      print(stack);
       rethrow;
     }
   }
 
-  /// Upload profile photo to Storage
-  Future<void> _uploadProfilePhoto(String applicationId, File file) async {
-    // This will be handled by Cloud Function that reads from local storage
-    // For now, we just note that it's been provided
+  /// Upload profile photo to Firebase Storage and return public URL
+  Future<String> _uploadProfilePhoto(String applicationId, File file) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) throw Exception('User not authenticated');
+
+      // Upload to Firebase Storage: coaches/{userId}/profile_photo_{timestamp}.jpg
+      final fileName =
+          'profile_photo_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final reference = FirebaseStorage.instance.ref(
+        'coaches/${user.uid}/$fileName',
+      );
+      print(
+        '[DEBUG] Storage ref: ${reference.fullPath}, bucket: ${reference.bucket}',
+      );
+
+      // Additional file checks
+      final exists = await file.exists();
+      final length = exists ? await file.length() : 0;
+      print(
+        '[DEBUG] File path: ${file.path}, exists: $exists, length: $length bytes',
+      );
+      if (!exists || length == 0) {
+        throw Exception('Profile photo file does not exist or is empty.');
+      }
+
+      final uploadTask = reference.putFile(file);
+      final snapshot = await uploadTask;
+
+      // Get the public download URL
+      final downloadUrl = await snapshot.ref.getDownloadURL();
+      print('Profile photo uploaded to Firebase Storage: $downloadUrl');
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading profile photo: $e');
+      rethrow;
+    }
   }
 
-  /// Upload credentials PDF to Storage
-  Future<void> _uploadCredentialsPdf(String applicationId, File file) async {
-    // This will be handled by Cloud Function that reads from local storage
-    // For now, we just note that it's been provided
+  /// Upload credentials PDF to Firebase Storage and return public URL
+  Future<String> _uploadCredentialsPdf(String applicationId, File file) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) throw Exception('User not authenticated');
+
+      // Upload to Firebase Storage: coaches/{userId}/credentials_{timestamp}.pdf
+      final fileName =
+          'credentials_${DateTime.now().millisecondsSinceEpoch}.pdf';
+      final reference = FirebaseStorage.instance.ref(
+        'coaches/${user.uid}/$fileName',
+      );
+
+      final uploadTask = reference.putFile(file);
+      final snapshot = await uploadTask;
+
+      // Get the public download URL
+      final downloadUrl = await snapshot.ref.getDownloadURL();
+      print('Credentials PDF uploaded to Firebase Storage: $downloadUrl');
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading credentials PDF: $e');
+      rethrow;
+    }
   }
 }

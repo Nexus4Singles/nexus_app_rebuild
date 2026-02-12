@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "nexus-visibility-app"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }
