@@ -275,11 +275,11 @@
       "number": 1,
       "dimension": "Emotional State",
       "questionType": "scenario",
-      "text": "You are at a gathering and someone mentions your late spouse's name in passing — maybe a shared memory or a kind word about them. What happens in your body?",
+      "text": "You are at a gathering and someone mentions your late spouse's name in passing: a shared memory or a kind word. What happens in your body?",
       "options": [
         {
           "id": "A",
-          "text": "I feel warmth — I can hear their name and hold the memory with gratitude, not pain",
+          "text": "I feel warmth. I can hear their name and hold the memory with gratitude, not pain",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "emotional_state_steady",
@@ -291,7 +291,7 @@
         },
         {
           "id": "B",
-          "text": "A brief ache — tender but manageable. I smile and keep going, but I feel it",
+          "text": "A brief ache, tender but manageable. I smile and keep going, but I feel it",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_state_brief_flicker",
@@ -303,7 +303,7 @@
         },
         {
           "id": "C",
-          "text": "My chest tightens and my eyes sting — the grief is still close to the surface even when I think I am doing fine",
+          "text": "My chest tightens and my eyes sting. The grief is still close to the surface even when I think I am doing fine",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "emotional_state_body_reacts",
@@ -315,7 +315,7 @@
         },
         {
           "id": "D",
-          "text": "I need to leave the room or change the subject — hearing their name in public is overwhelming and I cannot manage it around others",
+          "text": "I need to leave the room or change the subject. Hearing their name in public is overwhelming and I cannot manage it around others",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "emotional_state_emotional_flooding",
@@ -336,11 +336,11 @@
       "number": 2,
       "dimension": "Meaning-Making",
       "questionType": "scenario",
-      "text": "A friend going through marital struggles asks you: 'What did your marriage teach you?' What comes out?",
+      "text": "A friend going through marital struggles asks you: :\n\"What did your marriage teach you?\"\nWhat comes out?",
       "options": [
         {
           "id": "A",
-          "text": "I can speak about it with honesty and peace — I have found real meaning in what happened, even though it was painful",
+          "text": "I can speak about it with honesty and peace. I have found real meaning in what happened, even though it was painful",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "meaning_making_integrated_narrative",
@@ -352,7 +352,7 @@
         },
         {
           "id": "B",
-          "text": "I share some lessons, but I notice I still tell the story mostly through the lens of my loss — what was taken from me rather than the full picture of what our marriage was",
+          "text": "I share some lessons, but I notice I still tell the story mostly through the lens of my loss: what was taken from me rather than the full picture of what our marriage was",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "meaning_making_partial_insight_grief_colored",
@@ -364,7 +364,7 @@
         },
         {
           "id": "C",
-          "text": "I deflect or keep it vague — I have not really made sense of what happened yet",
+          "text": "I deflect or keep it vague. I have not really made sense of what happened yet",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "meaning_making_avoidance_of_narrative",
@@ -376,7 +376,7 @@
         },
         {
           "id": "D",
-          "text": "The question stirs up pain — I do not have a clear story yet, just fragments of hurt and confusion",
+          "text": "The question stirs up pain. I do not have a clear story yet, just fragments of hurt and confusion",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "meaning_making_fragmented_unprocessed",
@@ -393,11 +393,11 @@
       "number": 3,
       "dimension": "Memory Intrusion",
       "questionType": "scenario",
-      "text": "You are having a genuinely good day — feeling hopeful about the future — when a memory from your marriage hits you out of nowhere. What happens to the rest of your day?",
+      "text": "You are having a good day, feeling hopeful about the future, when a memory from your marriage hits you out of nowhere. What happens to the rest of your day?",
       "options": [
         {
           "id": "A",
-          "text": "I notice it, acknowledge it, and return to the present — it does not hijack my mood or derail my day",
+          "text": "I notice it, acknowledge it, and return to the present. It does not hijack my mood or derail my day",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "memory_intrusion_notices_and_returns",
@@ -421,7 +421,7 @@
         },
         {
           "id": "C",
-          "text": "The good feeling fades and I spend the rest of the day in a lower emotional place — memories have that power over me",
+          "text": "The good feeling fades and I spend the rest of the day in a lower emotional place. Memories have that power over me",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "memory_intrusion_mood_override",
@@ -433,7 +433,7 @@
         },
         {
           "id": "D",
-          "text": "Good days actually make it worse — happiness triggers guilt or the fear that it will be taken away again. Joy and grief are tangled together",
+          "text": "Good days actually make it worse. Happiness triggers guilt or the fear that it will be taken away again. Joy and grief are tangled together",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "memory_intrusion_happiness_triggers_grief",
@@ -454,7 +454,7 @@
       "options": [
         {
           "id": "A",
-          "text": "I miss partnership — having someone to build life with — but I am not desperate for it. I can sit with the loneliness without acting on it",
+          "text": "I miss partnership, having someone to build life with, but I am not desperate for it. I can sit with the loneliness without acting on it",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "loneliness_driver_healthy_longing",
@@ -466,7 +466,7 @@
         },
         {
           "id": "B",
-          "text": "I miss being known — someone who sees me, chooses me. The loneliness connects to a deeper ache for belonging",
+          "text": "I miss being known: someone who sees me, chooses me. The loneliness connects to a deeper ache for belonging",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "loneliness_driver_identity_and_belonging",
@@ -478,7 +478,7 @@
         },
         {
           "id": "C",
-          "text": "I miss the structure and comfort of what I had — even if it was not perfect, at least I was not alone",
+          "text": "I miss the structure and comfort of what I had, even if it was not perfect. At least I was not alone",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "loneliness_driver_comfort_seeking",
@@ -490,7 +490,7 @@
         },
         {
           "id": "D",
-          "text": "The loneliness feels unbearable — it makes me want to rush into something just to stop feeling this way",
+          "text": "The loneliness feels unbearable. It makes me want to rush into something just to stop feeling this way",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "loneliness_driver_urgency_driven",
@@ -507,11 +507,11 @@
       "number": 5,
       "dimension": "Healing Progress",
       "questionType": "scenario",
-      "text": "You come across an old photo from your marriage — a good moment, a happy day. What does your body and heart do?",
+      "text": "You come across an old photo from your marriage, a good moment, a happy day. What does your body and heart do?",
       "options": [
         {
           "id": "A",
-          "text": "I can hold the memory with gratitude and sadness at the same time — it does not throw me off me",
+          "text": "I can hold the memory with gratitude and sadness at the same time. It does not throw me off",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "healing_progress_holds_both",
@@ -523,7 +523,7 @@
         },
         {
           "id": "B",
-          "text": "It stirs something — I feel a mix of emotions, but I can set it down and move on with my day",
+          "text": "It stirs something. I feel a mix of emotions, but I can set it down and move on with my day",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "healing_progress_emotional_but_recovers",
@@ -535,7 +535,7 @@
         },
         {
           "id": "C",
-          "text": "It pulls me in — I might spend the next hour in memories, and my mood shifts for the rest of the day",
+          "text": "It pulls me in. I might spend the next hour in memories, and my mood shifts for the rest of the day",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "healing_progress_absorbed_by_memories",
@@ -547,7 +547,7 @@
         },
         {
           "id": "D",
-          "text": "I avoid looking at anything from that time — those memories are not safe for me yet",
+          "text": "I avoid looking at anything from that time. Those memories are not safe for me yet",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "healing_progress_avoidance_of_past",
@@ -564,11 +564,11 @@
       "number": 6,
       "dimension": "Grief Integration",
       "questionType": "scenario",
-      "text": "You are talking with a counselor or trusted friend and they ask you: 'When you think about the difficult parts of your marriage — the arguments, the disappointments, the things left unfinished — what do you do with those?' What is your most honest response?",
+      "text": "You are talking with a counselor or trusted friend and they ask: :\n\"When you think about the difficult parts of your marriage: the arguments, the disappointments, the things left unfinished, what do you do with those?\"\nWhat is your most honest response?",
       "options": [
         {
           "id": "A",
-          "text": "Specific things, clearly named — holding both gratitude for the good and honesty about the hard has taken real work",
+          "text": "Specific things, clearly named. Holding both gratitude for the good and honesty about the hard has taken real work",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "grief_integration_holds_full_picture",
@@ -580,7 +580,7 @@
         },
         {
           "id": "B",
-          "text": "I am learning to let the hard parts exist alongside the good — but it still feels disloyal to acknowledge the struggles",
+          "text": "I am learning to let the hard parts exist alongside the good, but it still feels disloyal to acknowledge the struggles",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "grief_integration_learning_honesty",
@@ -592,7 +592,7 @@
         },
         {
           "id": "C",
-          "text": "Most of what surfaces is the loss — the hard parts of the marriage feel disloyal to bring up now that they are gone",
+          "text": "Most of what surfaces is the loss. The hard parts of the marriage feel disloyal to bring up now that they are gone",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "grief_integration_idealizing",
@@ -604,7 +604,7 @@
         },
         {
           "id": "D",
-          "text": "I carry guilt and regret about things I wish I had done differently — and I cannot seem to let those go",
+          "text": "I carry guilt and regret about things I wish I had done differently, and I cannot seem to let those go",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "grief_integration_stuck_in_regret",
@@ -617,8 +617,8 @@
       ],
       "originalNumber": 10,
       "genderVariant": {
-        "male": "You are talking with a counselor or trusted friend and they ask: 'I know you loved your wife deeply. But every marriage has hard parts — the arguments, the things you wish you had done differently. What do you do with those memories?' As a widower, what is your most honest response?",
-        "female": "You are talking with a counselor or trusted friend and they ask: 'I know your marriage meant the world to you. But every marriage has its hard parts — the unfinished conversations, the things left unsaid. What do you do with those?' As a widow, what is your most honest response?"
+        "male": "You are talking with a counselor or trusted friend and they ask: 'I know you loved your wife deeply. But every marriage has hard parts: the arguments, the things you wish you had done differently. What do you do with those memories?' As a widower, what is your most honest response?",
+        "female": "You are talking with a counselor or trusted friend and they ask: 'I know your marriage meant the world to you. But every marriage has its hard parts: the unfinished conversations, the things left unsaid. What do you do with those?' As a widow, what is your most honest response?"
       }
     },
     {
@@ -629,7 +629,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Emotional self-awareness — I understand my own patterns, triggers, and needs in ways I never did before",
+          "text": "Emotional self-awareness. I understand my own patterns, triggers, and needs in ways I never did before",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "growth_domain_emotional_self_awareness",
@@ -641,7 +641,7 @@
         },
         {
           "id": "B",
-          "text": "Spiritual maturity — my relationship with God has deepened through the pain in ways I could not have planned",
+          "text": "Spiritual maturity. My relationship with God has deepened through the pain in ways I could not have planned",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "growth_domain_spiritual_maturity",
@@ -653,7 +653,7 @@
         },
         {
           "id": "C",
-          "text": "How I communicate and handle conflict — I am a fundamentally different person in hard conversations now",
+          "text": "How I communicate and handle conflict. I am a fundamentally different person in hard conversations now",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "growth_domain_communication_improvement",
@@ -665,7 +665,7 @@
         },
         {
           "id": "D",
-          "text": "I am honestly not sure — I know time has passed but I cannot point to clear, specific growth",
+          "text": "I am honestly not sure. I know time has passed but I cannot point to clear, specific growth",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "growth_domain_unclear_growth",
@@ -686,11 +686,11 @@
       "number": 8,
       "dimension": "Marriage Understanding",
       "questionType": "scenario",
-      "text": "A younger person about to get married asks you: 'What do you wish someone had told you about marriage before your first one?' What comes to mind first?",
+      "text": "A younger person about to get married asks you: :\n\"What do you wish someone had told you about marriage before your first one?\"\nWhat comes to mind first?",
       "options": [
         {
           "id": "A",
-          "text": "The hard stuff nobody prepares you for — sacrifice, dying to self daily, and how character matters more than chemistry",
+          "text": "The hard stuff nobody prepares you for: sacrifice, dying to self daily, and how character matters more than chemistry",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "marriage_understanding_deep_earned_wisdom",
@@ -702,7 +702,7 @@
         },
         {
           "id": "B",
-          "text": "I would warn them about the patterns you do not see coming — how your family background and unhealed wounds shape everything",
+          "text": "I would warn them about the patterns you do not see coming: how your family background and unhealed wounds shape everything",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "marriage_understanding_pattern_awareness",
@@ -714,7 +714,7 @@
         },
         {
           "id": "C",
-          "text": "I would tell them to make sure they really know the person — my understanding of marriage is still mostly about choosing the right partner",
+          "text": "I would tell them to make sure they really know the person. My understanding of marriage is still mostly about choosing the right partner",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "marriage_understanding_partner_selection_focused",
@@ -726,7 +726,7 @@
         },
         {
           "id": "D",
-          "text": "Not sure I would give advice — I still have not fully made sense of my own marriage experience, so I would feel like a fraud",
+          "text": "Not sure I would give advice. I still have not fully made sense of my own marriage experience, so I would feel like a fraud",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "marriage_understanding_unprocessed",
@@ -743,11 +743,11 @@
       "number": 9,
       "dimension": "Change Basis",
       "questionType": "scenario",
-      "text": "Imagine a future spouse asks you: 'How do I know you will not repeat the same patterns from your last marriage?' What would you honestly say?",
+      "text": "Imagine a future spouse asks you: :\n\"How do I know you will not repeat the same patterns from your last marriage?\"\nWhat would you honestly say?",
       "options": [
         {
           "id": "A",
-          "text": "I would point to specific internal work I have done — counseling, accountability, new patterns I have practiced and tested in real relationships",
+          "text": "I would point to specific internal work I have done: counseling, accountability, new patterns I have practiced and tested in real relationships",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "change_basis_real_tested_change",
@@ -759,7 +759,7 @@
         },
         {
           "id": "B",
-          "text": "Real learning and genuine change — though some of it has not been fully tested in a new relationship yet",
+          "text": "Real learning and genuine change, though some of it has not been fully tested in a new relationship yet",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "change_basis_insight_untested",
@@ -771,7 +771,7 @@
         },
         {
           "id": "C",
-          "text": "I would say 'I am a different person now' — but if pressed for evidence, I might struggle to give specific examples",
+          "text": "I would say\n\n'I am a different person now,'\n\nbut if pressed for evidence, I might struggle to give specific examples",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "change_basis_belief_without_evidence",
@@ -783,7 +783,7 @@
         },
         {
           "id": "D",
-          "text": "Have not really examined my own patterns — mostly thinking about what I lost rather than what I could do differently",
+          "text": "Have not really examined my own patterns, mostly thinking about what I lost rather than what I could do differently",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "change_basis_change_depends_on_partner",
@@ -804,7 +804,7 @@
       "options": [
         {
           "id": "A",
-          "text": "I recognize it in real-time and course-correct — I have done enough work on my family-of-origin patterns to catch them quickly",
+          "text": "I recognize it in real time and course-correct. I have done enough work on my family-of-origin patterns to catch them quickly",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "family_patterns_future_home_real_time_correction",
@@ -816,7 +816,7 @@
         },
         {
           "id": "B",
-          "text": "I realize it afterward and feel convicted — I am growing in awareness even if I cannot always stop it in the moment",
+          "text": "I realize it afterward and feel convicted. I am growing in awareness even if I cannot always stop it in the moment",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "family_patterns_future_home_growing_awareness",
@@ -828,7 +828,7 @@
         },
         {
           "id": "C",
-          "text": "Low self-awareness here — my family patterns run deeper than I usually realize, and others see them before I do",
+          "text": "Low self-awareness here. My family patterns run deeper than I usually realize, and others see them before I do",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "family_patterns_future_home_low_awareness",
@@ -840,7 +840,7 @@
         },
         {
           "id": "D",
-          "text": "Have not thought much about how my upbringing affects my parenting — what feels natural is just what I do",
+          "text": "Have not thought much about how my upbringing affects my parenting. What feels natural is just what I do",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "family_patterns_future_home_unexamined_repetition",
@@ -857,11 +857,11 @@
       "number": 11,
       "dimension": "Trust Capacity",
       "questionType": "scenario",
-      "text": "You are getting to know someone new and they say: 'I would never hurt you.' What is your gut response?",
+      "text": "You are getting to know someone new and they say: :\n\"I would never hurt you.\"\nWhat is your gut response?",
       "options": [
         {
           "id": "A",
-          "text": "I appreciate the intention but I know trust is built over time, not promised in words — I will watch their actions",
+          "text": "I appreciate the intention but I know trust is built over time, not promised in words. I will watch their actions",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "trust_capacity_earned_trust_posture",
@@ -873,7 +873,7 @@
         },
         {
           "id": "B",
-          "text": "Wanting to believe them, but something holds back — not because of betrayal, but because loss taught me that promises cannot prevent pain",
+          "text": "Wanting to believe them, but something holds back. Not because of betrayal, but because loss taught me that promises cannot prevent pain",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "trust_capacity_cautious_hope",
@@ -885,7 +885,7 @@
         },
         {
           "id": "C",
-          "text": "Guarded — not from cynicism but from grief. Trusting again means risking again, and loss has made risk feel different",
+          "text": "Guarded, not from cynicism but from grief. Trusting again means risking again, and loss has made risk feel different",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "trust_capacity_cynicism_as_shield",
@@ -897,7 +897,7 @@
         },
         {
           "id": "D",
-          "text": "I melt — that is exactly what I need to hear. If someone says the right things, I am ready to believe",
+          "text": "I melt. That is exactly what I need to hear. If someone says the right things, I am ready to believe",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "trust_capacity_words_override_discernment",
@@ -918,11 +918,11 @@
       "number": 12,
       "dimension": "Conflict Fear",
       "questionType": "scenario",
-      "text": "You are in a new relationship and your first real disagreement happens — a misunderstanding that gets tense. What runs through your mind?",
+      "text": "You are in a new relationship and your first real disagreement happens, a misunderstanding that gets tense. What runs through your mind?",
       "options": [
         {
           "id": "A",
-          "text": "This is normal — every relationship has conflict. What matters is how we handle it, not that it happened",
+          "text": "This is normal. Every relationship has conflict. What matters is how we handle it, not that it happened",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "conflict_fear_conflict_normalized",
@@ -934,7 +934,7 @@
         },
         {
           "id": "B",
-          "text": "I feel anxious but I stay in it — I remind myself this is different from before, even though my body does not fully believe it yet",
+          "text": "I feel anxious but I stay in it. I remind myself this is different from before, even though my body does not fully believe it yet",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "conflict_fear_anxious_but_present",
@@ -946,7 +946,7 @@
         },
         {
           "id": "C",
-          "text": "My mind races to the worst case — 'Here we go again. This is how it starts.' I want to run before it gets worse",
+          "text": "My mind races to the worst case:\n\n'Here we go again. This is how it starts.'\n\nI want to run before it gets worse",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_fear_catastrophizing",
@@ -958,7 +958,7 @@
         },
         {
           "id": "D",
-          "text": "I shut down completely — conflict triggers something deep and I cannot function in the conversation",
+          "text": "I shut down completely. Conflict triggers something deep and I cannot function in the conversation",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "conflict_fear_trauma_activated_shutdown",
@@ -975,11 +975,11 @@
       "number": 13,
       "dimension": "Healing Progress",
       "questionType": "reflective",
-      "text": "If healing were a journey with real milestones — not just time passing — where would you honestly place yourself right now?",
+      "text": "If healing were a journey with real milestones, not just time passing, where would you honestly place yourself right now?",
       "options": [
         {
           "id": "A",
-          "text": "I have reached a place where the past informs me but does not define me — I did real work to get here, not just waited",
+          "text": "I have reached a place where the past informs me but does not define me. I did real work to get here, not just waited",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "healing_progress_active_work_real_results",
@@ -991,7 +991,7 @@
         },
         {
           "id": "B",
-          "text": "I am in the middle of the work — counseling, processing, learning — and I can see progress even though I am not done",
+          "text": "I am in the middle of the work: counseling, processing, learning. I can see progress even though I am not done",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "healing_progress_mid_journey_progressing",
@@ -1003,7 +1003,7 @@
         },
         {
           "id": "C",
-          "text": "Time has helped, but I have not done much intentional healing work — I just kept living and hoped it would fade",
+          "text": "Time has helped, but I have not done much intentional healing work. I just kept living and hoped it would fade",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "healing_progress_time_not_work",
@@ -1015,7 +1015,7 @@
         },
         {
           "id": "D",
-          "text": "I am not sure I have healed at all — I have just gotten better at functioning around the wound",
+          "text": "I am not sure I have healed at all. I have just gotten better at functioning around the wound",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "healing_progress_functioning_around_the_wound",
@@ -1036,11 +1036,11 @@
       "number": 14,
       "dimension": "Trigger Response",
       "questionType": "scenario",
-      "text": "You are in a new relationship and your partner does something small — a tone of voice, a habit, a phrase — that is eerily similar to your late spouse. What happens?",
+      "text": "You are in a new relationship and your partner does something small: a tone, a habit, a phrase, eerily similar to your late spouse. What happens?",
       "options": [
         {
           "id": "A",
-          "text": "I notice the similarity clearly and can separate the two people — I respond to this person in this moment, not my past",
+          "text": "I notice the similarity clearly and can separate the two people. I respond to this person in this moment, not my past",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "trigger_response_sees_this_person_not_the_past",
@@ -1064,7 +1064,7 @@
         },
         {
           "id": "C",
-          "text": "I react before I realize why — my response is bigger than the moment calls for and I only understand the connection afterward",
+          "text": "I react before I realize why. My response is bigger than the moment calls for and I only understand the connection afterward",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "trigger_response_unconscious_reaction",
@@ -1076,7 +1076,7 @@
         },
         {
           "id": "D",
-          "text": "Flooded — the similarity overwhelms me and I either withdraw, lash out, or shut down before I can think clearly. The past takes over",
+          "text": "Flooded. The similarity overwhelms me and I either withdraw, lash out, or shut down before I can think clearly. The past takes over",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "trigger_response_overwhelmed_by_past",
@@ -1093,11 +1093,11 @@
       "number": 15,
       "dimension": "Comparison Risk",
       "questionType": "scenario",
-      "text": "You are getting close to someone new and you catch yourself thinking: 'My late spouse would have done this differently — they knew me so well.' What do you do with that thought?",
+      "text": "You are getting close to someone new and you catch yourself thinking: :\n\"My late spouse would have done this differently. They knew me so well.\"\nWhat do you do with that thought?",
       "options": [
         {
           "id": "A",
-          "text": "I notice it, honor the memory, and remind myself this is a different person with their own way of loving — and that is okay",
+          "text": "I notice it, honor the memory, and remind myself this is a different person with their own way of loving, and that is okay",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "comparison_risk_honors_memory_stays_present",
@@ -1109,7 +1109,7 @@
         },
         {
           "id": "B",
-          "text": "It catches me off guard and I feel a wave of longing — but I can redirect myself back to the present person",
+          "text": "It catches me off guard and I feel a wave of longing, but I can redirect myself back to the present person",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "comparison_risk_longing_but_redirects",
@@ -1121,7 +1121,7 @@
         },
         {
           "id": "C",
-          "text": "I feel guilty for even being with someone new — like I am trying to replace someone who cannot be replaced",
+          "text": "I feel guilty for even being with someone new, like I am trying to replace someone who cannot be replaced",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "comparison_risk_replacement_guilt",
@@ -1133,7 +1133,7 @@
         },
         {
           "id": "D",
-          "text": "The comparison takes over — no one measures up, and I find myself pulling away from the new person",
+          "text": "The comparison takes over. No one measures up, and I find myself pulling away from the new person",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "comparison_risk_idealization_blocks_new_love",
@@ -1146,19 +1146,19 @@
       ],
       "originalNumber": 17,
       "genderVariant": {
-        "male": "You are getting close to someone new and you catch yourself thinking: 'My late wife would have done this differently — she knew me so well.' What do you do with that thought?",
-        "female": "You are getting close to someone new and you catch yourself thinking: 'My late husband would have done this differently — he knew me so well.' What do you do with that thought?"
+        "male": "You are getting close to someone new and you catch yourself thinking: 'My late wife would have done this differently. She knew me so well.' What do you do with that thought?",
+        "female": "You are getting close to someone new and you catch yourself thinking: 'My late husband would have done this differently. He knew me so well.' What do you do with that thought?"
       }
     },
     {
       "number": 16,
       "dimension": "Accountability",
       "questionType": "scenario",
-      "text": "Think about a relational pattern from your marriage that you would want to do differently in a new relationship — maybe how you communicated, handled conflict, or showed up emotionally. If a close friend watched you in your current relationships, would they see real change?",
+      "text": "Think about a relational pattern from your marriage that you would want to do differently in a new relationship: maybe how you communicated, handled conflict, or showed up emotionally. If a close friend watched you in your current relationships, would they see real change?",
       "options": [
         {
           "id": "A",
-          "text": "Yes — people who know me well would say I am measurably different in this area. The change is visible, not just internal",
+          "text": "Yes. People who know me well would say I am measurably different in this area. The change is visible, not just internal",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "accountability_visible_behavior_change",
@@ -1170,7 +1170,7 @@
         },
         {
           "id": "B",
-          "text": "Partially — I am better in some situations but under stress the old pattern still surfaces. The change is real but not complete",
+          "text": "Partially. I am better in some situations but under stress the old pattern still surfaces. The change is real but not complete",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "accountability_improving_under_pressure_reverts",
@@ -1182,7 +1182,7 @@
         },
         {
           "id": "C",
-          "text": "I have the awareness but I am not sure the behavior has changed as much as I think — I have not really tested it in a close relationship",
+          "text": "I have the awareness but I am not sure the behavior has changed as much as I think. I have not really tested it in a close relationship",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "accountability_aware_but_untested",
@@ -1194,7 +1194,7 @@
         },
         {
           "id": "D",
-          "text": "If I am honest, that pattern would probably show up again — I understand it now but I have not done the work to change it",
+          "text": "If I am honest, that pattern would probably show up again. I understand it now but I have not done the work to change it",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "accountability_understands_but_unchanged",
@@ -1211,11 +1211,11 @@
       "number": 17,
       "dimension": "Trust Capacity",
       "questionType": "scenario",
-      "text": "You are in a new relationship and you realize you have not been fully honest about something — maybe a fear, a past pattern, or something you did. The right thing to do is tell them. What happens?",
+      "text": "You are in a new relationship and you realize you have not been fully honest about something, maybe a fear, a past pattern, or something you did. The right thing to do is tell them. What happens?",
       "options": [
         {
           "id": "A",
-          "text": "I bring it to them directly — being known honestly matters more to me than being seen perfectly",
+          "text": "I bring it to them directly. Being known honestly matters more to me than being seen perfectly",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "trust_capacity_honest_even_when_costly",
@@ -1227,7 +1227,7 @@
         },
         {
           "id": "B",
-          "text": "Planning to tell them but waiting for the right moment — wanting to be honest but unsure how they will receive it",
+          "text": "Planning to tell them but waiting for the right moment, wanting to be honest but unsure how they will receive it",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "trust_capacity_intends_honesty_delays",
@@ -1239,7 +1239,7 @@
         },
         {
           "id": "C",
-          "text": "Convincing myself it is not a big deal — managing what they see feels safer than full exposure right now",
+          "text": "Convincing myself it is not a big deal. Managing what they see feels safer than full exposure right now",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "trust_capacity_manages_own_image",
@@ -1251,7 +1251,7 @@
         },
         {
           "id": "D",
-          "text": "I have hidden things in relationships before and it created distance — but I am not sure I know how to be fully transparent",
+          "text": "I have hidden things in relationships before and it created distance, but I am not sure I know how to be fully transparent",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "trust_capacity_pattern_of_hiding",
@@ -1268,11 +1268,11 @@
       "number": 18,
       "dimension": "Conflict Fear",
       "questionType": "scenario",
-      "text": "You and someone you are dating have a genuine disagreement about something important. After talking, you still do not agree. It is going to take time to work through. How do you handle the in-between?",
+      "text": "You and someone you are dating have a genuine disagreement about something important. After talking, you still do not agree. It will take time to work through. How do you handle the in-between?",
       "options": [
         {
           "id": "A",
-          "text": "I can sit in the tension — not everything needs to be resolved immediately. I stay connected even while we disagree",
+          "text": "I can sit in the tension. Not everything needs to be resolved immediately. I stay connected even while we disagree",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "conflict_fear_tolerates_unresolved_tension",
@@ -1284,7 +1284,7 @@
         },
         {
           "id": "B",
-          "text": "Anxious until it is resolved — life is short, and unresolved tension feels like wasted time when you know how fast things can change",
+          "text": "Anxious until it is resolved. Life is short, and unresolved tension feels like wasted time when you know how fast things can change",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "conflict_fear_anxious_needs_resolution_fast",
@@ -1296,7 +1296,7 @@
         },
         {
           "id": "C",
-          "text": "Questioning the relationship — if this is already hard, maybe it is not meant to be",
+          "text": "Questioning the relationship. If this is already hard, maybe it is not meant to be",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_fear_disagreement_threatens_bond",
@@ -1308,7 +1308,7 @@
         },
         {
           "id": "D",
-          "text": "I shut down or give in just to end the discomfort — sustained tension feels unbearable and I will do anything to stop it",
+          "text": "I shut down or give in just to end the discomfort. Sustained tension feels unbearable and I will do anything to stop it",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "conflict_fear_capitulates_to_end_tension",
@@ -1325,11 +1325,11 @@
       "number": 19,
       "dimension": "Disclosure Boundaries",
       "questionType": "scenario",
-      "text": "You are getting to know someone new — a potential friend, a coworker, or someone you are dating. They ask: 'So, were you married before?' How do you handle it?",
+      "text": "You are getting to know someone new: a potential friend, a coworker, or someone you are dating. They ask:\n\n'Were you married before?'\n\nHow do you handle it?",
       "options": [
         {
           "id": "A",
-          "text": "I share honestly and appropriately — enough to be authentic without oversharing or performing vulnerability",
+          "text": "I share honestly and appropriately. Enough to be authentic without oversharing or performing vulnerability",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "disclosure_boundaries_honest_and_appropriate",
@@ -1341,7 +1341,7 @@
         },
         {
           "id": "B",
-          "text": "I share the facts but keep it brief — I am still figuring out how much detail feels right with different people",
+          "text": "I share the facts but keep it brief. I am still figuring out how much detail feels right with different people",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "disclosure_boundaries_cautious_appropriate",
@@ -1353,7 +1353,7 @@
         },
         {
           "id": "C",
-          "text": "I either overshare everything or shut the conversation down — I have not found a middle ground yet",
+          "text": "I either overshare everything or shut the conversation down. I have not found a middle ground yet",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "disclosure_boundaries_all_or_nothing",
@@ -1365,7 +1365,7 @@
         },
         {
           "id": "D",
-          "text": "The question makes me deeply uncomfortable — I avoid it, change the subject, or feel shame when it comes up",
+          "text": "The question makes me deeply uncomfortable. I avoid it, change the subject, or feel shame when it comes up",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "disclosure_boundaries_shame_driven_concealment",
@@ -1386,11 +1386,11 @@
       "number": 20,
       "dimension": "Remarriage Posture",
       "questionType": "scenario",
-      "text": "Someone you respect says to you: 'I think you are ready to start dating again.' What is the first thing you feel?",
+      "text": "Someone you respect says to you: :\n\"I think you are ready to start dating again.\"\nWhat is the first thing you feel?",
       "options": [
         {
           "id": "A",
-          "text": "Hope mixed with healthy caution — I feel open but I also know I want to do this differently and well",
+          "text": "Hope mixed with healthy caution. I feel open but I also know I want to do this differently and well",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "remarriage_posture_open_with_wisdom",
@@ -1402,7 +1402,7 @@
         },
         {
           "id": "B",
-          "text": "Curiosity but nervousness — I want to be ready but I am not sure I trust my own judgment yet",
+          "text": "Curiosity but nervousness. I want to be ready but I am not sure I trust my own judgment yet",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "remarriage_posture_willing_but_unsure",
@@ -1414,7 +1414,7 @@
         },
         {
           "id": "C",
-          "text": "Resistance — something in me tightens. The idea of being vulnerable again feels risky or frightening",
+          "text": "Resistance. Something in me tightens. The idea of being vulnerable again feels risky or frightening",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "remarriage_posture_fear_based_resistance",
@@ -1426,7 +1426,7 @@
         },
         {
           "id": "D",
-          "text": "Relief — I have been waiting for someone to tell me it is okay. I have actually been looking already",
+          "text": "Relief. I have been waiting for someone to tell me it is okay. I have actually been looking already",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "remarriage_posture_external_validation_seeking",
@@ -1447,11 +1447,11 @@
       "number": 21,
       "dimension": "Readiness Orientation",
       "questionType": "scenario",
-      "text": "A close friend asks you honestly: 'If the right person showed up tomorrow, would you be ready?' What is your most truthful answer?",
+      "text": "A close friend asks you honestly: :\n\"If the right person showed up tomorrow, would you be ready?\"\nWhat is your most truthful answer?",
       "options": [
         {
           "id": "A",
-          "text": "I believe so — not because I am perfect, but because I have done genuine work and I am building from a healthier place",
+          "text": "I believe so, not because I am perfect, but because I have done genuine work and I am building from a healthier place",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "readiness_orientation_grounded_readiness",
@@ -1463,7 +1463,7 @@
         },
         {
           "id": "B",
-          "text": "Almost — there are still a few things I am working through, but I am moving in the right direction",
+          "text": "Almost. There are still a few things I am working through, but I am moving in the right direction",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "readiness_orientation_approaching_readiness",
@@ -1487,7 +1487,7 @@
         },
         {
           "id": "D",
-          "text": "No — I know I am not ready, but the loneliness makes me want to try anyway",
+          "text": "No. I know I am not ready, but the loneliness makes me want to try anyway",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "readiness_orientation_loneliness_overriding_wisdom",
@@ -1504,11 +1504,11 @@
       "number": 22,
       "dimension": "Emotional State",
       "questionType": "scenario",
-      "text": "You are having a genuinely wonderful day — maybe a great conversation with someone new, a moment where you feel alive and hopeful again. Then a thought about your late spouse crosses your mind. What does that thought feel like?",
+      "text": "You are having a wonderful day: a great conversation, a moment where you feel alive and hopeful. Then a thought about your late spouse crosses your mind. What does it feel like?",
       "options": [
         {
           "id": "A",
-          "text": "Gratitude for both — I can hold the joy of today and the love of the past without one taking from the other",
+          "text": "Gratitude for both. I can hold the joy of today and the love of the past without one taking from the other",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_state_holds_past_and_present_peacefully",
@@ -1520,7 +1520,7 @@
         },
         {
           "id": "B",
-          "text": "A brief pang of 'I wish you could see me now' — bittersweet, but it does not steal the joy",
+          "text": "A brief pang of\n\n'I wish you could see me now,'\n\nbittersweet, but it does not steal the joy",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "emotional_state_bittersweet_but_present",
@@ -1532,7 +1532,7 @@
         },
         {
           "id": "C",
-          "text": "Guilt — like being happy without them is a betrayal. As if I owe it to their memory to carry the sadness",
+          "text": "Guilt, like being happy without them is a betrayal. As if I owe it to their memory to carry the sadness",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "emotional_state_guilt_about_happiness",
@@ -1544,7 +1544,7 @@
         },
         {
           "id": "D",
-          "text": "The good moment collapses — happiness feels fragile and dangerous because I know how quickly everything can be taken away",
+          "text": "The good moment collapses. Happiness feels fragile and dangerous because I know how quickly everything can be taken away",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "emotional_state_happiness_triggers_fear_of_loss",
@@ -1561,11 +1561,11 @@
       "number": 23,
       "dimension": "God's Role Framing",
       "questionType": "scenario",
-      "text": "Late at night, you are praying about your future — whether to love again, whether to trust again. In that prayer, how does God show up?",
+      "text": "Late at night, you are praying about your future, whether to love again, whether to trust again. In that prayer, how does God show up?",
       "options": [
         {
           "id": "A",
-          "text": "As a guide I lean into daily — I sense His direction and peace about what is ahead, even without knowing the details",
+          "text": "As a guide I lean into daily. I sense His direction and peace about what is ahead, even without knowing the details",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "god_s_role_framing_daily_reliance_and_peace",
@@ -1577,7 +1577,7 @@
         },
         {
           "id": "B",
-          "text": "As a healer — I mostly bring my wounds to Him and ask Him to make me whole before I try again",
+          "text": "As a healer. I mostly bring my wounds to Him and ask Him to make me whole before I try again",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "god_s_role_framing_healing_oriented",
@@ -1589,7 +1589,7 @@
         },
         {
           "id": "C",
-          "text": "As distant — I believe He is there but I struggle to feel His presence or direction specifically about this area of my life",
+          "text": "As distant. I believe He is there but I struggle to feel His presence or direction specifically about this area of my life",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "god_s_role_framing_believes_but_feels_distant",
@@ -1601,7 +1601,7 @@
         },
         {
           "id": "D",
-          "text": "I am honestly angry or confused at God — the ending of my marriage shook my faith and I have not fully recovered",
+          "text": "I am honestly angry or confused at God. The ending of my marriage shook my faith and I have not fully recovered",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "god_s_role_framing_spiritual_crisis",
@@ -1618,11 +1618,11 @@
       "number": 24,
       "dimension": "Spiritual Peace",
       "questionType": "reflective",
-      "text": "When you consider loving again as a Christian — with the loss you have experienced — what is the state of your heart before God?",
+      "text": "When you consider loving again as a Christian, with the loss you have experienced, what is the state of your heart before God?",
       "options": [
         {
           "id": "A",
-          "text": "I have peace — I believe God honors my late spouse's memory AND wants good things for my future. These are not in conflict",
+          "text": "I have peace. I believe God honors my late spouse's memory AND wants good things for my future. These are not in conflict",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "spiritual_peace_clear_conscience",
@@ -1634,7 +1634,7 @@
         },
         {
           "id": "B",
-          "text": "Mostly at peace, but moments of doubt surface — sometimes wondering if God fully approves of me trying again",
+          "text": "Mostly at peace, but moments of doubt surface, sometimes wondering if God fully approves of me trying again",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "spiritual_peace_lingering_doubt",
@@ -1646,7 +1646,7 @@
         },
         {
           "id": "C",
-          "text": "Unsettled — carrying guilt or theological confusion about whether remarriage is right for me after losing my spouse",
+          "text": "Unsettled. Carrying guilt or theological confusion about whether remarriage is right for me after losing my spouse",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "spiritual_peace_loyalty_conflict",
@@ -1658,7 +1658,7 @@
         },
         {
           "id": "D",
-          "text": "I feel spiritually stuck — like loving again would somehow betray my late spouse, my vows, or God's purpose in my suffering",
+          "text": "I feel spiritually stuck, like loving again would somehow betray my late spouse, my vows, or God's purpose in my suffering",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "spiritual_peace_spiritual_paralysis",
@@ -1679,7 +1679,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The gap is small — I am already living many of the values I want in my future home. I am not waiting for marriage to practice them",
+          "text": "The gap is small. I am already living many of the values I want in my future home. I am not waiting for marriage to practice them",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "family_patterns_future_home_living_the_vision_now",
@@ -1691,7 +1691,7 @@
         },
         {
           "id": "B",
-          "text": "I can see the vision clearly but I know I still have work to do — some of my patterns do not match my aspirations yet",
+          "text": "I can see the vision clearly but I know I still have work to do. Some of my patterns do not match my aspirations yet",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "family_patterns_future_home_vision_with_honest_gap",
@@ -1703,7 +1703,7 @@
         },
         {
           "id": "C",
-          "text": "I want something beautiful but I am not sure I know how to create it — I did not see it shown growing up",
+          "text": "I want something beautiful but I am not sure I know how to create it. I did not see it modeled growing up",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "family_patterns_future_home_vision_without_model",
@@ -1715,7 +1715,7 @@
         },
         {
           "id": "D",
-          "text": "Honestly, I am scared I will recreate what I came from — I do not trust myself to build something different",
+          "text": "I am scared I will recreate what I came from. I do not trust myself to build something different",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "family_patterns_future_home_fear_of_repetition",

@@ -579,11 +579,11 @@
       "number": 1,
       "dimension": "Emotional Regulation",
       "questionType": "scenario",
-      "text": "You just received deeply disappointing news — something you were counting on fell through. Within the next hour, you need to be present for a friend who needs your support. What happens inside you?",
+      "text": "You just received deeply disappointing news. Within the next hour, you need to show up for a friend who needs you. What happens inside you?",
       "options": [
         {
           "id": "A",
-          "text": "I feel the disappointment, name it, and set it aside for now — I can return to it later when I have space",
+          "text": "I feel it, name it, and set it aside. I can return to it when I have space",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_regulation_steady_under_pressure",
@@ -595,7 +595,7 @@
         },
         {
           "id": "B",
-          "text": "I would be honest with my friend: 'I am going through something too, but I am here for you' — I process by sharing",
+          "text": "I tell my friend I am going through something too, but I am here for them. I process by sharing",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "emotional_regulation_processes_through_connection",
@@ -607,7 +607,7 @@
         },
         {
           "id": "C",
-          "text": "I would push it down and show up for my friend — but I would probably seem distracted or off",
+          "text": "I push it down and show up, but I would probably seem distracted or off",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "emotional_regulation_suppresses_under_pressure",
@@ -619,7 +619,7 @@
         },
         {
           "id": "D",
-          "text": "Honestly, I would struggle to be present — the disappointment would likely consume me and I might cancel",
+          "text": "I would struggle to be present. The disappointment would consume me and I might cancel",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "emotional_regulation_stuck_in_the_feeling",
@@ -636,19 +636,19 @@
         "description": "Let's start with how you're wired emotionally and spiritually."
       },
       "genderVariant": {
-        "male": "You just received deeply disappointing news — something you were counting on fell through. Within the next hour, you need to show up for a friend who needs your support. What happens inside you?",
-        "female": "You just received deeply disappointing news — something you were counting on fell through. Within the next hour, you need to be present for a friend who needs your support. What happens inside you?"
+        "male": "You just received deeply disappointing news. Within the next hour, you need to show up for a friend who needs your support. What happens inside you?",
+        "female": "You just received deeply disappointing news. Within the next hour, you need to be present for a friend who needs your support. What happens inside you?"
       }
     },
     {
       "number": 2,
       "dimension": "Attachment Security",
       "questionType": "scenario",
-      "text": "You have been dating someone for a few months. They have not texted back in two days — unusual for them. What is your first unfiltered thought?",
+      "text": "You have been dating someone for a few months. They have not replied in two days, unusual for them. What is your first thought?",
       "options": [
         {
           "id": "A",
-          "text": "They are probably busy or going through something. I will check in when it feels right — I am not going to spiral over it",
+          "text": "They are probably busy or going through something. I will check in when it feels right, not spiral over it",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "attachment_security_secure_grounded",
@@ -672,7 +672,7 @@
         },
         {
           "id": "C",
-          "text": "If they wanted to talk to me, they would. I am not going to chase anyone — I pull back too",
+          "text": "If they wanted to talk to me, they would. I am not chasing anyone. I pull back too",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "attachment_security_avoidant_pattern",
@@ -684,7 +684,7 @@
         },
         {
           "id": "D",
-          "text": "I feel unsettled but I would rather wait than risk looking needy — even though the silence is eating at me",
+          "text": "I feel unsettled but would rather wait than risk looking needy, even though the silence is eating at me",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "attachment_security_conflicted_but_aware",
@@ -701,11 +701,11 @@
       "number": 3,
       "dimension": "Relational Self-Awareness",
       "questionType": "scenario",
-      "text": "Someone you trust tells you: 'Sometimes when we talk, I feel like you are not really listening — like you are just waiting for your turn to speak.' What is your most honest first reaction?",
+      "text": "Someone you trust says: :\n\"When we talk, I feel like you are not really listening, like you are just waiting for your turn to speak.\"\nWhat is your honest first reaction?",
       "options": [
         {
           "id": "A",
-          "text": "That would sting, but I would want to hear more — if that is their experience, I need to understand it",
+          "text": "That would sting, but I would want to hear more. If that is their experience, I need to understand it",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "relational_self_awareness_open_to_feedback",
@@ -729,7 +729,7 @@
         },
         {
           "id": "C",
-          "text": "I would feel hurt and misunderstood — I would probably explain why I do that rather than just receive it",
+          "text": "I would feel hurt and misunderstood. I would probably explain why I do that rather than receive it",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "relational_self_awareness_explains_instead_of_listens",
@@ -741,7 +741,7 @@
         },
         {
           "id": "D",
-          "text": "Something in me shuts down — feedback like that makes me question whether the relationship is safe, even if I know that reaction is bigger than the moment",
+          "text": "Something in me shuts down. Feedback like that makes me question whether the relationship is safe, even if my reaction is bigger than the moment",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "relational_self_awareness_shuts_down_under_feedback",
@@ -758,11 +758,11 @@
       "number": 4,
       "dimension": "Hard-Season Coping",
       "questionType": "reflective",
-      "text": "Think about the hardest season you have been through — a loss, a failure, a season of deep stress. How did you come through it?",
+      "text": "Think about the hardest season you have been through: a loss, a failure, deep stress. How did you come through it?",
       "options": [
         {
           "id": "A",
-          "text": "Faith, community, and healthy habits carried me through — not perfectly, but I came out the other side more grounded than I went in",
+          "text": "Faith, community, and healthy habits carried me through. Not perfectly, but I came out more grounded",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "hard_season_coping_resilient_with_support",
@@ -774,7 +774,7 @@
         },
         {
           "id": "B",
-          "text": "I survived it, but I mostly pushed through on my own — it took a lot out of me",
+          "text": "I survived it, but I mostly pushed through on my own. It took a lot out of me",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "hard_season_coping_independent_endurance",
@@ -786,7 +786,7 @@
         },
         {
           "id": "C",
-          "text": "Distraction, overworking, or numbing got me through it — functional on the outside, unprocessed on the inside",
+          "text": "Distraction, overworking, or numbing got me through it. Functional on the outside, unprocessed on the inside",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "hard_season_coping_avoidance_based_survival",
@@ -798,7 +798,7 @@
         },
         {
           "id": "D",
-          "text": "Honestly? It broke me. Hard seasons still scare me because the last one showed me how little I can hold on my own",
+          "text": "It broke me. Hard seasons still scare me because the last one showed me how little I can hold on my own",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "hard_season_coping_falls_apart_under_pressure",
@@ -815,11 +815,11 @@
       "number": 5,
       "dimension": "Spiritual Consistency",
       "questionType": "reflective",
-      "text": "If someone looked at your last 90 days — not your intentions, but your actual life — how much evidence of active faith would they find?",
+      "text": "If someone looked at your last 90 days, not your intentions but your actual life, how much evidence of active faith would they find?",
       "options": [
         {
           "id": "A",
-          "text": "Real evidence — not perfect consistency, but someone watching my life would see faith showing up in my choices, my community, and how I spend my time",
+          "text": "Real evidence. Not perfect consistency, but someone watching my life would see faith in my choices, my community, and my time",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "spiritual_consistency_visible_integrated_faith",
@@ -831,7 +831,7 @@
         },
         {
           "id": "B",
-          "text": "Some evidence in seasons — I go through strong weeks and quiet ones, but faith is real to me",
+          "text": "Some evidence in seasons. I go through strong weeks and quiet ones, but faith is real to me",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "spiritual_consistency_real_but_inconsistent",
@@ -843,7 +843,7 @@
         },
         {
           "id": "C",
-          "text": "Honestly, not much — I believe but I do not practice consistently enough for it to show",
+          "text": "Not much. I believe but I do not practice consistently enough for it to show",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "spiritual_consistency_private_belief_low_practice",
@@ -855,7 +855,7 @@
         },
         {
           "id": "D",
-          "text": "They would probably see more confusion than clarity — I am still figuring out what I believe and how it fits my life",
+          "text": "More confusion than clarity. I am still figuring out what I believe and how it fits my life",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "spiritual_consistency_faith_in_question",
@@ -872,11 +872,11 @@
       "number": 6,
       "dimension": "Family Background & Learned Patterns",
       "questionType": "scenario",
-      "text": "You catch yourself responding to someone you love in a way that reminds you exactly of how one of your parents used to respond — a tone, a withdrawal, a controlling comment. What happens next?",
+      "text": "You catch yourself responding to someone you love the way a parent used to: a certain tone, a withdrawal, a controlling comment. What happens next?",
       "options": [
         {
           "id": "A",
-          "text": "I notice it immediately and course-correct — I have done enough work on my family patterns to catch them in real-time",
+          "text": "I notice it and course-correct. I have done enough work on my family patterns to catch them in real time",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "family_background_time_pattern_interruption",
@@ -888,7 +888,7 @@
         },
         {
           "id": "B",
-          "text": "I realize it afterward and feel convicted — I am learning to recognize the pattern even if I cannot always stop it in the moment",
+          "text": "I realize it afterward and feel convicted. I am learning to recognize the pattern even if I cannot always stop it in the moment",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "family_background_learned_patterns_catches_it_after",
@@ -900,7 +900,7 @@
         },
         {
           "id": "C",
-          "text": "Someone else would probably notice it before I do — I do not always see how my family patterns come out",
+          "text": "Someone else would probably notice before I do. I do not always see how my family patterns show up",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "family_background_learned_patterns_low_pattern_awareness",
@@ -912,7 +912,7 @@
         },
         {
           "id": "D",
-          "text": "I would not see the connection — I do not think about my parents' patterns much and I am not sure how they affect me",
+          "text": "I would not see the connection. I do not think about my parents' patterns much or how they affect me",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "family_background_learned_patterns_unexamined_inheritance",
@@ -933,7 +933,7 @@
       "options": [
         {
           "id": "A",
-          "text": "I bring it up privately later — I want to understand what they meant before I assume the worst",
+          "text": "I bring it up privately later. I want to understand what they meant before I assume the worst",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "conflict_posture_approach_with_curiosity",
@@ -945,7 +945,7 @@
         },
         {
           "id": "B",
-          "text": "Grace first — let it go in the moment and only address it if a pattern forms. One-offs do not need a conversation",
+          "text": "Grace first. Let it go in the moment and only address it if a pattern forms. One-offs do not need a conversation",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "conflict_posture_gives_grace_but_may_build_up",
@@ -957,7 +957,7 @@
         },
         {
           "id": "C",
-          "text": "Silence, but the kind that changes things — something shifts in how I see them, even if they never know why",
+          "text": "Silence, but the kind that changes things. Something shifts in how I see them, even if they never know why",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_posture_silent_withdrawal",
@@ -969,7 +969,7 @@
         },
         {
           "id": "D",
-          "text": "I would probably respond in the moment — I find it hard to let things sit when I feel disrespected",
+          "text": "I would probably respond in the moment. I find it hard to let things sit when I feel disrespected",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_posture_reactive_confrontation",
@@ -990,11 +990,11 @@
       "number": 8,
       "dimension": "Hurt Response",
       "questionType": "scenario",
-      "text": "Someone you care about says something that genuinely wounds you — they meant it as a joke, but it hit a nerve. In the moment, what happens inside you first?",
+      "text": "Someone you care about says something that wounds you. They meant it as a joke, but it hit a nerve. What happens inside you first?",
       "options": [
         {
           "id": "A",
-          "text": "The sting lands, but my mouth stays steady — 'That actually hurt me, here is why' — without matching their energy",
+          "text": "The sting lands, but my mouth stays steady:\n\n'That actually hurt me, here is why,'\n\nwithout matching their energy",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "hurt_response_speaks_pain_without_attacking",
@@ -1006,7 +1006,7 @@
         },
         {
           "id": "B",
-          "text": "I go quiet — not because I am shutting down, but because I need to understand what I feel before I can speak",
+          "text": "I go quiet, not because I am shutting down, but because I need to understand what I feel before I can speak",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "hurt_response_goes_quiet_to_process",
@@ -1018,7 +1018,7 @@
         },
         {
           "id": "C",
-          "text": "A laugh, a subject change, and a replay loop for the next three days — wishing I had said something in the moment",
+          "text": "A laugh, a subject change, and a replay loop for three days, wishing I had said something in the moment",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "hurt_response_hides_it_then_replays",
@@ -1030,7 +1030,7 @@
         },
         {
           "id": "D",
-          "text": "I snap back with something sharp — when I feel hurt, my instinct is to hurt back or shut them out",
+          "text": "I snap back with something sharp. When I feel hurt, my instinct is to hurt back or shut them out",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "hurt_response_fires_back_or_shuts_out",
@@ -1043,19 +1043,19 @@
       ],
       "originalNumber": 9,
       "genderVariant": {
-        "male": "Someone you care about says something that genuinely wounds you — they meant it as a joke but it cut deep, touching something real. Your first instinct is to::",
-        "female": "Someone you care about says something that genuinely wounds you — they meant it as a joke but it cut deep, touching something you carry quietly. Your first instinct is to::"
+        "male": "Someone you care about says something that wounds you. They meant it as a joke but it cut deep, touching something real. Your first instinct is to:",
+        "female": "Someone you care about says something that wounds you. They meant it as a joke but it cut deep, touching something you carry quietly. Your first instinct is to:"
       }
     },
     {
       "number": 9,
       "dimension": "Partner Discernment",
       "questionType": "scenario",
-      "text": "You have been dating someone for several months. The chemistry is incredible and they are kind to you — but you have noticed they avoid hard conversations, rarely talk about faith, and their closest friends worry you. What do you do?",
+      "text": "You have been dating someone for several months. The chemistry is strong and they are kind to you, but they avoid hard conversations, rarely talk about faith, and their closest friends worry you. What do you do?",
       "options": [
         {
           "id": "A",
-          "text": "I initiate honest conversations about what I have noticed — chemistry is not enough if character and values are unclear",
+          "text": "I bring it up directly. Chemistry is not enough if character and values are unclear",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "partner_discernment_character_driven_evaluation",
@@ -1067,7 +1067,7 @@
         },
         {
           "id": "B",
-          "text": "I give it more time — people reveal themselves gradually, and I do not want to judge too early",
+          "text": "I give it more time. People reveal themselves gradually, and I do not want to judge too early",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "partner_discernment_patient_but_passive",
@@ -1079,7 +1079,7 @@
         },
         {
           "id": "C",
-          "text": "I focus on how they treat me — the rest will work itself out if the love is real",
+          "text": "I focus on how they treat me. The rest will work itself out if the love is real",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "partner_discernment_led_by_feelings_over_patterns",
@@ -1091,7 +1091,7 @@
         },
         {
           "id": "D",
-          "text": "Honestly, the chemistry would probably keep me in it longer than I should stay — I have a hard time walking away when I feel connected",
+          "text": "The chemistry would probably keep me in it longer than I should stay. I have a hard time walking away when I feel connected",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "partner_discernment_chemistry_overrides_discernment",
@@ -1108,11 +1108,11 @@
       "number": 10,
       "dimension": "Emotional Regulation",
       "questionType": "scenario",
-      "text": "Someone you care about does something that makes you genuinely angry — not annoyed, truly angry. You feel the heat rising. What do you do with that energy in the next 60 seconds?",
+      "text": "Someone you care about does something that makes you truly angry, not just annoyed. You feel the heat rising. What do you do in the next 60 seconds?",
       "options": [
         {
           "id": "A",
-          "text": "I feel it fully but I do not let it drive my next words or actions — I choose how to express it, not whether to",
+          "text": "I feel it fully but I do not let it drive my next words or actions. I choose how to express it, not whether to",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_regulation_anger_felt_not_acted_on",
@@ -1124,7 +1124,7 @@
         },
         {
           "id": "B",
-          "text": "I remove myself from the situation — I know I need space before I can engage without saying something damaging",
+          "text": "I remove myself. I know I need space before I can respond without saying something I will regret",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_regulation_strategic_withdrawal",
@@ -1136,7 +1136,7 @@
         },
         {
           "id": "C",
-          "text": "I go cold — my voice drops, I shut down emotionally, and I give very short answers until it passes",
+          "text": "I go cold. My voice drops, I shut down emotionally, and I give very short answers until it passes",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "emotional_regulation_cold_shutdown",
@@ -1148,7 +1148,7 @@
         },
         {
           "id": "D",
-          "text": "The anger comes out — raised voice, sharp words, slamming something. I regret it later but in the moment I cannot stop it",
+          "text": "The anger comes out: raised voice, sharp words, slamming something. I regret it later but in the moment I cannot stop it",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "emotional_regulation_anger_takes_over",
@@ -1161,8 +1161,8 @@
       ],
       "originalNumber": 22,
       "genderVariant": {
-        "male": "Someone you care about does something that makes you genuinely angry — not annoyed, truly angry. You feel the heat rising, your jaw tightening. What do you do with that energy in the next 60 seconds?",
-        "female": "Someone you care about does something that makes you genuinely angry — not annoyed, truly angry. You feel the heat rising, the words forming. What do you do with that energy in the next 60 seconds?"
+        "male": "Someone you care about does something that makes you truly angry, not just annoyed. You feel the heat rising, your jaw tightening. What do you do in the next 60 seconds?",
+        "female": "Someone you care about does something that makes you truly angry, not just annoyed. You feel the heat rising, the words forming. What do you do in the next 60 seconds?"
       }
     },
     {
@@ -1173,7 +1173,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Forgiven and adjusted — the relationship survived, but what I share with them has changed. Wisdom and forgiveness can coexist",
+          "text": "Forgiven and adjusted. The relationship survived, but what I share with them has changed. Wisdom and forgiveness coexist",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "conflict_resolution_pattern_forgiveness_with_wisdom",
@@ -1185,7 +1185,7 @@
         },
         {
           "id": "B",
-          "text": "I have moved past the anger but I notice I still feel guarded around them — the trust has shifted",
+          "text": "I have moved past the anger but I still feel guarded around them. The trust has shifted",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "conflict_resolution_pattern_past_the_anger_but_still_guarded",
@@ -1197,7 +1197,7 @@
         },
         {
           "id": "C",
-          "text": "The words 'I forgive you' came out, but the charge is still there — something stirs when I think about it",
+          "text": "The words\n\n'I forgive you'\n\ncame out, but the charge is still there. Something stirs when I think about it",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_resolution_forgiveness_emotional_retention",
@@ -1209,7 +1209,7 @@
         },
         {
           "id": "D",
-          "text": "I cannot pretend to be fine with what they did — trust like that does not come back easily for me",
+          "text": "I cannot pretend to be fine with what they did. Trust like that does not come back easily for me",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_resolution_pattern_honest_but_stuck",
@@ -1226,11 +1226,11 @@
       "number": 12,
       "dimension": "Spiritual Leadership Understanding",
       "questionType": "scenario",
-      "text": "A married couple you respect tells you they disagree about a major decision. One feels God is leading them in one direction; the other feels differently. They ask your perspective. What do you say?",
+      "text": "A married couple you respect disagree about a major decision. One feels God leading one way; the other feels differently. They ask your perspective. What do you say?",
       "options": [
         {
           "id": "A",
-          "text": "Pray together, seek counsel, and wait for unity — God does not usually lead a couple in two different directions at the same time",
+          "text": "Pray together, seek counsel, and wait for unity. God does not usually lead a couple in two different directions at the same time",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "spiritual_leadership_understanding_mutual_discernment",
@@ -1242,7 +1242,7 @@
         },
         {
           "id": "B",
-          "text": "I would ask who usually takes the lead spiritually and encourage that person to seek God more deeply — someone needs to lead",
+          "text": "I would ask who usually takes the lead spiritually and encourage that person to seek God more deeply. Someone needs to lead",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "spiritual_leadership_understanding_structured_headship",
@@ -1254,7 +1254,7 @@
         },
         {
           "id": "C",
-          "text": "I would tell them to follow their individual convictions — God speaks to each person personally",
+          "text": "I would tell them to follow their individual convictions. God speaks to each person personally",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "spiritual_leadership_understanding_each_follows_their_own",
@@ -1266,7 +1266,7 @@
         },
         {
           "id": "D",
-          "text": "Honestly, I would not know what to say — spiritual leadership in marriage is not something I have thought through yet",
+          "text": "I would not know what to say. Spiritual leadership in marriage is not something I have thought through yet",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "spiritual_leadership_understanding_has_not_thought_about_it",
@@ -1279,19 +1279,19 @@
       ],
       "originalNumber": 6,
       "genderVariant": {
-        "male": "A married couple you respect tells you they disagree about a major decision. One feels God is leading them one way; the other feels differently. As a man thinking about leading a home, which approach feels most right to you?",
-        "female": "A married couple you respect tells you they disagree about a major decision. One feels God is leading them one way; the other feels differently. As a woman thinking about what spiritual partnership should look like, which approach feels most right to you?"
+        "male": "A married couple you respect disagree about a major decision. One feels God leading one way; the other feels differently. As a man thinking about leading a home, which approach feels right to you?",
+        "female": "A married couple you respect disagree about a major decision. One feels God leading one way; the other feels differently. As a woman thinking about what spiritual partnership should look like, which approach feels right to you?"
       }
     },
     {
       "number": 13,
       "dimension": "Unresolved Wounds",
       "questionType": "scenario",
-      "text": "During a conversation with someone you are dating, they unintentionally touch on something from your childhood that still carries pain — an absent parent, a broken home, a deep rejection. What happens inside you?",
+      "text": "Someone you are dating unintentionally touches on something from your childhood that still carries pain: an absent parent, a broken home, a deep rejection. What happens inside you?",
       "options": [
         {
           "id": "A",
-          "text": "The tenderness is there, but I can name it without falling apart. I can say 'That is a sensitive area for me, here is why' and stay in the conversation",
+          "text": "The tenderness is there, but I can name it without falling apart. I can say\n\n'That is a sensitive area for me'\n\nand stay in the conversation",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "unresolved_wounds_can_share_openly",
@@ -1303,7 +1303,7 @@
         },
         {
           "id": "B",
-          "text": "I feel a wave of emotion but I manage it — I might change the subject and come back to it when I feel safe enough",
+          "text": "I feel a wave of emotion but I manage it. I might change the subject and come back to it when I feel safe enough",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "unresolved_wounds_tender_but_manages",
@@ -1315,7 +1315,7 @@
         },
         {
           "id": "C",
-          "text": "I shut down or deflect — I do not want them to see that part of me yet, maybe ever",
+          "text": "I shut down or deflect. I do not want them to see that part of me yet, maybe ever",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "unresolved_wounds_hides_and_deflects",
@@ -1327,7 +1327,7 @@
         },
         {
           "id": "D",
-          "text": "It hits me hard — I might tear up, get angry, or emotionally flood in a way that surprises even me",
+          "text": "It hits me hard. I might tear up, get angry, or emotionally flood in a way that surprises even me",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "unresolved_wounds_still_raw",
@@ -1352,7 +1352,7 @@
       "options": [
         {
           "id": "A",
-          "text": "I notice the similarity but I can separate the two people — I evaluate this person on their own merits, not my past",
+          "text": "I notice the similarity but I can separate the two people. I evaluate this person on their own merits, not my past",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "past_relationship_integration_sees_this_person_clearly",
@@ -1364,7 +1364,7 @@
         },
         {
           "id": "B",
-          "text": "It triggers a warning signal in me — I am aware it might be my past talking, but I watch more carefully from that point",
+          "text": "It triggers a warning in me. I am aware it might be my past talking, but I watch more carefully from that point",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "past_relationship_integration_on_alert_but_aware_of_it",
@@ -1376,7 +1376,7 @@
         },
         {
           "id": "C",
-          "text": "I pull back emotionally — I do not want to say it is because of my past, but something shifts inside me",
+          "text": "I pull back emotionally. I do not want to say it is because of my past, but something shifts inside me",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "past_relationship_integration_pulls_back_without_knowing_why",
@@ -1388,7 +1388,7 @@
         },
         {
           "id": "D",
-          "text": "A strong urge to end it — the feeling of 'I have been here before' is so powerful that my past makes the decision before my mind catches up",
+          "text": "A strong urge to end it. The feeling of\n\n'I have been here before'\n\nis so powerful that my past decides before my mind catches up",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "past_relationship_integration_past_controls_present",
@@ -1405,11 +1405,11 @@
       "number": 15,
       "dimension": "Trigger Handling",
       "questionType": "scenario",
-      "text": "You are in a disagreement with someone close to you, and they raise their voice — not yelling, but their tone shifts sharply. Something in you reacts before you can think. What typically happens?",
+      "text": "Someone close to you raises their voice during a disagreement. Not yelling, but their tone shifts sharply. Something in you reacts before you can think. What happens?",
       "options": [
         {
           "id": "A",
-          "text": "I notice the spike in my body — my chest tightens or my jaw clenches — but I can pause and say: 'I need a moment before I respond'",
+          "text": "I notice it in my body: chest tightens, jaw clenches. But I can pause and say:\n\n'I need a moment before I respond'",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "trigger_handling_feels_it_and_pauses",
@@ -1421,7 +1421,7 @@
         },
         {
           "id": "B",
-          "text": "Imperfect but present — the trigger fires, my body tenses, but I stay in the conversation even if I do not handle it perfectly",
+          "text": "Imperfect but present. The trigger fires, my body tenses, but I stay in the conversation even if I do not handle it perfectly",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "trigger_handling_stays_in_it_imperfectly",
@@ -1433,7 +1433,7 @@
         },
         {
           "id": "C",
-          "text": "Silence takes over — something in me shuts down and words disappear, even when I want to speak",
+          "text": "Silence takes over. Something in me shuts down and words disappear, even when I want to speak",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "trigger_handling_freeze_response",
@@ -1445,7 +1445,7 @@
         },
         {
           "id": "D",
-          "text": "I match their energy or escalate — if they come at me with heat, I fire back before I can stop myself",
+          "text": "I match their energy or escalate. If they come at me with heat, I fire back before I can stop myself",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "trigger_handling_fight_response",
@@ -1462,11 +1462,11 @@
       "number": 16,
       "dimension": "Attachment Security",
       "questionType": "scenario",
-      "text": "A relationship is going really well — this person is kind, consistent, and clearly into you. You start to feel yourself falling for them. What happens next inside you?",
+      "text": "A relationship is going well. This person is kind, consistent, and clearly into you. You start to feel yourself falling for them. What happens next inside you?",
       "options": [
         {
           "id": "A",
-          "text": "I let myself enjoy it — I can receive love without needing to control the outcome or protect myself from it",
+          "text": "I let myself enjoy it. I can receive love without needing to control the outcome or protect myself from it",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "attachment_security_receives_love_openly",
@@ -1478,7 +1478,7 @@
         },
         {
           "id": "B",
-          "text": "Excitement with a quiet undertow of 'be careful' — part of me starts looking for reasons it might not work",
+          "text": "Excitement with a quiet undertow of\n\n'be careful.'\n\nPart of me starts looking for reasons it might not work",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "attachment_security_hopeful_but_scanning_for_risk",
@@ -1490,7 +1490,7 @@
         },
         {
           "id": "C",
-          "text": "I pull back slightly — something about being truly wanted makes me uncomfortable, even though I want it",
+          "text": "I pull back slightly. Something about being truly wanted makes me uncomfortable, even though I want it",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "attachment_security_closeness_triggers_withdrawal",
@@ -1502,7 +1502,7 @@
         },
         {
           "id": "D",
-          "text": "The grip tightens — more checking in, more needing reassurance, more anxiety about losing them. Closeness and panic come together",
+          "text": "The grip tightens: more checking in, more needing reassurance, more anxiety about losing them. Closeness and panic come together",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "attachment_security_closeness_triggers_anxiety",
@@ -1519,11 +1519,11 @@
       "number": 17,
       "dimension": "Conflict Posture",
       "questionType": "scenario",
-      "text": "You and a close friend had a tense conversation two weeks ago. It was never fully resolved — both of you moved on without really addressing it. How do you carry that now?",
+      "text": "You and a close friend had a tense conversation two weeks ago. It was never fully resolved. Both of you moved on without addressing it. How do you carry that now?",
       "options": [
         {
           "id": "A",
-          "text": "It bothers me that it is unresolved — I would bring it up to clear the air, even if it is awkward",
+          "text": "It bothers me that it is unresolved. I would bring it up to clear the air, even if it is awkward",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "conflict_posture_pursues_resolution",
@@ -1535,7 +1535,7 @@
         },
         {
           "id": "B",
-          "text": "I have mostly let it go but I notice a slight distance between us — I am not sure how to bring it back up",
+          "text": "I have mostly let it go but I notice a slight distance between us. I am not sure how to bring it back up",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "conflict_posture_notices_distance_unsure_how",
@@ -1547,7 +1547,7 @@
         },
         {
           "id": "C",
-          "text": "I have mentally filed it away — but if something similar happens, it will come back stronger because it was never resolved",
+          "text": "I have filed it away, but if something similar happens, it will come back stronger because it was never resolved",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_posture_stores_unresolved_tension",
@@ -1559,7 +1559,7 @@
         },
         {
           "id": "D",
-          "text": "I have already adjusted how much I trust or share with them — unresolved conflict quietly changes my relationships",
+          "text": "I have already adjusted how much I trust or share with them. Unresolved conflict quietly changes my relationships",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "conflict_posture_silently_withdraws_trust",
@@ -1576,11 +1576,11 @@
       "number": 18,
       "dimension": "Marriage Expectations",
       "questionType": "scenario",
-      "text": "A friend who just got married tells you: 'Marriage is the best thing that ever happened to me — we never fight and I have never been happier.' What is your internal reaction?",
+      "text": "A newly married friend tells you: :\n\"Marriage is the best thing that ever happened to me. We never fight and I have never been happier.\"\nWhat is your reaction?",
       "options": [
         {
           "id": "A",
-          "text": "I am happy for them but I know that is probably the honeymoon phase — real marriage includes conflict and hard work alongside the joy",
+          "text": "I am happy for them but that is probably the honeymoon phase. Real marriage includes conflict and hard work alongside the joy",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "marriage_expectations_realistic_and_grounded",
@@ -1592,7 +1592,7 @@
         },
         {
           "id": "B",
-          "text": "That is exactly what I want — a marriage where we are so connected that conflict rarely happens",
+          "text": "That is exactly what I want: a marriage where we are so connected that conflict rarely happens",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "marriage_expectations_idealized",
@@ -1604,7 +1604,7 @@
         },
         {
           "id": "C",
-          "text": "I feel a mix of hope and skepticism — I want that but part of me wonders if it is too good to be true",
+          "text": "I feel a mix of hope and skepticism. I want that, but part of me wonders if it is too good to be true",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "marriage_expectations_hopeful_with_healthy_skepticism",
@@ -1616,7 +1616,7 @@
         },
         {
           "id": "D",
-          "text": "I feel envious or discouraged — I wonder if I will ever have something like that",
+          "text": "I feel envious or discouraged. I wonder if I will ever have something like that",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "marriage_expectations_envious_or_discouraged",
@@ -1633,11 +1633,11 @@
       "number": 19,
       "dimension": "Long-Term Orientation",
       "questionType": "scenario",
-      "text": "You are strongly attracted to someone who does not share your faith, your life values, or your vision for family — but the connection feels electric. They want to take things further. What do you do?",
+      "text": "You are strongly attracted to someone who does not share your faith, values, or vision for family, but the connection feels electric. They want to take things further. What do you do?",
       "options": [
         {
           "id": "A",
-          "text": "I have clear boundaries for this — no matter how strong the pull, I am not willing to build a future on a foundation I know is unstable",
+          "text": "I have clear boundaries for this. No matter how strong the pull, I am not willing to build a future on a foundation I know is unstable",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "long_term_orientation_conviction_over_chemistry",
@@ -1649,7 +1649,7 @@
         },
         {
           "id": "B",
-          "text": "I would slow things down and test whether the values gap is real or just surface-level — but I would not let chemistry drive the decision",
+          "text": "I would slow things down and test whether the values gap is real or surface-level, but I would not let chemistry drive the decision",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "long_term_orientation_cautious_evaluation",
@@ -1661,7 +1661,7 @@
         },
         {
           "id": "C",
-          "text": "I would struggle — I know what I should do but the connection might pull me in before I make a clear-headed choice",
+          "text": "I would struggle. I know what I should do but the connection might pull me in before I make a clear-headed choice",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "long_term_orientation_desire_competes_with_conviction",
@@ -1673,7 +1673,7 @@
         },
         {
           "id": "D",
-          "text": "Honestly, I would probably go with it — life is short and maybe love is enough even without shared values",
+          "text": "I would probably go with it. Life is short and maybe love is enough even without shared values",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "long_term_orientation_lives_for_now",
@@ -1694,11 +1694,11 @@
       "number": 20,
       "dimension": "Sacrifice Readiness",
       "questionType": "scenario",
-      "text": "Your spouse (or future spouse) gets a dream opportunity that would require significant sacrifice from you — changing your plans, giving up something important to you, or moving somewhere you do not want to go. What is your most honest reaction?",
+      "text": "Your spouse (or future spouse) receives a dream opportunity that requires significant sacrifice from you: changing your plans, giving up something important, or relocating somewhere you do not want to go. What is your honest reaction?",
       "options": [
         {
           "id": "A",
-          "text": "I would immediately support them — their happiness matters more to me than my own preferences",
+          "text": "I would immediately support them. Their happiness matters more to me than my own preferences",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "sacrifice_readiness_gives_quickly_may_lose_self",
@@ -1710,7 +1710,7 @@
         },
         {
           "id": "B",
-          "text": "The tension would be real — it would cost me something — but working through it together is what love actually looks like",
+          "text": "The tension would be real and it would cost me, but working through it together is what love looks like",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "sacrifice_readiness_feels_the_cost_but_chooses_love",
@@ -1722,7 +1722,7 @@
         },
         {
           "id": "C",
-          "text": "I would need to weigh how much this costs me — I want to be supportive but I also need my life to work for me",
+          "text": "I would need to weigh how much this costs me. I want to be supportive but I also need my life to work for me",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "sacrifice_readiness_weighs_personal_cost_carefully",
@@ -1734,7 +1734,7 @@
         },
         {
           "id": "D",
-          "text": "Deep resistance — giving up major things for someone else's dream does not feel like love, it feels like loss",
+          "text": "Deep resistance. Giving up major things for someone else's dream does not feel like love; it feels like loss",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "sacrifice_readiness_resists_giving_up",
@@ -1747,19 +1747,19 @@
       ],
       "originalNumber": 16,
       "genderVariant": {
-        "male": "Your wife (or future wife) gets a dream opportunity that would require significant sacrifice from you — maybe relocating away from your career momentum, your community, or your comfort zone. What is your honest response?",
-        "female": "Your husband (or future husband) gets a dream opportunity that would require significant sacrifice from you — maybe putting your own goals on hold, leaving your community, or adjusting your life around his. What is your honest response?"
+        "male": "Your wife (or future wife) receives a dream opportunity that requires significant sacrifice from you: relocating away from your career, your community, or your comfort zone. What is your honest response?",
+        "female": "Your husband (or future husband) receives a dream opportunity that requires significant sacrifice from you: putting your goals on hold, leaving your community, or adjusting your life around his. What is your honest response?"
       }
     },
     {
       "number": 21,
       "dimension": "Unresolved Wounds",
       "questionType": "reflective",
-      "text": "When you think about the deepest emotional wound you carry — whether from family, a relationship, a betrayal, or a loss — what have you actually done about it?",
+      "text": "Think about the deepest emotional wound you carry: from family, a relationship, a betrayal, or a loss. What have you actually done about it?",
       "options": [
         {
           "id": "A",
-          "text": "Real work — counseling, honest conversations, spiritual processing. The wound still shaped me, but it no longer runs my decisions",
+          "text": "Real work: counseling, honest conversations, spiritual processing. The wound still shaped me, but it no longer runs my decisions",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "unresolved_wounds_pursued_real_healing",
@@ -1771,7 +1771,7 @@
         },
         {
           "id": "B",
-          "text": "Trusted people and prayer have helped — the wound is healing, but structured professional work has not been part of it yet",
+          "text": "Trusted people and prayer have helped. The wound is healing, but structured professional work has not been part of it yet",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "unresolved_wounds_informal_processing",
@@ -1783,7 +1783,7 @@
         },
         {
           "id": "C",
-          "text": "I know it is there but I have mostly dealt with it by moving forward — I do not like revisiting painful things",
+          "text": "I know it is there but I have mostly dealt with it by moving forward. I do not like revisiting painful things",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "unresolved_wounds_moved_on_without_processing",
@@ -1795,7 +1795,7 @@
         },
         {
           "id": "D",
-          "text": "Nothing, honestly — it stays underground until something forces it to the surface, and then it surprises even me",
+          "text": "Nothing, honestly. It stays underground until something forces it to the surface, and then it surprises even me",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "unresolved_wounds_untouched",
@@ -1812,11 +1812,11 @@
       "number": 22,
       "dimension": "Priority Management",
       "questionType": "scenario",
-      "text": "You have a packed week — work deadlines, personal goals, social commitments. Your partner (or someone close to you) tells you they really need quality time with you this week. What do you actually do?",
+      "text": "You have a packed week: work deadlines, personal goals, social commitments. Your partner (or someone close) says they need quality time with you. What do you do?",
       "options": [
         {
           "id": "A",
-          "text": "I rearrange something — they matter more than a packed schedule, and I make sure they know that",
+          "text": "I rearrange something. They matter more than a packed schedule, and I make sure they know that",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "priority_management_relationship_takes_priority",
@@ -1828,7 +1828,7 @@
         },
         {
           "id": "B",
-          "text": "Time gets squeezed in, but my mind would be elsewhere — physically present, mentally still running through my to-do list",
+          "text": "Time gets squeezed in, but my mind would be elsewhere: physically present, mentally running through my to-do list",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "priority_management_present_but_divided",
@@ -1840,7 +1840,7 @@
         },
         {
           "id": "C",
-          "text": "An honest explanation that this week will not work — with a promise to make it up later that may or may not happen",
+          "text": "An honest explanation that this week will not work, with a promise to make it up later that may or may not happen",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "priority_management_promises_later_but_not_now",
@@ -1852,7 +1852,7 @@
         },
         {
           "id": "D",
-          "text": "I would feel frustrated by the request — I am already stretched thin and adding one more thing feels like pressure",
+          "text": "I would feel frustrated by the request. I am already stretched thin and adding one more thing feels like pressure",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "priority_management_feels_pressured_by_needs",
@@ -1873,7 +1873,7 @@
       "options": [
         {
           "id": "A",
-          "text": "I would pray about it and discuss it deeply with my partner — this is a decision we would need to make together",
+          "text": "I would pray about it and discuss it deeply with my partner. This is a decision we would need to make together",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "decision_making_alignment_collaborative_prayerful",
@@ -1885,7 +1885,7 @@
         },
         {
           "id": "B",
-          "text": "Think it through first, then present my reasoning — my partner's input matters, but I would come to the table with a direction already in mind",
+          "text": "Think it through first, then present my reasoning. My partner's input matters, but I would come to the table with a direction already in mind",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "decision_making_alignment_independent_then_informing",
@@ -1897,7 +1897,7 @@
         },
         {
           "id": "C",
-          "text": "I would probably know what I want to do already — but I would feel conflicted about how my partner fits into it",
+          "text": "I would probably know what I want to do already, but I would feel conflicted about how my partner fits into it",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "decision_making_alignment_decides_alone_partner_adjusts",
@@ -1909,7 +1909,7 @@
         },
         {
           "id": "D",
-          "text": "Paralysis — big decisions that affect someone else lock me up. The weight of getting it wrong feels crushing",
+          "text": "Paralysis. Big decisions that affect someone else lock me up. The weight of getting it wrong feels crushing",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "decision_making_alignment_decision_paralysis",
@@ -1926,11 +1926,11 @@
       "number": 24,
       "dimension": "Family Background & Learned Patterns",
       "questionType": "scenario",
-      "text": "Imagine you and your future spouse have your first real fight — raised voices, tears, strong emotions. In the aftermath, what would your instinctive pattern most likely be?",
+      "text": "You and your future spouse have your first real fight: raised voices, tears, strong emotions. In the aftermath, what would your instinctive pattern be?",
       "options": [
         {
           "id": "A",
-          "text": "Restless until it is resolved — unfinished conflict sits in my chest and I would need to talk through it as soon as possible",
+          "text": "Restless until it is resolved. Unfinished conflict sits in my chest and I would need to talk through it as soon as possible",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "family_background_learned_patterns_needs_to_fix_it_fast",
@@ -1942,7 +1942,7 @@
         },
         {
           "id": "B",
-          "text": "I would give us both space to cool down, then come back to repair — I have learned that time helps before talking",
+          "text": "I would give us both space to cool down, then come back to repair. I have learned that time helps before talking",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "family_background_learned_patterns_gives_space_then_repairs",
@@ -1954,7 +1954,7 @@
         },
         {
           "id": "C",
-          "text": "Withdrawal and waiting — pulling back until they come to me, because something in me says the one who reaches out first loses",
+          "text": "Withdrawal and waiting: pulling back until they come to me, because something in me says the one who reaches out first loses",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "family_background_learned_patterns_waits_them_out",
@@ -1966,7 +1966,7 @@
         },
         {
           "id": "D",
-          "text": "I would feel terrified — big fights remind me of something from my past and I might emotionally spiral",
+          "text": "I would feel terrified. Big fights remind me of something from my past and I might emotionally spiral",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "family_background_triggers_past_pain",
@@ -1983,11 +1983,11 @@
       "number": 25,
       "dimension": "Spiritual Consistency",
       "questionType": "scenario",
-      "text": "You go through a season where nothing makes sense — a deep disappointment, an unanswered prayer, a loss that shakes you. What happens to your faith during that season?",
+      "text": "You go through a season where nothing makes sense: a deep disappointment, an unanswered prayer, a loss that shakes you. What happens to your faith during that season?",
       "options": [
         {
           "id": "A",
-          "text": "My faith deepens — suffering draws me closer to God even when I do not understand what He is doing",
+          "text": "My faith deepens. Suffering draws me closer to God even when I do not understand what He is doing",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "spiritual_consistency_faith_deepens_in_suffering",
@@ -1999,7 +1999,7 @@
         },
         {
           "id": "B",
-          "text": "I wrestle honestly with God — I bring my doubt and anger to Him rather than walking away, even when it is messy",
+          "text": "I wrestle honestly with God. I bring my doubt and anger to Him rather than walking away, even when it is messy",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "spiritual_consistency_honest_wrestling",
@@ -2011,7 +2011,7 @@
         },
         {
           "id": "C",
-          "text": "I drift — I stop praying, stop showing up, and only come back when the storm passes",
+          "text": "I drift. I stop praying, stop showing up, and only come back when the storm passes",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "spiritual_consistency_drifts_in_hardship",
@@ -2023,7 +2023,7 @@
         },
         {
           "id": "D",
-          "text": "I question everything — hard seasons make me wonder if God is real, good, or paying attention at all",
+          "text": "I question everything. Hard seasons make me wonder if God is real, good, or paying attention at all",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "spiritual_consistency_faith_shaken_by_suffering",

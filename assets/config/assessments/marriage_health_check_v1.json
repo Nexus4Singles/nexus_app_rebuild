@@ -279,7 +279,7 @@
       "options": [
         {
           "id": "A",
-          "text": "We would probably end up talking, cooking together, or finding something to enjoy — we genuinely like each other's company",
+          "text": "We would probably end up talking, cooking, or finding something to enjoy. We genuinely like each other's company",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "connection_communication_natural_enjoyment",
@@ -291,7 +291,7 @@
         },
         {
           "id": "B",
-          "text": "We would each do our own thing, but comfortably — we are fine in parallel even if we do not plan anything together",
+          "text": "We would each do our own thing, but comfortably. We are fine in parallel even if we do not plan anything together",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "connection_communication_comfortable_parallel",
@@ -303,7 +303,7 @@
         },
         {
           "id": "C",
-          "text": "We would default to screens or separate routines — we do not naturally gravitate toward each other anymore",
+          "text": "We would default to screens or separate routines. We do not naturally gravitate toward each other anymore",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "connection_communication_drifting_apart",
@@ -315,7 +315,7 @@
         },
         {
           "id": "D",
-          "text": "Unstructured time together often feels awkward or tense — we are better with distractions between us",
+          "text": "Unstructured time together often feels awkward or tense. We are better with distractions between us",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "connection_communication_uncomfortable_together",
@@ -336,11 +336,11 @@
       "number": 2,
       "dimension": "Appreciation & Encouragement",
       "questionType": "scenario",
-      "text": "Your spouse does something small but thoughtful — handles a chore you hate, brings you something without being asked. What is your typical response?",
+      "text": "Your spouse does something small but thoughtful, like handling a chore you hate or bringing you something without being asked. What is your typical response?",
       "options": [
         {
           "id": "A",
-          "text": "I notice it and tell them specifically what I appreciated — this is part of how we love each other",
+          "text": "I notice it and tell them specifically what I appreciated. This is part of how we love each other",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "appreciation_encouragement_specific_expressed",
@@ -352,7 +352,7 @@
         },
         {
           "id": "B",
-          "text": "I feel grateful but I may not always say it out loud — I assume they know I appreciate them",
+          "text": "I feel grateful but I do not always say it out loud. I assume they know I appreciate them",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "appreciation_encouragement_felt_but_unexpressed",
@@ -364,7 +364,7 @@
         },
         {
           "id": "C",
-          "text": "Honestly, I might not even notice — we are both running on autopilot most days",
+          "text": "I might not even notice. We are both running on autopilot most days",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "appreciation_encouragement_running_on_autopilot",
@@ -376,7 +376,7 @@
         },
         {
           "id": "D",
-          "text": "I might notice but my first thought is about all the things they do not do — one good thing does not erase the frustration",
+          "text": "I might notice, but my first thought is about all the things they do not do. One good thing does not erase the frustration",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "appreciation_encouragement_negativity_filter",
@@ -393,11 +393,11 @@
       "number": 3,
       "dimension": "Quality Time",
       "questionType": "scenario",
-      "text": "Your spouse suggests a phone-free evening — just the two of you, no distractions. What is your honest internal response?",
+      "text": "Your spouse suggests a phone-free evening, just the two of you, no distractions. What is your honest internal response?",
       "options": [
         {
           "id": "A",
-          "text": "I would love that — we do this kind of thing regularly and it always reconnects us",
+          "text": "I would love that. We do this regularly and it always reconnects us",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "quality_time_established_rhythm",
@@ -409,7 +409,7 @@
         },
         {
           "id": "B",
-          "text": "I would be open to it, but honestly we have not done that in a while — it might feel a little unfamiliar",
+          "text": "I would be open to it, but honestly we have not done that in a while. It might feel a little unfamiliar",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "quality_time_willing_but_rusty",
@@ -421,7 +421,7 @@
         },
         {
           "id": "C",
-          "text": "Part of me would resist — I am not sure what we would talk about for that long without something to do",
+          "text": "Part of me would resist. I am not sure what we would talk about for that long without something to do",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "quality_time_avoidance_of_unstructured_intimacy",
@@ -433,7 +433,7 @@
         },
         {
           "id": "D",
-          "text": "That would feel stressful — time alone together without distractions usually surfaces tension",
+          "text": "That would feel stressful. Time alone together without distractions usually surfaces tension",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "quality_time_togetherness_triggers_tension",
@@ -450,11 +450,11 @@
       "number": 4,
       "dimension": "Emotional Intimacy",
       "questionType": "scenario",
-      "text": "You are carrying a deep fear — about your health, your future, your worth. It is late at night and your spouse is beside you. Do you share it?",
+      "text": "You are carrying a deep fear about your health, your future, your worth. It is late at night and your spouse is beside you. Do you share it?",
       "options": [
         {
           "id": "A",
-          "text": "Yes — my spouse is the first person I want to tell. I know they will hold it with care",
+          "text": "Yes. My spouse is the first person I want to tell. I know they will hold it with care",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_intimacy_spouse_is_safe_harbor",
@@ -466,7 +466,7 @@
         },
         {
           "id": "B",
-          "text": "Maybe parts of it — I would share enough for connection but hold back the deepest part to protect them or myself",
+          "text": "Maybe parts of it. I would share enough for connection but hold back the deepest part to protect them or myself",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "emotional_intimacy_filtered_vulnerability",
@@ -478,7 +478,7 @@
         },
         {
           "id": "C",
-          "text": "Probably not — I do not think they would know what to do with something that heavy, or I do not want to burden them",
+          "text": "Probably not. I do not think they would know what to do with something that heavy, or I do not want to burden them",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "emotional_intimacy_protective_isolation",
@@ -490,7 +490,7 @@
         },
         {
           "id": "D",
-          "text": "No — sharing deep fears with my spouse does not feel safe. I would call a friend or carry it alone",
+          "text": "No. Sharing deep fears with my spouse does not feel safe. I would call a friend or carry it alone",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "emotional_intimacy_spouse_not_emotionally_safe",
@@ -503,19 +503,19 @@
       ],
       "originalNumber": 12,
       "genderVariant": {
-        "male": "You are carrying a deep fear — about your health, your ability to provide, your worth as a man. It is late at night and your wife is beside you. Do you share it?",
-        "female": "You are carrying a deep fear — about your health, your future, something that keeps you up at night. It is late and your husband is beside you. Do you share it?"
+        "male": "You are carrying a deep fear about your health, your ability to provide, your worth as a man. It is late at night and your wife is beside you. Do you share it?",
+        "female": "You are carrying a deep fear about your health, your future, something that keeps you up at night. It is late and your husband is beside you. Do you share it?"
       }
     },
     {
       "number": 5,
       "dimension": "Physical Affection & Intimacy",
       "questionType": "scenario",
-      "text": "When was the last time physical affection between you and your spouse — a lingering hug, a genuine kiss, holding hands, sexual intimacy — felt natural and wanted by both of you?",
+      "text": "When was the last time physical affection with your spouse, like a lingering hug, a genuine kiss, holding hands, or sexual intimacy, felt natural and wanted by both of you?",
       "options": [
         {
           "id": "A",
-          "text": "Recently and regularly — physical connection is alive and mutual in our marriage",
+          "text": "Recently and regularly. Physical connection is alive and mutual in our marriage",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "physical_affection_intimacy_alive_and_mutual",
@@ -527,7 +527,7 @@
         },
         {
           "id": "B",
-          "text": "It happens but it takes more effort than it used to — we are not as naturally affectionate as we once were",
+          "text": "It happens but it takes more effort than it used to. We are not as naturally affectionate as we once were",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "physical_affection_intimacy_effortful_but_present",
@@ -539,7 +539,7 @@
         },
         {
           "id": "C",
-          "text": "It has been a while — physical intimacy has become a source of tension, avoidance, or one-sidedness",
+          "text": "It has been a while. Physical intimacy has become a source of tension, avoidance, or one-sidedness",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "physical_affection_intimacy_tension_or_avoidance",
@@ -551,7 +551,7 @@
         },
         {
           "id": "D",
-          "text": "I honestly cannot remember — we rarely touch and when we do it feels forced or obligatory",
+          "text": "I honestly cannot remember. We rarely touch, and when we do it feels forced or obligatory",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "physical_affection_intimacy_absent_or_obligatory",
@@ -568,11 +568,11 @@
       "number": 6,
       "dimension": "Shared Spiritual Practices",
       "questionType": "scenario",
-      "text": "Think about an ordinary week — no crisis, no special event. How does faith show up between you and your spouse in the everyday?",
+      "text": "Think about an ordinary week, no crisis, no special event. How does faith show up between you and your spouse day to day?",
       "options": [
         {
           "id": "A",
-          "text": "We pray together, read Scripture, or have faith conversations regularly — it is woven into our weekly rhythm",
+          "text": "We pray together, read Scripture, or have faith conversations regularly. It is woven into our weekly rhythm",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "shared_spiritual_practices_woven_into_rhythm",
@@ -596,7 +596,7 @@
         },
         {
           "id": "C",
-          "text": "One of us is more spiritually active than the other — we do not share a common faith rhythm",
+          "text": "One of us is more spiritually active than the other. We do not share a common faith rhythm",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "shared_spiritual_practices_one_sided",
@@ -608,7 +608,7 @@
         },
         {
           "id": "D",
-          "text": "Faith is not part of our daily life as a couple — we rarely pray, read, or talk about God together",
+          "text": "Faith is not part of our daily life as a couple. We rarely pray, read, or talk about God together",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "shared_spiritual_practices_absent_from_daily_life",
@@ -625,11 +625,11 @@
       "number": 7,
       "dimension": "Conflict Navigation",
       "questionType": "scenario",
-      "text": "You and your spouse disagree about something that matters to both of you — not a small thing. What most often happens in the first 10 minutes?",
+      "text": "You and your spouse disagree about something that matters to both of you, not a small thing. What most often happens in the first 10 minutes?",
       "options": [
         {
           "id": "A",
-          "text": "We express our views, listen to each other, and look for understanding — it is tense but productive",
+          "text": "We express our views, listen to each other, and look for understanding. It is tense but productive",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "conflict_navigation_productive_tension",
@@ -641,7 +641,7 @@
         },
         {
           "id": "B",
-          "text": "We start okay but one or both of us gets emotional — it takes effort to stay on track",
+          "text": "We start okay but one or both of us gets emotional. It takes effort to stay on track",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "conflict_navigation_emotions_take_over",
@@ -653,7 +653,7 @@
         },
         {
           "id": "C",
-          "text": "One of us shuts down or walks away — we do not know how to stay in the hard conversation",
+          "text": "One of us shuts down or walks away. We do not know how to stay in the hard conversation",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_navigation_premature_exit",
@@ -665,7 +665,7 @@
         },
         {
           "id": "D",
-          "text": "It escalates quickly — voices raise, words get sharp, and we end up further apart than when we started",
+          "text": "It escalates quickly. Voices raise, words get sharp, and we end up further apart than when we started",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_navigation_rapid_escalation",
@@ -686,11 +686,11 @@
       "number": 8,
       "dimension": "Respect During Conflict",
       "questionType": "scenario",
-      "text": "During an argument, your spouse says something that really gets under your skin — it feels unfair and personal. What comes out of your mouth next?",
+      "text": "During an argument, your spouse says something that really gets under your skin. It feels unfair and personal. What comes out of your mouth next?",
       "options": [
         {
           "id": "A",
-          "text": "A breath first, then: 'That hurt. Can we slow down? I do not want to say something I will regret'",
+          "text": "A breath first, then:\n\n'That hurt. Can we slow down? I do not want to say something I will regret'",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "respect_during_conflict_holds_the_line",
@@ -702,7 +702,7 @@
         },
         {
           "id": "B",
-          "text": "I try to stay calm but my tone probably shifts — I might say something sharp before I catch myself",
+          "text": "I try to stay calm but my tone probably shifts. I might say something sharp before I catch myself",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "respect_during_conflict_slips_under_pressure",
@@ -714,7 +714,7 @@
         },
         {
           "id": "C",
-          "text": "Match energy — if they come at me with heat, they are going to get it back. That is just how it goes",
+          "text": "Match energy. If they come at me with heat, they are going to get it back. That is just how it goes",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "respect_during_conflict_matches_their_energy",
@@ -726,7 +726,7 @@
         },
         {
           "id": "D",
-          "text": "I go for the jugular — when I am hurt, I know exactly what words will hurt them back",
+          "text": "I go for the jugular. When I am hurt, I know exactly what words will hurt them back",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "respect_during_conflict_goes_for_the_weak_spot",
@@ -739,8 +739,8 @@
       ],
       "originalNumber": 7,
       "genderVariant": {
-        "male": "During an argument, your wife says something that really gets under your skin — she knows exactly where you're vulnerable. In that heated moment, what do you do?",
-        "female": "During an argument, your husband says something that really gets under your skin — he knows exactly where you're vulnerable. In that heated moment, what do you do?"
+        "male": "During an argument, your wife says something that really gets under your skin. She knows exactly where you are vulnerable. In that heated moment, what do you do?",
+        "female": "During an argument, your husband says something that really gets under your skin. He knows exactly where you are vulnerable. In that heated moment, what do you do?"
       }
     },
     {
@@ -751,7 +751,7 @@
       "options": [
         {
           "id": "A",
-          "text": "One of us reaches out — a touch, a soft word, an apology. We both want to repair and we know how",
+          "text": "One of us reaches out with a touch, a soft word, or an apology. We both want to repair and we know how",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "repair_reconnection_natural_repair_instinct",
@@ -763,7 +763,7 @@
         },
         {
           "id": "B",
-          "text": "We are polite but distant — it takes us a few hours or a day before we can really talk about it",
+          "text": "We are polite but distant. It takes us a few hours or a day before we can really talk about it",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "repair_reconnection_slow_thaw",
@@ -775,7 +775,7 @@
         },
         {
           "id": "C",
-          "text": "We act like it did not happen — life resumes, but the unresolved tension sits underneath everything",
+          "text": "We act like it did not happen. Life resumes, but the unresolved tension sits underneath everything",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "repair_reconnection_avoidance_of_repair",
@@ -787,7 +787,7 @@
         },
         {
           "id": "D",
-          "text": "The coldness continues — sometimes for days. Neither of us knows how to break the silence",
+          "text": "The coldness continues, sometimes for days. Neither of us knows how to break the silence",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "repair_reconnection_prolonged_disconnection",
@@ -804,11 +804,11 @@
       "number": 10,
       "dimension": "Responsiveness to Concerns",
       "questionType": "scenario",
-      "text": "Your spouse sits you down and says: 'There is something I have been wanting to talk to you about — it has been bothering me.' What happens in your body and mind first?",
+      "text": "Your spouse sits you down and says: :\n\"There is something I have been wanting to talk to you about. It has been bothering me.\"\nWhat happens in your body and mind first?",
       "options": [
         {
           "id": "A",
-          "text": "I turn toward them and listen — if something is bothering them, I want to know",
+          "text": "I turn toward them and listen. If something is bothering them, I want to know",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "responsiveness_to_concerns_turns_toward",
@@ -820,7 +820,7 @@
         },
         {
           "id": "B",
-          "text": "Listening, but my guard goes up — hoping this is not about something I did wrong",
+          "text": "Listening, but my guard goes up. Hoping this is not about something I did wrong",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "responsiveness_to_concerns_listens_but_guard_goes_up",
@@ -832,7 +832,7 @@
         },
         {
           "id": "C",
-          "text": "I brace myself — conversations that start this way usually end in me feeling blamed or criticized",
+          "text": "I brace myself. Conversations that start this way usually end in me feeling blamed or criticized",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "responsiveness_to_concerns_bracing_for_attack",
@@ -844,7 +844,7 @@
         },
         {
           "id": "D",
-          "text": "Irritation before they even finish — already feeling like whatever it is, I am not enough",
+          "text": "Irritation before they even finish. Already feeling like whatever it is, I am not enough",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "responsiveness_to_concerns_preemptive_shutdown",
@@ -861,11 +861,11 @@
       "number": 11,
       "dimension": "Faith in Daily Conduct",
       "questionType": "scenario",
-      "text": "Your spouse wrongs you — not a small thing. You know as a Christian you are called to forgive. Three weeks later, what is the honest state of your heart?",
+      "text": "Your spouse wrongs you, not a small thing. You know as a Christian you are called to forgive. Three weeks later, what is the honest state of your heart?",
       "options": [
         {
           "id": "A",
-          "text": "The bitterness is loosening — not perfectly gone, but I am choosing forgiveness daily and the freedom is growing. It is a process, not a switch",
+          "text": "The bitterness is loosening. Not perfectly gone, but I am choosing forgiveness daily and the freedom is growing. It is a process, not a switch",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "faith_in_daily_conduct_active_practiced_forgiveness",
@@ -877,7 +877,7 @@
         },
         {
           "id": "B",
-          "text": "I have chosen to forgive but the hurt still surfaces — I keep bringing it back to God because my flesh wants to hold on",
+          "text": "I have chosen to forgive but the hurt still surfaces. I keep bringing it back to God because my flesh wants to hold on",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "faith_in_daily_conduct_choosing_daily",
@@ -889,7 +889,7 @@
         },
         {
           "id": "C",
-          "text": "The words 'I forgive you' were spoken, but honestly, emotional distance has crept in — self-protection wearing a forgiveness mask",
+          "text": "The words\n\n'I forgive you'\n\nwere spoken, but emotional distance has crept in. Self-protection wearing a forgiveness mask",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "faith_in_daily_conduct_words_without_heart",
@@ -901,7 +901,7 @@
         },
         {
           "id": "D",
-          "text": "Still carrying it — and part of me feels justified, even though I know Scripture says otherwise",
+          "text": "Still carrying it, and part of me feels justified, even though I know Scripture says otherwise",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "faith_in_daily_conduct_justified_bitterness",
@@ -918,11 +918,11 @@
       "number": 12,
       "dimension": "Trust & Integrity",
       "questionType": "scenario",
-      "text": "You discover your spouse told a small lie about something — nothing major, but they clearly hid the truth. What does this bring up for you?",
+      "text": "You discover your spouse told a small lie about something. Nothing major, but they clearly hid the truth. What does this bring up for you?",
       "options": [
         {
           "id": "A",
-          "text": "I bring it up directly — small lies matter to me, but I trust our foundation enough to address it without spiraling",
+          "text": "I bring it up directly. Small lies matter to me, but I trust our foundation enough to address it without spiraling",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "trust_integrity_addresses_directly_from_trust",
@@ -934,7 +934,7 @@
         },
         {
           "id": "B",
-          "text": "It bothers me and I will bring it up, but part of me wonders what else they might be hiding — one lie opens a door",
+          "text": "It bothers me and I will bring it up, but part of me wonders what else they might be hiding. One lie opens a door",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "trust_integrity_one_lie_opens_a_door",
@@ -946,7 +946,7 @@
         },
         {
           "id": "C",
-          "text": "It confirms what I already suspected — trust has been shaky for a while and this adds to the pattern",
+          "text": "It confirms what I already suspected. Trust has been shaky for a while and this adds to the pattern",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "trust_integrity_pattern_of_erosion",
@@ -958,7 +958,7 @@
         },
         {
           "id": "D",
-          "text": "I am not surprised — dishonesty has become normal between us and I am not sure it can change",
+          "text": "I am not surprised. Dishonesty has become normal between us and I am not sure it can change",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "trust_integrity_normalized_dishonesty",
@@ -975,11 +975,11 @@
       "number": 13,
       "dimension": "Emotional Safety to Share Hurt",
       "questionType": "scenario",
-      "text": "Something your spouse did genuinely hurt you — not on purpose, but the pain is real. You need to tell them. What do you expect will happen when you do?",
+      "text": "Something your spouse did genuinely hurt you, not on purpose, but the pain is real. You need to tell them. What do you expect will happen when you do?",
       "options": [
         {
           "id": "A",
-          "text": "They will listen, take it seriously, and care about how I feel — even if they see it differently",
+          "text": "They will listen, take it seriously, and care about how I feel, even if they see it differently",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_safety_to_share_hurt_expectation_of_care",
@@ -1015,7 +1015,7 @@
         },
         {
           "id": "D",
-          "text": "Silence — the last few times I tried to share, it made things worse. So I carry it alone now, which feels lonely but safer",
+          "text": "Silence. The last few times I tried to share, it made things worse. So I carry it alone now, which feels lonely but safer",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "emotional_safety_to_share_hurt_learned_silence",
@@ -1032,8 +1032,8 @@
         "description": "This section probes the deeper layers — safety, honesty, and vulnerability."
       },
       "genderVariant": {
-        "male": "Something your wife did genuinely hurt you — not on purpose, but the pain is real. You are deciding whether to tell her. What determines your decision?",
-        "female": "Something your husband did genuinely hurt you — not on purpose, but the pain is real. You are deciding whether to tell him. What determines your decision?"
+        "male": "Something your wife did genuinely hurt you, not on purpose, but the pain is real. You are deciding whether to tell her. What determines your decision?",
+        "female": "Something your husband did genuinely hurt you, not on purpose, but the pain is real. You are deciding whether to tell him. What determines your decision?"
       }
     },
     {
@@ -1044,7 +1044,7 @@
       "options": [
         {
           "id": "A",
-          "text": "We talked about what happened, what needs to change, and we check in on progress — it is painful but we face it together",
+          "text": "We talked about what happened, what needs to change, and we check in on progress. It is painful but we face it together",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "trust_repair_practices_structured_intentional_repair",
@@ -1056,7 +1056,7 @@
         },
         {
           "id": "B",
-          "text": "The apology helped but we have not really talked about what needs to change — I am watching to see if their behavior shifts",
+          "text": "The apology helped but we have not really talked about what needs to change. I am watching to see if their behavior shifts",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "trust_repair_practices_watching_but_no_plan",
@@ -1068,7 +1068,7 @@
         },
         {
           "id": "C",
-          "text": "We moved on from it but I still feel it — the apology did not actually address the root issue",
+          "text": "We moved on from it but I still feel it. The apology did not actually address the root issue",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "trust_repair_practices_surface_apology_no_change",
@@ -1080,7 +1080,7 @@
         },
         {
           "id": "D",
-          "text": "This has happened before and the pattern repeats — apology, temporary change, then back to the same behavior",
+          "text": "This has happened before and the pattern repeats. Apology, temporary change, then back to the same behavior",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "trust_repair_practices_cyclical_breach",
@@ -1097,11 +1097,11 @@
       "number": 15,
       "dimension": "Commitment to Growth",
       "questionType": "scenario",
-      "text": "Your spouse tells you: 'I think we should see a marriage counselor — not because we are in crisis, but because I want us to keep growing.' What is your honest reaction?",
+      "text": "Your spouse tells you: :\n\"I think we should see a marriage counselor, not because we are in crisis, but because I want us to keep growing.\"\nWhat is your honest reaction?",
       "options": [
         {
           "id": "A",
-          "text": "I would be open and even encouraged — investing in growth before crisis shows wisdom",
+          "text": "I would be open and even encouraged. Investing in growth before crisis shows wisdom",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "commitment_to_growth_proactive_growth_mindset",
@@ -1113,7 +1113,7 @@
         },
         {
           "id": "B",
-          "text": "I would be willing but a little uncomfortable — I associate counseling with problems, not growth",
+          "text": "I would be willing but a little uncomfortable. I associate counseling with problems, not growth",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "commitment_to_growth_open_but_uncomfortable",
@@ -1125,7 +1125,7 @@
         },
         {
           "id": "C",
-          "text": "Defensive — if they think we need counseling, they must think something is seriously wrong",
+          "text": "Defensive. If they think we need counseling, they must think something is seriously wrong",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "commitment_to_growth_defensive_about_growth",
@@ -1137,7 +1137,7 @@
         },
         {
           "id": "D",
-          "text": "Resistance — we should be able to figure things out on our own without bringing in an outsider",
+          "text": "Resistance. We should be able to figure things out on our own without bringing in an outsider",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "commitment_to_growth_closed_to_outside_help",
@@ -1154,11 +1154,11 @@
       "number": 16,
       "dimension": "Conflict Navigation",
       "questionType": "scenario",
-      "text": "There is one issue in your marriage that keeps coming back — you have argued about it multiple times and it never fully resolves. What is the current state of that issue?",
+      "text": "There is one issue in your marriage that keeps coming back. You have argued about it multiple times and it never fully resolves. What is the current state of that issue?",
       "options": [
         {
           "id": "A",
-          "text": "We have accepted we see it differently and found a way to live with the tension — not everything has to be solved, just managed with respect",
+          "text": "We have accepted we see it differently and found a way to live with the tension. Not everything has to be solved, just managed with respect",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "conflict_navigation_manages_perpetual_issues",
@@ -1170,7 +1170,7 @@
         },
         {
           "id": "B",
-          "text": "We revisit it occasionally and make small progress — it is still tender but we are learning to talk about it better",
+          "text": "We revisit it occasionally and make small progress. It is still tender but we are learning to talk about it better",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "conflict_navigation_slowly_improving",
@@ -1182,7 +1182,7 @@
         },
         {
           "id": "C",
-          "text": "We avoid it now — bringing it up always leads to the same fight, so we have an unspoken agreement to steer clear",
+          "text": "We avoid it now. Bringing it up always leads to the same fight, so we have an unspoken agreement to steer clear",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_navigation_avoids_recurring_issue",
@@ -1194,7 +1194,7 @@
         },
         {
           "id": "D",
-          "text": "It poisons everything — even when we are not talking about it, it sits under the surface and affects how we relate",
+          "text": "It poisons everything. Even when we are not talking about it, it sits under the surface and affects how we relate",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "conflict_navigation_unresolved_issue_poisons",
@@ -1211,11 +1211,11 @@
       "number": 17,
       "dimension": "Safety & Wellbeing",
       "questionType": "reflective",
-      "text": "When your spouse is angry — truly angry, not just frustrated — how does your body respond?",
+      "text": "When your spouse is truly angry, not just frustrated, how does your body respond?",
       "options": [
         {
           "id": "A",
-          "text": "I feel calm enough to engage — their anger does not make me feel unsafe, just alert that something matters to them",
+          "text": "I feel calm enough to engage. Their anger does not make me feel unsafe, just alert that something matters to them",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "safety_wellbeing_safe_even_in_anger",
@@ -1227,7 +1227,7 @@
         },
         {
           "id": "B",
-          "text": "Tense and cautious — watching my words carefully to avoid making it worse",
+          "text": "Tense and cautious, watching my words carefully to avoid making it worse",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "safety_wellbeing_walking_on_eggshells",
@@ -1239,7 +1239,7 @@
         },
         {
           "id": "C",
-          "text": "Afraid — their anger scares me and my body either freezes, flees, or tries to make it stop as fast as possible",
+          "text": "Afraid. Their anger scares me and my body either freezes, flees, or tries to make it stop as fast as possible",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "safety_wellbeing_fear_response_activated",
@@ -1251,7 +1251,7 @@
         },
         {
           "id": "D",
-          "text": "Physically unsafe — their anger has included intimidation, breaking things, blocking exits, or physical aggression. This is not normal and it is not your fault",
+          "text": "Physically unsafe. Their anger has included intimidation, breaking things, blocking exits, or physical aggression. This is not normal and it is not your fault",
           "signalTier": "SAFETY_ALERT",
           "weight": 0,
           "outcomeSignal": "safety_wellbeing_physical_safety_threat",
@@ -1268,11 +1268,11 @@
       "number": 18,
       "dimension": "Trust & Integrity",
       "questionType": "scenario",
-      "text": "Your spouse asks you about something you would rather not share — maybe a purchase, a conversation, or how you spent your time. You know the full truth might cause tension. What do you do?",
+      "text": "Your spouse asks you about something you would rather not share: a purchase, a conversation, or how you spent your time. You know the full truth might cause tension. What do you do?",
       "options": [
         {
           "id": "A",
-          "text": "The truth, even the uncomfortable parts — transparency matters more to me than avoiding a hard moment",
+          "text": "The truth, even the uncomfortable parts. Transparency matters more to me than avoiding a hard moment",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "trust_integrity_chooses_transparency",
@@ -1284,7 +1284,7 @@
         },
         {
           "id": "B",
-          "text": "I tell the truth but I soften it — I share the facts without all the details that might hurt",
+          "text": "I tell the truth but I soften it. I share the facts without all the details that might hurt",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "trust_integrity_truth_with_filter",
@@ -1296,7 +1296,7 @@
         },
         {
           "id": "C",
-          "text": "Deflection or minimizing — answering without technically lying, but leaving out the parts that would cause problems",
+          "text": "Deflection or minimizing. Answering without technically lying, but leaving out the parts that would cause problems",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "trust_integrity_truth_by_omission",
@@ -1308,7 +1308,7 @@
         },
         {
           "id": "D",
-          "text": "I have lied in situations like this before — sometimes it feels easier to manage the story than face the fallout",
+          "text": "I have lied in situations like this before. Sometimes it feels easier to manage the story than face the fallout",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "trust_integrity_manages_the_story",
@@ -1325,11 +1325,11 @@
       "number": 19,
       "dimension": "Teamwork & Responsibilities",
       "questionType": "scenario",
-      "text": "It is a chaotic week — the house is a mess, the kids need attention, work is demanding, errands are piling up. How does the load get distributed between you and your spouse?",
+      "text": "It is a chaotic week. The house is a mess, the kids need attention, work is demanding, errands are piling up. How does the load get distributed between you and your spouse?",
       "options": [
         {
           "id": "A",
-          "text": "We check in with each other, divide and conquer, and neither of us keeps score — we are a team",
+          "text": "We check in with each other, divide and conquer, and neither of us keeps score. We are a team",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "teamwork_responsibilities_fluid_teamwork",
@@ -1353,7 +1353,7 @@
         },
         {
           "id": "C",
-          "text": "It is mostly on one person — and the resentment is building",
+          "text": "It is mostly on one person, and the resentment is building",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "teamwork_responsibilities_visible_resentment",
@@ -1365,7 +1365,7 @@
         },
         {
           "id": "D",
-          "text": "Weeks like this turn into full-blown conflict — responsibilities are a constant battle in our home",
+          "text": "Weeks like this turn into full-blown conflict. Responsibilities are a constant battle in our home",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "teamwork_responsibilities_conflict_source",
@@ -1390,7 +1390,7 @@
       "options": [
         {
           "id": "A",
-          "text": "We talk about it — we have agreed on how we handle money and if one of us goes outside that, we address it respectfully",
+          "text": "We talk about it. We have agreed on how we handle money and if one of us goes outside that, we address it respectfully",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "financial_alignment_clear_shared_framework",
@@ -1414,7 +1414,7 @@
         },
         {
           "id": "C",
-          "text": "I am upset but I might not say anything — money conversations between us always end badly",
+          "text": "I am upset but I might not say anything. Money conversations between us always end badly",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "financial_alignment_avoidance_of_money_talk",
@@ -1426,7 +1426,7 @@
         },
         {
           "id": "D",
-          "text": "This kind of thing happens often and it always leads to a blowup — we cannot talk about money without fighting",
+          "text": "This kind of thing happens often and it always leads to a blowup. We cannot talk about money without fighting",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "financial_alignment_chronic_financial_conflict",
@@ -1443,11 +1443,11 @@
       "number": 21,
       "dimension": "Emotional Intimacy",
       "questionType": "scenario",
-      "text": "You notice your spouse seems quieter than usual — nothing dramatic, just slightly withdrawn. They have not said anything is wrong. What do you do?",
+      "text": "You notice your spouse seems quieter than usual, nothing dramatic, just slightly withdrawn. They have not said anything is wrong. What do you do?",
       "options": [
         {
           "id": "A",
-          "text": "I go to them and gently ask — 'I notice something seems off. I want to know what is going on with you'",
+          "text": "I go to them and gently ask:\n\n'I notice something seems off. I want to know what is going on with you'",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_intimacy_initiates_emotional_check_in",
@@ -1459,7 +1459,7 @@
         },
         {
           "id": "B",
-          "text": "I give them space and wait for them to come to me — I do not want to push if they are not ready",
+          "text": "I give them space and wait for them to come to me. I do not want to push if they are not ready",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_intimacy_respects_space_but_passive",
@@ -1471,7 +1471,7 @@
         },
         {
           "id": "C",
-          "text": "Notice it, but stay quiet — unsure how to bring it up without it turning into something heavy",
+          "text": "Notice it, but stay quiet. Unsure how to bring it up without it turning into something heavy",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "emotional_intimacy_notices_but_avoids",
@@ -1483,7 +1483,7 @@
         },
         {
           "id": "D",
-          "text": "Probably would not notice — we do not track each other's emotional states that closely anymore",
+          "text": "Probably would not notice. We do not track each other's emotional states that closely anymore",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "emotional_intimacy_emotionally_unaware",
@@ -1496,19 +1496,19 @@
       ],
       "originalNumber": 21,
       "genderVariant": {
-        "male": "You notice your wife seems quieter than usual — nothing dramatic, just slightly withdrawn. She has not said anything is wrong. What do you do?",
-        "female": "You notice your husband seems quieter than usual — nothing dramatic, just slightly withdrawn. He has not said anything is wrong. What do you do?"
+        "male": "You notice your wife seems quieter than usual, nothing dramatic, just slightly withdrawn. She has not said anything is wrong. What do you do?",
+        "female": "You notice your husband seems quieter than usual, nothing dramatic, just slightly withdrawn. He has not said anything is wrong. What do you do?"
       }
     },
     {
       "number": 22,
       "dimension": "Connection & Communication",
       "questionType": "scenario",
-      "text": "Something happened today that really affected you — good or bad. You walk through the door and your spouse is there. What is your instinct?",
+      "text": "Something happened today that affected you, good or bad. You walk through the door and your spouse is there. What is your instinct?",
       "options": [
         {
           "id": "A",
-          "text": "I go straight to them — they are the first person I want to tell. I know they will care about what I am feeling",
+          "text": "I go straight to them. They are the first person I want to tell. I know they will care about what I am feeling",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "connection_communication_spouse_is_first_call",
@@ -1520,7 +1520,7 @@
         },
         {
           "id": "B",
-          "text": "Sharing, but the edited version — enough for connection without risking their disengagement from the full story",
+          "text": "Sharing, but the edited version, enough for connection without risking their disengagement from the full story",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "connection_communication_shares_but_edits",
@@ -1532,7 +1532,7 @@
         },
         {
           "id": "C",
-          "text": "Keeping it to myself — a friend or my own head feels like a safer place to process than bringing it to my spouse",
+          "text": "Keeping it to myself. A friend or my own head feels like a safer place to process than bringing it to my spouse",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "connection_communication_spouse_not_first_choice",
@@ -1544,7 +1544,7 @@
         },
         {
           "id": "D",
-          "text": "I do not share things like this anymore — we have stopped being each other's emotional landing place",
+          "text": "I do not share things like this anymore. We have stopped being each other's emotional landing place",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "connection_communication_emotional_sharing_stopped",
@@ -1565,7 +1565,7 @@
       "options": [
         {
           "id": "A",
-          "text": "We are mostly on the same page — we handle it together or one leads and the other supports without undermining",
+          "text": "We are mostly on the same page. We handle it together, or one leads and the other supports without undermining",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "family_leadership_parenting_alignment_united_front",
@@ -1577,7 +1577,7 @@
         },
         {
           "id": "B",
-          "text": "We try to be united but we sometimes contradict each other in the moment — we debrief afterward",
+          "text": "We try to be united but sometimes contradict each other in the moment. We debrief afterward",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "family_leadership_parenting_alignment_reactive_then_repair",
@@ -1589,7 +1589,7 @@
         },
         {
           "id": "C",
-          "text": "One of us takes over and the other steps back or disagrees — it creates confusion for the child and tension between us",
+          "text": "One of us takes over and the other steps back or disagrees. It creates confusion for the child and tension between us",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "family_leadership_parenting_alignment_split_authority",
@@ -1601,7 +1601,7 @@
         },
         {
           "id": "D",
-          "text": "Parenting moments often become arguments between us — the child's behavior triggers our own unresolved issues",
+          "text": "Parenting moments often become arguments between us. The child's behavior triggers our own unresolved issues",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "family_leadership_triggers_marital_conflict",
@@ -1618,11 +1618,11 @@
       "number": 24,
       "dimension": "Shared Spiritual Practices",
       "questionType": "scenario",
-      "text": "One of you is going through a genuinely hard season — health scare, career crisis, loss of someone close. How does faith show up between you as a couple during this time?",
+      "text": "One of you is going through a genuinely hard season: a health scare, career crisis, or the loss of someone close. How does faith show up between you as a couple during this time?",
       "options": [
         {
           "id": "A",
-          "text": "We pray together, process it through our faith, and lean into God as a couple — this is when our shared faith is most real",
+          "text": "We pray together, process it through our faith, and lean into God as a couple. This is when our shared faith is most real",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "shared_spiritual_practices_activated_under_pressure",
@@ -1634,7 +1634,7 @@
         },
         {
           "id": "B",
-          "text": "We each turn to God individually — faith is important to both of us but we have not built the habit of processing it together",
+          "text": "We each turn to God individually. Faith is important to both of us but we have not built the habit of processing it together",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "shared_spiritual_practices_parallel_faith_not_shared",
@@ -1646,7 +1646,7 @@
         },
         {
           "id": "C",
-          "text": "One of us leans into faith and the other pulls away — our spiritual responses to crisis do not match",
+          "text": "One of us leans into faith and the other pulls away. Our spiritual responses to crisis do not match",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "shared_spiritual_practices_spiritual_mismatch_in_crisis",
@@ -1658,7 +1658,7 @@
         },
         {
           "id": "D",
-          "text": "Faith does not really come up — in hard times we rely on practical solutions, and spiritual connection feels disconnected",
+          "text": "Faith does not really come up. In hard times we rely on practical solutions, and spiritual connection feels disconnected",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "shared_spiritual_practices_absent_in_crisis",
@@ -1679,7 +1679,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The spouse whose family it is takes the lead in setting the boundary — we protect our marriage as a unit",
+          "text": "The spouse whose family it is takes the lead in setting the boundary. We protect our marriage as a unit",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "family_leadership_marriage_first_boundary",
@@ -1691,7 +1691,7 @@
         },
         {
           "id": "B",
-          "text": "We agree it is a problem but struggle to confront it — one of us is protective of their family",
+          "text": "We agree it is a problem but struggle to confront it. One of us is protective of their family",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "family_leadership_avoidance_with_family",
@@ -1703,7 +1703,7 @@
         },
         {
           "id": "C",
-          "text": "It has become a recurring fight between us — the outside interference is straining our marriage",
+          "text": "It is become a recurring fight between us. The outside interference is straining our marriage",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "family_leadership_external_pressure_dividing",
@@ -1715,7 +1715,7 @@
         },
         {
           "id": "D",
-          "text": "My spouse sides with their family over me — I feel like I am competing for priority in my own marriage",
+          "text": "My spouse sides with their family over me. I feel like I am competing for priority in my own marriage",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "family_leadership_parenting_alignment_loyalty_conflict",
