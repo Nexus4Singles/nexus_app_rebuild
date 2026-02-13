@@ -994,7 +994,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The sting lands, but my mouth stays steady:\n\n'That actually hurt me, here is why,'\n\nwithout matching their energy",
+          "text": "The sting lands, but my mouth stays steady. I express that it hurt me and explain why, without matching their aggressive energy",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "hurt_response_speaks_pain_without_attacking",
@@ -1197,7 +1197,7 @@
         },
         {
           "id": "C",
-          "text": "The words\n\n'I forgive you'\n\ncame out, but the charge is still there. Something stirs when I think about it",
+          "text": "I say I forgive you, but emotionally something still stirs when I think about it",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_resolution_forgiveness_emotional_retention",
@@ -1291,7 +1291,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The tenderness is there, but I can name it without falling apart. I can say\n\n'That is a sensitive area for me'\n\nand stay in the conversation",
+          "text": "The tenderness is there, and I can acknowledge it as a sensitive area without falling apart or leaving the conversation",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "unresolved_wounds_can_share_openly",
@@ -1388,7 +1388,7 @@
         },
         {
           "id": "D",
-          "text": "A strong urge to end it. The feeling of\n\n'I have been here before'\n\nis so powerful that my past decides before my mind catches up",
+          "text": "A strong urge to end it because I sense I have been here before, and my past decides before my mind catches up",
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "past_relationship_integration_past_controls_present",
@@ -1409,7 +1409,7 @@
       "options": [
         {
           "id": "A",
-          "text": "I notice it in my body: chest tightens, jaw clenches. But I can pause and say:\n\n'I need a moment before I respond'",
+          "text": "I notice it in my body—chest tightens, jaw clenches—but I can pause and ask for a moment before I respond",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "trigger_handling_feels_it_and_pauses",
@@ -1478,7 +1478,7 @@
         },
         {
           "id": "B",
-          "text": "Excitement with a quiet undertow of\n\n'be careful.'\n\nPart of me starts looking for reasons it might not work",
+          "text": "Excitement mixed with caution, as part of me starts looking for reasons it might not work",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "attachment_security_hopeful_but_scanning_for_risk",

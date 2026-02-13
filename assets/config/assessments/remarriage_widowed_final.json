@@ -771,7 +771,7 @@
         },
         {
           "id": "C",
-          "text": "I would say\n\n'I am a different person now,'\n\nbut if pressed for evidence, I might struggle to give specific examples",
+          "text": "I claim I am a different person now, but if pressed for evidence, I might struggle to give specific examples",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "change_basis_belief_without_evidence",
@@ -946,7 +946,7 @@
         },
         {
           "id": "C",
-          "text": "My mind races to the worst case:\n\n'Here we go again. This is how it starts.'\n\nI want to run before it gets worse",
+          "text": "My mind races to the worst case—thinking this is how it starts again—and I want to run before it gets worse",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_fear_catastrophizing",
@@ -1520,7 +1520,7 @@
         },
         {
           "id": "B",
-          "text": "A brief pang of\n\n'I wish you could see me now,'\n\nbittersweet, but it does not steal the joy",
+          "text": "A brief pang as I wish they could see me now—bittersweet, but it does not steal the joy",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "emotional_state_bittersweet_but_present",

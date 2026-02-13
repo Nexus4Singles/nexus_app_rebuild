@@ -690,7 +690,7 @@
       "options": [
         {
           "id": "A",
-          "text": "A breath first, then:\n\n'That hurt. Can we slow down? I do not want to say something I will regret'",
+          "text": "A breath first, then I ask that we slow down so I don't say something I will regret",
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "respect_during_conflict_holds_the_line",
@@ -889,7 +889,7 @@
         },
         {
           "id": "C",
-          "text": "The words\n\n'I forgive you'\n\nwere spoken, but emotional distance has crept in. Self-protection wearing a forgiveness mask",
+          "text": "I spoke forgiveness, but emotional distance has crept in—self-protection wearing a forgiveness mask",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "faith_in_daily_conduct_words_without_heart",
@@ -1447,7 +1447,7 @@
       "options": [
         {
           "id": "A",
-          "text": "I go to them and gently ask:\n\n'I notice something seems off. I want to know what is going on with you'",
+          "text": "I go to them and gently ask what is going on, noticing that something seems off",
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_intimacy_initiates_emotional_check_in",
