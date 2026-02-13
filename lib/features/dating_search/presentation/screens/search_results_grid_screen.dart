@@ -60,7 +60,7 @@ class _SearchResultsGridScreenState
       if (!_showDailyLimitCard) {
         final currentOffset = ref.read(searchResultsOffsetProvider);
         ref.read(searchResultsOffsetProvider.notifier).state =
-            currentOffset + 30;  // Load 30 more profiles
+            currentOffset + 30; // Load 30 more profiles
       }
     }
 
@@ -118,17 +118,13 @@ class _SearchResultsGridScreenState
                 SizedBox(height: 16),
                 Text(
                   'Loading Matches...',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
               ],
             ),
           );
         },
-        error:
-            (e, st) {
+        error: (e, st) {
           final isTimeout = e.toString().contains('Timeout');
           return Center(
             child: Column(
@@ -164,8 +160,7 @@ class _SearchResultsGridScreenState
                       if (!mounted) return;
                       ref.invalidate(datingSearchResultsProvider);
                       ref.read(searchResultsCacheProvider.notifier).clear();
-                      ref.read(searchResultsOffsetProvider.notifier).state =
-                          0;
+                      ref.read(searchResultsOffsetProvider.notifier).state = 0;
                     },
                     icon: const Icon(Icons.refresh, size: 18),
                     label: const Text('Retry'),
@@ -440,9 +435,13 @@ class _ProfileCard extends ConsumerWidget {
     final isSaved = ref.watch(isProfileSavedProvider(profile.uid));
     final photo = profile.photos.isNotEmpty ? profile.photos.first : null;
     if (photo == null || photo.isEmpty) {
-      print('[SearchResultsGrid] No photo for profile: uid=${profile.uid}, name=${profile.name}');
+      print(
+        '[SearchResultsGrid] No photo for profile: uid=${profile.uid}, name=${profile.name}',
+      );
     } else {
-      print('[SearchResultsGrid] Photo URL for profile: uid=${profile.uid}, name=${profile.name}, url=$photo');
+      print(
+        '[SearchResultsGrid] Photo URL for profile: uid=${profile.uid}, name=${profile.name}, url=$photo',
+      );
     }
 
     return GestureDetector(
@@ -466,40 +465,41 @@ class _ProfileCard extends ConsumerWidget {
           children: [
             // Background image
             Positioned.fill(
-              child: photo != null
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: CachedImage(
-                        photo,
-                        fit: BoxFit.cover,
-                        width: 200,
-                        height: 300,
+              child:
+                  photo != null
+                      ? ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        cacheDuration: const Duration(days: 30),
-                        errorWidget: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: AppColors.getBackground(context),
-                          ),
-                          child: Icon(
-                            Icons.image_not_supported_outlined,
-                            size: 40,
-                            color: AppColors.getTextSecondary(context),
+                        child: CachedImage(
+                          photo,
+                          fit: BoxFit.cover,
+                          width: 200,
+                          height: 300,
+                          borderRadius: BorderRadius.circular(16),
+                          cacheDuration: const Duration(days: 30),
+                          errorWidget: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: AppColors.getBackground(context),
+                            ),
+                            child: Icon(
+                              Icons.image_not_supported_outlined,
+                              size: 40,
+                              color: AppColors.getTextSecondary(context),
+                            ),
                           ),
                         ),
+                      )
+                      : Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: AppColors.getBackground(context),
+                        ),
+                        child: Icon(
+                          Icons.person,
+                          size: 40,
+                          color: AppColors.getTextSecondary(context),
+                        ),
                       ),
-                    )
-                  : Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: AppColors.getBackground(context),
-                      ),
-                      child: Icon(
-                        Icons.person,
-                        size: 40,
-                        color: AppColors.getTextSecondary(context),
-                      ),
-                    ),
             ),
 
             // Gradient overlay for readability

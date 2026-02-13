@@ -21,7 +21,7 @@ class DatingSearchService {
 
   bool _isDisabledUserDoc(Map<String, dynamic> data) {
     final accountStatus =
-      (data['accountStatus'] ?? '').toString().toLowerCase();
+        (data['accountStatus'] ?? '').toString().toLowerCase();
     if (accountStatus == 'disabled') return true;
 
     final status = (data['status'] ?? '').toString().toLowerCase();
@@ -395,14 +395,14 @@ class DatingSearchService {
 
   /// Assumption based on Nexus 1.0: dating profiles live in users collection.
   /// We filter on gender at query-level and apply the rest in-memory safely.
-  /// 
+  ///
   /// [offset]: Number of filtered profiles to skip (for pagination)
   /// [limit]: Number of filtered profiles per page
-  /// 
+  ///
   /// IMPORTANT: Offset is applied AFTER all filtering (age, country, distance, etc.),
   /// not at the Firestore query level. This ensures that pagination always returns
   /// profiles that match the saved preferences and age bracket.
-  /// 
+  ///
   /// Search strategy:
   /// 1. Query Firestore by gender + country (server-side only)
   /// 2. Apply in-memory filters step-by-step (age → country → distance → marital → kids → genotype)
@@ -418,7 +418,7 @@ class DatingSearchService {
     final genders = _genderQueryValues(genderToShow);
     if (genders.isEmpty)
       return const DatingSearchResult(items: <DatingProfile>[]);
-    
+
     if (kDebugMode) {
       // ignore: avoid_print
       print(
@@ -427,7 +427,7 @@ class DatingSearchService {
         'marital=${filters.maritalStatus}, kids=${filters.hasKids}',
       );
     }
-    
+
     // Optimization: Dynamically set Firestore query limit based on pagination offset
     // This reduces unnecessary re-fetching on subsequent pages
     // Calculate how many profiles we need to fetch to serve offset + limit
@@ -578,7 +578,6 @@ class DatingSearchService {
           );
         }
 
-
         // Enforce: disabled accounts are NOT visible in search results.
         // Exclude admin profiles from appearing in search results (but allow them to search)
         if (_isDisabledUserDoc(data)) {
@@ -673,9 +672,10 @@ class DatingSearchService {
 
     // Sort combined profiles by creation date (most recent first)
     // Done in-memory instead of at Firestore level to avoid composite index requirement
-    final sortedProfiles = combined.values.toList()
-      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    
+    final sortedProfiles =
+        combined.values.toList()
+          ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
     // Age filter first (always applied, even in unlimited mode)
     final afterAge =
         sortedProfiles
@@ -685,7 +685,9 @@ class DatingSearchService {
     if (kDebugMode && combined.isNotEmpty) {
       // Log creation dates to verify newest profiles are first
       final firstFew = combined.values.take(5).toList();
-      final creationDates = firstFew.map((p) => '${p.name}(${p.createdAt})').join(', ');
+      final creationDates = firstFew
+          .map((p) => '${p.name}(${p.createdAt})')
+          .join(', ');
       // ignore: avoid_print
       print(
         '[DatingSearchService] Profile creation order (newest first): $creationDates',
@@ -695,9 +697,11 @@ class DatingSearchService {
     if (kDebugMode) {
       // Debug: Show age range being filtered
       final agesInCombined = combined.values.map((p) => p.age).toList()..sort();
-      final minAgeInCombined = agesInCombined.isNotEmpty ? agesInCombined.first : 0;
-      final maxAgeInCombined = agesInCombined.isNotEmpty ? agesInCombined.last : 0;
-      
+      final minAgeInCombined =
+          agesInCombined.isNotEmpty ? agesInCombined.first : 0;
+      final maxAgeInCombined =
+          agesInCombined.isNotEmpty ? agesInCombined.last : 0;
+
       // ignore: avoid_print
       print(
         '[DatingSearchService] AGE FILTER: minAge=${filters.minAge}, maxAge=${filters.maxAge} '
@@ -711,9 +715,13 @@ class DatingSearchService {
         );
       }
       if (afterAge.isNotEmpty && afterAge.length < 20) {
-        final sampleAges = afterAge.map((p) => '${p.name}(${p.age})').join(', ');
+        final sampleAges = afterAge
+            .map((p) => '${p.name}(${p.age})')
+            .join(', ');
         // ignore: avoid_print
-        print('[DatingSearchService] Sample profiles after age filter: $sampleAges');
+        print(
+          '[DatingSearchService] Sample profiles after age filter: $sampleAges',
+        );
       }
     }
 
@@ -908,14 +916,15 @@ class DatingSearchService {
     if (current.isEmpty && afterAge.isNotEmpty) {
       // CRITICAL: Only return profiles in the age bracket, nothing else
       // Re-validate that all items in fallback are within age range
-      final validatedFallback = afterAge
-          .where((p) => p.age >= filters.minAge && p.age <= filters.maxAge)
-          .toList();
-      
+      final validatedFallback =
+          afterAge
+              .where((p) => p.age >= filters.minAge && p.age <= filters.maxAge)
+              .toList();
+
       // Apply offset/limit to age-only fallback results
       final paginatedFallback =
           validatedFallback.skip(offset).take(limit).toList();
-      
+
       if (kDebugMode) {
         // ignore: avoid_print
         print(
@@ -926,23 +935,31 @@ class DatingSearchService {
           final ages = paginatedFallback.map((p) => p.age).join(', ');
           // ignore: avoid_print
           print('[DatingSearchService] FALLBACK ages: $ages');
-          
+
           // Safety check: validate all returned ages are in range
-          final outOfRange = paginatedFallback.where((p) => p.age < filters.minAge || p.age > filters.maxAge).toList();
+          final outOfRange =
+              paginatedFallback
+                  .where(
+                    (p) => p.age < filters.minAge || p.age > filters.maxAge,
+                  )
+                  .toList();
           if (outOfRange.isNotEmpty) {
             // ignore: avoid_print
-            print('[DatingSearchService] ERROR: Found out-of-range ages in fallback! ${outOfRange.map((p) => '${p.name}(${p.age})').join(', ')}');
+            print(
+              '[DatingSearchService] ERROR: Found out-of-range ages in fallback! ${outOfRange.map((p) => '${p.name}(${p.age})').join(', ')}',
+            );
           }
         }
       }
-      
+
       // Determine hint message based on whether pagination within age bracket is exhausted
-      final hint = paginatedFallback.isEmpty
-          ? 'No more profiles within your age bracket (${filters.minAge}-${filters.maxAge}). '
-              'Expand your search or check back later.'
-          : 'No more profiles matching your preferences. '
-              'Showing other profiles in your age bracket.';
-      
+      final hint =
+          paginatedFallback.isEmpty
+              ? 'No more profiles within your age bracket (${filters.minAge}-${filters.maxAge}). '
+                  'Expand your search or check back later.'
+              : 'No more profiles matching your preferences. '
+                  'Showing other profiles in your age bracket.';
+
       return DatingSearchResult(
         items: paginatedFallback,
         emptyHint: hint,
@@ -952,7 +969,7 @@ class DatingSearchService {
 
     // Apply offset/limit to the fully-filtered results
     final paginatedResults = current.skip(offset).take(limit).toList();
-    
+
     if (kDebugMode) {
       // ignore: avoid_print
       print(
@@ -962,12 +979,17 @@ class DatingSearchService {
         final ages = paginatedResults.map((p) => p.age).join(', ');
         // ignore: avoid_print
         print('[DatingSearchService] FINAL ages: $ages');
-        
+
         // Safety check: validate all returned ages are in range
-        final outOfRange = paginatedResults.where((p) => p.age < filters.minAge || p.age > filters.maxAge).toList();
+        final outOfRange =
+            paginatedResults
+                .where((p) => p.age < filters.minAge || p.age > filters.maxAge)
+                .toList();
         if (outOfRange.isNotEmpty) {
           // ignore: avoid_print
-          print('[DatingSearchService] ERROR: Found out-of-range ages in final results! ${outOfRange.map((p) => '${p.name}(${p.age})').join(', ')}');
+          print(
+            '[DatingSearchService] ERROR: Found out-of-range ages in final results! ${outOfRange.map((p) => '${p.name}(${p.age})').join(', ')}',
+          );
         }
       }
     }

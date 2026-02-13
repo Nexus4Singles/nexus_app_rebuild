@@ -280,7 +280,13 @@ class _CoachApplicationScreenState
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            if (Navigator.of(context).canPop()) {
+              Navigator.pop(context);
+            } else {
+              Navigator.pushReplacementNamed(context, '/home');
+            }
+          },
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -977,7 +983,7 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Please upload a nice picture as this would be used to create your profile. AI-generated pictures are not acceptable and could invalidate your application.',
+                    'Please upload a nice picture as this would be used to create your profile. AI-generated pictures are not acceptable and using them could invalidate your application.',
                     style: TextStyle(
                       color: Colors.orange.shade700,
                       fontSize: 12,
@@ -1129,7 +1135,15 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
                               ),
                             );
                             Future.delayed(const Duration(seconds: 2), () {
-                              if (mounted) Navigator.pop(context);
+                              if (!mounted) return;
+                              if (Navigator.of(context).canPop()) {
+                                Navigator.pop(context);
+                              } else {
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  '/home',
+                                );
+                              }
                             });
                           }
                         } catch (e, stack) {

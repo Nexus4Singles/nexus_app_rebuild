@@ -21,6 +21,9 @@ class DatingOnboardingDraft {
   /// Local image file paths for now. Later we store remote URLs.
   final List<String> photoPaths;
 
+  /// Remote photo URLs after upload.
+  final List<String> photoUrls;
+
   /// Local audio file paths for now. Later we store remote URLs.
   final String? audio1Path;
   final String? audio2Path;
@@ -48,6 +51,7 @@ class DatingOnboardingDraft {
     this.hobbies = const [],
     this.desiredQualities = const [],
     this.photoPaths = const [],
+    this.photoUrls = const [],
     this.audio1Path,
     this.audio2Path,
     this.audio3Path,
@@ -69,6 +73,7 @@ class DatingOnboardingDraft {
     List<String>? hobbies,
     List<String>? desiredQualities,
     List<String>? photoPaths,
+    List<String>? photoUrls,
     String? audio1Path,
     String? audio2Path,
     String? audio3Path,
@@ -89,6 +94,7 @@ class DatingOnboardingDraft {
       hobbies: hobbies ?? this.hobbies,
       desiredQualities: desiredQualities ?? this.desiredQualities,
       photoPaths: photoPaths ?? this.photoPaths,
+      photoUrls: photoUrls ?? this.photoUrls,
       audio1Path: audio1Path ?? this.audio1Path,
       audio2Path: audio2Path ?? this.audio2Path,
       audio3Path: audio3Path ?? this.audio3Path,
@@ -113,6 +119,7 @@ class DatingOnboardingDraft {
       'hobbies': hobbies,
       'desiredQualities': desiredQualities,
       'photoPaths': photoPaths,
+      'photoUrls': photoUrls,
       'audio1Path': audio1Path,
       'audio2Path': audio2Path,
       'audio3Path': audio3Path,
@@ -138,6 +145,7 @@ class DatingOnboardingDraft {
       desiredQualities:
           (json['desiredQualities'] as List<dynamic>?)?.cast<String>() ?? [],
       photoPaths: (json['photoPaths'] as List<dynamic>?)?.cast<String>() ?? [],
+      photoUrls: (json['photoUrls'] as List<dynamic>?)?.cast<String>() ?? [],
       audio1Path: json['audio1Path'] as String?,
       audio2Path: json['audio2Path'] as String?,
       audio3Path: json['audio3Path'] as String?,
@@ -151,6 +159,8 @@ class DatingOnboardingDraft {
     );
   }
 }
+
+// Removed duplicate class definition. setPhotoUrls will be added to the main class below.
 
 class DatingOnboardingDraftNotifier
     extends StateNotifier<DatingOnboardingDraft> {
@@ -172,6 +182,13 @@ class DatingOnboardingDraftNotifier
     } catch (e) {
       // Ignore errors, start fresh
     }
+  }
+
+  // ...existing code...
+
+  void setPhotoUrls(List<String> urls) {
+    state = state.copyWith(photoUrls: urls);
+    _saveDraft();
   }
 
   /// Save draft to SharedPreferences after each change

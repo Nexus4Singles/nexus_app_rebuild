@@ -1694,18 +1694,38 @@ class _ProfileAudioController {
     });
   }
 
-  /// Get duration for a specific URL (returns cached or current duration)
-  Duration getDurationForUrl(String url) {
+  /// Get duration for a specific URL (always reads real file duration if possible)
+  Future<Duration> getDurationForUrl(String url) async {
     final u = url.trim();
     if (u.isEmpty) return Duration.zero;
 
-    // If this is the current URL, return the live duration
-    if (currentUrl == u && duration != Duration.zero) {
-      return duration;
+    // If cached, return immediately
+    if (_durationCache.containsKey(u)) {
+      return _durationCache[u]!;
     }
 
-    // Otherwise return cached duration
-    return _durationCache[u] ?? Duration.zero;
+    try {
+      final tempPlayer = AudioPlayer();
+      Duration? realDuration;
+      bool durationLoaded = false;
+      final completer = Completer<Duration>();
+      tempPlayer.onDurationChanged.listen((d) {
+        if (!durationLoaded && d != Duration.zero) {
+          durationLoaded = true;
+          _durationCache[u] = d;
+          realDuration = d;
+          completer.complete(d);
+        }
+      });
+      await tempPlayer.setSource(UrlSource(u));
+      await tempPlayer.resume();
+      await Future.delayed(const Duration(milliseconds: 100));
+      await tempPlayer.stop();
+      await tempPlayer.dispose();
+      return await completer.future.timeout(const Duration(seconds: 2), onTimeout: () => realDuration ?? Duration.zero);
+    } catch (_) {
+      return Duration.zero;
+    }
   }
 
   /// Preload duration for a URL without playing it
@@ -1996,113 +2016,116 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
     final isPlaying =
         isCurrent && widget.controller.state == PlayerState.playing;
 
+
     // Get duration specific to this audio URL (not the shared controller duration)
-    final audioDuration =
-        hasUrl
-            ? widget.controller.getDurationForUrl(widget.url!)
-            : Duration.zero;
-    final duration =
-        audioDuration.inMilliseconds == 0
+    final Future<Duration> audioDurationFuture = hasUrl
+        ? widget.controller.getDurationForUrl(widget.url!)
+        : Future.value(Duration.zero);
+
+    return FutureBuilder<Duration>(
+      future: audioDurationFuture,
+      builder: (context, snapshot) {
+        final audioDuration = snapshot.data ?? Duration.zero;
+        final duration = audioDuration.inMilliseconds == 0
             ? const Duration(seconds: 1)
             : audioDuration;
-
-    // Position is only relevant for the currently playing audio
-    final position = isCurrent ? widget.controller.position : Duration.zero;
-
-    final borderColor = Theme.of(context).dividerColor;
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: borderColor),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Audio prompt question
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Text(
-              widget.prompt,
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+        // Position is only relevant for the currently playing audio
+        final position = isCurrent ? widget.controller.position : Duration.zero;
+        final borderColor = Theme.of(context).dividerColor;
+        return Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: borderColor),
           ),
-          Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InkWell(
-                onTap:
-                    (!widget.isLocked && hasUrl)
-                        ? () async {
-                          await widget.controller.playOrPause(widget.url!);
-                        }
-                        : null,
-                borderRadius: BorderRadius.circular(999),
-                child: Container(
-                  height: 34,
-                  width: 44,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(color: Theme.of(context).dividerColor),
-                  ),
-                  child: Icon(
-                    widget.isLocked
-                        ? Icons.lock_rounded
-                        : hasUrl
-                        ? (isPlaying
-                            ? Icons.pause_rounded
-                            : Icons.play_arrow_rounded)
-                        : Icons.mic_none_rounded,
-                    color: Theme.of(context).colorScheme.primary,
-                    size: 22,
+              // Audio prompt question
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Text(
+                  widget.prompt,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-            ],
-          ),
-          if (!widget.isLocked && hasUrl) ...[
-            const SizedBox(height: 8),
-            Slider(
-              value:
-                  isCurrent
+              Row(
+                children: [
+                  InkWell(
+                    onTap:
+                        (!widget.isLocked && hasUrl)
+                            ? () async {
+                                await widget.controller.playOrPause(widget.url!);
+                              }
+                            : null,
+                    borderRadius: BorderRadius.circular(999),
+                    child: Container(
+                      height: 34,
+                      width: 44,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(999),
+                        border: Border.all(color: Theme.of(context).dividerColor),
+                      ),
+                      child: Icon(
+                        widget.isLocked
+                            ? Icons.lock_rounded
+                            : hasUrl
+                                ? (isPlaying
+                                    ? Icons.pause_rounded
+                                    : Icons.play_arrow_rounded)
+                                : Icons.mic_none_rounded,
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 22,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              if (!widget.isLocked && hasUrl) ...[
+                const SizedBox(height: 8),
+                Slider(
+                  value: isCurrent
                       ? position.inMilliseconds
                           .clamp(0, duration.inMilliseconds)
                           .toDouble()
                       : 0,
-              max: duration.inMilliseconds.toDouble(),
-              activeColor: Theme.of(context).colorScheme.primary,
-              inactiveColor: Theme.of(
-                context,
-              ).colorScheme.primary.withOpacity(0.2),
-              onChanged: (v) async {
-                if (!isCurrent) return;
-                await widget.controller.seek(Duration(milliseconds: v.toInt()));
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  _formatDuration(isCurrent ? position : Duration.zero),
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+                  max: duration.inMilliseconds.toDouble(),
+                  activeColor: Theme.of(context).colorScheme.primary,
+                  inactiveColor: Theme.of(
+                    context,
+                  ).colorScheme.primary.withOpacity(0.2),
+                  onChanged: (v) async {
+                    if (!isCurrent) return;
+                    await widget.controller.seek(Duration(milliseconds: v.toInt()));
+                  },
                 ),
-                Text(
-                  _formatDuration(duration),
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      _formatDuration(isCurrent ? position : Duration.zero),
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                    Text(
+                      _formatDuration(duration),
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
                 ),
               ],
-            ),
-          ],
-        ],
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

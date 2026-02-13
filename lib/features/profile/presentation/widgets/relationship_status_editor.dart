@@ -110,7 +110,16 @@ void showRelationshipStatusDialog(
   required VoidCallback onSuccess,
 }) {
   final updater = ref.read(relationshipStatusUpdaterProvider);
-  String selectedStatus = currentStatus;
+  // Normalize currentStatus to canonical value
+  String normalizeStatus(String status) {
+    final s = status.toLowerCase();
+    if (s.contains('never') || s.contains('single')) return 'never_married';
+    if (s.contains('married')) return 'married';
+    if (s.contains('divorc')) return 'divorced';
+    if (s.contains('widow')) return 'widowed';
+    return 'never_married'; // fallback
+  }
+  String selectedStatus = normalizeStatus(currentStatus);
   bool isLoading = false;
 
   final statusOptions = [

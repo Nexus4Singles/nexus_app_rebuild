@@ -235,6 +235,7 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
       }
 
       final storage = ref.read(mediaStorageProvider);
+      final List<String> uploadedUrls = [];
 
       for (var i = 0; i < _photoPaths.length; i++) {
         final path = _photoPaths[i];
@@ -245,12 +246,18 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
             localPath: path,
             objectKey: key,
           );
+          uploadedUrls.add(publicUrl);
         } catch (e) {
           _toast('Failed to upload photo ${i + 1}: $e');
           setState(() => _busy = false);
           return;
         }
       }
+
+      // Save uploaded photo URLs to the draft
+      ref
+          .read(datingOnboardingDraftProvider.notifier)
+          .setPhotoUrls(uploadedUrls);
 
       if (!context.mounted) return;
       Navigator.of(context).pushNamed('/dating/setup/audio');

@@ -11,7 +11,9 @@ final currentUserGenderProvider = StreamProvider<String?>((ref) {
   final authState = ref.watch(authStateProvider);
   authState.when(
     data: (user) {
-      print('[currentUserGenderProvider] Auth state: ${user?.uid}, anonymous=${user?.isAnonymous}');
+      print(
+        '[currentUserGenderProvider] Auth state: ${user?.uid}, anonymous=${user?.isAnonymous}',
+      );
       if (user != null && !user.isAnonymous) {
         // Clear guest session on login
         print('[currentUserGenderProvider] Clearing guest session on login');
@@ -34,7 +36,9 @@ final currentUserGenderProvider = StreamProvider<String?>((ref) {
     if (g == null || g.trim().isEmpty) {
       // Fallback to guest session gender if not authenticated
       if (presurveyGender != null && presurveyGender.trim().isNotEmpty) {
-        print('[currentUserGenderProvider] Fallback to guest session gender: $presurveyGender');
+        print(
+          '[currentUserGenderProvider] Fallback to guest session gender: $presurveyGender',
+        );
         return presurveyGender.toLowerCase();
       }
       return null;

@@ -66,14 +66,16 @@ class CompatibilityQuizScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               Expanded(
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 260),
-                  switchInCurve: Curves.easeOut,
-                  switchOutCurve: Curves.easeIn,
-                  child: _QuizStepView(
-                    key: ValueKey(step),
-                    step: step,
-                    selected: selected,
+                child: Center(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 260),
+                    switchInCurve: Curves.easeOut,
+                    switchOutCurve: Curves.easeIn,
+                    child: _QuizStepView(
+                      key: ValueKey(step),
+                      step: step,
+                      selected: selected,
+                    ),
                   ),
                 ),
               ),
