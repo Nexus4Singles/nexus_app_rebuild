@@ -48,8 +48,8 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
   @override
   void initState() {
     super.initState();
-    // Show splash for 45 seconds to allow full animation viewing
-    _timer = Timer(const Duration(seconds: 45), _route);
+    // Show splash for 10 seconds to allow full animation viewing
+    _timer = Timer(const Duration(seconds: 10), _route);
   }
 
   @override
@@ -431,40 +431,6 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // ── Logo (hero element, appears first) ──
-                ScaleTransition(
-                  scale: _logoScale,
-                  child: FadeTransition(
-                    opacity: _logoFade,
-                    child: AnimatedBuilder(
-                      animation: _shimmerController,
-                      builder: (context, child) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white.withOpacity(
-                                  0.08 + 0.07 * _shimmer.value,
-                                ),
-                                blurRadius: 30 + 10 * _shimmer.value,
-                                spreadRadius: 2 + 4 * _shimmer.value,
-                              ),
-                            ],
-                          ),
-                          child: child,
-                        );
-                      },
-                      child: Image.asset(
-                        'assets/images/nexus_logo.png',
-                        height: 120,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-
                 // ── App name ──
                 SlideTransition(
                   position: _titleSlide,
@@ -495,6 +461,40 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
                         color: Colors.white.withOpacity(0.85),
                         height: 1.45,
                         letterSpacing: 0.2,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // ── Logo (hero element, appears first) ──
+                ScaleTransition(
+                  scale: _logoScale,
+                  child: FadeTransition(
+                    opacity: _logoFade,
+                    child: AnimatedBuilder(
+                      animation: _shimmerController,
+                      builder: (context, child) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.white.withOpacity(
+                                  0.08 + 0.07 * _shimmer.value,
+                                ),
+                                blurRadius: 30 + 10 * _shimmer.value,
+                                spreadRadius: 2 + 4 * _shimmer.value,
+                              ),
+                            ],
+                          ),
+                          child: child,
+                        );
+                      },
+                      child: Image.asset(
+                        'assets/images/nexus_logo.png',
+                        height: 120,
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),
