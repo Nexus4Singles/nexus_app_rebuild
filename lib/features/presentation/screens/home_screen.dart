@@ -7,6 +7,7 @@ import 'package:nexus_app_v2/core/widgets/guest_guard.dart';
 import 'package:nexus_app_v2/core/theme/app_colors.dart';
 import 'package:nexus_app_v2/core/theme/app_text_styles.dart';
 import 'package:nexus_app_v2/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/core/router/app_routes.dart';
 
 import 'package:nexus_app_v2/core/session/is_guest_provider.dart';
 import 'package:nexus_app_v2/core/providers/auth_provider.dart';
@@ -470,7 +471,7 @@ class _StartAssessmentCard extends ConsumerWidget {
                   onCreateAccount:
                       () => Navigator.of(context).pushNamed('/signup'),
                   onAllowed: () async {
-                    Navigator.of(context).pushNamed('/assessment');
+                    Navigator.of(context).pushNamed(AppRoutes.assessmentIntro);
                   },
                 );
               },
