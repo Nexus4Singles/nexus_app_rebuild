@@ -13,8 +13,8 @@ import '../../../core/notifications/notification_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../guest/guest_entry_gate.dart';
-import '../../presurvey/presentation/splash/presurvey_splash_screen.dart';
 import '../../presurvey/presentation/screens/presurvey_relationship_status_screen.dart';
+import '../../../core/session/guest_session_provider.dart';
 
 import '../../auth/presentation/screens/login_screen.dart';
 import '../../auth/presentation/screens/signup_screen.dart';
@@ -48,8 +48,8 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
   @override
   void initState() {
     super.initState();
-    // Short splash delay for branding; then route.
-    _timer = Timer(const Duration(seconds: 2), _route);
+    // Show splash for 45 seconds to allow full animation viewing
+    _timer = Timer(const Duration(seconds: 45), _route);
   }
 
   @override
@@ -130,9 +130,10 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
             final hasRelationshipStatus = _isRelationshipStatusSelected(doc);
             if (!hasRelationshipStatus) {
               // V1 users must select relationship status in presurvey
+              ref.read(guestSessionProvider.notifier).clear();
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (_) => const PresurveySplashScreen(),
+                  builder: (_) => const PresurveyRelationshipStatusScreen(),
                 ),
               );
               return;
@@ -141,13 +142,16 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
             // Third check: is presurvey completed?
             final done = _isPresurveyCompleted(doc);
 
+            if (!done) {
+              ref.read(guestSessionProvider.notifier).clear();
+            }
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder:
                     (_) =>
                         done
                             ? const GuestEntryGate(child: BootstrapGate())
-                            : const PresurveySplashScreen(),
+                            : const PresurveyRelationshipStatusScreen(),
               ),
             );
           },
@@ -209,22 +213,26 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
               // V1 users must select relationship status
               final hasRelationshipStatus = _isRelationshipStatusSelected(doc);
               if (!hasRelationshipStatus) {
+                ref.read(guestSessionProvider.notifier).clear();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (_) => const PresurveySplashScreen(),
+                    builder: (_) => const PresurveyRelationshipStatusScreen(),
                   ),
                 );
                 return;
               }
 
               final done = _isPresurveyCompleted(doc);
+              if (!done) {
+                ref.read(guestSessionProvider.notifier).clear();
+              }
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder:
                       (_) =>
                           done
                               ? const GuestEntryGate(child: BootstrapGate())
-                              : const PresurveySplashScreen(),
+                              : const PresurveyRelationshipStatusScreen(),
                 ),
               );
             },
@@ -282,42 +290,213 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
   }
 }
 
-class _NexusSplashScreen extends StatelessWidget {
+class _NexusSplashScreen extends StatefulWidget {
   const _NexusSplashScreen();
+
+  @override
+  State<_NexusSplashScreen> createState() => _NexusSplashScreenState();
+}
+
+class _NexusSplashScreenState extends State<_NexusSplashScreen>
+    with TickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final AnimationController _shimmerController;
+
+  // Container
+  late final Animation<double> _containerFade;
+
+  // Logo: scale up + fade
+  late final Animation<double> _logoScale;
+  late final Animation<double> _logoFade;
+
+  // Title: fade + slide
+  late final Animation<double> _titleFade;
+  late final Animation<Offset> _titleSlide;
+
+  // Tagline: fade + slide
+  late final Animation<double> _taglineFade;
+  late final Animation<Offset> _taglineSlide;
+
+  // Subtle shimmer on logo
+  late final Animation<double> _shimmer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Pre-cache logo
+    Future.microtask(() {
+      if (mounted) {
+        precacheImage(
+          const AssetImage('assets/images/nexus_logo.png'),
+          context,
+        );
+      }
+    });
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1600),
+    );
+
+    _shimmerController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    );
+
+    // Whole container fades in (0% – 25%)
+    _containerFade = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.25, curve: Curves.easeOut),
+      ),
+    );
+
+    // Logo appears first — hero element (0% – 50%)
+    _logoScale = Tween<double>(begin: 0.6, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.50, curve: Curves.easeOutBack),
+      ),
+    );
+    _logoFade = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.35, curve: Curves.easeOut),
+      ),
+    );
+
+    // Title appears after logo (25% – 65%)
+    _titleFade = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.25, 0.55, curve: Curves.easeOut),
+      ),
+    );
+    _titleSlide = Tween<Offset>(
+      begin: const Offset(0, 0.15),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.25, 0.65, curve: Curves.easeOutCubic),
+      ),
+    );
+
+    // Tagline last (50% – 90%)
+    _taglineFade = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.50, 0.80, curve: Curves.easeOut),
+      ),
+    );
+    _taglineSlide = Tween<Offset>(
+      begin: const Offset(0, 0.15),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.50, 0.90, curve: Curves.easeOutCubic),
+      ),
+    );
+
+    // Soft shimmer pulse on logo (repeats)
+    _shimmer = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _shimmerController, curve: Curves.easeInOut),
+    );
+
+    _controller.forward();
+    // Start shimmer after main entrance finishes
+    Future.delayed(const Duration(milliseconds: 1200), () {
+      if (mounted) _shimmerController.repeat(reverse: true);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _shimmerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primary,
-      body: SafeArea(
+      body: FadeTransition(
+        opacity: _containerFade,
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28),
+            padding: const EdgeInsets.symmetric(horizontal: 32),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  'Nexus',
-                  style: AppTextStyles.headlineLarge.copyWith(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.4,
+                // ── Logo (hero element, appears first) ──
+                ScaleTransition(
+                  scale: _logoScale,
+                  child: FadeTransition(
+                    opacity: _logoFade,
+                    child: AnimatedBuilder(
+                      animation: _shimmerController,
+                      builder: (context, child) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.white.withOpacity(
+                                  0.08 + 0.07 * _shimmer.value,
+                                ),
+                                blurRadius: 30 + 10 * _shimmer.value,
+                                spreadRadius: 2 + 4 * _shimmer.value,
+                              ),
+                            ],
+                          ),
+                          child: child,
+                        );
+                      },
+                      child: Image.asset(
+                        'assets/images/nexus_logo.png',
+                        height: 120,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 18),
-                Image.asset(
-                  'assets/images/nexus_logo.png',
-                  height: 132,
-                  fit: BoxFit.contain,
+                const SizedBox(height: 24),
+
+                // ── App name ──
+                SlideTransition(
+                  position: _titleSlide,
+                  child: FadeTransition(
+                    opacity: _titleFade,
+                    child: Text(
+                      'Nexus',
+                      style: AppTextStyles.headlineLarge.copyWith(
+                        color: Colors.white,
+                        fontSize: 36,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 18),
-                Text(
-                  'Raising Godly Families through Kingdom Relationships & Marriages.',
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: Colors.white.withOpacity(0.95),
-                    height: 1.35,
+                const SizedBox(height: 10),
+
+                // ── Tagline ──
+                SlideTransition(
+                  position: _taglineSlide,
+                  child: FadeTransition(
+                    opacity: _taglineFade,
+                    child: Text(
+                      'Raising Godly Families through\nKingdom Relationships & Marriages.',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: Colors.white.withOpacity(0.85),
+                        height: 1.45,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
                   ),
                 ),
               ],
