@@ -336,7 +336,7 @@
       "number": 2,
       "dimension": "Meaning-Making",
       "questionType": "scenario",
-      "text": "A friend going through marital struggles asks you: :\n\"What did your marriage teach you?\"\nWhat comes out?",
+      "text": "A friend going through marital struggles asks you: \"What did your marriage teach you?\"\nWhat comes out?",
       "options": [
         {
           "id": "A",
@@ -564,7 +564,7 @@
       "number": 6,
       "dimension": "Grief Integration",
       "questionType": "scenario",
-      "text": "You are talking with a counselor or trusted friend and they ask: :\n\"When you think about the difficult parts of your marriage: the arguments, the disappointments, the things left unfinished, what do you do with those?\"\nWhat is your most honest response?",
+      "text": "You are talking with a counselor or trusted friend and they ask: \"When you think about the difficult parts of your marriage: the arguments, the disappointments, the things left unfinished, what do you do with those?\"\nWhat is your most honest response?",
       "options": [
         {
           "id": "A",
@@ -686,7 +686,7 @@
       "number": 8,
       "dimension": "Marriage Understanding",
       "questionType": "scenario",
-      "text": "A younger person about to get married asks you: :\n\"What do you wish someone had told you about marriage before your first one?\"\nWhat comes to mind first?",
+      "text": "A younger person about to get married asks you: \"What do you wish someone had told you about marriage before your first one?\"\nWhat comes to mind first?",
       "options": [
         {
           "id": "A",
@@ -743,7 +743,7 @@
       "number": 9,
       "dimension": "Change Basis",
       "questionType": "scenario",
-      "text": "Imagine a future spouse asks you: :\n\"How do I know you will not repeat the same patterns from your last marriage?\"\nWhat would you honestly say?",
+      "text": "Imagine a future spouse asks you: \"How do I know you will not repeat the same patterns from your last marriage?\"\nWhat would you honestly say?",
       "options": [
         {
           "id": "A",
@@ -857,7 +857,7 @@
       "number": 11,
       "dimension": "Trust Capacity",
       "questionType": "scenario",
-      "text": "You are getting to know someone new and they say: :\n\"I would never hurt you.\"\nWhat is your gut response?",
+      "text": "You are getting to know someone new and they say: \"I would never hurt you.\"\nWhat is your gut response?",
       "options": [
         {
           "id": "A",
@@ -1093,7 +1093,7 @@
       "number": 15,
       "dimension": "Comparison Risk",
       "questionType": "scenario",
-      "text": "You are getting close to someone new and you catch yourself thinking: :\n\"My late spouse would have done this differently. They knew me so well.\"\nWhat do you do with that thought?",
+      "text": "You are getting close to someone new and you catch yourself thinking: \"My late spouse would have done this differently. They knew me so well.\"\nWhat do you do with that thought?",
       "options": [
         {
           "id": "A",
@@ -1386,7 +1386,7 @@
       "number": 20,
       "dimension": "Remarriage Posture",
       "questionType": "scenario",
-      "text": "Someone you respect says to you: :\n\"I think you are ready to start dating again.\"\nWhat is the first thing you feel?",
+      "text": "Someone you respect says to you: \"I think you are ready to start dating again.\"\nWhat is the first thing you feel?",
       "options": [
         {
           "id": "A",
@@ -1447,7 +1447,7 @@
       "number": 21,
       "dimension": "Readiness Orientation",
       "questionType": "scenario",
-      "text": "A close friend asks you honestly: :\n\"If the right person showed up tomorrow, would you be ready?\"\nWhat is your most truthful answer?",
+      "text": "A close friend asks you honestly: \"If the right person showed up tomorrow, would you be ready?\"\nWhat is your most truthful answer?",
       "options": [
         {
           "id": "A",

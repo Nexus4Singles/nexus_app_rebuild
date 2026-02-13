@@ -804,7 +804,7 @@
       "number": 10,
       "dimension": "Responsiveness to Concerns",
       "questionType": "scenario",
-      "text": "Your spouse sits you down and says: :\n\"There is something I have been wanting to talk to you about. It has been bothering me.\"\nWhat happens in your body and mind first?",
+      "text": "Your spouse sits you down and says: \"There is something I have been wanting to talk to you about. It has been bothering me.\"\nWhat happens in your body and mind first?",
       "options": [
         {
           "id": "A",
@@ -1097,7 +1097,7 @@
       "number": 15,
       "dimension": "Commitment to Growth",
       "questionType": "scenario",
-      "text": "Your spouse tells you: :\n\"I think we should see a marriage counselor, not because we are in crisis, but because I want us to keep growing.\"\nWhat is your honest reaction?",
+      "text": "Your spouse tells you: \"I think we should see a marriage counselor, not because we are in crisis, but because I want us to keep growing.\"\nWhat is your honest reaction?",
       "options": [
         {
           "id": "A",

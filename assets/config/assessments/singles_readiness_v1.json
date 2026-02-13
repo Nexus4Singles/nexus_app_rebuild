@@ -701,7 +701,7 @@
       "number": 3,
       "dimension": "Relational Self-Awareness",
       "questionType": "scenario",
-      "text": "Someone you trust says: :\n\"When we talk, I feel like you are not really listening, like you are just waiting for your turn to speak.\"\nWhat is your honest first reaction?",
+      "text": "Someone you trust says: \"When we talk, I feel like you are not really listening, like you are just waiting for your turn to speak.\"\nWhat is your honest first reaction?",
       "options": [
         {
           "id": "A",
@@ -1576,7 +1576,7 @@
       "number": 18,
       "dimension": "Marriage Expectations",
       "questionType": "scenario",
-      "text": "A newly married friend tells you: :\n\"Marriage is the best thing that ever happened to me. We never fight and I have never been happier.\"\nWhat is your reaction?",
+      "text": "A newly married friend tells you: \"Marriage is the best thing that ever happened to me. We never fight and I have never been happier.\"\nWhat is your reaction?",
       "options": [
         {
           "id": "A",
