@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/auth/auth_providers.dart';
-
+import '../../../../core/router/safe_nav.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/widgets/guest_guard.dart';
@@ -151,7 +151,7 @@ class _Shell extends ConsumerWidget {
             Icons.arrow_back_ios_new,
             color: Theme.of(context).colorScheme.onBackground,
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => navigateBackToHome(context),
         ),
       ),
       body: completedAsync.when(

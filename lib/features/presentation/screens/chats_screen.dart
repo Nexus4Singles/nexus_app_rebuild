@@ -668,12 +668,10 @@ class _ChatRowState extends State<_ChatRow>
         borderRadius: BorderRadius.circular(28),
         child:
             url.isNotEmpty
-                ? Image.network(
-                  url,
-                  fit: BoxFit.cover,
-                  width: 56,
-                  height: 56,
-                  errorBuilder: (_, __, ___) => _buildInitialAvatar(initials),
+                ? CachedAvatarImage(
+                  imageUrl: url,
+                  size: 56,
+                  fallbackInitial: initials,
                 )
                 : _buildInitialAvatar(initials),
       ),

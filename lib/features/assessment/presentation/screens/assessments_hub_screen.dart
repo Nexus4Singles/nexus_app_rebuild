@@ -5,6 +5,7 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/providers/assessment_provider.dart';
 import '../../../../core/providers/auth_status_provider.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/router/safe_nav.dart';
 import '../../../../core/theme/theme.dart';
 
 class AssessmentsHubScreen extends ConsumerWidget {
@@ -40,6 +41,10 @@ class AssessmentsHubScreen extends ConsumerWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () => navigateBackToHome(context),
+        ),
         title: Text("Assessments", style: AppTextStyles.headlineLarge),
       ),
       body: ListView(
@@ -260,7 +265,11 @@ class _LockedChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.lock_outline, size: 16, color: AppColors.getTextSecondary(context)),
+        Icon(
+          Icons.lock_outline,
+          size: 16,
+          color: AppColors.getTextSecondary(context),
+        ),
         const SizedBox(width: 6),
         Text(
           "Sign in",

@@ -32,38 +32,44 @@ final isProfileSavedProvider = Provider.family<bool, String>((ref, profileId) {
 /// Notifier for managing saved profiles
 final savedProfilesNotifierProvider = Provider<SavedProfilesNotifier>((ref) {
   final userId = ref.watch(currentUserIdProvider);
-  return SavedProfilesNotifier(userId);
+  return SavedProfilesNotifier(userId, ref);
 });
 
 class SavedProfilesNotifier {
   final String? userId;
+  final Ref _ref;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  SavedProfilesNotifier(this.userId);
+  SavedProfilesNotifier(this.userId, this._ref);
 
-  /// Toggle save/unsave for a profile
+  /// Toggle save/unsave for a profile with optimistic update
   Future<void> toggleSave(String profileId) async {
     if (userId == null) return;
 
+    // OPTIMISTIC UPDATE: Get current saved state
+    final currentSaved = _ref.read(savedProfilesProvider).valueOrNull ?? {};
+    final willBeSaved = !currentSaved.contains(profileId);
+
+    // Update Firestore in background (no await - fire and forget for instant UX)
     final docRef = _firestore.collection('users').doc(userId);
-    final doc = await docRef.get();
-
-    if (!doc.exists) return;
-
-    final data = doc.data();
-    final savedList =
-        (data?['savedProfiles'] as List?)?.map((e) => e.toString()).toList() ??
-        [];
-
-    if (savedList.contains(profileId)) {
-      // Remove from saved
-      savedList.remove(profileId);
-    } else {
+    
+    if (willBeSaved) {
       // Add to saved
-      savedList.add(profileId);
+      docRef.update({
+        'savedProfiles': FieldValue.arrayUnion([profileId]),
+      }).catchError((e) {
+        print('[SavedProfilesNotifier] Error saving profile: $e');
+      });
+    } else {
+      // Remove from saved
+      docRef.update({
+        'savedProfiles': FieldValue.arrayRemove([profileId]),
+      }).catchError((e) {
+        print('[SavedProfilesNotifier] Error unsaving profile: $e');
+      });
     }
-
-    await docRef.update({'savedProfiles': savedList});
+    
+    // UI updates automatically via StreamProvider watching Firestore
   }
 
   /// Save a profile

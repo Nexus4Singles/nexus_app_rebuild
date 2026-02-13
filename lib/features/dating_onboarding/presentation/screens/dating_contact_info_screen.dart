@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:nexus_app_v2/core/router/safe_nav.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/features/dating_onboarding/application/dating_onboarding_draft.dart';
 import 'package:nexus_app_v2/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
@@ -196,7 +197,7 @@ class _DatingContactInfoScreenState
         titleSpacing: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => navigateBackToHome(context),
         ),
         title: Text(
           'Contact Information',
@@ -365,6 +366,7 @@ class _DatingContactInfoScreenState
               canonCountry, // Store canonicalized for query consistency
           'contactInfo': d.contactInfo,
           'profileCompleted': true,
+          'isActive': true, // Dating profile is now active when completed
           'verificationStatus': 'pending',
           'verificationQueuedAt': FieldValue.serverTimestamp(),
           // Profile searchable attributes (for dating.{field} queries)
@@ -398,10 +400,8 @@ class _DatingContactInfoScreenState
         await fs.collection('users').doc(uid).set({
           'dating': payload,
         }, SetOptions(merge: true));
-      } else {
-      }
-    } catch (e) {
-    }
+      } else {}
+    } catch (e) {}
 
     if (!mounted) return;
     Navigator.of(context).pushNamed('/dating/setup/complete');

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/router/safe_nav.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/router/app_routes.dart';
 import 'coach_application_screen.dart';
@@ -77,11 +78,7 @@ class _BookMarriageCoachScreenState
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            } else {
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            }
+            navigateBackToHome(context);
           },
         ),
         title: Text(
@@ -288,110 +285,6 @@ class _BookMarriageCoachScreenState
           ],
         ),
       ),
-    );
-  }
-
-  void _showComingSoonModal(BuildContext context) {
-    if (selectedIndex == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a counseling type')),
-      );
-      return;
-    }
-    final selectedCounseling =
-        ref.read(counselingTypesProvider)[selectedIndex!];
-
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            backgroundColor: AppColors.getSurface(context),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            title: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    Icons.access_time_rounded,
-                    color: AppColors.primary,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Coming Soon',
-                  style: AppTextStyles.titleMedium.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 12),
-                Text(
-                  'We\'re excited to bring ${selectedCounseling.title} (${selectedCounseling.type}) to you soon!',
-                  style: AppTextStyles.bodyMedium,
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.08),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: AppColors.primary.withOpacity(0.2),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.notifications_outlined,
-                        color: AppColors.primary,
-                        size: 18,
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          'Check back soon for updates',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.primary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  // Navigate to requirements screen when user clicks "Got it"
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const CoachRequirementsScreen(),
-                    ),
-                  );
-                },
-                child: Text(
-                  'Got it',
-                  style: AppTextStyles.labelLarge.copyWith(
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
-            ],
-          ),
     );
   }
 

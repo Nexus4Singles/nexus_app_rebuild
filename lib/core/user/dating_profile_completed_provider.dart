@@ -13,9 +13,10 @@ bool _hasNonEmptyString(Map<String, dynamic> doc, String key) {
   return v is String && v.trim().isNotEmpty;
 }
 
-/// v2: users/{uid}.dating.profileCompleted == true
+/// v2: users/{uid}.dating.profileCompleted == true AND dating profile is active
 /// Migration fallback (v1):
 /// - If profileCompleted is missing, infer completion from common v1 fields.
+/// - Also checks that dating profile is active (not archived by marriage)
 final datingProfileCompletedProvider = Provider<AsyncValue<bool>>((ref) {
   final docAsync = ref.watch(currentUserDocProvider);
 
@@ -24,6 +25,10 @@ final datingProfileCompletedProvider = Provider<AsyncValue<bool>>((ref) {
 
     final dating = (doc['dating'] as Map?)?.cast<String, dynamic>();
     final v2 = dating?['profileCompleted'];
+
+    // Check if dating profile is archived (isActive: false means archived when married)
+    final isActive = dating?['isActive'] as bool? ?? true;
+    if (!isActive) return false; // Archived dating profiles should not be considered complete
 
     if (v2 == true) return true;
     if (v2 == false) return false;

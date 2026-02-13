@@ -216,7 +216,7 @@ class AppColors {
   static const Color signalMedium = Color(0xFFF97316);
   static const Color signalWeak = Color(0xFFEF4444);
   static const Color signalDeveloping = Color(0xFF3B82F6);
-  static const Color signalGuarded = Color(0xFFF97316);
+  static const Color signalGuarded = Color(0xFF14B8A6);
   static const Color signalAtRisk = Color(0xFFEF4444);
   static const Color signalRestoration = Color(0xFF8B5CF6);
 

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_v2/core/models/story_model.dart' as remote;
 import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 import 'package:nexus_app_v2/core/providers/firestore_service_provider.dart';
+import 'package:nexus_app_v2/core/router/safe_nav.dart';
 import 'package:nexus_app_v2/core/services/firestore_service.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/widgets/guest_guard.dart';
@@ -118,6 +119,10 @@ class _StoryPollScreenState extends ConsumerState<StoryPollScreen> {
         surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () => navigateBackToHome(context),
+        ),
         title: Text(
           'Weekly Poll',
           style: AppTextStyles.headlineLarge.copyWith(

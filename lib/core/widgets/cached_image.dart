@@ -43,8 +43,11 @@ class CachedImage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Guard against empty URLs
     if (imageUrl.isEmpty) {
+      print('[CachedImage] Empty URL provided');
       return _buildPlaceholder();
     }
+
+    print('[CachedImage] Loading: $imageUrl (width=$width, height=$height)');
 
     final image = CachedNetworkImage(
       imageUrl: imageUrl,
@@ -52,15 +55,29 @@ class CachedImage extends StatelessWidget {
       width: width,
       height: height,
       cacheKey: imageUrl, // Use URL as cache key for consistency
-      maxHeightDiskCache: 1024, // Cache higher res (up to 1024px height)
-      maxWidthDiskCache: 1024, // Cache higher res (up to 1024px width)
+      // FIXED: Don't specify disk cache dimensions with custom CacheManager
+      // A regular CacheManager can't resize images on disk
+      // Memory cache is sufficient for our use case
       memCacheWidth: (width?.toInt() ?? 400) * 2, // 2x for high-DPI screens
       memCacheHeight: (height?.toInt() ?? 400) * 2,
       cacheManager: _SimpleCacheManager.instance,
-      progressIndicatorBuilder: (context, url, downloadProgress) =>
-          placeholder ?? _buildLoadingPlaceholder(),
-      errorWidget: (context, url, error) =>
-          errorWidget ?? _buildErrorPlaceholder(),
+      progressIndicatorBuilder: (context, url, downloadProgress) {
+        print('[CachedImage] Loading progress: $url - ${downloadProgress.progress}');
+        return placeholder ?? _buildLoadingPlaceholder();
+      },
+      errorWidget: (context, url, error) {
+        print('[CachedImage] Error loading image: $url\nError: $error');
+        return errorWidget ?? _buildErrorPlaceholder();
+      },
+      imageBuilder: (context, imageProvider) {
+        print('[CachedImage] Successfully loaded: $imageUrl');
+        return Image(
+          image: imageProvider,
+          fit: fit,
+          width: width,
+          height: height,
+        );
+      },
     );
 
     // Apply border radius if provided
@@ -144,8 +161,8 @@ class CachedDecorationImage extends StatelessWidget {
       height: height,
       memCacheWidth: (width?.toInt() ?? 400) * 2,
       memCacheHeight: (height?.toInt() ?? 400) * 2,
-      maxWidthDiskCache: 1024,
-      maxHeightDiskCache: 1024,
+      // FIXED: Don't specify disk cache dimensions with custom CacheManager
+      cacheManager: _SimpleCacheManager.instance,
       progressIndicatorBuilder: (context, url, progress) => Container(
         width: width,
         height: height,
@@ -203,8 +220,8 @@ class CachedAvatarImage extends StatelessWidget {
       errorWidget: (context, url, error) => _buildInitialCircle(),
       memCacheWidth: size.toInt() * 2,
       memCacheHeight: size.toInt() * 2,
-      maxWidthDiskCache: 256,
-      maxHeightDiskCache: 256,
+      // FIXED: Don't specify disk cache dimensions with custom CacheManager
+      cacheManager: _SimpleCacheManager.instance,
     );
   }
 

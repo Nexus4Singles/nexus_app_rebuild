@@ -7,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import '../../../../core/router/safe_nav.dart';
 import 'dart:typed_data';
 
 import '../../../../core/theme/theme.dart';
@@ -85,7 +86,14 @@ Widget _buildPdfUploadWidget({
               ),
               GestureDetector(
                 onTap: onRemove,
-                child: Icon(Icons.close, color: Colors.red.shade400, size: 20),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.red.shade400,
+                    size: 20,
+                  ),
+                ),
               ),
             ],
           ),
@@ -281,15 +289,11 @@ class _CoachApplicationScreenState
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () {
-            if (Navigator.of(context).canPop()) {
-              Navigator.pop(context);
-            } else {
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            }
+            navigateBackToHome(context);
           },
         ),
         title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Call for Applications',
@@ -894,51 +898,6 @@ class _MediaPage extends ConsumerStatefulWidget {
 class _MediaPageState extends ConsumerState<_MediaPage> {
   bool _isSubmitting = false;
 
-  Future<void> _testDirectUpload() async {
-    print('[DEBUG] Starting direct upload test...');
-    try {
-      final storage = FirebaseStorage.instance;
-      final testData = Uint8List.fromList(
-        List.generate(1024, (i) => i % 256),
-      ); // 1KB dummy data
-      final ref = storage.ref().child(
-        'test_uploads/test_${DateTime.now().millisecondsSinceEpoch}.bin',
-      );
-      print(
-        '[DEBUG] Test upload ref: \'${ref.fullPath}\', bucket: \'${ref.bucket}\'',
-      );
-
-      final uploadTask = ref.putData(testData);
-      uploadTask.snapshotEvents.listen((event) {
-        print(
-          '[DEBUG] Upload event: \'${event.state}\', bytes transferred: \'${event.bytesTransferred}\' / \'${event.totalBytes}\'',
-        );
-      });
-      final snapshot = await uploadTask;
-      final url = await snapshot.ref.getDownloadURL();
-      print('[DEBUG] Direct upload success! Download URL: $url');
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Direct upload test succeeded!'),
-            backgroundColor: Colors.green.shade400,
-          ),
-        );
-      }
-    } catch (e, stack) {
-      print('[ERROR] Direct upload test failed: $e');
-      print(stack);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Direct upload test failed: $e'),
-            backgroundColor: Colors.red.shade400,
-          ),
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final application = ref.watch(coachApplicationProvider);
@@ -1139,7 +1098,9 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
                               if (Navigator.of(context).canPop()) {
                                 Navigator.pop(context);
                               } else {
-                                Navigator.of(context).popUntil((route) => route.isFirst);
+                                Navigator.of(
+                                  context,
+                                ).popUntil((route) => route.isFirst);
                               }
                             });
                           }
@@ -1188,50 +1149,6 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
-              onPressed: _isSubmitting ? null : _testDirectUpload,
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                side: BorderSide(color: Colors.deepPurple),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: const Text(
-                'Test Direct Upload',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.deepPurple,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
-              onPressed: _isSubmitting ? null : widget.onPrev,
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                side: BorderSide(color: AppColors.primary),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: Text(
-                'Back',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primary,
-                ),
-              ),
             ),
           ),
         ],
@@ -1601,11 +1518,15 @@ Widget _buildPhotoUploadWidget({
                 child: GestureDetector(
                   onTap: onRemove,
                   child: Container(
+                    width: 36,
+                    height: 36,
                     decoration: BoxDecoration(
                       color: Colors.black54,
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.close, color: Colors.white, size: 20),
+                    child: Center(
+                      child: Icon(Icons.close, color: Colors.white, size: 20),
+                    ),
                   ),
                 ),
               ),

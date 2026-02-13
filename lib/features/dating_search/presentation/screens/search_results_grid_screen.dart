@@ -36,33 +36,51 @@ class _SearchResultsGridScreenState
     extends ConsumerState<SearchResultsGridScreen> {
   late ScrollController _scrollController;
   bool _showDailyLimitCard = false;
+  bool _isRestoringPosition = false;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
+    
+    // Restore scroll position after frame is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _restoreScrollPosition();
+    });
+  }
+
+  void _restoreScrollPosition() {
+    if (!mounted) return;
+    final savedPosition = ref.read(searchResultsScrollPositionProvider);
+    if (savedPosition > 0 && _scrollController.hasClients) {
+      _isRestoringPosition = true;
+      _scrollController.jumpTo(savedPosition);
+      print('[SearchResultsGrid] Restored scroll position: $savedPosition');
+      _isRestoringPosition = false;
+    }
   }
 
   @override
   void dispose() {
+    // Save scroll position before disposing
+    if (_scrollController.hasClients) {
+      final position = _scrollController.offset;
+      ref.read(searchResultsScrollPositionProvider.notifier).state = position;
+      print('[SearchResultsGrid] Saved scroll position: $position');
+    }
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
   }
 
   void _onScroll() {
-    // FIXED: Trigger load-more when user scrolls near bottom
-    // This loads the next batch of 30 profiles
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 500) {
-      // Trigger load more
-      if (!_showDailyLimitCard) {
-        final currentOffset = ref.read(searchResultsOffsetProvider);
-        ref.read(searchResultsOffsetProvider.notifier).state =
-            currentOffset + 30; // Load 30 more profiles
-      }
-    }
+    if (_isRestoringPosition) return;
+
+    // FIXED: Removed runaway offset increment that fired on every scroll
+    // frame within 500px of bottom, causing accumulatedSearchResultsProvider
+    // to re-evaluate repeatedly and reset the grid to the top.
+    // All results are loaded in the initial 100-profile batch.
 
     // Show daily limit card when user reaches very bottom
     if (_scrollController.position.pixels >=
@@ -108,8 +126,28 @@ class _SearchResultsGridScreenState
       ),
       body: resultsAsync.when(
         loading: () {
-          // FIXED: Don't show spinner - show empty state with loading indicator
-          // User will see results start appearing as they load
+          // FIXED: During refresh/re-evaluation, keep showing previous
+          // results so the grid is not destroyed and scroll position
+          // is preserved. Only show spinner on the very first load.
+          final cached = resultsAsync.valueOrNull;
+          if (cached != null && cached.items.isNotEmpty) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                if (!mounted) return;
+                ref.invalidate(datingSearchResultsProvider);
+                ref.read(searchResultsCacheProvider.notifier).clear();
+                ref.read(searchResultsOffsetProvider.notifier).state = 0;
+                if (!mounted) return;
+                await ref.read(accumulatedSearchResultsProvider.future);
+              },
+              child: _PaginatedGridView(
+                allResults: cached,
+                scrollController: _scrollController,
+                onLoadMore: () {},
+              ),
+            );
+          }
+          // First load — show spinner
           return const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -472,9 +510,8 @@ class _ProfileCard extends ConsumerWidget {
                         child: CachedImage(
                           photo,
                           fit: BoxFit.cover,
-                          width: 200,
-                          height: 300,
-                          borderRadius: BorderRadius.circular(16),
+                          // FIXED: Don't pass explicit dimensions when using Positioned.fill
+                          // Positioned.fill provides the size constraints automatically
                           cacheDuration: const Duration(days: 30),
                           errorWidget: Container(
                             decoration: BoxDecoration(
@@ -568,8 +605,9 @@ class _ProfileCard extends ConsumerWidget {
               top: 12,
               right: 12,
               child: GestureDetector(
-                onTap: () async {
-                  await ref
+                onTap: () {
+                  // FIXED: Don't await - fire and forget for instant UI response
+                  ref
                       .read(savedProfilesNotifierProvider)
                       .toggleSave(profile.uid);
                 },

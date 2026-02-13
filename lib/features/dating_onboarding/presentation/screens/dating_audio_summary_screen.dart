@@ -4,6 +4,7 @@ import 'package:just_audio/just_audio.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
+import 'package:nexus_app_v2/core/router/safe_nav.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
 import 'package:nexus_app_v2/features/dating_onboarding/application/dating_onboarding_draft.dart';
@@ -32,14 +33,13 @@ class _DatingAudioSummaryScreenState
   @override
   void initState() {
     super.initState();
-    // Listen to player state changes
+    // Listen to player state changes to track when playback completes
     _player.playerStateStream.listen((state) {
-      setState(() {
-        _isPlaying = state.playing;
-      });
+      // Only update when playback actually completes
       if (state.processingState == ProcessingState.completed) {
         setState(() {
           _playingIndex = null;
+          _isPlaying = false;
         });
       }
     });
@@ -119,7 +119,6 @@ class _DatingAudioSummaryScreenState
       // Small delay to allow SharedPreferences to save
       await Future.delayed(const Duration(milliseconds: 500));
 
-      final updatedDraft = ref.read(datingOnboardingDraftProvider);
       setState(() => _isUploading = false);
     } catch (e) {
       setState(() {
@@ -209,7 +208,7 @@ class _DatingAudioSummaryScreenState
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => navigateBackToHome(context),
         ),
         title: Text('Audio Recordings', style: AppTextStyles.titleLarge),
       ),
@@ -308,33 +307,39 @@ class _DatingAudioSummaryScreenState
     }
 
     try {
-      // If already playing this track, pause it
-      if (_playingIndex == index && _isPlaying) {
-        await _player.pause();
-        setState(() => _isPlaying = false);
+      // If clicking the same track that's already loaded
+      if (_playingIndex == index) {
+        if (_isPlaying) {
+          // Currently playing → pause it
+          await _player.pause();
+          setState(() => _isPlaying = false);
+        } else {
+          // Currently paused → resume it
+          await _player.play();
+          setState(() => _isPlaying = true);
+        }
         return;
       }
 
-      // If a different track is playing, stop it
-      if (_playingIndex != index && _playingIndex != null) {
+      // Different track selected: stop current, load and play new one
+      if (_playingIndex != null) {
         await _player.stop();
       }
 
-      // If paused but same track, resume
-      if (_playingIndex == index && !_isPlaying) {
-        await _player.play();
-        return;
-      }
-
-      // New track: load and play
-      await _player.setUrl(url);
-      await _player.play();
+      // Load and play the new track
       setState(() {
         _playingIndex = index;
         _isPlaying = true;
       });
+
+      await _player.setUrl(url);
+      await _player.play();
     } catch (e) {
-      _showSnackBar('Unable to play recording');
+      _showSnackBar('Unable to play recording: $e');
+      setState(() {
+        _playingIndex = null;
+        _isPlaying = false;
+      });
     }
   }
 

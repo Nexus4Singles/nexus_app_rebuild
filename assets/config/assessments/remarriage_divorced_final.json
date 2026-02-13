@@ -283,7 +283,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "emotional_state_steady",
-          "outcomeLabel": "emotionally steady, no lingering pain",
+          "outcomeLabel": "emotionally steady with minimal emotional charge",
           "genderInsight": {
             "male": "Hearing your ex's name without a charge shows real progress. Many men after divorce suppress the reaction rather than resolve it — your steadiness seems genuine, not performed.",
             "female": "Emotional stability when your ex comes up shows you've done real work. Many women after divorce carry residual anger or grief longer — your peace here is earned."
@@ -596,7 +596,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "accountability_victim_posture_dominant",
-          "outcomeLabel": "victim posture dominant",
+          "outcomeLabel": "primarily attributes outcomes to external factors",
           "genderInsight": {
             "male": "Defensiveness about your contribution is common in men after divorce — especially if the divorce felt done TO you. But staying here means your next relationship inherits the blind spots.",
             "female": "If you're still primarily focused on what he did, the hurt is doing the talking. Your next relationship needs you to see your patterns clearly, even the subtle ones."
@@ -950,7 +950,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_fear_catastrophizing",
-          "outcomeLabel": "catastrophizing — projecting past onto present",
+          "outcomeLabel": "assume worst will happen based on past hurt",
           "genderInsight": {
             "male": "Conflict avoidance after divorce often looks like 'keeping the peace' — but it's actually fear wearing a mask. Your next partner needs you to be able to disagree without disappearing.",
             "female": "If disagreement makes you question the whole relationship, your divorce taught you that conflict = ending. That's a trauma response, not a truth. Good relationships include disagreement."
@@ -962,7 +962,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "conflict_fear_trauma_activated_shutdown",
-          "outcomeLabel": "trauma-activated shutdown",
+          "outcomeLabel": "experience emotional overwhelm causing withdrawal",
           "genderInsight": {
             "male": "Shutting down or giving in to avoid conflict means you're more afraid of the tension than of losing yourself. This pattern will recreate the very dynamic you're trying to escape.",
             "female": "Giving in just to end discomfort means your boundaries dissolve under pressure. This is exactly how unhealthy patterns get repeated in new relationships."
@@ -1536,7 +1536,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "emotional_state_guilt_about_happiness",
-          "outcomeLabel": "guilt about being happy",
+          "outcomeLabel": "struggling with belief you deserve happiness",
           "genderInsight": {
             "male": "Guilt about being happy suggests your psyche hasn't given you permission to move forward. For men post-divorce, this sometimes shows as self-sabotage — undermining good things because you don't believe you deserve them.",
             "female": "Guilt about happiness after divorce often carries a hidden belief: 'I don't deserve this after what happened.' That belief will block every good thing that tries to enter your life, including new love."

@@ -6,6 +6,8 @@ import '../../../../core/providers/auth_provider.dart';
 import '../../../../core/bootstrap/bootstrap_gate.dart';
 import '../../../guest/guest_entry_gate.dart';
 import '../../../launch/presentation/app_launch_gate.dart';
+import '../../../presentation/screens/terms_screen.dart';
+import '../../../presentation/screens/privacy_policy_screen.dart';
 import 'email_verification_screen.dart';
 import 'login_screen.dart';
 
@@ -24,6 +26,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   bool _busy = false;
   bool _obscurePassword = true;
+  bool _agreedToTerms = false;
   String? _error;
 
   @override
@@ -335,7 +338,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     style: AppTextStyles.bodyLarge,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      hintText: 'Enter a strong password',
+                      hintText: '8+ chars, capital start, 1 special char',
                       labelStyle: AppTextStyles.bodyMedium.copyWith(
                         color: AppColors.getTextSecondary(context),
                       ),
@@ -385,31 +388,92 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.getSurface(context),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: AppColors.getBorder(context).withOpacity(0.3),
-                      ),
-                    ),
+                  const SizedBox(height: 16),
+                  // Terms & Privacy Policy checkbox
+                  GestureDetector(
+                    onTap: _busy
+                        ? null
+                        : () => setState(() => _agreedToTerms = !_agreedToTerms),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.info_outline,
-                          size: 20,
-                          color: AppColors.getTextSecondary(context),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            '8 characters min., start with capital letter, include at least 1 special character',
-                            style: AppTextStyles.labelSmall.copyWith(
+                        SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: Checkbox(
+                            value: _agreedToTerms,
+                            onChanged: _busy
+                                ? null
+                                : (v) => setState(() => _agreedToTerms = v ?? false),
+                            activeColor: AppColors.primary,
+                            checkColor: Colors.white,
+                            side: BorderSide(
                               color: AppColors.getTextSecondary(context),
-                              height: 1.4,
+                              width: 1.5,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            visualDensity: VisualDensity.compact,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text.rich(
+                            TextSpan(
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.getTextSecondary(context),
+                                height: 1.4,
+                              ),
+                              children: [
+                                const TextSpan(text: 'I agree to the '),
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.baseline,
+                                  baseline: TextBaseline.alphabetic,
+                                  child: GestureDetector(
+                                    onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const TermsScreen(),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Terms of Use',
+                                      style: AppTextStyles.bodySmall.copyWith(
+                                        color: AppColors.primary,
+                                        fontWeight: FontWeight.w600,
+                                        decoration: TextDecoration.underline,
+                                        decorationColor: AppColors.primary,
+                                        height: 1.4,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const TextSpan(text: ' and '),
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.baseline,
+                                  baseline: TextBaseline.alphabetic,
+                                  child: GestureDetector(
+                                    onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const PrivacyPolicyScreen(),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Privacy Policy',
+                                      style: AppTextStyles.bodySmall.copyWith(
+                                        color: AppColors.primary,
+                                        fontWeight: FontWeight.w600,
+                                        decoration: TextDecoration.underline,
+                                        decorationColor: AppColors.primary,
+                                        height: 1.4,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -450,7 +514,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: _busy ? null : _signup,
+                      onPressed: (_busy || !_agreedToTerms) ? null : _signup,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,

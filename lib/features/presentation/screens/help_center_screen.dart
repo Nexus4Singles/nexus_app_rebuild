@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nexus_app_v2/core/router/safe_nav.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 
 class HelpCenterScreen extends StatelessWidget {
@@ -13,6 +14,10 @@ class HelpCenterScreen extends StatelessWidget {
         surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () => navigateBackToHome(context),
+        ),
         title: Text(
           'Help Center',
           style: AppTextStyles.headlineLarge.copyWith(

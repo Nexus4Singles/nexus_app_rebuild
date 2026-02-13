@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/theme.dart';
 import 'coach_application_screen.dart';
+import '../../../../core/router/safe_nav.dart';
 
 class CoachRequirementsScreen extends StatelessWidget {
   const CoachRequirementsScreen({super.key});
@@ -14,7 +15,7 @@ class CoachRequirementsScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => navigateBackToHome(context),
         ),
         title: Text(
           'Call for Applications',
@@ -124,7 +125,7 @@ class CoachRequirementsScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 16),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(8),
@@ -153,7 +154,7 @@ class CoachRequirementsScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 16),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(8),
@@ -182,7 +183,7 @@ class CoachRequirementsScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 24),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(8),

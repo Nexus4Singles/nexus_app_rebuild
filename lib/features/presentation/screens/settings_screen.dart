@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nexus_app_v2/core/router/safe_nav.dart';
 import 'package:nexus_app_v2/core/theme/app_colors.dart';
 import 'package:nexus_app_v2/core/theme/app_text_styles.dart';
 import 'package:nexus_app_v2/core/theme/theme_provider.dart';
 import 'package:nexus_app_v2/core/user/is_admin_provider.dart';
-import 'package:nexus_app_v2/core/user/current_user_doc_provider.dart';
 import 'package:nexus_app_v2/features/admin_review/presentation/screens/admin_review_queue_screen.dart';
-import 'package:nexus_app_v2/features/profile/presentation/widgets/relationship_status_editor.dart';
 import 'package:nexus_app_v2/features/profile/presentation/screens/profile_screen.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -31,7 +30,7 @@ class SettingsScreen extends ConsumerWidget {
             size: 20,
             color: AppColors.getTextPrimary(context),
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => navigateBackToHome(context),
         ),
         title: Text(
           'Settings',
@@ -66,47 +65,6 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () {
                   ref.read(themeModeProvider.notifier).toggleTheme();
                 },
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 24),
-
-          // Profile Status Section
-          _SectionHeader(title: 'Profile Status'),
-          const SizedBox(height: 12),
-          _SettingsCard(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Consumer(
-                  builder: (context, ref, _) {
-                    final userDocAsync = ref.watch(currentUserDocProvider);
-                    final currentStatus =
-                        userDocAsync.maybeWhen(
-                          data: (doc) =>
-                              doc?['nexus2']?['relationshipStatus'] ?? '',
-                          orElse: () => '',
-                        );
-
-                    return GestureDetector(
-                      onTap: () {
-                        showRelationshipStatusDialog(
-                          context,
-                          ref,
-                          currentStatus,
-                          onSuccess: () {
-                            // Dialog will close and update automatically
-                          },
-                        );
-                      },
-                      child: RelationshipStatusEditor(
-                        currentStatus: currentStatus,
-                        customSubtitle: 'Edit your relationship status',
-                      ),
-                    );
-                  },
-                ),
               ),
             ],
           ),

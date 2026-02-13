@@ -6,6 +6,7 @@ import 'package:nexus_app_v2/core/lists/onboarding_lists.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/features/dating_onboarding/application/dating_onboarding_draft.dart';
 import 'package:nexus_app_v2/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
+import 'package:nexus_app_v2/core/router/safe_nav.dart';
 
 class DatingHobbiesScreen extends ConsumerStatefulWidget {
   const DatingHobbiesScreen({super.key});
@@ -45,7 +46,7 @@ class _DatingHobbiesScreenState extends ConsumerState<DatingHobbiesScreen> {
         titleSpacing: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => navigateBackToHome(context),
         ),
         title: Text(
           'Hobbies & Interests',

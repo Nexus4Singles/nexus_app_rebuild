@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nexus_app_v2/core/router/safe_nav.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import '../../application/compatibility_quiz_provider.dart';
 
@@ -42,7 +43,7 @@ class CompatibilityQuizScreen extends ConsumerWidget {
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               if (step == 0) {
-                Navigator.pop(context);
+                navigateBackToHome(context);
               } else {
                 notifier.goBack();
               }

@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/models/assessment_model.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/providers/assessment_provider.dart';
@@ -17,6 +20,9 @@ class AssessmentScreen extends ConsumerStatefulWidget {
 class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
   late final PageController _page;
   bool _started = false;
+  
+  /// Store randomized options per question to maintain order on re-renders
+  final Map<String, List<AssessmentOption>> _shuffledOptionsCache = {};
 
   @override
   void initState() {
@@ -37,6 +43,38 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
         ref.read(recommendedAssessmentTypeProvider) ??
         AssessmentType.singlesReadiness;
     ref.read(assessmentNotifierProvider.notifier).startAssessment(type);
+  }
+
+  double _getResponsiveQuestionFontSize(double screenWidth) {
+    if (screenWidth < 360) return 12.0;
+    if (screenWidth < 400) return 13.0;
+    return 15.0;
+  }
+
+  double _getResponsiveOptionFontSize(double screenWidth) {
+    if (screenWidth < 360) return 11.0;
+    if (screenWidth < 400) return 12.0;
+    return 13.0;
+  }
+
+  /// Get shuffled options for a question, cached to maintain order on re-renders.
+  /// This ensures options don't "jump around" when user selects an answer,
+  /// while still allowing randomized presentation and proper results mapping via option.id.
+  List<AssessmentOption> _getShuffledOptions(
+    List<AssessmentOption> options,
+    int questionNumber,
+  ) {
+    final cacheKey = 'q_$questionNumber';
+    
+    // Return cached shuffled options if available
+    if (_shuffledOptionsCache.containsKey(cacheKey)) {
+      return _shuffledOptionsCache[cacheKey]!;
+    }
+
+    // Shuffle once and cache
+    final shuffled = List.of(options)..shuffle(Random());
+    _shuffledOptionsCache[cacheKey] = shuffled;
+    return shuffled;
   }
 
   @override
@@ -82,18 +120,23 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
                                 Text(
                                   q.text,
                                   style: AppTextStyles.headlineSmall.copyWith(
+                                    fontSize: _getResponsiveQuestionFontSize(
+                                      MediaQuery.of(context).size.width,
+                                    ),
                                     fontWeight: FontWeight.w800,
                                   ),
                                 ),
-                                const SizedBox(height: 16),
+                                const SizedBox(height: 28),
                                 Expanded(
                                   child: ListView(
                                     children:
-                                        q.options.map((o) {
+                                        _getShuffledOptions(q.options, q.number).map((o) {
                                           final isSelected = selected == o.id;
+                                          final screenWidth = MediaQuery.of(context).size.width;
                                           return _OptionTile(
                                             title: o.text,
                                             isSelected: isSelected,
+                                            fontSize: _getResponsiveOptionFontSize(screenWidth),
                                             onTap: () {
                                               HapticFeedback.lightImpact();
                                               notifier.answerQuestion(o.id);
@@ -166,11 +209,10 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
 
     if (ok == true && mounted) {
       notifier.reset();
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context);
-      } else {
-        Navigator.of(context).popUntil((route) => route.isFirst);
-      }
+      // Navigate directly to home, bypassing splash screen
+      Navigator.of(
+        context,
+      ).pushNamedAndRemoveUntil(AppRoutes.home, (_) => false);
     }
   }
 }
@@ -230,11 +272,13 @@ class _TopProgress extends StatelessWidget {
 class _OptionTile extends StatelessWidget {
   final String title;
   final bool isSelected;
+  final double fontSize;
   final VoidCallback onTap;
 
   const _OptionTile({
     required this.title,
     required this.isSelected,
+    required this.fontSize,
     required this.onTap,
   });
 
@@ -256,16 +300,21 @@ class _OptionTile extends StatelessWidget {
         title: Text(
           title,
           style: AppTextStyles.bodyLarge.copyWith(
+            fontSize: fontSize,
             fontWeight: FontWeight.w600,
             color: isSelected ? AppColors.getTextOnPrimary(context) : null,
           ),
         ),
-        trailing: isSelected
-            ? Icon(Icons.check_circle, color: AppColors.getTextOnPrimary(context))
-            : Icon(
-                Icons.circle_outlined,
-                color: AppColors.getTextSecondary(context),
-              ),
+        trailing:
+            isSelected
+                ? Icon(
+                  Icons.check_circle,
+                  color: AppColors.getTextOnPrimary(context),
+                )
+                : Icon(
+                  Icons.circle_outlined,
+                  color: AppColors.getTextSecondary(context),
+                ),
       ),
     );
   }

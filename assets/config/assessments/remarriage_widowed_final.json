@@ -950,7 +950,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_fear_catastrophizing",
-          "outcomeLabel": "catastrophizing — projecting past onto present",
+          "outcomeLabel": "assume worst will happen based on past hurt",
           "genderInsight": {
             "male": "jumping to worst-case thinking in conflict may stem from a widower's awareness that relationships can end suddenly. That fear is real — but projecting catastrophe onto every disagreement will suffocate new love.",
             "female": "Running to worst-case scenarios during disagreement may be your grief talking — 'I can't lose someone again.' But healthy conflict is not the same as losing someone. Learning to separate the two is essential."
@@ -1536,7 +1536,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "emotional_state_guilt_about_happiness",
-          "outcomeLabel": "guilt about being happy without them",
+          "outcomeLabel": "struggling with guilt about happiness after loss",
           "genderInsight": {
             "male": "Guilt about being happy without your wife is one of the most common widower experiences. The belief that happiness betrays her memory will block every good thing that tries to enter your life — including new love.",
             "female": "Feeling that joy dishonors your late husband's memory is a grief trap. He would almost certainly want you to be happy — and your happiness doesn't erase what you had together."
@@ -1650,7 +1650,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "spiritual_peace_loyalty_conflict",
-          "outcomeLabel": "loyalty conflict, unsure of God's will",
+          "outcomeLabel": "uncertain whether remarriage honors the late spouse's memory",
           "genderInsight": {
             "male": "Feeling caught between loyalty to your late wife and desire for new love is one of the deepest spiritual tensions a widower faces. This is worth processing with a pastor or counselor.",
             "female": "If you feel that loving again betrays your vows or God's purpose, this spiritual conflict will block your ability to fully invest in someone new. It deserves focused attention."

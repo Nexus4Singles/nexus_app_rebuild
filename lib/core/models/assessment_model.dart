@@ -531,6 +531,7 @@ class AssessmentResult extends Equatable {
   final DateTime? updatedAt;
   final String? recommendedJourneyId;
   final List<String> inferredTags;
+  final bool archived; // Marked as archived when relationship status changes
 
   const AssessmentResult({
     required this.id,
@@ -547,6 +548,7 @@ class AssessmentResult extends Equatable {
     this.updatedAt,
     this.recommendedJourneyId,
     this.inferredTags = const [],
+    this.archived = false,
   });
 
   /// Alias for percentage (UI compatibility)
@@ -596,6 +598,7 @@ class AssessmentResult extends Equatable {
               ?.map((e) => e.toString())
               .toList() ??
           [],
+      archived: json['archived'] as bool? ?? false,
     );
   }
 
@@ -712,6 +715,7 @@ class AssessmentResult extends Equatable {
     if (recommendedJourneyId != null)
       'recommendedJourneyId': recommendedJourneyId,
     'inferredTags': inferredTags,
+    'archived': archived,
   };
 
   @override
@@ -730,5 +734,6 @@ class AssessmentResult extends Equatable {
     updatedAt,
     recommendedJourneyId,
     inferredTags,
+    archived,
   ];
 }

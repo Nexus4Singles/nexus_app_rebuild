@@ -12,6 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/features/dating_onboarding/application/dating_onboarding_draft.dart';
 import 'package:nexus_app_v2/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
+import 'package:nexus_app_v2/core/router/safe_nav.dart';
 
 class DatingAudioQuestionScreen extends ConsumerStatefulWidget {
   final int questionNumber;
@@ -144,7 +145,7 @@ class _DatingAudioQuestionScreenState
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => navigateBackToHome(context),
         ),
         title: Text(
           'Audio Recordings',
@@ -190,6 +191,17 @@ class _DatingAudioQuestionScreenState
                     letterSpacing: 0.5,
                   ),
                 ),
+                // Debug info: show actual recorded duration vs timer duration
+                if (_hasRecording && !_isRecording && _recordedDuration != _elapsed)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      'Recorded duration: ${_formatTime(_recordedDuration)}',
+                      style: AppTextStyles.labelSmall.copyWith(
+                        color: AppColors.textMuted,
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 24),
                 _Waveform(
                   active: _isRecording && !_isPaused,
@@ -291,16 +303,38 @@ class _DatingAudioQuestionScreenState
     if (_filePath == null) return;
 
     try {
+      // If currently playing, pause instead
       if (_isPlaying) {
-        // If already playing, pause it
         await _player.pause();
-      } else {
-        // Otherwise, play the recording
-        await _player.setFilePath(_filePath!);
-        await _player.play();
+        return;
       }
+
+      // Verify the file exists before trying to play
+      final file = File(_filePath!);
+      if (!await file.exists()) {
+        _toast('Recording file not found. Please record again.');
+        setState(() => _hasRecording = false);
+        return;
+      }
+
+      // Make sure player is stopped before loading new file
+      try {
+        await _player.stop();
+      } catch (_) {
+        // Ignore if already stopped
+      }
+
+      // Load and play the recording
+      await _player.setFilePath(_filePath!);
+      await _player.play();
     } catch (e) {
-      _toast('Failed to play recording: $e');
+      String errorMsg = 'Failed to play recording';
+      if (e.toString().contains('permission')) {
+        errorMsg = 'Audio playback permission denied';
+      } else if (e.toString().contains('FileSystemException')) {
+        errorMsg = 'Recording file corrupted or unavailable';
+      }
+      _toast('$errorMsg: $e');
     }
   }
 
@@ -320,8 +354,7 @@ class _DatingAudioQuestionScreenState
           if (await oldFile.exists()) {
             await oldFile.delete();
           }
-        } catch (e) {
-        }
+        } catch (e) {}
       }
 
       // Clear previous recording (both path and URL) to force fresh upload
@@ -346,15 +379,14 @@ class _DatingAudioQuestionScreenState
         path: path,
       );
 
-      // Verify recording actually started
-      final isRecording = await _recorder.isRecording();
+      // Verify recording actually started (just ensure it started, no need to check result extensively)
+      await _recorder.isRecording();
       _isRecording = true;
       _isPaused = false;
       _startTimer();
 
       // Early guard: if simulator, warn once because iOS sims often produce empty audio.
-      if (defaultTargetPlatform == TargetPlatform.iOS && !kIsWeb) {
-      }
+      if (defaultTargetPlatform == TargetPlatform.iOS && !kIsWeb) {}
       setState(() {});
     } catch (e) {
       _toast('Failed to start recording: $e');
@@ -385,28 +417,51 @@ class _DatingAudioQuestionScreenState
 
   Future<void> _stop() async {
     int finalSize = 0;
+    String? recordedPath;
     try {
-      final path = await _recorder.stop();
+      recordedPath = await _recorder.stop();
       // CRITICAL: Wait for iOS to flush audio buffer to disk
       await Future.delayed(const Duration(milliseconds: 500));
 
       // Check file size after giving iOS time to write
-      if (path != null) {
-        final file = File(path);
+      if (recordedPath != null) {
+        final file = File(recordedPath);
         if (await file.exists()) {
           finalSize = await file.length();
         }
       }
-    } catch (e) {
-    }
+    } catch (e) {}
     _timer?.cancel();
 
-    // Save the recorded duration
-    _recordedDuration = _elapsed;
+    // Stop any playback when recording stops
+    try {
+      await _player.stop();
+    } catch (_) {
+      // Ignore if already stopped
+    }
+
+    // Get actual audio duration from file metadata instead of timer
+    Duration actualDuration = Duration.zero;
+    if (recordedPath != null && finalSize > 2048) {
+      try {
+        final tempPlayer = AudioPlayer();
+        await tempPlayer.setFilePath(recordedPath);
+        actualDuration = tempPlayer.duration ?? Duration.zero;
+        await tempPlayer.dispose();
+      } catch (e) {
+        // Fallback to timer duration if metadata reading fails
+        actualDuration = Duration(seconds: _elapsed);
+      }
+    }
+
+    // Update recorded duration with actual file duration
+    _recordedDuration = actualDuration.inSeconds;
 
     setState(() {
       _isRecording = false;
       _isPaused = false;
+      _isPlaying = false;
+      _playbackPosition = 0;
     });
 
     // Only save if minimum duration met and file is not tiny
@@ -417,7 +472,7 @@ class _DatingAudioQuestionScreenState
       final reason =
           finalSize <= 2048
               ? 'No audio was captured (file too small). On iOS simulators the mic may be unavailable.'
-              : 'Recording must be at least ${_minSeconds}s long';
+              : 'Recording must be at least ${_minSeconds}s long (actual: ${_recordedDuration}s)';
       _toast(reason);
       await _restart();
     }
@@ -427,6 +482,13 @@ class _DatingAudioQuestionScreenState
     HapticFeedback.mediumImpact();
     if (_isRecording) {
       await _stop();
+    }
+
+    // Stop playback when restarting
+    try {
+      await _player.stop();
+    } catch (_) {
+      // Ignore if already stopped
     }
 
     if (_filePath != null) {
@@ -441,6 +503,8 @@ class _DatingAudioQuestionScreenState
       _recordedDuration = 0;
       _filePath = null;
       _hasRecording = false;
+      _isPlaying = false;
+      _playbackPosition = 0;
     });
 
     _saveDraftPath(clear: true);
@@ -460,11 +524,9 @@ class _DatingAudioQuestionScreenState
           if (await file.exists()) {
             final size = await file.length();
             // If file is still header-only after 15s, warn in logs.
-            if (_elapsed >= 15 && size <= 64) {
-            }
+            if (_elapsed >= 15 && size <= 64) {}
           }
-        } catch (e) {
-        }
+        } catch (e) {}
       }
 
       if (_elapsed >= _maxSeconds) {

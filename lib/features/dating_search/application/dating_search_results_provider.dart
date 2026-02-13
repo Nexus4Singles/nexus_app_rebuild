@@ -134,9 +134,19 @@ final exploreScreenFiltersProvider =
 // PAGINATION STATE
 // ============================================================================
 // Tracks the current offset for lazy-loading search results
+// NOT auto-disposing so state persists when navigating away and back
 
 final searchResultsOffsetProvider = StateProvider<int>((ref) {
   return 0;
+});
+
+// ============================================================================
+// SCROLL POSITION CACHE
+// ============================================================================
+// Persists scroll position so grid returns to same position when navigating back
+
+final searchResultsScrollPositionProvider = StateProvider<double>((ref) {
+  return 0.0;
 });
 
 final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
@@ -162,7 +172,11 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   }
 
   // Get current user for compatibility scoring
-  final currentUserAsync = ref.watch(currentUserProvider);
+  // FIXED: Use ref.read instead of ref.watch to prevent re-evaluation
+  // when user doc updates in Firestore (currentUserProvider wraps a
+  // StreamProvider that emits on every user-doc change, causing the
+  // entire search to re-run and the grid to reset to the top).
+  final currentUserAsync = ref.read(currentUserProvider);
   final currentUser = currentUserAsync.valueOrNull;
   if (kDebugMode) {
     print(
@@ -291,8 +305,8 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   }
 
   // FIXED: Load results incrementally in batches instead of all at once
-  // First batch: 20 results (fast, shows immediately to user)
-  // This allows UI to render profiles as they load instead of waiting for all
+  // Initial batch with sufficient profiles for premium users
+  // Limit is high enough to show meaningful results immediately
   DatingSearchResult results;
   try {
     print('[DatingSearchResultsProvider] Starting Firestore search...');
@@ -301,7 +315,7 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
           genderToShow: genderToShow,
           filters: filters,
           offset: 0,
-          limit: 20,
+          limit: 100, // FIXED: Increased from 20 to 100 for premium users
         )
         .timeout(
           const Duration(seconds: 30),

@@ -278,22 +278,34 @@ class FirestoreService {
     String assessmentId,
   ) async {
     try {
-      // ✅ New Nexus v2 storage first
+      // ✅ New Nexus v2 storage first - filtering out archived assessments
       final latestSnap = await _latestAssessmentRef(uid, assessmentId).get();
       if (latestSnap.exists && latestSnap.data() != null) {
-        return AssessmentResult.fromJson(latestSnap.data()!);
+        final result = AssessmentResult.fromJson(latestSnap.data()!);
+        // Only return if NOT archived
+        if (!result.archived) {
+          return result;
+        }
       }
 
-      // ✅ Fallback to legacy storage
+      // ✅ Fallback to legacy storage - fetch all and filter on client
+      // (Firestore where filter excludes documents without the archived field)
       final query =
           await _assessmentResultsRef(uid)
               .where('assessmentId', isEqualTo: assessmentId)
               .orderBy('completedAt', descending: true)
-              .limit(1)
+              .limit(100)
               .get();
 
       if (query.docs.isEmpty) return null;
-      return AssessmentResult.fromJson(query.docs.first.data());
+      
+      // Filter on client side to include documents without archived field
+      final filtered = query.docs
+          .map((doc) => AssessmentResult.fromJson(doc.data()))
+          .where((result) => !result.archived)
+          .toList();
+      
+      return filtered.isEmpty ? null : filtered.first;
     } catch (e) {
       throw FirestoreException('Failed to get assessment result: $e');
     }
@@ -302,23 +314,29 @@ class FirestoreService {
   Future<List<AssessmentResult>> getAllAssessmentResults(String uid) async {
     try {
       // ✅ Prefer latest-per-assessment documents
+      // Filter on client side instead of Firestore where() to include old documents
+      // without the archived field (they default to false in the model)
       final snap =
-          await _userAssessmentsRef(
-            uid,
-          ).orderBy('updatedAt', descending: true).get();
+          await _userAssessmentsRef(uid)
+              .orderBy('updatedAt', descending: true)
+              .get();
 
-      return snap.docs
+      final results = snap.docs
           .map((doc) => AssessmentResult.fromJson(doc.data()))
+          .where((result) => !result.archived)  // Filter on client side
           .toList();
+      
+      return results;
     } catch (e) {
       // ✅ Fallback to legacy storage
       try {
         final query =
-            await _assessmentResultsRef(
-              uid,
-            ).orderBy('completedAt', descending: true).get();
+            await _assessmentResultsRef(uid)
+                .orderBy('completedAt', descending: true)
+                .get();
         return query.docs
             .map((doc) => AssessmentResult.fromJson(doc.data()))
+            .where((result) => !result.archived)  // Filter on client side
             .toList();
       } catch (e2) {
         throw FirestoreException('Failed to get assessment results: $e2');
@@ -334,6 +352,7 @@ class FirestoreService {
           (snap) =>
               snap.docs
                   .map((doc) => AssessmentResult.fromJson(doc.data()))
+                  .where((result) => !result.archived)
                   .toList(),
         );
   }

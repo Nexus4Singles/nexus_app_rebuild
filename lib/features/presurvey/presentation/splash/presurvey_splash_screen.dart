@@ -18,16 +18,29 @@ class PresurveySplashScreen extends ConsumerStatefulWidget {
 
 class _PresurveySplashScreenState extends ConsumerState<PresurveySplashScreen>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _c;
+  late final AnimationController _mainController;
 
-  late final Animation<double> _fade;
-  late final Animation<double> _scale;
+  // Phase 1: Logo entrance & rotation
+  late final Animation<double> _logoRotation;
+  late final Animation<double> _logoGlow;
 
+  // Phase 2: Title slide & fade
   late final Animation<Offset> _titleSlide;
-  late final Animation<Offset> _logoSlide;
-  late final Animation<Offset> _taglineSlide;
+  late final Animation<double> _titleFade;
+  late final Animation<double> _titleScale;
 
-  Timer? _timer;
+  // Phase 3: Tagline slide & fade
+  late final Animation<Offset> _taglineSlide;
+  late final Animation<double> _taglineFade;
+
+  // Overall container effects
+  late final Animation<double> _containerFade;
+  late final Animation<double> _containerScale;
+
+  // Pulsing effects
+  late final Animation<double> _logoPulse;
+
+  Timer? _navigationTimer;
 
   @override
   void initState() {
@@ -35,61 +48,103 @@ class _PresurveySplashScreenState extends ConsumerState<PresurveySplashScreen>
 
     // Pre-cache logo image to load immediately
     Future.microtask(() {
-      precacheImage(
-        const AssetImage('assets/images/nexus_logo.png'),
-        context,
-      );
+      precacheImage(const AssetImage('assets/images/nexus_logo.png'), context);
     });
 
     // Always reset guest session at the start of presurvey
     Future.microtask(() => ref.read(guestSessionProvider.notifier).clear());
 
-    _c = AnimationController(
+    // Branding animation controller
+    _mainController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 4500),
+      duration: const Duration(milliseconds: 3500),
     );
 
-    _fade = CurvedAnimation(parent: _c, curve: Curves.easeOut);
+    // PHASE 1 (0% - 15%): Logo enters with rotation
+    _logoRotation = Tween<double>(begin: -0.3, end: 0.0).animate(
+      CurvedAnimation(
+        parent: _mainController,
+        curve: const Interval(0.0, 0.15, curve: Curves.easeOutBack),
+      ),
+    );
 
-    _scale = Tween<double>(
-      begin: 0.78,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _c, curve: Curves.easeOutBack));
+    _logoGlow = Tween<double>(begin: 0.3, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _mainController,
+        curve: const Interval(0.0, 0.15, curve: Curves.easeOut),
+      ),
+    );
 
+    // PHASE 2 (15% - 35%): Title slides in from top
     _titleSlide = Tween<Offset>(
-      begin: const Offset(0, -0.35),
+      begin: const Offset(0, -0.5),
       end: Offset.zero,
     ).animate(
       CurvedAnimation(
-        parent: _c,
-        curve: const Interval(0.0, 0.75, curve: Curves.easeOut),
+        parent: _mainController,
+        curve: const Interval(0.15, 0.35, curve: Curves.easeOutCubic),
       ),
     );
 
-    _logoSlide = Tween<Offset>(
-      begin: const Offset(0, 0.35),
-      end: Offset.zero,
-    ).animate(
+    _titleFade = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-        parent: _c,
-        curve: const Interval(0.10, 0.90, curve: Curves.easeOutBack),
+        parent: _mainController,
+        curve: const Interval(0.15, 0.35, curve: Curves.easeOut),
       ),
     );
 
+    _titleScale = Tween<double>(begin: 0.7, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _mainController,
+        curve: const Interval(0.15, 0.35, curve: Curves.easeOutBack),
+      ),
+    );
+
+    // PHASE 3 (35% - 55%): Tagline slides in from bottom
     _taglineSlide = Tween<Offset>(
-      begin: const Offset(0, 0.55),
+      begin: const Offset(0, 0.5),
       end: Offset.zero,
     ).animate(
       CurvedAnimation(
-        parent: _c,
-        curve: const Interval(0.25, 1.0, curve: Curves.easeOut),
+        parent: _mainController,
+        curve: const Interval(0.35, 0.55, curve: Curves.easeOutCubic),
       ),
     );
 
-    _c.forward();
+    _taglineFade = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _mainController,
+        curve: const Interval(0.35, 0.55, curve: Curves.easeOut),
+      ),
+    );
 
-    // Auto-route after 15 seconds
-    _timer = Timer(const Duration(seconds: 80), _goNext);
+    // Overall container animations
+    _containerFade = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _mainController,
+        curve: const Interval(0.0, 0.2, curve: Curves.easeOut),
+      ),
+    );
+
+    _containerScale = Tween<double>(begin: 0.85, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _mainController,
+        curve: const Interval(0.0, 0.25, curve: Curves.easeOutBack),
+      ),
+    );
+
+    // PHASE 4 (55% - 100%): Pulsing glow effect (breathing animation)
+    _logoPulse = Tween<double>(begin: 1.0, end: 1.15).animate(
+      CurvedAnimation(
+        parent: _mainController,
+        curve: const Interval(0.55, 1.0, curve: Curves.easeInOutSine),
+      ),
+    );
+
+    _mainController.forward();
+
+    // Auto-route after animation completes
+    _navigationTimer = Timer(const Duration(seconds: 4), _goNext);
   }
 
   void _goNext() {
@@ -104,8 +159,8 @@ class _PresurveySplashScreenState extends ConsumerState<PresurveySplashScreen>
 
   @override
   void dispose() {
-    _timer?.cancel();
-    _c.dispose();
+    _navigationTimer?.cancel();
+    _mainController.dispose();
     super.dispose();
   }
 
@@ -115,48 +170,87 @@ class _PresurveySplashScreenState extends ConsumerState<PresurveySplashScreen>
       backgroundColor: AppColors.primary,
       body: SafeArea(
         child: FadeTransition(
-          opacity: _fade,
+          opacity: _containerFade,
           child: ScaleTransition(
-            scale: _scale,
+            scale: _containerScale,
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 28),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    // ===== TITLE SECTION =====
                     SlideTransition(
                       position: _titleSlide,
-                      child: Text(
-                        'Nexus',
-                        style: AppTextStyles.headlineLarge.copyWith(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: -0.4,
+                      child: FadeTransition(
+                        opacity: _titleFade,
+                        child: ScaleTransition(
+                          scale: _titleScale,
+                          child: Text(
+                            'Nexus',
+                            style: AppTextStyles.headlineLarge.copyWith(
+                              color: Colors.white,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: -0.4,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(height: 18),
 
-                    SlideTransition(
-                      position: _logoSlide,
-                      child: Image.asset(
-                        'assets/images/nexus_logo.png',
-                        height: 50,
-                        width: 70,
-                        fit: BoxFit.contain,
+                    // ===== LOGO SECTION WITH DRAMATIC EFFECTS =====
+                    ScaleTransition(
+                      scale: _logoPulse,
+                      child: RotationTransition(
+                        turns: _logoRotation,
+                        child: FadeTransition(
+                          opacity: _logoGlow,
+                          child: AnimatedBuilder(
+                            animation: _mainController,
+                            builder: (context, child) {
+                              // Create pulsing shadow/glow effect
+                              final glowIntensity = _logoPulse.value;
+                              return Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.white.withOpacity(
+                                        0.3 * (_logoPulse.value - 1.0) * 10,
+                                      ),
+                                      blurRadius: 20 * glowIntensity,
+                                      spreadRadius: 5 * glowIntensity,
+                                    ),
+                                  ],
+                                ),
+                                child: child,
+                              );
+                            },
+                            child: Image.asset(
+                              'assets/images/nexus_logo.png',
+                              height: 50,
+                              width: 70,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 18),
 
+                    // ===== TAGLINE SECTION =====
                     SlideTransition(
                       position: _taglineSlide,
-                      child: Text(
-                        'Raising Godly Families through Kingdom Relationships & Marriages.',
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: Colors.white.withOpacity(0.95),
-                          height: 1.35,
+                      child: FadeTransition(
+                        opacity: _taglineFade,
+                        child: Text(
+                          'Raising Godly Families through Kingdom Relationships & Marriages.',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: Colors.white.withOpacity(0.95),
+                            height: 1.35,
+                          ),
                         ),
                       ),
                     ),

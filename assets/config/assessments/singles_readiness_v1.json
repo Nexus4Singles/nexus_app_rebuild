@@ -916,7 +916,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "family_background_learned_patterns_unexamined_inheritance",
-          "outcomeLabel": "unexamined family inheritance",
+          "outcomeLabel": "family patterns you haven't examined",
           "genderInsight": {
             "male": "Not seeing the connection between your family of origin and your current behavior is one of the most dangerous blind spots a man can bring into marriage. What you don't see, you repeat.",
             "female": "Unexamined family inheritance is how unhealthy patterns survive across generations. The behaviors you inherited from your parents will show up in your marriage — the only question is whether you'll see them coming."
@@ -1083,7 +1083,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "partner_discernment_led_by_feelings_over_patterns",
-          "outcomeLabel": "led by feelings, overlooks red flags",
+          "outcomeLabel": "led by feelings and overlook red flags",
           "genderInsight": {
             "male": "Focusing on how she treats you while ignoring broader character patterns is a dangerous shortcut. Marriage reveals everything — her friend circle, conflict style, and faith will shape your daily life.",
             "female": "Believing love will cover the gaps is a common hope that rarely survives marriage. How he treats YOU is important — but who he IS when you're not watching matters more long-term."

@@ -17,7 +17,7 @@ class RelationshipStatusUpdater {
 
   RelationshipStatusUpdater(this._firestore);
 
-  /// Update user's relationship status and archive dating profile if transitioning to married
+  /// Update user's relationship status and handle dating profile archiving/restoration + assessment archiving
   Future<void> updateRelationshipStatus(
     String uid,
     String newStatus,
@@ -34,17 +34,64 @@ class RelationshipStatusUpdater {
       'nexus2.relationshipStatus': newStatus,
     });
 
+    // Archive all existing assessment results in BOTH storage locations
+    // This ensures they start fresh with assessments tailored to their new status
+    
+    // 1. Archive in legacy storage (assessmentResults/{uid}/results)
+    try {
+      final resultsRef = userRef.collection('assessmentResults').doc(uid).collection('results');
+      final snapshot = await resultsRef.where('archived', isEqualTo: false).get();
+      
+      for (final doc in snapshot.docs) {
+        batch.update(doc.reference, {
+          'archived': true,
+          'archivedAt': FieldValue.serverTimestamp(),
+          'archivedDueToStatusChange': true,
+        });
+      }
+    } catch (e) {
+      // Collection might not exist yet - continue
+    }
+
+    // 2. Archive in v2 storage (users/{uid}/assessments/{assessmentType})
+    try {
+      final assessmentsRef = userRef.collection('assessments');
+      final v2Snapshot = await assessmentsRef.where('archived', isEqualTo: false).get();
+      
+      for (final doc in v2Snapshot.docs) {
+        batch.update(doc.reference, {
+          'archived': true,
+          'archivedAt': FieldValue.serverTimestamp(),
+          'archivedDueToStatusChange': true,
+        });
+      }
+    } catch (e) {
+      // Collection might not exist yet - continue
+    }
+
     // If transitioning to married, archive the dating profile
     if (newStatus.toLowerCase() == 'married') {
       final datingProfileRef = userRef.collection('dating').doc('profile');
       batch.update(datingProfileRef, {
         'isActive': false,
       });
+      
+      // Also ensure dating opt-in is turned off for married users
+      batch.update(userRef, {
+        'dating.optIn': false,
+      });
     }
 
-    // NOTE: Do NOT auto-reactivate dating profiles when switching from married.
-    // User will be prompted to explicitly opt-in via showRelationshipStatusDialog().
-    // This maintains consistency with the dating opt-in flow (not automatic).
+    // If transitioning FROM married to eligible status (never_married, divorced, widowed),
+    // ensure dating opt-in is restored but keep profile archived until user explicitly reactivates
+    final eligibleStatuses = ['never_married', 'divorced', 'widowed', 'single'];
+    if (eligibleStatuses.contains(newStatus.toLowerCase())) {
+      batch.update(userRef, {
+        'dating.optIn': true,
+      });
+      // NOTE: Keep dating profile archived (isActive: false) 
+      // User will see "create dating profile" card and can choose to reactivate
+    }
 
     await batch.commit();
   }

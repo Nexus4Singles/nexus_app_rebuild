@@ -48,8 +48,8 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
   @override
   void initState() {
     super.initState();
-    // Show splash for 10 seconds to allow full animation viewing
-    _timer = Timer(const Duration(seconds: 10), _route);
+    // Show splash for 5 seconds to allow full animation viewing
+    _timer = Timer(const Duration(seconds: 5), _route);
   }
 
   @override
@@ -302,22 +302,20 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
   late final AnimationController _controller;
   late final AnimationController _shimmerController;
 
-  // Container
-  late final Animation<double> _containerFade;
+  // Title: dramatic slide from LEFT
+  late final Animation<Offset> _titleSlide;
+  late final Animation<double> _titleFade;
 
-  // Logo: scale up + fade
+  // Logo: dramatic scale + fade
   late final Animation<double> _logoScale;
   late final Animation<double> _logoFade;
+  late final Animation<Offset> _logoSlide;
 
-  // Title: fade + slide
-  late final Animation<double> _titleFade;
-  late final Animation<Offset> _titleSlide;
-
-  // Tagline: fade + slide
-  late final Animation<double> _taglineFade;
+  // Tagline: dramatic slide from RIGHT
   late final Animation<Offset> _taglineSlide;
+  late final Animation<double> _taglineFade;
 
-  // Subtle shimmer on logo
+  // Shimmer effect on logo
   late final Animation<double> _shimmer;
 
   @override
@@ -336,7 +334,7 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1600),
+      duration: const Duration(milliseconds: 2200),
     );
 
     _shimmerController = AnimationController(
@@ -344,70 +342,77 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
       duration: const Duration(milliseconds: 2000),
     );
 
-    // Whole container fades in (0% – 25%)
-    _containerFade = Tween<double>(begin: 0.0, end: 1.0).animate(
+    // ─────────────────────────────────
+    // TITLE: Slide dramatically from LEFT
+    // ─────────────────────────────────
+    _titleSlide = Tween<Offset>(
+      begin: const Offset(-1.2, 0),
+      end: Offset.zero,
+    ).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.0, 0.25, curve: Curves.easeOut),
+        curve: const Interval(0.0, 0.35, curve: Curves.easeOutCubic),
+      ),
+    );
+    _titleFade = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.30, curve: Curves.easeOut),
       ),
     );
 
-    // Logo appears first — hero element (0% – 50%)
-    _logoScale = Tween<double>(begin: 0.6, end: 1.0).animate(
+    // ──────────────────────────────────────────
+    // LOGO: Dramatic scale bounce + fade + slide
+    // ──────────────────────────────────────────
+    _logoScale = Tween<double>(begin: 0.3, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.0, 0.50, curve: Curves.easeOutBack),
+        curve: const Interval(0.25, 0.60, curve: Curves.easeOutBack),
       ),
     );
     _logoFade = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.0, 0.35, curve: Curves.easeOut),
+        curve: const Interval(0.25, 0.45, curve: Curves.easeOut),
       ),
     );
-
-    // Title appears after logo (25% – 65%)
-    _titleFade = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.25, 0.55, curve: Curves.easeOut),
-      ),
-    );
-    _titleSlide = Tween<Offset>(
-      begin: const Offset(0, 0.15),
+    _logoSlide = Tween<Offset>(
+      begin: const Offset(0, -0.3),
       end: Offset.zero,
     ).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.25, 0.65, curve: Curves.easeOutCubic),
+        curve: const Interval(0.25, 0.60, curve: Curves.easeOutCubic),
       ),
     );
 
-    // Tagline last (50% – 90%)
+    // ─────────────────────────────────
+    // TAGLINE: Slide dramatically from RIGHT
+    // ─────────────────────────────────
+    _taglineSlide = Tween<Offset>(
+      begin: const Offset(1.2, 0),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.45, 0.80, curve: Curves.easeOutCubic),
+      ),
+    );
     _taglineFade = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.50, 0.80, curve: Curves.easeOut),
-      ),
-    );
-    _taglineSlide = Tween<Offset>(
-      begin: const Offset(0, 0.15),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.50, 0.90, curve: Curves.easeOutCubic),
+        curve: const Interval(0.45, 0.75, curve: Curves.easeOut),
       ),
     );
 
-    // Soft shimmer pulse on logo (repeats)
+    // Shimmer effect on logo
     _shimmer = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _shimmerController, curve: Curves.easeInOut),
     );
 
     _controller.forward();
     // Start shimmer after main entrance finishes
-    Future.delayed(const Duration(milliseconds: 1200), () {
+    Future.delayed(const Duration(milliseconds: 1500), () {
       if (mounted) _shimmerController.repeat(reverse: true);
     });
   }
@@ -423,52 +428,38 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primary,
-      body: FadeTransition(
-        opacity: _containerFade,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // ── App name ──
-                SlideTransition(
-                  position: _titleSlide,
-                  child: FadeTransition(
-                    opacity: _titleFade,
-                    child: Text(
-                      'Nexus',
-                      style: AppTextStyles.headlineLarge.copyWith(
-                        color: Colors.white,
-                        fontSize: 36,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 1.2,
-                      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // ══════════════════════════════════
+              // NEXUS TITLE: Slides in from LEFT
+              // ══════════════════════════════════
+              SlideTransition(
+                position: _titleSlide,
+                child: FadeTransition(
+                  opacity: _titleFade,
+                  child: Text(
+                    'Nexus',
+                    style: AppTextStyles.headlineLarge.copyWith(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.5,
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+              ),
+              const SizedBox(height: 12),
 
-                // ── Tagline ──
-                SlideTransition(
-                  position: _taglineSlide,
-                  child: FadeTransition(
-                    opacity: _taglineFade,
-                    child: Text(
-                      'Raising Godly Families through\nKingdom Relationships & Marriages.',
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: Colors.white.withOpacity(0.85),
-                        height: 1.45,
-                        letterSpacing: 0.2,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                // ── Logo (hero element, appears first) ──
-                ScaleTransition(
+              // ══════════════════════════════════
+              // LOGO: Dramatic scale + fade + slide
+              // ══════════════════════════════════
+              SlideTransition(
+                position: _logoSlide,
+                child: ScaleTransition(
                   scale: _logoScale,
                   child: FadeTransition(
                     opacity: _logoFade,
@@ -481,10 +472,10 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.white.withOpacity(
-                                  0.08 + 0.07 * _shimmer.value,
+                                  0.06 + 0.06 * _shimmer.value,
                                 ),
-                                blurRadius: 30 + 10 * _shimmer.value,
-                                spreadRadius: 2 + 4 * _shimmer.value,
+                                blurRadius: 20 + 8 * _shimmer.value,
+                                spreadRadius: 2 + 3 * _shimmer.value,
                               ),
                             ],
                           ),
@@ -493,14 +484,35 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
                       },
                       child: Image.asset(
                         'assets/images/nexus_logo.png',
-                        height: 120,
+                        height: 100,
                         fit: BoxFit.contain,
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 14),
+
+              // ══════════════════════════════════
+              // TAGLINE: Slides in from RIGHT
+              // ══════════════════════════════════
+              SlideTransition(
+                position: _taglineSlide,
+                child: FadeTransition(
+                  opacity: _taglineFade,
+                  child: Text(
+                    'Raising Godly Families through\nKingdom Relationships & Marriages.',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: Colors.white.withOpacity(0.9),
+                      fontSize: 14,
+                      height: 1.4,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

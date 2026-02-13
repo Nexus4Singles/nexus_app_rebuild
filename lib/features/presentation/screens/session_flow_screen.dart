@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nexus_app_v2/core/router/safe_nav.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 
 class SessionFlowScreen extends StatelessWidget {
@@ -37,7 +38,7 @@ class SessionFlowScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(14),
                   ),
                 ),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => navigateBackToHome(context),
                 child: Text(
                   'Back',
                   style: AppTextStyles.buttonMedium.copyWith(

@@ -86,9 +86,9 @@ class _JourneyTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: AppColors.primary.withOpacity(0.04),
+          color: AppColors.primary.withOpacity(0.03),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.primary.withOpacity(0.15)),
+          border: Border.all(color: AppColors.getBorder(context), width: 1),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

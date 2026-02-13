@@ -24,6 +24,7 @@ import 'package:nexus_app_v2/core/moderation/moderation_providers.dart';
 import '../../../../core/models/user_model.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:nexus_app_v2/core/services/media_service.dart';
+import 'package:nexus_app_v2/features/profile/presentation/widgets/relationship_status_editor.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,7 +40,6 @@ import '../../../subscription/presentation/screens/subscription_screen.dart';
 import '../../../dating_search/presentation/screens/saved_profiles_screen.dart';
 import '../../../dating_search/application/saved_profiles_provider.dart';
 import '../../../dating_search/domain/enhanced_compatibility_scorer.dart';
-import '../widgets/relationship_status_editor.dart';
 
 Future<void> handleLogout(BuildContext context, WidgetRef ref) async {
   final ok = await showDialog<bool>(
@@ -653,7 +653,7 @@ class _BasicProfileScreen extends ConsumerWidget {
                                 size: 20,
                               ),
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 messageTitle,
@@ -2426,6 +2426,20 @@ class _AccountTiles extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const SubscriptionScreen()),
+            );
+          },
+        ),
+        const SizedBox(height: 10),
+        Consumer(
+          builder: (context, ref, _) {
+            final userDocAsync = ref.watch(currentUserDocProvider);
+            final currentStatus = userDocAsync.maybeWhen(
+              data: (doc) => doc?['nexus2']?['relationshipStatus'] ?? '',
+              orElse: () => '',
+            );
+
+            return RelationshipStatusEditor(
+              currentStatus: currentStatus,
             );
           },
         ),

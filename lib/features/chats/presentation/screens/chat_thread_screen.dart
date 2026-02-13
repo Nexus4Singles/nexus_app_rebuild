@@ -18,6 +18,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'package:nexus_app_v2/core/constants/app_constants.dart';
 import 'package:nexus_app_v2/features/subscription/presentation/screens/subscription_screen.dart';
+import 'package:nexus_app_v2/core/widgets/cached_image.dart';
 
 final _userDocByIdProvider =
     StreamProvider.family<Map<String, dynamic>?, String>((ref, uid) {
@@ -2168,7 +2169,7 @@ class _Composer extends StatelessWidget {
   }
 }
 
-/// Network image with error handling for avatars
+/// Network image with error handling for avatars (cached)
 class _NetworkAvatarImage extends StatelessWidget {
   final String imageUrl;
 
@@ -2176,17 +2177,9 @@ class _NetworkAvatarImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipOval(
-      child: Image.network(
-        imageUrl,
-        fit: BoxFit.cover,
-        width: 32,
-        height: 32,
-        errorBuilder: (_, __, ___) => Container(
-          color: AppColors.primary.withOpacity(0.1),
-          child: Icon(Icons.person, size: 14, color: AppColors.primary),
-        ),
-      ),
+    return CachedAvatarImage(
+      imageUrl: imageUrl,
+      size: 32,
     );
   }
 }
@@ -2509,18 +2502,35 @@ class _MessageBody extends StatelessWidget {
           if (path == null || path.isEmpty) {
             body = Text('(missing image)', style: AppTextStyles.bodyMedium);
           } else {
-            body = ClipRRect(
-              borderRadius: BorderRadius.circular(14),
-              child: Image.file(
-                File(path),
-                fit: BoxFit.cover,
-                errorBuilder:
-                    (_, __, ___) => Container(
-                      height: 160,
-                      alignment: Alignment.center,
-                      color: AppColors.getBackground(context),
-                      child: const Icon(Icons.broken_image_outlined),
+            body = GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    opaque: false,
+                    barrierColor: Colors.black87,
+                    barrierDismissible: true,
+                    pageBuilder: (_, __, ___) => _FullScreenImageViewer(
+                      filePath: path,
                     ),
+                    transitionsBuilder: (_, anim, __, child) {
+                      return FadeTransition(opacity: anim, child: child);
+                    },
+                  ),
+                );
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: Image.file(
+                  File(path),
+                  fit: BoxFit.cover,
+                  errorBuilder:
+                      (_, __, ___) => Container(
+                        height: 160,
+                        alignment: Alignment.center,
+                        color: AppColors.getBackground(context),
+                        child: const Icon(Icons.broken_image_outlined),
+                      ),
+                ),
               ),
             );
           }
@@ -2780,6 +2790,68 @@ class _PremiumFeatureRow extends StatelessWidget {
           child: Text(text, style: const TextStyle(fontSize: 13, height: 1.2)),
         ),
       ],
+    );
+  }
+}
+
+/// Full-screen image viewer with pinch-to-zoom and swipe-to-dismiss
+class _FullScreenImageViewer extends StatelessWidget {
+  final String filePath;
+
+  const _FullScreenImageViewer({required this.filePath});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Stack(
+          children: [
+            // Zoomable image
+            Center(
+              child: InteractiveViewer(
+                minScale: 0.5,
+                maxScale: 4.0,
+                child: Hero(
+                  tag: filePath,
+                  child: Image.file(
+                    File(filePath),
+                    fit: BoxFit.contain,
+                    errorBuilder: (_, __, ___) => const Center(
+                      child: Icon(
+                        Icons.broken_image_outlined,
+                        color: Colors.white54,
+                        size: 64,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Close button
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 12,
+              right: 16,
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.close,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

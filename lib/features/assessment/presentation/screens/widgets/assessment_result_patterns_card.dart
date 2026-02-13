@@ -66,9 +66,9 @@ class _PatternTile extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.tierDeep.withOpacity(0.06),
+              color: AppColors.tierDeep.withOpacity(0.04),
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.tierDeep.withOpacity(0.15)),
+              border: Border.all(color: AppColors.getBorder(context), width: 1),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

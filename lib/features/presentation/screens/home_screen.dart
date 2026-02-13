@@ -15,6 +15,7 @@ import 'package:nexus_app_v2/core/providers/assessment_provider.dart';
 import 'package:nexus_app_v2/core/providers/user_provider.dart';
 
 import 'package:nexus_app_v2/core/session/relationship_status_key.dart';
+import 'package:nexus_app_v2/core/session/effective_relationship_status_provider.dart';
 import 'package:nexus_app_v2/core/models/assessment_model.dart';
 
 import 'package:nexus_app_v2/features/stories/data/story_repository.dart';
@@ -23,6 +24,7 @@ import 'package:nexus_app_v2/features/stories/presentation/screens/stories_scree
 
 import 'package:nexus_app_v2/features/journeys/data/journey_repository.dart';
 import 'package:nexus_app_v2/features/journeys/domain/journey_models.dart';
+import 'package:nexus_app_v2/features/challenges/providers/journeys_providers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<String> _homeDisplayNameForUser(User? u) async {
@@ -58,18 +60,6 @@ class HomeScreen extends ConsumerWidget {
     return 'Good evening';
   }
 
-  Future<String> _loadStatusKeyFromPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw =
-        prefs.getString('relationshipStatus') ??
-        prefs.getString('relationship_status') ??
-        prefs.getString('user_relationship_status') ??
-        prefs.getString('onboarding_relationship_status') ??
-        prefs.getString('category') ??
-        prefs.getString('user_category') ??
-        '';
-    return relationshipStatusKeyFromString(raw);
-  }
 
   Future<String?> _loadActiveJourneyIdFromPrefs() async {
     final prefs = await SharedPreferences.getInstance();
@@ -127,8 +117,9 @@ class HomeScreen extends ConsumerWidget {
     final isGuestAsync = ref.watch(isGuestProvider);
     final isGuest = isGuestAsync.maybeWhen(data: (v) => v, orElse: () => true);
 
-    // Fallback for relationship status comes from local prefs (guest + signed-in safe).
-    final fallbackKey = relationshipStatusKeyFromString('');
+    // Use effective relationship status provider for real-time updates
+    final effectiveStatus = ref.watch(effectiveRelationshipStatusProvider);
+    final statusKey = relationshipStatusKeyFromEnum(effectiveStatus);
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
@@ -143,14 +134,9 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
       ),
-      body: FutureBuilder<String>(
-        future: _loadStatusKeyFromPrefs(),
-        builder: (context, statusSnap) {
-          final statusKey = statusSnap.data ?? fallbackKey;
-
-          return ListView(
-            padding: EdgeInsets.fromLTRB(20, 16, 20, 220 + bottomInset),
-            children: [
+      body: ListView(
+        padding: EdgeInsets.fromLTRB(20, 16, 20, 220 + bottomInset),
+        children: [
               // Greeting Header
               if (isGuest)
                 Column(
@@ -183,6 +169,12 @@ class HomeScreen extends ConsumerWidget {
                       future: _homeDisplayNameForUser(user),
                       builder: (context, snap) {
                         final firstName = (snap.data ?? '').trim();
+                        // Determine if user is returning (not first session)
+                        final createdAt = user?.metadata.creationTime;
+                        final lastSignIn = user?.metadata.lastSignInTime;
+                        final isReturningUser = createdAt != null &&
+                            lastSignIn != null &&
+                            lastSignIn.difference(createdAt).inHours > 24;
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -196,13 +188,22 @@ class HomeScreen extends ConsumerWidget {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Text(
-                              'Welcome — continue where you left off',
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.getTextSecondary(context),
-                                height: 1.4,
+                            if (isReturningUser)
+                              Text(
+                                'Welcome back — continue where you left off',
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  color: AppColors.getTextSecondary(context),
+                                  height: 1.4,
+                                ),
+                              )
+                            else
+                              Text(
+                                'Explore different features below',
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  color: AppColors.getTextSecondary(context),
+                                  height: 1.4,
+                                ),
                               ),
-                            ),
                           ],
                         );
                       },
@@ -291,17 +292,21 @@ class HomeScreen extends ConsumerWidget {
                         },
                       ),
                       const SizedBox(height: 16),
-                      FutureBuilder<List<Journey>>(
-                        future: const JourneyRepository()
-                            .loadJourneysForCategory(statusKey),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState !=
-                              ConnectionState.done) {
-                            return const SizedBox.shrink();
-                          }
-                          final list = snapshot.data ?? const <Journey>[];
-                          if (list.isEmpty) return const SizedBox.shrink();
-                          return const SizedBox.shrink();
+                      // Journey catalog is loaded reactively based on relationship status
+                      // The journeyCatalogProvider watches effectiveRelationshipStatusProvider
+                      // so it automatically updates when status changes
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final catalogAsync = ref.watch(journeyCatalogProvider);
+                          return catalogAsync.when(
+                            data: (catalog) {
+                              // Catalog is loaded and reactive - actual journey display
+                              // happens on the challenges screen
+                              return const SizedBox.shrink();
+                            },
+                            loading: () => const SizedBox.shrink(),
+                            error: (_, __) => const SizedBox.shrink(),
+                          );
                         },
                       ),
                     ],
@@ -309,8 +314,6 @@ class HomeScreen extends ConsumerWidget {
                 },
               ),
             ],
-          );
-        },
       ),
     );
   }
@@ -525,19 +528,19 @@ class _ViewAssessmentResultCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: AppColors.textOnPrimary.withOpacity(0.2),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(0.3)),
+              border: Border.all(color: AppColors.textOnPrimary.withOpacity(0.3)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.psychology_outlined, size: 16, color: Colors.white),
+                Icon(Icons.psychology_outlined, size: 16, color: AppColors.textOnPrimary),
                 const SizedBox(width: 6),
                 Text(
                   'Assessment',
                   style: AppTextStyles.labelSmall.copyWith(
-                    color: Colors.white,
+                    color: AppColors.textOnPrimary,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0.5,
                   ),
@@ -549,19 +552,40 @@ class _ViewAssessmentResultCard extends StatelessWidget {
           Text(
             titleBuilder(context, statusKey),
             style: AppTextStyles.titleMedium.copyWith(
-              color: Colors.white,
+              color: AppColors.textOnPrimary,
               fontWeight: FontWeight.w700,
               height: 1.2,
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            'Score: ${(result.percentage * 100).round()}% - ${result.overallTier.displayName}',
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: Colors.white.withOpacity(0.9),
-              height: 1.4,
-              fontWeight: FontWeight.w600,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Score: ${(result.percentage * 100).round()}',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textOnPrimary.withOpacity(0.9),
+                        height: 1.4,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    TextSpan(
+                      text: '%',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textOnPrimary.withOpacity(0.9),
+                        height: 1.4,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+              _HomeTierPill(tier: result.overallTier),
+            ],
           ),
           const SizedBox(height: 20),
           SizedBox(
@@ -583,6 +607,41 @@ class _ViewAssessmentResultCard extends StatelessWidget {
                 'View Assessment Result',
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// TIER PILL - Matches assessment result screen style
+// ============================================================================
+class _HomeTierPill extends StatelessWidget {
+  final SignalTier tier;
+  const _HomeTierPill({required this.tier});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: AppColors.textOnPrimary.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.textOnPrimary.withOpacity(0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.auto_awesome_outlined, size: 12, color: AppColors.textOnPrimary),
+          const SizedBox(width: 5),
+          Text(
+            tier.displayName,
+            style: AppTextStyles.labelSmall.copyWith(
+              color: AppColors.textOnPrimary,
+              fontWeight: FontWeight.w800,
+              fontSize: 11,
             ),
           ),
         ],

@@ -6,6 +6,7 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/providers/assessment_provider.dart';
 import '../../../../core/providers/auth_status_provider.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/router/safe_nav.dart';
 import '../../../../core/theme/theme.dart';
 
 class AssessmentIntroScreen extends ConsumerWidget {
@@ -15,7 +16,6 @@ class AssessmentIntroScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoggedIn = ref.watch(isLoggedInProvider);
 
-    // Allow explicit assessment selection via route query param (?type=...)
     final routeName = ModalRoute.of(context)?.settings.name ?? '';
     final uri = Uri.tryParse(routeName);
     final typeParam = uri?.queryParameters['type'];
@@ -40,7 +40,7 @@ class AssessmentIntroScreen extends ConsumerWidget {
             if (config == null) {
               return _ErrorState(
                 message: 'Assessment not available right now.',
-                onBack: () => Navigator.pop(context),
+                onBack: () => navigateBackToHome(context),
               );
             }
 
@@ -48,115 +48,110 @@ class AssessmentIntroScreen extends ConsumerWidget {
 
             return Padding(
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _TopBar(onBack: () => Navigator.pop(context)),
-                  const SizedBox(height: 18),
-
-                  Center(
-                    child: Container(
-                      width: 96,
-                      height: 96,
-                      decoration: BoxDecoration(
-                        gradient: AppColors.primaryGradient,
-                        borderRadius: BorderRadius.circular(28),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primary.withOpacity(0.20),
-                            blurRadius: 22,
-                            offset: const Offset(0, 10),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _TopBar(onBack: () => navigateBackToHome(context)),
+                    const SizedBox(height: 12),
+                    Center(
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          gradient: AppColors.primaryGradient,
+                          borderRadius: BorderRadius.circular(24),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.primary.withOpacity(0.20),
+                              blurRadius: 22,
+                              offset: const Offset(0, 10),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            meta.emoji,
+                            style: const TextStyle(fontSize: 40),
                           ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          meta.emoji,
-                          style: const TextStyle(fontSize: 44),
                         ),
                       ),
                     ),
-                  ),
-
-                  const SizedBox(height: 22),
-
-                  Center(
-                    child: Text(
-                      meta.title,
-                      style: AppTextStyles.headlineLarge.copyWith(
-                        fontWeight: FontWeight.w800,
+                    const SizedBox(height: 14),
+                    Center(
+                      child: Text(
+                        meta.title,
+                        style: AppTextStyles.headlineLarge.copyWith(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  Center(
-                    child: Text(
-                      meta.subtitle,
-                      style: AppTextStyles.bodyLarge.copyWith(
-                        color: AppColors.getTextSecondary(context),
-                        height: 1.4,
+                    const SizedBox(height: 6),
+                    Center(
+                      child: Text(
+                        meta.subtitle,
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          fontSize: 13,
+                          color: AppColors.getTextSecondary(context),
+                          height: 1.3,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
-
-                  const SizedBox(height: 22),
-
-                  _InfoRow(
-                    items: [
-                      _InfoChip(
-                        icon: Icons.quiz_outlined,
-                        title: '${config.questions.length} Questions',
-                      ),
-                      _InfoChip(
-                        icon: Icons.timer_outlined,
-                        title: '5–7 Minutes',
-                      ),
-                      _InfoChip(icon: Icons.lock_outline, title: 'Private'),
-                    ],
-                  ),
-
-                  const SizedBox(height: 18),
-
-                  Expanded(
-                    child: Container(
+                    const SizedBox(height: 14),
+                    _InfoRow(
+                      items: [
+                        _InfoChip(
+                          icon: Icons.quiz_outlined,
+                          title: '${config.questions.length} Questions',
+                        ),
+                        _InfoChip(
+                          icon: Icons.timer_outlined,
+                          title: '7–10 Minutes',
+                        ),
+                        _InfoChip(icon: Icons.lock_outline, title: 'Private'),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(18),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: AppColors.getSurface(context),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: AppColors.getBorder(context)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'What you’ll get',
-                            style: AppTextStyles.titleMedium.copyWith(
+                            'What you\'ll get',
+                            style: AppTextStyles.titleSmall.copyWith(
+                              fontSize: 13,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
-                          const SizedBox(height: 14),
+                          const SizedBox(height: 10),
                           ...meta.discoveries.map(
                             (d) => Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
+                              padding: const EdgeInsets.only(bottom: 6),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Icon(
                                     Icons.check_circle,
                                     color: AppColors.primary,
-                                    size: 18,
+                                    size: 16,
                                   ),
-                                  const SizedBox(width: 10),
+                                  const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
                                       d,
-                                      style: AppTextStyles.bodyMedium.copyWith(
-                                        height: 1.4,
+                                      style: AppTextStyles.bodySmall.copyWith(
+                                        fontSize: 12,
+                                        height: 1.3,
                                       ),
                                     ),
                                   ),
@@ -164,172 +159,130 @@ class AssessmentIntroScreen extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          const Spacer(),
+                          const SizedBox(height: 8),
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(14),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: AppColors.primarySoft,
-                              borderRadius: BorderRadius.circular(16),
+                              color: AppColors.getSurface(context),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: AppColors.getBorder(context),
+                              ),
                             ),
                             child: Text(
                               meta.note,
-                              style: AppTextStyles.bodyMedium.copyWith(
+                              style: AppTextStyles.bodySmall.copyWith(
+                                fontSize: 12,
                                 color: AppColors.getTextPrimary(context),
-                                height: 1.35,
+                                height: 1.3,
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-
-                  const SizedBox(height: 18),
-
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.08),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: AppColors.primary.withOpacity(0.2),
+                    const SizedBox(height: 16),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.08),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: AppColors.primary.withOpacity(0.2),
+                        ),
                       ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.lightbulb_outlined,
-                              color: AppColors.primary,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'How to Get the Most Out of This',
-                              style: AppTextStyles.titleSmall.copyWith(
-                                fontWeight: FontWeight.w700,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.lightbulb_outlined,
                                 color: AppColors.primary,
+                                size: 18,
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          'Your honesty is crucial. Answer based on how you truly feel and behave—not how you wish you were. The accuracy of your results depends on your authentic responses.\n\nTake your time and be genuine with yourself.',
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.getTextSecondary(context),
-                            height: 1.4,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 18),
-
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.08),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: AppColors.primary.withOpacity(0.2),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.lightbulb_outlined,
-                              color: AppColors.primary,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'How to Get the Most Out of This',
-                              style: AppTextStyles.titleSmall.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          'Your honesty is crucial. Answer based on how you truly feel and behave—not how you wish you were. The accuracy of your results depends on your authentic responses.\n\nTake your time and be genuine with yourself.',
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.getTextSecondary(context),
-                            height: 1.4,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 18),
-
-                  SizedBox(
-                    width: double.infinity,
-                    height: 54,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (!isLoggedIn) {
-                          showDialog(
-                            context: context,
-                            builder:
-                                (_) => AlertDialog(
-                                  title: const Text('Sign in required'),
-                                  content: const Text(
-                                    'Create an account or sign in to take assessments.',
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: const Text('Not now'),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.pushNamed(
-                                          context,
-                                          AppRoutes.login,
-                                        );
-                                      },
-                                      child: const Text('Sign in'),
-                                    ),
-                                  ],
+                              const SizedBox(width: 6),
+                              Text(
+                                'How to Get the Most Out of This',
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.primary,
                                 ),
-                          );
-                          return;
-                        }
-
-                        Navigator.pushNamed(context, AppRoutes.assessment);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        elevation: 0,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Your honesty is crucial. Answer based on how you truly feel and behave—not how you wish you were. The accuracy of your results depends on your authentic responses.\n\nTake your time and be genuine with yourself.',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              fontSize: 12,
+                              color: AppColors.getTextSecondary(context),
+                              height: 1.3,
+                            ),
+                          ),
+                        ],
                       ),
-                      child: const Text(
-                        'Start Assessment',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (!isLoggedIn) {
+                            showDialog(
+                              context: context,
+                              builder:
+                                  (_) => AlertDialog(
+                                    title: const Text('Sign in required'),
+                                    content: const Text(
+                                      'Create an account or sign in to take assessments.',
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('Not now'),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          Navigator.pushNamed(
+                                            context,
+                                            AppRoutes.login,
+                                          );
+                                        },
+                                        child: const Text('Sign in'),
+                                      ),
+                                    ],
+                                  ),
+                            );
+                            return;
+                          }
+
+                          Navigator.pushNamed(context, AppRoutes.assessment);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: const Text(
+                          'Start Assessment',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },
@@ -365,9 +318,9 @@ class AssessmentMeta {
       case AssessmentType.singlesReadiness:
         return const AssessmentMeta(
           emoji: '💛',
-          title: 'Singles Readiness Check',
+          title: 'Marriage Readiness Check',
           subtitle:
-              'Understand what you’re truly ready for in love and dating.',
+              'Understand what you\'re truly ready for in love and dating.',
           discoveries: [
             'Clarity on your emotional readiness',
             'Signals and patterns holding you back',
