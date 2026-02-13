@@ -284,7 +284,7 @@ class _CoachApplicationScreenState
             if (Navigator.of(context).canPop()) {
               Navigator.pop(context);
             } else {
-              Navigator.pushReplacementNamed(context, '/home');
+              Navigator.of(context).popUntil((route) => route.isFirst);
             }
           },
         ),
@@ -1139,10 +1139,7 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
                               if (Navigator.of(context).canPop()) {
                                 Navigator.pop(context);
                               } else {
-                                Navigator.pushReplacementNamed(
-                                  context,
-                                  '/home',
-                                );
+                                Navigator.of(context).popUntil((route) => route.isFirst);
                               }
                             });
                           }

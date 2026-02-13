@@ -1722,7 +1722,10 @@ class _ProfileAudioController {
       await Future.delayed(const Duration(milliseconds: 100));
       await tempPlayer.stop();
       await tempPlayer.dispose();
-      return await completer.future.timeout(const Duration(seconds: 2), onTimeout: () => realDuration ?? Duration.zero);
+      return await completer.future.timeout(
+        const Duration(seconds: 2),
+        onTimeout: () => realDuration ?? Duration.zero,
+      );
     } catch (_) {
       return Duration.zero;
     }
@@ -2016,19 +2019,20 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
     final isPlaying =
         isCurrent && widget.controller.state == PlayerState.playing;
 
-
     // Get duration specific to this audio URL (not the shared controller duration)
-    final Future<Duration> audioDurationFuture = hasUrl
-        ? widget.controller.getDurationForUrl(widget.url!)
-        : Future.value(Duration.zero);
+    final Future<Duration> audioDurationFuture =
+        hasUrl
+            ? widget.controller.getDurationForUrl(widget.url!)
+            : Future.value(Duration.zero);
 
     return FutureBuilder<Duration>(
       future: audioDurationFuture,
       builder: (context, snapshot) {
         final audioDuration = snapshot.data ?? Duration.zero;
-        final duration = audioDuration.inMilliseconds == 0
-            ? const Duration(seconds: 1)
-            : audioDuration;
+        final duration =
+            audioDuration.inMilliseconds == 0
+                ? const Duration(seconds: 1)
+                : audioDuration;
         // Position is only relevant for the currently playing audio
         final position = isCurrent ? widget.controller.position : Duration.zero;
         final borderColor = Theme.of(context).dividerColor;
@@ -2059,8 +2063,8 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
                     onTap:
                         (!widget.isLocked && hasUrl)
                             ? () async {
-                                await widget.controller.playOrPause(widget.url!);
-                              }
+                              await widget.controller.playOrPause(widget.url!);
+                            }
                             : null,
                     borderRadius: BorderRadius.circular(999),
                     child: Container(
@@ -2069,16 +2073,18 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(999),
-                        border: Border.all(color: Theme.of(context).dividerColor),
+                        border: Border.all(
+                          color: Theme.of(context).dividerColor,
+                        ),
                       ),
                       child: Icon(
                         widget.isLocked
                             ? Icons.lock_rounded
                             : hasUrl
-                                ? (isPlaying
-                                    ? Icons.pause_rounded
-                                    : Icons.play_arrow_rounded)
-                                : Icons.mic_none_rounded,
+                            ? (isPlaying
+                                ? Icons.pause_rounded
+                                : Icons.play_arrow_rounded)
+                            : Icons.mic_none_rounded,
                         color: Theme.of(context).colorScheme.primary,
                         size: 22,
                       ),
@@ -2089,11 +2095,12 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
               if (!widget.isLocked && hasUrl) ...[
                 const SizedBox(height: 8),
                 Slider(
-                  value: isCurrent
-                      ? position.inMilliseconds
-                          .clamp(0, duration.inMilliseconds)
-                          .toDouble()
-                      : 0,
+                  value:
+                      isCurrent
+                          ? position.inMilliseconds
+                              .clamp(0, duration.inMilliseconds)
+                              .toDouble()
+                          : 0,
                   max: duration.inMilliseconds.toDouble(),
                   activeColor: Theme.of(context).colorScheme.primary,
                   inactiveColor: Theme.of(
@@ -2101,7 +2108,9 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
                   ).colorScheme.primary.withOpacity(0.2),
                   onChanged: (v) async {
                     if (!isCurrent) return;
-                    await widget.controller.seek(Duration(milliseconds: v.toInt()));
+                    await widget.controller.seek(
+                      Duration(milliseconds: v.toInt()),
+                    );
                   },
                 ),
                 Row(

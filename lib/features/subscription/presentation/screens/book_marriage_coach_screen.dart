@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/theme/theme.dart';
+import '../../../../core/router/app_routes.dart';
 import 'coach_application_screen.dart';
 import 'coach_requirements_screen.dart';
 
@@ -75,7 +76,13 @@ class _BookMarriageCoachScreenState
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            } else {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            }
+          },
         ),
         title: Text(
           'Speak to a Marriage Coach',

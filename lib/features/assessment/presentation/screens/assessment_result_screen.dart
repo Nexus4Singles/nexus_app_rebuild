@@ -59,13 +59,7 @@ class AssessmentResultScreen extends ConsumerWidget {
               const Text('No assessment result available'),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {
-                  if (Navigator.of(context).canPop()) {
-                    Navigator.pop(context);
-                  } else {
-                    Navigator.pushReplacementNamed(context, '/home');
-                  }
-                },
+                onPressed: () => Navigator.pop(context),
                 child: const Text('Go Back'),
               ),
             ],
@@ -99,30 +93,7 @@ class AssessmentResultScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       const SizedBox(width: 40), // space for back button
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              bundle.profileTitle,
-                              style: AppTextStyles.titleLarge.copyWith(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 20,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            _TierChip(tier: result.overallTier),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      _ReadinessRing(
-                        percentage: readinessPct,
-                        tier: result.overallTier,
-                        size: 115,
-                        label: _ringLabel(result.assessmentId),
-                      ),
+                      // ...existing code...
                     ],
                   ),
                 ),
@@ -141,11 +112,7 @@ class AssessmentResultScreen extends ConsumerWidget {
                       constraints: const BoxConstraints(),
                       onPressed: () {
                         ref.read(assessmentNotifierProvider.notifier).reset();
-                        if (Navigator.of(context).canPop()) {
-                          Navigator.pop(context);
-                        } else {
-                          Navigator.pushReplacementNamed(context, '/home');
-                        }
+                        Navigator.pop(context);
                       },
                     ),
                   ),
@@ -212,7 +179,7 @@ class AssessmentResultScreen extends ConsumerWidget {
                   AssessmentResultJourneyCard(
                     journeys: bundle.recommendedJourneys,
                     onTapJourney: () {
-                      Navigator.pushNamed(context, '/challenges');
+                      Navigator.pushNamed(context, AppRoutes.challenges);
                     },
                   ),
                 ],
@@ -224,12 +191,9 @@ class AssessmentResultScreen extends ConsumerWidget {
                       state.isNewlySubmitted
                           ? _PrimaryButton(
                             label: 'Go to Homepage',
-                            onPressed:
-                                () => Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  AppRoutes.home,
-                                  (_) => false,
-                                ),
+                            onPressed: () {
+                              Navigator.of(context).popUntil((route) => route.isFirst);
+                            },
                           )
                           : _PrimaryButton(
                             label: 'Retake Assessment',
@@ -238,7 +202,7 @@ class AssessmentResultScreen extends ConsumerWidget {
                                   .read(assessmentNotifierProvider.notifier)
                                   .reset();
                               Navigator.of(context).pushNamedAndRemoveUntil(
-                                '/assessment',
+                                AppRoutes.assessment,
                                 (route) =>
                                     route.settings.name == AppRoutes.home,
                               );
@@ -503,31 +467,23 @@ class _WhatWeNoticedSection extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'Patterns from your specific answers',
+            'Patterns we identified across multiple areas',
             style: AppTextStyles.bodySmall.copyWith(
               color: AppColors.getTextSecondary(context),
             ),
           ),
           const SizedBox(height: 12),
-          ...List.generate((sortedLabels.length / 2).ceil(), (i) {
-            final first = sortedLabels[i * 2];
-            final second =
-                (i * 2 + 1 < sortedLabels.length)
-                    ? sortedLabels[i * 2 + 1]
-                    : null;
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                children: [
-                  Expanded(child: _TagPill(label: _capitalize(first))),
-                  const SizedBox(width: 8),
-                  if (second != null)
-                    Expanded(child: _TagPill(label: _capitalize(second))),
-                  if (second == null) const Spacer(),
-                ],
-              ),
-            );
-          }),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children:
+                sortedLabels
+                    .map(
+                      (label) =>
+                          _TagPill(label: _capitalize(label), isError: true),
+                    )
+                    .toList(),
+          ),
         ],
       ),
     );
@@ -541,23 +497,32 @@ class _WhatWeNoticedSection extends StatelessWidget {
 
 class _TagPill extends StatelessWidget {
   final String label;
-  const _TagPill({required this.label});
+  final bool isError;
+  const _TagPill({required this.label, this.isError = false});
 
   @override
   Widget build(BuildContext context) {
+    final bgColor =
+        isError ? AppColors.primary : AppColors.primary.withOpacity(0.10);
+    final borderColor =
+        isError
+            ? AppColors.primary.withOpacity(0.18)
+            : AppColors.primary.withOpacity(0.18);
+    final textColor =
+        isError ? AppColors.getTextOnPrimary(context) : AppColors.primary;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 7),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.10),
+        color: bgColor,
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: AppColors.primary.withOpacity(0.18)),
+        border: Border.all(color: borderColor),
       ),
       alignment: Alignment.center,
       child: Text(
         label,
         style: AppTextStyles.labelSmall.copyWith(
           fontWeight: FontWeight.w700,
-          color: AppColors.primary,
+          color: textColor,
           fontSize: 11.0,
         ),
         maxLines: 2,

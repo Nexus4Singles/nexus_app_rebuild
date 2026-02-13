@@ -54,7 +54,7 @@ class _SignupStubScreenState extends State<SignupStubScreen> {
       );
 
       if (!mounted) return;
-      Navigator.of(context).pushNamedAndRemoveUntil('/home', (r) => false);
+      Navigator.of(context).popUntil((route) => route.isFirst);
     } on FirebaseAuthException catch (e) {
       setState(() => _error = e.message ?? 'Signup failed.');
     } catch (_) {

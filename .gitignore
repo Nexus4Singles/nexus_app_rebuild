@@ -86,7 +86,7 @@ tools/
 lib/core/constants/dev_flags.dart
 
 # ---- Local prototype features ----
-lib/features/assessment/
+## lib/features/assessment/ (removed to allow tracking assessment files)
 lib/features/home/
 
 # ---- Local prototypes/services ----
