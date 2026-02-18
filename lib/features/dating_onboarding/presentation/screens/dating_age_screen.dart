@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/theme/theme.dart';
+import '../../../../core/providers/auth_provider.dart';
 import '../../application/dating_onboarding_draft.dart';
 import '../widgets/dating_profile_progress_bar.dart';
+import '../../../dating_search/presentation/widgets/dating_pool_guidelines_modal.dart';
+import '../../../dating_search/application/dating_pool_guidelines_provider.dart';
 
 class DatingAgeScreen extends ConsumerStatefulWidget {
   const DatingAgeScreen({super.key});
@@ -19,11 +23,16 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
   late FixedExtentScrollController _controller;
   int _selectedAge = 21;
   bool _syncedFromDraft = false;
+  bool _guidelinesModalShown = false; // Track if modal was shown this session
 
   @override
   void initState() {
     super.initState();
     _controller = FixedExtentScrollController();
+    // Reset guidelines flag and show modal for each new profile creation attempt
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _resetAndShowGuidelines();
+    });
   }
 
   @override
@@ -70,6 +79,77 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
     }
   }
 
+  void _showGuidelinesManual() {
+    showDialog(
+      context: context,
+      builder:
+          (ctx) => DatingPoolGuidelinesModal(
+            onDismiss: () => Navigator.of(ctx).pop(),
+          ),
+    );
+  }
+
+  Future<void> _resetAndShowGuidelines() async {
+    // Get current user ID to use user-specific key
+    final userId = ref.watch(currentUserIdProvider);
+
+    // Reset the guidelines flag so the modal will show on this profile attempt
+    final prefs = await SharedPreferences.getInstance();
+
+    // Remove both old device-level key and user-specific key
+    await prefs.remove('dating_pool_guidelines_shown');
+    if (userId != null) {
+      await prefs.remove('dating_pool_guidelines_shown_$userId');
+    }
+
+    // Now show the guidelines modal
+    if (mounted) {
+      _showGuidelinesIfNeeded();
+    }
+  }
+
+  Future<void> _showGuidelinesIfNeeded() async {
+    // Prevent showing multiple times in this session
+    if (_guidelinesModalShown) return;
+
+    // Get current user ID for user-specific key check
+    final userId = ref.watch(currentUserIdProvider);
+    if (userId == null) return; // Not logged in yet
+
+    final prefs = await SharedPreferences.getInstance();
+
+    // Check user-specific key to see if this user has seen guidelines
+    final userSpecificKey = 'dating_pool_guidelines_shown_$userId';
+    final hasSeenGuidelines = prefs.getBool(userSpecificKey) ?? false;
+
+    if (hasSeenGuidelines == false && mounted) {
+      _guidelinesModalShown = true; // Mark as shown for this session
+
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder:
+            (ctx) => DatingPoolGuidelinesModal(
+              onDismiss: () {
+                // Close modal immediately
+                Navigator.of(ctx).pop();
+
+                // Mark guidelines as seen only if widget is still mounted
+                // This prevents "ref after dispose" errors
+                if (mounted) {
+                  ref
+                      .read(markGuidelinesSeenProvider.notifier)
+                      .markAsRead()
+                      .catchError((e) {
+                        print('[DatingPoolGuidelines] Dismiss error: $e');
+                      });
+                }
+              },
+            ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Sync wheel once when draft age becomes available
@@ -110,6 +190,13 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
             ),
           ),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.info_outline_rounded),
+              onPressed: _showGuidelinesManual,
+              tooltip: 'Dating Pool Guidelines',
+            ),
+          ],
         ),
         body: SafeArea(
           child: Padding(
@@ -189,10 +276,15 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
                                             ? AppTextStyles.headlineMedium
                                                 .copyWith(
                                                   fontWeight: FontWeight.w800,
-                                                  color: AppColors.getTextPrimary(context),
+                                                  color:
+                                                      AppColors.getTextPrimary(
+                                                        context,
+                                                      ),
                                                 )
                                             : AppTextStyles.titleLarge.copyWith(
-                                              color: AppColors.getTextSecondary(context),
+                                              color: AppColors.getTextSecondary(
+                                                context,
+                                              ),
                                             ),
                                     child: Text('$age'),
                                   ),

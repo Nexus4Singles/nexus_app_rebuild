@@ -30,19 +30,32 @@ RelationshipStatus? _parseRelationshipStatusKey(String? key) {
 /// If signed in but missing relationshipStatus (v1 user pre-presurvey), returns singleNeverMarried as fallback.
 /// NavConfig already treats this default as singles (so tabs don't disappear).
 final effectiveRelationshipStatusProvider = Provider<RelationshipStatus>((ref) {
+  // ignore: avoid_print
+  print('[effectiveRelationshipStatusProvider] PROVIDER EVALUATION STARTING');
+
   final authAsync = ref.watch(authStateProvider);
   final user = authAsync.maybeWhen(data: (u) => u, orElse: () => null);
 
   // Signed out / anonymous -> guest session status (or default to singles)
   if (user == null || user.isAnonymous) {
     final guest = ref.watch(guestSessionProvider);
+    // ignore: avoid_print
+    print(
+      '[effectiveRelationshipStatusProvider] Anonymous user, using guest status',
+    );
     return guest?.relationshipStatus ?? RelationshipStatus.singleNeverMarried;
   }
 
   // Signed in -> Firestore-backed status
   final docAsync = ref.watch(currentUserDocProvider);
   final doc = docAsync.maybeWhen(data: (d) => d, orElse: () => null);
-  if (doc == null) return RelationshipStatus.singleNeverMarried;
+  if (doc == null) {
+    // ignore: avoid_print
+    print(
+      '[effectiveRelationshipStatusProvider] Doc is null, returning default',
+    );
+    return RelationshipStatus.singleNeverMarried;
+  }
 
   final nexus = (doc['nexus'] as Map?)?.cast<String, dynamic>();
   final nexus2 = (doc['nexus2'] as Map?)?.cast<String, dynamic>();
@@ -51,6 +64,13 @@ final effectiveRelationshipStatusProvider = Provider<RelationshipStatus>((ref) {
       (nexus?['relationshipStatus'] ?? nexus2?['relationshipStatus'])
           ?.toString();
 
-  return _parseRelationshipStatusKey(key) ??
-      RelationshipStatus.singleNeverMarried;
+  final parsed =
+      _parseRelationshipStatusKey(key) ?? RelationshipStatus.singleNeverMarried;
+
+  // ignore: avoid_print
+  print(
+    '[effectiveRelationshipStatusProvider] RESOLVED: key=$key → $parsed (nexus=${nexus?['relationshipStatus']}, nexus2=${nexus2?['relationshipStatus']})',
+  );
+
+  return parsed;
 });

@@ -29,9 +29,15 @@ final journeyMissionResponseServiceProvider = Provider(
 final journeyCatalogProvider = FutureProvider<JourneyCatalogV1>((ref) async {
   final status = ref.watch(effectiveRelationshipStatusProvider);
 
+  // ignore: avoid_print
+  print('[journeyCatalogProvider] Loading catalog for status: $status');
+
   final service = ref.watch(journeysServiceProvider);
   final json = await service.loadCatalogForStatus(status);
   var catalog = JourneyCatalogV1.fromJson(json);
+
+  // ignore: avoid_print
+  print('[journeyCatalogProvider] Loaded ${catalog.journeys.length} journeys');
 
   // Gender-specific filtering for Singles: total per gender = 20, with 2 gender-specific.
   if (status == RelationshipStatus.singleNeverMarried) {
@@ -58,6 +64,10 @@ final journeyCatalogProvider = FutureProvider<JourneyCatalogV1>((ref) async {
     if (gender == 'male' || gender == 'female') {
       final filtered =
           catalog.journeys.where((j) => _includeForGender(j, gender!)).toList();
+      // ignore: avoid_print
+      print(
+        '[journeyCatalogProvider] Filtered to ${filtered.length} journeys for gender=$gender',
+      );
       catalog = JourneyCatalogV1(
         version: catalog.version,
         category: catalog.category,

@@ -48,9 +48,9 @@ dependencies:
   google_sign_in: ^7.2.0
   purchases_flutter: ^8.2.3
 
-  
+dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
 
-  #firebase_core: ^2.32.0
   #cloud_firestore: ^4.17.5
 
 
@@ -60,9 +60,12 @@ flutter:
     - assets/images/stories/
     - assets/images/social_icons/
     - assets/images/journeys/
-    - assets/config/journeys/
-    - assets/config/journeys/singles_catalog_FLAGSHIP_FINAL/
+    - assets/config/journeys/singles journeys/
+    - assets/config/journeys/married journeys/
+    - assets/config/journeys/divorced journeys/
+    - assets/config/journeys/widowed journeys/
     - assets/config/assessments/
+    - assets/config/journey_id_filename_map.json
     - assets/images/
     - assets/data/churches_v1.json
     - assets/data/nexus1_onboarding_lists.v1.json

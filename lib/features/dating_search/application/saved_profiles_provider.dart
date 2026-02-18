@@ -52,23 +52,27 @@ class SavedProfilesNotifier {
 
     // Update Firestore in background (no await - fire and forget for instant UX)
     final docRef = _firestore.collection('users').doc(userId);
-    
+
     if (willBeSaved) {
       // Add to saved
-      docRef.update({
-        'savedProfiles': FieldValue.arrayUnion([profileId]),
-      }).catchError((e) {
-        print('[SavedProfilesNotifier] Error saving profile: $e');
-      });
+      docRef
+          .update({
+            'savedProfiles': FieldValue.arrayUnion([profileId]),
+          })
+          .catchError((e) {
+            print('[SavedProfilesNotifier] Error saving profile: $e');
+          });
     } else {
       // Remove from saved
-      docRef.update({
-        'savedProfiles': FieldValue.arrayRemove([profileId]),
-      }).catchError((e) {
-        print('[SavedProfilesNotifier] Error unsaving profile: $e');
-      });
+      docRef
+          .update({
+            'savedProfiles': FieldValue.arrayRemove([profileId]),
+          })
+          .catchError((e) {
+            print('[SavedProfilesNotifier] Error unsaving profile: $e');
+          });
     }
-    
+
     // UI updates automatically via StreamProvider watching Firestore
   }
 

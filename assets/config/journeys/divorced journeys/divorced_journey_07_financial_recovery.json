@@ -1,0 +1,774 @@
+{
+  "journeyId": "divorced_financial_recovery",
+  "title": "Financial Recovery After Divorce",
+  "subtitle": "Rebuilding stability and wisdom with money",
+  "summary": "**Divorce often creates financial upheaval.** You may be dealing with reduced income, divided assets, new expenses, debt, or the challenge of managing money alone for the first time. This journey helps you assess your financial situation honestly, develop a plan for recovery, build healthy financial habits, and find peace about money even when resources are tight.",
+  "targetUserCategory": "divorced",
+  "priorityRank": 7,
+  "estimatedDays": 14,
+  "totalActivities": 10,
+  "difficulty": "intermediate",
+  "themeColor": "#2E7D32",
+  "cover": {
+    "themeTag": "Recovery",
+    "accentIcon": "account_balance",
+    "heroImage": "assets/images/journeys/divorced_journey7.jpg",
+    "heroImageDescription": "A person looking at financial documents with growing confidence, or a small plant growing from coins symbolizing financial growth and recovery."
+  },
+  "frameworks": [
+    "financial_wellness",
+    "stewardship",
+    "practical_wisdom",
+    "anxiety_management"
+  ],
+  "targetOutcomes": [
+    "Honestly assess your current financial situation",
+    "Create a workable budget for your new reality",
+    "Develop a plan for addressing debt and building stability",
+    "Build confidence in managing money independently",
+    "Find peace about finances even when resources are limited",
+    "Establish healthy financial habits for the future"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_financial_reality",
+      "isFree": true,
+      "title": "Facing the Numbers: Your Financial Reality After Divorce",
+      "subtitle": "Honestly assessing where you stand financially",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "account_balance",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "You cannot improve what you will not face. This activity helps you honestly assess your current financial situation, even if it is painful, so you can create a realistic plan for recovery.",
+      "frameworkBasis": {
+        "conceptKey": "financial_assessment",
+        "explanation": "Honest assessment of financial reality is the essential first step toward financial recovery."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Financial Impact of Divorce",
+          "text": "**Divorce is a financial earthquake.** The ground you built your life on has shifted. Structures you thought were solid have crumbled. Before you can build again, you need to assess the damage and clear the rubble.\n\n**Divorce typically has significant financial consequences.**\n\n**Income often drops.** You may go from two incomes to one, or from a shared household to supporting yourself alone.\n\n**Assets get divided.** What you had together is now split, often leaving both parties with less than before.\n\n**Expenses may increase.** Two households cost more than one. Legal fees, moving costs, and establishing a new home add up.\n\n**Debt may be a factor.** You may have taken on debt in the divorce settlement or accumulated debt during the difficult period.\n\n**The financial ground has shifted.** Understanding exactly where you stand is the first step toward recovery.",
+          "icon": "account_balance"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why Assessment Matters",
+          "text": "{red|**Before we talk about budgets and debt strategies, let us acknowledge something.**\n\n**The financial fear after divorce is real.** It is not about spreadsheets. It is about survival.\n\nCan I make it?}{red| Can I support myself?}{red| Can I support my kids?}{red| What if something goes wrong and there is no safety net?}\n\n{red|**This fear can be paralyzing.** It can keep you awake at night. It can make you feel like you are drowning, like the numbers are a wave that will pull you under.\n\n**Here is what you need to know: you are not going to drown.**\n\n**This journey will give you a map.** A way to see where you actually stand. A path from here to stability.\n\n**It will not be instant.** Financial recovery takes time. But it is possible. People in worse situations than yours have rebuilt. You can too.\n\n**First, though, you have to look at the numbers.** Many people avoid this because looking feels worse than not knowing. It does not. The monster in the closet is always smaller when you turn on the light.\n\nReady to turn on the light?}",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Key Areas to Assess",
+          "text": "{red|**A complete financial assessment includes several areas.**\n\nIncome: What money comes in each month?}{red| Salary, child support, alimony, other sources.\n\nExpenses: What are your monthly obligations?}{red| Housing, utilities, food, transportation, insurance, debt payments, childcare, everything.\n\nAssets: What do you own?}{red| Savings, retirement accounts, property, vehicles, valuables.\n\nDebts: What do you owe?} Credit cards, loans, legal fees, other obligations.\n\n**Net worth: Assets minus debts gives you your overall financial position.**\n\n**Cash flow: Income minus expenses shows whether you are gaining or losing ground each month.**\n\n**These numbers tell the story of your financial reality.**",
+          "icon": "list"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Financial Situation",
+          "text": "{red|How would you describe your current financial situation after divorce?}",
+          "prompts": [
+            "Stable - I am managing well financially",
+            "Tight but manageable - I can cover basics with little extra",
+            "Struggling - I am having trouble making ends meet",
+            "Crisis - I cannot cover basic needs",
+            "Uncertain - I honestly do not know where I stand",
+            "Recovering - Things were bad but are improving",
+            "Complicated - Some areas are fine while others are problematic"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are financially, this journey will help you gain clarity and move toward recovery."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Financial Picture",
+          "text": "{red|**Begin assessing your financial situation.**\n\nWhat is your approximate monthly income from all sources?}{red| What are your major monthly expenses?}{red| Do you have savings?}{red| Approximately how much?}{red| Do you have debt?}{red| Approximately how much?}{red| Are you currently gaining ground, losing ground, or breaking even each month?}\n\nWrite what you know about your financial picture:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Gathering Your Numbers",
+          "text": "**This week, gather the specific numbers for a complete financial picture.**\n\n**Pull together bank statements, bills, pay stubs, and account balances.**\n\n**List all sources of income and their amounts.**\n\n**List all monthly expenses, both fixed and variable.**\n\n**List all assets and their approximate values.**\n\n**List all debts and their balances.**\n\n**This information will be essential for creating a budget and recovery plan in the coming activities.**\n\nCommit to gathering this information before continuing:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_emotional_side",
+      "isFree": false,
+      "title": "Money and Emotions: Addressing Financial Anxiety",
+      "subtitle": "Managing the emotional weight of financial stress",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Financial stress is not just about numbers. It carries heavy emotional weight. This activity addresses the anxiety, fear, and shame that often accompany financial difficulty after divorce.",
+      "frameworkBasis": {
+        "conceptKey": "financial_emotions",
+        "explanation": "Addressing the emotional aspects of financial stress is essential for clear thinking and effective action."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Emotional Weight",
+          "text": "{red|**Financial stress is not just a practical problem.** It is an emotional one.\n\n**Fear about the future keeps you awake at night.** Will I be able to pay rent?}{red| What if an emergency happens?}{red| How will I ever retire?}\n\n**Shame about your situation makes you want to hide.** You compare yourself to others and feel like a failure.\n\n**Anxiety pervades everything.** The weight of money worries colors your whole life.\n\n**Grief may be present too.** The financial life you had is gone. The security you expected has vanished.\n\n**These emotions are real and valid.** They also need to be managed so they do not paralyze you.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "When Emotions Cloud Judgment",
+          "text": "{red|**Knowing where you stand financially is the foundation everything else builds on.**\n\n**This might be the first time you have had to manage money alone.** Or you might have always handled finances and now you have less to manage. Either way, you need a clear picture.\n\nHere is what you need to know:\n\nWhat comes in?}{red| All income, from all sources. Your paycheck, any support payments, any other income.\n\nWhat goes out?}{red| Everything you spend. The big things like rent and car payments. The small things that add up. All of it.\n\nWhat do you own?}{red| Assets. The value of your home if you have one. Savings. Retirement accounts. Anything that could be converted to cash if needed.\n\nWhat do you owe?} Every debt. Credit cards, car loans, student loans, medical bills. The total picture.\n\n**This is not about judgment.** It is about clarity. You cannot navigate without a map, and this is how you draw the map.\n\n**Some people discover they are in better shape than they feared.** Some discover the opposite. Either way, knowing is better than not knowing. Because once you know, you can plan. And a plan gives you power.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Strategies for Financial Anxiety",
+          "text": "**Several strategies help manage financial anxiety.**\n\n**Separate emotions from facts.** Your feelings are real, but they may not accurately reflect your situation. Stick to the numbers.\n\n**Focus on what you can control.** You cannot change the past or control the economy. Focus on the decisions within your power.\n\n**Take one step at a time.** You do not have to solve everything today. Just take the next right step.\n\n**Limit rumination.** Worrying repeatedly does not help. Set specific times to work on finances and let go the rest of the time.\n\n**Practice gratitude.** Even in difficulty, there are things to be thankful for. Gratitude shifts perspective.\n\n**Seek support.** Do not carry financial stress alone. Talk to trusted friends, a counselor, or a financial advisor.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Financial Emotions",
+          "text": "{red|**Explore the emotional side of your financial situation.**\n\nWhat emotions come up when you think about money?}{red| How is financial stress affecting your daily life?}{red| What fears about money keep you up at night?}{red| How have emotions affected your financial decisions?}\n\nWrite about your financial emotions:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Faith and Financial Fear",
+          "text": "**For those with faith, financial fear can be brought to God.**\n\n**Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.** (({red|Philippians 4:6}))\n\n**This does not mean God will make you wealthy or remove all financial difficulty.** It means He is present with you in the struggle and can provide peace that transcends circumstances.\n\n**Trusting God with your finances does not replace practical action.** It provides the peace and clarity needed to take that action wisely.\n\n**God is not surprised by your financial situation.** He can be trusted even here.",
+          "icon": "church"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "A Prayer for Financial Peace",
+          "text": "**Pray about your financial fears and anxieties.**\n\n**God, I am anxious about my finances.** [Name specific fears.] The weight of this stress is heavy.\n\n**I bring these worries to You.** I cannot carry them alone. Help me trust You even when I cannot see how things will work out.\n\n**Give me clarity to assess my situation honestly.** Give me wisdom to make good decisions. Give me peace that does not depend on my bank balance.\n\n**Help me take one step at a time and trust You with the rest.**\n\n**In Jesus' name, Amen.**\n\nWrite your own prayer about finances:",
+          "icon": "volunteer_activism"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_creating_budget",
+      "isFree": false,
+      "title": "Making It Work: Creating a Budget for Your New Reality",
+      "subtitle": "Building a spending plan that fits your current situation",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "calculate",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "A budget is not a restriction. It is a plan for making your money work for you. This activity helps you create a realistic budget for your new financial reality.",
+      "frameworkBasis": {
+        "conceptKey": "budgeting",
+        "explanation": "A budget provides clarity and control, enabling intentional decisions about limited resources."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What a Budget Really Is",
+          "text": "**Patricia had never paid a bill in her marriage.** Her husband handled everything. After the divorce, she sat at her kitchen table surrounded by statements she did not understand, feeling like a child thrown into an adult world. The learning curve was steep, but she climbed it.\n\n**Many people resist budgeting.** It feels restrictive, tedious, or like an admission of scarcity.\n\n**But a budget is simply a plan for your money.** It tells your money where to go rather than wondering where it went.\n\n**A budget provides clarity.** You know exactly what you have and what you can spend.\n\n**A budget provides control.** You make intentional decisions rather than reactive ones.\n\n**A budget provides peace.** No more wondering if you can afford something or being surprised by overdrafts.\n\n**Especially after divorce, when resources may be limited, a budget helps you make the most of what you have.**",
+          "icon": "calculate"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Budget Categories",
+          "text": "**A budget is not a punishment.** It is a strategy.\n\n**Without a budget, money happens to you.** It comes in and disappears, and you are not quite sure where it went. The end of the month arrives and there is nothing left, even though it felt like there should be.\n\n**With a budget, you happen to money.** You decide where it goes. You are in control.\n\n**Here is the simplest way to think about it: every dollar gets a job.** Before you spend anything, you decide what each dollar is supposed to do. This one pays rent. This one buys groceries. This one goes to savings. This one is for that debt payment.\n\n**When a dollar has a job, it does not wander off and get lost.**\n\n**This is especially important after divorce, when every dollar matters more.** When there is no margin for waste. When you need to stretch what you have further than you ever imagined.\n\n**Creating a budget takes time the first month.** After that, it is maintenance. And the peace it brings, knowing where you stand, knowing you have a plan, is worth the effort.\n\n**This is not about deprivation.** It is about intention. It is about you deciding what matters, instead of money deciding for you.",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Making It Balance",
+          "text": "{red|**The goal is income equal to or greater than expenses.** If expenses exceed income, something must change.\n\n**First, look for expenses to cut.** What is truly necessary versus nice to have?}{red| Subscriptions you do not use?}{red| Spending that could be reduced?}\n\n{red|**Second, look for income to increase.** Overtime?}{red| Side work?}{red| Selling items you no longer need?}{red| Better paying job?}\n\n**Third, prioritize ruthlessly.** If you cannot cover everything, decide what matters most. Housing, utilities, food, and transportation come before entertainment.\n\n**The goal is not perfection but sustainability.** A budget that you can actually follow that keeps you stable.",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Budget Draft",
+          "text": "**Using the numbers you gathered, draft a budget.**\n\n**List your total monthly income.**\n\n**List your expenses by category with amounts.**\n\n**Calculate the difference between income and expenses.**\n\n**If expenses exceed income, identify areas to cut or ways to increase income.**\n\nWrite your budget draft:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Budget Tools",
+          "text": "**Various tools can help you track and follow your budget.**\n\n**Spreadsheets work well if you like to build your own system.**\n\n**Budgeting apps like Mint, YNAB, or EveryDollar automate tracking and categorization.**\n\n**Envelope system uses cash in physical or virtual envelopes for each category.**\n\n**Simple notebook works if you prefer pen and paper.**\n\n**The best system is the one you will actually use.** Do not let the perfect be the enemy of the good. Start with something simple and adjust as needed.",
+          "icon": "build"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Committing to Your Budget",
+          "text": "{red|**Finalize and commit to your budget.**\n\n**Review your draft budget.** Does it cover essentials?}{red| Is it realistic?}{red| Can you actually follow it?}\n\n**Make adjustments as needed until income and expenses balance or income exceeds expenses.**\n\n**Choose a tracking method you will use.**\n\n**Commit to following this budget for one month before making major changes.** It takes time to see if it works.\n\nWrite your budget commitment and tracking method:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_addressing_debt",
+      "isFree": false,
+      "title": "Digging Out: Addressing Debt After Divorce",
+      "subtitle": "Creating a plan to become debt-free",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "trending_down",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Debt can feel like a weight that keeps you from moving forward. This activity helps you create a realistic plan for addressing debt and eventually becoming debt-free.",
+      "frameworkBasis": {
+        "conceptKey": "debt_elimination",
+        "explanation": "Strategic debt elimination provides freedom and financial flexibility over time."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Burden of Debt",
+          "text": "**Debt after divorce is common.** It may come from the divorce itself, from division of marital debt, from the cost of establishing a new household, or from trying to survive on reduced income.\n\n**Debt is a burden.** It takes money that could go toward building your future and gives it to creditors. It creates stress and limits options.\n\n**But debt is not permanent.** With a plan and discipline, you can pay it off. Many people have dug out of significant debt. You can too.\n\n**The first step is knowing exactly what you owe and creating a strategy for elimination.**",
+          "icon": "trending_down"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Know What You Owe",
+          "text": "{red|**Looking at debt can feel like staring up at a mountain from the bottom.**\n\nHow will I ever climb that?} It is too high. It will take forever. I might as well give up.\n\n**Do not give up.** People climb mountains all the time. Not in one leap, but one step at a time.\n\n**Here is the truth about debt: it responds to consistent pressure.** Small payments, made reliably, over time, will bring down even large debts. It is not about making huge payments. It is about not stopping.\n\n**There are strategies that help.** The debt snowball focuses on your smallest debt first. You throw everything extra at it while paying minimums on the rest. When it is gone, you roll that payment to the next smallest. The wins build momentum.\n\n**The debt avalanche focuses on your highest interest rate first.** Mathematically, this saves the most money. But it can take longer to see progress.\n\n**Either works.** The best strategy is the one you will actually stick with.\n\n**What matters is having a plan and working the plan.** Not perfectly. Not without setbacks. But consistently, over time.\n\n**The mountain is climbable.** You just have to start walking.",
+          "icon": "list"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Debt Elimination Strategies",
+          "text": "**Two popular strategies exist for paying off debt.**\n\n**The debt snowball focuses on paying off the smallest balance first while making minimum payments on everything else.** When that debt is paid, roll its payment to the next smallest. This provides quick wins that build momentum.\n\n**The debt avalanche focuses on paying off the highest interest rate first.** This saves the most money mathematically but may take longer to see progress.\n\n**Both work.** The snowball provides psychological wins. The avalanche saves more on interest. Choose the approach that motivates you.\n\n**The key is having a strategy and sticking with it.**",
+          "icon": "ac_unit"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Debt Inventory",
+          "text": "**List all your debts with the relevant information.**\n\n**For each debt include the creditor, balance, interest rate, and minimum payment.**\n\n**Calculate your total debt.**\n\n**Note which debt is smallest (for snowball) and which has highest interest (for avalanche).**\n\nWrite your debt inventory:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Finding Extra for Debt",
+          "text": "{red|**Paying only minimums keeps you in debt for years.** Finding extra money to throw at debt accelerates payoff.\n\n**Look at your budget for areas to trim temporarily.** What could you reduce or eliminate while in debt payoff mode?}\n\n**Consider additional income.** Side gigs, overtime, selling items, or using skills for extra work.\n\n**Use windfalls wisely.** Tax refunds, bonuses, gifts, or unexpected money can make a big dent in debt.\n\n**Every extra dollar paid toward debt saves interest and shortens your payoff timeline.** Small amounts add up.",
+          "icon": "attach_money"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Debt Elimination Plan",
+          "text": "{red|**Create your debt elimination plan.**\n\nWhich strategy will you use: snowball (smallest first) or avalanche (highest interest first)?}\n\n{red|What order will you pay off your debts?}\n\n{red|How much extra can you put toward debt each month beyond minimums?}\n\n{red|Where will that extra come from?}\n\n{red|What is your target date for being debt-free?}\n\nWrite your debt elimination plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_emergency_fund",
+      "isFree": false,
+      "title": "Building a Buffer: Emergency Fund Basics",
+      "subtitle": "Creating financial margin for unexpected expenses",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "savings",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Emergencies happen. Without savings, unexpected expenses become crises that often lead to more debt. This activity helps you begin building an emergency fund as a financial buffer.",
+      "frameworkBasis": {
+        "conceptKey": "emergency_savings",
+        "explanation": "Emergency savings provide stability and prevent small setbacks from becoming financial crises."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Emergency Funds Matter",
+          "text": "{red|**There is a kind of peace that comes from having a financial cushion.** Even a small one.\n\n**An emergency fund is money set aside for emergencies.** Not vacations, not wants, not retail therapy. Money that sits there, untouched, waiting for the car to break down or the medical bill to arrive or the job to disappear.\n\n**After divorce, building this fund can feel impossible.** There is barely enough to cover regular expenses, let alone extra.\n\n**Start small anyway.**\n\n**Ten dollars a week becomes five hundred in a year.** Twenty becomes a thousand. It adds up faster than you expect.\n\n**The goal eventually is three to six months of expenses.** That might seem absurd right now. But you do not have to get there immediately. You have to start moving in that direction.\n\nWhy does this matter so much?}\n\n**Because financial emergencies are not if, they are when.** And when they come, you need to have a way to handle them that does not involve going deeper into debt.\n\n**Because there is a feeling that comes from knowing you have a cushion.** It changes how you sleep. It changes how you face each day.\n\n**Because every dollar in that fund is evidence that you are building something.** That you are moving from crisis to stability.\n\n**Start small.** Start now.",
+          "icon": "savings"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "How Much to Save",
+          "text": "**The ultimate goal is three to six months of expenses in emergency savings.** This provides a significant buffer against job loss or major unexpected expenses.\n\n**But if you are starting from zero, that goal can feel overwhelming.** Start smaller.\n\n**A starter emergency fund of five hundred to one thousand dollars handles most common emergencies like car repairs or medical copays.** This is a realistic first target.\n\n**Once you have the starter fund, work on building to one month of expenses, then two, then the full three to six months.**\n\n**Start where you are.** Any savings is better than none.",
+          "icon": "flag"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Building the Fund",
+          "text": "**Building an emergency fund requires intentional saving.**\n\n**Make it automatic.** Set up automatic transfers to a savings account, even if small. What gets automated gets done.\n\n**Start small if needed.** Even twenty-five or fifty dollars per paycheck adds up. Something is better than nothing.\n\n**Use windfalls.** Put tax refunds, bonuses, or unexpected money toward your emergency fund.\n\n**Sell things.** Items you no longer need can become emergency fund dollars.\n\n**Temporarily reduce expenses.** Cut something temporarily and direct those dollars to savings.\n\n**Celebrate milestones.** When you hit one hundred, five hundred, or one thousand dollars, acknowledge the progress.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Savings Status",
+          "text": "{red|**Assess your current savings situation.**\n\nHow much do you currently have in emergency savings?}{red| How close is that to your starter goal of five hundred to one thousand dollars?}{red| How close to your ultimate goal of three to six months expenses?}{red| What has prevented you from saving in the past?}\n\nWrite about your savings status:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Emergency Fund Rules",
+          "text": "**An emergency fund only works if you use it correctly.**\n\n**Keep it accessible but separate.** Use a savings account, not your checking account. It should be easy to access in true emergencies but not so easy you dip into it casually.\n\n**Define what counts as emergency.** True emergencies are unexpected and necessary: car repair, medical bill, job loss. A sale at your favorite store is not an emergency.\n\n**Replenish after use.** When you use emergency funds, make rebuilding them a priority.\n\n**Do not feel guilty using it for real emergencies.** That is what it is for. Better to use savings than go into debt.",
+          "icon": "rule"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Emergency Fund Plan",
+          "text": "{red|**Create a plan to build your emergency fund.**\n\nWhat is your starter goal?}{red| Usually five hundred to one thousand dollars.\n\nHow much can you save each paycheck or month toward this goal?}\n\n{red|When will you set up automatic transfers?}\n\n{red|What additional sources could contribute: windfalls, selling items, reduced expenses?}\n\n{red|When do you expect to reach your starter goal?}\n\nWrite your emergency fund plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_income_growth",
+      "isFree": false,
+      "title": "Increasing Your Income: Strategies for Earning More",
+      "subtitle": "Exploring ways to improve your financial situation through increased earnings",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "trending_up",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "There is only so much you can cut from a budget. Sometimes financial recovery requires increasing income. This activity explores practical strategies for earning more.",
+      "frameworkBasis": {
+        "conceptKey": "income_growth",
+        "explanation": "Increasing income provides more options and accelerates financial recovery."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Income Side",
+          "text": "**Financial recovery is a marathon, not a sprint.** You will not fix everything in a month or even a year. What matters is consistent forward progress, one step at a time, one payment at a time, one wise choice at a time.\n\n**Budgeting focuses on managing what you have.** But there is another side to the equation: increasing what you have to manage.\n\n**If your income is genuinely insufficient to cover basic needs, no amount of budgeting wizardry will fix it.** You need more income.\n\n**Even if you are managing, increased income accelerates debt payoff, builds savings faster, and creates breathing room.**\n\n**This activity is not about pressure to hustle constantly.** It is about exploring realistic options for improving your financial situation from the income side.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Options for Increasing Income",
+          "text": "{red|**Several options exist for increasing income.**\n\n**Advance in your current job.** Could you take on more responsibility, get a raise, or pursue a promotion?}\n\n{red|**Find a better paying job.** Is your current job paying market rate?}{red| Could you find something better?}\n\n{red|**Add a part-time job.** Temporary second work can accelerate financial goals.\n\n**Develop a side hustle.** Freelancing, consulting, or gig work using your skills.\n\n**Monetize hobbies.** Could something you enjoy doing generate income?}\n\n**Sell items.** Things you no longer need can become cash.\n\n**Pursue education or training.** Sometimes investing in yourself leads to higher earning potential.\n\n**Not all options are available to everyone.** Consider what might work for your situation.",
+          "icon": "work"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Considerations and Cautions",
+          "text": "**When pursuing increased income, consider some important factors.**\n\n**Time and energy are limited.** Adding work hours means less time for rest, relationships, and recovery. This is a season, not forever.\n\n**Childcare costs may offset earnings.** If you have children, calculate whether additional work actually nets more after childcare.\n\n**Avoid get-rich-quick schemes.** Anything promising fast easy money is usually a scam.\n\n**Consider sustainability.** Short-term hustle for a specific goal is different from burning yourself out indefinitely.\n\n**Balance is important.** Financial recovery matters, but so does your health and wellbeing.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Income Options",
+          "text": "{red|**Explore your options for increasing income.**\n\nIs there potential to earn more in your current job?}{red| Would a job change improve your income?}{red| What skills do you have that could generate additional income?}{red| Do you have time and energy for additional work?}{red| How much?}{red| What constraints limit your options?}\n\nWrite about your income options:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Most Viable Option",
+          "text": "{red|Which income-increasing option seems most viable for you right now?}",
+          "prompts": [
+            "Seeking a raise or promotion at current job",
+            "Looking for a better paying job",
+            "Taking on part-time work",
+            "Starting a side hustle using my skills",
+            "Selling items I no longer need",
+            "Pursuing education or training for better opportunities",
+            "Increasing income is not realistic for me right now",
+            "I am unsure what would work best"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Even if increasing income seems difficult, considering options is worthwhile."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Income Growth Plan",
+          "text": "{red|**If increasing income would help your situation, create a plan.**\n\nWhat is one concrete step you could take toward increasing income?}\n\n{red|What timeline makes sense for this step?}\n\n{red|What barriers might you face and how could you address them?}\n\n**If increasing income is not viable right now, note that and focus energy on managing what you have.**\n\nWrite your income growth plan or decision:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_financial_independence",
+      "isFree": false,
+      "title": "On Your Own: Building Financial Confidence",
+      "subtitle": "Developing skills and confidence to manage money independently",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "person",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "If your spouse handled finances during marriage, managing money alone can feel daunting. This activity builds confidence in your ability to handle your financial life independently.",
+      "frameworkBasis": {
+        "conceptKey": "financial_self_efficacy",
+        "explanation": "Building confidence in financial management enables better decisions and reduces anxiety."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "New Financial Responsibility",
+          "text": "**In many marriages, one person takes the lead on finances.** If that was your spouse, divorce may have thrust you into unfamiliar territory.\n\n**You may be managing money alone for the first time in years, or ever.** Bills, accounts, investments, taxes, all now fall on you.\n\n**This can feel overwhelming.** The learning curve is steep when you are also dealing with emotional upheaval.\n\n**But you can learn this.** People master financial management at every age and stage of life. You are capable of more than you think.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Essential Financial Skills",
+          "text": "**Several core financial skills are worth developing.**\n\n**Budgeting: planning and tracking income and expenses.**\n\n**Bill management: ensuring bills are paid on time to avoid fees and credit damage.**\n\n**Banking: managing accounts, understanding statements, using online banking.**\n\n**Credit management: understanding credit scores, using credit wisely, checking reports.**\n\n**Basic investing: understanding retirement accounts and simple investment options.**\n\n**Tax basics: knowing what is required and when, gathering documents for filing.**\n\n**You do not need to master everything at once.** Start with the essentials and build from there.",
+          "icon": "school"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Resources for Learning",
+          "text": "**Many resources can help you build financial skills.**\n\n**Books like The Total Money Makeover, Smart Women Finish Rich, or I Will Teach You to Be Rich provide accessible financial education.**\n\n**Online courses from platforms like Coursera, Khan Academy, or financial institutions offer free learning.**\n\n**Podcasts cover personal finance topics in digestible episodes.**\n\n**Financial advisors can provide personalized guidance, though be aware of fees.**\n\n**Community classes through libraries, community colleges, or churches may offer workshops.**\n\n**You do not have to figure it out alone.** Take advantage of resources to build your knowledge and confidence.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Financial Confidence",
+          "text": "{red|**Assess your current financial knowledge and confidence.**\n\nWhat aspects of financial management do you feel confident about?}{red| What areas feel overwhelming or confusing?}{red| What financial tasks have you never done that you now need to do?}{red| What would help you feel more confident?}\n\nWrite about your financial confidence:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Confidence",
+          "text": "**Financial confidence builds through experience and education.**\n\n**Start with one thing at a time.** Master budgeting before worrying about investing.\n\n**Make small decisions to build confidence.** Each good decision reinforces your ability.\n\n**Learn from mistakes.** Everyone makes financial mistakes. They are learning opportunities, not failures.\n\n**Celebrate progress.** Notice when you handle something well that once seemed impossible.\n\n**Ask for help.** Getting guidance is smart, not weak. You do not have to know everything.\n\n**You are becoming financially capable.** It takes time, but each step builds your confidence.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Financial Learning Plan",
+          "text": "{red|**Create a plan to build your financial knowledge and confidence.**\n\nWhat is one financial skill you want to develop first?}\n\n{red|What resource will you use to learn it?}\n\n{red|What is one financial task you have been avoiding that you will tackle this week?}\n\n{red|Who could you ask for help or guidance?}\n\nWrite your financial learning plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_stewardship",
+      "isFree": false,
+      "title": "Faithful with Little: Biblical Stewardship in Tight Times",
+      "subtitle": "Honoring God with your finances even when resources are limited",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "volunteer_activism",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Financial struggle can create tension with faith. How do you give when you can barely pay bills? How do you trust God when money is tight? This activity addresses biblical stewardship in difficult financial times.",
+      "frameworkBasis": {
+        "conceptKey": "biblical_stewardship",
+        "explanation": "Biblical stewardship provides a framework for honoring God with finances regardless of abundance or scarcity."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Stewardship Not Ownership",
+          "text": "{red|Can we talk about something that might feel uncomfortable?}\n\n**Contentment.** And giving.\n\n**When you are struggling financially, contentment can sound like a cruel joke.** Be content with what you have. Easy for someone to say who has enough.\n\n**But contentment is not about having enough by the world's standards.** It is about finding peace regardless of circumstances. It is about not letting financial stress steal every good thing. It is about recognizing that, even in difficulty, there are things to be grateful for.\n\n**This is not toxic positivity.** Your situation may genuinely be hard. Contentment does not mean pretending it is not.\n\n**It means not letting the hardship define everything.** It means still being able to see beauty, receive kindness, experience joy. Even while you struggle.\n\n**And giving.** You might think you have nothing to give. But giving is not just money. It is time, attention, kindness. It is being generous with what you have, even when what you have is limited.\n\n**There is something that happens when you give even from scarcity.** It reminds you that you are not just a consumer of resources but a contributor. That you have something to offer. That you are part of the flow, not just trying to capture as much as possible.\n\n**Start where you are.** Give what you can. Find what contentment is available to you. It will not fix your finances. But it might save your soul while your finances recover.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Giving When It Is Hard",
+          "text": "{red|**Steven left his marriage with nothing but his car and his clothes.** Three years later, he had a small apartment, an emergency fund, and zero debt. It was not wealth, but it was stability he had built himself. That felt like more than money.\n\n**Giving is a core biblical practice.** But what about when you can barely pay your bills?}\n\nSome perspectives to hold in tension:\n\n**God calls us to generosity.** Giving is part of faithful living and acknowledges that He is our provider.\n\n**God does not want you to neglect legitimate obligations.** Providing for your family and meeting basic needs are also biblical commands.\n\n**The heart matters more than the amount.** The widow's mite was precious to Jesus because of her heart, not its monetary value.\n\n**Giving can be an act of faith.** Trusting God by giving even when tight can be powerful.\n\n**No condemnation.** If you truly cannot give right now, God understands. This is a season.\n\n**Pray about what is right for you in this season, and follow your conscience.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Trusting God as Provider",
+          "text": "**Financial difficulty tests our trust in God as provider.**\n\n**When money is tight, it is tempting to rely entirely on your own efforts and leave God out of the equation.** Or to become bitter that He has not provided more.\n\n**But God promises to provide for our needs.** Not necessarily our wants, but our needs. And He often provides through unexpected means.\n\n**Trusting Him does not mean being passive.** Work hard, be wise, make good decisions. But hold it all with open hands, knowing ultimately He provides.\n\n**Do not be anxious about what you will eat or drink or wear.** Your heavenly Father knows that you need them. Seek first His kingdom and His righteousness, and all these things will be given to you as well. (({red|Matthew 6:31-33}))",
+          "icon": "church"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Stewardship Reflection",
+          "text": "{red|**Reflect on stewardship and giving in your current situation.**\n\nHow do you view your relationship with money and God?}{red| Have you been able to give?}{red| How has that felt?}{red| What tensions do you feel between tight finances and biblical generosity?}{red| What would faithful stewardship look like for you in this season?}\n\nWrite your stewardship reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Contentment in Scarcity",
+          "text": "**Contentment is a biblical virtue that does not depend on circumstances.**\n\n**I have learned to be content whatever the circumstances.** I know what it is to be in need, and I know what it is to have plenty. I have learned the secret of being content in any and every situation. (({red|Philippians 4:11-12}))\n\n**Contentment does not mean giving up or not working toward improvement.** It means finding peace in the present while working toward a better future.\n\n**Contentment is possible in financial difficulty.** Not because the difficulty is pleasant, but because your security is in God, not in money.\n\n**This does not come naturally.** It is learned, as Paul says. Practice contentment as a spiritual discipline.",
+          "icon": "self_improvement"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Stewardship Commitment",
+          "text": "{red|**Make a stewardship commitment appropriate for your situation.**\n\nHow will you honor God with your finances in this season?}\n\n{red|What will giving look like for you, even if small?}\n\n{red|How will you practice trust in God as your provider?}\n\n{red|How will you cultivate contentment amid financial difficulty?}\n\nWrite your stewardship commitment:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_long_term_vision",
+      "isFree": false,
+      "title": "Looking Ahead: Financial Vision for Your Future",
+      "subtitle": "Beginning to plan for long-term financial health",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "visibility",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "It is easy to get stuck in survival mode, focused only on immediate needs. This activity helps you lift your eyes to longer-term financial health and begin planning for the future.",
+      "frameworkBasis": {
+        "conceptKey": "financial_vision",
+        "explanation": "Long-term financial planning provides direction and hope beyond immediate survival."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Beyond Survival Mode",
+          "text": "{red|**When finances are tight, survival mode is necessary.** You focus on getting through this month, paying this bill, handling this crisis.\n\n**But survival mode is not meant to be permanent.** At some point, you need to lift your eyes and look further ahead.\n\nWhat do you want your financial life to look like in five years?}{red| Ten years?}{red| At retirement?}\n\n**These questions may seem irrelevant when you are struggling now.** But beginning to think about them gives you direction and hope. You are not just surviving. You are building toward something.",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Long-Term Financial Goals",
+          "text": "**Long-term financial health typically includes several components.**\n\n**Debt freedom: paying off all debt except perhaps a mortgage.**\n\n**Adequate savings: full emergency fund plus savings for specific goals.**\n\n**Retirement preparation: saving enough to support yourself when you stop working.**\n\n**Insurance protection: appropriate coverage for health, life, disability, and property.**\n\n**Estate planning: will, beneficiaries, and plans for passing assets to heirs.**\n\n**You may not be able to address all these now.** But knowing what you are working toward helps prioritize when you have margin.",
+          "icon": "flag"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Retirement Considerations",
+          "text": "**Divorce often significantly impacts retirement planning.**\n\n**Retirement accounts may have been divided.** You may have less than you planned.\n\n**You are now saving as one income rather than two.**\n\n**You may need to work longer or save more aggressively.**\n\n**Do not ignore retirement even when current needs are pressing.** Even small contributions now grow significantly over time.\n\n**If your employer offers a retirement plan with matching, try to contribute at least enough to get the match.** It is free money.\n\n**Every bit saved now reduces pressure later.** Start where you can.",
+          "icon": "elderly"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Financial Vision",
+          "text": "{red|**Begin to envision your long-term financial future.**\n\nWhat do you want your financial life to look like in five years?}{red| What about in ten years or at retirement?}{red| What long-term financial goals matter most to you?}{red| What is one small step toward long-term health you could take now?}\n\nWrite your financial vision:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Progress Over Perfection",
+          "text": "**Long-term financial health is built gradually.** Do not be discouraged by how far you have to go.\n\n**Every debt paid off moves you forward.** Every dollar saved matters. Every good financial decision counts.\n\n**You cannot fix years of financial damage overnight.** But you can make progress one step at a time.\n\n**Compare yourself to where you were, not to where others are.** Your journey is your own.\n\n**Trust the process.** Small faithful steps add up to significant change over time.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "One Step Toward the Future",
+          "text": "{red|**Identify one step you can take now toward long-term financial health.**\n\n**This might be starting retirement contributions (even small ones).** Setting a goal date for debt freedom. Beginning to research insurance needs. Creating or updating a will.\n\n**It does not have to be big.** It just has to be movement in the right direction.\n\nWhat is your one step toward long-term financial health?}",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_financial_commitment",
+      "isFree": false,
+      "title": "Moving Forward: Your Financial Recovery Commitment",
+      "subtitle": "Committing to ongoing financial health and wisdom",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "light",
+      "activityType": "commitment",
+      "whyThisMatters": "You have done significant work on financial recovery. This activity helps you consolidate what you have learned and commit to ongoing financial health.",
+      "frameworkBasis": {
+        "conceptKey": "financial_commitment",
+        "explanation": "Lasting financial health requires ongoing commitment to the principles and practices learned."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Accomplished",
+          "text": "**Through this journey, you have done important financial work.** You have looked at numbers that may have terrified you, made plans when the future felt impossible, and taken steps when you wanted to give up. That is courage.\n\n**You have faced your financial reality honestly.** You have addressed the emotional side of money stress. You have created or refined a budget.\n\n**You have made a plan for addressing debt and building emergency savings.** You have explored options for increasing income and built confidence in managing money.\n\n**You have considered stewardship and giving.** You have begun envisioning your long-term financial future.\n\n**This is significant progress toward financial recovery.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Financial Health Is Ongoing",
+          "text": "**Financial recovery is not a one-time event.** It requires ongoing attention and discipline.\n\n**Budgets need to be followed and adjusted as circumstances change.** Debt payoff requires persistence over time. Savings grow gradually through consistent contributions.\n\n**There will be setbacks.** Unexpected expenses, mistakes, months where it does not work perfectly. This is normal.\n\n**The key is staying committed to the direction even when progress feels slow.** Keep going. Financial health is built over years, not days.",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Financial Insight",
+          "text": "{red|What is the most important thing you have learned or realized through this journey about your finances?}\n\n{red|What do you want to remember when financial stress rises?}\n\nWrite your key financial insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Financial Commitments",
+          "text": "{red|What specific commitments will you make for your ongoing financial health?}\n\n{red|How will you manage your budget?}{red| How will you continue addressing debt?}{red| How will you build savings?}{red| How will you handle financial anxiety when it arises?}\n\nWrite your financial commitments:",
+          "responseType": "open-text",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Financial Peace",
+          "text": "**Father, thank You for providing for me even in difficulty.**\n\n**Thank You for the progress I have made toward financial recovery.** Continue to guide me as I manage what You have entrusted to me.\n\n**Give me wisdom to make good decisions.** Give me discipline to follow my plans. Give me peace that does not depend on my bank balance.\n\n**Help me trust You as my provider.** Help me be faithful with little so that I might be trusted with more.\n\n**I commit my finances to You.**\n\n**In Jesus' name, Amen.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Financial Declaration",
+          "text": "**Write a declaration of your commitment to financial health.**\n\n**I am committed to managing my finances with wisdom and discipline.**\n\n**I will follow my budget, address my debt, and build my savings.**\n\n**I will grow in financial knowledge and confidence.**\n\n**I will trust God as my provider while being faithful with what He has given.**\n\n**I am on a path to financial recovery, and I will keep walking it.**\n\nWrite your financial declaration:",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Financial Progress",
+    "summaryText": "You have done significant work in addressing your finances after divorce. Remember that financial recovery takes time. Stay committed to your budget, keep working on debt and savings, and trust that steady progress leads to lasting change. You are building a stable financial future.",
+    "keyTakeaways": [
+      "Honest assessment of financial reality enables effective action",
+      "Financial stress has emotional components that need addressing",
+      "A budget is a plan that provides clarity and control",
+      "Debt can be eliminated with a strategy and persistence",
+      "Emergency savings prevent small setbacks from becoming crises",
+      "Increasing income may accelerate financial recovery",
+      "Financial management skills can be learned at any stage",
+      "Biblical stewardship applies in scarcity as well as abundance",
+      "Long-term financial vision provides direction beyond survival mode"
+    ],
+    "nextRecommendedJourneys": [
+      "Healing and Restoration After Divorce",
+      "Rebuilding Your Identity and Self-worth",
+      "Co-parenting with Peace and Stability"
+    ]
+  }
+}

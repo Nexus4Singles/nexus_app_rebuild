@@ -139,9 +139,9 @@ class _DatingAudioQuestionScreenState
         (_recordedDuration >= _minSeconds && !_isRecording);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -177,7 +177,7 @@ class _DatingAudioQuestionScreenState
                     _helperText!,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.caption.copyWith(
-                      color: AppColors.textMuted,
+                      color: AppColors.getTextMuted(context),
                     ),
                   ),
                 ],
@@ -192,13 +192,15 @@ class _DatingAudioQuestionScreenState
                   ),
                 ),
                 // Debug info: show actual recorded duration vs timer duration
-                if (_hasRecording && !_isRecording && _recordedDuration != _elapsed)
+                if (_hasRecording &&
+                    !_isRecording &&
+                    _recordedDuration != _elapsed)
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
                       'Recorded duration: ${_formatTime(_recordedDuration)}',
                       style: AppTextStyles.labelSmall.copyWith(
-                        color: AppColors.textMuted,
+                        color: AppColors.getTextMuted(context),
                       ),
                     ),
                   ),
@@ -212,31 +214,29 @@ class _DatingAudioQuestionScreenState
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _CircleIconButton(
-                      icon: Icons.restart_alt_rounded,
-                      label: 'Restart',
-                      onTap: _busy ? null : _restart,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 19),
+                      child: _CircleIconButton(
+                        icon: Icons.restart_alt_rounded,
+                        label: 'Restart',
+                        onTap: _busy ? null : _restart,
+                      ),
                     ),
                     const SizedBox(width: 20),
                     _RecordButton(
                       isRecording: _isRecording,
                       isPaused: _isPaused,
+                      canStop: _isRecording && _elapsed >= _minSeconds,
                       onTap: _busy || _hasRecording ? null : _toggleRecord,
                     ),
                     const SizedBox(width: 20),
                     _PlayButton(
                       isPlaying: _isPlaying,
                       hasRecording: _hasRecording,
-                      canPlayDuringRecording:
-                          _isRecording && _elapsed >= _minSeconds,
-                      onTap:
-                          (_hasRecording ||
-                                      (_isRecording &&
-                                          _elapsed >= _minSeconds)) &&
-                                  !_busy
-                              ? _playRecording
-                              : null,
+                      canPlayDuringRecording: false,
+                      onTap: _hasRecording && !_busy ? _playRecording : null,
                     ),
                   ],
                 ),
@@ -287,11 +287,18 @@ class _DatingAudioQuestionScreenState
   }
 
   Future<void> _toggleRecord() async {
-    if (_isRecording && !_isPaused) {
-      await _pause();
-      return;
-    }
-    if (_isRecording && _isPaused) {
+    if (_isRecording) {
+      // Once minimum duration is met, tapping the button STOPS (finalizes)
+      // the recording so the file is properly closed and playable.
+      if (_elapsed >= _minSeconds) {
+        await _stop();
+        return;
+      }
+      // Before minimum: pause / resume as usual
+      if (!_isPaused) {
+        await _pause();
+        return;
+      }
       await _resume();
       return;
     }
@@ -309,23 +316,31 @@ class _DatingAudioQuestionScreenState
         return;
       }
 
-      // Verify the file exists before trying to play
+      // Verify the file exists and is non-trivial before trying to play
       final file = File(_filePath!);
       if (!await file.exists()) {
         _toast('Recording file not found. Please record again.');
         setState(() => _hasRecording = false);
         return;
       }
-
-      // Make sure player is stopped before loading new file
-      try {
-        await _player.stop();
-      } catch (_) {
-        // Ignore if already stopped
+      final fileSize = await file.length();
+      if (fileSize <= 2048) {
+        _toast(
+          'Recording file is too small — may be corrupt. Please re-record.',
+        );
+        setState(() => _hasRecording = false);
+        return;
       }
 
-      // Load and play the recording
+      // Fully reset player state before loading a new source
+      try {
+        await _player.stop();
+        await _player.seek(Duration.zero);
+      } catch (_) {}
+
+      // Use setFilePath (simplest API, avoids double-wrapping)
       await _player.setFilePath(_filePath!);
+      await _player.seek(Duration.zero);
       await _player.play();
     } catch (e) {
       String errorMsg = 'Failed to play recording';
@@ -333,6 +348,17 @@ class _DatingAudioQuestionScreenState
         errorMsg = 'Audio playback permission denied';
       } else if (e.toString().contains('FileSystemException')) {
         errorMsg = 'Recording file corrupted or unavailable';
+      } else if (e.toString().contains('-11829') ||
+          e.toString().contains('Cannot Open')) {
+        // -11829 on iOS often means the audio session is not ready or the file
+        // was produced by the Simulator (which has no real microphone).
+        if (defaultTargetPlatform == TargetPlatform.iOS) {
+          errorMsg =
+              'Cannot play audio. If using iOS Simulator, please test on a physical device.';
+        } else {
+          errorMsg = 'Cannot open audio file. Please re-record.';
+        }
+        setState(() => _hasRecording = false);
       }
       _toast('$errorMsg: $e');
     }
@@ -440,22 +466,9 @@ class _DatingAudioQuestionScreenState
       // Ignore if already stopped
     }
 
-    // Get actual audio duration from file metadata instead of timer
-    Duration actualDuration = Duration.zero;
-    if (recordedPath != null && finalSize > 2048) {
-      try {
-        final tempPlayer = AudioPlayer();
-        await tempPlayer.setFilePath(recordedPath);
-        actualDuration = tempPlayer.duration ?? Duration.zero;
-        await tempPlayer.dispose();
-      } catch (e) {
-        // Fallback to timer duration if metadata reading fails
-        actualDuration = Duration(seconds: _elapsed);
-      }
-    }
-
-    // Update recorded duration with actual file duration
-    _recordedDuration = actualDuration.inSeconds;
+    // Get actual audio duration from timer (avoids creating a second AudioPlayer
+    // which can conflict with iOS audio session and cause -11829 playback errors)
+    _recordedDuration = _elapsed;
 
     setState(() {
       _isRecording = false;
@@ -515,23 +528,19 @@ class _DatingAudioQuestionScreenState
     _timer = Timer.periodic(const Duration(seconds: 1), (_) async {
       if (!_isRecording || _isPaused) return;
 
-      setState(() => _elapsed++);
+      _elapsed++;
 
-      // Check file size during recording every 5 seconds
-      if (_elapsed % 5 == 0 && _filePath != null) {
-        try {
-          final file = File(_filePath!);
-          if (await file.exists()) {
-            final size = await file.length();
-            // If file is still header-only after 15s, warn in logs.
-            if (_elapsed >= 15 && size <= 64) {}
-          }
-        } catch (e) {}
-      }
-
+      // Cap at maxSeconds and stop IMMEDIATELY (cancel timer first to
+      // prevent any further ticks while _stop() is awaited).
       if (_elapsed >= _maxSeconds) {
+        _elapsed = _maxSeconds;
+        _timer?.cancel();
+        setState(() {});
         await _stop();
+        return;
       }
+
+      setState(() {});
     });
   }
 
@@ -629,20 +638,23 @@ class _WaveformState extends State<_Waveform>
     return AnimatedBuilder(
       animation: _c,
       builder: (_, __) {
-        // Show animation during recording OR during playback
-        final isAnimating = widget.active || widget.isPlaying;
+        // Only animate during recording, not playback
+        final isAnimating = widget.active;
         final t = isAnimating ? _c.value : 0.0;
 
         // Color logic:
-        // - Primary (animated) when recording or playing back
-        // - Red (static) when recording exists but not currently recording/playing
+        // - Primary (animated) when actively recording
+        // - Primary (static) when playing back
+        // - Red (static) when recording exists but idle
         // - Border (static) when idle with no recording
         final Color waveColor =
-            widget.active || widget.isPlaying
+            widget.active
+                ? AppColors.primary
+                : widget.isPlaying
                 ? AppColors.primary
                 : (widget.hasRecording
                     ? Colors.red.shade400
-                    : AppColors.border);
+                    : AppColors.getBorder(context));
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -667,11 +679,13 @@ class _WaveformState extends State<_Waveform>
 class _RecordButton extends StatelessWidget {
   final bool isRecording;
   final bool isPaused;
+  final bool canStop;
   final VoidCallback? onTap;
 
   const _RecordButton({
     required this.isRecording,
     required this.isPaused,
+    this.canStop = false,
     required this.onTap,
   });
 
@@ -680,10 +694,15 @@ class _RecordButton extends StatelessWidget {
     IconData icon;
 
     if (isRecording) {
-      // During recording: show pause icon if recording, mic icon if paused
-      icon = isPaused ? Icons.mic_rounded : Icons.pause_rounded;
+      if (canStop) {
+        // 45-60s range: show stop icon so user can finalize the recording
+        icon = Icons.stop_rounded;
+      } else {
+        // < 45s: show pause icon while recording, mic icon while paused
+        icon = isPaused ? Icons.mic_rounded : Icons.pause_rounded;
+      }
     } else {
-      // Initial state or after recording: show record icon
+      // Initial state or after recording is finalized
       icon = Icons.mic_rounded;
     }
 
@@ -788,15 +807,18 @@ class _CircleIconButton extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   enabled
-                      ? AppColors.surface
-                      : AppColors.surface.withOpacity(0.6),
+                      ? AppColors.getSurface(context)
+                      : AppColors.getSurface(context).withOpacity(0.6),
               shape: BoxShape.circle,
-              border: Border.all(color: AppColors.border),
+              border: Border.all(color: AppColors.getBorder(context)),
             ),
             child: Icon(
               icon,
               size: 22,
-              color: enabled ? AppColors.textPrimary : AppColors.textMuted,
+              color:
+                  enabled
+                      ? AppColors.getTextPrimary(context)
+                      : AppColors.getTextMuted(context),
             ),
           ),
         ),

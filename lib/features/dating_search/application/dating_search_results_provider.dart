@@ -554,36 +554,26 @@ final searchResultsCacheProvider = StateNotifierProvider<
 final cachedDatingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   ref,
 ) async {
-  // FIXED: Watch preferences to detect changes and clear stale cache
-  // This ensures cache invalidates when user edits preferences
-  try {
-    ref.watch(
-      datingPreferencesProvider.select(
-        (prefsAsync) =>
-            prefsAsync.maybeWhen(data: (prefs) => prefs, orElse: () => null),
-      ),
-    );
-  } catch (_) {
-    // Preferences unavailable, proceed with cached results if available
-  }
-
-  // Watch the cache
+  // Check cache without watching preferences
+  // (watching preferences causes infinite re-evaluations)
   final cachedResults = ref.watch(searchResultsCacheProvider);
 
-  // FIXED: Only return cache if preferences haven't explicitly been cleared
-  // When user saves preferences, they manually call ref.invalidate(datingPreferencesProvider)
-  // which triggers this provider to recalculate
   if (cachedResults != null && cachedResults.items.isNotEmpty) {
+    print('[cachedDatingSearchResultsProvider] Returning cached results: ${cachedResults.items.length} profiles');
     return cachedResults;
   }
 
-  // Otherwise, fetch fresh results
+  print('[cachedDatingSearchResultsProvider] Cache empty, fetching fresh results...');
+
+  // Fetch fresh results
   try {
     final result = await ref.watch(datingSearchResultsProvider.future);
+    print('[cachedDatingSearchResultsProvider] Got${result.items.length} profiles, caching...');
     // Cache the successful result
     ref.read(searchResultsCacheProvider.notifier).setResults(result);
     return result;
   } catch (e) {
+    print('[cachedDatingSearchResultsProvider] Error fetching results: $e');
     rethrow;
   }
 });
@@ -703,27 +693,34 @@ final accumulatedSearchResultsProvider = FutureProvider<DatingSearchResult>((
   final initialBatch = await ref.watch(
     cachedDatingSearchResultsProvider.future,
   );
+  print('[accumulatedSearchResultsProvider] Initial batch loaded: ${initialBatch.items.length} profiles');
 
   // If no profiles in initial batch, return immediately (show 'No Profiles')
   if (initialBatch.items.isEmpty) {
+    print('[accumulatedSearchResultsProvider] No profiles in initial batch');
     return initialBatch;
   }
 
-  // Watch the offset to know when to include paginated results
+  // Watch the offset - when it changes, fetch the next batch
   final currentOffset = ref.watch(searchResultsOffsetProvider);
+  print('[accumulatedSearchResultsProvider] Current offset: $currentOffset');
 
-  // If offset is 0, show only initial batch
+  // If offset is 0, show only initial batch (DON'T watch offset to avoid re-evaluations)
   if (currentOffset == 0) {
+    print('[accumulatedSearchResultsProvider] Offset is 0, returning only initial batch');
     return initialBatch;
   }
 
   // Try to get paginated batch, but if it fails or is empty, just return initial batch
   DatingSearchResult paginatedBatch;
   try {
+    print('[accumulatedSearchResultsProvider] Fetching paginated batch at offset $currentOffset');
     paginatedBatch = await ref.watch(
       paginatedDatingSearchResultsProvider.future,
     );
-  } catch (_) {
+    print('[accumulatedSearchResultsProvider] Paginated batch loaded: ${paginatedBatch.items.length} profiles');
+  } catch (e) {
+    print('[accumulatedSearchResultsProvider] Error fetching paginated batch: $e');
     paginatedBatch = const DatingSearchResult(items: []);
   }
 
@@ -732,6 +729,8 @@ final accumulatedSearchResultsProvider = FutureProvider<DatingSearchResult>((
     ...initialBatch.items,
     ...paginatedBatch.items,
   ];
+
+  print('[accumulatedSearchResultsProvider] Combined results: ${combined.length} total profiles');
 
   return DatingSearchResult(
     items: combined,

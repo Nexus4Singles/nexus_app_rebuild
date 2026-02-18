@@ -80,7 +80,7 @@ class RelationshipStatusPickerScreen extends ConsumerWidget {
               const Spacer(),
               Text(
                 'You can explore in guest mode. Some features will require creating an account.',
-                style: AppTextStyles.labelMedium.copyWith(
+                style: AppTextStyles.labelSmall.copyWith(
                   color: AppColors.getTextSecondary(context),
                 ),
                 textAlign: TextAlign.center,

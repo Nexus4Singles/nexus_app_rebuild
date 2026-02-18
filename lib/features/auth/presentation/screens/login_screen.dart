@@ -110,7 +110,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             children: [
               Text(
                 'Welcome Back',
-                style: AppTextStyles.displayLarge.copyWith(
+                style: AppTextStyles.headlineLarge.copyWith(
                   fontWeight: FontWeight.w700,
                   height: 1.1,
                 ),
@@ -118,38 +118,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               const SizedBox(height: 10),
               Text(
                 'Sign in to continue your journey',
-                style: AppTextStyles.bodyLarge.copyWith(
+                style: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.getTextSecondary(context),
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Email verification notice
-              Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.primary.withOpacity(0.2)),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: AppColors.primary,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'New user? Please verify your email first before logging in.',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.getTextPrimary(context),
-                          height: 1.4,
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               ),
               const SizedBox(height: 24),

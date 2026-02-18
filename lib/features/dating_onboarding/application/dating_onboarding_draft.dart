@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -165,7 +166,22 @@ class DatingOnboardingDraft {
 class DatingOnboardingDraftNotifier
     extends StateNotifier<DatingOnboardingDraft> {
   DatingOnboardingDraftNotifier() : super(const DatingOnboardingDraft()) {
-    _loadDraft();
+    _initLoad();
+  }
+
+  final Completer<void> _loadCompleter = Completer<void>();
+
+  /// Await this before reading state to ensure SharedPreferences draft is loaded.
+  Future<void> ensureLoaded() => _loadCompleter.future;
+
+  void _initLoad() {
+    _loadDraft()
+        .then((_) {
+          if (!_loadCompleter.isCompleted) _loadCompleter.complete();
+        })
+        .catchError((_) {
+          if (!_loadCompleter.isCompleted) _loadCompleter.complete();
+        });
   }
 
   static const _storageKey = 'dating_onboarding_draft';
@@ -178,9 +194,14 @@ class DatingOnboardingDraftNotifier
       if (jsonString != null) {
         final json = jsonDecode(jsonString) as Map<String, dynamic>;
         state = DatingOnboardingDraft.fromJson(json);
+        print(
+          '[DRAFT] Loaded draft from SharedPreferences: age=${state.age}, country=${state.countryOfResidence}',
+        );
+      } else {
+        print('[DRAFT] No saved draft found in SharedPreferences');
       }
     } catch (e) {
-      // Ignore errors, start fresh
+      print('[DRAFT] Error loading draft: $e');
     }
   }
 
@@ -198,7 +219,7 @@ class DatingOnboardingDraftNotifier
       final jsonString = jsonEncode(state.toJson());
       await prefs.setString(_storageKey, jsonString);
     } catch (e) {
-      // Ignore save errors
+      print('[DRAFT] Error saving draft: $e');
     }
   }
 
@@ -279,6 +300,7 @@ class DatingOnboardingDraftNotifier
       hobbies: state.hobbies,
       desiredQualities: state.desiredQualities,
       photoPaths: state.photoPaths,
+      photoUrls: state.photoUrls,
       audio1Path: null,
       audio2Path: null,
       audio3Path: null,
@@ -306,6 +328,7 @@ class DatingOnboardingDraftNotifier
           hobbies: state.hobbies,
           desiredQualities: state.desiredQualities,
           photoPaths: state.photoPaths,
+          photoUrls: state.photoUrls,
           audio1Path: null, // Clear
           audio2Path: state.audio2Path,
           audio3Path: state.audio3Path,
@@ -328,6 +351,7 @@ class DatingOnboardingDraftNotifier
           hobbies: state.hobbies,
           desiredQualities: state.desiredQualities,
           photoPaths: state.photoPaths,
+          photoUrls: state.photoUrls,
           audio1Path: state.audio1Path,
           audio2Path: null, // Clear
           audio3Path: state.audio3Path,
@@ -350,6 +374,7 @@ class DatingOnboardingDraftNotifier
           hobbies: state.hobbies,
           desiredQualities: state.desiredQualities,
           photoPaths: state.photoPaths,
+          photoUrls: state.photoUrls,
           audio1Path: state.audio1Path,
           audio2Path: state.audio2Path,
           audio3Path: null, // Clear

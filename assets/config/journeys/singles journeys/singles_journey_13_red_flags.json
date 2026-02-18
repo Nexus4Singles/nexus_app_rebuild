@@ -1,0 +1,825 @@
+{
+  "journeyId": "singles_red_flags",
+  "title": "Spotting Red Flags and Toxic Behaviors",
+  "subtitle": "Recognizing warning signs before they become marriage nightmares",
+  "summary": "Love can be blind,but it doesn't have to be. Many people marry partners showing clear warning signs, only to realize years later what they ignored in the beginning. This journey trains you to recognize red flags early: the patterns of manipulation, control, immaturity, and character deficiency that predict relationship disaster. See clearly now, or pay the price later.",
+  "targetUserCategory": "singles",
+  "priorityRank": 13,
+  "estimatedDays": 14,
+  "totalActivities": 12,
+  "difficulty": "intermediate",
+  "themeColor": "#C0392B",
+  "cover": {
+    "themeTag": "Discernment",
+    "accentIcon": "warning",
+    "heroImage": "assets/images/journeys/Singles_journey13.jpg",
+    "heroImageDescription": "A person with discerning eyes looking carefully. Alert, wise, protective."
+  },
+  "frameworks": [
+    "behavioral_psychology",
+    "abuse_dynamics",
+    "character_assessment",
+    "biblical_discernment"
+  ],
+  "targetOutcomes": [
+    "Recognize the most common red flags in potential partners",
+    "Understand why red flags are often ignored or excused",
+    "Distinguish between fixable issues and fundamental character problems",
+    "Learn to trust your instincts when something feels wrong",
+    "Develop exit strategies when red flags emerge",
+    "Protect yourself from abusive or toxic relationships"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_why_we_miss",
+      "isFree": true,
+      "title": "Why We Miss What We Should See",
+      "subtitle": "Understanding why red flags go unnoticed or ignored",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "visibility_off",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Red flags are often visible from the beginning,but we don't see them. Or we see them and explain them away. Understanding WHY we miss warning signs helps us become more alert.",
+      "frameworkBasis": {
+        "conceptKey": "activity_1_concept",
+        "explanation": "Red flags are often visible from the beginning,but we don't see them. Or we see them and explain them away. Understanding WHY we miss warning signs he..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Red Flags Get Missed",
+          "icon": "psychology",
+          "text": "Red flags are rarely obvious at first.\nThey often appear as discomfort you explain away, boundaries you soften, or truths you delay naming.\n\nIf you have ever sensed something was off but struggled to trust yourself, this journey will help you see clearly and respond wisely.\n\nSeveral factors cause us to miss warning signs: **Chemistry blindness:** Attraction creates intoxication. Your brain processes information about them less critically. **Projection:** You see what you want to see. You project your own values onto them. **Investment protection:** Once invested, your brain protects that investment by minimizing concerns. **Hope addiction:** \"They'll change.\" Hope becomes a way to avoid reality. **Fear of alternatives:** Being alone, starting over,these fears make you ignore what you should see. **Normalization:** If you grew up around dysfunction, red flags can feel normal."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Everyone Else Could See",
+          "icon": "menu_book",
+          "text": "When Amanda's friends met Derek, they were concerned immediately. He interrupted her constantly. He made subtle put-downs disguised as jokes. He seemed annoyed when attention shifted to her. Amanda saw none of it. When her best friend gently raised concerns, Amanda defended him: \"He's just nervous.\" \"That's just his sense of humor.\" \"You don't know him like I do.\" Two years into marriage, those \"little things\" had become controlling behavior, constant criticism, and emotional abuse. Looking back, Amanda could see it was all there from the beginning. She just didn't want to look."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Excuses We Make",
+          "icon": "lightbulb",
+          "text": "Common ways we explain away red flags: **\"They're just stressed right now.\"** But stress reveals character; it doesn't create it. **\"That's not the real them.\"** Behavior IS the real them. **\"I can help them change.\"** You're dating for marriage, not a renovation project. **\"Everyone has flaws.\"** True. But some flaws are deal-breakers. **\"They didn't mean it that way.\"** Impact matters more than intent. **\"My friends/family don't understand.\"** Or maybe they see what you won't."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Blind Spots",
+          "icon": "edit_note",
+          "text": "{red|Have you ever ignored red flags in a relationship? What excuses did you make? What factors make you most likely to miss warning signs?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Seeing Clearly Is Love",
+          "icon": "auto_awesome",
+          "text": "Some think being \"loving\" means overlooking flaws. They spiritualize blindness as grace. But seeing clearly is actually the most loving thing you can do. **For yourself:** You deserve to know who you're committing to. **For them:** If they have real problems, they need to face them,not have them enabled. **For your future:** Marriage to someone with serious character issues can destroy your life. Grace doesn't mean ignoring reality. Wisdom means seeing clearly AND responding with love."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Clear Vision",
+          "icon": "volunteer_activism",
+          "text": "Lord, I don't want to be blind to what I should see. Remove the filters that distort my vision,the chemistry, the hope, the fear. Help me see people as they actually are. Give me courage to acknowledge red flags, not excuse them. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_character_red_flags",
+      "isFree": false,
+      "title": "Character Red Flags: Who They Really Are",
+      "subtitle": "Warning signs that reveal fundamental character problems",
+      "timeBoxMinutes": 30,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "person_off",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Character is foundational. You can work through many issues in marriage, but fundamental character deficiencies,dishonesty, lack of integrity, selfishness,create problems that rarely improve and often worsen.",
+      "frameworkBasis": {
+        "conceptKey": "activity_2_concept",
+        "explanation": "Character is foundational. You can work through many issues in marriage, but fundamental character deficiencies,dishonesty, lack of integrity, selfish..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Dishonesty Patterns",
+          "icon": "psychology",
+          "text": "Watch for patterns of dishonesty: **Lies,even \"small\" ones.** If they lie to others, they'll lie to you. **Exaggerations and embellishments.** Stretching truth is lying. **Omission.** Leaving out important information is deceptive. **Different versions.** If stories change depending on audience, something's wrong. **Blame-shifting.** Never owning their part. Always someone else's fault. **Gaslighting.** Making you question reality. \"That never happened.\" A person who lies in small things will lie in big things."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Integrity Failures",
+          "icon": "lightbulb",
+          "text": "Watch for lack of integrity: **Cheating in any context.** Academic, taxes, small things,the principle transfers. **Breaking commitments easily.** If they don't keep their word to others, they won't to you. **Different person in different contexts.** Private should match public. **Character varies by audience.** Sweet to you, harsh to service workers. **Ethical flexibility.** Rules don't apply to them. **How they treat people who can do nothing for them.** This reveals true character."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Selfishness and Entitlement",
+          "icon": "warning",
+          "text": "Watch for fundamental selfishness: **Everything is about them.** Conversations, plans, decisions revolve around their needs. **They keep score.** Every kindness expected to be repaid. **Entitlement attitude.** They deserve special treatment. **Inability to celebrate others.** Your success triggers their insecurity. **Taking without giving.** You give, they take. **Self-focus in your pain.** When you're struggling, they make it about them. Marriage requires mutual sacrifice. Fundamental selfishness destroys marriages."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Character Evaluation",
+          "icon": "edit_note",
+          "text": "{red|Have you seen any of these character red flags in people you've dated? How did you respond? How should you respond?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Character Doesn't Change Easily",
+          "icon": "auto_awesome",
+          "text": "Character is hard to change. Behavior can change relatively quickly. Habits can be broken. But character,the fundamental orientation of a person's heart,changes slowly, with great difficulty, usually only through significant pain or spiritual transformation. If you see serious character deficits now, don't assume marriage will fix them. Marriage often intensifies existing issues. \"By their fruit you will recognize them.\", Matthew 7:16 Look at the fruit. Believe what you see."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Character Discernment",
+          "icon": "volunteer_activism",
+          "text": "Lord, help me see character clearly. Show me patterns of dishonesty, selfishness, and lack of integrity. Don't let me project my values onto someone who doesn't share them. Give me courage to acknowledge what I see. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_control_manipulation",
+      "isFree": false,
+      "title": "Control and Manipulation: The Slow Suffocation",
+      "subtitle": "Recognizing patterns that lead to abusive relationships",
+      "timeBoxMinutes": 30,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "do_not_disturb",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Controlling and manipulative behavior often starts small and escalates. What begins as \"protective\" becomes possessive. Recognizing these patterns early can protect you from abusive relationships.",
+      "frameworkBasis": {
+        "conceptKey": "activity_3_concept",
+        "explanation": "Controlling and manipulative behavior often starts small and escalates. What begins as \"protective\" becomes possessive. Recognizing these patterns ear..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Isolation Tactics",
+          "icon": "psychology",
+          "text": "Controllers isolate their targets: **Criticizing your people.** Your friends \"don't really care.\" Your family \"doesn't understand.\" **Creating conflict.** Engineering situations where you choose between them and others. **Demanding time.** Wanting all your time, resenting time with others. **Monitoring communication.** Wanting to know who you're talking to, checking your phone. **Geographic isolation.** Pushing you to move away from support. **Economic dependency.** Creating financial dependence. Isolation makes you easier to control. If someone consistently separates you from your support system, this is serious."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Manipulation Techniques",
+          "icon": "lightbulb",
+          "text": "Watch for manipulation patterns: **Guilt trips.** Making you feel guilty for having your own needs or boundaries. **Love bombing then withdrawing.** Intense affection followed by coldness to keep you off-balance. **Gaslighting.** Making you question your perception. \"That didn't happen.\" \"You're too sensitive.\" **Moving goalposts.** No matter what you do, it's never enough. **Victim stance.** They're always the victim, never responsible. **Emotional blackmail.** Threats if you don't comply. \"If you loved me...\" **Silent treatment.** Punishing with silence rather than addressing issues."
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "When You Knew But Stayed",
+          "text": "Think about a relationship where warning signs appeared early.\n\nWrite what you noticed, how you explained it away, and what you were hoping would change.\n\nThen write one sentence beginning with, “Next time, I will trust myself when…”",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Jealousy and Possessiveness",
+          "icon": "warning",
+          "text": "Excessive jealousy is dangerous: **Constant suspicion.** Assuming you're interested in others without evidence. **Interrogation.** Demanding detailed accounts of interactions. **Restriction requests.** Asking you to avoid people or places. **Accusations.** Accusing you of cheating based on nothing. **Monitoring.** Tracking location, checking social media, reading messages. **Possessive language.** \"You're MINE.\" Treating you as property. This isn't love,it's insecurity trying to control. It typically escalates."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Frog in Boiling Water",
+          "icon": "menu_book",
+          "text": "Abusive control rarely starts dramatic. It escalates. At first, he \"really missed her\" when she was with friends. Flattering. Then he got \"hurt\" when she didn't text back immediately. Understanding. Then he needed to know where she was. For safety. Then her friends \"weren't good influences.\" Concerning. Then he checked her phone because he \"just loved her so much.\" Red flag. Then he got angry when she saw family without him. Problem. Then she realized she had no one left,just him. Trapped. Each step seemed small. Together, they were a prison."
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "Control Pattern Assessment",
+          "icon": "edit_note",
+          "text": "{red|Have you experienced controlling or manipulative behaviors? Did you recognize them at the time?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 7,
+          "title": "A Prayer for Protection",
+          "icon": "volunteer_activism",
+          "text": "Lord, protect me from relationships that would trap and control me. Help me recognize manipulation disguised as love. Give me discernment to see isolation tactics early. I refuse to be controlled. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_emotional_immaturity",
+      "isFree": false,
+      "title": "Emotional Immaturity: The Adult Child",
+      "subtitle": "Recognizing when someone isn't ready for adult relationship",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "child_care",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Some people are adults in age but children emotionally. They can't handle frustration, take responsibility, or manage emotions. Marrying someone emotionally immature means parenting your spouse rather than partnering with them.",
+      "frameworkBasis": {
+        "conceptKey": "activity_4_concept",
+        "explanation": "Some people are adults in age but children emotionally. They can't handle frustration, take responsibility, or manage emotions. Marrying someone emoti..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Signs of Emotional Immaturity",
+          "icon": "psychology",
+          "text": "Watch for these signs: **Poor frustration tolerance.** Small setbacks cause big reactions. **Blame-shifting.** Nothing is ever their fault. **Defensiveness.** Can't receive feedback without attacking. **Emotional volatility.** Mood swings everyone must accommodate. **Need for immediate gratification.** Can't delay pleasure or work toward long-term goals. **Inability to have hard conversations.** Avoids, shuts down, or explodes. **Black-and-white thinking.** People are all good or all bad. **Self-centeredness.** Difficulty seeing beyond their own perspective."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Immaturity Looks Like in Marriage",
+          "icon": "lightbulb",
+          "text": "If you marry someone emotionally immature: • Every conflict becomes a crisis\n• You walk on eggshells to avoid their reactions\n• You become responsible for everything\n• You can never address problems\n• You parent your partner instead of partnering\n• Their emotions dictate the household atmosphere\n• You lose respect for someone who can't handle life\n• You're exhausted from managing their emotional states This isn't partnership. It's parenting an adult child."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Immaturity Assessment",
+          "icon": "edit_note",
+          "text": "{red|Have you dated someone emotionally immature? What was that like? What signs of immaturity would be deal-breakers?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Growth Is Key",
+          "icon": "auto_awesome",
+          "text": "Everyone is growing. No one is fully mature. The question isn't \"Are they perfect?\" but \"Are they growing?\" Someone who recognizes their immaturity and is actively working on it is different from someone who sees nothing wrong. Look for:\n• Self-awareness about growth areas\n• Genuine effort to mature\n• Responsiveness to feedback\n• Progress over time Immaturity can improve. Immaturity combined with unwillingness to change rarely does."
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Mature Partnership",
+          "icon": "volunteer_activism",
+          "text": "Lord, I want a partner, not a child to raise. Help me recognize emotional immaturity. Give me discernment to see who is growing versus who is stuck. Prepare me for partnership with someone who can handle adult life. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_anger_conflict",
+      "isFree": false,
+      "title": "Anger, Conflict, and the Preview of Marriage",
+      "subtitle": "How they fight now predicts how they'll fight forever",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "whatshot",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "How someone handles anger and conflict in dating is a preview of marriage. Explosive anger, contempt, inability to restore,these patterns don't improve. They intensify.",
+      "frameworkBasis": {
+        "conceptKey": "activity_5_concept",
+        "explanation": "How someone handles anger and conflict in dating is a preview of marriage. Explosive anger, contempt, inability to restore,these patterns don't improve..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Dangerous Anger Patterns",
+          "icon": "psychology",
+          "text": "Watch for these anger red flags: **Explosive rage.** Anger out of proportion. Screaming, throwing things, punching walls. **Physical intimidation.** Using size or presence to frighten,even without hitting. **Threats.** Implied or explicit threats of harm or abandonment. **Verbal abuse.** Name-calling, cursing at you, attacks on character. **Blaming you.** \"You made me angry.\" You're responsible for their reactions. **No remorse.** They don't apologize or see what they did as wrong. **Increasing frequency or intensity.** Anger episodes getting worse. These patterns escalate. What's a shove during dating becomes a punch during marriage."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Conflict Style Red Flags",
+          "icon": "lightbulb",
+          "text": "Beyond anger, watch how they handle conflict: **Contempt.** Mockery, eye-rolling, disgust. The #1 predictor of divorce. **Stonewalling.** Complete shutdown. Refusal to engage. **Bringing up the past.** Every conflict becomes an inventory of offenses. **Character attacks.** \"You're so [negative trait]\" rather than addressing behavior. **Inability to restore.** Can't apologize, can't move forward. **Winning over understanding.** Must be right. Must win. **Escalation.** Every disagreement becomes major. Healthy couples disagree and restore. Unhealthy couples destroy and accumulate damage."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Warning She Ignored",
+          "icon": "menu_book",
+          "text": "The first time Tyler got angry, he punched a wall. Megan was startled, but he apologized profusely. \"I'd never hurt you,\" he promised. She believed him. Over the next year, there were more walls. A thrown phone. A grabbed arm. Always apologies. Always promises. She kept believing the apologies rather than the pattern. After marriage, there were no more walls between his fist and her face. The warning signs were flashing. She wanted to believe the words more than the behavior. Believe the behavior. Always."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Anger Assessment",
+          "icon": "edit_note",
+          "text": "{red|How have people you've dated handled anger and conflict? What anger patterns would be immediate deal-breakers?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Safety",
+          "icon": "volunteer_activism",
+          "text": "Lord, protect me from relationships with dangerous anger. Help me see patterns clearly. Give me courage to leave when anger is destructive, no matter how much I want to believe the apologies. I deserve safety. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_addiction_dependency",
+      "isFree": false,
+      "title": "Addiction, Dependencies, and Hidden Struggles",
+      "subtitle": "Recognizing patterns that destroy marriages",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "no_drinks",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Addiction,to substances, pornography, gambling, or other behaviors,devastates marriages. It brings deception, broken promises, financial ruin, and emotional abandonment.",
+      "frameworkBasis": {
+        "conceptKey": "activity_6_concept",
+        "explanation": "Addiction,to substances, pornography, gambling, or other behaviors,devastates marriages. It brings deception, broken promises, financial ruin, and emo..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Warning Signs of Addiction",
+          "icon": "psychology",
+          "text": "Signs that addiction may be present: **Excessive use.** Trust your instincts if their use seems excessive. **Inability to moderate.** They can't have \"just one.\" **Secrecy and hiding.** Unexplained time, hidden expenses. **Defensiveness.** Overreaction to concerns. \"You're overreacting.\" **Prioritizing the substance/behavior.** Choosing it over responsibilities. **Promises that fail.** Repeated promises to stop that don't last. **Impact on life.** Job problems, financial issues, health consequences. What you see during dating is likely the tip of the iceberg."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Genuine Recovery Looks Like",
+          "icon": "lightbulb",
+          "text": "Someone in genuine recovery: **Acknowledges the problem fully.** No minimizing. Full ownership. **Is actively working a program.** Therapy, recovery groups, accountability. **Has significant sobriety.** Months or years of demonstrated freedom. **Is transparent.** Willing to share openly. **Has accountability structures.** Sponsors, accountability partners. **Shows consistent behavior change.** Sustained, visible transformation. **Is realistic about vulnerability.** Knows recovery is lifelong. Dating someone in genuine, established recovery is different from someone who \"used to have a problem\" but has no recovery structure."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Pornography: The Hidden Addiction",
+          "icon": "warning",
+          "text": "Pornography addiction is epidemic and often hidden: **Signs:** Unusual device secrecy, staying up late alone, decreased interest in physical intimacy, escalating requests, discovered material. **Why it matters:** Creates unrealistic expectations, reduces satisfaction with real intimacy, involves deception, can escalate to extreme content. **Recovery requires:** Full acknowledgment, accountability software, ongoing commitment, usually professional help. This is not minor. It's a significant barrier to healthy marriage."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Addiction Awareness",
+          "icon": "edit_note",
+          "text": "{red|Have you encountered addiction in dating? What did you observe? What would you need to see to believe someone's addiction is genuinely in recovery?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Discernment",
+          "icon": "volunteer_activism",
+          "text": "Lord, help me recognize addiction when it's present. Give me discernment to see through denial and minimization. Help me understand what genuine recovery looks like. Protect me from relationships destroyed by addiction. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_spiritual_values",
+      "isFree": false,
+      "title": "Spiritual and Values Red Flags",
+      "subtitle": "When faith doesn't match the life",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "church",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Someone can say the right spiritual words while living a different life. Religious language without corresponding character is its own red flag.",
+      "frameworkBasis": {
+        "conceptKey": "activity_7_concept",
+        "explanation": "Someone can say the right spiritual words while living a different life. Religious language without corresponding character is its own red flag."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Faith Performance vs. Reality",
+          "icon": "psychology",
+          "text": "Watch for gaps between words and life: **Talks about faith but doesn't live it.** Church on Sunday, unchanged on Monday. **Uses spiritual language to control.** \"God told me we should...\" \"A godly woman would...\" **No fruit of the Spirit.** Where is the love, joy, peace, patience, kindness? **Compartmentalized faith.** Faith exists in a box, not affecting daily choices. **Spiritual superiority.** Looks down on others' faith journey. **Uses faith to avoid accountability.** \"I've prayed about it\" as conversation-ender. **No genuine spiritual community.** Not connected to church or believers who know them."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Values Misalignment",
+          "icon": "lightbulb",
+          "text": "Beyond faith, watch for values misalignment: **Different priorities.** What they value vs. what you value don't align. **Ethical differences.** What they consider acceptable vs. what you do. **Life vision conflicts.** Where they're heading vs. where you're heading. **Family values gaps.** Views on marriage, children, roles differ significantly. **Money values.** Generosity vs. hoarding, spending vs. saving, giving vs. keeping. You can love someone and be incompatible in values. Values misalignment doesn't improve with time."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Faith and Values Check",
+          "icon": "edit_note",
+          "text": "{red|Have you seen gaps between someone's stated faith and lived life? What values misalignments would be deal-breakers for you?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Fruit Over Words",
+          "icon": "auto_awesome",
+          "text": "Jesus gave us the evaluation method: \"By their fruit you will recognize them.\", Matthew 7:16 Not by their words. Not by their appearance. Not by their church attendance. By their FRUIT. What does their life produce? What grows from how they live? Look at the fruit. The fruit tells the truth that words can hide."
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Authentic Faith",
+          "icon": "volunteer_activism",
+          "text": "Lord, help me see beyond spiritual performance to genuine faith. Show me the fruit,or the lack of it. Don't let me be deceived by words that don't match lives. Bring me someone whose faith is authentic, not performed. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_relational_history",
+      "isFree": false,
+      "title": "What Their Past Relationships Reveal",
+      "subtitle": "Patterns that predict future problems",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "history",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "How someone has handled past relationships,romantic, family, friendships,reveals patterns that will emerge with you. Listen carefully to their relational history.",
+      "frameworkBasis": {
+        "conceptKey": "activity_8_concept",
+        "explanation": "How someone has handled past relationships,romantic, family, friendships,reveals patterns that will emerge with you. Listen carefully to their relatio..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Relationship History Red Flags",
+          "icon": "psychology",
+          "text": "Watch for concerning patterns: **All exes are \"crazy.\"** If every ex is the problem, they're the common denominator. **No responsibility for past failures.** Everything was someone else's fault. **Serial relationships.** Can't be alone. Jumps from relationship to relationship. **Unresolved endings.** Still entangled with exes emotionally or practically. **Pattern of infidelity.** If they've cheated before, the pattern often continues. **No long-term relationships.** Only short-term indicates difficulty maintaining commitment. **Hostile about past.** Deep bitterness suggests unprocessed issues."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Family Relationship Red Flags",
+          "icon": "lightbulb",
+          "text": "Look at family relationships: **Toxic family with no boundaries.** Dysfunction that will spill into your marriage. **Complete estrangement without explanation.** May indicate inability to work through conflict. **Inability to separate from parents.** Will parents be too involved in your marriage? **Disrespect toward parents.** How they treat parents predicts how they'll treat you. **Unaddressed family wounds.** Pain that hasn't been processed will affect you. You don't just marry a person,you marry into their family system."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "action",
+          "cardNumber": 3,
+          "title": "Questions to Ask",
+          "icon": "task_alt",
+          "text": "Get history by asking: • \"What did you learn from your past relationships?\"\n• \"What was your part in relationships ending?\"\n• \"How would your exes describe you?\"\n• \"What's your relationship with your family like?\"\n• \"What patterns have you noticed in your relationships?\" Listen not just to what they say, but HOW they say it. Are they reflective? Blaming? Defensive? Self-aware? Healthy people take appropriate responsibility for their past.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "History Assessment",
+          "icon": "edit_note",
+          "text": "{red|What relational history red flags have you encountered? What would you need to know about someone's past to feel confident about your future?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Pattern Recognition",
+          "icon": "volunteer_activism",
+          "text": "Lord, help me learn from their past. Give me discernment to recognize patterns that predict problems. Help me ask good questions and listen carefully to answers. Show me what their history reveals about our future. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_trusting_instincts",
+      "isFree": false,
+      "title": "When Something Feels Wrong",
+      "subtitle": "Learning to trust your instincts",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Often, something feels off before you can articulate why. Your instincts pick up on subtle cues your conscious mind hasn't processed yet. Learning to trust that feeling can protect you.",
+      "frameworkBasis": {
+        "conceptKey": "activity_9_concept",
+        "explanation": "Often, something feels off before you can articulate why. Your instincts pick up on subtle cues your conscious mind hasn't processed yet. Learning to ..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Gift of Unease",
+          "icon": "psychology",
+          "text": "When something feels off: • You can't quite explain why you're unsettled\n• You feel tense around them but don't know why\n• Something about their story doesn't add up\n• You notice yourself making excuses for them\n• Friends' concerns resonate even when you resist\n• Peace is absent even when things seem fine This unease is information. Your brain is processing things your conscious mind hasn't caught up to yet. Gavin de Becker, security expert, writes: \"The gift of fear is your best survival signal.\" Don't dismiss it."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why We Override Instincts",
+          "icon": "lightbulb",
+          "text": "We dismiss instincts because: **We can't articulate it.** \"I don't have a good reason.\" **We want to be \"fair.\"** \"I shouldn't judge without proof.\" **We're invested.** We don't want the instinct to be right. **We're people-pleasers.** We don't want to seem difficult. **We're lonely.** We'd rather ignore concerns than be alone. **Past experiences.** We've learned our feelings don't matter. Your instincts exist for your protection. They've evolved over millennia to detect danger. Respect them."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Instinct History",
+          "icon": "edit_note",
+          "text": "{red|Have you ever had instincts about someone that proved correct,but you ignored them? What keeps you from trusting your gut feelings?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Discernment Is a Gift",
+          "icon": "auto_awesome",
+          "text": "Scripture speaks of discernment as a spiritual gift,the ability to perceive what's not immediately obvious. God gives His children wisdom and discernment. That \"check in your spirit\" may be the Holy Spirit warning you. \"The spiritual person judges all things.\", 1 Corinthians 2:15 You don't need to have proof to have concern. You don't need to articulate it to take it seriously. If something feels wrong, explore it. Talk to trusted advisors. Pay attention. Your instincts may be God's protection."
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Discernment",
+          "icon": "volunteer_activism",
+          "text": "Lord, sharpen my discernment. When something feels wrong, help me pay attention rather than dismiss it. Help me trust the instincts You've given me for protection. Speak through my unease. Show me what I need to see. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_responding_to_flags",
+      "isFree": false,
+      "title": "What to Do When Red Flags Appear",
+      "subtitle": "Moving from recognition to response",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "directions",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Seeing red flags is only half the battle. Knowing how to respond is equally important. Different flags require different responses,some need conversation, some need boundaries, some need exit.",
+      "frameworkBasis": {
+        "conceptKey": "activity_10_concept",
+        "explanation": "Seeing red flags is only half the battle. Knowing how to respond is equally important. Different flags require different responses,some need conversat..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Types of Red Flags",
+          "icon": "psychology",
+          "text": "Not all red flags are equal: **Yellow flags (caution):**\nConcerning but potentially addressable. Might be immaturity that's being worked on, a past issue with demonstrated growth, or a pattern that could change with awareness. **Red flags (serious concern):**\nSignificant issues that require direct conversation and probably time. Character concerns, compatibility questions, patterns that need to change before moving forward. **Black flags (exit immediately):**\nAny form of abuse, unrepentant addiction, fundamental character disqualification, manipulation/control patterns. These require immediate exit, not conversation."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Response Framework",
+          "icon": "lightbulb",
+          "text": "**For yellow flags:**\n• Note and observe over time\n• See if it's a pattern or isolated incident\n• Address gently if it continues\n• Watch for change or entrenchment **For red flags:**\n• Have direct conversation about the concern\n• Watch for response: defensiveness or receptivity?\n• Allow time to see genuine change\n• Don't move forward until resolved **For black flags:**\n• Exit immediately\n• Don't negotiate or wait for change\n• Safety first\n• Get support"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "action",
+          "cardNumber": 3,
+          "title": "Having the Conversation",
+          "icon": "task_alt",
+          "text": "When you need to address a red flag: **1. Be specific.** \"I've noticed [specific behavior].\" Not vague accusations. **2. Express concern.** \"This concerns me because...\" **3. Ask for response.** \"Help me understand.\" **4. Watch their reaction.** Defensiveness? Blame-shifting? Or genuine openness? **5. Name what you need.** \"I need to see [specific change] to continue.\" **6. Set timeline.** \"I need to see this addressed in [timeframe].\" **7. Follow through.** If change doesn't happen, act on what you said.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Response Plan",
+          "icon": "edit_note",
+          "text": "Think of a red flag you've seen or might see. How would you respond? What would genuine change look like vs. temporary adjustment?",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Courage",
+          "icon": "volunteer_activism",
+          "text": "Lord, give me courage to respond when I see red flags. Help me address what needs to be addressed. Help me know when to have conversations and when to exit. Don't let me rationalize away what I should take seriously. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_exit_plan",
+      "isFree": false,
+      "title": "When It's Time to Leave",
+      "subtitle": "Creating an exit plan before you need it",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "exit_to_app",
+      "emotionalIntensity": "high",
+      "activityType": "practical",
+      "whyThisMatters": "Having an exit plan before you need it makes leaving possible when it's necessary. People stay in dangerous situations partly because they haven't thought through how to leave.",
+      "frameworkBasis": {
+        "conceptKey": "activity_11_concept",
+        "explanation": "Having an exit plan before you need it makes leaving possible when it's necessary. People stay in dangerous situations partly because they haven't tho..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why an Exit Plan Matters",
+          "icon": "psychology",
+          "text": "People stay when they should leave because: • They don't know how to get out\n• They're financially dependent\n• They're isolated from support\n• They've made their life revolve around this person\n• They're afraid of the reaction if they leave Having a plan before you need it means you CAN leave if you need to. This isn't pessimism,it's wisdom. You wear a seatbelt not because you expect a crash, but because you might have one."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "action",
+          "cardNumber": 2,
+          "title": "Building Your Exit Plan",
+          "icon": "task_alt",
+          "text": "Elements of a healthy exit plan: **Support system.** Maintain friendships and family connections. Don't isolate. **Financial independence.** Have your own money, own account, ability to support yourself. **Living alternatives.** Know where you could go if you needed to leave quickly. **Trusted confidants.** People who know the situation and would help. **Documentation.** If there's abuse, keep records,messages, photos, dates of incidents. **Essential items accessible.** Important documents, essentials you'd need. This plan should exist in the back of your mind for any dating relationship.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "If You're Already Unsafe",
+          "icon": "warning",
+          "text": "If you're currently in a dangerous relationship: **You are not trapped.** There is help. **Tell someone.** A friend, family member, counselor, pastor. **Use resources.** National Domestic Violence Hotline: 1-800-799-7233 **Make a safety plan.** Work with professionals on how to leave safely. **Don't announce your departure to an abuser.** Leaving is the most dangerous time. Get help planning. **You deserve safety.** This is not your fault. Help is available."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Support Structure",
+          "icon": "edit_note",
+          "text": "{red|Do you have the elements of an exit plan in place? Support system, financial independence, people who would help you? What needs to be strengthened?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Safety",
+          "icon": "volunteer_activism",
+          "text": "Lord, I pray for wisdom to maintain healthy independence even in relationship. Keep me connected to support. Keep me wise about protecting myself. If I ever need to leave, give me courage and provide a way. Protect me. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 12,
+      "id": "act_12_discernment_commitment",
+      "isFree": false,
+      "title": "Eyes Wide Open: A Commitment to See Clearly",
+      "subtitle": "Consolidating everything into vigilant discernment",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "visibility",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You've learned to recognize a comprehensive range of red flags. Now it's time to commit to seeing clearly,to never letting attraction, hope, or fear blind you to what you need to see.",
+      "frameworkBasis": {
+        "conceptKey": "activity_12_concept",
+        "explanation": "You've learned to recognize a comprehensive range of red flags. Now it's time to commit to seeing clearly,to never letting attraction, hope, or fear b..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Can Now See",
+          "icon": "lightbulb",
+          "text": "You can now recognize: • Why red flags get missed and how to stay alert\n• Character red flags: dishonesty, selfishness, lack of integrity\n• Control and manipulation patterns\n• Emotional immaturity that disqualifies partnership\n• Dangerous anger and conflict patterns\n• Addiction and dependency warning signs\n• Spiritual performance vs. authentic faith\n• Relational history patterns that predict problems\n• When to trust your instincts\n• How to respond at each level of concern\n• How to maintain exit options This is powerful discernment."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "reflection",
+          "cardNumber": 2,
+          "title": "Your Red Flag Summary",
+          "icon": "edit_note",
+          "text": "What are the most important red flags for YOU to watch for,based on your patterns, blind spots, and history? Write your personal \"watch list\" of warning signs you'll take seriously.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "action",
+          "cardNumber": 3,
+          "title": "Your Discernment Commitments",
+          "icon": "task_alt",
+          "text": "Commit to: 1. I will **maintain support systems** that can see what I might miss. 2. I will **ask hard questions** early rather than assuming the best. 3. I will **trust my instincts** when something feels wrong. 4. I will **watch behavior, not just words**,fruit over promises. 5. I will **address concerns directly** rather than hoping they'll resolve. 6. I will **leave when necessary**,no matter how invested I am. 7. I will **believe what I see**, even when I wish I saw something different.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Clear Eyes, Protected Heart",
+          "icon": "auto_awesome",
+          "text": "Seeing clearly isn't cynicism. It's wisdom. You can be hopeful AND discerning.\nYou can be loving AND alert.\nYou can give people chances AND protect yourself. The goal isn't suspicion of everyone. The goal is seeing clearly so you can love wisely,giving your heart to someone who deserves it, not someone who will damage it. \"Be wise as serpents and innocent as doves.\", Matthew 10:16 Both. Not one or the other."
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Clear Sight",
+          "icon": "volunteer_activism",
+          "text": "Lord, I commit to seeing clearly. Give me eyes that see truth, not just what I want to see. Give me courage to acknowledge red flags and respond wisely. Protect me from relationships that would harm me. Guide me to relationships that would bless me. I trust You with my discernment and my future. Amen.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Declaration",
+          "icon": "verified",
+          "text": "Declare this over your dating life: \"I will see clearly. I refuse to let chemistry blind me to character.\nI refuse to let hope override evidence.\nI refuse to let fear keep me in harmful relationships. I will watch behavior, not just words.\nI will trust my instincts when something feels wrong.\nI will address concerns rather than ignoring them.\nI will leave when I should leave. I am wise as a serpent and innocent as a dove. My heart is worth protecting. I will protect it.\"",
+          "responseType": "open-text"
+        }
+      ]
+    }
+  ],
+  "heroImage": "assets/images/journeys/Singles_journey13.jpg"
+}

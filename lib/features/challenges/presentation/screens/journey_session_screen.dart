@@ -914,20 +914,16 @@ class _ChoiceCard extends StatelessWidget {
                     color:
                         isSelected
                             ? (isDark
-                                ? AppColors.primary.withOpacity(0.32)
-                                : AppColors.primary.withOpacity(0.12))
-                            : (isDark
-                                ? AppColors.primary.withOpacity(0.14)
-                                : AppColors.primary.withOpacity(0.06)),
+                                ? AppColors.primary.withOpacity(0.20)
+                                : AppColors.primary.withOpacity(0.10))
+                            : AppColors.getSurface(context),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color:
                           isSelected
                               ? AppColors.primary
-                              : (isDark
-                                  ? AppColors.primary.withOpacity(0.5)
-                                  : AppColors.primary.withOpacity(0.25)),
-                      width: isSelected ? 1.6 : 1.2,
+                              : AppColors.getBorder(context),
+                      width: isSelected ? 1.6 : 1.0,
                     ),
                   ),
                   child: Row(
@@ -936,13 +932,11 @@ class _ChoiceCard extends StatelessWidget {
                         child: Text(
                           o,
                           style: AppTextStyles.bodyMedium.copyWith(
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w600,
                             height: 1.25,
                             color:
                                 isSelected
-                                    ? (isDark
-                                        ? Colors.white
-                                        : AppColors.primary)
+                                    ? AppColors.primary
                                     : AppColors.getTextPrimary(context),
                           ),
                         ),
@@ -950,19 +944,21 @@ class _ChoiceCard extends StatelessWidget {
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 140),
                         width: 20,
+                        height: 20,
                         decoration: BoxDecoration(
                           color:
                               isSelected
-                                  ? (isDark
-                                      ? AppColors.primary.withOpacity(0.32)
-                                      : AppColors.primary)
+                                  ? AppColors.primary
                                   : Colors.transparent,
                           borderRadius: BorderRadius.circular(999),
                           border: Border.all(
                             color:
                                 isSelected
                                     ? AppColors.primary
-                                    : AppColors.getBorder(context),
+                                    : (isDark
+                                        ? AppColors.getTextSecondary(context)
+                                        : AppColors.getBorder(context)),
+                            width: isSelected ? 0 : 1.5,
                           ),
                         ),
                         child:
@@ -970,8 +966,7 @@ class _ChoiceCard extends StatelessWidget {
                                 ? Icon(
                                   Icons.check,
                                   size: 14,
-                                  color:
-                                      isDark ? AppColors.primary : Colors.white,
+                                  color: Colors.white,
                                 )
                                 : null,
                       ),
@@ -1135,7 +1130,7 @@ List<TextSpan> _buildInlineSpans(String text, TextStyle baseStyle) {
     final raw = lines[i];
 
     final match = RegExp(
-      r'^([A-Za-z0-9\s\*\-\(\)]+):\s*(.*)$',
+      r'^([A-Za-z0-9\s\-\(\)]+):\s*(.*)$',
     ).firstMatch(raw.trim());
 
     if (match != null) {
@@ -1165,12 +1160,13 @@ List<TextSpan> _buildInlineSpans(String text, TextStyle baseStyle) {
   return spans;
 }
 
-/// Supports **bold** and *italic* inline emphasis.
+/// Supports **bold**, *italic*, and {red|text} for colored emphasis.
+/// Allows nesting of formatting (e.g., {red|**text**} for red bold text).
 List<TextSpan> _buildEmphasisSpans(String input, TextStyle baseStyle) {
   final spans = <TextSpan>[];
 
-  // Tokenize by **bold** or *italic*
-  final regex = RegExp(r'(\*\*.*?\*\*|\*.*?\*)');
+  // Tokenize by {red|...}, **bold**, or *italic*
+  final regex = RegExp(r'(\{red\|[^}]*\}|\*\*.*?\*\*|\*.*?\*)');
   final matches = regex.allMatches(input);
 
   var lastIndex = 0;
@@ -1184,7 +1180,20 @@ List<TextSpan> _buildEmphasisSpans(String input, TextStyle baseStyle) {
 
     final token = input.substring(m.start, m.end);
 
-    if (token.startsWith('**') && token.endsWith('**') && token.length > 4) {
+    if (token.startsWith('{red|') && token.endsWith('}')) {
+      final inner = token.substring(5, token.length - 1);
+      // Process inner content for nested bold/italic
+      final innerSpans = _buildEmphasisSpans(
+        inner,
+        baseStyle.copyWith(
+          color: AppColors.primary,
+          fontWeight: FontWeight.w600,
+        ),
+      );
+      spans.addAll(innerSpans);
+    } else if (token.startsWith('**') &&
+        token.endsWith('**') &&
+        token.length > 4) {
       final inner = token.substring(2, token.length - 2);
       spans.add(
         TextSpan(

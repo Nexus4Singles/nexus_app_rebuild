@@ -1,0 +1,757 @@
+{
+  "journeyId": "divorced_preparing_new_covenant",
+  "title": "Preparing for a New Covenant",
+  "subtitle": "Getting ready to make lasting vows again",
+  "summary": "**You are approaching the point of making marriage vows again.** This is sacred ground. The vows you will make are not just words but a covenant before God. This journey helps you prepare spiritually and practically for this covenant, understand the weight and meaning of what you are committing to, ensure you and your partner are aligned, and enter your new marriage with the solemnity, preparation, and hope it deserves.",
+  "targetUserCategory": "divorced",
+  "priorityRank": 16,
+  "estimatedDays": 14,
+  "totalActivities": 10,
+  "difficulty": "advanced",
+  "themeColor": "#5E35B1",
+  "cover": {
+    "themeTag": "Covenant",
+    "accentIcon": "volunteer_activism",
+    "heroImage": "assets/images/journeys/divorced_journey16.jpg",
+    "heroImageDescription": "Two hands joining together or two rings, symbolizing the sacred commitment of marriage covenant, with light suggesting divine blessing."
+  },
+  "frameworks": [
+    "covenant_theology",
+    "marriage_preparation",
+    "spiritual_formation",
+    "commitment_readiness"
+  ],
+  "targetOutcomes": [
+    "Understand the biblical meaning of marriage covenant",
+    "Prepare spiritually for making vows again",
+    "Ensure alignment with your partner on key issues",
+    "Address practical preparations for remarriage",
+    "Enter your new marriage with appropriate weight and hope",
+    "Commit to building a covenant marriage that lasts"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_covenant_meaning",
+      "isFree": true,
+      "title": "More Than a Contract: Understanding Covenant",
+      "subtitle": "Grasping the sacred meaning of marriage covenant",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "volunteer_activism",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Marriage is a covenant, not merely a contract. Understanding this distinction shapes how you approach and live out your vows.",
+      "frameworkBasis": {
+        "conceptKey": "covenant_understanding",
+        "explanation": "Understanding marriage as covenant rather than contract shapes expectations and commitment."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Approaching Sacred Ground",
+          "text": "**You are preparing to make vows again.** The same words, or similar ones, that you spoke before. But this time, you know what they cost.\n\n**This is not a casual decision.** Marriage is one of the most significant commitments a person can make. It deserves to be approached with reverence, preparation, and clear understanding.\n\n**You have been married before.** Those vows did not result in lifelong union. This may make you approach new vows with either cynicism or deeper appreciation.\n\n**This journey invites you to approach your coming marriage as sacred ground, with the weight and preparation it deserves.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Covenant vs Contract",
+          "text": "{red|**Marriage is a covenant, not a contract.** Most people do not understand the difference until a marriage fails.\n\n**A contract is a deal.** I give you this, you give me that. Both parties hold up their end. If one fails to deliver, the contract is void. Walk away.\n\n**A covenant is something else entirely.** It is a sacred promise that binds you regardless of what the other person does. Not I will love you as long as you love me back. But I will love you. Period.\n\n**Contracts are conditional.** They depend on circumstances. They have exit clauses.\n\n**Covenants are unconditional.** They are kept even when it is hard. Especially when it is hard.\n\n**Here is why this matters: if you approach marriage as a contract, you will always be keeping score.** Did they hold up their end?}{red| Do I still have to hold up mine?}{red| When the score gets uneven enough, you leave.\n\n**If you approach marriage as a covenant, you are bound even in the hard times.** Even when they are not holding up their end. Even when leaving would be easier.\n\n**This is what you are about to do.** Not make a deal. Make a covenant. A sacred, binding, unconditional promise before God.\n\nDo you understand what that means?}{red| Really understand it?}",
+          "icon": "description"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Biblical View",
+          "text": "**Scripture presents marriage as covenant.**\n\n**Malachi speaks of the wife of your marriage covenant (({red|Malachi 2:14})).** Marriage is not just a social arrangement but a sacred bond.\n\n**Ephesians 5 presents marriage as a picture of Christ and the church.** The husband's love should mirror Christ's sacrificial, covenant love.\n\n**Genesis presents the two becoming one flesh.** A union that is meant to be permanent and total.\n\n**This biblical framework elevates marriage beyond mere partnership to sacred covenant.**",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Covenant Understanding",
+          "text": "{red|How would you describe your current understanding of marriage as covenant?}",
+          "prompts": [
+            "I deeply understand and embrace the covenant view",
+            "I intellectually understand it but am still growing into it",
+            "This is somewhat new to me and I want to learn more",
+            "I struggle with this view given my divorce",
+            "I am uncertain what I believe about marriage after my experience"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are, this journey will help you prepare to enter a covenant marriage with understanding and commitment."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your View of Vows",
+          "text": "{red|**Reflect on how you view the vows you will make.**\n\nHow do you understand the vows you will make?}{red| What do they mean to you?}{red| How does your previous marriage experience affect how you view making vows again?}{red| What weight do you give to the covenant nature of marriage?}{red| What would it mean for you to truly commit in covenant?}\n\nWrite about your view of vows:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Commitment to Covenant",
+          "text": "**Commit to approaching your marriage as covenant.**\n\n**I understand that marriage is more than a contract.** It is a sacred covenant.\n\n**I will make my vows with full understanding of what I am committing to.**\n\n**I commit to covenant love that endures, not just conditional partnership.**\n\n**I will prepare myself spiritually to make and keep these vows.**\n\nWrite your commitment to covenant in your own words:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_learning_from_past",
+      "isFree": false,
+      "title": "What Your First Marriage Taught You",
+      "subtitle": "Bringing wisdom from the past into your new covenant",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "school",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Your first marriage, though it ended, taught you things. Bringing that wisdom into your new covenant helps you build differently this time.",
+      "frameworkBasis": {
+        "conceptKey": "experiential_wisdom",
+        "explanation": "Wisdom gained from previous marriage experience can strengthen a new covenant marriage."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Gift of Experience",
+          "text": "{red|**Your first marriage gave you something valuable, if you are willing to receive it: an education.**\n\n**You paid for this education in pain.** In tears. In sleepless nights and shattered hopes. You paid more than you ever wanted to pay.\n\n**But you learned things.** Things you could not have learned any other way.\n\n**You learned what you cannot live with.** The behaviors, patterns, dynamics that slowly destroy a marriage. You felt them from the inside. You know now.\n\n**You learned what you cannot live without.** The needs you have that you may have denied or minimized. The things that must be present for you to flourish in a marriage.\n\n**You learned about yourself.** Your patterns, your triggers, your ways of contributing to dysfunction. The parts of you that need work, that need healing, that need to change.\n\n**This education is a gift, but only if you use it.** If you remarry without learning from your first marriage, you wasted the tuition.\n\nHave you actually learned?}{red| Have you processed what happened and extracted the wisdom from the wreckage?}\n\n{red|Or are you about to make the same mistakes with a different person?}",
+          "icon": "school"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Went Right",
+          "text": "{red|**Sandra kept a journal from her first marriage.** Not to dwell on pain, but to learn. She wrote down what worked: the way they prayed together, their weekly date nights, how they handled his family. She also wrote what failed: avoiding hard conversations, letting resentment build, assuming the other knew what she needed. The journal became a blueprint for building differently.\n\n**Even marriages that end had good elements.**\n\nWhat worked in your first marriage?}{red| What did you and your ex do well?}{red| What brought you joy or connection?}\n\n**You want to bring these good elements into your new marriage.** The skills, practices, and habits that served your relationship well.\n\n**Do not throw out everything from your first marriage just because it ended.** Keep what was good and build on it.",
+          "icon": "thumb_up"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What Went Wrong",
+          "text": "{red|More importantly, what went wrong?}\n\n{red|What patterns, behaviors, or dynamics contributed to your marriage's failure?}{red| Both yours and your ex's.\n\nWhat would you do differently if you could go back?}{red| What do you now see that you did not see then?}\n\n**These lessons are painful but invaluable.** They show you what to avoid, what to address, and what to build differently.\n\n**The worst outcome would be to repeat the same mistakes in a new marriage.**",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Marriage Lessons",
+          "text": "{red|**Identify the key lessons from your first marriage.**\n\nWhat worked well that you want to bring into your new marriage?}{red| What went wrong that you want to avoid or do differently?}{red| What did you learn about yourself as a spouse?}{red| What did you learn about what you need from a partner?}\n\nWrite your marriage lessons:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Applying the Lessons",
+          "text": "{red|**Lessons only help if applied.**\n\nHave you shared your lessons with your partner?}{red| Do they know what you learned and what you want to do differently?}\n\n{red|Have you made concrete changes, or just mental notes?}{red| Real change requires new behaviors, not just insights.\n\nAre you alert to old patterns emerging?} The pull of familiar dynamics is strong.\n\n**Your new marriage is an opportunity to apply everything you learned.** Do not waste the education your painful experience provided.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Application Plan",
+          "text": "**Create a plan for applying your lessons to your new marriage.**\n\nGood elements from my past marriage I will intentionally bring forward:\n\nMistakes I will actively work to avoid:\n\nNew practices I will implement based on what I learned:\n\nHow I will stay alert to old patterns:\n\nWrite your application plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_spiritual_preparation",
+      "isFree": false,
+      "title": "Heart Preparation: Spiritual Readiness for Covenant",
+      "subtitle": "Preparing your heart spiritually for making vows",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "church",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Marriage is a spiritual act. Preparing your heart spiritually helps you enter covenant with the right posture before God.",
+      "frameworkBasis": {
+        "conceptKey": "spiritual_preparation",
+        "explanation": "Spiritual preparation positions the heart rightly for making and keeping sacred vows."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "A Spiritual Act",
+          "text": "{red|**Marriage is not merely a legal or social arrangement.** It is a spiritual act.\n\n**You are making vows before God.** He is a witness to your covenant and you are inviting His presence into your union.\n\n**This means preparing for marriage should include spiritual preparation, not just practical planning.**\n\nIs your heart right before God?}{red| Are you entering this marriage in alignment with His will?}{red| Have you invited Him into this relationship?}",
+          "icon": "church"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Examining Your Heart",
+          "text": "{red|**Before you stand at an altar again, look inside.**\n\nIs there unfinished business with God?}{red| After divorce, many people carry anger at Him, confusion about Him, distance from Him. Have you dealt with that?}{red| Are you right with Him, or are you inviting Him to witness a covenant while holding things against Him?}\n\n{red|Is there unconfessed sin in your life?}{red| Not ancient history you have already brought to Him. Current, ongoing, hidden things. An affair that started your new relationship. A pattern you have not given up. Something you are hiding from your partner that would matter to them.\n\nAre your motives clean?}{red| Why are you getting married?}{red| Because you genuinely love this person and believe you are called to build a life together?}{red| Or because you are afraid of being alone?}{red| Because you want to prove something?}{red| Because they have money, or status, or fill some void you should be dealing with differently?}\n\n{red|Is there peace in your heart about this?}{red| Or is there a nagging anxiety, a small voice saying something is wrong, that you are trying to silence with wedding planning?}\n\n{red|**God already knows the answers to these questions.** You are not fooling Him. This examination is for your benefit, not His.\n\nWhat do you find when you look honestly inside?}",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Seeking God's Blessing",
+          "text": "**You want God's blessing on your marriage.**\n\n**This is not superstition or magic.** It is acknowledging that marriage works best when built with God at the center.\n\n**Seek His blessing through prayer.** Ask Him to guide your relationship and your coming marriage.\n\n**Seek His blessing through obedience.** A marriage built on His principles is positioned for blessing.\n\n**Seek His blessing through community.** The church community can pray for and support your marriage.\n\n**Unless the Lord builds the house, the builders labor in vain.** (({red|Psalm 127:1}))",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Spiritual State",
+          "text": "{red|**Examine your current spiritual state as you approach remarriage.**\n\nHow is your relationship with God currently?}{red| Are there spiritual issues you need to address before marriage?}{red| Have you sought God's guidance about this relationship?}{red| Do you have peace about moving forward?}\n\nWrite about your spiritual state:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Spiritual Practices for Preparation",
+          "text": "**Several spiritual practices help prepare for marriage covenant.**\n\n**Prayer: Individually and together as a couple, seeking God's guidance and blessing.**\n\n**Scripture: Reading what God says about marriage and covenant.**\n\n**Fasting: A focused time of seeking God's face about your coming marriage.**\n\n**Confession: Clearing any unresolved sin that might hinder your marriage.**\n\n**Community: Seeking prayer and counsel from your church family.**\n\n**These practices position your heart rightly for the covenant you will make.**",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Spiritual Preparation Plan",
+          "text": "**Create a plan for spiritual preparation before your marriage.**\n\nPrayer practices I will engage in:\n\nScripture I will study:\n\nAny fasting or focused seeking I will do:\n\nConfession or spiritual issues I need to address:\n\nHow I will involve my faith community:\n\nWrite your spiritual preparation plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_premarital_conversations",
+      "isFree": false,
+      "title": "The Essential Conversations: Aligning Before Vows",
+      "subtitle": "Ensuring you and your partner are aligned on key issues",
+      "timeBoxMinutes": 26,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "forum",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Before making lifelong vows, you and your partner need alignment on key issues. These conversations prevent surprises and ensure you are building on shared understanding.",
+      "frameworkBasis": {
+        "conceptKey": "premarital_alignment",
+        "explanation": "Alignment on key issues before marriage prevents conflict and ensures shared expectations."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Before You Say I Do",
+          "text": "{red|**Before making vows, ensure you and your partner have had the essential conversations.**\n\n**These are discussions about the things that will shape your married life.** Areas where misalignment creates ongoing conflict.\n\n**Some couples avoid hard conversations because they do not want to create conflict or discover incompatibility.** But it is far better to discover problems before vows than after.\n\nHave you had these conversations?}{red| Do you know where you stand together on the important issues?}",
+          "icon": "forum"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Faith and Values",
+          "text": "{red|Have you actually talked about faith together?}{red| Not just Do we both believe in God?}{red| but the deeper questions.\n\nWhat does faith look like in daily life?}{red| Will you pray together?}{red| Go to church together?}{red| How will you handle it if one of you is going through a spiritual dry season?}\n\n{red|What are your actual values, not the ones you say you have, but the ones you live?}{red| When push comes to shove, what wins?}{red| Family or career?}{red| Security or adventure?}{red| Generosity or accumulation?}\n\n{red|If children are in your future, how will you raise them spiritually?}{red| What church, what teaching, what practices?}{red| Do you agree, or are you assuming you will figure it out later?}\n\n{red|What if your faith grows in different directions?}{red| What if one of you becomes more committed and the other less?}{red| What if one of you changes denominations or has a crisis of faith?}\n\n{red|**These conversations are not comfortable.** That is why many couples avoid them. But the discomfort now is nothing compared to the conflict later when you discover you are not on the same page.\n\nHave you had these conversations?}{red| Do you actually know where you stand together, or are you assuming alignment that may not exist?}",
+          "icon": "church"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Family and Children",
+          "text": "{red|**Family issues require clear discussion.**\n\nDo you want children?}{red| If you already have children, do you want more?}\n\n{red|How will you parent together?}{red| What are your parenting philosophies?}\n\n{red|How will you handle blended family dynamics if applicable?}{red| Relationships with stepchildren, custody arrangements, your ex.\n\nWhat is the role of extended family?}{red| How involved will in-laws be?}\n\n**These are not areas for assumptions.** Explicit conversations prevent painful surprises.",
+          "icon": "family_restroom"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Money and Lifestyle",
+          "text": "{red|**Financial alignment is essential.**\n\nHow will you handle money?}{red| Joint accounts, separate accounts, or both?}\n\n{red|What are your financial goals?}{red| Saving, debt repayment, lifestyle priorities?}\n\n{red|What are your spending habits?}{red| Are they compatible?}\n\n{red|What lifestyle do you envision?}{red| Housing, work-life balance, social life?}\n\n{red|How will you handle financial baggage?}{red| Debt, child support, or financial obligations from previous marriages?}\n\n**Money is one of the top sources of marital conflict.** Get aligned before vows.",
+          "icon": "account_balance"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Essential Conversations",
+          "text": "{red|**Assess whether you have had the essential conversations.**\n\nWhich of these topics have you thoroughly discussed with your partner?}{red| Which topics have you avoided or only superficially addressed?}{red| Are there areas where you know you are misaligned?}{red| What conversations still need to happen before your wedding?}\n\nWrite your assessment of essential conversations:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Conversation Plan",
+          "text": "**Create a plan for completing essential conversations.**\n\nConversations we still need to have:\n\nHow and when we will have them:\n\nTopics where we need to reach alignment:\n\nWhether we will use premarital counseling to facilitate:\n\nWrite your conversation plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_premarital_counseling",
+      "isFree": false,
+      "title": "Getting Help: The Value of Premarital Counseling",
+      "subtitle": "Using professional guidance to prepare for marriage",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Premarital counseling significantly improves marriage outcomes. For those who have been divorced, it is especially valuable in preparing for a healthier second marriage.",
+      "frameworkBasis": {
+        "conceptKey": "premarital_counseling",
+        "explanation": "Professional premarital guidance improves communication and addresses potential issues proactively."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Premarital Counseling Matters",
+          "text": "**Premarital counseling significantly improves your chances of a successful marriage.**\n\n**Research consistently shows that couples who complete premarital counseling have lower divorce rates and higher marital satisfaction.**\n\n**A skilled counselor helps you have conversations you might avoid, identify potential problems before they become crises, and build skills for healthy marriage.**\n\n**For those who have been divorced, premarital counseling is especially valuable.** You have patterns and wounds that need attention before entering a new covenant.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Premarital Counseling Covers",
+          "text": "**Good premarital counseling typically covers several areas.**\n\n**Communication skills: How to talk and listen effectively.**\n\n**Conflict resolution: How to handle disagreements constructively.**\n\n**Expectations: Surfacing and aligning what you each expect from marriage.**\n\n**Family of origin: How your backgrounds affect your relationship.**\n\n**Key topics: Finances, children, intimacy, roles, and other practical matters.**\n\n**For remarriage specifically: lessons from previous marriage, blended family dynamics, and unresolved issues.**\n\n**This comprehensive preparation positions you for success.**",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Finding the Right Counselor",
+          "text": "**The right counselor makes a significant difference.**\n\n**Look for someone with training specifically in premarital counseling, not just general therapy.**\n\n**For faith-based marriage, find someone who shares your values and will integrate faith into the process.**\n\n**Seek someone with experience in remarriage counseling who understands the unique dynamics.**\n\n**Ask for recommendations from your pastor, church, or trusted friends.**\n\n**Commit to the process fully.** Premarital counseling only helps if you engage honestly.",
+          "icon": "person_search"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Counseling Plans",
+          "text": "{red|**Reflect on premarital counseling for your upcoming marriage.**\n\nAre you planning to do premarital counseling?}{red| If you have done it, what was valuable?}{red| What was missing?}{red| If you have not, what has held you back?}{red| What do you hope to gain from premarital counseling?}\n\nWrite about your counseling plans:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Beyond Premarital Counseling",
+          "text": "**Premarital counseling is valuable, but preparation does not end there.**\n\n**Continue learning.** Read books on marriage together. Discuss what you are learning.\n\n**Stay in community.** Maintain connections with others who can support your marriage.\n\n**Be willing to seek help later.** If problems arise after marriage, return to counseling early rather than waiting until crisis.\n\n**Preparation is ongoing.** The work you do before marriage sets the foundation, but building a strong marriage is a lifelong project.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Counseling Commitment",
+          "text": "**Commit to premarital counseling and ongoing growth.**\n\nOur plan for premarital counseling:\n\nTimeline and how we will find a counselor:\n\nTopics we specifically want to address:\n\nHow we will continue learning and growing after counseling:\n\nWrite your counseling commitment:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_blended_family",
+      "isFree": false,
+      "title": "Blending Well: Preparing for Blended Family Dynamics",
+      "subtitle": "Navigating the complexities of bringing families together",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "groups",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "If either or both of you have children, you are creating a blended family. This brings unique challenges that require specific preparation and realistic expectations.",
+      "frameworkBasis": {
+        "conceptKey": "blended_family_preparation",
+        "explanation": "Blended family success requires specific preparation and realistic expectations about the process."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Blended Family Reality",
+          "text": "**If children are involved, you are not just marrying a person.** You are creating a blended family.\n\n**Blended families are among the most complex family structures.** They involve multiple relationships, loyalties, histories, and dynamics.\n\n**The fantasy is that everyone will quickly become one happy family.** The reality is that blending takes years, involves conflict, and requires enormous patience.\n\n**Understanding this reality helps you prepare appropriately rather than being blindsided.**",
+          "icon": "groups"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Children's Adjustment",
+          "text": "If children are involved, here is what they need you to understand:\n\n**They are not as excited about this as you are.** You are gaining a spouse. They are losing the last hope that mom and dad might get back together. They are gaining a stranger who is going to live in their house and have authority over them. This is complicated for them.\n\n**They may feel disloyal.** Liking your new partner can feel like betraying their other parent. They may resist the relationship not because anything is wrong with your partner, but because accepting them feels like abandoning someone they love.\n\n**They may grieve all over again.** Your remarriage is the final confirmation that the divorce is permanent. For children who were still hoping, this is a loss that needs to be mourned.\n\n**They may act out.** Younger children may regress. Older children may rebel. Teenagers may become hostile or distant. These behaviors are not defiance. They are grief and confusion expressed through actions because the words are not available.\n\n**They need time.** Years, not months. Research suggests blended families take five to seven years to truly stabilize. That is longer than you want to hear.\n\n**They need you to put their needs alongside your new relationship, not beneath it.** If your new partner cannot accept that your children come with you as a package, they are not the right partner.\n\n**This is hard.** Prepare for it to be hard. And give your children grace.",
+          "icon": "child_care"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Stepparent Role",
+          "text": "**The stepparent role is challenging and often misunderstood.**\n\n**Stepparents should not try to replace biological parents.** Children already have a mom and dad.\n\n**Stepparents should start as friendly adults, not authority figures.** Trust and relationship must be built before discipline is appropriate.\n\n**Stepparents should support their spouse's parenting rather than taking over.**\n\n**The transition to a more parental role happens slowly, over years, not months.**\n\n**Rushing this process creates resistance and conflict.**",
+          "icon": "escalator_warning"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Blended Family Situation",
+          "text": "{red|**Reflect on your specific blended family situation.**\n\nWhat children are involved?}{red| Yours, your partner's, or both?}{red| What challenges do you anticipate in blending your families?}{red| How are the children currently responding to the prospect of the marriage?}{red| What role do ex-spouses play that will affect your blended family?}\n\nWrite about your blended family situation:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Keys to Blended Family Success",
+          "text": "**Research identifies keys to blended family success.**\n\n**Protect your marriage.** The couple relationship is the foundation. Nurture it intentionally.\n\n**Go slow with blending.** Expect several years for the family to truly integrate.\n\n**Biological parents lead discipline initially.** Stepparents support but do not enforce.\n\n**Create new traditions while respecting old ones.** Both matter.\n\n**Maintain one-on-one time.** Children need individual time with their biological parent.\n\n**Get support.** Blended family counseling or support groups help navigate challenges.\n\n**Patience and realistic expectations are essential.**",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Blended Family Plan",
+          "text": "**Create a plan for blended family success.**\n\nHow we will protect our marriage as the foundation:\n\nHow we will handle parenting roles and discipline:\n\nHow we will give children time and space to adjust:\n\nSupport we will seek for blended family challenges:\n\nRealistic expectations we are setting:\n\nWrite your blended family plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_your_vows",
+      "isFree": false,
+      "title": "Words That Bind: Preparing Your Vows",
+      "subtitle": "Thinking deeply about the promises you will make",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "edit",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Your wedding vows are the words that create your covenant. Whether traditional or personal, they deserve deep thought about what you are actually promising.",
+      "frameworkBasis": {
+        "conceptKey": "vow_preparation",
+        "explanation": "Thoughtful vow preparation ensures understanding and commitment to what is being promised."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Weight of Words",
+          "text": "**Your wedding vows are the materials you will build your marriage with.** Choose them carefully. Test them against reality. Make sure they can bear the weight of actual life, not just the romance of a wedding day.\n\n**Your wedding vows are not just ceremonial words.** They are binding promises that create your covenant.\n\n**Whether you use traditional vows or write your own, what you speak on your wedding day matters.** You are making commitments before God, your partner, and witnesses.\n\n**These words should not be taken lightly.** They deserve deep thought about what you are actually promising and whether you truly intend to keep those promises.",
+          "icon": "edit"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Traditional Vows",
+          "text": "**Traditional wedding vows have stood the test of time for good reason.**\n\n**For better, for worse.** Commitment through good times and bad.\n\n**For richer, for poorer.** Commitment regardless of financial circumstances.\n\n**In sickness and in health.** Commitment through physical challenges.\n\n**To love and to cherish.** Active, ongoing love as a choice.\n\n**Till death do us part.** Lifelong commitment.\n\n**These vows cover the range of what marriage actually involves.** Consider whether you are prepared to keep each one.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Personal Vows",
+          "text": "**Some couples write personal vows to supplement or replace traditional ones.**\n\n**If you write personal vows, ensure they include genuine promises, not just expressions of feeling.**\n\n**Include commitments for the hard times, not just the romantic moments.**\n\n**Be specific about what you are promising.** Vague words are easier to dismiss later.\n\n**Consider having someone review your vows for substance and covenant language.**\n\n**Your vows should reflect the full weight of what you are committing to.**",
+          "icon": "create"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Vows Reflection",
+          "text": "{red|**Reflect deeply on the vows you will make.**\n\nWhat vows will you make at your wedding?}{red| Traditional, personal, or both?}{red| As you consider each promise, are you truly prepared to keep it in all circumstances?}{red| What will make your second vows different from your first in terms of your intention and commitment?}{red| Is there anything in traditional vows you hesitate to promise?}{red| Why?}\n\nWrite your vows reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Vows After Divorce",
+          "text": "{red|**Making vows after divorce carries particular weight.**\n\n**You made these promises before and they were broken.** Whether you broke them, your ex did, or both, the promises did not hold.\n\n**This should make you approach new vows with greater sobriety.** Not cynicism, but seriousness.\n\nWhat will be different this time?} Not just that you are marrying a different person, but that you are making these vows with fuller understanding of what they require.\n\n**Make your vows with eyes wide open to the commitment you are undertaking.**",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Vow Preparation",
+          "text": "**Begin preparing your vows intentionally.**\n\nThe vows I will make and why I have chosen them:\n\nSpecific promises I want to include:\n\nHow my vow preparation will be different from my first marriage:\n\nPractices I will use to remember and honor my vows after the wedding:\n\nWrite your vow preparation:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_ceremony_meaning",
+      "isFree": false,
+      "title": "More Than a Party: Making Your Ceremony Meaningful",
+      "subtitle": "Creating a wedding that reflects the sacred nature of covenant",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "celebration",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Your wedding ceremony is where you make your covenant. Creating a ceremony that reflects the sacred nature of what you are doing honors the commitment you are making.",
+      "frameworkBasis": {
+        "conceptKey": "ceremony_intentionality",
+        "explanation": "An intentional ceremony reflects and honors the sacred nature of covenant marriage."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Beyond the Party",
+          "text": "{red|**Weddings can become more about the party than the covenant.**\n\n**The dress, the venue, the reception, the photos.** These details consume attention while the actual covenant gets minimal thought.\n\n**Your ceremony is where you make your vows.** It is the most important part of the day, spiritually speaking.\n\nHow can your ceremony reflect the sacred nature of what you are doing?}{red| How can it honor God, your commitment, and the witnesses present?}",
+          "icon": "celebration"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Elements of Meaningful Ceremony",
+          "text": "{red|How can your ceremony reflect what you are actually doing?}\n\n{red|**Scripture can anchor your vows in something bigger than your feelings.** God's words about love, covenant, and marriage have sustained couples for millennia. Let them speak into your union.\n\n**Prayer can invite God into the center.** Not as an afterthought, not as a religious formality, but as a genuine invitation for His presence and blessing.\n\n**Communion can symbolize what your marriage is built on.** Two people, unified in Christ, remembering what His sacrifice made possible. Some couples share communion during the ceremony as their first act as a married couple.\n\n**Your vows should be substantial.** Not rushed through to get to the party. Not generic words you barely hear yourself saying. Promises you have thought about, that you mean, that you speak clearly and with weight.\n\n**If you have children, consider including them.** Not as props, but as acknowledgment that this marriage creates a family. Some couples present medallions or gifts to children, making promises to them too.\n\n**The goal is a ceremony that you will remember not for the flowers or the dress, but for the covenant you made.** Everything else is decorations. The vows are the point.\n\nWhat kind of ceremony will honor what you are doing?}",
+          "icon": "auto_awesome"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Involving Your Community",
+          "text": "{red|**Your wedding involves more than just you and your partner.**\n\n**Witnesses matter.** They are not just observers but people who will hold you accountable to your vows.\n\n**Consider involving community intentionally.** Perhaps a moment where guests commit to supporting your marriage.\n\n**Your wedding is joining not just two people but two networks of community.** How can your ceremony reflect this?}\n\n**A wedding surrounded by community that will support your marriage is a wedding built for success.**",
+          "icon": "groups"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Ceremony Vision",
+          "text": "{red|**Reflect on what you want your ceremony to be.**\n\nWhat elements are most important to include?}{red| How will your ceremony reflect the sacred nature of your covenant?}{red| How will you involve your community meaningfully?}{red| What do you want people to remember about your ceremony?}\n\nWrite about your ceremony vision:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Second Wedding Considerations",
+          "text": "{red|**Second weddings have their own considerations.**\n\n**Scale: Many couples choose smaller, more intimate second weddings.** This can actually enhance meaningfulness.\n\nChildren: If children are involved, how will you include them?} Many couples include vows to stepchildren.\n\n**Tone: While still celebratory, a second wedding can carry a different tone of mature commitment.**\n\n**Simplicity: With less focus on the party, more attention can go to the covenant itself.**\n\n**Your second wedding can be even more meaningful than your first precisely because you understand the weight of what you are doing.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Ceremony Plan",
+          "text": "**Create a plan for your meaningful ceremony.**\n\nElements we will include and why:\n\nHow we will make the covenant central:\n\nHow we will involve community:\n\nIf applicable, how we will include children:\n\nWho will officiate and why we chose them:\n\nWrite your ceremony plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_marriage_vision",
+      "isFree": false,
+      "title": "The Marriage You Want to Build",
+      "subtitle": "Creating a shared vision for your life together",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "architecture",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Before building, you need a vision. Creating a shared picture of the marriage you want to build helps you work toward the same goals.",
+      "frameworkBasis": {
+        "conceptKey": "marriage_vision",
+        "explanation": "A shared vision for marriage provides direction and alignment for building life together."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Vision Precedes Building",
+          "text": "{red|What kind of marriage do you want to build?}\n\n{red|**Not just a marriage that does not fail.** What kind of marriage, specifically, do you want to have?}\n\n{red|**Close your eyes and imagine five years from now.** What does your home feel like?}{red| When you walk through the door, what is the atmosphere?}{red| What characterizes your relationship on an ordinary Tuesday evening?}\n\n{red|What do you want people to see when they look at you together?}{red| What would your children say about your marriage if someone asked them?}\n\n{red|**Every builder works from a blueprint.** Without one, you just put up walls and hope they become a house. With one, every decision serves a coherent vision.\n\n**Your marriage needs a blueprint.** A shared vision of what you are building together.\n\n**This is not about having everything figured out.** It is about knowing what you are aiming for. A marriage characterized by what?}{red| Warmth?}{red| Adventure?}{red| Service?}{red| Deep friendship?}{red| Passionate intimacy?}{red| Spiritual partnership?}\n\n{red|**If you do not define it, you will default to whatever patterns you brought with you.** And those patterns got you a divorce.\n\nWhat are you building this time?}",
+          "icon": "architecture"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Elements of Marriage Vision",
+          "text": "{red|**Anthony's second wedding was small, just family and close friends.** No grand reception, no elaborate ceremony. But when he spoke his vows, he meant them in a way he had not understood the first time. He knew now what the words cost. He knew what it meant to promise forever.\n\n**Your marriage vision might include several elements.**\n\nRelational quality: What will your relationship be characterized by?}{red| Intimacy, friendship, respect, adventure?}\n\n{red|Spiritual life: How will faith be lived out in your marriage and home?}\n\n{red|Family culture: What kind of home will you create?}{red| What values will define your family?}\n\n{red|Mission: Is there something larger you are working toward together?}{red| Service, ministry, impact?}\n\n{red|Growth: How will you continue growing individually and together?}\n\n**These elements create a picture of the marriage you are building.**",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Learning from the Past",
+          "text": "{red|**Your marriage vision is informed by your past.**\n\nWhat was missing in your first marriage that you want to be present in this one?}\n\n{red|What was present that you want to continue?}\n\n{red|What have you learned about what makes a marriage flourish?}\n\n**Your experience, both positive and negative, shapes what you now understand to be important.**\n\n**Use that wisdom to create a vision for something better.**",
+          "icon": "history"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Marriage Vision",
+          "text": "{red|**Begin articulating your vision for your marriage.**\n\nWhat do you want your marriage to be characterized by?}{red| What kind of home do you want to create?}{red| What role will faith play in your married life?}{red| What is your shared mission or purpose?}\n\nWrite your marriage vision:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Creating Vision Together",
+          "text": "{red|**Your marriage vision should be created together with your partner.**\n\n**Share your individual visions with each other.** Where do they overlap?}{red| Where do they differ?}\n\n**Craft a shared vision you both own.** This is not your vision or their vision but our vision.\n\n**Write it down.** A written vision can be reviewed and returned to.\n\n**Revisit regularly.** Your vision may evolve as you grow together.\n\n**A shared vision provides direction and unity as you build your life together.**",
+          "icon": "people"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Vision Process",
+          "text": "**Create a plan for developing your shared marriage vision.**\n\nMy personal vision elements I will bring to the conversation:\n\nWhen and how I will discuss vision with my partner:\n\nHow we will document our shared vision:\n\nHow we will keep our vision central as we build our marriage:\n\nWrite your vision process plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_covenant_commitment",
+      "isFree": false,
+      "title": "Ready for Covenant: Your Commitment to Build Well",
+      "subtitle": "Committing to entering and living out your marriage covenant",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "high",
+      "activityType": "commitment",
+      "whyThisMatters": "You have done significant preparation work. This activity helps you consolidate what you have learned and commit to entering and honoring your new marriage covenant.",
+      "frameworkBasis": {
+        "conceptKey": "covenant_commitment",
+        "explanation": "Final commitment to covenant marriage integrates all preparation into readiness for vows."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Prepared",
+          "text": "**Through this journey, you have done significant preparation for your new covenant.**\n\n**You have understood marriage as covenant, not just contract.** You have examined what your first marriage taught you.\n\n**You have prepared spiritually and ensured essential conversations have happened.** You have considered premarital counseling and blended family dynamics.\n\n**You have thought deeply about your vows, your ceremony, and your marriage vision.**\n\n**You are ready to make a covenant that lasts.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Commitment You Are Making",
+          "text": "**You are about to make a covenant.**\n\n**Not a promise to try.** Not a commitment to see how it goes. A covenant. A sacred, binding, before-God promise to love this person until one of you dies.\n\n**You know what vows cost now.** You have paid the price of broken ones. You are not naive about what can go wrong, how people can change, how love can erode.\n\n**And you are choosing to do this anyway.**\n\n**That is not foolishness.** That is faith. Faith that love is worth the risk. Faith that what you are building together can last. Faith that with God's help and your commitment, this covenant can be kept.\n\n**You have prepared for this.** You have healed from your past. You have examined yourself, learned from your failures, chosen wisely. You have had the hard conversations and sought wise counsel.\n\n**You are not entering this covenant blind.** You are entering it with your eyes open. With scars that remind you of the cost. With wisdom that only comes from walking through fire.\n\n**This is not naive optimism.** This is informed hope. The choice to believe that love can endure, made by someone who knows that sometimes it does not.\n\n**Go make your vows.** Mean every word. And may God bless your covenant with decades of keeping them.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Preparation Insight",
+          "text": "{red|What is the most important thing you have learned through preparing for this covenant?}\n\n{red|What do you want to carry with you into your marriage?}\n\nWrite your key preparation insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Covenant Commitments",
+          "text": "{red|What specific commitments are you making as you enter this covenant?}\n\n{red|How will you live out your vows daily, not just speak them once?}{red| How will you prioritize your marriage?}{red| How will you handle difficulty when it comes?}{red| How will you continue growing together?}\n\nWrite your covenant commitments:",
+          "responseType": "open-text",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Your Marriage",
+          "text": "**Father, I am preparing to make a covenant.**\n\n**Thank You for this second chance at married love.** Thank You for the person You have brought into my life.\n\n**Help me enter this covenant with full understanding and complete commitment.** Help me keep the vows I will make.\n\n**Build our marriage on the foundation of Your love.** Make us faithful to each other and to You.\n\n**May this marriage bring You glory and bring us deep joy.**\n\n**In Jesus' name, Amen.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Covenant Declaration",
+          "text": "**Write a declaration of your commitment to covenant marriage.**\n\n**I am ready to make a covenant with the person I love.**\n\n**I understand the weight of what I am committing to and I enter it willingly.**\n\n**I will make my vows with full intention to keep them for life.**\n\n**I will build my marriage with God at the center.**\n\n**I commit to love, honor, and cherish my spouse through all circumstances.**\n\n**This covenant will last.**\n\nWrite your covenant declaration:",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Covenant Ready",
+    "summaryText": "You have done significant work preparing for your new marriage covenant. You understand what covenant means, have learned from your past, prepared spiritually, and thought deeply about the commitment you are making. Enter your marriage with both the weight it deserves and the joy it promises. May your covenant be blessed and lasting.",
+    "keyTakeaways": [
+      "Marriage is a sacred covenant not merely a contract",
+      "Your first marriage taught lessons that can strengthen your second",
+      "Spiritual preparation positions your heart rightly for vows",
+      "Essential conversations ensure alignment before commitment",
+      "Premarital counseling significantly improves marriage outcomes",
+      "Blended families require specific preparation and patience",
+      "Your vows deserve deep thought about what you are promising",
+      "Your ceremony should reflect the sacred nature of covenant",
+      "A shared vision provides direction for building marriage together"
+    ],
+    "nextRecommendedJourneys": [
+      "Building a Strong Marriage Foundation",
+      "Communication in Marriage",
+      "Spiritual Intimacy as a Couple"
+    ]
+  }
+}

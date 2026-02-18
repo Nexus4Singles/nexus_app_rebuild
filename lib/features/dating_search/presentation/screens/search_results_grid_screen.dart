@@ -43,7 +43,7 @@ class _SearchResultsGridScreenState
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
-    
+
     // Restore scroll position after frame is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _restoreScrollPosition();
@@ -126,13 +126,15 @@ class _SearchResultsGridScreenState
       ),
       body: resultsAsync.when(
         loading: () {
-          // FIXED: During refresh/re-evaluation, keep showing previous
-          // results so the grid is not destroyed and scroll position
-          // is preserved. Only show spinner on the very first load.
+          // During refresh/re-evaluation, keep showing previous results
+          // so the grid is not destroyed and scroll position is preserved.
+          // Only show spinner on the very first load.
           final cached = resultsAsync.valueOrNull;
           if (cached != null && cached.items.isNotEmpty) {
+            print('[SearchResultsGrid] Loading but have cached results: ${cached.items.length} profiles');
             return RefreshIndicator(
               onRefresh: () async {
+                print('[SearchResultsGrid] User triggered refresh');
                 if (!mounted) return;
                 ref.invalidate(datingSearchResultsProvider);
                 ref.read(searchResultsCacheProvider.notifier).clear();
@@ -147,7 +149,8 @@ class _SearchResultsGridScreenState
               ),
             );
           }
-          // First load — show spinner
+          // First load — show spinner only
+          print('[SearchResultsGrid] First load, showing spinner');
           return const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

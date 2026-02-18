@@ -298,13 +298,14 @@ class FirestoreService {
               .get();
 
       if (query.docs.isEmpty) return null;
-      
+
       // Filter on client side to include documents without archived field
-      final filtered = query.docs
-          .map((doc) => AssessmentResult.fromJson(doc.data()))
-          .where((result) => !result.archived)
-          .toList();
-      
+      final filtered =
+          query.docs
+              .map((doc) => AssessmentResult.fromJson(doc.data()))
+              .where((result) => !result.archived)
+              .toList();
+
       return filtered.isEmpty ? null : filtered.first;
     } catch (e) {
       throw FirestoreException('Failed to get assessment result: $e');
@@ -317,26 +318,27 @@ class FirestoreService {
       // Filter on client side instead of Firestore where() to include old documents
       // without the archived field (they default to false in the model)
       final snap =
-          await _userAssessmentsRef(uid)
-              .orderBy('updatedAt', descending: true)
-              .get();
+          await _userAssessmentsRef(
+            uid,
+          ).orderBy('updatedAt', descending: true).get();
 
-      final results = snap.docs
-          .map((doc) => AssessmentResult.fromJson(doc.data()))
-          .where((result) => !result.archived)  // Filter on client side
-          .toList();
-      
+      final results =
+          snap.docs
+              .map((doc) => AssessmentResult.fromJson(doc.data()))
+              .where((result) => !result.archived) // Filter on client side
+              .toList();
+
       return results;
     } catch (e) {
       // ✅ Fallback to legacy storage
       try {
         final query =
-            await _assessmentResultsRef(uid)
-                .orderBy('completedAt', descending: true)
-                .get();
+            await _assessmentResultsRef(
+              uid,
+            ).orderBy('completedAt', descending: true).get();
         return query.docs
             .map((doc) => AssessmentResult.fromJson(doc.data()))
-            .where((result) => !result.archived)  // Filter on client side
+            .where((result) => !result.archived) // Filter on client side
             .toList();
       } catch (e2) {
         throw FirestoreException('Failed to get assessment results: $e2');
@@ -585,21 +587,38 @@ class FirestoreService {
     if (db == null) return;
 
     try {
-      final batch = db.batch();
+      // Use transaction to atomically save vote and update aggregate
+      await db.runTransaction((transaction) async {
+        final voteRef = _pollVotesRef(vote.pollId).doc(vote.userId);
+        final aggregateRef = _pollAggregateRef(vote.pollId);
 
-      // Save the vote
-      batch.set(_pollVotesRef(vote.pollId).doc(vote.userId), vote.toJson());
+        // Get current aggregate
+        final aggregateDoc = await transaction.get(aggregateRef);
+        final currentAggregate = aggregateDoc.exists 
+            ? PollAggregate.fromJson(aggregateDoc.data()!)
+            : PollAggregate(
+                pollId: vote.pollId,
+                totalVotes: 0,
+                optionCounts: {},
+                updatedAt: DateTime.now(),
+              );
 
-      // Update aggregate - use nested map structure to ensure optionCounts is properly created
-      batch.set(_pollAggregateRef(vote.pollId), {
-        'pollId': vote.pollId,
-        'totalVotes': FieldValue.increment(1),
-        'optionCounts': {vote.selectedOptionId: FieldValue.increment(1)},
-        'updatedAt': FieldValue.serverTimestamp(),
-      }, SetOptions(merge: true));
+        // Calculate new optionCounts
+        final newOptionCounts = Map<String, int>.from(currentAggregate.optionCounts);
+        newOptionCounts[vote.selectedOptionId] = 
+            (newOptionCounts[vote.selectedOptionId] ?? 0) + 1;
 
-      await batch.commit();
+        // Save vote
+        transaction.set(voteRef, vote.toJson());
 
+        // Update aggregate with calculated values (not increment)
+        transaction.set(aggregateRef, {
+          'pollId': vote.pollId,
+          'totalVotes': currentAggregate.totalVotes + 1,
+          'optionCounts': newOptionCounts,
+          'updatedAt': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+      });
     } catch (e) {
       throw FirestoreException('Failed to save poll vote: $e');
     }

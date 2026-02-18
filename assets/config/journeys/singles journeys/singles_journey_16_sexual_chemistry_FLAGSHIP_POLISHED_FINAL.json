@@ -1,0 +1,750 @@
+{
+  "journeyId": "singles_sexual_chemistry",
+  "title": "Managing Sexual Chemistry and Attachment",
+  "subtitle": "Stewarding attraction and emotional bonding wisely",
+  "summary": "Sexual attraction is a gift from God, but in dating it requires careful management. The pull toward physical intimacy is strong, and without intentional boundaries, couples often go further than they intended. This journey helps you understand attraction biblically, develop practical strategies for purity, and build the self-control that protects both you and the person you are dating.",
+  "targetUserCategory": "singles",
+  "priorityRank": 16,
+  "estimatedDays": 12,
+  "totalActivities": 11,
+  "difficulty": "intermediate",
+  "themeColor": "#8E44AD",
+  "cover": {
+    "themeTag": "Purity",
+    "accentIcon": "shield",
+    "heroImage": "assets/images/journeys/Singles_journey16.jpg",
+    "heroImageDescription": "A person standing with strength and resolve, representing self-control and intentional purity."
+  },
+  "frameworks": [
+    "biblical_sexuality",
+    "self_control",
+    "temptation_resistance",
+    "accountability_systems"
+  ],
+  "targetOutcomes": [
+    "Understand sexual attraction as a good gift that requires boundaries",
+    "Recognize your personal vulnerability patterns and triggers",
+    "Develop practical strategies for maintaining purity while dating",
+    "Build accountability structures that support your commitments",
+    "Learn to recover gracefully when you fall short",
+    "Prepare for healthy sexual intimacy within marriage"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_attraction_gift",
+      "isFree": true,
+      "title": "Attraction: A Good Gift That Needs Boundaries",
+      "subtitle": "Understanding sexuality as God designed it",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Many Christians have been taught to feel shame about sexual attraction, as if desire itself is sinful. But attraction is part of God's good design. The issue is not desire but how we steward it.",
+      "frameworkBasis": {
+        "conceptKey": "activity_1_concept",
+        "explanation": "Many Christians have been taught to feel shame about sexual attraction, as if desire itself is sinful. But attraction is part of God's good design. Th..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Attraction Is Not Sin",
+          "icon": "psychology",
+          "text": "Attraction can feel powerful, confusing, and deeply personal.\nIt can draw you toward connection while also awakening desires you are not sure how to carry wisely.\n\nThis journey is not about suppressing attraction.\nIt is about learning how to steward it in a way that protects your heart and honors your future.\n\nFirst, let us be clear: sexual attraction is not sinful. It is part of how God made us.\n\nGod created us male and female. He designed sexual attraction to draw men and women together. He called His creation, including sexuality, \"very good\" ({red|Genesis 1:31}).\n\nAttraction becomes problematic not because desire exists but when desire is:\n\n- Directed outside God's design (toward someone not your spouse)\n- Acted on prematurely (before the covenant of marriage)\n- Allowed to consume your thoughts (lust)\n- Used to exploit another person\n\nThe goal is not to eliminate desire but to steward it well."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why Boundaries Matter",
+          "icon": "lightbulb",
+          "text": "If attraction is good, why do we need boundaries?\n\nBecause good things in the wrong context cause harm.\n\nFire is good. Fire in your fireplace warms your home. Fire outside your fireplace burns it down.\n\nSexual intimacy is good in marriage. Outside marriage, it creates wounds, bonds without commitment, and often deep regret.\n\nGod's boundaries are not about restricting pleasure but protecting it. He knows that sex is most fulfilling within the covenant it was designed for."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Relationship with Attraction",
+          "icon": "edit_note",
+          "text": "{red|How have you thought about sexual attraction? As shameful? As uncontrollable? As something to be stewarded?}\n\n{red|How has your view affected how you handle desire?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Freedom Through Right Understanding",
+          "icon": "auto_awesome",
+          "text": "Right understanding brings freedom:\n\nYou do not have to feel shame for experiencing attraction. That is how God made you.\n\nYou do not have to act on every attraction. You have the power of choice.\n\nYou can anticipate sexual fulfillment in marriage without guilt.\n\nThis is the balance: embrace the goodness of God's design while respecting the boundaries He has set."
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Right Understanding",
+          "icon": "volunteer_activism",
+          "text": "Lord, thank You for making me a sexual being. Thank You for attraction as part of Your good design.\n\nHelp me steward this gift well. Free me from shame about desire itself while giving me strength to honor Your boundaries.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_biblical_purity",
+      "isFree": false,
+      "title": "What Scripture Actually Says About Purity",
+      "subtitle": "God's design for sexuality and why it matters",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "menu_book",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Understanding the why behind biblical sexual ethics makes them easier to embrace. Scripture's teaching reflects deep wisdom about how we are made and how sex works.",
+      "frameworkBasis": {
+        "conceptKey": "activity_2_concept",
+        "explanation": "Understanding the why behind biblical sexual ethics makes them easier to embrace. Scripture's teaching reflects deep wisdom about how we are made and ..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Scripture's Clear Teaching",
+          "icon": "auto_stories",
+          "text": "Scripture consistently reserves sexual intimacy for marriage:\n\n\"Flee from sexual immorality. Every other sin a person commits is outside the body, but the sexually immoral person sins against his own body.\" ({red|1 Corinthians 6:18})\n\n\"But among you there must not be even a hint of sexual immorality.\" ({red|Ephesians 5:3})\n\n\"Marriage should be honored by all, and the marriage bed kept pure.\" ({red|Hebrews 13:4})\n\n})\n\nThe consistent message: sexual intimacy belongs within the covenant of marriage."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why God Cares About This",
+          "icon": "lightbulb",
+          "text": "God's boundaries reflect how we are made:\n\nSex creates bonds. Neurologically and spiritually, sex bonds people together. This bonding is beautiful in marriage; it is painful when the relationship ends.\n\nSex involves vulnerability. You give someone access to your most intimate self. That vulnerability deserves the protection of commitment.\n\nSex can create life. The potential for children adds weight to sexual choices.\n\nSex is sacred. It reflects the union of Christ and the church (Ephesians 5). It is not casual."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Beyond Just Prohibitions",
+          "icon": "psychology",
+          "text": "Biblical sexuality is not just prohibitions. It is also profound affirmation:\n\nSex in marriage is celebrated. The Song of Solomon is explicit in its celebration of marital desire and pleasure.\n\nSexual fulfillment is a gift. \"May your fountain be blessed, and may you rejoice in the wife of your youth.\" ({red|Proverbs 5:18})\n\nGod wants you to experience sexual fulfillment. He just knows it works best within the context He designed for it."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Response to Scripture",
+          "icon": "edit_note",
+          "text": "{red|How do you respond to Scripture's teaching on sexuality? Does it feel like restriction or protection?}\n\n{red|What questions or struggles do you have with biblical sexual ethics?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Embracing God's Design",
+          "icon": "volunteer_activism",
+          "text": "Lord, I receive Your teaching on sexuality.\n\nHelp me see Your boundaries as protection, not punishment. Help me trust Your wisdom even when culture says otherwise.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_vulnerability_patterns",
+      "isFree": false,
+      "title": "Knowing Your Vulnerability Patterns",
+      "subtitle": "Understanding when and how temptation gets to you",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "high",
+      "activityType": "reflection",
+      "whyThisMatters": "Temptation does not attack randomly. It exploits specific vulnerabilities at specific times. Knowing your patterns allows you to prepare and protect yourself strategically.",
+      "frameworkBasis": {
+        "conceptKey": "activity_3_concept",
+        "explanation": "Temptation does not attack randomly. It exploits specific vulnerabilities at specific times. Knowing your patterns allows you to prepare and protect y..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Common Vulnerability Factors",
+          "icon": "psychology",
+          "text": "Temptation often intensifies when you are:\n\nLonely: Craving connection makes physical intimacy appealing.\n\nTired: Exhaustion weakens willpower and decision-making.\n\nStressed: Looking for comfort or escape.\n\nBored: Seeking stimulation or excitement.\n\nRejected: Wanting validation or proof you are desirable.\n\nIntoxicated: Alcohol or substances lower inhibitions.\n\nIsolated: No one to know or hold you accountable.\n\nKnowing which factors affect you most helps you prepare."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Situational Triggers",
+          "icon": "lightbulb",
+          "text": "Beyond emotional states, certain situations increase temptation:\n\nPrivate spaces: Apartments, bedrooms, cars late at night.\n\nLate hours: Inhibitions drop as the night goes on.\n\nPhysical escalation: Once physical affection starts, it tends to progress.\n\nAlcohol involvement: Drinks loosen boundaries.\n\nExtended alone time: Long periods without others present.\n\nEmotionally vulnerable moments: After deep conversations or conflicts.\n\nIdentify which situations are most dangerous for you specifically."
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Chemistry and Safety Scan",
+          "text": "Think about people you have felt strong chemistry with.\n\nAfter spending time with them, did you feel grounded and clear, or restless and anxious?\n\nNow think about people who felt emotionally safe, even if the attraction grew more slowly.\n\nWrite a few lines about what these patterns might be teaching you about how your attachment system responds to closeness.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Personal Vulnerability Map",
+          "icon": "edit_note",
+          "text": "{red|When are you most vulnerable to sexual temptation? What emotional states? What situations?}\n\nThink about past struggles. What patterns do you notice?",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "action",
+          "cardNumber": 5,
+          "title": "Building Your Risk Profile",
+          "icon": "task_alt",
+          "text": "Complete this assessment:\n\nI am most vulnerable when I feel: ________________\n\nSituations that increase my temptation: ________________\n\nTimes of day or week that are highest risk: ________________\n\nWarning signs that I am entering a vulnerable state: ________________\n\nThis profile helps you know where to build defenses.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Self-Awareness",
+          "icon": "volunteer_activism",
+          "text": "Lord, help me know myself honestly.\n\nShow me my vulnerability patterns. Give me wisdom to protect myself in the places I am weakest.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_practical_strategies",
+      "isFree": false,
+      "title": "Practical Strategies for Purity",
+      "subtitle": "Specific tactics that actually work",
+      "timeBoxMinutes": 30,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "shield",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Good intentions are not enough. You need practical strategies that create distance between you and temptation. These tactics work if you work them.",
+      "frameworkBasis": {
+        "conceptKey": "activity_4_concept",
+        "explanation": "Good intentions are not enough. You need practical strategies that create distance between you and temptation. These tactics work if you work them."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Strategy of Avoidance",
+          "icon": "psychology",
+          "text": "The most effective strategy is avoiding tempting situations entirely:\n\nAvoid being alone in private spaces. Stay in public or with others.\n\nSet time limits. End dates at reasonable hours.\n\nLimit alcohol. Drinks lower inhibitions. Keep consumption minimal or zero.\n\nAvoid horizontal positions. Do not lie down together.\n\nLimit alone time duration. Brief private moments differ from hours of isolation.\n\nThe best victory over temptation is not facing it at all."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Strategy of Interruption",
+          "icon": "lightbulb",
+          "text": "When physical escalation begins, interrupt it:\n\nHave a signal. Agree on a word or phrase that means \"we need to stop.\"\n\nChange the environment. Leave the room. Go outside. Create physical distance.\n\nIntroduce others. Call a friend. Go somewhere public.\n\nChange the activity. Switch from cuddling to walking.\n\nAddress it verbally. \"I am feeling tempted. We need to change what we are doing.\"\n\nPhysical intimacy escalates gradually. Interrupt the escalation before it goes too far."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "action",
+          "cardNumber": 3,
+          "title": "Your Specific Boundaries",
+          "icon": "task_alt",
+          "text": "Write out your specific boundaries:\n\nLocations I will avoid being alone together: ________________\n\nTime I will end dates by: ________________\n\nPhysical boundaries I will maintain: ________________\n\nMy interruption signal or phrase: ________________\n\nWhat I will do if I feel temptation rising: ________________\n\nSpecific plans beat vague intentions.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Strategy Plan",
+          "icon": "edit_note",
+          "text": "Based on your vulnerabilities, what specific strategies do you need?\n\n{red|What boundaries will you set? What situations will you avoid?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Strategy",
+          "icon": "volunteer_activism",
+          "text": "Lord, help me be strategic about purity.\n\nGive me wisdom to avoid what I should avoid. Give me strength to interrupt what I should interrupt.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_accountability",
+      "isFree": false,
+      "title": "Building Accountability That Works",
+      "subtitle": "Structures that support your commitments",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "groups",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Willpower alone is unreliable. Accountability multiplies your strength by bringing others into your commitment.",
+      "frameworkBasis": {
+        "conceptKey": "activity_5_concept",
+        "explanation": "Willpower alone is unreliable. Accountability multiplies your strength by bringing others into your commitment."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Accountability Works",
+          "icon": "psychology",
+          "text": "Accountability works because:\n\nSecrecy feeds sin. What happens in darkness grows. What comes into light weakens.\n\nAnticipated questions change behavior. Knowing you will be asked affects your choices.\n\nShared struggle provides support. You are not alone.\n\nConfession brings freedom. Secrets are heavy. Sharing lightens the load.\n\nOthers can see what you cannot. They notice patterns you miss."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Good Accountability Looks Like",
+          "icon": "lightbulb",
+          "text": "Effective accountability involves:\n\nThe right person: Same gender, trustworthy, spiritually mature.\n\nRegular check-ins: Weekly or more often.\n\nSpecific questions: Not just \"How are you doing?\" but \"Have you been in compromising situations?\"\n\nHonesty commitment: Agreeing to tell the truth, even when embarrassing.\n\nGrace and truth: Accountability without shaming.\n\nAction steps: Help making changes, not just confessing failures."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "action",
+          "cardNumber": 3,
+          "title": "Building Your Accountability",
+          "icon": "task_alt",
+          "text": "Set up accountability:\n\n1. Identify one or two people who could serve this role.\n\n2. Ask them directly: \"Would you hold me accountable in sexual purity?\"\n\n3. Agree on frequency of check-ins.\n\n4. Give them specific questions to ask you.\n\n5. Commit to complete honesty.\n\n{red|Who will you ask? When will you ask them?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Accountability Plan",
+          "icon": "edit_note",
+          "text": "{red|Who could hold you accountable? What would you want them to ask?}\n\n{red|What has kept you from accountability in the past?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Accountability",
+          "icon": "volunteer_activism",
+          "text": "Lord, I do not want to fight this battle alone.\n\nBring me the right people to walk with me. Give me humility to be honest.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_partner_communication",
+      "isFree": false,
+      "title": "Talking to Your Partner About Boundaries",
+      "subtitle": "Having the conversation that sets you up for success",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "chat",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Boundaries only work if both people are committed to them. This requires explicit conversation, not assumptions.",
+      "frameworkBasis": {
+        "conceptKey": "activity_6_concept",
+        "explanation": "Boundaries only work if both people are committed to them. This requires explicit conversation, not assumptions."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why This Conversation Matters",
+          "icon": "psychology",
+          "text": "You cannot assume you are on the same page:\n\nTheir boundaries may differ from yours.\n\nUnspoken boundaries are easily crossed.\n\nShared commitment strengthens resolve.\n\nIt builds trust. Someone who agrees to boundaries shows respect.\n\nIt reveals character. Their response tells you a lot about them."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "action",
+          "cardNumber": 2,
+          "title": "How to Have the Conversation",
+          "icon": "task_alt",
+          "text": "A framework for the discussion:\n\n1. Choose the right time. Not in a physically charged moment.\n\n2. Frame it positively. \"I want to talk about how we can set ourselves up for success...\"\n\n3. Share your why. \"Purity matters to me because...\"\n\n4. State your boundaries clearly. Be specific.\n\n5. Ask for their perspective. \"What are your boundaries?\"\n\n6. Agree together. Find shared commitments you both own.\n\n7. Plan for accountability. \"How will we help each other?\"",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What Their Response Reveals",
+          "icon": "lightbulb",
+          "text": "Pay attention to how they respond:\n\nRespect and agreement: A good sign.\n\nWillingness to discuss: Can work through differences.\n\nResistance or dismissal: Concerning.\n\nPressure or negotiation: Red flag.\n\nMocking or disrespect: Serious problem.\n\nSomeone who respects your boundaries before marriage will respect you after."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Conversation Plan",
+          "icon": "edit_note",
+          "text": "If dating, have you had this conversation? What was the response?\n\nIf not dating yet, what would you want to communicate?",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for the Conversation",
+          "icon": "volunteer_activism",
+          "text": "Lord, give me courage to have this conversation clearly.\n\nHelp me communicate with love and confidence. May the conversation draw us closer.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_when_you_fall",
+      "isFree": false,
+      "title": "When You Fall Short: Grace and Reset",
+      "subtitle": "Recovering from failure without shame spiral",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "refresh",
+      "emotionalIntensity": "high",
+      "activityType": "healing",
+      "whyThisMatters": "Despite best intentions, you may fall short. What happens next matters enormously. Shame spirals lead to more failure. Grace-based reset leads to renewed commitment.",
+      "frameworkBasis": {
+        "conceptKey": "activity_7_concept",
+        "explanation": "Despite best intentions, you may fall short. What happens next matters enormously. Shame spirals lead to more failure. Grace-based reset leads to rene..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Shame Spiral",
+          "icon": "psychology",
+          "text": "When people fail sexually, shame often follows:\n\n\"I am disgusting.\"\n\"I have ruined everything.\"\n\"I might as well give up.\"\n\nShame leads to hiding, isolation, and often more failure. If you feel worthless anyway, why bother trying?\n\nThis is a trap. It is not God's response to your failure."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Truth About God's Response",
+          "icon": "auto_awesome",
+          "text": "When you fall short and turn back to God:\n\n\"If we confess our sins, he is faithful and just and will forgive us our sins and purify us from all unrighteousness.\" ({red|1 John 1:9})\n\n\"Therefore, there is now no condemnation for those who are in Christ Jesus.\" ({red|Romans 8:1})\n\nGod is not shocked by your failure. He does not love you less. He is ready to forgive and restore.\n\nYour failure is real. His grace is greater."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "action",
+          "cardNumber": 3,
+          "title": "The Reset Protocol",
+          "icon": "task_alt",
+          "text": "When you have failed:\n\n1. Confess to God immediately. Receive His forgiveness.\n\n2. Confess to your accountability partner.\n\n3. Talk with your partner. Address what happened honestly.\n\n4. Analyze what went wrong. What led to the failure?\n\n5. Strengthen your plan. What will you do differently?\n\n6. Forgive yourself. God has forgiven you. Accept it.\n\n7. Move forward. Do not wallow. Reset and continue.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Response to Failure",
+          "icon": "edit_note",
+          "text": "{red|How have you responded to sexual failure in the past? Shame spiral or grace reset?}\n\n{red|What would change if you truly believed God's forgiveness was complete?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer of Grace",
+          "icon": "volunteer_activism",
+          "text": "Lord, I know I may fall short.\n\nWhen I do, help me run to You rather than from You. Help me receive Your grace rather than drown in shame.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_mind_purity",
+      "isFree": false,
+      "title": "The Battlefield of the Mind",
+      "subtitle": "Addressing lust and mental purity",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Physical purity starts in the mind. Jesus said looking at someone lustfully is adultery of the heart. Addressing mental purity is essential to holistic sexual integrity.",
+      "frameworkBasis": {
+        "conceptKey": "activity_8_concept",
+        "explanation": "Physical purity starts in the mind. Jesus said looking at someone lustfully is adultery of the heart. Addressing mental purity is essential to holisti..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Where Purity Begins",
+          "icon": "psychology",
+          "text": "Jesus raised the bar on purity:\n\n\"You have heard that it was said, 'You shall not commit adultery.' But I tell you that anyone who looks at a woman lustfully has already committed adultery with her in his heart.\" ({red|Matthew 5:27-28})\n\nPhysical actions begin as mental choices. Fantasy precedes action. What you dwell on in your mind shapes what you do with your body.\n\nPurity is not just about what you do. It is about what you cultivate in your mind."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Practical Mind Management",
+          "icon": "lightbulb",
+          "text": "Strategies for mental purity:\n\nBounce your eyes. When you see something tempting, look away immediately.\n\nCapture the thought. Recognize lustful thoughts, reject them, redirect to something else.\n\nGuard your inputs. What you consume affects what you think. Be selective about media.\n\nAvoid triggers. Know what feeds lust for you and avoid those inputs.\n\nFill your mind. Replace empty space with Scripture, worship, good things.\n\nAddress root issues. Lust often fills emotional voids. Address the real needs."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Pornography Trap",
+          "icon": "warning",
+          "text": "Pornography is a particular danger:\n\nIt rewires your brain. Creating expectations reality cannot match.\n\nIt escalates. What satisfied before becomes insufficient.\n\nIt objectifies. Training you to see people as objects.\n\nIt creates secrecy. Hiding becomes habitual.\n\nIt affects relationships. Reducing satisfaction with real intimacy.\n\nIf pornography is a struggle, seek specific help. Accountability software, counseling, and recovery groups exist for this battle."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Mental Purity",
+          "icon": "edit_note",
+          "text": "{red|How is your mental purity? Do you struggle with lust, fantasy, or pornography?}\n\n{red|What strategies do you need to implement?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for a Pure Mind",
+          "icon": "volunteer_activism",
+          "text": "Lord, purify my mind.\n\nHelp me take every thought captive. Guard what I allow into my eyes and heart. Fill my mind with what honors You.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_preparing_for_marriage",
+      "isFree": false,
+      "title": "Preparing for Healthy Marriage Intimacy",
+      "subtitle": "Looking forward with anticipation, not fear",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Purity is not the end goal; it is preparation for something beautiful. Looking forward to healthy marriage intimacy with anticipation helps sustain your commitment now.",
+      "frameworkBasis": {
+        "conceptKey": "activity_9_concept",
+        "explanation": "Purity is not the end goal; it is preparation for something beautiful. Looking forward to healthy marriage intimacy with anticipation helps sustain yo..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Purity Is Preparation",
+          "icon": "psychology",
+          "text": "You are not just saying no. You are saying \"not yet\" and \"yes, in the right context.\"\n\nPurity now prepares you for:\n\nFreedom from comparison. Not bringing mental images of others into your marriage bed.\n\nDeep trust. A history of self-control builds confidence in faithfulness.\n\nGuilt-free enjoyment. No shadows from past compromise.\n\nBonding without baggage. Giving yourself fully without mixed connections.\n\nThe discipline of purity now becomes the freedom of fulfillment later."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Something to Look Forward To",
+          "icon": "auto_awesome",
+          "text": "Sexual intimacy in marriage is something to anticipate with joy, not fear:\n\nIt is good. God designed it and calls it good.\n\nIt is celebratory. The Song of Solomon is a celebration.\n\nIt is bonding. It connects you uniquely to your spouse.\n\nIt is pleasurable. God designed it to be enjoyed.\n\nIt is exclusive. A gift only you share with each other.\n\nYou are not sacrificing pleasure by waiting. You are protecting and maximizing it."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Anticipation",
+          "icon": "edit_note",
+          "text": "{red|How do you think about sexual intimacy in marriage? With anticipation? Fear? Confusion?}\n\n{red|How does viewing purity as preparation shift your perspective?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "A Prayer of Anticipation",
+          "icon": "volunteer_activism",
+          "text": "Lord, thank You that purity prepares me for something beautiful.\n\nHelp me look forward with anticipation, not just endure with discipline. May the vision of healthy marriage intimacy strengthen my commitment now.\n\nAmen.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Anticipation, Not Anxiety",
+          "text": "Healthy anticipation for marital intimacy is different from anxiety or obsession.\n\nAnticipation says: 'I look forward to this gift in its proper time.'\nAnxiety says: 'I can't wait, I need this now.'\n\nCultivate joyful expectation while maintaining present-moment faithfulness. The waiting is part of the gift, it builds appreciation and trust.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Commitment to Healthy Anticipation",
+          "text": "Write a commitment for how you will prepare for healthy marital intimacy:\n\nI will honor my future spouse by...\n\nI will prepare my heart and mind by...\n\nI trust God's timing because...",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_partner_struggles",
+      "isFree": false,
+      "title": "When Your Partner Struggles",
+      "subtitle": "Supporting each other in the battle for purity",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "support",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Purity is a team effort. Your partner may have their own struggles with temptation, past issues, or current battles. Knowing how to support without enabling or condemning matters.",
+      "frameworkBasis": {
+        "conceptKey": "activity_10_concept",
+        "explanation": "Purity is a team effort. Your partner may have their own struggles with temptation, past issues, or current battles. Knowing how to support without en..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Common Partner Struggles",
+          "icon": "psychology",
+          "text": "Your partner may struggle with:\n\nPast sexual history. Previous relationships or experiences that created patterns.\n\nPornography. A battle many people, especially men, face.\n\nDifferent desire levels. They may want more physical contact than you.\n\nDifferent boundaries. Their lines may be different from yours.\n\nCurrent temptation. Struggling in the moment with self-control.\n\nHow you respond to their struggles matters for the relationship."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Responding Well",
+          "icon": "lightbulb",
+          "text": "When your partner shares struggles:\n\nDo not shame them. Shame drives people into hiding, not healing.\n\nAppreciate their honesty. It takes courage to share vulnerabilities.\n\nMaintain boundaries. Supporting them does not mean compromising yours.\n\nEncourage professional help if needed. Some struggles require more than you can provide.\n\nHold them accountable lovingly. Grace and truth together.\n\nEvaluate the trajectory. Are they growing, stuck, or declining?"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "When to Be Concerned",
+          "icon": "warning",
+          "text": "Be concerned if your partner:\n\nMinimizes their struggle. Not taking it seriously.\n\nBlames you. Making their temptation your fault.\n\nRefuses help. Not willing to get accountability or support.\n\nShows no progress. Same patterns over extended time.\n\nPressures you. Using their \"struggle\" to push your boundaries.\n\nHides repeatedly. Pattern of deception about this area.\n\nSupporting someone's growth is different from enabling their sin."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Response Plan",
+          "icon": "edit_note",
+          "text": "If your partner shared a struggle with sexual temptation, how would you respond?\n\n{red|What would concern you? What would encourage you?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Partner Support",
+          "icon": "volunteer_activism",
+          "text": "Lord, help me respond well if my partner struggles.\n\nGive me grace without enabling. Give me truth without shaming. Help me support their growth while maintaining my own boundaries.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_purity_commitment",
+      "isFree": false,
+      "title": "Your Purity Commitment",
+      "subtitle": "Consolidating everything into sustained commitment",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You have learned strategies, built accountability, and developed understanding. Now it is time to consolidate everything into a clear, owned commitment.",
+      "frameworkBasis": {
+        "conceptKey": "activity_11_concept",
+        "explanation": "You have learned strategies, built accountability, and developed understanding. Now it is time to consolidate everything into a clear, owned commitmen..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Built",
+          "icon": "lightbulb",
+          "text": "Across this journey, you have developed:\n\n- Understanding of attraction as a good gift requiring boundaries\n- Biblical foundation for sexual ethics\n- Awareness of your vulnerability patterns\n- Practical strategies for purity\n- Accountability structures\n- Communication skills for partner conversations\n- Grace-based reset protocol for failures\n- Mental purity strategies\n- Forward-looking anticipation of marriage\n- Tools for supporting a struggling partner\n\nThis is a comprehensive framework for managing attraction and temptation."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "action",
+          "cardNumber": 2,
+          "title": "Your Purity Plan Summary",
+          "icon": "task_alt",
+          "text": "Summarize your commitments:\n\nMy physical boundaries: ________________\n\nSituations I will avoid: ________________\n\nMy accountability partner(s): ________________\n\nMy interruption strategies: ________________\n\nMy mental purity practices: ________________\n\nHow I will reset after failure: ________________\n\nThis is your battle plan. Review it regularly.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Personal Commitment",
+          "icon": "edit_note",
+          "text": "Write out your commitment to sexual purity in your own words.\n\n{red|What are you committing to? Why does it matter to you?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "You Can Do This",
+          "icon": "auto_awesome",
+          "text": "Sexual purity in dating is possible. Millions have done it. You can too.\n\nIt is not about perfect performance. It is about direction and growth.\n\nIt is not about shame. It is about stewarding a good gift.\n\nIt is not about deprivation. It is about preparation for something better.\n\nWith God's help, your strategies, and your accountability, you can honor God with your body while dating and enter marriage with freedom and joy."
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer of Commitment",
+          "icon": "volunteer_activism",
+          "text": "Lord, I commit to honoring You with my body.\n\nI embrace attraction as Your good gift. I accept Your boundaries as wise protection. I will implement my strategies and lean on my accountability.\n\nWhen I fall, I will receive Your grace and reset. I look forward to marriage intimacy with anticipation.\n\nMay my sexuality glorify You in singleness and in marriage.\n\nAmen.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Declaration",
+          "icon": "verified",
+          "text": "Declare this over your dating life:\n\n\"I will honor God with my body.\n\nAttraction is a good gift. I will steward it wisely.\nI know my vulnerabilities. I will protect against them.\nI have strategies. I will use them.\nI have accountability. I will stay connected.\nWhen I fall, I will receive grace and reset.\n\nI am preparing for something beautiful. Purity now protects pleasure later.\n\nMy body is a temple of the Holy Spirit. I will honor God with it.\"",
+          "responseType": "open-text"
+        }
+      ]
+    }
+  ],
+  "heroImage": "assets/images/journeys/Singles_journey16.jpg"
+}

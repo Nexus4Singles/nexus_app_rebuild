@@ -238,8 +238,6 @@ String _bestDisplayName(Map<String, dynamic>? u) {
   return 'Chat';
 }
 
-
-
 class ChatThreadScreen extends ConsumerStatefulWidget {
   final String chatId;
 
@@ -2177,10 +2175,7 @@ class _NetworkAvatarImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedAvatarImage(
-      imageUrl: imageUrl,
-      size: 32,
-    );
+    return CachedAvatarImage(imageUrl: imageUrl, size: 32);
   }
 }
 
@@ -2509,9 +2504,8 @@ class _MessageBody extends StatelessWidget {
                     opaque: false,
                     barrierColor: Colors.black87,
                     barrierDismissible: true,
-                    pageBuilder: (_, __, ___) => _FullScreenImageViewer(
-                      filePath: path,
-                    ),
+                    pageBuilder:
+                        (_, __, ___) => _FullScreenImageViewer(filePath: path),
                     transitionsBuilder: (_, anim, __, child) {
                       return FadeTransition(opacity: anim, child: child);
                     },
@@ -2818,13 +2812,14 @@ class _FullScreenImageViewer extends StatelessWidget {
                   child: Image.file(
                     File(filePath),
                     fit: BoxFit.contain,
-                    errorBuilder: (_, __, ___) => const Center(
-                      child: Icon(
-                        Icons.broken_image_outlined,
-                        color: Colors.white54,
-                        size: 64,
-                      ),
-                    ),
+                    errorBuilder:
+                        (_, __, ___) => const Center(
+                          child: Icon(
+                            Icons.broken_image_outlined,
+                            color: Colors.white54,
+                            size: 64,
+                          ),
+                        ),
                   ),
                 ),
               ),
@@ -2841,11 +2836,7 @@ class _FullScreenImageViewer extends StatelessWidget {
                     color: Colors.black54,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 24,
-                  ),
+                  child: const Icon(Icons.close, color: Colors.white, size: 24),
                 ),
               ),
             ),

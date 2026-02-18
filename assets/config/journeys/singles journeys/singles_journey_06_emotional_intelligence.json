@@ -1,0 +1,909 @@
+{
+  "journeyId": "singles_emotional_intelligence",
+  "title": "Developing Emotional Intelligence and Maturity",
+  "subtitle": "Mastering the inner skills that make or break relationships",
+  "summary": "Emotional intelligence is the invisible skill set that determines relationship success. It's the ability to understand your own emotions, read others accurately, manage your reactions, and navigate social complexity. This journey builds EQ systematically,transforming you into someone who can handle the emotional demands of deep relationship.",
+  "targetUserCategory": "singles",
+  "priorityRank": 6,
+  "estimatedDays": 14,
+  "totalActivities": 12,
+  "difficulty": "intermediate",
+  "themeColor": "#6B5B95",
+  "cover": {
+    "themeTag": "Growth",
+    "accentIcon": "psychology",
+    "heroImage": "assets/images/journeys/Singles_journey6.jpg",
+    "heroImageDescription": "A person in thoughtful reflection with visual elements suggesting insight and understanding,perhaps light bulbs, connections, or clarity. Modern, intelligent, warm."
+  },
+  "frameworks": [
+    "emotional_intelligence",
+    "attachment_theory",
+    "cognitive_behavioral",
+    "biblical_wisdom"
+  ],
+  "targetOutcomes": [
+    "Develop keen self-awareness about your emotional patterns and triggers",
+    "Build skills to regulate emotions in healthy ways",
+    "Increase ability to read and understand others' emotions",
+    "Learn to respond rather than react in charged situations",
+    "Develop empathy that connects without losing yourself",
+    "Grow the emotional maturity that healthy relationships require"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_eq_foundation",
+      "isFree": true,
+      "title": "The Hidden Factor in Every Relationship",
+      "subtitle": "Why emotional intelligence matters more than you think",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "You've probably met smart people who can't maintain relationships, and average people who everyone wants to be around. The difference is emotional intelligence. EQ predicts relationship success better than IQ, looks, or even compatibility. The great news? Unlike IQ, EQ can be developed.",
+      "frameworkBasis": {
+        "conceptKey": "activity_1_concept",
+        "explanation": "You've probably met smart people who can't maintain relationships, and average people who everyone wants to be around. The difference is emotional int..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Skill Nobody Taught You",
+          "icon": "psychology",
+          "text": "Emotional maturity is not about never feeling deeply.\nIt is about knowing how to respond to what you feel without letting emotions run your life.\n\nIf you have ever reacted in ways you later regretted, or struggled to express what you felt clearly, this journey will help you grow steadiness, not suppression.\n\nThink about your education. You learned math, reading, history, maybe a language or two. You learned how to analyze problems and present arguments. But did anyone teach you how to: • Understand why you react the way you do?\n• Read what someone is actually feeling beneath their words?\n• Manage intense emotions without exploding or shutting down?\n• Navigate conflict without destroying connection?\n• Respond thoughtfully instead of reacting impulsively? These skills are emotional intelligence,and most of us had to figure them out on our own. Or we didn't figure them out at all. The result? Smart, capable people who keep sabotaging their relationships without understanding why."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Emotional Intelligence Actually Is",
+          "icon": "lightbulb",
+          "text": "Emotional intelligence has four core components: **1. Self-Awareness**\nKnowing your own emotions as they happen. Understanding your triggers, patterns, and tendencies. **2. Self-Management**\nRegulating your emotions. Being able to pause, calm down, and respond intentionally instead of reacting impulsively. **3. Social Awareness**\nReading others accurately. Picking up on non-verbal cues, understanding emotional undercurrents, and having empathy. **4. Relationship Management**\nUsing all of the above to navigate relationships skillfully. Handling conflict, building connection, influencing positively. These four areas build on each other. Self-awareness is the foundation. Without it, nothing else works."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Brilliant Disaster",
+          "icon": "menu_book",
+          "text": "James was impressive on paper. Graduate degree, rising career, articulate and sharp. People assumed his dating life would be easy. It wasn't. Every relationship followed a pattern. Things would start well, then slowly unravel. His girlfriends would say variations of the same thing: \"It's like you don't understand me.\" \"You never know how I'm feeling.\" \"You're impossible to talk to when you're upset.\" James was intelligent. But he was emotionally illiterate. He didn't understand his own reactions, couldn't read others accurately, and had no tools for managing conflict. His intellectual brilliance was useless without emotional intelligence. It took him years,and a therapist,to realize that his relationship failures weren't about finding the right person. They were about becoming the right person."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your EQ Self-Assessment",
+          "icon": "edit_note",
+          "text": "Based on the four components, where are you strongest and weakest? 1. Self-awareness (knowing your emotions)\n2. Self-management (regulating your reactions)\n3. Social awareness (reading others)\n4. Relationship management (navigating connection and conflict) Be honest about where you need the most growth.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "EQ Can Be Developed",
+          "icon": "auto_awesome",
+          "text": "Here's the encouraging truth: emotional intelligence isn't fixed. Unlike IQ, which is relatively stable throughout life, EQ can grow significantly with intentional effort. Your brain is plastic,it literally rewires based on what you practice. The neural pathways for emotional skills can be strengthened at any age. This journey is designed to systematically develop your EQ in all four areas. It won't happen overnight, but it will happen if you engage the process. \"The wise in heart are called discerning, and gracious words promote instruction.\", Proverbs 16:21 Wisdom of the heart,that's emotional intelligence in biblical language. And Scripture consistently presents it as something to pursue and develop."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Emotional Growth",
+          "icon": "volunteer_activism",
+          "text": "Lord, I want to grow in areas I've neglected. I want to understand my own heart better. I want to read others with accuracy and compassion. I want to manage my reactions rather than being controlled by them. Give me humility to see where I'm lacking. Give me motivation to do the work of growth. Give me patience with a process that takes time. Make me emotionally wise, not just intellectually smart. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_self_awareness_emotions",
+      "isFree": false,
+      "title": "Becoming Fluent in Your Own Emotions",
+      "subtitle": "Building the foundation of emotional intelligence",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "self_improvement",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Most people have a surprisingly limited understanding of their own emotional world. They might know they feel 'bad' or 'upset,' but can't distinguish anxiety from sadness, frustration from hurt, shame from guilt. This emotional illiteracy makes it impossible to address what's actually going on,in yourself or with others.",
+      "frameworkBasis": {
+        "conceptKey": "activity_2_concept",
+        "explanation": "Most people have a surprisingly limited understanding of their own emotional world. They might know they feel 'bad' or 'upset,' but can't distinguish ..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Beyond 'Fine' and 'Upset'",
+          "icon": "psychology",
+          "text": "When someone asks how you're feeling, what do you typically say? \"Fine.\" \"Good.\" \"Okay.\" \"Stressed.\" \"Upset.\" These are emotional generalities,so vague they're almost meaningless. Beneath 'fine' might be contentment, relief, hope, or a mask over anxiety. Beneath 'upset' might be hurt, anger, disappointment, fear, shame, or grief. Each of these requires different understanding and different response. Emotional self-awareness means moving from vague categories to specific recognition. It means knowing not just that you feel bad, but WHY and WHAT KIND of bad. This precision matters because:\n• It helps you understand yourself\n• It helps you communicate to others\n• It helps you address the actual issue, not a symptom"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Emotional Vocabulary Expansion",
+          "icon": "lightbulb",
+          "text": "Most people use a vocabulary of 5-10 emotion words. Emotionally intelligent people use 50+. Consider the difference between these: **Anger family:** irritated, frustrated, annoyed, resentful, furious, indignant, bitter **Fear family:** worried, anxious, nervous, terrified, insecure, threatened, panicked **Sadness family:** disappointed, grieving, lonely, dejected, hopeless, melancholy, heartbroken **Shame family:** embarrassed, humiliated, inadequate, exposed, worthless, guilty **Joy family:** content, excited, grateful, hopeful, peaceful, thrilled, relieved Each word captures something slightly different. The more precisely you can name what you feel, the better you can understand and address it."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "action",
+          "cardNumber": 3,
+          "title": "The Emotional Check-In Practice",
+          "icon": "task_alt",
+          "text": "For the next week, practice emotional check-ins three times daily: **Morning, Midday, Evening:** Pause and ask: \"What am I feeling right now?\" Don't accept 'fine' or 'okay.' Push deeper: • What's the specific emotion?\n• Where do I feel it in my body?\n• What triggered it?\n• What does it need? Write your answers down. After a week, you'll see patterns you never noticed.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Emotional Vocabulary",
+          "icon": "edit_note",
+          "text": "Right now, in this moment, what are you feeling? Push past the first word that comes to mind. What's the more specific, accurate descriptor? Where do you feel it in your body? What triggered it?",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Emotions in the Body",
+          "icon": "verified",
+          "text": "Emotions aren't just in your head,they live in your body. Anxiety often shows up as chest tightness or stomach churning. Anger frequently appears as heat in the face or tension in the jaw. Sadness might feel like heaviness in the chest or a lump in the throat. Shame often creates a desire to physically shrink or hide. Learning to read your body's signals is a shortcut to emotional awareness. Often your body knows what you're feeling before your mind catches up. Pay attention. Your body is constantly giving you information."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Self-Understanding",
+          "icon": "volunteer_activism",
+          "text": "Lord, You know me better than I know myself. \"You have searched me and you know me.\" You know what I'm feeling even when I can't name it. Help me grow in understanding my own heart. Help me name what's happening inside me with accuracy and honesty. I don't want to live disconnected from my own emotions. I want the self-awareness that leads to wisdom. Teach me to read myself well. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_trigger_mapping",
+      "isFree": false,
+      "title": "Mapping Your Emotional Triggers",
+      "subtitle": "Understanding what sets you off and why",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "bolt",
+      "emotionalIntensity": "high",
+      "activityType": "reflection",
+      "whyThisMatters": "Triggers are the specific situations, words, or behaviors that provoke outsized emotional reactions. They often connect to old wounds, unmet needs, or core fears. Understanding your triggers gives you power over them,you can prepare for them, communicate about them, and eventually heal them.",
+      "frameworkBasis": {
+        "conceptKey": "activity_3_concept",
+        "explanation": "Triggers are the specific situations, words, or behaviors that provoke outsized emotional reactions. They often connect to old wounds, unmet needs, or..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What Triggers Actually Are",
+          "icon": "psychology",
+          "text": "A trigger is a stimulus that provokes an emotional response disproportionate to the present situation. Someone makes a small critical comment, and you feel crushing shame. Your partner is 10 minutes late, and you feel abandoned. A friend doesn't text back quickly, and you feel rejected and worthless. The intensity doesn't match the event. That's the sign of a trigger. Triggers work by connecting present situations to past wounds. The critical comment hits an old wound from a harsh parent. The lateness activates abandonment fears from childhood. The slow text response touches rejection wounds from past relationships. Your nervous system responds as if the old threat is happening again,because in a sense, it is."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Common Trigger Categories",
+          "icon": "lightbulb",
+          "text": "Most triggers fall into predictable categories: **Rejection triggers:** Feeling unwanted, left out, or not chosen **Abandonment triggers:** Fear of being left, forgotten, or discarded **Criticism triggers:** Feeling judged, inadequate, or never good enough **Control triggers:** Feeling powerless, trapped, or without agency **Betrayal triggers:** Feeling deceived, manipulated, or let down **Shame triggers:** Feeling exposed, humiliated, or fundamentally flawed **Dismissal triggers:** Feeling unheard, invisible, or unimportant Most people have 2-3 categories that are especially sensitive. Knowing yours helps you understand your reactions."
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Reaction or Response",
+          "text": "Think about a recent situation where your emotions rose quickly.\n\nWrite what you felt in the moment and how you reacted.\n\nNow write how you might want to respond if the same situation happened again, with awareness and intention.\nGrowth begins when you can pause between feeling and action.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Trigger Inventory",
+          "icon": "edit_note",
+          "text": "Think about times you've had emotional reactions that felt bigger than the situation warranted. What happened? What did you feel? What category might that trigger fall into? Identify 2-3 of your strongest triggers and what they connect to.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Mystery Reaction",
+          "icon": "menu_book",
+          "text": "Amanda couldn't understand why she got so upset when her boyfriend made plans without checking with her first. It wasn't controlling behavior on his part,just normal spontaneity. But she'd feel a surge of anger completely out of proportion. In counseling, she traced it back. Her father had been unreliable, constantly making and breaking plans, leaving her waiting and uncertain. She learned young that she couldn't count on anyone to consider her. Her boyfriend's spontaneous plans weren't the problem. They were triggering an old wound of feeling unconsidered, unimportant, left out of decisions that affected her. Once she understood the connection, she could respond differently. \"I'm being triggered right now,this touches something old for me. Can you give me a minute?\" Understanding didn't make the trigger disappear. But it gave her power over her reaction."
+        },
+        {
+          "cardId": "c5",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Trigger Preparation Plan",
+          "icon": "task_alt",
+          "text": "For each trigger you identified: **1. Name it clearly.**\n\"I get triggered when...\" **2. Trace its origin.**\n\"This probably connects to...\" **3. Recognize the present/past gap.**\n\"What's happening now is not the same as what happened then.\" **4. Create a response plan.**\nWhen triggered: pause, breathe, name it internally, choose response rather than react. **5. Communicate to close people.**\n\"I want you to know I get triggered by X because of Y. It's not about you,it's old stuff. But now you know.\" Preparation reduces the power triggers have over you.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 7,
+          "title": "A Prayer Over Triggers",
+          "icon": "volunteer_activism",
+          "text": "Lord, You know the wounds underneath my triggers. You see why certain things set me off, even when I don't fully understand it myself. Bring healing to the old wounds that keep getting activated. Help me separate past from present. Give me the pause between stimulus and response. I don't want to keep reacting from old pain. I want to respond from present reality. Heal what needs healing. And give me grace in the process. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_emotional_regulation",
+      "isFree": false,
+      "title": "The Art of Managing Your Emotions",
+      "subtitle": "Learning to regulate without suppressing",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "tune",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Emotional regulation is the ability to influence which emotions you have, when you have them, and how you express them. It's not about suppressing feelings,it's about managing them so they don't manage you. This skill determines whether you respond wisely or react destructively.",
+      "frameworkBasis": {
+        "conceptKey": "activity_4_concept",
+        "explanation": "Emotional regulation is the ability to influence which emotions you have, when you have them, and how you express them. It's not about suppressing fee..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Regulation vs. Suppression",
+          "icon": "psychology",
+          "text": "Let's be clear about what emotional regulation is NOT: **It's not suppression.**\nPushing emotions down, pretending they don't exist, numbing yourself. This backfires,suppressed emotions always resurface, often explosively. **It's not expression without filter.**\n\"I just say what I feel\" sounds authentic but often causes damage. **What regulation actually is:** The ability to:\n• Feel your emotions fully without being controlled by them\n• Choose how and when to express what you feel\n• Calm yourself down when activated\n• Maintain access to rational thinking even when emotional\n• Respond intentionally rather than react impulsively Regulation is like being a skilled surfer,you ride the wave of emotion rather than being tumbled by it or pretending there's no wave."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Window of Tolerance",
+          "icon": "lightbulb",
+          "text": "Psychologists describe something called the \"window of tolerance\",the zone where you can experience emotions while still functioning. **Inside the window:**\nYou feel things, but you can still think clearly, communicate effectively, and make good decisions. **Above the window (hyperarousal):**\nYou're flooded,racing heart, can't think straight, fight or flight activated. **Below the window (hypoarousal):**\nYou're shut down,numb, disconnected, frozen. The goal of regulation is to:\n1. Widen your window (increase what you can tolerate)\n2. Recognize when you're leaving the window\n3. Have tools to bring yourself back inside With practice, your window expands. Emotions that used to overwhelm you become manageable."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "action",
+          "cardNumber": 3,
+          "title": "Your Regulation Toolkit",
+          "icon": "task_alt",
+          "text": "Build a toolkit of strategies that work for you: **Physiological Tools (body-based):**\n• Deep breathing (4 counts in, 6 out)\n• Cold water on face or wrists\n• Physical movement (walk, stretch)\n• Progressive muscle relaxation **Cognitive Tools (thought-based):**\n• Name the emotion (\"I'm feeling anger\")\n• Challenge catastrophic thoughts\n• Remind yourself: \"This feeling will pass\"\n• Ask: \"Will this matter in 5 years?\" **Behavioral Tools (action-based):**\n• Take a time-out before responding\n• Journal to process\n• Talk to a trusted friend\n• Engage in a calming activity Different situations need different tools. Build a varied toolkit.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Regulation Patterns",
+          "icon": "edit_note",
+          "text": "{red|When you get emotionally activated, what do you typically do? Do you tend toward hyperarousal (explosion) or hypoarousal (shutdown)? What strategies have helped you regulate in the past? What tools from the list above do you want to develop?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Pause That Changes Everything",
+          "icon": "verified",
+          "text": "Between stimulus and response, there is a space. In that space lies your power to choose. Emotionally immature people have no space,stimulus leads immediately to reaction. Emotionally mature people have cultivated a pause,even just a few seconds,where they can choose their response. That pause is the essence of regulation. **To build the pause:**\n• When activated, consciously stop before speaking or acting\n• Take one breath minimum\n• Name what you're feeling internally\n• Ask: \"What response would I be proud of?\"\n• Then choose This takes practice. Your default is to react. But every time you choose to pause, you're rewiring your brain for better responses."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Self-Control",
+          "icon": "volunteer_activism",
+          "text": "Lord, I need help managing what I feel. I don't want to suppress my emotions,You gave them to me for a reason. But I don't want to be controlled by them either. Give me the pause between feeling and reacting. Widen my window of tolerance. Build in me the fruit of self-control. Help me ride the waves without being tumbled by them. Make me someone who responds wisely, not someone who reacts destructively. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_reading_others",
+      "isFree": false,
+      "title": "Learning to Read the Room",
+      "subtitle": "Developing the skill of perceiving others' emotions",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "groups",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Half of emotional intelligence is about you; the other half is about others. Can you accurately read what someone is feeling? Can you pick up on unspoken dynamics in a room? This social awareness is crucial for relationships,you can't respond appropriately if you're misreading what's actually happening.",
+      "frameworkBasis": {
+        "conceptKey": "activity_5_concept",
+        "explanation": "Half of emotional intelligence is about you; the other half is about others. Can you accurately read what someone is feeling? Can you pick up on unspo..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Unspoken Language",
+          "icon": "psychology",
+          "text": "Research suggests that 60-90% of communication is nonverbal. That means most of what people communicate isn't in their words,it's in their tone, facial expressions, body language, and what they're NOT saying. Socially aware people pick up on this unspoken language: • They notice when someone's words say \"I'm fine\" but their body says \"I'm not\"\n• They sense tension in a room even when no one addresses it\n• They can tell when someone is uncomfortable, bored, or engaged\n• They read between the lines of what's being said This isn't mind-reading,it's careful observation. And it can be developed with practice."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What to Watch For",
+          "icon": "lightbulb",
+          "text": "Key nonverbal cues to observe: **Facial expressions:**\nMicro-expressions often reveal true feelings before someone composes their face. Watch for brief flashes of emotion. **Eye contact:**\nAvoiding eyes can signal discomfort or dishonesty. Sustained contact can signal interest or confrontation. **Body positioning:**\nLeaning in suggests engagement; turning away suggests disengagement. Crossed arms can signal defensiveness. **Tone of voice:**\nPitch, speed, and volume reveal emotional states. A flat tone might indicate depression; rapid speech might indicate anxiety. **Incongruence:**\nThe most important thing to notice: when words and body language don't match. That gap reveals what's really going on. \"I'm not upset\" said through clenched teeth tells you more than the words."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "action",
+          "cardNumber": 3,
+          "title": "The Observation Practice",
+          "icon": "task_alt",
+          "text": "This week, practice intentional observation: **In conversations:**\n• Watch facial expressions while listening\n• Notice body language shifts\n• Pay attention to tone, not just words\n• Look for incongruence between verbal and nonverbal **In groups:**\n• Observe dynamics between people\n• Notice who's engaged, who's withdrawn\n• Sense the overall emotional temperature of the room **Reflection questions:**\n• What was the person REALLY feeling?\n• What were they not saying?\n• What did I learn from observation that I wouldn't have known from words alone? This practice sharpens your social perception significantly.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Social Awareness Assessment",
+          "icon": "edit_note",
+          "text": "{red|How accurately do you typically read others? Are you often surprised by how people were actually feeling? Do you tend to miss nonverbal cues? Or are you naturally perceptive? What aspects of reading others do you most need to develop?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Checking Your Reads",
+          "icon": "verified",
+          "text": "Here's an important caution: observation must be checked, not assumed. You might observe that someone seems upset. But you could be wrong about why, or even wrong about the emotion itself. Mature social awareness includes checking your perception: \"You seem quiet,is everything okay?\" \"I'm getting the sense that something's bothering you. Am I reading that right?\" \"I noticed your expression changed when I mentioned that. What's going on?\" This approach combines observation with humility. You notice something, then you verify rather than assume. This is how you build trust,people feel seen AND respected when you check rather than project."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Perception",
+          "icon": "volunteer_activism",
+          "text": "Lord, help me see people the way You see them. Give me eyes that notice what others miss,the pain beneath the smile, the fear beneath the anger, the loneliness beneath the composure. Make me perceptive without being presumptuous. Help me observe carefully and check graciously. I want to truly see the people in front of me, not just hear their words. Give me wisdom to know how to respond to what I perceive. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_empathy_development",
+      "isFree": false,
+      "title": "Empathy: Feeling With, Not Just For",
+      "subtitle": "Developing the heart that truly understands",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Empathy goes beyond reading emotions,it's the ability to actually feel what someone else is feeling, to stand in their shoes and experience their perspective. This creates connection like nothing else. But empathy has to be balanced with boundaries, or it becomes overwhelming.",
+      "frameworkBasis": {
+        "conceptKey": "activity_6_concept",
+        "explanation": "Empathy goes beyond reading emotions,it's the ability to actually feel what someone else is feeling, to stand in their shoes and experience their pers..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Three Types of Empathy",
+          "icon": "psychology",
+          "text": "Empathy isn't one thing,it's three related skills: **Cognitive Empathy**\nUnderstanding what someone is thinking and feeling. \"I can see this from your perspective.\" This is about mental understanding. **Emotional Empathy**\nActually feeling what they're feeling. When they're sad, you feel a version of their sadness. This is about emotional resonance. **Compassionate Empathy**\nUnderstanding and feeling, but also being moved to help. This combines the other two with action. Healthy empathy involves all three:\n• Understanding their perspective (cognitive)\n• Resonating with their feeling (emotional)\n• Being moved to respond appropriately (compassionate) Too much emotional empathy without boundaries leads to being overwhelmed. Pure cognitive empathy without emotional resonance feels cold and disconnected."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Empathy Blockers",
+          "icon": "lightbulb",
+          "text": "Several things block empathy: **Judgment:** When you're evaluating whether someone should feel what they feel, you can't empathize with them. **Problem-solving mode:** Jumping to fix things before the person feels heard blocks emotional connection. **Comparison:** \"I had it worse\" or \"That's nothing\" dismisses their experience. **Self-focus:** Thinking about how this affects you rather than how it affects them. **Defensiveness:** If their pain involves you, the urge to defend yourself blocks empathy. **Projection:** Assuming they feel what you would feel in their situation. Noticing these blockers in yourself is the first step to removing them."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Difference Empathy Makes",
+          "icon": "menu_book",
+          "text": "Two friends each lost their jobs in the same month. Mark's girlfriend responded: \"That's tough. But you'll find something else,you're talented. Here are some job sites you should check. And maybe this is a chance to pursue something different.\" She meant well. But Mark felt unheard and alone in his fear. David's girlfriend responded: \"Oh no. I can only imagine how scary this feels. You've worked so hard there. What's going on inside you right now?\" Then she just listened. She asked questions. She sat in the difficulty with him before offering any solutions. David felt understood. Supported. Like he wasn't alone. The difference wasn't intelligence or caring,both girlfriends cared. The difference was empathy. One jumped to fixing; the other stayed in feeling with."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "action",
+          "cardNumber": 4,
+          "title": "Empathy Practice",
+          "icon": "task_alt",
+          "text": "Next time someone shares something difficult, practice these empathy skills: **1. Pause fixing.**\nDon't offer solutions until they've been fully heard. **2. Reflect their emotion.**\n\"That sounds really frustrating\" or \"You must have felt so hurt.\" **3. Ask to understand deeper.**\n\"What was that like for you?\" \"How are you feeling about it now?\" **4. Stay with them.**\nResist the urge to minimize, compare, or redirect. **5. Only then, if appropriate, offer support.**\n\"Is there anything I can do?\" \"Do you want me to just listen or would advice be helpful?\" This approach makes people feel genuinely understood.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Empathy With Boundaries",
+          "icon": "verified",
+          "text": "Empathy needs boundaries, or it becomes exhausting and unhealthy. **Healthy empathy:**\n\"I can feel with you without drowning in your pain. I can understand your perspective without losing my own. I can support you without being responsible for fixing you.\" **Unhealthy empathy:**\nAbsorbing everyone's emotions. Feeling responsible for others' feelings. Losing yourself in others' experiences. Being unable to separate your feelings from theirs. You can be deeply empathetic AND maintain your own emotional center. In fact, you must,because empathy without boundaries leads to burnout and resentment, which serves no one."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for a Tender Heart",
+          "icon": "volunteer_activism",
+          "text": "Lord, give me a heart that can feel with others. Remove the blockers,my judgment, my rush to fix, my self-focus. Help me be truly present to people's pain without needing to immediately solve it. But also give me healthy boundaries. Help me feel with others without drowning. Help me support without carrying what only You can carry. Make me an empathetic person,one who makes others feel genuinely understood. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_respond_not_react",
+      "isFree": false,
+      "title": "The Space Between: Responding vs. Reacting",
+      "subtitle": "Mastering the moment that determines everything",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "pause_circle",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "The difference between emotionally mature and immature people often comes down to one thing: the space between stimulus and response. Immature people react,immediate, unfiltered, often regretted. Mature people respond,thoughtful, intentional, chosen. This skill is learnable.",
+      "frameworkBasis": {
+        "conceptKey": "activity_7_concept",
+        "explanation": "The difference between emotionally mature and immature people often comes down to one thing: the space between stimulus and response. Immature people ..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Reaction vs. Response",
+          "icon": "psychology",
+          "text": "**Reaction:**\n• Immediate and automatic\n• Driven by emotion, not thought\n• Often from the survival brain (fight/flight/freeze)\n• Usually regretted later\n• Prioritizes discharge over outcome Examples: Snapping back when criticized. Stonewalling when hurt. Sending the angry text immediately. **Response:**\n• Delayed and intentional\n• Informed by emotion but chosen by wisdom\n• From the thinking brain as well as feeling brain\n• Aligned with your values and goals\n• Prioritizes outcome over discharge Examples: Taking a breath before answering. Asking clarifying questions. Waiting to send that text until you've calmed down. The difference isn't suppressing emotion. It's inserting a pause that allows choice."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why We React",
+          "icon": "lightbulb",
+          "text": "Reactions happen because of how the brain is wired. When you perceive threat (even emotional threat like criticism), your amygdala fires before your prefrontal cortex can engage. The emotional brain is faster than the thinking brain. This was useful when threats were physical,you needed to run from the tiger before thinking about it. But in relationships, this speed works against you. By the time your thinking brain catches up, you've already said something damaging. The good news: with practice, you can strengthen the connection between emotional and thinking brain. You can build the neural pathways that create a pause. This takes time and repetition, but it literally changes your brain."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "action",
+          "cardNumber": 3,
+          "title": "Building the Pause",
+          "icon": "task_alt",
+          "text": "Practice these techniques for creating space: **Physical interrupt:**\n• Take a deep breath before speaking\n• Shift your body position\n• If possible, leave the room briefly **Mental interrupt:**\n• Count to five internally\n• Ask yourself: \"What response would I be proud of tomorrow?\"\n• Remind yourself: \"I don't have to answer immediately\" **Verbal interrupt:**\n• \"Let me think about that for a moment\"\n• \"I want to respond to this well,give me a second\"\n• \"I'm feeling reactive. Can we pause?\" Any of these creates the space for choice.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Reaction Patterns",
+          "icon": "edit_note",
+          "text": "{red|When do you most tend to react rather than respond? What situations, people, or topics trigger automatic reactions? What has been the cost of those reactions?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Text That Almost Destroyed",
+          "icon": "menu_book",
+          "text": "Rebecca and her boyfriend had an argument. He said something that really hurt. Old Rebecca would have fired back immediately,a blistering text that matched hurt for hurt. But she'd been working on this. She felt the urge to react, recognized it, and forced herself to wait. \"I'll respond in one hour,\" she told herself. During that hour, she calmed down. She realized his comment came from his own insecurity. She thought about what she actually wanted from this conversation. When she finally responded, it was firm but not cruel. It addressed the hurt without escalating the conflict. He apologized. They talked. They resolved it. If she'd sent the first text that came to mind, they might not be together today. One hour of pause. Relationship saved."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for the Pause",
+          "icon": "volunteer_activism",
+          "text": "Lord, I need help in the moment,the moment when I feel hurt, angry, or defensive and want to react. Give me the pause. Build in me the neural pathways that create space between stimulus and response. Help me remember that I have a choice. Help me choose words I won't regret. \"Set a guard over my mouth, Lord; keep watch over the door of my lips.\" Make me someone who responds with wisdom, not someone who reacts with destruction. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_emotional_maturity",
+      "isFree": false,
+      "title": "What Emotional Maturity Actually Looks Like",
+      "subtitle": "The markers of grown-up emotional functioning",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "military_tech",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Emotional maturity isn't about age,plenty of older people are emotionally immature, and some young people show remarkable maturity. Maturity is about how you handle your inner world and relationships. Knowing what maturity looks like gives you a clear target for growth.",
+      "frameworkBasis": {
+        "conceptKey": "activity_8_concept",
+        "explanation": "Emotional maturity isn't about age,plenty of older people are emotionally immature, and some young people show remarkable maturity. Maturity is about ..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Markers of Emotional Immaturity",
+          "icon": "psychology",
+          "text": "Emotional immaturity shows up in predictable ways: • **Black-and-white thinking:** People are all good or all bad. Can't hold complexity. • **Inability to delay gratification:** Wants what they want NOW. Can't sacrifice short-term for long-term. • **Poor frustration tolerance:** Small setbacks cause major meltdowns. • **Blaming others:** Rarely takes responsibility. It's always someone else's fault. • **Defensiveness:** Can't receive feedback without falling apart or attacking. • **Emotional reactivity:** Reactions are frequent, intense, and disproportionate. • **Self-centeredness:** Difficulty seeing beyond their own perspective and needs. • **Inconsistency:** Moods swing wildly. Others walk on eggshells. Recognizing these patterns in yourself is the first step to outgrowing them."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Markers of Emotional Maturity",
+          "icon": "lightbulb",
+          "text": "In contrast, emotionally mature people demonstrate: • **Nuanced thinking:** Can hold complexity and ambiguity. People and situations aren't all good or bad. • **Delayed gratification:** Can sacrifice now for later. Thinks long-term. • **Frustration tolerance:** Handles setbacks without melting down. Bounces back. • **Responsibility-taking:** Owns their contribution to problems. Apologizes genuinely. • **Openness to feedback:** Can hear criticism without crumbling or counterattacking. • **Emotional regulation:** Has feelings but isn't controlled by them. Responds rather than reacts. • **Perspective-taking:** Can genuinely see from others' viewpoints. • **Consistency:** Stable and predictable. Others feel safe around them. This is the target. None of us arrive fully, but we can all grow toward it."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Honest Self-Assessment",
+          "icon": "checklist",
+          "text": "Which immaturity markers do you most struggle with?",
+          "prompts": [
+            "Black-and-white thinking - I struggle with complexity",
+            "Delayed gratification - I want what I want now",
+            "Frustration tolerance - Small setbacks overwhelm me",
+            "Taking responsibility - I tend to blame others",
+            "Receiving feedback - I get defensive easily",
+            "Emotional reactivity - My reactions are often too intense",
+            "Self-centeredness - I struggle to see others' perspectives",
+            "I struggle with several of these"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Thank you for your honesty. This awareness will guide your growth."
+          }
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Maturity Edge",
+          "icon": "edit_note",
+          "text": "Based on the immaturity markers, which 1-2 areas represent your biggest growth opportunity? How has this immaturity affected your relationships? What would growth in this area look like practically?",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Growth Is Possible",
+          "icon": "auto_awesome",
+          "text": "Here's the encouraging truth: emotional maturity can be developed at any age. Your brain remains plastic throughout life. The patterns you've developed aren't permanent,they're habits that can be changed with awareness and practice. Every time you:\n• Hold a complex thought instead of splitting to black-and-white\n• Delay a gratification for a greater good\n• Handle a setback without melting down\n• Take responsibility instead of blaming\n• Receive feedback without counterattacking\n• Respond instead of react\n• Consider someone else's perspective ...you're strengthening new neural pathways. You're growing up emotionally. It takes time. But it happens."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Maturity",
+          "icon": "volunteer_activism",
+          "text": "Lord, I see areas where I'm still emotionally immature. I don't want to stay here. I want to grow up,to handle life like an adult, not like a child in an adult's body. Grow me in frustration tolerance. Teach me to delay gratification. Help me take responsibility. Make me able to receive feedback. I know this takes time. Give me patience with the process and persistence in the practice. Mature me, Lord. For my sake and for the sake of everyone I'm in relationship with. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_handling_criticism",
+      "isFree": false,
+      "title": "When Someone Points Out Your Flaws",
+      "subtitle": "Receiving criticism without crumbling or counterattacking",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "feedback",
+      "emotionalIntensity": "high",
+      "activityType": "practical",
+      "whyThisMatters": "Few things test emotional maturity like receiving criticism. The natural response is to defend, deflect, or attack back. But in relationships, the ability to hear hard things about yourself,without falling apart or getting hostile,is essential. Your partner will have feedback. Can you hear it?",
+      "frameworkBasis": {
+        "conceptKey": "activity_9_concept",
+        "explanation": "Few things test emotional maturity like receiving criticism. The natural response is to defend, deflect, or attack back. But in relationships, the abi..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Criticism Stings So Much",
+          "icon": "psychology",
+          "text": "Criticism activates some of our deepest fears: • Fear of rejection,if I'm flawed, I won't be loved\n• Fear of inadequacy,maybe I really am not good enough\n• Fear of exposure,they've seen something I was hiding\n• Fear of shame,I'll be humiliated These fears make criticism feel like existential threat, not useful information. Your nervous system responds accordingly,fight (defend, counterattack), flight (withdraw, shut down), or freeze (go blank, unable to respond). But here's the reality: everyone has flaws. Everyone needs feedback to grow. If you can't hear criticism, you can't improve,and you'll be very hard to be in relationship with. Learning to receive criticism is one of the most important emotional skills you can develop."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Unhealthy vs. Healthy Responses",
+          "icon": "lightbulb",
+          "text": "**Unhealthy responses to criticism:** • Immediate defense: \"That's not true!\"\n• Counterattack: \"Well, you do X!\"\n• Deflection: \"That's not what we're talking about\"\n• Collapse: Falling apart, crying to shut it down\n• Withdrawal: Going silent, shutting down\n• Dismissal: \"You're overreacting\" or \"That's ridiculous\" **Healthy response to criticism:** • Pause before responding\n• Listen to understand, not to rebut\n• Ask clarifying questions\n• Look for the kernel of truth\n• Thank them for the feedback\n• Take time to process if needed\n• Respond thoughtfully later\n• Change if warranted Healthy response doesn't mean accepting ALL criticism,some is unfair or wrong. But it means staying open enough to evaluate rather than automatically defending."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Criticism Response Pattern",
+          "icon": "edit_note",
+          "text": "How do you typically respond when someone criticizes you or points out a flaw? Do you defend? Attack? Withdraw? Collapse? Think of a specific recent example and analyze your response.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "action",
+          "cardNumber": 4,
+          "title": "The Criticism Protocol",
+          "icon": "task_alt",
+          "text": "Next time you receive criticism, try this protocol: **Step 1: Don't respond immediately.**\nTake a breath. Buy yourself time. **Step 2: Listen fully.**\nDon't prepare your defense while they're talking. Actually hear them. **Step 3: Ask to understand.**\n\"Can you give me an example?\" \"Help me understand what you mean.\" **Step 4: Thank them.**\n\"Thanks for telling me that\" (even if it stung). **Step 5: Take time to process.**\n\"Let me think about this and get back to you.\" **Step 6: Evaluate honestly.**\nIs there truth here? Even a kernel? What can I learn? **Step 7: Respond thoughtfully.**\nAcknowledge what's true. Clarify what's not. Discuss how to move forward. This protocol transforms criticism from threat to growth opportunity.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Gift of Honest Feedback",
+          "icon": "auto_awesome",
+          "text": "Here's a reframe that changes everything: People who give you honest feedback are giving you a gift. It's easy to find people who will tell you what you want to hear. It's rare to find people who will tell you what you need to hear. \"Wounds from a friend can be trusted, but an enemy multiplies kisses.\", Proverbs 27:6 The person who cares enough to give you hard truth is doing you a favor. They're helping you see blind spots you couldn't see alone. This doesn't mean all criticism is valid or delivered well. But the ability to receive it graciously,to sift for truth rather than automatically defend,is a mark of wisdom and maturity."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Teachability",
+          "icon": "volunteer_activism",
+          "text": "Lord, I confess I don't handle criticism well. My instinct is to defend, attack, or withdraw. I make it hard for people to tell me the truth. Soften my heart. Lower my defenses. Help me hear feedback as a gift rather than a threat. Give me the security that doesn't crumble when my flaws are named. Give me the humility to change when change is warranted. Make me teachable. Make me safe to be honest with. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_giving_feedback",
+      "isFree": false,
+      "title": "Speaking Hard Truths with Grace",
+      "subtitle": "How to give feedback that people can actually hear",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "chat",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Emotional intelligence isn't just about receiving feedback,it's about giving it. In any close relationship, you'll need to name problems, express concerns, and sometimes say hard things. How you deliver feedback determines whether it builds the relationship or damages it.",
+      "frameworkBasis": {
+        "conceptKey": "activity_10_concept",
+        "explanation": "Emotional intelligence isn't just about receiving feedback,it's about giving it. In any close relationship, you'll need to name problems, express conc..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Feedback Dilemma",
+          "icon": "psychology",
+          "text": "When something bothers you in a relationship, you face a choice: **Option 1: Stay silent.**\nAvoid conflict but let resentment build. The issue festers. **Option 2: Explode.**\nLet it out in a burst of frustration. Say things you regret. Damage trust. **Option 3: Speak truth with grace.**\nName the issue clearly but kindly. Create opportunity for resolution. Strengthen the relationship. Most people default to options 1 or 2. Option 3 requires skill. That skill is learnable. It's about HOW you deliver hard truths, not WHETHER you deliver them."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Feedback Framework",
+          "icon": "lightbulb",
+          "text": "Effective feedback follows a structure: **1. Choose the right time.**\nNot when either person is tired, hungry, or already upset. Find a calm moment. **2. Start soft.**\nBegin with connection, not accusation. \"I want to talk about something because I care about us.\" **3. Use \"I\" statements.**\n\"I feel hurt when...\" not \"You always...\" Own your feelings without attacking. **4. Be specific.**\nName exact behaviors, not character judgments. \"When you interrupted me in that meeting\" not \"You're so rude.\" **5. Express the impact.**\nExplain how it affected you. \"It made me feel dismissed.\" **6. Make a request.**\nWhat do you want instead? \"I'd like you to let me finish my thoughts.\" **7. Invite their perspective.**\n\"What's your take on this?\" Make it a dialogue."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "action",
+          "cardNumber": 3,
+          "title": "The Feedback Script",
+          "icon": "task_alt",
+          "text": "Practice this template for delivering feedback: \"I want to talk about something because [our relationship matters to me / I care about us]. When you [specific behavior], I feel [emotion]. The impact is [what happens for you]. What I'd like is [specific request]. Can you help me understand your perspective?\" **Example:**\n\"I want to talk about something because I care about us. When you check your phone during our conversations, I feel unimportant. It makes me wonder if what I'm saying matters to you. What I'd like is for us to put phones away when we're talking about important things. What's your take?\" This approach is direct but not attacking.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Feedback Style",
+          "icon": "edit_note",
+          "text": "{red|How do you typically give feedback or address issues in relationships? Do you avoid? Explode? Something else? Think of a recent example where you needed to address something. How did you handle it? What would you do differently?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Truth AND Love",
+          "icon": "auto_awesome",
+          "text": "Scripture calls us to speak truth in love ({red|Ephesians 4:15}). Not truth without love,that's harshness. Not love without truth,that's enabling. Both together,that's maturity. Speaking truth in love means:\n• Caring enough about the relationship to address issues\n• Caring enough about the person to deliver truth kindly\n• Being honest AND being gentle\n• Naming problems without attacking personhood This balance is difficult but essential. Every healthy relationship requires the ability to speak hard truths with grace."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Gracious Honesty",
+          "icon": "volunteer_activism",
+          "text": "Lord, give me the courage to speak truth when it's needed. But also give me the grace to speak it kindly. Help me address issues without attacking people. Help me be honest without being harsh. I don't want to avoid hard conversations out of cowardice. I don't want to bulldoze people out of carelessness. Teach me to speak truth in love,both at the same time. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_emotional_resilience",
+      "isFree": false,
+      "title": "Bouncing Back: Building Emotional Resilience",
+      "subtitle": "Developing the ability to recover from emotional setbacks",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "replay",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Life will knock you down emotionally,disappointments, conflicts, failures, losses. Emotional resilience is the ability to recover. It's not about not falling; it's about how quickly and completely you get back up. This capacity can be developed.",
+      "frameworkBasis": {
+        "conceptKey": "activity_11_concept",
+        "explanation": "Life will knock you down emotionally,disappointments, conflicts, failures, losses. Emotional resilience is the ability to recover. It's not about not ..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What Resilience Is and Isn't",
+          "icon": "psychology",
+          "text": "Emotional resilience is often misunderstood. **Resilience is NOT:**\n• Never feeling pain or difficulty\n• Being unaffected by hard things\n• Suppressing emotions and pushing through\n• Being tough and invulnerable **Resilience IS:**\n• Feeling the full impact of difficulty AND recovering\n• Adapting to adversity without being permanently damaged\n• Learning and growing from hard experiences\n• Maintaining core stability while handling stress\n• Bouncing back,not bouncing off Resilient people aren't immune to pain. They feel it fully. But they also have the capacity to recover, learn, and move forward."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Pillars of Resilience",
+          "icon": "lightbulb",
+          "text": "Research identifies several factors that build emotional resilience: **Connection:** Strong relationships with supportive people **Perspective:** Ability to see setbacks as temporary and specific rather than permanent and pervasive **Self-care:** Physical health habits that support emotional capacity **Meaning:** A sense of purpose that transcends immediate circumstances **Faith:** Connection to something larger than yourself **Adaptability:** Flexibility to adjust when reality requires it **Self-efficacy:** Belief in your ability to handle what comes Each of these can be intentionally strengthened."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Resilience Assessment",
+          "icon": "edit_note",
+          "text": "{red|How resilient are you? How quickly do you typically recover from emotional setbacks? Which of the resilience pillars are strong in your life? Which need building?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "action",
+          "cardNumber": 4,
+          "title": "Building Your Resilience",
+          "icon": "task_alt",
+          "text": "Choose 1-2 areas to intentionally strengthen: **Connection:** Invest in relationships that support you. Don't isolate when struggling. **Perspective:** Practice reframing setbacks. \"This is hard\" not \"This is the end.\" **Self-care:** Prioritize sleep, exercise, and nutrition,they directly affect emotional capacity. **Meaning:** Connect to purpose. Remember why you're doing what you're doing. **Faith:** Deepen your relationship with God. Draw on spiritual resources. **Adaptability:** Practice flexibility. When plans change, adjust without crumbling. **Self-efficacy:** Build confidence by remembering past difficulties you've overcome. Resilience is built before you need it.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Resilient Response",
+          "icon": "menu_book",
+          "text": "Two people lose their jobs in the same company layoff. Person A spirals. They isolate, stop exercising, obsess over the unfairness, and sink into despair. Six months later, they're still barely functioning. Person B is devastated too. They allow themselves to grieve. But they also reach out to friends, maintain their routines, update their resume, and start networking. Six months later, they're in a better job than before. Same event. Different resilience. The difference isn't that Person B didn't feel the pain. They did. But they had structures and practices in place that enabled recovery. Resilience isn't about avoiding difficulty. It's about having the capacity to move through it."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Resilience",
+          "icon": "volunteer_activism",
+          "text": "Lord, I know hard things will come. Difficulties. Disappointments. Failures. Build in me the resilience to handle them,not to avoid them, but to move through them and come out stronger. Strengthen my connections with supportive people. Give me perspective that sees beyond the immediate. Keep me faithful to self-care. Root me in meaning and purpose. Deepen my faith in You. When I fall, help me get back up. When I'm knocked down, help me recover. Make me resilient. Amen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 12,
+      "id": "act_12_eq_integration",
+      "isFree": false,
+      "title": "The Emotionally Intelligent Life",
+      "subtitle": "Integrating everything and committing to ongoing growth",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You've covered tremendous ground in this journey,self-awareness, regulation, social awareness, empathy, responding vs. reacting, maturity markers, feedback skills, and resilience. This final activity integrates everything and commits you to continued growth.",
+      "frameworkBasis": {
+        "conceptKey": "activity_12_concept",
+        "explanation": "You've covered tremendous ground in this journey,self-awareness, regulation, social awareness, empathy, responding vs. reacting, maturity markers, fee..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You've Built",
+          "icon": "lightbulb",
+          "text": "Across this journey, you've developed: **Self-Awareness:** The ability to know your emotions, triggers, and patterns **Self-Management:** Tools for regulating emotions rather than being controlled by them **Social Awareness:** Skills for reading others and empathizing genuinely **Relationship Management:** Techniques for responding (not reacting), giving and receiving feedback, and navigating conflict **Maturity Markers:** Clear picture of emotional maturity and your growth edges **Resilience:** Foundations for bouncing back from difficulty This is substantial. You're not the same person who started this journey."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "reflection",
+          "cardNumber": 2,
+          "title": "Your EQ Growth Summary",
+          "icon": "edit_note",
+          "text": "Looking back across this journey, what are the most significant shifts in you? What do you understand now that you didn't before? What skills are you developing? What remains your biggest growth area?",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "action",
+          "cardNumber": 3,
+          "title": "Your Ongoing EQ Development Plan",
+          "icon": "task_alt",
+          "text": "EQ development is ongoing. Create a simple plan: **Daily practices:**\n• Emotional check-ins (morning/evening)\n• Pause before responding in charged moments\n• Notice body sensations linked to emotions **Weekly practices:**\n• Review interactions,what went well? What could improve?\n• Practice one feedback conversation\n• Check in with someone who can give you honest input **Monthly review:**\n• Assess growth in your identified weak areas\n• Adjust focus as needed\n• Celebrate progress Write this plan down. Growth requires intention.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Fruit of EQ",
+          "icon": "auto_awesome",
+          "text": "Emotional intelligence produces tangible fruit: **In relationships:**\nDeeper connection. Less destructive conflict. Partners feel understood and safe. **In friendships:**\nPeople want to be around you. You're someone who gets it. **In work:**\nBetter collaboration. Stronger leadership. Ability to navigate complexity. **In yourself:**\nGreater peace. Less internal chaos. Confidence rooted in self-understanding. And spiritually, EQ development aligns with the fruit of the Spirit: love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control. You're not just becoming emotionally intelligent. You're becoming more like Christ."
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Continued Growth",
+          "icon": "volunteer_activism",
+          "text": "Lord, thank You for the growth that's happened through this journey. I see myself more clearly now. I have tools I didn't have before. I understand what maturity looks like. But I'm not finished. Keep growing me. Deepen my self-awareness. Strengthen my regulation. Sharpen my perception of others. Develop my empathy. Make me quicker to respond and slower to react. I want to be someone whose emotional presence is a gift to everyone around them. Continue the work You've started. Amen.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your EQ Declaration",
+          "icon": "verified",
+          "text": "Declare this as you complete this journey: \"I am committed to emotional intelligence. I will know my own emotions with increasing clarity.\nI will manage my reactions with increasing skill.\nI will read others with increasing accuracy.\nI will navigate relationships with increasing wisdom. I will respond rather than react.\nI will receive feedback with openness.\nI will give feedback with grace.\nI will bounce back from difficulty with resilience. Emotional maturity is my pursuit. I will continue growing for the rest of my life. I am becoming someone whose emotional presence is a gift.\"",
+          "responseType": "open-text"
+        }
+      ]
+    }
+  ],
+  "heroImage": "assets/images/journeys/Singles_journey6.jpg"
+}

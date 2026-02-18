@@ -1,0 +1,940 @@
+{
+  "journeyId": "singles_biblical_masculinity",
+  "title": "Understanding Your Masculinity as a Man",
+  "subtitle": "Embracing God's design for manhood",
+  "summary": "Culture sends confusing messages about manhood. Some say masculinity is toxic; others promote machismo. Many men feel lost. This journey explores biblical masculinity,what God designed manhood to be,so you can step confidently into your identity and prepare to lead a future family well.",
+  "targetUserCategory": "singles_men",
+  "priorityRank": 21,
+  "estimatedDays": 14,
+  "totalActivities": 11,
+  "difficulty": "intermediate",
+  "themeColor": "#2C3E50",
+  "cover": {
+    "themeTag": "Identity",
+    "accentIcon": "person",
+    "heroImage": "assets/images/journeys/Singles_journey9.jpg",
+    "heroImageDescription": "A man standing firmly on a mountain summit at sunrise, representing strength, purpose, and grounded identity."
+  },
+  "frameworks": [
+    "biblical_manhood",
+    "masculine_identity",
+    "servant_leadership",
+    "emotional_strength"
+  ],
+  "targetOutcomes": [
+    "Understand biblical masculinity versus cultural distortions",
+    "Embrace your identity as a man created in God's image",
+    "Develop strength, courage, and tender leadership",
+    "Learn to lead yourself before leading others",
+    "Prepare for the responsibilities of husband and father",
+    "Integrate faith, work, and relationships as a man"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_masculinity_confusion",
+      "isFree": true,
+      "title": "The Masculinity Crisis",
+      "subtitle": "Understanding the confusion around manhood today",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "help_outline",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Men today receive contradictory messages about masculinity. Some say it's toxic; others glorify aggression. Clarity about God's design brings freedom.",
+      "frameworkBasis": {
+        "conceptKey": "cultural_confusion",
+        "explanation": "Understanding competing narratives helps you discern biblical truth from cultural distortion."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "question",
+          "cardNumber": 1,
+          "title": "Messages About Manhood",
+          "text": "Masculinity today is often defined by extremes, domination on one side, passivity on the other.\nBiblical masculinity offers a quieter, stronger path rooted in responsibility, restraint, courage, and love.\n\nIf you have ever felt confused about what it means to be a man of faith in today’s world, this journey will help you build clarity without shame or posturing.\n\n{red|What messages have you received about what it means to be a man?}",
+          "prompts": [
+            "Men should be tough and never show weakness",
+            "Masculinity is toxic and harmful",
+            "Real men don't cry",
+            "Men should dominate",
+            "I'm not sure what manhood means"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These conflicting messages leave many men confused. Let's explore what God actually designed."
+          },
+          "icon": "forum"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Two Ditches to Avoid",
+          "text": "Culture offers two distortions: **Hyper-masculinity**: Aggression, dominance, emotional suppression. Strength without tenderness. **Emasculation**: Passivity, weakness, abdication. Tenderness without strength. Biblical masculinity integrates strength AND gentleness, courage AND compassion.",
+          "icon": "compare"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Crisis Is Real",
+          "text": "Statistics reveal a masculinity crisis: fatherlessness affects millions, male suicide rates are 4x higher than female, young men are increasingly disconnected. Something has gone wrong. Men need a better vision.",
+          "icon": "trending_down"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Why This Matters for Marriage",
+          "text": "Your understanding of masculinity directly affects your future marriage: Will you lead or abdicate? Protect or neglect? Provide or drift? Serve or demand? Be present or absent?",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Own Journey",
+          "text": "Did you have a model of healthy masculinity? Did your father teach you what it means to be a man? Have you been wounded by toxic masculinity or by the absence of masculine presence? Your history shapes your understanding,but God's design can reshape it.",
+          "icon": "self_improvement",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Starting Point",
+          "text": "Reflect honestly: My current understanding of masculinity: Where this understanding came from: What I hope to gain from this journey:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_created_male",
+      "isFree": false,
+      "title": "Created Male: God's Design",
+      "subtitle": "What Scripture reveals about manhood",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "menu_book",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Before exploring what men should do, we must understand who men are. Your masculinity isn't a social construct,it's part of God's intentional design.",
+      "frameworkBasis": {
+        "conceptKey": "created_design",
+        "explanation": "Masculinity isn't defined by culture but by the Creator who made male and female."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Male and Female He Created Them",
+          "text": "\"So God created mankind in his own image, in the image of God he created them; male and female he created them.\" ({red|Genesis 1:27}) God intentionally created two sexes,not interchangeable, but complementary. Masculinity is part of bearing God's image.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The First Man's Calling",
+          "text": "Before Eve existed, Adam was given: Work (tend the garden), Responsibility (name the animals), Boundaries (guard God's command). From the beginning, men were called to productive work, responsible leadership, and protective stewardship.",
+          "icon": "work"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Designed for Partnership",
+          "text": "\"It is not good for the man to be alone.\" ({red|Genesis 2:18|It is not good for the man to be alone.}) Man was designed for partnership,with God and with a wife. Biblical masculinity isn't independence but interdependence.",
+          "icon": "people"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Reflecting God's Image",
+          "text": "Which aspects of God's character do you most want to embody?",
+          "prompts": [
+            "Strength and power",
+            "Protection and provision",
+            "Initiative and leadership",
+            "Sacrificial love",
+            "Faithful presence"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These qualities aren't cultural expectations,they're reflections of God's character."
+          },
+          "icon": "star"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Masculinity Affirmed",
+          "text": "God's verdict on His creation: \"very good.\" You don't need to apologize for being male. Your masculinity,properly understood and expressed,is a gift to the world.",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Embracing Your Design",
+          "text": "Reflect on your masculinity: How I've viewed my masculinity: How I want to view it: God's character I want to reflect as a man:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_jesus_model",
+      "isFree": false,
+      "title": "Jesus: The Perfect Man",
+      "subtitle": "Learning masculinity from Christ",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "brightness_high",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Jesus is the ultimate model of masculinity,fully God and fully man. He shows us what manhood looks like without sin's distortion.",
+      "frameworkBasis": {
+        "conceptKey": "christlike_masculinity",
+        "explanation": "Jesus embodied perfect manhood. His example defines what masculinity should look like."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Strength and Tenderness",
+          "text": "Jesus combined qualities often seen as contradictory: Strong enough to overturn tables, tender enough to weep. Bold enough to confront leaders, gentle enough to bless children. Courageous enough to face crucifixion, humble enough to wash feet.",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Led Through Service",
+          "text": "\"The Son of Man did not come to be served, but to serve.\" ({red|Mark 10:45}) Jesus redefined leadership. Not domination but sacrifice. Biblical masculinity leads downward,toward service.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Strength That Serves",
+          "text": "Think about a man you respect deeply.\n\n{red|What makes his strength feel safe, steady, and trustworthy?}\n\nWrite a few lines about how responsibility, self-control, and humility show up in his life.\nThen reflect on one way you want to embody that kind of strength more consistently.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Showed Emotion",
+          "text": "Jesus wept, felt anger, experienced compassion, knew sorrow. Emotional expression isn't weakness,it's humanity. Jesus models emotional authenticity.",
+          "icon": "mood"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Which Quality Do You Need?",
+          "text": "Which quality of Jesus do you most need to develop?",
+          "prompts": [
+            "Strength and courage",
+            "Tenderness and compassion",
+            "Servant leadership",
+            "Emotional authenticity",
+            "Bold truth-telling"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "This is an area for growth. The Spirit can develop it in you."
+          },
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 6,
+          "title": "Following the Master",
+          "text": "\"Follow me.\" ({red|Matthew 4:19}) Jesus invites you to follow. You're not left with abstract principles. You have a Person to follow, a Spirit to empower you.",
+          "icon": "directions"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 7,
+          "title": "Learning from Jesus",
+          "text": "Apply Jesus' example: The quality of Jesus I most admire: How I can develop this: A situation where I need to act more like Jesus:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_provider_protector",
+      "isFree": false,
+      "title": "Provider and Protector",
+      "subtitle": "Embracing core masculine responsibilities",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "shield",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Throughout Scripture, men have been called to provide and protect. These aren't outdated roles but enduring responsibilities that serve families.",
+      "frameworkBasis": {
+        "conceptKey": "provision_protection",
+        "explanation": "Providing and protecting are core masculine callings that serve others rather than dominate them."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Call to Provide",
+          "text": "\"Anyone who does not provide for their relatives has denied the faith.\" ({red|1 Timothy 5:8}) Provision isn't about ego,it's about responsibility. Men are called to work diligently and ensure their families have what they need.",
+          "icon": "work"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Call to Protect",
+          "text": "\"Husbands, love your wives, just as Christ loved the church and gave himself up for her.\" ({red|Ephesians 5:25}) Protection means creating safety,physical, emotional, and spiritual. Standing between your family and danger.",
+          "icon": "security"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Preparing to Provide",
+          "text": "{red|How are you preparing to provide for a future family?}",
+          "prompts": [
+            "Developing career skills",
+            "Building financial stability",
+            "Getting out of debt",
+            "Working diligently",
+            "I haven't thought about this"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Preparation now determines capability later."
+          },
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "What Protection Looks Like",
+          "text": "Protection today includes: Physical safety, Emotional security, Spiritual leadership, Digital protection. Protection is active care, not passive presence.",
+          "icon": "gpp_good"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Service, Not Domination",
+          "text": "Provision and protection are SERVING roles, not dominating ones. A provider works for his family's benefit, not his ego. These roles are other-focused.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Plan",
+          "text": "Assess your readiness: How I'm preparing to provide: What kind of protector I want to be: One step I'll take this week:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_emotional_strength",
+      "isFree": false,
+      "title": "Emotional Strength and Vulnerability",
+      "subtitle": "Being strong enough to be real",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Many men were taught that emotions are weakness. This produces men who are disconnected and unable to connect deeply. True strength includes emotional intelligence.",
+      "frameworkBasis": {
+        "conceptKey": "emotional_integration",
+        "explanation": "Emotional strength isn't suppression,it's the ability to feel, process, and express appropriately."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Lie About Emotions",
+          "text": "Many men learned: 'Boys don't cry,' 'Man up,' 'Don't be emotional.' The result: Men who can't identify or express feelings. This isn't strength,it's disability.",
+          "icon": "block"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Emotional Patterns",
+          "text": "{red|How do you typically handle emotions?}",
+          "prompts": [
+            "I suppress them",
+            "I only express anger",
+            "I don't know what I'm feeling",
+            "I express emotion freely",
+            "Emotions make me uncomfortable"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Your emotional patterns affect every relationship."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What Emotional Strength Is",
+          "text": "True emotional strength: Feels emotions fully, Identifies what you're feeling, Expresses appropriately, Processes difficult emotions, Connects emotionally with others. This requires more courage than stuffing everything down.",
+          "icon": "fitness_center"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Why Your Wife Will Need This",
+          "text": "Your future wife needs emotional connection with you,to know what you're feeling, to see your vulnerability. Emotionally unavailable husbands create lonely wives.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Growing Emotionally",
+          "text": "Develop emotional strength by: Practicing naming your feelings, Journaling, Sharing with safe people, Noticing what's beneath anger, Therapy if needed.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Emotional Growth Plan",
+          "text": "Plan your development: My current patterns: What I want to change: A safe person I can practice with:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_leading_yourself",
+      "isFree": false,
+      "title": "Leading Yourself First",
+      "subtitle": "Self-leadership as the foundation",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "self_improvement",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "You cannot lead a family if you cannot lead yourself. Self-leadership is the foundation for leading others well.",
+      "frameworkBasis": {
+        "conceptKey": "self_leadership",
+        "explanation": "Leadership begins with self-mastery. A man who can't govern himself shouldn't govern others."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Foundation of Leadership",
+          "text": "\"Whoever has no rule over his own spirit is like a city broken down, without walls.\" ({red|Proverbs 25:28}) A man who can't manage himself has no business managing others.",
+          "icon": "foundation"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Self-Leadership Assessment",
+          "text": "{red|How would you rate your self-leadership?}",
+          "prompts": [
+            "Managing time well",
+            "Controlling impulses",
+            "Maintaining healthy habits",
+            "Following through on commitments",
+            "Managing finances",
+            "Disciplining thought life"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Honest assessment is the first step."
+          },
+          "icon": "assessment"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Areas of Self-Leadership",
+          "text": "Lead yourself in: Body (health, fitness), Mind (what you consume), Spirit (prayer, Scripture), Time (how you spend hours), Money (earn, save, spend, give), Sexuality (purity in thought and action).",
+          "icon": "category"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Discipline Equals Freedom",
+          "text": "Discipline isn't restriction,it's freedom. The disciplined man has health, options, margin, integrity. Undisciplined men are slaves to impulses.",
+          "icon": "lock_open"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Start Small",
+          "text": "Self-leadership grows through small, consistent actions: Make your bed, Keep your word, Exercise regularly, Maintain a budget, Limit screen time.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Self-Leadership Plan",
+          "text": "Develop your plan: My weakest area: One discipline I'll implement: How I'll hold myself accountable:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_work_calling",
+      "isFree": false,
+      "title": "Work as Calling",
+      "subtitle": "Understanding masculine purpose in labor",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "work",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Work isn't just a paycheck,it's a fundamental part of masculine design. How you approach work reflects your character.",
+      "frameworkBasis": {
+        "conceptKey": "work_calling",
+        "explanation": "Work is part of bearing God's image. Men are designed for productive, meaningful labor."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Work Before the Fall",
+          "text": "\"The Lord God put him in the Garden to work it.\" ({red|Genesis 2:15|The Lord God put him in the Garden to work it.}) Work existed before sin. Men are designed to create, build, produce, and steward.",
+          "icon": "eco"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Work as Worship",
+          "text": "\"Whatever you do, work at it with all your heart, as working for the Lord.\" ({red|Colossians 3:23}) Your work can be worship. Excellence honors God.",
+          "icon": "church"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Work Attitude",
+          "text": "{red|How would you describe your relationship with work?}",
+          "prompts": [
+            "I work hard and find meaning",
+            "I do the minimum",
+            "I'm too ambitious",
+            "I struggle with laziness",
+            "Still figuring out my calling"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Your approach reveals character."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Danger of Idleness",
+          "text": "\"Lazy hands make for poverty, but diligent hands bring wealth.\" ({red|Proverbs 10:4}) Men without purpose drift. You were designed to produce, not merely consume.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Work-Life Integration",
+          "text": "Work hard, but don't worship work. Provide, but don't neglect presence. Your family needs your provision AND your presence.",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Work Vision",
+          "text": "Develop your vision: How I want to approach work: The character I want to display: One way I'll grow this month:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_sexuality_purity",
+      "isFree": false,
+      "title": "Masculine Sexuality and Purity",
+      "subtitle": "Stewarding your sexual drive",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "shield",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Male sexuality is powerful,designed by God for marriage. In a pornified culture, stewarding this drive requires intentionality.",
+      "frameworkBasis": {
+        "conceptKey": "sexual_stewardship",
+        "explanation": "Sexual drive isn't sinful,it's good but powerful. Stewarding it requires wisdom and discipline."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Power of Male Sexuality",
+          "text": "Male sexual drive is God-designed, powerful, visual, and easily misdirected. The goal isn't to eliminate your drive but to channel it toward its designed purpose.",
+          "icon": "bolt"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Pornography War",
+          "text": "Pornography rewires your brain, trains you to objectify, creates unrealistic expectations, and becomes addictive. Most men struggle here. Victory is possible but requires warfare.",
+          "icon": "gpp_bad"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Struggles",
+          "text": "{red|Where do you most struggle with sexual purity?}",
+          "prompts": [
+            "Pornography",
+            "Lustful thoughts",
+            "Masturbation",
+            "Physical boundaries",
+            "Sexual content in media",
+            "I have victory here"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Naming your struggle is the first step."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Strategies for Victory",
+          "text": "Fight for purity by: Accountability, Filters on devices, Knowing your triggers, Scripture, Exercise, Community, Professional help if needed.",
+          "icon": "fitness_center"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "For Your Future Wife",
+          "text": "Your sexual purity now affects your future marriage. Freedom from porn enables real intimacy. The fight for purity is a gift to your future wife.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Battle Plan",
+          "text": "Develop your plan: My biggest struggle: My accountability partner: Protections I'll put in place:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_courage_initiative",
+      "isFree": false,
+      "title": "Courage and Initiative",
+      "subtitle": "Taking action when it's hard",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "bolt",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Passivity is a plague among modern men. Biblical masculinity takes initiative,in pursuing women, in addressing problems, in standing for truth.",
+      "frameworkBasis": {
+        "conceptKey": "masculine_initiative",
+        "explanation": "Men are called to move first,toward problems, toward relationships, toward responsibility."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Problem of Passivity",
+          "text": "Adam's first sin was passive,he was with Eve when she was tempted and said nothing. Male passivity shows up as: Waiting for others, Not pursuing women, Avoiding hard conversations.",
+          "icon": "block"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Call to Courage",
+          "text": "\"Be strong and courageous.\" ({red|Joshua 1:9}) Courage isn't absence of fear,it's action despite fear. Men are called to move first.",
+          "icon": "military_tech"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Where Do You Need Courage?",
+          "text": "In what area do you need to take initiative?",
+          "prompts": [
+            "Pursuing a woman",
+            "Having a hard conversation",
+            "Standing up for what's right",
+            "Making a major decision",
+            "Stepping into leadership"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These are your growth edges."
+          },
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Initiative in Relationships",
+          "text": "Men should take initiative in pursuing women: Approach her, Be clear about intentions, Plan dates, Lead the relationship forward. Women generally want to be pursued.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Cultivating Courage",
+          "text": "Build courage by: Doing small hard things regularly, Saying yes before you feel ready, Having difficult conversations promptly, Standing alone when necessary.",
+          "icon": "fitness_center"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Taking Initiative",
+          "text": "Plan your action: One area where I've been passive: The courageous action I need to take: When I'll do it:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_fatherhood_prep",
+      "isFree": false,
+      "title": "Preparing for Fatherhood",
+      "subtitle": "Becoming the father your children need",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "family_restroom",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Fatherhood is one of the highest callings. The presence or absence of fathers shapes children for life.",
+      "frameworkBasis": {
+        "conceptKey": "fatherhood_preparation",
+        "explanation": "Good fathers are developed, not born. Preparation now determines presence later."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Father Crisis",
+          "text": "Statistics on fatherlessness are devastating: 85% of youth in prison grew up without a father. Fathers aren't optional,they're essential.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Father Experience",
+          "text": "{red|What was your experience with your own father?}",
+          "prompts": [
+            "Present and engaged",
+            "Present but distant",
+            "Harsh or abusive",
+            "Absent completely",
+            "Complicated relationship"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Your experience shapes expectations,but you can break cycles."
+          },
+          "icon": "family_restroom"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What Children Need",
+          "text": "Children need fathers who: Are present, Provide security, Affirm identity, Model manhood, Discipline with love, Point to God.",
+          "icon": "child_care"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Breaking Negative Cycles",
+          "text": "Your father's failures don't have to be yours. With awareness, community, and the Spirit's help, you can father differently than you were fathered.",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Preparing Now",
+          "text": "Prepare for fatherhood by: Developing emotional health, Building self-leadership, Learning from good father figures, Processing your own father wounds, Growing in your faith.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Fatherhood Vision",
+          "text": "Envision your fatherhood: The father I want to be: What I want to repeat from my father: What I'll do differently: One way I'm preparing now:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_integrated_man",
+      "isFree": false,
+      "title": "Becoming an Integrated Man",
+      "subtitle": "Living out biblical masculinity",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "action",
+      "whyThisMatters": "This journey ends with a beginning,your commitment to live out biblical masculinity in every area of life.",
+      "frameworkBasis": {
+        "conceptKey": "integrated_masculinity",
+        "explanation": "Biblical masculinity isn't compartmentalized,it's integrated across every domain of life."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "reflection",
+          "cardNumber": 1,
+          "title": "What You've Learned",
+          "text": "Reflect on your journey: You've explored God's design for masculinity, Jesus as your model, provision and protection, emotional strength, self-leadership, work as calling, sexual purity, courage and initiative, and preparation for fatherhood.",
+          "icon": "psychology",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Biggest Growth Area",
+          "text": "Which area needs the most attention?",
+          "prompts": [
+            "Emotional strength",
+            "Self-leadership",
+            "Sexual purity",
+            "Courage and initiative",
+            "Preparing for fatherhood",
+            "Work and provision"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Focus here first. Growth in one area strengthens others."
+          },
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Integrated Man",
+          "text": "Biblical masculinity isn't a checklist,it's an integrated life: Strong AND tender, Courageous AND compassionate, Leader AND servant, Provider AND present, Disciplined AND gracious. This is the man God is shaping you to be.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Ongoing Journey",
+          "text": "Becoming a man is a lifelong process. You'll stumble. You'll grow. You'll need grace. The goal isn't perfection,it's direction. Keep moving toward the man God designed you to be.",
+          "icon": "timeline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Resources for the Journey",
+          "text": "Continue growing through: Mentorship from older men, Community with other men pursuing godliness, Scripture and prayer, Books on biblical masculinity, Accountability relationships.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Masculinity Commitment",
+          "text": "Write your commitment: The man I want to become: My primary growth focus: One action I'll take this week: Who will hold me accountable: A prayer for my journey:",
+          "responseType": "open-text",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "heroImage": "assets/images/journeys/Singles_journey9.jpg"
+}

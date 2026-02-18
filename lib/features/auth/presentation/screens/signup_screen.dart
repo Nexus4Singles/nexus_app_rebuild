@@ -6,8 +6,8 @@ import '../../../../core/providers/auth_provider.dart';
 import '../../../../core/bootstrap/bootstrap_gate.dart';
 import '../../../guest/guest_entry_gate.dart';
 import '../../../launch/presentation/app_launch_gate.dart';
-import '../../../presentation/screens/terms_screen.dart';
-import '../../../presentation/screens/privacy_policy_screen.dart';
+import '../../../profile/presentation/screens/terms_screen.dart';
+import '../../../profile/presentation/screens/privacy_policy_screen.dart';
 import 'email_verification_screen.dart';
 import 'login_screen.dart';
 
@@ -227,7 +227,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 children: [
                   Text(
                     'Join Nexus',
-                    style: AppTextStyles.displayMedium.copyWith(
+                    style: AppTextStyles.titleLarge.copyWith(
                       fontWeight: FontWeight.w500,
                       height: 1.1,
                     ),
@@ -235,7 +235,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   const SizedBox(height: 10),
                   Text(
                     'Create your account to get started',
-                    style: AppTextStyles.bodyMedium.copyWith(
+                    style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.getTextSecondary(context),
                     ),
                   ),
@@ -279,7 +279,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                       focusedErrorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: AppColors.error, width: 2),
+                        borderSide: BorderSide(
+                          color: AppColors.error,
+                          width: 2,
+                        ),
                       ),
                       contentPadding: const EdgeInsets.all(18),
                     ),
@@ -324,7 +327,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                       focusedErrorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: AppColors.error, width: 2),
+                        borderSide: BorderSide(
+                          color: AppColors.error,
+                          width: 2,
+                        ),
                       ),
                       contentPadding: const EdgeInsets.all(18),
                     ),
@@ -338,7 +344,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     style: AppTextStyles.bodyLarge,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      hintText: '8+ chars, capital start, 1 special char',
+                      hintText: '8+ chars, start with caps, 1 special char',
                       labelStyle: AppTextStyles.bodyMedium.copyWith(
                         color: AppColors.getTextSecondary(context),
                       ),
@@ -369,7 +375,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                       focusedErrorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: AppColors.error, width: 2),
+                        borderSide: BorderSide(
+                          color: AppColors.error,
+                          width: 2,
+                        ),
                       ),
                       contentPadding: const EdgeInsets.all(18),
                       suffixIcon: IconButton(
@@ -391,20 +400,26 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   const SizedBox(height: 16),
                   // Terms & Privacy Policy checkbox
                   GestureDetector(
-                    onTap: _busy
-                        ? null
-                        : () => setState(() => _agreedToTerms = !_agreedToTerms),
+                    onTap:
+                        _busy
+                            ? null
+                            : () => setState(
+                              () => _agreedToTerms = !_agreedToTerms,
+                            ),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
                           width: 24,
                           height: 24,
                           child: Checkbox(
                             value: _agreedToTerms,
-                            onChanged: _busy
-                                ? null
-                                : (v) => setState(() => _agreedToTerms = v ?? false),
+                            onChanged:
+                                _busy
+                                    ? null
+                                    : (v) => setState(
+                                      () => _agreedToTerms = v ?? false,
+                                    ),
                             activeColor: AppColors.primary,
                             checkColor: Colors.white,
                             side: BorderSide(
@@ -414,7 +429,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(4),
                             ),
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
                             visualDensity: VisualDensity.compact,
                           ),
                         ),
@@ -432,12 +448,13 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                                   alignment: PlaceholderAlignment.baseline,
                                   baseline: TextBaseline.alphabetic,
                                   child: GestureDetector(
-                                    onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const TermsScreen(),
-                                      ),
-                                    ),
+                                    onTap:
+                                        () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => const TermsScreen(),
+                                          ),
+                                        ),
                                     child: Text(
                                       'Terms of Use',
                                       style: AppTextStyles.bodySmall.copyWith(
@@ -455,12 +472,15 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                                   alignment: PlaceholderAlignment.baseline,
                                   baseline: TextBaseline.alphabetic,
                                   child: GestureDetector(
-                                    onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const PrivacyPolicyScreen(),
-                                      ),
-                                    ),
+                                    onTap:
+                                        () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (_) =>
+                                                    const PrivacyPolicyScreen(),
+                                          ),
+                                        ),
                                     child: Text(
                                       'Privacy Policy',
                                       style: AppTextStyles.bodySmall.copyWith(
@@ -487,7 +507,9 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       decoration: BoxDecoration(
                         color: AppColors.error.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.error.withOpacity(0.3)),
+                        border: Border.all(
+                          color: AppColors.error.withOpacity(0.3),
+                        ),
                       ),
                       child: Row(
                         children: [
@@ -517,9 +539,14 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       onPressed: (_busy || !_agreedToTerms) ? null : _signup,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
+                        foregroundColor: AppColors.getTextOnPrimary(context),
                         elevation: 0,
-                        disabledBackgroundColor: AppColors.border,
+                        disabledBackgroundColor: AppColors.getTextMuted(
+                          context,
+                        ).withOpacity(0.3),
+                        disabledForegroundColor: AppColors.getTextMuted(
+                          context,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
@@ -531,8 +558,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                                 height: 24,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  valueColor: const AlwaysStoppedAnimation<Color>(
-                                    Colors.white,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    AppColors.getTextOnPrimary(context),
                                   ),
                                 ),
                               )

@@ -1,0 +1,884 @@
+{
+  "journeyId": "married_communication_conflict",
+  "title": "Communication and Conflict Resolution in Marriage",
+  "subtitle": "Learning to hear, be heard, and fight fair",
+  "summary": "**Every marriage has conflict—the difference between thriving and struggling couples is how they handle it.** This journey equips you with practical communication tools, helps you understand your conflict patterns, and teaches you to turn disagreements into opportunities for deeper connection rather than distance.",
+  "targetUserCategory": "married",
+  "priorityRank": 1,
+  "estimatedDays": 14,
+  "totalActivities": 11,
+  "difficulty": "intermediate",
+  "themeColor": "#3498DB",
+  "cover": {
+    "themeTag": "Communication",
+    "accentIcon": "forum",
+    "heroImage": "assets/images/journeys/married_journey1.jpg",
+    "heroImageDescription": "A couple sitting close together in conversation, warm lighting suggesting deep connection and understanding. Intimate but not staged."
+  },
+  "frameworks": [
+    "gottman_method",
+    "nonviolent_communication",
+    "attachment_theory",
+    "biblical_wisdom"
+  ],
+  "targetOutcomes": [
+    "Identify your communication style and your spouse's",
+    "Learn to listen for understanding rather than response",
+    "Develop skills for de-escalating heated conversations",
+    "Transform criticism into constructive requests",
+    "Build rituals of connection through daily communication",
+    "Turn conflicts into opportunities for growth"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_communication_crossroads",
+      "isFree": true,
+      "title": "The Communication Crossroads",
+      "subtitle": "Why the way you talk determines where your marriage goes",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "route",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Research shows that the way couples communicate in the first three minutes of a conflict predicts the outcome 96% of the time. Communication isn't just one part of marriage—it's the oxygen that keeps everything else alive. This activity helps you see why mastering this skill changes everything.",
+      "frameworkBasis": {
+        "conceptKey": "gottman_communication_research",
+        "explanation": "Dr. John Gottman's research demonstrates that communication patterns predict marital success with remarkable accuracy."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The 96% Prediction",
+          "text": "Marriage researcher, Dr. John Gottman, made a startling discovery: he could predict with 96% accuracy whether a couple would divorce—simply by watching how they communicated during conflict.\n\n**Not what they fought about.** How they fought.\n\n**Marcus and Denise came to counseling convinced their marriage was beyond repair.** \"We fight about everything,\" Denise said. \"Money, the kids, what to have for dinner. Everything turns into a battle.\" But their counselor noticed something crucial: the issue was never really about the topic. It was about how they spoke to each other—the contempt in Marcus's voice, the criticism in Denise's words. When they learned to change how they communicated, the constant fighting stopped, even though they still disagreed about money, kids, and dinner.\n\n**The couples who thrive are not the ones who avoid conflict.** They are the ones who have learned to navigate it without destroying each other.\n\n**This means your communication patterns are not just preferences—they are prophecies.** The way you talk to your spouse today is writing the story of your marriage tomorrow.",
+          "icon": "insights"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Four Horsemen",
+          "text": "**Gottman identified four communication patterns that destroy marriages.** He called them 'The Four Horsemen':\n\n**Criticism**: Attacking your spouse's character, not their behavior.** 'You never think about anyone but yourself.'\n\n**Contempt**: Communicating disgust or superiority—eye rolling, mockery, name-calling.** This is the single greatest predictor of divorce.\n\n**Defensiveness**: Meeting complaints with counter-complaints instead of taking responsibility.**\n\n**Stonewalling**: Shutting down completely—walking away, silent treatment, emotional withdrawal.**\n\n**If any of these are present in your marriage, this journey is essential.**",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Recognizing the Patterns",
+          "text": "{red|**Be honest with yourself.** Which of the Four Horsemen show up most often in your marriage?} (Select all that apply)",
+          "prompts": [
+            "Criticism—attacking character rather than addressing behavior",
+            "Contempt—eye-rolling, mockery, sarcasm",
+            "Defensiveness—refusing to take responsibility",
+            "Stonewalling—shutting down or walking away",
+            "I see multiple of these in our communication"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Recognizing these patterns is the first step toward changing them. Every couple struggles with at least one."
+          },
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "What the Bible Says",
+          "text": "Scripture has always known what research now confirms:\n\n**'A gentle answer turns away wrath, but a harsh word stirs up anger.**' (({red|Proverbs 15:1}))\n\n**'Everyone should be quick to listen, slow to speak and slow to become angry.**' (({red|James 1:19}))\n\n**'Do not let any unwholesome talk come out of your mouths, but only what is helpful for building others up.**' (({red|Ephesians 4:29}))\n\n**God designed marriage to be a place of safety.** When communication becomes weaponized, that safety disappears. But it can be rebuilt.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Communication History",
+          "text": "{red|**Think about your last significant disagreement with your spouse.** What communication patterns showed up?}{red| What was the tone?}{red| How did it end?}\n\n**Now think about what you wish had happened differently—not what your spouse should have done, but what you could have done.**\n\nWrite a brief honest assessment of how you typically communicate during conflict:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Hope Ahead",
+          "text": "**Here's the good news: communication skills can be learned.**\n\n**Couples who seemed headed for disaster have turned their marriages around by learning to communicate differently.** It takes practice and humility, but it's absolutely possible.\n\nThis journey will give you: • Tools for speaking so your spouse can hear • Skills for listening so your spouse feels understood • Strategies for de-escalating when things get heated • Habits that build daily connection\n\n**Your marriage can become a place where both of you feel safe, heard, and valued.** Let's build that together.",
+          "icon": "lightbulb"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_listening_speak",
+      "isFree": false,
+      "title": "Listening to Understand, Not to Respond",
+      "subtitle": "The art that changes everything",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "hearing",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Most people listen while mentally preparing their response. This isn't listening—it's waiting to talk. True listening is rare, and when your spouse experiences it, everything changes. This activity teaches you the skill that most marriages are starving for.",
+      "frameworkBasis": {
+        "conceptKey": "active_listening",
+        "explanation": "Active listening creates the psychological safety necessary for genuine communication and conflict resolution."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Listening Illusion",
+          "text": "**Here is an uncomfortable truth: most of the time when we think we are listening, we are not.**\n\n**We are planning what we will say next, thinking about why they are wrong, waiting for them to finish so we can correct them, or half-listening while distracted.**\n\n**Janet described it perfectly: \"I would tell my husband something important, and I could see his eyes glaze over.** He was nodding, but he was not there. When I finished, he would respond to something I said five minutes earlier, or worse, ask a question I had already answered. I felt invisible.\"\n\n**\"My dear brothers and sisters, take note of this: Everyone should be quick to listen, slow to speak and slow to become angry\" ({red|James 1:19|**}).** God knew we would struggle with this.\n\n**Your spouse can feel the difference.** When you listen just to respond, they feel like a problem to be solved rather than a person to be understood. When you listen to understand, they feel valued—even if you do not agree with everything they are saying.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Gift of Being Heard",
+          "text": "{red|**Think about a time when someone really listened to you.** Not waiting to talk. Not trying to fix you. Just fully present, seeking to understand.\n\nHow did it feel?}\n\n**That feeling is one of the greatest gifts you can give your spouse.** And it costs nothing except your attention and humility.\n\nWhen people feel truly heard: • Their defensiveness drops • They become more open to other perspectives • They feel loved and valued • They're more willing to listen in return\n\n**Listening isn't passive.** It's one of the most powerful things you can do in your marriage.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The HEAR Method",
+          "text": "Try this framework for better listening:\n\n**H - Halt**: Stop what you're doing.** Put down the phone. Turn toward your spouse. Give them your full attention.\n\n**E - Engage**: Make eye contact.** Show you're present through your body language.\n\n**A - Acknowledge**: Reflect back what you're hearing.** 'It sounds like you're frustrated because...' This shows you're processing, not just waiting.\n\n**R - Respond**: Only after you've truly heard should you respond—and start by validating their feelings before offering your perspective.**\n\n**This takes practice.** Most of us have years of bad listening habits to unlearn.",
+          "icon": "format_list_numbered"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Listening Audit",
+          "text": "{red|**Be honest with yourself.** When your spouse is talking, especially about something difficult, what's typically happening in your mind?}\n\n{red|Are you fully present or partially distracted?}{red| Are you seeking to understand or preparing to respond?}{red| Do you interrupt or let them finish?}{red| Do you validate before offering your perspective?}\n\nWrite about your typical listening patterns:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Barriers to Listening",
+          "text": "{red|What most commonly prevents you from truly listening to your spouse?}",
+          "prompts": [
+            "I'm too distracted or busy",
+            "I disagree and want to correct them",
+            "I feel attacked and get defensive",
+            "I'm thinking about my response",
+            "I feel the issue isn't important",
+            "Other barriers"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Identifying your barriers is the first step to overcoming them. Awareness creates choice."
+          },
+          "icon": "block"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Listening Practice",
+          "text": "{red|**This week, practice the HEAR method at least three times with your spouse.**\n\n**Pick moments that aren't high-conflict—everyday conversations are perfect for building the skill.**\n\nAfter each conversation, ask yourself: • Did I give them my full attention?}{red| • Did I reflect back what I heard?}{red| • Did I validate before responding?}\n\n**The goal isn't perfection—it's progress.**",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_speaking_heard",
+      "isFree": false,
+      "title": "Speaking So You Can Be Heard",
+      "subtitle": "The difference between expressing and attacking",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "record_voice_over",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "How you say something matters as much as what you say. The same message delivered differently can either invite connection or trigger defensiveness. This activity teaches you to speak in ways that your spouse can actually receive.",
+      "frameworkBasis": {
+        "conceptKey": "soft_startup",
+        "explanation": "Gottman's research shows that conversations end the way they begin. A soft startup dramatically increases the chance of productive resolution."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Startup Determines the Outcome",
+          "text": "**Research reveals something powerful: the first three minutes of a conversation predict its outcome 96% of the time.**\n\n**Start harsh, end harsh.** Start soft, end better.\n\n**This means how you bring up issues matters enormously.** Not because you need to 'manage' your spouse, but because a gentle approach invites dialogue while a harsh approach triggers defense.\n\n**'A gentle answer turns away wrath, but a harsh word stirs up anger.**' (({red|Proverbs 15:1}))\n\n**This isn't weakness.** It's wisdom.",
+          "icon": "start"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "From Criticism to Request",
+          "text": "{red|There is a crucial difference between criticism and complaint:\n\n**Criticism** attacks character: \"You are so selfish.** You never think about anyone but yourself.\"\n\n**Complaint** addresses behavior: \"I felt hurt when the plans changed without asking me.**\"\n\n**Robert learned this distinction the hard way.** Robert said he used to come home and immediately point out what was wrong. \"The house is a mess. You forgot to pay that bill. Why is dinner not ready?}{red|\" Robert explained. \"I thought I was just being honest. But my wife heard: you are a failure. When I learned to say 'I feel stressed when the house is cluttered because I need calm to decompress' instead of 'you never clean up,' everything changed. Same concern, but she could actually hear me.\"\n\nEven better, transform complaints into requests:\n\n**Request**: \"When plans change, could you check with me first?} It helps me feel valued.\"\n\n**Same issue.** Completely different delivery. Dramatically different response.",
+          "icon": "swap_horiz"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The 'I Feel' Formula",
+          "text": "A powerful tool for speaking without attacking:\n\n**'I feel [emotion] when [specific behavior] because [reason].** What I need is [request].'**\n\n**Instead of: 'You never help around the house!**'\n\n**Try: 'I feel overwhelmed when I'm doing housework alone because there's so much to do.** What I need is for us to tackle it together a few times a week.'\n\nThis formula: • Owns your feelings (not 'you made me feel') • References specific behavior (not character) • Explains the impact • Makes a clear request\n\n**It takes practice, but it changes everything.**",
+          "icon": "format_quote"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Rewriting Your Scripts",
+          "text": "**Think of something that's been bothering you about your spouse—something you've either complained about harshly or haven't addressed at all.**\n\nNow, rewrite it using the 'I Feel' formula:\n\n**I feel _____ when _____ because _____.** What I need is _____.\n\nWrite your reframed statement:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Timing Matters",
+          "text": "{red|**The best-crafted message delivered at the wrong time will still fail.**\n\nAvoid bringing up difficult topics when: • Either of you is tired, hungry, or stressed • You're walking out the door or about to sleep • You're in front of children or others • You're in the middle of another conflict\n\n**Instead, ask: 'There's something I'd like to talk through with you.** When would be a good time?}'\n\n**This respects your spouse and increases the chance of being heard.**",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Speaking Practice",
+          "text": "**This week, bring up one issue using the 'I Feel' formula.**\n\n**Choose something small to start—not your biggest conflict.** The goal is to practice the skill.\n\n**Before speaking: 1.** Write out your statement using the formula 2. Choose an appropriate time 3. Start with something positive about your spouse 4. Use your prepared statement 5. Listen to their response\n\n**Notice how different the conversation feels.**",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_deescalation",
+      "isFree": false,
+      "title": "When Things Get Heated",
+      "subtitle": "De-escalation strategies that actually work",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "whatshot",
+      "emotionalIntensity": "high",
+      "activityType": "practical",
+      "whyThisMatters": "Even with the best intentions, conversations can escalate. Your heart rate rises, your thinking narrows, and you say things you'll regret. Knowing how to de-escalate—for yourself and your spouse—is essential for protecting your marriage during heated moments.",
+      "frameworkBasis": {
+        "conceptKey": "emotional_flooding",
+        "explanation": "When heart rate exceeds 100 bpm, we enter 'flooding'—a state where productive communication becomes nearly impossible."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Understanding Flooding",
+          "text": "{red|**There is a reason you cannot think clearly when you are really upset.** It is called flooding.\n\n**When your heart rate exceeds about 100 beats per minute, your body enters fight-or-flight mode.** Blood flows away from your prefrontal cortex (where rational thinking happens) toward your muscles and survival centers.\n\n**Kevin described his experience: \"In the middle of arguments, I would say things that were not even true—hurtful things I did not mean.** Later I would wonder, where did that come from?} That is not who I am.\" Kevin learned it was not really him. It was his flooded brain, operating from survival mode rather than wisdom.\n\n**In this state you cannot listen well, you interpret neutral things as attacks, you say things you do not mean, and you make the conflict worse, not better.**\n\n**\"In your anger do not sin: Do not let the sun go down while you are still angry\" ({red|Ephesians 4:26|In your anger do not sin: Do not let the sun go down while you are still angry}).** Paul understood that anger needs managing, not acting upon.\n\n**No productive conversation can happen when either person is flooded.** Learning to recognize and address flooding is essential.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Flooding Signs",
+          "text": "{red|When you're getting flooded in a conflict, what do you typically notice in your body?}",
+          "prompts": [
+            "Racing heart or chest tightness",
+            "Clenched jaw or fists",
+            "Raised voice or faster speech",
+            "Feeling hot or flushed",
+            "Mind going blank or racing",
+            "Urge to walk away or shut down"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These physical signs are your early warning system. Noticing them early gives you a chance to respond wisely."
+          },
+          "icon": "monitor_heart"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Time-Out Strategy",
+          "text": "**When you notice flooding—in yourself or your spouse—it's time for a strategic pause.**\n\n**How to do it well:**\n\n1. Agree on a signal beforehand (a word or gesture) 2. When flooded, use the signal: 'I need a break to calm down' 3. Commit to a specific return time: 'Let's come back in 20 minutes' 4. Actually return and continue the conversation\n\n**The rules:** • This is a pause, not an escape • 20-30 minutes minimum (it takes that long for flooding to subside) • Don't use the time to build your case—use it to calm down • No stonewalling disguised as time-out",
+          "icon": "timer"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Self-Soothing During Time-Out",
+          "text": "**What you do during the time-out matters.** If you spend it rehearsing your arguments or stewing in resentment, you'll return more flooded, not less.\n\nEffective self-soothing: • Deep breathing (slow exhale is key) • Physical movement (walk, stretch) • Distraction (read, music—nothing related to the conflict) • Prayer: 'Lord, help me see my spouse as you see them'\n\n**The goal is to get your heart rate below 100 bpm and your thinking brain back online.**\n\n**Only then are you ready to return.**",
+          "icon": "self_improvement"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Repair Attempts",
+          "text": "{red|**Healthy couples interrupt escalation with 'repair attempts'—things that break the tension and remind you that you're on the same team.**\n\nExamples: • 'Can we start over?}' • 'I'm sorry, that came out wrong' • 'I can see I hurt you—that wasn't my intention' • 'Let's take a breath together' • 'I love you even though this is hard' • Even appropriate humor (carefully!)\n\n**What matters isn't the elegance of the repair—it's that your spouse accepts it.**\n\n**Couples who make and receive repair attempts have dramatically better outcomes.**",
+          "icon": "handshake"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Creating Your De-escalation Plan",
+          "text": "Have a conversation with your spouse (when things are calm) to create a de-escalation plan:\n\n1. Agree on a time-out signal that either can use 2. Agree on minimum time (20-30 minutes) 3. Agree that you'll return and continue 4. Each identify 2-3 repair attempts you'll try\n\n**Having this agreement in place before conflict happens makes it much easier to use in the moment.**\n\n**Consider discussing this activity together tonight.**",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_beneath_surface",
+      "isFree": false,
+      "title": "What's Really Underneath the Argument",
+      "subtitle": "Finding the deeper need beneath the surface conflict",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "layers",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Most arguments aren't really about what they appear to be about. The fight about dishes is often about feeling unappreciated. The conflict about money might really be about security or control. Until you get to what's underneath, you'll keep having the same fights.",
+      "frameworkBasis": {
+        "conceptKey": "underlying_needs",
+        "explanation": "Surface conflicts often mask deeper emotional needs—for respect, security, appreciation, or connection."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Iceberg of Conflict",
+          "text": "**Think of conflict like an iceberg.** The visible part—what you're arguing about—is just 10% of what's really there.\n\nBeneath the surface are: • Unspoken fears • Past wounds that got triggered • Core needs that aren't being met • Childhood patterns playing out • Fundamental values at stake\n\n**When you argue about the tip of the iceberg while ignoring what's beneath, you never resolve anything.** The same fights keep returning because the real issue was never addressed.",
+          "icon": "icecream"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Story Behind the Story",
+          "text": "Here is an example:\n\n**Surface argument**: \"You are always on your phone when I am talking to you.**\"\n\n**Christina and Brian fought about the phone constantly.** Brian said he just needed a few minutes to decompress after work. Christina said she felt ignored. They went round and round on the same argument for months.\n\n**Their breakthrough came when they stopped arguing about the phone and asked what was underneath.**\n\n**Beneath the surface** (for Christina): I do not feel like a priority anymore.** I am scared I am losing you. I need to know I still matter to you.\n\n**Beneath the surface** (for Brian): I feel criticized constantly.** I need some space to decompress. I am overwhelmed and do not know how to say it.\n\n**Once they understood each other's deeper needs, they found a solution easily: Brian got 20 minutes to decompress, then gave Christina his full attention.** The phone argument disappeared because it was never really about the phone.\n\n**When couples can get beneath the surface, the conversation shifts from attack and defend to understanding and connecting.**",
+          "icon": "auto_stories"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Recurring Conflicts",
+          "text": "{red|**Think about a conflict that keeps repeating in your marriage.** The same issue that comes up again and again.\n\nNow ask yourself: What might be beneath the surface for you?}{red| What fear, need, or wound might be driving your reaction?}\n\n{red|And what might be beneath the surface for your spouse?}\n\nWrite your thoughts:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Questions That Go Deeper",
+          "text": "{red|When you're in conflict, try asking these questions—to yourself or to your spouse:\n\n• 'What's the worst part of this for you?}{red|' • 'What does this mean to you?}{red| What does it say about us?}{red|' • 'Is there something from your past that this reminds you of?}{red|' • 'What do you need from me right now?}{red|' • 'What are you afraid might happen?}'\n\n**These questions move you from positions ('You should do X') to needs ('I need to feel Y').**\n\n**Needs can be negotiated.** Positions just clash.",
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Core Emotional Needs",
+          "text": "Most underneath needs fall into a few categories:\n\n**Security**: Feeling safe, stable, able to trust **Respect**: Feeling valued, honored, taken seriously **Appreciation**: Feeling noticed, acknowledged, thanked **Connection**: Feeling close, prioritized, intimate **Freedom**: Feeling trusted, not controlled **Support**: Feeling helped, not alone\n\n**When you can name the need underneath your frustration, you can ask for it directly rather than attacking your spouse for failing to meet it.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Going Deeper Together",
+          "text": "{red|The next time you find yourself in a recurring conflict, pause and try this:\n\n1. Take a breath and ask yourself: 'What's really bothering me here?}{red| What need isn't being met?}{red|'\n\n2. Share it with your spouse: 'I think what's really going on for me is that I need to feel [need].'\n\n3. Invite them to share: 'What's going on beneath the surface for you?}'\n\n4. Once you're both talking about needs rather than positions, explore how to meet each other's needs.\n\n**This takes practice.** Start with lower-stakes conflicts.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_daily_connection",
+      "isFree": false,
+      "title": "Building Daily Connection Rituals",
+      "subtitle": "Small moments that prevent big problems",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "event_repeat",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "The health of your marriage isn't determined by the big conversations—it's built in the small daily moments. Couples who have rituals of connection are more resilient when conflict comes. This activity helps you create sustainable habits that keep you connected.",
+      "frameworkBasis": {
+        "conceptKey": "emotional_bank_account",
+        "explanation": "Daily positive interactions build an 'emotional bank account' that sustains the relationship through difficult times."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Emotional Bank Account",
+          "text": "**Think of your marriage as having an emotional bank account.**\n\n**Every positive interaction—a kind word, a loving touch, genuine listening—is a deposit.**\n\n**Every negative interaction—criticism, dismissiveness, conflict—is a withdrawal.**\n\n**Couples with a healthy balance can weather difficult conversations because there's trust in the account.** Couples who are overdrawn have no cushion—every conversation feels risky.\n\n**Research shows successful couples have a ratio of at least 5:1 positive to negative interactions.** That ratio is built through daily deposits.",
+          "icon": "account_balance"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Power of Small Moments",
+          "text": "{red|**You do not need grand gestures.** You need consistent small ones.\n\n**Gottman calls these 'bids for connection'—the small ways your spouse reaches out: \"Look at this funny thing I saw.**\" \"How was your meeting?}{red|\" \"Come sit with me.\" A touch on the shoulder as they pass.\n\n**Every bid is an invitation.** You can turn toward it (engage), turn away (ignore), or turn against it (respond negatively).\n\n**Amanda realized she had been turning away from her husband's bids for years without knowing it.** Amanda said he would show her something on his phone and she would barely glance up from what she was doing. \"I did not realize each of those moments was a test,\" Amanda explained. \"He was asking, 'Do I still matter to you?}' And my distracted responses were saying no. When I started turning toward him, actually looking, actually engaging, he became a different person. More affectionate, more open, more connected. Nothing else changed except that I started saying yes to his bids.\"\n\n**Couples who consistently turn toward each other's bids have dramatically healthier marriages.**",
+          "icon": "touch_app"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Current Connection Points",
+          "text": "{red|When during a typical day do you and your spouse intentionally connect?} (Select all that apply)",
+          "prompts": [
+            "Morning before work/day starts",
+            "During meals together",
+            "Evening check-in about the day",
+            "Bedtime routine together",
+            "Regular date nights",
+            "We don't have regular connection points"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Whatever you're doing now, there's opportunity to be more intentional about building connection into your rhythm."
+          },
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Simple Connection Rituals",
+          "text": "{red|Consider building these into your daily or weekly rhythm:\n\n**Daily:** • 6-second kiss goodbye and hello (not just a peck) • 10 minutes of phone-free conversation about your day • A genuine compliment or appreciation • Praying together before bed (even briefly)\n\n**Weekly:** • A dedicated date (even if it's at home after kids are asleep) • A 'state of the union' check-in: 'How are we doing?}' • Physical affection that isn't goal-oriented\n\n**The ritual isn't magic—the consistency is.**",
+          "icon": "event_available"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "What Would Help Most?",
+          "text": "{red|**Think about your marriage right now.** Which of your connection points are strong?}{red| Which are missing or weak?}\n\n{red|What one ritual could you add that would make the biggest difference for your relationship?}\n\nWrite your thoughts:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Creating Your Connection Ritual",
+          "text": "{red|**Talk with your spouse about building one new connection ritual.**\n\nDiscuss: • What feels manageable given your current season of life?}{red| • What time of day works best?}{red| • What would be meaningful to both of you?}\n\n**Start small.** One sustainable ritual is better than five aspirational ones.\n\n**Commit to practicing it for one week, then evaluate together.**\n\n**This activity is designed to be discussed together with your spouse.**",
+          "icon": "group"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_fighting_fair",
+      "isFree": false,
+      "title": "Fighting Fair: Rules of Engagement",
+      "subtitle": "Boundaries that protect your marriage during conflict",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "gavel",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Every healthy couple has conflict. What separates thriving marriages from struggling ones is how that conflict is managed. Having agreed-upon 'rules of engagement' protects your relationship even when emotions run high.",
+      "frameworkBasis": {
+        "conceptKey": "conflict_boundaries",
+        "explanation": "Pre-established conflict boundaries provide structure that protects the relationship when emotions are elevated."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Rules Matter",
+          "text": "**When you're flooded with emotion, your judgment is impaired.** You say things you don't mean. You hit below the belt. You do damage that takes weeks to repair.\n\n**Having pre-agreed rules—established when you're both calm—provides guardrails when things get heated.**\n\n**This isn't about being robotic during conflict.** It's about protecting your marriage from words and actions that can't be undone.\n\n**'A person without self-control is like a city with broken-down walls.**' (({red|Proverbs 25:28}))",
+          "icon": "security"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Rules That Protect",
+          "text": "Consider adopting these as your couple's 'rules of engagement':\n\n**Never:** • Call each other names • Use 'always' and 'never' • Bring up past resolved conflicts • Threaten divorce or leaving • Involve others (kids, in-laws) in the fight • Fight in public or in front of children\n\n**Always:** • Stick to one issue at a time • Take breaks when flooded • Return to finish unresolved conversations • End with some form of repair, even if unresolved • Sleep in the same bed (barring safety concerns)",
+          "icon": "rule"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Sacred Boundaries",
+          "text": "Some lines should never be crossed, no matter how heated things get:\n\n**Physical aggression**: Never acceptable.** Ever.\n\n**Character assassination**: Attacking who your spouse IS rather than what they DID crosses a line that takes much longer to heal.**\n\n**Threatening the relationship**: Using 'maybe we should just divorce' as a weapon creates instability that poisons everything.**\n\n**Public humiliation**: Fighting in front of others, airing grievances to friends/family, social media venting—all violations.**\n\n**These aren't negotiable.** They're the walls that keep your marriage safe.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Lines You've Crossed",
+          "text": "{red|**Be honest with yourself.** Which of these have you crossed in your marriage?}",
+          "prompts": [
+            "Name-calling or insults",
+            "Bringing up old issues to win current fights",
+            "Threatening to leave or divorce",
+            "Refusing to continue conversations",
+            "Fighting in front of children",
+            "Involving others in our conflicts"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "We've all crossed lines we shouldn't have. The question is whether we'll establish and honor boundaries going forward."
+          },
+          "icon": "warning"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "What Your Marriage Needs",
+          "text": "{red|Based on your conflict history, what rules does your specific marriage need?}\n\n{red|**Think about the patterns that have hurt you both.** What boundaries would protect against those patterns?}\n\nWrite 2-3 rules that would make the biggest difference:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Creating Your Rules Together",
+          "text": "**Sit down with your spouse (when things are calm) and create your own 'Rules of Engagement.**'\n\n1. Share what you've written in this activity 2. Let them share their perspective 3. Agree on 5-7 rules you'll both honor 4. Write them down somewhere you can reference them 5. Agree on what happens if a rule is broken (repair, apology, time-out)\n\n**This activity is designed to be completed with your spouse.**",
+          "icon": "handshake"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_different_styles",
+      "isFree": false,
+      "title": "When You Speak Different Languages",
+      "subtitle": "Understanding your different communication styles",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "translate",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "You and your spouse likely have different communication styles—different ways of processing, different needs during conflict, different preferences for timing and approach. Understanding these differences prevents you from misinterpreting each other and helps you adapt.",
+      "frameworkBasis": {
+        "conceptKey": "communication_styles",
+        "explanation": "Recognizing that communication style differences are normal—not signs of dysfunction—reduces personalization and conflict."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Different, Not Wrong",
+          "text": "**One of the most common sources of frustration in marriage is interpreting style differences as character flaws.**\n\n**Your spouse needs space when upset—you think they don't care.** You need to talk things through—they think you're overwhelming. They're brief and direct—you feel dismissed. You're detailed and explanatory—they feel lectured.\n\n**These aren't right vs.** wrong. They're just different. And understanding the difference changes everything.",
+          "icon": "compare"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Processing Styles",
+          "text": "People generally process emotions and information in two ways:\n\n**External processors** think by talking.** They need to verbalize to understand what they feel. They may not know their conclusion until they have talked it through.\n\n**Internal processors** think before talking.** They need time to reflect before they are ready to discuss. Speaking before processing feels overwhelming.\n\n**Neither is better.** But pairing one of each creates friction if you do not understand what is happening.\n\n**David and Michelle almost divorced over this difference.** Michelle said she would bring up an issue and David would just shut down. \"I thought he did not care. I thought he was dismissing me.\" David explained his side: \"She would want to talk about something heavy the moment I walked in the door. My brain was not ready. I needed time to think, but she interpreted my silence as rejection.\"\n\n**Once they understood they were simply different processors, everything shifted.** Michelle learned to give David a heads-up and time. David learned to commit to a specific time to return to the conversation. \"We stopped fighting about the fact that we process differently,\" Michelle said. \"We just worked with it.\"\n\n**The external processor feels stonewalled.** The internal processor feels pressured. But understanding dissolves the conflict.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Processing Style",
+          "text": "{red|When you're upset or facing a complex issue, what do you typically need first?}",
+          "prompts": [
+            "To talk it out immediately with someone",
+            "Time alone to process before discussing",
+            "A mix—depends on the situation",
+            "I'm not sure"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Understanding your own style helps you communicate your needs to your spouse."
+          },
+          "icon": "quiz"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Bridging the Gap",
+          "text": "{red|If you're different processing styles, here's how to bridge the gap:\n\n**If you're the external processor:** • Give warning: 'I need to talk through something—can we find time?}' • Don't require immediate response to everything you say • Write notes if your spouse needs time to process\n\n**If you're the internal processor:** • Commit to returning after you've processed: 'I need some time, but let's talk at 8pm' • Reassure them you're not withdrawing permanently • Try thinking out loud sometimes—it builds intimacy\n\n**Meet in the middle.** Your style isn't the only valid one.",
+          "icon": "sync"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Understanding Your Spouse",
+          "text": "{red|Think about your spouse's communication style:\n\n• Are they an internal or external processor?}{red| • Do they prefer to address issues immediately or need time?}{red| • Are they direct or do they hint at what they mean?}{red| • What makes them shut down?}{red| • What helps them open up?}\n\nWrite your observations about how your spouse communicates:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Style Conversation",
+          "text": "**Have a conversation with your spouse about communication styles—NOT during a conflict.**\n\nShare: • Your processing style and what you need • What you've observed about their style • Ask what helps them feel heard • Ask what makes them shut down\n\n**Create a plan for how you'll honor each other's styles, especially during difficult conversations.**",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_repair_after_conflict",
+      "isFree": false,
+      "title": "Repair: After the Storm",
+      "subtitle": "How to reconnect when conflict has caused damage",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "healing",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Even with the best skills, conflicts will sometimes go badly. Things will be said that shouldn't have been. Feelings will be hurt. What matters is what happens next. The ability to repair after conflict determines whether hurt becomes healing or accumulates into resentment.",
+      "frameworkBasis": {
+        "conceptKey": "relationship_repair",
+        "explanation": "Repair after conflict is more important than avoiding conflict. How couples recover predicts relationship health."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Repair Is Everything",
+          "text": "**Here's a surprising finding from marriage research: the healthiest couples aren't the ones who fight less—they're the ones who repair better.**\n\n**Every couple has moments they're not proud of.** Harsh words, cold shoulders, unfair accusations.\n\n**The difference is whether that damage stays or gets healed.**\n\n**Unrepaired hurts accumulate.** Small wounds become infected and grow. Eventually, partners stop bringing things up because 'nothing ever gets resolved.'\n\n**Repair interrupts that cycle.**",
+          "icon": "healing"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Genuine Repair Looks Like",
+          "text": "{red|Effective repair has several components:\n\n**Acknowledgment**: 'I see that I hurt you.** I said/did [specific thing].'\n\n**Responsibility**: 'That was wrong.** I shouldn't have done that.' (No 'but...')\n\n**Understanding**: 'I can see why that hurt you.** You felt [emotion].'\n\n**Apology**: 'I'm sorry.** Will you forgive me?}'\n\n**Change**: 'Here's what I'll do differently next time.**..'\n\n**Notice what's NOT here: defending yourself, explaining why, minimizing what happened, or expecting immediate forgiveness.**",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Receiving Repair",
+          "text": "**Repair takes two.** One person offers it; the other receives it.\n\nReceiving repair well means: • Listening without interrupting • Resisting the urge to add more grievances • Being willing to forgive (not immediately forget) • Not weaponizing the apology later\n\n**Forgiveness is a choice, not a feeling.** The feelings often follow the choice.\n\n**'Bear with each other and forgive one another if any of you has a grievance against someone.** Forgive as the Lord forgave you.' (({red|Colossians 3:13}))\n\n**If God can forgive you, you can forgive your spouse.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Repair in Your Marriage",
+          "text": "{red|Think honestly about repair in your marriage:\n\n• After conflict, who typically initiates repair?}{red| Is it balanced?}{red| • Do your apologies include genuine responsibility, or do they have 'buts'?}{red| • Can you receive apologies without adding more to discuss?}{red| • Is there any unrepaired damage still sitting between you?}\n\nWrite your honest assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "When Repair Feels Hard",
+          "text": "Sometimes repair feels impossible:\n\n• Pride says 'They started it' • Hurt says 'They should apologize first' • Fear says 'They won't receive it anyway'\n\n**But someone has to go first.** And it can be you.\n\n**Jesus said, 'If you are offering your gift at the altar and remember that your brother has something against you, leave your gift.** First go and be reconciled.' (({red|Matthew 5:23-24}))\n\n**Notice: it doesn't say 'if they have something legitimately against you.**' It says if they have something against you—go reconcile.\n\n**Initiating repair isn't weakness.** It's leadership.",
+          "icon": "emoji_people"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "An Act of Repair",
+          "text": "{red|Is there anything between you and your spouse that needs repair?}{red| Something said, something done, something neglected?}\n\nThis week, initiate repair:\n\n1. Acknowledge specifically what you did 2. Take responsibility without defending 3. Express understanding of the impact 4. Apologize genuinely 5. Offer what you'll do differently\n\n**Don't wait for the perfect moment.** The perfect moment is when you decide to act.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_perpetual_problems",
+      "isFree": false,
+      "title": "Living with Unsolvable Problems",
+      "subtitle": "What to do when you can't fix it",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "loop",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Here's something most couples don't know: 69% of marital conflicts are perpetual—they never fully resolve. They stem from fundamental differences in personality, values, or needs. Healthy couples learn to manage these rather than 'solve' them. This reframe can save your sanity.",
+      "frameworkBasis": {
+        "conceptKey": "perpetual_problems",
+        "explanation": "Gottman's research shows most marital conflicts are perpetual. Successful couples dialogue about them rather than demanding resolution."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The 69% Reality",
+          "text": "Dr. Gottman's research revealed something surprising: 69% of the issues couples fight about will never be fully resolved.\n\n**This is not because they are failing.** It is because these conflicts reflect fundamental differences—in personality, upbringing, values, or preferences—that are not going to change completely.\n\n**Sarah and Tom fought about housekeeping for fifteen years.** Sarah said the clutter made her anxious. Tom said she was too uptight. They tried everything—chore charts, hiring help, ultimatums. Nothing worked because they were trying to \"solve\" what was really a perpetual difference in how they experienced their environment.\n\n**Their breakthrough came when they stopped trying to change each other.** \"We finally accepted we are just different,\" Tom explained. \"She needs more order than I do. I need more relaxation about it than she does. Neither of us is wrong.\" They found compromises—certain rooms stayed tidy for Sarah, certain spaces stayed relaxed for Tom—but more importantly, they stopped resenting each other for being who they were.\n\n**The spender married to the saver.** The introvert married to the extrovert. Different parenting philosophies. Different relationships with in-laws.\n\n**These are perpetual problems.** And the question is not how to eliminate them—it is how to live with them without letting them destroy the marriage.",
+          "icon": "insights"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Gridlock vs. Dialogue",
+          "text": "{red|**The same perpetual problem can become either gridlock or ongoing dialogue.**\n\n**Gridlock** looks like: • The same fight, escalating each time • Feeling unheard, stuck, hopeless • Withdrawal or resentment building • 'Why even bother talking about it?}'\n\n**Dialogue** looks like: • Discussing without attacking • Understanding the other's position, even without agreeing • Finding areas of flexibility within the difference • Humor and affection despite disagreement • 'We're different here, but we respect each other'\n\n**The issue doesn't disappear.** The relationship dynamic around it transforms.",
+          "icon": "compare_arrows"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Perpetual Problems",
+          "text": "{red|What issues in your marriage keep coming up again and again?}{red| What feels like it will never be fully resolved because you're fundamentally different?}\n\nPerhaps it's about: • Money approach • Time with extended family • Parenting styles • Social needs • Household standards\n\nIdentify 1-2 perpetual problems in your marriage:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Dreams Within Conflict",
+          "text": "**Beneath every perpetual problem is a dream—something each person hopes for or values deeply.**\n\n**The partner who wants to spend more is often dreaming of enjoyment, generosity, or freedom.**\n\n**The partner who wants to save more is often dreaming of security, stability, or peace of mind.**\n\n**When you can understand and honor the dream beneath your spouse's position—even without agreeing with their approach—the conflict becomes less personal.**\n\n**You're not fighting each other.** You're trying to navigate two valid dreams.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Finding the Flexible Space",
+          "text": "**Within every perpetual problem, there's usually some flexible space and some non-negotiable core.**\n\nFor example: • Non-negotiable: I need to feel financially secure • Flexible: How we get there can be discussed\n\n• Non-negotiable: I need some time with friends • Flexible: How often and when can be negotiated\n\n**Healthy couples identify what's truly non-negotiable for each of them, then creatively problem-solve in the flexible space.**\n\n**This isn't compromise where both lose.** It's finding solutions that honor both dreams where possible.",
+          "icon": "tune"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Shifting from Gridlock to Dialogue",
+          "text": "Take one perpetual problem in your marriage and try this exercise:\n\n1. Each share the dream beneath your position 2. Identify what's non-negotiable for each of you 3. Identify where there's flexibility 4. Brainstorm options that honor both dreams 5. Accept that you'll need to revisit this—that's normal\n\n**The goal isn't to 'win' or even to fully resolve.** It's to stay connected and respectful while navigating a real difference.",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_communication_commitment",
+      "isFree": false,
+      "title": "Your Communication Commitment",
+      "subtitle": "Taking what you've learned into daily life",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "verified",
+      "emotionalIntensity": "light",
+      "activityType": "commitment",
+      "whyThisMatters": "Information without application fades quickly. This activity helps you consolidate what you've learned and create a commitment to practice these skills in your daily life. Real change requires intentional ongoing effort.",
+      "frameworkBasis": {
+        "conceptKey": "intentional_practice",
+        "explanation": "Communication skills require ongoing practice. Creating specific commitments increases follow-through."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You've Learned",
+          "text": "{red|Over this journey, you've gained important tools:\n\n• The Four Horsemen and how to avoid them • The HEAR method for listening • The 'I Feel' formula for speaking • De-escalation and time-out strategies • How to reach what's beneath the surface • Daily connection rituals • Rules of engagement • Understanding different styles • How to repair after conflict • How to live with perpetual problems\n\n**Knowing these things is not the same as doing them.** The question is: what will you actually practice?}",
+          "icon": "school"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "reflection",
+          "cardNumber": 2,
+          "title": "Your Greatest Need",
+          "text": "{red|Looking at your marriage right now, what communication skill do you most need to develop?}\n\n{red|• Better listening?}{red| • Speaking without attacking?}{red| • De-escalating when heated?}{red| • Initiating repair?}{red| • Daily connection?}\n\nBe specific about what would make the biggest difference:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "What Your Spouse Needs",
+          "text": "{red|**Now think about your spouse.** What do they most need from you in terms of communication?}\n\n{red|What would they say if asked what one thing would help them feel more heard, understood, and connected?}\n\nWrite what you believe your spouse needs most:",
+          "responseType": "open-text",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Making It Stick",
+          "text": "Research on habit formation suggests:\n\n• Focus on one thing at a time • Attach it to an existing habit (after dinner, when getting into bed) • Track it for accountability • Expect setbacks and keep going • Review progress weekly\n\n**Don't try to implement everything at once.** Choose one or two skills to focus on this month. Master those, then add more.\n\n**Small consistent progress beats ambitious plans that fade.**",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Your Communication",
+          "text": "**Lord, I want my words to build up, not tear down.**\n\n**I want to listen to understand, not just to respond.**\n\n**I want to fight fair and repair quickly.**\n\n**I want my spouse to feel safe, heard, and valued in our conversations.**\n\n**Change starts with me.** Help me lead in healthy communication, even when it's hard.\n\n**Give us words of grace and truth.** Help us communicate in ways that honor You and strengthen our marriage.\n\nAmen.\n\n**'Let your conversation be always full of grace, seasoned with salt, so that you may know how to answer everyone.**' (({red|Colossians 4:6}))",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Communication Commitment",
+          "text": "Create a commitment for the next 30 days:\n\n1. One listening skill I will practice: 2. One speaking skill I will practice: 3. Our de-escalation plan when things get heated: 4. Our daily connection ritual: 5. When we'll check in on progress:\n\n**Discuss this with your spouse and create this plan together.**\n\n**Sign and date it as a reminder of your commitment to healthy communication in your marriage.**",
+          "icon": "handshake"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Communication Transformed",
+    "summaryText": "You've gained essential tools for healthy marriage communication. The difference between couples who thrive and those who struggle often comes down to these skills. Practice them consistently and watch your connection deepen.",
+    "keyTakeaways": [
+      "How you communicate predicts your marriage's future more than what you argue about",
+      "Listening to understand transforms conversations more than speaking better",
+      "De-escalation and repair are more important than avoiding conflict",
+      "Daily connection rituals build the resilience needed for difficult conversations",
+      "69% of problems are perpetual—learning to dialogue about them is key"
+    ],
+    "nextRecommendedJourneys": [
+      "Breaking Harmful Conflict Patterns in Marriage",
+      "Restoring Friendship and Emotional Connection",
+      "Strengthening Emotional and Physical Intimacy"
+    ]
+  }
+}

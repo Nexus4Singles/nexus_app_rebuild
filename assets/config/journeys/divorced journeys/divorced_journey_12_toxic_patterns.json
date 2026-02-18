@@ -1,0 +1,757 @@
+{
+  "journeyId": "divorced_toxic_patterns",
+  "title": "Addressing Toxic Patterns Before Remarriage",
+  "subtitle": "Breaking cycles that could sabotage your next relationship",
+  "summary": "**Before entering a new marriage, it is essential to identify and address any toxic patterns you may carry.** These might include patterns you brought into your first marriage, patterns that developed during it, or patterns rooted in your family of origin. Left unaddressed, these patterns will follow you into your next relationship and potentially destroy it too. This journey helps you honestly examine your patterns, understand their roots, and do the work of change so you can enter a new relationship as a healthier person.",
+  "targetUserCategory": "divorced",
+  "priorityRank": 12,
+  "estimatedDays": 16,
+  "totalActivities": 10,
+  "difficulty": "advanced",
+  "themeColor": "#6A1B9A",
+  "cover": {
+    "themeTag": "Transformation",
+    "accentIcon": "autorenew",
+    "heroImage": "assets/images/journeys/divorced_journey12.jpg",
+    "heroImageDescription": "A broken chain or a person stepping out of a shadow into light, symbolizing freedom from destructive patterns."
+  },
+  "frameworks": [
+    "pattern_recognition",
+    "family_systems",
+    "behavioral_change",
+    "attachment_healing"
+  ],
+  "targetOutcomes": [
+    "Honestly identify toxic patterns in your relational history",
+    "Understand where your patterns originated",
+    "Recognize how patterns contributed to your divorce",
+    "Take responsibility for your part in relationship dysfunction",
+    "Develop strategies for breaking destructive patterns",
+    "Build new healthy patterns for future relationships"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_patterns_matter",
+      "isFree": true,
+      "title": "Why Patterns Matter: The Baggage You Carry",
+      "subtitle": "Understanding why addressing patterns is essential before remarriage",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "luggage",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Everyone carries patterns into relationships. Understanding why these patterns matter and committing to address them is essential for a healthy future marriage.",
+      "frameworkBasis": {
+        "conceptKey": "pattern_awareness",
+        "explanation": "Awareness of relational patterns is the first step toward change and healthier relationships."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Patterns We Carry",
+          "text": "**We all carry baggage into relationships.** The question is whether you know what is in your bags and have sorted through them, or whether you are dragging around suitcases you have never unpacked, full of things that will spill out at the worst moments.\n\n**Everyone carries patterns into their relationships.**\n\n**Patterns are habitual ways of thinking, feeling, and behaving that we repeat across different situations and relationships.** They operate largely on autopilot, below our conscious awareness.\n\n**Some patterns are healthy: how to show affection, how to resolve conflict constructively, how to support a partner.**\n\n**Other patterns are toxic: controlling behavior, emotional withdrawal, explosive anger, manipulation, dishonesty, codependency.**\n\n**These patterns do not disappear when a marriage ends.** They travel with you into the next relationship unless specifically addressed.",
+          "icon": "luggage"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why This Work Is Essential",
+          "text": "{red|**Here is the hard truth no one wants to hear: if you do not do this work, you will probably end up in the same place again.**\n\n**Different person, same problems.**\n\n**The statistics bear this out.** Second marriages fail at a higher rate than first marriages. Not because second marriages are cursed, but because people carry their unaddressed issues into them.\n\n**You think you are choosing differently this time.** You think you have learned your lesson. You think this person is nothing like your ex.\n\n**But you are still you.** With the same patterns, the same triggers, the same blind spots, the same ways of relating that you have always had. And those patterns will find their match, or create one, in any relationship you enter.\n\n**This is not a punishment.** It is just how patterns work. They repeat until they are interrupted.\n\n**The good news is that patterns can be interrupted.** They can be seen, understood, and changed. You are not doomed to repeat your marriage forever. But only if you do the work.\n\n**That is why this journey matters.** Not as homework. Not as self-flagellation. But as the price of admission to a different future.\n\nAre you willing to look honestly at yourself?} It is uncomfortable. It is also the only way out.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Honest Self-Examination",
+          "text": "**This journey requires honest self-examination.**\n\n**It is tempting to focus entirely on your ex's faults.** They may have had many. But you also brought things into the marriage that contributed to its dysfunction.\n\n**This is not about blame or shame.** It is about taking responsibility for what is yours so you can change it.\n\n**Even if your ex was primarily at fault, you had patterns that played a role.** Perhaps you chose someone unhealthy. Perhaps you enabled bad behavior. Perhaps you had your own toxic behaviors.\n\n**Be willing to look honestly at yourself.**",
+          "icon": "search"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Readiness",
+          "text": "{red|How ready are you to honestly examine your own patterns?}",
+          "prompts": [
+            "Very ready - I know I have work to do",
+            "Somewhat ready - I am willing but it feels hard",
+            "Uncertain - I am not sure I have patterns to address",
+            "Reluctant - I mostly blame my ex for what went wrong",
+            "Already started - I have been working on this"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are starting, this journey will help you examine and address your patterns with honesty and grace."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Initial Pattern Awareness",
+          "text": "{red|**Begin to identify patterns you might carry.**\n\nWhat patterns or behaviors have others pointed out in you, whether your ex, family members, or friends?}{red| What relationship dynamics seem to repeat in your life?}{red| What do you suspect might be patterns you carry without full awareness?}\n\nWrite your initial pattern awareness:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Commitment to Honest Examination",
+          "text": "**Commit to the honest work ahead.**\n\n**I commit to honestly examining my own patterns, not just my ex's faults.**\n\n**I am willing to see things about myself that are uncomfortable.**\n\n**I take responsibility for my contribution to relationship dysfunction.**\n\n**I want to change so my future relationships can be healthier.**\n\n**I will approach this work with both honesty and self-compassion.**\n\nWrite your commitment in your own words:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_common_toxic_patterns",
+      "isFree": false,
+      "title": "Common Toxic Patterns: Recognizing What Destroys Relationships",
+      "subtitle": "Identifying destructive patterns that undermine marriages",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "report_problem",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Understanding common toxic patterns helps you identify which ones might be operating in your own life. This activity surveys major destructive patterns.",
+      "frameworkBasis": {
+        "conceptKey": "toxic_pattern_identification",
+        "explanation": "Identifying common toxic patterns enables recognition of personal patterns requiring attention."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Control and Manipulation",
+          "text": "{red|**Let us talk about control.** It is one of the most common toxic patterns, and one of the hardest to see in yourself.\n\n**Control in relationships looks like needing to know where your partner is at all times.** Checking their phone, their email, their social media. Getting upset when they spend time with others without you. Making decisions for both of you without really asking.\n\n**It looks like financial control: managing all the money, giving an allowance, questioning every purchase.** It looks like isolating your partner from friends and family, subtly or overtly.\n\n**Manipulation is control's sneaky sibling.** It is getting what you want through indirect means. Playing the victim so they feel guilty. Sulking until they give in. Weaponizing tears, silence, or affection. Making them doubt their own perceptions.\n\nHere is the uncomfortable question: do you recognize yourself in any of this?}\n\n**Not in your ex.** In you.\n\n**Many people who were controlled become controllers.** Many who were manipulated learned the skill. It is a pattern, passed down or picked up, and it destroys relationships from the inside.\n\n**If this is you, there is hope.** But only if you can see it first.",
+          "icon": "admin_panel_settings"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Anger and Contempt",
+          "text": "**Destructive anger patterns damage relationships severely.**\n\n**Explosive anger involves yelling, name-calling, throwing things, or physical aggression.** Even if you apologize afterward, the damage accumulates.\n\n**Contempt is even more destructive.** Research identifies it as the single greatest predictor of divorce. Contempt includes mockery, sarcasm, eye-rolling, and communicating that your partner is beneath you.\n\n**Passive aggression expresses anger indirectly through the silent treatment, forgetting important things, or subtle sabotage.**\n\n**All forms of destructive anger erode love and safety.**",
+          "icon": "whatshot"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Withdrawal and Avoidance",
+          "text": "**Withdrawal patterns avoid conflict and emotional engagement.**\n\n**Stonewalling means shutting down during conflict, refusing to engage, or walking away without resolution.**\n\n**Emotional unavailability involves being physically present but emotionally absent, not sharing feelings or connecting deeply.**\n\n**Conflict avoidance means never addressing problems, letting resentment build silently, or pretending everything is fine when it is not.**\n\n**These patterns seem less destructive than anger but are equally damaging.** They leave partners feeling alone in the marriage and issues never get resolved.",
+          "icon": "person_off"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Codependency and Enabling",
+          "text": "**Codependency patterns involve unhealthy emotional reliance.**\n\n**Losing yourself in the relationship means having no identity outside the marriage, making your partner responsible for your happiness, or being unable to function independently.**\n\n**Enabling involves protecting a partner from consequences of their bad behavior, making excuses for them, or taking responsibility for their problems.**\n\n**People-pleasing means never expressing your own needs, always deferring to your partner, or being unable to say no.**\n\n**These patterns create dysfunctional dynamics that drain both partners and prevent genuine intimacy.**",
+          "icon": "link"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Dishonesty and Betrayal",
+          "text": "**Patterns of dishonesty destroy the foundation of trust.**\n\n**Lying includes both big lies and chronic small deceptions that create an atmosphere of unreliability.**\n\n**Secrecy involves hiding significant things from your partner: money, relationships, activities, or parts of yourself.**\n\n**Infidelity is the ultimate betrayal, whether physical or emotional affairs.**\n\n**Broken promises means repeatedly failing to follow through on commitments.**\n\n**Once trust is broken, it is extremely difficult to rebuild.** Patterns of dishonesty make genuine intimacy impossible.",
+          "icon": "visibility_off"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "Your Pattern Recognition",
+          "text": "{red|**Honestly assess which toxic patterns might apply to you.**\n\n**Review the patterns discussed: control and manipulation, anger and contempt, withdrawal and avoidance, codependency and enabling, dishonesty and betrayal.**\n\nWhich of these have you exhibited in your marriage?}{red| Which ones do you recognize as ongoing tendencies?} Be specific about how these patterns showed up.\n\nWrite your honest pattern recognition:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_family_of_origin",
+      "isFree": false,
+      "title": "Where It Started: Family of Origin Patterns",
+      "subtitle": "Tracing your patterns back to their roots",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "family_restroom",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Most relational patterns have roots in our family of origin. Understanding where your patterns came from helps you address them at a deeper level.",
+      "frameworkBasis": {
+        "conceptKey": "family_systems",
+        "explanation": "Family of origin patterns are transmitted across generations and shape adult relationships."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Family System",
+          "text": "**Your family was a classroom.** You did not sign up for it, but you attended every day for years. And you learned things that went deeper than any lesson you will ever learn again.\n\n**You learned how relationships work by watching your parents.** How love is shown, or not shown. How conflict is handled, or avoided. How emotions are expressed, or suppressed. How power flows between two people.\n\n**You did not choose these lessons.** You absorbed them. They became the water you swim in, so normal you do not even notice them.\n\n**Your father was angry, so you think men are scary.** Or you think anger is how men show they care. Or you learned to manage men's anger to survive.\n\n**Your mother was critical, so you think women are never satisfied.** Or you think you have to be perfect to be loved. Or you learned to criticize because that is what love sounds like.\n\n**Your parents did not fight, so you think conflict means the relationship is dying.** Or they fought constantly, so you think that is just how marriage is.\n\n**Whatever you saw, it imprinted.** And it is still running in the background, shaping how you relate, what you expect, what you tolerate, and what you do not even notice is wrong.\n\n**To break the patterns, you have to see them.** And to see them, you have to look at where they started.",
+          "icon": "family_restroom"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Patterns Passed Down",
+          "text": "**Carla always swore she would never marry someone like her father.** But in counseling after her divorce, she saw it clearly: her ex was different on the surface but identical underneath. She had unconsciously recreated the dysfunction she knew. Seeing the pattern was painful, but it was also the first step to breaking it.\n\n**Patterns are often passed down through generations.**\n\n**If your father was emotionally unavailable, you may have learned that men do not share feelings.**\n\n**If your mother was controlling, you may have learned that love involves managing others.**\n\n**If your parents avoided conflict, you may never have learned healthy conflict resolution.**\n\n**If there was addiction, abuse, or dysfunction, you likely developed coping patterns that do not serve you well in healthy relationships.**\n\n**You are not doomed to repeat these patterns.** But you must recognize them first.",
+          "icon": "history"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What You Learned About Marriage",
+          "text": "{red|**Consider specifically what you learned about marriage from your family.**\n\nHow did your parents handle conflict?}{red| Did they fight, avoid, or resolve?}\n\n{red|How was affection shown?}{red| Was it warm or cold?}\n\n{red|Who held power in the relationship?}{red| Was it equal or unbalanced?}\n\n{red|How were emotions handled?}{red| Were they expressed, suppressed, or explosive?}\n\n{red|Was there respect?}{red| Or contempt, criticism, and put-downs?}\n\n{red|Was there trust?}{red| Or secrets, lies, and betrayal?}\n\n**Your answers reveal the template you unconsciously brought into your own marriage.**",
+          "icon": "school"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Family of Origin",
+          "text": "{red|**Explore your family of origin patterns.**\n\n**Describe your parents' marriage or the primary relationship you observed growing up.** What unhealthy patterns did you observe?}{red| What did you learn about relationships that may not have been healthy?}{red| How do you see these patterns showing up in your own relationships?}\n\nWrite about your family of origin:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Breaking the Chain",
+          "text": "**You can break the chain of generational patterns.**\n\n**Awareness is the first step.** You cannot change what you do not see.\n\n**Understanding the source helps.** Knowing why you do something reduces its automatic power.\n\n**Intentional choice replaces automatic behavior.** You can choose differently once you recognize the pattern.\n\n**New learning is possible.** You can learn healthy relationship skills you were never taught.\n\n**You are not destined to repeat your parents' mistakes.** But breaking free requires deliberate effort.",
+          "icon": "link_off"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Naming Your Inherited Patterns",
+          "text": "**Name the specific patterns you inherited from your family.**\n\nFrom my family, I learned these unhealthy patterns:\n\n**List specific patterns and where they came from.**\n\n**I am committed to breaking these patterns rather than passing them on.**\n\nWrite your inherited patterns:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_your_contribution",
+      "isFree": false,
+      "title": "Your Part: Taking Responsibility for What You Contributed",
+      "subtitle": "Honestly examining your role in your marriage's dysfunction",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "person_search",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Taking responsibility for your contribution to your marriage's problems is essential for growth. This activity guides honest self-examination without descending into self-blame.",
+      "frameworkBasis": {
+        "conceptKey": "personal_responsibility",
+        "explanation": "Taking ownership of personal contribution to dysfunction enables targeted change."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Beyond Blame",
+          "text": "**It is natural to focus on your ex's faults when thinking about your failed marriage.** They probably did have significant faults.\n\n**But a marriage is a system.** Both partners contribute to its dynamics, whether healthy or unhealthy.\n\n**This does not mean equal blame.** Your ex may bear more responsibility. But you contributed something.\n\n**The purpose of examining your contribution is not self-condemnation.** It is to identify what you can change. You cannot change your ex, but you can change yourself.",
+          "icon": "person_search"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Ways You May Have Contributed",
+          "text": "**Consider various ways you might have contributed to dysfunction.**\n\n**Active contribution: behaviors you engaged in that caused harm, like anger, control, withdrawal, dishonesty.**\n\n**Reactive contribution: unhealthy ways you responded to your partner's behavior, like escalating conflicts or retaliating.**\n\n**Enabling contribution: ways you allowed or enabled their bad behavior, like making excuses, not setting boundaries, or pretending problems did not exist.**\n\n**Selection contribution: patterns that led you to choose this person in the first place, perhaps attraction to unhealthy traits.**\n\n**All of these are areas you can work on for future relationships.**",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Avoiding the Extremes",
+          "text": "**Avoid two extremes when examining your contribution.**\n\n**One extreme is taking no responsibility, placing all blame on your ex.** This prevents growth because you see nothing to change in yourself.\n\n**The other extreme is taking all the blame, believing you were entirely at fault.** This is often a sign of codependency or low self-worth and is rarely accurate.\n\n**The healthy middle acknowledges your real contribution without minimizing your ex's responsibility.** It looks honestly at both.\n\n**Aim for accurate responsibility, not zero and not one hundred percent.**",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Honest Contribution",
+          "text": "{red|**Examine your contribution to your marriage's dysfunction honestly.**\n\nWhat behaviors of yours contributed to problems in your marriage?}{red| How did you respond to your ex's behavior in unhealthy ways?}{red| What did you enable or allow that you should not have?}{red| Looking back, what would you do differently?}\n\nWrite your honest assessment of your contribution:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Responsibility Without Shame",
+          "text": "**Taking responsibility should lead to growth, not shame.**\n\n**Shame says you are fundamentally bad.** Responsibility says you did some things that were not good and you can change them.\n\n**Shame is paralyzing.** Responsibility is empowering.\n\n**God offers forgiveness for your failures.** You do not need to carry guilt indefinitely. Confess, receive grace, and move toward change.\n\n**The goal is not to feel bad about yourself.** The goal is to become a healthier person for your next relationship.",
+          "icon": "self_improvement"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Taking Ownership",
+          "text": "**Write a statement of ownership for your contribution.**\n\nIn my marriage, I contributed to dysfunction in these ways:\n\n**List your specific contributions.**\n\n**I take responsibility for these without making excuses.** I also extend grace to myself as I work on change.\n\nWrite your ownership statement:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_attachment_patterns",
+      "isFree": false,
+      "title": "How You Attach: Understanding Your Attachment Style",
+      "subtitle": "Examining patterns in how you connect and bond",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "link",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Attachment styles profoundly affect how we relate in romantic relationships. Understanding your attachment patterns helps explain recurring dynamics and points toward growth.",
+      "frameworkBasis": {
+        "conceptKey": "attachment_theory",
+        "explanation": "Attachment styles formed in childhood influence adult romantic relationships and can be modified."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What Is Attachment Style?",
+          "text": "**Attachment style refers to characteristic patterns in how you form emotional bonds and respond to intimacy and separation.**\n\n**These patterns develop in early childhood based on your relationship with caregivers.** They become templates for adult romantic relationships.\n\n**Attachment styles are not destiny.** They can be modified with awareness and work. But understanding your style helps explain why you relate the way you do.\n\n**There are four main attachment styles: secure, anxious, avoidant, and disorganized.** Most people lean toward one, though you may have elements of several.",
+          "icon": "link"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Secure Attachment",
+          "text": "**Secure attachment is the healthy baseline.**\n\n**Securely attached people are comfortable with intimacy and independence.** They can be close without losing themselves, and separate without excessive anxiety.\n\n**They trust their partners and express needs directly.** They handle conflict constructively and do not become overwhelmed by relationship stress.\n\n**Secure attachment develops when caregivers were consistently responsive and available.** It creates a foundation of trust that relationships are safe.\n\n**If you are securely attached, your work may focus on patterns other than attachment.** If not, moving toward secure attachment is a key goal.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Anxious Attachment",
+          "text": "**Anxious attachment is the fear of abandonment running the show.**\n\n**If you are anxiously attached, you crave closeness intensely.** You need reassurance, often. You watch for signs that your partner is pulling away, and you find them even when they are not there.\n\n**You might text repeatedly and feel panic when they do not respond fast enough.** You might interpret a quiet evening as evidence they are losing interest. You might need constant confirmation that they love you, and the reassurance only holds for a short while before you need more.\n\n**When threatened, even by something as minor as them being distracted, you pursue.** You reach for them. You need to close the gap. This can look like clinginess, neediness, or constant processing of the relationship.\n\n**The cruel irony: the very behaviors that come from fear of abandonment often push people away.** The more you pursue, the more some partners withdraw. The more you need reassurance, the more exhausted some partners become.\n\n**This pattern usually started in childhood.** Caregivers who were inconsistent, sometimes available and sometimes not. You learned that love was unreliable, so you hold on tight whenever you get it.\n\n**The work is learning that you are okay even when your partner is not actively proving their love at this exact moment.** That silence does not mean rejection. That security can come from inside you, not just from them.",
+          "icon": "notification_important"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Avoidant Attachment",
+          "text": "**Avoidant attachment is the fear of engulfment running the show.**\n\n**If you are avoidant, you crave independence intensely.** Too much closeness feels suffocating. When partners want more intimacy, more time, more emotional connection, you feel trapped.\n\n**You might prioritize other things over the relationship: work, hobbies, friends, anything that creates space.** You might feel relief when your partner is not around. You might have a nagging sense that you could be happier alone, even when you love someone.\n\n**When threatened with too much closeness, you withdraw.** You pull back. You need air. This can look like emotional unavailability, or distancing, or never quite being fully present.\n\n**The cruel irony: the very behaviors that protect you from feeling smothered often push people to demand more.** The more you withdraw, the more anxious partners pursue. The more independent you act, the more some partners feel rejected.\n\n**This pattern usually started in childhood too.** Caregivers who were intrusive, overwhelming, or dismissive of your needs. You learned that closeness was dangerous, that you had to maintain distance to survive.\n\n**The work is learning that intimacy will not swallow you.** That you can be close and still be yourself. That letting someone in does not mean losing yourself.",
+          "icon": "person_off"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Attachment Style",
+          "text": "{red|**Reflect on your attachment patterns.**\n\nBased on the descriptions, which attachment style do you most identify with?}{red| How has this style shown up in your marriage and other relationships?}{red| What early experiences might have shaped your attachment style?}{red| How might your attachment style have contributed to dynamics in your marriage?}\n\nWrite about your attachment style:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Attachment Growth Goals",
+          "text": "**Identify growth goals related to your attachment style.**\n\n**If anxiously attached: work on self-soothing, reducing reassurance-seeking, and building security from within.**\n\n**If avoidantly attached: work on allowing closeness, expressing needs and emotions, and staying engaged rather than withdrawing.**\n\nWrite your attachment growth goals:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_conflict_patterns",
+      "isFree": false,
+      "title": "How You Fight: Examining Your Conflict Patterns",
+      "subtitle": "Understanding your patterns in handling disagreement",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "flash_on",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "How couples handle conflict determines much about whether a marriage thrives or fails. Examining your conflict patterns helps you identify destructive tendencies.",
+      "frameworkBasis": {
+        "conceptKey": "conflict_patterns",
+        "explanation": "Conflict patterns are key predictors of relationship health and can be modified with awareness."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Conflict Is Inevitable",
+          "text": "**Patterns are like grooves worn into a record.** The needle naturally falls into them and plays the same tune every time. Creating new patterns means carving new grooves, which takes intentional effort. The needle will try to slip back to the old ones.\n\n**All couples have conflict.** The question is not whether you will disagree but how you will handle disagreement.\n\n**Research shows that happy couples do not have fewer conflicts than unhappy couples.** They handle conflict differently.\n\n**Destructive conflict patterns predict divorce with remarkable accuracy.** Constructive conflict patterns predict lasting, healthy marriages.\n\n**Examining how you fight is therefore crucial.** Your conflict patterns may need significant work before you are ready for a healthy marriage.",
+          "icon": "flash_on"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Four Horsemen",
+          "text": "{red|**Research identifies four destructive conflict patterns, called the Four Horsemen, that predict divorce.**\n\n**Criticism: attacking your partner's character rather than addressing specific behavior.** You always versus I feel frustrated when.\n\n**Contempt: communicating disgust and superiority through mockery, sarcasm, eye-rolling, or name-calling.** The most destructive of all.\n\n**Defensiveness: refusing to accept responsibility, making excuses, or counter-attacking when confronted.**\n\n**Stonewalling: shutting down, withdrawing from interaction, or refusing to engage.**\n\nWhich of these do you recognize in yourself?}",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Other Destructive Patterns",
+          "text": "Beyond the Four Horsemen, other destructive conflict patterns include:\n\n**Escalation: conflict spirals out of control, with each response more intense than the last.**\n\n**Bringing up the past: cannot address present issues without dredging up old grievances.**\n\n**Globalizing: one issue becomes a referendum on the whole relationship or character.**\n\n**Silent treatment: using withdrawal as punishment rather than for self-regulation.**\n\n**Physical aggression: any use of physical force crosses a line that should never be crossed.**\n\n**Identify which patterns were present in your marriage and which came from you.**",
+          "icon": "report"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Conflict Patterns",
+          "text": "{red|**Honestly examine your conflict patterns.**\n\nWhich of the Four Horsemen do you tend toward: criticism, contempt, defensiveness, or stonewalling?}{red| What other destructive patterns were present in your conflicts?}{red| How did your conflict patterns interact with your ex's patterns?}{red| What would healthy conflict look like for you?}\n\nWrite about your conflict patterns:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Healthy Conflict Skills",
+          "text": "**Healthy conflict involves specific skills that can be learned.**\n\n**Soft startup: begin conversations gently rather than with criticism or accusation.**\n\n**Repair attempts: actions to de-escalate tension during conflict, like humor, affection, or acknowledgment.**\n\n**Physiological self-soothing: recognizing when you are flooded and taking breaks to calm down.**\n\n**Accepting influence: being willing to be affected by your partner's perspective.**\n\n**Compromise: looking for solutions that honor both partners rather than insisting on winning.**\n\n**These skills can be developed.** They do not come naturally to most people.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Conflict Pattern Change Plan",
+          "text": "**Create a plan for changing your destructive conflict patterns.**\n\nPatterns I need to eliminate:\n\nSkills I need to develop:\n\nSpecific changes I will practice:\n\nWrite your conflict change plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_communication_patterns",
+      "isFree": false,
+      "title": "How You Communicate: Patterns in Expressing and Listening",
+      "subtitle": "Examining your communication habits and skills",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "forum",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Communication is the lifeblood of relationships. Poor communication patterns contribute to most marriage problems. This activity examines your communication habits.",
+      "frameworkBasis": {
+        "conceptKey": "communication_patterns",
+        "explanation": "Communication patterns profoundly affect relationship quality and can be improved with practice."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Communication Matters",
+          "text": "**When couples describe their problems, communication is almost always mentioned.**\n\n**We do not communicate.** He does not listen. She does not understand. We talk but nothing gets resolved.\n\n**Communication involves both expressing yourself and receiving what your partner expresses.** Problems can exist on either side or both.\n\n**Good communication does not guarantee a good marriage, but poor communication almost guarantees problems.**\n\n**Examining your communication patterns reveals areas for growth.**",
+          "icon": "forum"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Expressing Patterns",
+          "text": "{red|How do you express yourself in relationships?}{red| Really?}\n\n{red|**Not how you think you do.** How you actually do, according to someone who has been on the receiving end.\n\nDo you say what you mean, or do you hint and hope they figure it out?}{red| Many people expect mind-reading. They drop clues instead of making requests. Then they resent when the other person does not understand.\n\nDo you use I statements or you statements?}{red| I feel hurt when you do not call versus You never call and you obviously do not care about me. Same information, completely different impact.\n\nDo you express emotions or just thoughts?}{red| Some people are articulate about ideas and incoherent about feelings. They can discuss anything except what they actually feel.\n\nDo you speak respectfully when you are upset, or do your words become weapons?}{red| Criticism, sarcasm, name-calling, contempt. Things you cannot take back.\n\nDo you bring up problems, or do you swallow them until you explode?}{red| The silent collectors, who say nothing until it becomes everything at once.\n\n**These patterns can be changed.** But first you have to see them. Ask someone who loves you enough to be honest. What is it like to be on the receiving end of my communication?} The answer might be uncomfortable. It might also be the beginning of something different.",
+          "icon": "record_voice_over"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Listening Patterns",
+          "text": "{red|**Listening is often the weaker skill for most people.**\n\nDo you truly listen to understand?}{red| Or are you preparing your response while your partner talks?}\n\n{red|Do you reflect back what you heard?}{red| Or do you assume you understand?}\n\n{red|Can you listen without becoming defensive?}{red| Or does any criticism trigger self-protection?}\n\n{red|Do you validate your partner's feelings?}{red| Or do you dismiss, minimize, or argue with their emotions?}\n\n{red|Do you stay present?}{red| Or do you check out, get distracted, or shut down?}\n\n**Poor listening leaves partners feeling unheard and alone.**",
+          "icon": "hearing"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Communication Patterns",
+          "text": "{red|**Examine your communication patterns honestly.**\n\nWhat are your strengths in expressing yourself?}{red| What are your weaknesses in expressing yourself?}{red| What are your strengths as a listener?}{red| What are your weaknesses as a listener?}{red| What communication complaints did your ex have about you?}\n\nWrite about your communication patterns:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Better Communication",
+          "text": "{red|**Communication skills can be improved with practice.**\n\n**Practice I statements: I feel X when Y instead of You always Z.**\n\n**Practice reflective listening: What I hear you saying is.**.. Did I get that right?}\n\n**Practice emotional expression: Work on identifying and articulating your feelings.**\n\n**Practice staying curious: Ask questions to understand rather than assuming.**\n\n**Practice timing: Choose good moments for important conversations.**\n\n**These skills feel awkward at first but become natural with practice.**",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Communication Improvement Plan",
+          "text": "**Create a plan for improving your communication.**\n\nSpecific expressing skills I will work on:\n\nSpecific listening skills I will work on:\n\nHow I will practice these skills:\n\nWrite your communication improvement plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_partner_selection",
+      "isFree": false,
+      "title": "Who You Choose: Patterns in Partner Selection",
+      "subtitle": "Examining what draws you to certain people",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "person_search",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Patterns in who you are attracted to and choose as partners can lead you toward unhealthy relationships. Examining your selection patterns helps you make wiser choices.",
+      "frameworkBasis": {
+        "conceptKey": "partner_selection",
+        "explanation": "Understanding attraction and selection patterns enables healthier partner choices."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Selection Is a Pattern",
+          "text": "**The people you are attracted to and choose as partners is not random.** It follows patterns.\n\n**Some people repeatedly choose partners who are unavailable, addicted, unfaithful, controlling, or otherwise problematic.** This is not bad luck. It is a pattern.\n\n**These patterns often connect to unresolved issues from your past.** You may be unconsciously trying to heal old wounds by recreating familiar dynamics.\n\n**Understanding your selection patterns helps you make different choices going forward.**",
+          "icon": "person_search"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Attraction to Familiarity",
+          "text": "**We are often attracted to what feels familiar, even if familiar is unhealthy.**\n\n**If your father was emotionally unavailable, you may find emotionally unavailable men attractive.** There is a pull toward what you know.\n\n**If your mother was controlling, you may feel drawn to controlling women.** It feels like home, even if home was not healthy.\n\n**This attraction is unconscious.** The person feels right in a way you cannot explain. But right often means familiar, not good.\n\n**Recognizing this pattern helps you distinguish between attraction and healthy compatibility.**",
+          "icon": "home"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Red Flags Ignored",
+          "text": "{red|**Often the red flags were there from the beginning, but you ignored them.**\n\n**You may have explained them away, made excuses, or believed you could change the person.**\n\n**You may have been so eager for the relationship to work that you overlooked warning signs.**\n\n**You may have dismissed your own intuition when it sensed something was wrong.**\n\nLooking back at your marriage, were there red flags you ignored?}{red| What led you to ignore them?}",
+          "icon": "flag"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Selection Patterns",
+          "text": "{red|**Examine your patterns in choosing partners.**\n\nWhat drew you to your ex initially?}{red| Looking back, were there red flags you ignored?}{red| What were they?}{red| Do you see patterns across your romantic history in the type of person you choose?}{red| How might your selection patterns connect to your family of origin?}\n\nWrite about your selection patterns:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Choosing Differently",
+          "text": "**You can learn to choose differently.**\n\n**Know your pattern.** Awareness of what you tend toward is protective.\n\n**Distinguish attraction from compatibility.** Intense chemistry may signal recreating unhealthy dynamics.\n\n**Pay attention to red flags.** Do not explain them away or believe you can change someone.\n\n**Seek input from trusted others.** They may see what you cannot when you are attracted to someone.\n\n**Look for character over charisma.** Reliability, integrity, and kindness matter more than excitement.\n\n**Healthy relationships may feel less intense at first but prove more satisfying long-term.**",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Selection Pattern Commitment",
+          "text": "**Commit to healthier partner selection.**\n\nPatterns in my selection I need to be aware of:\n\nRed flags I will not ignore:\n\nQualities I will prioritize over chemistry:\n\nPeople who can give me input about future partners:\n\nWrite your selection commitment:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_doing_the_work",
+      "isFree": false,
+      "title": "Doing the Work: Strategies for Lasting Change",
+      "subtitle": "Practical approaches to breaking destructive patterns",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "construction",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Recognizing patterns is not enough. You must actively work to change them. This activity provides strategies for making lasting changes.",
+      "frameworkBasis": {
+        "conceptKey": "behavioral_change",
+        "explanation": "Lasting pattern change requires specific strategies and sustained effort over time."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Awareness Is Not Enough",
+          "text": "**Understanding your patterns is essential but insufficient.**\n\n**Many people can articulate their patterns clearly but continue repeating them.** Insight alone does not produce change.\n\n**Change requires not just understanding but action.** You must actively practice different behaviors until they become new patterns.\n\n**This is hard work.** Patterns are deeply ingrained. They operate automatically. Changing them requires sustained effort over time.\n\n**But it is possible.** People do change. You can become a healthier person for your next relationship.",
+          "icon": "construction"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Professional Help",
+          "text": "**William's father had been married three times.** His grandfather twice. When his own marriage ended, William refused to accept that this was just how men in his family were. He committed to therapy, to growth, to being the one who broke the chain. His future children would inherit something different.\n\n**Some pattern work requires professional help.**\n\n**A good therapist can help you understand patterns at a deeper level than self-reflection allows.** They can identify blind spots you cannot see.\n\n**Therapy provides a safe space to explore painful origins of your patterns.** Family of origin work especially benefits from professional guidance.\n\n**Some patterns are too entrenched to break without professional support.** If you have been trying to change unsuccessfully, therapy may be needed.\n\n**Consider individual therapy focused on your patterns before entering another serious relationship.**",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Practice and Accountability",
+          "text": "**Change requires practice and accountability.**\n\n**Practice means intentionally doing the new behavior, not just understanding it.** Every interaction is an opportunity to practice healthy patterns.\n\n**Accountability means having others who know your patterns and check on your progress.** This might be a therapist, support group, mentor, or trusted friend.\n\n**Without accountability, it is easy to slip back into old patterns without noticing.** Others help you see when you are falling into familiar ruts.",
+          "icon": "groups"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Grace for the Process",
+          "text": "**Change is not linear.** There will be setbacks.\n\n**You will fall back into old patterns sometimes, especially under stress.** This does not mean you have failed or cannot change.\n\n**Grace means extending patience to yourself as you grow.** It means getting back up after setbacks rather than giving up.\n\n**God's grace is available for this process.** You do not have to be perfect. You just have to keep moving in the right direction.\n\n**Celebrate progress even when it is imperfect.** Small changes accumulate into transformation.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Change Strategy",
+          "text": "{red|**Develop a strategy for changing your patterns.**\n\nWhat specific patterns are your top priorities for change?}{red| What professional help might you need?}{red| Who can provide accountability for you?}{red| How will you practice new patterns in daily life?}{red| How will you extend grace to yourself through setbacks?}\n\nWrite your change strategy:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Change Commitment",
+          "text": "**Commit to the ongoing work of change.**\n\n**I am committed to not just understanding my patterns but actively changing them.**\n\nSpecific steps I will take:\n\nTimeline for professional help if needed:\n\nAccountability I will put in place:\n\n**I believe change is possible and commit to the work required.**\n\nWrite your change commitment:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_new_patterns",
+      "isFree": false,
+      "title": "Becoming New: Building Healthy Patterns for the Future",
+      "subtitle": "Creating the foundation for a healthy future marriage",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You have done significant work examining your patterns. This activity helps you consolidate what you have learned and commit to becoming a healthier person for your future relationship.",
+      "frameworkBasis": {
+        "conceptKey": "pattern_transformation",
+        "explanation": "Transforming patterns requires commitment to new ways of being in relationships."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Examined",
+          "text": "**Through this journey, you have done significant self-examination.**\n\n**You have explored why patterns matter and examined common toxic patterns.** You have traced patterns to your family of origin and taken responsibility for your contribution.\n\n**You have examined attachment, conflict, and communication patterns.** You have looked at partner selection patterns.\n\n**You have developed strategies for change and committed to doing the work.**\n\n**This is substantial and important work for your future.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Person You Are Becoming",
+          "text": "**This work is not just about avoiding bad patterns.** It is about becoming a better person.\n\n**You are becoming someone who knows themselves deeply.** You understand your tendencies and triggers.\n\n**You are becoming someone who takes responsibility.** You own your part rather than blaming others.\n\n**You are becoming someone committed to growth.** You are willing to do hard work for healthy relationships.\n\n**This person is more capable of healthy love than the person who entered their first marriage.** Your pain has produced growth.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Pattern Insight",
+          "text": "{red|What is the most important thing you have learned about your patterns through this journey?}\n\n{red|What do you want to remember as you move toward future relationships?}\n\nWrite your key pattern insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your New Patterns",
+          "text": "{red|**Describe the new patterns you want to build.**\n\nWhat healthy patterns will replace your toxic ones?}{red| How will you handle conflict differently?}{red| How will you communicate differently?}{red| What kind of partner will you choose?}\n\nWrite about your new patterns:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Transformation",
+          "text": "**Father, I have seen patterns in myself that I do not like.**\n\n**Thank You for the courage to look honestly.** Thank You for grace that does not leave me in shame.\n\n**Help me change.** Break the chains of destructive patterns. Build new, healthy ways of relating.\n\n**Make me the person You created me to be, capable of healthy, loving relationships.**\n\n**I trust You to complete the work You have begun in me.**\n\n**In Jesus' name, Amen.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Pattern Declaration",
+          "text": "**Write a declaration of who you are becoming.**\n\n**I have examined my toxic patterns honestly and take responsibility for them.**\n\n**I am committed to changing these patterns through hard work and, if needed, professional help.**\n\n**I will not carry these patterns into my next relationship.**\n\n**I am becoming a person capable of healthy love.**\n\n**By God's grace, I will break destructive cycles and build new patterns of life.**\n\nWrite your pattern declaration:",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Pattern Breaker",
+    "summaryText": "You have done significant work examining and committing to change your toxic patterns. Remember that pattern change is an ongoing process that requires sustained effort. Keep doing the work, seek professional help if needed, and trust that transformation is possible. You are becoming a healthier person capable of a healthier marriage.",
+    "keyTakeaways": [
+      "Toxic patterns follow you from relationship to relationship unless addressed",
+      "Most patterns have roots in family of origin experiences",
+      "Taking responsibility for your contribution enables growth",
+      "Attachment styles affect how you connect and bond",
+      "Conflict patterns significantly predict relationship outcomes",
+      "Communication skills can be learned and improved",
+      "Partner selection follows patterns that can be changed",
+      "Awareness is not enough - active practice produces change",
+      "Professional help may be necessary for deep pattern work"
+    ],
+    "nextRecommendedJourneys": [
+      "Emotional Readiness for Remarriage",
+      "Discerning Healthy Love Again",
+      "Dating Again with Wisdom"
+    ]
+  }
+}

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/models/assessment_model.dart';
+import '../../../../core/providers/tab_selection_provider.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/providers/assessment_provider.dart';
@@ -20,7 +21,7 @@ class AssessmentScreen extends ConsumerStatefulWidget {
 class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
   late final PageController _page;
   bool _started = false;
-  
+
   /// Store randomized options per question to maintain order on re-renders
   final Map<String, List<AssessmentOption>> _shuffledOptionsCache = {};
 
@@ -65,7 +66,7 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
     int questionNumber,
   ) {
     final cacheKey = 'q_$questionNumber';
-    
+
     // Return cached shuffled options if available
     if (_shuffledOptionsCache.containsKey(cacheKey)) {
       return _shuffledOptionsCache[cacheKey]!;
@@ -130,13 +131,20 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
                                 Expanded(
                                   child: ListView(
                                     children:
-                                        _getShuffledOptions(q.options, q.number).map((o) {
+                                        _getShuffledOptions(
+                                          q.options,
+                                          q.number,
+                                        ).map((o) {
                                           final isSelected = selected == o.id;
-                                          final screenWidth = MediaQuery.of(context).size.width;
+                                          final screenWidth =
+                                              MediaQuery.of(context).size.width;
                                           return _OptionTile(
                                             title: o.text,
                                             isSelected: isSelected,
-                                            fontSize: _getResponsiveOptionFontSize(screenWidth),
+                                            fontSize:
+                                                _getResponsiveOptionFontSize(
+                                                  screenWidth,
+                                                ),
                                             onTap: () {
                                               HapticFeedback.lightImpact();
                                               notifier.answerQuestion(o.id);
@@ -209,10 +217,9 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
 
     if (ok == true && mounted) {
       notifier.reset();
-      // Navigate directly to home, bypassing splash screen
-      Navigator.of(
-        context,
-      ).pushNamedAndRemoveUntil(AppRoutes.home, (_) => false);
+      // Pop back out of the assessment screen, then switch to home tab
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      ref.read(selectedTabProvider.notifier).state = NavTab.home;
     }
   }
 }
@@ -250,13 +257,26 @@ class _TopProgress extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: LinearProgressIndicator(
-                    value: progress,
-                    minHeight: 8,
-                    backgroundColor: AppColors.surfaceDark,
-                    valueColor: AlwaysStoppedAnimation(AppColors.primary),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: AppColors.getBorder(context),
+                      width: 1,
+                    ),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(9),
+                    child: LinearProgressIndicator(
+                      value: progress,
+                      minHeight: 8,
+                      backgroundColor: AppColors.getBackgroundSecondary(
+                        context,
+                      ),
+                      valueColor: AlwaysStoppedAnimation(
+                        Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
                   ),
                 ),
               ],

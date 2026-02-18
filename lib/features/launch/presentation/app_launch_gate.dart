@@ -342,6 +342,20 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
       duration: const Duration(milliseconds: 2000),
     );
 
+    // Ensure animation starts after first frame is rendered
+    // This fixes inconsistent animation playback on app launch
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _controller.forward();
+        // Start shimmer after main entrance finishes
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          if (mounted) {
+            _shimmerController.repeat(reverse: true);
+          }
+        });
+      }
+    });
+
     // ─────────────────────────────────
     // TITLE: Slide dramatically from LEFT
     // ─────────────────────────────────
@@ -409,12 +423,6 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
     _shimmer = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _shimmerController, curve: Curves.easeInOut),
     );
-
-    _controller.forward();
-    // Start shimmer after main entrance finishes
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      if (mounted) _shimmerController.repeat(reverse: true);
-    });
   }
 
   @override

@@ -1,0 +1,757 @@
+{
+  "journeyId": "divorced_understanding_what_went_wrong",
+  "title": "Understanding What Went Wrong in Your Past Marriage",
+  "subtitle": "Gaining clarity and insight for healing and growth",
+  "summary": "**Before you can fully heal and move forward, you need to understand what happened in your marriage.** This is not about assigning blame or wallowing in the past. It is about gaining clarity that enables genuine healing and prevents repeating the same patterns. This journey helps you examine your marriage honestly, understand the dynamics that led to its end, take appropriate responsibility, and extract wisdom that will serve you going forward.",
+  "targetUserCategory": "divorced",
+  "priorityRank": 1,
+  "estimatedDays": 14,
+  "totalActivities": 10,
+  "difficulty": "advanced",
+  "themeColor": "#5D4037",
+  "cover": {
+    "themeTag": "Understanding",
+    "accentIcon": "search",
+    "heroImage": "assets/images/journeys/divorced_journey1.jpg",
+    "heroImageDescription": "A person sitting thoughtfully, perhaps looking at old photographs or journaling, with soft contemplative lighting suggesting reflection and processing."
+  },
+  "frameworks": [
+    "narrative_therapy",
+    "attachment_theory",
+    "systems_thinking",
+    "growth_mindset"
+  ],
+  "targetOutcomes": [
+    "Understand the key factors that contributed to your marriage ending",
+    "Recognize patterns and dynamics that developed over time",
+    "Take appropriate responsibility without excessive self-blame",
+    "Identify what you could not control versus what you could",
+    "Extract lessons that will help you in future relationships",
+    "Gain closure through understanding"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_why_understanding_matters",
+      "isFree": true,
+      "title": "Why Understanding Matters: The Path to Real Healing",
+      "subtitle": "How clarity about the past enables freedom for the future",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "search",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Many people try to move on from divorce without truly understanding what happened. But unexamined endings often lead to repeated patterns. This activity explains why honest reflection is essential for genuine healing and healthy future relationships.",
+      "frameworkBasis": {
+        "conceptKey": "reflective_practice",
+        "explanation": "Meaningful growth requires honest examination of experiences to extract understanding and wisdom."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Temptation to Skip This",
+          "text": "{red|**You lie awake at 3 AM, the same questions circling.** What happened?}{red| How did we get here?}{red| Could I have stopped it?} The questions exhaust you, but they will not leave you alone.\n\n**After divorce, two temptations arise.**\n\n**The first is to avoid examining what happened.** It hurts too much. You just want to move on. So you close the chapter without really reading it.\n\n**The second is to oversimplify.** Everything becomes your ex's fault, or everything becomes your fault. Complex reality gets reduced to a simple villain and victim story.\n\n**Both approaches feel protective in the moment.** But both leave you vulnerable to repeating patterns you do not understand and carrying wounds you have not actually healed.\n\n**There is a better way: honest, balanced reflection that leads to genuine understanding.**",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Understanding Provides",
+          "text": "**Think of your marriage like a house that collapsed.** You could walk away from the rubble and build somewhere new. But if you never understood why it fell, whether the foundation, the framing, or the soil beneath, you risk building the next house with the same fatal flaws.\n\n**Taking time to truly understand what happened provides essential gifts.** Clarity replaces the swirl of painful memories. Closure becomes possible. Patterns become visible, including your own contributions. Lessons emerge that can protect your future.\n\n**Healing deepens when you understand your wounds rather than simply bury them.**\n\n**Scripture invites this kind of seeking: \"If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you\" ({red|James 1:5|If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you}).** God is not angry at your questions. He wants to give you understanding.",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What This Is Not",
+          "text": "{red|**You might be afraid of what this journey will ask of you.**\n\n**Maybe you are afraid it will mean wallowing in pain you have worked hard to push down.** It will not. There is a difference between purposeful reflection and torturing yourself with memories. We are doing the first, not the second.\n\n**Maybe you are afraid it will force you to let your ex off the hook.** It will not. Understanding why someone did something is not the same as excusing it. You can understand the wound behind their behavior and still call it wrong.\n\n**Maybe you are afraid of what you will find when you look at your own part.** That is the scariest fear of all, is it not?} We will go there, but gently. And what you find will not destroy you. It will free you.\n\n**This is not about assigning blame or keeping score.** It is about finding clarity that leads to peace.",
+          "icon": "info"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Where You Are Now",
+          "text": "{red|How would you describe your current level of understanding about what happened in your marriage?}",
+          "prompts": [
+            "I have a pretty clear understanding of what went wrong",
+            "I understand some things but am confused about others",
+            "I mostly blame my ex and struggle to see my part",
+            "I mostly blame myself and carry heavy guilt",
+            "I have avoided really thinking about it",
+            "I go back and forth between different explanations",
+            "I am genuinely unsure what happened"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are starting, this journey will help you develop clearer, more balanced understanding that supports healing."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Questions",
+          "text": "{red|What questions do you still have about your marriage and its ending?}\n\n{red|What do you wish you understood better?}{red| What confuses you about what happened?}{red| What would you want to know if you could know anything?}\n\nWrite the questions you carry about your marriage:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Setting Your Intention",
+          "text": "**Before going deeper, set an intention for this journey.**\n\n**I am entering this reflection not to torture myself or assign blame, but to understand what happened so I can heal more fully and grow.**\n\n**I will be honest with myself about my own contributions without excessive self-condemnation.**\n\n**I will try to understand my ex's perspective without excusing harmful behavior.**\n\n**I will look for patterns and lessons, not just grievances.**\n\n**I will trust that understanding, though painful, leads to freedom.**\n\nWrite this intention in your own words and commit to it:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_the_story",
+      "isFree": false,
+      "title": "Telling Your Story: The Arc of Your Marriage",
+      "subtitle": "Creating a coherent narrative from beginning to end",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "auto_stories",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "One of the most healing things you can do is develop a coherent narrative of your marriage. This means telling the story from beginning to end in a way that makes sense, acknowledges complexity, and helps you understand how you got from there to here.",
+      "frameworkBasis": {
+        "conceptKey": "narrative_coherence",
+        "explanation": "Creating a coherent narrative of difficult experiences is a key part of processing and integrating them."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Power of Narrative",
+          "text": "**Humans make sense of life through stories.** We understand ourselves and our experiences by organizing them into narratives with beginnings, middles, and ends.\n\n**After divorce, many people have fragmented stories.** Painful memories jumble together like shattered glass, each piece sharp, none of them forming a complete picture. Or the story gets stuck in one phase, replaying the same hurts without context.\n\n**Creating a coherent narrative of your marriage, telling the whole story from beginning to end, is deeply healing.** It helps you see the full arc rather than just the painful ending. It places events in context. It reveals patterns that were invisible in the moment.\n\n**This is not about creating a sanitized or distorted version.** It is about developing a truthful story that makes sense.",
+          "icon": "auto_stories"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Beginning",
+          "text": "{red|**Close your eyes for a moment.** Go back to the beginning.\n\n**Not the wedding day.** Before that. The first time you saw them. The moment something in you said yes, this one. What was it about them?}{red| What did they see in you?}\n\n{red|**Remember who you were then.** Younger. Probably more naive. Full of hope about what marriage would be. What did you believe about love?}{red| What did you think marriage would give you?}\n\n{red|**Now, with the vision you have now, look at that beginning again.** Were there hints of what would come?} Not to blame yourself for missing them, but because hindsight sometimes reveals what hope made invisible.\n\n**The seeds of an ending are often present in a beginning.** Not always. But often enough that it is worth looking.",
+          "icon": "flag"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Middle",
+          "text": "{red|**The middle is where most of the marriage lived.** Years, maybe decades. It deserves more than a summary.\n\n**Think about the good seasons.** Not perfect, but good. When you laughed together. When you were a team. When the future felt like something you were building together. What made those times work?}\n\n{red|**Now think about when things started to shift.** It is rarely one moment. Usually it is a slow drift, like two boats that started tied together and gradually floated apart. When did you first notice the distance?}{red| What happened when you tried to close it?}\n\n{red|**Every marriage has patterns that either saved it or strangled it.** The way you fought. The way you made up, or did not. The things you talked about and the things that became too dangerous to mention.\n\nWhat patterns defined your middle years?}{red| And when did you first suspect the patterns might be fatal?}",
+          "icon": "timeline"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The End",
+          "text": "{red|**Every marriage that ends has a final chapter.** Understanding yours helps bring closure.\n\nWhat finally ended the marriage?}{red| Was it a specific event or the accumulation of many things?}{red| Who initiated the divorce?}{red| How did that happen?}\n\n{red|What were the final months or years like?}{red| Was there a point of no return?}{red| When did you know it was truly over?}\n\n{red|How did the divorce process unfold?}{red| What was hardest about it?}{red| What surprised you?}\n\n{red|Looking back, was there a way the marriage could have been saved?}{red| Or had too much damage accumulated?}{red| What do you believe now about whether it had to end?}",
+          "icon": "stop"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Writing Your Story",
+          "text": "**Take time to write the story of your marriage from beginning to end.**\n\n**Start with how you met and what drew you together.** Move through the seasons of your marriage. Trace how things developed over time. End with how and why it ended.\n\n**Try to write this as a story, not a list of grievances.** Include both good and bad. Be honest about complexity.\n\n**This may take more time than other reflections.** That is okay. You can return to it.\n\nWrite the story of your marriage:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Sitting With Your Story",
+          "text": "{red|**After writing your story, sit with it.**\n\n**Read it back to yourself.** Notice what emotions arise. Notice what feels true and what might need revision.\n\nAsk yourself: Does this story capture the complexity of what happened?}{red| Does it acknowledge both good and bad?}{red| Does it make sense of how we got from beginning to end?}\n\n**You may want to revise your story as you continue this journey and gain more insight.** That is part of the process.\n\n**For now, simply notice what it felt like to tell your story and what you learned from the telling.**",
+          "icon": "self_improvement"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_contributing_factors",
+      "isFree": false,
+      "title": "What Went Wrong: Identifying Contributing Factors",
+      "subtitle": "Understanding the multiple causes that led to the end",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "account_tree",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Marriages rarely fail for a single reason. Multiple factors combine and compound over time. Identifying these contributing factors helps you understand the full picture rather than oversimplifying what happened.",
+      "frameworkBasis": {
+        "conceptKey": "systems_thinking",
+        "explanation": "Relationship failures typically result from multiple interacting factors rather than single causes."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Myth of the Single Cause",
+          "text": "**When David's marriage ended, everyone wanted to know why.** He gave the simple answer: she cheated. But lying awake at night, he knew it was more complicated. The affair was real and devastating. But it did not come from nowhere. There were years of disconnection, unspoken resentments, needs neither of them voiced. The affair was the explosion, but the gas had been leaking for years.\n\n**Marriages rarely collapse from a single cause.** They fail like a bridge fails: from accumulated stress on multiple points until the whole structure gives way.\n\n**Even when there is an obvious cause like an affair, that cause did not emerge from nowhere.** There were conditions that made it possible, vulnerabilities that were exploited, cracks that already existed.\n\n**Understanding what really happened means looking at all the factors, not just the most obvious one.**",
+          "icon": "account_tree"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Categories of Contributing Factors",
+          "text": "**Every failed marriage is a unique combination of ingredients.** But certain ingredients show up again and again.\n\n**There is what each of you brought.** The wounds from before you ever met. The way your parents taught you what marriage looks like, for better or worse. The coping mechanisms that helped you survive childhood but poison adult intimacy. The places where you never fully grew up.\n\n**There is what happened between you.** The way you talked, or stopped talking. How you handled it when you were hurt. Whether conflict brought you closer or drove you apart. The slow death of physical or emotional intimacy.\n\n**There is what happened to you from outside.** Money stress that left no margin for grace. Family members who never accepted the marriage. Health crises that took everything you had. Jobs that consumed one of you while the other waited alone.\n\n**And there is timing.** The crisis that hit when you were already depleted. The opportunity for repair that came too late. The way one hard season bled into another until you could not remember what normal felt like.\n\n**Your marriage failed from some combination of these.** Understanding which ones, and how they mixed, is how you make sense of what happened.",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Primary vs Secondary Factors",
+          "text": "**While multiple factors contribute, they are not all equal.**\n\n**Primary factors are the deep, fundamental issues that made the marriage unsustainable.** Maybe it was addiction that your spouse refused to address. Maybe it was your emotional unavailability that starved the relationship. Maybe it was core incompatibility that became undeniable.\n\n**Secondary factors are things that contributed but were not the root cause.** Stress made things worse but did not cause the fundamental problem. A difficult in-law added pressure but was not the real issue.\n\n**Distinguishing primary from secondary factors helps you understand what really happened.** If you focus only on secondary factors, you might miss the deeper issues.",
+          "icon": "sort"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Mapping Your Factors",
+          "text": "{red|**Now map your own marriage.**\n\n**Do not try to be comprehensive.** Try to be honest. What were the real ingredients that combined to end this?}\n\n{red|What did your ex bring from before you met?}\n\n{red|What did you bring?}\n\n{red|What developed between you that became toxic?}\n\n{red|What pressures from outside made everything harder?}\n\n{red|Was there something about timing, a crisis that hit when you were already vulnerable, that made the difference?}\n\n{red|And of all these factors, which ones were fundamental?}{red| Which ones were just the final straws on a back that was already breaking?}\n\n**Take your time with this.** It is not a quiz. It is an excavation.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "How Factors Interact",
+          "text": "{red|**Factors do not operate in isolation.** They interact and amplify each other like instruments in a tragic symphony.\n\n**Imagine a marriage where one partner fears abandonment while the other withdraws when stressed.** Add financial pressure that removes any margin for grace. Each factor alone might be manageable. Together, they create a devastating spiral: her fear triggers his withdrawal, his withdrawal confirms her fear, she clings harder, he pulls further away, all while stress removes their capacity to break the cycle.\n\n**Look at your factor map.** How did the factors interact?}{red| What spirals developed?}{red| How did one issue make another worse?}",
+          "icon": "sync_problem"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Contributing Factors Summary",
+          "text": "**Based on your reflection, write a summary of what contributed to your marriage ending.**\n\nThe primary factors were:\n\nThe secondary factors that made things worse were:\n\nThe key interactions and spirals were:\n\n**Try to write this without excessive blame in either direction.** The goal is accurate understanding, not prosecution.\n\nWrite your contributing factors summary:",
+          "icon": "summarize"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_their_part",
+      "isFree": false,
+      "title": "Their Part: Understanding Your Ex's Contribution",
+      "subtitle": "Honest examination of what your ex brought to the failure",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "person_outline",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Your ex contributed to your marriage's failure. Acknowledging this honestly, without demonizing them, helps you understand what happened and recognize warning signs in the future.",
+      "frameworkBasis": {
+        "conceptKey": "accurate_attribution",
+        "explanation": "Healing requires honest acknowledgment of each person's contribution to relationship failure."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Honest Without Demonizing",
+          "text": "{red|**This may be the part you have rehearsed most, the litany of their failures.** Or it may be the part you have avoided, afraid of your own anger. Either way, your ex contributed to your marriage failing. This is not about demonizing them. It is about being honest.\n\n**Some people, in an effort to be balanced, minimize their ex's contribution.** They take too much blame onto themselves, often from codependency or a pattern of accepting mistreatment.\n\n**Others go the opposite direction, making their ex into a complete villain with no redeeming qualities, which is rarely accurate and prevents real understanding.**\n\n**The goal here is honest assessment.** Your ex was a flawed human being who made choices that contributed to the marriage ending. What were those contributions?} Not to nurse grievances, but to understand clearly what happened.",
+          "icon": "person_outline"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What They Brought",
+          "text": "{red|**Think about who your ex was before you met them.** Not who you wanted them to be. Who they actually were.\n\nWhat happened to them as a child?}{red| How did their parents love them, or fail to?}{red| What did they learn about relationships before they could even spell the word?}\n\n{red|**These early experiences shape us in ways we rarely see.** A child who was abandoned learns that people leave. A child who was controlled learns that love means dominance. A child who was never enough learns that they must perform to be loved. Your ex brought these lessons into your marriage, and they played out whether either of you recognized them or not.\n\n**Then there is character.** Not their wounds, but their choices. Were they honest with you?}{red| Did they take responsibility when they were wrong?}{red| Did they care about your pain, or only their own?}{red| Could they see you as a separate person with separate needs?}\n\n**Some of what your ex brought was damage they could not help.** Some was choices they made anyway. Understanding the difference helps you know what to grieve and what to hold them accountable for.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Understanding vs Excusing",
+          "text": "**There is a difference between understanding your ex's behavior and excusing it.**\n\n**You may come to understand that your ex's rage came from childhood abuse, or that their infidelity grew from profound insecurity.** This understanding can bring a measure of compassion.\n\n**But understanding does not excuse.** Their wounds explain their behavior but do not make it acceptable. You can have compassion for the wounded person inside them while still holding them accountable for their choices.\n\n**Explanation is not justification.** Their background may evoke compassion, but it does not erase responsibility.",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Their Contribution",
+          "text": "{red|**Write honestly about your ex's contribution to the marriage ending.**\n\nWhat did they bring from their past that affected the marriage?}{red| What character issues or patterns did they have?}{red| What did they fail to provide that you needed?}{red| What choices did they make that damaged the relationship?}\n\n**Try to be honest without being vindictive.** The goal is understanding, not revenge.\n\nWrite about their contribution:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "What This Tells You",
+          "text": "{red|**Understanding your ex's contribution is not just about the past.** It informs your future.\n\nWhat red flags were present that you missed or minimized?}{red| Now that you see them clearly, you can watch for them in the future.\n\nWhat patterns were there that you tolerated for too long?}{red| Understanding this helps you set better boundaries.\n\nWhat did you accept that you should not have accepted?} Knowing this helps you establish clearer standards going forward.\n\n**Your ex taught you something about what you cannot live with, what damages you, what you need to avoid.** Do not waste that painful education.",
+          "icon": "school"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Lessons From Their Part",
+          "text": "{red|Based on understanding your ex's contribution, what lessons do you take forward?}\n\nRed flags I will not ignore again:\n\nPatterns I will not tolerate:\n\nBoundaries I will maintain:\n\nWhat I learned I need in a partner:\n\nWrite the lessons you take from understanding their part:",
+          "icon": "flag"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_your_part",
+      "isFree": false,
+      "title": "Your Part: Honest Self-Examination",
+      "subtitle": "Taking appropriate responsibility for your contribution",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "person",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "This may be the hardest part of understanding what went wrong: honestly examining your own contribution. This is not about self-flagellation but about accurate self-awareness that enables genuine growth.",
+      "frameworkBasis": {
+        "conceptKey": "self_examination",
+        "explanation": "Personal growth requires honest examination of one's own contribution to difficulties."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Hardest Look",
+          "text": "**Take a breath.** This is the activity many people want to skip. Looking at your ex's faults is one thing. Looking honestly at your own is another.\n\n**But here is the truth: you brought something to the failure too.** Maybe it was less than your ex brought. Maybe much less. But you were not a perfect spouse who did everything right while your partner single-handedly destroyed the marriage.\n\n**This is not about accepting blame you do not deserve.** It is about the humility to see yourself clearly.\n\n**Because here is what matters: you cannot change your ex.** You can change yourself. And the parts you contributed are the parts you can actually work on.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Common Ways We Contribute",
+          "text": "{red|**This is where it gets uncomfortable.** Not because you are responsible for their choices. You are not. But because you were not just a passenger in this marriage. You were driving too.\n\n**Maybe you contributed in obvious ways.** Things you did that you knew were wrong when you did them. Those are painful to admit, but at least they are clear.\n\n**More often, we contribute in ways that feel justified in the moment.** The criticism that was technically true but delivered to wound. The withdrawal that felt like self-protection but looked like abandonment. The score-keeping that made sure every grievance was remembered.\n\n**Sometimes we contribute by what we did not do.** We did not speak up when something bothered us until it had festered into resentment. We did not prioritize the marriage when it was slowly starving. We did not get help when we were drowning.\n\n**And sometimes we contributed by choosing this person in the first place.** Not because choosing them was wrong, but because we chose them for reasons that set us up for trouble. We chose them to fix us. We chose them because they were familiar, even though familiar was not healthy. We chose the project, not the partner.\n\nWhat did you bring?}{red| What did you do, not do, or choose?}",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Trap of Two Extremes",
+          "text": "{red|**Two traps await when examining your contribution.**\n\n**The first is taking too little responsibility.** Your ex was so clearly at fault that you cannot see your own part. Maybe they were 80% responsible. But what about your 20%?} That 20% is the part you can change.\n\n**The second trap is taking too much responsibility.** This is common among people who grew up learning to take blame, who are prone to shame, or who were in relationships with blamers who made everything their fault. If you find yourself saying it was all my fault, pause. That is rarely accurate.\n\n**Aim for accurate responsibility.** Not too little, not too much.",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Honest Contribution",
+          "text": "{red|**This is between you and yourself.** No one else will read this unless you choose to share it.\n\nWhat did you bring into this marriage that made things harder?}{red| The wounds you had not healed. The patterns you had not broken. The ways of relating you learned in childhood that you carried into adulthood.\n\nWhat did you do that damaged the relationship?}{red| Not by accident. Choices you made, even if they felt justified at the time.\n\nWhat did you fail to do that might have made a difference?}{red| The conversations you avoided. The help you did not seek. The moments you chose comfort over growth.\n\nAnd here is the hardest question: Is there something about how you chose this person, or why you stayed, that you need to examine?} Not to blame yourself, but to understand yourself.\n\n**Write what is true.** The goal is not self-flagellation. The goal is clarity that sets you free.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Responsibility Without Shame",
+          "text": "**There is a crucial difference between responsibility and shame.**\n\n**Responsibility says: I did things that contributed to this failure.** I can see them clearly. I take ownership.\n\n**Shame says: I am a terrible person.** I destroy everything. I deserve to be alone forever.\n\n**Responsibility is specific and actionable.** Shame is global and paralyzing.\n\n**God invites confession, which is honest acknowledgment of specific wrongs.** He does not invite shame spirals that crush you under the weight of general worthlessness.\n\n**You can fully own your contribution while still knowing you are loved, forgivable, and capable of growth.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Taking Ownership",
+          "text": "**Write a statement of ownership for your contribution to the marriage ending.**\n\n**This is not a shame statement.** It is an honest acknowledgment.\n\nI contributed to my marriage ending in these ways:\n\n**I take responsibility for these specific things without taking blame for things that were not mine.**\n\n**I acknowledge these so I can grow and not repeat them.**\n\nWrite your ownership statement:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_patterns",
+      "isFree": false,
+      "title": "The Patterns: Dynamics That Developed",
+      "subtitle": "Understanding the relational patterns that shaped your marriage",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "sync",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Beyond individual contributions, marriages develop patterns of interaction. These patterns take on a life of their own and can trap both partners in destructive cycles. Understanding your marriage's patterns reveals dynamics that may have been invisible while you lived inside them.",
+      "frameworkBasis": {
+        "conceptKey": "systems_patterns",
+        "explanation": "Relationships develop recurring patterns of interaction that shape outcomes regardless of individual intentions."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Dance Between You",
+          "text": "**Every marriage develops a dance, patterns of interaction that both partners fall into, often without realizing it.**\n\n**Think of it like a well-worn path through a forest.** At first, you could have gone anywhere. But over time, you walked the same route so many times that it became a rut. Eventually, the rut was so deep you could not see any other way through.\n\n**These patterns feel automatic.** She raises a concern, he gets defensive, she gets more intense, he shuts down, she feels abandoned, he feels attacked. Neither person chooses this sequence consciously. It just happens, every time.\n\n**Understanding your patterns helps you see that it was not just two individuals failing.** It was also a system that developed its own destructive logic.",
+          "icon": "sync"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Common Destructive Patterns",
+          "text": "{red|See if you recognize your marriage in any of these:\n\n**One of you needed to talk about problems.** The other needed space. So one pursued, which felt like pressure, and the other withdrew, which felt like abandonment. The pursuing got more desperate. The withdrawing got more complete. You could not find each other.\n\n**Or: One of you raised concerns by criticizing.** The other responded by defending. Neither of you ever felt heard. The criticism got sharper. The defense got higher. Eventually, you stopped trying.\n\n**Or: Small issues became big fights.** Voices raised. Things said that could not be unsaid. Afterward, neither of you knew how it escalated so fast. But it kept happening.\n\n**Or: Neither of you wanted to fight, so neither of you said anything.** Problems piled up in the silence. By the time you tried to talk about them, there were too many. The pile had become a wall.\n\n**Or: One of you showed contempt.** Eye rolls. Disgust. The message that the other was not just wrong but pathetic. The other retreated inward, shutting down to survive the disdain. Connection died in that space.\n\nWhich one was yours?}{red| Or was it a combination that was uniquely destructive?}",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "How Patterns Form",
+          "text": "Here is something that might change how you see your marriage:\n\n**Your patterns were not accidents.** They were almost inevitable given what each of you brought.\n\n**Put someone who grew up with chaos together with someone who grew up with control, and watch what happens.** One craves structure; the other feels suffocated by it. Neither is wrong. But together, they are gasoline and fire.\n\n**Put someone whose parents never fought together with someone whose parents fought constantly.** One thinks conflict means the relationship is dying. The other thinks conflict is how you work things out. They are speaking different languages about the same thing.\n\n**Your patterns formed in the space between your two histories.** His withdrawal made sense given his story. Her pursuit made sense given hers. Together, they created something neither wanted and neither knew how to stop.\n\n**This is not about excusing the patterns.** It is about understanding why they felt so automatic, so impossible to escape. You were not crazy. You were two wounded people whose wounds interlocked in devastating ways.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Marriage Patterns",
+          "text": "{red|**Identify the patterns that characterized your marriage.**\n\nWhat was your typical pattern during conflict?}{red| Who pursued, who withdrew?}{red| What happened when one of you raised a concern?}{red| How did you handle disagreements?}{red| What cycles kept repeating?}{red| What was your role in the pattern?}{red| What was your ex's role?}\n\nWrite about your marriage patterns:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Breaking Free From Patterns",
+          "text": "**Understanding your patterns is the first step to freedom from them.**\n\n**When you can see the dance clearly, you can choose different steps.** You can recognize when the old pattern is starting and interrupt it.\n\n**This matters for your future.** The patterns you developed are not solely about your ex. They are partly about you. You may carry your part of the pattern into new relationships unless you become aware of it and grow.\n\n**If you were the pursuer, you may need to learn to give space.** If you were the withdrawer, you may need to learn to stay present. If you escalated, you may need to learn to de-escalate.\n\n**The pattern does not have to follow you forever.**",
+          "icon": "link_off"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Pattern Work",
+          "text": "{red|Based on understanding your patterns, what work do you need to do?}\n\nThe role I typically played in destructive patterns was:\n\nThis connected to my history or wounds in these ways:\n\nTo avoid repeating this pattern, I need to grow in these areas:\n\nThe different steps I want to take in future relationships are:\n\nWrite your pattern work plan:",
+          "icon": "construction"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_uncontrollable",
+      "isFree": false,
+      "title": "What You Could Not Control",
+      "subtitle": "Releasing responsibility for what was never yours to fix",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "block",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Part of understanding what went wrong is recognizing what was never in your control. You cannot make someone love you, change for you, or choose the marriage. Releasing what you could not control is essential for healing.",
+      "frameworkBasis": {
+        "conceptKey": "locus_of_control",
+        "explanation": "Distinguishing between what we can and cannot control is essential for emotional health and appropriate responsibility."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Limits of Your Power",
+          "text": "**Sarah spent years believing that if she had just been better, prettier, more patient, less demanding, more something, her husband would not have left.** She carried the weight of a failure that was never entirely hers to prevent.\n\n**You could not control your ex.** Full stop.\n\n**You could not make them love you.** You could not make them faithful. You could not make them get help for their addiction. You could not make them choose the marriage.\n\n**The hardest truth about marriage is that it requires two people choosing each other every day.** You can only control one of those people. If the other person stops choosing, there is a limit to what you can do.\n\n**This is not about letting yourself off the hook for your part.** It is about releasing responsibility for what was never yours to carry.",
+          "icon": "block"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Their Choices Were Theirs",
+          "text": "**Your ex made choices.** Those choices were theirs.\n\n**If they had an affair, that was their choice.** Your imperfections did not make them cheat.\n\n**If they were abusive, that was their choice.** Your behavior did not cause their violence.\n\n**If they refused to work on the marriage, that was their choice.** You could not force them to care.\n\n**If they left, that was their choice.** You could not make them stay by being more or less of anything.\n\n**Their choices came from their wounds, their character, their will.** You influenced the environment, but you did not control their responses. Humans have agency. They chose what they chose.",
+          "icon": "person_outline"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Circumstances Beyond Control",
+          "text": "**Beyond your ex's choices, other factors were beyond your control.**\n\n**External stressors that hit your marriage were not your fault.** Job losses, health crises, family deaths, traumas. These things happened to you.\n\n**Timing factors were not your fault.** Maybe you married young before you knew yourselves. Maybe a crisis hit during an already fragile season.\n\n**What you did not know you did not know.** You cannot blame yourself for lacking awareness you had not yet developed. You made decisions with the understanding you had at the time.\n\n**Some of what went wrong happened to you.** It was not all things you did wrong.",
+          "icon": "cloud"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "What Was Not Yours",
+          "text": "**Identify specifically what was not in your control.**\n\nChoices your ex made that you could not have prevented: Circumstances that happened to your marriage: Things you did not know that you cannot blame yourself for not knowing: Limitations that were simply part of being human:\n\nWrite about what was not yours to control:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Releasing What Is Not Yours",
+          "text": "**You have to release what was never yours.**\n\n**Picture carrying a heavy backpack filled with everything you have blamed yourself for.** Now open it and remove everything that was actually someone else's choice or beyond your control.\n\n**You still carry your part.** That remains yours to own and grow from. But their choices, their character, the circumstances that happened to you, those were never yours to carry.\n\n**Releasing does not mean forgetting or excusing.** It means stop carrying weight that does not belong to you. It means directing your energy toward what you can actually change: yourself.",
+          "icon": "backpack"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "A Prayer of Release",
+          "text": "**Release what was not yours through prayer.**\n\n**God, I have carried responsibility for things that were not mine to carry.**\n\n**I release my ex's choices.** They were not my choices. I could not make them choose differently.\n\n**I release the circumstances that happened to us.** They were not my fault.\n\n**I release the things I did not know.** I cannot blame myself for awareness I did not yet have.\n\n**I keep what is mine: my choices, my growth, my responsibility.**\n\n**Help me carry only what is actually mine.**\n\nAmen.\n\nWrite your own prayer of release:",
+          "icon": "volunteer_activism"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_turning_points",
+      "isFree": false,
+      "title": "Turning Points: When Things Changed",
+      "subtitle": "Identifying key moments that shifted your marriage's trajectory",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "turn_right",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Most marriages have turning points, moments when things shifted significantly for better or worse. Identifying these helps you understand how your marriage moved toward its ending.",
+      "frameworkBasis": {
+        "conceptKey": "critical_incidents",
+        "explanation": "Significant events and decisions often mark turning points in relationship trajectories."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Moments That Changed Things",
+          "text": "{red|**Michael could pinpoint it exactly.** The pregnancy loss. Everything was different after that. Not immediately, but looking back, that was when the ground shifted beneath them. They grieved differently, drifted into separate silences, and never quite found their way back to each other.\n\n**Most marriages have turning points, moments when the trajectory changed.**\n\n**Sometimes they are dramatic: a discovery, a betrayal, a crisis.** Sometimes they are quiet: a conversation that went wrong, a choice that set things on a different path, the moment you realized something fundamental had shifted.\n\n**Sometimes the turning point is not a single moment but a season.** The year of depression. The period when work consumed everything. The stretch when you stopped talking about anything real.\n\n**Identifying these turning points helps you understand the shape of your marriage's story.** How did you get from the hopeful beginning to the painful end?} The turning points mark the route.",
+          "icon": "turn_right"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Positive Turning Points That Did Not Last",
+          "text": "{red|**Some turning points were positive.** There were moments when things could have gotten better, and maybe briefly did.\n\n**The conversation where you finally opened up.** The season when you reconnected. The counseling that seemed to help. The recommitment you made.\n\n**These positive turning points matter because they show what was possible.** But understanding why they did not last matters more.\n\nDid the change not go deep enough?}{red| Did old patterns reassert themselves?}{red| Did one or both of you not follow through?}{red| Did a new crisis undo the progress?}\n\n**Positive turning points that fade often reveal what the marriage really needed but never fully got.**",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Negative Turning Points",
+          "text": "{red|**Negative turning points are often easier to identify.** Something happened, and things were never the same.\n\n**Betrayal: discovery of an affair, major lies revealed, trust shattered.**\n\n**Failure: a crucial moment when one partner needed the other and they were not there.**\n\n**Words: something said that could not be unsaid, a line crossed in conflict.**\n\n**Choices: a decision that prioritized something else over the marriage.**\n\n**Accumulation: sometimes the turning point is not dramatic but the moment when accumulated damage reached critical mass.**\n\nWhat negative turning points marked your marriage's decline?}",
+          "icon": "trending_down"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Turning Points",
+          "text": "{red|**Identify the significant turning points in your marriage.**\n\nWhat moments or seasons marked major shifts?}{red| What positive turning points occurred and why did they not last?}{red| What negative turning points accelerated the decline?}{red| Was there a point of no return?}{red| When was it?}\n\nWrite about your turning points:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Road Not Taken",
+          "text": "{red|**At each turning point, other paths existed.** What if you had made different choices?}{red| What if your ex had?}\n\n**This is not about torturing yourself with regret.** It is about recognizing that marriages do not inevitably fail. Choices matter. Moments matter.\n\n**Some marriages survive affairs and emerge stronger.** Some marriages navigate devastating losses and come through closer. The turning point is not destiny. What happens at the turning point matters.\n\n**This matters for your future.** In your next relationship, there will be turning points. Recognizing them and choosing differently is possible when you understand what turning points look like.",
+          "icon": "fork_right"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Turning Point Lessons",
+          "text": "{red|What do your turning points teach you?}\n\nWhat I learned about how quickly things can shift:\n\nWhat I wish I had done differently at key moments:\n\nWhat I will watch for in future relationships:\n\nHow I will handle future turning points differently:\n\nWrite your turning point lessons:",
+          "icon": "school"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_lessons",
+      "isFree": false,
+      "title": "Extracting Wisdom: Lessons for the Future",
+      "subtitle": "Identifying what your marriage taught you for next time",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "school",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Your failed marriage, painful as it was, contains wisdom. Extracting clear lessons helps ensure the pain was not wasted and positions you for healthier relationships in the future.",
+      "frameworkBasis": {
+        "conceptKey": "post_traumatic_growth",
+        "explanation": "Difficult experiences can yield wisdom and growth that contributes to future flourishing."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Pain as Teacher",
+          "text": "{red|**Your marriage may have failed, but it was not wasted.** It taught you things you could not have learned any other way.\n\n**You paid a high price for this education.** Divorce is brutal tuition, but it does teach. Do not waste what it cost you. Wring every drop of wisdom from the experience.\n\n**Rachel spent two years after her divorce replaying every fight, every failure, every moment she wished she could take back.** Then something shifted. She stopped asking \"why did this happen to me?}{red|\" and started asking \"what did this teach me?}{red|\" The same memories that had tormented her became instructors. She realized she had ignored her own needs for years. She saw how she had chosen someone who reminded her of her emotionally unavailable father. She understood why she had stayed so long past the point of health. \"The marriage failed,\" Rachel said, \"but I did not fail. I grew. I know myself now in ways I never did before. And I will never make those same choices again.\"\n\nWhat did you learn about yourself?}{red| About relationships?}{red| About what you need and cannot tolerate?}{red| About what makes love last or fail?}\n\n**The worst outcome would be to suffer this much and learn nothing.** The redemptive outcome is to emerge wiser, more self-aware, and better equipped for what comes next.\n\n**\"There is a time for everything, and a season for every activity under the heavens\" ({red|Ecclesiastes 3:1|There is a time for everything, and a season for every activity under the heavens}).** This was a season of painful learning. Let it yield its wisdom.",
+          "icon": "school"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Lessons About Yourself",
+          "text": "{red|**Your marriage was a mirror.** It showed you things about yourself you might never have seen otherwise.\n\n**You learned how you attach.** When you felt insecure, did you reach for your partner or push them away?}{red| Did you need constant reassurance, or did you pretend you needed nothing at all?}{red| Your attachment style showed up every time things got hard.\n\n**You learned where your wounds are.** The things your partner said that destroyed you, they found the places you were already broken. The criticisms that cut deepest exposed what you secretly feared was true about yourself.\n\n**You learned what you need that you did not know you needed.** Maybe you need more affection than you admitted. Maybe you need solitude that felt selfish to ask for. Maybe you need to feel respected, or desired, or simply seen. Your marriage taught you what starving for these things feels like.\n\n**And you learned what you become under pressure.** The best version of yourself, or the worst?}{red| Did you fight fair?}{red| Did you fight at all?}{red| When things got hard, who did you turn into?}\n\n**These lessons are painful.** They are also invaluable. You know yourself now in ways you did not before.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Lessons About Relationships",
+          "text": "**Your marriage also taught you how relationships work.** Or do not work.\n\n**You learned what kills love.** Whatever was in your marriage that poisoned it slowly, criticism or contempt or neglect or betrayal, you know now what love cannot survive. You have seen it from the inside.\n\n**You learned that love is not enough.** You probably loved each other, at least at the beginning. Maybe even at the end. But love without respect erodes. Love without trust corrodes. Love without the skills to navigate conflict eventually surrenders. You know now that love is necessary but not sufficient.\n\n**You learned that small things become big things.** The little disconnection you did not address. The small resentment you swallowed. The minor issue you thought was not worth fighting about. They accumulated. They compounded. They became the mountain that buried you.\n\n**And you learned that people do not change unless they want to.** You probably tried to change your ex. Or hoped they would change. Or believed that if you just loved them enough, they would become who you needed. You know now how that story ends.\n\n**These lessons cost you a marriage.** Do not let that price be paid for nothing.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Lessons",
+          "text": "**Extract the key lessons from your marriage.**\n\nLessons about myself: Lessons about what I need in a partner: Lessons about what I cannot tolerate: Lessons about relationship dynamics: Lessons about what makes love last:\n\nWrite your lessons:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Applying the Lessons",
+          "text": "**Lessons only help if you actually apply them.**\n\n**Knowing you need better communication does not help unless you practice communicating.** Knowing you should not ignore red flags does not help unless you actually pay attention to them.\n\n**This is where the rubber meets the road.** You have extracted wisdom. Now the question is whether you will live differently because of it.\n\n**Some people go through multiple failed relationships without ever applying their lessons.** They see the same things wrong each time but never change their part. Do not be that person.\n\n**Your pain bought this wisdom.** Use it.",
+          "icon": "construction"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Commitment to Apply",
+          "text": "**Commit to applying the lessons you have learned.**\n\nThe most important lessons I will carry forward:\n\nSpecific changes I will make in how I approach relationships:\n\nWarning signs I will not ignore:\n\nPatterns I will work to break:\n\nWhat I will do differently next time:\n\nWrite your commitment to apply what you have learned:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_integration",
+      "isFree": false,
+      "title": "A Clearer Picture: Integrating Your Understanding",
+      "subtitle": "Bringing together everything you have explored",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "integration_instructions",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You have done significant work examining your marriage from multiple angles. This final activity helps you integrate everything into a coherent understanding that supports ongoing healing.",
+      "frameworkBasis": {
+        "conceptKey": "integration",
+        "explanation": "Integration of multiple perspectives into a coherent whole supports resolution and growth."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Done",
+          "text": "**You have done hard, important work in this journey.**\n\n**You told the story of your marriage from beginning to end.** You identified the factors that contributed to its failure. You examined both your ex's part and your own honestly.\n\n**You explored the patterns that developed between you.** You identified what was beyond your control. You marked the turning points where things shifted.\n\n**You extracted lessons that your painful experience provided.**\n\n**This is significant work.** Most people never do it. They carry unexamined baggage into their futures. You are choosing differently.",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Your Coherent Understanding",
+          "text": "**Now bring it together into a coherent understanding.**\n\n**You should be able to tell the story of what happened in a way that is honest, balanced, and makes sense.** Not a victim story. Not a self-flagellation story. A true story that acknowledges complexity.\n\n**You should understand why your marriage ended.** Not a simple answer, but a real one that accounts for multiple factors.\n\n**You should know your part and your ex's part without either excessive blame or excessive self-condemnation.**\n\n**You should have lessons that will inform your future.**\n\n**This is what understanding looks like.**",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Summary Understanding",
+          "text": "{red|**Write a summary of your understanding of what happened in your marriage.**\n\nIn a few paragraphs, describe: How did your marriage begin, develop, and end?}{red| What were the main factors that contributed to its failure?}{red| What was your part and what was your ex's part?}{red| What was beyond either of your control?}\n\n**Write this as if explaining to someone who genuinely wants to understand what happened.**\n\nYour summary understanding:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Peace Through Understanding",
+          "text": "**Understanding does not make the pain disappear.** But it can bring a certain kind of peace, the kind that comes not from having all the answers but from no longer being tormented by the questions.\n\n**The peace of knowing what happened instead of endless confusion.** The peace of appropriate responsibility instead of crushing guilt or toxic blame. The peace of lessons learned instead of senseless suffering. The peace of a story that makes sense instead of fragments that torment.\n\n**May understanding bring you peace.** Not the peace of having all the answers, but the peace of having enough clarity to move forward without the weight of unresolved confusion.",
+          "icon": "spa"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Understanding and Faith",
+          "text": "**Your faith speaks to this work of understanding.**\n\n**Search me, God, and know my heart; test me and know my anxious thoughts.** See if there is any offensive way in me, and lead me in the way everlasting. (({red|Psalm 139:23-24}))\n\n**God invites honest self-examination.** He already knows everything about your marriage. You are not hiding anything from Him. But your own understanding matters for your healing.\n\n**God can redeem even failed marriages.** Not by erasing them, but by using them to grow you, to teach you, to prepare you for what comes next. Let Him do that work.",
+          "icon": "church"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Closing This Chapter",
+          "text": "**You have done the work of understanding.** Now mark the completion.\n\n**I have examined my marriage honestly and reached understanding.**\n\n**I know what contributed to its ending.** I take responsibility for my part without carrying what is not mine.\n\n**I have extracted lessons that will serve me going forward.**\n\n**I am ready to continue healing with this understanding as foundation.**\n\n**I thank God for the wisdom that even painful experiences can provide.**\n\n**I close this chapter of examination and open myself to what comes next.**\n\nWrite your own closing statement:",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Clarity Achieved",
+    "summaryText": "You have done the courageous work of honestly examining your marriage to understand what happened. This understanding is not the end of healing, but it is a crucial foundation. You now have clarity about contributing factors, your part and your ex's part, the patterns that developed, and the lessons you carry forward. May this understanding bring peace and wisdom for your future.",
+    "keyTakeaways": [
+      "Understanding what went wrong enables genuine healing and prevents repeated patterns",
+      "Marriages fail from multiple interacting factors, not single causes",
+      "Both partners contribute to failure, though not necessarily equally",
+      "Patterns of interaction take on a life of their own",
+      "Some factors were beyond your control and are not yours to carry",
+      "Turning points mark where different choices could have led to different outcomes",
+      "Your painful experience contains wisdom for future relationships",
+      "Honest understanding leads to peace, not endless rumination"
+    ],
+    "nextRecommendedJourneys": [
+      "Processing Past Relationship Pain",
+      "Healing and Restoration After Divorce",
+      "Letting Go of Resentment and Lingering Conflict"
+    ]
+  }
+}

@@ -73,9 +73,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         titleSpacing: 0,
         title: Text(
           'Reset Password',
-          style: AppTextStyles.headlineLarge.copyWith(
-            fontWeight: FontWeight.w700,
-          ),
+          style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700),
         ),
       ),
       body: SafeArea(
@@ -84,34 +82,47 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Icon(
-                  Icons.lock_reset_rounded,
-                  size: 40,
-                  color: AppColors.primary,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Forgot Password?',
-                style: AppTextStyles.displayLarge.copyWith(
-                  fontWeight: FontWeight.w900,
-                  height: 1.1,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'Enter your email and we\'ll send you a link to reset your password',
-                style: AppTextStyles.bodyLarge.copyWith(
-                  color: AppColors.getTextSecondary(context),
-                  height: 1.5,
-                ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Icon(
+                      Icons.lock_reset_rounded,
+                      size: 28,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Forgot Password?',
+                          style: AppTextStyles.headlineLarge.copyWith(
+                            fontWeight: FontWeight.w700,
+                            height: 1.1,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Enter your email and we\'ll send you a link to reset your password',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.getTextSecondary(context),
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 32),
               TextField(
@@ -227,7 +238,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                             'Send Reset Link',
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
-                              fontSize: 17,
+                              fontSize: 15,
                             ),
                           ),
                 ),

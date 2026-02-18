@@ -1,0 +1,861 @@
+{
+  "journeyId": "married_harmful_conflict_patterns",
+  "title": "Breaking Harmful Conflict Patterns in Marriage",
+  "subtitle": "Escaping the cycles that keep you stuck",
+  "summary": "**Every couple develops patterns—ways they typically react to each other that become automatic over time.** Some patterns build connection. Others are destructive loops that play out again and again, leaving both spouses frustrated and distant. This journey helps you identify your specific harmful patterns, understand where they come from, and develop new ways of relating that break the cycle.",
+  "targetUserCategory": "married",
+  "priorityRank": 2,
+  "estimatedDays": 14,
+  "totalActivities": 11,
+  "difficulty": "intermediate",
+  "themeColor": "#E74C3C",
+  "cover": {
+    "themeTag": "Patterns",
+    "accentIcon": "autorenew",
+    "heroImage": "assets/images/journeys/married_journey2.jpg",
+    "heroImageDescription": "Broken chains or a maze exit representing freedom from destructive cycles."
+  },
+  "frameworks": [
+    "attachment_theory",
+    "gottman_method",
+    "family_systems",
+    "biblical_renewal"
+  ],
+  "targetOutcomes": [
+    "Identify your specific conflict patterns as a couple",
+    "Understand the pursue-withdraw and other common cycles",
+    "Trace patterns to their origins in family and past experiences",
+    "Learn to interrupt the cycle before it escalates",
+    "Develop new patterns that build rather than destroy",
+    "Create lasting change through intentional practice"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_the_dance",
+      "isFree": true,
+      "title": "The Dance You Do Without Thinking",
+      "subtitle": "Recognizing the automatic patterns in your conflicts",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "sync_problem",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Every couple has a 'dance'—a predictable sequence of actions and reactions that happens almost automatically during conflict. Most couples don't see their dance clearly because they're too busy dancing. This activity helps you step back and observe what's actually happening.",
+      "frameworkBasis": {
+        "conceptKey": "conflict_cycles",
+        "explanation": "Couples develop automatic interaction patterns that become self-reinforcing, often without awareness."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Pattern You Can't See",
+          "text": "{red|**Imagine recording every argument you have had with your spouse for the past year.** If you watched them back-to-back, you would notice something striking:\n\n**Most of them follow the same basic script.**\n\n**Different topics—money, kids, chores, in-laws—but the same pattern underneath.** The same sequence of moves. The same escalation points. The same ending.\n\n**Carlos and Maria finally saw their pattern clearly in counseling.** Maria said every fight ended the same way. \"I would get upset about something and want to talk. Carlos would shut down. I would push harder. He would leave the room. I would follow him. He would explode. I would cry. We would not speak for days.\" When their counselor mapped it on a whiteboard, Carlos stared at it stunned. \"That is exactly what happens,\" Carlos admitted. \"Every single time. How did we not see this?}\"\n\n**It is like a dance you have choreographed together without realizing it.** One person steps forward, the other steps back. One person raises their voice, the other shuts down. One person pursues, the other withdraws.\n\n**You are not choosing these responses consciously.** They have become automatic. And \"the prudent see danger and take refuge, but the simple keep going and pay the penalty\" ({red|Proverbs 27:12|the prudent see danger and take refuge, but the simple keep going and pay the penalty}). Seeing your pattern is the first step to finding refuge from it.",
+          "icon": "repeat"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why Patterns Form",
+          "text": "These patterns form for understandable reasons:\n\n**Self-protection**: We develop responses that feel protective—even if they make things worse long-term.**\n\n**Learned behavior**: We repeat what we saw growing up or what worked (or seemed to) in the past.**\n\n**Emotional flooding**: When stressed, we default to automatic responses rather than thoughtful ones.**\n\n**Trigger-response**: Your spouse's behavior triggers something in you, which triggers something in them, which triggers you again.**..\n\n**The pattern becomes a rut.** And ruts are easy to fall into and hard to climb out of.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Most Common Dance",
+          "text": "The most common conflict pattern is the pursue-withdraw cycle:\n\n**The Pursuer**: Feels disconnection and pursues—asks questions, wants to talk, expresses frustration, may criticize or complain.** Underlying message: 'I need to know we're okay. Connect with me.'\n\n**The Withdrawer**: Feels overwhelmed and withdraws—gets quiet, changes the subject, walks away, shuts down emotionally.** Underlying message: 'I need space to process. Back off so we don't make it worse.'\n\n**The more one pursues, the more the other withdraws.** The more one withdraws, the more the other pursues.\n\n**Both are protecting themselves.** Both are making it worse.",
+          "icon": "swap_horiz"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Typical Role",
+          "text": "{red|In your marriage's conflict pattern, which role do you typically play?}",
+          "prompts": [
+            "I'm usually the pursuer—I push to talk, resolve, connect",
+            "I'm usually the withdrawer—I need space, go quiet, shut down",
+            "We both pursue—things escalate quickly",
+            "We both withdraw—issues go unaddressed",
+            "It depends on the topic"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Neither role is 'the problem.' The pattern itself is the problem, and both partners are in it together."
+          },
+          "icon": "person"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Mapping Your Dance",
+          "text": "**Think about your last few significant conflicts.** Try to describe the typical sequence:\n\n1. It usually starts when... 2. Then I typically... 3. Which leads my spouse to... 4. Which makes me... 5. And it ends with...\n\nWrite out the pattern as specifically as you can:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Observer's Eye",
+          "text": "{red|**This week, try to observe your conflict pattern as if you were watching it from outside.**\n\n**When a disagreement starts, part of your brain should be asking: • 'There's our pattern starting.** What step is this?}{red|' • 'What do I usually do next?}{red| What does my spouse usually do?}{red|' • 'Can I feel the automatic response wanting to happen?}'\n\n**You don't need to change anything yet.** Just observe. Awareness is the first step to change.",
+          "icon": "visibility"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_beneath_pattern",
+      "isFree": false,
+      "title": "What's Driving Your Pattern",
+      "subtitle": "Understanding the fears and needs underneath",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "layers",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Conflict patterns aren't random—they're driven by deeper fears and attachment needs. The pursuer isn't just annoying; they're scared of disconnection. The withdrawer isn't just avoidant; they're overwhelmed and trying to prevent explosion. Understanding what's beneath the pattern creates compassion and opens doors to change.",
+      "frameworkBasis": {
+        "conceptKey": "attachment_needs",
+        "explanation": "Conflict behaviors are often attempts to meet core attachment needs for security, connection, and emotional safety."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Iceberg of Pattern",
+          "text": "**Your conflict behavior is just the tip of the iceberg.** Beneath the surface:\n\n**What you do** (visible): Criticize, withdraw, defend, attack\n\n**What you feel** (less visible): Hurt, scared, overwhelmed, alone\n\n**What you need** (hidden): To know I matter, to feel safe, to be respected\n\n**When we only deal with the visible behavior, we miss the point entirely.** Your spouse isn't trying to torture you—they're trying to protect themselves or get a core need met.\n\n**And so are you.**",
+          "icon": "icecream"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Pursuer's Underneath",
+          "text": "If you are the pursuer in your pattern, here is what is often underneath:\n\n**Behavior**: Pushing to talk, criticizing, asking repeated questions, getting louder\n\n**Feelings**: Anxious, abandoned, not important, alone\n\n**Deep fear**: 'If we do not resolve this, we are not okay.** If you walk away, maybe you will not come back.'\n\n**Core need**: Reassurance of connection, to know the relationship is secure\n\n**Rachel recognized herself immediately.** Rachel said she would become almost frantic when her husband pulled away. \"I knew I was making it worse by following him around the house demanding we talk. But the thought of him walking away with things unresolved—I could not bear it. It felt like dying.\" When Rachel traced it back, she realized her father had left the family after a fight and never came back. \"No wonder my husband's withdrawal felt like abandonment,\" Rachel admitted. \"To me, it was.\"\n\n**\"There is no fear in love.** But perfect love drives out fear\" (1 {red|John 4:18|When Rachel traced it back, she realized her father had left the family after a fight and never came back.}). The pursuer's core wound is fear, and only experiencing consistent, returning love can heal it.\n\n**The pursuer is not trying to control or attack.** They are trying to restore a sense of connection because its absence feels unbearable.",
+          "icon": "person_search"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Withdrawer's Underneath",
+          "text": "If you are the withdrawer in your pattern, here is what is often underneath:\n\n**Behavior**: Getting quiet, leaving the room, changing the subject, shutting down\n\n**Feelings**: Overwhelmed, failing, inadequate, like nothing I do is right\n\n**Deep fear**: 'If we keep going, I will say something that makes it worse.** I cannot handle this intensity.'\n\n**Core need**: Space to process, to feel capable, to not feel like a failure\n\n**James recognized his pattern instantly.** James said when his wife got upset, his brain just stopped working. \"I could not think, could not form sentences, could not figure out what she wanted me to say. So I shut down. She saw avoidance. I felt survival.\" Growing up, James's mother's anger had been explosive and unpredictable. \"When she started yelling, my only option was to disappear—mentally if not physically. I learned that staying engaged only made things worse.\"\n\n**\"A gentle answer turns away wrath, but a harsh word stirs up anger\" ({red|Proverbs 15:1|Growing up, James's mother's anger had been explosive and unpredictable.}).** The withdrawer often fears they have no gentle answer, only dangerous words better left unsaid.\n\n**The withdrawer is not trying to abandon or punish.** They are trying to prevent further damage because the intensity feels dangerous.",
+          "icon": "person_off"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Underneath",
+          "text": "{red|**Think about what's beneath your typical conflict behavior.**\n\nWhen you do what you do in conflict: • What are you actually feeling?}{red| (Not what you show, but what you feel) • What are you afraid will happen?}{red| • What do you need in that moment?}\n\nBe honest—this is for your growth:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Spouse's Underneath",
+          "text": "{red|**Now try to imagine your spouse's experience.**\n\nWhen they do what they do in conflict: • What might they actually be feeling underneath?}{red| • What might they be afraid of?}{red| • What might they really need?}\n\nTry to write from their perspective with compassion:",
+          "responseType": "open-text",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Compassion Practice",
+          "text": "{red|The next time you're in your conflict pattern, try to pause and ask:\n\n'What is my spouse feeling right now?}{red| What are they afraid of?}{red| What do they need?}'\n\n**Even if you can't change your response in the moment, holding compassion for what's underneath their behavior can shift your entire experience of the conflict.**\n\n**They're not your enemy.** They're a scared person you love.",
+          "icon": "volunteer_activism"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_family_origins",
+      "isFree": false,
+      "title": "Where Your Pattern Learned to Dance",
+      "subtitle": "Tracing conflict styles to family origins",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "family_restroom",
+      "emotionalIntensity": "high",
+      "activityType": "healing",
+      "whyThisMatters": "You didn't invent your conflict responses—you learned them. Watching how your parents handled conflict taught you what was safe and dangerous. Understanding these origins helps you see your patterns with new eyes.",
+      "frameworkBasis": {
+        "conceptKey": "family_of_origin",
+        "explanation": "Conflict patterns are often learned in childhood and unconsciously replicated."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Your First Classroom",
+          "text": "**Your family was your first classroom for relationships.** You learned:\n\n• How to express (or not express) emotions • What happens when people disagree • Whether conflict leads to resolution or destruction • Whether it's safe to be vulnerable • What roles men and women play in arguments\n\n**These lessons were absorbed before you had the ability to evaluate them.** They just became 'how things are.'\n\n**Now they're running your marriage, often without your conscious awareness.**",
+          "icon": "school"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Family's Conflict Style",
+          "text": "{red|How did your parents handle conflict?}",
+          "prompts": [
+            "Explosive—yelling, then pretending it didn't happen",
+            "Silent treatment—cold war, no direct communication",
+            "Avoidance—swept under the rug",
+            "Constructive—disagreed but worked through it",
+            "One pursued, one withdrew"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Whatever you witnessed became your template."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "The Lessons You Absorbed",
+          "text": "Complete these sentences based on what you experienced (not what you were told):\n\n**• 'When people disagree, what happens is.**..' • 'Expressing strong emotions is...' • 'The way to get your needs met is...'\n\nWrite your learned beliefs about conflict:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Replication or Rebellion",
+          "text": "People respond to family patterns in two ways:\n\n**Replication**: You repeat what you saw.** If your dad yelled, you yell.\n\n**Rebellion**: You do the opposite.** If your parents fought loudly, you avoid all conflict.\n\n**Both are reactions to your past rather than free choices.** True freedom is choosing based on what's healthy.",
+          "icon": "compare_arrows"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Pattern's Origin",
+          "text": "{red|How does your current conflict pattern relate to what you learned growing up?}{red| Are you replicating or rebelling?}\n\nWrite about the connection between your past and present:",
+          "responseType": "open-text",
+          "icon": "timeline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "teaching",
+          "cardNumber": 6,
+          "title": "Breaking Generational Patterns",
+          "text": "**Patterns that were learned can be unlearned.**\n\n**'Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!**' (2 ({red|Corinthians 5:17}))\n\n**You are not destined to repeat your family's dysfunctions.** The patterns you change now are patterns your children won't inherit.",
+          "icon": "auto_awesome"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_trigger_moment",
+      "isFree": false,
+      "title": "The Trigger Moment",
+      "subtitle": "Identifying what sets off your pattern",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "bolt",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Every harmful pattern has a trigger point. Identifying your triggers gives you an intervention point before the pattern takes over.",
+      "frameworkBasis": {
+        "conceptKey": "trigger_awareness",
+        "explanation": "Triggers activate automatic responses. Awareness creates space for intentional choice."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Spark That Starts the Fire",
+          "text": "**Every conflict pattern has a trigger—a tone of voice, specific words, a facial expression, or context.**\n\n**The trigger itself often is not that significant.** But it activates your pattern, and suddenly you are off and running.\n\n**Anthony discovered his trigger was the phrase \"you always.**\" Anthony said the moment his wife started a sentence with \"you always,\" something in him just shut off. \"I stopped hearing anything after those words. My defenses went up, my ears closed, and I was preparing my counterattack.\" The phrase reminded him of his father's constant criticism: \"You always mess things up. You always disappoint me.\"\n\n**\"Above all else, guard your heart, for everything you do flows from it\" ({red|Proverbs 4:23|The phrase reminded him of his father's constant criticism:}).** Knowing your triggers is one way of guarding your heart—not from your spouse, but from your own automatic reactions.\n\n**Identifying your triggers is like seeing the trapdoor before you fall through it.**",
+          "icon": "flash_on"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "What Triggers You",
+          "text": "{red|What typically triggers your conflict response?}",
+          "prompts": [
+            "Critical tone or words",
+            "Feeling dismissed or ignored",
+            "Eye rolling or sighing",
+            "Defensiveness when I raise an issue",
+            "My spouse shutting down or walking away",
+            "Raised voice or intensity"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These triggers often connect to deeper vulnerabilities."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Why Those Things Trigger You",
+          "text": "**Your triggers connect to vulnerabilities.**\n\n**If you're triggered by dismissiveness, you might fear not mattering.** If you're triggered by criticism, you might fear being inadequate.\n\n**Understanding why helps you respond from awareness rather than reacting from pain.**",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "The Sequence After Trigger",
+          "text": "Map your sequence: Trigger → Body sensation → Emotion → Thought → Action\n\n**For example: 'When she sighs (trigger), I feel heat in my chest (body), feel angry (emotion), think \"here we go again\" (thought), and get defensive (action).**'\n\nMap your own sequence:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Intervention Point",
+          "text": "**The earlier in the sequence you intervene, the easier it is to change course.**\n\n**Catch it at the trigger: 'That's my trigger.**' Notice the body sensation: 'I'm tensing up.' Name the emotion: 'I'm feeling hurt.'\n\n**In that gap is your freedom to choose differently.**",
+          "icon": "pause_circle"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Trigger Tracking",
+          "text": "{red|This week, track your triggers:\n\n1. What triggered you?}{red| 2. Body sensation?}{red| 3. Emotion?}{red| 4. Thought?}{red| 5. What did you do?}\n\n**Just build awareness.** That's the foundation for change.",
+          "icon": "track_changes"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_pursue_withdraw",
+      "isFree": false,
+      "title": "The Pursue-Withdraw Trap",
+      "subtitle": "Understanding the most common destructive cycle",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "sync",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "The pursue-withdraw cycle is the most common harmful pattern. Understanding what each partner needs is essential for breaking free.",
+      "frameworkBasis": {
+        "conceptKey": "pursue_withdraw_cycle",
+        "explanation": "This cycle is driven by opposing attachment strategies that prevent both partners from getting what they need."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Vicious Cycle",
+          "text": "1. Partner A feels disconnection and pursues 2. Partner B feels overwhelmed and withdraws 3. Partner A feels more disconnected and pursues harder 4. Partner B feels more overwhelmed and withdraws further\n\n**Each person's self-protective response triggers more of the other's.**",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What the Pursuer Needs",
+          "text": "**If you're the pursuer, you need reassurance—that the relationship is okay, that your spouse cares.**\n\n**But pursuing often drives your spouse away.**\n\n**What actually helps: Your spouse staying present, reassurance they're not leaving, signs of engagement.**",
+          "icon": "person_search"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What the Withdrawer Needs",
+          "text": "**If you're the withdrawer, you need space to process—time to calm down, avoid saying something worse.**\n\n**But withdrawing makes your spouse more anxious.**\n\n**What actually helps: Permission to take a break, lower intensity, not feeling like a failure.**",
+          "icon": "person_off"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Key Shift",
+          "text": "**For the pursuer**: Pull back.** Trust your spouse will engage when not pressured.\n\n**For the withdrawer**: Stay present.** Reassure you're not leaving. Even saying 'I need a break, but I'll be back in 30 minutes' is staying.\n\n**Both require doing the opposite of your instinct.**",
+          "icon": "swap_horiz"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Cycle",
+          "text": "{red|For pursuers: What's the hardest part about pulling back?}\n\n{red|For withdrawers: What's the hardest part about staying present?}\n\nWrite your honest reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "One Counterintuitive Move",
+          "text": "{red|Next time you're in the cycle:\n\n**Pursuer**: Say 'I want to talk, but I can tell you need space.** Can we set a time?}'\n\n**Withdrawer**: Say 'I need a break, but I'm not leaving.** Give me 20 minutes.'\n\n**One different move can interrupt the entire cycle.**",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_other_patterns",
+      "isFree": false,
+      "title": "Other Destructive Cycles",
+      "subtitle": "Beyond pursue-withdraw: patterns that damage",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "warning",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "While pursue-withdraw is most common, other destructive cycles exist. Some couples escalate together. Others avoid so completely nothing gets resolved.",
+      "frameworkBasis": {
+        "conceptKey": "destructive_cycles",
+        "explanation": "Different couples develop different unhealthy patterns—all are attempts at self-protection that backfire."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Escalation Pattern",
+          "text": "Some couples both pursue—both escalate: • Both voices get louder • Both interrupt and talk over • Criticism meets counter-criticism • It ends in explosion—yelling, doors slamming\n\n**Both are trying to be heard.** Neither is succeeding.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Avoidance Pattern",
+          "text": "Other couples both withdraw—both avoid:\n\n**Henry and Patricia had not had a real argument in fifteen years.** Everyone thought they had the perfect marriage. But Patricia described the truth: \"We were polite strangers living in the same house. When something bothered me, I swallowed it. When something bothered him, he did too. We had peace, but it was the peace of a cemetery—nothing living there.\"\n\n**Issues are never discussed.** Tension builds but is not addressed. Resentment accumulates silently. The relationship feels polite but disconnected.\n\n**\"Faithful are the wounds of a friend; profuse are the kisses of an enemy\" ({red|Proverbs 27:6|**Issues are never discussed.** Tension builds but is not addressed. Resentment accumulates silently. The relationship feels polite but disconnected. **}).** Sometimes loving your spouse means having the hard conversation, not avoiding it.\n\n**\"Peace at any price\" eventually costs everything.** By the time Henry and Patricia sought help, Patricia said she felt nothing for her husband anymore. \"All those years of swallowed words—they did not disappear. They just turned into indifference.\" The avoided conflicts had created a wall that years of avoidance had made nearly impenetrable.",
+          "icon": "do_not_disturb"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Attack-Defend Pattern",
+          "text": "One partner attacks, one defends:\n\n**Attacker**: Criticizes, finds fault, expresses disappointment **Defender**: Explains, justifies, never takes responsibility\n\n**Nothing moves forward because no one takes ownership and no one feels validated.**",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Pattern",
+          "text": "{red|Which best describes your marriage's conflict style?}",
+          "prompts": [
+            "Pursue-Withdraw: One pushes, one pulls away",
+            "Mutual Escalation: Both get intense",
+            "Mutual Avoidance: Neither addresses issues",
+            "Attack-Defend: One criticizes, one justifies",
+            "A combination"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "All patterns can be changed with awareness and effort."
+          },
+          "icon": "help"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "The Cost of Your Pattern",
+          "text": "{red|What has your conflict pattern cost you?}{red| Your relationship?}{red| Your intimacy?}{red| Your peace?}\n\n{red|What would be different if it changed?}\n\nWrite honestly about what's at stake:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Naming It Together",
+          "text": "Have a calm conversation naming your pattern: • 'This is the pattern we fall into' • 'This is what I do' • 'This isn't working for either of us'\n\n**Naming the pattern as 'the enemy' shifts the dynamic.** You're not against each other—you're against the pattern together.",
+          "icon": "group"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_interrupting",
+      "isFree": false,
+      "title": "Interrupting the Cycle",
+      "subtitle": "Strategies for stopping the pattern mid-dance",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "stop_circle",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Once you see your pattern, you can interrupt it. This requires specific strategies—knowing what to say, when to pause, and how to re-engage differently.",
+      "frameworkBasis": {
+        "conceptKey": "cycle_interruption",
+        "explanation": "Changing automatic patterns requires conscious interruption and alternative responses."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Power of Pause",
+          "text": "**The most powerful interruption is simple: pause.**\n\n**'Between stimulus and response there is a space.** In that space is our power to choose.' —Viktor Frankl\n\n**The pattern depends on both dancers.** One person pausing disrupts everything.",
+          "icon": "pause"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Interrupt Phrases",
+          "text": "{red|**Naming the pattern:** • 'I think we're doing our thing again'\n\n**Calling for pause:** • 'Can we pause?}{red| This isn't going well'\n\n**Expressing underneath:** • 'What's really going on for me is.**..'\n\n**Repair attempt:** • 'Can we start over?}'",
+          "icon": "format_quote"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Strategic Time-Out",
+          "text": "1. Call it: 'I need a break. Let's come back in 30 minutes.' 2. Commit to returning 3. Actually separate—different rooms 4. Self-soothe—breathing, prayer, walking (not building your case) 5. Return and re-engage",
+          "icon": "timer"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Speaking From Underneath",
+          "text": "**Instead of: 'You never listen!**' (attack) Try: 'I'm feeling invisible and it hurts.' (vulnerable truth)\n\n**Instead of: 'Fine, I won't say anything.**' (withdrawal) Try: 'I'm overwhelmed and afraid of making this worse.' (vulnerable truth)\n\n**Vulnerability invites connection rather than triggering defense.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Interruption Plan",
+          "text": "{red|Based on your pattern, what strategies might work?}\n\n{red|• What phrase to name the pattern?}{red| • What to say to pause?}{red| • How to communicate what's underneath?}\n\nWrite your plan:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Practice Run",
+          "text": "**Share your plan with your spouse during a calm moment.**\n\nAgree on: • A phrase to name the pattern • A signal for time-out • How long time-outs last • Commitment to return\n\n**Having this agreement ready makes it easier to use.**",
+          "icon": "handshake"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_new_dance",
+      "isFree": false,
+      "title": "Learning a New Dance",
+      "subtitle": "Building healthier patterns",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "celebration",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Breaking an old pattern isn't enough—you need a new pattern to replace it. Otherwise, under stress, you'll default to what's familiar.",
+      "frameworkBasis": {
+        "conceptKey": "pattern_replacement",
+        "explanation": "Sustainable change requires building new positive patterns, not just stopping old ones."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "From Old Dance to New",
+          "text": "**The old pattern served a purpose—protecting yourself, managing emotions.**\n\n**A new pattern needs to accomplish the same things—just better.**\n\n**Instead of self-protection through attack or withdrawal, use healthy boundaries and clear communication.**\n\n**Instead of getting needs met through criticism or silence, use vulnerable requesting.**",
+          "icon": "change_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Healthy Conflict Dance",
+          "text": "{red|1. **Soft startup**: 'Is now okay to talk?}{red|' 2. **Share from underneath**: 'When X happened, I felt Y because I need Z' 3. **Listener reflects**: 'It sounds like you felt...' 4. **Validation**: 'I can see why you'd feel that way' 5. **Taking responsibility**: 'I can see my part...' 6. **Problem-solving**: 'What would help?}' 7. **Repair**: 'Thanks for hearing me.'",
+          "icon": "format_list_numbered"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "For Pursuers: A New Approach",
+          "text": "• Regulate your anxiety before engaging • Ask if it's a good time • Express needs without criticism • Trust your spouse will engage when given space • Find ways to self-soothe\n\n**Your need for connection is valid.** A gentler approach will get more of what you need.",
+          "icon": "emoji_people"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "For Withdrawers: A New Approach",
+          "text": "• Stay present even when uncomfortable • Communicate your need for space rather than just taking it • Return to conversations you've paused • Share what's happening inside • Initiate connection sometimes\n\n**Your need for space is valid.** Staying connected while setting boundaries gives you more of what you need.",
+          "icon": "emoji_people"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your New Dance",
+          "text": "{red|Envision healthier conflict:\n\n• How would conversations start?}{red| • What would you do instead of your old pattern?}{red| • How would conflicts end?}\n\nDescribe your vision:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "One New Step",
+          "text": "{red|Pick one specific new behavior to practice:\n\n• Asking 'Is now a good time?}{red|' before raising issues • Staying in the room instead of leaving • Saying 'I need a break but I'll be back' • Expressing the feeling underneath instead of the criticism\n\nWhat's your one new step?}",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_setbacks",
+      "isFree": false,
+      "title": "When You Fall Back Into the Pattern",
+      "subtitle": "Grace for setbacks and the art of repair",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "restart_alt",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "You will fall back into old patterns. This isn't failure—it's part of change. Learning to repair after setbacks keeps you moving forward.",
+      "frameworkBasis": {
+        "conceptKey": "setback_recovery",
+        "explanation": "The ability to repair and re-commit after setbacks determines long-term success."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Setbacks Are Part of the Process",
+          "text": "**You're going to fall back into your old pattern.**\n\n**It's been practiced for years.** Under stress, it's what your brain defaults to.\n\nHaving a setback doesn't mean: • The work isn't working • You're hopeless • Your marriage is doomed\n\n**It means you're human.** What matters is what you do after.",
+          "icon": "restart_alt"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Recovery Conversation",
+          "text": "{red|After falling into the old pattern:\n\n1. **Name it**: 'We fell into our pattern again.' 2. **Take responsibility**: 'My part was...' 3. **Express regret**: 'I'm sorry.' 4. **Recommit**: 'Can we try again?}{red|' 5. **Learn**: 'What triggered us?}{red| What could we do differently?}'",
+          "icon": "question_answer"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Grace for Each Other",
+          "text": "**Breaking patterns requires grace.**\n\nWhen your spouse falls back: • Remember they're trying • Remember you fall back too • Don't keep score • Focus on progress, not perfection\n\n**'Be kind to one another, forgiving each other, just as in Christ God forgave you.**' (({red|Ephesians 4:32}))",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Setback Plan",
+          "text": "{red|When you have a setback, how will you: • Recognize it?}{red| • Initiate recovery?}{red| • Extend grace to your spouse?}{red| • Keep going?}\n\nWrite your recovery plan:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Celebrating Progress",
+          "text": "**Don't just notice failures—notice progress.**\n\nCelebrate when: • You interrupted the pattern even briefly • You recovered faster than before • You had conflict that didn't escalate • You tried something new\n\n**Celebrating reinforces new behaviors.**",
+          "icon": "celebration"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Commit to Grace",
+          "text": "Agree with your spouse:\n\n**'We're working on changing our patterns.** We will both have setbacks. When we do, we'll: • Name it without blame • Take responsibility • Offer and receive grace • Learn from it • Keep trying'\n\n**This creates safety for imperfect change.**",
+          "icon": "handshake"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_rebuilding_safety",
+      "isFree": false,
+      "title": "Rebuilding Safety After Damage",
+      "subtitle": "Restoring trust when patterns have caused harm",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "healing",
+      "emotionalIntensity": "high",
+      "activityType": "healing",
+      "whyThisMatters": "Harmful patterns leave damage—eroded trust, emotional walls. Breaking the pattern isn't enough if the damage remains.",
+      "frameworkBasis": {
+        "conceptKey": "safety_restoration",
+        "explanation": "Healthy communication requires emotional safety. Intentional rebuilding is necessary."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Damage Patterns Cause",
+          "text": "Years of harmful patterns leave marks:\n\n**Grace described the wall she had built.** Grace said after ten years of her husband's criticism and her own withdrawal, something inside her just closed off. \"I used to long for his approval. Now I do not care what he thinks. That sounds like freedom, but it is not. It is numbness. I protected myself so well that now I cannot feel anything for him.\"\n\n**Trust erodes: \"I do not feel safe being vulnerable.**\" Walls go up: \"I have learned to protect myself from you.\" Intimacy disappears. Hope fades.\n\n**\"Above all, love each other deeply, because love covers over a multitude of sins\" (1 {red|Peter 4:8|**Trust erodes:}).** Love can rebuild what patterns have torn down, but it requires acknowledging what has been broken.\n\n**Changing the pattern forward is essential.** But you may also need to address past damage.",
+          "icon": "broken_image"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Acknowledging the Hurt",
+          "text": "Healing requires acknowledgment:\n\n**'I see that our pattern has hurt you.** My part in it—[specific behaviors]—caused you pain. I'm sorry.'\n\n**Not defending.** Not explaining. Not 'I'm sorry, but...'\n\n**Just acknowledging impact.**",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Impact on Your Spouse",
+          "text": "{red|How has your role in the pattern affected your spouse?}\n\n{red|If you're the pursuer: Has your criticism made them feel inadequate?}\n\n{red|If you're the withdrawer: Has your shutdown made them feel unloved?}\n\nWrite what you think your pattern has cost them:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Small Acts of Safety",
+          "text": "Trust is rebuilt through small consistent acts:\n\n• Following through on commitments • Responding gently when they take a risk • Not weaponizing vulnerability later • Showing up differently, consistently • Words of appreciation\n\n**Every positive interaction is a deposit.**",
+          "icon": "account_balance"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Healing",
+          "text": "**Father, our patterns have caused damage.** We've hurt each other with words and silence, pursuit and withdrawal.\n\n**We ask for healing for what's been broken.**\n\n**Help us acknowledge without defending.** Help us forgive without keeping score. Help us rebuild through consistent love.\n\nAmen.\n\n**'He heals the brokenhearted.**' (({red|Psalm 147:3}))",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Acknowledgment Conversation",
+          "text": "If there's damage needing acknowledgment, share:\n\n• What you see as your part in the harmful pattern • How you think it has affected them • Your genuine regret • Your commitment to change\n\n**Invite them to share their experience too.**",
+          "icon": "healing"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_new_legacy",
+      "isFree": false,
+      "title": "Creating a New Legacy",
+      "subtitle": "Your commitment to healthier patterns",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "park",
+      "emotionalIntensity": "light",
+      "activityType": "commitment",
+      "whyThisMatters": "The patterns you establish now become your legacy—what your children see, what your marriage becomes.",
+      "frameworkBasis": {
+        "conceptKey": "generational_legacy",
+        "explanation": "Breaking harmful patterns changes not just your marriage but patterns passed to future generations."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You're Really Changing",
+          "text": "**When you break harmful patterns, you're not just improving your marriage.**\n\nYou're: • Modeling healthy relationships for your children • Breaking generational cycles • Creating new patterns to pass down • Honoring God with how you treat your spouse\n\n**This is legacy work.**",
+          "icon": "account_tree"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "reflection",
+          "cardNumber": 2,
+          "title": "Twenty Years From Now",
+          "text": "{red|**Imagine your marriage twenty years from now.**\n\nIf you keep old patterns, where will you be?}\n\n{red|If you establish new ones, what could your marriage look like?}\n\n{red|What do you want your children to remember about how you handled conflict?}",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What You've Learned",
+          "text": "In this journey, you've:\n\n• Identified your pattern • Understood what's underneath • Traced its origins • Found trigger points • Learned interruption strategies • Begun building new approaches • Prepared for setbacks • Addressed past damage\n\n**This is significant work.**",
+          "icon": "school"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Key Insight",
+          "text": "{red|What's the most important thing you've learned about yourself or your marriage?}\n\nWrite it down:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Your Patterns",
+          "text": "**Lord, we bring our conflict patterns to You.**\n\n**The ones we learned without choosing.** The ones we've practiced for years.\n\n**Give us awareness in conflict.** Give us courage to try new approaches. Give us grace when we fail.\n\n**May our marriage reflect Your redemption.**\n\nAmen.\n\n**'See, I am doing a new thing!**' (({red|Isaiah 43:18-19}))",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Commitment",
+          "text": "Make a commitment together:\n\n**'We recognize our old pattern of [name it] hasn't served us well.**\n\nWe commit to: • Notice when we're falling into it • Use our interruption strategies • Practice new approaches • Give each other grace • Keep trying'\n\n**Sign and date this together.**",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Breaking Free",
+    "summaryText": "You've done significant work in this journey—seeing patterns that were invisible, understanding what drives them, and building tools to change them. This is the kind of deep work that transforms marriages.",
+    "keyTakeaways": [
+      "Conflict patterns are automatic dances that both partners are in together",
+      "Underneath every pattern are fears and needs—understanding them creates compassion",
+      "Patterns often originate in family of origin experiences",
+      "Interrupting the cycle requires awareness, pausing, and new responses",
+      "Setbacks are part of change—repair and keep going"
+    ],
+    "nextRecommendedJourneys": [
+      "Restoring Friendship and Emotional Connection",
+      "Recovering After Hurt or Betrayal in Marriage",
+      "Strengthening Emotional and Physical Intimacy"
+    ]
+  }
+}

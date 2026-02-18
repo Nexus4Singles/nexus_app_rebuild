@@ -1,0 +1,757 @@
+{
+  "journeyId": "divorced_discerning_healthy_love",
+  "title": "Discerning Healthy Love Again",
+  "subtitle": "Learning to recognize what real, lasting love looks like",
+  "summary": "{red|**After divorce, your understanding of love may be confused.** What you thought was love did not last. How can you trust your judgment about love now?} This journey helps you develop discernment about what healthy love actually looks like, distinguish between infatuation and lasting love, recognize the marks of a love that can endure, and build confidence in your ability to recognize the real thing when you find it.",
+  "targetUserCategory": "divorced",
+  "priorityRank": 14,
+  "estimatedDays": 14,
+  "totalActivities": 10,
+  "difficulty": "intermediate",
+  "themeColor": "#C2185B",
+  "cover": {
+    "themeTag": "Discernment",
+    "accentIcon": "favorite",
+    "heroImage": "assets/images/journeys/divorced_journey14.jpg",
+    "heroImageDescription": "A heart being examined with clarity, perhaps with light shining through it, symbolizing the ability to see love clearly and discern its authenticity."
+  },
+  "frameworks": [
+    "love_discernment",
+    "relationship_health",
+    "attachment_theory",
+    "biblical_love"
+  ],
+  "targetOutcomes": [
+    "Understand what healthy love actually looks like",
+    "Distinguish between infatuation and lasting love",
+    "Recognize red flags and green flags in relationships",
+    "Develop criteria for evaluating potential partners",
+    "Build confidence in your ability to discern healthy love",
+    "Prepare to recognize and receive genuine love"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_confused_about_love",
+      "isFree": true,
+      "title": "What Is Love Anyway? Clarifying Your Understanding",
+      "subtitle": "Examining what you believe love is and should be",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Your understanding of love shapes what you seek and accept in relationships. Clarifying what healthy love actually looks like is essential for finding it.",
+      "frameworkBasis": {
+        "conceptKey": "love_understanding",
+        "explanation": "A clear understanding of healthy love enables recognition and cultivation of it."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Love That Did Not Last",
+          "text": "{red|**You once believed you found love.** You were certain. And you were wrong, or at least it did not last. You committed your life to it. And it ended.\n\n**This raises unsettling questions.** Was it ever really love?}{red| If it was, why did it not last?}{red| If it was not, how did you get it so wrong?}\n\n**Your confidence in understanding love may be shaken.** The word itself may feel hollow or confusing.\n\n**This journey helps you rebuild a clear understanding of what healthy, lasting love actually looks like, so you can recognize it when you encounter it again.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Cultural Confusion About Love",
+          "text": "**Most of what you have been taught about love is wrong.**\n\n**Movies taught you that love is a feeling that sweeps you off your feet.** That you will just know when you meet the right person. That passion is the measure of depth. That true love conquers all.\n\n**Songs taught you that love is obsession.** That you cannot live without them. That needing someone desperately is romantic, not concerning.\n\n**Fairy tales taught you that there is one perfect person out there, your soulmate, and when you find them everything will click into place.**\n\n**This is how we end up in marriages that fail.** Because we chase the feeling, the chemistry, the certainty, and we think that is love. When the feeling fades, which it always does, we think love has died.\n\n**Real love is different.** It includes feelings but is not enslaved to them. It is built through choices, not just experienced through emotions. It endures through seasons when feelings are absent.\n\n**Real love is less dramatic than the movies.** It is also more sustainable. More reliable. More capable of lasting a lifetime.\n\n**You may need to unlearn what you thought you knew about love.** What you were taught got you a divorce. Something else is needed now.",
+          "icon": "movie"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What Love Is",
+          "text": "**The Bible offers a different vision of love.**\n\n**Love is patient and kind.** Love does not envy or boast. It is not proud or rude. It is not self-seeking or easily angered. It keeps no record of wrongs. Love does not delight in evil but rejoices in truth. It always protects, trusts, hopes, and perseveres. Love never fails. (1 ({red|Corinthians 13:4-8}))\n\n**This love is characterized by how it acts, not just how it feels.** It is patient even when frustrated. Kind even when inconvenienced. Committed even when difficult.\n\n**This is the love that lasts.**",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Love Understanding",
+          "text": "{red|How would you describe your current understanding of love?}",
+          "prompts": [
+            "Confused - I am not sure what love really is anymore",
+            "Skeptical - I doubt whether lasting love exists",
+            "Clearer than before - I have learned from my experience",
+            "Hopeful but cautious - I believe in love but am careful",
+            "Rebuilding - I am actively working on understanding love better"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are, this journey will help you develop clearer discernment about healthy love."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Love Beliefs",
+          "text": "{red|**Examine your current beliefs about love.**\n\nWhat do you believe love is?}{red| How would you define it?}{red| How has your understanding of love changed since your divorce?}{red| What did you learn about love from your marriage, both positive and negative?}{red| What kind of love do you want in the future?}\n\nWrite about your love beliefs:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Commitment to Learning",
+          "text": "**Commit to developing clearer discernment about love.**\n\n**I commit to examining and refining my understanding of love.**\n\n**I want to learn to recognize healthy love and distinguish it from counterfeits.**\n\n**I will not settle for less than genuine love, nor will I let fear prevent me from receiving it.**\n\n**I believe I can develop the discernment to recognize real love when I find it.**\n\nWrite your commitment in your own words:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_infatuation_vs_love",
+      "isFree": false,
+      "title": "Infatuation vs Love: Knowing the Difference",
+      "subtitle": "Distinguishing between the rush of new attraction and lasting love",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "compare",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Infatuation feels like love but is fundamentally different. Learning to distinguish between them prevents mistaking temporary intensity for lasting connection.",
+      "frameworkBasis": {
+        "conceptKey": "infatuation_distinction",
+        "explanation": "Distinguishing infatuation from love prevents premature commitment based on temporary feelings."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Intoxication of Infatuation",
+          "text": "**Infatuation is a drug.** Literally. When you are infatuated, your brain floods with chemicals similar to cocaine. You feel incredible, certain this is the real thing. But like any high, it fades. The question is what remains when the chemistry normalizes.\n\n**Infatuation is intoxicating.** When you are infatuated, you feel wonderful.\n\n**You think about the person constantly.** Everything about them seems perfect. You feel alive, excited, and certain this is the real thing.\n\n**Biologically, infatuation floods your brain with chemicals similar to drugs.** You are literally high on the other person.\n\n**This feeling is wonderful, but it is not sustainable.** It is designed to bring people together, not to sustain long-term relationship.\n\n**Mistaking infatuation for love leads to premature commitment and eventual disillusionment when the feeling fades.**",
+          "icon": "local_fire_department"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Characteristics of Infatuation",
+          "text": "**You know you are infatuated when you cannot stop thinking about them.** They are the first thing in your mind when you wake up and the last thing before sleep. Everything reminds you of them.\n\n**You know you are infatuated when they seem perfect.** Every flaw is charming. Every quirk is endearing. You cannot imagine anything about them you would want to change.\n\n**You know you are infatuated when you are anxious.** Waiting for their text. Analyzing what they meant. Wondering constantly if they feel the same way. The uncertainty is exhilarating and exhausting.\n\n**You know you are infatuated when you want all of them.** Their time, their attention, their focus. Sharing feels like losing.\n\n**Here is the hard truth: you are not seeing them clearly.** Infatuation is projection. You are seeing what you want to see, what you hope is there, not necessarily what is actually there. Your brain is on drugs. The judgment is impaired.\n\n**This does not mean infatuation is bad.** It is beautiful, actually. The problem is building a life on it. Because infatuation fades. It always fades. And when it does, you will finally see clearly the person you committed to.\n\n**Make sure you actually know them before then.**",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Characteristics of Lasting Love",
+          "text": "**Lasting love looks different from infatuation.**\n\n**It is calm and secure.** You feel peace, not constant anxiety.\n\n**It sees clearly.** You know the person's flaws and love them anyway.\n\n**It grows over time.** Rather than fading, it deepens as you truly know each other.\n\n**It is based on reality.** You love who they actually are, not a projection.\n\n**It includes choice.** You choose to love even when feelings fluctuate.\n\n**It is sustainable.** It can weather ordinary days, stress, and difficulty.\n\n**This love may begin with infatuation but matures into something more stable.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Transition",
+          "text": "**In healthy relationships, infatuation transitions into lasting love.**\n\n**The initial intensity fades.** This is normal and inevitable. It does not mean love is gone.\n\n**A deeper connection develops.** As you truly know each other, a richer love can emerge.\n\n**Choice becomes central.** You choose to love, serve, and commit even without the high of infatuation.\n\n**The relationship becomes comfortable.** Not boring, but secure and sustainable.\n\n**Some people panic when infatuation fades, thinking love has ended.** But it is actually making room for something better.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Experience",
+          "text": "{red|**Reflect on infatuation and love in your experience.**\n\nLooking back at your marriage, what was infatuation and what was lasting love?}{red| Have you mistaken infatuation for love in the past?}{red| How can you tell when you are infatuated versus genuinely loving?}{red| What would help you make better distinctions in the future?}\n\nWrite about your experience:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Discernment Commitment",
+          "text": "**Commit to distinguishing infatuation from love in your future relationships.**\n\n**I will enjoy infatuation but not mistake it for lasting love.**\n\n**I will give relationships time to see what remains when infatuation fades.**\n\n**I will not make major commitments while in the fog of infatuation.**\n\n**I will look for the marks of lasting love before committing my life.**\n\nWrite your discernment commitment:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_marks_of_healthy_love",
+      "isFree": false,
+      "title": "The Real Thing: Marks of Healthy Love",
+      "subtitle": "Identifying what genuine, lasting love looks like in practice",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Healthy love has observable characteristics. Knowing what to look for helps you recognize it and evaluate whether a relationship has what it takes to last.",
+      "frameworkBasis": {
+        "conceptKey": "healthy_love_marks",
+        "explanation": "Observable marks of healthy love enable evaluation of relationship quality and potential."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Mutual Respect",
+          "text": "{red|**Love without respect is not love.** It is possession, or convenience, or need. But it is not love.\n\n**Respect in a relationship looks like this: they value your thoughts, even when they disagree.** They listen when you speak, actually listen, not just wait for their turn to talk. They honor your boundaries without making you fight for them.\n\n**Respect means you are treated as an equal.** Not as a child to be managed. Not as an extension of them. Not as less-than because of gender or income or education. An equal.\n\n**It means they speak well of you, to your face and behind your back.** They do not mock you, even jokingly, in ways that cut. They do not roll their eyes at your opinions or make you feel small.\n\n**When respect is absent, you feel it in your body before you can name it.** You feel dismissed. Overlooked. Like your thoughts do not matter. Like you are tolerated rather than valued.\n\n**When respect is present, you feel seen.** Safe. Like your perspective is considered even when it is not adopted.\n\nWhat did respect look like in your first marriage?}{red| Was it mutual?}{red| Did it erode?} If respect was missing, pay close attention to it now. Do not settle for anything less than a partner who genuinely respects who you are.",
+          "icon": "handshake"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Safety and Trust",
+          "text": "{red|Can you be yourself with them?}{red| Your real self, not the version you perform.\n\nCan you admit when you are struggling without fearing they will think less of you?}{red| Can you share your fears, your shame, your imperfections without bracing for attack?}\n\n{red|**That is emotional safety.** The knowledge that vulnerability will not be used against you. That what you share in intimacy will not become ammunition in arguments. That your weaknesses are safe with them.\n\n**Trust is related but distinct.** Trust is knowing they will do what they say. That their words mean something. That when they are not with you, they are still choosing you.\n\n**Trust takes time to build and seconds to destroy.** It is built through consistent small faithfulnesses. Kept promises. Honest answers. Reliable follow-through.\n\n**Without safety and trust, you cannot have intimacy.** You can have companionship, maybe. Sex, certainly. But not true intimacy, the kind where you are fully known and fully loved anyway. That requires safety.\n\nAsk yourself: Do I feel safe with this person?}{red| Can I trust them with my heart?} Not based on how you wish they were, but based on how they have actually shown up.\n\n**Your gut knows the answer.** Listen to it.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Growth and Support",
+          "text": "**Healthy love supports mutual growth.**\n\n**Your partner wants you to flourish.** They encourage your development, celebrate your successes, and support you through challenges.\n\n**You do the same for them.** The relationship is not competitive but mutually supportive.\n\n**Unhealthy love is threatened by your growth, jealous of your success, or indifferent to your struggles.**\n\n**In healthy love, you become a better person.** The relationship brings out the best in you rather than diminishing you. You thrive, not just survive.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Effective Communication",
+          "text": "**Healthy love includes effective communication.**\n\n**You can talk about difficult things.** Emotions, needs, concerns, and conflicts can all be discussed constructively.\n\n**You listen to understand, not just to respond.** You seek to truly know what your partner thinks and feels.\n\n**Conflict is handled respectfully.** You disagree without contempt, work toward resolution, and repair after hurt.\n\n**Unhealthy love avoids hard conversations, escalates into destructive conflict, or leaves issues unresolved.**\n\n**In healthy love, communication deepens understanding and strengthens connection.**",
+          "icon": "forum"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Assessing Your Past",
+          "text": "{red|**Assess the presence of these marks in your past marriage.**\n\nWas there genuine mutual respect?}{red| Did you experience emotional safety and trust?}{red| Did the relationship support your growth?}{red| Was communication effective?}\n\n{red|What was present and what was missing?}\n\nWrite your assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Healthy Love Criteria",
+          "text": "{red|**Establish criteria for healthy love in your future.**\n\nBased on these marks and your experience, what will you look for?}\n\nI will look for mutual respect that shows up as:\n\nI will look for safety and trust that shows up as:\n\nI will look for growth support that shows up as:\n\nI will look for effective communication that shows up as:\n\nWrite your healthy love criteria:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_red_flags",
+      "isFree": false,
+      "title": "Warning Signs: Red Flags to Watch For",
+      "subtitle": "Recognizing early indicators of unhealthy relationship dynamics",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "flag",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Red flags are warning signs of potential problems. Learning to recognize them early helps you avoid relationships that are unlikely to be healthy.",
+      "frameworkBasis": {
+        "conceptKey": "red_flag_recognition",
+        "explanation": "Early recognition of relationship red flags enables wise decisions before deep investment."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What Red Flags Are",
+          "text": "**Red flags are warning signs that something may be wrong in a relationship.**\n\n**They are behaviors, patterns, or characteristics that indicate potential problems.** They suggest a person may not be healthy to be in relationship with.\n\n**Red flags do not always mean a relationship is doomed.** Sometimes they indicate areas needing growth. But they should not be ignored.\n\n**Paying attention to red flags early protects you from investing deeply in relationships that are likely to hurt you.**",
+          "icon": "flag"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Character Red Flags",
+          "text": "**Megan saw the red flags.** He drank too much. He blamed his ex for everything. He pushed for commitment way too fast. But she was lonely, and he was charming, and she convinced herself it would be different with her. It was not different. Red flags do not change color.\n\n**Some red flags relate to character.**\n\n**Dishonesty: Lying, even about small things, indicates a pattern that will affect the relationship.**\n\n**Irresponsibility: Not keeping commitments, blaming others, or refusing to take accountability.**\n\n**Disrespect: Rudeness to service workers, contempt for others, or dismissiveness of your feelings.**\n\n**Selfishness: Everything centered on their needs without regard for yours.**\n\n**Addiction: Active addiction to substances, gambling, pornography, or other compulsive behaviors.**\n\n**These character issues will not improve just because they love you.** They require serious work.",
+          "icon": "person_off"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Relationship Red Flags",
+          "text": "**Other red flags appear in how they relate to you.**\n\n**Moving too fast: Intense declarations of love very early, pushing for quick commitment.**\n\n**Controlling behavior: Wanting to know where you are, who you are with, or limiting your freedom.**\n\n**Jealousy: Excessive or irrational jealousy that is not based on anything you have done.**\n\n**Bad-mouthing exes: Every previous partner was crazy or entirely at fault.**\n\n**Isolation: Discouraging relationships with your friends and family.**\n\n**Explosive anger: Rage that seems disproportionate, even if not directed at you yet.**\n\n**These patterns tend to intensify over time, not improve.**",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Red Flags You Missed",
+          "text": "{red|**Reflect on red flags in your past.**\n\nLooking back at your marriage, were there red flags you ignored or explained away?}{red| What led you to overlook them?}{red| What would you do differently now?}{red| Which red flags are you most susceptible to missing?}\n\nWrite about red flags you missed:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Why We Ignore Red Flags",
+          "text": "**Understanding why we ignore red flags helps us do better.**\n\n**Infatuation blinds us.** The chemical high of attraction makes us overlook problems.\n\n**We want it to work.** Desire for the relationship makes us explain away concerns.\n\n**We think we can change them.** We believe our love will transform their behavior.\n\n**We fear being alone.** Desperation accepts what wisdom would reject.\n\n**We normalize unhealthy patterns.** If dysfunction was normal in our family, we may not recognize it.\n\n**Awareness of these tendencies helps you pay attention even when you do not want to.**",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Red Flag List",
+          "text": "**Create your personal red flag list.**\n\nRed flags I will not ignore:\n\nRed flags I am particularly susceptible to missing:\n\nWhat I will do when I notice red flags:\n\nPeople who can help me see red flags I might miss:\n\nWrite your red flag list:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_green_flags",
+      "isFree": false,
+      "title": "Promising Signs: Green Flags to Look For",
+      "subtitle": "Recognizing positive indicators of healthy relationship potential",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "check_circle",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Just as red flags warn of problems, green flags indicate healthy potential. Learning to recognize them helps you identify relationships worth investing in.",
+      "frameworkBasis": {
+        "conceptKey": "green_flag_recognition",
+        "explanation": "Recognizing positive indicators helps identify relationships with healthy potential."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What Green Flags Are",
+          "text": "**Green flags are positive indicators that a relationship has healthy potential.**\n\n**They are behaviors, patterns, and characteristics that suggest a person is healthy to be in relationship with.**\n\n**Green flags do not guarantee a perfect relationship.** Every person has flaws. But they indicate the foundational health is there.\n\n**Looking for green flags, not just avoiding red flags, helps you identify relationships worth pursuing.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Character Green Flags",
+          "text": "{red|What does a healthy person actually look like?}{red| Not perfect. Healthy.\n\n**They tell the truth, even when it is uncomfortable.** You do not catch them in small lies, which are the doorway to big ones. What they say matches what they do.\n\n**They take responsibility.** When they mess up, they own it. No blame-shifting, no excuses, no rewriting history to make themselves the victim. Just honest acknowledgment and genuine effort to do better.\n\n**They are kind to people who cannot do anything for them.** Watch how they treat servers, drivers, people they do not need to impress. That is who they really are.\n\n**They have done their own work.** They have been to counseling, or read the books, or somehow wrestled with their issues. They are not expecting you to fix them or complete them.\n\n**Their faith is real.** Not performance for church. Not cultural Christianity. An actual relationship with God that shapes how they treat people, spend money, make decisions.\n\n**They can be wrong.** They can receive feedback without becoming defensive. They can say those three hard words: I was wrong.\n\n**None of this means they are perfect.** But it means the foundation is there. It means when hard times come, and they will come, you are building with someone who has the character to weather them.\n\nDoes the person you are considering have these qualities?} Watch carefully. Time will tell.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Relational Green Flags",
+          "text": "**Other green flags appear in how they relate to you.**\n\n**Respects your boundaries: They honor your limits without pressure or manipulation.**\n\n**Communicates openly: They share their thoughts and feelings and listen to yours.**\n\n**Consistent over time: Their behavior stays steady rather than dramatic swings.**\n\n**Supports your growth: They encourage your development and celebrate your success.**\n\n**Handles conflict well: They can disagree respectfully and work toward resolution.**\n\n**Includes you in their life: They introduce you to friends and family appropriately.**\n\n**These patterns indicate capacity for healthy long-term relationship.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "How You Feel",
+          "text": "**Green flags also show up in how you feel in the relationship.**\n\n**You feel safe to be yourself.** You do not have to perform or pretend.\n\n**You feel respected and valued.** Your thoughts and feelings matter to them.\n\n**You feel peaceful, not anxious.** Security, not constant worry about where you stand.\n\n**You feel encouraged and supported.** You are becoming a better version of yourself.\n\n**You feel free.** Not controlled or limited but trusted and given space.\n\n**Your feelings are data about the relationship's health.**",
+          "icon": "spa"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Green Flags in Your Past",
+          "text": "{red|**Reflect on green flags in your past relationships.**\n\nWhat green flags were present in your marriage?}{red| What was genuinely good?}{red| What green flags were missing that you now know to look for?}{red| What green flags matter most to you for the future?}\n\nWrite about green flags in your experience:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Green Flag List",
+          "text": "**Create your personal green flag list.**\n\nCharacter green flags I will look for:\n\nRelational green flags I will look for:\n\nHow I want to feel in a healthy relationship:\n\nGreen flags I may have undervalued in the past:\n\nWrite your green flag list:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_compatibility",
+      "isFree": false,
+      "title": "Beyond Chemistry: Evaluating Compatibility",
+      "subtitle": "Looking at factors that determine long-term relationship success",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "compare_arrows",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Chemistry is important but not sufficient for lasting marriage. Compatibility across key areas determines whether two people can build a life together.",
+      "frameworkBasis": {
+        "conceptKey": "compatibility_assessment",
+        "explanation": "Compatibility across key life areas predicts long-term relationship viability."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Chemistry Is Not Enough",
+          "text": "**Chemistry is wonderful but not sufficient.**\n\n**You can have incredible chemistry with someone you are completely incompatible with.** The attraction is real but building a life together would be impossible.\n\n**Compatibility refers to how well two people fit together across the important areas of life.** Shared values, aligned goals, complementary lifestyles.\n\n**A marriage needs both chemistry and compatibility.** Chemistry without compatibility creates passion without partnership. Compatibility without chemistry creates partnership without passion.\n\n**Look for both.**",
+          "icon": "compare_arrows"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Key Compatibility Areas",
+          "text": "{red|**Chemistry gets you together.** Compatibility keeps you together.\n\n**Think about faith.** Not just Do we both check the Christian box?}{red| but Do we pursue God in similar ways?}{red| Will we be able to pray together, serve together, grow together spiritually?}\n\n{red|**Think about values.** What do you each prioritize?}{red| Family, career, adventure, security, service, comfort?}{red| When those priorities conflict, which wins?}{red| Because they will conflict.\n\n**Think about life goals.** Do you want kids?}{red| How many?}{red| Where do you want to live?}{red| What does retirement look like?}{red| What kind of lifestyle do you expect?}{red| These are not small questions. Misalignment here will tear at a marriage.\n\n**Think about money.** How do you each relate to it?}{red| Spender or saver?}{red| Generous or cautious?}{red| Transparent or private?}{red| Financial conflict is one of the top predictors of divorce. Get clear on this.\n\n**Think about family.** How involved will extended family be?}{red| How will you handle holidays?}{red| If there are children from previous marriages, how will they fit?}\n\n**Chemistry makes you want to be together.** Compatibility determines whether being together is actually workable.\n\n**You can have incredible chemistry with someone you are fundamentally incompatible with.** That relationship will be passionate and painful. Look at both.",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Negotiable vs Non-negotiable",
+          "text": "**Not all compatibility differences are equal.**\n\n**Some differences are negotiable.** You like different music, have different hobbies, prefer different vacation styles. These can be navigated with compromise.\n\n**Other differences are non-negotiable.** You want children and they do not. You are committed to your faith and they are hostile to it. You have fundamentally different values.\n\n**Non-negotiable differences do not improve with time or love.** They create fundamental incompatibility.\n\n**Be clear about what is non-negotiable for you and evaluate potential partners accordingly.**",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Compatibility in Your Past",
+          "text": "{red|**Reflect on compatibility in your past marriage.**\n\nWhere were you compatible with your ex?}{red| Where were you incompatible?}{red| Did incompatibility issues contribute to your divorce?}{red| How?}{red| What did you learn about what compatibility you need?}{red| What compatibility issues did you overlook that you would not overlook now?}\n\nWrite about compatibility in your past:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Evaluating Compatibility",
+          "text": "{red|How do you evaluate compatibility with someone?}\n\n{red|**Have conversations about the important areas.** Do not avoid topics because they are uncomfortable.\n\n**Observe over time.** What they do reveals more than what they say.\n\n**Pay attention to friction.** Where do you consistently clash?}{red| Is it negotiable?}\n\n{red|**Imagine daily life together.** Can you picture building an actual life, not just dating?}\n\n**Seek input from others.** People who know you can see compatibility issues you might miss.\n\n**Do not assume love will overcome incompatibility.** It rarely does on the big things.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Compatibility Priorities",
+          "text": "**Identify your compatibility priorities.**\n\nNon-negotiable areas where I must be compatible:\n\nImportant areas where I prefer compatibility but can be flexible:\n\nAreas where difference is fine or even welcome:\n\nHow I will evaluate compatibility in future relationships:\n\nWrite your compatibility priorities:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_time_test",
+      "isFree": false,
+      "title": "The Test of Time: Why Patience Reveals Truth",
+      "subtitle": "Understanding why time is essential for evaluating love",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "schedule",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Time reveals what initial impression cannot. Patience in evaluating a relationship protects you from committing before you truly know someone.",
+      "frameworkBasis": {
+        "conceptKey": "time_revelation",
+        "explanation": "Time reveals true character and compatibility that cannot be seen in initial attraction."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Time Reveals Truth",
+          "text": "**You cannot judge a tree by its blossoms alone.** Anyone can bloom beautifully for a season. What matters is whether the tree produces good fruit consistently, year after year. That takes time to see. Do not commit to a tree until you have seen several seasons of fruit.\n\n**Time is one of the best tools for evaluating a relationship.**\n\n**In the beginning, everyone puts their best foot forward.** You see their representative, not their true self.\n\n**Over time, the real person emerges.** You see how they handle stress, disappointment, conflict, and ordinary boring days.\n\n**Character that seemed solid may reveal cracks.** Or initial concerns may prove unfounded as you see consistent good character.\n\n**There is no shortcut.** Time reveals what first impressions cannot.",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Time Reveals",
+          "text": "{red|**Here is what waiting does for you.**\n\n**In the beginning, you see their representative.** The version they show when they are trying to impress. Everyone has one. It is not lying, exactly. It is just putting your best foot forward.\n\n**But the representative cannot last.** Over time, real life intrudes. Stress happens. The infatuation chemicals fade. And you start to see the actual person.\n\n**You see how they handle conflict.** Not if, when. The first real fight tells you so much. Do they fight fair?}{red| Can they repair?}{red| Do they hold grudges?}\n\n{red|**You see how they handle stress.** Job loss, family crisis, health scare. Who do they become when things are hard?}{red| That is who you will be married to in hard times.\n\n**You see whether their character holds.** The integrity that seemed solid, does it stay solid when it costs them something?}{red| The kindness that seemed genuine, is it still there when they are tired?}\n\n{red|**You see what ordinary life together looks like.** Not just dates and romance. Regular Tuesday evenings. Grocery shopping. Being sick. The mundane reality of two lives merging.\n\n**This takes time.** More time than you want to give it, probably. But the alternative is committing to someone you do not actually know yet.\n\nHow long is long enough?} There is no magic number. But one year should be a minimum. Two is better. Enough to see them in different seasons, under different pressures, past the honeymoon.\n\n**Do not rush this.** The rest of your life is at stake.",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Seasons of Relationship",
+          "text": "{red|**Healthy relationships pass through seasons, and each reveals something.**\n\n**The honeymoon season: Everything feels perfect.** Infatuation is high. Enjoy it but do not trust it completely.\n\n**The reality season: Flaws emerge.** Infatuation fades. You see who they really are.\n\n**The conflict season: You disagree about something significant.** How you navigate this reveals much.\n\n**The ordinary season: No drama, just daily life.** Can you be content in the mundane together?}\n\n**You need to experience all these seasons before major commitment.**",
+          "icon": "ac_unit"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Time in Your Past",
+          "text": "{red|**Reflect on the role of time in your past relationship.**\n\nHow long did you date before committing to marriage?}{red| Did time reveal things you did not see initially?}{red| What?}{red| Do you think you rushed or took appropriate time?}{red| What would you do differently regarding timing?}\n\nWrite about time in your past:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Patience in Practice",
+          "text": "**Practicing patience in relationships is countercultural but wise.**\n\n**Do not rush to commitment.** Take time to truly know someone before major steps.\n\n**Let infatuation settle.** Make decisions when you can think clearly, not when you are high on attraction.\n\n**Experience all seasons.** See how the relationship handles various challenges before committing.\n\n**Resist pressure.** External pressure or internal impatience should not drive your timing.\n\n**Trust the process.** If the love is real, it will still be there after taking appropriate time.",
+          "icon": "hourglass_empty"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Timing Commitment",
+          "text": "**Commit to appropriate timing in future relationships.**\n\n**I will take adequate time before making major commitments.**\n\n**I will let infatuation settle before making important decisions.**\n\n**I will experience multiple seasons of a relationship before commitment.**\n\nMy minimum timeline before engagement will be:\n\nWrite your timing commitment:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_trusted_input",
+      "isFree": false,
+      "title": "Other Eyes: Seeking Trusted Input",
+      "subtitle": "The value of outside perspective in evaluating relationships",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "groups",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Others can see things you cannot when you are in a relationship. Seeking trusted input provides valuable perspective for evaluating potential partners.",
+      "frameworkBasis": {
+        "conceptKey": "external_perspective",
+        "explanation": "Trusted outside perspective provides insight that internal evaluation alone cannot offer."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Limits of Self-evaluation",
+          "text": "**When you are in a relationship, your perspective is limited.**\n\n**Attractions and emotions affect your judgment.** You may not see clearly when you are feeling strongly.\n\n**You see from the inside.** Others see from the outside, which offers different information.\n\n**You may rationalize or explain away concerns.** Others are not as invested in making it work.\n\n**Your history may blind you.** Patterns from your past may affect what you notice.\n\n**You need other eyes to see what you cannot see yourself.**",
+          "icon": "visibility_off"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Who to Ask",
+          "text": "**Not all input is equally valuable.** Seek input from the right people.\n\n**People who know you well.** They understand your patterns and what you need.\n\n**People who have good judgment.** Their own relationships and decisions reflect wisdom.\n\n**People who will be honest.** They care enough to tell you hard truths, not just what you want to hear.\n\n**People who have your best interest at heart.** They are not motivated by jealousy or their own agenda.\n\n**This might include close friends, family members, mentors, or a counselor.**",
+          "icon": "people"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What to Ask",
+          "text": "{red|**When seeking input, ask specific questions.**\n\nWhat do you observe about this person?}{red| How do they treat me?}{red| Others?}\n\n{red|Do you see any red flags I might be missing?}\n\n{red|Does this relationship seem healthy to you from the outside?}\n\n{red|Do you see me thriving in this relationship or diminishing?}\n\n{red|Knowing my history and patterns, are there concerns I should consider?}\n\n{red|If you had concerns, would you tell me?} Please do.\n\n**Open-ended questions invite honest feedback.**",
+          "icon": "help"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Input in Your Past",
+          "text": "{red|**Reflect on the role of others' input in your past.**\n\nDid trusted people have concerns about your ex that you dismissed?}{red| Did you seek input before committing to your marriage?}{red| Who in your life gives you honest, wise relationship input?}{red| How receptive are you to hearing concerns from others?}\n\nWrite about input in your past:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Receiving Hard Feedback",
+          "text": "{red|**The most valuable input is often the hardest to hear.**\n\n**If someone expresses concern about your relationship, resist the urge to defend or dismiss.**\n\n**Consider the source.** Is this person trustworthy and motivated by your good?}\n\n{red|**Sit with it.** Even if you disagree initially, give the feedback time to settle.\n\n**Look for patterns.** If multiple trusted people express similar concerns, pay attention.\n\n**Remember past regrets.** Did you dismiss input before that you wish you had heeded?}\n\n**The feedback that stings may be the feedback you need.**",
+          "icon": "feedback"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Input Network",
+          "text": "**Identify your network for relationship input.**\n\nPeople I trust to give me honest input about relationships:\n\nHow I will seek their input intentionally, not just when I want affirmation:\n\nHow I will receive hard feedback without being defensive:\n\nQuestions I will ask them about future relationships:\n\nWrite about your input network:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_trusting_discernment",
+      "isFree": false,
+      "title": "Trusting Your Discernment: Building Confidence",
+      "subtitle": "Learning to trust your ability to recognize healthy love",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "After divorce, you may not trust your own judgment about love. This activity helps rebuild confidence in your ability to discern healthy from unhealthy relationships.",
+      "frameworkBasis": {
+        "conceptKey": "discernment_confidence",
+        "explanation": "Confidence in discernment enables decisive action rather than paralysis or recklessness."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Shaken Confidence",
+          "text": "{red|**You do not trust yourself anymore.**\n\n**That is the quiet wound underneath everything.** You chose your ex. You believed in that relationship. You committed your life to someone who turned out to be wrong for you, or who became someone different, or who hurt you in ways you never saw coming.\n\n**So now you doubt.** Every time you meet someone promising, a voice whispers: You thought your ex was promising too. Look how that turned out.\n\n**Every time you feel attracted, you wonder if your attractions are broken.** Every time someone seems trustworthy, you remember that your ex seemed trustworthy too.\n\n**This doubt makes sense.** Your judgment failed you, or seemed to. Why would you trust it again?}\n\n**But here is what the doubt does not account for: you are not the same person you were.** You have learned things. Paid tuition in pain for an education you did not want. You see things now that you could not see before.\n\n**The doubt also does not account for this: you probably saw more than you admitted.** The red flags you explained away. The gut feelings you overruled. Some part of you knew.\n\n**Your judgment is not broken.** It may have been overruled by hope, by loneliness, by the desire for it to work. But the judgment itself, the part that saw clearly, it was there.\n\n**Your job now is to listen to it.** To trust the part of you that sees truth, even when other parts want to look away.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "You Are Wiser Now",
+          "text": "**Paul's friends had warned him about his first wife.** He did not listen. After the divorce, he wondered if he could ever trust his own judgment again. But through counseling and self-reflection, he came to understand why he had missed what others saw. That understanding became his protection.\n\n**Your painful experience has taught you things.**\n\n**You know red flags now that you did not recognize before.**\n\n**You know what unhealthy dynamics feel like from the inside.**\n\n**You know yourself better, including your vulnerabilities and needs.**\n\n**You have done work through this journey on understanding healthy love.**\n\n**You are not the same person who made the decision to marry your ex.** You have learned and grown.\n\n**Your discernment is likely better now than it was then.**",
+          "icon": "school"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Balanced Confidence",
+          "text": "**Aim for balanced confidence in your discernment.**\n\n**Not overconfidence that ignores input and dismisses concerns.** That leads to repeated mistakes.\n\n**Not under-confidence that is paralyzed by doubt and unable to move forward.** That prevents love altogether.\n\n**Balanced confidence trusts your judgment while remaining humble.** It decides while seeking input. It moves forward while staying alert.\n\n**You can trust yourself and still be careful.** These are not opposites.",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Discernment Assessment",
+          "text": "{red|**Assess your current confidence in your discernment.**\n\nHow much do you currently trust your ability to evaluate relationships?}{red| What specifically shakes your confidence?}{red| What grounds give you confidence in your judgment?}{red| What would help you trust yourself more without becoming overconfident?}\n\nWrite your discernment assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Discernment Confidence",
+          "text": "**You can intentionally build discernment confidence.**\n\n**Acknowledge your growth.** You have learned and changed.\n\n**Use your tools.** Apply what you have learned about red flags, green flags, and healthy love marks.\n\n**Seek input.** Others' perspective supplements your own judgment.\n\n**Pray for wisdom.** Ask God for discernment that comes from Him.\n\n**Take your time.** Confident discernment does not rush. It observes and evaluates.\n\n**Trust the process.** Following good practices leads to good outcomes over time.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Discernment Affirmation",
+          "text": "**Write an affirmation of trust in your discernment.**\n\n**I have learned from my past and am wiser than I was.**\n\n**I can recognize healthy love and unhealthy patterns.**\n\n**I will use the tools I have learned while remaining humble.**\n\n**I trust my judgment while seeking input from others.**\n\n**I am capable of making wise decisions about love.**\n\nWrite your discernment affirmation:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_discernment_commitment",
+      "isFree": false,
+      "title": "Ready to Recognize: Your Commitment to Discerning Love",
+      "subtitle": "Committing to the ongoing practice of wise discernment",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You have done significant work on discernment. This activity helps you consolidate what you have learned and commit to recognizing healthy love when you encounter it.",
+      "frameworkBasis": {
+        "conceptKey": "discernment_commitment",
+        "explanation": "Commitment to ongoing discernment practices enables recognition of healthy love."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Learned",
+          "text": "**Through this journey, you have developed clearer discernment about love.**\n\n**You have clarified what healthy love actually looks like.** You have learned to distinguish infatuation from lasting love.\n\n**You have identified marks of healthy love and red flags to avoid.** You have explored green flags and compatibility.\n\n**You have understood the role of time and trusted input.** You have worked on rebuilding confidence in your judgment.\n\n**This equips you to recognize healthy love when you encounter it.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Discernment as Practice",
+          "text": "**Discernment is not a destination but an ongoing practice.**\n\n**It requires staying alert rather than going on autopilot.**\n\n**It means applying what you have learned consistently.**\n\n**It involves seeking input and remaining humble.**\n\n**It includes prayer and seeking wisdom from God.**\n\n**As you continue practicing discernment, it becomes more natural.** Your ability to recognize healthy love strengthens with use.",
+          "icon": "fitness_center"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Discernment Insight",
+          "text": "{red|What is the most important thing you have learned about discerning healthy love?}\n\n{red|What do you want to remember when evaluating a relationship in the future?}\n\nWrite your key discernment insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Discernment Commitments",
+          "text": "{red|What commitments will you make for discerning healthy love?}\n\n{red|How will you evaluate potential relationships against what you have learned?}{red| How will you use time wisely?}{red| How will you seek input from others?}{red| How will you trust your judgment while remaining humble?}\n\nWrite your discernment commitments:",
+          "responseType": "open-text",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Discernment",
+          "text": "**Father, I want to recognize healthy love when I encounter it.**\n\n**Give me wisdom to discern real love from counterfeits.** Help me see clearly, not through the fog of infatuation or the clouds of fear.\n\n**Show me red flags I might miss.** Open my eyes to green flags I might overlook.\n\n**Give me patience to let time reveal truth.** Give me humility to seek input from others.\n\n**Prepare me to receive genuine love and to give it well.**\n\n**In Jesus' name, Amen.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Discernment Declaration",
+          "text": "**Write a declaration of your commitment to discerning healthy love.**\n\n**I commit to applying what I have learned about healthy love.**\n\n**I will look for the marks of real love and not settle for counterfeits.**\n\n**I will pay attention to red flags and green flags.**\n\n**I will take appropriate time and seek trusted input.**\n\n**I trust that I can recognize healthy love when I find it.**\n\n**I am ready to receive genuine love.**\n\nWrite your discernment declaration:",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Eyes to See",
+    "summaryText": "You have done significant work developing your ability to discern healthy love. Remember that discernment is an ongoing practice, not a destination. Apply what you have learned, take your time, seek input, and trust that you can recognize the real thing. Healthy, lasting love is possible, and you are better equipped to find it.",
+    "keyTakeaways": [
+      "Healthy love is different from cultural portrayals and includes choice not just feeling",
+      "Infatuation and lasting love are different and must be distinguished",
+      "Healthy love has observable marks like respect safety growth and communication",
+      "Red flags are warning signs that should not be ignored",
+      "Green flags indicate healthy relationship potential",
+      "Compatibility across key life areas matters as much as chemistry",
+      "Time reveals truth that initial attraction cannot show",
+      "Trusted input provides valuable outside perspective",
+      "You can rebuild confident discernment after divorce"
+    ],
+    "nextRecommendedJourneys": [
+      "Dating Again with Wisdom",
+      "Preparing for a New Covenant",
+      "Emotional Readiness for Remarriage"
+    ]
+  }
+}

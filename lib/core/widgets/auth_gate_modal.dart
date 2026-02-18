@@ -37,7 +37,7 @@ class AuthGateModal {
               children: [
                 Text(title, style: Theme.of(ctx).textTheme.titleLarge),
                 const SizedBox(height: 12),
-                Text(message, style: Theme.of(ctx).textTheme.bodyMedium),
+                Text(message, style: Theme.of(ctx).textTheme.bodySmall),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,

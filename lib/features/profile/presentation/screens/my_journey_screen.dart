@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../challenges/providers/journeys_providers.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/providers/tab_selection_provider.dart';
 
 class MyJourneyScreen extends ConsumerWidget {
   const MyJourneyScreen({super.key});
@@ -57,12 +59,12 @@ class MyJourneyScreen extends ConsumerWidget {
   }
 }
 
-class _SummaryCard extends StatelessWidget {
+class _SummaryCard extends ConsumerWidget {
   final AsyncValue<int> bestStreakAsync;
   const _SummaryCard({required this.bestStreakAsync});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final bestStreakText = bestStreakAsync.when(
       loading: () => '…',
       error: (_, __) => '—',
@@ -93,7 +95,10 @@ class _SummaryCard extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pushNamed('/challenges'),
+              onPressed:
+                  () =>
+                      ref.read(selectedTabProvider.notifier).state =
+                          NavTab.challenges,
               child: const Text('Browse'),
             ),
           ],

@@ -1,0 +1,905 @@
+{
+  "journeyId": "widowed_rebuilding_life",
+  "title": "Rebuilding Life After Loss",
+  "subtitle": "Finding your footing in a world that has shifted",
+  "summary": "**Your life was built around two people.** Now it is just you, and everything that was constructed for two must be reconstructed for one. This is not just emotional work; it is practical, daily, exhausting work. This journey helps you rebuild every aspect of your life: the financial realities, the legal complexities, the daily routines, the decisions that now fall on you alone, and the systems that keep life functioning. You will learn to manage what your spouse once handled, create new structures that work for one, and build a sustainable life while honoring your grief.",
+  "targetUserCategory": "widowed",
+  "priorityRank": 4,
+  "estimatedDays": 21,
+  "totalActivities": 14,
+  "difficulty": "intermediate",
+  "themeColor": "#4A5568",
+  "cover": {
+    "themeTag": "Rebuilding",
+    "accentIcon": "build",
+    "heroImage": "assets/images/journeys/widowed_journey4.jpg",
+    "heroImageDescription": "A sunrise over a landscape suggesting new beginnings, with elements of both what was lost and what might be built."
+  },
+  "frameworks": [
+    "grief_theory",
+    "life_reconstruction",
+    "practical_adaptation",
+    "financial_literacy",
+    "faith_integration"
+  ],
+  "targetOutcomes": [
+    "Identify all areas of life that need rebuilding",
+    "Navigate immediate financial and legal tasks after loss",
+    "Understand your new financial reality and create a sustainable budget",
+    "Develop confidence in tasks your spouse once handled",
+    "Create sustainable daily and weekly routines",
+    "Make decisions as a single person with wisdom",
+    "Build support systems for your rebuilt life",
+    "Trust God with an uncertain future"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_life_dismantled",
+      "isFree": true,
+      "title": "A Life Dismantled: Understanding What Needs Rebuilding",
+      "subtitle": "Seeing the full scope of reconstruction ahead",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "foundation",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Before you can rebuild, you need to understand what has been dismantled. Your life was constructed around partnership, and nearly every area has been affected.",
+      "frameworkBasis": {
+        "conceptKey": "life_assessment",
+        "explanation": "Rebuilding requires first understanding the full scope of what needs to be reconstructed."
+      },
+      "cards": [
+        {
+          "id": "card_1_1",
+          "cardType": "teaching",
+          "title": "Everything Was Built for Two",
+          "text": "**You did not just lose a person.** You lost half of a system.\n\n**Your life was a machine with two operators.** You each had roles, responsibilities, domains. Things one of you did and things the other did. The machine worked because both parts were functioning.\n\n**Now one operator is gone, and the machine keeps demanding to be run.** Bills still come. The car still needs oil changes. Food still needs to appear. Decisions still need to be made. The thousand small tasks of daily life continue, indifferent to your grief.\n\n**This is exhausting.** You are doing the work of two people while operating at half capacity because grief has depleted you.\n\n**No one tells you that widowhood is also an organizational crisis.** Everyone focuses on the emotional loss, which is real and primary. But the practical dismantling is its own burden.\n\n**\"Unless the Lord builds the house, the builders labor in vain\" ({red|Psalm 127:1|Unless the Lord builds the house, the builders labor in vain}).** You are being asked to rebuild a house while grieving its collapse. You cannot do this alone. You need God, and you need to understand what you are facing.",
+          "reflection": null
+        },
+        {
+          "id": "card_1_2",
+          "cardType": "teaching",
+          "title": "The Domains of Life",
+          "text": "**Consider how many areas of life have been affected.**\n\n**Finances: Income may have changed.** Bills, accounts, investments, insurance claims, legal matters that were managed together or by your spouse now fall to you alone.\n\n**Home: Maintenance, repairs, cleaning, organizing.** Things they did that you may not know how to do or have time to do.\n\n**Meals: Shopping, cooking, eating.** The rhythms of food that were built around two people.\n\n**Transportation: Cars, maintenance, driving.** If they were the primary driver or mechanic, this is now yours.\n\n**Social: Your social life was built as a couple.** Friendships, gatherings, church involvement may all need restructuring.\n\n**Work: If you were not working, you may need to.** If you were, you may need to adjust. The balance between work and everything else has shifted.\n\n**Children: If you have them, all parenting responsibilities now fall on you alone.**\n\n**Health: Both yours and what used to be shared responsibility for the household's wellbeing.**\n\n**Each of these domains needs attention.** Not all at once, but eventually. The life you had was dismantled. A new one must be built.",
+          "reflection": null
+        },
+        {
+          "id": "card_1_3",
+          "cardType": "teaching",
+          "title": "You Do Not Have to Rebuild Everything Today",
+          "text": "**Here is good news: you do not have to fix everything immediately.**\n\n**Robert felt overwhelmed by the mountain of tasks after his wife died.** She had handled the finances, the social calendar, most of the cooking. He did not know where to start, so he froze.\n\n**His pastor gave him advice that helped: \"Just keep the house from burning down.** That is your only job right now. Pay the essential bills. Feed yourself. Show up where you have to show up. Everything else can wait.\"\n\n**In the early days and weeks, survival is enough.** The detailed rebuilding comes later, when you have more capacity.\n\n**But at some point, you do have to rebuild.** Not because anyone is pressuring you, but because living in a half-collapsed house is not sustainable. Eventually, you need functioning systems.\n\n**\"There is a time for everything.**.. a time to tear down and a time to build\" ({red|Ecclesiastes 3:1|There is a time for everything.**.. a time to tear down and a time to build}, 3). The tearing down has happened. The building will come. But it happens in seasons, not all at once.",
+          "reflection": null
+        },
+        {
+          "id": "card_1_4",
+          "cardType": "question",
+          "title": "Your Current State",
+          "text": "{red|Which areas of your life feel most dismantled right now?}{red| Where is the need most urgent?}",
+          "reflection": null
+        },
+        {
+          "id": "card_1_5",
+          "cardType": "reflection",
+          "title": "Surveying the Damage",
+          "text": "{red|**Take an inventory of what needs attention in your life.**\n\nWhat did your spouse handle that now falls to you?}{red| Make a list.\n\nWhat systems are barely functioning or completely broken?}\n\n{red|What have you been avoiding because it feels too overwhelming?}\n\n{red|What is urgent versus what can wait?}\n\n{red|What do you not even know how to do?}\n\n{red|**This is not meant to overwhelm you.** It is meant to help you see clearly. You cannot rebuild what you have not assessed. \"Suppose one of you wants to build a tower. Won't you first sit down and estimate the cost?}\" ({red|Luke 14:28|Suppose one of you wants to build a tower. Won't you first sit down and estimate the cost?}}). Count the cost. See what needs to be done. Then take it one step at a time.",
+          "reflection": "{red|What areas of your life need rebuilding?}{red| What is urgent versus what can wait?}"
+        },
+        {
+          "id": "card_1_6",
+          "cardType": "action",
+          "title": "One Area to Address",
+          "text": "{red|**You cannot rebuild everything at once.** Choose one area to focus on first.\n\n**Look at your inventory.** What is most urgent?}{red| What is causing the most stress or dysfunction?}\n\n{red|**Commit to addressing that one area over the coming weeks.** Not perfectly, not completely, but enough to stabilize it.\n\n**This journey will help you think through different domains of life.** But you know your situation best. You know what is on fire.\n\n**Start there.** One area. One step at a time.\n\n**\"Do not despise these small beginnings, for the Lord rejoices to see the work begin\" ({red|Zechariah 4:10|Do not despise these small beginnings, for the Lord rejoices to see the work begin}, NLT).** Small beginnings are still beginnings. Start somewhere.\n\nWhat one area will you address first?}",
+          "reflection": "{red|What one area of your life will you focus on rebuilding first?}"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_immediate_practical",
+      "isFree": false,
+      "title": "The Immediate Tasks: What Cannot Wait",
+      "subtitle": "Handling urgent matters in the first weeks and months",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "urgent",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Some matters need attention quickly. Knowing what is urgent helps you prioritize when everything feels overwhelming.",
+      "frameworkBasis": {
+        "conceptKey": "urgent_priorities",
+        "explanation": "Identifying and addressing time-sensitive tasks prevents penalties and complications."
+      },
+      "cards": [
+        {
+          "id": "card_2_1",
+          "cardType": "teaching",
+          "title": "The Paperwork Avalanche",
+          "text": "**Your spouse has just died, and the world wants paperwork.**\n\n**Death certificates.** Insurance claims. Bank notifications. Social Security forms. Retirement account transfers. Title changes. The list seems endless.\n\n**Each form requires information you may not have.** Each phone call puts you on hold for hours. Each institution has its own requirements, its own timeline, its own bureaucracy.\n\n**And you are doing all of this while grieving.** While barely able to get out of bed. While your brain feels wrapped in cotton.\n\n**Beverly described it as drowning in paper while drowning in grief.** \"I could not think straight. I kept losing documents. I would start something and forget what I was doing. And the deadlines kept coming.\"\n\n**This is one of the cruelest aspects of widowhood: the demands of the practical world do not pause for your grief.**\n\n**\"Cast all your anxiety on him because he cares for you\" (1 {red|Peter 5:7|**This is one of the cruelest aspects of widowhood: the demands of the practical world do not pause for your grief.** **}).** He cares. Even about the paperwork. Cast your anxiety on Him and take one step.",
+          "reflection": null
+        },
+        {
+          "id": "card_2_2",
+          "cardType": "teaching",
+          "title": "What Cannot Wait",
+          "text": "**Some matters need attention quickly.** Others can wait. Knowing the difference helps you prioritize.\n\nTypically urgent in the first weeks:\n\n**Death certificates: Order multiple certified copies, often ten to fifteen.** You will need them for almost everything.\n\n**Notify Social Security: Report the death.** If your spouse received benefits, these need to stop. You may be eligible for survivor benefits.\n\n**Notify banks and credit card companies: Especially for joint accounts.** Some accounts may be frozen upon death notification.\n\n**Locate the will and any trust documents: If there is a will, you need to know what it says.** If there is an executor named, that person needs to be informed.\n\n**Secure property: Make sure home, vehicles, and valuables are secure.**\n\n**These matters should be addressed within the first few weeks if possible.** They form the foundation for everything else.\n\n**\"There is a time for everything, and a season for every activity\" ({red|Ecclesiastes 3:1|There is a time for everything, and a season for every activity}).** This is the time for these tasks. Attend to them so other things can follow.",
+          "reflection": null
+        },
+        {
+          "id": "card_2_3",
+          "cardType": "teaching",
+          "title": "Important But Not Immediate",
+          "text": "**Other tasks are important but do not require immediate attention.**\n\nWithin the first few months:\n\n**Life insurance claims: File claims with any life insurance companies.** They typically require death certificates.\n\n**Retirement account notifications: 401(k), IRA, pension plans need to be notified.** Beneficiary transfers take time.\n\n**Property title changes: Real estate, vehicles, and other property may need title transfers.**\n\n**Probate: If assets must go through probate, this process takes time but does not usually require immediate action.**\n\n**Health insurance: If you were on your spouse's plan, you need to find new coverage.** COBRA may be an option temporarily.\n\n**Utility and subscription accounts: Transfer or close accounts in your spouse's name.**\n\n**These matters should be addressed but can wait a few weeks or even months.** Do not let anyone rush you on non-urgent items.\n\n**\"The plans of the diligent lead to profit as surely as haste leads to poverty\" ({red|Proverbs 21:5|The plans of the diligent lead to profit as surely as haste leads to poverty}).** Be diligent but not hasty. Prioritize wisely.",
+          "reflection": null
+        },
+        {
+          "id": "card_2_4",
+          "cardType": "question",
+          "title": "Your Urgent Tasks",
+          "text": "{red|What immediate tasks still need attention in your situation?}{red| What has been handled and what remains?}",
+          "reflection": null
+        },
+        {
+          "id": "card_2_5",
+          "cardType": "reflection",
+          "title": "Prioritizing Your Tasks",
+          "text": "{red|**Make a list of what needs attention and prioritize it.**\n\nWhat urgent tasks have been completed?}{red| Give yourself credit.\n\nWhat urgent tasks still need to be done?}{red| What has deadlines?}\n\n{red|What important but non-urgent tasks are on the horizon?}\n\n{red|Who is helping you?}{red| Who could help if you asked?}\n\n{red|What tasks could you delegate?}{red| To whom?}\n\n**Organizing what needs to be done is itself an accomplishment.** Make your list.",
+          "reflection": "{red|What tasks need attention?}{red| What is urgent versus important?}{red| Who can help?}"
+        },
+        {
+          "id": "card_2_6",
+          "cardType": "action",
+          "title": "Address One Urgent Item",
+          "text": "{red|**Choose one urgent task and address it this week.**\n\n**If you need death certificates, order them or check that you have enough copies.**\n\n**If Social Security has not been notified, make that call.**\n\n**If banks need to be contacted, start with one account.**\n\n**If you need to locate the will, begin searching or contact an attorney.**\n\n**One task at a time.** That is how the mountain gets climbed.\n\n**\"Commit to the Lord whatever you do, and he will establish your plans\" ({red|Proverbs 16:3|Commit to the Lord whatever you do, and he will establish your plans}).** Commit this task to Him. He will establish your work.\n\nWhat one urgent item will you address?}",
+          "reflection": "{red|What one urgent task will you address this week?}"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_financial_picture",
+      "isFree": false,
+      "title": "Understanding Your Financial Picture: What Do You Have?",
+      "subtitle": "Getting clarity on your assets, income, and debts",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "clarity",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "You cannot manage what you do not understand. Getting a clear picture of your finances is essential to planning your future.",
+      "frameworkBasis": {
+        "conceptKey": "financial_clarity",
+        "explanation": "Understanding current financial situation is prerequisite to making sound decisions."
+      },
+      "cards": [
+        {
+          "id": "card_3_1",
+          "cardType": "teaching",
+          "title": "The Numbers You Need to Know",
+          "text": "**There is a particular cruelty in having to think about money when your heart is broken.**\n\n**You do not want to look at bank statements.** You do not want to calculate what you have and what you owe. You want to grieve, not do accounting. But the bills keep coming, and the uncertainty about your financial future adds anxiety on top of grief.\n\n**Knowing where you stand financially does not make grief easier, but it removes one source of fear.** The unknown is often scarier than the known, even when the known is difficult.\n\n**Start with what you have.** Bank accounts, checking and savings. Any retirement accounts like a 401(k), IRA, or pension. Life insurance policies where you are the beneficiary. Your home, if you own one, and whether there is a mortgage. Your car and whether it is paid off.\n\n**You may have a lot or a little.** Many widowed people discover their financial situation is different than they expected, sometimes better, sometimes worse. Marcus assumed he and his wife had almost nothing saved, only to discover she had been quietly putting money aside for years. The search for information can bring surprises.\n\n**\"The Lord is my shepherd, I lack nothing\" ({red|Psalm 23:1|The Lord is my shepherd, I lack nothing}).** Whatever your financial picture shows, He remains your shepherd. Start by understanding what you have.",
+          "reflection": null
+        },
+        {
+          "id": "card_3_2",
+          "cardType": "teaching",
+          "title": "What You Owe",
+          "text": "**Understanding your debts is just as important as knowing what you have.**\n\n**For some widowed people, the fear of debt is worse than the reality.** For others, the reality is challenging. Either way, you need to know.\n\n**Common debts to account for: Mortgage or rent obligations.** Car payments. Credit card balances. Medical bills from your spouse's illness or final care. Any other loans or regular payments.\n\n**Here is important news: not all debt automatically becomes yours.** Debt that was solely in your spouse's name may not transfer to you, depending on your state's laws. Medical debt, in particular, has rules that vary by location. Before you panic about what you owe, consult with someone knowledgeable, whether a legal aid service, an attorney, or a financial counselor.\n\n**William was terrified when collection calls started coming for his wife's medical bills.** He assumed he would lose everything. A free legal clinic helped him understand that most of those debts were not his responsibility. The relief was immense.\n\n**Do not let fear of debt keep you from finding out the truth.** The truth, even when hard, is better than the anxiety of not knowing.\n\n**\"The truth will set you free\" ({red|John 8:32|The truth will set you free}).** Know the truth about what you owe. It may be less frightening than you imagine.",
+          "reflection": null
+        },
+        {
+          "id": "card_3_3",
+          "cardType": "teaching",
+          "title": "Your Income Now",
+          "text": "{red|**Your household income has likely changed, and you need to understand exactly how.**\n\n**If your spouse worked, that income is gone.** If you depended on their paycheck, this is a significant loss that affects everything.\n\n**But there may be income sources you have not fully explored.** Social Security survivor benefits can provide meaningful monthly income, and the Social Security office can explain your options. If your spouse had a pension, there may be survivor benefits. If there was life insurance, that provides a sum that, while not ongoing income, affects your overall financial picture.\n\n**Your own income matters too.** If you work, what is your take-home pay?}{red| If you do not work, is returning to work necessary or possible?}\n\n**Tony had been the secondary earner in his marriage.** When his wife died, he assumed he could not make it on his income alone. But between his salary, her Social Security survivor benefit, and a small life insurance policy, he found he could manage if he was careful. It was tighter than before, but it was possible.\n\n**The goal is not to have a certain amount.** The goal is to know what you have so you can plan accordingly.\n\n**\"Give us today our daily bread\" ({red|Matthew 6:11|Give us today our daily bread}).** God provides daily bread. Know what bread you have, and trust Him to provide what you need.",
+          "reflection": null
+        },
+        {
+          "id": "card_3_4",
+          "cardType": "question",
+          "title": "Your Understanding",
+          "text": "{red|How well do you understand your current financial picture?}{red| What do you know and what do you need to learn?}",
+          "reflection": null
+        },
+        {
+          "id": "card_3_5",
+          "cardType": "reflection",
+          "title": "Taking Inventory",
+          "text": "{red|**Begin to create a financial inventory.**\n\n**Assets: List everything you own, with approximate values if known.**\n\n**Debts: List everything you owe, with balances and monthly payments.**\n\n**Income: List all sources of ongoing income.**\n\nExpenses: What are your monthly expenses?}{red| Housing, utilities, food, insurance, transportation, other?}\n\n{red|Gaps: Is income covering expenses?}{red| If not, how large is the gap?}\n\n**This inventory does not need to be perfect.** Start with what you know. Refine it as you learn more.",
+          "reflection": "**Create a basic financial inventory: assets, debts, income, expenses.**"
+        },
+        {
+          "id": "card_3_6",
+          "cardType": "action",
+          "title": "Gather Information",
+          "text": "{red|**Take one step toward understanding your finances this week.**\n\n**Pull out recent statements: Bank statements, investment statements, credit card statements.** What do they tell you?}\n\n{red|**Look at last year's tax return: It provides a snapshot of income sources and financial activity.**\n\n**Make a list of accounts: Write down every account you know of, where it is held, approximate balance.**\n\nIdentify gaps: What do you not know?}{red| What do you need to find out?}\n\n{red|**Consider professional help: If this feels overwhelming, a financial advisor can help you understand your situation in one or two meetings.**\n\n**\"An intelligent heart acquires knowledge, and the ear of the wise seeks knowledge\" ({red|Proverbs 18:15|An intelligent heart acquires knowledge, and the ear of the wise seeks knowledge}).** Acquire knowledge about your finances. Seek to understand.\n\nWhat step will you take to understand your financial picture?}",
+          "reflection": "{red|What one step will you take to better understand your financial picture?}"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_benefits_insurance",
+      "isFree": false,
+      "title": "Insurance and Benefits: Claiming What Is Yours",
+      "subtitle": "Navigating life insurance, Social Security, and other benefits",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "benefits",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "You may be entitled to significant benefits. Knowing what is available and how to claim it provides financial stability.",
+      "frameworkBasis": {
+        "conceptKey": "benefit_navigation",
+        "explanation": "Widowed individuals are often entitled to benefits that require proper claiming."
+      },
+      "cards": [
+        {
+          "id": "card_4_1",
+          "cardType": "teaching",
+          "title": "Money You May Not Know Exists",
+          "text": "**In the midst of grief, it feels wrong to think about money.** But there may be money owed to you that will not appear on its own. You have to claim it.\n\n**Life insurance is often the most significant.** If your spouse had a policy through work or one you purchased together, you are likely the beneficiary. These funds do not automatically arrive. You have to find the policies and file claims.\n\n**Start by looking through papers, old tax returns, and employment documents.** Check with your spouse's employer. Contact any insurance companies you know they did business with. You are looking for policy numbers and company names.\n\n**Once you find policies, filing a claim is usually straightforward, a death certificate and some forms.** The money typically arrives within a few weeks to a couple of months.\n\n**Be thoughtful with any money that comes.** It can feel like a windfall, but for many widowed people, insurance money needs to last a long time. Do not let grief or pressure from others push you into hasty decisions.\n\n**Edward received a modest life insurance payout after his wife died.** It was not a fortune, but he stretched it by being careful. He resisted the urge to spend freely and instead let it provide a safety cushion that gave him peace of mind for years.\n\n**\"Wealth gained hastily will dwindle, but whoever gathers little by little will increase it\" ({red|Proverbs 13:11|Wealth gained hastily will dwindle, but whoever gathers little by little will increase it}).** Handle whatever comes with patience and wisdom.",
+          "reflection": null
+        },
+        {
+          "id": "card_4_2",
+          "cardType": "teaching",
+          "title": "Social Security Benefits",
+          "text": "**Social Security provides several types of benefits for surviving spouses.**\n\n**Survivor benefits: If your spouse worked and paid into Social Security, you may be eligible for survivor benefits.** The amount depends on their earnings history and your age.\n\n**Lump sum death benefit: A one-time payment of $255 is available to surviving spouses in certain situations.**\n\n**Benefits for children: Minor children may be eligible for benefits based on the deceased parent's record.**\n\n**Your own benefits vs.** survivor benefits: If you are also eligible for your own Social Security, you may be able to choose the higher benefit or use strategies to maximize total benefits.\n\n**Contact Social Security to understand your options.** Their website has information, and you can schedule appointments.\n\n**Samuel did not know he was eligible for survivor benefits until a friend told him.** He had been struggling financially for months when he could have been receiving help. Do not assume you know what is available. Ask.\n\n**\"Ask and it will be given to you; seek and you will find\" ({red|Matthew 7:7|Ask and it will be given to you; seek and you will find}).** Ask about benefits. Seek what is available to you.",
+          "reflection": null
+        },
+        {
+          "id": "card_4_3",
+          "cardType": "teaching",
+          "title": "Other Potential Benefits",
+          "text": "**Other benefits may be available depending on your situation.**\n\n**Employer benefits: If your spouse's employer offered life insurance, retirement plans, or other death benefits, contact HR to understand what is available.**\n\n**Veteran benefits: If your spouse was a veteran, you may be eligible for survivor benefits, burial benefits, and other assistance through the VA.**\n\n**Pension survivor benefits: Some pensions continue to pay a surviving spouse.** Contact the pension administrator.\n\n**Union or professional organization benefits: Some unions and professional organizations provide death benefits to families of members.**\n\n**Health insurance: COBRA allows you to continue employer health coverage for a limited time.** Marketplace plans are another option.\n\n**Make a list of every organization your spouse was connected to and check whether any benefits are available.** You may be surprised what exists.\n\n**\"The Lord watches over the foreigner and sustains the fatherless and the widow\" ({red|Psalm 146:9|The Lord watches over the foreigner and sustains the fatherless and the widow}).** He watches over you. Part of that provision may come through benefits you have not yet claimed.",
+          "reflection": null
+        },
+        {
+          "id": "card_4_4",
+          "cardType": "question",
+          "title": "Your Benefits",
+          "text": "{red|What benefits have you already claimed?}{red| What benefits might still be available that you have not explored?}",
+          "reflection": null
+        },
+        {
+          "id": "card_4_5",
+          "cardType": "reflection",
+          "title": "Benefits Checklist",
+          "text": "{red|**Review what benefits you may be entitled to.**\n\nLife insurance: Policies located?}{red| Claims filed?}\n\n{red|Social Security: Have you contacted them?}{red| Do you understand your options?}\n\n{red|Employer benefits: Have you contacted your spouse's employer HR?}\n\n{red|Veteran benefits (if applicable): Have you explored VA benefits?}\n\n{red|Pension: Is there a survivor benefit available?}\n\n{red|Health insurance: How will you be covered?}\n\n{red|Other sources: Any other organizations that might have benefits?}\n\n**Make a list of what you have claimed, what you need to claim, and what you need to investigate.**",
+          "reflection": "{red|What benefits have you claimed?}{red| What still needs attention?}"
+        },
+        {
+          "id": "card_4_6",
+          "cardType": "action",
+          "title": "Claim One Benefit",
+          "text": "{red|**Take one step this week toward claiming a benefit you are entitled to.**\n\n**If you have not contacted Social Security, call to schedule an appointment or begin the process online.**\n\n**If there is a life insurance policy you have not claimed, contact the company.**\n\n**If your spouse's employer might have benefits, call HR.**\n\n**If your spouse was a veteran, contact the VA.**\n\n**Do not leave money on the table.** These benefits exist for people in your situation. Claim them.\n\n**\"The Lord is my shepherd, I lack nothing\" ({red|Psalm 23:1|The Lord is my shepherd, I lack nothing}).** He provides. Sometimes that provision comes through benefits you must actively claim.\n\nWhat benefit will you pursue this week?}",
+          "reflection": "{red|What one benefit will you take steps to claim this week?}"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_legal_estate",
+      "isFree": false,
+      "title": "Legal and Estate Matters: Navigating the Process",
+      "subtitle": "Understanding wills, probate, and property transfers",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "legal",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Legal matters can be confusing and intimidating. Understanding the basics helps you navigate the process or know when to get help.",
+      "frameworkBasis": {
+        "conceptKey": "legal_navigation",
+        "explanation": "Estate settlement involves legal processes that require understanding or professional guidance."
+      },
+      "cards": [
+        {
+          "id": "card_5_1",
+          "cardType": "teaching",
+          "title": "Legal Matters No One Prepared You For",
+          "text": "**The legal system does not care that you are grieving.**\n\n**There are forms to file, processes to follow, and deadlines that do not adjust for your broken heart.** Words like probate and executor and intestate get thrown around, and you may have no idea what they mean or whether they apply to you.\n\n**Here is the basic reality: when someone dies, there is usually some legal process for transferring whatever they had to whoever should receive it.** This is true whether your spouse had significant assets or very little.\n\n**If there is a will, the will directs who gets what.** Someone, often the surviving spouse, is named as executor to carry out those wishes. The will may need to be filed with the court.\n\n**If there is no will, state law determines what happens.** You may still be entitled to everything, but the process may be different.\n\n**For simple situations, a house and a car and some bank accounts, the process is usually straightforward.** For complex situations, it takes longer.\n\n**Lawrence had never dealt with anything legal in his life.** After his wife died, he was terrified of doing something wrong. A free consultation with a legal aid attorney helped him understand that his situation was simple and he could handle most of it himself.\n\n**\"The Lord gives wisdom; from his mouth come knowledge and understanding\" ({red|Proverbs 2:6|The Lord gives wisdom; from his mouth come knowledge and understanding}).** Ask Him for wisdom. Then find the human help you need to understand the process.",
+          "reflection": null
+        },
+        {
+          "id": "card_5_2",
+          "cardType": "teaching",
+          "title": "Transferring What They Had",
+          "text": "**Whatever your spouse had needs to be properly transferred to you or other beneficiaries.**\n\n**The good news is that many things transfer automatically or simply.** Joint bank accounts usually become yours immediately. Life insurance and retirement accounts with you named as beneficiary pass directly to you without going through probate.\n\n**Other things require more paperwork.** A car title needs to be changed to your name. If you owned your home together, the deed may need to be updated depending on how it was titled. Any accounts in your spouse's name alone may require court involvement.\n\n**The process varies by state and by what type of assets are involved.** What is simple in one state may be complicated in another.\n\n**Be patient with institutions.** Banks, insurance companies, and government agencies move slowly. Keep records of every call, every form, every communication. Follow up when things stall.\n\n**Charles spent weeks trying to get his wife's car title transferred.** The DMV kept asking for different documents. It was maddening, but he persisted, and eventually it was done.\n\n**\"Let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up\" ({red|Galatians 6:9|Let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up}).** Persistence pays off. The harvest of completion will come.",
+          "reflection": null
+        },
+        {
+          "id": "card_5_3",
+          "cardType": "teaching",
+          "title": "Getting Help When You Need It",
+          "text": "**You may need professional legal help, or your situation may be simple enough to handle yourself.**\n\n**You can probably handle it yourself if: Everything was jointly owned, beneficiaries are clearly named on accounts, there is no will or a very simple will, and no one is disputing anything.**\n\n**You probably need help if: There are disputes among family members.** You are unsure what debts you are responsible for. The situation involves property in multiple states. You are being pressured by creditors. You simply feel overwhelmed and confused.\n\n**Help does not have to be expensive.** Many communities have legal aid services that provide free assistance based on income. Some attorneys offer free initial consultations. Bar associations often have referral services. Some courts have self-help centers for simple matters.\n\n**Brenda was intimidated by the idea of hiring a lawyer until a friend told her about the legal aid office in their county.** They helped her understand her situation for free and told her she did not need an attorney at all, her case was simple enough to handle herself with their guidance.\n\n**Do not assume you cannot afford help.** Do not assume you need help when you might not. Find out what your situation actually requires.\n\n**\"Where there is no guidance, a people falls, but in an abundance of counselors there is safety\" ({red|Proverbs 11:14|Where there is no guidance, a people falls, but in an abundance of counselors there is safety}).** Seek guidance. Safety comes from understanding your situation.",
+          "reflection": null
+        },
+        {
+          "id": "card_5_4",
+          "cardType": "question",
+          "title": "Your Legal Situation",
+          "text": "{red|Where are you with legal and estate matters?}{red| What has been handled and what remains?}",
+          "reflection": null
+        },
+        {
+          "id": "card_5_5",
+          "cardType": "reflection",
+          "title": "Legal Needs Assessment",
+          "text": "{red|**Assess your legal and estate situation.**\n\nWill: Was there a will?}{red| Has it been located and filed?}\n\n{red|Probate: Is probate required?}{red| Has it been initiated?}\n\n{red|Titles and accounts: What needs to be transferred?}{red| What has been completed?}\n\n{red|Debt: Are there questions about what debts you are responsible for?}\n\n{red|Do you need an attorney?}{red| Is your situation complex enough to warrant professional help?}\n\n{red|What legal tasks are still pending?}",
+          "reflection": "{red|What is your legal situation?}{red| What needs attention?}{red| Do you need professional help?}"
+        },
+        {
+          "id": "card_5_6",
+          "cardType": "action",
+          "title": "One Legal Step",
+          "text": "{red|**Take one step on legal matters this week.**\n\n**If you need an attorney and do not have one, get a referral and make an appointment.**\n\n**If probate needs to be initiated, take the first step with the court or an attorney.**\n\n**If accounts or titles need transfer, contact one institution and begin the process.**\n\n**If you are unsure what needs to be done, consult with someone knowledgeable.**\n\n**Legal matters can feel intimidating.** But they are navigable, especially with help.\n\n**\"The heart of the discerning acquires knowledge\" ({red|Proverbs 18:15|The heart of the discerning acquires knowledge}).** Acquire knowledge about your legal situation. One step at a time.\n\nWhat legal step will you take?}",
+          "reflection": "{red|What one step on legal matters will you take this week?}"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_budget",
+      "isFree": false,
+      "title": "Creating a New Budget: Living on Your New Income",
+      "subtitle": "Building a financial plan that fits your changed reality",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "budget",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Your income and expenses have changed. A budget that reflects your new reality is essential to financial stability.",
+      "frameworkBasis": {
+        "conceptKey": "budget_adaptation",
+        "explanation": "Changed financial circumstances require intentional budget creation and adaptation."
+      },
+      "cards": [
+        {
+          "id": "card_6_1",
+          "cardType": "teaching",
+          "title": "Your Income Has Changed",
+          "text": "**Your household income is probably different now.**\n\n**If your spouse worked, their income is gone.** If you receive survivor benefits, they likely do not fully replace what was lost. If there was life insurance, that is a one-time amount, not ongoing income.\n\n**This reality requires adjustment.** You may need to live on less than before. This is not failure; it is adaptation to new circumstances.\n\n**Nancy's income dropped by more than half when her husband died.** His salary was gone. Her Social Security survivor benefit helped, but there was still a significant gap. She had to make hard choices about her lifestyle to match her new income.\n\n**The first step is accepting reality.** You cannot budget for income you do not have. Start with what is actually coming in and build from there.\n\n**\"Whoever can be trusted with very little can also be trusted with much\" ({red|Luke 16:10|Whoever can be trusted with very little can also be trusted with much}).** Be faithful with what you have. Steward your actual income well, whatever the amount.",
+          "reflection": null
+        },
+        {
+          "id": "card_6_2",
+          "cardType": "teaching",
+          "title": "Building a Budget",
+          "text": "{red|**A budget is simply a plan for your money.** Here is how to build one.\n\n**List your income: All sources, all amounts, monthly total.**\n\n**List your fixed expenses: Mortgage or rent, utilities, insurance, car payments, any regular fixed costs.**\n\n**List your variable expenses: Food, gas, entertainment, clothing.** These can be adjusted.\n\n**List your debt payments: Minimum payments on any debts.**\n\nCompare income to expenses: Is there money left over, or is there a gap?}\n\n**If there is a gap, you have two options: increase income or reduce expenses.** For most widowed people, reducing expenses is the more immediate option.\n\n**Look for places to cut.** Subscriptions you do not use. Services you can reduce. Lifestyle adjustments you can make. Small cuts add up.\n\n**Richard built his first budget after his wife died and discovered he was spending far more than he realized on things he did not need.** Cutting those expenses brought his budget into balance.\n\n**\"The plans of the diligent lead to profit\" ({red|Proverbs 21:5|The plans of the diligent lead to profit}).** Be diligent. Plan your money. It leads to stability.",
+          "reflection": null
+        },
+        {
+          "id": "card_6_3",
+          "cardType": "teaching",
+          "title": "Priorities in Your Budget",
+          "text": "**Not all expenses are equal.** Prioritize wisely.\n\n**Essentials first: Housing, utilities, food, necessary transportation, essential insurance, required medications.** These come first.\n\n**Debt obligations: Minimum payments must be made to avoid penalties and credit damage.**\n\n**Savings: Even a small amount for emergencies.** You need a buffer for unexpected expenses.\n\n**Everything else: After essentials, debt, and savings, what remains is for other expenses.**\n\n**Be ruthless with non-essentials if money is tight.** Cable TV is not essential. Dining out is not essential. These are nice to have, but they come after the necessities.\n\n**George had to make hard choices.** He canceled several subscriptions, cut his food budget by meal planning carefully, and drove less to save on gas. It was not fun, but it allowed him to live within his means.\n\n**\"Better a little with righteousness than much gain with injustice\" ({red|Proverbs 16:8|Better a little with righteousness than much gain with injustice}).** A smaller budget lived wisely is better than overspending and anxiety. Be content with enough.",
+          "reflection": null
+        },
+        {
+          "id": "card_6_4",
+          "cardType": "question",
+          "title": "Your Budget",
+          "text": "{red|Do you have a budget that reflects your current income and expenses?}{red| If not, what is holding you back?}",
+          "reflection": null
+        },
+        {
+          "id": "card_6_5",
+          "cardType": "reflection",
+          "title": "Budget Planning",
+          "text": "{red|**Work through the elements of a budget.**\n\nMonthly income: What is your total monthly income from all sources?}\n\n{red|Fixed expenses: What are your regular, unchangeable expenses?}\n\n{red|Variable expenses: What are your flexible expenses?}{red| Where might you adjust?}\n\n{red|Debt payments: What debts require monthly payments?}\n\n{red|Savings: Can you set aside anything for emergencies?}\n\n{red|Balance: Is income greater than expenses?}{red| If not, what could change?}",
+          "reflection": "**Create a basic budget: income, fixed expenses, variable expenses, debt, savings.**"
+        },
+        {
+          "id": "card_6_6",
+          "cardType": "action",
+          "title": "Create Your Budget",
+          "text": "{red|**This week, create a written budget.**\n\n**Use a simple spreadsheet, a budgeting app, or even paper.** The format matters less than the act of doing it.\n\n**List every source of income.**\n\n**List every expense, fixed and variable.**\n\n**See if they balance.** If not, identify what can change.\n\n**Commit to living by this budget for the next month.** Track your spending against it.\n\n**A budget is not a punishment.** It is freedom. It tells you what you can afford and eliminates the anxiety of not knowing.\n\n**\"Suppose one of you wants to build a tower.** Won't you first sit down and estimate the cost?}{red|\" ({red|Luke 14:28|Suppose one of you wants to build a tower.** Won't you first sit down and estimate the cost?}{red|}). Sit down. Estimate the cost of your life. Build your budget.\n\nWhen will you create your budget?}",
+          "reflection": "**Commit to creating a written budget this week.**"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_their_domain",
+      "isFree": false,
+      "title": "What They Did: Taking Over Your Spouse's Responsibilities",
+      "subtitle": "Learning tasks that were never yours before",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "tasks",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Your spouse handled certain things. Now those things are yours. Taking over unfamiliar responsibilities is both practical challenge and emotional journey.",
+      "frameworkBasis": {
+        "conceptKey": "responsibility_transfer",
+        "explanation": "Widowhood requires taking over tasks that belonged to the deceased spouse, often with little preparation."
+      },
+      "cards": [
+        {
+          "id": "card_7_1",
+          "cardType": "teaching",
+          "title": "Entering Their Domain",
+          "text": "**Every marriage develops a division of labor.** You did some things; they did others. Maybe it was explicit, or maybe it just evolved over time.\n\n**Now everything they did is yours.**\n\n**This can feel like entering foreign territory.** Their domain may be completely unfamiliar to you. You may not know where to start, what the passwords are, how the system works.\n\n**Eleanor's husband had handled all the finances for forty years.** After he died, she did not even know what accounts they had. She found herself sitting at his desk, surrounded by papers, crying because she did not understand any of it.\n\n**This is common.** It is not stupid or incompetent. It is what happens when one person handles something for decades and then is suddenly gone.\n\n**The good news: you can learn.** People learn new skills at every age. What feels impossible now will feel manageable eventually.\n\n**\"I can do all this through him who gives me strength\" ({red|Philippians 4:13|I can do all this through him who gives me strength}).** Including learning things that feel impossible right now.",
+          "reflection": null
+        },
+        {
+          "id": "card_7_2",
+          "cardType": "teaching",
+          "title": "Common Areas of Transfer",
+          "text": "{red|**Some responsibilities commonly shift to the surviving spouse.**\n\n**Finances: If they handled bills, accounts, investments, taxes, you need to understand these now.**\n\n**Home maintenance: If they handled repairs, yard work, car maintenance, these are now yours.** You may need to learn basic skills or find reliable help.\n\n**Cooking and meals: If they did most of the cooking, you need to feed yourself.** This can be surprisingly hard when you have never done it.\n\n**Technology: If they managed the computers, wifi, streaming services, phones, you may feel lost.**\n\n**Social planning: If they maintained friendships and planned social activities, you may find your social life needs attention.**\n\nWhat did your spouse handle that is now foreign territory for you?} Identifying it is the first step.",
+          "reflection": null
+        },
+        {
+          "id": "card_7_3",
+          "cardType": "teaching",
+          "title": "Learning What You Need to Learn",
+          "text": "**You have options for handling unfamiliar responsibilities.**\n\n**Learn it yourself: Some things you should learn, both for practical reasons and for the confidence it builds.** YouTube tutorials, classes, books, trial and error. You can learn more than you think.\n\n**Get help: Some things you can outsource.** Hire a handyman, use a financial advisor, pay someone to do what you cannot or do not want to do. This is not failure. It is wisdom.\n\n**Ask someone to teach you: A friend, family member, or professional can show you how to do things.** People often want to help but do not know how.\n\n**Simplify: Some things your spouse did may not be necessary.** Maybe you do not need to maintain the same complexity. Simplifying can make the load manageable.\n\n**\"If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault\" ({red|James 1:5|If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault}).** Ask for wisdom about what to learn, what to delegate, and what to release.",
+          "reflection": null
+        },
+        {
+          "id": "card_7_4",
+          "cardType": "question",
+          "title": "Your Spouse's Domain",
+          "text": "{red|What responsibilities did your spouse handle that are now the most challenging for you?}",
+          "reflection": null
+        },
+        {
+          "id": "card_7_5",
+          "cardType": "reflection",
+          "title": "Transfer Plan",
+          "text": "{red|**Think through how you will handle your spouse's former responsibilities.**\n\nWhat do you need to learn yourself?}{red| What skills should you develop?}\n\n{red|What can you delegate or outsource?}{red| Where is help available?}\n\n{red|Who can teach you things you need to know?}\n\n{red|What can be simplified or eliminated?}\n\n{red|What are the most urgent items that need attention soon?}\n\n**Make a plan.** Not everything at once, but a sense of how you will address each area over time.",
+          "reflection": "{red|How will you handle your spouse's former responsibilities?}{red| What is your plan?}"
+        },
+        {
+          "id": "card_7_6",
+          "cardType": "action",
+          "title": "One New Skill",
+          "text": "{red|**Choose one thing from your spouse's domain to learn this month.**\n\n**Maybe it is understanding the household finances.**\n\n**Maybe it is learning to do a basic home repair.**\n\n**Maybe it is cooking a few simple meals.**\n\n**Maybe it is figuring out the technology.**\n\n**Pick one thing.** Find a resource, whether a person, video, class, or book, to help you learn it. Take the first step.\n\n**Every skill you develop is one less dependency, one more area of confidence.** You are more capable than you know.\n\n**\"She watches over the affairs of her household and does not eat the bread of idleness\" ({red|Proverbs 31:27|She watches over the affairs of her household and does not eat the bread of idleness}).** Watch over your household. Learn what you need to learn.\n\nWhat skill will you learn?}",
+          "reflection": "{red|What one skill from your spouse's domain will you learn this month?}"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_daily_routines",
+      "isFree": false,
+      "title": "A New Normal: Building Daily Routines That Work",
+      "subtitle": "Creating structure when the old patterns are gone",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "routine",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Your daily routines were built around your spouse. Creating new routines gives structure to days that can otherwise feel shapeless and overwhelming.",
+      "frameworkBasis": {
+        "conceptKey": "routine_reconstruction",
+        "explanation": "Daily routines provide stability and reduce decision fatigue, both critical during grief."
+      },
+      "cards": [
+        {
+          "id": "card_8_1",
+          "cardType": "teaching",
+          "title": "When the Rhythm Stops",
+          "text": "**Your days used to have a rhythm.** Morning routines that involved two people. Mealtimes structured around when they would be home. Evenings spent together. Weekends with shared activities.\n\n**That rhythm is gone, and the silence it leaves is disorienting.**\n\n**Phillip described it this way: \"After Marie died, I would wake up and not know what to do.** There was nothing I had to do. No one expecting me. No schedule. I would sit at the kitchen table for hours, paralyzed, because the whole structure of my day had disappeared.\"\n\n**Routines matter more than we realize.** They reduce the number of decisions we have to make. They give shape to time. They create a sense of normalcy even when nothing is normal.\n\n**Without routines, days become shapeless.** You expend energy deciding things that should be automatic. The lack of structure adds to the exhaustion of grief.\n\n**\"The steadfast love of the Lord never ceases; his mercies are new every morning\" ({red|Lamentations 3:22-23|The steadfast love of the Lord never ceases; his mercies are new every morning}).** Every morning is a new gift of mercy. A morning routine helps you receive it.",
+          "reflection": null
+        },
+        {
+          "id": "card_8_2",
+          "cardType": "teaching",
+          "title": "Morning Anchors",
+          "text": "**How you start the day sets the tone for everything that follows.**\n\n**In grief, mornings can be brutal.** Waking up and remembering. Facing another day alone. The temptation to stay in bed and avoid it all.\n\n**A morning routine creates an anchor.** Something you do every morning, regardless of how you feel. Not because you feel like it, but because it is the structure that gets you moving.\n\n**This might include: getting up at a consistent time, even when you do not want to.** Making your bed. Coffee or tea in a certain way. A few minutes of Scripture or prayer. Some movement or stretching. Breakfast, even if simple.\n\n**The specific elements matter less than the consistency.** You are training your body and mind to start the day with structure rather than chaos.",
+          "reflection": null
+        },
+        {
+          "id": "card_8_3",
+          "cardType": "teaching",
+          "title": "Filling the Empty Spaces",
+          "text": "**The hardest times are often the empty spaces.** The hours that used to be filled with your spouse's presence.\n\n**Dinner time, when you used to eat together.** Evenings, when you used to watch TV or talk. Weekends, when you used to do things as a couple.\n\n**These empty spaces can swallow you if you do not fill them intentionally.**\n\nSome strategies:\n\n**Schedule activities for your hardest times.** If evenings are worst, plan something for evenings.\n\n**Create new rituals.** Maybe evening becomes your time for a walk, or journaling, or a certain show.\n\n**Be with people when possible.** The empty spaces feel emptiest when you are alone.\n\n**Be gentle with the process.** Filling the spaces takes time. You will not figure it out immediately.\n\n**\"For everything there is a season\" ({red|Ecclesiastes 3:1|For everything there is a season}).** This is a season of rebuilding. New patterns will come.",
+          "reflection": null
+        },
+        {
+          "id": "card_8_4",
+          "cardType": "question",
+          "title": "Your Days Now",
+          "text": "{red|What does a typical day look like for you now?}{red| Where are the empty spaces that need structure?}",
+          "reflection": null
+        },
+        {
+          "id": "card_8_5",
+          "cardType": "reflection",
+          "title": "Designing Your Routines",
+          "text": "{red|**Think through what routines would help you.**\n\nMorning: What could anchor your start to the day?}{red| What time will you get up?}{red| What will you do in the first hour?}\n\n{red|Mealtimes: How will you handle eating alone?}{red| Will you keep regular meal times?}\n\n{red|Hardest times: What are your hardest times of day?}{red| What could fill those spaces?}\n\n{red|Evening: How will you structure the end of your day?}{red| What routine will help you move toward rest?}\n\n**You do not need a perfect schedule.** You need enough structure to hold your days together.",
+          "reflection": "{red|What routines will you create for mornings, mealtimes, and your hardest times?}"
+        },
+        {
+          "id": "card_8_6",
+          "cardType": "action",
+          "title": "Implement One Routine",
+          "text": "{red|**Choose one routine to implement this week.**\n\n**Start with your most vulnerable time.** If mornings are hardest, create a morning routine. If evenings are worst, focus there.\n\n**Keep it simple.** Three or four elements are enough. You can add complexity later.\n\n**Write it down.** Post it where you will see it. Having it written reduces decision fatigue.\n\n**Commit to it for one week.** Even when you do not feel like it. Routines only help if you follow them.\n\n**\"Commit to the Lord whatever you do, and he will establish your plans\" ({red|Proverbs 16:3|Commit to the Lord whatever you do, and he will establish your plans}).** Commit your routine to Him. Ask Him to help you follow it.\n\nWhat routine will you implement this week?}",
+          "reflection": "{red|What one routine will you implement this week?}"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_decisions_alone",
+      "isFree": false,
+      "title": "Decisions Alone: Making Choices Without Your Partner",
+      "subtitle": "Learning to decide when you used to decide together",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "decision",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "You used to make decisions together. Now every decision falls on you alone. Learning to decide wisely is part of rebuilding.",
+      "frameworkBasis": {
+        "conceptKey": "decision_autonomy",
+        "explanation": "Widowhood requires developing the ability to make decisions independently after years of partnership."
+      },
+      "cards": [
+        {
+          "id": "card_9_1",
+          "cardType": "teaching",
+          "title": "The Weight of Every Decision",
+          "text": "{red|**You used to have someone to decide with.**\n\n**Big decisions were discussed, debated, made together.** Even small decisions had a sounding board. What should we have for dinner?}{red| Should we go to the party?}{red| What do you think about this?}\n\n{red|**Now every decision lands on you alone.** And there are so many decisions.\n\nShould you sell the house?}{red| Change jobs?}{red| Move closer to family?} These are enormous decisions you have to make without your partner's input.\n\n**But even small decisions can feel heavy.** What to make for dinner, when no one else will eat it. Whether to go to an event alone.\n\n**Barbara found herself paralyzed by simple choices.** \"I stood in the grocery store for twenty minutes trying to decide what cereal to buy. We always bought the same kind. But now it was just me, and I did not know what I wanted.\"\n\n**It is not ridiculous.** It is the weight of doing alone what you used to do together.",
+          "reflection": null
+        },
+        {
+          "id": "card_9_2",
+          "cardType": "teaching",
+          "title": "Big Decisions: Wait When You Can",
+          "text": "**Conventional wisdom says not to make major decisions in the first year of grief.** This is generally good advice.\n\n**Your judgment is affected by grief.** You may be more fearful, more impulsive, more likely to make choices you will regret.\n\n**If you can wait on big decisions, wait.** Do not sell the house immediately. Do not move across the country. Do not make dramatic changes to your financial situation. Give yourself time to stabilize before making permanent choices.\n\n**But sometimes you cannot wait.** Financial necessities or family situations may force decisions. If you must decide, get input. Talk to trusted friends, family, professionals. Do not make major decisions alone when you are depleted.\n\n**\"Plans fail for lack of counsel, but with many advisers they succeed\" ({red|Proverbs 15:22|Plans fail for lack of counsel, but with many advisers they succeed}).** You do not have your spouse's counsel anymore. Find other wise counselors.\n\n**And pray.** \"If any of you lacks wisdom, you should ask God, who gives generously\" ({red|James 1:5|Plans fail for lack of counsel, but with many advisers they succeed}). He will guide you.",
+          "reflection": null
+        },
+        {
+          "id": "card_9_3",
+          "cardType": "teaching",
+          "title": "Small Decisions: Lower the Stakes",
+          "text": "{red|**For the avalanche of small decisions, lower the stakes.**\n\n**Remind yourself: most small decisions do not matter much.** What you have for dinner, whether you go to an event, what you buy at the store, these are not life-changing choices.\n\n**Create defaults.** Reduce the number of decisions by having standard answers. You always have this for breakfast. You always go to that class on Tuesdays. Defaults eliminate decisions.\n\n**Give yourself permission to change your mind.** If you make a choice and it does not work, you can choose differently next time.\n\n**Practice deciding.** The more you make small decisions, the more comfortable you become with the process.\n\nAsk yourself: What would I tell a friend in this situation?} Often we have better judgment for others than for ourselves.\n\n**\"Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight\" ({red|Proverbs 3:5-6|Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight}).** Trust Him. Submit to Him. Decide. He will guide your path.",
+          "reflection": null
+        },
+        {
+          "id": "card_9_4",
+          "cardType": "question",
+          "title": "Your Decision Challenges",
+          "text": "{red|What kinds of decisions have been hardest for you since your spouse died?}{red| Big decisions or small ones?}",
+          "reflection": null
+        },
+        {
+          "id": "card_9_5",
+          "cardType": "reflection",
+          "title": "Decisions Pending",
+          "text": "{red|**Take inventory of the decisions you are facing.**\n\nWhat big decisions are on your plate?}{red| Can any wait?}{red| Which cannot?}\n\n{red|For decisions that cannot wait, who can advise you?}\n\n{red|What small decisions are draining you?}{red| Where could defaults help?}\n\n{red|What would your spouse have said about the decisions you are facing?}\n\n{red|What is God's guidance?}{red| Have you asked Him for wisdom on specific decisions?}",
+          "reflection": "{red|What decisions are you facing?}{red| Which need immediate attention and which can wait?}"
+        },
+        {
+          "id": "card_9_6",
+          "cardType": "action",
+          "title": "Make One Pending Decision",
+          "text": "{red|**Choose one decision you have been avoiding and make it this week.**\n\n**If it is a big decision, gather input first.** Talk to at least one wise person. Pray about it. Then decide.\n\n**If it is a small decision, just make it.** Stop deliberating. Pick an option and move forward.\n\n**After you decide, notice how it feels.** You did it. You made a decision on your own. Even if it is not perfect, it is done.\n\n**\"In their hearts humans plan their course, but the Lord establishes their steps\" ({red|Proverbs 16:9|In their hearts humans plan their course, but the Lord establishes their steps}).** Plan. Decide. Trust Him to establish your steps.\n\nWhat decision will you make this week?}",
+          "reflection": "{red|What one decision will you make this week?}"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_home_space",
+      "isFree": false,
+      "title": "The House That Was Ours: Managing Home and Space",
+      "subtitle": "Maintaining and inhabiting your home alone",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "home",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Your home was shared space. Living in it alone, maintaining it alone, and potentially deciding its future are all part of rebuilding.",
+      "frameworkBasis": {
+        "conceptKey": "home_adaptation",
+        "explanation": "The home must be practically managed and emotionally inhabited in new ways after a spouse dies."
+      },
+      "cards": [
+        {
+          "id": "card_10_1",
+          "cardType": "teaching",
+          "title": "Living in a Home Built for Two",
+          "text": "**Your home is full of ghosts.** Not literal ones, but the presence of your spouse in every room.\n\n**Their chair.** Their side of the closet. The bathroom counter where their things used to be. The spaces that were theirs, now empty but still holding their shape.\n\n**Living in your shared home after they are gone is complicated.** It can be comforting because it holds memories. It can be painful for the same reason.\n\n**Some people cannot bear to stay.** The home is too full of absence. They sell quickly, move, start fresh.\n\n**Others cannot bear to leave.** This is where they built their life together. This is where the memories live.\n\n**There is no right answer.** Some people stay and find peace. Some leave and find freedom. Some stay for a while and then leave when ready.\n\n**\"In my Father's house are many rooms\" ({red|John 14:2|In my Father's house are many rooms}).** Jesus spoke of the ultimate home. Whatever you decide about your earthly home, remember that your true home is being prepared by Him.",
+          "reflection": null
+        },
+        {
+          "id": "card_10_2",
+          "cardType": "teaching",
+          "title": "Maintaining What You Have",
+          "text": "**Regardless of what you decide about the long term, the home needs to be maintained now.**\n\n**If your spouse handled home maintenance, this may be new territory for you.** Repairs, yard work, cleaning, organizing, all the tasks that keep a house functioning.\n\n**Helen felt overwhelmed by the house after her husband died.** He had done everything outside and most things inside. She did not know how to change a furnace filter, let alone handle a roof leak.\n\nShe developed a three-part strategy:\n\n**Learn what you can.** Basic maintenance is not complicated. YouTube has tutorials for almost everything.\n\n**Hire what you cannot.** For major repairs or regular maintenance you cannot handle, find reliable help.\n\n**Ask for help.** Friends, neighbors, church members may be willing to help with occasional tasks.\n\n**Your home can be maintained.** It just requires a different approach than before.",
+          "reflection": null
+        },
+        {
+          "id": "card_10_3",
+          "cardType": "teaching",
+          "title": "Making It Yours",
+          "text": "**At some point, you may want to make the home feel more like yours and less like ours.**\n\n**This does not mean erasing your spouse.** It means inhabiting the space as the person you are now.\n\nSome changes that can help:\n\n**Rearrange furniture.** A different layout can make the space feel fresh without erasing what was there.\n\n**Use the whole space.** If you have been avoiding their spaces, consider reclaiming them.\n\n**Redecorate if it helps.** New paint, new curtains, small changes that make the space feel like yours.\n\n**Create a memorial space rather than leaving everything unchanged.** A corner with their photo, some meaningful items.\n\n**Keep what comforts you.** You do not have to change everything.\n\n**This is your home now.** It is okay to make it feel that way.\n\n**\"By wisdom a house is built, and through understanding it is established\" ({red|Proverbs 24:3|By wisdom a house is built, and through understanding it is established}).** Build your house with wisdom. Make it a place you can live.",
+          "reflection": null
+        },
+        {
+          "id": "card_10_4",
+          "cardType": "question",
+          "title": "Your Home",
+          "text": "{red|How do you feel about your home now?}{red| Is it a comfort, a burden, or a complicated mix?}",
+          "reflection": null
+        },
+        {
+          "id": "card_10_5",
+          "cardType": "reflection",
+          "title": "Home Decisions",
+          "text": "{red|**Think through the practical and emotional aspects of your home.**\n\nDo you want to stay or eventually move?}{red| What factors influence this?}\n\n{red|If you stay, what maintenance needs attention?}{red| What do you need to learn or hire out?}\n\n{red|How does the home feel emotionally?}{red| What spaces are hard?}{red| What spaces are comforting?}\n\n{red|Are there changes you want to make to the space?}\n\n{red|What would help the home feel more sustainable for you to live in alone?}",
+          "reflection": "{red|What are your thoughts and feelings about your home?}{red| What decisions or changes might help?}"
+        },
+        {
+          "id": "card_10_6",
+          "cardType": "action",
+          "title": "One Step in Your Home",
+          "text": "{red|**Take one step related to your home this week.**\n\n**If maintenance is needed, address one item.** Fix something, clean something, or schedule someone to help.\n\n**If the space feels stagnant, make one change.** Move a piece of furniture. Reclaim a space you have been avoiding.\n\n**If you are considering bigger decisions, talk to someone about them.**\n\n**Your home is where you live your daily life.** Making it functional and bearable is part of rebuilding.\n\n**\"Through knowledge its rooms are filled with rare and beautiful treasures\" ({red|Proverbs 24:4|Through knowledge its rooms are filled with rare and beautiful treasures}).** Fill your rooms with what gives life.\n\nWhat step will you take in your home this week?}",
+          "reflection": "{red|What one step will you take regarding your home this week?}"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_work_purpose",
+      "isFree": false,
+      "title": "Work and Purpose: Finding Meaningful Activity",
+      "subtitle": "Rebuilding how you spend your days",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "purpose",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "How you spend your days shapes your sense of purpose and identity. Work, whether paid or unpaid, needs attention in your rebuilt life.",
+      "frameworkBasis": {
+        "conceptKey": "purposeful_activity",
+        "explanation": "Meaningful activity provides structure, identity, and purpose that support recovery from grief."
+      },
+      "cards": [
+        {
+          "id": "card_11_1",
+          "cardType": "teaching",
+          "title": "The Question of Work",
+          "text": "**Your relationship to work may have changed.**\n\n**If you were working, you may find it hard to concentrate, to care, to perform at your previous level.** Grief takes energy that used to go to work.\n\n**If you were not working, you may need to now.** Financial necessity, the need for structure, or the desire for purpose may push you toward employment.\n\n**If you are retired, the structure that your spouse provided may have been what shaped your days.** Without them, the days can feel endless.\n\n**Stephen went back to work two weeks after his wife died.** He thought it would help. Instead, he sat at his desk unable to focus, making mistakes, exhausted by pretending to be functional. He eventually took a leave of absence.\n\n**There is no right answer.** Some people need to work. Some need to step back. The question is what you need and what is sustainable.",
+          "reflection": null
+        },
+        {
+          "id": "card_11_2",
+          "cardType": "teaching",
+          "title": "More Than a Job",
+          "text": "**Work, in the broadest sense, is anything you do that contributes and creates meaning.** It does not have to be paid employment.\n\n**Raising children is work.** Maintaining a home is work. Volunteering is work. Creative pursuits are work. Caring for aging parents is work.\n\n**The question is not just whether you have a job.** It is whether you have meaningful activity that gives shape to your days and a sense of contribution.\n\n**After losing your spouse, you may need to rethink what meaningful activity looks like for you.**\n\n**Maybe you continue the work you were doing.** Maybe you change it. Maybe you add volunteer work that gives purpose. Maybe you pursue something you always wanted to do.\n\n**\"Whatever you do, work at it with all your heart, as working for the Lord\" ({red|Colossians 3:23|Whatever you do, work at it with all your heart, as working for the Lord}).** Whatever you do, do it for Him. That is what makes any work meaningful.",
+          "reflection": null
+        },
+        {
+          "id": "card_11_3",
+          "cardType": "teaching",
+          "title": "Finding Your Contribution",
+          "text": "{red|**Part of rebuilding is finding how you will contribute to the world as the person you are now.**\n\n**Your contribution used to be partly as half of a couple.** You served together, gave together, contributed together. That partnership is gone.\n\n**But you still have something to give.** Your skills, your experiences, your presence. Even your grief has equipped you to help others who will walk this path.\n\n**\"Praise be to the God and Father of our Lord Jesus Christ, the Father of compassion and the God of all comfort, who comforts us in all our troubles, so that we can comfort those in any trouble with the comfort we ourselves receive from God\" (2 {red|Corinthians 1:3-4|Praise be to the God and Father of our Lord Jesus Christ, the Father of compassion and the God of all comfort, who comforts us in all our troubles, so that we can comfort those in any trouble with the comfort we ourselves receive from God}).**\n\n**Your suffering is not wasted.** It becomes the source of comfort you can offer others.\n\nWhat will you contribute?} Finding what that is can be part of finding your way forward.",
+          "reflection": null
+        },
+        {
+          "id": "card_11_4",
+          "cardType": "question",
+          "title": "Your Work and Purpose",
+          "text": "{red|What does work or meaningful activity look like in your life right now?}{red| What is working and what is not?}",
+          "reflection": null
+        },
+        {
+          "id": "card_11_5",
+          "cardType": "reflection",
+          "title": "Purpose Going Forward",
+          "text": "{red|**Think about work and purpose in your rebuilt life.**\n\nHow is your current work situation?}{red| Sustainable?}{red| Needing change?}\n\n{red|If you are not working, do you need to for financial or other reasons?}\n\n{red|What gives you a sense of purpose and contribution?}\n\n{red|Are there things you have always wanted to do that might be possible now?}\n\n{red|How might your grief experience be turned into something that helps others?}",
+          "reflection": "{red|What does meaningful work or activity look like for you going forward?}"
+        },
+        {
+          "id": "card_11_6",
+          "cardType": "action",
+          "title": "One Step Toward Purpose",
+          "text": "{red|**Take one step toward meaningful activity this week.**\n\n**If you are struggling at work, consider what you need.** A conversation with your employer?}{red| A reduced schedule?}{red| Professional help?}\n\n{red|**If you need work, take a step toward finding it.** Update a resume. Explore options.\n\n**If you need purpose beyond paid work, explore one option.** A volunteer opportunity. A class. A project.\n\n**Purpose does not appear automatically.** It is cultivated.\n\n**\"For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do\" ({red|Ephesians 2:10|For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do}).** He has prepared good works for you. Even now. Ask Him to show you what they are.\n\nWhat step toward purpose will you take?}",
+          "reflection": "{red|What one step toward meaningful work or purpose will you take this week?}"
+        }
+      ]
+    },
+    {
+      "activityNumber": 12,
+      "id": "act_12_self_care",
+      "isFree": false,
+      "title": "Taking Care of Yourself: Health and Wellbeing Alone",
+      "subtitle": "Managing your physical and emotional health without your partner",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "health",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Your spouse may have been a partner in maintaining your health. Now you must take care of yourself alone, while grief makes self-care harder.",
+      "frameworkBasis": {
+        "conceptKey": "self_care",
+        "explanation": "Health maintenance becomes solely self-directed after loss and requires intentional attention."
+      },
+      "cards": [
+        {
+          "id": "card_12_1",
+          "cardType": "teaching",
+          "title": "No One to Remind You",
+          "text": "{red|**Your spouse may have been part of how you took care of yourself.**\n\n**They reminded you to take your medication.** They noticed when you seemed off. They encouraged you to see the doctor. They cooked healthy meals. They made sure you did not work too late.\n\n**Now no one is watching.** No one reminds you. No one notices.\n\n**It is easy to let self-care slide.** Who cares if you skip meals?}{red| Who notices if you do not exercise?}{red| Who knows if you stay up too late or neglect your health?}\n\n{red|**You notice.** And it matters.\n\n**Greg stopped taking care of himself after his wife died.** He ate poorly, stopped exercising, ignored symptoms. A year later, he had a health scare that could have been prevented with basic self-care.\n\n\"Do you not know that your bodies are temples of the Holy Spirit, who is in you?}\" (1 {red|Corinthians 6:19|Do you not know that your bodies are temples of the Holy Spirit, who is in you?}}). Your body is a temple. Treat it that way, even when no one else is watching.",
+          "reflection": null
+        },
+        {
+          "id": "card_12_2",
+          "cardType": "teaching",
+          "title": "The Basics of Self-Care",
+          "text": "**Self-care is not selfish or indulgent.** It is the basic maintenance that allows you to function.\n\n**Eating: Regular meals, even simple ones.** Nutrition matters, especially when your body is under the stress of grief.\n\n**Sleeping: As much as grief allows.** Creating conditions for rest even when sleep is difficult.\n\n**Moving: Some physical activity.** Walking, stretching, anything that keeps your body functional.\n\n**Medical care: Keeping up with medications, appointments, not ignoring symptoms.**\n\n**Emotional care: Processing grief in healthy ways.** Seeing a counselor if needed. Connecting with others.\n\n**Spiritual care: Time with God.** Prayer, Scripture, worship. Feeding your soul.\n\n**These are not extras.** They are essentials. Neglecting them makes everything harder.\n\n**\"Come to me, all you who are weary and burdened, and I will give you rest\" ({red|Matthew 11:28|Come to me, all you who are weary and burdened, and I will give you rest}).** He offers rest. Receive it by taking care of the body and soul He gave you.",
+          "reflection": null
+        },
+        {
+          "id": "card_12_3",
+          "cardType": "teaching",
+          "title": "Finding Accountability",
+          "text": "**Since you no longer have a spouse to notice and remind, you may need to find accountability elsewhere.**\n\n**Tell someone what you are trying to do.** A friend who checks in on your exercise. A family member who asks about your eating.\n\n**Set up systems.** Pill organizers. Calendar reminders. Scheduled appointments you cannot easily skip.\n\n**Join something.** An exercise class that expects you. A group that meets regularly. Built-in accountability.\n\n**Be honest with your doctor.** Tell them you are widowed and struggling with self-care. They can help monitor.\n\n**\"Therefore confess your sins to each other and pray for each other so that you may be healed\" ({red|James 5:16|Therefore confess your sins to each other and pray for each other so that you may be healed}).** Confess your struggles. Let others pray and support. Healing happens in community.",
+          "reflection": null
+        },
+        {
+          "id": "card_12_4",
+          "cardType": "question",
+          "title": "Your Self-Care",
+          "text": "{red|How well are you taking care of yourself?}{red| What areas are slipping?}",
+          "reflection": null
+        },
+        {
+          "id": "card_12_5",
+          "cardType": "reflection",
+          "title": "Self-Care Assessment",
+          "text": "{red|**Honestly assess how you are caring for yourself.**\n\nEating: Are you eating regularly?}{red| Nutritiously?}\n\n{red|Sleeping: Are you getting adequate rest?}\n\n{red|Moving: Are you getting any exercise?}\n\n{red|Medical: Are you keeping up with medications and appointments?}\n\n{red|Emotional: Are you processing grief healthily?}\n\n{red|Spiritual: Are you feeding your soul?}\n\n{red|Where are the gaps?}{red| What needs the most attention?}",
+          "reflection": "{red|How are you caring for yourself in each area?}{red| Where are the gaps?}"
+        },
+        {
+          "id": "card_12_6",
+          "cardType": "action",
+          "title": "One Self-Care Commitment",
+          "text": "{red|**Choose one area of self-care to improve this week.**\n\n**If eating is the issue, commit to one healthy meal a day.**\n\n**If sleeping is the issue, create a bedtime routine.**\n\n**If movement is the issue, commit to one form of exercise.**\n\n**If medical care is slipping, make an appointment.**\n\n**If emotional or spiritual care is lacking, take a step.** See a counselor. Spend time in prayer.\n\n**You matter.** Your wellbeing matters. Taking care of yourself is not optional.\n\n**\"He refreshes my soul\" ({red|Psalm 23:3|He refreshes my soul}).** Let Him refresh you. Take care of the vessel He refreshes.\n\nWhat self-care commitment will you make this week?}",
+          "reflection": "{red|What one self-care commitment will you make this week?}"
+        }
+      ]
+    },
+    {
+      "activityNumber": 13,
+      "id": "act_13_support_system",
+      "isFree": false,
+      "title": "You Need Help: Building Your Support System",
+      "subtitle": "Creating a network to support your rebuilt life",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "support",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "You cannot rebuild alone. Creating a support system of people and resources is essential to sustainable recovery.",
+      "frameworkBasis": {
+        "conceptKey": "support_systems",
+        "explanation": "Rebuilding life requires a network of support that must be intentionally cultivated."
+      },
+      "cards": [
+        {
+          "id": "card_13_1",
+          "cardType": "teaching",
+          "title": "You Cannot Do This Alone",
+          "text": "**Your spouse was your primary support.** Now they are gone, and you are trying to do everything alone.\n\n**This is not sustainable.** You are one person doing what used to be a partnership. You cannot carry it all.\n\n**You need help.** This is not weakness. This is reality.\n\n**Some people resist asking for help.** They do not want to be a burden. They want to prove they can handle it. They are ashamed to need support.\n\n**But asking for help is wisdom, not weakness.** Even Jesus sent His disciples out in pairs. \"Two are better than one... If either of them falls down, one can help the other up\" ({red|Ecclesiastes 4:9-10|Two are better than one... If either of them falls down, one can help the other up}).\n\n**You will fall down.** You need people who can help you up.\n\n**Rachel tried to do everything herself for the first year after her husband died.** She ended up hospitalized for exhaustion. In the hospital, she finally accepted that she could not be everything for everyone. She needed help.",
+          "reflection": null
+        },
+        {
+          "id": "card_13_2",
+          "cardType": "teaching",
+          "title": "Types of Support You Need",
+          "text": "**Different kinds of support serve different needs.**\n\n**Emotional support: People who listen, understand, and validate your feelings.** Friends, family, a counselor, a grief group.\n\n**Practical support: People who help with tasks.** Fixing things, running errands, providing meals, watching kids.\n\n**Professional support: Experts you hire.** A financial advisor, a therapist, a handyman, a lawn service.\n\n**Spiritual support: Your church community, a pastor, a small group.** People who pray with you and point you to God.\n\n**Widowed support: People who have walked this road.** Grief groups, widowed friends. Those who truly understand because they have been there.\n\n**You need support in multiple categories.** No single person can meet all your needs. Build a network.\n\n**\"A friend loves at all times, and a brother is born for a time of adversity\" ({red|Proverbs 17:17|A friend loves at all times, and a brother is born for a time of adversity}).** This is your time of adversity. Find the friends born for such a time.",
+          "reflection": null
+        },
+        {
+          "id": "card_13_3",
+          "cardType": "teaching",
+          "title": "Asking for What You Need",
+          "text": "{red|**People want to help.** But they often do not know how. You have to tell them.\n\n**Let them know what is hard.** \"I am struggling with meals.\" \"I do not know how to handle the yard.\"\n\n**Make specific requests.** \"Could you bring a meal Tuesday?}{red|\" \"Would you be able to help me move some furniture?}\"\n\n**Accept help when offered.** If someone offers to be with you, say yes.\n\n**Clara sent a text to three close friends before her husband's birthday: \"Thursday is going to be hard.** I do not need anything specific, but if any of you could check on me, it would mean a lot.\" All three reached out.\n\n**\"Carry each other's burdens, and in this way you will fulfill the law of Christ\" ({red|Galatians 6:2|Thursday is going to be hard.** I do not need anything specific, but if any of you could check on me, it would mean a lot.}).** Let them carry some of yours. It is Christ's design.",
+          "reflection": null
+        },
+        {
+          "id": "card_13_4",
+          "cardType": "question",
+          "title": "Your Support System",
+          "text": "{red|Who is currently supporting you?}{red| Where are the gaps in your support system?}",
+          "reflection": null
+        },
+        {
+          "id": "card_13_5",
+          "cardType": "reflection",
+          "title": "Building Your Network",
+          "text": "{red|**Map out your support system and identify what you need.**\n\nEmotional support: Who listens to you?}{red| Who do you trust with your feelings?}\n\n{red|Practical support: Who helps with tasks?}{red| Where do you need more hands?}\n\n{red|Professional support: What professionals are you using?}{red| What professionals do you need?}\n\n{red|Spiritual support: Who supports you spiritually?}{red| Are you connected to a church community?}\n\n{red|Widowed support: Do you know others who have lost spouses?}{red| Are you in a grief group?}\n\n{red|What is your most urgent support need?}",
+          "reflection": "{red|Who is in your support system?}{red| Where are the gaps?}{red| What is most urgently needed?}"
+        },
+        {
+          "id": "card_13_6",
+          "cardType": "action",
+          "title": "Ask for One Thing",
+          "text": "{red|**Make one specific request for help this week.**\n\n**Identify something you need.** It could be practical, emotional, or any other kind of support.\n\n**Identify who might provide it.**\n\n**Make a specific ask.** \"Could you...\" and fill in exactly what you need.\n\n**Accept the help when offered.** Do not minimize it or refuse to receive it fully.\n\n**This is practice.** The more you ask, the easier it becomes.\n\n**\"Ask and it will be given to you; seek and you will find; knock and the door will be opened to you\" ({red|Matthew 7:7|and fill in exactly what you need. **Accept the help when offered.** Do not minimize it or refuse to receive it fully. **This is practice.** The more you ask, the easier it becomes. **}).** Ask. Seek. Knock.\n\nWhat will you ask for this week?}",
+          "reflection": "{red|What specific request for help will you make this week?}"
+        }
+      ]
+    },
+    {
+      "activityNumber": 14,
+      "id": "act_14_a_life_rebuilt",
+      "isFree": false,
+      "title": "A Life Rebuilt: Looking Forward with Hope",
+      "subtitle": "Trusting God with your new life",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "hope",
+      "emotionalIntensity": "moderate",
+      "activityType": "action",
+      "whyThisMatters": "Rebuilding is not just about survival. It is about creating a life that has meaning and hope. This activity helps you look forward.",
+      "frameworkBasis": {
+        "conceptKey": "hope_reconstruction",
+        "explanation": "Rebuilding after loss includes reconstructing hope for a meaningful future."
+      },
+      "cards": [
+        {
+          "id": "card_14_1",
+          "cardType": "teaching",
+          "title": "What You Have Done",
+          "text": "**Through this journey, you have done significant rebuilding work.**\n\n**You have surveyed the damage and understood what needs attention.** You have navigated immediate tasks, financial realities, and legal complexities.\n\n**You have begun taking over responsibilities your spouse once held.** You have built new daily routines and learned to make decisions alone.\n\n**You have addressed your home, your work, and your self-care.** You have built support systems and learned to ask for help.\n\n**This is hard work.** It is exhausting work. And you are doing it.\n\n**The life you are building is not the life you planned.** But it is a life. It can have meaning, purpose, even joy. Not instead of grief, but alongside it.\n\n**\"He who was seated on the throne said, 'I am making everything new!**'\" ({red|Revelation 21:5|He who was seated on the throne said, 'I am making everything new!**'}). He makes things new. Including you. Including your life. Trust Him with the rebuilding.",
+          "reflection": null
+        },
+        {
+          "id": "card_14_2",
+          "cardType": "teaching",
+          "title": "A Future You Cannot See",
+          "text": "**You do not know what your rebuilt life will look like.**\n\n**A year from now, five years from now, you cannot predict where you will be.** What work you will do. Where you will live. Who will be in your life. What will bring you joy.\n\n**This uncertainty is uncomfortable.** You used to have a plan. You used to know where you were going. Now the path is unclear.\n\n**But God sees what you cannot.** \"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future\" ({red|Jeremiah 29:11|For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future}).\n\n**He has plans.** They are good plans. You cannot see them yet, but they exist.\n\n**Your job is not to know the future.** Your job is to take the next step. To do the work of rebuilding one day at a time.\n\n**\"Your word is a lamp for my feet, a light on my path\" ({red|Psalm 119:105|(Jeremiah 29:11). **He has plans.** They are good plans. You cannot see them yet, but they exist. **Your job is not to know the future.** Your job is to take the next step. To do the work of rebuilding one day at a time. **}).** A lamp shows the next step, not the whole journey. That is enough.",
+          "reflection": null
+        },
+        {
+          "id": "card_14_3",
+          "cardType": "teaching",
+          "title": "Joy Will Return",
+          "text": "**This may be hard to believe right now, but joy will return to your life.**\n\n**Not a joy that replaces your spouse or forgets your loss.** A joy that coexists with grief. A joy that honors what you had by continuing to live fully.\n\n**Debra did not believe she would ever feel joy again after her husband died.** The world was gray. Laughter felt impossible.\n\n**Two years later, she found herself laughing at a friend's joke, genuinely laughing, and realized: joy had returned.** Not constantly. Not completely. But it was there again.\n\n**\"Weeping may stay for the night, but rejoicing comes in the morning\" ({red|Psalm 30:5|Weeping may stay for the night, but rejoicing comes in the morning}).** The morning comes. It may be a long night. But morning comes.\n\n**Your rebuilt life can be good.** Not the same. But good. Believe that, even when it is hard to feel.",
+          "reflection": null
+        },
+        {
+          "id": "card_14_4",
+          "cardType": "reflection",
+          "title": "Hope for Your Rebuilt Life",
+          "text": "{red|**Dare to hope for what your rebuilt life might become.**\n\nWhat do you hope for in the coming year?}{red| Small hopes, simple hopes.\n\nWhat would meaningful life look like for you?}{red| What would give you purpose?}\n\n{red|What kind of person do you want to become through this?}\n\n{red|What would your spouse want to see if they could look at your life in five years?}\n\n{red|What is God inviting you toward?}{red| What hints of His plans have you sensed?}\n\n**Hope is not betrayal.** Hope is faith. Let yourself hope.",
+          "reflection": "{red|What do you hope for in your rebuilt life?}{red| What might God be inviting you toward?}"
+        },
+        {
+          "id": "card_14_5",
+          "cardType": "action",
+          "title": "A Prayer for Rebuilding",
+          "text": "God,\n\n**My life has been dismantled.** Everything I built with my spouse has been changed.\n\n**Thank You for walking with me through this rebuilding.** Thank You for giving me strength to do what I cannot do alone.\n\n**Help me continue to rebuild.** Help me learn what I need to learn, do what I need to do, ask for help when I need it.\n\n**Give me wisdom for decisions.** Give me energy for daily tasks. Give me hope for the future.\n\n**I trust You with this new life I am building.** I do not know what it will look like, but You do. Guide my steps.\n\n**\"Unless the Lord builds the house, the builders labor in vain\" ({red|Psalm 127:1|Unless the Lord builds the house, the builders labor in vain}).** Build this house with me, Lord.\n\n**In Jesus' name, Amen.**\n\n**Write your own prayer if these words do not fit.**",
+          "reflection": "**Write your prayer for rebuilding.**"
+        },
+        {
+          "id": "card_14_6",
+          "cardType": "action",
+          "title": "Your Commitment to Rebuild",
+          "text": "**Make a commitment to continue the work of rebuilding.**\n\n**I will keep building, even when I am tired.** One step at a time.\n\n**I will ask for help when I need it.** I cannot do this alone, and I do not have to.\n\n**I will take care of myself so I can sustain the work.**\n\n**I will trust God with what I cannot see.** He knows the plans.\n\n**I will remain open to joy.** It will return, and I will receive it.\n\n**I will honor my spouse by living fully.** This is what love would want.\n\n**My life is being rebuilt.** It will be different. It can be good. I commit to building it.\n\n**Write your commitment in your own words.** Return to it when rebuilding feels impossible.",
+          "reflection": "**Write your commitment to continue rebuilding your life.**"
+        }
+      ]
+    }
+  ]
+}

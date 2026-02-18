@@ -488,17 +488,15 @@ class _HeroHeader extends ConsumerWidget {
     if (heroImage.isEmpty) {
       if (journey.id == 'singles_biblical_femininity' ||
           (journeyIndex == 9 && userGender == 'female')) {
-        heroImage =
-            'assets/images/journeys/Singles_journey_images/Singles_journey9_female.jpg';
+        heroImage = 'assets/images/journeys/Singles_journey9_female.jpg';
       } else if (journey.id == 'singles_biblical_masculinity' ||
           (journeyIndex == 9 && userGender == 'male')) {
-        heroImage =
-            'assets/images/journeys/Singles_journey_images/Singles_journey9_male.jpeg';
+        heroImage = 'assets/images/journeys/Singles_journey9_male.jpeg';
       } else {
         const exts = ['.jpg', '.jpeg', '.png', '.webp', '.avif'];
         for (final ext in exts) {
           final candidate =
-              'assets/images/journeys/Singles_journey_images/Singles_journey$journeyIndex$ext';
+              'assets/images/journeys/Singles_journey$journeyIndex$ext';
           heroImage = candidate;
           break;
         }
@@ -970,7 +968,7 @@ class _HeroPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(999),
@@ -981,13 +979,17 @@ class _HeroPill extends StatelessWidget {
         children: [
           if (icon != null) ...[
             Icon(icon, size: 13, color: fg),
-            const SizedBox(width: 4),
+            const SizedBox(width: 2),
           ],
-          Text(
-            text,
-            style: AppTextStyles.labelSmall.copyWith(
-              color: fg,
-              fontWeight: FontWeight.w900,
+          Flexible(
+            child: Text(
+              text,
+              style: AppTextStyles.labelSmall.copyWith(
+                color: fg,
+                fontWeight: FontWeight.w900,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
           ),
         ],

@@ -1,0 +1,759 @@
+{
+  "journeyId": "divorced_coparenting",
+  "title": "Co-parenting with Peace and Stability",
+  "subtitle": "Raising healthy children across two homes",
+  "summary": "**Divorce ends a marriage but not the parenting partnership.** If you have children, you will co-parent with your ex for years to come. This journey helps you navigate the challenges of co-parenting, prioritize your children's wellbeing, manage conflict with your ex, create stability across two homes, and raise healthy kids even in the midst of family restructuring.",
+  "targetUserCategory": "divorced",
+  "priorityRank": 8,
+  "estimatedDays": 16,
+  "totalActivities": 10,
+  "difficulty": "advanced",
+  "themeColor": "#00796B",
+  "cover": {
+    "themeTag": "Parenting",
+    "accentIcon": "family_restroom",
+    "heroImage": "assets/images/journeys/divorced_journey8.jpg",
+    "heroImageDescription": "A parent and child sharing a warm moment, suggesting love and stability amid change, perhaps with subtle imagery of two homes."
+  },
+  "frameworks": [
+    "child_development",
+    "parallel_parenting",
+    "conflict_management",
+    "attachment_theory"
+  ],
+  "targetOutcomes": [
+    "Prioritize your children's wellbeing above adult conflict",
+    "Develop effective communication strategies with your co-parent",
+    "Create consistency and stability across two homes",
+    "Help your children process and adjust to the divorce",
+    "Manage conflict with your ex in ways that protect your children",
+    "Build a sustainable co-parenting approach for the long term"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_children_first",
+      "isFree": true,
+      "title": "Children First: Making Their Wellbeing the Priority",
+      "subtitle": "Committing to put your children's needs above adult conflict",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "child_care",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "The most important principle in co-parenting is prioritizing your children's wellbeing. This activity establishes that foundation and helps you commit to keeping your kids at the center of co-parenting decisions.",
+      "frameworkBasis": {
+        "conceptKey": "child_centered",
+        "explanation": "Child-centered co-parenting prioritizes children's needs and shields them from adult conflict."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Children in the Middle",
+          "text": "**Co-parenting with your ex is like being business partners with someone you would never choose to work with.** The partnership was not your idea, but the business, your children's wellbeing, is too important to let personal feelings sabotage it.\n\n**Divorce is hard on adults.** It can be even harder on children.\n\n**They did not choose this.** They did not ask for their family to split. They love both parents and are now caught between two homes, two lives, and sometimes two warring adults.\n\n**Children are profoundly affected by how their parents handle the divorce and co-parenting relationship.** Research consistently shows that it is not the divorce itself that damages children most. It is ongoing parental conflict.\n\n**Your children are watching.** How you treat their other parent, how you manage conflict, and how you co-parent will shape them for years to come.\n\n**They need you to put them first.**",
+          "icon": "child_care"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Children Need",
+          "text": "{red|**Your children did not ask for this.**\n\n**They did not choose to have their world split in two.** They did not choose to shuttle between houses, to have two bedrooms, to spend holidays wondering which parent is alone.\n\n**They love you both.** Even if one of you is clearly more at fault. Even if one of you hurt the other unforgivably. Your children love both of their parents, and asking them to stop is asking them to cut off part of themselves.\n\n**This is the central challenge of co-parenting: to protect your children from a war they did not start and cannot escape.**\n\n**It means biting your tongue when you want to criticize their other parent.** It means smiling when they come home full of stories about fun at the other house. It means being civil to someone you might hate.\n\n**It is incredibly hard.** And it is necessary.\n\n**Because your children are watching.** They are learning from you how adults handle conflict. How to treat people who have hurt you. Whether anger gets the final word.\n\nWhat do you want them to learn?}",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Your Feelings vs Their Needs",
+          "text": "**Here is a hard truth: your feelings about your ex and your children's needs may conflict.**\n\n**You may be furious at your ex.** But your children need you to speak respectfully about their other parent.\n\n**You may want nothing to do with your ex.** But your children need you to cooperate for their sake.\n\n**You may feel your ex does not deserve access to the kids.** But your children need a relationship with both parents, unless there are genuine safety concerns.\n\n**Co-parenting well requires separating your legitimate adult feelings from what your children need.** This is one of the hardest things about divorce, and one of the most important.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Co-parenting Situation",
+          "text": "{red|How would you describe your current co-parenting relationship?}",
+          "prompts": [
+            "Cooperative - we work together reasonably well",
+            "Businesslike - civil but not warm",
+            "Parallel - we parent separately with minimal interaction",
+            "Tense - frequent conflict and difficulty communicating",
+            "High conflict - significant ongoing battles",
+            "One-sided - I try but my ex does not cooperate",
+            "Evolving - it is changing and I am not sure where it will land"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Whatever your current situation, this journey will help you co-parent in ways that prioritize your children."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Co-parenting Challenges",
+          "text": "{red|**Identify your main co-parenting challenges.**\n\nWhat makes co-parenting difficult for you?}{red| Where does conflict with your ex most affect your children?}{red| What do your children need that is hard to provide given your co-parenting situation?}{red| What would improve if you could change one thing about your co-parenting?}\n\nWrite about your co-parenting challenges:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Children-First Commitment",
+          "text": "**Make a commitment to put your children first in co-parenting.**\n\n**I commit to prioritizing my children's wellbeing above my conflict with my ex.**\n\n**I will not put my children in the middle of adult issues.**\n\n**I will speak respectfully about their other parent in their presence.**\n\n**I will cooperate with my co-parent to the extent I am able, for my children's sake.**\n\n**My children's needs will guide my co-parenting decisions.**\n\nWrite this commitment in your own words:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_protecting_children",
+      "isFree": false,
+      "title": "Shield Them: Protecting Children from Adult Conflict",
+      "subtitle": "Keeping your children out of the crossfire",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "shield",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Children exposed to parental conflict suffer significant harm. This activity identifies common ways children get pulled into conflict and provides strategies for shielding them.",
+      "frameworkBasis": {
+        "conceptKey": "conflict_shielding",
+        "explanation": "Protecting children from exposure to parental conflict is essential for their emotional health."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Damage of Exposure",
+          "text": "**When children are exposed to ongoing parental conflict, they pay a heavy price.**\n\n**Anxiety and stress become chronic.** They live in a state of tension, never knowing when conflict will erupt.\n\n**Loyalty conflicts tear them apart.** They feel they must choose sides, which is impossible when they love both parents.\n\n**Self-blame develops.** Children often believe they caused the problems or that they should be able to fix them.\n\n**Relationship models get distorted.** They learn that conflict is how relationships work.\n\n**Long-term effects include higher rates of depression, anxiety, relationship difficulties, and their own divorces.**\n\n**Protecting children from conflict is not optional.** It is essential for their wellbeing.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Ways Children Get Caught",
+          "text": "**When parents stay at war, children become casualties.**\n\n**Not intentionally.** No one sets out to hurt their kids. But it happens anyway.\n\n**Children in high-conflict divorces show higher rates of anxiety, depression, and behavioral problems.** They struggle more in school. They have more difficulty forming healthy relationships later.\n\n**They develop coping mechanisms that serve them in the war zone but damage them everywhere else.** Hypervigilance. People-pleasing. Emotional shutdown. The skills of a child survivor.\n\n**Some become parentified, taking care of their parents' emotions instead of the other way around.** Some become messengers, carrying information between hostile camps. Some become spies, interrogated about what happens at the other house.\n\n**None of this is what you want for them.** But it happens when the conflict continues.\n\n**This is not to induce guilt.** It is to clarify the stakes. The choices you make about how you engage with your co-parent will shape your children for the rest of their lives.\n\n**That is the weight of this.** And it is why the hard work of peaceful co-parenting matters more than almost anything else you will do after divorce.",
+          "icon": "block"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Shielding Strategies",
+          "text": "**Protecting children requires intentional strategies.**\n\n**Scripture warns parents not to provoke their children to anger or exasperate them.** (({red|Ephesians 6:4}), ({red|Colossians 3:21})) Exposing children to parental conflict does exactly this, burdening them with adult pain they cannot process or escape.\n\n**Never argue in front of the children.** If conflict arises during exchanges, walk away. Handle it later without them present.\n\n**Do not use children as messengers.** Communicate directly with your co-parent, even if difficult.\n\n**Do not interrogate children about the other home.** Let them share naturally without pressure.\n\n**Do not bad-mouth your ex.** Whatever you think of them, they are your child's parent. Speak neutrally or positively.\n\n**Do not burden children with adult information.** Financial disputes, legal matters, and relationship details are not for them.\n\n**Do not make them choose.** Let them love both parents freely.\n\n**Every interaction is a chance to shield or expose them.** Choose wisely.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Shielding Assessment",
+          "text": "{red|**Honestly assess how well you are shielding your children from conflict.**\n\nAre there ways you have exposed them to adult conflict?}{red| Have you used them as messengers, confidants, or in other inappropriate roles?}{red| What do your children see and hear about your conflict with your ex?}{red| Where do you need to improve in protecting them?}\n\nWrite your shielding assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "What You Can Control",
+          "text": "**You cannot control how your ex co-parents.** They may bad-mouth you, use the children as messengers, or expose them to conflict.\n\n**This is painful and damaging.** But you can only control your own behavior.\n\n**Focus on what you can do.** Shield your children from conflict on your end. Model healthy behavior even if your ex does not.\n\n**Do not retaliate in kind.** If your ex bad-mouths you, do not respond by bad-mouthing them. Two wrongs do not make a right, and your children suffer either way.\n\n**Be the parent you want your children to have, regardless of what your co-parent does.**",
+          "icon": "self_improvement"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Shielding Plan",
+          "text": "**Create a plan for better shielding your children from conflict.**\n\n**Specific behaviors I will stop that expose my children to conflict.**\n\n**How I will communicate with my co-parent without using the children.**\n\n**What I will say (or not say) about my ex in front of my children.**\n\n**How I will handle it when conflict arises during child exchanges or interactions.**\n\nWrite your shielding plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_communication",
+      "isFree": false,
+      "title": "Business Partners: Communicating with Your Co-parent",
+      "subtitle": "Developing effective communication strategies",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "forum",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Communication with your co-parent is often challenging but necessary. This activity provides strategies for communicating effectively even when the relationship is difficult.",
+      "frameworkBasis": {
+        "conceptKey": "coparent_communication",
+        "explanation": "Effective co-parent communication is businesslike, child-focused, and minimizes opportunities for conflict."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Business Partner Approach",
+          "text": "**Michelle wanted to scream every time she saw her ex.** But she noticed her daughter watching, absorbing how mom and dad treated each other. That awareness changed everything. Her daughter did not need a perfect mom. She needed a mom who could be civil.\n\n**One helpful reframe is to think of your co-parent as a business partner.**\n\n**You are no longer in a personal relationship.** You are partners in the business of raising your children.\n\n**Business partners do not need to be friends.** They do not need to share personal details or have warm feelings. They need to communicate professionally about the business at hand.\n\n**This reframe helps remove emotion from communication.** You are not interacting as ex-spouses with all that baggage. You are colleagues working on a shared project: your children's wellbeing.\n\n**Keep communication focused on the business: the children.** Everything else is off the table.",
+          "icon": "business"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Communication Principles",
+          "text": "**Communicating with someone who hurt you is one of the hardest things you will ever do.**\n\n**Every conversation is a minefield.** Old wounds. Loaded words. The temptation to score points or settle scores.\n\nHere is what helps:\n\n**Keep it about the kids.** Only the kids. Not your grievances, not their failings, not the past. Just logistics and decisions about your children.\n\n**Keep it businesslike.** Pretend you are emailing a colleague you do not like but must work with. Polite. Factual. Brief.\n\n**Keep it in writing when possible.** Email or text creates a record and gives you time to edit before sending. Phone calls and face-to-face are harder to control.\n\n**Do not take the bait.** They might try to provoke you. Old patterns die hard. When they say something designed to hurt, do not respond to the provocation. Respond only to any legitimate content.\n\n**Wait before responding.** When a message makes you angry, write your response, then do not send it. Wait an hour. A day. Edit out the emotion. Send only what serves your children.\n\n**This is not about being a pushover.** It is about being strategic. You cannot control what they do. You can control what you do. And every interaction that stays calm is a victory for your kids.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Communication Tools",
+          "text": "**Various tools can help structure co-parent communication.**\n\n**Co-parenting apps like OurFamilyWizard, Talking Parents, or AppClose provide structured communication with records.** Some courts accept these records as evidence.\n\n**Shared calendars help coordinate schedules without constant back-and-forth.**\n\n**Email can work for non-urgent matters, providing time for thoughtful responses.**\n\n**Text works for quick logistics but can escalate quickly.** Use carefully.\n\n**Phone calls are risky as they can become arguments and leave no record.** Use sparingly.\n\n**In-person conversations are highest risk for conflict.** Reserve for truly necessary discussions and have them away from children.\n\n**Choose communication methods that minimize conflict opportunity.**",
+          "icon": "build"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Communication Assessment",
+          "text": "{red|**Assess your current communication with your co-parent.**\n\nWhat methods do you currently use to communicate?}{red| What works well?}{red| What leads to conflict?}{red| How often does communication stay focused on children versus drift to other issues?}{red| What would improve your co-parent communication?}\n\nWrite your communication assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The BIFF Response",
+          "text": "**When you receive a hostile or provocative message from your co-parent, the BIFF method helps you respond well.**\n\n**Brief: Keep your response short.** Long responses give more ammunition.\n\n**Informative: Provide relevant information about the children.**\n\n**Friendly: Maintain a civil tone even if they do not.**\n\n**Firm: State your position clearly without being aggressive.**\n\n**Example: Their message is an angry paragraph about you being a terrible parent.** Your BIFF response: Thanks for letting me know about Tuesday. I can pick up the kids at 5. Let me know if that works.\n\n**You address the relevant issue and ignore the rest.**",
+          "icon": "edit"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Communication Plan",
+          "text": "**Create a plan for improved co-parent communication.**\n\n**Primary communication method I will use.**\n\n**Topics I will discuss: children only.**\n\n**Topics I will not engage on: past grievances, adult issues.**\n\n**How I will respond to hostile messages: BIFF method.**\n\n**What I will do when communication breaks down.**\n\nWrite your communication plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_consistency_stability",
+      "isFree": false,
+      "title": "Two Homes, One Childhood: Creating Stability",
+      "subtitle": "Building consistency and security across two households",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "home",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Children thrive with consistency and predictability. When living between two homes, creating stability requires intentional effort from both parents. This activity addresses how to provide stability across two households.",
+      "frameworkBasis": {
+        "conceptKey": "dual_home_stability",
+        "explanation": "Consistency across two homes provides children with security and predictability during family transition."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Need for Consistency",
+          "text": "**Children need predictability to feel secure.** They need to know what to expect.\n\n**Divorce disrupts this.** Suddenly there are two homes, two sets of rules, two routines, two everything. It can feel chaotic and destabilizing.\n\n**The more consistency you can create between homes, the more secure your children will feel.** This does not mean everything must be identical. But core elements should be similar.\n\n**Consistency requires cooperation between co-parents.** If you cannot cooperate on everything, prioritize the most important areas.",
+          "icon": "home"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Areas for Consistency",
+          "text": "**Several areas benefit from consistency across homes.**\n\n**Schedule and routine: Similar bedtimes, mealtimes, and daily rhythms reduce adjustment stress.**\n\n**Rules and expectations: Core rules about behavior, homework, screen time, and responsibilities should be similar.**\n\n**Discipline approach: Consistent consequences help children know what to expect.**\n\n**School involvement: Both parents engaged with school, homework, and activities.**\n\n**Health routines: Consistent approaches to medication, sleep, and health practices.**\n\n**Values: Agreement on core values you want to instill.**\n\n**Not everything can be identical.** But the more alignment, the easier for children.",
+          "icon": "list"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "When Co-parents Disagree",
+          "text": "**Consistency is ideal, but co-parents often disagree.**\n\n**If your co-parent will not cooperate on consistency, focus on what you can control: your own home.**\n\n**Create stability in your household.** Clear routines, consistent rules, predictable environment.\n\n**Help children adjust to differences.** It is okay to say different houses have some different rules, without criticizing the other home.\n\n**Do not undermine the other parent's rules.** Even if you disagree, contradicting them confuses children and creates conflict.\n\n**Pick your battles.** Not every difference is worth fighting over. Focus on what matters most for your children's wellbeing and safety.",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Consistency Assessment",
+          "text": "{red|**Assess the consistency between your two homes.**\n\nWhat is consistent across both homes?}{red| What is significantly different?}{red| What differences seem to be hardest on your children?}{red| What areas would benefit most from more consistency?}{red| What is realistic to align given your co-parenting relationship?}\n\nWrite your consistency assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Transitions Between Homes",
+          "text": "**Transitions between homes can be particularly stressful for children.** Several things help.\n\n**Keep exchanges calm and brief.** This is not the time for long conversations or conflicts with your co-parent.\n\n**Have transition rituals.** A consistent routine when arriving at each home helps children settle in.\n\n**Allow adjustment time.** Children often need time to shift gears. Do not schedule demanding activities right after transitions.\n\n**Keep comfort items mobile.** Favorite toys, blankets, or items that travel between homes.\n\n**Stay positive about the other home.** Never make children feel bad about going to or leaving the other parent.\n\n**Smooth transitions reduce the stress of living in two homes.**",
+          "icon": "sync_alt"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Stability Plan",
+          "text": "**Create a plan for maximizing stability for your children.**\n\n**Areas where I will work with my co-parent to create consistency.**\n\n**How I will create stability and routine in my own home.**\n\n**How I will help my children with transitions between homes.**\n\n**What transition rituals or practices I will establish.**\n\nWrite your stability plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_helping_children_adjust",
+      "isFree": false,
+      "title": "Helping Them Heal: Supporting Your Children's Adjustment",
+      "subtitle": "Helping children process and adapt to the divorce",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "healing",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Children need help processing the divorce and adjusting to their new reality. This activity provides guidance on supporting your children's emotional needs during this difficult transition.",
+      "frameworkBasis": {
+        "conceptKey": "child_adjustment",
+        "explanation": "Children process divorce differently at different ages and need age-appropriate support for healthy adjustment."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Children Grieve Too",
+          "text": "**Your children are grieving too.** Their family died.\n\n**They may not show it the way you expect.** They might act out instead of crying. They might seem fine and then fall apart over something small. They might regress to younger behaviors or suddenly seem older than their years.\n\n**Grief in children looks different at different ages.** Younger children may not understand what happened but feel the disruption. Older children may understand too well and carry adult-sized pain.\n\nHere is what they need from you:\n\n**Permission to feel.** Do not tell them to be strong or to cheer up. Let them be sad, angry, confused. Their feelings are valid.\n\n**Assurance that it is not their fault.** Say it explicitly, more than once. Kids have magical thinking. They need to hear, clearly, that they did not cause this.\n\n**Freedom to love both parents.** Never make them feel guilty for loving or missing the other parent. Their relationship with your ex is separate from your relationship with your ex.\n\n**Stability where possible.** Keep routines consistent. Maintain as much normalcy as you can. They need anchors.\n\n**Your presence.** Not your perfection. Just you, showing up, day after day, being a safe place for them to land.\n\n**They will get through this.** But they need you to help them.",
+          "icon": "healing"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Age-Appropriate Responses",
+          "text": "**Children process divorce differently at different ages.**\n\n**Young children may not understand what is happening.** They may show regression, clinginess, or sleep problems. They need extra reassurance and simple explanations.\n\n**Elementary age children understand more but may blame themselves or fantasize about parents reuniting.** They need clear messages that it is not their fault and both parents love them.\n\n**Tweens and teens may have strong reactions including anger, withdrawal, or acting out.** They may take sides or become parentified. They need space to express feelings while maintaining appropriate boundaries.\n\n**Every child is different.** Watch your individual children for how they are responding and adjust your support accordingly.",
+          "icon": "escalator_warning"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "How to Support Them",
+          "text": "**Several approaches help support children through divorce adjustment.**\n\n**Create safety for feelings.** Let them know all their feelings are okay. Do not dismiss or minimize their emotions.\n\n**Listen more than you talk.** Be available and attentive when they want to share.\n\n**Reassure repeatedly.** It is not your fault. We both love you. You will be okay. They need to hear these messages often.\n\n**Maintain normalcy.** Keep routines, activities, and friendships as stable as possible.\n\n**Watch for concerning signs.** Significant behavioral changes, academic decline, persistent sadness, or talk of self-harm warrant professional help.\n\n**Consider therapy.** A child therapist can provide support and tools you may not be able to provide.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Children's Adjustment",
+          "text": "{red|**Reflect on how your children are adjusting to the divorce.**\n\nWhat signs of grief or struggle have you noticed in each child?}{red| How is each child responding differently?}{red| What have you done to support their adjustment?}{red| What do you think they need that you have not been providing?}\n\nWrite about your children's adjustment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "When Professional Help Is Needed",
+          "text": "**Sometimes children need more support than parents can provide.**\n\n**Consider professional help if your child shows persistent depression or anxiety that does not improve, significant behavioral problems at home or school, dramatic academic decline, social withdrawal or loss of friendships, regression that does not resolve, talk of hurting themselves or others, or intense ongoing anger or grief.**\n\n**Seeking help is not failure.** It is providing your child with the support they need.\n\n**A good child therapist can help your child process the divorce in ways that even the best parent cannot replicate.** Do not hesitate to get this help if needed.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Support Plan",
+          "text": "**Create a plan for supporting your children's adjustment.**\n\n**How I will create safety for my children to express their feelings.**\n\n**Specific reassurances I will give them regularly.**\n\n**How I will maintain normalcy and stability.**\n\n**Signs I will watch for that indicate they need more help.**\n\n**Whether professional support is needed and how I will access it.**\n\nWrite your support plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_high_conflict",
+      "isFree": false,
+      "title": "When It Is Hard: Managing High-Conflict Co-parenting",
+      "subtitle": "Strategies for co-parenting when your ex is difficult",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "warning",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Some co-parenting situations are genuinely high-conflict. When your ex is hostile, uncooperative, or even abusive, special strategies are needed. This activity addresses co-parenting in difficult circumstances.",
+      "frameworkBasis": {
+        "conceptKey": "high_conflict_coparenting",
+        "explanation": "High-conflict co-parenting requires specific strategies to protect children and maintain boundaries."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The High-Conflict Reality",
+          "text": "{red|**Your children now live in two homes, but they need to feel like they have one team of parents working for their good.** Think of yourselves as two departments in the same company: separate offices, different management styles, but united in the mission.\n\n**This is the ideal.** It requires two willing partners.\n\nBut what if your co-parent is not willing?}\n\n{red|What if they are hostile, unreasonable, impossible to work with?}{red| What if every attempt at cooperation is met with aggression or manipulation?}\n\n**You cannot control them.** You can only control yourself.\n\n**This means being the stable parent even if they are not.** Being civil even when they are not. Taking the high road even when they are digging tunnels.\n\n**It means protecting your children from your reactions, even when their other parent's behavior is indefensible.**\n\n**It means documenting everything, keeping records, having evidence if you ever need it.**\n\n**And it means accepting that you cannot create peaceful co-parenting alone.** If they insist on war, you may need to minimize contact, use parallel parenting strategies, and focus on making your home a place of peace regardless of what happens in theirs.\n\n**This is unfair.** You should not have to do this alone. But your children need at least one parent who rises above the conflict. Let it be you.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Parallel Parenting",
+          "text": "**When cooperative co-parenting is not possible, parallel parenting may be the answer.**\n\n**Parallel parenting means each parent operates independently with minimal interaction.** You disengage from each other and parent separately.\n\n**Communication is strictly limited to essential child logistics.** No discussions, no negotiations, no attempts at agreement.\n\n**Each parent makes decisions in their own home.** You do not try to control or influence what happens at the other house.\n\n**Exchanges are brief and businesslike, or done through third parties.**\n\n**This is not ideal.** But when a co-parent is high-conflict, parallel parenting protects everyone from constant battle.",
+          "icon": "call_split"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Protecting Yourself and Children",
+          "text": "**In high-conflict situations, protection is essential.**\n\n**Document everything.** Keep records of communications, incidents, and violations. Use co-parenting apps that create automatic records.\n\n**Stay strictly businesslike.** Do not engage emotionally. Respond only to child-related logistics.\n\n**Use written communication.** Avoid phone calls and in-person conversations that can escalate.\n\n**Have witnesses at exchanges.** Meet in public places or use third-party exchange locations.\n\n**Know your legal options.** Understand what your custody order says and how to enforce it if violated.\n\n**Get support.** High-conflict co-parenting is exhausting. You need a therapist, support group, or trusted friends.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Conflict Assessment",
+          "text": "{red|**Assess the level of conflict in your co-parenting relationship.**\n\nIs your co-parenting relationship genuinely high-conflict or difficult but manageable?}{red| What specific behaviors make your ex difficult to co-parent with?}{red| What strategies have you tried?}{red| What has worked or not worked?}{red| Do you need to shift to a more parallel parenting approach?}\n\nWrite your conflict assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "When Safety Is a Concern",
+          "text": "**If your ex is abusive or your children's safety is genuinely at risk, additional steps are necessary.**\n\n**Document abuse or safety concerns carefully.** Dates, details, evidence.\n\n**Consult an attorney about modifying custody arrangements.**\n\n**Report abuse to appropriate authorities if required.**\n\n**Work with a domestic violence advocate if applicable.**\n\n**Do not allow unsupervised contact if children are at risk.**\n\n**Your children's safety comes first.** If you have genuine safety concerns, not just dislike of your ex but real danger, take them seriously and get professional help.",
+          "icon": "security"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your High-Conflict Strategy",
+          "text": "**If you are in a high-conflict co-parenting situation, create a strategy.**\n\n**How I will minimize engagement with my ex.**\n\n**Communication methods and boundaries I will use.**\n\n**How I will document interactions and incidents.**\n\n**What support I will get for myself.**\n\n**Safety measures I need to put in place if applicable.**\n\nWrite your high-conflict strategy:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_new_partners",
+      "isFree": false,
+      "title": "New People in the Picture: Navigating New Partners",
+      "subtitle": "Handling new romantic relationships in co-parenting",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "group_add",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Eventually, you or your ex may have new romantic partners. This adds complexity to co-parenting. This activity addresses how to navigate new relationships in ways that protect your children.",
+      "frameworkBasis": {
+        "conceptKey": "blended_family_dynamics",
+        "explanation": "New partners require careful navigation to protect children and maintain effective co-parenting."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Complication of New Partners",
+          "text": "**New romantic relationships add layers of complexity to co-parenting.**\n\n**When your ex starts dating, it can trigger difficult emotions: jealousy, anger, concern for your children.**\n\n**When you start dating, you face questions about when and how to introduce someone to your children.**\n\n**New partners eventually become stepparents or significant figures in your children's lives.** How they are integrated matters greatly.\n\n**New partners can also become sources of conflict between co-parents if not handled carefully.**\n\n**Navigating this well requires both wisdom and emotional management.**",
+          "icon": "group_add"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "When Your Ex Has a New Partner",
+          "text": "{red|**Introducing a new partner to your children is not a small decision.**\n\n**Your children have already lost the family they knew.** Now you are asking them to make room for someone new. This is harder than it looks from the adult side.\n\n**Too fast is dangerous.** Children who meet a parade of partners learn that relationships are temporary. They may struggle to attach, or attach too quickly, or refuse to attach at all.\n\n**The general wisdom: wait until the relationship is serious and stable before introductions.** Months, not weeks. And even then, go slowly.\n\n**Watch your children, not just your partner.** How are they actually responding, not how you hope they are responding?}{red| Are they withdrawn?}{red| Acting out?}{red| Asking worried questions?}\n\n**Do not force bonding.** Let relationships develop naturally. Your partner does not need to become a parent figure immediately, or ever. They need to become a safe adult in your children's lives. That is enough to start.\n\n**And remember: your children may have complicated feelings about your happiness.** They might resent that you have moved on. They might feel disloyal to their other parent. They might fear losing you to someone new.\n\n**These feelings are not rational, but they are real.** Make room for them. Reassure your children that your love for them is not diminished by your love for someone else.\n\n**They will adjust.** But they need time, patience, and the certainty that they still come first.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Introducing Your New Partner",
+          "text": "**When you begin dating, introduce new partners to your children carefully.**\n\n**Wait until the relationship is serious.** Do not introduce casual dates. Your children do not need to meet everyone you go out with.\n\n**Prepare your children.** Let them know you are seeing someone before they meet.\n\n**Start slowly.** Brief, low-pressure meetings before longer time together.\n\n**Do not force connection.** Let relationships develop naturally. Your children may need time.\n\n**Do not replace their other parent.** A new partner is not their new mom or dad.\n\n**Prioritize one-on-one time.** Ensure your children still get time with just you, not always as a group.\n\n**Your children's comfort and adjustment should pace how you integrate a new relationship.**",
+          "icon": "escalator_warning"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your New Partner Situation",
+          "text": "{red|**Reflect on new partners in your co-parenting situation.**\n\nDoes your ex have a new partner?}{red| How has that affected co-parenting and your children?}{red| Are you dating or considering dating?}{red| What concerns do you have about introducing someone?}{red| What boundaries or guidelines do you want around new partners in your children's lives?}{red| What emotions do you need to manage around this topic?}\n\nWrite about your new partner situation:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Communication About New Partners",
+          "text": "**Some co-parents agree to inform each other before introducing new partners to children.** This can reduce surprises and allow preparation.\n\n**Others have no such agreement and operate independently.**\n\n**There is no single right approach.** What matters is what is best for your children.\n\n**If you can have a civil conversation about this with your co-parent, consider discussing guidelines: how long before introductions, what information to share, how to handle sleepovers.**\n\n**If such conversation is not possible, do what you believe is best for your children on your end and let go of controlling what happens at the other home.**",
+          "icon": "forum"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your New Partner Guidelines",
+          "text": "{red|**Establish your own guidelines around new partners.**\n\nHow long will I wait before introducing someone to my children?}\n\n{red|How will I introduce a new partner?}{red| What steps will I take?}\n\n{red|How will I handle my children's feelings about new partners?}\n\n{red|What boundaries are important to me about new partners in my children's lives?}\n\nWrite your new partner guidelines:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_special_situations",
+      "isFree": false,
+      "title": "Special Occasions: Holidays, Events, and Milestones",
+      "subtitle": "Navigating special times as co-parents",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "celebration",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Holidays, birthdays, graduations, and other special occasions present unique co-parenting challenges. This activity addresses how to navigate these times in ways that prioritize your children.",
+      "frameworkBasis": {
+        "conceptKey": "special_occasion_navigation",
+        "explanation": "Special occasions require planning and flexibility to minimize conflict and maximize children's enjoyment."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Challenge of Special Times",
+          "text": "{red|**Holidays, birthdays, school events, and family milestones become complicated after divorce.**\n\nWho gets the kids for Christmas?}{red| How do you handle a birthday?}{red| What about graduation when both parents and extended families want to attend?}\n\n**These occasions carry emotional weight.** They highlight the loss of the intact family. They create logistics challenges. They can spark conflict.\n\n**But they are also opportunities.** To show your children that they can be celebrated by both parents. To model cooperation. To create new traditions that work for your restructured family.\n\n**With planning and flexibility, special occasions can be navigated well.**",
+          "icon": "celebration"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Holiday Approaches",
+          "text": "**Different approaches work for different families regarding holidays.**\n\n**Alternating years: One parent gets Christmas this year, the other next year.**\n\n**Splitting the day: Morning at one home, afternoon and evening at the other.**\n\n**Separate celebrations: Each parent celebrates on different days.**\n\n**Joint celebrations: Some co-parents can celebrate together for the children's sake.**\n\n**What works depends on your relationship with your co-parent, your children's ages and preferences, and logistical factors.**\n\n**Whatever approach, focus on your children enjoying the holiday rather than on fairness scorekeeping between adults.**",
+          "icon": "calendar_month"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Events and Milestones",
+          "text": "**School events, sports games, recitals, and graduations require co-parents to be in the same space.**\n\n**Make it about your child.** They want both parents there and want to enjoy the occasion without tension.\n\n**Be civil.** You do not need to sit together or interact extensively. But be polite and avoid visible conflict.\n\n**Plan in advance.** Know who is coming, where everyone will sit, how you will handle conversations.\n\n**Do not make your child choose.** They should be able to celebrate with both parents without loyalty stress.\n\n**Save conflicts for another time.** Whatever issues exist, the event is not the place to address them.\n\n**Your child will remember whether their parents could show up together peacefully.** Make good memories.",
+          "icon": "school"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Special Occasion Challenges",
+          "text": "{red|**Reflect on special occasions in your co-parenting.**\n\nWhat holidays or occasions have been most challenging?}{red| How have you handled them so far?}{red| What worked or did not?}{red| What upcoming special occasions need planning?}{red| What would make special occasions easier for your children?}\n\nWrite about your special occasion challenges:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Creating New Traditions",
+          "text": "**Divorce means old traditions may change.** But new traditions can emerge.\n\n**You can create special traditions for your time with your children.** Things that are uniquely yours.\n\n**You can adapt old traditions rather than eliminating them entirely.**\n\n**You can involve your children in creating new traditions, giving them ownership and something to look forward to.**\n\n**Change is hard, but it does not have to mean loss of all tradition and celebration.** New traditions can be just as meaningful.",
+          "icon": "auto_awesome"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Special Occasion Plan",
+          "text": "**Create a plan for navigating special occasions.**\n\n**How I will handle major holidays with my co-parent.**\n\n**How I will conduct myself at shared events like school functions.**\n\n**New traditions I want to create with my children.**\n\n**How I will prioritize my children's experience over adult conflict during special times.**\n\nWrite your special occasion plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_self_care",
+      "isFree": false,
+      "title": "Taking Care of You: Self-Care for Co-parents",
+      "subtitle": "Maintaining your own wellbeing while co-parenting",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "spa",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Co-parenting is demanding. You cannot pour from an empty cup. This activity addresses the importance of self-care for co-parents and how to maintain your wellbeing while navigating this challenging role.",
+      "frameworkBasis": {
+        "conceptKey": "parental_self_care",
+        "explanation": "Parents who care for themselves are better able to care for their children and manage co-parenting stress."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Exhaustion of Co-parenting",
+          "text": "**Co-parenting, especially in difficult circumstances, is exhausting.**\n\n**You are managing your own grief and adjustment while supporting your children through theirs.** You are handling logistics and schedules. You are dealing with a potentially difficult ex.\n\n**Meanwhile, you may be parenting alone much of the time, without the built-in support of a partner.**\n\n**This takes a toll.** Physical exhaustion, emotional depletion, and mental fatigue are common.\n\n**You cannot be the parent your children need if you are running on empty.** Self-care is not selfish. It is necessary.",
+          "icon": "spa"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why Self-Care Matters",
+          "text": "**Ten years after his divorce, James stood next to his ex-wife at their son's graduation.** They were not friends, exactly. But they had learned to be partners in the one thing that mattered most. Their son had thrived. That was the only success that counted.\n\n**When you take care of yourself, everyone benefits.**\n\n**You have more patience with your children.** The reserves you build through self-care translate into better parenting.\n\n**You handle conflict better.** When you are rested and balanced, you respond rather than react.\n\n**You model healthy behavior.** Your children learn self-care by watching you practice it.\n\n**You avoid burnout.** Sustainable parenting requires replenishment.\n\n**Self-care is not abandoning your responsibilities.** It is ensuring you can meet them well.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Self-Care Strategies",
+          "text": "**Self-care looks different for everyone.** Some options:\n\n**Physical care: sleep, exercise, nutrition, medical attention.**\n\n**Emotional care: therapy, support groups, journaling, allowing yourself to feel.**\n\n**Social care: maintaining friendships, getting out of isolation.**\n\n**Spiritual care: prayer, worship, community, spiritual practices.**\n\n**Rest: actual downtime, not just productivity in a different form.**\n\n**Joy: activities that bring pleasure and refreshment.**\n\n**You may not be able to do all of these.** But neglecting all of them is a recipe for breakdown. Find what replenishes you and prioritize it.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Self-Care Assessment",
+          "text": "{red|**Assess your current self-care.**\n\nHow are you doing physically, emotionally, socially, and spiritually?}{red| What self-care practices have you maintained?}{red| What has fallen away?}{red| What signs of depletion are you experiencing?}{red| What would help you be a better resourced parent?}\n\nWrite your self-care assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Using Your Time Without Kids",
+          "text": "**If your custody arrangement gives you time without your children, use some of it for self-care.**\n\n**This may feel strange at first.** Time without your kids can trigger guilt or sadness.\n\n**But this time is a gift.** Use it to replenish so you are your best self when they return.\n\n**Schedule self-care during this time.** Do not fill every moment with errands and obligations.\n\n**Rest.** See friends. Exercise. Do things you cannot do when the kids are home.\n\n**You will be a better parent for the time you invest in yourself.**",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Self-Care Plan",
+          "text": "**Create a self-care plan for yourself as a co-parent.**\n\n**Physical self-care I will prioritize.**\n\n**Emotional or mental health support I will seek.**\n\n**Social connection I will maintain.**\n\n**Spiritual practices I will engage in.**\n\n**How I will use time without my children for replenishment.**\n\nWrite your self-care plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_coparenting_commitment",
+      "isFree": false,
+      "title": "For Their Sake: Your Co-parenting Commitment",
+      "subtitle": "Committing to child-centered co-parenting for the long term",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You have done significant work on co-parenting. This activity helps you consolidate what you have learned and commit to child-centered co-parenting for the years ahead.",
+      "frameworkBasis": {
+        "conceptKey": "coparenting_commitment",
+        "explanation": "Sustainable co-parenting requires long-term commitment to principles that prioritize children's wellbeing."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Explored",
+          "text": "**Through this journey, you have done important co-parenting work.** You have chosen, over and over, to put your children's needs above your own pain. That is sacrificial love in action.\n\n**You have committed to putting your children first.** You have learned to shield them from adult conflict. You have developed communication strategies with your co-parent.\n\n**You have worked on creating stability across two homes and supporting your children's adjustment.** You have addressed high-conflict situations and new partner dynamics.\n\n**You have planned for special occasions and prioritized your own self-care.**\n\n**This equips you for the ongoing work of co-parenting well.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Long Road",
+          "text": "**Co-parenting is a long-term commitment.** Depending on your children's ages, you may be co-parenting for years or even decades.\n\n**There will be easy seasons and hard seasons.** Times when things go smoothly and times of intense conflict.\n\n**Your children will grow and change.** Co-parenting a toddler is different from co-parenting a teenager.\n\n**Your relationship with your co-parent may evolve, hopefully toward less conflict over time.**\n\n**Stay committed to the principles even when it is hard.** Your children are worth it.",
+          "icon": "timeline"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Co-parenting Insight",
+          "text": "{red|What is the most important thing you have learned or realized through this journey about co-parenting?}\n\n{red|What do you want to remember when co-parenting gets difficult?}\n\nWrite your key insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Co-parenting Commitments",
+          "text": "{red|What specific commitments will you make for your ongoing co-parenting?}\n\n{red|How will you continue to put your children first?}{red| How will you manage conflict with your co-parent?}{red| How will you support your children's wellbeing?}{red| How will you take care of yourself?}\n\nWrite your co-parenting commitments:",
+          "responseType": "open-text",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Your Children",
+          "text": "**Father, I lift my children to You.**\n\n**Protect them through this difficult season.** Help them know they are loved by both parents. Shield them from the effects of adult conflict.\n\n**Give me wisdom to co-parent well.** Help me put their needs above my own feelings. Help me communicate effectively with their other parent.\n\n**Bring healing to my children's hearts.** Help them adjust and thrive even in a restructured family.\n\n**I trust them to You.** Cover them with Your grace.\n\n**In Jesus' name, Amen.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Co-parenting Declaration",
+          "text": "**Write a declaration of your commitment to your children in co-parenting.**\n\n**For my children, I commit to put their wellbeing first in every co-parenting decision.**\n\n**I will shield them from adult conflict and never use them as pawns.**\n\n**I will work toward consistency and stability in their lives.**\n\n**I will support their relationship with their other parent.**\n\n**I will take care of myself so I can take care of them.**\n\n**They deserve parents who can work together for their sake.** I will do my part.\n\nWrite your co-parenting declaration:",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Committed Co-parent",
+    "summaryText": "You have done significant work in preparing to co-parent with peace and stability. Remember that your children are watching and learning from how you handle this. Keep them at the center, manage conflict wisely, and trust that your efforts to co-parent well are making a difference in their lives.",
+    "keyTakeaways": [
+      "Children's wellbeing must be the priority above adult conflict",
+      "Shielding children from parental conflict is essential for their health",
+      "Communication with co-parents should be businesslike and child-focused",
+      "Consistency across two homes provides children security",
+      "Children grieve divorce and need support in their adjustment",
+      "High-conflict situations may require parallel parenting approaches",
+      "New partners require careful navigation for children's sake",
+      "Special occasions can be handled with planning and flexibility",
+      "Self-care enables better parenting"
+    ],
+    "nextRecommendedJourneys": [
+      "Navigating Anniversaries and Special Occasions After Divorce",
+      "Letting Go of Resentment and Lingering Conflict",
+      "Healing and Restoration After Divorce"
+    ]
+  }
+}

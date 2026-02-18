@@ -63,10 +63,10 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
     final maxReached = _photoPaths.length >= _maxPhotos;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
+        surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
         leading: IconButton(
@@ -83,6 +83,7 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
             child: Column(
+              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const _ProgressHeader(
@@ -92,12 +93,10 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
                 ),
                 const SizedBox(height: 12),
 
-                Expanded(
-                  child: _PhotoGrid(
-                    photoPaths: _photoPaths,
-                    onAdd: (_busy || maxReached) ? null : _pickPhoto,
-                    onRemove: _removePhoto,
-                  ),
+                _PhotoGrid(
+                  photoPaths: _photoPaths,
+                  onAdd: (_busy || maxReached) ? null : _pickPhoto,
+                  onRemove: _removePhoto,
                 ),
 
                 SafeArea(
@@ -222,19 +221,23 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
     setState(() => _busy = true);
 
     try {
-      // Check if we already uploaded these exact photos
+      // Check if we already uploaded these exact photos (URLs exist and count matches)
       final draft = ref.read(datingOnboardingDraftProvider);
-      final currentPhotoPaths = List<String>.from(_photoPaths);
-      final draftPhotoPaths = List<String>.from(draft.photoPaths);
+      final alreadyUploaded =
+          draft.photoUrls.isNotEmpty &&
+          draft.photoUrls.length == _photoPaths.length;
 
-      // If the current photos match the draft photos, skip upload
-      if (currentPhotoPaths.length == draftPhotoPaths.length &&
-          currentPhotoPaths.every((path) => draftPhotoPaths.contains(path))) {
+      // If photos were already uploaded and count matches, skip re-upload
+      if (alreadyUploaded) {
+        print(
+          '[PHOTOS] Skipping upload — ${draft.photoUrls.length} URLs already exist',
+        );
         if (!context.mounted) return;
         Navigator.of(context).pushNamed('/dating/setup/audio');
         return;
       }
 
+      print('[PHOTOS] Uploading ${_photoPaths.length} photos to DO Spaces...');
       final storage = ref.read(mediaStorageProvider);
       final List<String> uploadedUrls = [];
 
@@ -248,6 +251,7 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
             objectKey: key,
           );
           uploadedUrls.add(publicUrl);
+          print('[PHOTOS] Uploaded photo ${i + 1}: $publicUrl');
         } catch (e) {
           _toast('Failed to upload photo ${i + 1}: $e');
           setState(() => _busy = false);
@@ -290,7 +294,9 @@ class _ProgressHeader extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           subtitle,
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.getTextMuted(context),
+          ),
         ),
       ],
     );
@@ -343,12 +349,15 @@ class _AddTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(18),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: AppColors.getBorder(context)),
         ),
         child: Center(
-          child: Icon(Icons.add_a_photo_outlined, color: AppColors.textMuted),
+          child: Icon(
+            Icons.add_a_photo_outlined,
+            color: AppColors.getTextMuted(context),
+          ),
         ),
       ),
     );
@@ -380,18 +389,18 @@ class _PhotoTile extends StatelessWidget {
                       cacheWidth: 500,
                       errorBuilder:
                           (_, __, ___) => Container(
-                            color: AppColors.surface,
+                            color: AppColors.getSurface(context),
                             child: Icon(
                               Icons.broken_image,
-                              color: AppColors.textMuted,
+                              color: AppColors.getTextMuted(context),
                             ),
                           ),
                     )
                     : Container(
-                      color: AppColors.surface,
+                      color: AppColors.getSurface(context),
                       child: Icon(
                         Icons.broken_image,
-                        color: AppColors.textMuted,
+                        color: AppColors.getTextMuted(context),
                       ),
                     ),
           ),

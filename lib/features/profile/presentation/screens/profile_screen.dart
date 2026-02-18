@@ -13,6 +13,7 @@ import 'package:nexus_app_v2/features/admin_review/presentation/screens/admin_re
 import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 import 'package:nexus_app_v2/core/theme/app_colors.dart';
 import 'package:nexus_app_v2/core/theme/app_text_styles.dart';
+import 'package:nexus_app_v2/features/presurvey/presentation/screens/presurvey_relationship_status_screen.dart';
 import 'package:nexus_app_v2/core/constants/app_constants.dart';
 import 'package:nexus_app_v2/core/session/effective_relationship_status_provider.dart';
 import 'package:nexus_app_v2/core/user/dating_profile_completed_provider.dart';
@@ -23,6 +24,7 @@ import 'package:nexus_app_v2/core/moderation/moderation_providers.dart';
 
 import '../../../../core/models/user_model.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart' as ja;
 import 'package:nexus_app_v2/core/services/media_service.dart';
 import 'package:nexus_app_v2/features/profile/presentation/widgets/relationship_status_editor.dart';
 import 'dart:convert';
@@ -179,7 +181,12 @@ class ProfileScreen extends ConsumerWidget {
       // ignore: avoid_print
       print('[ProfileScreen] NOT SIGNED IN');
       return _GuestProfileGate(
-        onCreateAccount: () => Navigator.of(context).pushNamed('/signup'),
+        onCreateAccount:
+            () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => const PresurveyRelationshipStatusScreen(),
+              ),
+            ),
       );
     }
 
@@ -448,7 +455,7 @@ class _BasicProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final p = profile;
-    final name = (p.name ?? 'User').trim();
+    final name = (p.username ?? p.name ?? 'User').trim();
     final email = (p.email ?? '').trim();
 
     return Scaffold(
@@ -461,40 +468,7 @@ class _BasicProfileScreen extends ConsumerWidget {
             elevation: 0,
             pinned: true,
             foregroundColor: Theme.of(context).colorScheme.onBackground,
-            actions: [
-              if (kDebugMode)
-                IconButton(
-                  tooltip: 'Copy Firebase ID token',
-                  icon: Icon(
-                    Icons.vpn_key_rounded,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  onPressed: () async {
-                    try {
-                      final token = await FirebaseAuth.instance.currentUser
-                          ?.getIdToken(true);
-                      if (token == null || token.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('No ID token found. Please sign in.'),
-                          ),
-                        );
-                        return;
-                      }
-                      await Clipboard.setData(ClipboardData(text: token));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('ID token copied to clipboard.'),
-                        ),
-                      );
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Failed to get token: $e')),
-                      );
-                    }
-                  },
-                ),
-            ],
+            actions: [],
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: BoxDecoration(
@@ -653,14 +627,11 @@ class _BasicProfileScreen extends ConsumerWidget {
                                 size: 20,
                               ),
                             ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                messageTitle,
-                                textAlign: TextAlign.center,
-                                style: AppTextStyles.titleMedium.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                ),
+                            const SizedBox(width: 12),
+                            Text(
+                              messageTitle,
+                              style: AppTextStyles.titleMedium.copyWith(
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ],
@@ -921,6 +892,7 @@ class _StatusOptionTile extends StatelessWidget {
           ),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
               child: Text(
@@ -931,7 +903,6 @@ class _StatusOptionTile extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 12),
             Icon(
               selected ? Icons.check_circle_rounded : Icons.circle_outlined,
               color:
@@ -1014,6 +985,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
           return FlexibleSpaceBar(
             collapseMode: CollapseMode.parallax,
             background: _HeroCarousel(
+              profile: profile,
               photos: photos,
               overlayChild: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -1246,9 +1218,14 @@ class _ProfileHeroAppBar extends StatelessWidget {
 }
 
 class _HeroCarousel extends StatefulWidget {
+  final UserModel profile;
   final List<String> photos;
   final Widget overlayChild;
-  const _HeroCarousel({required this.photos, required this.overlayChild});
+  const _HeroCarousel({
+    required this.profile,
+    required this.photos,
+    required this.overlayChild,
+  });
 
   @override
   State<_HeroCarousel> createState() => _HeroCarouselState();
@@ -1281,7 +1258,14 @@ class _HeroCarouselState extends State<_HeroCarousel> {
                 color: Theme.of(context).colorScheme.surface,
                 child:
                     url.isEmpty
-                        ? _InitialsAvatar(name: 'User')
+                        ? _InitialsAvatar(
+                          profile: widget.profile,
+                          name:
+                              (widget.profile.username ??
+                                      widget.profile.name ??
+                                      'User')
+                                  .trim(),
+                        )
                         : Image.network(
                           url,
                           fit: BoxFit.cover,
@@ -1694,7 +1678,7 @@ class _ProfileAudioController {
     });
   }
 
-  /// Get duration for a specific URL (always reads real file duration if possible)
+  /// Get duration for a specific URL (loads metadata via just_audio)
   Future<Duration> getDurationForUrl(String url) async {
     final u = url.trim();
     if (u.isEmpty) return Duration.zero;
@@ -1705,30 +1689,15 @@ class _ProfileAudioController {
     }
 
     try {
-      final tempPlayer = AudioPlayer();
-      Duration? realDuration;
-      bool durationLoaded = false;
-      final completer = Completer<Duration>();
-      tempPlayer.onDurationChanged.listen((d) {
-        if (!durationLoaded && d != Duration.zero) {
-          durationLoaded = true;
-          _durationCache[u] = d;
-          realDuration = d;
-          completer.complete(d);
-        }
-      });
-      await tempPlayer.setSource(UrlSource(u));
-      await tempPlayer.resume();
-      await Future.delayed(const Duration(milliseconds: 100));
-      await tempPlayer.stop();
-      await tempPlayer.dispose();
-      return await completer.future.timeout(
-        const Duration(seconds: 2),
-        onTimeout: () => realDuration ?? Duration.zero,
-      );
-    } catch (_) {
-      return Duration.zero;
-    }
+      final probe = ja.AudioPlayer();
+      final d = await probe.setUrl(u);
+      await probe.dispose();
+      if (d != null && d != Duration.zero) {
+        _durationCache[u] = d;
+        return d;
+      }
+    } catch (_) {}
+    return Duration.zero;
   }
 
   /// Preload duration for a URL without playing it
@@ -1744,36 +1713,17 @@ class _ProfileAudioController {
     }
 
     try {
-      // Create a temporary player just to load duration metadata
-      final tempPlayer = AudioPlayer();
-
-      // Set up a one-time listener for duration
-      bool durationLoaded = false;
-      tempPlayer.onDurationChanged.listen((d) {
-        if (!durationLoaded && d != Duration.zero) {
-          durationLoaded = true;
-          _durationCache[u] = d;
-          if (currentUrl == u) {
-            duration = d;
-          }
-          _notify?.call();
+      final probe = ja.AudioPlayer();
+      final d = await probe.setUrl(u);
+      await probe.dispose();
+      if (d != null && d != Duration.zero) {
+        _durationCache[u] = d;
+        if (currentUrl == u || currentUrl == null) {
+          duration = d;
         }
-      });
-
-      // Start playback to trigger duration loading (then stop immediately)
-      await tempPlayer.play(UrlSource(u));
-      await Future.delayed(const Duration(milliseconds: 50));
-      await tempPlayer.stop();
-
-      // Dispose after a timeout
-      Future.delayed(const Duration(seconds: 2), () {
-        try {
-          if (tempPlayer.state != PlayerState.disposed) {
-            tempPlayer.dispose();
-          }
-        } catch (_) {}
-      });
-    } catch (e) {}
+        _notify?.call();
+      }
+    } catch (_) {}
   }
 
   Future<void> playOrPause(String url) async {
@@ -2438,181 +2388,131 @@ class _AccountTiles extends StatelessWidget {
               orElse: () => '',
             );
 
-            return RelationshipStatusEditor(
-              currentStatus: currentStatus,
-            );
+            return RelationshipStatusEditor(currentStatus: currentStatus);
           },
         ),
-        const SizedBox(height: 10),
-        _ProfileTile(
-          icon: Icons.delete_rounded,
-          title: 'Delete Account',
-          subtitle: 'Delete your account',
-          onTap: () async {
-            // Step 1: Confirm deletion intent
-            final confirm = await showDialog<bool>(
-              context: context,
-              builder:
-                  (ctx) => AlertDialog(
-                    title: const Text('Delete Account?'),
-                    content: const Text(
-                      'This action cannot be undone. All your data will be permanently deleted.',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(ctx).pop(false),
-                        child: const Text('Cancel'),
+        // Only show "Delete Dating Profile" when a dating profile actually exists
+        if (ref
+            .watch(datingProfileCompletedProvider)
+            .maybeWhen(data: (v) => v, orElse: () => false)) ...[
+          const SizedBox(height: 10),
+          _ProfileTile(
+            icon: Icons.delete_rounded,
+            title: 'Delete Dating Profile',
+            subtitle: 'Switch back to a basic account',
+            onTap: () async {
+              // Step 1: Confirm deletion intent
+              final confirm = await showDialog<bool>(
+                context: context,
+                builder:
+                    (ctx) => AlertDialog(
+                      title: const Text('Delete Dating Profile?'),
+                      content: const Text(
+                        'This will remove your dating profile, photos, and audio prompts. '
+                        'You can create a new dating profile anytime.',
                       ),
-                      TextButton(
-                        onPressed: () => Navigator.of(ctx).pop(true),
-                        child: const Text(
-                          'Delete',
-                          style: TextStyle(color: AppColors.error),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(ctx).pop(false),
+                          child: const Text('Cancel'),
                         ),
-                      ),
-                    ],
-                  ),
-            );
-
-            if (confirm != true) return;
-
-            if (!context.mounted) return;
-
-            // Step 2: Prompt for password verification
-            final passwordController = TextEditingController();
-            final password = await showDialog<String>(
-              context: context,
-              builder:
-                  (ctx) => AlertDialog(
-                    title: const Text('Verify Your Password'),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          'Enter your password to confirm account deletion:',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        const SizedBox(height: 16),
-                        TextField(
-                          controller: passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            hintText: 'Enter your password',
+                        TextButton(
+                          onPressed: () => Navigator.of(ctx).pop(true),
+                          child: const Text(
+                            'Delete',
+                            style: TextStyle(color: AppColors.error),
                           ),
                         ),
                       ],
                     ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(ctx).pop(null),
-                        child: const Text('Cancel'),
+              );
+
+              if (confirm != true) return;
+              if (!context.mounted) return;
+
+              // Show loading dialog
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder:
+                    (ctx) => const AlertDialog(
+                      content: SizedBox(
+                        height: 50,
+                        child: Center(child: CircularProgressIndicator()),
                       ),
-                      TextButton(
-                        onPressed:
-                            () =>
-                                Navigator.of(ctx).pop(passwordController.text),
-                        child: const Text('Verify'),
-                      ),
-                    ],
-                  ),
-            );
-
-            passwordController.dispose();
-
-            if (password == null || password.isEmpty) return;
-
-            if (!context.mounted) return;
-
-            // Show loading dialog
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder:
-                  (ctx) => const AlertDialog(
-                    content: SizedBox(
-                      height: 50,
-                      child: Center(child: CircularProgressIndicator()),
                     ),
-                  ),
-            );
+              );
 
-            try {
-              final user = FirebaseAuth.instance.currentUser;
-              final email = user?.email;
-              final uid = user?.uid;
+              // Capture navigator BEFORE any async work — the widget tree
+              // will rebuild (dating → basic) when Firestore updates, which
+              // unmounts the current widget and invalidates `context`.
+              final nav = Navigator.of(context);
 
-              if (user == null || email == null || uid == null) {
-                throw Exception('User not found');
-              }
-
-              // Step 3: Re-authenticate with password
               try {
-                final credential = EmailAuthProvider.credential(
-                  email: email,
-                  password: password,
-                );
-                await user.reauthenticateWithCredential(credential);
-              } catch (e) {
-                if (!context.mounted) return;
-                Navigator.of(context).pop(); // Close loading dialog
+                final uid = FirebaseAuth.instance.currentUser?.uid;
+                if (uid == null) throw Exception('User not found');
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      'Incorrect password. Account deletion cancelled.',
+                final fs = FirebaseFirestore.instance;
+
+                // Replace the 'dating' map with just {profileCompleted: false}.
+                // This wipes all photos/audio/profile data while giving
+                // datingProfileCompletedProvider an explicit `false` so it
+                // short-circuits before v1 fallback heuristics run.
+                await fs.collection('users').doc(uid).update({
+                  'dating': {'profileCompleted': false},
+                });
+
+                // Also clean up any top-level v1 dating fields that the
+                // provider's fallback heuristics might pick up.
+                await fs.collection('users').doc(uid).update({
+                  'profileUrl': FieldValue.delete(),
+                  'photos': FieldValue.delete(),
+                  'audioPrompts': FieldValue.delete(),
+                  'relationshipWithGod': FieldValue.delete(),
+                  'relationship_with_god': FieldValue.delete(),
+                  'roleOfHusband': FieldValue.delete(),
+                  'role_of_husband': FieldValue.delete(),
+                  'bestQualitiesOrTraits': FieldValue.delete(),
+                  'bestQualotiesOrTraits': FieldValue.delete(),
+                  'best_qualities_or_traits': FieldValue.delete(),
+                });
+
+                // Clear dating onboarding draft from SharedPreferences
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.remove('dating_onboarding_draft');
+
+                // Close loading dialog using pre-captured navigator
+                nav.pop();
+
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Dating profile deleted successfully.'),
                     ),
-                    backgroundColor: AppColors.error,
-                  ),
-                );
-                return;
+                  );
+                }
+
+                // The currentUserDocProvider is a stream — removing the dating
+                // field will automatically trigger a rebuild, which shows
+                // _BasicProfileScreen with the "Create Dating Profile" CTA.
+              } catch (e) {
+                // Close loading dialog using pre-captured navigator
+                try {
+                  nav.pop();
+                } catch (_) {}
+
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Error deleting dating profile: $e'),
+                      backgroundColor: AppColors.error,
+                    ),
+                  );
+                }
               }
-
-              final fs = FirebaseFirestore.instance;
-
-              // Step 4: Delete Firestore document
-              await fs.collection('users').doc(uid).delete();
-
-              // Step 5: Delete authentication user
-              await user.delete();
-
-              if (!context.mounted) return;
-              Navigator.of(context).pop(); // Close loading dialog
-
-              final prefs = await SharedPreferences.getInstance();
-              await prefs.remove('force_guest');
-
-              // Navigate to welcome screen
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const AppLaunchGate()),
-                (_) => false,
-              );
-
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Account successfully deleted'),
-                    backgroundColor: AppColors.success,
-                  ),
-                );
-              }
-            } catch (e) {
-              if (!context.mounted) return;
-              Navigator.of(context).pop(); // Close loading dialog
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Error deleting account: $e'),
-                  backgroundColor: AppColors.error,
-                ),
-              );
-            }
-          },
-        ),
+            },
+          ),
+        ], // end datingProfileCompleted guard
         const SizedBox(height: 10),
         _ProfileTile(
           icon: Icons.logout_rounded,
@@ -2700,6 +2600,7 @@ class _DatingProfileRequiredGate extends StatelessWidget {
               onPressed: onCreateDatingProfile,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.getTextOnPrimary(context),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 18,
                   vertical: 14,
@@ -2711,7 +2612,7 @@ class _DatingProfileRequiredGate extends StatelessWidget {
               child: Text(
                 'Create a Profile',
                 style: AppTextStyles.labelLarge.copyWith(
-                  color: AppColors.textOnPrimary,
+                  color: AppColors.getTextOnPrimary(context),
                 ),
               ),
             ),
@@ -2738,9 +2639,9 @@ class _GuestProfileGate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         title: Text('Profile', style: AppTextStyles.headlineLarge),
       ),
@@ -2753,8 +2654,8 @@ class _GuestProfileGate extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               'You’re currently in guest mode. To access dating profiles, create an account && complete your dating profile.',
-              style: AppTextStyles.bodyLarge.copyWith(
-                color: AppColors.textSecondary,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.getTextSecondary(context),
               ),
             ),
             const SizedBox(height: 18),
@@ -2762,6 +2663,7 @@ class _GuestProfileGate extends StatelessWidget {
               onPressed: onCreateAccount,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.getTextOnPrimary(context),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 18,
                   vertical: 14,
@@ -2773,7 +2675,7 @@ class _GuestProfileGate extends StatelessWidget {
               child: Text(
                 'Create an account',
                 style: AppTextStyles.titleMedium.copyWith(
-                  color: AppColors.textOnPrimary,
+                  color: AppColors.getTextOnPrimary(context),
                 ),
               ),
             ),
@@ -2781,7 +2683,7 @@ class _GuestProfileGate extends StatelessWidget {
             OutlinedButton(
               onPressed:
                   () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const AppLaunchGate()),
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
                   ),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
@@ -2791,7 +2693,7 @@ class _GuestProfileGate extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
-                side: BorderSide(color: AppColors.border),
+                side: BorderSide(color: AppColors.getBorder(context)),
               ),
               child: Text('Log In', style: AppTextStyles.titleMedium),
             ),
@@ -2984,12 +2886,38 @@ class _ProfileTile extends StatelessWidget {
 }
 
 class _InitialsAvatar extends StatelessWidget {
+  final UserModel profile;
   final String name;
-  const _InitialsAvatar({required this.name});
+  const _InitialsAvatar({required this.profile, required this.name});
+
+  bool _isV1User() {
+    // v1 users have schemaVersion < 2
+    // v2 users have schemaVersion >= 2
+    final sv = profile.nexus2?.schemaVersion ?? 1;
+    return sv < 2;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final initials = _initialsFromName(name);
+    // For v1 users without photos: show empty generic user avatar
+    if (_isV1User()) {
+      return Center(
+        child: Image.asset(
+          'assets/images/empty_avatar.png',
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+        ),
+      );
+    }
+
+    // For v2/new users: show first letter of username
+    final username = (profile.username ?? '').trim();
+    final initials =
+        username.isNotEmpty
+            ? username[0].toUpperCase()
+            : _initialsFromName(name);
+
     return Center(
       child: CircleAvatar(
         radius: 44,
@@ -3422,6 +3350,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
         'facebookUsername': _facebook.trim(),
         'telegramUsername': _telegram.trim(),
         'snapchatUsername': _snapchat.trim(),
+        // Also update nested dating fields to ensure dating search visibility
+        'dating.countryOfResidence': _country.trim(),
+        'dating.nationality': _nationality.trim(),
         'updatedAt': FieldValue.serverTimestamp(),
       };
 

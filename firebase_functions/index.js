@@ -651,3 +651,75 @@ Status: ${data.status}
       );
     }
   });
+
+// ============================================================================
+// POLL AGGREGATE RECALCULATION FUNCTION
+// ============================================================================
+
+/**
+ * Recalculates poll aggregate from individual votes.
+ * Used to fix corrupted aggregates where optionCounts don't match actual votes.
+ * Can be called via HTTP: POST /recalculatePollAggregate?pollId=poll_week_01
+ */
+exports.recalculatePollAggregate = functions.https.onCall(async (data, context) => {
+  const pollId = data.pollId;
+
+  if (!pollId) {
+    throw new functions.https.HttpsError(
+      'invalid-argument',
+      'pollId is required'
+    );
+  }
+
+  try {
+    const db = admin.firestore();
+    
+    // Get all votes for this poll
+    const votesSnapshot = await db
+      .collection('pollVotes')
+      .doc(pollId)
+      .collection('votes')
+      .get();
+
+    console.log(`Found ${votesSnapshot.size} votes for poll ${pollId}`);
+
+    // Calculate optionCounts from individual votes
+    const optionCounts = {};
+    votesSnapshot.forEach(doc => {
+      const vote = doc.data();
+      const optionId = vote.selectedOptionId;
+      optionCounts[optionId] = (optionCounts[optionId] || 0) + 1;
+    });
+
+    const totalVotes = votesSnapshot.size;
+
+    console.log(`Recalculated aggregate for ${pollId}:`, {
+      optionCounts,
+      totalVotes,
+    });
+
+    // Update the aggregate document
+    await db.collection('pollAggregates').doc(pollId).update({
+      optionCounts: optionCounts,
+      totalVotes: totalVotes,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    console.log(`✅ Successfully recalculated aggregate for ${pollId}`);
+
+    return {
+      success: true,
+      pollId,
+      optionCounts,
+      totalVotes,
+      message: `Fixed ${pollId}: ${totalVotes} votes across options`,
+    };
+
+  } catch (error) {
+    console.error(`❌ Error recalculating poll ${pollId}:`, error);
+    throw new functions.https.HttpsError(
+      'internal',
+      `Failed to recalculate aggregate: ${error.message}`
+    );
+  }
+});

@@ -8,11 +8,13 @@ class _SimpleCacheManager extends CacheManager {
   static final instance = _SimpleCacheManager._();
 
   _SimpleCacheManager._()
-      : super(Config(
+    : super(
+        Config(
           'nexus_simple_cache',
           stalePeriod: const Duration(days: 30),
           maxNrOfCacheObjects: 50,
-        ));
+        ),
+      );
 }
 
 /// A cached image widget for DO Spaces and other URLs
@@ -62,7 +64,9 @@ class CachedImage extends StatelessWidget {
       memCacheHeight: (height?.toInt() ?? 400) * 2,
       cacheManager: _SimpleCacheManager.instance,
       progressIndicatorBuilder: (context, url, downloadProgress) {
-        print('[CachedImage] Loading progress: $url - ${downloadProgress.progress}');
+        print(
+          '[CachedImage] Loading progress: $url - ${downloadProgress.progress}',
+        );
         return placeholder ?? _buildLoadingPlaceholder();
       },
       errorWidget: (context, url, error) {
@@ -82,10 +86,7 @@ class CachedImage extends StatelessWidget {
 
     // Apply border radius if provided
     if (borderRadius != null) {
-      return ClipRRect(
-        borderRadius: borderRadius!,
-        child: image,
-      );
+      return ClipRRect(borderRadius: borderRadius!, child: image);
     }
 
     return image;
@@ -99,9 +100,7 @@ class CachedImage extends StatelessWidget {
         color: AppColors.border,
         borderRadius: borderRadius,
       ),
-      child: const Center(
-        child: CircularProgressIndicator(strokeWidth: 2),
-      ),
+      child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
     );
   }
 
@@ -110,9 +109,7 @@ class CachedImage extends StatelessWidget {
       width: width,
       height: height,
       color: AppColors.border,
-      child: const Center(
-        child: CircularProgressIndicator(strokeWidth: 2),
-      ),
+      child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
     );
   }
 
@@ -121,9 +118,7 @@ class CachedImage extends StatelessWidget {
       width: width,
       height: height,
       color: AppColors.border,
-      child: const Center(
-        child: Icon(Icons.image_not_supported, size: 32),
-      ),
+      child: const Center(child: Icon(Icons.image_not_supported, size: 32)),
     );
   }
 }
@@ -163,18 +158,22 @@ class CachedDecorationImage extends StatelessWidget {
       memCacheHeight: (height?.toInt() ?? 400) * 2,
       // FIXED: Don't specify disk cache dimensions with custom CacheManager
       cacheManager: _SimpleCacheManager.instance,
-      progressIndicatorBuilder: (context, url, progress) => Container(
-        width: width,
-        height: height,
-        color: AppColors.border,
-        child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-      ),
-      errorWidget: (context, url, error) => Container(
-        width: width,
-        height: height,
-        color: AppColors.border,
-        child: const Center(child: Icon(Icons.image_not_supported)),
-      ),
+      progressIndicatorBuilder:
+          (context, url, progress) => Container(
+            width: width,
+            height: height,
+            color: AppColors.border,
+            child: const Center(
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+          ),
+      errorWidget:
+          (context, url, error) => Container(
+            width: width,
+            height: height,
+            color: AppColors.border,
+            child: const Center(child: Icon(Icons.image_not_supported)),
+          ),
     );
   }
 }
@@ -204,19 +203,21 @@ class CachedAvatarImage extends StatelessWidget {
 
     return CachedNetworkImage(
       imageUrl: imageUrl!,
-      imageBuilder: (context, imageProvider) => Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-        ),
-      ),
-      placeholder: (context, url) => CircleAvatar(
-        radius: size / 2,
-        backgroundColor: AppColors.border,
-        child: const Icon(Icons.person, size: 24),
-      ),
+      imageBuilder:
+          (context, imageProvider) => Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            ),
+          ),
+      placeholder:
+          (context, url) => CircleAvatar(
+            radius: size / 2,
+            backgroundColor: AppColors.border,
+            child: const Icon(Icons.person, size: 24),
+          ),
       errorWidget: (context, url, error) => _buildInitialCircle(),
       memCacheWidth: size.toInt() * 2,
       memCacheHeight: size.toInt() * 2,
@@ -229,17 +230,19 @@ class CachedAvatarImage extends StatelessWidget {
     return CircleAvatar(
       radius: size / 2,
       backgroundColor: backgroundColor ?? AppColors.border,
-      child: fallbackInitial != null
-          ? Text(
-              fallbackInitial!,
-              style: initialTextStyle ??
-                  const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textOnPrimary,
-                  ),
-            )
-          : const Icon(Icons.person, size: 24),
+      child:
+          fallbackInitial != null
+              ? Text(
+                fallbackInitial!,
+                style:
+                    initialTextStyle ??
+                    const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textOnPrimary,
+                    ),
+              )
+              : const Icon(Icons.person, size: 24),
     );
   }
 }

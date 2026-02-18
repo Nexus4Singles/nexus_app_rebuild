@@ -70,18 +70,22 @@ class DimensionInsights extends Equatable {
       high: json['high'] as String?,
       microStep: json['microStep'] as String?,
       recommendedJourney: json['recommendedJourney'] as String?,
-      genderLow: json['genderLow'] != null
-          ? Map<String, String>.from(json['genderLow'] as Map)
-          : null,
-      genderMedium: json['genderMedium'] != null
-          ? Map<String, String>.from(json['genderMedium'] as Map)
-          : null,
-      genderHigh: json['genderHigh'] != null
-          ? Map<String, String>.from(json['genderHigh'] as Map)
-          : null,
-      genderMicroStep: json['genderMicroStep'] != null
-          ? Map<String, String>.from(json['genderMicroStep'] as Map)
-          : null,
+      genderLow:
+          json['genderLow'] != null
+              ? Map<String, String>.from(json['genderLow'] as Map)
+              : null,
+      genderMedium:
+          json['genderMedium'] != null
+              ? Map<String, String>.from(json['genderMedium'] as Map)
+              : null,
+      genderHigh:
+          json['genderHigh'] != null
+              ? Map<String, String>.from(json['genderHigh'] as Map)
+              : null,
+      genderMicroStep:
+          json['genderMicroStep'] != null
+              ? Map<String, String>.from(json['genderMicroStep'] as Map)
+              : null,
     );
   }
 
@@ -128,7 +132,9 @@ class DimensionInsights extends Equatable {
   /// Get gender-personalized micro step, falling back to generic
   String? getMicroStepForGender(String? gender) {
     final g = gender?.toLowerCase();
-    if (g != null && genderMicroStep != null && genderMicroStep!.containsKey(g)) {
+    if (g != null &&
+        genderMicroStep != null &&
+        genderMicroStep!.containsKey(g)) {
       return genderMicroStep![g];
     }
     return microStep;
@@ -136,8 +142,15 @@ class DimensionInsights extends Equatable {
 
   @override
   List<Object?> get props => [
-    low, medium, high, microStep, recommendedJourney,
-    genderLow, genderMedium, genderHigh, genderMicroStep,
+    low,
+    medium,
+    high,
+    microStep,
+    recommendedJourney,
+    genderLow,
+    genderMedium,
+    genderHigh,
+    genderMicroStep,
   ];
 }
 
@@ -165,12 +178,14 @@ class AssessmentProfile extends Equatable {
     return AssessmentProfile(
       title: (json["title"] as String?) ?? "",
       summary: (json["summary"] as String?) ?? "",
-      genderTitle: json['genderTitle'] != null
-          ? Map<String, String>.from(json['genderTitle'] as Map)
-          : null,
-      genderSummary: json['genderSummary'] != null
-          ? Map<String, String>.from(json['genderSummary'] as Map)
-          : null,
+      genderTitle:
+          json['genderTitle'] != null
+              ? Map<String, String>.from(json['genderTitle'] as Map)
+              : null,
+      genderSummary:
+          json['genderSummary'] != null
+              ? Map<String, String>.from(json['genderSummary'] as Map)
+              : null,
       narrativeFrame: json['narrativeFrame'] as String?,
     );
   }
@@ -203,7 +218,11 @@ class AssessmentProfile extends Equatable {
 
   @override
   List<Object?> get props => [
-    title, summary, genderTitle, genderSummary, narrativeFrame,
+    title,
+    summary,
+    genderTitle,
+    genderSummary,
+    narrativeFrame,
   ];
 }
 
@@ -240,7 +259,8 @@ class AssessmentOption extends Equatable {
   final String signalTier;
   final int weight;
   final String outcomeSignal;
-  final String? outcomeLabel; // Human-readable label e.g. "anxious attachment pattern"
+  final String?
+  outcomeLabel; // Human-readable label e.g. "anxious attachment pattern"
   final Map<String, String>? genderInsight; // {"male": "...", "female": "..."}
 
   const AssessmentOption({
@@ -261,9 +281,10 @@ class AssessmentOption extends Equatable {
       weight: json['weight'] as int,
       outcomeSignal: json['outcomeSignal'] as String,
       outcomeLabel: json['outcomeLabel'] as String?,
-      genderInsight: json['genderInsight'] != null
-          ? Map<String, String>.from(json['genderInsight'] as Map)
-          : null,
+      genderInsight:
+          json['genderInsight'] != null
+              ? Map<String, String>.from(json['genderInsight'] as Map)
+              : null,
     );
   }
 
@@ -286,7 +307,15 @@ class AssessmentOption extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, text, signalTier, weight, outcomeSignal, outcomeLabel, genderInsight];
+  List<Object?> get props => [
+    id,
+    text,
+    signalTier,
+    weight,
+    outcomeSignal,
+    outcomeLabel,
+    genderInsight,
+  ];
 }
 
 /// Assessment question
@@ -314,9 +343,10 @@ class AssessmentQuestion extends Equatable {
           (json['options'] as List<dynamic>)
               .map((e) => AssessmentOption.fromJson(e as Map<String, dynamic>))
               .toList(),
-      genderVariant: json['genderVariant'] != null
-          ? Map<String, String>.from(json['genderVariant'] as Map)
-          : null,
+      genderVariant:
+          json['genderVariant'] != null
+              ? Map<String, String>.from(json['genderVariant'] as Map)
+              : null,
     );
   }
 
@@ -491,7 +521,37 @@ class DimensionScore extends Equatable {
     required this.answers,
   });
 
-  double get percentage => maxScore > 0 ? totalScore / maxScore : 0;
+  double get percentage {
+    if (maxScore == 0) return 0;
+
+    final basePercentage = totalScore / maxScore;
+
+    // Most dimensions have only 1 question (max score = 3), so base percentages
+    // cluster at 0%, 33%, 67%, 100%. Apply seeded randomization to spread them
+    // out so strengths/growth areas show varied scores.
+    // Seed is deterministic: same dimension+score always produces same result.
+    if (questionCount <= 3) {
+      // Use dimension name characters for better hash distribution than hashCode
+      int charSum = 0;
+      for (int i = 0; i < dimensionId.length; i++) {
+        charSum += dimensionId.codeUnitAt(i) * (i + 1);
+      }
+
+      // Create a well-distributed seed unique to this dimension + score combination
+      final seed =
+          ((charSum * 31 + totalScore * 7919 + maxScore * 127) % 10000).abs();
+      final seedFraction = seed / 10000.0; // 0.0 to 1.0
+
+      // ±12% spread for 1-question dimensions, ±8% for 2-3 question dimensions
+      final spread = questionCount == 1 ? 0.24 : 0.16;
+      final randomization = (seedFraction * spread) - (spread / 2);
+      final randomized = (basePercentage + randomization).clamp(0.0, 1.0);
+
+      return randomized;
+    }
+
+    return basePercentage;
+  }
 
   SignalTier get overallTier {
     final pct = percentage;
@@ -531,7 +591,7 @@ class AssessmentResult extends Equatable {
   final DateTime? updatedAt;
   final String? recommendedJourneyId;
   final List<String> inferredTags;
-  final bool archived; // Marked as archived when relationship status changes
+  final bool archived;
 
   const AssessmentResult({
     required this.id,

@@ -76,7 +76,7 @@ class DatingAudioScreen extends StatelessWidget {
                     ),
                     const TextSpan(
                       text:
-                          'and you will not be able to change your responses after \n'
+                          ' and you will not be able to change your responses after \n'
                           'your profile is completed. \nYour responses don´t need to be perfect, \n'
                           'they just need to be audible & authentic. \n\n',
                     ),
@@ -91,7 +91,7 @@ class DatingAudioScreen extends StatelessWidget {
                     const TextSpan(
                       text:
                           ' \n\n'
-                          'Lastly, any user who records gibberish or submits empty recordings will not be verified and such profiles will be deleted.\n\n'
+                          'Lastly, any user who records gibberish or submits empty recordings will not be approved by our Admin team and such profiles will be deleted.\n\n'
                           'Happy Recording!',
                     ),
                   ],

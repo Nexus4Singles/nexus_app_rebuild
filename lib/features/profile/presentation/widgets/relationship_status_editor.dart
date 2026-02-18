@@ -25,7 +25,7 @@ class RelationshipStatusEditor extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cardColor = Theme.of(context).colorScheme.surface;
     final borderColor = Theme.of(context).dividerColor;
-    
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -64,7 +64,10 @@ class RelationshipStatusEditor extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(color: Theme.of(context).dividerColor),
                 ),
-                child: Icon(Icons.favorite_border_rounded, color: Theme.of(context).colorScheme.primary),
+                child: Icon(
+                  Icons.favorite_border_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
               const SizedBox(width: 46),
               Expanded(
@@ -122,6 +125,11 @@ void showRelationshipStatusDialog(
   String currentStatus, {
   required VoidCallback onSuccess,
 }) {
+  // Cache all colors BEFORE showing the dialog - they don't change during the dialog lifecycle
+  final surfaceColor = AppColors.getSurface(context);
+  final borderColor = AppColors.getBorder(context);
+  final textSecondaryColor = AppColors.getTextSecondary(context);
+
   final updater = ref.read(relationshipStatusUpdaterProvider);
   // Normalize currentStatus to canonical value
   String normalizeStatus(String status) {
@@ -142,241 +150,324 @@ void showRelationshipStatusDialog(
     context: context,
     builder:
         (dialogContext) => StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text(
-                'Switch Marital Status',
-                style: AppTextStyles.headlineSmall,
+          builder: (sbContext, setState) {
+            final statusChanged =
+                selectedStatus.toLowerCase() !=
+                normalizeStatus(currentStatus).toLowerCase();
+
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
               ),
-              content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Select your current relationship status:',
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.getTextSecondary(context),
-                      ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Header with title and close button
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Switch Marital Status',
+                            style: AppTextStyles.headlineSmall,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed:
+                              isLoading
+                                  ? null
+                                  : () => Navigator.pop(dialogContext),
+                          tooltip: 'Close',
+                          iconSize: 24,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    ...statusOptions.map((status) {
-                      final displayLabel = _getStatusLabel(status);
-                      final isSelected =
-                          selectedStatus.toLowerCase() == status.toLowerCase();
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap:
-                                isLoading
-                                    ? null
-                                    : () =>
-                                        setState(() => selectedStatus = status),
-                            borderRadius: BorderRadius.circular(12),
-                            child: Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color:
-                                    isSelected
-                                        ? AppColors.primary.withOpacity(0.1)
-                                        : AppColors.getSurface(context),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color:
-                                      isSelected
-                                          ? AppColors.primary
-                                          : AppColors.getBorder(
-                                            context,
-                                          ).withOpacity(0.3),
-                                  width: isSelected ? 2 : 1,
-                                ),
+                  ),
+                  // Divider
+                  Divider(height: 1, thickness: 1),
+                  // Content
+                  Flexible(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Select your current relationship status:',
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: textSecondaryColor,
                               ),
-                              child: Row(
-                                children: [
-                                  Radio<String>(
-                                    value: status,
-                                    groupValue: selectedStatus,
-                                    onChanged:
+                            ),
+                            const SizedBox(height: 16),
+                            ...statusOptions.map((status) {
+                              final displayLabel = _getStatusLabel(status);
+                              final isSelected =
+                                  selectedStatus.toLowerCase() ==
+                                  status.toLowerCase();
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap:
                                         isLoading
                                             ? null
-                                            : (value) {
-                                              if (value != null) {
-                                                setState(
-                                                  () => selectedStatus = value,
-                                                );
-                                              }
-                                            },
-                                    activeColor: AppColors.primary,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      displayLabel,
-                                      style: AppTextStyles.bodyMedium,
+                                            : () => setState(
+                                              () => selectedStatus = status,
+                                            ),
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        color:
+                                            isSelected
+                                                ? AppColors.primary.withOpacity(
+                                                  0.1,
+                                                )
+                                                : surfaceColor,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color:
+                                              isSelected
+                                                  ? AppColors.primary
+                                                  : borderColor.withOpacity(
+                                                    0.3,
+                                                  ),
+                                          width: isSelected ? 2 : 1,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Radio<String>(
+                                            value: status,
+                                            groupValue: selectedStatus,
+                                            onChanged:
+                                                isLoading
+                                                    ? null
+                                                    : (value) {
+                                                      if (value != null) {
+                                                        setState(
+                                                          () =>
+                                                              selectedStatus =
+                                                                  value,
+                                                        );
+                                                      }
+                                                    },
+                                            activeColor: AppColors.primary,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Text(
+                                              displayLabel,
+                                              style: AppTextStyles.bodyMedium,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                    if (selectedStatus.toLowerCase() !=
-                        currentStatus.toLowerCase()) ...[
-                      const SizedBox(height: 16),
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.08),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: AppColors.primary.withOpacity(0.2),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.info_outline,
-                              color: AppColors.primary,
-                              size: 16,
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                _getStatusChangeMessage(
-                                  currentStatus,
-                                  selectedStatus,
                                 ),
-                                style: AppTextStyles.bodySmall.copyWith(
-                                  color: AppColors.getTextSecondary(context),
+                              );
+                            }).toList(),
+                            // Info message only shows when status is different
+                            if (statusChanged) ...[
+                              const SizedBox(height: 16),
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary.withOpacity(0.08),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: AppColors.primary.withOpacity(0.2),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.info_outline,
+                                      color: AppColors.primary,
+                                      size: 16,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        _getStatusChangeMessage(
+                                          currentStatus,
+                                          selectedStatus,
+                                        ),
+                                        style: AppTextStyles.bodySmall.copyWith(
+                                          color: textSecondaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
+                            ],
                           ],
                         ),
                       ),
-                    ],
-                  ],
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: isLoading ? null : () => Navigator.pop(context),
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(
-                      color: AppColors.getTextSecondary(context),
                     ),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed:
-                      selectedStatus.toLowerCase() ==
-                              currentStatus.toLowerCase()
-                          ? null
-                          : isLoading
-                          ? null
-                          : () async {
-                            setState(() => isLoading = true);
-                            try {
-                              final userAsync = ref.read(currentUserProvider);
-                              final user = userAsync.maybeWhen(
-                                data: (u) => u,
-                                orElse: () => null,
-                              );
+                  // Divider before actions
+                  Divider(height: 1, thickness: 1),
+                  // Action buttons - only show Update when status changed
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        // Update button - only visible when status changed
+                        if (statusChanged)
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed:
+                                  isLoading
+                                      ? null
+                                      : () async {
+                                        // ignore: avoid_print
+                                        print(
+                                          '[RelationshipStatusDialog] UPDATE button pressed',
+                                        );
+                                        setState(() => isLoading = true);
+                                        try {
+                                          final userAsync = ref.read(
+                                            currentUserProvider,
+                                          );
+                                          final user = userAsync.maybeWhen(
+                                            data: (u) => u,
+                                            orElse: () => null,
+                                          );
 
-                              if (user == null) {
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('User not found'),
-                                    ),
-                                  );
-                                }
-                                return;
-                              }
+                                          if (user == null) {
+                                            if (sbContext.mounted) {
+                                              ScaffoldMessenger.of(
+                                                sbContext,
+                                              ).showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                    'User not found',
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                            return;
+                                          }
 
-                              // Check if transitioning FROM married to eligible status
-                              final oldStatus = currentStatus.toLowerCase();
-                              final newStatus = selectedStatus.toLowerCase();
-                              final isReactivatingDating =
-                                  oldStatus == 'married' &&
-                                  [
-                                    'single',
-                                    'divorced',
-                                    'widowed',
-                                    'never_married',
-                                  ].contains(newStatus);
+                                          // Check if transitioning FROM married to eligible status
+                                          final oldStatus =
+                                              currentStatus.toLowerCase();
+                                          final newStatus =
+                                              selectedStatus.toLowerCase();
+                                          // ignore: avoid_print
+                                          print(
+                                            '[RelationshipStatusDialog] Status change: $oldStatus → $newStatus',
+                                          );
+                                          final isReactivatingDating =
+                                              oldStatus == 'married' &&
+                                              [
+                                                'single',
+                                                'divorced',
+                                                'widowed',
+                                                'never_married',
+                                              ].contains(newStatus);
 
-                              await updater.updateRelationshipStatus(
-                                user.uid,
-                                newStatus,
-                              );
+                                          // ignore: avoid_print
+                                          print(
+                                            '[RelationshipStatusDialog] Calling updateRelationshipStatus...',
+                                          );
+                                          await updater
+                                              .updateRelationshipStatus(
+                                                user.uid,
+                                                newStatus,
+                                                oldStatus: oldStatus,
+                                              );
+                                          // ignore: avoid_print
+                                          print(
+                                            '[RelationshipStatusDialog] updateRelationshipStatus completed!',
+                                          );
 
-                              if (context.mounted) {
-                                // Invalidate the entire provider cascade to refresh:
-                                // currentUserDocProvider -> effectiveRelationshipStatusProvider
-                                // -> journeyCatalogProvider & recommendedAssessmentTypeProvider
-                                ref.invalidate(currentUserDocProvider);
-                                ref.invalidate(currentUserProvider);
+                                          if (sbContext.mounted) {
+                                            // Close dialog - Firestore listeners automatically handle UI updates
+                                            Navigator.pop(dialogContext);
+                                            // ignore: avoid_print
+                                            print(
+                                              '[RelationshipStatusDialog] Dialog popped!',
+                                            );
+                                          }
 
-                                // If switching FROM married to eligible status, ask about reactivating dating profile
-                                if (isReactivatingDating) {
-                                  Navigator.pop(context);
-                                  _showReactivateDatingProfileDialog(
-                                    context,
-                                    ref,
-                                    user.uid,
-                                    updater,
-                                    selectedStatus,
-                                    onSuccess,
-                                  );
-                                } else {
-                                  Navigator.pop(context);
+                                          // If switching FROM married to eligible status, ask about reactivating dating profile
+                                          if (isReactivatingDating) {
+                                            _showReactivateDatingProfileDialog(
+                                              context,
+                                              ref,
+                                              user.uid,
+                                              updater,
+                                              selectedStatus,
+                                              onSuccess,
+                                            );
+                                          } else {
+                                            // Show success message for non-dating transitions
+                                            // Use context (outer) instead of sbContext to avoid deactivated widget
+                                            if (context.mounted) {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Relationship status updated to $selectedStatus ✓',
+                                                  ),
+                                                  backgroundColor:
+                                                      AppColors.primary,
+                                                ),
+                                              );
+                                            }
 
-                                  // Show success message for non-dating transitions
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Relationship status updated to $selectedStatus ✓',
-                                      ),
-                                      backgroundColor: AppColors.primary,
-                                    ),
-                                  );
-
-                                  onSuccess();
-                                }
-                              }
-                            } catch (e) {
-                              setState(() => isLoading = false);
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Error: ${e.toString()}'),
-                                    backgroundColor: AppColors.error,
-                                  ),
-                                );
-                              }
-                            }
-                          },
-                  child:
-                      isLoading
-                          ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                AppColors.textOnPrimary,
-                              ),
-                              strokeWidth: 2,
+                                            onSuccess();
+                                          }
+                                        } catch (e) {
+                                          setState(() => isLoading = false);
+                                          if (context.mounted) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Error: ${e.toString()}',
+                                                ),
+                                                backgroundColor:
+                                                    AppColors.error,
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      },
+                              child:
+                                  isLoading
+                                      ? SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                AppColors.textOnPrimary,
+                                              ),
+                                          strokeWidth: 2,
+                                        ),
+                                      )
+                                      : const Text('Update'),
                             ),
-                          )
-                          : const Text('Update'),
-                ),
-              ],
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         ),
@@ -420,7 +511,7 @@ void _showReactivateDatingProfileDialog(
               Text(
                 'You previously had a dating profile. Would you like to reactivate it now?',
                 style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.getTextSecondary(context),
+                  color: AppColors.getTextSecondary(dialogContext),
                 ),
               ),
               const SizedBox(height: 12),
@@ -443,7 +534,7 @@ void _showReactivateDatingProfileDialog(
                       child: Text(
                         'Your profile data has been kept safe. You can reactivate it anytime.',
                         style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.getTextSecondary(context),
+                          color: AppColors.getTextSecondary(dialogContext),
                         ),
                       ),
                     ),
@@ -455,7 +546,7 @@ void _showReactivateDatingProfileDialog(
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(dialogContext);
 
                 // User chose NOT to reactivate - show success message
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -471,12 +562,14 @@ void _showReactivateDatingProfileDialog(
               },
               child: Text(
                 'Keep as Basic Profile',
-                style: TextStyle(color: AppColors.getTextSecondary(context)),
+                style: TextStyle(
+                  color: AppColors.getTextSecondary(dialogContext),
+                ),
               ),
             ),
             ElevatedButton(
               onPressed: () async {
-                Navigator.pop(context);
+                Navigator.pop(dialogContext);
 
                 try {
                   // Reactivate the dating profile
@@ -491,9 +584,13 @@ void _showReactivateDatingProfileDialog(
                     'isActive': true,
                   }, SetOptions(merge: true));
 
-                  // Invalidate to refresh UI
-                  ref.invalidate(currentUserDocProvider);
-                  ref.invalidate(currentUserProvider);
+                  // Invalidate providers after pop to be safe
+                  try {
+                    ref.invalidate(currentUserProvider);
+                    ref.invalidate(effectiveRelationshipStatusProvider);
+                  } catch (e) {
+                    // Ignore errors if ref is already disposed
+                  }
 
                   if (context.mounted) {
                     // Show success message

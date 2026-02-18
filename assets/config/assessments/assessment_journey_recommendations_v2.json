@@ -1,0 +1,2197 @@
+{
+  "documentTitle": "Assessment to Journey Recommendations Mapping",
+  "version": "2.0",
+  "lastUpdated": "2026-02-15",
+  "methodology": "Each dimension is mapped to related journeys. Recommendations include journeys that directly address the issue AND journeys that touch on related themes. Minimum 2 recommendations per dimension, more where genuinely relevant.",
+  "marriageHealthCheck": {
+    "assessmentId": "marriage_health_check",
+    "audience": "married",
+    "dimensionMappings": [
+      {
+        "dimensionId": "appreciation_encouragement",
+        "dimensionName": "Appreciation & Encouragement",
+        "recommendations": [
+          {
+            "journeyId": "married_restoring_friendship",
+            "journeyTitle": "Restoring Friendship in Marriage",
+            "rationale": "Appreciation flows naturally from genuine friendship. Friends naturally notice and affirm each other."
+          },
+          {
+            "journeyId": "married_keeping_romance_alive",
+            "journeyTitle": "Keeping Romance Alive",
+            "rationale": "Romance includes the daily practice of noticing and affirming your spouse through words and actions."
+          },
+          {
+            "journeyId": "married_emotional_physical_intimacy",
+            "journeyTitle": "Emotional and Physical Intimacy",
+            "rationale": "Emotional intimacy creates safety where appreciation is both given and received genuinely."
+          },
+          {
+            "journeyId": "married_communication_conflict",
+            "journeyTitle": "Communication and Conflict Resolution",
+            "rationale": "Learning to communicate positively, not just during conflict, includes expressing appreciation effectively."
+          }
+        ]
+      },
+      {
+        "dimensionId": "commitment_to_growth",
+        "dimensionName": "Commitment to Growth",
+        "recommendations": [
+          {
+            "journeyId": "married_personal_growth",
+            "journeyTitle": "Personal Growth Within Marriage",
+            "rationale": "Directly addresses individual and mutual growth mindset within marriage."
+          },
+          {
+            "journeyId": "married_shared_purpose_vision",
+            "journeyTitle": "Shared Purpose and Vision",
+            "rationale": "Growth requires direction. Shared vision gives couples a reason to grow together."
+          },
+          {
+            "journeyId": "married_faith_spiritual_unity",
+            "journeyTitle": "Faith and Spiritual Unity",
+            "rationale": "Spiritual growth catalyzes personal and relational growth. Faith motivates transformation."
+          },
+          {
+            "journeyId": "married_roles_expectations",
+            "journeyTitle": "Roles and Expectations in Marriage",
+            "rationale": "Growth often requires renegotiating roles as individuals and marriages evolve."
+          }
+        ]
+      },
+      {
+        "dimensionId": "conflict_navigation",
+        "dimensionName": "Conflict Navigation",
+        "recommendations": [
+          {
+            "journeyId": "married_communication_conflict",
+            "journeyTitle": "Communication and Conflict Resolution",
+            "rationale": "Core journey for conflict skills - de-escalation, soft startups, repair attempts."
+          },
+          {
+            "journeyId": "married_harmful_conflict_patterns",
+            "journeyTitle": "Breaking Harmful Conflict Patterns",
+            "rationale": "Identifies and breaks destructive patterns like criticism, contempt, defensiveness, stonewalling."
+          },
+          {
+            "journeyId": "married_rebuilding_trust",
+            "journeyTitle": "Rebuilding Trust",
+            "rationale": "Poor conflict erodes trust. Rebuilding trust creates safety for healthier conflict."
+          },
+          {
+            "journeyId": "married_emotional_physical_intimacy",
+            "journeyTitle": "Emotional and Physical Intimacy",
+            "rationale": "Emotional intimacy reduces defensiveness and helps couples fight as allies, not enemies."
+          }
+        ]
+      },
+      {
+        "dimensionId": "connection_communication",
+        "dimensionName": "Connection & Communication",
+        "recommendations": [
+          {
+            "journeyId": "married_communication_conflict",
+            "journeyTitle": "Communication and Conflict Resolution",
+            "rationale": "Teaches everyday communication and listening skills, not just conflict communication."
+          },
+          {
+            "journeyId": "married_restoring_friendship",
+            "journeyTitle": "Restoring Friendship in Marriage",
+            "rationale": "Connection is fundamentally about friendship. Friends communicate naturally."
+          },
+          {
+            "journeyId": "married_emotional_physical_intimacy",
+            "journeyTitle": "Emotional and Physical Intimacy",
+            "rationale": "Deep communication requires emotional intimacy - willingness to be known."
+          },
+          {
+            "journeyId": "married_keeping_romance_alive",
+            "journeyTitle": "Keeping Romance Alive",
+            "rationale": "Romance includes intentional connection through date nights and quality time."
+          },
+          {
+            "journeyId": "married_shared_purpose_vision",
+            "journeyTitle": "Shared Purpose and Vision",
+            "rationale": "Shared purpose gives couples meaningful things to connect and communicate about."
+          }
+        ]
+      },
+      {
+        "dimensionId": "emotional_intimacy",
+        "dimensionName": "Emotional Intimacy",
+        "recommendations": [
+          {
+            "journeyId": "married_emotional_physical_intimacy",
+            "journeyTitle": "Emotional and Physical Intimacy",
+            "rationale": "Directly addresses emotional intimacy - vulnerability, being known, deep connection."
+          },
+          {
+            "journeyId": "married_restoring_friendship",
+            "journeyTitle": "Restoring Friendship in Marriage",
+            "rationale": "Emotional intimacy grows from friendship foundation."
+          },
+          {
+            "journeyId": "married_rebuilding_trust",
+            "journeyTitle": "Rebuilding Trust",
+            "rationale": "Emotional intimacy requires trust. Where trust is damaged, intimacy cannot flourish."
+          },
+          {
+            "journeyId": "married_communication_conflict",
+            "journeyTitle": "Communication and Conflict Resolution",
+            "rationale": "Sharing emotions requires communication skills. Learning to express and receive feelings."
+          },
+          {
+            "journeyId": "married_keeping_romance_alive",
+            "journeyTitle": "Keeping Romance Alive",
+            "rationale": "Romance creates context for emotional intimacy through intentional pursuit."
+          }
+        ]
+      },
+      {
+        "dimensionId": "emotional_safety_to_share_hurt",
+        "dimensionName": "Emotional Safety to Share Hurt",
+        "recommendations": [
+          {
+            "journeyId": "married_rebuilding_trust",
+            "journeyTitle": "Rebuilding Trust",
+            "rationale": "Safety to share hurt is a trust issue. Trust creates space for vulnerability."
+          },
+          {
+            "journeyId": "married_emotional_physical_intimacy",
+            "journeyTitle": "Emotional and Physical Intimacy",
+            "rationale": "Emotional intimacy includes creating space for pain, not just joy."
+          },
+          {
+            "journeyId": "married_communication_conflict",
+            "journeyTitle": "Communication and Conflict Resolution",
+            "rationale": "Learning to communicate hurt without attacking creates safety for both parties."
+          },
+          {
+            "journeyId": "married_harmful_conflict_patterns",
+            "journeyTitle": "Breaking Harmful Conflict Patterns",
+            "rationale": "Breaking contempt and criticism patterns makes it safer to share vulnerability."
+          }
+        ]
+      },
+      {
+        "dimensionId": "faith_in_daily_conduct",
+        "dimensionName": "Faith in Daily Conduct",
+        "recommendations": [
+          {
+            "journeyId": "married_faith_spiritual_unity",
+            "journeyTitle": "Faith and Spiritual Unity",
+            "rationale": "Directly addresses how faith shapes daily marriage interactions and decisions."
+          },
+          {
+            "journeyId": "married_shared_purpose_vision",
+            "journeyTitle": "Shared Purpose and Vision",
+            "rationale": "Faith lived out requires shared purpose. Daily conduct aligns with larger calling."
+          },
+          {
+            "journeyId": "married_personal_growth",
+            "journeyTitle": "Personal Growth Within Marriage",
+            "rationale": "Personal spiritual growth feeds into daily conduct. Individual faith supports marriage practice."
+          }
+        ]
+      },
+      {
+        "dimensionId": "family_leadership_parenting_alignment",
+        "dimensionName": "Family Leadership & Parenting Alignment",
+        "recommendations": [
+          {
+            "journeyId": "married_parenting_partners",
+            "journeyTitle": "Parenting as a United Team",
+            "rationale": "Directly addresses parenting alignment, discipline consistency, united front."
+          },
+          {
+            "journeyId": "married_roles_expectations",
+            "journeyTitle": "Roles and Expectations in Marriage",
+            "rationale": "Leadership alignment requires clarity on roles. Many parenting conflicts stem from role confusion."
+          },
+          {
+            "journeyId": "married_inlaws_extended_family",
+            "journeyTitle": "Healthy Boundaries with Extended Family",
+            "rationale": "Extended family interference undermines parenting alignment. Boundaries protect partnership."
+          },
+          {
+            "journeyId": "married_communication_conflict",
+            "journeyTitle": "Communication and Conflict Resolution",
+            "rationale": "Parents need conflict skills to discuss parenting disagreements productively."
+          },
+          {
+            "journeyId": "married_shared_purpose_vision",
+            "journeyTitle": "Shared Purpose and Vision",
+            "rationale": "Parenting alignment flows from shared family vision and values."
+          }
+        ]
+      },
+      {
+        "dimensionId": "financial_alignment",
+        "dimensionName": "Financial Alignment",
+        "recommendations": [
+          {
+            "journeyId": "married_managing_finances",
+            "journeyTitle": "Managing Finances Together",
+            "rationale": "Directly addresses financial communication, budgeting, and value alignment around money."
+          },
+          {
+            "journeyId": "married_roles_expectations",
+            "journeyTitle": "Roles and Expectations in Marriage",
+            "rationale": "Financial conflict often stems from unspoken expectations about who manages money."
+          },
+          {
+            "journeyId": "married_shared_purpose_vision",
+            "journeyTitle": "Shared Purpose and Vision",
+            "rationale": "Financial alignment flows from shared vision. Purpose clarifies spending priorities."
+          },
+          {
+            "journeyId": "married_communication_conflict",
+            "journeyTitle": "Communication and Conflict Resolution",
+            "rationale": "Money conversations require good communication skills to avoid escalation."
+          }
+        ]
+      },
+      {
+        "dimensionId": "physical_affection_intimacy",
+        "dimensionName": "Physical Affection & Intimacy",
+        "recommendations": [
+          {
+            "journeyId": "married_emotional_physical_intimacy",
+            "journeyTitle": "Emotional and Physical Intimacy",
+            "rationale": "Addresses both emotional foundation and physical expression of intimacy."
+          },
+          {
+            "journeyId": "married_reigniting_sexual_desire",
+            "journeyTitle": "Reigniting Sexual Desire",
+            "rationale": "Specifically addresses sexual intimacy when desire has waned."
+          },
+          {
+            "journeyId": "married_keeping_romance_alive",
+            "journeyTitle": "Keeping Romance Alive",
+            "rationale": "Physical affection thrives in romantic context. Romance fuels touch."
+          },
+          {
+            "journeyId": "married_restoring_friendship",
+            "journeyTitle": "Restoring Friendship in Marriage",
+            "rationale": "Physical intimacy is more satisfying when spouses genuinely like each other."
+          },
+          {
+            "journeyId": "married_rebuilding_trust",
+            "journeyTitle": "Rebuilding Trust",
+            "rationale": "Physical intimacy requires trust and safety. Trust damage affects physical connection."
+          }
+        ]
+      },
+      {
+        "dimensionId": "quality_time",
+        "dimensionName": "Quality Time",
+        "recommendations": [
+          {
+            "journeyId": "married_restoring_friendship",
+            "journeyTitle": "Restoring Friendship in Marriage",
+            "rationale": "Quality time is the currency of friendship. Friends want to spend time together."
+          },
+          {
+            "journeyId": "married_keeping_romance_alive",
+            "journeyTitle": "Keeping Romance Alive",
+            "rationale": "Romance requires protected time together. Dating and intentional time investment."
+          },
+          {
+            "journeyId": "married_shared_purpose_vision",
+            "journeyTitle": "Shared Purpose and Vision",
+            "rationale": "Shared purpose gives couples meaningful activities to do together."
+          },
+          {
+            "journeyId": "married_emotional_physical_intimacy",
+            "journeyTitle": "Emotional and Physical Intimacy",
+            "rationale": "Intimacy requires uninterrupted time together. Quality time enables depth."
+          }
+        ]
+      },
+      {
+        "dimensionId": "repair_reconnection",
+        "dimensionName": "Repair & Reconnection",
+        "recommendations": [
+          {
+            "journeyId": "married_communication_conflict",
+            "journeyTitle": "Communication and Conflict Resolution",
+            "rationale": "Repair is a communication skill. Teaches reconnection after rupture."
+          },
+          {
+            "journeyId": "married_harmful_conflict_patterns",
+            "journeyTitle": "Breaking Harmful Conflict Patterns",
+            "rationale": "Failed repair often stems from destructive patterns. Breaking them enables repair."
+          },
+          {
+            "journeyId": "married_rebuilding_trust",
+            "journeyTitle": "Rebuilding Trust",
+            "rationale": "When repair consistently fails, trust erodes. Trust work enables future repair."
+          },
+          {
+            "journeyId": "married_emotional_physical_intimacy",
+            "journeyTitle": "Emotional and Physical Intimacy",
+            "rationale": "Physical reconnection (touch, intimacy) is often part of repair after conflict."
+          }
+        ]
+      },
+      {
+        "dimensionId": "respect_during_conflict",
+        "dimensionName": "Respect During Conflict",
+        "recommendations": [
+          {
+            "journeyId": "married_harmful_conflict_patterns",
+            "journeyTitle": "Breaking Harmful Conflict Patterns",
+            "rationale": "Contempt and disrespect are destructive patterns. This journey breaks them."
+          },
+          {
+            "journeyId": "married_communication_conflict",
+            "journeyTitle": "Communication and Conflict Resolution",
+            "rationale": "Teaches respectful conflict engagement - soft startups, de-escalation."
+          },
+          {
+            "journeyId": "married_personal_growth",
+            "journeyTitle": "Personal Growth Within Marriage",
+            "rationale": "Disrespect often stems from personal issues. Personal growth addresses root causes."
+          },
+          {
+            "journeyId": "married_rebuilding_trust",
+            "journeyTitle": "Rebuilding Trust",
+            "rationale": "Disrespect damages trust. Rebuilding trust includes rebuilding respect."
+          }
+        ]
+      },
+      {
+        "dimensionId": "responsiveness_to_concerns",
+        "dimensionName": "Responsiveness to Concerns",
+        "recommendations": [
+          {
+            "journeyId": "married_communication_conflict",
+            "journeyTitle": "Communication and Conflict Resolution",
+            "rationale": "Responsiveness is a listening skill. Active listening and empathic response."
+          },
+          {
+            "journeyId": "married_emotional_physical_intimacy",
+            "journeyTitle": "Emotional and Physical Intimacy",
+            "rationale": "Responsiveness creates emotional intimacy. Feeling heard equals feeling loved."
+          },
+          {
+            "journeyId": "married_restoring_friendship",
+            "journeyTitle": "Restoring Friendship in Marriage",
+            "rationale": "Friends care about each other's concerns. Friendship restores natural responsiveness."
+          }
+        ]
+      },
+      {
+        "dimensionId": "safety_wellbeing",
+        "dimensionName": "Safety & Wellbeing",
+        "recommendations": [
+          {
+            "journeyId": "married_rebuilding_trust",
+            "journeyTitle": "Rebuilding Trust",
+            "rationale": "Safety is foundational to trust. Trust work creates safety."
+          },
+          {
+            "journeyId": "married_harmful_conflict_patterns",
+            "journeyTitle": "Breaking Harmful Conflict Patterns",
+            "rationale": "Unsafe marriages often feature destructive conflict patterns. Breaking them creates safety."
+          },
+          {
+            "journeyId": "married_handling_infidelity",
+            "journeyTitle": "Handling Infidelity",
+            "rationale": "If safety concerns stem from betrayal, this addresses post-infidelity recovery."
+          }
+        ],
+        "clinicalNote": "LOW scores may indicate abuse. Include safety resources and crisis intervention information."
+      },
+      {
+        "dimensionId": "shared_spiritual_practices",
+        "dimensionName": "Shared Spiritual Practices",
+        "recommendations": [
+          {
+            "journeyId": "married_faith_spiritual_unity",
+            "journeyTitle": "Faith and Spiritual Unity",
+            "rationale": "Directly addresses building shared practices - prayer, worship, service, faith conversations."
+          },
+          {
+            "journeyId": "married_shared_purpose_vision",
+            "journeyTitle": "Shared Purpose and Vision",
+            "rationale": "Spiritual practices connect to shared purpose. Kingdom calling together."
+          },
+          {
+            "journeyId": "married_personal_growth",
+            "journeyTitle": "Personal Growth Within Marriage",
+            "rationale": "Personal spiritual health feeds into shared practice. Individual growth catalyzes couple growth."
+          }
+        ]
+      },
+      {
+        "dimensionId": "teamwork_responsibilities",
+        "dimensionName": "Teamwork & Responsibilities",
+        "recommendations": [
+          {
+            "journeyId": "married_roles_expectations",
+            "journeyTitle": "Roles and Expectations in Marriage",
+            "rationale": "Teamwork requires clear roles. Negotiating responsibilities and expectations."
+          },
+          {
+            "journeyId": "married_communication_conflict",
+            "journeyTitle": "Communication and Conflict Resolution",
+            "rationale": "Responsibility imbalance creates conflict. Communication helps negotiate fairly."
+          },
+          {
+            "journeyId": "married_shared_purpose_vision",
+            "journeyTitle": "Shared Purpose and Vision",
+            "rationale": "Shared vision makes teamwork feel purposeful rather than burdensome."
+          },
+          {
+            "journeyId": "married_parenting_partners",
+            "journeyTitle": "Parenting as a United Team",
+            "rationale": "If parents, teamwork in parenting is often the biggest responsibility area."
+          }
+        ]
+      },
+      {
+        "dimensionId": "trust_integrity",
+        "dimensionName": "Trust & Integrity",
+        "recommendations": [
+          {
+            "journeyId": "married_rebuilding_trust",
+            "journeyTitle": "Rebuilding Trust",
+            "rationale": "Core journey for trust - building and rebuilding through consistent integrity."
+          },
+          {
+            "journeyId": "married_handling_infidelity",
+            "journeyTitle": "Handling Infidelity",
+            "rationale": "If trust broken through betrayal, this addresses post-infidelity recovery."
+          },
+          {
+            "journeyId": "married_communication_conflict",
+            "journeyTitle": "Communication and Conflict Resolution",
+            "rationale": "Trust rebuilding requires honest communication."
+          },
+          {
+            "journeyId": "married_emotional_physical_intimacy",
+            "journeyTitle": "Emotional and Physical Intimacy",
+            "rationale": "Intimacy rebuilds as trust rebuilds. They reinforce each other."
+          }
+        ]
+      },
+      {
+        "dimensionId": "trust_repair_practices",
+        "dimensionName": "Trust Repair Practices",
+        "recommendations": [
+          {
+            "journeyId": "married_rebuilding_trust",
+            "journeyTitle": "Rebuilding Trust",
+            "rationale": "Teaches trust repair practices - transparency, consistency, accountability."
+          },
+          {
+            "journeyId": "married_handling_infidelity",
+            "journeyTitle": "Handling Infidelity",
+            "rationale": "Infidelity requires specialized trust repair."
+          },
+          {
+            "journeyId": "married_harmful_conflict_patterns",
+            "journeyTitle": "Breaking Harmful Conflict Patterns",
+            "rationale": "Trust repair fails when destructive patterns persist. Breaking them creates space for repair."
+          },
+          {
+            "journeyId": "married_communication_conflict",
+            "journeyTitle": "Communication and Conflict Resolution",
+            "rationale": "Repair conversations require communication skills."
+          }
+        ]
+      }
+    ],
+    "profileBasedRecommendations": {
+      "STRONG": {
+        "description": "Thriving marriages benefit from growth-oriented journeys.",
+        "recommendations": [
+          "married_shared_purpose_vision",
+          "married_faith_spiritual_unity",
+          "married_personal_growth",
+          "married_keeping_romance_alive"
+        ]
+      },
+      "DEVELOPING": {
+        "description": "Target lowest-scoring dimensions with corresponding journeys.",
+        "recommendations": "Assign based on lowest-scoring dimensions"
+      },
+      "GUARDED": {
+        "description": "Needs foundational repair - trust, safety, communication.",
+        "recommendations": [
+          "married_rebuilding_trust",
+          "married_communication_conflict",
+          "married_harmful_conflict_patterns",
+          "married_emotional_physical_intimacy"
+        ]
+      },
+      "AT_RISK": {
+        "description": "Crisis intervention needed. Journeys supplement professional help.",
+        "recommendations": [
+          "married_rebuilding_trust",
+          "married_harmful_conflict_patterns",
+          "married_handling_infidelity"
+        ],
+        "clinicalNote": "Direct to professional counseling. Include crisis resources."
+      }
+    }
+  },
+  "remarriageDivorced": {
+    "assessmentId": "remarriage_readiness_divorced",
+    "audience": "divorced",
+    "dimensionMappings": [
+      {
+        "dimensionId": "accountability",
+        "dimensionName": "Accountability",
+        "recommendations": [
+          {
+            "journeyId": "divorced_understanding_what_went_wrong",
+            "journeyTitle": "Understanding What Went Wrong",
+            "rationale": "Accountability begins with honest examination of what happened, including one's contributions."
+          },
+          {
+            "journeyId": "divorced_toxic_patterns",
+            "journeyTitle": "Breaking Toxic Patterns",
+            "rationale": "Taking accountability for patterns is deeper than single incidents."
+          },
+          {
+            "journeyId": "divorced_identity_selfworth",
+            "journeyTitle": "Identity and Self-Worth After Divorce",
+            "rationale": "Healthy accountability requires neither self-condemnation nor self-protection. Identity work supports balance."
+          },
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "Healing includes honest self-assessment as part of moving forward."
+          }
+        ]
+      },
+      {
+        "dimensionId": "change_basis",
+        "dimensionName": "Change Basis",
+        "recommendations": [
+          {
+            "journeyId": "divorced_emotional_readiness",
+            "journeyTitle": "Emotional Readiness for New Love",
+            "rationale": "Directly addresses whether desire for remarriage comes from healing or escape."
+          },
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "True change basis requires genuine healing, not just time passing."
+          },
+          {
+            "journeyId": "divorced_processing_pain",
+            "journeyTitle": "Processing the Pain of Divorce",
+            "rationale": "Unprocessed pain drives escape-based remarriage. Processing creates healthier motivation."
+          },
+          {
+            "journeyId": "divorced_identity_selfworth",
+            "journeyTitle": "Identity and Self-Worth After Divorce",
+            "rationale": "Solid identity means not needing a relationship to feel complete."
+          }
+        ]
+      },
+      {
+        "dimensionId": "comparison_risk",
+        "dimensionName": "Comparison Risk",
+        "recommendations": [
+          {
+            "journeyId": "divorced_letting_go_resentment",
+            "journeyTitle": "Letting Go of Resentment",
+            "rationale": "Comparison often stems from unresolved feelings about ex. Releasing resentment releases comparison."
+          },
+          {
+            "journeyId": "divorced_discerning_healthy_love",
+            "journeyTitle": "Discerning Healthy Love",
+            "rationale": "Learning to see new partner for who they are, not through lens of past."
+          },
+          {
+            "journeyId": "divorced_emotional_readiness",
+            "journeyTitle": "Emotional Readiness for New Love",
+            "rationale": "Emotional readiness includes ability to be present without constant comparison."
+          },
+          {
+            "journeyId": "divorced_dating_again",
+            "journeyTitle": "Dating Again with Wisdom",
+            "rationale": "Practical guidance on dating includes seeing each person as unique."
+          }
+        ]
+      },
+      {
+        "dimensionId": "conflict_fear",
+        "dimensionName": "Conflict Fear",
+        "recommendations": [
+          {
+            "journeyId": "divorced_developing_trust",
+            "journeyTitle": "Developing Trust Again",
+            "rationale": "Conflict fear often stems from broken trust - fear that disagreement means disaster."
+          },
+          {
+            "journeyId": "divorced_toxic_patterns",
+            "journeyTitle": "Breaking Toxic Patterns",
+            "rationale": "If previous marriage had destructive conflict, learning healthy patterns reduces fear."
+          },
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "Deep healing reduces hypervigilance that fuels conflict avoidance."
+          },
+          {
+            "journeyId": "divorced_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Covenant preparation includes preparing for healthy conflict in new marriage."
+          },
+          {
+            "journeyId": "divorced_emotional_readiness",
+            "journeyTitle": "Emotional Readiness for New Love",
+            "rationale": "Emotional readiness includes capacity to handle disagreement without panic."
+          }
+        ]
+      },
+      {
+        "dimensionId": "disclosure_boundaries",
+        "dimensionName": "Disclosure Boundaries",
+        "recommendations": [
+          {
+            "journeyId": "divorced_dating_again",
+            "journeyTitle": "Dating Again with Wisdom",
+            "rationale": "Addresses practical disclosure questions - what to share, when, how much."
+          },
+          {
+            "journeyId": "divorced_discerning_healthy_love",
+            "journeyTitle": "Discerning Healthy Love",
+            "rationale": "Healthy disclosure is part of healthy relationship building."
+          },
+          {
+            "journeyId": "divorced_developing_trust",
+            "journeyTitle": "Developing Trust Again",
+            "rationale": "Disclosure and trust are intertwined. Learning to trust helps navigate what to share."
+          },
+          {
+            "journeyId": "divorced_emotional_readiness",
+            "journeyTitle": "Emotional Readiness for New Love",
+            "rationale": "Emotional readiness includes knowing what to share and when as you engage someone new."
+          },
+          {
+            "journeyId": "divorced_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Covenant preparation addresses how much of past to bring into new marriage conversations."
+          }
+        ]
+      },
+      {
+        "dimensionId": "emotional_state",
+        "dimensionName": "Emotional State",
+        "recommendations": [
+          {
+            "journeyId": "divorced_processing_pain",
+            "journeyTitle": "Processing the Pain of Divorce",
+            "rationale": "Core journey for emotional processing - grief, anger, sadness, shame."
+          },
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "Moves beyond processing to active healing and wholeness."
+          },
+          {
+            "journeyId": "divorced_letting_go_resentment",
+            "journeyTitle": "Letting Go of Resentment",
+            "rationale": "Resentment is common emotional state post-divorce that blocks healing."
+          },
+          {
+            "journeyId": "divorced_identity_selfworth",
+            "journeyTitle": "Identity and Self-Worth After Divorce",
+            "rationale": "Emotional state connected to identity. Rebuilding identity stabilizes emotions."
+          }
+        ]
+      },
+      {
+        "dimensionId": "family_patterns_future_home",
+        "dimensionName": "Family Patterns & Future Home",
+        "recommendations": [
+          {
+            "journeyId": "divorced_toxic_patterns",
+            "journeyTitle": "Breaking Toxic Patterns",
+            "rationale": "Family patterns often become toxic relationship patterns. Breaking them prevents repetition."
+          },
+          {
+            "journeyId": "divorced_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Includes vision for future home and intentional covenant preparation."
+          },
+          {
+            "journeyId": "divorced_understanding_what_went_wrong",
+            "journeyTitle": "Understanding What Went Wrong",
+            "rationale": "Understanding includes recognizing which family-of-origin patterns contributed to failure."
+          },
+          {
+            "journeyId": "divorced_coparenting",
+            "journeyTitle": "Coparenting with Grace",
+            "rationale": "If children involved, coparenting patterns affect future home dynamics."
+          }
+        ]
+      },
+      {
+        "dimensionId": "god_s_role_framing",
+        "dimensionName": "God's Role Framing",
+        "recommendations": [
+          {
+            "journeyId": "divorced_faith_church_community",
+            "journeyTitle": "Faith, Church, and Community After Divorce",
+            "rationale": "Directly addresses spiritual questions, God's role in suffering, faith reconstruction."
+          },
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "Frames healing within God's redemptive work - seeing His hand in restoration."
+          },
+          {
+            "journeyId": "divorced_identity_selfworth",
+            "journeyTitle": "Identity and Self-Worth After Divorce",
+            "rationale": "Understanding identity in Christ addresses questions of God's view of divorced persons."
+          }
+        ]
+      },
+      {
+        "dimensionId": "growth_domain",
+        "dimensionName": "Growth Domain",
+        "recommendations": [
+          {
+            "journeyId": "divorced_understanding_what_went_wrong",
+            "journeyTitle": "Understanding What Went Wrong",
+            "rationale": "Growth requires understanding. Extracts wisdom from the marriage's failure."
+          },
+          {
+            "journeyId": "divorced_toxic_patterns",
+            "journeyTitle": "Breaking Toxic Patterns",
+            "rationale": "Growth means changing patterns. Identifying and breaking toxic patterns is measurable growth."
+          },
+          {
+            "journeyId": "divorced_identity_selfworth",
+            "journeyTitle": "Identity and Self-Worth After Divorce",
+            "rationale": "Identity reconstruction is profound growth work."
+          },
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "Healing itself is growth - becoming more whole."
+          }
+        ]
+      },
+      {
+        "dimensionId": "healing_progress",
+        "dimensionName": "Healing Progress",
+        "recommendations": [
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "Core healing journey addressing full spectrum of post-divorce recovery."
+          },
+          {
+            "journeyId": "divorced_processing_pain",
+            "journeyTitle": "Processing the Pain of Divorce",
+            "rationale": "Processing precedes healing. Ensures grief work is done properly."
+          },
+          {
+            "journeyId": "divorced_letting_go_resentment",
+            "journeyTitle": "Letting Go of Resentment",
+            "rationale": "Resentment blocks healing. Releasing it is major milestone."
+          },
+          {
+            "journeyId": "divorced_identity_selfworth",
+            "journeyTitle": "Identity and Self-Worth After Divorce",
+            "rationale": "Healing includes identity reconstruction."
+          },
+          {
+            "journeyId": "divorced_faith_church_community",
+            "journeyTitle": "Faith, Church, and Community After Divorce",
+            "rationale": "Spiritual healing is part of overall healing progress."
+          }
+        ]
+      },
+      {
+        "dimensionId": "loneliness_driver",
+        "dimensionName": "Loneliness Driver",
+        "recommendations": [
+          {
+            "journeyId": "divorced_emotional_readiness",
+            "journeyTitle": "Emotional Readiness for New Love",
+            "rationale": "Addresses whether loneliness is driving premature relationship seeking."
+          },
+          {
+            "journeyId": "divorced_faith_church_community",
+            "journeyTitle": "Faith, Church, and Community After Divorce",
+            "rationale": "Community addresses loneliness in healthy ways without requiring romance."
+          },
+          {
+            "journeyId": "divorced_identity_selfworth",
+            "journeyTitle": "Identity and Self-Worth After Divorce",
+            "rationale": "Healthy identity includes capacity for solitude. Self-worth not dependent on partnership."
+          },
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "Healing includes learning to be whole alone before coupling."
+          }
+        ]
+      },
+      {
+        "dimensionId": "marriage_understanding",
+        "dimensionName": "Marriage Understanding",
+        "recommendations": [
+          {
+            "journeyId": "divorced_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Builds mature, realistic understanding of covenant marriage."
+          },
+          {
+            "journeyId": "divorced_understanding_what_went_wrong",
+            "journeyTitle": "Understanding What Went Wrong",
+            "rationale": "Understanding marriage includes learning from what didn't work."
+          },
+          {
+            "journeyId": "divorced_discerning_healthy_love",
+            "journeyTitle": "Discerning Healthy Love",
+            "rationale": "Understanding what healthy love looks like is part of mature marriage understanding."
+          }
+        ]
+      },
+      {
+        "dimensionId": "meaning_making",
+        "dimensionName": "Meaning-Making",
+        "recommendations": [
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "Meaning-making is central to healing - finding redemption in the pain."
+          },
+          {
+            "journeyId": "divorced_faith_church_community",
+            "journeyTitle": "Faith, Church, and Community After Divorce",
+            "rationale": "Faith provides framework for meaning-making. God's purposes emerge through spiritual reflection."
+          },
+          {
+            "journeyId": "divorced_understanding_what_went_wrong",
+            "journeyTitle": "Understanding What Went Wrong",
+            "rationale": "Understanding contributes to meaning. Making sense of what happened."
+          },
+          {
+            "journeyId": "divorced_identity_selfworth",
+            "journeyTitle": "Identity and Self-Worth After Divorce",
+            "rationale": "Meaning includes who you're becoming - identity and purpose."
+          }
+        ]
+      },
+      {
+        "dimensionId": "memory_intrusion",
+        "dimensionName": "Memory Intrusion",
+        "recommendations": [
+          {
+            "journeyId": "divorced_processing_pain",
+            "journeyTitle": "Processing the Pain of Divorce",
+            "rationale": "Intrusive memories indicate unprocessed material. Processing reduces intrusion."
+          },
+          {
+            "journeyId": "divorced_letting_go_resentment",
+            "journeyTitle": "Letting Go of Resentment",
+            "rationale": "Resentment fuels rumination. Releasing it reduces memory cycling."
+          },
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "Deep healing allows memories to exist without hijacking the present."
+          },
+          {
+            "journeyId": "divorced_anniversaries_occasions",
+            "journeyTitle": "Navigating Anniversaries and Special Occasions",
+            "rationale": "Memory intrusion peaks around significant dates. Provides coping strategies."
+          }
+        ]
+      },
+      {
+        "dimensionId": "readiness_orientation",
+        "dimensionName": "Readiness Orientation",
+        "recommendations": [
+          {
+            "journeyId": "divorced_emotional_readiness",
+            "journeyTitle": "Emotional Readiness for New Love",
+            "rationale": "Directly assesses and builds readiness for new relationship."
+          },
+          {
+            "journeyId": "divorced_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Final preparation before entering covenant - confirms readiness."
+          },
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "Readiness requires healing. Ensures foundation is solid."
+          },
+          {
+            "journeyId": "divorced_discerning_healthy_love",
+            "journeyTitle": "Discerning Healthy Love",
+            "rationale": "Readiness includes knowing what to look for in a partner."
+          },
+          {
+            "journeyId": "divorced_dating_again",
+            "journeyTitle": "Dating Again with Wisdom",
+            "rationale": "Practical readiness for re-entering dating world."
+          }
+        ]
+      },
+      {
+        "dimensionId": "remarriage_posture",
+        "dimensionName": "Remarriage Posture",
+        "recommendations": [
+          {
+            "journeyId": "divorced_emotional_readiness",
+            "journeyTitle": "Emotional Readiness for New Love",
+            "rationale": "Addresses posture - open vs. defensive, hopeful vs. desperate."
+          },
+          {
+            "journeyId": "divorced_discerning_healthy_love",
+            "journeyTitle": "Discerning Healthy Love",
+            "rationale": "Healthy posture includes wisdom about what to look for and red flags."
+          },
+          {
+            "journeyId": "divorced_developing_trust",
+            "journeyTitle": "Developing Trust Again",
+            "rationale": "Posture issues often stem from trust wounds. Healing trust supports healthier posture."
+          },
+          {
+            "journeyId": "divorced_dating_again",
+            "journeyTitle": "Dating Again with Wisdom",
+            "rationale": "Practical posture guidance for dating after divorce."
+          }
+        ]
+      },
+      {
+        "dimensionId": "spiritual_peace",
+        "dimensionName": "Spiritual Peace",
+        "recommendations": [
+          {
+            "journeyId": "divorced_faith_church_community",
+            "journeyTitle": "Faith, Church, and Community After Divorce",
+            "rationale": "Directly addresses spiritual questions, guilt, and peace about remarriage."
+          },
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "Spiritual peace often comes through broader healing work."
+          },
+          {
+            "journeyId": "divorced_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Covenant preparation includes spiritual foundation and peace."
+          },
+          {
+            "journeyId": "divorced_identity_selfworth",
+            "journeyTitle": "Identity and Self-Worth After Divorce",
+            "rationale": "Identity in Christ brings spiritual peace about one's status and future."
+          }
+        ]
+      },
+      {
+        "dimensionId": "trigger_response",
+        "dimensionName": "Trigger Response",
+        "recommendations": [
+          {
+            "journeyId": "divorced_toxic_patterns",
+            "journeyTitle": "Breaking Toxic Patterns",
+            "rationale": "Triggers often fire toxic patterns. Understanding both helps manage responses."
+          },
+          {
+            "journeyId": "divorced_processing_pain",
+            "journeyTitle": "Processing the Pain of Divorce",
+            "rationale": "Triggers indicate unprocessed wounds. Processing reduces trigger intensity."
+          },
+          {
+            "journeyId": "divorced_developing_trust",
+            "journeyTitle": "Developing Trust Again",
+            "rationale": "Many triggers relate to trust wounds. Trust work reduces sensitivity."
+          },
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "Deep healing reduces overall trigger reactivity."
+          }
+        ]
+      },
+      {
+        "dimensionId": "trust_capacity",
+        "dimensionName": "Trust Capacity",
+        "recommendations": [
+          {
+            "journeyId": "divorced_developing_trust",
+            "journeyTitle": "Developing Trust Again",
+            "rationale": "Core journey for rebuilding capacity to trust after betrayal or disappointment."
+          },
+          {
+            "journeyId": "divorced_discerning_healthy_love",
+            "journeyTitle": "Discerning Healthy Love",
+            "rationale": "Healthy trust includes discernment - knowing who deserves trust."
+          },
+          {
+            "journeyId": "divorced_healing_restoration",
+            "journeyTitle": "Healing and Restoration",
+            "rationale": "Trust capacity grows from deep healing of wounds that broke trust."
+          },
+          {
+            "journeyId": "divorced_dating_again",
+            "journeyTitle": "Dating Again with Wisdom",
+            "rationale": "Dating requires trust. Practical guidance on trusting wisely."
+          },
+          {
+            "journeyId": "divorced_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Covenant requires full trust commitment. Preparation includes building trust capacity."
+          }
+        ]
+      }
+    ],
+    "profileBasedRecommendations": {
+      "STRONG": {
+        "description": "Ready for remarriage - focus on preparation and wisdom.",
+        "recommendations": [
+          "divorced_preparing_new_covenant",
+          "divorced_discerning_healthy_love",
+          "divorced_dating_again"
+        ]
+      },
+      "DEVELOPING": {
+        "description": "Real progress with specific areas needing attention.",
+        "recommendations": "Assign based on lowest-scoring dimensions"
+      },
+      "GUARDED": {
+        "description": "Significant healing work remains. Remarriage premature.",
+        "recommendations": [
+          "divorced_healing_restoration",
+          "divorced_processing_pain",
+          "divorced_letting_go_resentment",
+          "divorced_developing_trust"
+        ]
+      },
+      "AT_RISK": {
+        "description": "Crisis level - needs professional support.",
+        "recommendations": [
+          "divorced_processing_pain",
+          "divorced_healing_restoration",
+          "divorced_faith_church_community"
+        ],
+        "clinicalNote": "Strongly encourage professional counseling. Journeys supplement but don't replace."
+      }
+    }
+  },
+  "remarriageWidowed": {
+    "assessmentId": "remarriage_readiness_widowed",
+    "audience": "widowed",
+    "dimensionMappings": [
+      {
+        "dimensionId": "accountability",
+        "dimensionName": "Accountability",
+        "recommendations": [
+          {
+            "journeyId": "widowed_honoring_memory",
+            "journeyTitle": "Honoring Their Memory While Creating New Ones",
+            "rationale": "Accountability for widowed includes honest assessment of marriage without idealizing or demonizing."
+          },
+          {
+            "journeyId": "widowed_rediscovering_identity",
+            "journeyTitle": "Rediscovering Identity and Purpose",
+            "rationale": "Identity work includes honest self-reflection about who you were as a spouse."
+          },
+          {
+            "journeyId": "widowed_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Covenant preparation includes bringing wisdom from past marriage, including ownership of patterns."
+          }
+        ]
+      },
+      {
+        "dimensionId": "change_basis",
+        "dimensionName": "Change Basis",
+        "recommendations": [
+          {
+            "journeyId": "widowed_opening_heart_new_love",
+            "journeyTitle": "Opening Your Heart to New Love",
+            "rationale": "Directly addresses whether readiness comes from healing or escape from grief/loneliness."
+          },
+          {
+            "journeyId": "widowed_navigating_grief_loss",
+            "journeyTitle": "Navigating Grief and Loss",
+            "rationale": "True change basis requires processed grief, not avoidance through new relationship."
+          },
+          {
+            "journeyId": "widowed_dealing_with_loneliness",
+            "journeyTitle": "Dealing with Loneliness",
+            "rationale": "Understanding loneliness helps distinguish escape-driven from healing-driven interest."
+          },
+          {
+            "journeyId": "widowed_rebuilding_life",
+            "journeyTitle": "Rebuilding Life After Loss",
+            "rationale": "Rebuilding life independently shows change basis is internal, not dependent on new partner."
+          }
+        ]
+      },
+      {
+        "dimensionId": "comparison_risk",
+        "dimensionName": "Comparison Risk",
+        "recommendations": [
+          {
+            "journeyId": "widowed_honoring_memory",
+            "journeyTitle": "Honoring Their Memory While Creating New Ones",
+            "rationale": "Learning to honor without comparison - carrying memory without imposing on new partner."
+          },
+          {
+            "journeyId": "widowed_opening_heart_new_love",
+            "journeyTitle": "Opening Your Heart to New Love",
+            "rationale": "Addresses seeing new partner as unique person, not replacement or comparison."
+          },
+          {
+            "journeyId": "widowed_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Covenant preparation includes learning to fully commit to new person."
+          },
+          {
+            "journeyId": "widowed_navigating_grief_loss",
+            "journeyTitle": "Navigating Grief and Loss",
+            "rationale": "Processed grief reduces need to compare - late spouse has proper place in heart."
+          }
+        ]
+      },
+      {
+        "dimensionId": "conflict_fear",
+        "dimensionName": "Conflict Fear",
+        "recommendations": [
+          {
+            "journeyId": "widowed_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Covenant preparation includes preparing for healthy conflict in new marriage."
+          },
+          {
+            "journeyId": "widowed_opening_heart_new_love",
+            "journeyTitle": "Opening Your Heart to New Love",
+            "rationale": "Addresses fears about new relationship, including fear that conflict means loss."
+          },
+          {
+            "journeyId": "widowed_rebuilding_life",
+            "journeyTitle": "Rebuilding Life After Loss",
+            "rationale": "Rebuilding confidence in handling challenges reduces fear in relationships."
+          },
+          {
+            "journeyId": "widowed_rediscovering_identity",
+            "journeyTitle": "Rediscovering Identity and Purpose",
+            "rationale": "Strong identity supports healthy conflict - not losing self in disagreement."
+          }
+        ]
+      },
+      {
+        "dimensionId": "disclosure_boundaries",
+        "dimensionName": "Disclosure Boundaries",
+        "recommendations": [
+          {
+            "journeyId": "widowed_opening_heart_new_love",
+            "journeyTitle": "Opening Your Heart to New Love",
+            "rationale": "Addresses what and how to share about deceased spouse with new partner."
+          },
+          {
+            "journeyId": "widowed_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Covenant preparation includes navigating how to honor past while building future."
+          },
+          {
+            "journeyId": "widowed_honoring_memory",
+            "journeyTitle": "Honoring Their Memory While Creating New Ones",
+            "rationale": "Learning what memory practices to maintain and which might burden new partner."
+          },
+          {
+            "journeyId": "widowed_kids_embrace_new_commitment",
+            "journeyTitle": "Helping Kids Embrace Your New Commitment",
+            "rationale": "If children involved, disclosure includes how to talk about deceased parent with new partner."
+          }
+        ]
+      },
+      {
+        "dimensionId": "emotional_state",
+        "dimensionName": "Emotional State",
+        "recommendations": [
+          {
+            "journeyId": "widowed_navigating_grief_loss",
+            "journeyTitle": "Navigating Grief and Loss",
+            "rationale": "Core grief journey - processing full range of emotions after spouse's death."
+          },
+          {
+            "journeyId": "widowed_dealing_with_loneliness",
+            "journeyTitle": "Dealing with Loneliness",
+            "rationale": "Loneliness is primary emotional state for widowed - needs direct attention."
+          },
+          {
+            "journeyId": "widowed_holidays_anniversaries",
+            "journeyTitle": "Navigating Holidays and Anniversaries",
+            "rationale": "Emotional state tested most on significant dates. Provides coping strategies."
+          },
+          {
+            "journeyId": "widowed_staying_present_for_kids",
+            "journeyTitle": "Staying Present for Your Kids",
+            "rationale": "If parent, emotional state affects children. Managing emotions supports family."
+          }
+        ]
+      },
+      {
+        "dimensionId": "family_patterns_future_home",
+        "dimensionName": "Family Patterns & Future Home",
+        "recommendations": [
+          {
+            "journeyId": "widowed_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Includes vision for blended home, especially with children."
+          },
+          {
+            "journeyId": "widowed_kids_embrace_new_commitment",
+            "journeyTitle": "Helping Kids Embrace Your New Commitment",
+            "rationale": "If children involved, addresses family blending directly."
+          },
+          {
+            "journeyId": "widowed_rebuilding_life",
+            "journeyTitle": "Rebuilding Life After Loss",
+            "rationale": "Rebuilding includes establishing new household patterns."
+          },
+          {
+            "journeyId": "widowed_honoring_memory",
+            "journeyTitle": "Honoring Their Memory While Creating New Ones",
+            "rationale": "Future home includes how deceased spouse's memory is honored in new family."
+          }
+        ]
+      },
+      {
+        "dimensionId": "god_s_role_framing",
+        "dimensionName": "God's Role Framing",
+        "recommendations": [
+          {
+            "journeyId": "widowed_navigating_grief_loss",
+            "journeyTitle": "Navigating Grief and Loss",
+            "rationale": "Addresses faith questions from loss - why did God allow this, where is He now."
+          },
+          {
+            "journeyId": "widowed_opening_heart_new_love",
+            "journeyTitle": "Opening Your Heart to New Love",
+            "rationale": "Addresses spiritual peace about loving again - whether God blesses remarriage."
+          },
+          {
+            "journeyId": "widowed_rediscovering_identity",
+            "journeyTitle": "Rediscovering Identity and Purpose",
+            "rationale": "Identity in Christ provides foundation for understanding God's role and purpose."
+          },
+          {
+            "journeyId": "widowed_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Covenant preparation includes spiritual foundation and God's blessing on remarriage."
+          }
+        ]
+      },
+      {
+        "dimensionId": "growth_domain",
+        "dimensionName": "Growth Domain",
+        "recommendations": [
+          {
+            "journeyId": "widowed_rediscovering_identity",
+            "journeyTitle": "Rediscovering Identity and Purpose",
+            "rationale": "Growth includes becoming who you are beyond 'spouse of' - identity development."
+          },
+          {
+            "journeyId": "widowed_rebuilding_life",
+            "journeyTitle": "Rebuilding Life After Loss",
+            "rationale": "Rebuilding requires growth - new skills, confidence, capabilities."
+          },
+          {
+            "journeyId": "widowed_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Bringing wisdom from first marriage into second is growth application."
+          },
+          {
+            "journeyId": "widowed_navigating_grief_loss",
+            "journeyTitle": "Navigating Grief and Loss",
+            "rationale": "Growth through grief - becoming deeper, more compassionate person."
+          }
+        ]
+      },
+      {
+        "dimensionId": "healing_progress",
+        "dimensionName": "Healing Progress",
+        "recommendations": [
+          {
+            "journeyId": "widowed_navigating_grief_loss",
+            "journeyTitle": "Navigating Grief and Loss",
+            "rationale": "Primary healing journey for grief - core work of widowed healing."
+          },
+          {
+            "journeyId": "widowed_dealing_with_loneliness",
+            "journeyTitle": "Dealing with Loneliness",
+            "rationale": "Loneliness healing is distinct from grief healing - both needed."
+          },
+          {
+            "journeyId": "widowed_rediscovering_identity",
+            "journeyTitle": "Rediscovering Identity and Purpose",
+            "rationale": "Identity reconstruction is part of healing - becoming whole as individual."
+          },
+          {
+            "journeyId": "widowed_rebuilding_life",
+            "journeyTitle": "Rebuilding Life After Loss",
+            "rationale": "Rebuilding is healing in action - moving from surviving to thriving."
+          },
+          {
+            "journeyId": "widowed_holidays_anniversaries",
+            "journeyTitle": "Navigating Holidays and Anniversaries",
+            "rationale": "Healing tested on hard dates. Surviving them marks progress."
+          }
+        ]
+      },
+      {
+        "dimensionId": "loneliness_driver",
+        "dimensionName": "Loneliness Driver",
+        "recommendations": [
+          {
+            "journeyId": "widowed_dealing_with_loneliness",
+            "journeyTitle": "Dealing with Loneliness",
+            "rationale": "Directly addresses loneliness - understanding it, managing it, preventing desperate decisions."
+          },
+          {
+            "journeyId": "widowed_opening_heart_new_love",
+            "journeyTitle": "Opening Your Heart to New Love",
+            "rationale": "Addresses whether loneliness is driving remarriage interest vs. genuine readiness."
+          },
+          {
+            "journeyId": "widowed_rebuilding_life",
+            "journeyTitle": "Rebuilding Life After Loss",
+            "rationale": "Rebuilding includes building community that addresses loneliness without requiring romance."
+          },
+          {
+            "journeyId": "widowed_rediscovering_identity",
+            "journeyTitle": "Rediscovering Identity and Purpose",
+            "rationale": "Strong identity includes capacity to be alone. Purpose provides meaning beyond partnership."
+          }
+        ]
+      },
+      {
+        "dimensionId": "marriage_understanding",
+        "dimensionName": "Marriage Understanding",
+        "recommendations": [
+          {
+            "journeyId": "widowed_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Builds mature understanding of what second marriage requires."
+          },
+          {
+            "journeyId": "widowed_opening_heart_new_love",
+            "journeyTitle": "Opening Your Heart to New Love",
+            "rationale": "Includes realistic expectations about what loving again looks like."
+          },
+          {
+            "journeyId": "widowed_honoring_memory",
+            "journeyTitle": "Honoring Their Memory While Creating New Ones",
+            "rationale": "Understanding that new marriage doesn't replace first - both honored."
+          },
+          {
+            "journeyId": "widowed_kids_embrace_new_commitment",
+            "journeyTitle": "Helping Kids Embrace Your New Commitment",
+            "rationale": "If children, understanding blended family dynamics is part of marriage understanding."
+          }
+        ]
+      },
+      {
+        "dimensionId": "meaning_making",
+        "dimensionName": "Meaning-Making",
+        "recommendations": [
+          {
+            "journeyId": "widowed_navigating_grief_loss",
+            "journeyTitle": "Navigating Grief and Loss",
+            "rationale": "Meaning-making is central to grief work - finding purpose and redemption in loss."
+          },
+          {
+            "journeyId": "widowed_rediscovering_identity",
+            "journeyTitle": "Rediscovering Identity and Purpose",
+            "rationale": "Identity reconstruction includes meaning-making - who am I now and why."
+          },
+          {
+            "journeyId": "widowed_honoring_memory",
+            "journeyTitle": "Honoring Their Memory While Creating New Ones",
+            "rationale": "Meaning includes legacy - how spouse's life and death shape ongoing purpose."
+          },
+          {
+            "journeyId": "widowed_rebuilding_life",
+            "journeyTitle": "Rebuilding Life After Loss",
+            "rationale": "Rebuilding gives life new meaning through purpose and contribution."
+          }
+        ]
+      },
+      {
+        "dimensionId": "memory_intrusion",
+        "dimensionName": "Memory Intrusion",
+        "recommendations": [
+          {
+            "journeyId": "widowed_navigating_grief_loss",
+            "journeyTitle": "Navigating Grief and Loss",
+            "rationale": "Intrusive memories indicate unprocessed grief. Grief work reduces intrusion."
+          },
+          {
+            "journeyId": "widowed_honoring_memory",
+            "journeyTitle": "Honoring Their Memory While Creating New Ones",
+            "rationale": "Learning to hold memory without being hijacked - intentional vs. intrusive remembering."
+          },
+          {
+            "journeyId": "widowed_holidays_anniversaries",
+            "journeyTitle": "Navigating Holidays and Anniversaries",
+            "rationale": "Memory intrusion peaks around significant dates. Provides coping strategies."
+          },
+          {
+            "journeyId": "widowed_opening_heart_new_love",
+            "journeyTitle": "Opening Your Heart to New Love",
+            "rationale": "Managing memories in new relationship context - when they surface around new partner."
+          }
+        ]
+      },
+      {
+        "dimensionId": "readiness_orientation",
+        "dimensionName": "Readiness Orientation",
+        "recommendations": [
+          {
+            "journeyId": "widowed_opening_heart_new_love",
+            "journeyTitle": "Opening Your Heart to New Love",
+            "rationale": "Directly assesses and builds readiness for new relationship."
+          },
+          {
+            "journeyId": "widowed_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Final preparation before remarriage - confirms readiness."
+          },
+          {
+            "journeyId": "widowed_navigating_grief_loss",
+            "journeyTitle": "Navigating Grief and Loss",
+            "rationale": "Readiness requires sufficient grief work. Ensures foundation."
+          },
+          {
+            "journeyId": "widowed_rediscovering_identity",
+            "journeyTitle": "Rediscovering Identity and Purpose",
+            "rationale": "Readiness includes knowing who you are now - solid identity."
+          },
+          {
+            "journeyId": "widowed_kids_embrace_new_commitment",
+            "journeyTitle": "Helping Kids Embrace Your New Commitment",
+            "rationale": "If children, readiness includes their preparation, not just yours."
+          }
+        ]
+      },
+      {
+        "dimensionId": "remarriage_posture",
+        "dimensionName": "Remarriage Posture",
+        "recommendations": [
+          {
+            "journeyId": "widowed_opening_heart_new_love",
+            "journeyTitle": "Opening Your Heart to New Love",
+            "rationale": "Addresses posture - guilt, loyalty conflicts, openness, hope without desperation."
+          },
+          {
+            "journeyId": "widowed_honoring_memory",
+            "journeyTitle": "Honoring Their Memory While Creating New Ones",
+            "rationale": "Healthy posture includes resolving loyalty conflicts - can love again without betraying first spouse."
+          },
+          {
+            "journeyId": "widowed_rediscovering_identity",
+            "journeyTitle": "Rediscovering Identity and Purpose",
+            "rationale": "Strong individual identity supports healthy posture - not desperate, not closed."
+          },
+          {
+            "journeyId": "widowed_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Covenant preparation shapes posture toward remarriage with proper gravity and hope."
+          }
+        ]
+      },
+      {
+        "dimensionId": "spiritual_peace",
+        "dimensionName": "Spiritual Peace",
+        "recommendations": [
+          {
+            "journeyId": "widowed_navigating_grief_loss",
+            "journeyTitle": "Navigating Grief and Loss",
+            "rationale": "Spiritual peace about loss must precede spiritual peace about remarriage."
+          },
+          {
+            "journeyId": "widowed_opening_heart_new_love",
+            "journeyTitle": "Opening Your Heart to New Love",
+            "rationale": "Addresses spiritual questions about loving again - God's blessing, theological permission."
+          },
+          {
+            "journeyId": "widowed_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Covenant preparation includes spiritual foundation for new marriage."
+          },
+          {
+            "journeyId": "widowed_rediscovering_identity",
+            "journeyTitle": "Rediscovering Identity and Purpose",
+            "rationale": "Identity in Christ provides spiritual grounding and peace."
+          }
+        ]
+      },
+      {
+        "dimensionId": "trigger_response",
+        "dimensionName": "Trigger Response",
+        "recommendations": [
+          {
+            "journeyId": "widowed_navigating_grief_loss",
+            "journeyTitle": "Navigating Grief and Loss",
+            "rationale": "Triggers indicate unprocessed grief. Grief work reduces trigger intensity."
+          },
+          {
+            "journeyId": "widowed_holidays_anniversaries",
+            "journeyTitle": "Navigating Holidays and Anniversaries",
+            "rationale": "Major triggers are calendar-based. Provides specific trigger management."
+          },
+          {
+            "journeyId": "widowed_opening_heart_new_love",
+            "journeyTitle": "Opening Your Heart to New Love",
+            "rationale": "Managing triggers in new relationship context - when memories surface around new partner."
+          },
+          {
+            "journeyId": "widowed_dealing_with_loneliness",
+            "journeyTitle": "Dealing with Loneliness",
+            "rationale": "Loneliness can trigger grief. Managing loneliness reduces some triggers."
+          }
+        ]
+      },
+      {
+        "dimensionId": "trust_capacity",
+        "dimensionName": "Trust Capacity",
+        "recommendations": [
+          {
+            "journeyId": "widowed_opening_heart_new_love",
+            "journeyTitle": "Opening Your Heart to New Love",
+            "rationale": "Addresses fear of loss again - can I trust enough to love knowing I could lose again."
+          },
+          {
+            "journeyId": "widowed_navigating_grief_loss",
+            "journeyTitle": "Navigating Grief and Loss",
+            "rationale": "Trust in life and God after loss is foundational to trusting new partner."
+          },
+          {
+            "journeyId": "widowed_preparing_new_covenant",
+            "journeyTitle": "Preparing for a New Covenant",
+            "rationale": "Covenant requires trust. Preparation includes building capacity to commit again."
+          },
+          {
+            "journeyId": "widowed_rediscovering_identity",
+            "journeyTitle": "Rediscovering Identity and Purpose",
+            "rationale": "Strong identity supports risk of trusting - not losing self if loss happens again."
+          }
+        ]
+      }
+    ],
+    "profileBasedRecommendations": {
+      "STRONG": {
+        "description": "Ready for remarriage - grief integrated, heart open, wisdom present.",
+        "recommendations": [
+          "widowed_preparing_new_covenant",
+          "widowed_opening_heart_new_love",
+          "widowed_kids_embrace_new_commitment"
+        ]
+      },
+      "DEVELOPING": {
+        "description": "Real progress with specific areas needing attention.",
+        "recommendations": "Assign based on lowest-scoring dimensions"
+      },
+      "GUARDED": {
+        "description": "Grief still active. More healing needed before remarriage.",
+        "recommendations": [
+          "widowed_navigating_grief_loss",
+          "widowed_dealing_with_loneliness",
+          "widowed_honoring_memory",
+          "widowed_rediscovering_identity"
+        ]
+      },
+      "AT_RISK": {
+        "description": "Deep grief requiring professional support.",
+        "recommendations": [
+          "widowed_navigating_grief_loss",
+          "widowed_dealing_with_loneliness",
+          "widowed_staying_present_for_kids"
+        ],
+        "clinicalNote": "Strongly encourage grief counseling or support groups. Journeys supplement but don't replace professional help."
+      }
+    }
+  },
+  "singlesReadiness": {
+    "assessmentId": "singles_readiness",
+    "audience": "single_never_married",
+    "dimensionMappings": [
+      {
+        "dimensionId": "attachment_security",
+        "dimensionName": "Emotional Security",
+        "recommendations": [
+          {
+            "journeyId": "singles_identity_self_worth",
+            "journeyTitle": "Identity & Self-Worth",
+            "rationale": "Core foundation for feeling secure - know your worth before seeking relationship"
+          },
+          {
+            "journeyId": "singles_secure_confidence",
+            "journeyTitle": "Growing in Secure Confidence",
+            "rationale": "Directly addresses building secure confidence that allows healthy attachment"
+          },
+          {
+            "journeyId": "singles_fear_commitment",
+            "journeyTitle": "Overcoming Fear of Commitment",
+            "rationale": "Fear blocks secure attachment - learning to face rather than flee"
+          },
+          {
+            "journeyId": "singles_healing_past_wounds",
+            "journeyTitle": "Healing Past Wounds",
+            "rationale": "Wounds damage security - healing restores secure attachment capacity"
+          }
+        ]
+      },
+      {
+        "dimensionId": "conflict_posture",
+        "dimensionName": "Conflict Posture",
+        "recommendations": [
+          {
+            "journeyId": "singles_toxic_triggers",
+            "journeyTitle": "Understanding Toxic Triggers",
+            "rationale": "Recognizing how triggers drive poor conflict responses before marriage"
+          },
+          {
+            "journeyId": "singles_communication_skills",
+            "journeyTitle": "Communication Skills",
+            "rationale": "Better communication directly translates to healthier conflict"
+          },
+          {
+            "journeyId": "singles_healthy_boundaries",
+            "journeyTitle": "Healthy Boundaries",
+            "rationale": "Boundaries protect you and create space for conflict resolution"
+          },
+          {
+            "journeyId": "singles_unhealthy_family_patterns",
+            "journeyTitle": "Breaking Family Patterns",
+            "rationale": "Family patterns often determine conflict approach - breaking them is essential"
+          }
+        ]
+      },
+      {
+        "dimensionId": "conflict_resolution_pattern",
+        "dimensionName": "Conflict Repair Skills",
+        "recommendations": [
+          {
+            "journeyId": "singles_unhealthy_family_patterns",
+            "journeyTitle": "Breaking Family Patterns",
+            "rationale": "Family patterns repeat in your conflict resolution - identify and change them"
+          },
+          {
+            "journeyId": "singles_communication_skills",
+            "journeyTitle": "Communication Skills",
+            "rationale": "Repair requires communication skills - knowing how to reconnect after conflict"
+          },
+          {
+            "journeyId": "singles_healthy_boundaries",
+            "journeyTitle": "Healthy Boundaries",
+            "rationale": "Recovery after conflict needs clear boundaries to prevent harm"
+          },
+          {
+            "journeyId": "singles_emotional_intelligence",
+            "journeyTitle": "Building Emotional Intelligence",
+            "rationale": "Repair requires emotional awareness and ability to repair with empathy"
+          }
+        ]
+      },
+      {
+        "dimensionId": "decision_making_alignment",
+        "dimensionName": "Decision-Making Alignment",
+        "recommendations": [
+          {
+            "journeyId": "singles_breaking_cultural_lies",
+            "journeyTitle": "Deconstructing Cultural Lies About Marriage",
+            "rationale": "Must align on what marriage truly requires before choosing partner"
+          },
+          {
+            "journeyId": "singles_compatibility_values",
+            "journeyTitle": "Assessing Compatibility",
+            "rationale": "Directly assesses values alignment and decision-making compatibility"
+          },
+          {
+            "journeyId": "singles_faith_alignment",
+            "journeyTitle": "Faith Alignment",
+            "rationale": "Faith values shape all major life decisions - must align with partner"
+          },
+          {
+            "journeyId": "singles_choosing_spouse",
+            "journeyTitle": "Choosing a Spouse",
+            "rationale": "Core journey for making wise decisions about life partner"
+          },
+          {
+            "journeyId": "singles_dating_purpose",
+            "journeyTitle": "Dating with Purpose",
+            "rationale": "Purposeful dating means making aligned decisions about commitment"
+          }
+        ]
+      },
+      {
+        "dimensionId": "emotional_regulation",
+        "dimensionName": "Emotional Regulation",
+        "recommendations": [
+          {
+            "journeyId": "singles_emotional_intelligence",
+            "journeyTitle": "Building Emotional Intelligence",
+            "rationale": "EI is the primary skill for regulating emotions effectively"
+          },
+          {
+            "journeyId": "singles_unhealthy_family_patterns",
+            "journeyTitle": "Breaking Family Patterns",
+            "rationale": "Family patterns determine your default emotional regulation style"
+          },
+          {
+            "journeyId": "singles_healing_past_wounds",
+            "journeyTitle": "Healing Past Wounds",
+            "rationale": "Unhealed wounds dysregulate emotions - healing restores regulation"
+          },
+          {
+            "journeyId": "singles_toxic_triggers",
+            "journeyTitle": "Understanding Toxic Triggers",
+            "rationale": "Triggers dysregulate - managing them helps maintain emotional balance"
+          },
+          {
+            "journeyId": "singles_secure_confidence",
+            "journeyTitle": "Growing in Secure Confidence",
+            "rationale": "Confidence and security support better emotional regulation"
+          }
+        ]
+      },
+      {
+        "dimensionId": "family_background_learned_patterns",
+        "dimensionName": "Family Background & Learned Patterns",
+        "recommendations": [
+          {
+            "journeyId": "singles_healing_past_wounds",
+            "journeyTitle": "Healing Past Wounds",
+            "rationale": "Wounds from family of origin need healing before marriage"
+          },
+          {
+            "journeyId": "singles_unhealthy_family_patterns",
+            "journeyTitle": "Breaking Family Patterns",
+            "rationale": "Core journey for identifying and breaking inherited family patterns"
+          },
+          {
+            "journeyId": "singles_secure_confidence",
+            "journeyTitle": "Growing in Secure Confidence",
+            "rationale": "Secure adulthood includes transcending unhealthy family patterns"
+          },
+          {
+            "journeyId": "singles_compatibility_values",
+            "journeyTitle": "Assessing Compatibility",
+            "rationale": "Partner choice is deeply shaped by family patterns - assess awareness"
+          }
+        ]
+      },
+      {
+        "dimensionId": "hard_season_coping",
+        "dimensionName": "Handling Stress",
+        "recommendations": [
+          {
+            "journeyId": "singles_unhealthy_family_patterns",
+            "journeyTitle": "Breaking Family Patterns",
+            "rationale": "Family patterns determine your stress response style"
+          },
+          {
+            "journeyId": "singles_emotional_intelligence",
+            "journeyTitle": "Building Emotional Intelligence",
+            "rationale": "EI helps navigate stress and hard times without falling apart"
+          },
+          {
+            "journeyId": "singles_faith_alignment",
+            "journeyTitle": "Faith Alignment",
+            "rationale": "Faith sustains you through hard seasons and difficulties"
+          },
+          {
+            "journeyId": "singles_healing_past_wounds",
+            "journeyTitle": "Healing Past Wounds",
+            "rationale": "Past trauma affects coping capacity - healing increases resilience"
+          },
+          {
+            "journeyId": "singles_healthy_boundaries",
+            "journeyTitle": "Healthy Boundaries",
+            "rationale": "Healthy boundaries help manage stress and prevent overextension"
+          }
+        ]
+      },
+      {
+        "dimensionId": "hurt_response",
+        "dimensionName": "Hurt Response",
+        "recommendations": [
+          {
+            "journeyId": "singles_healing_past_wounds",
+            "journeyTitle": "Healing Past Wounds",
+            "rationale": "Process emotional hurt to respond healthily rather than defensively"
+          },
+          {
+            "journeyId": "singles_communication_skills",
+            "journeyTitle": "Communication Skills",
+            "rationale": "Communicate hurt clearly and honestly to avoid resentment buildup"
+          },
+          {
+            "journeyId": "singles_healthy_boundaries",
+            "journeyTitle": "Healthy Boundaries",
+            "rationale": "Boundaries protect you and help you respond to hurt from a place of safety"
+          },
+          {
+            "journeyId": "singles_emotional_intelligence",
+            "journeyTitle": "Building Emotional Intelligence",
+            "rationale": "EI helps recognize hurt as information rather than threat"
+          }
+        ]
+      },
+      {
+        "dimensionId": "long_term_orientation",
+        "dimensionName": "Long-Term Orientation",
+        "recommendations": [
+          {
+            "journeyId": "singles_choosing_spouse",
+            "journeyTitle": "Choosing a Spouse",
+            "rationale": "Long-term thinking means choosing based on character and values, not chemistry alone"
+          },
+          {
+            "journeyId": "singles_compatibility_values",
+            "journeyTitle": "Assessing Compatibility",
+            "rationale": "Compatibility assessment focuses on long-term life trajectory alignment"
+          },
+          {
+            "journeyId": "singles_breaking_cultural_lies",
+            "journeyTitle": "Deconstructing Cultural Lies About Marriage",
+            "rationale": "Cultural narratives often emphasize short-term romance over long-term commitment"
+          },
+          {
+            "journeyId": "singles_faith_alignment",
+            "journeyTitle": "Faith Alignment",
+            "rationale": "Faith provides long-term perspective and commitment framework"
+          }
+        ]
+      },
+      {
+        "dimensionId": "marriage_expectations",
+        "dimensionName": "Marriage Expectations",
+        "recommendations": [
+          {
+            "journeyId": "singles_breaking_cultural_lies",
+            "journeyTitle": "Deconstructing Cultural Lies About Marriage",
+            "rationale": "Cultural narratives create unrealistic marriage expectations - deconstruct them"
+          },
+          {
+            "journeyId": "singles_compatibility_values",
+            "journeyTitle": "Assessing Compatibility",
+            "rationale": "Align expectations about marriage roles, responsibilities, and lifestyle with partner"
+          },
+          {
+            "journeyId": "singles_choosing_spouse",
+            "journeyTitle": "Choosing a Spouse",
+            "rationale": "Know your marriage expectations before choosing a life partner"
+          },
+          {
+            "journeyId": "singles_dating_purpose",
+            "journeyTitle": "Dating with Purpose",
+            "rationale": "Purpose-driven dating clarifies what marriage means to you"
+          }
+        ]
+      },
+      {
+        "dimensionId": "partner_discernment",
+        "dimensionName": "Partner Discernment",
+        "recommendations": [
+          {
+            "journeyId": "singles_choosing_spouse",
+            "journeyTitle": "Choosing a Spouse",
+            "rationale": "Core journey teaching how to discern wisdom about character and suitability"
+          },
+          {
+            "journeyId": "singles_red_flags",
+            "journeyTitle": "Recognizing Red Flags",
+            "rationale": "Essential skills for identifying unhealthy patterns and incompatibilities"
+          },
+          {
+            "journeyId": "singles_compatibility_values",
+            "journeyTitle": "Assessing Compatibility",
+            "rationale": "Structured assessment of whether potential partner is truly compatible"
+          },
+          {
+            "journeyId": "singles_emotional_intelligence",
+            "journeyTitle": "Building Emotional Intelligence",
+            "rationale": "EI supports wise discernment by balancing emotion and logic"
+          }
+        ]
+      },
+      {
+        "dimensionId": "past_relationship_integration",
+        "dimensionName": "Past Relationship Integration",
+        "recommendations": [
+          {
+            "journeyId": "singles_healing_past_wounds",
+            "journeyTitle": "Healing Past Wounds",
+            "rationale": "Integrate lessons without carrying unhealed trauma into new relationships"
+          },
+          {
+            "journeyId": "singles_unhealthy_family_patterns",
+            "journeyTitle": "Breaking Family Patterns",
+            "rationale": "Understand how past relationships reflected family patterns to break cycles"
+          },
+          {
+            "journeyId": "singles_identity_self_worth",
+            "journeyTitle": "Identity & Self-Worth",
+            "rationale": "Restore identity and worth independent of past relationship outcomes"
+          },
+          {
+            "journeyId": "singles_toxic_triggers",
+            "journeyTitle": "Understanding Toxic Triggers",
+            "rationale": "Past relationships create triggers - understanding them prevents projection"
+          }
+        ]
+      },
+      {
+        "dimensionId": "priority_management",
+        "dimensionName": "Priority Management",
+        "recommendations": [
+          {
+            "journeyId": "singles_dating_purpose",
+            "journeyTitle": "Dating with Purpose",
+            "rationale": "Purpose-driven dating requires clear priorities and boundaries"
+          },
+          {
+            "journeyId": "singles_faith_alignment",
+            "journeyTitle": "Faith Alignment",
+            "rationale": "Faith helps order priorities - can't align with partner on secondary priorities"
+          },
+          {
+            "journeyId": "singles_compatibility_values",
+            "journeyTitle": "Assessing Compatibility",
+            "rationale": "Assess whether your priorities align with potential partner's"
+          },
+          {
+            "journeyId": "singles_financial_readiness",
+            "journeyTitle": "Financial Readiness",
+            "rationale": "Financial priorities and management must align in marriage"
+          },
+          {
+            "journeyId": "singles_healthy_boundaries",
+            "journeyTitle": "Healthy Boundaries",
+            "rationale": "Boundaries protect your priorities from being overrun by partner"
+          }
+        ]
+      },
+      {
+        "dimensionId": "relational_self_awareness",
+        "dimensionName": "Relational Self-Awareness",
+        "recommendations": [
+          {
+            "journeyId": "singles_identity_self_worth",
+            "journeyTitle": "Identity & Self-Worth",
+            "rationale": "Understanding yourself is foundation for relational awareness"
+          },
+          {
+            "journeyId": "singles_emotional_intelligence",
+            "journeyTitle": "Building Emotional Intelligence",
+            "rationale": "EI deeply includes self-awareness - seeing yourself clearly"
+          },
+          {
+            "journeyId": "singles_communication_skills",
+            "journeyTitle": "Communication Skills",
+            "rationale": "Self-aware communication is honest and clear about your needs"
+          },
+          {
+            "journeyId": "singles_unhealthy_family_patterns",
+            "journeyTitle": "Breaking Family Patterns",
+            "rationale": "Self-awareness includes seeing family patterns you've internalized"
+          }
+        ]
+      },
+      {
+        "dimensionId": "sacrifice_readiness",
+        "dimensionName": "Sacrifice Readiness",
+        "recommendations": [
+          {
+            "journeyId": "singles_choosing_spouse",
+            "journeyTitle": "Choosing a Spouse",
+            "rationale": "Marriage requires sacrifice - choosing wisely makes sacrifice worthwhile"
+          },
+          {
+            "journeyId": "singles_breaking_cultural_lies",
+            "journeyTitle": "Deconstructing Cultural Lies About Marriage",
+            "rationale": "Cultural lies minimize sacrifice required - understanding truth prepares you"
+          },
+          {
+            "journeyId": "singles_faith_alignment",
+            "journeyTitle": "Faith Alignment",
+            "rationale": "Faith provides motivation and grace for marriage sacrifices"
+          },
+          {
+            "journeyId": "singles_compatibility_values",
+            "journeyTitle": "Assessing Compatibility",
+            "rationale": "Compatibility assessment includes whether shared values make sacrifice meaningful"
+          }
+        ]
+      },
+      {
+        "dimensionId": "spiritual_consistency",
+        "dimensionName": "Spiritual Consistency",
+        "recommendations": [
+          {
+            "journeyId": "singles_faith_alignment",
+            "journeyTitle": "Faith Alignment",
+            "rationale": "Directly addresses building consistent spiritual practice"
+          },
+          {
+            "journeyId": "singles_secure_confidence",
+            "journeyTitle": "Growing in Secure Confidence",
+            "rationale": "Spiritual confidence comes from consistent faith practice"
+          },
+          {
+            "journeyId": "singles_breaking_cultural_lies",
+            "journeyTitle": "Deconstructing Cultural Lies About Marriage",
+            "rationale": "Spiritual perspective helps deconstruct false cultural narratives"
+          },
+          {
+            "journeyId": "singles_purity_discipline",
+            "journeyTitle": "Purity & Boundaries",
+            "rationale": "Purity is spiritual practice - consistency matters"
+          },
+          {
+            "journeyId": "singles_choosing_spouse",
+            "journeyTitle": "Choosing a Spouse",
+            "rationale": "Spiritual maturity guides wise spouse selection"
+          }
+        ]
+      },
+      {
+        "dimensionId": "spiritual_leadership_understanding",
+        "dimensionName": "Spiritual Leadership Understanding",
+        "recommendations": [
+          {
+            "journeyId": "singles_faith_alignment",
+            "journeyTitle": "Faith Alignment",
+            "rationale": "Understand spiritual leadership in marriage context and what it requires"
+          },
+          {
+            "journeyId": "singles_choosing_spouse",
+            "journeyTitle": "Choosing a Spouse",
+            "rationale": "Assess whether potential partner shares vision for spiritual leadership"
+          },
+          {
+            "journeyId": "singles_compatibility_values",
+            "journeyTitle": "Assessing Compatibility",
+            "rationale": "Compatibility includes shared vision for spiritual leadership in family"
+          },
+          {
+            "journeyId": "singles_breaking_cultural_lies",
+            "journeyTitle": "Deconstructing Cultural Lies About Marriage",
+            "rationale": "Cultural lies about gender and leadership require spiritual deconstruction"
+          }
+        ]
+      },
+      {
+        "dimensionId": "trigger_handling",
+        "dimensionName": "Trigger Handling",
+        "recommendations": [
+          {
+            "journeyId": "singles_healing_past_wounds",
+            "journeyTitle": "Healing Past Wounds",
+            "rationale": "Triggers indicate unhealed wounds - healing reduces trigger intensity"
+          },
+          {
+            "journeyId": "singles_unhealthy_family_patterns",
+            "journeyTitle": "Breaking Family Patterns",
+            "rationale": "Family patterns often generate triggers - breaking them helps"
+          },
+          {
+            "journeyId": "singles_toxic_triggers",
+            "journeyTitle": "Understanding Toxic Triggers",
+            "rationale": "Core journey for recognizing and managing your specific triggers"
+          },
+          {
+            "journeyId": "singles_emotional_intelligence",
+            "journeyTitle": "Building Emotional Intelligence",
+            "rationale": "EI helps recognize triggers before they control your responses"
+          },
+          {
+            "journeyId": "singles_healthy_boundaries",
+            "journeyTitle": "Healthy Boundaries",
+            "rationale": "Boundaries protect you from triggers and prevent reactive responses"
+          }
+        ]
+      },
+      {
+        "dimensionId": "unresolved_wounds",
+        "dimensionName": "Healing From Past Hurt",
+        "recommendations": [
+          {
+            "journeyId": "singles_healing_past_wounds",
+            "journeyTitle": "Healing Past Wounds",
+            "rationale": "Core journey for processing and healing deep wounds"
+          },
+          {
+            "journeyId": "singles_unhealthy_family_patterns",
+            "journeyTitle": "Breaking Family Patterns",
+            "rationale": "Family wounds often drive unhealthy patterns - healing addresses root"
+          },
+          {
+            "journeyId": "singles_identity_self_worth",
+            "journeyTitle": "Identity & Self-Worth",
+            "rationale": "Wounds damage worth - restoring identity restores worth"
+          },
+          {
+            "journeyId": "singles_secure_confidence",
+            "journeyTitle": "Growing in Secure Confidence",
+            "rationale": "Confidence grows from healed wounds - security develops"
+          },
+          {
+            "journeyId": "singles_faith_alignment",
+            "journeyTitle": "Faith Alignment",
+            "rationale": "Spiritual healing addresses deepest wounds"
+          }
+        ]
+      }
+    ],
+    "profileBasedRecommendations": {
+      "STRONG": {
+        "description": "You've built a strong foundation - focus on deepening wisdom about love and partner selection.",
+        "recommendations": [
+          "singles_journey_14_compatibility",
+          "singles_journey_19_choosing_spouse",
+          "singles_journey_15_dating_purpose"
+        ]
+      },
+      "DEVELOPING": {
+        "description": "Real progress with specific growth areas - target lowest dimensions with corresponding journeys.",
+        "recommendations": "Assign based on lowest-scoring dimensions"
+      },
+      "GUARDED": {
+        "description": "Significant core work needed before marriage - focus on healing and foundation-building.",
+        "recommendations": [
+          "singles_journey_03_healing_past_wounds",
+          "singles_journey_04_family_patterns",
+          "singles_journey_06_emotional_intelligence",
+          "singles_journey_01_identity_self_worth"
+        ]
+      },
+      "AT_RISK": {
+        "description": "Critical gaps suggest marriage would be premature. Professional support strongly recommended.",
+        "recommendations": [
+          "singles_journey_03_healing_past_wounds",
+          "singles_journey_04_family_patterns",
+          "singles_journey_01_identity_self_worth"
+        ],
+        "clinicalNote": "Strongly encourage professional counseling before pursuing marriage. These journeys supplement but do not replace therapeutic support."
+      }
+    }
+  },
+  "implementationNotes": {
+    "scoringLogic": "For DEVELOPING profiles, assign journeys based on 2-3 lowest-scoring dimensions. Each dimension maps to multiple recommendations.",
+    "journeyOrdering": "Prioritize foundational journeys (grief/healing) before relational journeys (trust/conflict) before preparation journeys (covenant/dating).",
+    "minimumRecommendations": "Each dimension has at least 2 recommendations. Most have 3-5 based on genuine relevance.",
+    "multipleAssessments": "If user takes multiple assessments over time, track dimension changes and recommend journeys for dimensions showing least improvement."
+  }
+}

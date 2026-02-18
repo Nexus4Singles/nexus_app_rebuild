@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_v2/core/router/safe_nav.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/core/providers/tab_selection_provider.dart';
 import '../../application/compatibility_quiz_provider.dart';
 
 class CompatibilityQuizScreen extends ConsumerWidget {
@@ -123,10 +125,16 @@ class CompatibilityQuizScreen extends ConsumerWidget {
                                     } else {
                                       await notifier.submit();
                                       if (context.mounted) {
-                                        // Route to user's own dating profile after completion
+                                        // Switch to profile tab and navigate home
+                                        ref
+                                            .read(selectedTabProvider.notifier)
+                                            .state = NavTab.profile;
                                         Navigator.of(
                                           context,
-                                        ).pushReplacementNamed('/profile');
+                                        ).pushNamedAndRemoveUntil(
+                                          '/home',
+                                          (_) => false,
+                                        );
                                       }
                                     }
                                   },

@@ -40,11 +40,11 @@ void navigateBackToHome(BuildContext context) {
     if (Navigator.of(context).canPop()) {
       Navigator.of(context).pop();
     } else {
-      // If we can't pop (first route or deep link), navigate to home
+      // If we can't pop (first route or deep link), navigate to /home (AppShell with nav bar, no splash)
       Navigator.of(context).pushNamedAndRemoveUntil('/home', (_) => false);
     }
   } catch (_) {
-    // Last resort: replace with home
+    // Last resort: replace with /home (AppShell with nav bar, no splash)
     try {
       Navigator.of(context).pushReplacementNamed('/home');
     } catch (_) {

@@ -72,8 +72,11 @@ class JourneyV1 {
             ?.map((e) => e.toString().toLowerCase())
             .toList();
 
+    // Check both 'id' and 'journeyId' fields - journey files use 'journeyId'
+    final journeyId = (json['journeyId'] ?? json['id'] ?? '') as String;
+
     return JourneyV1(
-      id: (json['id'] ?? '') as String,
+      id: journeyId,
       title: (json['title'] ?? '') as String,
       subtitle: (json['subtitle'] ?? '') as String,
       summary: (json['summary'] ?? '') as String,

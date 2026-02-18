@@ -62,7 +62,7 @@
   "dimensions": [
     {
       "id": "appreciation_encouragement",
-      "name": "Appreciation & Encouragement",
+      "name": "You are Valued and Encouraged",
       "insights": {
         "low": "Your spouse may not feel seen or valued right now. Expressing appreciation is like oxygen for relationships—without it, marriage starves.",
         "medium": "You appreciate your spouse sometimes, but they might need to hear it more consistently. Regular appreciation strengthens connection and security.",
@@ -73,7 +73,7 @@
     },
     {
       "id": "commitment_to_growth",
-      "name": "Commitment to Growth",
+      "name": "You're Growing Together",
       "insights": {
         "low": "One or both of you may resist change or personal growth. Marriage thrives when both partners are committed to growing individually and together.",
         "medium": "You're both somewhat open to growth but might resist in certain areas. Embracing growth mindset strengthens your marriage's resilience.",
@@ -84,7 +84,7 @@
     },
     {
       "id": "conflict_navigation",
-      "name": "Conflict Navigation",
+      "name": "You Handle Conflict Well",
       "insights": {
         "low": "Conflict may feel destructive or unmanageable right now. Learning healthier conflict patterns can transform these moments from threats into opportunities.",
         "medium": "You can navigate some conflict but certain types or situations escalate quickly. Building skills prevents small issues from becoming big divides.",
@@ -95,7 +95,7 @@
     },
     {
       "id": "connection_communication",
-      "name": "Connection & Communication",
+      "name": "You Stay Connected",
       "insights": {
         "low": "You may feel disconnected or find communication difficult right now. Rebuilding connection requires intentional time and vulnerability.",
         "medium": "You have a friendly connection but deeper communication could deepen intimacy. Small moments of openness create big shifts in marriages.",
@@ -106,7 +106,7 @@
     },
     {
       "id": "emotional_intimacy",
-      "name": "Emotional Intimacy",
+      "name": "You're Emotionally Close",
       "insights": {
         "low": "Emotional distance may be significant right now. Rebuilding emotional intimacy requires vulnerability, time, and willingness from both partners.",
         "medium": "You're emotionally connected in some areas but may hold back in others. Greater openness deepens your bond and strengthens resilience.",
@@ -117,7 +117,7 @@
     },
     {
       "id": "emotional_safety_to_share_hurt",
-      "name": "Emotional Safety to Share Hurt",
+      "name": "You Feel Safe Sharing Hurt",
       "insights": {
         "low": "Your spouse may not feel safe sharing pain with you, or vice versa. Creating safety is foundational—it allows healing and deepens trust.",
         "medium": "There's some safety but maybe not complete openness about hurt. Growing trust allows vulnerable conversations that strengthen marriage.",
@@ -128,7 +128,7 @@
     },
     {
       "id": "faith_in_daily_conduct",
-      "name": "Faith in Daily Conduct",
+      "name": "Your Faith Shapes Daily Life",
       "insights": {
         "low": "Faith may feel disconnected from your daily life right now. Integrating faith into everyday decisions and interactions strengthens marriage.",
         "medium": "You live out some faith values but inconsistently. Greater consistency brings peace and alignment to your marriage.",
@@ -139,7 +139,7 @@
     },
     {
       "id": "family_leadership_parenting_alignment",
-      "name": "Family Leadership & Parenting Alignment",
+      "name": "You're Aligned as Parents",
       "insights": {
         "low": "Parenting and family leadership may be a tension point right now. A shared plan can reduce conflict and bring more peace at home.",
         "medium": "You seem mostly aligned on family direction, but a few areas may still need clearer agreement. Small adjustments can make a big difference.",
@@ -150,7 +150,7 @@
     },
     {
       "id": "financial_alignment",
-      "name": "Financial Alignment",
+      "name": "You Agree on Money",
       "insights": {
         "low": "Financial disagreement may be a significant source of stress. Getting on the same page about money reduces conflict and increases peace.",
         "medium": "You generally agree on finances but some tension areas remain. Clarifying goals and values around money helps alignment.",
@@ -161,7 +161,7 @@
     },
     {
       "id": "physical_affection_intimacy",
-      "name": "Physical Affection & Intimacy",
+      "name": "You Share Physical Affection",
       "insights": {
         "low": "Physical connection may feel distant right now. Rebuilding physical affection—from hand-holding to intimacy—strengthens emotional bonds.",
         "medium": "You share physical affection sometimes but it could deepen. Small gestures of touch throughout the day can reconnect you.",
@@ -172,7 +172,7 @@
     },
     {
       "id": "quality_time",
-      "name": "Quality Time",
+      "name": "You Protect Quality Time Together",
       "insights": {
         "low": "You may lack dedicated, distraction-free time together. Regular one-on-one connection is vital for relationship health.",
         "medium": "You spend time together but it could be more intentional or protected. Prioritizing quality time shows your spouse they matter.",
@@ -183,7 +183,7 @@
     },
     {
       "id": "repair_reconnection",
-      "name": "Repair & Reconnection",
+      "name": "You Repair After Conflict",
       "insights": {
         "low": "You may struggle to reconnect after conflicts. The ability to repair and move forward is crucial for long-term marriage health.",
         "medium": "You can usually patch things up but emotional reconnection could be deeper. True repair restores intimacy after rupture.",
@@ -194,7 +194,7 @@
     },
     {
       "id": "respect_during_conflict",
-      "name": "Respect During Conflict",
+      "name": "You Stay Respectful During Disagreement",
       "insights": {
         "low": "Conflict may involve disrespect or contempt. Maintaining respect even during disagreement is essential for healthy marriage.",
         "medium": "You're mostly respectful but sometimes lose it under pressure. Building consistency here prevents damage and maintains the relationship's foundation.",
@@ -205,7 +205,7 @@
     },
     {
       "id": "responsiveness_to_concerns",
-      "name": "Responsiveness to Concerns",
+      "name": "You Respond to Each Other's Concerns",
       "insights": {
         "low": "Your spouse may feel unheard or dismissed when they express concerns. Responsive listening builds security and shows they matter to you.",
         "medium": "You listen sometimes but your spouse might need you to engage more consistently. Regular responsiveness demonstrates love and commitment.",
@@ -216,7 +216,7 @@
     },
     {
       "id": "safety_wellbeing",
-      "name": "Safety & Wellbeing",
+      "name": "You Feel Safe With Each Other",
       "insights": {
         "low": "One or both of you may not feel physically or emotionally safe. Safety is non-negotiable—all other growth depends on it.",
         "medium": "You generally feel safe but some situations trigger concern. Strengthening safety creates the foundation for deeper connection.",
@@ -227,7 +227,7 @@
     },
     {
       "id": "shared_spiritual_practices",
-      "name": "Shared Spiritual Practices",
+      "name": "You Grow Spiritually Together",
       "insights": {
         "low": "Your spiritual practices may feel disconnected or nonexistent. Shared faith practices create alignment and strength during hard seasons.",
         "medium": "You share some spiritual practices but could strengthen them. Regular prayer, worship, or reflection together deepens spiritual connection.",
@@ -238,7 +238,7 @@
     },
     {
       "id": "teamwork_responsibilities",
-      "name": "Teamwork & Responsibilities",
+      "name": "You Work as a Team",
       "insights": {
         "low": "Responsibilities may feel unfairly distributed or create resentment. Working as a true team reduces burden and builds partnership.",
         "medium": "You work together generally well but some imbalance may exist. Discussing expectations creates fairness and appreciation.",
@@ -249,7 +249,7 @@
     },
     {
       "id": "trust_integrity",
-      "name": "Trust & Integrity",
+      "name": "You Trust Each Other",
       "insights": {
         "low": "Trust may have been broken and needs rebuilding. Integrity in words and actions is essential for restoring trust.",
         "medium": "You generally trust each other but some wariness remains. Continued consistency rebuilds full confidence.",
@@ -260,7 +260,7 @@
     },
     {
       "id": "trust_repair_practices",
-      "name": "Trust Repair Practices",
+      "name": "You Can Repair Broken Trust",
       "insights": {
         "low": "Trust may have been damaged and repair feels difficult or impossible. With the right practices, trust can be rebuilt stronger than before.",
         "medium": "You're trying to rebuild trust but the process feels unclear. Learning specific repair practices accelerates healing.",
@@ -283,7 +283,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "connection_communication_natural_enjoyment",
-          "outcomeLabel": "natural enjoyment of each other",
+          "outcomeLabel": "You naturally enjoy each other",
           "genderInsight": {
             "male": "Natural connection with your wife is a gift. Many husbands underestimate how much their presence — not just their provision — matters.",
             "female": "The fact that you genuinely enjoy your husband's company and he yours is not something to take for granted. This connection is the heartbeat of your marriage."
@@ -295,7 +295,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "connection_communication_comfortable_parallel",
-          "outcomeLabel": "comfortable apart, low effort to connect",
+          "outcomeLabel": "You're comfortable apart, with low effort to connect",
           "genderInsight": {
             "male": "You're connected but there may be room for more intentionality. Many husbands express love through doing; your wife may need you to express it through being.",
             "female": "Comfortable parallel is fine sometimes, but watch for the drift. Women often feel the emotional distance before men notice it."
@@ -307,7 +307,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "connection_communication_drifting_apart",
-          "outcomeLabel": "drifting into separate worlds",
+          "outcomeLabel": "You're drifting into separate worlds",
           "genderInsight": {
             "male": "Drifting apart often happens slowly. Men tend to notice it later than women. If you're here, your wife has likely been feeling this for longer than you think.",
             "female": "If you're drifting into separate worlds, you've probably been feeling this awhile. Your awareness of it is the first step — don't ignore it."
@@ -319,7 +319,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "connection_communication_uncomfortable_together",
-          "outcomeLabel": "uncomfortable with unplanned time together",
+          "outcomeLabel": "Unstructured time together feels awkward or tense",
           "genderInsight": {
             "male": "Discomfort in unstructured togetherness is a serious signal. Marriage needs both structured and unstructured connection. Consider what's making closeness feel unsafe.",
             "female": "If being together without plans feels awkward or tense, something important has been lost. This is worth addressing — with help if needed."
@@ -344,7 +344,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "appreciation_encouragement_specific_expressed",
-          "outcomeLabel": "specific, expressed appreciation",
+          "outcomeLabel": "You express specific, genuine appreciation",
           "genderInsight": {
             "male": "Specific, voiced appreciation is a language many men have to learn. Your wife doesn't just need to feel appreciated — she needs to hear it, in detail. The fact that you do this naturally is powerful.",
             "female": "Expressing specific gratitude creates a cycle of generosity in marriage. Your husband may not ask for encouragement, but he is deeply affected by whether you notice what he does."
@@ -356,7 +356,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "appreciation_encouragement_felt_but_unexpressed",
-          "outcomeLabel": "love felt but rarely expressed",
+          "outcomeLabel": "Love is felt but rarely expressed",
           "genderInsight": {
             "male": "Feeling grateful without saying it is the most common male pattern — and the most corrosive. Your wife cannot read your mind. Unspoken appreciation is functionally the same as no appreciation.",
             "female": "Assuming he knows you're grateful is a risky bet. Most husbands report feeling underappreciated — not because their wives don't feel it, but because they never hear it."
@@ -368,7 +368,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "appreciation_encouragement_running_on_autopilot",
-          "outcomeLabel": "marriage running on autopilot",
+          "outcomeLabel": "Your marriage is running on autopilot",
           "genderInsight": {
             "male": "Autopilot means you've stopped seeing your wife's efforts. For men, this often happens when work stress dominates attention. What she does on autopilot is still a choice — noticing it costs you nothing.",
             "female": "Not noticing thoughtful gestures means the daily fabric of your marriage has become invisible. When appreciation dies, resentment grows in its place."
@@ -380,7 +380,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "appreciation_encouragement_negativity_filter",
-          "outcomeLabel": "negativity filter active",
+          "outcomeLabel": "Your negativity filter is active",
           "genderInsight": {
             "male": "If one good thing can't break through a negativity filter, your wife is being evaluated by a rigged system. A husband who can only see what's missing creates a wife who stops trying.",
             "female": "A negativity filter means you're keeping a mental ledger where debits always outweigh credits. Your husband's good moments deserve to count — otherwise why would he keep making them?"
@@ -401,7 +401,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "quality_time_established_rhythm",
-          "outcomeLabel": "established quality time rhythm",
+          "outcomeLabel": "You have an established quality time rhythm",
           "genderInsight": {
             "male": "Regular phone-free connection means you've made your wife a priority, not an afterthought. Many husbands schedule everything except their marriage.",
             "female": "An established quality time rhythm shows intentionality. This doesn't happen by accident — it's built by two people who choose each other over convenience."
@@ -413,7 +413,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "quality_time_willing_but_rusty",
-          "outcomeLabel": "willing but out of practice",
+          "outcomeLabel": "You're willing but out of practice",
           "genderInsight": {
             "male": "Willing but rusty means the habit has faded. For men, this often means work or hobbies have quietly taken the time that used to belong to your wife. Rebuilding this rhythm is simpler than you think.",
             "female": "Out of practice doesn't mean broken — it means the rhythm needs resetting. The slight awkwardness of re-learning unstructured togetherness is temporary."
@@ -425,7 +425,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "quality_time_avoidance_of_unstructured_intimacy",
-          "outcomeLabel": "avoids unplanned closeness",
+          "outcomeLabel": "You avoid unplanned closeness",
           "genderInsight": {
             "male": "If you're unsure what you'd talk about for a whole evening, your emotional intimacy has been replaced by functional communication — logistics, schedules, and kids. Your wife needs more than a roommate.",
             "female": "Resisting unstructured time together usually means something feels risky about being alone with your husband without distractions. That's important information."
@@ -437,7 +437,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "quality_time_togetherness_triggers_tension",
-          "outcomeLabel": "spending time together creates tension",
+          "outcomeLabel": "Spending time together creates tension",
           "genderInsight": {
             "male": "If unstructured time surfaces tension rather than connection, something fundamental has shifted. For men, this often signals unresolved issues you've been avoiding by staying busy.",
             "female": "Time alone surfacing tension means the distractions have been holding something back. The tension isn't caused by the togetherness — it was already there, waiting."
@@ -458,7 +458,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_intimacy_spouse_is_safe_harbor",
-          "outcomeLabel": "spouse is emotional safe harbor",
+          "outcomeLabel": "Your spouse is your emotional safe harbor",
           "genderInsight": {
             "male": "Your wife being your emotional safe harbor means she feels trusted with your real self — not just the strong version. That trust is your marriage's greatest asset.",
             "female": "Being able to bring your deepest fears to your husband means you've built something rare. Protect this vulnerability — it's the foundation of everything."
@@ -470,7 +470,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "emotional_intimacy_filtered_vulnerability",
-          "outcomeLabel": "opens up partially, holds back the rest",
+          "outcomeLabel": "You share enough for connection but hold back to protect yourself",
           "genderInsight": {
             "male": "Filtered vulnerability is common in men — sharing the 'acceptable' emotions but hiding the deeper fears. Your wife wants the real you, not the edited version.",
             "female": "Sharing selectively is natural but limiting. If you're holding back the hardest parts, consider what you're protecting — yourself, or the image your husband has of you."
@@ -482,7 +482,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "emotional_intimacy_protective_isolation",
-          "outcomeLabel": "protective isolation",
+          "outcomeLabel": "You fear burdening them or assume they couldn't handle it",
           "genderInsight": {
             "male": "Protective isolation often looks like 'not wanting to burden her.' But your wife would rather carry weight with you than wonder why you're distant.",
             "female": "Pulling away emotionally to protect yourself makes sense — but it leaves your husband on the outside wondering what he did wrong."
@@ -494,7 +494,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "emotional_intimacy_spouse_not_emotionally_safe",
-          "outcomeLabel": "spouse is not the emotional safe person",
+          "outcomeLabel": "Your spouse is not your emotional safe person",
           "genderInsight": {
             "male": "If your spouse is not your emotional safe person, that's one of the most important things to address in your marriage right now.",
             "female": "If your husband is not who you go to with your deepest feelings, something foundational needs attention. You deserve to be fully known in your marriage."
@@ -519,7 +519,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "physical_affection_intimacy_alive_and_mutual",
-          "outcomeLabel": "alive and mutual",
+          "outcomeLabel": "Your connection is alive and mutual",
           "genderInsight": {
             "male": "Mutual, alive physical connection means both you and your wife feel desired — not dutiful. Many husbands underestimate how much their wife's sense of being wanted shapes this dynamic.",
             "female": "Mutual physical connection means neither of you is performing or enduring — you're genuinely drawn to each other. This is worth actively protecting."
@@ -531,7 +531,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "physical_affection_intimacy_effortful_but_present",
-          "outcomeLabel": "trying hard to stay connected",
+          "outcomeLabel": "You're trying hard to stay connected",
           "genderInsight": {
             "male": "Effortful but present means the desire is still there but the spontaneity has faded. For husbands, this often means the emotional connection needs rebuilding — for most women, intimacy follows feeling known.",
             "female": "If physical connection takes more effort, consider what's changed emotionally. For many women, physical desire follows emotional safety — if one has dropped, the other often follows."
@@ -543,7 +543,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "physical_affection_intimacy_tension_or_avoidance",
-          "outcomeLabel": "tension or avoidance around intimacy",
+          "outcomeLabel": "You experience tension or avoidance around intimacy",
           "genderInsight": {
             "male": "Tension or avoidance around physical intimacy is one of the most painful markers in a marriage. For men who feel rejected, the instinct is to withdraw — but withdrawal deepens the problem.",
             "female": "If physical intimacy has become a source of tension, you may be caught between obligation and desire. You deserve to feel genuinely wanted, not pressured — and so does your husband."
@@ -555,7 +555,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "physical_affection_intimacy_absent_or_obligatory",
-          "outcomeLabel": "faith absent or purely obligatory",
+          "outcomeLabel": "You rarely touch and it feels forced or obligatory",
           "genderInsight": {
             "male": "Absent physical connection means a critical part of your marriage has gone dormant. Many husbands grieve this silently. This requires honest, possibly professional conversation — not just hope.",
             "female": "Forced or absent intimacy signals something significant has broken in the connection. This isn't about frequency — it's about whether you feel safe, seen, and desired. All three matter."
@@ -576,7 +576,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "shared_spiritual_practices_woven_into_rhythm",
-          "outcomeLabel": "faith woven into weekly rhythm",
+          "outcomeLabel": "Your faith is woven into your weekly rhythm",
           "genderInsight": {
             "male": "Woven-in faith means you're not just a Christian husband on Sunday — you're leading spiritually in the daily. This creates a home where faith is caught, not just taught.",
             "female": "Regular shared spiritual practice means faith isn't just your individual pursuit — it's the connective tissue of your marriage. This shared rhythm sustains when everything else shakes."
@@ -588,7 +588,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "shared_spiritual_practices_sunday_not_daily",
-          "outcomeLabel": "faith on Sunday, absent during the week",
+          "outcomeLabel": "You attend church together but your daily faith life is mostly individual",
           "genderInsight": {
             "male": "Sunday faith without daily rhythm means your spiritual leadership is event-based, not lifestyle-based. Your wife and kids experience your faith in the Tuesday moments, not just the Sunday ones.",
             "female": "Church attendance without daily shared practice means your marriage's spiritual foundation is thinner than it looks. It may hold during calm seasons but buckle under pressure."
@@ -600,7 +600,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "shared_spiritual_practices_one_sided",
-          "outcomeLabel": "only one spouse pursuing spiritual growth",
+          "outcomeLabel": "Only one of you is pursuing spiritual growth",
           "genderInsight": {
             "male": "If your wife carries the spiritual effort alone, she feels spiritually lonely in her own marriage. A husband who leads spiritually isn't one who has all the answers — he's one who shows up.",
             "female": "One-sided spiritual effort is exhausting. If you're the one always initiating prayer or faith conversations, it may feel like you're dragging your husband toward God rather than walking together."
@@ -612,7 +612,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "shared_spiritual_practices_absent_from_daily_life",
-          "outcomeLabel": "faith absent from daily life together",
+          "outcomeLabel": "Your faith is absent from daily life together",
           "genderInsight": {
             "male": "A marriage without shared faith practice is building on sand during storms. As a husband, initiating even one small spiritual practice — a weekly prayer, a dinner blessing — changes the direction.",
             "female": "Faith absent from your daily life together means you're navigating marriage with human resources alone. In hard seasons, this absence is felt most acutely."
@@ -633,7 +633,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "conflict_navigation_productive_tension",
-          "outcomeLabel": "productive tension management",
+          "outcomeLabel": "You manage tension productively",
           "genderInsight": {
             "male": "Managing perpetual issues with respect rather than needing to 'win' is a sign of real maturity. Many men struggle to accept that not every problem has a solution.",
             "female": "Your ability to sit in unresolved tension without jumping to worst-case thinking shows deep relational strength. Not everything needs to be fixed — some things just need to be held."
@@ -645,7 +645,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "conflict_navigation_emotions_take_over",
-          "outcomeLabel": "emotions take over",
+          "outcomeLabel": "Emotions take over in your discussions",
           "genderInsight": {
             "male": "Emotions interrupting good intentions is human. For men, this often looks like frustration escalating into silence or sharpness. Name the emotion before it drives the response.",
             "female": "When emotions take over, it's usually because something deeper got touched. Learning to name the real feeling underneath — not just the surface anger — changes everything."
@@ -657,7 +657,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_navigation_premature_exit",
-          "outcomeLabel": "leaves conversations before resolution",
+          "outcomeLabel": "You leave conversations before resolution",
           "genderInsight": {
             "male": "Premature exit from conflict is the most common male pattern in marriage. Your wife experiences your withdrawal as abandonment, even if you call it 'cooling off.'",
             "female": "Avoiding the issue feels like peace, but it's actually distance. The unresolved thing doesn't go away — it just waits for a worse moment to resurface."
@@ -669,7 +669,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_navigation_rapid_escalation",
-          "outcomeLabel": "rapid escalation",
+          "outcomeLabel": "Conflict escalates quickly with sharp words and distance",
           "genderInsight": {
             "male": "Premature exit from conflict is the most common male pattern in marriage. Your wife experiences your withdrawal as abandonment, even if you call it 'cooling off.'",
             "female": "Avoiding the issue feels like peace, but it's actually distance. The unresolved thing doesn't go away — it just waits for a worse moment to resurface."
@@ -694,7 +694,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "respect_during_conflict_holds_the_line",
-          "outcomeLabel": "holds the line on respect",
+          "outcomeLabel": "You hold the line on respect",
           "genderInsight": {
             "male": "Holding the line on respect when your wife hits below the belt is the hardest test of self-control a man faces. Your restraint in this moment builds more trust than a thousand good days.",
             "female": "Pausing when your husband provokes you shows the kind of emotional discipline that transforms arguments from destructive to productive. This restraint is a gift to your marriage."
@@ -706,7 +706,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "respect_during_conflict_slips_under_pressure",
-          "outcomeLabel": "respect slips under pressure",
+          "outcomeLabel": "Your tone shifts under pressure but you catch yourself quickly",
           "genderInsight": {
             "male": "Tone shifts under pressure are human. The key for husbands is catching the sharp word quickly and naming it: 'That came out wrong. Let me try again.' Repair speed matters more than perfection.",
             "female": "Slipping under pressure then catching yourself shows growth. The gap between the slip and the repair is where your marriage either spirals or stabilizes."
@@ -718,7 +718,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "respect_during_conflict_matches_their_energy",
-          "outcomeLabel": "mirrors partner's negative energy",
+          "outcomeLabel": "You match their intensity if they come at you with heat",
           "genderInsight": {
             "male": "Matching your wife's energy in a fight means neither of you is regulating — you're both escalating. As a husband, someone has to break the cycle. That's not weakness; it's leadership.",
             "female": "Fire meeting fire feels justified in the moment but leaves both of you burned. One of you has to choose de-escalation — and it can start with you."
@@ -730,7 +730,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "respect_during_conflict_goes_for_the_weak_spot",
-          "outcomeLabel": "goes for the weak spot",
+          "outcomeLabel": "You go for the weak spot",
           "genderInsight": {
             "male": "Going for the jugular means you've weaponized your knowledge of your wife's vulnerabilities. This is one of the most damaging things a husband can do — it turns intimacy into ammunition.",
             "female": "Using your knowledge of his weak spots as a weapon turns the safest relationship into the most dangerous one. This pattern erodes trust at a level that's very hard to rebuild."
@@ -755,7 +755,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "repair_reconnection_natural_repair_instinct",
-          "outcomeLabel": "natural repair instinct",
+          "outcomeLabel": "You have a natural repair instinct",
           "genderInsight": {
             "male": "Initiating repair the next morning shows relational courage. Many husbands wait for their wives to make the first move — your willingness to reach across the tension is what safe marriages are built on.",
             "female": "Natural repair instinct means you or your husband breaks the ice without either of you needing to 'lose.' This capacity for reconnection is one of the strongest predictors of marriage longevity."
@@ -767,7 +767,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "repair_reconnection_slow_thaw",
-          "outcomeLabel": "slowly warming toward reconciliation",
+          "outcomeLabel": "You're polite but distant until you can really talk",
           "genderInsight": {
             "male": "A slow thaw is better than a freeze. The risk for husbands is letting 'a few hours' become a few days. Don't wait for the perfect moment — reach out imperfectly.",
             "female": "Politeness masking distance is a common post-fight pattern. The real repair happens when someone moves past polite and into honest. Don't wait for him — go first."
@@ -779,7 +779,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "repair_reconnection_avoidance_of_repair",
-          "outcomeLabel": "avoidance of repair",
+          "outcomeLabel": "You avoid repairing",
           "genderInsight": {
             "male": "Pretending the fight didn't happen is how unresolved issues accumulate in marriage. Husbands who avoid repair conversations create wives who stop bringing up problems altogether.",
             "female": "Acting like nothing happened protects the peace but stores the poison. Each unaddressed argument adds weight to the next one — until a small trigger causes a massive reaction."
@@ -791,7 +791,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "repair_reconnection_prolonged_disconnection",
-          "outcomeLabel": "prolonged disconnection",
+          "outcomeLabel": "You experience prolonged disconnection",
           "genderInsight": {
             "male": "Multi-day coldness after arguments means your marriage lacks a repair mechanism. For husbands, learning to break the silence — even clumsily — is one of the most important skills you can build.",
             "female": "Prolonged disconnection after conflict means neither of you knows how to bridge the gap. This pattern doesn't improve with time — it requires learning new tools for reconnection."
@@ -812,7 +812,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "responsiveness_to_concerns_turns_toward",
-          "outcomeLabel": "turns toward spouse's concern",
+          "outcomeLabel": "You turn toward your spouse's concern",
           "genderInsight": {
             "male": "Turning toward your wife's concern without defensiveness creates safety for honesty. Many wives stop sharing concerns because their husbands' first reaction is self-protection. Your openness is a gift.",
             "female": "Genuine curiosity when your husband brings something up shows emotional maturity. Many husbands hesitate to raise concerns — your receptiveness encourages his honesty."
@@ -824,7 +824,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "responsiveness_to_concerns_listens_but_guard_goes_up",
-          "outcomeLabel": "listens but guard goes up",
+          "outcomeLabel": "Your guard goes up and you hope it's not about you",
           "genderInsight": {
             "male": "Guard going up when your wife says 'we need to talk' is common in men who associate feedback with failure. Learning to separate 'she has a concern' from 'I'm not enough' changes everything.",
             "female": "Defensiveness before he even finishes often comes from anticipating criticism. Try receiving the concern as information, not an attack — it usually shifts the entire conversation."
@@ -836,7 +836,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "responsiveness_to_concerns_bracing_for_attack",
-          "outcomeLabel": "braces for criticism before it comes",
+          "outcomeLabel": "You brace yourself and expect to feel blamed or criticized",
           "genderInsight": {
             "male": "Bracing for attack means your wife's attempts to share have historically felt like blame sessions. Either the pattern of how she raises things needs work, or your interpretation of concern as criticism does — probably both.",
             "female": "If your husband raising a concern feels like being put on trial, something has gone wrong in how you both communicate. You deserve to hear concerns without feeling attacked — and so does he."
@@ -848,7 +848,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "responsiveness_to_concerns_preemptive_shutdown",
-          "outcomeLabel": "shuts down emotionally before conflict starts",
+          "outcomeLabel": "You feel irritation and inadequacy before they even finish",
           "genderInsight": {
             "male": "automatic shutdown means your wife can't reach you with anything that sounds remotely like dissatisfaction. This makes honest marriage impossible — she'll either stop trying or start hiding.",
             "female": "Irritation before the conversation even starts means you've already decided what he's going to say — and it's nothing good. This automatic defense closes the door on genuine dialogue."
@@ -869,7 +869,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "faith_in_daily_conduct_active_practiced_forgiveness",
-          "outcomeLabel": "active, practiced forgiveness",
+          "outcomeLabel": "You practice active forgiveness",
           "genderInsight": {
             "male": "Active forgiveness as a daily practice — not a one-time declaration — shows spiritual maturity that will sustain your marriage through far worse offenses than this one.",
             "female": "Releasing bitterness daily rather than just deciding to forgive once shows you understand that forgiveness is a process, not an event. This depth protects your heart and your marriage."
@@ -881,7 +881,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "faith_in_daily_conduct_choosing_daily",
-          "outcomeLabel": "choosing forgiveness daily",
+          "outcomeLabel": "You choose forgiveness daily",
           "genderInsight": {
             "male": "Choosing forgiveness while the hurt still surfaces is honest faith in action. Many men think forgiveness means the pain stops — it doesn't. It means you stop weaponizing it.",
             "female": "Daily choosing forgiveness while still feeling the ache is one of the hardest things faith asks of a wife. Your persistence in this shows genuine spiritual depth."
@@ -893,7 +893,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "faith_in_daily_conduct_words_without_heart",
-          "outcomeLabel": "said I forgive, but heart still guarded",
+          "outcomeLabel": "You say you forgive, but your heart stays guarded",
           "genderInsight": {
             "male": "Verbal forgiveness with emotional distance is a common male pattern — 'I said I forgive you, why are we still talking about it?' But your wife can feel the wall, even when you can't see it.",
             "female": "Saying forgiveness while maintaining protective distance means the hurt is still running the show. Your husband may think things are resolved while you're quietly keeping him at arm's length."
@@ -905,7 +905,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "faith_in_daily_conduct_justified_bitterness",
-          "outcomeLabel": "justified bitterness",
+          "outcomeLabel": "You feel justified in your bitterness",
           "genderInsight": {
             "male": "Justified bitterness is still bitterness — and it corrodes marriage from the inside. As a husband, carrying resentment doesn't punish your wife; it poisons you and everything you touch.",
             "female": "Holding onto the wrong because it feels deserved is understandable — but bitterness doesn't hurt the person who wronged you. It hurts you, and it hurts the marriage."
@@ -926,7 +926,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "trust_integrity_addresses_directly_from_trust",
-          "outcomeLabel": "addresses directly from a foundation of trust",
+          "outcomeLabel": "You address issues directly from a foundation of trust",
           "genderInsight": {
             "male": "Addressing dishonesty directly from a foundation of trust shows a marriage with strong bones. Protect this by continuing to choose transparency even when it's costly.",
             "female": "Your trust foundation is solid. Keep choosing honesty over comfort — even about the small things."
@@ -938,7 +938,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "trust_integrity_one_lie_opens_a_door",
-          "outcomeLabel": "one lie opens a door of lasting doubt",
+          "outcomeLabel": "One lie has opened a door of lasting doubt",
           "genderInsight": {
             "male": "One lie triggering constant watchfulness often reflects past wounds — either in this marriage or before it. Address the pattern, not just the incident.",
             "female": "If one small lie opens a flood of doubt, there may be older trust wounds at play. Consider whether this reaction is proportional or historical."
@@ -950,7 +950,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "trust_integrity_pattern_of_erosion",
-          "outcomeLabel": "pattern of trust erosion",
+          "outcomeLabel": "You experience a pattern of trust erosion",
           "genderInsight": {
             "male": "Trust erosion in marriage is often slow — small lies, partial truths, managed stories. Each one feels minor. Together they hollow out the foundation.",
             "female": "If you can see a pattern of erosion, you're already past the 'one-time thing' stage. This needs direct conversation — or professional help."
@@ -962,7 +962,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "trust_integrity_normalized_dishonesty",
-          "outcomeLabel": "dishonesty has become normal",
+          "outcomeLabel": "Dishonesty has become normal between you",
           "genderInsight": {
             "male": "Normalized dishonesty means the marriage has adapted to untruth. This requires serious intervention — not just a conversation, but likely professional help.",
             "female": "When dishonesty becomes normal, the relationship loses its ability to self-correct. This is urgent and worth professional support."
@@ -983,7 +983,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_safety_to_share_hurt_expectation_of_care",
-          "outcomeLabel": "expects care and receptivity",
+          "outcomeLabel": "You expect care and receptivity",
           "genderInsight": {
             "male": "Expecting care when you share hurt means your wife has built trust that vulnerability is safe with her. Protect this by continuing to bring things to her rather than handling them alone.",
             "female": "Knowing your husband will receive your hurt with care rather than defensiveness is one of the most important safety markers in a marriage. This trust took work — honor it."
@@ -995,7 +995,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "emotional_safety_to_share_hurt_safe_sometimes",
-          "outcomeLabel": "safe sometimes, defended against other times",
+          "outcomeLabel": "You're safe sometimes, defended against other times",
           "genderInsight": {
             "male": "Expecting initial defensiveness before real listening suggests a pattern you've both adapted to. As a husband, consider whether you do the same when she shares — often the pattern is mutual.",
             "female": "If sharing hurt usually starts with his defensiveness, you've learned to brace for it. But notice whether the eventual listening is genuine — if so, the pattern is workable, just uncomfortable."
@@ -1007,7 +1007,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "emotional_safety_to_share_hurt_expects_dismissal",
-          "outcomeLabel": "expects dismissal or reversal",
+          "outcomeLabel": "You expect dismissal or reversal",
           "genderInsight": {
             "male": "Expecting dismissal or reversal means sharing your hurt has historically been met with 'you shouldn't feel that way' or 'what about what you did?' This makes emotional intimacy impossible.",
             "female": "If you expect him to turn it around on you, you've been conditioned to believe your feelings are invalid in this relationship. That conditioning isn't truth — it's damage."
@@ -1019,7 +1019,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "emotional_safety_to_share_hurt_learned_silence",
-          "outcomeLabel": "learned silence from repeated pain",
+          "outcomeLabel": "You've learned silence from repeated pain",
           "genderInsight": {
             "male": "Learned silence — choosing not to share because sharing made things worse — is one of the saddest patterns in marriage. Your hurt doesn't disappear because you stop voicing it; it just goes underground.",
             "female": "Giving up on sharing hurt because it always backfires means you've lost the most basic safety in your marriage. This isn't something you can fix alone — please consider professional help."
@@ -1048,7 +1048,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "trust_repair_practices_structured_intentional_repair",
-          "outcomeLabel": "structured, intentional repair process",
+          "outcomeLabel": "You have a structured, intentional repair process",
           "genderInsight": {
             "male": "Structured repair with accountability shows your marriage has a system for rebuilding trust, not just hoping the apology is enough. Many husbands apologize and expect that to close the book — real repair is a process.",
             "female": "A clear repair process means trust isn't left to chance after a breach. This structure protects both of you — he knows what's expected, and you know what progress looks like."
@@ -1060,7 +1060,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "trust_repair_practices_watching_but_no_plan",
-          "outcomeLabel": "hoping for change without a plan",
+          "outcomeLabel": "You hope for change without a plan",
           "genderInsight": {
             "male": "Watching without a plan means you've accepted the apology but not established what change looks like. As a husband, either ask your wife what she needs, or name what you'll do differently.",
             "female": "Watching for change without a roadmap keeps you in evaluation mode rather than partnership mode. Consider naming what rebuilding looks like rather than silently monitoring."
@@ -1072,7 +1072,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "trust_repair_practices_surface_apology_no_change",
-          "outcomeLabel": "apologizes without making real changes",
+          "outcomeLabel": "You apologize but don't make real changes",
           "genderInsight": {
             "male": "A surface apology without addressing the root means the same commitment will likely be broken again. As a husband, if your apology doesn't include a plan for change, it's just damage control.",
             "female": "If his apology felt sincere but nothing structural changed, you're right to feel unsatisfied. Real repair addresses the WHY behind the breach, not just the WHAT."
@@ -1084,7 +1084,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "trust_repair_practices_cyclical_breach",
-          "outcomeLabel": "cyclical breach pattern",
+          "outcomeLabel": "You experience a cyclical breach pattern",
           "genderInsight": {
             "male": "A cyclical breach pattern — apologize, improve briefly, repeat — means the apology itself has lost credibility. Your wife no longer trusts your words. Only sustained changed behavior can rebuild this.",
             "female": "Recurring breach and apology cycles train you to distrust his promises, no matter how sincere they sound. This pattern requires professional intervention — you can't fix a loop from inside it."
@@ -1105,7 +1105,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "commitment_to_growth_proactive_growth_mindset",
-          "outcomeLabel": "proactive growth mindset",
+          "outcomeLabel": "You have a proactive growth mindset",
           "genderInsight": {
             "male": "Welcoming proactive counseling shows your wife that you value the marriage enough to invest before crisis. Many men only consider counseling when things are already breaking — your openness sets you apart.",
             "female": "Being encouraged by a counseling suggestion means you see growth as a shared project, not a sign of failure. This mindset is the difference between marriages that stagnate and marriages that deepen."
@@ -1117,7 +1117,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "commitment_to_growth_open_but_uncomfortable",
-          "outcomeLabel": "open but uncomfortable",
+          "outcomeLabel": "You're open but uncomfortable",
           "genderInsight": {
             "male": "Willingness with discomfort is honest. Many men associate counseling with admitting failure. Reframe it: counseling is how strong marriages stay strong — like maintenance on a house, not emergency repair.",
             "female": "Discomfort with counseling is normal — it's vulnerable work. The fact that you'd still go despite the discomfort shows your commitment to the marriage outweighs your self-protection."
@@ -1129,7 +1129,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "commitment_to_growth_defensive_about_growth",
-          "outcomeLabel": "gets defensive when growth is suggested",
+          "outcomeLabel": "You get defensive when growth is suggested",
           "genderInsight": {
             "male": "Defensiveness about counseling often comes from a man's belief that he should be able to fix things himself. But marriage isn't a solo project, and outside perspective isn't an indictment of your leadership.",
             "female": "If your husband's suggestion of counseling makes you feel something is wrong with you, consider that he might be investing rather than criticizing. The interpretation you choose shapes your response."
@@ -1141,7 +1141,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "commitment_to_growth_closed_to_outside_help",
-          "outcomeLabel": "closed to outside advice or growth",
+          "outcomeLabel": "You're closed to outside advice or growth",
           "genderInsight": {
             "male": "Resistance to outside help is one of the strongest predictors of eventual marriage failure. Believing you 'should be able to figure it out' puts an impossible burden on two imperfect people.",
             "female": "Refusing outside help means the marriage only has the tools it already has — which are the same tools that created the current problems. Growth requires something new."
@@ -1162,7 +1162,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "conflict_navigation_manages_perpetual_issues",
-          "outcomeLabel": "manages recurring issues with respect",
+          "outcomeLabel": "You manage recurring issues with respect",
           "genderInsight": {
             "male": "Accepting that some issues won't fully resolve — and managing them with respect — is advanced marital skill. Many husbands need to 'win' or 'fix' every disagreement. Your ability to live in productive tension shows real maturity.",
             "female": "Living with an unresolved issue without it poisoning the marriage is one of the hardest things marriage asks. Your ability to hold the tension while maintaining connection shows deep relational strength."
@@ -1174,7 +1174,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "conflict_navigation_slowly_improving",
-          "outcomeLabel": "slowly improving on hard topics",
+          "outcomeLabel": "You're slowly improving on hard topics",
           "genderInsight": {
             "male": "Slow progress on a recurring issue is still progress. For husbands, the temptation is to declare the issue 'dealt with' after one good conversation. Recurring issues need recurring attention — not a one-time fix.",
             "female": "Small progress on a recurring issue shows both of you are still engaged with it. The danger isn't the issue itself — it's the temptation to stop trying because the progress feels too slow."
@@ -1186,7 +1186,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_navigation_avoids_recurring_issue",
-          "outcomeLabel": "avoids the recurring issue",
+          "outcomeLabel": "You avoid the recurring issue",
           "genderInsight": {
             "male": "Avoiding a recurring issue by unspoken agreement creates a no-go zone in your marriage. As a husband, the issue you both refuse to discuss becomes the thing that silently controls the relationship.",
             "female": "An unspoken agreement to avoid the hard topic protects the peace but starves the marriage. The issue doesn't go away — it just operates underground, influencing moods and reactions you can't trace."
@@ -1198,7 +1198,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "conflict_navigation_unresolved_issue_poisons",
-          "outcomeLabel": "unresolved issue poisons the relationship",
+          "outcomeLabel": "An unresolved issue poisons your relationship",
           "genderInsight": {
             "male": "Rapid escalation or toxic avoidance are both marriage-threatening patterns. This is the area with the highest return on investment for counseling.",
             "female": "If conflict has become poisonous or absent in your marriage, this needs professional attention. The patterns here don't improve on their own."
@@ -1219,7 +1219,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "safety_wellbeing_safe_even_in_anger",
-          "outcomeLabel": "feels safe even when spouse is angry",
+          "outcomeLabel": "You feel safe even when your spouse is angry",
           "genderInsight": {
             "male": "Feeling safe even when your spouse is angry means anger is expressed without threat. This is what healthy homes look like.",
             "female": "Feeling safe when your husband is angry means his anger doesn't threaten your sense of security. This is foundational."
@@ -1231,7 +1231,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "safety_wellbeing_walking_on_eggshells",
-          "outcomeLabel": "walking on eggshells",
+          "outcomeLabel": "You're walking on eggshells",
           "genderInsight": {
             "male": "Walking on eggshells around your wife's anger may feel like 'keeping the peace' — but it's actually a sign that emotional safety needs work.",
             "female": "Walking on eggshells means you're managing his emotions instead of living freely in your own home. This deserves attention."
@@ -1243,7 +1243,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "safety_wellbeing_fear_response_activated",
-          "outcomeLabel": "fear response activated",
+          "outcomeLabel": "Your fear response gets activated",
           "genderInsight": {
             "male": "A fear response to your spouse's anger is a significant warning. This may indicate patterns that need professional help to address safely.",
             "female": "If your body responds with fear to your husband's anger, that is your body telling you something important. Please listen to it."
@@ -1255,7 +1255,7 @@
           "signalTier": "SAFETY_ALERT",
           "weight": 0,
           "outcomeSignal": "safety_wellbeing_physical_safety_threat",
-          "outcomeLabel": "physical safety threat — urgent support needed",
+          "outcomeLabel": "Physical safety is threatened — urgent support needed",
           "genderInsight": {
             "male": "If you feel physically unsafe when your spouse is angry, this is not a counseling issue — this is a safety issue. Please reach out to a pastor, trusted friend, or professional immediately.",
             "female": "If your husband's anger makes you fear for your physical safety, please reach out for help. This is not something to manage alone. You deserve to be safe."
@@ -1276,7 +1276,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "trust_integrity_chooses_transparency",
-          "outcomeLabel": "chooses transparency over comfort",
+          "outcomeLabel": "You choose transparency over comfort",
           "genderInsight": {
             "male": "Choosing truth over comfort — even when you know it might cause tension — shows your marriage is built on honesty rather than image management. As a husband, this transparency is what makes your wife feel safe.",
             "female": "Being willing to share the uncomfortable truth rather than managing the narrative means you trust the marriage to handle honesty. This kind of courage from a wife builds the deepest kind of trust."
@@ -1288,7 +1288,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "trust_integrity_truth_with_filter",
-          "outcomeLabel": "truthful but filters the hard parts",
+          "outcomeLabel": "You're truthful but filter the hard parts",
           "genderInsight": {
             "male": "Sharing truth but softening it is often a sign of emotional maturity, not dishonesty. The key question for husbands: are you softening to protect her feelings, or to protect yourself from her reaction?",
             "female": "Filtering truth to make it gentler shows care for your husband's feelings. Just make sure the filtering doesn't remove the actual substance — 'softened truth' is still truth. 'Curated truth' is not."
@@ -1300,7 +1300,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "trust_integrity_truth_by_omission",
-          "outcomeLabel": "withholds important truths",
+          "outcomeLabel": "You withhold important truths",
           "genderInsight": {
             "male": "Omitting uncomfortable details feels like 'not lying' but functions the same way. As a husband, what you withhold shapes your wife's reality just as much as what you say. Managed truth erodes the same as outright dishonesty.",
             "female": "Deflecting or minimizing when asked a direct question is a form of dishonesty that doesn't feel like lying. But your husband made a direct ask — and you chose to answer a different question."
@@ -1312,7 +1312,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "trust_integrity_manages_the_story",
-          "outcomeLabel": "controls the narrative to avoid conflict",
+          "outcomeLabel": "You control the narrative to avoid conflict",
           "genderInsight": {
             "male": "If you've lied to manage your wife's perception, you've chosen control over intimacy. Every lie — even a small one — teaches your wife that the version of you she sees isn't real. Rebuilding from this requires painful honesty.",
             "female": "Managing the story rather than telling the truth means you've decided what your husband can handle. But that's not your decision to make — and the lie itself does more damage than the truth would have."
@@ -1333,7 +1333,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "teamwork_responsibilities_fluid_teamwork",
-          "outcomeLabel": "fluid, score-free teamwork",
+          "outcomeLabel": "You work together fluidly, without keeping score",
           "genderInsight": {
             "male": "Score-free teamwork means neither of you is keeping a ledger. In many marriages, men underestimate the invisible labor their wives carry. That you don't — that's real partnership.",
             "female": "Fluid teamwork means the household runs on partnership, not scorekeeping. If you're here, you and your husband have built something many couples struggle to find."
@@ -1345,7 +1345,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "teamwork_responsibilities_unspoken_imbalance",
-          "outcomeLabel": "unspoken imbalance in responsibilities",
+          "outcomeLabel": "There's an unspoken imbalance in responsibilities",
           "genderInsight": {
             "male": "Unspoken imbalance is extremely common — and many men are often unaware of it. The work you don't see is still being done by someone.",
             "female": "You may be carrying more than your husband realizes. The question isn't whose fault it is — it's whether you can talk about it without it becoming a fight."
@@ -1357,7 +1357,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "teamwork_responsibilities_visible_resentment",
-          "outcomeLabel": "visible resentment from unfair division",
+          "outcomeLabel": "Visible resentment comes from unfair division",
           "genderInsight": {
             "male": "Visible resentment around household labor often reflects a deeper issue — feeling unseen or undervalued. This is about more than chores.",
             "female": "Resentment about imbalance is rarely just about the dishes. It's about feeling like a partner vs. Feeling like a manager. Name the real issue."
@@ -1369,7 +1369,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "teamwork_responsibilities_conflict_source",
-          "outcomeLabel": "household duties keep causing conflict",
+          "outcomeLabel": "Household duties keep causing conflict",
           "genderInsight": {
             "male": "When responsibilities become a recurring source of conflict, it usually means the partnership has broken down into scorekeeping. This needs restructuring, not just redistribution.",
             "female": "If every week feels like a battle over who does what, the marriage has a teamwork problem that goes deeper than task allocation."
@@ -1394,7 +1394,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "financial_alignment_clear_shared_framework",
-          "outcomeLabel": "clear shared financial framework",
+          "outcomeLabel": "You have a clear shared financial framework",
           "genderInsight": {
             "male": "A clear shared financial framework means money isn't a power tool in your marriage. Many husbands and wives struggle with financial control dynamics — your transparency protects the partnership.",
             "female": "Agreed-upon financial boundaries mean purchases don't become betrayals. This framework only works if both of you actually follow it — and both feel equally empowered in financial decisions."
@@ -1406,7 +1406,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "financial_alignment_no_clear_system",
-          "outcomeLabel": "no shared plan for finances",
+          "outcomeLabel": "You have no shared plan for finances",
           "genderInsight": {
             "male": "No clear financial system means every purchase becomes a negotiation. As a husband, initiating a money conversation — boundaries, thresholds, shared accounts — is an act of leadership.",
             "female": "Messy financial conversations often reflect deeper issues — control, trust, or different values around money. Creating a system together removes the emotion from individual purchases."
@@ -1418,7 +1418,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "financial_alignment_avoidance_of_money_talk",
-          "outcomeLabel": "avoids talking about money",
+          "outcomeLabel": "You avoid talking about money",
           "genderInsight": {
             "male": "Avoiding money conversations because they always end badly means financial decisions are made by default rather than by agreement. Husbands often either over-control or completely withdraw from finances — neither works.",
             "female": "If money talks always end in conflict, there may be an underlying trust or control issue that the financial disagreement is just surfacing. Addressing the real issue unlocks the money conversation."
@@ -1430,7 +1430,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "financial_alignment_chronic_financial_conflict",
-          "outcomeLabel": "ongoing conflict about money",
+          "outcomeLabel": "You have ongoing conflict about money",
           "genderInsight": {
             "male": "Chronic financial conflict often reflects a deeper power struggle. As a husband, financial transparency isn't just practical — it's a trust issue. Secretive spending erodes marriage faster than debt itself.",
             "female": "Money being an untouchable topic in your marriage means one of the most practical areas of partnership is completely broken. This rarely improves without structured help."
@@ -1451,7 +1451,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_intimacy_initiates_emotional_check_in",
-          "outcomeLabel": "initiates emotional check-in",
+          "outcomeLabel": "You initiate emotional check-ins",
           "genderInsight": {
             "male": "Noticing your wife's quietness and going to her shows emotional emotional awareness that many husbands lack. You're not waiting for her to ask for help — you're reading the room and initiating. This is relational leadership.",
             "female": "Initiating a check-in when your husband is withdrawn shows you refuse to let distance grow silently. Many wives wait for him to come to them — your willingness to bridge the gap first is powerful."
@@ -1463,7 +1463,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "emotional_intimacy_respects_space_but_passive",
-          "outcomeLabel": "respects space but stays passive",
+          "outcomeLabel": "You respect space but stay passive",
           "genderInsight": {
             "male": "Giving space when your wife is withdrawn can be wisdom or avoidance — the difference is whether you come back. If giving space means waiting indefinitely for her to come to you, it's not respect; it's passivity.",
             "female": "Respecting his space while staying emotionally available is a valid approach. The growth edge is making sure 'giving space' has an endpoint — otherwise it becomes permanent distance."
@@ -1475,7 +1475,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "emotional_intimacy_notices_but_avoids",
-          "outcomeLabel": "notices issues but avoids addressing them",
+          "outcomeLabel": "You notice issues but avoid addressing them",
           "genderInsight": {
             "male": "Noticing but not engaging means you're emotionally aware but relationally passive. Your wife needs more than a husband who sees her — she needs one who reaches for her when she's pulling away.",
             "female": "Seeing something is off but avoiding the conversation usually means past attempts went badly. The fear of making it worse keeps you both stuck in unaddressed distance."
@@ -1487,7 +1487,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "emotional_intimacy_emotionally_unaware",
-          "outcomeLabel": "emotionally unaware of spouse",
+          "outcomeLabel": "You're emotionally unaware of your spouse",
           "genderInsight": {
             "male": "Not tracking your wife's emotional state means you've disconnected from the most important monitoring system in your marriage. If you can't tell when she's off, you won't catch problems until they're crises.",
             "female": "If you wouldn't notice your husband withdrawing, the emotional channel between you has gone quiet. This isn't about attention span — it's about whether you're still tuned in to each other."
@@ -1512,7 +1512,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "connection_communication_spouse_is_first_call",
-          "outcomeLabel": "spouse is the first person they turn to",
+          "outcomeLabel": "Your spouse is the first person you turn to",
           "genderInsight": {
             "male": "Your wife being the first person you want to tell — good news or bad — means she's still your emotional home. Many husbands stop sharing over the years without realizing it. Your instinct to go to her first is a sign of deep connection.",
             "female": "Going straight to your husband when something moves you means he's still your person. This instinct to share — not just coexist — is the heartbeat of emotional intimacy."
@@ -1524,7 +1524,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "connection_communication_shares_but_edits",
-          "outcomeLabel": "shares selectively for self-protection",
+          "outcomeLabel": "You share selectively for self-protection",
           "genderInsight": {
             "male": "Editing what you share means you've started managing your wife's response rather than trusting her with the full story. Ask yourself what you're protecting — her, or yourself from her reaction.",
             "female": "Sharing the summary version but not the real version means something has made full honesty feel risky. When did you start filtering? That moment often reveals what changed."
@@ -1536,7 +1536,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "connection_communication_spouse_not_first_choice",
-          "outcomeLabel": "spouse is not the go-to person",
+          "outcomeLabel": "Your spouse is not your go-to person",
           "genderInsight": {
             "male": "If your friend hears your real thoughts before your wife does, your emotional intimacy has reversed. A marriage where the husband outsources his inner life to friends isn't broken — but it's hollowing out.",
             "female": "Choosing a friend over your husband for emotional processing isn't wrong in itself — but if it's your default, your marriage has lost its position as your primary emotional relationship."
@@ -1548,7 +1548,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "connection_communication_emotional_sharing_stopped",
-          "outcomeLabel": "emotional sharing has stopped",
+          "outcomeLabel": "Emotional sharing has stopped between you",
           "genderInsight": {
             "male": "Stopping emotional sharing entirely means you've given up on being known by your wife. This is often the last stage before emotional divorce — the marriage continues functionally but the connection is gone.",
             "female": "When you no longer bring anything real to your husband — not the good, not the bad — the marriage has become a logistical arrangement. Rebuilding this requires intentional reconnection, probably with professional help."
@@ -1569,7 +1569,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "family_leadership_parenting_alignment_united_front",
-          "outcomeLabel": "united parenting front",
+          "outcomeLabel": "You present a united parenting front",
           "genderInsight": {
             "male": "United parenting means your children see their parents as a team, not two separate authorities to play against each other. As a father, supporting your wife's decisions in the moment — even when you'd do it differently — builds family stability.",
             "female": "A united front in parenting means your children feel secure in consistent boundaries. This requires you and your husband to have done the behind-the-scenes work of aligning your approaches."
@@ -1581,7 +1581,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "family_leadership_parenting_alignment_reactive_then_repair",
-          "outcomeLabel": "reactive then repair",
+          "outcomeLabel": "You react but then repair",
           "genderInsight": {
             "male": "Contradicting each other in the moment then debriefing later is workable but confusing for kids. The fix isn't agreement on everything — it's a rule: support in the moment, discuss in private.",
             "female": "Reactive disagreement followed by private repair shows good intentions but imperfect execution. The child sees the contradiction; the repair happens where they can't. Consider agreeing on a 'default parent' rule."
@@ -1593,7 +1593,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "family_leadership_parenting_alignment_split_authority",
-          "outcomeLabel": "divided on who leads the home",
+          "outcomeLabel": "You're divided on who leads the home",
           "genderInsight": {
             "male": "If one of you takes over while the other steps back, your children are learning that parenting is a power contest, not a partnership. As a father, this often looks like either dominating or deferring entirely.",
             "female": "Split authority teaches children to seek the lenient parent, which divides you further. If you and your husband can't parent together, the child pays the price."
@@ -1605,7 +1605,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "family_leadership_triggers_marital_conflict",
-          "outcomeLabel": "parenting triggers marital conflict",
+          "outcomeLabel": "Parenting triggers conflict between you",
           "genderInsight": {
             "male": "When parenting triggers marital conflict, the child becomes both the subject and the audience of your disagreement. Children who witness this internalize blame. Protecting them requires protecting your parenting alliance.",
             "female": "Parenting becoming a battlefield means the child's behavior is less the issue than how you and your husband relate under pressure. This needs couples work, not parenting tips."
@@ -1626,7 +1626,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "shared_spiritual_practices_activated_under_pressure",
-          "outcomeLabel": "shared faith activates under pressure",
+          "outcomeLabel": "Your shared faith activates under pressure",
           "genderInsight": {
             "male": "Shared faith activating under pressure is the truest test of spiritual partnership. As a husband, leading your wife to prayer during crisis — not just handling the logistics — is transformative spiritual leadership.",
             "female": "Turning to God together in crisis means faith is functional in your marriage, not ornamental. This shared reliance is the deepest form of spiritual intimacy."
@@ -1638,7 +1638,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "shared_spiritual_practices_parallel_faith_not_shared",
-          "outcomeLabel": "faith lives side by side, not together",
+          "outcomeLabel": "Your faith lives side by side, not together",
           "genderInsight": {
             "male": "Parallel faith during crisis means you're each going to God separately rather than together. As a husband, simply saying 'can we pray about this together?' bridges that gap.",
             "female": "Individual faith is real, but shared faith in crisis hits differently. If you've never prayed together through a hard season, you've missed one of the most bonding experiences marriage offers."
@@ -1650,7 +1650,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "shared_spiritual_practices_spiritual_mismatch_in_crisis",
-          "outcomeLabel": "spiritual mismatch in crisis",
+          "outcomeLabel": "You experience spiritual mismatch in crisis",
           "genderInsight": {
             "male": "If your wife turns to faith while you pull away in crisis — or vice versa — you're coping in opposite directions. This spiritual mismatch can feel like abandonment at the worst possible time.",
             "female": "One leaning in while the other pulls away creates spiritual loneliness during the season you most need each other. This mismatch is worth discussing during calm, not during crisis."
@@ -1662,7 +1662,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "shared_spiritual_practices_absent_in_crisis",
-          "outcomeLabel": "faith absent during hardship",
+          "outcomeLabel": "Your faith is absent during hardship",
           "genderInsight": {
             "male": "Faith absent in hardship means your marriage only has human resources during superhuman challenges. As a husband, you don't need to have answers — you need to be willing to seek them together with God.",
             "female": "Relying only on practical solutions during crisis leaves out the most important resource available to a Christian marriage. Faith doesn't eliminate hard seasons — it provides a foundation to endure them together."
@@ -1683,7 +1683,7 @@
           "signalTier": "STRONG",
           "weight": 3,
           "outcomeSignal": "family_leadership_marriage_first_boundary",
-          "outcomeLabel": "marriage-first boundary setting",
+          "outcomeLabel": "You set boundaries with marriage first",
           "genderInsight": {
             "male": "Taking the lead in setting boundaries with your own family protects your wife from being the 'bad guy.' As a husband, your mother or father respecting your marriage starts with you enforcing it.",
             "female": "Marriage-first boundaries mean your husband puts your relationship above his family of origin when it counts. If you're the one setting boundaries with his family, the dynamic is backwards."
@@ -1695,7 +1695,7 @@
           "signalTier": "DEVELOPING",
           "weight": 2,
           "outcomeSignal": "family_leadership_avoidance_with_family",
-          "outcomeLabel": "avoids conflict with extended family",
+          "outcomeLabel": "You avoid conflict with extended family",
           "genderInsight": {
             "male": "Struggling to confront your own family is one of the most common marriage stressors for men. Your wife needs to know you'll choose her over keeping the peace with your parents.",
             "female": "If your husband won't confront his own family, you feel unprotected — and you're right to. But pushing him may not work; helping him see the cost of inaction often does."
@@ -1707,7 +1707,7 @@
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "family_leadership_external_pressure_dividing",
-          "outcomeLabel": "outside pressure pulling the marriage apart",
+          "outcomeLabel": "Outside pressure is pulling your marriage apart",
           "genderInsight": {
             "male": "External family pressure becoming a recurring fight means the boundary hasn't been set clearly enough — or one of you keeps caving. As a husband, your marriage must be the primary loyalty.",
             "female": "In-law interference straining your marriage means the boundary is being discussed between you instead of being enforced with them. The conversation needs to shift to the right audience."
@@ -1719,7 +1719,7 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "family_leadership_parenting_alignment_loyalty_conflict",
-          "outcomeLabel": "conflicting priorities between spouse and extended family",
+          "outcomeLabel": "You experience conflicting priorities between spouse and extended family",
           "genderInsight": {
             "male": "If your wife feels she's competing with your mother for priority, your family-of-origin loyalty is threatening your marriage. A man who can't prioritize his wife over his parents hasn't fully left and cleaved.",
             "female": "Feeling like you come second to his family is one of the most painful positions in marriage. You deserve to be your husband's primary loyalty — and Scripture supports this ('leave and cleave')."

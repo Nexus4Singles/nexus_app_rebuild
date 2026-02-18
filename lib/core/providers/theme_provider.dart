@@ -68,10 +68,15 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
   }
 
   void toggleTheme() {
-    if (state == ThemeMode.light) {
-      setThemeMode(ThemeMode.dark);
-    } else {
+    final currentBrightness =
+        WidgetsBinding.instance.platformDispatcher.platformBrightness;
+    // If currently dark (either explicit or via system), switch to light
+    if (state == ThemeMode.dark ||
+        (state == ThemeMode.system && currentBrightness == Brightness.dark)) {
       setThemeMode(ThemeMode.light);
+    } else {
+      // Otherwise switch to dark
+      setThemeMode(ThemeMode.dark);
     }
   }
 
@@ -79,7 +84,13 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
 }
 
 /// Provider to check if dark mode is currently active
+/// Handles system mode by checking actual platform brightness
 final isDarkModeProvider = Provider<bool>((ref) {
   final themeMode = ref.watch(themeModeProvider);
+  if (themeMode == ThemeMode.system) {
+    // When in system mode, check actual device brightness
+    return WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+        Brightness.dark;
+  }
   return themeMode == ThemeMode.dark;
 });

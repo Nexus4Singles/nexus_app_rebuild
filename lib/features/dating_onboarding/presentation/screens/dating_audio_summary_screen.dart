@@ -29,6 +29,7 @@ class _DatingAudioSummaryScreenState
   // Track which audio is currently playing (1, 2, 3, or null)
   int? _playingIndex;
   bool _isPlaying = false;
+  bool _isLoading = false; // Track when audio is loading before playback
 
   @override
   void initState() {
@@ -99,19 +100,17 @@ class _DatingAudioSummaryScreenState
         return;
       }
 
-      // Probe local durations before upload (helps debug 28-byte files)
-      final d1 = await _probeLocalDuration(a1);
-      final d2 = await _probeLocalDuration(a2);
-      final d3 = await _probeLocalDuration(a3);
-      _showSnackBar(
-        'Local audio sizes: a1=${await file1.length()} bytes, a2=${await file2.length()} bytes, a3=${await file3.length()} bytes. Durations: a1=${d1?.inSeconds ?? -1}s, a2=${d2?.inSeconds ?? -1}s, a3=${d3?.inSeconds ?? -1}s',
-      );
-
       final storage = ref.read(mediaStorageProvider) as DoSpacesStorageService;
 
-      final url1 = await storage.uploadFile(localPath: a1);
-      final url2 = await storage.uploadFile(localPath: a2);
-      final url3 = await storage.uploadFile(localPath: a3);
+      // Upload all three files in parallel for faster completion
+      final results = await Future.wait([
+        storage.uploadFile(localPath: a1),
+        storage.uploadFile(localPath: a2),
+        storage.uploadFile(localPath: a3),
+      ]);
+      final url1 = results[0];
+      final url2 = results[1];
+      final url3 = results[2];
       ref
           .read(datingOnboardingDraftProvider.notifier)
           .updateAudioUrls(audio1Url: url1, audio2Url: url2, audio3Url: url3);
@@ -141,7 +140,7 @@ class _DatingAudioSummaryScreenState
 
     if (_isUploading) {
       return Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -157,8 +156,11 @@ class _DatingAudioSummaryScreenState
 
     if (_uploadError) {
       return Scaffold(
-        backgroundColor: AppColors.background,
-        appBar: AppBar(backgroundColor: AppColors.background, elevation: 0),
+        backgroundColor: AppColors.getBackground(context),
+        appBar: AppBar(
+          backgroundColor: AppColors.getBackground(context),
+          elevation: 0,
+        ),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -173,7 +175,7 @@ class _DatingAudioSummaryScreenState
                   'Unable to upload recordings. Please check your connection and try again.',
                   textAlign: TextAlign.center,
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.getTextSecondary(context),
                   ),
                 ),
                 if (_errorMessage != null) ...[
@@ -182,7 +184,7 @@ class _DatingAudioSummaryScreenState
                     'Details: ' + _errorMessage!,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.caption.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.getTextSecondary(context),
                     ),
                   ),
                 ],
@@ -202,9 +204,9 @@ class _DatingAudioSummaryScreenState
     }
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -234,7 +236,8 @@ class _DatingAudioSummaryScreenState
                       index: 1,
                       isPlaying: _playingIndex == 1 && _isPlaying,
                       isPaused: _playingIndex == 1 && !_isPlaying,
-                      onPlay: () => _play(draft.audio1Url, 1),
+                      isLoading: _playingIndex == 1 && _isLoading,
+                      onPlay: () => _play(draft.audio1Path, draft.audio1Url, 1),
                     ),
                     const SizedBox(height: 14),
                     _Row(
@@ -244,7 +247,8 @@ class _DatingAudioSummaryScreenState
                       index: 2,
                       isPlaying: _playingIndex == 2 && _isPlaying,
                       isPaused: _playingIndex == 2 && !_isPlaying,
-                      onPlay: () => _play(draft.audio2Url, 2),
+                      isLoading: _playingIndex == 2 && _isLoading,
+                      onPlay: () => _play(draft.audio2Path, draft.audio2Url, 2),
                     ),
                     const SizedBox(height: 14),
                     _Row(
@@ -254,7 +258,8 @@ class _DatingAudioSummaryScreenState
                       index: 3,
                       isPlaying: _playingIndex == 3 && _isPlaying,
                       isPaused: _playingIndex == 3 && !_isPlaying,
-                      onPlay: () => _play(draft.audio3Url, 3),
+                      isLoading: _playingIndex == 3 && _isLoading,
+                      onPlay: () => _play(draft.audio3Path, draft.audio3Url, 3),
                     ),
                   ],
                 ),
@@ -300,8 +305,8 @@ class _DatingAudioSummaryScreenState
     );
   }
 
-  Future<void> _play(String? url, int index) async {
-    if (url == null) {
+  Future<void> _play(String? localPath, String? url, int index) async {
+    if (localPath == null && url == null) {
       _showSnackBar('Recording not available');
       return;
     }
@@ -309,6 +314,7 @@ class _DatingAudioSummaryScreenState
     try {
       // If clicking the same track that's already loaded
       if (_playingIndex == index) {
+        if (_isLoading) return; // Still loading, ignore tap
         if (_isPlaying) {
           // Currently playing → pause it
           await _player.pause();
@@ -326,19 +332,38 @@ class _DatingAudioSummaryScreenState
         await _player.stop();
       }
 
-      // Load and play the new track
       setState(() {
         _playingIndex = index;
-        _isPlaying = true;
+        _isPlaying = false;
+        _isLoading = true;
       });
 
-      await _player.setUrl(url);
+      // Prefer local file (instant) — fall back to remote URL if local is gone
+      bool loadedLocal = false;
+      if (localPath != null) {
+        final file = File(localPath);
+        if (await file.exists() && await file.length() > 2048) {
+          await _player.setFilePath(localPath);
+          loadedLocal = true;
+        }
+      }
+      if (!loadedLocal && url != null) {
+        await _player.setUrl(url);
+      } else if (!loadedLocal) {
+        throw Exception('Local file missing and no remote URL');
+      }
+
+      setState(() {
+        _isLoading = false;
+        _isPlaying = true;
+      });
       await _player.play();
     } catch (e) {
       _showSnackBar('Unable to play recording: $e');
       setState(() {
         _playingIndex = null;
         _isPlaying = false;
+        _isLoading = false;
       });
     }
   }
@@ -363,20 +388,6 @@ class _DatingAudioSummaryScreenState
       return false;
     }
   }
-
-  /// Probe local audio file duration using a temporary player
-  Future<Duration?> _probeLocalDuration(String path) async {
-    final p = AudioPlayer();
-    try {
-      await p.setFilePath(path);
-      final dur = p.duration;
-      return dur;
-    } catch (e) {
-      return null;
-    } finally {
-      await p.dispose();
-    }
-  }
 }
 
 class _Row extends StatelessWidget {
@@ -386,6 +397,7 @@ class _Row extends StatelessWidget {
   final int index;
   final bool isPlaying;
   final bool isPaused;
+  final bool isLoading;
   final VoidCallback onPlay;
 
   const _Row({
@@ -395,30 +407,42 @@ class _Row extends StatelessWidget {
     required this.index,
     required this.isPlaying,
     required this.isPaused,
+    this.isLoading = false,
     required this.onPlay,
   });
 
   @override
   Widget build(BuildContext context) {
     final ok = url != null;
-    final playing = isPlaying || isPaused;
-    final playIcon = isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded;
-    final playText = isPlaying ? 'Pause' : (isPaused ? 'Resume' : 'Play');
+    final playing = isPlaying || isPaused || isLoading;
+    final playIcon =
+        isLoading
+            ? Icons.hourglass_top_rounded
+            : (isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded);
+    final playText =
+        isLoading
+            ? 'Loading...'
+            : (isPlaying ? 'Pause' : (isPaused ? 'Resume' : 'Play'));
 
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
             radius: 14,
-            backgroundColor: AppColors.primary.withOpacity(0.12),
-            child: Text('$n', style: AppTextStyles.labelLarge),
+            backgroundColor: AppColors.primary,
+            child: Text(
+              '$n',
+              style: AppTextStyles.labelLarge.copyWith(
+                color: AppColors.getTextOnPrimary(context),
+              ),
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -437,14 +461,17 @@ class _Row extends StatelessWidget {
                       color:
                           ok
                               ? AppColors.primary.withOpacity(0.10)
-                              : AppColors.border,
+                              : AppColors.getBorder(context),
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Row(
                       children: [
                         Icon(
                           playIcon,
-                          color: ok ? AppColors.primary : AppColors.textMuted,
+                          color:
+                              ok
+                                  ? AppColors.primary
+                                  : AppColors.getTextMuted(context),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -454,14 +481,19 @@ class _Row extends StatelessWidget {
                                 : 'Uploading...',
                             style: AppTextStyles.bodyMedium.copyWith(
                               color:
-                                  ok ? AppColors.primary : AppColors.textMuted,
+                                  ok
+                                      ? AppColors.primary
+                                      : AppColors.getTextMuted(context),
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
                         Icon(
                           Icons.graphic_eq_rounded,
-                          color: ok ? AppColors.primary : AppColors.textMuted,
+                          color:
+                              ok
+                                  ? AppColors.primary
+                                  : AppColors.getTextMuted(context),
                         ),
                       ],
                     ),

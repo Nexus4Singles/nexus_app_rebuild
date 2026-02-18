@@ -1,0 +1,802 @@
+{
+  "journeyId": "divorced_healing_restoration",
+  "title": "Healing and Restoration After Divorce",
+  "subtitle": "Finding wholeness and new life after the end of your marriage",
+  "summary": "**Divorce wounds deeply, but healing is possible.** This journey moves beyond processing pain to actively pursuing restoration. You will learn to rebuild what was broken, find wholeness as a person, experience God's redemptive work in your life, and emerge from this season not just surviving but genuinely restored and ready for whatever comes next.",
+  "targetUserCategory": "divorced",
+  "priorityRank": 3,
+  "estimatedDays": 16,
+  "totalActivities": 10,
+  "difficulty": "intermediate",
+  "themeColor": "#2E7D32",
+  "cover": {
+    "themeTag": "Restoration",
+    "accentIcon": "spa",
+    "heroImage": "assets/images/journeys/divorced_journey3.jpg",
+    "heroImageDescription": "New growth emerging from broken ground, perhaps a plant pushing through cracked earth, symbolizing restoration and new life after difficulty."
+  },
+  "frameworks": [
+    "post_traumatic_growth",
+    "resilience_building",
+    "spiritual_renewal",
+    "wholeness_model"
+  ],
+  "targetOutcomes": [
+    "Move from surviving to thriving after divorce",
+    "Experience genuine healing not just time passing",
+    "Rebuild areas of life damaged by the divorce",
+    "Find meaning and growth in the painful experience",
+    "Develop resilience for future challenges",
+    "Experience God's restoration in your life"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_beyond_surviving",
+      "isFree": true,
+      "title": "Beyond Surviving: The Promise of Genuine Restoration",
+      "subtitle": "Believing that real healing and new life are possible",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "spa",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "After divorce, many people settle for simply surviving. But God offers more than survival. He offers restoration. This activity helps you believe that genuine healing and new life are possible for you.",
+      "frameworkBasis": {
+        "conceptKey": "restoration_hope",
+        "explanation": "Believing restoration is possible is the first step toward experiencing it. Hope activates healing."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "More Than Survival",
+          "text": "{red|**Think of a seed buried in dark soil.** From the seed's perspective, everything is darkness and pressure. It cannot see that something is happening, that life is stirring, that eventually it will break through to light.\n\n**After divorce, survival mode is normal.** You focus on getting through each day, managing the practical challenges, keeping your head above water.\n\n**But survival is not the destination.** It is a season. And if you stay in survival mode too long, you miss something important: the possibility of genuine restoration.\n\n**Restoration is more than not drowning.** It is learning to swim again. More than wounds closing, it is becoming stronger at the broken places. More than enduring, it is flourishing.\n\n**God does not just want you to survive your divorce.** He wants to restore you, to bring new life from what felt like death.\n\nDo you believe that is possible for you?}",
+          "icon": "spa"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Restoration Looks Like",
+          "text": "{red|What does restoration actually look like?} Not in theory. In real life.\n\n**It looks like waking up one morning and realizing the first thing you thought about was not your divorce.** Your mind went somewhere else first. That had not happened in months.\n\n**It looks like laughing at something, really laughing, and then noticing with surprise that you still can.** That the capacity for joy was not killed. It was just buried.\n\n**It looks like making a decision without wondering what they would think, or without feeling the absence of someone to discuss it with.** You are becoming a self again, not just a half.\n\n**It looks like telling someone you are divorced and having it feel like a fact about your history, not a confession of failure.** The shame has loosened its grip.\n\n**It looks like imagining the future and feeling something other than dread.** Maybe even, on some days, hope.\n\n**Restoration does not mean the pain disappears.** It means the pain becomes part of your story without being the whole story. It means you are not just surviving. You are beginning to live again.",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "God's Heart for Restoration",
+          "text": "**Scripture reveals a God who specializes in restoration.**\n\n**He promises to restore the years the locusts have eaten.** He makes all things new. He brings beauty from ashes, joy from mourning.\n\n**The Lord is close to the brokenhearted.** He heals the wounds of His people. He redeems what was lost.\n\n**This does not mean God caused your divorce so He could restore you.** But it means He can bring good even from painful things. His redemptive power is not limited by what has happened to you.\n\n**Your divorce is not the end of your story.** God is still writing, and He is a God of restoration.",
+          "icon": "auto_awesome"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Hope Level",
+          "text": "{red|How hopeful are you that genuine restoration is possible for you?}",
+          "prompts": [
+            "Very hopeful - I believe good things are ahead",
+            "Somewhat hopeful - I want to believe but have doubts",
+            "Uncertain - Some days I hope, other days I despair",
+            "Struggling - It is hard to imagine feeling whole again",
+            "Hopeless - I do not believe things will really get better",
+            "Starting to hope - After being hopeless, I am beginning to see possibilities"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever your hope level is today, this journey will help you move toward genuine restoration."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "What Restoration Would Mean",
+          "text": "{red|**Imagine yourself genuinely restored, not just surviving but thriving.**\n\nWhat would that look like for you?}{red| How would you feel?}{red| What would be different about your daily life?}{red| What would be healed that currently hurts?}\n\nDescribe what restoration would look like for you:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Choosing to Believe",
+          "text": "**Restoration begins with believing it is possible.**\n\n**Even if your faith is small, choose to believe that healing can happen for you.** Not because you feel it, but because you decide to.\n\nWrite a statement of belief:\n\n**I choose to believe that genuine restoration is possible for me.** Even though I have been deeply hurt, I am not beyond healing. God can bring new life from this painful season. I open myself to the restoration He offers.\n\n**Write this in your own words and read it when doubt creeps in.**",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_assessing_damage",
+      "isFree": false,
+      "title": "Taking Stock: Assessing What Needs Healing",
+      "subtitle": "Honestly evaluating the areas affected by your divorce",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "assessment",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Before you can rebuild, you need to know what was damaged. This activity helps you honestly assess the various areas of your life affected by divorce so you can address them intentionally.",
+      "frameworkBasis": {
+        "conceptKey": "holistic_assessment",
+        "explanation": "Divorce affects multiple dimensions of life. Comprehensive assessment enables targeted healing."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Scope of Impact",
+          "text": "**Divorce affects more than your relationship status.** It ripples through every area of life.\n\n**Your emotional health takes a hit through grief, anxiety, depression, and trauma.** Your identity shifts as you figure out who you are now. Your social world changes as friendships shift and community feels different.\n\n**Your finances may be strained.** Your living situation may have changed. Your daily routines are disrupted. Your relationship with your children, if you have them, takes on new complexity.\n\n**Your faith may be shaken.** Your confidence may be damaged. Your ability to trust may be compromised.\n\n**Restoration requires addressing all of these areas, not just the most obvious ones.**",
+          "icon": "assessment"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Areas to Assess",
+          "text": "Consider how divorce has affected these areas of your life:\n\nEmotional health: grief, anxiety, depression, anger, fear\n\nIdentity: sense of self, confidence, self-worth\n\nRelationships: friendships, family, community, capacity to trust\n\nPractical life: finances, housing, daily routines\n\nParenting: if applicable, your relationship with your children and co-parenting challenges\n\nFaith: your relationship with God, your church community, your spiritual practices\n\nPhysical health: sleep, eating, exercise, stress effects on body\n\nFuture outlook: hope, goals, vision for what comes next\n\n**Some areas may be severely damaged.** Others may be relatively intact. Honest assessment helps you know where to focus.",
+          "icon": "list"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Damage Assessment",
+          "text": "**Rate how significantly divorce has affected each area of your life, from 1 meaning minimally affected to 5 meaning severely affected.**\n\nEmotional health: Identity and self-worth: Relationships and trust: Practical life and finances: Parenting (if applicable): Faith and spirituality: Physical health: Hope and future outlook:\n\nWrite your ratings and any notes about each area:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Most Damaged Area",
+          "text": "{red|Which area of your life has been most severely affected by your divorce?}",
+          "prompts": [
+            "Emotional health - I am struggling with grief, anxiety, or depression",
+            "Identity - I do not know who I am anymore",
+            "Relationships - I have lost friends or cannot trust people",
+            "Finances - I am in financial distress",
+            "Parenting - Co-parenting or my relationship with my kids is very hard",
+            "Faith - My relationship with God or church has suffered",
+            "Physical health - My body is showing the stress",
+            "Hope - I cannot see a positive future"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Identifying your most damaged area helps you know where healing is most urgently needed."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "What Is Still Intact",
+          "text": "{red|**While assessing damage, also notice what is still intact.**\n\nWhat areas of your life are functioning relatively well?}{red| What strengths do you still have?}{red| What resources are available to you?}{red| What relationships remain supportive?}\n\n**These intact areas are assets for your restoration.** They provide stability while you rebuild damaged areas. They remind you that not everything is broken.\n\n**Restoration is not starting from zero.** You have a foundation to build on, even if parts of it feel shaky.\n\n**Take time to acknowledge what is still working, not to minimize the damage but to recognize the resources you have.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Restoration Priorities",
+          "text": "{red|**Based on your assessment, identify your restoration priorities.**\n\nWhich two or three areas most need attention?}\n\n{red|For each priority area, what would healing look like?}\n\n{red|What resources or support might help in each area?}\n\nWrite your restoration priorities:\n\nPriority 1: Priority 2: Priority 3:\n\n**This becomes your roadmap for the healing work ahead.**",
+          "icon": "flag"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_emotional_healing",
+      "isFree": false,
+      "title": "Healing the Heart: Emotional Restoration",
+      "subtitle": "Moving from emotional turmoil to emotional health",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Emotional wounds are often the deepest and slowest to heal. This activity focuses specifically on emotional restoration, moving from the turmoil of divorce toward genuine emotional health.",
+      "frameworkBasis": {
+        "conceptKey": "emotional_restoration",
+        "explanation": "Emotional healing involves processing pain, developing resilience, and rebuilding the capacity for joy and connection."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "From Turmoil to Health",
+          "text": "{red|**Lisa described her heart after the divorce as a house ransacked by burglars.** Drawers emptied, furniture overturned, precious things broken or stolen. The thought of putting it all back together felt impossible. Where would she even begin?}\n\n**Divorce creates emotional turmoil: intense, unpredictable, exhausting emotions that feel unmanageable.**\n\n**Emotional health is different.** It does not mean never feeling pain. It means having the capacity to feel emotions without being overwhelmed by them. To process difficult feelings rather than being stuck in them. To experience the full range of human emotion, including joy and peace.\n\n**The path from turmoil to health is not instant.** It involves processing the pain you have been experiencing, developing emotional resilience, and rebuilding your capacity for positive emotions.\n\n**You have already begun this work.** Now we continue it with focus on restoration, not just processing.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Signs of Emotional Healing",
+          "text": "{red|How do you know emotional healing is happening?}\n\n**The intensity of painful emotions decreases over time.** You can think about your divorce without being flooded. You have good days, then good weeks.\n\n**You begin to feel positive emotions again: joy, hope, peace, gratitude.** These may come in glimpses at first, then more frequently.\n\n**You can function in daily life without constant emotional disruption.** You can be present with others without being consumed by your own pain.\n\n**You can talk about what happened without falling apart.** The story becomes integrated rather than overwhelming.\n\n**You begin to look forward rather than only backward.** The future holds possibility, not just fear.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Practices for Emotional Healing",
+          "text": "**Several practices support emotional restoration.**\n\n**Continue processing emotions rather than avoiding them.** Suppressed emotions stay stuck. Felt emotions move through.\n\n**Develop emotional awareness.** Notice what you feel, name it, and let it inform you without controlling you.\n\n**Practice self-compassion.** Treat yourself with the kindness you would offer a friend. Stop the harsh inner critic.\n\n**Engage in activities that bring joy.** Do not wait until you feel like it. Joy practices can precede joy feelings.\n\n**Connect with supportive people.** Isolation worsens emotional health. Connection improves it.\n\n**Seek professional help if needed.** Therapy can accelerate and deepen emotional healing.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Emotional Healing Progress",
+          "text": "{red|**Reflect on where you are in emotional healing.**\n\nWhat signs of emotional healing do you notice in yourself?}{red| What emotional struggles remain?}{red| What has helped your emotional healing so far?}{red| What do you need to continue healing emotionally?}\n\nWrite about your emotional healing progress:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Rebuilding Capacity for Joy",
+          "text": "**One important aspect of emotional restoration is rebuilding your capacity for joy.**\n\n**Divorce can steal joy.** You may have forgotten what it feels like or believe you do not deserve it.\n\n**But joy is essential for full restoration.** Not happiness that depends on circumstances, but joy that can coexist with difficulty.\n\n**Rebuilding joy capacity involves intentionally engaging in things that bring pleasure: hobbies, nature, creativity, play.** Practicing gratitude daily, noticing what is good even amid what is hard. Allowing yourself to laugh without guilt. Celebrating small wins and good moments.\n\n**Joy does not dishonor your pain.** It honors your healing.",
+          "icon": "sentiment_very_satisfied"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Emotional Healing Plan",
+          "text": "**Create a plan for continuing emotional restoration.**\n\n**Emotional processing I will continue: how I will keep working through difficult emotions.**\n\n**Joy practices I will engage in: specific activities that bring me life.**\n\n**Connections I will nurture: people who support my emotional health.**\n\n**Professional support I will seek if needed.**\n\n**Self-compassion practice: how I will be kind to myself.**\n\nWrite your emotional healing plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_spiritual_restoration",
+      "isFree": false,
+      "title": "Restoring Your Soul: Spiritual Renewal After Divorce",
+      "subtitle": "Rebuilding your relationship with God through the pain",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "church",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Divorce often affects people spiritually. You may feel distant from God, angry at Him, or unsure what you believe. This activity addresses spiritual restoration as an essential part of overall healing.",
+      "frameworkBasis": {
+        "conceptKey": "spiritual_restoration",
+        "explanation": "Spiritual healing involves processing faith struggles and rebuilding a life-giving relationship with God."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Faith and Divorce",
+          "text": "**Divorce can shake faith in profound ways.** The prayers you prayed for your marriage went unanswered, or so it seems. The promises you believed feel hollow.\n\n**You may feel distant from God, wondering where He was when your marriage fell apart.** You may be angry at Him for allowing this to happen. You may question whether He is good or whether He cares.\n\n**You may feel shame that keeps you from approaching God.** You may wonder if He is disappointed in you or has rejected you.\n\n**You may struggle with church community.** Feeling judged, out of place, or unable to engage with couples and families.\n\n**You may have abandoned spiritual practices that once sustained you, finding it hard to pray or read Scripture.**\n\n**These struggles are common.** They do not disqualify you from restoration. They are part of what needs to be healed.",
+          "icon": "church"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "God's Posture Toward You",
+          "text": "{red|**The spiritual questions that come after divorce are often the hardest ones.**\n\nWhere was God?}{red| You prayed. Maybe for years. You begged Him to change your spouse, to save your marriage, to fix what was breaking. And silence. Or worse, it kept breaking.\n\nDoes He even hear?}{red| Does He care?}{red| If He is good and powerful, why did He let this happen?}{red| Why did He let your children go through this?}{red| Why did your faithfulness not matter?}\n\n{red|**These questions are not evidence of weak faith.** They are evidence of real faith struggling with real pain. The psalms are full of people asking God these exact questions. David, the man after God's own heart, asked them repeatedly.\n\n**But there are other questions too, perhaps harder ones.** The ones about yourself.\n\nDid God let this happen because of something you did wrong?}{red| Are you being punished?}{red| Is divorce the disqualifying sin that removes you from His favor?}\n\n**These questions come from shame, not from truth.** But they feel so real in the dark nights.\n\n**This activity will not give you all the answers.** Some of these questions do not have neat answers. But we can sit with the questions honestly, and find that God is present even when He is silent.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Rebuilding Spiritual Connection",
+          "text": "**Spiritual restoration involves intentionally rebuilding your connection with God.**\n\n**Be honest with God about where you are.** He already knows. Tell Him about your anger, doubt, distance. He can handle it.\n\n**Return to spiritual practices, even if they feel empty at first.** Read Scripture. Pray, even if just briefly. Worship, even through tears.\n\n**Find grace-filled community.** Not places of judgment but places where broken people find acceptance and support.\n\n**Receive God's forgiveness if guilt is a barrier.** Confess what needs confessing and accept the grace offered.\n\n**Allow God to comfort you.** Let Him be the source of comfort you need rather than demanding it from others who cannot fully provide it.",
+          "icon": "sync"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Spiritual State",
+          "text": "{red|**Honestly assess your spiritual state since the divorce.**\n\nHow has your relationship with God been affected?}{red| What struggles or barriers exist in your faith?}{red| What spiritual practices have you maintained or abandoned?}{red| What do you need from God right now?}\n\nWrite about your spiritual state:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Primary Spiritual Struggle",
+          "text": "{red|What is your primary spiritual struggle since the divorce?}",
+          "prompts": [
+            "Feeling distant from God",
+            "Anger at God for allowing this",
+            "Shame that keeps me from approaching God",
+            "Questioning whether God is good or cares",
+            "Struggling with church community",
+            "Unable to maintain spiritual practices",
+            "Confusion about what I believe",
+            "My faith has actually grown through this"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Whatever your spiritual struggle, restoration is available. God meets you where you are."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Spiritual Restoration Plan",
+          "text": "**Create a plan for spiritual renewal.**\n\n**Honesty with God: I will tell Him about my struggles, doubts, and needs.**\n\n**Spiritual practices I will resume or begin: prayer, Scripture, worship, or other disciplines.**\n\n**Community I will engage: a church, small group, or supportive believers.**\n\n**Truth I will hold onto: one or two Scriptures that anchor me.**\n\nWrite your spiritual restoration plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_rebuilding_life",
+      "isFree": false,
+      "title": "Rebuilding Your Life: Practical Restoration",
+      "subtitle": "Establishing stability and structure in your new reality",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "home",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Restoration is not only internal. It also involves rebuilding the practical structures of your life: routines, living situation, finances, and daily rhythms that provide stability.",
+      "frameworkBasis": {
+        "conceptKey": "practical_stability",
+        "explanation": "Practical life stability supports emotional and spiritual healing by providing structure and reducing chaos."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Importance of Structure",
+          "text": "**Healing is not only emotional and spiritual.** It is practical. And the practical stuff is exhausting.\n\n**Your routines are gone.** The rhythm of life you built over years has been disrupted. You used to know what Saturdays looked like. Now you are not sure what anything looks like.\n\n**You might be in a new place, or the same place that feels completely different.** You might be figuring out how to do things your spouse always handled. Taxes, car maintenance, cooking, yard work, whatever was not your domain is now yours alone.\n\n**The practical chaos makes the emotional healing harder.** It is difficult to process grief when you cannot find a plumber, when the bills are confusing, when dinner needs to happen and you do not have the energy to think about it.\n\n**Here is what helps: structure.** Not rigid, perfect structure. Just enough scaffolding to hold your days together while you heal. Regular sleep times. Basic meals. Some form of exercise. A few routines you can count on.\n\n**This is not about having your life together.** It is about creating enough stability that you have the capacity to fall apart when you need to, and put yourself back together again.",
+          "icon": "home"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Areas to Rebuild",
+          "text": "{red|**Consider these practical areas that may need attention.**\n\n**Daily routines: morning and evening rhythms, meal times, sleep schedule, self-care practices.**\n\n**Living situation: making your space feel like home, even if temporary.** Creating comfort and peace in your environment.\n\n**Finances: budgeting for your new reality, addressing debt, building stability.** A later journey addresses this in depth.\n\n**Work: maintaining professional stability or making necessary adjustments.**\n\n**Social rhythms: regular connection with friends, activities outside the home, avoiding isolation.**\n\n**Self-care: exercise, nutrition, sleep, and health practices that support wellbeing.**\n\nWhich of these need the most attention in your life?}",
+          "icon": "list"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Creating New Normal",
+          "text": "**Part of rebuilding is creating a new normal that works for your current life.**\n\n**This is not about replacing what was lost but about building something sustainable for now.**\n\n**New normal might include rituals that mark your new life: a morning routine that sets you up for the day, a weekly activity that brings joy, traditions that are yours alone.**\n\n**It might include making your space reflect you, not your old life together.** Arranging things as you want them. Adding things that bring comfort.\n\n**It might include establishing rhythms of connection, times you regularly see friends or engage in community.**\n\n**New normal takes time to establish.** But intentionally building it speeds the process.",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Practical Life Assessment",
+          "text": "{red|**Assess the practical structures of your life.**\n\nWhat routines are working well?}{red| What areas feel chaotic or unstable?}{red| What would help you feel more grounded practically?}{red| What new normal do you want to create?}\n\nWrite about your practical life assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Small Steps Matter",
+          "text": "{red|**Rebuilding practical life does not require dramatic changes.** Small steps accumulate.\n\n**Making your bed each morning is a small act of order.** Cooking a real meal instead of eating whatever is small self-care. Going to sleep at a consistent time is a small rhythm.\n\n**These small things add up.** They create a sense of agency and accomplishment. They build structure that supports larger healing.\n\n**Do not despise small steps.** They are how life gets rebuilt.\n\nWhat small step could you take today toward practical stability?}",
+          "icon": "stairs"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Practical Rebuilding Plan",
+          "text": "**Create a plan for rebuilding practical life structures.**\n\n**Daily routines I will establish: morning routine, evening routine, self-care practices.**\n\n**Living space improvements I will make: changes to create comfort and peace.**\n\n**Social rhythms I will create: regular connections and activities.**\n\n**One small step I will take this week.**\n\nWrite your practical rebuilding plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_rebuilding_relationships",
+      "isFree": false,
+      "title": "Rebuilding Connection: Restoring Relationships and Community",
+      "subtitle": "Recreating healthy relational life after divorce",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "groups",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Divorce often damages your relational world. Friendships shift, community feels different, and your capacity to connect may be impaired. Restoring healthy relationships is essential for full healing.",
+      "frameworkBasis": {
+        "conceptKey": "relational_restoration",
+        "explanation": "Humans are wired for connection. Restoring healthy relationships is essential for overall wellbeing after divorce."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Relational Fallout",
+          "text": "**Divorce affects relationships beyond your marriage.** Like a stone dropped in water, the impact ripples outward, touching relationships you never expected to be affected.\n\n**Friendships may have shifted.** Couple friends may feel awkward. Some friends may have taken sides or drifted away.\n\n**Family relationships may be strained.** Your family's response to the divorce may have been helpful or hurtful. In-laws you cared about may be lost.\n\n**Community may feel different.** Church, neighborhood, or social groups may feel uncomfortable or no longer fit.\n\n**Your capacity to connect may be impaired.** Trust issues, exhaustion, or shame may make you withdraw from relationships you need.\n\n**Restoration involves addressing all of these relational impacts.**",
+          "icon": "groups"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Need for Connection",
+          "text": "**You need people.** This is not weakness. It is human design.\n\n**Isolation worsens everything.** It intensifies depression, extends grief, and prevents perspective. Alone, your thoughts can spiral unchecked.\n\n**Connection improves everything.** Support from others provides comfort. Companionship eases loneliness. Community reminds you that you belong.\n\n**This does not mean you need constant company or superficial socializing.** Quality matters more than quantity. A few genuine connections are worth more than many shallow ones.\n\n**But some connection is essential.** Do not try to heal in complete isolation.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Rebuilding Your Relational World",
+          "text": "**Rebuilding relationships after divorce involves several things.**\n\n**Nurture existing friendships that remain.** Invest in the people who have stayed. Let them support you.\n\n**Build new connections.** This may mean finding new community, joining groups, or making new friends who fit your current life.\n\n**Set boundaries where needed.** Some relationships may be unhealthy or unsupportive. You can limit contact with people who harm rather than help.\n\n**Re-engage community.** Find a church, support group, or social circle where you can belong.\n\n**Be vulnerable selectively.** Let trusted people know what you are going through. Hiding makes healing harder.",
+          "icon": "engineering"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Relational Assessment",
+          "text": "{red|**Assess your current relational world.**\n\nWhich friendships have remained supportive?}{red| Which relationships have you lost or do you need to let go?}{red| Where do you experience community and belonging?}{red| What is your capacity for connection right now?}{red| What do you need relationally for healing?}\n\nWrite about your relational assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Relational Need",
+          "text": "{red|What is your greatest relational need right now?}",
+          "prompts": [
+            "Deeper connection with existing friends",
+            "New friendships that fit my current life",
+            "A community or group where I belong",
+            "Family relationships that need repair",
+            "Help overcoming isolation and withdrawal",
+            "Learning to trust people again",
+            "Support from people who understand divorce"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Identifying your relational need helps you know where to focus your connection efforts."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Connection Plan",
+          "text": "**Create a plan for rebuilding your relational world.**\n\n**Friendships I will nurture: specific people I will invest in.**\n\n**New connections I will pursue: groups to join, people to meet, communities to engage.**\n\n**Boundaries I need to set: relationships to limit or end.**\n\n**One specific step I will take this week toward connection.**\n\nWrite your connection plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_growth_from_pain",
+      "isFree": false,
+      "title": "Beauty from Ashes: Finding Growth in the Pain",
+      "subtitle": "Discovering how suffering can produce transformation",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "park",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "One of the most profound aspects of restoration is finding genuine growth in the midst of pain. This is not about pretending the pain was good, but about discovering how God brings good even from difficult things.",
+      "frameworkBasis": {
+        "conceptKey": "post_traumatic_growth",
+        "explanation": "Difficult experiences can become catalysts for growth that would not have happened otherwise."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Growth Through Suffering",
+          "text": "**In Japan, there is an art called kintsugi: repairing broken pottery with gold, making the cracks part of the object's beauty and history rather than something to hide.**\n\n**This may seem impossible to believe, but many people eventually find genuine growth through the pain of divorce.**\n\n**Not growth they would have chosen.** Not growth that makes the pain worth it in some simple equation. But real growth nonetheless.\n\n**Research on post-traumatic growth shows that many people who go through major difficulties report positive changes: deeper relationships, greater appreciation for life, increased personal strength, new possibilities, and spiritual development.**\n\n**This does not happen automatically.** And it does not happen for everyone. But it is possible for you.\n\n**God promises to bring beauty from ashes.** This is not empty words. It is how He works.",
+          "icon": "park"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Growth Might Look Like",
+          "text": "Growth through divorce might include:\n\n**Deeper self-knowledge.** You understand yourself better, your needs, your patterns, your strengths and weaknesses.\n\n**Increased empathy.** Having suffered, you can comfort others who suffer. Your pain becomes a gift you can offer.\n\n**Stronger faith.** Faith that has been tested and survived is more resilient than untested faith.\n\n**Greater appreciation.** Having lost, you value what you have more deeply.\n\n**New possibilities.** Doors that seemed closed may open. Paths you never considered become available.\n\n**Personal strength.** You have survived something hard. You know you can handle difficulty.\n\n**Danielle discovered all of these.** Three years after her divorce, she leads a support group for women going through the same pain. \"I never would have signed up for this path,\" she says. \"But I am not the same person I was before. I am more compassionate, more self-aware, more grounded in my faith. I stopped people-pleasing and started knowing what I actually need. I am stronger than I ever knew I could be. And now I get to sit with women who are where I was and say: you will survive this. You will even grow through it.\"\n\n**This growth does not erase the pain.** It coexists with it.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Cultivating Growth",
+          "text": "**Growth through pain is not automatic, but it can be cultivated.**\n\n**Look for meaning.** Ask what you can learn, how you can grow, what good might come. Not to minimize the bad, but to find the good within it.\n\n**Stay open to change.** Let the experience reshape you rather than hardening you.\n\n**Practice gratitude.** Even in pain, there are things to be thankful for. Gratitude shifts perspective.\n\n**Use the experience to help others.** Your story can encourage and guide others going through similar pain.\n\n**Choose growth over bitterness.** This is a daily choice. Bitterness is easier, but growth is better.\n\n**Trust God's redemptive work.** He wastes nothing. He can bring good from this.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Growth You Have Experienced",
+          "text": "{red|**Reflect on any growth you have already experienced or can imagine experiencing through this painful season.**\n\nWhat have you learned about yourself?}{red| How have you grown or changed?}{red| What do you appreciate more now?}{red| What strengths have you discovered?}{red| How might this experience ultimately benefit you or others?}\n\nWrite about growth you have experienced or hope for:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Not Wasted Pain",
+          "text": "**One of the most healing realizations is that your pain does not have to be wasted.**\n\n**The suffering was real.** The loss was real. Nothing erases that.\n\n**But it can produce something.** Wisdom for yourself. Comfort for others. Depth you would not have otherwise. A testimony of God's faithfulness through difficulty.\n\n**Paul wrote that we comfort others with the comfort we have received from God.** Your experience of being comforted in pain becomes a gift you can give to others in pain.\n\n**This does not make the divorce good.** But it means it is not only bad. Redemption is possible.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Choosing Growth",
+          "text": "**Make a declaration of your intention to grow through this experience.**\n\n**I choose to look for growth in my pain, not to minimize the hurt but to find redemption in it.**\n\n**I will ask what I can learn, how I can change, and how my experience can eventually help others.**\n\n**I believe God can bring beauty from these ashes.**\n\n**I will not let bitterness have the final word.** I choose growth.\n\nWrite this declaration in your own words:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_self_compassion",
+      "isFree": false,
+      "title": "Being Kind to Yourself: The Practice of Self-Compassion",
+      "subtitle": "Learning to treat yourself with the grace you need",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "self_improvement",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Many people are incredibly hard on themselves after divorce. Self-compassion is not self-pity or letting yourself off the hook. It is treating yourself with the kindness that enables healing.",
+      "frameworkBasis": {
+        "conceptKey": "self_compassion",
+        "explanation": "Self-compassion is treating yourself with the same kindness you would offer a good friend, which supports healing."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Harsh Inner Critic",
+          "text": "{red|**Pay attention to the voice in your head.** The one that narrates your divorce.\n\nWhat does it say?}\n\n{red|**You should have known.** You should have left sooner. You should have tried harder. You should have been more. You should have been less. This is your fault. Everyone knows it is your fault. You will never get over this. You do not deserve to get over this.\n\n**If you talked to anyone else the way you talk to yourself, you would be cruel.** Abusive, even. You would never say these things to a friend going through divorce. You would offer compassion, understanding, grace.\n\nWhy do you deserve less than what you would give a stranger?}\n\n**Self-compassion is not self-pity.** It is not letting yourself off the hook or avoiding responsibility. It is treating yourself with the same kindness you would treat someone you love.\n\n**You made mistakes.** You are not a mistake.\n\n**Your marriage failed.** You are not a failure.\n\n**You have regrets.** You are not defined by your regrets.\n\n**The voice that condemns you constantly, that is not the voice of truth.** It is not the voice of God. It is the voice of shame, and it lies.\n\n**Start noticing it.** Start talking back to it. Start speaking to yourself the way you would speak to someone you love who is in pain.",
+          "icon": "record_voice_over"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Self-Compassion Is",
+          "text": "**Self-compassion has three components.**\n\n**Self-kindness means treating yourself with warmth and understanding rather than harsh judgment.** Recognizing that you are human, imperfect, and deserving of care.\n\n**Common humanity means recognizing that suffering and failure are part of the shared human experience.** You are not alone in your struggles. Others have felt this too.\n\n**Mindfulness means holding your pain in balanced awareness.** Not ignoring it or exaggerating it. Simply acknowledging it without being consumed by it.\n\n**Self-compassion is not self-pity, which says poor me and gets stuck.** It is not self-indulgence, which avoids responsibility. It is healthy self-care that enables healing.",
+          "icon": "self_improvement"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Practicing Self-Compassion",
+          "text": "{red|**Self-compassion can be practiced intentionally.**\n\n**Notice your self-talk.** When you catch yourself being harsh, pause. Would you say this to a friend?}\n\n{red|**Reframe with kindness.** Replace harsh statements with compassionate ones. Instead of I am such a failure, try I am going through something hard and I am doing my best.\n\n**Acknowledge your humanity.** Remind yourself that you are human, that humans make mistakes, and that you deserve compassion.\n\n**Offer yourself comfort.** When you are hurting, ask what would comfort me right now?} Then provide it.\n\n**Pray compassionately.** Ask God to help you see yourself as He sees you: loved, valuable, and worthy of grace.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Self-Talk",
+          "text": "{red|**Examine how you talk to yourself about your divorce.**\n\nWhat does your inner critic say to you?}{red| How harsh or compassionate is your self-talk?}{red| What would you say to a friend in your situation?}{red| What would change if you treated yourself with that same kindness?}\n\nWrite about your self-talk patterns:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "God's Compassion for You",
+          "text": "{red|**Self-compassion is grounded in God's compassion for you.**\n\n**The Lord is compassionate and gracious, slow to anger, abounding in love.** He does not treat us as our sins deserve. As a father has compassion on his children, so the Lord has compassion on those who fear Him. (Psalm 103)\n\n**God's posture toward you is compassion, not condemnation.** If He is gracious to you, can you be gracious to yourself?}\n\n**Receiving God's compassion and extending it to yourself is not arrogance.** It is appropriate response to grace.\n\n**You are allowed to be kind to yourself.** God is.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "A Self-Compassion Practice",
+          "text": "**This week, practice self-compassion intentionally.**\n\n**When you notice harsh self-talk, pause and reframe it with kindness.**\n\n**Each day, identify one thing you would say to comfort a friend in your situation and say it to yourself.**\n\n**Write a letter to yourself as if you were writing to a beloved friend going through a divorce.** Offer understanding, encouragement, and hope.\n\nBegin the letter here or continue in your journal:\n\n**Dear friend.**..",
+          "icon": "edit"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_future_hope",
+      "isFree": false,
+      "title": "Eyes Forward: Rebuilding Hope for the Future",
+      "subtitle": "Moving from backward focus to forward possibility",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "wb_sunny",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Restoration includes rebuilding hope for the future. While healing requires processing the past, it also requires turning your eyes forward toward possibility. This activity helps you begin envisioning a hopeful future.",
+      "frameworkBasis": {
+        "conceptKey": "future_orientation",
+        "explanation": "Hope for the future is essential for full restoration and involves shifting focus from past loss to future possibility."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "From Backward to Forward",
+          "text": "{red|**Divorce naturally orients you toward the past.** What happened?}{red| What went wrong?}{red| What was lost?}\n\n**This backward focus is necessary for a time.** You cannot heal what you will not examine.\n\n**But at some point, healing requires turning forward.** Not forgetting the past, but no longer being stuck in it. Not ignoring what happened, but not letting it determine what will happen.\n\n**Restoration includes a future.** It includes new possibilities, new dreams, and new life. Part of healing is beginning to look in that direction.\n\n**This does not mean you have to have everything figured out.** It means opening yourself to the possibility that good things lie ahead.",
+          "icon": "wb_sunny"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Is Possible Now",
+          "text": "{red|**Thomas had given up on ever feeling hopeful again.** Then one morning, he caught himself planning a trip he wanted to take, something for himself, not an escape from pain. He realized with surprise that he was imagining a future he actually wanted to live in. Hope had returned without announcement.\n\n**Your life is not over.** It is different, but it is not over.\n\n**Possibilities exist that you may not be able to see yet.** Relationships you have not formed. Experiences you have not had. Growth you have not achieved. Purposes you have not fulfilled.\n\n**Some doors closed when your marriage ended.** But other doors may be opening or waiting to be opened.\n\n**This does not minimize what you lost.** It simply acknowledges that loss and possibility can coexist. Your story has painful chapters, but the story is not finished.\n\nWhat might be possible for you that you have not yet considered?}",
+          "icon": "door_front"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Rebuilding Dreams",
+          "text": "{red|**Divorce often destroys dreams.** The future you imagined is not going to happen.\n\n**But you can dream again.** Not the same dreams, but new ones appropriate to your new reality.\n\n**Rebuilding dreams starts with allowing yourself to want things again.** What do you hope for?}{red| What would you like your life to look like?}{red| What would bring meaning and joy?}\n\n{red|**These dreams do not have to be fully formed or realistic yet.** You are just beginning to look forward again. Give yourself permission to hope, to want, to imagine.\n\nWhat do you dream might be possible for your future?}",
+          "icon": "cloud"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Future Hopes",
+          "text": "{red|**Begin to articulate what you hope for in your future.**\n\nWhat would you like your life to look like in one year?}{red| In five years?}{red| What relationships do you hope for?}{red| What experiences do you hope to have?}{red| What kind of person do you hope to become?}{red| What would make life feel meaningful and good?}\n\nWrite about your future hopes:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Hope as Choice",
+          "text": "**Hope is not always a feeling.** Sometimes it is a choice.\n\n**You may not feel hopeful yet.** That is okay. You can choose hope even when you do not feel it.\n\n**Choosing hope means deciding to believe that good things are possible even when you cannot see them.** Deciding to stay open to the future rather than closing down. Deciding to move forward even when you do not know where you are going.\n\n**Hope is not denial of pain.** It is refusing to let pain have the final word.\n\n**For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.** (({red|Jeremiah 29:11}))\n\n**God has plans for you.** Choose to hope in them.",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "A Declaration of Hope",
+          "text": "**Write a declaration of hope for your future.**\n\n**Even though I have been through great pain, I choose to believe that good things are possible for my future.**\n\n**I do not know exactly what lies ahead, but I trust that God is not finished with me.**\n\n**I open myself to new relationships, new experiences, new purposes, and new dreams.**\n\n**My divorce is part of my story, but it is not the end of my story.**\n\n**I choose hope.**\n\nWrite your declaration of hope in your own words:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_commitment_to_restoration",
+      "isFree": false,
+      "title": "The Restoration Journey: Your Commitment to Wholeness",
+      "subtitle": "Committing to ongoing pursuit of full restoration",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "Restoration is not a one-time event but an ongoing journey. This activity helps you consolidate what you have learned and commit to continuing the pursuit of wholeness.",
+      "frameworkBasis": {
+        "conceptKey": "restoration_commitment",
+        "explanation": "Lasting restoration requires ongoing commitment to the practices and perspectives that enable healing."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Explored",
+          "text": "**Through this journey, you have explored the promise of genuine restoration and assessed the areas of your life affected by divorce.**\n\n**You have addressed emotional healing, spiritual renewal, practical rebuilding, and relational restoration.** You have learned to find growth in pain and practice self-compassion. You have begun to turn your eyes toward a hopeful future.\n\n**This work matters.** It positions you for ongoing healing that goes beyond mere survival to genuine flourishing.\n\n**Restoration is still in process.** But you have made significant progress.",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Restoration Is Ongoing",
+          "text": "**Restoration is not finished when this journey ends.** It continues as a way of life.\n\n**There will be setbacks and hard days.** Triggers will still come. Grief will sometimes resurface.\n\n**But the trajectory can be toward healing.** Each day, each choice, each practice can move you further along the restoration path.\n\n**God is faithful to complete the work He has begun in you.** Trust the process. Keep engaging the practices. Stay committed to your healing.\n\n**The fullness of restoration may take time.** But it is coming.",
+          "icon": "timeline"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Insight",
+          "text": "{red|What is the most important thing you have learned or realized through this journey about restoration after divorce?}\n\n{red|What do you most want to remember as you continue healing?}\n\nWrite your key insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Restoration Commitments",
+          "text": "{red|Based on what you have learned, what commitments will you make to ongoing restoration?}\n\n{red|How will you continue pursuing emotional health?}{red| How will you nurture your spiritual life?}{red| How will you maintain practical stability?}{red| How will you invest in relationships?}{red| How will you practice self-compassion and hope?}\n\nWrite your restoration commitments:",
+          "responseType": "open-text",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Restoration",
+          "text": "**Father, thank You for being a God of restoration.**\n\n**Thank You for the healing that has already begun in me.** Continue the work You have started.\n\n**Restore my heart, my soul, my relationships, and my hope.** Bring beauty from these ashes. Make me whole in ways I cannot yet imagine.\n\n**Help me cooperate with Your restoration by doing the work, practicing the habits, and maintaining hope.**\n\n**I trust that You are not finished with me.** My best days are not behind me. You have plans for my future.\n\n**Complete Your restoration in me.**\n\n**In Jesus' name, Amen.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Next Steps",
+          "text": "**Identify your next steps in the restoration journey.**\n\n**Continue with the next journey in this series: Rebuilding Your Identity and Self-worth.**\n\n**Maintain the practices you have developed: emotional processing, spiritual engagement, practical routines, relational connection, self-compassion, and hope.**\n\n**Seek additional support if needed: counseling, support groups, or trusted friends.**\n\n**Identify one specific next step you will take.**\n\nWrite your next step:",
+          "icon": "arrow_forward"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Restoration in Progress",
+    "summaryText": "You have done significant work in pursuing restoration after divorce. Remember that restoration is a journey, not a destination. Continue the practices you have developed, maintain hope, and trust that God is bringing wholeness to your life. Your best days are not behind you.",
+    "keyTakeaways": [
+      "Restoration goes beyond survival to genuine flourishing",
+      "Healing requires assessing and addressing all affected life areas",
+      "Emotional restoration involves processing pain and rebuilding joy capacity",
+      "Spiritual renewal comes through honest engagement with God",
+      "Practical stability supports emotional and spiritual healing",
+      "Relationships and community are essential for full restoration",
+      "Growth can emerge from pain when we remain open to it",
+      "Self-compassion enables rather than hinders healing",
+      "Hope for the future is both a feeling and a choice"
+    ],
+    "nextRecommendedJourneys": [
+      "Rebuilding Your Identity and Self-worth",
+      "Letting Go of Resentment and Lingering Conflict",
+      "Faith, Church, and Community After Divorce"
+    ]
+  }
+}

@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:nexus_app_v2/core/router/safe_nav.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
@@ -209,17 +212,31 @@ class _DatingContactInfoScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const _ProgressHeader(
-              subtitle:
-                  "Kindly provide the details of at least one social media platform you feel comfortable sharing, where users can easily contact you in case you're away from the app and unable to see messages.",
-            ),
+            const DatingProfileProgressBar(currentStep: 9, totalSteps: 9),
             const SizedBox(height: 14),
             Expanded(
               child: ListView.builder(
-                itemCount: _fields.length + 2, // +2 for Phone and WhatsApp
+                itemCount:
+                    _fields.length +
+                    2 +
+                    1, // +2 for Phone/WhatsApp, +1 for subtitle header
                 itemBuilder: (context, i) {
-                  // Phone field (after Facebook)
-                  if (i == 3) {
+                  // First item: subtitle text (scrolls with the list)
+                  if (i == 0) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 14),
+                      child: Text(
+                        "Kindly provide the details of at least one social media platform you feel comfortable sharing, where users can easily contact you in case you're away from the app and unable to see messages.",
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.getTextSecondary(context),
+                        ),
+                      ),
+                    );
+                  }
+                  // Shift remaining indices by 1
+                  final ai = i - 1;
+                  // WhatsApp field (after Facebook, index 3 in original)
+                  if (ai == 3) {
                     return _PhoneInputTile(
                       label: 'WhatsApp',
                       countryCodeController: _whatsappCountryCodeController,
@@ -228,7 +245,7 @@ class _DatingContactInfoScreenState
                     );
                   }
                   // Adjust index for regular fields
-                  final fieldIndex = i < 3 ? i : i - 1;
+                  final fieldIndex = ai < 3 ? ai : ai - 1;
                   if (fieldIndex >= _fields.length) {
                     return _PhoneInputTile(
                       label: 'Phone',
@@ -336,14 +353,57 @@ class _DatingContactInfoScreenState
       final fs = ref.read(firestoreInstanceProvider);
       final uid = FirebaseAuth.instance.currentUser?.uid;
       if (ready && fs != null && uid != null) {
-        final d = ref.read(datingOnboardingDraftProvider);
+        // Ensure the draft has been fully loaded from SharedPreferences
+        // (guards against race condition if provider was recently recreated)
+        await ref.read(datingOnboardingDraftProvider.notifier).ensureLoaded();
+        var d = ref.read(datingOnboardingDraftProvider);
 
-        // Fetch current user doc to get uploaded photos
-        final userDoc = await fs.collection('users').doc(uid).get();
-        final userData = userDoc.data();
-        final datingData = userData?['dating'] as Map<String, dynamic>?;
-        final photoUrls =
-            (datingData?['photos'] as List<dynamic>?)?.cast<String>() ?? [];
+        // Safety check: if critical fields are null, the in-memory draft may
+        // have been lost (e.g. hot restart). Try one more reload.
+        if (d.age == null && d.countryOfResidence == null) {
+          print(
+            '[DATING_SAVE] ⚠️ Draft appears empty — attempting manual reload',
+          );
+          try {
+            final prefs = await SharedPreferences.getInstance();
+            final raw = prefs.getString('dating_onboarding_draft');
+            if (raw != null) {
+              final json = jsonDecode(raw) as Map<String, dynamic>;
+              final reloaded = DatingOnboardingDraft.fromJson(json);
+              if (reloaded.age != null || reloaded.countryOfResidence != null) {
+                d = reloaded;
+                print(
+                  '[DATING_SAVE] ✅ Manual reload recovered data: age=${d.age}, country=${d.countryOfResidence}',
+                );
+              }
+            }
+          } catch (e) {
+            print('[DATING_SAVE] Manual reload failed: $e');
+          }
+        }
+
+        // DEBUG: Log draft contents to identify why data may be missing
+        print('[DATING_SAVE] Draft contents at save time:');
+        print(
+          '[DATING_SAVE]   age=${d.age}, city=${d.city}, country=${d.countryOfResidence}',
+        );
+        print(
+          '[DATING_SAVE]   nationality=${d.nationality}, education=${d.educationLevel}',
+        );
+        print(
+          '[DATING_SAVE]   profession=${d.profession}, church=${d.churchName}',
+        );
+        print(
+          '[DATING_SAVE]   hobbies=${d.hobbies}, qualities=${d.desiredQualities}',
+        );
+        print(
+          '[DATING_SAVE]   audio1Url=${d.audio1Url != null}, audio2Url=${d.audio2Url != null}, audio3Url=${d.audio3Url != null}',
+        );
+        print('[DATING_SAVE]   contactInfo=${d.contactInfo}');
+
+        // Use photo URLs from draft (uploaded during photos screen)
+        final photoUrls = d.photoUrls;
+        print('[DATING_SAVE]   photoUrls=${photoUrls.length} urls: $photoUrls');
 
         // Collect audio URLs for review pack
         final audioUrls = <String>[];
@@ -351,7 +411,9 @@ class _DatingContactInfoScreenState
         if (d.audio2Url?.isNotEmpty ?? false) audioUrls.add(d.audio2Url!);
         if (d.audio3Url?.isNotEmpty ?? false) audioUrls.add(d.audio3Url!);
 
-        // Get gender and relationship status from user data
+        // Get gender and relationship status from user doc
+        final userDoc = await fs.collection('users').doc(uid).get();
+        final userData = userDoc.data();
         final nexus2 = userData?['nexus2'] as Map<String, dynamic>?;
         final gender = nexus2?['gender'] as String?;
         final relationshipStatus = nexus2?['relationshipStatus'] as String?;
@@ -367,6 +429,8 @@ class _DatingContactInfoScreenState
           'contactInfo': d.contactInfo,
           'profileCompleted': true,
           'isActive': true, // Dating profile is now active when completed
+          'createdAt':
+              FieldValue.serverTimestamp(), // IMPORTANT: Set creation timestamp for sorting
           'verificationStatus': 'pending',
           'verificationQueuedAt': FieldValue.serverTimestamp(),
           // Profile searchable attributes (for dating.{field} queries)
@@ -400,34 +464,19 @@ class _DatingContactInfoScreenState
         await fs.collection('users').doc(uid).set({
           'dating': payload,
         }, SetOptions(merge: true));
-      } else {}
-    } catch (e) {}
+        print('[DATING_SAVE] ✅ Firestore write successful');
+      } else {
+        print(
+          '[DATING_SAVE] ⚠️ Skipped Firestore write: ready=$ready, fs=${fs != null}, uid=$uid',
+        );
+      }
+    } catch (e, st) {
+      print('[DATING_SAVE] ❌ Error saving profile: $e');
+      print('[DATING_SAVE] Stack: $st');
+    }
 
     if (!mounted) return;
     Navigator.of(context).pushNamed('/dating/setup/complete');
-  }
-}
-
-class _ProgressHeader extends StatelessWidget {
-  final String subtitle;
-
-  const _ProgressHeader({required this.subtitle});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const DatingProfileProgressBar(currentStep: 9, totalSteps: 9),
-        const SizedBox(height: 12),
-        Text(
-          subtitle,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.getTextSecondary(context),
-          ),
-        ),
-      ],
-    );
   }
 }
 

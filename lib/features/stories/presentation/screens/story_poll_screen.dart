@@ -316,15 +316,14 @@ class _ResultsView extends StatelessWidget {
     final counts = aggregate?.optionCounts ?? const <String, int>{};
     var total = aggregate?.totalVotes ?? 0;
 
-    // DEBUG: Log the aggregate data
-    // If no aggregate votes yet, calculate from seedCounts
-    if (total == 0 && poll.seedCounts.isNotEmpty) {
-      total = poll.seedCounts.values.fold(0, (sum, count) => sum + count);
-    }
-
-    // If still 0, calculate from counts map (in case totalVotes wasn't set properly)
+    // If totalVotes is somehow not set, calculate from counts as fallback
     if (total == 0 && counts.isNotEmpty) {
       total = counts.values.fold(0, (sum, count) => sum + count);
+    }
+
+    // If still 0, use seedCounts as last resort
+    if (total == 0 && poll.seedCounts.isNotEmpty) {
+      total = poll.seedCounts.values.fold(0, (sum, count) => sum + count);
     }
 
     final safeTotal = total == 0 ? 1 : total;
@@ -357,15 +356,14 @@ class _ResultsView extends StatelessWidget {
           child: Column(
             children: [
               ...poll.options.map((o) {
-                // Use aggregate counts first, fall back to seedCounts
+                // Prefer aggregate counts (real-time votes), fall back to seedCounts (seed data)
                 var c = counts[o.id] ?? poll.seedCounts[o.id] ?? 0;
                 final isMine = o.id == votedOptionId;
 
-                // DEBUG: Log per-option calculation
-                // If this is the user's voted option and total is 1 but count is 0,
-                // that means the vote was just recorded. Show 100%.
-                if (isMine && c == 0 && total == 1) {
-                  c = 1;
+                // If this is the user's voted option and total shows their vote counted,
+                // but count is still 0 from aggregate, use 1 to show it accurately
+                if (isMine && c == 0 && counts[o.id] == null && total >= 1) {
+                  c = 1; // This vote was just submitted
                 }
 
                 final pct =
@@ -395,7 +393,14 @@ class _ResultsView extends StatelessWidget {
                       const SizedBox(height: 8),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(999),
-                        child: LinearProgressIndicator(value: pct / 100),
+                        child: LinearProgressIndicator(
+                          value: pct / 100,
+                          minHeight: 8,
+                          backgroundColor: theme.colorScheme.surfaceVariant,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            theme.colorScheme.primary,
+                          ),
+                        ),
                       ),
                     ],
                   ),

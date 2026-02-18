@@ -1,0 +1,654 @@
+{
+  "journeyId": "widowed_holidays_anniversaries",
+  "title": "Navigating Holidays and Anniversaries",
+  "subtitle": "Finding your way through days that magnify the absence",
+  "summary": "**Certain days carry extra weight when you are grieving.** Holidays that were once celebrations become reminders of who is missing. Anniversaries of your marriage, their birthday, the day they died, these dates on the calendar can feel like landmines. This journey helps you prepare for these difficult days, create new traditions that honor your spouse while allowing you to move forward, and find ways to survive and eventually reclaim these occasions.",
+  "targetUserCategory": "widowed",
+  "priorityRank": 5,
+  "estimatedDays": 14,
+  "totalActivities": 10,
+  "difficulty": "intermediate",
+  "themeColor": "#4A5568",
+  "cover": {
+    "themeTag": "Holidays",
+    "accentIcon": "calendar",
+    "heroImage": "assets/images/journeys/widowed_journey5.jpg",
+    "heroImageDescription": "A single candle lit in a window, suggesting both remembrance and hope, with soft warm lighting that evokes both celebration and solemnity."
+  },
+  "frameworks": [
+    "grief_theory",
+    "ritual_adaptation",
+    "family_systems",
+    "faith_integration"
+  ],
+  "targetOutcomes": [
+    "Understand why certain days are harder and prepare for them",
+    "Develop strategies for surviving holidays without your spouse",
+    "Create new traditions that honor memory while embracing life",
+    "Help children navigate special occasions",
+    "Find meaning in difficult dates rather than just enduring them",
+    "Reclaim holidays over time as occasions that can hold both grief and joy"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_calendar_minefields",
+      "isFree": true,
+      "title": "Calendar Minefields: Why Certain Days Are Harder",
+      "subtitle": "Understanding the weight of special occasions in grief",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "calendar",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Holidays and anniversaries intensify grief in predictable ways. Understanding why helps you prepare rather than be blindsided.",
+      "frameworkBasis": {
+        "conceptKey": "anniversary_reactions",
+        "explanation": "Grief intensifies around significant dates due to memory, expectation, and social pressure."
+      },
+      "cards": [
+        {
+          "id": "card_1_1",
+          "cardType": "teaching",
+          "title": "The Days That Loom",
+          "text": "{red|**You see it coming on the calendar.** A date circled in dread instead of anticipation.\n\n**Their birthday.** Your anniversary. The day they died. Christmas. Thanksgiving. Valentine's Day. The holidays you used to celebrate together.\n\n**These days loom.** They approach with a weight that ordinary days do not carry. You know they will be hard. You brace yourself. And often, they are as difficult as you feared, sometimes worse.\n\nWhy do certain days hurt more?} It is not just psychological. Your brain has stored memories connected to dates, smells, traditions. When those triggers arrive, the grief that may have been manageable becomes acute.\n\n**Victor dreaded Christmas.** He and his wife had made it magical for their children every year. Now she was gone, and the thought of decorating the tree without her, of Christmas morning without her smile, felt unbearable. He considered skipping Christmas entirely.\n\n**These days are minefields.** But they can be navigated. With preparation, with support, with realistic expectations, you can get through them. Not perfectly. But through.",
+          "reflection": null
+        },
+        {
+          "id": "card_1_2",
+          "cardType": "teaching",
+          "title": "Why Holidays Intensify Grief",
+          "text": "{red|**Several factors make holidays and special occasions harder.**\n\n**Memory triggers: Holidays are filled with sensory experiences tied to the past.** The smell of certain foods. The sound of certain songs. Decorations you put up together. Each trigger brings a flood of memory.\n\n**Expectations: Holidays carry cultural weight.** They are supposed to be happy, family-filled, celebratory. When your reality does not match the expectation, the gap is painful.\n\n**Contrast: Everyone else seems to be celebrating.** Couples together, families intact. The contrast between their wholeness and your loss is stark.\n\n**Traditions disrupted: You built traditions together over years.** Now half of that tradition-building partnership is gone. Do you continue the traditions?}{red| Change them?} The questions themselves are exhausting.\n\n**Social pressure: Well-meaning people want you to participate, to be okay, to enjoy yourself.** Their expectations add burden to an already heavy day.\n\n**\"The Lord is close to the brokenhearted and saves those who are crushed in spirit\" ({red|Psalm 34:18|The Lord is close to the brokenhearted and saves those who are crushed in spirit}).** On these days when your heart breaks fresh, He is especially close. He does not expect you to be fine.",
+          "reflection": null
+        },
+        {
+          "id": "card_1_3",
+          "cardType": "teaching",
+          "title": "The Different Kinds of Difficult Days",
+          "text": "**Not all difficult days are the same.**\n\n**Public holidays: Christmas, Thanksgiving, Easter, New Year's.** These are hard because the whole world is celebrating and you are grieving. There is no escape from the reminders.\n\n**Personal anniversaries: Your wedding anniversary, their birthday, the day you met.** These are hard in a more private way. The world does not know, but you know.\n\n**The death anniversary: The day they died carries its own particular weight.** Reliving that day, remembering where you were, what happened. It is a re-opening of the original wound.\n\n**Unexpected days: Sometimes a random Tuesday will hit you because of something that happened on a Tuesday.** A song plays that was your song. You pass a restaurant where you used to go. These ambush days cannot be predicted.\n\n**\"There is a time for everything, and a season for every activity under the heavens: a time to weep and a time to laugh, a time to mourn and a time to dance\" ({red|Ecclesiastes 3:1|There is a time for everything, and a season for every activity under the heavens: a time to weep and a time to laugh, a time to mourn and a time to dance}, 4).** These difficult days are times for weeping. That is their season. You do not have to force laughter.",
+          "reflection": null
+        },
+        {
+          "id": "card_1_4",
+          "cardType": "question",
+          "title": "Your Difficult Days",
+          "text": "{red|What days on the calendar do you dread the most?}{red| What makes them particularly hard?}",
+          "reflection": null
+        },
+        {
+          "id": "card_1_5",
+          "cardType": "reflection",
+          "title": "Mapping Your Calendar",
+          "text": "{red|**Take time to identify the difficult days ahead.**\n\nWhat holidays will be hardest?}{red| Which ones carried the most meaning in your marriage?}\n\n{red|What personal dates are significant?}{red| Wedding anniversary, their birthday, other meaningful dates?}\n\n{red|When is the anniversary of their death?}{red| How do you anticipate that day?}\n\n{red|Are there seasonal triggers?}{red| Times of year that carry particular memory or meaning?}\n\n{red|Looking at the next twelve months, which dates concern you most?}\n\n**Naming these days is the first step in preparing for them.** You cannot plan for what you have not identified.",
+          "reflection": "{red|What are the difficult days coming in the next year?} Map them on a calendar."
+        },
+        {
+          "id": "card_1_6",
+          "cardType": "action",
+          "title": "Acknowledging the Minefields",
+          "text": "{red|**Make a list of your difficult days.**\n\n**Write down every date that you anticipate being hard.** Holidays, anniversaries, birthdays, seasonal times.\n\nFor each one, note: How far away is it?}{red| What made this day special before?}{red| Why will it be hard now?}{red| What is your biggest fear about this day?}\n\n**This is not meant to increase your dread.** It is meant to bring the fear into the light where it can be addressed.\n\n**\"Even though I walk through the darkest valley, I will fear no evil, for you are with me\" ({red|Psalm 23:4|Even though I walk through the darkest valley, I will fear no evil, for you are with me}).** You will walk through these dark days. He will be with you. But walking through requires facing them, not pretending they do not exist.\n\n**Make your list.** These are the minefields. Now you can begin to navigate them.",
+          "reflection": "**Create a list of your difficult days and what makes each one hard.**"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_preparation",
+      "isFree": false,
+      "title": "Preparing for Hard Days: Planning Instead of Dreading",
+      "subtitle": "How preparation can reduce the pain",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "plan",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Difficult days are harder when you face them unprepared. Having a plan reduces anxiety and gives you a sense of control.",
+      "frameworkBasis": {
+        "conceptKey": "anticipatory_coping",
+        "explanation": "Preparing for predictably difficult moments improves coping and reduces the intensity of grief."
+      },
+      "cards": [
+        {
+          "id": "card_2_1",
+          "cardType": "teaching",
+          "title": "The Power of Preparation",
+          "text": "**Dreading a day without preparing for it leaves you helpless.** The day arrives, and you have no plan, no support, no strategy. You just white-knuckle through it.\n\n**Preparation changes this.** When you have thought through the day in advance, you have options. You know what you will do, who will be with you, how you will handle the hard moments.\n\n**This does not make the day easy.** But it makes it navigable.\n\n**Anne used to dread Thanksgiving.** The first year after her husband died, she had no plan. She went to a family gathering and spent the day crying in a back bedroom, overwhelmed by his absence at the table.\n\n**The second year, she prepared.** She decided she would go for only part of the day. She identified a friend she could call if she needed to escape. She planned a quiet ritual to honor him before the gathering. The day was still hard, but she got through it without falling apart.\n\n**Preparation is not about controlling grief.** It is about giving yourself tools to survive it.",
+          "reflection": null
+        },
+        {
+          "id": "card_2_2",
+          "cardType": "teaching",
+          "title": "Elements of a Plan",
+          "text": "{red|**A plan for a difficult day might include several elements.**\n\nDecide what you will do: Will you participate in the usual activities?}{red| Modify them?}{red| Skip them entirely?} Make an intentional choice rather than drifting into something you cannot handle.\n\n**Decide who will be with you: Being alone on hard days can be brutal.** But being with the wrong people can be worse. Choose carefully who you want around you.\n\n**Have an escape plan: Know that you can leave if it becomes too much.** Having permission to exit makes it easier to enter.\n\n**Plan a way to honor your spouse: Build in time to remember them.** This can make the day about honoring memory rather than just surviving absence.\n\n**Lower expectations: You do not have to do holidays the way you used to.** You do not have to be okay. Lower the bar for what counts as success.\n\n**Line up support: Know who you can call or text during the day.** Have people ready to check on you.\n\n**\"The plans of the diligent lead to profit as surely as haste leads to poverty\" ({red|Proverbs 21:5|The plans of the diligent lead to profit as surely as haste leads to poverty}).** Diligent planning for difficult days leads to better outcomes than just hoping for the best.",
+          "reflection": null
+        },
+        {
+          "id": "card_2_3",
+          "cardType": "teaching",
+          "title": "Give Yourself Permission",
+          "text": "**Part of preparation is giving yourself permission in advance.**\n\n**Permission to cry.** If tears come, they come. You do not have to hold it together.\n\n**Permission to leave.** If an event becomes too hard, you can go. No one will fault you.\n\n**Permission to say no.** You do not have to accept every invitation or meet every expectation.\n\n**Permission to do things differently.** You can change traditions, skip activities, make the day look completely different than before.\n\n**Permission to feel whatever you feel.** Sadness, anger, guilt, even moments of joy. All feelings are allowed.\n\n**Mark decided he would not host Christmas at his house as he and his wife always had.** He gave himself permission to go to his sister's instead, to be a guest rather than a host. Some family members were disappointed. But he knew what he could handle.\n\n**Giving yourself permission in advance means you do not have to fight for it in the moment when you are depleted.**",
+          "reflection": null
+        },
+        {
+          "id": "card_2_4",
+          "cardType": "question",
+          "title": "Planning Your Approach",
+          "text": "{red|What is the next difficult day coming for you?}{red| Have you thought about how you will approach it?}",
+          "reflection": null
+        },
+        {
+          "id": "card_2_5",
+          "cardType": "reflection",
+          "title": "Creating Your Plan",
+          "text": "{red|**For your next difficult day, think through your plan.**\n\nWhat will you do?}{red| Participate, modify, or skip the usual activities?}\n\n{red|Who will be with you?}{red| Who do you want around, and who do you need space from?}\n\n{red|What is your escape plan if you need one?}\n\n{red|How will you honor your spouse during the day?}\n\n{red|What are your realistic expectations?}{red| What would count as getting through okay?}\n\n{red|Who is your support?}{red| Who can you contact during the day if you need help?}\n\n**Write this down.** A plan in your head is less useful than a plan on paper.",
+          "reflection": "{red|What is your plan for the next difficult day?} Write out the details."
+        },
+        {
+          "id": "card_2_6",
+          "cardType": "action",
+          "title": "Make One Plan",
+          "text": "{red|**Choose the next difficult day on your calendar and make a specific plan.**\n\nWrite down: The date and what makes it significant What you will do that day Who you want to be with Your escape option if needed How you will honor your spouse Who you will call if you struggle\n\n**Share this plan with at least one person.** Having someone who knows your plan means having someone who can support you in it.\n\n**\"Commit to the Lord whatever you do, and he will establish your plans\" ({red|Proverbs 16:3|Commit to the Lord whatever you do, and he will establish your plans}).** Commit this plan to Him. Ask Him to guide you through the day. He will be with you.\n\nWhat is your plan?}",
+          "reflection": "**Create a specific plan for your next difficult day and share it with someone.**"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_firsts",
+      "isFree": false,
+      "title": "The Brutal Firsts: Surviving the First Year of Occasions",
+      "subtitle": "Getting through each holiday and anniversary the first time",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "milestone",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "The first time through each holiday or anniversary without your spouse is uniquely painful. Surviving these firsts is a milestone in grief.",
+      "frameworkBasis": {
+        "conceptKey": "first_year_grief",
+        "explanation": "The first occurrence of each significant date after loss carries unique intensity that typically moderates in subsequent years."
+      },
+      "cards": [
+        {
+          "id": "card_3_1",
+          "cardType": "teaching",
+          "title": "The Weight of Firsts",
+          "text": "**The first Christmas without them.** The first birthday they will not celebrate. The first anniversary of your marriage that is not an anniversary anymore. The first anniversary of the day they died.\n\n**Firsts are brutal.**\n\n**There is something about the first time that carries extra weight.** You are walking territory you have never walked before. Every first is proof that life is continuing without them, that time is moving forward whether you want it to or not.\n\n**Catherine said the first year was like walking through a minefield blindfolded.** Every month brought another first. First Thanksgiving. First Christmas. First Easter. First summer vacation alone. Each one was a detonation she could not predict.\n\n**The good news, if there is good news, is that firsts only happen once.** The second Christmas is still hard, but it is not the first. The territory has been walked before. You know you can survive it because you already did.\n\n**\"I have told you these things, so that in me you may have peace.** In this world you will have trouble. But take heart! I have overcome the world\" ({red|John 16:33|I have told you these things, so that in me you may have peace.** In this world you will have trouble. But take heart! I have overcome the world}). These firsts are trouble. Take heart. He has overcome.",
+          "reflection": null
+        },
+        {
+          "id": "card_3_2",
+          "cardType": "teaching",
+          "title": "Strategies for Firsts",
+          "text": "Some strategies specifically for surviving firsts:\n\n**Acknowledge it is a first.** Name it. \"This is my first Thanksgiving without them.\" Naming the significance gives it appropriate weight.\n\n**Lower expectations dramatically.** Do not try to replicate what you used to do. A first is about survival, not celebration.\n\n**Do not be alone unless you truly want to be.** Have someone with you or available. Firsts are not the time for isolation.\n\n**Plan something to honor them.** A toast, a moment of silence, a special activity. Make the day include them in some way.\n\n**Have an exit strategy.** Know you can leave, cut it short, go to bed early. You do not have to endure more than you can handle.\n\n**Be kind to yourself afterward.** Getting through a first is an accomplishment. Acknowledge that you did it.\n\n**\"When you pass through the waters, I will be with you\" ({red|Isaiah 43:2|When you pass through the waters, I will be with you}).** You will pass through. He will be with you. And you will reach the other side.",
+          "reflection": null
+        },
+        {
+          "id": "card_3_3",
+          "cardType": "teaching",
+          "title": "The Other Side of Firsts",
+          "text": "**Here is what people on the other side of the first year will tell you: it does get different.**\n\n**Not easy.** But different. The second year, you know what to expect. You have memories of surviving. The terror of the unknown is replaced by the challenge of the known.\n\n**Some people find the second year harder in some ways because the support has dried up and the reality has fully set in.** But the firsts themselves are never quite as brutal as the first time.\n\n**Each first you survive is a victory.** Not a victory over grief, which is not an enemy to defeat. A victory of endurance. Proof that you can get through what you thought was unsurvivable.\n\n**Daniel kept a journal of firsts.** After each one, he wrote: \"I survived [first]. I did not think I could, but I did. God was with me.\" Looking back at that journal reminded him that he could survive the next one too.\n\n**\"I have fought the good fight, I have finished the race, I have kept the faith\" (2 {red|Timothy 4:7|I survived [first]. I did not think I could, but I did. God was with me.}).** Each first is part of the race. You are running it. You are keeping the faith. Keep going.",
+          "reflection": null
+        },
+        {
+          "id": "card_3_4",
+          "cardType": "question",
+          "title": "Your Firsts",
+          "text": "{red|What firsts have you already survived?}{red| What firsts are still ahead?}",
+          "reflection": null
+        },
+        {
+          "id": "card_3_5",
+          "cardType": "reflection",
+          "title": "Marking Your Firsts",
+          "text": "{red|**Take inventory of your firsts.**\n\nWhat firsts have you already been through?}{red| How did you survive them?}{red| What helped?}\n\n{red|What firsts are still coming in the next months?}\n\n{red|Which upcoming first are you most dreading?}{red| Why?}\n\n{red|What did you learn from the firsts you have survived that might help with the ones ahead?}\n\n{red|How might you mark or acknowledge each first as you complete it?}\n\n**You are walking through a year of firsts.** Keeping track helps you see your progress.",
+          "reflection": "{red|What firsts have you survived?}{red| What firsts are ahead?}{red| What have you learned?}"
+        },
+        {
+          "id": "card_3_6",
+          "cardType": "action",
+          "title": "Acknowledge a First",
+          "text": "**If you have recently survived a first, take time to acknowledge it.**\n\n**Write in a journal: \"I survived my first [occasion] without [name].** It was hard, but I made it through.\"\n\n**Thank God for carrying you through it.** \"Thank You, Lord, for being with me on [day]. I could not have done it without You.\"\n\n**Tell someone.** Let a friend know that you got through it. Let them celebrate your endurance with you.\n\n**If you have firsts still coming, look at your list.** Choose the next one and begin planning for it using what you learned in the last activity.\n\n**\"The Lord your God is with you, the Mighty Warrior who saves.** He will take great delight in you; in his love he will no longer rebuke you, but will rejoice over you with singing\" ({red|Zephaniah 3:17|The Lord your God is with you, the Mighty Warrior who saves.** He will take great delight in you; in his love he will no longer rebuke you, but will rejoice over you with singing}). He delights in you. He rejoices over you. Even in the firsts. Especially in the firsts.\n\n**Acknowledge a first you have survived, or begin planning for the next one.**",
+          "reflection": "**Acknowledge a first you have survived, or plan for the next one coming.**"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_holidays",
+      "isFree": false,
+      "title": "The Big Holidays: Navigating Christmas, Thanksgiving, and More",
+      "subtitle": "Strategies for the major celebrations",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "holiday",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Major holidays like Christmas and Thanksgiving are often the hardest days. Specific strategies for these occasions can help you survive them.",
+      "frameworkBasis": {
+        "conceptKey": "holiday_navigation",
+        "explanation": "Major holidays require specific navigation strategies due to their cultural weight and family significance."
+      },
+      "cards": [
+        {
+          "id": "card_4_1",
+          "cardType": "teaching",
+          "title": "The Holidays Everyone Celebrates",
+          "text": "**Some holidays are inescapable.** Christmas decorations go up in October. Thanksgiving is discussed for weeks. Everyone asks about your plans.\n\n**These public holidays are hard because you cannot avoid them.** The reminders are everywhere. The expectations are heavy. The contrast between the celebration around you and the grief inside you is stark.\n\n**Evelyn described her first Christmas as torture.** \"The music in every store. The happy families. The assumption that everyone was having a wonderful time. I wanted to scream, 'My husband just died!' But no one wanted to hear that during the holidays.\"\n\n**The cultural pressure to be joyful makes grief feel especially isolating.** You are supposed to be merry. You are not merry. You are surviving.\n\n**But these holidays can be navigated.** With the right approach, the right expectations, and the right support, you can get through them. Not the way you used to. But through.\n\n**\"The Lord is my shepherd, I lack nothing.** He makes me lie down in green pastures, he leads me beside quiet waters, he refreshes my soul\" ({red|Psalm 23:1-3|The Lord is my shepherd, I lack nothing.** He makes me lie down in green pastures, he leads me beside quiet waters, he refreshes my soul}). Even when the world is loud and demanding, He leads you to quiet places. Find those places.",
+          "reflection": null
+        },
+        {
+          "id": "card_4_2",
+          "cardType": "teaching",
+          "title": "Christmas Strategies",
+          "text": "{red|**Christmas is often the hardest holiday for grieving people.** Here are some strategies:\n\n**Decide what you can handle.** Full decorating?}{red| Minimal?}{red| None?}{red| Choose intentionally rather than defaulting to what you used to do.\n\n**Modify traditions.** You can keep some traditions, modify others, and drop some entirely. What traditions do you want to continue?}{red| Which ones are too painful?}\n\n**Give yourself an out.** Christmas Day does not have to be all day. You can participate for part of it and then retreat.\n\n**Remember them intentionally.** Light a candle for them. Hang a special ornament. Include their memory rather than trying to pretend they are not missing.\n\n**Limit gift stress.** Shopping can be overwhelming when you are grieving. Simplify, delegate, or skip it. No one will fault you.\n\n**Consider doing something completely different.** Some widowed people travel, volunteer at a shelter, or spend the day entirely differently than their usual tradition. This can remove the triggers.\n\n**Be with people who understand.** If your family pressures you to be festive, consider spending time instead with people who let you grieve.",
+          "reflection": null
+        },
+        {
+          "id": "card_4_3",
+          "cardType": "teaching",
+          "title": "Thanksgiving and Other Gatherings",
+          "text": "{red|**Thanksgiving, Easter, and other family gathering holidays carry their own challenges.**\n\n**The empty chair: At a table where everyone is supposed to be present, the absence is glaring.** Some families set a place for the deceased. Others do not. There is no right answer.\n\n**Family dynamics: Your family may not know how to handle your grief.** They may say the wrong things, avoid the subject entirely, or pressure you to be okay. Decide in advance how you will handle this.\n\n**The cooking question: If you usually cooked or your spouse usually cooked, this is now different.** Can you manage it?}{red| Should someone else take over?}{red| Can you order food instead?}\n\n**Howard could not face Thanksgiving at his own house without his wife.** He asked his daughter to host instead. Being a guest rather than a host changed the dynamic enough that he could manage it.\n\n**Alternative plans: You do not have to do the traditional thing.** Some widowed people serve at a soup kitchen on Thanksgiving. Others have a quiet day alone by choice. Others gather only with those who knew and loved their spouse.\n\n**\"Above all, love each other deeply, because love covers over a multitude of sins\" (1 {red|Peter 4:8|Above all, love each other deeply, because love covers over a multitude of sins}).** Family gatherings are imperfect. Love covers the awkwardness. Extend grace to those who do not know what to say.",
+          "reflection": null
+        },
+        {
+          "id": "card_4_4",
+          "cardType": "question",
+          "title": "Your Holiday Approach",
+          "text": "{red|How have you handled major holidays since your spouse died?}{red| What has worked and what has not?}",
+          "reflection": null
+        },
+        {
+          "id": "card_4_5",
+          "cardType": "reflection",
+          "title": "Holiday Planning",
+          "text": "{red|**Think through your approach to the major holidays.**\n\nChristmas: What will you do this year?}{red| What traditions will you keep, modify, or drop?}{red| Where will you be and with whom?}\n\n{red|Thanksgiving: How will you handle this gathering?}{red| What will make it survivable?}\n\n{red|Easter: What is your plan for this holiday of resurrection, which holds particular meaning in grief?}\n\n{red|Other holidays significant to you: What approach will you take?}\n\n{red|For each holiday, consider: What do I actually want?}{red| What can I handle?}{red| What will help me honor my spouse while getting through the day?}",
+          "reflection": "{red|What is your approach to each major holiday?}{red| What will make them survivable?}"
+        },
+        {
+          "id": "card_4_6",
+          "cardType": "action",
+          "title": "Plan One Holiday",
+          "text": "{red|**Choose the next major holiday on your calendar and make a specific plan.**\n\nWrite down: What you will do (and what you will not do) Where you will be Who you will be with How you will honor your spouse What traditions you will keep, modify, or skip Your exit strategy if you need it Who you will call if you are struggling\n\n**Share this plan with someone who will support you in it.**\n\n**\"Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight\" ({red|Proverbs 3:5-6|Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight}).** Trust Him with this holiday. Submit your plan to Him. He will guide your path.\n\nWhat is your plan for the next major holiday?}",
+          "reflection": "**Create a specific plan for the next major holiday.**"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_personal_dates",
+      "isFree": false,
+      "title": "The Personal Dates: Anniversaries, Birthdays, and the Day They Died",
+      "subtitle": "Navigating the dates that belong only to you",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "heart",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Personal dates like your anniversary, their birthday, and the day they died carry private weight that others may not understand.",
+      "frameworkBasis": {
+        "conceptKey": "personal_anniversaries",
+        "explanation": "Private significant dates require different navigation than public holidays."
+      },
+      "cards": [
+        {
+          "id": "card_5_1",
+          "cardType": "teaching",
+          "title": "Dates That Belong to You",
+          "text": "{red|**Some dates are not on anyone else's calendar.** Only you know their significance.\n\n**Your wedding anniversary.** You used to celebrate. Now what?} The date comes, and the world does not acknowledge it, but you feel every ounce of its weight.\n\n**Their birthday.** They are not here to blow out candles. But you remember when they were born, what age they would be, how you used to celebrate.\n\n**The day they died.** This date is seared into your memory. Where you were. What happened. The worst day of your life.\n\n**Other meaningful dates.** The day you met. The day you got engaged. The day you found out they were sick. Dates that mean nothing to anyone else but everything to you.\n\n**Patricia said the hardest date was her wedding anniversary.** \"No one else remembered. It was just a normal Tuesday to everyone. But I spent the day crying, looking at our wedding photos, feeling like I was the only person in the world who knew what that date meant.\"\n\n**These private dates can be even harder than public holidays because you grieve them alone.**",
+          "reflection": null
+        },
+        {
+          "id": "card_5_2",
+          "cardType": "teaching",
+          "title": "Your Wedding Anniversary",
+          "text": "{red|**Your wedding anniversary is complicated now.**\n\n**It is no longer a celebration of years together.** But it is also not nothing. It marks the day you committed your life to someone you loved deeply.\n\n**Some people mourn on their anniversary.** They treat it as a day of grief, looking at photos, allowing tears, remembering what was.\n\n**Some people celebrate.** They do something their spouse loved, toast to the years they had, honor the joy of their marriage.\n\n**Some people do both.** The day holds both grief and gratitude.\n\n**Some people want to be alone.** Others need people around them.\n\n**Richard spent his first anniversary at the restaurant where he proposed.** He ordered her favorite meal and cried into his dinner. The waitress brought him extra napkins without comment. It was hard, but it felt right to be there.\n\n**There is no right way to spend your anniversary.** The question is: what do you need?}{red| What would help you honor the day and your spouse?}",
+          "reflection": null
+        },
+        {
+          "id": "card_5_3",
+          "cardType": "teaching",
+          "title": "The Death Anniversary",
+          "text": "{red|**The anniversary of their death is its own particular burden.**\n\n**Unlike your wedding anniversary, which was once a celebration, this date was never happy.** It marks the worst moment, the dividing line between life with them and life without them.\n\n**Some people experience what is called an anniversary reaction.** As the date approaches, grief intensifies. You may feel worse for days or weeks before, without realizing why until you look at the calendar.\n\n**Lisa found herself unable to function the week before the anniversary of her husband's death.** She thought she was relapsing until she realized what date was coming. Her body knew before her conscious mind did.\n\nHow do you spend this day?} Some people want to be surrounded by others who loved their spouse. Some want solitude. Some want to visit the grave or do something meaningful. Some just want to survive it.\n\n**\"For his anger lasts only a moment, but his favor lasts a lifetime; weeping may stay for the night, but rejoicing comes in the morning\" ({red|Psalm 30:5|For his anger lasts only a moment, but his favor lasts a lifetime; weeping may stay for the night, but rejoicing comes in the morning}).** The night of the death anniversary is dark. But morning comes. The day ends. And you will have survived another year.",
+          "reflection": null
+        },
+        {
+          "id": "card_5_4",
+          "cardType": "question",
+          "title": "Your Personal Dates",
+          "text": "{red|What personal dates are hardest for you?}{red| How have you handled them so far?}",
+          "reflection": null
+        },
+        {
+          "id": "card_5_5",
+          "cardType": "reflection",
+          "title": "Planning for Personal Dates",
+          "text": "{red|**Think through how you want to approach the personal dates.**\n\nWedding anniversary: What do you want this day to be?}{red| Mourning, celebration, or both?}{red| How will you spend it?}{red| Who, if anyone, do you want with you?}\n\n{red|Their birthday: How will you mark this day?}{red| Will you do something they loved?}{red| Visit somewhere meaningful?}{red| Allow yourself to grieve?}\n\n{red|The death anniversary: What do you need on this hardest of days?}{red| What support?}{red| What activity or stillness?}{red| What would help you honor them while surviving the day?}\n\n{red|Other meaningful dates: What other dates are significant?}{red| How will you approach them?}\n\n**For each date, consider whether you want to be alone or with others, active or still, surrounded by reminders or distanced from them.**",
+          "reflection": "{red|How will you approach your wedding anniversary, their birthday, and the death anniversary?}"
+        },
+        {
+          "id": "card_5_6",
+          "cardType": "action",
+          "title": "Plan One Personal Date",
+          "text": "{red|**Choose the next personal date on your calendar and make a plan.**\n\n**Decide: How you want to feel about this day.** What would help you honor it?}{red| What you will do. A specific activity, ritual, or intention. Where you will be. Home, somewhere meaningful, somewhere different?}{red| Who will be with you, if anyone. Or if you want solitude. How you will communicate to others what you need. Can you tell someone what this date is and ask for support?}\n\n{red|**You do not have to let these dates ambush you.** With a plan, you can walk into them with intention.\n\n\"The Lord is my light and my salvation, whom shall I fear?}{red| The Lord is the stronghold of my life, of whom shall I be afraid?}{red|\" ({red|Psalm 27:1|The Lord is my light and my salvation, whom shall I fear?}{red| The Lord is the stronghold of my life, of whom shall I be afraid?}{red|}). You need not fear these dates. He is your stronghold.\n\nWhat is your plan for the next personal date?}",
+          "reflection": "**Create a specific plan for the next personal date on your calendar.**"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_new_traditions",
+      "isFree": false,
+      "title": "Creating New Traditions: Honoring the Past While Embracing Life",
+      "subtitle": "Building rituals that acknowledge loss and allow joy",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "tradition",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Old traditions may be too painful or impossible to continue. Creating new traditions that honor your spouse while allowing life to continue is part of healing.",
+      "frameworkBasis": {
+        "conceptKey": "ritual_adaptation",
+        "explanation": "Creating new rituals that incorporate loss while embracing life supports healthy grief integration."
+      },
+      "cards": [
+        {
+          "id": "card_6_1",
+          "cardType": "teaching",
+          "title": "When Old Traditions Cannot Continue",
+          "text": "**Some traditions were built around your spouse.** Without them, the traditions feel impossible.\n\n**Maybe they always cooked the turkey.** Maybe they led the prayer. Maybe the tradition itself was something you did together, just the two of you.\n\n**Trying to continue these traditions without them can feel like putting on a costume that no longer fits.** The form is there, but the substance is gone.\n\n**Glorida and her husband always spent Christmas Eve driving around to look at holiday lights.** After he died, she tried to do it alone. She made it two blocks before pulling over to cry. The tradition without him was not the tradition. It was just a painful reminder.\n\n**You have choices about traditions.** You can try to continue them, modified. You can let them go. Or you can create new ones that fit who you are now.\n\n**There is no wrong answer.** But clinging to traditions that only bring pain is not required. Sometimes the most honoring thing is to create something new.",
+          "reflection": null
+        },
+        {
+          "id": "card_6_2",
+          "cardType": "teaching",
+          "title": "Elements of New Traditions",
+          "text": "{red|**New traditions can honor your spouse while creating space for life to continue.**\n\n**Remembrance elements: Include something that specifically honors your spouse.** A toast to them. A candle lit in their memory. A story shared about them. A donation to something they cared about.\n\n**New activities: Do something you have never done, so there are no memories to compete with.** A new restaurant. A new location. A completely different approach to the day.\n\n**Include others: Build traditions that include people who love you and understand your grief.** Shared rituals are easier to sustain.\n\nMake it meaningful: What would give the day meaning beyond just getting through it?}{red| Service?}{red| Creativity?}{red| Connection?}{red| Rest?}\n\n{red|**Mary started a new tradition after her husband died.** On his birthday, she makes his favorite meal and invites close friends. They eat together, tell stories about him, and laugh and cry. It is not the same as celebrating with him. But it is something. It is a tradition that holds both memory and life.\n\n**\"See, I am doing a new thing!** Now it springs up; do you not perceive it?}\" ({red|Isaiah 43:19|See, I am doing a new thing!** Now it springs up; do you not perceive it?}}). God does new things. You can too. New traditions are not betrayal. They are adaptation.",
+          "reflection": null
+        },
+        {
+          "id": "card_6_3",
+          "cardType": "teaching",
+          "title": "Traditions That Include Children",
+          "text": "**If you have children, traditions matter for their grief too.**\n\n**Children need continuity, something that stays the same when everything has changed.** But they also need traditions that do not make them sad every time.\n\n**Involve them in decisions.** Ask what traditions they want to keep, what they want to change. Give them some ownership.\n\n**Include the deceased parent.** Children need permission to remember and talk about their parent during holidays. Build this into your traditions. \"Let us each share a memory of Dad before we eat.\"\n\n**Create something new together.** Starting a new tradition as a family can be healing. It is something that belongs to who you are now, not who you used to be.\n\n**Watch for what they need.** Some children want to talk about their parent constantly. Others avoid it. Follow their lead while gently creating space for memory.\n\n**\"Train up a child in the way he should go; even when he is old he will not depart from it\" ({red|Proverbs 22:6|Train up a child in the way he should go; even when he is old he will not depart from it}).** Training includes teaching them to grieve with hope, to remember with love, to embrace traditions that honor the past and welcome the future.",
+          "reflection": null
+        },
+        {
+          "id": "card_6_4",
+          "cardType": "question",
+          "title": "Your Traditions",
+          "text": "{red|What old traditions have been hard to continue?}{red| What new traditions might you want to create?}",
+          "reflection": null
+        },
+        {
+          "id": "card_6_5",
+          "cardType": "reflection",
+          "title": "Designing New Traditions",
+          "text": "{red|**Think through what new traditions might help you.**\n\nWhat old traditions are too painful or impossible to continue?}\n\n{red|What old traditions can be modified to fit your new reality?}\n\n{red|What completely new traditions might you create?}\n\n{red|How can you build remembrance of your spouse into new traditions?}\n\n{red|If you have children, how can you involve them in creating new traditions?}\n\n{red|What would make holidays and special occasions meaningful rather than just survivable?}",
+          "reflection": "{red|What new traditions might you create?}{red| How can they honor your spouse while embracing life?}"
+        },
+        {
+          "id": "card_6_6",
+          "cardType": "action",
+          "title": "Create One New Tradition",
+          "text": "{red|**Choose one new tradition to start.**\n\n**It could be for a holiday, an anniversary, or any meaningful date.**\n\n**Decide: What the tradition will be.** What will you do?}{red| Who will be involved. Just you?}{red| Family?}{red| Friends?}{red| How it honors your spouse. What remembrance element is included?}{red| How it allows for life to continue. What makes it sustainable and even enjoyable?}\n\n{red|**Write it down.** Tell someone about it. Plan to implement it at the next appropriate occasion.\n\n**Traditions take time to feel established.** This first time will be experimental. Give it a chance, and adjust as needed.\n\n**\"Remember the former things, those of long ago; I am the Lord, and there is no other\" ({red|Isaiah 46:9|Remember the former things, those of long ago; I am the Lord, and there is no other}).** Remember. But also create. The former things are honored by the new things that carry their memory forward.\n\nWhat new tradition will you create?}",
+          "reflection": "**Create one new tradition that honors your spouse while allowing life to continue.**"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_helping_children",
+      "isFree": false,
+      "title": "Helping Children Through Holidays: Supporting Their Grief on Special Days",
+      "subtitle": "Navigating difficult occasions with your kids",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "family",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "If you have children, they are navigating these difficult days too. Helping them requires attention to their unique needs.",
+      "frameworkBasis": {
+        "conceptKey": "child_grief_holidays",
+        "explanation": "Children's grief intensifies around holidays and requires age-appropriate support."
+      },
+      "cards": [
+        {
+          "id": "card_7_1",
+          "cardType": "teaching",
+          "title": "Children and Difficult Days",
+          "text": "{red|**Your children are walking through the same minefield of holidays and anniversaries, but their experience is different from yours.**\n\n**They may feel the loss differently.** Children miss their parent as a parent, as the one who did certain things, filled certain roles, provided certain love.\n\n**They may not anticipate hard days the same way.** Children often live in the moment. They may be blindsided by grief on a holiday when you saw it coming.\n\n**They may feel conflicted about having fun.** Can they enjoy Christmas without their parent?}{red| Is it okay to be happy on a day that is supposed to be happy but feels sad?}\n\n**They watch you.** How you handle these days teaches them how to handle them. Your grief models grief. Your hope models hope.\n\n**Jason noticed his kids were quiet on their first Christmas without their mom.** They did not want to seem happy because they thought it would make him sad. He had to explicitly tell them: \"It is okay to have fun today. Mom would want you to enjoy Christmas. And I am okay if you enjoy it.\"\n\n**Your children need permission, guidance, and space to grieve these days in their own way.**",
+          "reflection": null
+        },
+        {
+          "id": "card_7_2",
+          "cardType": "teaching",
+          "title": "Preparing Children",
+          "text": "{red|**Just as you prepare for difficult days, help your children prepare.**\n\n**Talk about it in advance.** \"Thanksgiving is coming. It might feel sad because we will miss Mom. How are you feeling about it?}\"\n\n**Validate their feelings.** Whatever they feel is okay. Sad, angry, confused, even excited about parts of the holiday. All feelings are allowed.\n\n**Explain the plan.** Children feel safer when they know what to expect. Tell them what the day will look like, where you will be, who will be there.\n\n**Give them a role.** Having something to do can help. Maybe they light the memory candle. Maybe they help with a tradition. Having a role makes them feel less helpless.\n\n**Prepare them for questions.** Other people may ask about their parent or say awkward things. Help them know what they can say. \"You can just say, 'We miss her,' and that is enough.\"\n\n**\"Start children off on the way they should go, and even when they are old they will not turn from it\" ({red|Proverbs 22:6|You can just say, 'We miss her,' and that is enough.}).** You are teaching them how to grieve with hope. Start them on that path.",
+          "reflection": null
+        },
+        {
+          "id": "card_7_3",
+          "cardType": "teaching",
+          "title": "During the Day",
+          "text": "{red|**On the difficult day itself, stay attuned to your children.**\n\n**Check in with them.** Not constantly, but periodically. \"How are you doing?}\" in a quiet moment.\n\n**Watch for signs of struggle.** Withdrawal, acting out, unusual quietness, physical complaints. These may signal that they are overwhelmed.\n\n**Create space for them to step away.** If they need a break, let them take one. A quiet room, some time alone, permission to stop participating.\n\n**Include the deceased parent naturally.** Say their name. Share a memory. Let your children know it is okay to talk about their parent on this day.\n\n**Allow joy.** If they laugh, play, have fun, that is good. Children need to be children, even on hard days. Joy and grief can coexist.\n\n**Be honest about your own feelings.** \"I am feeling sad today because I miss Dad. It is okay to feel sad.\" Modeling honest emotion gives them permission for theirs.\n\n**\"Rejoice with those who rejoice; mourn with those who mourn\" ({red|Romans 12:15|I am feeling sad today because I miss Dad. It is okay to feel sad.}).** Do both with your children. Mourn the loss together. And rejoice in the moments of joy that come.",
+          "reflection": null
+        },
+        {
+          "id": "card_7_4",
+          "cardType": "question",
+          "title": "Your Children's Needs",
+          "text": "{red|How have your children handled difficult days so far?}{red| What do they seem to need from you?}",
+          "reflection": null
+        },
+        {
+          "id": "card_7_5",
+          "cardType": "reflection",
+          "title": "Supporting Each Child",
+          "text": "{red|**Think about what each of your children needs for difficult days.**\n\nHow does each child express grief?}{red| Are there differences in how they handle hard days?}\n\n{red|What has helped each child on previous difficult days?}\n\n{red|What might each child need for the next big holiday or anniversary?}\n\n{red|How can you prepare each child appropriately for their age?}\n\n{red|What role might each child play in traditions or remembrance activities?}\n\n{red|How can you create space for both grief and joy for each child?}",
+          "reflection": "{red|What does each of your children need for difficult days?}{red| How will you support them?}"
+        },
+        {
+          "id": "card_7_6",
+          "cardType": "action",
+          "title": "Prepare Your Children",
+          "text": "{red|**For the next difficult day, prepare your children.**\n\n**Have a conversation with each child (or together) about the upcoming day.** Talk about: What the day is and why it might be hard How you will spend it and what to expect How they are feeling about it How they can remember their parent during the day What they can do if they feel sad or overwhelmed That it is okay to have fun too\n\n**Listen to what they need.** Ask what would help them.\n\n**Make a plan together.** Involving them in the plan gives them ownership and reduces anxiety.\n\n**\"Fathers, do not exasperate your children; instead, bring them up in the training and instruction of the Lord\" ({red|Ephesians 6:4|Fathers, do not exasperate your children; instead, bring them up in the training and instruction of the Lord}).** Training includes teaching them to navigate grief with faith. Walk through these days together.\n\nWhen will you have this conversation with your children?}",
+          "reflection": "**Plan a conversation with your children about the next difficult day.**"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_faith_and_holidays",
+      "isFree": false,
+      "title": "Faith and Holidays: Finding God in Difficult Celebrations",
+      "subtitle": "Connecting grief, celebration, and faith on special days",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "faith",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Holidays like Christmas and Easter have deep spiritual significance. Connecting that significance to your grief can transform these days.",
+      "frameworkBasis": {
+        "conceptKey": "faith_integration_holidays",
+        "explanation": "Holidays with spiritual significance can be reframed through faith to hold both grief and hope."
+      },
+      "cards": [
+        {
+          "id": "card_8_1",
+          "cardType": "teaching",
+          "title": "Christmas and Incarnation",
+          "text": "**Christmas celebrates God entering the world of human suffering.**\n\n**The incarnation means that God knows what it is to be human.** To have a body. To love and lose. Jesus wept at the death of His friend. He experienced grief firsthand.\n\n**When Christmas feels impossibly hard, remember what it actually celebrates.** Not just a sentimental baby in a manger. God stepping into the mess of human existence. Immanuel, God with us, including with us in grief.\n\n**Christmas is not about forced joy.** It is about God meeting us where we are, even in darkness. The light came into the darkness, and the darkness could not overcome it.\n\n**\"The people walking in darkness have seen a great light; on those living in the land of deep darkness a light has dawned\" ({red|Isaiah 9:2|The people walking in darkness have seen a great light; on those living in the land of deep darkness a light has dawned}).** You are in a land of deep darkness. Christmas promises that light dawns even there.\n\n**Let Christmas be about what it is actually about: God entering your suffering, not requiring you to pretend suffering does not exist.**",
+          "reflection": null
+        },
+        {
+          "id": "card_8_2",
+          "cardType": "teaching",
+          "title": "Easter and Resurrection",
+          "text": "{red|**Easter is the holiday of hope for those who grieve.**\n\n**The resurrection is the foundation of Christian hope regarding death.** Because Jesus rose, death is not the end. Because He lives, those who are in Him will live also.\n\n**Easter can be hard because it is a celebration of life when you are mourning death.** But rightly understood, it is the very thing that makes your grief bearable.\n\n**Your spouse, if they were in Christ, is alive.** Not as a memory or a metaphor. Actually alive, with God, awaiting the resurrection when you will see them again.\n\n**Easter says that the grave is not the final word.** That separation is temporary. That reunion is coming.\n\n\"Where, O death, is your victory?}{red| Where, O death, is your sting?}\" (1 {red|Corinthians 15:55|Where, O death, is your victory?}{red| Where, O death, is your sting?}}). Death has stung you badly. But Easter proclaims that death does not win. The sting is temporary. Victory belongs to life.\n\n**Let Easter be a day to grieve with hope.** To miss your spouse and also to trust that you will see them again.",
+          "reflection": null
+        },
+        {
+          "id": "card_8_3",
+          "cardType": "teaching",
+          "title": "Finding God on Hard Days",
+          "text": "**On holidays that feel crushing, look for God.**\n\n**He is in the memories.** The love you shared, the years you had, these are gifts from Him. Remembering is a way of acknowledging His goodness.\n\n**He is in the community.** If people gather around you, support you, walk through the day with you, that is His presence mediated through others.\n\n**He is in the comfort.** When a moment of peace comes, when the weight lifts briefly, when you feel held, that is Him.\n\n**He is in the hope.** The belief that this is not the end, that your spouse lives, that you will be reunited, that is the hope He provides.\n\n**Alice found that the hardest holidays became the times she most clearly felt God.** \"I was so desperate for comfort that I looked for Him more intensely. And He met me. Not with answers, but with presence.\"\n\n**\"The Lord is close to the brokenhearted and saves those who are crushed in spirit\" ({red|Psalm 34:18|I was so desperate for comfort that I looked for Him more intensely. And He met me. Not with answers, but with presence.}).** On holidays when your heart breaks fresh, He is especially close. Look for Him there.",
+          "reflection": null
+        },
+        {
+          "id": "card_8_4",
+          "cardType": "question",
+          "title": "Faith and Holidays",
+          "text": "{red|How has your faith shaped your experience of holidays since your spouse died?}{red| Where have you found God on hard days?}",
+          "reflection": null
+        },
+        {
+          "id": "card_8_5",
+          "cardType": "reflection",
+          "title": "Connecting Faith and Grief",
+          "text": "{red|**Think about how your faith can shape your experience of difficult days.**\n\nHow can the meaning of Christmas, the incarnation of God, comfort you in grief?}\n\n{red|How can the meaning of Easter, resurrection and eternal life, give you hope?}\n\n{red|What Scriptures might anchor you on difficult days?}\n\n{red|How can you intentionally look for God's presence on holidays?}\n\n{red|What spiritual practices might help you navigate these days?}{red| Prayer, worship, Scripture, communion?}\n\n{red|How can church community support you on spiritual holidays?}",
+          "reflection": "{red|How can faith shape your experience of difficult days?}{red| What spiritual resources will you draw on?}"
+        },
+        {
+          "id": "card_8_6",
+          "cardType": "action",
+          "title": "A Spiritual Practice for Hard Days",
+          "text": "{red|**Choose one spiritual practice to incorporate into your next difficult day.**\n\n**Light a candle and pray.** \"Lord, I light this candle in memory of [name] and in hope of the resurrection.\"\n\n**Read a Scripture that comforts you.** Write it on a card and carry it with you.\n\n**Attend church even when it is hard.** Let the community of faith hold you.\n\n**Take communion.** The body broken, the blood poured out. He understands suffering.\n\n**Journal a prayer.** Write your grief to God on the hard day.\n\n**Listen to worship music.** Let the truth of songs carry you when you cannot carry yourself.\n\n\"I lift up my eyes to the mountains, where does my help come from?}{red| My help comes from the Lord, the Maker of heaven and earth\" ({red|Psalm 121:1-2|I lift up my eyes to the mountains, where does my help come from?}{red| My help comes from the Lord, the Maker of heaven and earth}). Your help comes from Him. Let these practices connect you to that help.\n\nWhat spiritual practice will you incorporate into your next difficult day?}",
+          "reflection": "**Choose one spiritual practice for your next difficult day.**"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_support_system",
+      "isFree": false,
+      "title": "Your Support System: Not Facing Hard Days Alone",
+      "subtitle": "Building and using support for holidays and anniversaries",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "support",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Difficult days are much harder alone. Having people who will support you through these occasions is essential.",
+      "frameworkBasis": {
+        "conceptKey": "social_support",
+        "explanation": "Social support significantly improves coping with grief, especially around difficult dates."
+      },
+      "cards": [
+        {
+          "id": "card_9_1",
+          "cardType": "teaching",
+          "title": "You Need People",
+          "text": "**The worst thing you can do on a difficult day is face it alone without support.**\n\n**This does not mean you have to be surrounded by people every moment.** Some people need solitude on hard days, and that is fine. But having people available, people who know what you are facing, people who can be called upon, this is essential.\n\n**Philip tried to get through the anniversary of his wife's death alone.** He thought he could handle it. By evening, he was in such despair that he called a crisis hotline. The person who answered saved his night by simply staying on the phone with him.\n\n**Afterward, Philip built a support plan.** For every subsequent hard day, he had people who knew and who checked on him. He never went through another one without backup.\n\n**You cannot control how hard these days will hit.** You can control whether you have support in place.\n\n**\"Two are better than one, because they have a good return for their labor: If either of them falls down, one can help the other up\" ({red|Ecclesiastes 4:9-10|Two are better than one, because they have a good return for their labor: If either of them falls down, one can help the other up}).** You may fall down on hard days. Have someone who can help you up.",
+          "reflection": null
+        },
+        {
+          "id": "card_9_2",
+          "cardType": "teaching",
+          "title": "Who to Have With You",
+          "text": "**Not all company is helpful on hard days.** Choose wisely.\n\n**People who understand grief: Those who have lost spouses themselves, or who have deep empathy for loss.** They will not expect you to be okay.\n\n**People who knew your spouse: They share your grief.** They can remember with you. They can say the name.\n\n**People who let you be real: Those who do not expect forced happiness.** Who will let you cry without trying to fix it.\n\n**People who are comfortable with silence: Sometimes you do not need conversation.** You need presence. Some people can provide that.\n\n**Avoid, if possible: People who minimize your grief: \"It has been a year, you should be better.**\" People who make it about themselves: Somehow turning your hard day into their drama. People who cannot handle emotion: Who become uncomfortable if you cry.\n\n**You may have limited options.** But even one good person is better than a crowd of unhelpful ones.\n\n**\"A friend loves at all times, and a brother is born for a time of adversity\" ({red|Proverbs 17:17|A friend loves at all times, and a brother is born for a time of adversity}).** This is your time of adversity. Find the friends born for such a time.",
+          "reflection": null
+        },
+        {
+          "id": "card_9_3",
+          "cardType": "teaching",
+          "title": "Asking for Support",
+          "text": "{red|**People often want to help but do not know what you need.** You have to tell them.\n\n**Let them know what days are hard.** \"My anniversary is next Tuesday. It is going to be a really difficult day.\"\n\n**Tell them what would help.** \"Could you call me that evening just to check in?}{red|\" \"Would you come over for a few hours?}{red|\" \"Would you be available if I need someone to talk to?}\"\n\n**Be specific about what you do not need.** \"I do not need advice or cheering up. I just need someone who will listen.\"\n\n**Accept help when offered.** If someone offers to be with you, say yes. This is not the time for self-sufficiency.\n\n**Clara sent a text to three close friends before her husband's birthday: \"Thursday is going to be hard.** I do not need anything specific, but if any of you could check on me, it would mean a lot.\" All three reached out. She was not alone.\n\n**\"Carry each other's burdens, and in this way you will fulfill the law of Christ\" ({red|Galatians 6:2|Thursday is going to be hard.** I do not need anything specific, but if any of you could check on me, it would mean a lot.}).** Let them carry some of yours. It is Christ's design.",
+          "reflection": null
+        },
+        {
+          "id": "card_9_4",
+          "cardType": "question",
+          "title": "Your Support",
+          "text": "{red|Who has been there for you on hard days?}{red| Who do you wish had been?}",
+          "reflection": null
+        },
+        {
+          "id": "card_9_5",
+          "cardType": "reflection",
+          "title": "Your Support Plan",
+          "text": "{red|**Create a support plan for difficult days.**\n\nWho understands your grief and can be with you?}\n\n{red|Who knew your spouse and can remember with you?}\n\n{red|Who can you call or text if you are struggling during the day?}\n\n{red|Who might check on you if you asked them to?}\n\n{red|What other support is available?}{red| Grief groups, church community, counselors?}\n\n{red|For your next difficult day, who will be your support?} Make a specific list of names.",
+          "reflection": "{red|Who is your support for difficult days?} Create a specific plan with names."
+        },
+        {
+          "id": "card_9_6",
+          "cardType": "action",
+          "title": "Line Up Support",
+          "text": "{red|**For your next difficult day, line up support in advance.**\n\n**Contact at least two people.** Tell them: What day is coming and why it is hard What you need from them: presence, a call, a text, availability if you need to talk When they should check on you\n\n**This conversation can be brief: \"Hey, [day] is coming and it is going to be a hard one, the anniversary of [spouse's] death.** Would you be able to check on me that day?}{red| Just a call or text would mean a lot.\"\n\n**Most people will say yes.** They want to help. You are giving them a way.\n\n**\"Therefore encourage one another and build each other up\" (1 {red|Thessalonians 5:11|**Most people will say yes.** They want to help. You are giving them a way. **}).** Let them encourage you. Let them build you up. You are not meant to do this alone.\n\nWho will you contact to line up support?}",
+          "reflection": "**Contact at least two people to line up support for your next difficult day.**"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_reclaiming_days",
+      "isFree": false,
+      "title": "Reclaiming the Days: Moving from Survival to Meaning",
+      "subtitle": "How holidays and anniversaries can eventually hold both grief and joy",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "hope",
+      "emotionalIntensity": "moderate",
+      "activityType": "action",
+      "whyThisMatters": "Over time, difficult days can be transformed. This activity points toward hope that these occasions can eventually hold both memory and life.",
+      "frameworkBasis": {
+        "conceptKey": "meaning_reconstruction",
+        "explanation": "Over time, difficult dates can be reconstructed to hold both grief and meaning, allowing them to be reclaimed."
+      },
+      "cards": [
+        {
+          "id": "card_10_1",
+          "cardType": "teaching",
+          "title": "It Does Get Different",
+          "text": "**Here is what people on the other side will tell you: it gets different.**\n\n**The first Christmas without them may be unbearable.** The second is hard but less so. By the fifth, you may find moments of actual joy alongside the missing.\n\n**The first anniversary of their death reopens everything.** Over years, it becomes a day of remembrance more than a day of devastation.\n\n**This does not mean you forget.** It does not mean the days become easy. It means your capacity expands. You learn to hold grief and life in the same hand.\n\n**Frank said that by the seventh Christmas without his wife, he actually enjoyed parts of the day.** He still lit a candle for her. He still felt her absence. But he also laughed with his grandchildren, enjoyed the meal, felt something like joy. \"It took years,\" he said. \"But it happened. I did not think it ever would.\"\n\n**\"He has made everything beautiful in its time\" ({red|Ecclesiastes 3:11|It took years,}).** In time, even these days can become something bearable. Something meaningful. Maybe even something with beauty in it.",
+          "reflection": null
+        },
+        {
+          "id": "card_10_2",
+          "cardType": "teaching",
+          "title": "From Survival to Meaning",
+          "text": "**In early grief, the goal is survival.** Get through the day. Make it to bedtime. Do not fall apart completely.\n\n**Over time, the goal can shift from survival to meaning.** Not just getting through, but finding something meaningful in the day.\n\nMeaning might look like: Honoring your spouse in a way that feels rich rather than just obligatory Connecting with family in ways that feel good rather than just necessary Experiencing genuine gratitude alongside the grief Feeling your spouse's presence as a comfort rather than only an absence\n\n**This shift takes time.** You cannot force it. And survival is a legitimate goal for as long as you need it.\n\n**But eventually, these days can become more than just minefields to navigate.** They can become opportunities to remember well, to connect deeply, to live fully while still grieving.\n\n**\"I have set before you life and death, blessings and curses.** Now choose life\" ({red|Deuteronomy 30:19|I have set before you life and death, blessings and curses.** Now choose life}). Choosing life does not mean abandoning grief. It means allowing life to exist alongside it. Even on hard days.",
+          "reflection": null
+        },
+        {
+          "id": "card_10_3",
+          "cardType": "teaching",
+          "title": "What Your Spouse Would Want",
+          "text": "**Your spouse loved you.** They would not want you to dread every holiday for the rest of your life.\n\nImagine what they would say if they could speak to you about these days:\n\n**\"Remember me, yes.** But also live. Enjoy what you can. Do not let my death steal every celebration from you.\"\n\n**\"I want you to be happy again.** Not instead of missing me. Alongside missing me.\"\n\n**\"Our love was real.** Honor it by continuing to love and be loved, not by shutting down.\"\n\n**You knew your spouse.** You know what they would want. They would want you to grieve fully, yes. But they would also want you to live fully. To find joy again. To not spend the rest of your life in darkness.\n\n**Reclaiming holidays is not betraying them.** It is honoring what they would want for you.\n\n**\"The thief comes only to steal and kill and destroy; I have come that they may have life, and have it to the full\" ({red|John 10:10|The thief comes only to steal and kill and destroy; I have come that they may have life, and have it to the full}).** Jesus came for full life. Your spouse wanted that for you. Do not let death steal it entirely.",
+          "reflection": null
+        },
+        {
+          "id": "card_10_4",
+          "cardType": "reflection",
+          "title": "Hope for Reclaiming",
+          "text": "{red|**Dare to imagine these days eventually transformed.**\n\nWhat would it look like for Christmas, in five years, to hold both memory of your spouse and genuine joy?}\n\n{red|What would it look like for their birthday to be a celebration of their life rather than only a mourning of their death?}\n\n{red|What would it look like for your anniversary to be a day of gratitude for what you had rather than only grief for what you lost?}\n\n{red|What would your spouse want for you on these days?}\n\n**This may feel impossible now.** That is okay. But let yourself imagine that it might someday be different. Hope is not denial. It is trust in a future you cannot yet see.",
+          "reflection": "{red|What would it look like for difficult days to eventually hold both grief and life?}"
+        },
+        {
+          "id": "card_10_5",
+          "cardType": "action",
+          "title": "A Prayer for the Days Ahead",
+          "text": "God,\n\n**These days are hard.** Holidays, anniversaries, dates that carry so much weight. I face them with dread, wondering how I will get through.\n\n**Thank You for being with me in the dark days.** Thank You for carrying me through the ones I have already survived.\n\n**Help me prepare for what is coming.** Give me wisdom to plan, courage to ask for help, people to support me.\n\n**Help me honor my spouse on these days.** Let me remember them with love, not only pain.\n\n**And help me hold onto hope that these days will not always be this hard.** That eventually, they might hold both grief and joy. That I might reclaim them, not as days of only sorrow, but as days of meaningful remembrance.\n\n**Be with me.** I cannot face these days without You.\n\n**\"Even though I walk through the darkest valley, I will fear no evil, for you are with me\" ({red|Psalm 23:4|Even though I walk through the darkest valley, I will fear no evil, for you are with me}).**\n\nAmen.\n\n**Write your own prayer for the difficult days ahead.**",
+          "reflection": "**Write your prayer for the holidays and anniversaries ahead.**"
+        },
+        {
+          "id": "card_10_6",
+          "cardType": "action",
+          "title": "Your Commitment",
+          "text": "**Make a commitment for how you will approach difficult days going forward.**\n\n**I will prepare for hard days rather than just dreading them.**\n\n**I will ask for help and not face these days alone.**\n\n**I will honor my spouse in ways that bring meaning to the days.**\n\n**I will give myself permission to grieve fully and also to experience moments of joy.**\n\n**I will trust that these days will get different over time.**\n\n**I will hold onto hope that eventually these days can be reclaimed.**\n\n**I will lean on God, who has promised to be close to the brokenhearted.**\n\n**Write your commitment in your own words.** Return to it when a difficult day looms.\n\n**You will get through these days.** Not easily. But through. And eventually, with meaning.",
+          "reflection": "**Write your commitment for approaching difficult days.**"
+        }
+      ]
+    }
+  ]
+}

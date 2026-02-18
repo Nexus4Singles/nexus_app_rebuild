@@ -4,7 +4,7 @@ import '../../../../../core/models/recommendation_bundle.dart';
 
 class AssessmentResultJourneyCard extends StatelessWidget {
   final List<JourneyRecommendationData> journeys;
-  final VoidCallback onTapJourney;
+  final Function(String journeyId) onTapJourney;
 
   const AssessmentResultJourneyCard({
     super.key,
@@ -51,10 +51,9 @@ class AssessmentResultJourneyCard extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 10),
               child: _JourneyTile(
                 title: j.journeyTitle,
-                dimension: j.relevantDimension,
-                dimensionScore: j.dimensionScore,
-                rationale: j.rationale,
-                onTap: onTapJourney,
+                subtitle: j.journeySubtitle,
+                journeyId: j.journeyId,
+                onTap: () => onTapJourney(j.journeyId),
               ),
             );
           }),
@@ -66,16 +65,14 @@ class AssessmentResultJourneyCard extends StatelessWidget {
 
 class _JourneyTile extends StatelessWidget {
   final String title;
-  final String dimension;
-  final int dimensionScore;
-  final String rationale;
+  final String subtitle;
+  final String journeyId;
   final VoidCallback onTap;
 
   const _JourneyTile({
     required this.title,
-    required this.dimension,
-    required this.dimensionScore,
-    required this.rationale,
+    required this.subtitle,
+    required this.journeyId,
     required this.onTap,
   });
 
@@ -113,18 +110,10 @@ class _JourneyTile extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              rationale,
+              subtitle,
               style: AppTextStyles.bodySmall.copyWith(
                 color: AppColors.getTextSecondary(context),
                 height: 1.4,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '${dimension} • ${dimensionScore}% readiness',
-              style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.primary,
-                fontWeight: FontWeight.w600,
               ),
             ),
           ],

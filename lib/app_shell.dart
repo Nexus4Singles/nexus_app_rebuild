@@ -4,20 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/constants/app_constants.dart';
 import 'core/session/effective_relationship_status_provider.dart';
 import 'core/notifications/notification_provider.dart';
+import 'core/providers/tab_selection_provider.dart';
 import 'safe_imports.dart';
 import 'features/stories/presentation/screens/stories_screen.dart';
 import 'features/dating_search/presentation/screens/new_dating_search_screen.dart';
-import 'features/subscription/presentation/screens/book_marriage_coach_screen.dart';
+import 'features/counselling/presentation/screens/book_marriage_coach_screen.dart';
 
-class AppShell extends ConsumerStatefulWidget {
+class AppShell extends ConsumerWidget {
   const AppShell({super.key});
-
-  @override
-  ConsumerState<AppShell> createState() => _AppShellState();
-}
-
-class _AppShellState extends ConsumerState<AppShell> {
-  int _index = 0;
 
   Widget _screenForTab(NavTab tab) {
     switch (tab) {
@@ -58,15 +52,34 @@ class _AppShellState extends ConsumerState<AppShell> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // Initialize FCM for push notifications
     ref.watch(fcmInitializationProvider);
 
     final status = ref.watch(effectiveRelationshipStatusProvider);
+    final selectedTab = ref.watch(selectedTabProvider);
     final tabConfigs = NavConfig.getTabsForStatus(status);
 
-    if (_index >= tabConfigs.length) _index = 0;
+    // ignore: avoid_print
+    print(
+      '[AppShell] rebuild: status=$status, tabs=${tabConfigs.map((t) => t.id).toList()}, selectedTab=$selectedTab',
+    );
 
+    // Validate that selected tab is in current tab configs
+    bool isValidTab = tabConfigs.any((c) => c.id == selectedTab);
+    if (!isValidTab) {
+      // If selected tab is no longer valid (e.g., status changed), reset to home
+      // ignore: avoid_print
+      print(
+        '[AppShell] Selected tab $selectedTab not in current configs, resetting to home',
+      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(selectedTabProvider.notifier).state = NavTab.home;
+      });
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    final _index = tabConfigs.indexWhere((c) => c.id == selectedTab);
     final currentTab = tabConfigs[_index].id;
 
     return Scaffold(
@@ -121,7 +134,9 @@ class _AppShellState extends ConsumerState<AppShell> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
-        onTap: (i) => setState(() => _index = i),
+        onTap:
+            (i) =>
+                ref.read(selectedTabProvider.notifier).state = tabConfigs[i].id,
         type: BottomNavigationBarType.fixed,
         items:
             tabConfigs

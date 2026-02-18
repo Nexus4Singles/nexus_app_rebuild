@@ -162,15 +162,15 @@ class _DatingProfileCompleteScreenState
                     child: Container(
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.7),
+                        color: AppColors.getCardBackground(context),
                         borderRadius: BorderRadius.circular(28),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.5),
+                          color: AppColors.getBorder(context),
                           width: 1.5,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
+                            color: AppColors.getOverlayLight(context),
                             blurRadius: 20,
                             offset: const Offset(0, 10),
                           ),
@@ -208,7 +208,9 @@ class _DatingProfileCompleteScreenState
                                     Text(
                                       'Compatibility quiz',
                                       style: AppTextStyles.bodySmall.copyWith(
-                                        color: AppColors.getTextSecondary(context),
+                                        color: AppColors.getTextSecondary(
+                                          context,
+                                        ),
                                       ),
                                     ),
                                   ],

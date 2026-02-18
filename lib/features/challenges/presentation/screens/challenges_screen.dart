@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/widgets/guest_guard.dart';
 
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/router/safe_nav.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/ui/icon_mapper.dart';
 import '../../../../core/providers/user_provider.dart';
@@ -64,6 +65,16 @@ class ChallengesScreen extends ConsumerWidget {
             ),
         data: (catalog) {
           var journeys = catalog.journeys;
+
+          // Determine featured priority ranks based on relationship status
+          final featuredRanks = switch (catalog.category) {
+            'singles' => [1, 3, 9, 19, 20],
+            'married' => [1, 3, 9, 19, 20],
+            'divorced' => [1, 3, 9, 16],
+            'widowed' => [1, 3, 9],
+            _ => [1, 3, 9],
+          };
+
           // Filter gender-specific journeys
           journeys =
               journeys.where((j) {
@@ -77,15 +88,15 @@ class ChallengesScreen extends ConsumerWidget {
               }).toList();
           final featured =
               journeys
-                  .where((j) => [1, 3, 9, 19, 20].contains(j.priorityRank))
+                  .where((j) => featuredRanks.contains(j.priorityRank))
                   .toList();
           return ListView(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(12),
             children: [
               // Intro Card
               Padding(
                 padding: const EdgeInsets.only(
-                  top: 8.0,
+                  top: 0,
                   bottom: 14.0,
                 ), // Card closer to header
                 child: Container(
@@ -144,7 +155,7 @@ class ChallengesScreen extends ConsumerWidget {
                           color: Theme.of(
                             context,
                           ).colorScheme.onSurface.withOpacity(0.80),
-                          fontSize: 13,
+                          fontSize: 12,
                         ),
                       ),
                     ],
@@ -260,7 +271,8 @@ class _FeaturedJourneyCard extends StatelessWidget {
       onTap: () => Navigator.of(context).pushNamed('/journey/${journey.id}'),
       child: Container(
         width: 220,
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        height: 170,
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           color: overlayColor,
           borderRadius: BorderRadius.circular(14),
@@ -275,7 +287,7 @@ class _FeaturedJourneyCard extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -289,14 +301,17 @@ class _FeaturedJourneyCard extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                       color: textColor,
                       fontSize: 12,
+                      height: 1.3,
                     ),
-                    maxLines: 2,
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
+                    softWrap: true,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12), // Reduced spacing to prevent overflow
+            const SizedBox(height: 6), // Reduced spacing to prevent overflow
+            const Spacer(), // Push content to bottom
             Row(
               children: [
                 Container(

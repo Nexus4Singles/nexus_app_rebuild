@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nexus_app_v2/core/stubs/firebase_exceptions_stub.dart';
+import 'package:nexus_app_v2/core/services/firebase_exceptions.dart';
 // firebase removed (stubbed)
 
 import '../theme/app_colors.dart';
@@ -222,10 +222,8 @@ class ErrorHandlerService {
   /// Log error for debugging
   void logError(dynamic error, [StackTrace? stackTrace]) {
     // In debug mode, print to console
-    if (error is AppError && error.code != null) {
-    }
-    if (stackTrace != null) {
-    }
+    if (error is AppError && error.code != null) {}
+    if (stackTrace != null) {}
     // TODO: In production, send to Firebase Crashlytics:
     // FirebaseCrashlytics.instance.recordError(error, stackTrace);
   }
@@ -248,7 +246,11 @@ class ErrorHandlerService {
           children: [
             Row(
               children: [
-                const Icon(Icons.error_outline, color: AppColors.textOnPrimary, size: 20),
+                const Icon(
+                  Icons.error_outline,
+                  color: AppColors.textOnPrimary,
+                  size: 20,
+                ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(

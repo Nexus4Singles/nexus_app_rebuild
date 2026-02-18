@@ -320,14 +320,15 @@ class AssessmentMeta {
           emoji: '💛',
           title: 'Marriage Readiness Check',
           subtitle:
-              'Understand what you\'re truly ready for in love and dating.',
+              'Find out how equipped and ready you are for the marriage you desire.',
           discoveries: [
-            'Clarity on your emotional readiness',
+            'Clarity on your readiness for marriage',
+
             'Signals and patterns holding you back',
-            'Next steps to build confidence',
+            'Next steps to improve on these areas to hold you back',
           ],
           note:
-              'This is private and designed to guide your next moves, not judge you.',
+              'This is private and designed to guide you on your journey to finding the right kind of love, not judge you.',
         );
 
       case AssessmentType.remarriageReadiness:
@@ -349,11 +350,11 @@ class AssessmentMeta {
           emoji: '💙',
           title: 'Marriage Health Check',
           subtitle:
-              'Measure the health of your marriage and strengthen it together.',
+              'Test the pulse of your marriage and discover areas to strengthen it',
           discoveries: [
             'Strengths you can build on',
-            'Blind spots affecting closeness',
-            'Ways to restore connection and trust',
+            'Blind spots affecting your marriage',
+            'Ways to restore and rebuild weak areas.',
           ],
           note: 'Best used as a reflection tool — alone or as a couple.',
         );

@@ -1,0 +1,801 @@
+{
+  "journeyId": "married_shared_purpose_vision",
+  "title": "Building Shared Purpose and Vision",
+  "subtitle": "Creating a compelling future together",
+  "summary": "**The strongest marriages are united not just by love but by shared purpose.** Couples who know where they are going together, who have a vision that is bigger than their individual desires, experience deeper connection and greater resilience. This journey helps you discover what you are building together, align your individual dreams into a shared vision, create meaningful goals as a couple, and live with intentionality toward a future you are both excited about.",
+  "targetUserCategory": "married",
+  "priorityRank": 18,
+  "estimatedDays": 14,
+  "totalActivities": 10,
+  "difficulty": "intermediate",
+  "themeColor": "#00695C",
+  "cover": {
+    "themeTag": "Vision",
+    "accentIcon": "explore",
+    "heroImage": "assets/images/journeys/married_journey18.jpg",
+    "heroImageDescription": "A couple standing together looking at a horizon or map, symbolizing shared direction and vision. Hopeful, forward-looking atmosphere."
+  },
+  "frameworks": [
+    "vision_casting",
+    "goal_alignment",
+    "meaning_making",
+    "legacy_building"
+  ],
+  "targetOutcomes": [
+    "Articulate your individual dreams and desires",
+    "Discover shared values and priorities",
+    "Create a compelling shared vision for your marriage",
+    "Develop meaningful goals together",
+    "Align daily life with long-term purpose",
+    "Build a legacy that outlasts you"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_more_than_maintenance",
+      "isFree": true,
+      "title": "More Than Maintenance: Why Shared Vision Matters",
+      "subtitle": "Moving from surviving to thriving with purpose",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "explore",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Many marriages slip into maintenance mode, just getting through each day without a sense of direction or purpose. But couples who share a compelling vision for their future experience deeper connection and greater motivation. This activity explores why shared purpose matters.",
+      "frameworkBasis": {
+        "conceptKey": "shared_vision",
+        "explanation": "A shared vision provides direction, motivation, and meaning that transforms marriage from mere coexistence into purposeful partnership."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Drift Into Maintenance",
+          "text": "**Kevin and Rachel had been married for twelve years.** They were not unhappy exactly. They paid bills, raised kids, went to work, and came home. But somewhere along the way, they had lost any sense of where they were going together.\n\n**When asked about their dreams for the future, they looked at each other blankly.** They had not talked about that in years. Life had become about managing the present, not building toward anything.\n\n**This is maintenance mode.** The marriage functions but lacks direction. You are together but not going anywhere together.\n\n**Many couples drift into this without realizing it.** The busyness of life crowds out vision. Survival replaces dreaming. And slowly, the marriage loses its sense of purpose.",
+          "icon": "trending_flat"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Power of Shared Vision",
+          "text": "**\"Where there is no vision, the people perish\" ({red|Proverbs 29:18|Where there is no vision, the people perish} KJV).** This ancient wisdom applies powerfully to marriage. Couples without shared vision drift apart, lose motivation, and settle for less than what is possible.\n\n**But couples with shared vision experience something different.** They have a reason to sacrifice together because they know what they are building. They make decisions more easily because they have criteria to evaluate options. They weather difficulties better because they are working toward something that matters. They feel more connected because they are partners in a shared mission. They experience more meaning because their marriage has purpose beyond itself.\n\n**\"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future\" ({red|Jeremiah 29:11|For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future}).** God has plans for your marriage. Discovering and pursuing those plans together transforms marriage from two people living parallel lives into two people building something together.",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What Shared Vision Looks Like",
+          "text": "{red|**Shared vision is not about having identical dreams.** It is about weaving your individual hopes into a common direction.\n\n**It includes understanding what matters most to both of you and your core values.** It means having a picture of what you want your life together to look like and your desired future. It involves knowing what you want to accomplish or contribute together and your shared mission. It requires having specific objectives you are working toward and your goals.\n\nShared vision answers questions like: What are we building together?}{red| What kind of family do we want to be?}{red| What impact do we want to have?}{red| What legacy do we want to leave?}\n\n**When you can answer these questions together, you have direction.**",
+          "icon": "map"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Current State",
+          "text": "{red|How would you describe the current state of shared vision in your marriage?}",
+          "prompts": [
+            "We have a clear shared vision and are actively working toward it",
+            "We have some shared direction but could clarify and strengthen it",
+            "We used to have shared vision but have drifted from it",
+            "We have never really developed a shared vision together",
+            "We have different visions that sometimes conflict",
+            "We are so focused on daily survival that vision feels like a luxury"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are starting from, this journey will help you build or strengthen your shared sense of purpose and direction."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "What Is Missing",
+          "text": "{red|**Think about what might be missing in terms of shared purpose in your marriage.**\n\nDo you know what you are building together?}{red| Do you have goals you are working toward as a couple?}{red| Do you talk about the future with excitement or just anxiety?}{red| Does daily life feel connected to something larger?}\n\nWrite about what feels missing or unclear regarding shared vision in your marriage:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "A Vision Conversation Starter",
+          "text": "{red|**This week, have an initial conversation with your spouse about vision.**\n\nAsk each other: If our marriage could be anything we wanted it to be in ten years, what would it look like?}{red| What would we be doing?}{red| Where would we be?}{red| What would matter most?}\n\n**Do not worry about being practical or realistic yet.** Just dream together. See what emerges.\n\n**This is just a starting point.** The journey ahead will help you develop these initial thoughts into a clear shared vision.",
+          "icon": "forum"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_individual_dreams",
+      "isFree": false,
+      "title": "What Do You Want? Discovering Your Individual Dreams",
+      "subtitle": "Understanding your own hopes and desires",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "person",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Before you can build shared vision, you need to understand your own dreams. Many people have never clearly articulated what they want from life. This activity helps you discover and name your individual hopes and desires.",
+      "frameworkBasis": {
+        "conceptKey": "individual_dreams",
+        "explanation": "Shared vision must honor and incorporate the individual dreams of both partners, not erase them."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Knowing What You Want",
+          "text": "{red|**When asked what she wanted for her future, Maria paused.** She had spent so much time managing responsibilities and meeting expectations that she had lost touch with her own dreams.\n\nWhat did she actually want?}{red| Not what she should want. Not what others expected. What did her heart long for?}\n\n**Many people cannot answer this question clearly.** Dreams get buried under obligations. Desires are dismissed as impractical. Over time, we lose touch with what we actually want.\n\n**\"Delight yourself in the Lord, and he will give you the desires of your heart\" ({red|Psalm 37:4|Delight yourself in the Lord, and he will give you the desires of your heart}).** This verse suggests that God cares about your desires. He is not opposed to your dreams. He wants to fulfill the deepest longings of your heart.\n\n**But you cannot contribute to a shared vision if you do not know what you bring to it.** Understanding your own dreams is not selfish. It is essential.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Categories of Dreams",
+          "text": "**Dreams span many areas of life.** Consider each category.\n\n**Relational dreams involve what you want for your marriage, family relationships, friendships, and community.**\n\n**Vocational dreams cover what you want to accomplish in your career, calling, or contribution to the world.**\n\n**Financial dreams address what level of security, generosity, or lifestyle you hope for.**\n\n**Experiential dreams include what you want to experience, such as places to visit, things to try, and adventures to have.**\n\n**Personal growth dreams involve who you want to become, what skills to develop, and how you want to grow.**\n\n**Spiritual dreams cover what you want your relationship with God to look like and your spiritual impact.**\n\n**Legacy dreams address what you want to leave behind and how you want to be remembered.**\n\n**Dreams in each area contribute to a full picture of what you want from life.**",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Recovering Lost Dreams",
+          "text": "{red|**Sometimes dreams need to be recovered.** They may have been buried under layers of practicality, disappointment, or neglect.\n\nTo recover your dreams, ask yourself: What did you dream about when you were younger before life taught you to be realistic?}{red| What activities make you lose track of time?}{red| What makes you feel most alive?}{red| What would you do if money and time were not obstacles?}{red| What breaks your heart about the world?}{red| What do you secretly wish you could try?}\n\n**Your answers reveal desires that may have been dormant.** Not all of them will become part of your shared vision. But knowing them helps you understand what you bring to the conversation.",
+          "icon": "restore"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Dreams Inventory",
+          "text": "{red|**Take time to explore your own dreams across different areas.**\n\nWhat do you want for your marriage and family?}{red| What do you want to accomplish vocationally?}{red| What experiences do you want to have?}{red| Who do you want to become?}{red| What impact do you want to make?}{red| What legacy do you want to leave?}\n\nWrite freely about your dreams without filtering for practicality:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Most Important Dream",
+          "text": "{red|If you could only accomplish one thing in the next ten years, what would matter most to you?}",
+          "prompts": [
+            "Building a strong, deeply connected marriage",
+            "Raising children who are healthy and thriving",
+            "Making a significant impact through my work or calling",
+            "Achieving financial security or generosity goals",
+            "Experiencing adventure and new things",
+            "Growing spiritually and in character",
+            "Leaving a meaningful legacy",
+            "Something else not listed here"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Understanding your most important dream helps clarify what you most want to build into your shared vision."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Sharing Your Dreams",
+          "text": "**Schedule a time to share your dreams with your spouse.**\n\n**Take turns sharing what you discovered in your reflection.** Share your dreams across different areas and identify what matters most to you.\n\n**When listening, receive your spouse's dreams with curiosity and support.** Do not critique or dismiss. Just understand.\n\n**This is not yet about merging your dreams.** It is about knowing each other's hearts.\n\n**Schedule this conversation for this week.**",
+          "icon": "forum"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_shared_values",
+      "isFree": false,
+      "title": "What Matters Most: Discovering Your Shared Values",
+      "subtitle": "Identifying the principles that guide your life together",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "essential",
+      "icon": "star",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Values are the foundation of vision. They determine what matters, what you prioritize, and how you make decisions. Clarifying your shared values provides the foundation for building a shared vision that reflects what you both care about most.",
+      "frameworkBasis": {
+        "conceptKey": "core_values",
+        "explanation": "Core values are the fundamental beliefs and principles that guide behavior and decision-making."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Foundation of Vision",
+          "text": "{red|**Before you can know where you want to go, you need to know what matters to you.**\n\n**Values are the principles that guide your life.** They determine what you prioritize, what you sacrifice for, and how you make decisions.\n\n**When couples share core values, decision-making becomes easier.** Should we take this job opportunity that requires a move?}{red| If you both value family closeness, that shapes the answer. Should we stretch financially to give more generously?} If you both value generosity, the answer is clearer.\n\n**\"But seek first his kingdom and his righteousness, and all these things will be given to you as well\" ({red|Matthew 6:33|But seek first his kingdom and his righteousness, and all these things will be given to you as well}).** This is the ultimate values statement. When God's kingdom is your shared highest value, everything else finds its proper place.\n\n**Shared values create shared criteria.** They become the filter through which you evaluate options and build your vision.",
+          "icon": "foundation"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Common Core Values",
+          "text": "**Values span many areas.** Some common ones include:\n\nFaith and spiritual growth Family closeness and connection Financial security or generosity Adventure and new experiences Stability and predictability Achievement and accomplishment Service and helping others Creativity and self-expression Health and wellness Learning and growth Community and belonging Freedom and independence Legacy and lasting impact\n\n**No couple values everything equally.** Part of building shared vision is identifying which values you both hold most deeply.",
+          "icon": "list"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "When Values Differ",
+          "text": "**You and your spouse will not value everything identically.** That is normal.\n\n**David valued adventure and spontaneity.** His wife Susan valued security and planning. For years, this difference created conflict. He felt trapped by her caution. She felt anxious about his impulsiveness.\n\n**But when they dug deeper, they discovered shared ground.** They both valued family experiences and wanted their children to have rich memories. This shared value allowed them to create a vision that honored both perspectives: planned adventures with some spontaneous elements.\n\n**The goal is not to have identical values but to understand each other's values, find the significant overlap, and create a vision that honors both of you.**\n\n**\"Two are better than one, because they have a good return for their labor\" ({red|Ecclesiastes 4:9|Two are better than one, because they have a good return for their labor}).** Your differences can become complementary rather than conflicting.\n\n**Some values will be shared and central.** Others will be individual and honored. The vision accommodates both.",
+          "icon": "compare_arrows"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Core Values",
+          "text": "{red|**Reflect on your own core values.**\n\nWhat principles guide your decisions?}{red| What would you sacrifice for?}{red| What cannot be compromised?}{red| What do you want to be known for?}\n\nList your top five to seven core values in order of importance:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Finding Shared Ground",
+          "text": "**To discover your shared values, each of you should identify your individual top values first.**\n\n**Then compare your lists.** Look for overlap and identify the values that appear on both lists. These are your shared core values.\n\n**Discuss differences by understanding why certain values matter more to one than the other.** Find the underlying concern and see if there is a deeper shared value beneath surface differences.\n\n**Prioritize together by agreeing on your top shared values that will guide your vision.**\n\n**These shared values become the foundation for everything else you build.**",
+          "icon": "handshake"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "The Values Conversation",
+          "text": "**Have a values conversation with your spouse.**\n\n**Each share your individual top values and why they matter to you.**\n\n**Together, identify your shared values where you clearly overlap.**\n\n**Discuss any significant differences and how you might honor both perspectives.**\n\n**Agree on your top five shared values as a couple.** Write them down.\n\n**These shared values will guide your vision development.**",
+          "icon": "forum"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_marriage_vision",
+      "isFree": false,
+      "title": "Envisioning Your Marriage: What Kind of Couple Do You Want to Be?",
+      "subtitle": "Creating a vision for your relationship itself",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "essential",
+      "icon": "favorite",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Before visioning about external goals, it is important to envision your marriage itself. What kind of couple do you want to be? What do you want your relationship to feel like? This internal vision shapes everything else.",
+      "frameworkBasis": {
+        "conceptKey": "relationship_vision",
+        "explanation": "The quality of the marriage relationship itself is a crucial part of any shared vision for the future."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Marriage You Want",
+          "text": "{red|**Shared vision includes external goals like where you want to live, what you want to accomplish, and how you want to serve.** But it must also include a vision for the marriage itself.\n\nWhat kind of couple do you want to be?}{red| What do you want your relationship to feel like?}{red| How do you want to treat each other?}{red| What do you want others to see when they observe your marriage?}\n\n**This is your relationship vision.** It describes the quality and character of your marriage, not just its achievements.\n\n**\"Husbands, love your wives, just as Christ loved the church and gave himself up for her\" ({red|Ephesians 5:25|Husbands, love your wives, just as Christ loved the church and gave himself up for her}).** This is a vision for marriage that goes far beyond external accomplishments. It is about the character of love itself.\n\n**Without this internal vision, you might accomplish external goals while your marriage deteriorates.** The relationship itself must be part of what you are intentionally building.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Elements of Relationship Vision",
+          "text": "A relationship vision might include:\n\n**Emotional climate describes what you want your home and relationship to feel like, whether peaceful, joyful, warm, secure, or fun.**\n\n**Communication patterns cover how you want to talk to each other and handle disagreements.**\n\n**Connection level addresses how close, intimate, and bonded you want to be.**\n\n**Partnership style describes how you want to work together, make decisions, and share responsibilities.**\n\n**Growth orientation covers how you want to help each other become better people.**\n\n**Fun and enjoyment addresses how you want to enjoy life together.**\n\n**Public witness describes what you want your marriage to model for others.**\n\n**Each element contributes to a picture of the marriage you want to build.**",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Learning From Models",
+          "text": "{red|**It can help to think about marriages you admire.**\n\nWhat couples do you look at and think: I want a marriage like that?}{red| What specifically do you admire about them?}{red| Is it how they communicate?}{red| Their obvious affection?}{red| Their teamwork?}{red| Their fun together?}\n\n{red|**Michael and Janet identified three couples they admired.** One couple had been married fifty years and still held hands everywhere. Another couple ran a nonprofit together with obvious mutual respect. A third couple had navigated serious illness while their love only deepened. \"We took notes,\" Michael said. \"We asked ourselves what we could learn from each of them.\"\n\n**Also consider anti-models.** What marriages have you observed that you definitely do not want to replicate?}{red| What specifically do you want to avoid?}\n\n**These positive and negative examples help clarify your relationship vision.** You are not copying anyone else's marriage. But observing others helps you see what is possible and what to pursue or avoid.",
+          "icon": "groups"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Relationship Vision",
+          "text": "{red|**Envision your ideal marriage.**\n\nWhat do you want your marriage to feel like day to day?}{red| How do you want to treat each other?}{red| What do you want to be known for as a couple?}{red| What would make you look back in twenty years and say: We built something beautiful?}\n\nDescribe your vision for your marriage relationship itself:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Relationship Priority",
+          "text": "{red|What aspect of your marriage relationship do you most want to develop or strengthen?}",
+          "prompts": [
+            "Deeper emotional intimacy and connection",
+            "Better communication and conflict resolution",
+            "More fun, laughter, and enjoyment together",
+            "Stronger partnership and teamwork",
+            "Greater physical and romantic connection",
+            "More mutual support and encouragement",
+            "A peaceful and secure home environment"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "This priority can become a key part of your relationship vision that you intentionally build toward."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Crafting Your Relationship Vision",
+          "text": "**Together with your spouse, create a relationship vision statement.**\n\n**Share what you each wrote in your reflection.** Listen for common themes.\n\n**Together, craft a description of the marriage you want to build.** It might be a paragraph or a list of commitments.\n\n**Example: We want a marriage marked by deep friendship, honest communication, joyful fun, passionate intimacy, and shared purpose.** We want our home to be a place of warmth and welcome. We want to be the kind of couple that others look at and see what marriage can be.\n\n**Write your relationship vision together.**",
+          "icon": "forum"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_life_vision",
+      "isFree": false,
+      "title": "Envisioning Your Life: What Do You Want to Build Together?",
+      "subtitle": "Creating a vision for your shared future",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "essential",
+      "icon": "architecture",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Beyond your relationship itself, you are building a life together. Where do you want to live? What do you want to accomplish? How do you want to spend your time and resources? This activity helps you envision the life you want to create together.",
+      "frameworkBasis": {
+        "conceptKey": "life_vision",
+        "explanation": "A comprehensive life vision addresses all major areas of shared life including home, work, family, finances, and impact."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Life You Are Building",
+          "text": "**Beyond your relationship, you are building a life together.** This includes:\n\nWhere you live, your home, location, and community\n\nHow you work, your careers, callings, and how you spend your days\n\nYour family, whether and how you have children and how you raise them\n\nYour finances, how you earn, spend, save, and give\n\nYour community, your friends, church, and social connections\n\nYour impact, how you serve, contribute, and make a difference\n\nYour experiences, what you do for fun, adventure, and enrichment\n\n**Each area requires decisions that shape your shared future.** Having a vision helps you make those decisions intentionally rather than by default.",
+          "icon": "architecture"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Time Horizons",
+          "text": "**Vision works across different time horizons.**\n\n**Lifetime vision covers the big picture of what you want your life together to ultimately look like and accomplish.**\n\n**Ten-year vision is more concrete and describes where you want to be in a decade.**\n\n**Five-year vision is actionable and shows what you are working toward in the medium term.**\n\n**One-year vision is immediate and describes what you will focus on this year.**\n\n**These horizons connect.** Your one-year goals should move you toward your five-year vision, which moves you toward your ten-year vision, which moves you toward your lifetime vision.\n\n**Starting with the bigger picture helps ensure your short-term choices align with your long-term direction.**",
+          "icon": "timeline"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Dreaming Together",
+          "text": "{red|**Creating a life vision requires dreaming together.**\n\n**Set aside focused time and get away from daily demands to think bigger.** Dream before you evaluate by letting yourselves imagine freely before introducing practical constraints. Cover all areas and do not neglect any dimension of life. Look for integration and see how different dreams connect and support each other.\n\n**\"Commit to the Lord whatever you do, and he will establish your plans\" ({red|Proverbs 16:3|Commit to the Lord whatever you do, and he will establish your plans}).** When you dream with God, He shapes and establishes your plans.\n\nSome helpful questions: What would we attempt if we knew we could not fail?}{red| What do we want to be able to say we did with our lives?}{red| What would we regret not doing?}{red| What matters more than money or convenience?}\n\n**Give yourselves permission to dream big.** You can scale back later.",
+          "icon": "cloud"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Life Vision",
+          "text": "{red|**Envision the life you want to build together across key areas.**\n\nHome: Where and how do you want to live?}{red| Family: What do you want your family to look like?}{red| Work: What do you want to accomplish vocationally?}{red| Finances: What financial position do you want to achieve?}{red| Community: What relationships and connections do you want?}{red| Impact: How do you want to serve and contribute?}{red| Experiences: What do you want to do and enjoy?}\n\nWrite your vision for your shared life:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Integrating Individual Dreams",
+          "text": "**Remember the individual dreams you explored earlier.** Now is the time to integrate them.\n\n**Some dreams will be shared and both of you want the same things.** These go directly into your vision.\n\n**Some dreams will be individual and important to one but not central to the other.** Make space for these within your shared vision.\n\n**Some dreams will be competing and genuinely in tension.** These require negotiation and perhaps compromise.\n\n**The goal is a shared vision that both of you are genuinely excited about, not one person's dream that the other merely tolerates.**\n\n**A good shared vision makes room for individual dreams while creating something bigger together.**",
+          "icon": "merge"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Shared Life Vision",
+          "text": "**Have an extended conversation to craft your shared life vision.**\n\n**This may take more than one sitting.** Consider setting aside several hours or even a day away to dream together.\n\n**Work through each area of life.** Share your individual dreams. Look for overlap and integration. Negotiate differences.\n\n**Write a description of the life you want to build together.** Be specific enough to be meaningful but flexible enough to adapt as life changes.\n\n**This document becomes your north star for decision-making.**",
+          "icon": "forum"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_setting_goals",
+      "isFree": false,
+      "title": "Making It Real: Setting Meaningful Goals Together",
+      "subtitle": "Translating vision into actionable objectives",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "essential",
+      "icon": "flag",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Vision without goals remains a dream. Goals translate your vision into concrete objectives you can work toward. This activity helps you set meaningful, achievable goals that move you toward your shared vision.",
+      "frameworkBasis": {
+        "conceptKey": "goal_setting",
+        "explanation": "Goals provide the concrete milestones and objectives that translate vision into actionable progress."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "From Vision to Goals",
+          "text": "**A beautiful vision that never becomes concrete remains just a dream.**\n\n**Goals are the bridge between vision and reality.** They take your big picture desires and translate them into specific objectives you can pursue.\n\n**Vision says: We want to be financially generous.** Goals say: We will increase our giving by five percent this year and be debt-free in five years.\n\n**Vision says: We want a close, connected family.** Goals say: We will have weekly family dinners and take an annual family trip.\n\n**Goals make vision actionable.** Without them, you know what you want but never move toward it.",
+          "icon": "flag"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Qualities of Good Goals",
+          "text": "**Effective goals have certain qualities.**\n\n**They are specific and clear enough to know exactly what you are aiming for.** They are measurable so you can track progress and know when you have achieved them. They are achievable and stretching but realistic. They are relevant and connected to your values and vision. They are time-bound with a deadline or timeframe.\n\n**Good goals also balance different areas of life.** Do not set only career or financial goals. Include relationship, family, spiritual, and personal goals.\n\n**And good shared goals require genuine agreement from both spouses, not one person imposing goals on the other.**",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Categories of Goals",
+          "text": "**Consider setting goals in multiple categories.**\n\n**Relationship goals focus on strengthening your marriage specifically.**\n\n**Family goals address parenting, extended family, or family culture.**\n\n**Financial goals cover income, debt, saving, and giving.**\n\n**Career goals address professional development and vocational direction.**\n\n**Spiritual goals cover growth in faith individually and as a couple.**\n\n**Health goals address physical, mental, and emotional wellbeing.**\n\n**Experience goals include travel, adventure, and things you want to do.**\n\n**Service goals cover how you want to give back and make an impact.**\n\n**You do not need goals in every category every year.** But over time, attend to all areas.",
+          "icon": "category"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Potential Goals",
+          "text": "{red|**Based on your shared vision, brainstorm potential goals.**\n\nWhat specific objectives would move you toward your vision in the next year?}{red| In the next five years?}\n\n{red|What relationship goals would strengthen your marriage?}{red| What family goals would build the family you want?}{red| What financial goals would create security or generosity?}{red| What other goals matter to you?}\n\nList potential goals without filtering yet:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Prioritizing and Selecting",
+          "text": "**You cannot pursue unlimited goals.** Selection is essential.\n\n**Prioritize by impact and choose goals that most significantly move you toward your vision.** Consider capacity and be realistic about what you can actually pursue given your current season. Balance areas so you do not neglect important dimensions of life. Agree together since both spouses must genuinely own the goals.\n\n**A helpful approach is to select three to five major goals for the year.** More than that diffuses focus. Fewer may not create enough momentum.\n\n**You can also have longer-term goals for the next five years that your annual goals build toward.**",
+          "icon": "filter_list"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Setting Your Goals",
+          "text": "**Together with your spouse, set your shared goals.**\n\n**Review your potential goals from your reflection.** Discuss and prioritize together.\n\n**Select three to five goals for this year.** Make them specific, measurable, achievable, relevant, and time-bound.\n\n**Also identify one to three longer-term goals for the next five years.**\n\n**Write your goals clearly.** These become your focus.\n\n**Schedule regular check-ins, perhaps monthly, to review progress on your goals.**",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_daily_alignment",
+      "isFree": false,
+      "title": "Living Your Vision: Aligning Daily Life with Purpose",
+      "subtitle": "Connecting everyday choices to your bigger picture",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "today",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Vision and goals can remain abstract if not connected to daily life. This activity helps you bridge the gap between your big picture vision and your everyday choices, ensuring that how you spend your time aligns with what you say matters most.",
+      "frameworkBasis": {
+        "conceptKey": "daily_alignment",
+        "explanation": "Vision is realized through accumulated daily choices that either move toward or away from the desired future."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Gap Between Vision and Reality",
+          "text": "**You can have a beautiful vision and meaningful goals but still live in ways that contradict them.**\n\n**You say family is your priority, but work consistently wins your time.** You say you value generosity, but spending always crowds out giving. You say you want a close marriage, but you rarely invest in connection.\n\n**The gap between stated vision and actual life is common.** It happens because daily pressures are immediate while vision is distant. It happens because habits run on autopilot. It happens because we have not connected our everyday choices to our bigger picture.\n\n**Closing this gap requires intentionally aligning daily life with stated purpose.**",
+          "icon": "compare_arrows"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Where Time and Money Go",
+          "text": "**Two of the clearest indicators of actual priorities are time and money.**\n\n**How you spend your time reveals what you really value, regardless of what you say.** How you spend your money does the same.\n\n**\"For where your treasure is, there your heart will be also\" ({red|Matthew 6:21|For where your treasure is, there your heart will be also}).** Jesus understood that money follows heart, and heart follows money. Your spending patterns reveal your actual values.\n\n**If your vision includes a close marriage but your calendar shows no regular time together, there is a gap.** If your vision includes generosity but your budget shows no significant giving, there is a gap.\n\n**Examining where your time and money actually go, not where you think they go or where you want them to go, reveals whether your daily life aligns with your vision.**\n\n**This is not about guilt.** It is about awareness that enables change.",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Creating Alignment",
+          "text": "**Several practices help align daily life with vision.**\n\n**Calendar your priorities first.** Put the most important things in your calendar before other things crowd them out. If weekly date night matters, schedule it.\n\n**Budget your values.** Allocate money to what you say matters before spending on what does not. If generosity matters, give first.\n\n**Create supporting habits.** Build routines that move you toward your goals automatically.\n\n**Eliminate contradictions.** Identify and remove things that actively work against your vision.\n\n**Review regularly.** Periodically check whether your daily life matches your stated priorities.\n\n**Alignment is not achieved once.** It is maintained through ongoing attention.",
+          "icon": "tune"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Alignment Assessment",
+          "text": "{red|**Honestly assess how well your daily life aligns with your vision and goals.**\n\nWhere does your time actually go?}{red| Does it match what you say matters?}{red| Where does your money actually go?}{red| Does it reflect your values?}{red| What daily habits support your vision?}{red| Which ones undermine it?}{red| What is the biggest gap between your stated vision and your actual life?}\n\nWrite about your alignment assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Biggest Alignment Gap",
+          "text": "{red|Where is the biggest gap between your vision and your daily life?}",
+          "prompts": [
+            "Time for marriage is crowded out by other demands",
+            "Family time gets sacrificed for work",
+            "Financial habits do not match financial goals",
+            "Health and wellness are neglected",
+            "Spiritual practices are inconsistent",
+            "Fun and rest are missing",
+            "Service and giving are minimal"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Identifying your biggest gap helps you know where to focus alignment efforts first."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "One Alignment Change",
+          "text": "**Choose one specific change to better align your daily life with your vision.**\n\n**This might be adding something like scheduling weekly date night, starting a giving practice, or creating a family routine.**\n\n**It might be removing something like cutting a time commitment that contradicts your priorities or eliminating a spending category that crowds out what matters.**\n\n**Be specific about what you will change and when you will start.**\n\n**Write your one alignment change and commit to implementing it this week.**",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_navigating_obstacles",
+      "isFree": false,
+      "title": "When Vision Gets Hard: Navigating Obstacles and Setbacks",
+      "subtitle": "Maintaining direction when reality pushes back",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "terrain",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Pursuing vision is not a straight path. Obstacles arise. Setbacks happen. Plans change. This activity helps you develop resilience and adaptability so that challenges strengthen rather than derail your shared vision.",
+      "frameworkBasis": {
+        "conceptKey": "resilience",
+        "explanation": "Resilience enables couples to maintain direction and purpose through inevitable obstacles and setbacks."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Inevitable Obstacles",
+          "text": "**No matter how clear your vision, obstacles will come.**\n\n**William and Grace had a clear ten-year plan: pay off their house, start a family business, travel together in their fifties.** Then William lost his job at forty-two, and Grace was diagnosed with a chronic illness that same year. Their carefully crafted vision seemed to crumble overnight.\n\n**\"We could have given up,\" Grace said.** \"Instead, we asked ourselves what was still true about our vision. We still wanted to be together, to work together, to serve together. The details changed, but the core direction did not.\"\n\n**Financial setbacks may delay goals.** Health challenges may change plans. Job losses or career disappointments may redirect paths. Family crises may demand attention. Unexpected opportunities may create new choices. Disagreements between spouses may surface.\n\n**These obstacles are not signs that your vision was wrong.** They are normal parts of pursuing anything meaningful.\n\n**The question is not whether you will face obstacles but how you will respond when you do.**",
+          "icon": "terrain"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Resilient Vision",
+          "text": "{red|**Resilient vision has certain qualities.**\n\n**It is flexible in tactics while firm in direction.** The specific path may change while the destination remains. It distinguishes between what is negotiable and what is not.\n\n**It embraces learning.** Setbacks contain information. What can you learn from this obstacle?}\n\n**It maintains long-term perspective.** Temporary setbacks do not define permanent reality. A bad year is not a bad life.\n\n**It relies on shared strength.** You face obstacles together, not alone. \"Though one may be overpowered, two can defend themselves. A cord of three strands is not quickly broken\" ({red|Ecclesiastes 4:12|Though one may be overpowered, two can defend themselves. A cord of three strands is not quickly broken}).\n\n**It trusts God's sovereignty.** \"Many are the plans in a person's heart, but it is the Lord's purpose that prevails\" ({red|Proverbs 19:21|Though one may be overpowered, two can defend themselves. A cord of three strands is not quickly broken}). Your plans may fail, but God's purposes will not.\n\n**Resilient vision bends without breaking.**",
+          "icon": "fitness_center"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Adapting Without Abandoning",
+          "text": "{red|**When obstacles arise, you face a choice: adapt or abandon.**\n\n**Abandoning means giving up on your vision because it got hard.** This leads to drifting without direction.\n\n**Adapting means adjusting your approach while maintaining your core direction.** This leads to resilient progress.\n\n**Adaptation might look like adjusting timelines when goals take longer than expected.** It might mean modifying methods when initial approaches do not work. It might mean scaling appropriately when circumstances change. It might mean finding alternative paths when the original route is blocked.\n\n**The core vision remains.** The path to get there evolves.\n\nMany of you have probably known that this was going to be applicable to us, right?} Let us get into how that specifically works.",
+          "icon": "refresh"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Obstacles",
+          "text": "{red|**Reflect on obstacles you face or anticipate in pursuing your shared vision.**\n\nWhat challenges currently stand in the way of your vision?}{red| What setbacks have you experienced that affected your direction?}{red| What obstacles do you anticipate in the future?}{red| How have you historically responded to obstacles in your marriage?}\n\nWrite about the obstacles you face:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Processing Setbacks Together",
+          "text": "{red|**When setbacks occur, process them together.**\n\n**Acknowledge the disappointment.** Do not minimize the loss or frustration. Let yourselves grieve if needed.\n\n**Avoid blame.** Setbacks are hard enough without blaming each other.\n\n**Analyze together.** What happened?}{red| What can you learn?}{red| What does this change?}\n\n{red|**Reaffirm your vision.** Does this setback change what you ultimately want?}{red| Usually it does not.\n\n**Adapt your plan.** How will you adjust your approach given this new reality?}\n\n**Move forward.** Do not get stuck in disappointment. Take the next step.\n\n**Processing setbacks well actually strengthens your partnership.**",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Obstacle Planning",
+          "text": "{red|**Discuss with your spouse how you will handle obstacles to your vision.**\n\n**Identify two or three likely obstacles you may face.**\n\nFor each, discuss: How will we recognize if this becomes a real challenge?}{red| How will we adapt our approach if needed?}{red| What will we not compromise even if this happens?}\n\n{red|Also discuss: How do we want to process setbacks when they occur?}{red| How can we support each other during difficult times?}\n\n**Write your obstacle response plan.**",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_legacy",
+      "isFree": false,
+      "title": "Beyond Yourselves: Building a Legacy Together",
+      "subtitle": "Creating impact that outlasts your lifetime",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "recommended",
+      "icon": "history_edu",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "The deepest shared vision extends beyond your own lifetimes. What will you leave behind? What impact will last? This activity helps you think about the legacy you want to create together.",
+      "frameworkBasis": {
+        "conceptKey": "legacy_building",
+        "explanation": "Legacy is the lasting impact of a life that continues to influence and benefit others beyond one's lifetime."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Beyond Your Lifetime",
+          "text": "{red|**Someday your life on earth will end.** What will remain?}\n\n{red|**Legacy is what continues after you are gone: the impact you made, the people you influenced, the things you built, the values you passed on.**\n\n**\"A good person leaves an inheritance for their children's children\" ({red|Proverbs 13:22|A good person leaves an inheritance for their children's children}).** This inheritance is not just material. It includes faith, values, wisdom, and love that flow through generations.\n\n**Some people never think about legacy until it is too late to build one intentionally.** Others live with legacy in mind from the beginning, making choices that create lasting impact.\n\n**Thinking about legacy is not morbid.** It is clarifying. When you know what you want to leave behind, you make different choices today.\n\nWhat do you want people to say about your marriage and family at your funeral?}{red| What do you want to still exist because you lived?} These questions shape how you live now.",
+          "icon": "history_edu"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Types of Legacy",
+          "text": "{red|**Legacy takes multiple forms.**\n\n**Relational legacy is the impact on people you directly influence: children, grandchildren, friends, mentees.** How will they be different because of you?}\n\n{red|**Character legacy is the values and virtues you model and pass on.** What will people learn about how to live by watching you?}\n\n**Material legacy includes resources, property, or organizations that continue beyond you.**\n\n**Contribution legacy is the difference you made in your community, profession, or cause.**\n\n**Spiritual legacy is the faith you passed on and the eternal impact of your life.**\n\n**Most people have limited capacity for material or contribution legacy.** But everyone can build relational, character, and spiritual legacy.",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Marriage as Legacy",
+          "text": "**Your marriage itself is a legacy.**\n\n**A strong marriage models what is possible.** Your children learn about marriage by watching yours. Others are influenced by what they observe in you.\n\n**Robert and Angela have been married forty-three years.** Their four children all have strong marriages themselves. \"We did not preach at them about marriage,\" Robert said. \"We just showed them what it looks like to love someone for a lifetime. They watched us work through hard times and stay together. That was the lesson.\"\n\n**A marriage that lasts and thrives says something to a world where marriages often fail.** It demonstrates that lifelong love is possible.\n\n**A marriage centered on Christ points people to Him.** \"Let your light shine before others, that they may see your good deeds and glorify your Father in heaven\" ({red|Matthew 5:16|Let your light shine before others, that they may see your good deeds and glorify your Father in heaven}). Your shared faith becomes a witness to God's goodness and faithfulness.\n\n**You are already building marriage legacy whether you intend to or not.** The question is whether you are building the legacy you want.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Legacy Vision",
+          "text": "{red|**Reflect on the legacy you want to leave.**\n\nWhat do you want people to say about you and your marriage when you are gone?}{red| What impact do you want to have on your children or others you influence?}{red| What values do you want to pass on?}{red| What do you want to still exist because you lived?}\n\nDescribe the legacy you want to build together:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Legacy Now",
+          "text": "**Legacy is built through accumulated choices over time, not dramatic single acts.**\n\n**If you want to leave a legacy of faith, live faithfully now.** If you want to leave a legacy of generosity, give generously now. If you want to leave a legacy of strong relationships, invest in relationships now.\n\n**Some specific legacy-building actions include passing on faith intentionally, mentoring younger people, documenting your family history and values, giving generously to causes that outlast you, building an organization or project with lasting impact, and creating traditions that carry values forward.**\n\n**The legacy you want tomorrow is built by the choices you make today.**",
+          "icon": "build"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Legacy Commitment",
+          "text": "{red|**Discuss with your spouse the legacy you want to build together.**\n\n**Share what you each wrote in your reflection.** Look for shared themes.\n\n**Identify two or three specific ways you want to build legacy intentionally.**\n\nFor each, discuss: What will we do differently starting now?}{red| How will we make this a priority?}\n\n**Write your legacy commitments together.** Let these shape your ongoing vision and choices.",
+          "icon": "forum"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_commitment",
+      "isFree": false,
+      "title": "Your Shared Purpose: A Commitment to Vision",
+      "subtitle": "Committing to pursue your shared vision together",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": true,
+      "companionInvolvementLevel": "essential",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You have done significant work developing a shared vision. Now it is time to commit to pursuing it together. This activity helps you consolidate and commit to all you have created.",
+      "frameworkBasis": {
+        "conceptKey": "commitment_integration",
+        "explanation": "Lasting change requires explicit commitments that are revisited and renewed over time."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Built",
+          "text": "**Through this journey, you have explored why shared vision matters for marriage, discovered your individual dreams, identified your shared values, created a vision for your relationship itself, envisioned the life you want to build together, set meaningful goals, learned to align daily life with vision, developed resilience for obstacles, and thought about the legacy you want to leave.**\n\n**This is significant work.** You now have clarity about where you are going together that many couples never develop.",
+          "icon": "school"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Vision as Living Document",
+          "text": "**Your shared vision is not fixed forever.** It is a living document that will evolve.\n\n**Life changes will require adaptation.** New seasons bring new priorities. Growth reveals new possibilities.\n\n**Plan to revisit your vision regularly.** Many couples do an annual retreat or review where they evaluate progress, celebrate wins, adjust goals, and update their vision for the coming season.\n\n**The goal is not a perfect permanent plan but ongoing intentionality about where you are going together.** Vision-keeping is a continuous practice, not a one-time event.",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Insight",
+          "text": "{red|What is the most important thing you have learned or realized through this journey about shared vision and purpose?}\n\n{red|What do you want to remember and apply going forward?}\n\nWrite your key insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Vision Summary",
+          "text": "**Summarize the key elements of your shared vision.**\n\n**Our shared values are.**.. Our relationship vision is... Our life vision includes... Our current goals are... The legacy we want to build is...\n\nWrite a summary of your shared vision:",
+          "responseType": "open-text",
+          "icon": "summarize"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Your Vision",
+          "text": "**Father, thank You for the gift of marriage and the gift of shared purpose.**\n\n**Thank You for helping us see more clearly what we want to build together.** We offer our vision to You. Align it with Your purposes. Correct it where we are wrong. Expand it where we are thinking too small.\n\n**Give us wisdom to pursue this vision faithfully.** Give us courage when obstacles arise. Give us flexibility to adapt when needed. Give us perseverance to keep going.\n\n**May our marriage glorify You.** May our life together make a difference. May our legacy point others to You.\n\n**We commit our plans to You, trusting that You will establish our steps.**\n\n**In Jesus' name, Amen.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Vision Commitment",
+          "text": "**Together, make a commitment to your shared vision.**\n\n**We commit to pursue our shared vision intentionally.** We commit to review and update our vision regularly. We commit to align our daily choices with what we say matters most. We commit to navigate obstacles together with resilience. We commit to build a legacy that outlasts our lifetime. We commit to keep dreaming and growing together.\n\n**We are not just living together.** We are building something together.\n\n**Sign and date this commitment.** Schedule your first vision review for three to six months from now.",
+          "icon": "handshake"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Building Together",
+    "summaryText": "You have completed an important journey toward shared purpose and vision. You now have clearer direction than most couples ever develop. Remember that vision is not a one-time exercise but an ongoing practice. Keep dreaming together, setting goals together, and building toward the future you both want. Your marriage has a purpose bigger than yourselves.",
+    "keyTakeaways": [
+      "Shared vision transforms marriage from maintenance to mission",
+      "Understanding individual dreams enables building shared vision",
+      "Shared values provide the foundation for decision-making",
+      "Relationship vision addresses the quality of your marriage itself",
+      "Life vision covers all areas you are building together",
+      "Goals translate vision into actionable objectives",
+      "Daily alignment connects everyday choices to bigger purpose",
+      "Resilience enables navigating inevitable obstacles",
+      "Legacy thinking adds eternal perspective to present choices"
+    ],
+    "nextRecommendedJourneys": [
+      "Faith and Spiritual Unity in Marriage",
+      "Communication and Conflict Resolution in Marriage",
+      "Restoring Friendship and Emotional Connection"
+    ]
+  }
+}

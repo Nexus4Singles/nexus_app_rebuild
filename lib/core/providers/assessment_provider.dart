@@ -25,15 +25,26 @@ final assessmentConfigProvider =
 final recommendedAssessmentTypeProvider = Provider<AssessmentType?>((ref) {
   final status = ref.watch(effectiveRelationshipStatusProvider);
 
+  late final AssessmentType? type;
   switch (status) {
     case RelationshipStatus.singleNeverMarried:
-      return AssessmentType.singlesReadiness;
+      type = AssessmentType.singlesReadiness;
+      break;
     case RelationshipStatus.divorced:
     case RelationshipStatus.widowed:
-      return AssessmentType.remarriageReadiness;
+      type = AssessmentType.remarriageReadiness;
+      break;
     case RelationshipStatus.married:
-      return AssessmentType.marriageHealthCheck;
+      type = AssessmentType.marriageHealthCheck;
+      break;
   }
+
+  // ignore: avoid_print
+  print(
+    '[recommendedAssessmentTypeProvider] Status=$status → AssessmentType=$type',
+  );
+
+  return type;
 });
 
 /// Provider for recommended assessment config
@@ -46,8 +57,9 @@ final recommendedAssessmentProvider = FutureProvider<AssessmentConfig?>((
 });
 
 /// Provider for loading assessment based on relationship status (divorced vs widowed)
-final relationshipAwareAssessmentProvider =
-    FutureProvider<AssessmentConfig?>((ref) async {
+final relationshipAwareAssessmentProvider = FutureProvider<AssessmentConfig?>((
+  ref,
+) async {
   final status = ref.watch(effectiveRelationshipStatusProvider);
   final configLoader = ref.watch(configLoaderProvider);
 
@@ -70,8 +82,10 @@ final userGenderProvider = Provider<String?>((ref) {
 });
 
 /// Provider for personalizing assessment question with gender-aware text
-final genderAwareQuestionProvider =
-    Provider.family<String, int>((ref, questionNumber) {
+final genderAwareQuestionProvider = Provider.family<String, int>((
+  ref,
+  questionNumber,
+) {
   // This will be used in screens to get the gender-specific question text
   // Returns question text for the given question number
   final gender = ref.watch(userGenderProvider);
@@ -79,7 +93,8 @@ final genderAwareQuestionProvider =
   return gender ?? 'male'; // Default to male if gender not set
 });
 
-/// Provider for loading the latest assessment result (any type) for current user
+/// Provider for loading the latest assessment result matching the user's
+/// current relationship status. Falls back to the most recent result of any type.
 final latestAnyAssessmentProvider = FutureProvider<AssessmentResult?>((
   ref,
 ) async {
@@ -87,9 +102,25 @@ final latestAnyAssessmentProvider = FutureProvider<AssessmentResult?>((
   if (user == null) return null;
 
   final firestoreService = ref.watch(firestoreServiceProvider);
-  final allResults = await firestoreService.getAllAssessmentResults(user.id);
 
-  // Return the most recently updated assessment
+  // Determine which assessment ID matches the user's current relationship status
+  final status = ref.watch(effectiveRelationshipStatusProvider);
+  final assessmentId = switch (status) {
+    RelationshipStatus.singleNeverMarried => 'singles_readiness',
+    RelationshipStatus.married => 'marriage_health_check',
+    RelationshipStatus.divorced => 'remarriage_readiness_divorced',
+    RelationshipStatus.widowed => 'remarriage_readiness_widowed',
+  };
+
+  // Try to get the result for the current status first
+  final statusResult = await firestoreService.getLatestAssessmentResult(
+    user.id,
+    assessmentId,
+  );
+  if (statusResult != null) return statusResult;
+
+  // Fallback: return the most recently updated assessment of any type
+  final allResults = await firestoreService.getAllAssessmentResults(user.id);
   if (allResults.isEmpty) return null;
   return allResults.first; // Already sorted by updatedAt desc
 });
@@ -195,10 +226,23 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
   AssessmentNotifier(this._ref, this._firestoreService)
     : super(const AssessmentState());
 
-  /// Start a new assessment
+  /// Start a new assessment (now relationship-aware for divorced/widowed distinction)
   Future<void> startAssessment(AssessmentType type) async {
     try {
-      final config = await _ref.read(assessmentConfigProvider(type).future);
+      AssessmentConfig? config;
+
+      // For remarriage type, load based on actual relationship status
+      // This ensures divorced/widowed distinction is preserved
+      if (type == AssessmentType.remarriageReadiness) {
+        print(
+          '[AssessmentNotifier] Starting remarriage assessment - using relationship-aware loading',
+        );
+        config = await _ref.read(relationshipAwareAssessmentProvider.future);
+      } else {
+        // For other types, use standard loading
+        config = await _ref.read(assessmentConfigProvider(type).future);
+      }
+
       if (config == null) {
         state = state.copyWith(
           error: 'Failed to load assessment configuration',
@@ -206,8 +250,10 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
         return;
       }
 
+      print('[AssessmentNotifier] ✓ Loaded config: ${config.assessmentId}');
       state = AssessmentState(config: config);
     } catch (e) {
+      print('[AssessmentNotifier] ❌ Error starting assessment: $e');
       state = state.copyWith(error: 'Error starting assessment: $e');
     }
   }
@@ -292,6 +338,12 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
       // Save to Firestore (skip in dev mode if Firebase is unavailable)
       if (_firestoreService.isAvailable) {
         await _firestoreService.saveAssessmentResult(userId, result);
+
+        // ✅ CRITICAL: Invalidate provider cache after saving
+        // This forces home screen to re-fetch and show "View Results"
+        _ref.invalidate(latestAnyAssessmentProvider);
+        _ref.invalidate(latestAssessmentResultProvider);
+        print('[AssessmentNotifier] ✓ Invalidated assessment result providers');
       }
 
       // Mark as newly submitted so result screen shows "Done" button
@@ -300,7 +352,11 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
         result: result,
         isNewlySubmitted: true,
       );
+      print(
+        '[AssessmentNotifier] ✓ Assessment submitted and cached result updated',
+      );
     } catch (e) {
+      print('[AssessmentNotifier] ❌ Error submitting assessment: $e');
       state = state.copyWith(
         isSubmitting: false,
         error: 'Failed to save assessment: $e',

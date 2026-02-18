@@ -5,6 +5,7 @@ import '../auth/auth_providers.dart';
 import '../session/is_guest_provider.dart';
 import 'auth_gate_modal.dart';
 import '../../features/launch/presentation/app_launch_gate.dart';
+import '../../features/auth/presentation/screens/login_screen.dart';
 
 class GuestGuard {
   static Future<void> requireSignedIn(
@@ -42,7 +43,7 @@ class GuestGuard {
           () {
             Navigator.of(
               context,
-            ).push(MaterialPageRoute(builder: (_) => const AppLaunchGate()));
+            ).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
           },
     );
   }

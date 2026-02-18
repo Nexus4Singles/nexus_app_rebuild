@@ -61,10 +61,22 @@ final currentUserDocProvider = StreamProvider<Map<String, dynamic>?>((ref) {
               }
               return;
             }
+            // Extract relationship status for logging
+            final data = doc.data();
+            final nexusStatus =
+                (data?['nexus'] as Map?)
+                    ?.cast<String, dynamic>()['relationshipStatus'];
+            final nexus2Status =
+                (data?['nexus2'] as Map?)
+                    ?.cast<String, dynamic>()['relationshipStatus'];
+            final dating = (data?['dating'] as Map?)?.cast<String, dynamic>();
+            final optIn = dating?['optIn'];
             // ignore: avoid_print
             print(
-              '[currentUserDocProvider] Emitting user doc data: ${doc.data()}',
+              '[currentUserDocProvider] NEW SNAPSHOT: nexus=$nexusStatus, nexus2=$nexus2Status, optIn=$optIn',
             );
+            // ignore: avoid_print
+            print('[currentUserDocProvider] Emitting user doc data: $data');
             if (!controller.isClosed) {
               controller.add(doc.data());
             }

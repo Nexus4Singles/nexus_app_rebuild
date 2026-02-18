@@ -28,7 +28,8 @@ final datingProfileCompletedProvider = Provider<AsyncValue<bool>>((ref) {
 
     // Check if dating profile is archived (isActive: false means archived when married)
     final isActive = dating?['isActive'] as bool? ?? true;
-    if (!isActive) return false; // Archived dating profiles should not be considered complete
+    if (!isActive)
+      return false; // Archived dating profiles should not be considered complete
 
     if (v2 == true) return true;
     if (v2 == false) return false;

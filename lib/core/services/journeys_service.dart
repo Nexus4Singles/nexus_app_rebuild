@@ -11,45 +11,18 @@ class JourneysService {
   Future<Map<String, dynamic>> loadCatalogForStatus(
     RelationshipStatus status,
   ) async {
-    // Try legacy aggregated catalog (v1) first for other statuses
-    // but for singles, prioritize the v2 folder structure
-    if (status != RelationshipStatus.singleNeverMarried) {
-      try {
-        final assetPath = _assetForStatus(status);
-        final raw = await rootBundle.loadString(assetPath);
-        return json.decode(raw) as Map<String, dynamic>;
-      } catch (e) {
-        print(
-          '[JourneysService] Failed to load aggregate file for $status: $e',
-        );
-      }
-    }
-
-    // For singles or as fallback, load from v2 folder structure
+    // Load journeys directly from folder structure
+    // v1 aggregated files have been deprecated
     return await _loadCatalogFromFolderStructure(status);
-  }
-
-  String _assetForStatus(RelationshipStatus status) {
-    switch (status) {
-      case RelationshipStatus.married:
-        return 'assets/config/journeys/journeys_married.v1.json';
-      case RelationshipStatus.divorced:
-        return 'assets/config/journeys/journeys_divorced.v1.json';
-      case RelationshipStatus.widowed:
-        return 'assets/config/journeys/journeys_widowed.v1.json';
-      case RelationshipStatus.singleNeverMarried:
-        return 'assets/config/journeys/journeys_singles.v1.json';
-    }
   }
 
   Future<Map<String, dynamic>> _loadCatalogFromFolderStructure(
     RelationshipStatus status,
   ) async {
-    // Direct file loading approach: try to load journey files by their expected paths
-    // This is more reliable than manifest scanning and doesn't depend on build artifacts
+    // Load journeys dynamically from status-specific folders
+    // Each folder contains individual JSON files for each journey
 
     final folder = _getCatalogFolder(status);
-    // final prefix = _getPrefixForStatus(status); // No longer used
 
     if (folder == null) {
       return _emptyJourneyCatalog(status);
@@ -59,45 +32,26 @@ class JourneysService {
 
     final journeys = <Map<String, dynamic>>[];
 
-    // For singles, load from the flagship folder with known filenames
-    if (status == RelationshipStatus.singleNeverMarried) {
-      final knownFiles = <String>[
-        'singles_journey_01_identity_self_worth_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_02_cultural_lies_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_03_healing_past_wounds_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_04_family_patterns_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_05_emotional_readiness_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_06_emotional_intelligence_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_07_secure_confidence_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_08_toxic_triggers_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_09_biblical_femininity_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_09_biblical_masculinity_FLAGSHIP_POLISHED.json',
-        'singles_journey_10_communicate_better_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_11_healthy_boundaries_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_12_financial_readiness_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_13_red_flags_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_14_compatibility_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_15_dating_purpose_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_16_sexual_chemistry_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_17_faith_alignment_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_18_purity_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_19_choosing_spouse_FLAGSHIP_POLISHED_FINAL.json',
-        'singles_journey_20_fear_commitment_FLAGSHIP_POLISHED_FINAL.json',
-      ];
+    // List of files to load based on status
+    final filePreset = _getJourneyFilesForStatus(status);
 
-      for (final fileName in knownFiles) {
-        final path = '$folder$fileName';
-        try {
-          final raw = await rootBundle.loadString(path);
-          final data = json.decode(raw);
-          final normalized = _normalizeJourneyJsonV2(data, sourcePath: path);
-          if (normalized != null) {
-            journeys.add(normalized);
-            print('[JourneysService] ✓ Loaded: $fileName');
-          }
-        } catch (e) {
-          print('[JourneysService] ✗ Failed to load $fileName: $e');
+    if (filePreset.isEmpty) {
+      print('[JourneysService] No journey files configured for status=$status');
+      return _emptyJourneyCatalog(status);
+    }
+
+    for (final fileName in filePreset) {
+      final path = '$folder$fileName';
+      try {
+        final raw = await rootBundle.loadString(path);
+        final data = json.decode(raw);
+        final normalized = _normalizeJourneyJsonV2(data, sourcePath: path);
+        if (normalized != null) {
+          journeys.add(normalized);
+          print('[JourneysService] ✓ Loaded: $fileName');
         }
+      } catch (e) {
+        print('[JourneysService] ✗ Failed to load $fileName: $e');
       }
     }
 
@@ -117,16 +71,92 @@ class JourneysService {
     };
   }
 
+  List<String> _getJourneyFilesForStatus(RelationshipStatus status) {
+    return switch (status) {
+      RelationshipStatus.singleNeverMarried => <String>[
+        'singles_journey_01_identity_self_worth.json',
+        'singles_journey_02_cultural_lies.json',
+        'singles_journey_03_healing_past_wounds.json',
+        'singles_journey_04_family_patterns.json',
+        'singles_journey_05_emotional_readiness.json',
+        'singles_journey_06_emotional_intelligence.json',
+        'singles_journey_07_secure_confidence.json',
+        'singles_journey_08_toxic_triggers.json',
+        'singles_journey_09_biblical_femininity.json',
+        'singles_journey_09_biblical_masculinity.json',
+        'singles_journey_10_communicate_better.json',
+        'singles_journey_11_healthy_boundaries.json',
+        'singles_journey_12_financial_readiness.json',
+        'singles_journey_13_red_flags.json',
+        'singles_journey_14_compatibility.json',
+        'singles_journey_15_dating_purpose.json',
+        'singles_journey_16_sexual_chemistry.json',
+        'singles_journey_17_faith_alignment.json',
+        'singles_journey_18_purity.json',
+        'singles_journey_19_choosing_spouse.json',
+        'singles_journey_20_fear_commitment.json',
+      ],
+      RelationshipStatus.married => <String>[
+        'married_journey_01_communication_conflict.json',
+        'married_journey_02_harmful_conflict_patterns.json',
+        'married_journey_03_restoring_friendship.json',
+        'married_journey_04_emotional_physical_intimacy.json',
+        'married_journey_05_keeping_romance_alive.json',
+        'married_journey_06_reigniting_sexual_desire.json',
+        'married_journey_07_rebuilding_trust.json',
+        'married_journey_08_handling_infidelity.json',
+        'married_journey_09_roles_expectations.json',
+        'married_journey_10_masculinity_femininity.json',
+        'married_journey_11_cultural_differences.json',
+        'married_journey_12_managing_finances.json',
+        'married_journey_13_parenting_united_team.json',
+        'married_journey_14_infertility.json',
+        'married_journey_15_healthy_boundaries_extended_family.json',
+        'married_journey_16_personal_growth.json',
+        'married_journey_17_faith_spiritual_unity.json',
+        'married_journey_18_shared_purpose_vision.json',
+      ],
+      RelationshipStatus.divorced => <String>[
+        'divorced_journey_01_understanding_what_went_wrong.json',
+        'divorced_journey_02_processing_pain.json',
+        'divorced_journey_03_healing_restoration.json',
+        'divorced_journey_04_identity_selfworth.json',
+        'divorced_journey_05_letting_go_resentment.json',
+        'divorced_journey_06_faith_church_community.json',
+        'divorced_journey_07_financial_recovery.json',
+        'divorced_journey_08_coparenting.json',
+        'divorced_journey_09_anniversaries_occasions.json',
+        'divorced_journey_10_ex_moves_on.json',
+        'divorced_journey_11_developing_trust.json',
+        'divorced_journey_12_toxic_patterns.json',
+        'divorced_journey_13_emotional_readiness.json',
+        'divorced_journey_14_discerning_healthy_love.json',
+        'divorced_journey_15_dating_again.json',
+        'divorced_journey_16_preparing_new_covenant.json',
+      ],
+      RelationshipStatus.widowed => <String>[
+        'widowed_journey_01_navigating_grief_loss.json',
+        'widowed_journey_02_staying_present_for_kids.json',
+        'widowed_journey_03_dealing_with_loneliness.json',
+        'widowed_journey_04_rebuilding_life.json',
+        'widowed_journey_05_holidays_anniversaries.json',
+        'widowed_journey_06_rediscovering_identity.json',
+        'widowed_journey_07_honoring_memory.json',
+        'widowed_journey_08_opening_heart_new_love.json',
+        'widowed_journey_09_kids_embrace_new_commitment.json',
+        'widowed_journey_10_preparing_new_covenant.json',
+      ],
+    };
+  }
+
   String? _getCatalogFolder(RelationshipStatus status) {
     return switch (status) {
       RelationshipStatus.singleNeverMarried =>
-        'assets/config/journeys/singles_catalog_FLAGSHIP_FINAL/',
-      RelationshipStatus.married =>
-        'assets/config/journeys/married_catalog_FLAGSHIP_FINAL/',
+        'assets/config/journeys/singles journeys/',
+      RelationshipStatus.married => 'assets/config/journeys/married journeys/',
       RelationshipStatus.divorced =>
-        'assets/config/journeys/divorced_catalog_FLAGSHIP_FINAL/',
-      RelationshipStatus.widowed =>
-        'assets/config/journeys/widowed_catalog_FLAGSHIP_FINAL/',
+        'assets/config/journeys/divorced journeys/',
+      RelationshipStatus.widowed => 'assets/config/journeys/widowed journeys/',
     };
   }
 
@@ -199,7 +229,9 @@ class JourneysService {
       'abstract',
     ], '');
     final icon = _string(j, const ['icon'], 'sparkles');
+    // Check for journeyId first (from migration), then id, slug, or generate from filename
     final id = _string(j, const [
+      'journeyId',
       'id',
       'slug',
     ], _slugFromSource(sourcePath, title));
@@ -227,7 +259,11 @@ class JourneysService {
 
     final missions = _extractMissionsList(j);
 
-    final subtitle = _string(j, const ['subtitle'], '');
+    // Extract subtitle with summary as fallback for consistency across all journey types
+    var subtitle = _string(j, const ['subtitle'], '');
+    if (subtitle.isEmpty) {
+      subtitle = _string(j, const ['summary', 'description'], '');
+    }
     return {
       'id': id,
       'title': title,

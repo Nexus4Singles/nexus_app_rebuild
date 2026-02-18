@@ -5,12 +5,12 @@ import 'placeholder_screen.dart';
 
 import '../constants/app_constants.dart';
 
-import '../../features/presentation/screens/home_screen.dart';
-import '../../features/presentation/screens/search_screen.dart';
-import '../../features/presentation/screens/_stubs/onboarding_stub_screen.dart';
-import '../../features/presentation/screens/_stubs/notifications_stub_screen.dart';
+import '../../features/launch/presentation/screens/home_screen.dart';
+import '../../features/dating_search/presentation/screens/search_screen.dart';
+import '../../features/launch/presentation/screens/onboarding_screen.dart';
+import '../../features/notifications/presentation/screens/notifications_screen.dart';
 import '../../features/dating_search/presentation/screens/new_dating_search_screen.dart';
-import '../../features/presentation/screens/chats_screen.dart';
+import '../../features/chats/presentation/screens/chats_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/dating_onboarding/presentation/screens/dating_age_screen.dart';
 import '../../features/dating_onboarding/presentation/screens/dating_extra_info_screen.dart';
@@ -22,13 +22,13 @@ import '../../features/dating_onboarding/presentation/screens/dating_hobbies_scr
 import '../../features/dating_onboarding/presentation/screens/dating_qualities_screen.dart';
 import '../../features/dating_onboarding/presentation/screens/dating_contact_info_screen.dart';
 import '../../features/dating_onboarding/presentation/screens/dating_profile_complete_screen.dart';
-import '../../features/presentation/screens/settings_screen.dart';
-import '../../features/presentation/screens/contact_screen.dart';
-import '../../features/presentation/screens/privacy_policy_screen.dart';
-import '../../features/presentation/screens/terms_screen.dart';
-import '../../features/presentation/screens/blocked_users_screen.dart';
-import '../../features/presentation/screens/contact_support_screen.dart';
-import '../../features/presentation/screens/help_center_screen.dart';
+import '../../features/profile/presentation/screens/settings_screen.dart';
+import '../../features/profile/presentation/screens/contact_screen.dart';
+import '../../features/profile/presentation/screens/privacy_policy_screen.dart';
+import '../../features/profile/presentation/screens/terms_screen.dart';
+import '../../features/chats/presentation/screens/blocked_users_screen.dart';
+import '../../features/profile/presentation/screens/contact_support_screen.dart';
+import '../../features/profile/presentation/screens/help_center_screen.dart';
 
 import 'app_routes.dart';
 
@@ -41,7 +41,7 @@ import '../../features/challenges/presentation/screens/journey_gate_screen.dart'
 import '../../features/challenges/domain/journey_v1_models.dart';
 
 import '../../features/subscription/presentation/screens/journey_purchase_screen.dart';
-import '../../features/subscription/presentation/screens/book_marriage_coach_screen.dart';
+import '../../features/counselling/presentation/screens/book_marriage_coach_screen.dart';
 
 import '../../features/assessment/presentation/screens/assessments_hub_screen.dart';
 import '../../features/assessment/presentation/screens/assessment_intro_screen.dart';
@@ -152,7 +152,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case '/home':
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const HomeScreen(),
+        builder: (_) => const AppShell(),
       );
 
     case '/search':

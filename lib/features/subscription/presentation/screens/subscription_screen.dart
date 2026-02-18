@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -7,6 +6,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/constants/app_constants.dart';
 import 'package:nexus_app_v2/core/session/effective_relationship_status_provider.dart';
+import 'package:nexus_app_v2/core/providers/tab_selection_provider.dart';
 import 'package:nexus_app_v2/core/config/revenuecat_config.dart';
 import 'package:nexus_app_v2/core/services/revenuecat_service.dart';
 import 'package:nexus_app_v2/core/providers/auth_provider.dart';
@@ -680,11 +680,11 @@ class _JourneyPurchasesTab extends StatelessWidget {
 }
 
 // Empty Journeys View
-class _EmptyJourneysView extends StatelessWidget {
+class _EmptyJourneysView extends ConsumerWidget {
   const _EmptyJourneysView();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -727,8 +727,9 @@ class _EmptyJourneysView extends StatelessWidget {
             OutlinedButton.icon(
               onPressed: () {
                 Navigator.pop(context);
-                // Navigate to challenges/journeys screen
-                Navigator.pushNamed(context, '/challenges');
+                // Navigate to challenges/journeys Tab
+                ref.read(selectedTabProvider.notifier).state =
+                    NavTab.challenges;
               },
               icon: const Icon(Icons.explore),
               label: const Text('Explore Journeys'),

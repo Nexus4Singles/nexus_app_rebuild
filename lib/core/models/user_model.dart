@@ -13,6 +13,7 @@ class Nexus2Data extends Equatable {
   final int schemaVersion;
   final DateTime? lastActiveAt;
   final Map<String, dynamic>? experiments;
+  final bool hasSeenDatingPoolGuidelines;
 
   const Nexus2Data({
     required this.relationshipStatus,
@@ -23,6 +24,7 @@ class Nexus2Data extends Equatable {
     this.schemaVersion = AppConfig.nexus2SchemaVersion,
     this.lastActiveAt,
     this.experiments,
+    this.hasSeenDatingPoolGuidelines = false,
   });
 
   /// Create from Firestore document
@@ -53,6 +55,8 @@ class Nexus2Data extends Equatable {
           map['schemaVersion'] as int? ?? AppConfig.nexus2SchemaVersion,
       lastActiveAt: (map['lastActiveAt'] as Timestamp?)?.toDate(),
       experiments: map['experiments'] as Map<String, dynamic>?,
+      hasSeenDatingPoolGuidelines:
+          UserModel._boolFrom(map['hasSeenDatingPoolGuidelines']) ?? false,
     );
   }
 
@@ -69,6 +73,7 @@ class Nexus2Data extends Equatable {
       'lastActiveAt':
           lastActiveAt != null ? Timestamp.fromDate(lastActiveAt!) : null,
       if (experiments != null) 'experiments': experiments,
+      'hasSeenDatingPoolGuidelines': hasSeenDatingPoolGuidelines,
     };
   }
 
@@ -87,6 +92,7 @@ class Nexus2Data extends Equatable {
     int? schemaVersion,
     DateTime? lastActiveAt,
     Map<String, dynamic>? experiments,
+    bool? hasSeenDatingPoolGuidelines,
   }) {
     return Nexus2Data(
       relationshipStatus: relationshipStatus ?? this.relationshipStatus,
@@ -97,6 +103,8 @@ class Nexus2Data extends Equatable {
       schemaVersion: schemaVersion ?? this.schemaVersion,
       lastActiveAt: lastActiveAt ?? this.lastActiveAt,
       experiments: experiments ?? this.experiments,
+      hasSeenDatingPoolGuidelines:
+          hasSeenDatingPoolGuidelines ?? this.hasSeenDatingPoolGuidelines,
     );
   }
 
@@ -128,6 +136,7 @@ class Nexus2Data extends Equatable {
     schemaVersion,
     lastActiveAt,
     experiments,
+    hasSeenDatingPoolGuidelines,
   ];
 }
 
@@ -209,7 +218,7 @@ class UserModel extends Equatable {
       final status = dating['verificationStatus'];
       if (status == 'verified') return true;
     }
-    
+
     // Fallback to old root-level isVerified field (v1 compatibility)
     return _boolFrom(data['isVerified']) ?? false;
   }
