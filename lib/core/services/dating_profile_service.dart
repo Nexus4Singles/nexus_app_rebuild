@@ -195,16 +195,20 @@ class DatingProfileService {
       'profileCompleted': true,
       'profileCompletedAt': FieldValue.serverTimestamp(),
       // Store a compact review pack used by moderation + search
-      'reviewPack': _buildReviewPack(photoUrls: photoUrls, audioUrls: audioUrls),
+      'reviewPack': _buildReviewPack(
+        photoUrls: photoUrls,
+        audioUrls: audioUrls,
+      ),
       // Keep a simple searchable nationality/country inside dating as well
       'nationality': nationality,
       'countryOfResidence': country,
     };
 
     // If the user was previously verified and we changed evidence, bump to pending
-    final previousDating = (existing['dating'] is Map)
-        ? (existing['dating'] as Map).cast<String, dynamic>()
-        : <String, dynamic>{};
+    final previousDating =
+        (existing['dating'] is Map)
+            ? (existing['dating'] as Map).cast<String, dynamic>()
+            : <String, dynamic>{};
     final currentStatus = previousDating['verificationStatus']?.toString();
     if (currentStatus == 'verified') {
       datingMap['verificationStatus'] = 'pending';
@@ -251,11 +255,17 @@ class DatingProfileService {
     // and overwrite the `dating` map. If it does not exist, create a new doc
     // with the full payload (safe for new users).
     if (!doc.exists) {
-      final full = <String, dynamic>{}..addAll(topLevel)..addAll({'dating': datingMap});
+      final full =
+          <String, dynamic>{}
+            ..addAll(topLevel)
+            ..addAll({'dating': datingMap});
       await userRef.set(full);
     } else {
       // Use update to overwrite the `dating` map and set top-level fields.
-      final updatePayload = <String, dynamic>{}..addAll(topLevel)..addAll({'dating': datingMap});
+      final updatePayload =
+          <String, dynamic>{}
+            ..addAll(topLevel)
+            ..addAll({'dating': datingMap});
 
       // Perform the update
       await userRef.update(updatePayload);
@@ -289,7 +299,7 @@ class DatingProfileService {
       'church': church,
       'updatedAt': FieldValue.serverTimestamp(),
     });
-    
+
     // Track unique nationality and country
     await trackNationalityAndCountry(nationality, country);
   }
@@ -451,7 +461,7 @@ class DatingProfileService {
   /// Add a nationality to the unique nationalities collection
   Future<void> trackNationality(String nationality) async {
     if (nationality.trim().isEmpty) return;
-    
+
     try {
       final normalized = nationality.trim();
       await _fs.collection('nationalities').doc(normalized).set({
@@ -459,14 +469,13 @@ class DatingProfileService {
         'count': FieldValue.increment(1),
         'lastUpdatedAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   /// Add a country of residence to the unique countries collection
   Future<void> trackCountryOfResidence(String country) async {
     if (country.trim().isEmpty) return;
-    
+
     try {
       final normalized = country.trim();
       await _fs.collection('countriesOfResidence').doc(normalized).set({
@@ -474,19 +483,20 @@ class DatingProfileService {
         'count': FieldValue.increment(1),
         'lastUpdatedAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   /// Track both nationality and country when user completes profile
-  Future<void> trackNationalityAndCountry(String nationality, String country) async {
+  Future<void> trackNationalityAndCountry(
+    String nationality,
+    String country,
+  ) async {
     try {
       await Future.wait([
         trackNationality(nationality),
         trackCountryOfResidence(country),
       ]);
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 }
 

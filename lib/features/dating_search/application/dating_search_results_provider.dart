@@ -486,19 +486,23 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
       if (userRel == RelationshipStatus.divorced) desired = 'divorced';
 
       if (desired != null) {
-        final matching = results.items
-            .where((p) => (p.maritalStatus ?? '').toLowerCase() == desired)
-            .toList();
-        final others = results.items
-            .where((p) => (p.maritalStatus ?? '').toLowerCase() != desired)
-            .toList();
+        final matching =
+            results.items
+                .where((p) => (p.maritalStatus ?? '').toLowerCase() == desired)
+                .toList();
+        final others =
+            results.items
+                .where((p) => (p.maritalStatus ?? '').toLowerCase() != desired)
+                .toList();
 
         if (matching.isNotEmpty) {
           results = DatingSearchResult(
             items: [...matching, ...others],
             emptyHint: results.emptyHint,
           );
-          print('[DatingSearchResultsProvider] Prioritized by relationship: ${matching.length} $desired profiles first');
+          print(
+            '[DatingSearchResultsProvider] Prioritized by relationship: ${matching.length} $desired profiles first',
+          );
         }
       }
     }
@@ -514,12 +518,10 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     final userCountry = preferences!.countryOfResidence!;
 
     // Partition: local profiles first, international second
-    final localProfiles = results.items
-        .where((p) => p.country == userCountry)
-        .toList();
-    final internationalProfiles = results.items
-        .where((p) => p.country != userCountry)
-        .toList();
+    final localProfiles =
+        results.items.where((p) => p.country == userCountry).toList();
+    final internationalProfiles =
+        results.items.where((p) => p.country != userCountry).toList();
 
     if (localProfiles.isNotEmpty || internationalProfiles.isNotEmpty) {
       // Combine with local first, preserving sort order within each group
@@ -618,16 +620,22 @@ final cachedDatingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   final cachedResults = ref.watch(searchResultsCacheProvider);
 
   if (cachedResults != null && cachedResults.items.isNotEmpty) {
-    print('[cachedDatingSearchResultsProvider] Returning cached results: ${cachedResults.items.length} profiles');
+    print(
+      '[cachedDatingSearchResultsProvider] Returning cached results: ${cachedResults.items.length} profiles',
+    );
     return cachedResults;
   }
 
-  print('[cachedDatingSearchResultsProvider] Cache empty, fetching fresh results...');
+  print(
+    '[cachedDatingSearchResultsProvider] Cache empty, fetching fresh results...',
+  );
 
   // Fetch fresh results
   try {
     final result = await ref.watch(datingSearchResultsProvider.future);
-    print('[cachedDatingSearchResultsProvider] Got${result.items.length} profiles, caching...');
+    print(
+      '[cachedDatingSearchResultsProvider] Got${result.items.length} profiles, caching...',
+    );
     // Cache the successful result
     ref.read(searchResultsCacheProvider.notifier).setResults(result);
     return result;
@@ -752,7 +760,9 @@ final accumulatedSearchResultsProvider = FutureProvider<DatingSearchResult>((
   final initialBatch = await ref.watch(
     cachedDatingSearchResultsProvider.future,
   );
-  print('[accumulatedSearchResultsProvider] Initial batch loaded: ${initialBatch.items.length} profiles');
+  print(
+    '[accumulatedSearchResultsProvider] Initial batch loaded: ${initialBatch.items.length} profiles',
+  );
 
   // If no profiles in initial batch, return immediately (show 'No Profiles')
   if (initialBatch.items.isEmpty) {
@@ -766,20 +776,28 @@ final accumulatedSearchResultsProvider = FutureProvider<DatingSearchResult>((
 
   // If offset is 0, show only initial batch (DON'T watch offset to avoid re-evaluations)
   if (currentOffset == 0) {
-    print('[accumulatedSearchResultsProvider] Offset is 0, returning only initial batch');
+    print(
+      '[accumulatedSearchResultsProvider] Offset is 0, returning only initial batch',
+    );
     return initialBatch;
   }
 
   // Try to get paginated batch, but if it fails or is empty, just return initial batch
   DatingSearchResult paginatedBatch;
   try {
-    print('[accumulatedSearchResultsProvider] Fetching paginated batch at offset $currentOffset');
+    print(
+      '[accumulatedSearchResultsProvider] Fetching paginated batch at offset $currentOffset',
+    );
     paginatedBatch = await ref.watch(
       paginatedDatingSearchResultsProvider.future,
     );
-    print('[accumulatedSearchResultsProvider] Paginated batch loaded: ${paginatedBatch.items.length} profiles');
+    print(
+      '[accumulatedSearchResultsProvider] Paginated batch loaded: ${paginatedBatch.items.length} profiles',
+    );
   } catch (e) {
-    print('[accumulatedSearchResultsProvider] Error fetching paginated batch: $e');
+    print(
+      '[accumulatedSearchResultsProvider] Error fetching paginated batch: $e',
+    );
     paginatedBatch = const DatingSearchResult(items: []);
   }
 
@@ -789,7 +807,9 @@ final accumulatedSearchResultsProvider = FutureProvider<DatingSearchResult>((
     ...paginatedBatch.items,
   ];
 
-  print('[accumulatedSearchResultsProvider] Combined results: ${combined.length} total profiles');
+  print(
+    '[accumulatedSearchResultsProvider] Combined results: ${combined.length} total profiles',
+  );
 
   return DatingSearchResult(
     items: combined,
