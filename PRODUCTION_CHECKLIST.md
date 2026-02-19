@@ -116,7 +116,7 @@ The app has a solid foundation with core features implemented. Below is a detail
 - [x] Subscription service (RevenueCat ready)
 - [x] Subscription screen with plans
 - [x] Premium features display
-- [x] Monthly/Quarterly/Yearly plans
+- [x] Monthly subscription plan (dynamic pricing from stores)
 - [x] Free chat limit enforcement
 - [x] Premium paywall modal
 - [x] Restore purchases placeholder

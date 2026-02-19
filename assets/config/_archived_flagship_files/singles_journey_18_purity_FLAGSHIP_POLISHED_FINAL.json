@@ -1,0 +1,979 @@
+{
+  "journeyId": "singles_purity_discipline",
+  "title": "Purity and Sexual Discipline",
+  "subtitle": "Honoring God with your body and desires",
+  "summary": "Sexual purity in a hypersexualized culture requires more than willpower,it requires understanding, strategy, and grace. This journey helps you develop a biblical framework for sexuality, practical disciplines for maintaining purity, and a grace-based approach to recovery when you fall. True purity is a heart posture, not just behavioral compliance.",
+  "targetUserCategory": "singles",
+  "priorityRank": 18,
+  "estimatedDays": 12,
+  "totalActivities": 11,
+  "difficulty": "intermediate",
+  "themeColor": "#9B59B6",
+  "cover": {
+    "themeTag": "Holiness",
+    "accentIcon": "verified_user",
+    "heroImage": "assets/images/journeys/Singles_journey18.jpg",
+    "heroImageDescription": "A person walking on a clear path at sunrise, representing the journey toward purity and intentional living."
+  },
+  "frameworks": [
+    "biblical_sexuality",
+    "spiritual_disciplines",
+    "temptation_resistance",
+    "grace_and_restoration"
+  ],
+  "targetOutcomes": [
+    "Develop a biblical understanding of sexuality and its purpose",
+    "Identify your personal vulnerability patterns and triggers",
+    "Build practical strategies and boundaries for purity",
+    "Create accountability structures that actually work",
+    "Learn to receive grace and recover after failure",
+    "Prepare for healthy intimacy within marriage"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_sexuality_design",
+      "isFree": true,
+      "title": "God's Design for Sexuality",
+      "subtitle": "Understanding sex as a gift with a purpose",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "The world says sex is just physical pleasure. The church sometimes makes it sound shameful. Neither is the biblical view. Understanding God's design transforms purity from obligation to opportunity.",
+      "frameworkBasis": {
+        "conceptKey": "sexuality_design",
+        "explanation": "Sex was God's idea. He created it good, with specific purposes within specific boundaries."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "question",
+          "cardNumber": 1,
+          "title": "Your Sexuality Story",
+          "text": "Sexual discipline is often misunderstood as repression or shame.\nIn reality, it is about choosing alignment between desire, values, and long-term love.\n\nIf you have ever felt torn between what you want now and what you want most, this journey will help you walk with integrity, not condemnation.\n\nWhat messages about sex did you absorb growing up? Select all that shaped you:",
+          "prompts": [
+            "Sex is dirty or shameful",
+            "Sex is just physical,no big deal",
+            "Don't talk about it",
+            "It's only for making babies",
+            "It's a gift to be celebrated in marriage",
+            "Desire itself is sinful"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These messages,whether from church, family, or culture,shape how you approach sexuality. Let's examine them against Scripture."
+          },
+          "icon": "history"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Sex: A Very Good Creation",
+          "text": "\"God saw all that he had made, and it was very good.\" ({red|Genesis 1:31}) Sex existed before sin. God designed male and female, pronounced it \"very good,\" and commanded them to \"be fruitful and multiply.\" Sexual desire is not the result of the fall,it's part of God's original good creation. The problem isn't desire. The problem is disordered desire,wanting good things in wrong ways or wrong contexts.",
+          "icon": "eco"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Purposes of Sex",
+          "text": "Scripture reveals multiple purposes for sexuality: **Union**: \"The two shall become one flesh\" ({red|Genesis 2:24|The two shall become one flesh}), Deep intimacy and bonding **Procreation**: Partnering with God in creating life **Pleasure**: Song of Solomon celebrates erotic love between spouses **Picture**: Marriage and sex reflect Christ's love for the church (Ephesians 5) Sex is designed to accomplish all these within the covenant of marriage.",
+          "icon": "hub"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Why Boundaries Exist",
+          "text": "God's boundaries aren't about restricting pleasure,they're about protecting purpose. Sex creates soul ties. It bonds people neurochemically through oxytocin and dopamine. It makes promises with bodies. Outside marriage, these powerful effects happen without the commitment to sustain them. \"Flee from sexual immorality. Every other sin a person commits is outside the body, but the sexually immoral person sins against his own body.\" ({red|1 Corinthians 6:18})",
+          "icon": "security"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Reframing Purity",
+          "text": "Purity is not:\n• A checklist of don'ts\n• About being \"good enough\" for a spouse\n• Something you lose permanently\n• Impossible in modern culture Purity IS:\n• A heart posture of honoring God\n• Stewarding your sexuality with wisdom\n• Possible through Christ's power\n• A journey with grace for stumbles",
+          "icon": "lightbulb",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Purity Motivation",
+          "text": "Purity that lasts must be motivated by more than fear or guilt. Write out your personal \"why\": I want to pursue purity because. I believe God's design for sex is. The life I want requires.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_cultural_lies",
+      "isFree": false,
+      "title": "Recognizing Cultural Lies About Sex",
+      "subtitle": "Countering the messages bombarding you daily",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "contrast",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "You're swimming in a culture that constantly promotes a distorted view of sexuality. Recognizing these lies is essential to resisting them. What you don't identify, you absorb.",
+      "frameworkBasis": {
+        "conceptKey": "cultural_discernment",
+        "explanation": "The world's sexual ethic is not neutral,it's actively shaping your desires and expectations."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Cultural Narrative",
+          "text": "Modern culture teaches: • Sexual expression is essential to identity\n• Waiting is unhealthy repression\n• Consent is the only boundary needed\n• Porn is normal and harmless\n• Hooking up is consequence-free\n• You need sexual experience before marriage These messages are presented as obvious, progressive, and liberating. But are they true?",
+          "icon": "public"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Messages You've Absorbed",
+          "text": "Which cultural messages about sex have influenced your thinking? Be honest:",
+          "prompts": [
+            "Waiting is unrealistic or outdated",
+            "I need experience to be good at sex",
+            "Porn is harmless entertainment",
+            "My desires define what's right for me",
+            "Sexual compatibility must be tested",
+            "Everyone else is doing it"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Cultural immersion makes these feel like facts. Let's examine them critically."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Lies Examined",
+          "text": "**\"Waiting is repression\"** → No, it's delayed gratification,a mark of maturity. No one calls saving money \"financial repression.\" **\"You need experience\"** → Research shows couples who wait report higher sexual satisfaction. Learning together is bonding. **\"Porn is harmless\"** → It rewires the brain, creates unrealistic expectations, and correlates with relationship problems. **\"Consent is enough\"** → Consent doesn't prevent heartbreak, STIs, pregnancy, soul ties, or regret.",
+          "icon": "fact_check"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Fruits of Sexual \"Freedom\"",
+          "text": "The sexual revolution promised freedom. The results? • Record levels of loneliness and disconnection\n• 50% of marriages end in divorce\n• Epidemic of porn addiction\n• Rising rates of STIs\n• Widespread anxiety around relationships True freedom isn't doing whatever you want,it's having the power to do what's truly good.",
+          "icon": "trending_down"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Renewing Your Mind",
+          "text": "\"Do not conform to the pattern of this world, but be transformed by the renewing of your mind.\" ({red|Romans 12:2}) Transformation requires actively replacing lies with truth. This means:\n• Limiting exposure to false messages\n• Filling your mind with biblical truth\n• Finding community that reinforces godly standards\n• Questioning what culture presents as obvious",
+          "icon": "autorenew",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Truth to Replace Lies",
+          "text": "Identify one cultural lie about sex you've been believing, and write the biblical truth that replaces it: The lie I've believed: The truth from Scripture: One way I'll reinforce this truth:",
+          "responseType": "open-text",
+          "icon": "swap_horiz"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_vulnerability_patterns",
+      "isFree": false,
+      "title": "Knowing Your Vulnerability Patterns",
+      "subtitle": "Understanding when and why you're most tempted",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "shield",
+      "emotionalIntensity": "high",
+      "activityType": "exercise",
+      "whyThisMatters": "Temptation isn't random. It follows patterns tied to your emotions, circumstances, and history. Understanding your unique vulnerability map allows you to prepare rather than react.",
+      "frameworkBasis": {
+        "conceptKey": "vulnerability_awareness",
+        "explanation": "Self-knowledge is a weapon against temptation. The enemy exploits what you don't understand."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The HALT Framework",
+          "text": "You're most vulnerable when you're: **H**ungry, Physical needs unmet\n**A**ngry, Emotional turmoil seeking outlet\n**L**onely, Craving connection\n**T**ired, Defenses lowered Most sexual failures don't happen when you're strong and alert. They happen when you're depleted and desperate for comfort.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Emotional Triggers",
+          "text": "Which emotions make you most vulnerable to sexual temptation?",
+          "prompts": [
+            "Loneliness",
+            "Boredom",
+            "Stress or anxiety",
+            "Rejection or hurt",
+            "Anger or frustration",
+            "Celebration or excitement",
+            "Sadness or depression"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Sexual sin often masks emotional needs. Understanding the underlying need helps you address it appropriately."
+          },
+          "icon": "mood"
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Desire and Direction",
+          "text": "Think about moments when desire felt strongest and discipline felt hardest.\n\nWrite what you were longing for beneath the desire, connection, comfort, affirmation, or escape.\n\nThen write how you want your desires to serve your future, not control it.\nDiscipline becomes meaningful when it protects something you deeply value.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Situational Triggers",
+          "text": "Which situations or circumstances increase your vulnerability?",
+          "prompts": [
+            "Late night alone",
+            "After drinking alcohol",
+            "Traveling away from home",
+            "During relationship conflict",
+            "After a major win or achievement",
+            "When bored with nothing to do",
+            "Scrolling social media"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These situations require extra vigilance. Awareness allows you to create protective strategies."
+          },
+          "icon": "place"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Temptation Progression",
+          "text": "Temptation rarely starts at full intensity. It escalates: 1. **Trigger**, Emotion or situation arises\n2. **Thought**, Sexual thought enters mind\n3. **Fantasy**, Thought is entertained, dwelt upon\n4. **Justification**, \"Just this once,\" \"I deserve this\"\n5. **Action**, Physical behavior\n6. **Shame**, Guilt and hiding The earlier you intervene, the easier it is to stop.",
+          "icon": "stacked_line_chart"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "Your Warning Signs",
+          "text": "Think about past failures or near-failures. What were the early warning signs? Were you isolated? Spiritually dry? Emotionally depleted? In a specific place or situation? Recognizing these patterns transforms them from ambush zones into alert zones.",
+          "icon": "crisis_alert",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 7,
+          "title": "Your Vulnerability Map",
+          "text": "Complete your personal vulnerability profile: My most dangerous emotion:\nMy most dangerous situation:\nMy typical temptation progression:\nMy early warning signs:\nWhat I'm really seeking when tempted:",
+          "responseType": "open-text",
+          "icon": "map"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_boundaries",
+      "isFree": false,
+      "title": "Building Practical Boundaries",
+      "subtitle": "Creating guardrails before you need them",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "fence",
+      "emotionalIntensity": "moderate",
+      "activityType": "exercise",
+      "whyThisMatters": "Purity isn't maintained in the heat of the moment,it's maintained by decisions made in advance. Boundaries are decisions about what you will and won't do, established before temptation hits.",
+      "frameworkBasis": {
+        "conceptKey": "proactive_boundaries",
+        "explanation": "You can't make good decisions in the middle of temptation. Make them now."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Advance Decisions Matter",
+          "text": "\"Whoever has no rule over his own spirit is like a city broken down, without walls.\" ({red|Proverbs 25:28}) In the moment of temptation, your emotional brain overwhelms your rational brain. Willpower is limited. The only reliable defense is having already decided,and having structures that support that decision.",
+          "icon": "gpp_good"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Types of Boundaries",
+          "text": "**Physical boundaries**: What you won't do with your body\n• Where won't you be alone together?\n• What physical contact is off-limits?\n• What time will dates end? **Digital boundaries**: Protecting online behavior\n• What will you not view?\n• What apps won't you have?\n• What accountability software will you use? **Relational boundaries**: Protecting emotional purity\n• What conversations won't you have?\n• What level of intimacy matches your commitment?",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Physical Boundaries",
+          "text": "What physical boundaries will you maintain while dating? (Select what you believe honors God):",
+          "prompts": [
+            "No being alone in bedrooms",
+            "No horizontal cuddling",
+            "No spending the night together",
+            "Limit kissing to brief expressions",
+            "No touching under clothes",
+            "Dates end by a certain time",
+            "Always in public or group settings"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These boundaries protect you. The specific lines matter less than having clear ones you're committed to."
+          },
+          "icon": "accessibility_new"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Digital Boundaries",
+          "text": "{red|What digital boundaries will you implement?}",
+          "prompts": [
+            "No porn,period",
+            "Accountability software on devices",
+            "No following provocative accounts",
+            "Phone stays out of bedroom",
+            "No sexting or sending/receiving explicit images",
+            "Share passwords with accountability partner"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Digital temptation is constant and accessible. These barriers create friction that gives you time to choose wisely."
+          },
+          "icon": "phonelink_lock"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Principle Behind the Rules",
+          "text": "Boundaries aren't arbitrary rules,they're based on wisdom: **Escalation principle**: Physical intimacy wants to progress. Start where you want to stay. **Environment principle**: Private spaces increase risk. Stay public. **Time principle**: Late nights lower defenses. End early. **Accountability principle**: Secrecy enables sin. Stay visible.",
+          "icon": "insights"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Boundary Commitments",
+          "text": "Write out your specific boundary commitments: Physical boundaries I commit to: Digital boundaries I commit to: Situational boundaries (places/times): I will share these boundaries with:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_digital_purity",
+      "isFree": false,
+      "title": "Winning the Digital Battle",
+      "subtitle": "Practical strategies for online purity",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "computer",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Pornography is the most accessible and normalized temptation in human history. It rewires your brain, distorts your expectations, and damages your capacity for real intimacy. Winning this battle is essential for marital health.",
+      "frameworkBasis": {
+        "conceptKey": "digital_warfare",
+        "explanation": "The digital realm requires specific strategies. General willpower isn't enough against designed-to-addict content."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Porn Epidemic",
+          "text": "The stats are staggering: • Average age of first exposure: 11 years old\n• 70% of men and 30% of women report regular use\n• Porn sites get more traffic than Netflix, Amazon, and Twitter combined This isn't normal, even if it's normalized. Pornography is training your brain to prefer fantasy over reality, isolation over intimacy.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Porn Does to Your Brain",
+          "text": "Pornography: • Floods your brain with dopamine (the reward chemical)\n• Creates tolerance,needing more extreme content for the same effect\n• Associates arousal with isolation instead of connection\n• Distorts expectations of sex and bodies\n• Reduces ability to be aroused by a real partner This isn't moral panic,it's neuroscience. Your brain is being rewired.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Digital Struggles",
+          "text": "Where do you most struggle with digital temptation? (This is confidential,be honest):",
+          "prompts": [
+            "Traditional porn sites",
+            "Social media (suggestive content)",
+            "Dating apps",
+            "Late night phone scrolling",
+            "Explicit messaging/sexting",
+            "Streaming services (explicit scenes)",
+            "I don't struggle in this area"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Identifying specific vulnerabilities allows targeted solutions."
+          },
+          "icon": "devices"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Practical Digital Defenses",
+          "text": "Create friction and accountability: **Filters**: Covenant Eyes, Bark, Net Nanny\n**Phone settings**: Screen time limits, disable Safari\n**Physical**: Charge phone outside bedroom, no devices after 10pm\n**Apps**: Delete or restrict problematic apps\n**Accountability**: Real person who asks real questions The goal: make giving in harder than staying pure.",
+          "icon": "build"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "When Temptation Hits",
+          "text": "Have a plan for the moment: 1. **Recognize**, \"This is temptation, not need\"\n2. **Redirect**, Get up, change locations, call someone\n3. **Replace**, Do something else: exercise, pray, read\n4. **Report**, Text your accountability partner: \"Had a close call\" \"No temptation has overtaken you except what is common to mankind. God is faithful; he will not let you be tempted beyond what you can bear.\" ({red|1 Corinthians 10:13})",
+          "icon": "directions"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Digital Defense Plan",
+          "text": "Commit to specific digital defenses: 1. I will install this accountability software:\n2. I will remove or restrict these apps:\n3. My phone will charge in this room:\n4. My accountability partner is:\n5. When tempted, I will:",
+          "responseType": "open-text",
+          "icon": "checklist"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_accountability",
+      "isFree": false,
+      "title": "The Power of Accountability",
+      "subtitle": "Building support systems that actually work",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "group",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Shame thrives in secrecy. Sin gains power in isolation. True accountability,not surface-level checking in,is essential for lasting purity. You need people who know your real struggles.",
+      "frameworkBasis": {
+        "conceptKey": "authentic_accountability",
+        "explanation": "We were not designed to fight alone. Authentic community is a weapon against temptation."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Accountability Is Essential",
+          "text": "\"Therefore confess your sins to each other and pray for each other so that you may be healed.\" ({red|James 5:16}) \"Two are better than one. If either of them falls down, one can help the other up. But pity anyone who falls and has no one to help them up!\" ({red|Ecclesiastes 4:9-10}) Accountability isn't optional for serious Christians. It's biblical architecture for transformation.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Fake vs. Real Accountability",
+          "text": "**Fake accountability**:\n• \"How's your purity?\" \"Fine.\"\n• Surface-level check-ins\n• Easy to lie or minimize\n• Infrequent and forgettable **Real accountability**:\n• Specific questions about specific struggles\n• Regular, scheduled conversations\n• Permission to probe and challenge\n• Complete honesty, including failures\n• Receives both confrontation and grace",
+          "icon": "compare"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Current Accountability",
+          "text": "{red|How would you describe your current level of accountability?}",
+          "prompts": [
+            "I have no accountability partner",
+            "I have someone but we don't talk about this",
+            "I have surface-level accountability",
+            "I have one person who knows my real struggles",
+            "I have deep accountability with multiple people"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are, there's room to grow. Effective accountability takes intentional building."
+          },
+          "icon": "assessment"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Choosing an Accountability Partner",
+          "text": "Look for someone who: • Shares your faith and values\n• Is the same gender\n• Has demonstrated trustworthiness\n• Will ask hard questions, not just listen\n• Offers both grace and truth\n• Is available regularly This person doesn't need to be perfect,they need to be committed, honest, and safe.",
+          "icon": "person_search"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Questions That Actually Work",
+          "text": "Effective accountability asks specific questions: • \"Have you looked at anything you shouldn't this week?\"\n• \"Have you been completely honest with me?\"\n• \"What situations put you at risk this week?\"\n• \"How is your thought life?\"\n• \"What do you need prayer for?\"\n• \"Is there anything you're hiding?\" General questions get general (often dishonest) answers.",
+          "icon": "help"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Building Your Accountability",
+          "text": "Take action on accountability: 1. Who will I ask to be my accountability partner?\n2. When will I ask them (specific date)?\n3. How often will we check in?\n4. What questions do I want them to ask me?\n5. What will I commit to sharing honestly?",
+          "responseType": "open-text",
+          "icon": "handshake"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_spiritual_disciplines",
+      "isFree": false,
+      "title": "Spiritual Disciplines for Purity",
+      "subtitle": "Building strength through spiritual practices",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "fitness_center",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "Purity isn't primarily about stopping bad behaviors,it's about cultivating a heart that desires God more than sin. Spiritual disciplines build the inner strength that makes purity sustainable.",
+      "frameworkBasis": {
+        "conceptKey": "spiritual_strength",
+        "explanation": "You cannot white-knuckle your way to purity. You need spiritual power that comes from regular communion with God."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Role of Spiritual Disciplines",
+          "text": "\"Walk by the Spirit, and you will not gratify the desires of the flesh.\" ({red|Galatians 5:16}) Purity isn't achieved through willpower alone,it comes from Spirit-empowered living. Spiritual disciplines position you to receive that power. They're not magic formulas; they're channels of grace.",
+          "icon": "self_improvement"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Scripture for Sexual Purity",
+          "text": "\"I have hidden your word in my heart that I might not sin against you.\" ({red|Psalm 119:11}) Regular Scripture intake:\n• Renews your mind with truth\n• Provides ammunition against lies\n• Reminds you of God's purposes\n• Builds desire for holiness This isn't legalistic duty,it's strategic warfare. Fill your mind with truth so lies have less room.",
+          "icon": "auto_stories"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Prayer in the Battle",
+          "text": "Prayer provides: **Immediate help**: \"Lord, I'm being tempted. Help me right now.\" **Proactive strength**: Daily asking for power to resist **Heart examination**: \"Search me, God. See if there is any offensive way in me\" ({red|Psalm 139:23-24}) **Victory declaration**: Praying Scripture over your sexuality Make prayer your first response to temptation, not your last resort.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Current Spiritual Practices",
+          "text": "{red|How would you describe your current spiritual disciplines?}",
+          "prompts": [
+            "Inconsistent or nonexistent",
+            "Occasional but not regular",
+            "Regular but feeling stale",
+            "Consistent and life-giving",
+            "Strong foundation I can build on"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Your spiritual health directly impacts your purity journey. Let's strengthen this foundation."
+          },
+          "icon": "assessment"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Fasting and Self-Denial",
+          "text": "Fasting trains your body to submit to your spirit: \"I discipline my body and keep it under control\" ({red|1 Corinthians 9:27|I discipline my body and keep it under control}) When you say no to food (or screens, or comfort), you build the muscle of self-control. Fasting reminds you that you are not controlled by your appetites,physical or sexual.",
+          "icon": "restaurant"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Spiritual Battle Plan",
+          "text": "Commit to specific spiritual disciplines that support purity: 1. Scripture: I will read _____ daily at _____\n2. Prayer: I will pray for purity when _____\n3. Fasting: I will fast from _____ weekly/monthly\n4. Worship: I will _____ to fill my heart with God\n5. One verse I'll memorize for moments of temptation:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_dating_purity",
+      "isFree": false,
+      "title": "Purity in Dating Relationships",
+      "subtitle": "Maintaining boundaries when feelings are strong",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Purity is harder when you're actually attracted to someone and in a relationship. The boundaries that seem clear in theory get fuzzy when emotions are involved. You need a plan for real dating scenarios.",
+      "frameworkBasis": {
+        "conceptKey": "relational_purity",
+        "explanation": "Most sexual compromise happens in dating relationships, not random encounters. This is where the battle is won or lost."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Dating Purity Challenge",
+          "text": "Dating creates unique pressures: • Growing emotional connection wants physical expression\n• Private time together increases opportunity\n• \"We're committed\" justifies more intimacy\n• Physical chemistry escalates naturally\n• Cultural norms assume sexual activity Without intentional boundaries, couples drift toward compromise.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Having THE Conversation",
+          "text": "Early in dating, discuss: • \"What are your physical boundaries?\"\n• \"How do you want to handle this together?\"\n• \"What accountability do you have?\"\n• \"What situations should we avoid?\" This conversation should happen before strong feelings cloud judgment,ideally in the first few dates. If someone is unwilling to discuss or dismisses your boundaries, that's important information.",
+          "icon": "forum"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Relationship Boundaries",
+          "text": "Which boundaries will you maintain in a dating relationship?",
+          "prompts": [
+            "No being alone in each other's homes",
+            "Physical cutoff point clearly defined",
+            "Check-ins with mentor or accountability partner",
+            "Date in public places",
+            "Avoid late-night alone time",
+            "Both partners empowered to call timeout"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Having these decided in advance,and communicated clearly,protects both of you."
+          },
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "When Things Heat Up",
+          "text": "In the moment, have an exit plan: 1. **The code word**: Agree on a word that means \"we need to stop\"\n2. **The redirect**: \"Let's go get coffee\", change the environment\n3. **The honest check**: \"Where are we headed? Is this honoring God?\"\n4. **The exit**: Sometimes you just need to leave Honoring each other means protecting each other from regret.",
+          "icon": "exit_to_app"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Leading with Integrity",
+          "text": "Whoever is more committed to purity should set the pace: • Don't push boundaries hoping they'll stop you\n• Don't blame the other person for going too far\n• Take responsibility for your own hands, eyes, and actions\n• View protecting their purity as an act of love \"It is God's will that you should be sanctified: that you should avoid sexual immorality; that each of you should learn to control your own body in a way that is holy and honorable.\" ({red|1 Thessalonians 4:3-4})",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Dating Purity Plan",
+          "text": "Write out your plan for maintaining purity in a dating relationship: 1. How I'll communicate boundaries to a partner:\n2. Specific situations I'll avoid:\n3. My \"heat of the moment\" exit strategy:\n4. How I'll involve accountability:\n5. What I want to be able to say on my wedding day:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_thought_life",
+      "isFree": false,
+      "title": "Guarding Your Thought Life",
+      "subtitle": "Winning the battle in your mind",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Sexual sin begins in the mind before it ever reaches the body. Lustful thoughts, fantasies, and mental rehearsal all undermine purity. Guarding your thought life is essential to lasting change.",
+      "frameworkBasis": {
+        "conceptKey": "mental_purity",
+        "explanation": "The battlefield is the mind. What you allow yourself to think shapes what you eventually do."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Thought-Action Connection",
+          "text": "Jesus raised the bar: \"You have heard that it was said, 'You shall not commit adultery.' But I tell you that anyone who looks at a woman lustfully has already committed adultery with her in his heart.\" ({red|Matthew 5:27-28}) God cares about your thought life, not just your behavior. And practically, what you rehearse in your mind you eventually perform with your body.",
+          "icon": "link"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Noticing vs. Lusting",
+          "text": "There's a difference: **Noticing**: Involuntary recognition of attractiveness. Not sin. **The second look**: Deliberate return of attention. Danger zone. **Lusting**: Entertaining sexual thoughts, fantasizing, mentally undressing. Sin. You can't always control the first thought. You can control whether you entertain it.",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Mental Struggles",
+          "text": "{red|Where do you most struggle with your thought life?}",
+          "prompts": [
+            "Fantasy about real people I know",
+            "Fantasy about fictional scenarios",
+            "Replaying sexual memories",
+            "Mental rehearsal of what I'd like to do",
+            "Lustful thoughts triggered by media",
+            "Difficulty controlling the second look"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These struggles are common but not inevitable. The mind can be renewed and retrained."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Thought Capture Strategy",
+          "text": "\"We take captive every thought to make it obedient to Christ.\" ({red|2 Corinthians 10:5}) The strategy: 1. **Recognize**: \"That's a lustful thought\"\n2. **Refuse**: \"I will not entertain this\"\n3. **Replace**: Immediately think about something else\n4. **Repeat**: This gets easier with practice You can't just empty your mind,you must fill it with something else.",
+          "icon": "catching_pokemon"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Starving Your Thought Life",
+          "text": "Thoughts don't appear from nowhere. They're fed by: • What you watch and listen to\n• Where you allow your eyes to linger\n• What you scroll through late at night\n• The fantasies you've allowed to develop Starve lustful thoughts by cutting off their food supply. Be ruthless about inputs.",
+          "icon": "no_meals"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Thought Life Plan",
+          "text": "Commit to specific strategies for guarding your mind: 1. A replacement thought for when lustful thoughts come:\n2. Inputs I need to eliminate or reduce:\n3. A verse I'll quote when tempted:\n4. How I'll practice the \"thought capture\" strategy:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_grace_recovery",
+      "isFree": false,
+      "title": "Grace After Failure",
+      "subtitle": "Receiving forgiveness and getting back up",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "replay",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Everyone stumbles. The question is: will failure lead to shame spirals and giving up, or will it lead to grace, growth, and renewed commitment? How you respond to failure determines your long-term trajectory.",
+      "frameworkBasis": {
+        "conceptKey": "grace_and_restoration",
+        "explanation": "Christianity is not about perfection,it's about receiving grace, repenting, and getting back up again."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Truth About Failure",
+          "text": "If you struggle with sexual sin, you are not:\n• Too far gone\n• Uniquely broken\n• Disqualified from good relationships\n• Unlovable to God \"If we confess our sins, he is faithful and just and will forgive us our sins and purify us from all unrighteousness.\" ({red|1 John 1:9}) Failure is not final. It's an opportunity for grace.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Shame vs. Conviction",
+          "text": "**Shame** says: \"You ARE bad. You're hopeless. Why even try?\"\n→ Leads to hiding, giving up, spiraling **Conviction** says: \"You DID something wrong. Bring it to God. Try again.\"\n→ Leads to confession, grace, growth The enemy uses shame to keep you stuck. The Spirit uses conviction to move you forward. Learn to tell the difference.",
+          "icon": "contrast"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Response to Failure",
+          "text": "{red|When you fail sexually, what is your typical response?}",
+          "prompts": [
+            "Overwhelming shame and self-hatred",
+            "\"I've already messed up,might as well keep going\"",
+            "Hide it and pretend it didn't happen",
+            "Confess to God but not tell anyone",
+            "Confess and seek accountability",
+            "Learn from it and adjust boundaries"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Your response pattern either reinforces the cycle or breaks it. Let's build a healthier response."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Recovery Protocol",
+          "text": "When you fail: 1. **Confess immediately**, Don't wait. Go to God now.\n2. **Receive forgiveness**, Don't wallow. Accept His grace.\n3. **Tell someone**, Within 24 hours, confess to your accountability partner.\n4. **Examine what happened**, What led to this? Where did boundaries fail?\n5. **Adjust and recommit**, What will you do differently?\n6. **Move forward**, Don't let one failure define your journey.",
+          "icon": "assignment"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Breaking the Shame Cycle",
+          "text": "The shame spiral:\nFail → Shame → Isolate → Feel worse → Seek comfort → Fail again The grace cycle:\nFail → Convict → Confess → Receive grace → Reconnect → Grow stronger The difference? Bringing failure into the light instead of hiding in darkness.",
+          "icon": "loop",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Recovery Commitment",
+          "text": "Write out your commitment for when (not if) you stumble: 1. I will confess to God immediately by.\n2. I will tell this person within 24 hours:\n3. I will not let shame tell me these lies:\n4. I will remember this truth about God's grace:\n5. I will get back up because.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_marriage_preparation",
+      "isFree": false,
+      "title": "Preparing for Marital Intimacy",
+      "subtitle": "How purity now sets you up for great sex later",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "celebration",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "The goal of purity isn't just to avoid sin,it's to prepare for flourishing. Your choices now directly impact your future sexual relationship in marriage. Purity is an investment, not just a restriction.",
+      "frameworkBasis": {
+        "conceptKey": "future_focused",
+        "explanation": "Every choice to honor God with your sexuality now is a gift to your future spouse and marriage."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Purity as Investment",
+          "text": "What you're building now: • **Trust**, Your spouse will know you can be faithful\n• **Self-control**, The ability to direct desire appropriately\n• **Clean conscience**, No comparisons or regrets\n• **Undivided heart**, No soul ties from previous partners\n• **Healthy expectations**, Not warped by porn or multiple partners Purity isn't deprivation,it's preparation.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Research Shows",
+          "text": "Studies consistently find: • Couples who wait report higher sexual satisfaction in marriage\n• Fewer sexual partners before marriage correlates with marital stability\n• Porn use correlates with lower relationship and sexual satisfaction\n• Couples who discuss sex openly have better intimacy The world's approach promises satisfaction but delivers the opposite. God's design actually works.",
+          "icon": "science"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Breaking Porn's Grip",
+          "text": "If you've struggled with pornography, know that: • Your brain can be rewired with time and abstinence\n• Real intimacy is better than artificial stimulation\n• Your future spouse deserves your full attention\n• Confession and healing are possible The work you do now to break free will pay dividends in your marriage bed.",
+          "icon": "healing"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "The Wedding Night Vision",
+          "text": "Imagine your wedding night. You want to bring:\n• A heart full of anticipation, not shame\n• Eyes trained to see only your spouse\n• A body you've honored and protected\n• No comparisons to previous partners\n• Freedom, not baggage Every choice for purity now moves you toward this vision.",
+          "icon": "bedtime",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "What You Want to Give",
+          "text": "{red|What do you most want to be able to offer your future spouse regarding your sexuality?}",
+          "prompts": [
+            "A history of faithfulness",
+            "Freedom from porn addiction",
+            "No sexual comparisons to others",
+            "Self-control and patience",
+            "Open communication about intimacy",
+            "A clean conscience before God"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These gifts are built through daily choices. The person you're becoming now is who you'll bring to marriage."
+          },
+          "icon": "card_giftcard"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Purity Declaration",
+          "text": "Write a declaration of your commitment to purity and its purpose: \"I commit to sexual purity because. The person I want to become is. What I want to give my future spouse is. With God's help, I will.\"",
+          "responseType": "open-text",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "heroImage": "assets/images/journeys/Singles_journey18.jpg"
+}

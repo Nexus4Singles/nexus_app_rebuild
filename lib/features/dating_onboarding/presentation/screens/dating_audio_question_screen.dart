@@ -214,24 +214,30 @@ class _DatingAudioQuestionScreenState
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 19),
-                      child: _CircleIconButton(
-                        icon: Icons.restart_alt_rounded,
-                        label: 'Restart',
-                        onTap: _busy ? null : _restart,
-                      ),
+                    // Left control (Restart)
+                    _CircleIconButton(
+                      icon: Icons.restart_alt_rounded,
+                      label: 'Restart',
+                      onTap: _busy ? null : _restart,
                     ),
-                    const SizedBox(width: 20),
+
+                    // Even spacing so the central record button sits exactly
+                    // in the horizontal center of the screen.
+                    const SizedBox(width: 36),
+
+                    // Central record control
                     _RecordButton(
                       isRecording: _isRecording,
                       isPaused: _isPaused,
                       canStop: _isRecording && _elapsed >= _minSeconds,
                       onTap: _busy || _hasRecording ? null : _toggleRecord,
                     ),
-                    const SizedBox(width: 20),
+
+                    const SizedBox(width: 36),
+
+                    // Right control (Play)
                     _PlayButton(
                       isPlaying: _isPlaying,
                       hasRecording: _hasRecording,
@@ -441,7 +447,7 @@ class _DatingAudioQuestionScreenState
     } catch (_) {}
   }
 
-  Future<void> _stop() async {
+  Future<void> _stop({bool validate = true}) async {
     int finalSize = 0;
     String? recordedPath;
     try {
@@ -477,24 +483,33 @@ class _DatingAudioQuestionScreenState
       _playbackPosition = 0;
     });
 
-    // Only save if minimum duration met and file is not tiny
-    if (_recordedDuration >= _minSeconds && finalSize > 2048) {
-      setState(() => _hasRecording = true);
-      _saveDraftPath();
+    // Only save if minimum duration met and file is not tiny.
+    // If `validate` is false (we're stopping because the user requested a restart),
+    // skip validation and do not show any toast or re-enter restart flow.
+    if (validate) {
+      if (_recordedDuration >= _minSeconds && finalSize > 2048) {
+        setState(() => _hasRecording = true);
+        _saveDraftPath();
+      } else {
+        final reason =
+            finalSize <= 2048
+                ? 'No audio was captured (file too small). On iOS simulators the mic may be unavailable.'
+                : 'Recording must be at least ${_minSeconds}s long (actual: ${_recordedDuration}s)';
+        _toast(reason);
+        await _restart();
+      }
     } else {
-      final reason =
-          finalSize <= 2048
-              ? 'No audio was captured (file too small). On iOS simulators the mic may be unavailable.'
-              : 'Recording must be at least ${_minSeconds}s long (actual: ${_recordedDuration}s)';
-      _toast(reason);
-      await _restart();
+      // When not validating (user-initiated restart), ensure we don't persist
+      // any incomplete recording and silently return so `_restart` can clear state.
+      // Do not call `_saveDraftPath` or show toasts here.
     }
   }
 
   Future<void> _restart() async {
     HapticFeedback.mediumImpact();
     if (_isRecording) {
-      await _stop();
+      // Stop recording silently for a restart (don't validate or show messages)
+      await _stop(validate: false);
     }
 
     // Stop playback when restarting

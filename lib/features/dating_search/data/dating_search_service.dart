@@ -670,24 +670,28 @@ class DatingSearchService {
       }
     }
 
-    // Sort combined profiles by creation date (most recent first)
-    // Three-tier sort:
-    // 1. Profiles WITH valid createdAt (v2 + v1 with recent dates), sorted newest first
-    // 2. Profiles WITHOUT createdAt (old v1 legacy), appear last
+    // Sort combined profiles by three tiers:
+    // 1. V2 profiles (schemaVersion >= 2) with valid createdAt, sorted newest first
+    // 2. V1 profiles (schemaVersion < 2) WITH valid createdAt, sorted newest first
+    // 3. V1 profiles WITHOUT createdAt (epoch = 0), appear last
     // Done in-memory instead of at Firestore level to avoid composite index requirement
     final sortedProfiles =
         combined.values.toList()..sort((a, b) {
-          // Check if each profile has a valid (non-epoch) creation date
+          // Tier 1: V2 (2+) comes before V1 (1)
+          final aIsV2 = a.schemaVersion >= 2;
+          final bIsV2 = b.schemaVersion >= 2;
+          if (aIsV2 && !bIsV2) return -1; // a is v2, b is v1 -> a first
+          if (!aIsV2 && bIsV2) return 1; // a is v1, b is v2 -> b first
+
+          // Tier 2: Within same version, profiles with dates before profiles without dates
           final aIsEpoch = a.createdAt.millisecondsSinceEpoch == 0;
           final bIsEpoch = b.createdAt.millisecondsSinceEpoch == 0;
-
-          // If one has a real date and the other is epoch, the one with a date comes first
           if (aIsEpoch && !bIsEpoch)
-            return 1; // a is old v1, b has date -> b first
+            return 1; // a has no date, b has date -> b first
           if (!aIsEpoch && bIsEpoch)
-            return -1; // a has date, b is old v1 -> a first
+            return -1; // a has date, b has no date -> a first
 
-          // If both have dates or both are epoch, sort by date descending (newest first)
+          // Tier 3: Sort by date descending (newest first)
           return b.createdAt.compareTo(a.createdAt);
         });
 

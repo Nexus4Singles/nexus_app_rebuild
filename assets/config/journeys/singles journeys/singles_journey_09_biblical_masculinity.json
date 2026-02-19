@@ -53,7 +53,7 @@
           "cardType": "question",
           "cardNumber": 1,
           "title": "Messages About Manhood",
-          "text": "Masculinity today is often defined by extremes, domination on one side, passivity on the other.\nBiblical masculinity offers a quieter, stronger path rooted in responsibility, restraint, courage, and love.\n\nIf you have ever felt confused about what it means to be a man of faith in today’s world, this journey will help you build clarity without shame or posturing.\n\n{red|What messages have you received about what it means to be a man?}",
+          "text": "Masculinity today is often defined by extremes, domination on one side, passivity on the other.\n\nBiblical masculinity offers a quieter, stronger path rooted in responsibility, restraint, courage, and love.\n\nIf you have ever felt confused about what it means to be a man of faith in today's world, this journey will help you build clarity without shame or posturing.\n\nWhat messages have you received about what it means to be a man?",
           "prompts": [
             "Men should be tough and never show weakness",
             "Masculinity is toxic and harmful",
@@ -73,7 +73,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Two Ditches to Avoid",
-          "text": "Culture offers two distortions: **Hyper-masculinity**: Aggression, dominance, emotional suppression. Strength without tenderness. **Emasculation**: Passivity, weakness, abdication. Tenderness without strength. Biblical masculinity integrates strength AND gentleness, courage AND compassion.",
+          "text": "Culture offers two distortions: Hyper-masculinity: Aggression, dominance, emotional suppression.\n\nStrength without tenderness.\n\n**Emasculation: Passivity, weakness, abdication.**\n\nTenderness without strength.\n\nBiblical masculinity integrates strength AND gentleness, courage AND compassion.",
           "icon": "compare"
         },
         {
@@ -81,7 +81,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "The Crisis Is Real",
-          "text": "Statistics reveal a masculinity crisis: fatherlessness affects millions, male suicide rates are 4x higher than female, young men are increasingly disconnected. Something has gone wrong. Men need a better vision.",
+          "text": "Statistics reveal a masculinity crisis: fatherlessness affects millions, male suicide rates are 4x higher than female, young men are increasingly disconnected.\n\nSomething has gone wrong.\n\nMen need a better vision.",
           "icon": "trending_down"
         },
         {
@@ -97,7 +97,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Own Journey",
-          "text": "Did you have a model of healthy masculinity? Did your father teach you what it means to be a man? Have you been wounded by toxic masculinity or by the absence of masculine presence? Your history shapes your understanding,but God's design can reshape it.",
+          "text": "Did you have a model of healthy masculinity? Did your father teach you what it means to be a man? Have you been wounded by toxic masculinity or by the absence of masculine presence? Your history shapes your understanding, but God's design can reshape it.",
           "icon": "self_improvement",
           "responseType": "open-text"
         },
@@ -135,7 +135,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Male and Female He Created Them",
-          "text": "\"So God created mankind in his own image, in the image of God he created them; male and female he created them.\" ({red|Genesis 1:27}) God intentionally created two sexes,not interchangeable, but complementary. Masculinity is part of bearing God's image.",
+          "text": "\"So God created mankind in his own image, in the image of God he created them; male and female he created them.\" (Genesis 1:27) God intentionally created two sexes, not interchangeable, but complementary.\n\nMasculinity is part of bearing God's image.",
           "icon": "menu_book"
         },
         {
@@ -151,7 +151,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Designed for Partnership",
-          "text": "\"It is not good for the man to be alone.\" ({red|Genesis 2:18|It is not good for the man to be alone.}) Man was designed for partnership,with God and with a wife. Biblical masculinity isn't independence but interdependence.",
+          "text": "\"It is not good for the man to be alone.\" (Genesis 2:18) Man was designed for partnership, with God and with a wife.\n\nBiblical masculinity isn't independence but interdependence.",
           "icon": "people"
         },
         {
@@ -179,7 +179,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Masculinity Affirmed",
-          "text": "God's verdict on His creation: \"very good.\" You don't need to apologize for being male. Your masculinity,properly understood and expressed,is a gift to the world.",
+          "text": "God's verdict on\n\nHis creation: \"very good.\" You don't need to apologize for being male.\n\nYour masculinity, properly understood and expressed, is a gift to the world.",
           "icon": "verified"
         },
         {
@@ -216,7 +216,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Strength and Tenderness",
-          "text": "Jesus combined qualities often seen as contradictory: Strong enough to overturn tables, tender enough to weep. Bold enough to confront leaders, gentle enough to bless children. Courageous enough to face crucifixion, humble enough to wash feet.",
+          "text": "Jesus combined qualities often seen as contradictory: Strong enough to overturn tables, tender enough to weep.\n\nBold enough to confront leaders, gentle enough to bless children.\n\nCourageous enough to face crucifixion, humble enough to wash feet.",
           "icon": "balance"
         },
         {
@@ -224,7 +224,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Led Through Service",
-          "text": "\"The Son of Man did not come to be served, but to serve.\" ({red|Mark 10:45}) Jesus redefined leadership. Not domination but sacrifice. Biblical masculinity leads downward,toward service.",
+          "text": "\"The Son of Man did not come to be served, but to serve.\" (Mark 10:45) Jesus redefined leadership.\n\nNot domination but sacrifice.\n\nBiblical masculinity leads downward, toward service.",
           "icon": "volunteer_activism"
         },
         {
@@ -232,7 +232,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Strength That Serves",
-          "text": "Think about a man you respect deeply.\n\n{red|What makes his strength feel safe, steady, and trustworthy?}\n\nWrite a few lines about how responsibility, self-control, and humility show up in his life.\nThen reflect on one way you want to embody that kind of strength more consistently.",
+          "text": "Think about a man you respect deeply.\n\nWhat makes his strength feel safe, steady, and trustworthy?\n\nWrite a few lines about how responsibility, self-control, and humility show up in his life.\n\nThen reflect on one way you want to embody that kind of strength more consistently.",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -241,7 +241,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Showed Emotion",
-          "text": "Jesus wept, felt anger, experienced compassion, knew sorrow. Emotional expression isn't weakness,it's humanity. Jesus models emotional authenticity.",
+          "text": "Jesus wept, felt anger, experienced compassion, knew sorrow.\n\nEmotional expression isn't weakness, it's humanity.\n\nJesus models emotional authenticity.",
           "icon": "mood"
         },
         {
@@ -269,7 +269,7 @@
           "cardType": "teaching",
           "cardNumber": 6,
           "title": "Following the Master",
-          "text": "\"Follow me.\" ({red|Matthew 4:19}) Jesus invites you to follow. You're not left with abstract principles. You have a Person to follow, a Spirit to empower you.",
+          "text": "\"Follow me.\" (Matthew 4:19) Jesus invites you to follow.\n\nYou're not left with abstract principles.\n\nYou have a Person to follow, a Spirit to empower you.",
           "icon": "directions"
         },
         {
@@ -306,7 +306,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Call to Provide",
-          "text": "\"Anyone who does not provide for their relatives has denied the faith.\" ({red|1 Timothy 5:8}) Provision isn't about ego,it's about responsibility. Men are called to work diligently and ensure their families have what they need.",
+          "text": "\"Anyone who does not provide for their relatives has denied the faith.\" (1 Timothy 5:8) Provision isn't about ego, it's about responsibility.\n\nMen are called to work diligently and ensure their families have what they need.",
           "icon": "work"
         },
         {
@@ -314,7 +314,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "The Call to Protect",
-          "text": "\"Husbands, love your wives, just as Christ loved the church and gave himself up for her.\" ({red|Ephesians 5:25}) Protection means creating safety,physical, emotional, and spiritual. Standing between your family and danger.",
+          "text": "\"Husbands, love your wives, just as Christ loved the church and gave himself up for her.\" (Ephesians 5:25) Protection means creating safety, physical, emotional, and spiritual.\n\nStanding between your family and danger.",
           "icon": "security"
         },
         {
@@ -322,7 +322,7 @@
           "cardType": "question",
           "cardNumber": 3,
           "title": "Preparing to Provide",
-          "text": "{red|How are you preparing to provide for a future family?}",
+          "text": "How are you preparing to provide for a future family?",
           "prompts": [
             "Developing career skills",
             "Building financial stability",
@@ -342,7 +342,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "What Protection Looks Like",
-          "text": "Protection today includes: Physical safety, Emotional security, Spiritual leadership, Digital protection. Protection is active care, not passive presence.",
+          "text": "Protection today includes: Physical safety, Emotional security, Spiritual leadership, Digital protection.\n\nProtection is active care, not passive presence.",
           "icon": "gpp_good"
         },
         {
@@ -350,7 +350,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Service, Not Domination",
-          "text": "Provision and protection are SERVING roles, not dominating ones. A provider works for his family's benefit, not his ego. These roles are other-focused.",
+          "text": "Provision and protection are SERVING roles, not dominating ones. A provider works for his family's benefit, not his ego.\n\nThese roles are other-focused.",
           "icon": "volunteer_activism"
         },
         {
@@ -387,7 +387,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Lie About Emotions",
-          "text": "Many men learned: 'Boys don't cry,' 'Man up,' 'Don't be emotional.' The result: Men who can't identify or express feelings. This isn't strength,it's disability.",
+          "text": "Many men learned: 'Boys don't cry,' 'Man up,' 'Don't be emotional.' The result: Men who can't identify or express feelings.\n\nThis isn't strength, it's disability.",
           "icon": "block"
         },
         {
@@ -395,7 +395,7 @@
           "cardType": "question",
           "cardNumber": 2,
           "title": "Your Emotional Patterns",
-          "text": "{red|How do you typically handle emotions?}",
+          "text": "How do you typically handle emotions?",
           "prompts": [
             "I suppress them",
             "I only express anger",
@@ -415,7 +415,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "What Emotional Strength Is",
-          "text": "True emotional strength: Feels emotions fully, Identifies what you're feeling, Expresses appropriately, Processes difficult emotions, Connects emotionally with others. This requires more courage than stuffing everything down.",
+          "text": "True emotional strength: Feels emotions fully, Identifies what you're feeling, Expresses appropriately, Processes difficult emotions, Connects emotionally with others.\n\nThis requires more courage than stuffing everything down.",
           "icon": "fitness_center"
         },
         {
@@ -423,7 +423,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Why Your Wife Will Need This",
-          "text": "Your future wife needs emotional connection with you,to know what you're feeling, to see your vulnerability. Emotionally unavailable husbands create lonely wives.",
+          "text": "Your future wife needs emotional connection with you, to know what you're feeling, to see your vulnerability.\n\nEmotionally unavailable husbands create lonely wives.",
           "icon": "favorite"
         },
         {
@@ -468,7 +468,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Foundation of Leadership",
-          "text": "\"Whoever has no rule over his own spirit is like a city broken down, without walls.\" ({red|Proverbs 25:28}) A man who can't manage himself has no business managing others.",
+          "text": "\"Whoever has no rule over his own spirit is like a city broken down, without walls.\" (Proverbs 25:28) A man who can't manage himself has no business managing others.",
           "icon": "foundation"
         },
         {
@@ -476,7 +476,7 @@
           "cardType": "question",
           "cardNumber": 2,
           "title": "Self-Leadership Assessment",
-          "text": "{red|How would you rate your self-leadership?}",
+          "text": "How would you rate your self-leadership?",
           "prompts": [
             "Managing time well",
             "Controlling impulses",
@@ -505,7 +505,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Discipline Equals Freedom",
-          "text": "Discipline isn't restriction,it's freedom. The disciplined man has health, options, margin, integrity. Undisciplined men are slaves to impulses.",
+          "text": "Discipline isn't restriction, it's freedom.\n\nThe disciplined man has health, options, margin, integrity.\n\nUndisciplined men are slaves to impulses.",
           "icon": "lock_open"
         },
         {
@@ -550,7 +550,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Work Before the Fall",
-          "text": "\"The Lord God put him in the Garden to work it.\" ({red|Genesis 2:15|The Lord God put him in the Garden to work it.}) Work existed before sin. Men are designed to create, build, produce, and steward.",
+          "text": "\"The Lord God put him in the Garden to work it.\" (Genesis 2:15) Work existed before sin.\n\nMen are designed to create, build, produce, and steward.",
           "icon": "eco"
         },
         {
@@ -558,7 +558,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Work as Worship",
-          "text": "\"Whatever you do, work at it with all your heart, as working for the Lord.\" ({red|Colossians 3:23}) Your work can be worship. Excellence honors God.",
+          "text": "\"Whatever you do, work at it with all your heart, as working for the Lord.\" (Colossians 3:23) Your work can be worship.\n\nExcellence honors God.",
           "icon": "church"
         },
         {
@@ -566,7 +566,7 @@
           "cardType": "question",
           "cardNumber": 3,
           "title": "Your Work Attitude",
-          "text": "{red|How would you describe your relationship with work?}",
+          "text": "How would you describe your relationship with work?",
           "prompts": [
             "I work hard and find meaning",
             "I do the minimum",
@@ -586,7 +586,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "The Danger of Idleness",
-          "text": "\"Lazy hands make for poverty, but diligent hands bring wealth.\" ({red|Proverbs 10:4}) Men without purpose drift. You were designed to produce, not merely consume.",
+          "text": "\"Lazy hands make for poverty, but diligent hands bring wealth.\" (Proverbs 10:4) Men without purpose drift.\n\nYou were designed to produce, not merely consume.",
           "icon": "warning"
         },
         {
@@ -594,7 +594,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Work-Life Integration",
-          "text": "Work hard, but don't worship work. Provide, but don't neglect presence. Your family needs your provision AND your presence.",
+          "text": "Work hard, but don't worship work.\n\nProvide, but don't neglect presence.\n\nYour family needs your provision AND your presence.",
           "icon": "balance"
         },
         {
@@ -631,7 +631,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Power of Male Sexuality",
-          "text": "Male sexual drive is God-designed, powerful, visual, and easily misdirected. The goal isn't to eliminate your drive but to channel it toward its designed purpose.",
+          "text": "Male sexual drive is God-designed, powerful, visual, and easily misdirected.\n\nThe goal isn't to eliminate your drive but to channel it toward its designed purpose.",
           "icon": "bolt"
         },
         {
@@ -639,7 +639,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "The Pornography War",
-          "text": "Pornography rewires your brain, trains you to objectify, creates unrealistic expectations, and becomes addictive. Most men struggle here. Victory is possible but requires warfare.",
+          "text": "Pornography rewires your brain, trains you to objectify, creates unrealistic expectations, and becomes addictive.\n\nMost men struggle here.\n\nVictory is possible but requires warfare.",
           "icon": "gpp_bad"
         },
         {
@@ -647,7 +647,7 @@
           "cardType": "question",
           "cardNumber": 3,
           "title": "Your Struggles",
-          "text": "{red|Where do you most struggle with sexual purity?}",
+          "text": "Where do you most struggle with sexual purity?",
           "prompts": [
             "Pornography",
             "Lustful thoughts",
@@ -676,7 +676,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "For Your Future Wife",
-          "text": "Your sexual purity now affects your future marriage. Freedom from porn enables real intimacy. The fight for purity is a gift to your future wife.",
+          "text": "Your sexual purity now affects your future marriage.\n\nFreedom from porn enables real intimacy.\n\nThe fight for purity is a gift to your future wife.",
           "icon": "favorite"
         },
         {
@@ -713,7 +713,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Problem of Passivity",
-          "text": "Adam's first sin was passive,he was with Eve when she was tempted and said nothing. Male passivity shows up as: Waiting for others, Not pursuing women, Avoiding hard conversations.",
+          "text": "Adam's first sin was passive, he was with Eve when she was tempted and said nothing.\n\nMale passivity shows up as: Waiting for others, Not pursuing women, Avoiding hard conversations.",
           "icon": "block"
         },
         {
@@ -721,7 +721,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "The Call to Courage",
-          "text": "\"Be strong and courageous.\" ({red|Joshua 1:9}) Courage isn't absence of fear,it's action despite fear. Men are called to move first.",
+          "text": "\"Be strong and courageous.\" (Joshua 1:9) Courage isn't absence of fear, it's action despite fear.\n\nMen are called to move first.",
           "icon": "military_tech"
         },
         {
@@ -749,7 +749,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Initiative in Relationships",
-          "text": "Men should take initiative in pursuing women: Approach her, Be clear about intentions, Plan dates, Lead the relationship forward. Women generally want to be pursued.",
+          "text": "Men should take initiative in pursuing women: Approach her, Be clear about intentions, Plan dates, Lead the relationship forward.\n\nWomen generally want to be pursued.",
           "icon": "favorite"
         },
         {
@@ -794,7 +794,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Father Crisis",
-          "text": "Statistics on fatherlessness are devastating: 85% of youth in prison grew up without a father. Fathers aren't optional,they're essential.",
+          "text": "Statistics on fatherlessness are devastating: 85% of youth in prison grew up without a father.\n\nFathers aren't optional, they're essential.",
           "icon": "warning"
         },
         {
@@ -802,7 +802,7 @@
           "cardType": "question",
           "cardNumber": 2,
           "title": "Your Father Experience",
-          "text": "{red|What was your experience with your own father?}",
+          "text": "What was your experience with your own father?",
           "prompts": [
             "Present and engaged",
             "Present but distant",
@@ -830,7 +830,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Breaking Negative Cycles",
-          "text": "Your father's failures don't have to be yours. With awareness, community, and the Spirit's help, you can father differently than you were fathered.",
+          "text": "Your father's failures don't have to be yours.\n\nWith awareness, community, and the Spirit's help, you can father differently than you were fathered.",
           "icon": "autorenew"
         },
         {
@@ -905,7 +905,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "The Integrated Man",
-          "text": "Biblical masculinity isn't a checklist,it's an integrated life: Strong AND tender, Courageous AND compassionate, Leader AND servant, Provider AND present, Disciplined AND gracious. This is the man God is shaping you to be.",
+          "text": "Biblical masculinity isn't a checklist, it's an integrated life: Strong AND tender, Courageous AND compassionate, Leader AND servant, Provider AND present, Disciplined AND gracious.\n\nThis is the man God is shaping you to be.",
           "icon": "person"
         },
         {
@@ -913,7 +913,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "The Ongoing Journey",
-          "text": "Becoming a man is a lifelong process. You'll stumble. You'll grow. You'll need grace. The goal isn't perfection,it's direction. Keep moving toward the man God designed you to be.",
+          "text": "Becoming a man is a lifelong process.\n\nYou'll stumble.\n\nYou'll grow.\n\nYou'll need grace.\n\nThe goal isn't perfection, it's direction.\n\nKeep moving toward the man God designed you to be.",
           "icon": "timeline"
         },
         {

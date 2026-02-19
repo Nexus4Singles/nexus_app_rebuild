@@ -7,16 +7,13 @@ import 'package:equatable/equatable.dart';
 
 /// Subscription tier/plan
 enum SubscriptionTier {
-  free('free', 'Free', 0),
-  monthly('monthly_premium', 'Monthly Premium', 2999),
-  quarterly('quarterly_premium', 'Quarterly Premium', 7999),
-  yearly('yearly_premium', 'Yearly Premium', 24999);
+  free('free', 'Free'),
+  monthly('monthly_premium', 'Monthly Premium');
 
   final String id;
   final String displayName;
-  final int priceNGN;
 
-  const SubscriptionTier(this.id, this.displayName, this.priceNGN);
+  const SubscriptionTier(this.id, this.displayName);
 
   static SubscriptionTier fromId(String id) {
     return SubscriptionTier.values.firstWhere(

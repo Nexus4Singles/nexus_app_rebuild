@@ -69,7 +69,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Who Resentment Really Hurts",
-          "text": "{red|**Here is the hardest part: your ex may not even know or care that you are angry.**\n\n**While you lie awake replaying their wrongs, they may be sleeping peacefully.** While you fume at their injustice, they may have moved on entirely. Your resentment may have zero impact on them.\n\n**But it has massive impact on you.** You are the one carrying the weight. You are the one whose peace is disturbed. You are the one stuck in the past.\n\n**Resentment is a prison where you are both the prisoner and the jailer.** You have the key to let yourself out, but you refuse to use it because you believe they deserve for you to stay angry.\n\nBut who is really serving the sentence?}",
+          "text": "**Here is the hardest part: your ex may not even know or care that you are angry.**\n\n**While you lie awake replaying their wrongs, they may be sleeping peacefully.** While you fume at their injustice, they may have moved on entirely. Your resentment may have zero impact on them.\n\n**But it has massive impact on you.** You are the one carrying the weight. You are the one whose peace is disturbed. You are the one stuck in the past.\n\n**Resentment is a prison where you are both the prisoner and the jailer.** You have the key to let yourself out, but you refuse to use it because you believe they deserve for you to stay angry.\n\nBut who is really serving the sentence?",
           "icon": "lock"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Resentment Level",
-          "text": "{red|How much resentment toward your ex are you currently carrying?}",
+          "text": "How much resentment toward your ex are you currently carrying?",
           "prompts": [
             "Intense - I am consumed by anger and bitterness",
             "Significant - Resentment is a major presence in my life",
@@ -98,7 +98,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "What Resentment Is Costing You",
-          "text": "{red|**Consider what holding onto resentment is costing you.**\n\nHow is it affecting your emotional wellbeing?}{red| How is it affecting your other relationships?}{red| How is it affecting your ability to move forward?}{red| How is it affecting your peace and joy?}{red| How much mental and emotional energy does it consume?}\n\nWrite about the cost of your resentment:",
+          "text": "**Consider what holding onto resentment is costing you.**\n\nHow is it affecting your emotional wellbeing? How is it affecting your other relationships? How is it affecting your ability to move forward? How is it affecting your peace and joy? How much mental and emotional energy does it consume?\n\nWrite about the cost of your resentment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -107,7 +107,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Considering Freedom",
-          "text": "{red|**This journey is about finding freedom.** Before we go further, consider whether you want it.\n\n**Letting go of resentment does not mean what they did was okay.** It does not mean they win. It does not mean you are weak.\n\n**It means you choose freedom over bondage.** Peace over bitterness. Your future over their past wrongs.\n\nAre you willing to at least consider letting go?}{red| Not to do it yet, but to explore it?}\n\nWrite about your willingness to consider freedom from resentment:",
+          "text": "**This journey is about finding freedom.** Before we go further, consider whether you want it.\n\n**Letting go of resentment does not mean what they did was okay.** It does not mean they win. It does not mean you are weak.\n\n**It means you choose freedom over bondage.** Peace over bitterness. Your future over their past wrongs.\n\nAre you willing to at least consider letting go? Not to do it yet, but to explore it?\n\nWrite about your willingness to consider freedom from resentment:",
           "icon": "lock_open"
         }
       ]
@@ -135,7 +135,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Need to Name",
-          "text": "{red|**Some people try to forgive without fully acknowledging what happened.** They minimize the wrong, make excuses for the offender, or skip straight to saying they forgive.\n\n**This does not work.** Premature forgiveness is not real forgiveness. It is denial or suppression dressed up in religious language.\n\n**Real forgiveness requires naming the offense clearly.** What did they actually do?}{red| How did it actually affect you?}{red| What was the real cost?}\n\n**This is not about building a case or nursing your anger.** It is about being honest about what happened so you can eventually release something real, not a sanitized version.",
+          "text": "**Some people try to forgive without fully acknowledging what happened.** They minimize the wrong, make excuses for the offender, or skip straight to saying they forgive.\n\n**This does not work.** Premature forgiveness is not real forgiveness. It is denial or suppression dressed up in religious language.\n\n**Real forgiveness requires naming the offense clearly.** What did they actually do? How did it actually affect you? What was the real cost?\n\n**This is not about building a case or nursing your anger.** It is about being honest about what happened so you can eventually release something real, not a sanitized version.",
           "icon": "list_alt"
         },
         {
@@ -143,7 +143,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Categories of Wrong",
-          "text": "{red|**Before we talk about letting go, you need to be honest about what you are holding.**\n\nWhat did they do to you?}\n\n**Not the sanitized version.** Not the version you tell acquaintances. The real list. The things that wake you up at night. The betrayals you cannot stop replaying. The words that cut so deep you can still feel them.\n\n**Maybe they cheated.** Maybe they lied, for years, to your face. Maybe they chose addiction over you and your children. Maybe they were cruel in ways no one else saw.\n\n**Maybe the list is long.** Maybe it is one devastating thing. Either way, it is real, and you are allowed to name it.\n\n**Write it down if you need to.** Every grievance. Every wound. Every legitimate reason you have to be angry.\n\n**This is not wallowing.** This is the necessary first step. You cannot forgive what you have not acknowledged. You cannot let go of what you will not look at.\n\n**So look at it.** All of it. Then we can talk about what comes next.",
+          "text": "**Before we talk about letting go, you need to be honest about what you are holding.**\n\nWhat did they do to you?\n\n**Not the sanitized version.** Not the version you tell acquaintances. The real list. The things that wake you up at night. The betrayals you cannot stop replaying. The words that cut so deep you can still feel them.\n\n**Maybe they cheated.** Maybe they lied, for years, to your face. Maybe they chose addiction over you and your children. Maybe they were cruel in ways no one else saw.\n\n**Maybe the list is long.** Maybe it is one devastating thing. Either way, it is real, and you are allowed to name it.\n\n**Write it down if you need to.** Every grievance. Every wound. Every legitimate reason you have to be angry.\n\n**This is not wallowing.** This is the necessary first step. You cannot forgive what you have not acknowledged. You cannot let go of what you will not look at.\n\n**So look at it.** All of it. Then we can talk about what comes next.",
           "icon": "category"
         },
         {
@@ -151,7 +151,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "The Impact on You",
-          "text": "{red|**Beyond naming what they did, acknowledge the impact it had on you.**\n\nHow did their actions affect you emotionally?}{red| What wounds were created?}\n\n{red|How did their actions affect you practically?}{red| What was lost?}\n\n{red|How did their actions affect your sense of self?}{red| Your trust?}{red| Your faith?}\n\n{red|How did their actions affect your children if you have them?}\n\n**Naming the impact validates your experience.** It says this was real and it mattered. This is not self-pity. It is honesty about the cost of what was done to you.",
+          "text": "**Beyond naming what they did, acknowledge the impact it had on you.**\n\nHow did their actions affect you emotionally? What wounds were created?\n\nHow did their actions affect you practically? What was lost?\n\nHow did their actions affect your sense of self? Your trust? Your faith?\n\nHow did their actions affect your children if you have them?\n\n**Naming the impact validates your experience.** It says this was real and it mattered. This is not self-pity. It is honesty about the cost of what was done to you.",
           "icon": "psychology"
         },
         {
@@ -159,7 +159,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Grievance List",
-          "text": "{red|**Take time to write out your legitimate grievances against your ex.**\n\nWhat did they do that was wrong?}{red| What promises did they break?}{red| How did they hurt you?}{red| What was the impact of their actions on you and others?}\n\n**Be specific and honest.** This is a safe space to name what happened.\n\nWrite your grievance list:",
+          "text": "**Take time to write out your legitimate grievances against your ex.**\n\nWhat did they do that was wrong? What promises did they break? How did they hurt you? What was the impact of their actions on you and others?\n\n**Be specific and honest.** This is a safe space to name what happened.\n\nWrite your grievance list:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -212,7 +212,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What Forgiveness Is",
-          "text": "{red|**Resentment promises to protect you.** It lies.\n\n**It whispers that staying angry keeps you safe.** That if you let go of the anger, you are saying what they did was okay. That forgiveness is weakness.\n\n**But look at what resentment actually does.**\n\n**It keeps them in your head.** Every time you rehearse the offense, they are there. They are taking up space in your mind, your thoughts, your energy. You are giving them real estate they did not pay for.\n\n**It poisons your other relationships.** The bitterness leaks. It makes you suspicious of people who have not earned your suspicion. It keeps you guarded when you could be open.\n\n**It steals your joy.** Resentment is incompatible with peace. You cannot be bitter and happy at the same time. Every moment spent nursing grievances is a moment unavailable for anything else.\n\n**It keeps you stuck in the past.** The divorce happened. The wrongs happened. But resentment keeps you living there, revisiting the scene of the crime instead of building a new life.\n\n**The cruelest irony: the person you are punishing by holding onto resentment is yourself.** Your ex is probably not lying awake thinking about how angry you are. But you are lying awake. You are the one suffering.\n\nIs that what you want?}",
+          "text": "**Resentment promises to protect you.** It lies.\n\n**It whispers that staying angry keeps you safe.** That if you let go of the anger, you are saying what they did was okay. That forgiveness is weakness.\n\n**But look at what resentment actually does.**\n\n**It keeps them in your head.** Every time you rehearse the offense, they are there. They are taking up space in your mind, your thoughts, your energy. You are giving them real estate they did not pay for.\n\n**It poisons your other relationships.** The bitterness leaks. It makes you suspicious of people who have not earned your suspicion. It keeps you guarded when you could be open.\n\n**It steals your joy.** Resentment is incompatible with peace. You cannot be bitter and happy at the same time. Every moment spent nursing grievances is a moment unavailable for anything else.\n\n**It keeps you stuck in the past.** The divorce happened. The wrongs happened. But resentment keeps you living there, revisiting the scene of the crime instead of building a new life.\n\n**The cruelest irony: the person you are punishing by holding onto resentment is yourself.** Your ex is probably not lying awake thinking about how angry you are. But you are lying awake. You are the one suffering.\n\nIs that what you want?",
           "icon": "check_circle"
         },
         {
@@ -228,7 +228,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Forgiveness Barriers",
-          "text": "{red|What has made forgiveness difficult for you?}\n\n{red|What misunderstandings about forgiveness have held you back?}{red| What fears do you have about forgiving?}{red| What feels unfair about the idea of forgiving them?}{red| What would need to change for you to be willing to forgive?}\n\nWrite about your barriers to forgiveness:",
+          "text": "What has made forgiveness difficult for you?\n\nWhat misunderstandings about forgiveness have held you back? What fears do you have about forgiving? What feels unfair about the idea of forgiving them? What would need to change for you to be willing to forgive?\n\nWrite about your barriers to forgiveness:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -237,7 +237,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Biggest Barrier",
-          "text": "{red|What is your biggest barrier to forgiving your ex?}",
+          "text": "What is your biggest barrier to forgiving your ex?",
           "prompts": [
             "It feels like saying what they did was okay",
             "They have not apologized or acknowledged their wrong",
@@ -288,7 +288,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "For Your Freedom",
-          "text": "{red|**Forgiveness is the most misunderstood word in the English language.**\n\n**It is not saying what they did was okay.** It was not okay. It will never be okay. Forgiveness does not change the past.\n\n**It is not pretending you were not hurt.** You were hurt, deeply, and that is real.\n\n**It is not trusting them again.** Trust is earned. Forgiveness can be given even when trust is impossible.\n\n**It is not reconciliation.** You can forgive someone and never speak to them again. You can forgive someone and still keep them completely out of your life.\n\n**It is not a feeling.** If you wait until you feel like forgiving, you will wait forever. Forgiveness is a choice, often made through gritted teeth.\n\nSo what is it?}\n\n{red|**Forgiveness is releasing your grip on the debt.** They owe you something. An apology, restitution, acknowledgment, suffering. They owe you and they will probably never pay. Forgiveness is saying I am done waiting for you to pay. I am writing off the debt because collecting it is costing me more than the debt is worth.\n\n**Forgiveness is freedom.** Not for them. For you.\n\n**It is the decision to stop letting what they did control your present.** To stop giving them power over your peace. To take your life back from the person who damaged it.\n\n**That is what forgiveness actually is.** Does that change anything for you?}",
+          "text": "**Forgiveness is the most misunderstood word in the English language.**\n\n**It is not saying what they did was okay.** It was not okay. It will never be okay. Forgiveness does not change the past.\n\n**It is not pretending you were not hurt.** You were hurt, deeply, and that is real.\n\n**It is not trusting them again.** Trust is earned. Forgiveness can be given even when trust is impossible.\n\n**It is not reconciliation.** You can forgive someone and never speak to them again. You can forgive someone and still keep them completely out of your life.\n\n**It is not a feeling.** If you wait until you feel like forgiving, you will wait forever. Forgiveness is a choice, often made through gritted teeth.\n\nSo what is it?\n\n**Forgiveness is releasing your grip on the debt.** They owe you something. An apology, restitution, acknowledgment, suffering. They owe you and they will probably never pay. Forgiveness is saying I am done waiting for you to pay. I am writing off the debt because collecting it is costing me more than the debt is worth.\n\n**Forgiveness is freedom.** Not for them. For you.\n\n**It is the decision to stop letting what they did control your present.** To stop giving them power over your peace. To take your life back from the person who damaged it.\n\n**That is what forgiveness actually is.** Does that change anything for you?",
           "icon": "lock_open"
         },
         {
@@ -304,7 +304,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "For Your Future Relationships",
-          "text": "{red|**Unforgiveness does not stay contained.** It affects all your relationships.\n\n**Bitterness leaks out.** It makes you suspicious, guarded, and difficult to be close to. It builds walls that keep everyone out, not just the one who hurt you.\n\n**Unresolved anger toward your ex can sabotage future romantic relationships.** You may project their wrongs onto innocent people. You may be unable to trust or fully commit.\n\n**Forgiveness clears the slate.** It allows you to enter future relationships without dragging the past along. It opens you to love again.\n\nDo you want healthy relationships in your future?} Forgiveness makes them possible.",
+          "text": "**Unforgiveness does not stay contained.** It affects all your relationships.\n\n**Bitterness leaks out.** It makes you suspicious, guarded, and difficult to be close to. It builds walls that keep everyone out, not just the one who hurt you.\n\n**Unresolved anger toward your ex can sabotage future romantic relationships.** You may project their wrongs onto innocent people. You may be unable to trust or fully commit.\n\n**Forgiveness clears the slate.** It allows you to enter future relationships without dragging the past along. It opens you to love again.\n\nDo you want healthy relationships in your future? Forgiveness makes them possible.",
           "icon": "groups"
         },
         {
@@ -312,7 +312,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Because You Have Been Forgiven",
-          "text": "**For those who follow Christ, there is another reason to forgive: you have been forgiven.**\n\n**Bear with each other and forgive one another if any of you has a grievance against someone.** Forgive as the Lord forgave you. (({red|Colossians 3:13}))\n\n**The debt you owed God was far greater than any debt owed to you.** Yet He forgave freely and completely.\n\n**This does not minimize what your ex did.** But it puts it in perspective. If God can forgive you, you can forgive them.\n\n**Forgiving others is not earning God's forgiveness.** It is responding to it. It is passing on the grace you have received.",
+          "text": "**For those who follow Christ, there is another reason to forgive: you have been forgiven.**\n\n**Bear with each other and forgive one another if any of you has a grievance against someone.** Forgive as the Lord forgave you. (Colossians 3:13)\n\n**The debt you owed God was far greater than any debt owed to you.** Yet He forgave freely and completely.\n\n**This does not minimize what your ex did.** But it puts it in perspective. If God can forgive you, you can forgive them.\n\n**Forgiving others is not earning God's forgiveness.** It is responding to it. It is passing on the grace you have received.",
           "icon": "church"
         },
         {
@@ -320,7 +320,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Reasons to Forgive",
-          "text": "{red|**Consider your personal reasons to pursue forgiveness.**\n\nHow would forgiveness benefit your freedom?}{red| How might it benefit your health and wellbeing?}{red| How might it benefit your future relationships?}{red| How does having been forgiven by God affect your willingness to forgive?}\n\nWrite about your reasons to forgive:",
+          "text": "**Consider your personal reasons to pursue forgiveness.**\n\nHow would forgiveness benefit your freedom? How might it benefit your health and wellbeing? How might it benefit your future relationships? How does having been forgiven by God affect your willingness to forgive?\n\nWrite about your reasons to forgive:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -365,7 +365,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Steps in the Process",
-          "text": "{red|How do you actually do it?}{red| How do you forgive when everything in you wants to hold on?}\n\n**Start with a decision, not a feeling.** You may never feel like forgiving them. That is okay. You can choose to begin the process anyway.\n\n**Name what you are forgiving.** Be specific. Not just I forgive them for the divorce but I forgive them for the lie they told on March 15th that destroyed my trust. The more specific, the more real.\n\n**Acknowledge how you feel about it.** The anger, the hurt, the desire for revenge. You are not suppressing these. You are bringing them into the light so they can be released.\n\n**Choose to release them from the debt.** This is the actual forgiveness. I release you from what you owe me. I am done trying to collect.\n\n**Expect to do it again.** The feelings will come back. The memories will surface. Each time, you choose again. I already forgave this. I am not picking it back up.\n\n**Look for signs of freedom.** Over time, you will notice that the memory does not sting as much. That you can think about them without your stomach clenching. That you are spending less time in the past.\n\n**This is not a one-day process.** It is a practice. And like any practice, it gets easier with repetition.",
+          "text": "How do you actually do it? How do you forgive when everything in you wants to hold on?\n\n**Start with a decision, not a feeling.** You may never feel like forgiving them. That is okay. You can choose to begin the process anyway.\n\n**Name what you are forgiving.** Be specific. Not just I forgive them for the divorce but I forgive them for the lie they told on March 15th that destroyed my trust. The more specific, the more real.\n\n**Acknowledge how you feel about it.** The anger, the hurt, the desire for revenge. You are not suppressing these. You are bringing them into the light so they can be released.\n\n**Choose to release them from the debt.** This is the actual forgiveness. I release you from what you owe me. I am done trying to collect.\n\n**Expect to do it again.** The feelings will come back. The memories will surface. Each time, you choose again. I already forgave this. I am not picking it back up.\n\n**Look for signs of freedom.** Over time, you will notice that the memory does not sting as much. That you can think about them without your stomach clenching. That you are spending less time in the past.\n\n**This is not a one-day process.** It is a practice. And like any practice, it gets easier with repetition.",
           "icon": "list"
         },
         {
@@ -381,7 +381,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Where You Are in the Process",
-          "text": "{red|**Assess where you are in the forgiveness process.**\n\nHave you fully acknowledged the wrong?}{red| Have you allowed yourself to feel the emotions?}{red| Have you made a decision to forgive, even if not complete?}{red| Have you released any of the debt they owe?}{red| What step do you need to take next?}\n\nWrite about where you are in the forgiveness process:",
+          "text": "**Assess where you are in the forgiveness process.**\n\nHave you fully acknowledged the wrong? Have you allowed yourself to feel the emotions? Have you made a decision to forgive, even if not complete? Have you released any of the debt they owe? What step do you need to take next?\n\nWrite about where you are in the forgiveness process:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -426,7 +426,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "When It Does Not Stop",
-          "text": "{red|**Unforgiveness is like carrying a bag of heavy stones everywhere you go.** Each offense is another stone added to the weight. You can justify why you picked up each one. But eventually, the burden makes it impossible to move forward.\n\n**Some offenses are in the past.** Your ex did something wrong, and it is over.\n\n**But sometimes the difficult behavior continues.** They are still hostile, manipulative, uncooperative, or hurtful. Every interaction brings fresh wounds.\n\n**This makes forgiveness much harder.** How do you let go when they keep giving you new things to hold against them?}\n\n**The answer involves both ongoing forgiveness and strong boundaries.** You need both to survive without being destroyed by bitterness.",
+          "text": "**Unforgiveness is like carrying a bag of heavy stones everywhere you go.** Each offense is another stone added to the weight. You can justify why you picked up each one. But eventually, the burden makes it impossible to move forward.\n\n**Some offenses are in the past.** Your ex did something wrong, and it is over.\n\n**But sometimes the difficult behavior continues.** They are still hostile, manipulative, uncooperative, or hurtful. Every interaction brings fresh wounds.\n\n**This makes forgiveness much harder.** How do you let go when they keep giving you new things to hold against them?\n\n**The answer involves both ongoing forgiveness and strong boundaries.** You need both to survive without being destroyed by bitterness.",
           "icon": "repeat"
         },
         {
@@ -450,7 +450,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Ongoing Challenges",
-          "text": "{red|**If your ex's difficult behavior is ongoing, reflect on how you are handling it.**\n\nWhat ongoing behaviors are most hurtful or frustrating?}{red| How are you currently responding to these behaviors?}{red| What boundaries do you have in place?}{red| What boundaries do you need?}{red| How can you practice ongoing forgiveness without allowing ongoing harm?}\n\nWrite about your ongoing challenges:",
+          "text": "**If your ex's difficult behavior is ongoing, reflect on how you are handling it.**\n\nWhat ongoing behaviors are most hurtful or frustrating? How are you currently responding to these behaviors? What boundaries do you have in place? What boundaries do you need? How can you practice ongoing forgiveness without allowing ongoing harm?\n\nWrite about your ongoing challenges:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -495,7 +495,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Weight of Self-Blame",
-          "text": "{red|**There is someone you may need to forgive who is not your ex.**\n\nYourself.\n\n**Maybe you carry guilt for what you did.** Real wrongs, not imagined ones. An affair. Cruelty. Neglect. Choices that contributed to the destruction of your marriage.\n\n**Or maybe you carry guilt for what you did not do.** Not seeing the signs. Not leaving sooner. Not trying harder. Not being enough.\n\n**Either way, the voice in your head is relentless.** You should have known. You should have been better. This is your fault. You do not deserve to be happy.\n\n**Here is the truth: you are human.** Humans make mistakes. Sometimes terrible ones. Sometimes ones that have devastating consequences.\n\n**This does not mean you are unredeemable.** It does not mean you deserve a lifetime of self-punishment. It does not mean the guilt should define the rest of your life.\n\n**God offers forgiveness for things far worse than what you have done.** Can you receive what He offers?}{red| Can you extend to yourself what He extends to you?}\n\n**Self-forgiveness is not letting yourself off the hook.** It is acknowledging the wrong, accepting responsibility, learning from it, and then refusing to let it imprison you forever.\n\n**You made mistakes.** You are not your mistakes.",
+          "text": "**There is someone you may need to forgive who is not your ex.**\n\nYourself.\n\n**Maybe you carry guilt for what you did.** Real wrongs, not imagined ones. An affair. Cruelty. Neglect. Choices that contributed to the destruction of your marriage.\n\n**Or maybe you carry guilt for what you did not do.** Not seeing the signs. Not leaving sooner. Not trying harder. Not being enough.\n\n**Either way, the voice in your head is relentless.** You should have known. You should have been better. This is your fault. You do not deserve to be happy.\n\n**Here is the truth: you are human.** Humans make mistakes. Sometimes terrible ones. Sometimes ones that have devastating consequences.\n\n**This does not mean you are unredeemable.** It does not mean you deserve a lifetime of self-punishment. It does not mean the guilt should define the rest of your life.\n\n**God offers forgiveness for things far worse than what you have done.** Can you receive what He offers? Can you extend to yourself what He extends to you?\n\n**Self-forgiveness is not letting yourself off the hook.** It is acknowledging the wrong, accepting responsibility, learning from it, and then refusing to let it imprison you forever.\n\n**You made mistakes.** You are not your mistakes.",
           "icon": "person"
         },
         {
@@ -503,7 +503,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What Self-Forgiveness Is",
-          "text": "{red|**Self-forgiveness is not pretending you did nothing wrong.** If you sinned, your sin was real.\n\n**Self-forgiveness is accepting God's forgiveness for your failures.** If He has forgiven you, who are you to refuse that forgiveness?}\n\n**Self-forgiveness is releasing yourself from ongoing punishment.** You can acknowledge your wrong without being condemned forever.\n\n**Self-forgiveness is learning from your mistakes without being defined by them.** Your failures are part of your story, not your whole story.\n\n**Self-forgiveness is grace.** The same grace you would extend to someone else who repented of their wrong.",
+          "text": "**Self-forgiveness is not pretending you did nothing wrong.** If you sinned, your sin was real.\n\n**Self-forgiveness is accepting God's forgiveness for your failures.** If He has forgiven you, who are you to refuse that forgiveness?\n\n**Self-forgiveness is releasing yourself from ongoing punishment.** You can acknowledge your wrong without being condemned forever.\n\n**Self-forgiveness is learning from your mistakes without being defined by them.** Your failures are part of your story, not your whole story.\n\n**Self-forgiveness is grace.** The same grace you would extend to someone else who repented of their wrong.",
           "icon": "check_circle"
         },
         {
@@ -511,7 +511,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Receiving God's Forgiveness",
-          "text": "{red|**The foundation of self-forgiveness is receiving God's forgiveness.**\n\n**If we confess our sins, He is faithful and just to forgive us our sins and cleanse us from all unrighteousness.** (1 ({red|John 1:9}))\n\n**God's forgiveness is available for everything you have done.** Nothing is beyond His grace. When you confess, He forgives completely.\n\n**The question is whether you will receive it.** Will you accept what He offers?}{red| Or will you insist on continuing to pay for sins He has already paid for?}\n\n**Refusing to forgive yourself after God has forgiven you is a form of pride.** It says your judgment matters more than His.\n\n**Receive His forgiveness.** Let it settle deep into your soul.",
+          "text": "**The foundation of self-forgiveness is receiving God's forgiveness.**\n\n**If we confess our sins, He is faithful and just to forgive us our sins and cleanse us from all unrighteousness.** (1 (John 1:9)\n\n**God's forgiveness is available for everything you have done.** Nothing is beyond His grace. When you confess, He forgives completely.\n\n**The question is whether you will receive it.** Will you accept what He offers? Or will you insist on continuing to pay for sins He has already paid for?\n\n**Refusing to forgive yourself after God has forgiven you is a form of pride.** It says your judgment matters more than His.\n\n**Receive His forgiveness.** Let it settle deep into your soul.",
           "icon": "church"
         },
         {
@@ -519,7 +519,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "What You Need to Forgive Yourself For",
-          "text": "{red|What do you need to forgive yourself for regarding your marriage and divorce?}\n\n{red|What failures or sins do you carry guilt about?}{red| What decisions do you regret?}{red| What do you condemn yourself for?}{red| Have you confessed these things to God?}{red| Have you received His forgiveness?}\n\nWrite what you need to forgive yourself for:",
+          "text": "What do you need to forgive yourself for regarding your marriage and divorce?\n\nWhat failures or sins do you carry guilt about? What decisions do you regret? What do you condemn yourself for? Have you confessed these things to God? Have you received His forgiveness?\n\nWrite what you need to forgive yourself for:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -588,7 +588,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Interaction Challenges",
-          "text": "{red|**Reflect on your interactions with your ex.**\n\nHow often must you interact?}{red| About what?}{red| What typically makes these interactions difficult?}{red| How do you usually respond?}{red| What works and what does not?}{red| What would help you handle interactions more constructively?}\n\nWrite about your interaction challenges:",
+          "text": "**Reflect on your interactions with your ex.**\n\nHow often must you interact? About what? What typically makes these interactions difficult? How do you usually respond? What works and what does not? What would help you handle interactions more constructively?\n\nWrite about your interaction challenges:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -597,7 +597,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Interaction Pattern",
-          "text": "{red|How would you describe your typical interaction pattern with your ex?}",
+          "text": "How would you describe your typical interaction pattern with your ex?",
           "prompts": [
             "Generally civil and businesslike",
             "Tense but manageable",
@@ -647,7 +647,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Desire for Justice",
-          "text": "{red|**Imagine waking up and not thinking about them first thing.**\n\n**Imagine someone mentioning their name and feeling nothing, or at most a mild twinge instead of a surge of rage.**\n\n**Imagine being able to tell your story without your voice tightening.** To remember the marriage without being flooded with bitterness. To see old photos and feel sadness, maybe, but not hatred.\n\n**Imagine being genuinely indifferent to whether they are happy or suffering.** Not pretending to be indifferent. Actually being free from caring.\n\n**Imagine putting your energy into your life, your future, your relationships, instead of into rehearsing their wrongs and wishing them harm.**\n\n**This is what freedom from resentment looks like.** It is not a fairy tale. It is available to you.\n\n**Not overnight.** Not easily. But really, actually available.\n\n**The people who have walked this path say the same thing: they did not do it for their ex.** They did it for themselves. And the freedom was worth every difficult choice it took to get there.\n\nDo you want this?} Because it is possible. The path is hard, but the destination is real.",
+          "text": "**Imagine waking up and not thinking about them first thing.**\n\n**Imagine someone mentioning their name and feeling nothing, or at most a mild twinge instead of a surge of rage.**\n\n**Imagine being able to tell your story without your voice tightening.** To remember the marriage without being flooded with bitterness. To see old photos and feel sadness, maybe, but not hatred.\n\n**Imagine being genuinely indifferent to whether they are happy or suffering.** Not pretending to be indifferent. Actually being free from caring.\n\n**Imagine putting your energy into your life, your future, your relationships, instead of into rehearsing their wrongs and wishing them harm.**\n\n**This is what freedom from resentment looks like.** It is not a fairy tale. It is available to you.\n\n**Not overnight.** Not easily. But really, actually available.\n\n**The people who have walked this path say the same thing: they did not do it for their ex.** They did it for themselves. And the freedom was worth every difficult choice it took to get there.\n\nDo you want this? Because it is possible. The path is hard, but the destination is real.",
           "icon": "gavel"
         },
         {
@@ -655,7 +655,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Entrusting Justice to God",
-          "text": "**Scripture calls us to leave room for God's justice rather than taking revenge ourselves.**\n\n**Do not take revenge, my dear friends, but leave room for God's wrath, for it is written: It is mine to avenge; I will repay, says the Lord.** (({red|Romans 12:19}))\n\n**This does not mean God will necessarily punish your ex in the way you want or on your timeline.** But it means you can release the burden of needing to be the one who ensures they pay.\n\n**God sees everything.** Nothing is hidden from Him. He will deal with every person justly. You can trust Him with this.\n\n**Releasing justice to God is not letting them off the hook.** It is taking yourself off the hook of needing to be the judge.",
+          "text": "**Scripture calls us to leave room for God's justice rather than taking revenge ourselves.**\n\n**Do not take revenge, my dear friends, but leave room for God's wrath, for it is written: It is mine to avenge; I will repay, says the Lord.** (Romans 12:19)\n\n**This does not mean God will necessarily punish your ex in the way you want or on your timeline.** But it means you can release the burden of needing to be the one who ensures they pay.\n\n**God sees everything.** Nothing is hidden from Him. He will deal with every person justly. You can trust Him with this.\n\n**Releasing justice to God is not letting them off the hook.** It is taking yourself off the hook of needing to be the judge.",
           "icon": "church"
         },
         {
@@ -663,7 +663,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Letting Go of Vindication",
-          "text": "{red|**Beyond justice, you may want vindication.** You want everyone to know you were right and they were wrong. You want your side of the story to win.\n\n**This desire is understandable but can also be a trap.** Your healing cannot depend on others seeing the truth or validating your experience.\n\n**Some people will believe your ex's version of events.** Some will never know the full truth. You may never be publicly vindicated.\n\nCan you be at peace without universal vindication?}{red| Can you know the truth yourself and let that be enough?}{red| Can you trust that God knows and that His opinion matters most?}\n\n**Letting go of the need for everyone to see the truth frees you from a burden you were never meant to carry.**",
+          "text": "**Beyond justice, you may want vindication.** You want everyone to know you were right and they were wrong. You want your side of the story to win.\n\n**This desire is understandable but can also be a trap.** Your healing cannot depend on others seeing the truth or validating your experience.\n\n**Some people will believe your ex's version of events.** Some will never know the full truth. You may never be publicly vindicated.\n\nCan you be at peace without universal vindication? Can you know the truth yourself and let that be enough? Can you trust that God knows and that His opinion matters most?\n\n**Letting go of the need for everyone to see the truth frees you from a burden you were never meant to carry.**",
           "icon": "visibility_off"
         },
         {
@@ -671,7 +671,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Justice Desires",
-          "text": "{red|**Reflect on your desires for justice and vindication.**\n\nWhat justice do you want to see?}{red| What would satisfy your sense of fairness?}{red| How much does your peace depend on them facing consequences?}{red| How much does it bother you when others do not know the truth?}{red| What would it mean to entrust justice to God?}\n\nWrite about your justice desires:",
+          "text": "**Reflect on your desires for justice and vindication.**\n\nWhat justice do you want to see? What would satisfy your sense of fairness? How much does your peace depend on them facing consequences? How much does it bother you when others do not know the truth? What would it mean to entrust justice to God?\n\nWrite about your justice desires:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -732,7 +732,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Insight",
-          "text": "{red|What is the most important thing you have learned about letting go of resentment through this journey?}\n\n{red|What do you want to remember when bitterness tempts you?}\n\nWrite your key insight:",
+          "text": "What is the most important thing you have learned about letting go of resentment through this journey?\n\nWhat do you want to remember when bitterness tempts you?\n\nWrite your key insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -741,7 +741,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Freedom Commitments",
-          "text": "{red|What commitments will you make to walk in ongoing freedom?}\n\n{red|How will you handle resentment when it returns?}{red| How will you practice ongoing forgiveness?}{red| How will you maintain boundaries while releasing bitterness?}{red| How will you keep justice entrusted to God?}\n\nWrite your freedom commitments:",
+          "text": "What commitments will you make to walk in ongoing freedom?\n\nHow will you handle resentment when it returns? How will you practice ongoing forgiveness? How will you maintain boundaries while releasing bitterness? How will you keep justice entrusted to God?\n\nWrite your freedom commitments:",
           "responseType": "open-text",
           "icon": "verified"
         },

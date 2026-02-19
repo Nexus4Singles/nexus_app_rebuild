@@ -53,7 +53,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Temptation to Skip This",
-          "text": "{red|**You lie awake at 3 AM, the same questions circling.** What happened?}{red| How did we get here?}{red| Could I have stopped it?} The questions exhaust you, but they will not leave you alone.\n\n**After divorce, two temptations arise.**\n\n**The first is to avoid examining what happened.** It hurts too much. You just want to move on. So you close the chapter without really reading it.\n\n**The second is to oversimplify.** Everything becomes your ex's fault, or everything becomes your fault. Complex reality gets reduced to a simple villain and victim story.\n\n**Both approaches feel protective in the moment.** But both leave you vulnerable to repeating patterns you do not understand and carrying wounds you have not actually healed.\n\n**There is a better way: honest, balanced reflection that leads to genuine understanding.**",
+          "text": "**You lie awake at 3 AM, the same questions circling.** What happened? How did we get here? Could I have stopped it? The questions exhaust you, but they will not leave you alone.\n\n**After divorce, two temptations arise.**\n\n**The first is to avoid examining what happened.** It hurts too much. You just want to move on. So you close the chapter without really reading it.\n\n**The second is to oversimplify.** Everything becomes your ex's fault, or everything becomes your fault. Complex reality gets reduced to a simple villain and victim story.\n\n**Both approaches feel protective in the moment.** But both leave you vulnerable to repeating patterns you do not understand and carrying wounds you have not actually healed.\n\n**There is a better way: honest, balanced reflection that leads to genuine understanding.**",
           "icon": "psychology"
         },
         {
@@ -61,7 +61,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What Understanding Provides",
-          "text": "**Think of your marriage like a house that collapsed.** You could walk away from the rubble and build somewhere new. But if you never understood why it fell, whether the foundation, the framing, or the soil beneath, you risk building the next house with the same fatal flaws.\n\n**Taking time to truly understand what happened provides essential gifts.** Clarity replaces the swirl of painful memories. Closure becomes possible. Patterns become visible, including your own contributions. Lessons emerge that can protect your future.\n\n**Healing deepens when you understand your wounds rather than simply bury them.**\n\n**Scripture invites this kind of seeking: \"If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you\" ({red|James 1:5|If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you}).** God is not angry at your questions. He wants to give you understanding.",
+          "text": "**Think of your marriage like a house that collapsed.** You could walk away from the rubble and build somewhere new. But if you never understood why it fell, whether the foundation, the framing, or the soil beneath, you risk building the next house with the same fatal flaws.\n\n**Taking time to truly understand what happened provides essential gifts.** Clarity replaces the swirl of painful memories. Closure becomes possible. Patterns become visible, including your own contributions. Lessons emerge that can protect your future.\n\n**Healing deepens when you understand your wounds rather than simply bury them.**\n\n**Scripture invites this kind of seeking: \"If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you\" (James 1:5|If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you).** God is not angry at your questions. He wants to give you understanding.",
           "icon": "lightbulb"
         },
         {
@@ -69,7 +69,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "What This Is Not",
-          "text": "{red|**You might be afraid of what this journey will ask of you.**\n\n**Maybe you are afraid it will mean wallowing in pain you have worked hard to push down.** It will not. There is a difference between purposeful reflection and torturing yourself with memories. We are doing the first, not the second.\n\n**Maybe you are afraid it will force you to let your ex off the hook.** It will not. Understanding why someone did something is not the same as excusing it. You can understand the wound behind their behavior and still call it wrong.\n\n**Maybe you are afraid of what you will find when you look at your own part.** That is the scariest fear of all, is it not?} We will go there, but gently. And what you find will not destroy you. It will free you.\n\n**This is not about assigning blame or keeping score.** It is about finding clarity that leads to peace.",
+          "text": "**You might be afraid of what this journey will ask of you.**\n\n**Maybe you are afraid it will mean wallowing in pain you have worked hard to push down.** It will not. There is a difference between purposeful reflection and torturing yourself with memories. We are doing the first, not the second.\n\n**Maybe you are afraid it will force you to let your ex off the hook.** It will not. Understanding why someone did something is not the same as excusing it. You can understand the wound behind their behavior and still call it wrong.\n\n**Maybe you are afraid of what you will find when you look at your own part.** That is the scariest fear of all, is it not? We will go there, but gently. And what you find will not destroy you. It will free you.\n\n**This is not about assigning blame or keeping score.** It is about finding clarity that leads to peace.",
           "icon": "info"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Where You Are Now",
-          "text": "{red|How would you describe your current level of understanding about what happened in your marriage?}",
+          "text": "How would you describe your current level of understanding about what happened in your marriage?",
           "prompts": [
             "I have a pretty clear understanding of what went wrong",
             "I understand some things but am confused about others",
@@ -99,7 +99,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Questions",
-          "text": "{red|What questions do you still have about your marriage and its ending?}\n\n{red|What do you wish you understood better?}{red| What confuses you about what happened?}{red| What would you want to know if you could know anything?}\n\nWrite the questions you carry about your marriage:",
+          "text": "What questions do you still have about your marriage and its ending?\n\nWhat do you wish you understood better? What confuses you about what happened? What would you want to know if you could know anything?\n\nWrite the questions you carry about your marriage:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -144,7 +144,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "The Beginning",
-          "text": "{red|**Close your eyes for a moment.** Go back to the beginning.\n\n**Not the wedding day.** Before that. The first time you saw them. The moment something in you said yes, this one. What was it about them?}{red| What did they see in you?}\n\n{red|**Remember who you were then.** Younger. Probably more naive. Full of hope about what marriage would be. What did you believe about love?}{red| What did you think marriage would give you?}\n\n{red|**Now, with the vision you have now, look at that beginning again.** Were there hints of what would come?} Not to blame yourself for missing them, but because hindsight sometimes reveals what hope made invisible.\n\n**The seeds of an ending are often present in a beginning.** Not always. But often enough that it is worth looking.",
+          "text": "**Close your eyes for a moment.** Go back to the beginning.\n\n**Not the wedding day.** Before that. The first time you saw them. The moment something in you said yes, this one. What was it about them? What did they see in you?\n\n**Remember who you were then.** Younger. Probably more naive. Full of hope about what marriage would be. What did you believe about love? What did you think marriage would give you?\n\n**Now, with the vision you have now, look at that beginning again.** Were there hints of what would come? Not to blame yourself for missing them, but because hindsight sometimes reveals what hope made invisible.\n\n**The seeds of an ending are often present in a beginning.** Not always. But often enough that it is worth looking.",
           "icon": "flag"
         },
         {
@@ -152,7 +152,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "The Middle",
-          "text": "{red|**The middle is where most of the marriage lived.** Years, maybe decades. It deserves more than a summary.\n\n**Think about the good seasons.** Not perfect, but good. When you laughed together. When you were a team. When the future felt like something you were building together. What made those times work?}\n\n{red|**Now think about when things started to shift.** It is rarely one moment. Usually it is a slow drift, like two boats that started tied together and gradually floated apart. When did you first notice the distance?}{red| What happened when you tried to close it?}\n\n{red|**Every marriage has patterns that either saved it or strangled it.** The way you fought. The way you made up, or did not. The things you talked about and the things that became too dangerous to mention.\n\nWhat patterns defined your middle years?}{red| And when did you first suspect the patterns might be fatal?}",
+          "text": "**The middle is where most of the marriage lived.** Years, maybe decades. It deserves more than a summary.\n\n**Think about the good seasons.** Not perfect, but good. When you laughed together. When you were a team. When the future felt like something you were building together. What made those times work?\n\n**Now think about when things started to shift.** It is rarely one moment. Usually it is a slow drift, like two boats that started tied together and gradually floated apart. When did you first notice the distance? What happened when you tried to close it?\n\n**Every marriage has patterns that either saved it or strangled it.** The way you fought. The way you made up, or did not. The things you talked about and the things that became too dangerous to mention.\n\nWhat patterns defined your middle years? And when did you first suspect the patterns might be fatal?",
           "icon": "timeline"
         },
         {
@@ -160,7 +160,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "The End",
-          "text": "{red|**Every marriage that ends has a final chapter.** Understanding yours helps bring closure.\n\nWhat finally ended the marriage?}{red| Was it a specific event or the accumulation of many things?}{red| Who initiated the divorce?}{red| How did that happen?}\n\n{red|What were the final months or years like?}{red| Was there a point of no return?}{red| When did you know it was truly over?}\n\n{red|How did the divorce process unfold?}{red| What was hardest about it?}{red| What surprised you?}\n\n{red|Looking back, was there a way the marriage could have been saved?}{red| Or had too much damage accumulated?}{red| What do you believe now about whether it had to end?}",
+          "text": "**Every marriage that ends has a final chapter.** Understanding yours helps bring closure.\n\nWhat finally ended the marriage? Was it a specific event or the accumulation of many things? Who initiated the divorce? How did that happen?\n\nWhat were the final months or years like? Was there a point of no return? When did you know it was truly over?\n\nHow did the divorce process unfold? What was hardest about it? What surprised you?\n\nLooking back, was there a way the marriage could have been saved? Or had too much damage accumulated? What do you believe now about whether it had to end?",
           "icon": "stop"
         },
         {
@@ -177,7 +177,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Sitting With Your Story",
-          "text": "{red|**After writing your story, sit with it.**\n\n**Read it back to yourself.** Notice what emotions arise. Notice what feels true and what might need revision.\n\nAsk yourself: Does this story capture the complexity of what happened?}{red| Does it acknowledge both good and bad?}{red| Does it make sense of how we got from beginning to end?}\n\n**You may want to revise your story as you continue this journey and gain more insight.** That is part of the process.\n\n**For now, simply notice what it felt like to tell your story and what you learned from the telling.**",
+          "text": "**After writing your story, sit with it.**\n\n**Read it back to yourself.** Notice what emotions arise. Notice what feels true and what might need revision.\n\nAsk yourself: Does this story capture the complexity of what happened? Does it acknowledge both good and bad? Does it make sense of how we got from beginning to end?\n\n**You may want to revise your story as you continue this journey and gain more insight.** That is part of the process.\n\n**For now, simply notice what it felt like to tell your story and what you learned from the telling.**",
           "icon": "self_improvement"
         }
       ]
@@ -229,7 +229,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Mapping Your Factors",
-          "text": "{red|**Now map your own marriage.**\n\n**Do not try to be comprehensive.** Try to be honest. What were the real ingredients that combined to end this?}\n\n{red|What did your ex bring from before you met?}\n\n{red|What did you bring?}\n\n{red|What developed between you that became toxic?}\n\n{red|What pressures from outside made everything harder?}\n\n{red|Was there something about timing, a crisis that hit when you were already vulnerable, that made the difference?}\n\n{red|And of all these factors, which ones were fundamental?}{red| Which ones were just the final straws on a back that was already breaking?}\n\n**Take your time with this.** It is not a quiz. It is an excavation.",
+          "text": "**Now map your own marriage.**\n\n**Do not try to be comprehensive.** Try to be honest. What were the real ingredients that combined to end this?\n\nWhat did your ex bring from before you met?\n\nWhat did you bring?\n\nWhat developed between you that became toxic?\n\nWhat pressures from outside made everything harder?\n\nWas there something about timing, a crisis that hit when you were already vulnerable, that made the difference?\n\nAnd of all these factors, which ones were fundamental? Which ones were just the final straws on a back that was already breaking?\n\n**Take your time with this.** It is not a quiz. It is an excavation.",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -238,7 +238,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "How Factors Interact",
-          "text": "{red|**Factors do not operate in isolation.** They interact and amplify each other like instruments in a tragic symphony.\n\n**Imagine a marriage where one partner fears abandonment while the other withdraws when stressed.** Add financial pressure that removes any margin for grace. Each factor alone might be manageable. Together, they create a devastating spiral: her fear triggers his withdrawal, his withdrawal confirms her fear, she clings harder, he pulls further away, all while stress removes their capacity to break the cycle.\n\n**Look at your factor map.** How did the factors interact?}{red| What spirals developed?}{red| How did one issue make another worse?}",
+          "text": "**Factors do not operate in isolation.** They interact and amplify each other like instruments in a tragic symphony.\n\n**Imagine a marriage where one partner fears abandonment while the other withdraws when stressed.** Add financial pressure that removes any margin for grace. Each factor alone might be manageable. Together, they create a devastating spiral: her fear triggers his withdrawal, his withdrawal confirms her fear, she clings harder, he pulls further away, all while stress removes their capacity to break the cycle.\n\n**Look at your factor map.** How did the factors interact? What spirals developed? How did one issue make another worse?",
           "icon": "sync_problem"
         },
         {
@@ -274,7 +274,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Honest Without Demonizing",
-          "text": "{red|**This may be the part you have rehearsed most, the litany of their failures.** Or it may be the part you have avoided, afraid of your own anger. Either way, your ex contributed to your marriage failing. This is not about demonizing them. It is about being honest.\n\n**Some people, in an effort to be balanced, minimize their ex's contribution.** They take too much blame onto themselves, often from codependency or a pattern of accepting mistreatment.\n\n**Others go the opposite direction, making their ex into a complete villain with no redeeming qualities, which is rarely accurate and prevents real understanding.**\n\n**The goal here is honest assessment.** Your ex was a flawed human being who made choices that contributed to the marriage ending. What were those contributions?} Not to nurse grievances, but to understand clearly what happened.",
+          "text": "**This may be the part you have rehearsed most, the litany of their failures.** Or it may be the part you have avoided, afraid of your own anger. Either way, your ex contributed to your marriage failing. This is not about demonizing them. It is about being honest.\n\n**Some people, in an effort to be balanced, minimize their ex's contribution.** They take too much blame onto themselves, often from codependency or a pattern of accepting mistreatment.\n\n**Others go the opposite direction, making their ex into a complete villain with no redeeming qualities, which is rarely accurate and prevents real understanding.**\n\n**The goal here is honest assessment.** Your ex was a flawed human being who made choices that contributed to the marriage ending. What were those contributions? Not to nurse grievances, but to understand clearly what happened.",
           "icon": "person_outline"
         },
         {
@@ -282,7 +282,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What They Brought",
-          "text": "{red|**Think about who your ex was before you met them.** Not who you wanted them to be. Who they actually were.\n\nWhat happened to them as a child?}{red| How did their parents love them, or fail to?}{red| What did they learn about relationships before they could even spell the word?}\n\n{red|**These early experiences shape us in ways we rarely see.** A child who was abandoned learns that people leave. A child who was controlled learns that love means dominance. A child who was never enough learns that they must perform to be loved. Your ex brought these lessons into your marriage, and they played out whether either of you recognized them or not.\n\n**Then there is character.** Not their wounds, but their choices. Were they honest with you?}{red| Did they take responsibility when they were wrong?}{red| Did they care about your pain, or only their own?}{red| Could they see you as a separate person with separate needs?}\n\n**Some of what your ex brought was damage they could not help.** Some was choices they made anyway. Understanding the difference helps you know what to grieve and what to hold them accountable for.",
+          "text": "**Think about who your ex was before you met them.** Not who you wanted them to be. Who they actually were.\n\nWhat happened to them as a child? How did their parents love them, or fail to? What did they learn about relationships before they could even spell the word?\n\n**These early experiences shape us in ways we rarely see.** A child who was abandoned learns that people leave. A child who was controlled learns that love means dominance. A child who was never enough learns that they must perform to be loved. Your ex brought these lessons into your marriage, and they played out whether either of you recognized them or not.\n\n**Then there is character.** Not their wounds, but their choices. Were they honest with you? Did they take responsibility when they were wrong? Did they care about your pain, or only their own? Could they see you as a separate person with separate needs?\n\n**Some of what your ex brought was damage they could not help.** Some was choices they made anyway. Understanding the difference helps you know what to grieve and what to hold them accountable for.",
           "icon": "psychology"
         },
         {
@@ -298,7 +298,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Their Contribution",
-          "text": "{red|**Write honestly about your ex's contribution to the marriage ending.**\n\nWhat did they bring from their past that affected the marriage?}{red| What character issues or patterns did they have?}{red| What did they fail to provide that you needed?}{red| What choices did they make that damaged the relationship?}\n\n**Try to be honest without being vindictive.** The goal is understanding, not revenge.\n\nWrite about their contribution:",
+          "text": "**Write honestly about your ex's contribution to the marriage ending.**\n\nWhat did they bring from their past that affected the marriage? What character issues or patterns did they have? What did they fail to provide that you needed? What choices did they make that damaged the relationship?\n\n**Try to be honest without being vindictive.** The goal is understanding, not revenge.\n\nWrite about their contribution:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -307,7 +307,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "What This Tells You",
-          "text": "{red|**Understanding your ex's contribution is not just about the past.** It informs your future.\n\nWhat red flags were present that you missed or minimized?}{red| Now that you see them clearly, you can watch for them in the future.\n\nWhat patterns were there that you tolerated for too long?}{red| Understanding this helps you set better boundaries.\n\nWhat did you accept that you should not have accepted?} Knowing this helps you establish clearer standards going forward.\n\n**Your ex taught you something about what you cannot live with, what damages you, what you need to avoid.** Do not waste that painful education.",
+          "text": "**Understanding your ex's contribution is not just about the past.** It informs your future.\n\nWhat red flags were present that you missed or minimized? Now that you see them clearly, you can watch for them in the future.\n\nWhat patterns were there that you tolerated for too long? Understanding this helps you set better boundaries.\n\nWhat did you accept that you should not have accepted? Knowing this helps you establish clearer standards going forward.\n\n**Your ex taught you something about what you cannot live with, what damages you, what you need to avoid.** Do not waste that painful education.",
           "icon": "school"
         },
         {
@@ -315,7 +315,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Lessons From Their Part",
-          "text": "{red|Based on understanding your ex's contribution, what lessons do you take forward?}\n\nRed flags I will not ignore again:\n\nPatterns I will not tolerate:\n\nBoundaries I will maintain:\n\nWhat I learned I need in a partner:\n\nWrite the lessons you take from understanding their part:",
+          "text": "Based on understanding your ex's contribution, what lessons do you take forward?\n\nRed flags I will not ignore again:\n\nPatterns I will not tolerate:\n\nBoundaries I will maintain:\n\nWhat I learned I need in a partner:\n\nWrite the lessons you take from understanding their part:",
           "icon": "flag"
         }
       ]
@@ -351,7 +351,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Common Ways We Contribute",
-          "text": "{red|**This is where it gets uncomfortable.** Not because you are responsible for their choices. You are not. But because you were not just a passenger in this marriage. You were driving too.\n\n**Maybe you contributed in obvious ways.** Things you did that you knew were wrong when you did them. Those are painful to admit, but at least they are clear.\n\n**More often, we contribute in ways that feel justified in the moment.** The criticism that was technically true but delivered to wound. The withdrawal that felt like self-protection but looked like abandonment. The score-keeping that made sure every grievance was remembered.\n\n**Sometimes we contribute by what we did not do.** We did not speak up when something bothered us until it had festered into resentment. We did not prioritize the marriage when it was slowly starving. We did not get help when we were drowning.\n\n**And sometimes we contributed by choosing this person in the first place.** Not because choosing them was wrong, but because we chose them for reasons that set us up for trouble. We chose them to fix us. We chose them because they were familiar, even though familiar was not healthy. We chose the project, not the partner.\n\nWhat did you bring?}{red| What did you do, not do, or choose?}",
+          "text": "**This is where it gets uncomfortable.** Not because you are responsible for their choices. You are not. But because you were not just a passenger in this marriage. You were driving too.\n\n**Maybe you contributed in obvious ways.** Things you did that you knew were wrong when you did them. Those are painful to admit, but at least they are clear.\n\n**More often, we contribute in ways that feel justified in the moment.** The criticism that was technically true but delivered to wound. The withdrawal that felt like self-protection but looked like abandonment. The score-keeping that made sure every grievance was remembered.\n\n**Sometimes we contribute by what we did not do.** We did not speak up when something bothered us until it had festered into resentment. We did not prioritize the marriage when it was slowly starving. We did not get help when we were drowning.\n\n**And sometimes we contributed by choosing this person in the first place.** Not because choosing them was wrong, but because we chose them for reasons that set us up for trouble. We chose them to fix us. We chose them because they were familiar, even though familiar was not healthy. We chose the project, not the partner.\n\nWhat did you bring? What did you do, not do, or choose?",
           "icon": "psychology"
         },
         {
@@ -359,7 +359,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "The Trap of Two Extremes",
-          "text": "{red|**Two traps await when examining your contribution.**\n\n**The first is taking too little responsibility.** Your ex was so clearly at fault that you cannot see your own part. Maybe they were 80% responsible. But what about your 20%?} That 20% is the part you can change.\n\n**The second trap is taking too much responsibility.** This is common among people who grew up learning to take blame, who are prone to shame, or who were in relationships with blamers who made everything their fault. If you find yourself saying it was all my fault, pause. That is rarely accurate.\n\n**Aim for accurate responsibility.** Not too little, not too much.",
+          "text": "**Two traps await when examining your contribution.**\n\n**The first is taking too little responsibility.** Your ex was so clearly at fault that you cannot see your own part. Maybe they were 80% responsible. But what about your 20%? That 20% is the part you can change.\n\n**The second trap is taking too much responsibility.** This is common among people who grew up learning to take blame, who are prone to shame, or who were in relationships with blamers who made everything their fault. If you find yourself saying it was all my fault, pause. That is rarely accurate.\n\n**Aim for accurate responsibility.** Not too little, not too much.",
           "icon": "balance"
         },
         {
@@ -367,7 +367,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Honest Contribution",
-          "text": "{red|**This is between you and yourself.** No one else will read this unless you choose to share it.\n\nWhat did you bring into this marriage that made things harder?}{red| The wounds you had not healed. The patterns you had not broken. The ways of relating you learned in childhood that you carried into adulthood.\n\nWhat did you do that damaged the relationship?}{red| Not by accident. Choices you made, even if they felt justified at the time.\n\nWhat did you fail to do that might have made a difference?}{red| The conversations you avoided. The help you did not seek. The moments you chose comfort over growth.\n\nAnd here is the hardest question: Is there something about how you chose this person, or why you stayed, that you need to examine?} Not to blame yourself, but to understand yourself.\n\n**Write what is true.** The goal is not self-flagellation. The goal is clarity that sets you free.",
+          "text": "**This is between you and yourself.** No one else will read this unless you choose to share it.\n\nWhat did you bring into this marriage that made things harder? The wounds you had not healed. The patterns you had not broken. The ways of relating you learned in childhood that you carried into adulthood.\n\nWhat did you do that damaged the relationship? Not by accident. Choices you made, even if they felt justified at the time.\n\nWhat did you fail to do that might have made a difference? The conversations you avoided. The help you did not seek. The moments you chose comfort over growth.\n\nAnd here is the hardest question: Is there something about how you chose this person, or why you stayed, that you need to examine? Not to blame yourself, but to understand yourself.\n\n**Write what is true.** The goal is not self-flagellation. The goal is clarity that sets you free.",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -420,7 +420,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Common Destructive Patterns",
-          "text": "{red|See if you recognize your marriage in any of these:\n\n**One of you needed to talk about problems.** The other needed space. So one pursued, which felt like pressure, and the other withdrew, which felt like abandonment. The pursuing got more desperate. The withdrawing got more complete. You could not find each other.\n\n**Or: One of you raised concerns by criticizing.** The other responded by defending. Neither of you ever felt heard. The criticism got sharper. The defense got higher. Eventually, you stopped trying.\n\n**Or: Small issues became big fights.** Voices raised. Things said that could not be unsaid. Afterward, neither of you knew how it escalated so fast. But it kept happening.\n\n**Or: Neither of you wanted to fight, so neither of you said anything.** Problems piled up in the silence. By the time you tried to talk about them, there were too many. The pile had become a wall.\n\n**Or: One of you showed contempt.** Eye rolls. Disgust. The message that the other was not just wrong but pathetic. The other retreated inward, shutting down to survive the disdain. Connection died in that space.\n\nWhich one was yours?}{red| Or was it a combination that was uniquely destructive?}",
+          "text": "See if you recognize your marriage in any of these:\n\n**One of you needed to talk about problems.** The other needed space. So one pursued, which felt like pressure, and the other withdrew, which felt like abandonment. The pursuing got more desperate. The withdrawing got more complete. You could not find each other.\n\n**Or: One of you raised concerns by criticizing.** The other responded by defending. Neither of you ever felt heard. The criticism got sharper. The defense got higher. Eventually, you stopped trying.\n\n**Or: Small issues became big fights.** Voices raised. Things said that could not be unsaid. Afterward, neither of you knew how it escalated so fast. But it kept happening.\n\n**Or: Neither of you wanted to fight, so neither of you said anything.** Problems piled up in the silence. By the time you tried to talk about them, there were too many. The pile had become a wall.\n\n**Or: One of you showed contempt.** Eye rolls. Disgust. The message that the other was not just wrong but pathetic. The other retreated inward, shutting down to survive the disdain. Connection died in that space.\n\nWhich one was yours? Or was it a combination that was uniquely destructive?",
           "icon": "category"
         },
         {
@@ -436,7 +436,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Marriage Patterns",
-          "text": "{red|**Identify the patterns that characterized your marriage.**\n\nWhat was your typical pattern during conflict?}{red| Who pursued, who withdrew?}{red| What happened when one of you raised a concern?}{red| How did you handle disagreements?}{red| What cycles kept repeating?}{red| What was your role in the pattern?}{red| What was your ex's role?}\n\nWrite about your marriage patterns:",
+          "text": "**Identify the patterns that characterized your marriage.**\n\nWhat was your typical pattern during conflict? Who pursued, who withdrew? What happened when one of you raised a concern? How did you handle disagreements? What cycles kept repeating? What was your role in the pattern? What was your ex's role?\n\nWrite about your marriage patterns:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -453,7 +453,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Pattern Work",
-          "text": "{red|Based on understanding your patterns, what work do you need to do?}\n\nThe role I typically played in destructive patterns was:\n\nThis connected to my history or wounds in these ways:\n\nTo avoid repeating this pattern, I need to grow in these areas:\n\nThe different steps I want to take in future relationships are:\n\nWrite your pattern work plan:",
+          "text": "Based on understanding your patterns, what work do you need to do?\n\nThe role I typically played in destructive patterns was:\n\nThis connected to my history or wounds in these ways:\n\nTo avoid repeating this pattern, I need to grow in these areas:\n\nThe different steps I want to take in future relationships are:\n\nWrite your pattern work plan:",
           "icon": "construction"
         }
       ]
@@ -550,7 +550,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Moments That Changed Things",
-          "text": "{red|**Michael could pinpoint it exactly.** The pregnancy loss. Everything was different after that. Not immediately, but looking back, that was when the ground shifted beneath them. They grieved differently, drifted into separate silences, and never quite found their way back to each other.\n\n**Most marriages have turning points, moments when the trajectory changed.**\n\n**Sometimes they are dramatic: a discovery, a betrayal, a crisis.** Sometimes they are quiet: a conversation that went wrong, a choice that set things on a different path, the moment you realized something fundamental had shifted.\n\n**Sometimes the turning point is not a single moment but a season.** The year of depression. The period when work consumed everything. The stretch when you stopped talking about anything real.\n\n**Identifying these turning points helps you understand the shape of your marriage's story.** How did you get from the hopeful beginning to the painful end?} The turning points mark the route.",
+          "text": "**Michael could pinpoint it exactly.** The pregnancy loss. Everything was different after that. Not immediately, but looking back, that was when the ground shifted beneath them. They grieved differently, drifted into separate silences, and never quite found their way back to each other.\n\n**Most marriages have turning points, moments when the trajectory changed.**\n\n**Sometimes they are dramatic: a discovery, a betrayal, a crisis.** Sometimes they are quiet: a conversation that went wrong, a choice that set things on a different path, the moment you realized something fundamental had shifted.\n\n**Sometimes the turning point is not a single moment but a season.** The year of depression. The period when work consumed everything. The stretch when you stopped talking about anything real.\n\n**Identifying these turning points helps you understand the shape of your marriage's story.** How did you get from the hopeful beginning to the painful end? The turning points mark the route.",
           "icon": "turn_right"
         },
         {
@@ -558,7 +558,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Positive Turning Points That Did Not Last",
-          "text": "{red|**Some turning points were positive.** There were moments when things could have gotten better, and maybe briefly did.\n\n**The conversation where you finally opened up.** The season when you reconnected. The counseling that seemed to help. The recommitment you made.\n\n**These positive turning points matter because they show what was possible.** But understanding why they did not last matters more.\n\nDid the change not go deep enough?}{red| Did old patterns reassert themselves?}{red| Did one or both of you not follow through?}{red| Did a new crisis undo the progress?}\n\n**Positive turning points that fade often reveal what the marriage really needed but never fully got.**",
+          "text": "**Some turning points were positive.** There were moments when things could have gotten better, and maybe briefly did.\n\n**The conversation where you finally opened up.** The season when you reconnected. The counseling that seemed to help. The recommitment you made.\n\n**These positive turning points matter because they show what was possible.** But understanding why they did not last matters more.\n\nDid the change not go deep enough? Did old patterns reassert themselves? Did one or both of you not follow through? Did a new crisis undo the progress?\n\n**Positive turning points that fade often reveal what the marriage really needed but never fully got.**",
           "icon": "trending_up"
         },
         {
@@ -566,7 +566,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Negative Turning Points",
-          "text": "{red|**Negative turning points are often easier to identify.** Something happened, and things were never the same.\n\n**Betrayal: discovery of an affair, major lies revealed, trust shattered.**\n\n**Failure: a crucial moment when one partner needed the other and they were not there.**\n\n**Words: something said that could not be unsaid, a line crossed in conflict.**\n\n**Choices: a decision that prioritized something else over the marriage.**\n\n**Accumulation: sometimes the turning point is not dramatic but the moment when accumulated damage reached critical mass.**\n\nWhat negative turning points marked your marriage's decline?}",
+          "text": "**Negative turning points are often easier to identify.** Something happened, and things were never the same.\n\n**Betrayal: discovery of an affair, major lies revealed, trust shattered.**\n\n**Failure: a crucial moment when one partner needed the other and they were not there.**\n\n**Words: something said that could not be unsaid, a line crossed in conflict.**\n\n**Choices: a decision that prioritized something else over the marriage.**\n\n**Accumulation: sometimes the turning point is not dramatic but the moment when accumulated damage reached critical mass.**\n\nWhat negative turning points marked your marriage's decline?",
           "icon": "trending_down"
         },
         {
@@ -574,7 +574,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Turning Points",
-          "text": "{red|**Identify the significant turning points in your marriage.**\n\nWhat moments or seasons marked major shifts?}{red| What positive turning points occurred and why did they not last?}{red| What negative turning points accelerated the decline?}{red| Was there a point of no return?}{red| When was it?}\n\nWrite about your turning points:",
+          "text": "**Identify the significant turning points in your marriage.**\n\nWhat moments or seasons marked major shifts? What positive turning points occurred and why did they not last? What negative turning points accelerated the decline? Was there a point of no return? When was it?\n\nWrite about your turning points:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -583,7 +583,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "The Road Not Taken",
-          "text": "{red|**At each turning point, other paths existed.** What if you had made different choices?}{red| What if your ex had?}\n\n**This is not about torturing yourself with regret.** It is about recognizing that marriages do not inevitably fail. Choices matter. Moments matter.\n\n**Some marriages survive affairs and emerge stronger.** Some marriages navigate devastating losses and come through closer. The turning point is not destiny. What happens at the turning point matters.\n\n**This matters for your future.** In your next relationship, there will be turning points. Recognizing them and choosing differently is possible when you understand what turning points look like.",
+          "text": "**At each turning point, other paths existed.** What if you had made different choices? What if your ex had?\n\n**This is not about torturing yourself with regret.** It is about recognizing that marriages do not inevitably fail. Choices matter. Moments matter.\n\n**Some marriages survive affairs and emerge stronger.** Some marriages navigate devastating losses and come through closer. The turning point is not destiny. What happens at the turning point matters.\n\n**This matters for your future.** In your next relationship, there will be turning points. Recognizing them and choosing differently is possible when you understand what turning points look like.",
           "icon": "fork_right"
         },
         {
@@ -591,7 +591,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Turning Point Lessons",
-          "text": "{red|What do your turning points teach you?}\n\nWhat I learned about how quickly things can shift:\n\nWhat I wish I had done differently at key moments:\n\nWhat I will watch for in future relationships:\n\nHow I will handle future turning points differently:\n\nWrite your turning point lessons:",
+          "text": "What do your turning points teach you?\n\nWhat I learned about how quickly things can shift:\n\nWhat I wish I had done differently at key moments:\n\nWhat I will watch for in future relationships:\n\nHow I will handle future turning points differently:\n\nWrite your turning point lessons:",
           "icon": "school"
         }
       ]
@@ -619,7 +619,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Pain as Teacher",
-          "text": "{red|**Your marriage may have failed, but it was not wasted.** It taught you things you could not have learned any other way.\n\n**You paid a high price for this education.** Divorce is brutal tuition, but it does teach. Do not waste what it cost you. Wring every drop of wisdom from the experience.\n\n**Rachel spent two years after her divorce replaying every fight, every failure, every moment she wished she could take back.** Then something shifted. She stopped asking \"why did this happen to me?}{red|\" and started asking \"what did this teach me?}{red|\" The same memories that had tormented her became instructors. She realized she had ignored her own needs for years. She saw how she had chosen someone who reminded her of her emotionally unavailable father. She understood why she had stayed so long past the point of health. \"The marriage failed,\" Rachel said, \"but I did not fail. I grew. I know myself now in ways I never did before. And I will never make those same choices again.\"\n\nWhat did you learn about yourself?}{red| About relationships?}{red| About what you need and cannot tolerate?}{red| About what makes love last or fail?}\n\n**The worst outcome would be to suffer this much and learn nothing.** The redemptive outcome is to emerge wiser, more self-aware, and better equipped for what comes next.\n\n**\"There is a time for everything, and a season for every activity under the heavens\" ({red|Ecclesiastes 3:1|There is a time for everything, and a season for every activity under the heavens}).** This was a season of painful learning. Let it yield its wisdom.",
+          "text": "**Your marriage may have failed, but it was not wasted.** It taught you things you could not have learned any other way.\n\n**You paid a high price for this education.** Divorce is brutal tuition, but it does teach. Do not waste what it cost you. Wring every drop of wisdom from the experience.\n\n**Rachel spent two years after her divorce replaying every fight, every failure, every moment she wished she could take back.** Then something shifted. She stopped asking \"why did this happen to me?\" and started asking \"what did this teach me?\" The same memories that had tormented her became instructors. She realized she had ignored her own needs for years. She saw how she had chosen someone who reminded her of her emotionally unavailable father. She understood why she had stayed so long past the point of health. \"The marriage failed,\" Rachel said, \"but I did not fail. I grew. I know myself now in ways I never did before. And I will never make those same choices again.\"\n\nWhat did you learn about yourself? About relationships? About what you need and cannot tolerate? About what makes love last or fail?\n\n**The worst outcome would be to suffer this much and learn nothing.** The redemptive outcome is to emerge wiser, more self-aware, and better equipped for what comes next.\n\n**\"There is a time for everything, and a season for every activity under the heavens\" (Ecclesiastes 3:1|There is a time for everything, and a season for every activity under the heavens).** This was a season of painful learning. Let it yield its wisdom.",
           "icon": "school"
         },
         {
@@ -627,7 +627,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Lessons About Yourself",
-          "text": "{red|**Your marriage was a mirror.** It showed you things about yourself you might never have seen otherwise.\n\n**You learned how you attach.** When you felt insecure, did you reach for your partner or push them away?}{red| Did you need constant reassurance, or did you pretend you needed nothing at all?}{red| Your attachment style showed up every time things got hard.\n\n**You learned where your wounds are.** The things your partner said that destroyed you, they found the places you were already broken. The criticisms that cut deepest exposed what you secretly feared was true about yourself.\n\n**You learned what you need that you did not know you needed.** Maybe you need more affection than you admitted. Maybe you need solitude that felt selfish to ask for. Maybe you need to feel respected, or desired, or simply seen. Your marriage taught you what starving for these things feels like.\n\n**And you learned what you become under pressure.** The best version of yourself, or the worst?}{red| Did you fight fair?}{red| Did you fight at all?}{red| When things got hard, who did you turn into?}\n\n**These lessons are painful.** They are also invaluable. You know yourself now in ways you did not before.",
+          "text": "**Your marriage was a mirror.** It showed you things about yourself you might never have seen otherwise.\n\n**You learned how you attach.** When you felt insecure, did you reach for your partner or push them away? Did you need constant reassurance, or did you pretend you needed nothing at all? Your attachment style showed up every time things got hard.\n\n**You learned where your wounds are.** The things your partner said that destroyed you, they found the places you were already broken. The criticisms that cut deepest exposed what you secretly feared was true about yourself.\n\n**You learned what you need that you did not know you needed.** Maybe you need more affection than you admitted. Maybe you need solitude that felt selfish to ask for. Maybe you need to feel respected, or desired, or simply seen. Your marriage taught you what starving for these things feels like.\n\n**And you learned what you become under pressure.** The best version of yourself, or the worst? Did you fight fair? Did you fight at all? When things got hard, who did you turn into?\n\n**These lessons are painful.** They are also invaluable. You know yourself now in ways you did not before.",
           "icon": "person"
         },
         {
@@ -704,7 +704,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Summary Understanding",
-          "text": "{red|**Write a summary of your understanding of what happened in your marriage.**\n\nIn a few paragraphs, describe: How did your marriage begin, develop, and end?}{red| What were the main factors that contributed to its failure?}{red| What was your part and what was your ex's part?}{red| What was beyond either of your control?}\n\n**Write this as if explaining to someone who genuinely wants to understand what happened.**\n\nYour summary understanding:",
+          "text": "**Write a summary of your understanding of what happened in your marriage.**\n\nIn a few paragraphs, describe: How did your marriage begin, develop, and end? What were the main factors that contributed to its failure? What was your part and what was your ex's part? What was beyond either of your control?\n\n**Write this as if explaining to someone who genuinely wants to understand what happened.**\n\nYour summary understanding:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -721,7 +721,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Understanding and Faith",
-          "text": "**Your faith speaks to this work of understanding.**\n\n**Search me, God, and know my heart; test me and know my anxious thoughts.** See if there is any offensive way in me, and lead me in the way everlasting. (({red|Psalm 139:23-24}))\n\n**God invites honest self-examination.** He already knows everything about your marriage. You are not hiding anything from Him. But your own understanding matters for your healing.\n\n**God can redeem even failed marriages.** Not by erasing them, but by using them to grow you, to teach you, to prepare you for what comes next. Let Him do that work.",
+          "text": "**Your faith speaks to this work of understanding.**\n\n**Search me, God, and know my heart; test me and know my anxious thoughts.** See if there is any offensive way in me, and lead me in the way everlasting. (Psalm 139:23-24)\n\n**God invites honest self-examination.** He already knows everything about your marriage. You are not hiding anything from Him. But your own understanding matters for your healing.\n\n**God can redeem even failed marriages.** Not by erasing them, but by using them to grow you, to teach you, to prepare you for what comes next. Let Him do that work.",
           "icon": "church"
         },
         {

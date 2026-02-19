@@ -53,7 +53,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Before We Begin",
-          "text": "Most people do not choose poorly because they lack wisdom.\nThey choose poorly because they are afraid of being alone, left behind, or running out of time.\n\nIf you have ever felt pressured to settle, rush, or ignore uneasy signs just to feel chosen, take a breath.\nThis journey will help you choose with clarity, peace, and courage, even when patience feels costly.",
+          "text": "Most people do not choose poorly because they lack wisdom.\n\nThey choose poorly because they are afraid of being alone, left behind, or running out of time.\n\nIf you have ever felt pressured to settle, rush, or ignore uneasy signs just to feel chosen, take a breath.\n\nThis journey will help you choose with clarity, peace, and courage, even when patience feels costly.",
           "icon": "menu_book"
         },
         {
@@ -61,7 +61,7 @@
           "cardType": "question",
           "cardNumber": 2,
           "title": "Your Current Approach",
-          "text": "{red|How would you describe your current approach to choosing a spouse?}",
+          "text": "How would you describe your current approach to choosing a spouse?",
           "prompts": [
             "Following my heart and feelings",
             "Hoping the right person appears",
@@ -82,7 +82,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Why This Decision Matters So Much",
-          "text": "Consider what your spouse choice affects:\n\n• Your daily happiness and emotional health\n• Your spiritual growth (or decline)\n• Your children's upbringing and worldview\n• Your financial trajectory\n• Your ministry and impact\n• Your extended family relationships\n• Every single day for the rest of your life\n\nNo career choice, no location, no other relationship carries this weight.",
+          "text": "Consider what your spouse choice affects:\n• Your daily happiness and emotional health\n• Your spiritual growth (or decline)\n• Your children's upbringing and worldview\n• Your financial trajectory\n• Your ministry and impact\n• Your extended family relationships\n• Every single day for the rest of your life\n\nNo career choice, no location, no other relationship carries this weight.",
           "icon": "scale"
         },
         {
@@ -90,7 +90,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "The Problem with 'Following Your Heart'",
-          "text": "\"The heart is deceitful above all things and beyond cure. Who can understand it?\" ({red|Jeremiah 17:9})\n\nFeelings are real but not reliable guides. Attraction can blind you to red flags. Chemistry can mask incompatibility. Loneliness can rush you into poor choices.\n\nThis doesn't mean ignore your heart, it means don't let it override your head and godly counsel.",
+          "text": "The heart is deceitful above all things and beyond cure.\n\n\"Who can understand it?\" (Jeremiah 17:9)\n\nFeelings are real but not reliable guides.\n\nAttraction can blind you to red flags.\n\nChemistry can mask incompatibility.\n\nLoneliness can rush you into poor choices.\n\nThis doesn't mean ignore your heart, it means don't let it override your head and godly counsel.",
           "icon": "favorite"
         },
         {
@@ -98,7 +98,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Biblical Wisdom for Big Decisions",
-          "text": "\"Plans fail for lack of counsel, but with many advisers they succeed.\" ({red|Proverbs 15:22})\n\n\"Trust in the Lord with all your heart and lean not on your own understanding.\" ({red|Proverbs 3:5})\n\nGod wants to guide this decision. He does so through:\n• Scripture's principles\n• The Holy Spirit's leading\n• Wise community input\n• Sound evaluation of character",
+          "text": "\"Plans fail for lack of counsel, but with many advisers they succeed.\" (Proverbs 15:22)\n\n\"Trust in the Lord with all your heart and lean not on your own understanding.\" (Proverbs 3:5God wants to guide this decision. He does so through:\n• Scripture's principles\n• The Holy Spirit's leading\n• Wise community input\n• Sound evaluation of character",
           "icon": "menu_book"
         },
         {
@@ -106,7 +106,7 @@
           "cardType": "reflection",
           "cardNumber": 6,
           "title": "The Stakes of Getting It Wrong",
-          "text": "Think about marriages you've observed, both thriving and struggling.\n\nThe struggling ones often started with:\n• Ignored red flags\n• Rush driven by emotion\n• Insufficient evaluation of character\n• Lack of spiritual alignment\n\nYou have the opportunity to choose differently. The work you do now prevents decades of pain.",
+          "text": "Think about marriages you've observed, both thriving and struggling.\n\nThe struggling ones often started with:\n• Ignored red flags\n• Rush driven by emotion\n• Insufficient evaluation of character\n• Lack of spiritual alignment\n\nYou have the opportunity to choose differently.\n\nThe work you do now prevents decades of pain.",
           "icon": "warning",
           "responseType": "open-text"
         },
@@ -115,7 +115,7 @@
           "cardType": "action",
           "cardNumber": 7,
           "title": "Your Commitment to Choose Wisely",
-          "text": "Write a commitment statement about how you will approach this decision:\n\nI commit to choosing a spouse by...\n\nI will not let _____ override wisdom...\n\nI want my future marriage to be...",
+          "text": "Write a commitment statement about how you will approach this decision:\n\n• I commit to choosing a spouse by.\n\n• I will not let _____ override wisdom.\n\n• I want my future marriage to be.",
           "responseType": "open-text",
           "icon": "edit_note"
         }
@@ -144,7 +144,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Chemistry Trap",
-          "text": "Chemistry is intoxicating:\n\n• Dopamine creates euphoria\n• Oxytocin creates bonding\n• Adrenaline creates excitement\n\nThese chemicals literally impair judgment, like being mildly drunk. This is why people overlook obvious problems in the 'honeymoon phase.'\n\nChemistry matters, but it's not a reliable guide to long-term compatibility.",
+          "text": "Chemistry is intoxicating:\n• Dopamine creates euphoria\n• Oxytocin creates bonding\n• Adrenaline creates excitement\n\nThese chemicals literally impair judgment, like being mildly drunk.\n\nThis is why people overlook obvious problems in the 'honeymoon phase.'\n\nChemistry matters, but it's not a reliable guide to long-term compatibility.",
           "icon": "science"
         },
         {
@@ -152,7 +152,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Why Character Endures",
-          "text": "Character is:\n\n• How someone treats people who can do nothing for them\n• What they do when no one is watching\n• How they handle adversity, failure, and frustration\n• Their consistency over time\n\n\"A good name is more desirable than great riches\" ({red|Proverbs 22:1|A good name is more desirable than great riches})\n\nYou can build chemistry with a person of character. You cannot build character into a person with chemistry.",
+          "text": "Character is:\n• How someone treats people who can do nothing for them\n• What they do when no one is watching\n• How they handle adversity, failure, and frustration\n• Their consistency over time\n\n\"A good name is more desirable than great riches\" (Proverbs 22:1)\n\nYou can build chemistry with a person of character.\n\nYou cannot build character into a person with chemistry.",
           "icon": "verified"
         },
         {
@@ -183,7 +183,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Core Character Traits to Evaluate",
-          "text": "Look for these non-negotiable character qualities:\n\n**Integrity**: Honesty even when it costs them\n**Humility**: Ability to admit wrong and receive feedback\n**Responsibility**: Ownership of their life and choices\n**Self-control**: Mastery over impulses and emotions\n**Kindness**: Consistent compassion toward others\n**Faithfulness**: Reliability and commitment",
+          "text": "Look for these non-negotiable character qualities:\n\n• **Integrity: Honesty even when it costs them**\n\n• **Humility: Ability to admit wrong and receive feedback**\n\n• **Responsibility: Ownership of their life and choices**\n\n• **Self-control: Mastery over impulses and emotions**\n\n• **Kindness: Consistent compassion toward others**\n\n• **Faithfulness: Reliability and commitment**",
           "icon": "checklist"
         },
         {
@@ -191,7 +191,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "How to Actually Evaluate Character",
-          "text": "Character reveals itself over time and pressure:\n\n• Watch how they treat service workers, family, and people they disagree with\n• Observe them when stressed, disappointed, or inconvenienced\n• Listen to what they say about others, they'll say the same about you\n• Notice patterns, not just moments\n• Pay attention to how they handle conflict with you",
+          "text": "Character reveals itself over time and pressure:\n• Watch how they treat service workers, family, and people they disagree with\n• Observe them when stressed, disappointed, or inconvenienced\n• Listen to what they say about others, they'll say the same about you\n• Notice patterns, not just moments\n• Pay attention to how they handle conflict with you",
           "icon": "visibility"
         },
         {
@@ -228,7 +228,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Unequal Yoke Warning",
-          "text": "\"Do not be yoked together with unbelievers. For what do righteousness and wickedness have in common?\" ({red|2 Corinthians 6:14})\n\nThis isn't about superiority, it's about direction. An ox and donkey yoked together will pull against each other and go nowhere. Marriage requires walking the same way.\n\nThis applies not just to believer vs. unbeliever, but to levels of commitment and spiritual direction.",
+          "text": "\"Do not be yoked together with unbelievers.\n\nFor what do righteousness and wickedness have in common?\" (2 Corinthians 6:14)\n\nThis isn't about superiority, it's about direction. An ox and donkey yoked together will pull against each other and go nowhere.\n\nMarriage requires walking the same way.\n\nThis applies not just to believer vs. unbeliever, but to levels of commitment and spiritual direction.",
           "icon": "warning"
         },
         {
@@ -236,7 +236,7 @@
           "cardType": "question",
           "cardNumber": 2,
           "title": "What Spiritual Alignment Means to You",
-          "text": "{red|What aspects of spiritual life are most important to share with a spouse?}",
+          "text": "What aspects of spiritual life are most important to share with a spouse?",
           "prompts": [
             "Same core theological beliefs",
             "Similar church involvement level",
@@ -258,7 +258,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Beyond the Label 'Christian'",
-          "text": "Evaluate the substance of their faith:\n\n**Is their faith personal or inherited?** Did they choose Christ or just grow up in church?\n\n**Is their faith growing?** Are they actively pursuing God, or coasting?\n\n**Is their faith integrated?** Does it affect their decisions, relationships, and priorities?\n\n**Is their faith tested?** Have they maintained faith through difficulty?\n\nLabels mean little; fruit reveals everything.",
+          "text": "Evaluate the substance of their faith:\n\n• Is their faith personal or inherited?\n\n• Did they choose Christ or just grow up in church?\n\n• Is their faith growing?\n\n• Are they actively pursuing God, or coasting?\n\n• Is their faith integrated?\n\nDoes it affect their decisions, relationships, and priorities?\n\nIs their faith tested?\n\nHave they maintained faith through difficulty?\n\nLabels mean little; fruit reveals everything.",
           "icon": "eco"
         },
         {
@@ -266,7 +266,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Questions That Reveal Spiritual Reality",
-          "text": "Ask and observe:\n\n• \"Tell me about your relationship with God.\"\n• \"How has your faith changed you?\"\n• \"What's God teaching you lately?\"\n• \"How do you make decisions?\"\n• \"What role does church play in your life?\"\n\nListen for genuine, personal answers, not clichés or what they think you want to hear.",
+          "text": "Ask and observe:\n\n\"Tell me about your relationship with God.\"\n\n\"How has your faith changed you?\"\n\n\"What's God teaching you lately?\"\n\n\"How do you make decisions?\"\n\n\"What role does church play in your life?\"\n\nListen for genuine, personal answers, not clichés or what they think you want to hear.",
           "icon": "help_outline"
         },
         {
@@ -274,7 +274,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "The 'Missionary Dating' Fallacy",
-          "text": "Many have entered relationships hoping to convert or change someone. The results are almost universally painful:\n\n• You cannot love someone into faith\n• Pressure creates resentment, not conversion\n• You often get pulled away from your own faith\n• Children suffer in spiritually divided homes\n\nMarry someone who IS what you want, not someone you hope to change.",
+          "text": "Many have entered relationships hoping to convert or change someone.\n\nThe results are almost universally painful:\n• You cannot love someone into faith\n• Pressure creates resentment, not conversion\n• You often get pulled away from your own faith\n• Children suffer in spiritually divided homes\n\nMarry someone who IS what you want, not someone you hope to change.",
           "icon": "gpp_maybe",
           "responseType": "open-text"
         },
@@ -312,7 +312,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Emotional Health Factor",
-          "text": "You're not just marrying someone's beliefs and behaviors, you're marrying their emotional world:\n\n• Their triggers and sensitivities\n• Their coping mechanisms\n• Their conflict style\n• Their capacity for intimacy\n• Their unhealed wounds\n\nEmotionally unhealthy people make emotionally unhealthy spouses, regardless of other qualities.",
+          "text": "You're not just marrying someone's beliefs and behaviors, you're marrying their emotional world:\n• Their triggers and sensitivities\n• Their coping mechanisms\n• Their conflict style\n• Their capacity for intimacy\n• Their unhealed wounds\n\nEmotionally unhealthy people make emotionally unhealthy spouses, regardless of other qualities.",
           "icon": "mood"
         },
         {
@@ -320,7 +320,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Signs of Emotional Health",
-          "text": "Look for these markers:\n\n✓ Takes responsibility for their feelings\n✓ Can identify and express emotions appropriately\n✓ Handles stress without destructive behaviors\n✓ Maintains healthy relationships with others\n✓ Has worked through significant past wounds\n✓ Can receive feedback without defensiveness\n✓ Shows consistent emotional stability",
+          "text": "Look for these markers:\n\n• ✓ Takes responsibility for their feelings\n• ✓ Can identify and express emotions appropriately\n• ✓ Handles stress without destructive behaviors\n• ✓ Maintains healthy relationships with others\n• ✓ Has worked through significant past wounds\n• ✓ Can receive feedback without defensiveness\n• ✓ Shows consistent emotional stability",
           "icon": "check_circle"
         },
         {
@@ -328,7 +328,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Warning Signs of Emotional Immaturity",
-          "text": "Red flags to watch:\n\n🚩 Blames others for their problems\n🚩 Explosive anger or emotional volatility\n🚩 Inability to handle conflict without escalation\n🚩 Extreme jealousy or possessiveness\n🚩 Unprocessed trauma affecting current behavior\n🚩 Addiction or compulsive behaviors\n🚩 No close, healthy friendships",
+          "text": "Red flags to watch:\n\n• 🚩 Blames others for their problems\n• 🚩 Explosive anger or emotional volatility\n• 🚩 Inability to handle conflict without escalation\n• 🚩 Extreme jealousy or possessiveness\n• 🚩 Unprocessed trauma affecting current behavior\n• 🚩 Addiction or compulsive behaviors\n• 🚩 No close, healthy friendships",
           "icon": "report_problem"
         },
         {
@@ -367,7 +367,7 @@
           "cardType": "teaching",
           "cardNumber": 6,
           "title": "The 'I Can Fix Them' Trap",
-          "text": "Warning: You cannot heal someone else's emotional wounds through love.\n\nYes, God heals. Yes, people grow. But:\n\n• Significant emotional work happens before, not after, marriage\n• Your love won't fix their issues, professional help might\n• Marriage amplifies existing patterns; it doesn't resolve them\n\nMarry someone who has done their work, or is actively doing it with professional support.",
+          "text": "Warning: You cannot heal someone else's emotional wounds through love.\n\nYes, God heals.\n\nYes, people grow.\n\nBut:\n• Significant emotional work happens before, not after, marriage\n• Your love won't fix their issues, professional help might\n• Marriage amplifies existing patterns; it doesn't resolve them\n\nMarry someone who has done their work, or is actively doing it with professional support.",
           "icon": "build"
         },
         {
@@ -404,7 +404,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Family Systems Impact",
-          "text": "We unconsciously absorb from our families:\n\n• How conflict is handled (or avoided)\n• How affection is expressed\n• Gender roles and expectations\n• Communication patterns\n• Financial habits\n• Parenting approaches\n\nThese patterns operate automatically unless made conscious and intentionally changed.",
+          "text": "We unconsciously absorb from our families:\n• How conflict is handled (or avoided)\n• How affection is expressed\n• Gender roles and expectations\n• Communication patterns\n• Financial habits\n• Parenting approaches\n\nThese patterns operate automatically unless made conscious and intentionally changed.",
           "icon": "account_tree"
         },
         {
@@ -433,7 +433,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Questions to Ask About Family",
-          "text": "Learn about their family through questions like:\n\n• \"What was good about your childhood? What was hard?\"\n• \"How did your parents handle disagreements?\"\n• \"What do you want to repeat from your parents' marriage? What do you want to do differently?\"\n• \"Tell me about your relationship with each family member.\"\n• \"Were there any addictions, abuse, or major dysfunction?\"",
+          "text": "Learn about their family through questions like:\n\n\"What was good about your childhood? What was hard?\"\n\n\"How did your parents handle disagreements?\"\n\n\"What do you want to repeat from your parents' marriage? What do you want to do differently?\"\n\n\"Tell me about your relationship with each family member.\"\n\n\"Were there any addictions, abuse, or major dysfunction?\"",
           "icon": "help_outline"
         },
         {
@@ -441,7 +441,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Red Flags in Family Systems",
-          "text": "Be cautious if you observe:\n\n🚩 No awareness of family dysfunction\n🚩 Complete enmeshment (no boundaries with parents)\n🚩 Total estrangement with no explanation\n🚩 Repeating parents' destructive patterns\n🚩 Unaddressed abuse or trauma history\n🚩 In-laws who will demand unhealthy involvement\n\nThe question isn't whether there's brokenness, everyone has some. It's whether they're aware and working on it.",
+          "text": "Be cautious if you observe:\n\n• 🚩 No awareness of family dysfunction\n• 🚩 Complete enmeshment (no boundaries with parents)\n• 🚩 Total estrangement with no explanation\n• 🚩 Repeating parents' destructive patterns\n• 🚩 Unaddressed abuse or trauma history\n• 🚩 In-laws who will demand unhealthy involvement\n\nThe question isn't whether there's brokenness, everyone has some. It's whether they're aware and working on it.",
           "icon": "warning"
         },
         {
@@ -449,7 +449,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Own Family Patterns",
-          "text": "You also bring family patterns into marriage. Consider:\n\n• What patterns from your family do you want to continue?\n• What patterns do you need to break?\n• Are you aware of how your background affects your expectations?\n\nSelf-awareness enables honest conversation and mutual growth.",
+          "text": "You also bring family patterns into marriage.\n\nConsider:\n• What patterns from your family do you want to continue?\n• What patterns do you need to break?\n• Are you aware of how your background affects your expectations?\n\nSelf-awareness enables honest conversation and mutual growth.",
           "icon": "self_improvement",
           "responseType": "open-text"
         },
@@ -487,7 +487,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Compatibility Conversation",
-          "text": "Before marriage, you need alignment (or at least clarity) on:\n\n• Children: Do you want them? How many? Parenting philosophy?\n• Finances: Spending habits, debt, financial goals?\n• Location: Where will you live? Career priorities?\n• Lifestyle: Activity level, social preferences, hobbies?\n• Faith practice: Church involvement, spiritual disciplines?\n\nDisagreement on these creates daily conflict.",
+          "text": "Before marriage, you need alignment (or at least clarity) on:\n• **Children:** Do you want them? How many? Parenting philosophy?\n• **Finances:** Spending habits, debt, financial goals?\n• **Location:** Where will you live? Career priorities?\n• **Lifestyle:** Activity level, social preferences, hobbies?\n• **Faith practice:** Church involvement, spiritual disciplines?\n\nDisagreement on these creates daily conflict.",
           "icon": "checklist"
         },
         {
@@ -517,7 +517,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Children Conversation",
-          "text": "This cannot be compromised, you can't have half a child:\n\n• Do both of you want children?\n• How many? Is there flexibility?\n• What about if you can't have biological children?\n• How do you each view parenting roles?\n• What are your discipline philosophies?\n\nIf you're not aligned here, don't assume it will work out.",
+          "text": "This cannot be compromised, you can't have half a child:\n• Do both of you want children?\n• How many? Is there flexibility?\n• What about if you can't have biological children?\n• How do you each view parenting roles?\n• What are your discipline philosophies?\n\nIf you're not aligned here, don't assume it will work out.",
           "icon": "child_care"
         },
         {
@@ -525,7 +525,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Money Conversation",
-          "text": "Financial conflict destroys marriages. Discuss:\n\n• What's your debt situation?\n• How do you feel about budgeting?\n• Are you a spender or saver?\n• What are your financial goals?\n• How do you view giving?\n• Will both work? For how long?\n\nFull financial transparency is required before engagement.",
+          "text": "Financial conflict destroys marriages.\n\nDiscuss:\n• What's your debt situation?\n• How do you feel about budgeting?\n• Are you a spender or saver?\n• What are your financial goals?\n• How do you view giving?\n• Will both work? For how long?\n\nFull financial transparency is required before engagement.",
           "icon": "attach_money"
         },
         {
@@ -533,7 +533,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Life Vision Conversation",
-          "text": "Discuss your broader life vision:\n\n• Where do you see yourself in 10 years?\n• What's most important to you in life?\n• What does success look like?\n• How do you want to make an impact?\n• What kind of life do you want to build?\n\nYour visions don't have to be identical, but they need to be compatible.",
+          "text": "Discuss your broader life vision:\n• Where do you see yourself in 10 years?\n• What's most important to you in life?\n• What does success look like?\n• How do you want to make an impact?\n• What kind of life do you want to build?\n\nYour visions don't have to be identical, but they need to be compatible.",
           "icon": "visibility"
         },
         {
@@ -570,7 +570,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Why Conflict Patterns Matter",
-          "text": "Research by John Gottman found that how couples handle conflict predicts divorce with over 90% accuracy.\n\nThe 'Four Horsemen' that destroy marriages:\n\n1. **Criticism**: Attacking character, not behavior\n2. **Contempt**: Disrespect, mockery, eye-rolling\n3. **Defensiveness**: Refusing responsibility\n4. **Stonewalling**: Withdrawing, shutting down\n\nWatch for these patterns while dating.",
+          "text": "Research by John Gottman found that how couples handle conflict predicts divorce with over 90% accuracy.\n\nThe 'Four Horsemen' that destroy marriages:\n\n1.\n\n**Criticism: Attacking character, not behavior**\n2.\n\n**Contempt: Disrespect, mockery, eye-rolling**\n3.\n\n**Defensiveness: Refusing responsibility**\n4.\n\n**Stonewalling: Withdrawing, shutting down**\n\nWatch for these patterns while dating.",
           "icon": "analytics"
         },
         {
@@ -578,7 +578,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Healthy Conflict Signs",
-          "text": "A healthy partner in conflict:\n\n✓ Stays focused on the issue, not attacking you\n✓ Listens to understand, not just to respond\n✓ Can admit when they're wrong\n✓ Seeks resolution, not victory\n✓ Takes breaks when needed without abandoning\n✓ Returns to restore after conflict\n✓ Doesn't hold grudges or bring up old issues",
+          "text": "A healthy partner in conflict:\n\n• ✓ Stays focused on the issue, not attacking you\n• ✓ Listens to understand, not just to respond\n• ✓ Can admit when they're wrong\n• ✓ Seeks resolution, not victory\n• ✓ Takes breaks when needed without abandoning\n• ✓ Returns to restore after conflict\n• ✓ Doesn't hold grudges or bring up old issues",
           "icon": "check_circle"
         },
         {
@@ -608,7 +608,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Red Flags in Conflict",
-          "text": "Exit or get help if you see:\n\n🚩 Rage, intimidation, or physical aggression\n🚩 Blaming you for everything\n🚩 Refusing to discuss issues at all\n🚩 Cruel words designed to wound\n🚩 Punishing you through silence or withholding\n🚩 Never apologizing or admitting fault\n🚩 Gaslighting (making you doubt your perception)",
+          "text": "Exit or get help if you see:\n\n• 🚩 Rage, intimidation, or physical aggression\n• 🚩 Blaming you for everything\n• 🚩 Refusing to discuss issues at all\n• 🚩 Cruel words designed to wound\n• 🚩 Punishing you through silence or withholding\n• 🚩 Never apologizing or admitting fault\n• 🚩 Gaslighting (making you doubt your perception)",
           "icon": "report_problem"
         },
         {
@@ -616,7 +616,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Own Conflict Style",
-          "text": "Honest self-assessment:\n\n• How do YOU handle conflict?\n• Do you attack, withdraw, or engage healthily?\n• What's your pattern when hurt or angry?\n\nYou're evaluating them, but you also bring a conflict style to the relationship. Are you someone healthy people want to be with?",
+          "text": "Honest self-assessment:\n• How do YOU handle conflict?\n• Do you attack, withdraw, or engage healthily?\n• What's your pattern when hurt or angry?\n\nYou're evaluating them, but you also bring a conflict style to the relationship.\n\nAre you someone healthy people want to be with?",
           "icon": "self_improvement",
           "responseType": "open-text"
         },
@@ -654,7 +654,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Red Flags vs. Deal Breakers",
-          "text": "**Red flags**: Concerns that require attention and evaluation\n• May indicate a problem\n• Require conversation and observation\n• Could be resolved with awareness and work\n\n**Deal breakers**: Conditions that end consideration\n• Predict severe dysfunction\n• Cannot be changed by your love\n• Require walking away, regardless of feelings",
+          "text": "**Red flags: Concerns that require attention and evaluation**\n• May indicate a problem\n• Require conversation and observation\n• Could be resolved with awareness and work\n\nDeal breakers:\n\nConditions that end consideration\n• Predict severe dysfunction\n• Cannot be changed by your love\n• Require walking away, regardless of feelings",
           "icon": "compare"
         },
         {
@@ -670,7 +670,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Serious Red Flags",
-          "text": "These require serious evaluation:\n\n🚩 Controlling or possessive behavior\n🚩 Inability to maintain friendships\n🚩 Significant unaddressed mental health issues\n🚩 Family strongly opposes the relationship\n🚩 Pattern of broken relationships with their fault\n🚩 Unresolved past (divorce, legal issues) they won't discuss\n🚩 Extreme financial irresponsibility",
+          "text": "These require serious evaluation:\n\n• 🚩 Controlling or possessive behavior\n• 🚩 Inability to maintain friendships\n• 🚩 Significant unaddressed mental health issues\n• 🚩 Family strongly opposes the relationship\n• 🚩 Pattern of broken relationships with their fault\n🚩 Unresolved past (divorce, legal issues) they won't discuss\n🚩 Extreme financial irresponsibility",
           "icon": "warning"
         },
         {
@@ -700,7 +700,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Why We Ignore Red Flags",
-          "text": "People ignore red flags because:\n\n• \"Love conquers all\" (it doesn't conquer character)\n• Fear of being alone\n• Invested time and emotion\n• Hope they'll change\n• Embarrassment about ending it\n• Minimizing (\"it's not that bad\")\n\nEvery person in a disastrous marriage once stood where you stand. They saw the signs and continued anyway.",
+          "text": "People ignore red flags because:\n\n\"Love conquers all\" (it doesn't conquer character)\n• Fear of being alone\n• Invested time and emotion\n• Hope they'll change\n• Embarrassment about ending it\n• Minimizing (\"it's not that bad\")\n\nEvery person in a disastrous marriage once stood where you stand.\n\nThey saw the signs and continued anyway.",
           "icon": "psychology"
         },
         {
@@ -737,7 +737,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Why Outside Input Matters",
-          "text": "\"Plans fail for lack of counsel, but with many advisers they succeed.\" ({red|Proverbs 15:22})\n\n\"The way of a fool is right in his own eyes, but a wise man listens to advice.\" ({red|Proverbs 12:15})\n\nYou cannot objectively evaluate someone you're in love with. Your brain won't let you. You need eyes that aren't under the influence of oxytocin and dopamine.",
+          "text": "\"Plans fail for lack of counsel, but with many advisers they succeed.\" (Proverbs 15:22)\n\n\"The way of a fool is right in his own eyes, but a wise man listens to advice.\" (Proverbs 12:15You cannot objectively evaluate someone you're in love with.\n\nYour brain won't let you.\n\nYou need eyes that aren't under the influence of oxytocin and dopamine.",
           "icon": "menu_book"
         },
         {
@@ -745,7 +745,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Who to Ask",
-          "text": "Seek input from people who:\n\n• Know you well and want your best\n• Are spiritually mature\n• Have wisdom about relationships\n• Will tell you truth, not just what you want to hear\n• Have observed you with this person\n\nThis might include: parents, mentors, pastors, close friends, married couples you respect.",
+          "text": "Seek input from people who:\n• Know you well and want your best\n• Are spiritually mature\n• Have wisdom about relationships\n• Will tell you truth, not just what you want to hear\n• Have observed you with this person\n\nThis might include: parents, mentors, pastors, close friends, married couples you respect.",
           "icon": "people"
         },
         {
@@ -753,7 +753,7 @@
           "cardType": "question",
           "cardNumber": 3,
           "title": "Your Counsel Circle",
-          "text": "{red|Who in your life would you trust to give honest input on a potential spouse?}",
+          "text": "Who in your life would you trust to give honest input on a potential spouse?",
           "prompts": [
             "Parents or family members",
             "A mentor or older friend",
@@ -775,7 +775,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Questions to Ask Your Counsel",
-          "text": "Invite specific feedback:\n\n• \"What do you see in this person's character?\"\n• \"Do you notice any concerns I might be missing?\"\n• \"How do we seem together?\"\n• \"Do you think this person is good for me?\"\n• \"Is there anything you'd want to tell me that I might not want to hear?\"\n\nGive permission for hard truth.",
+          "text": "Invite specific feedback:\n\n\"What do you see in this person's character?\"\n• \"Do you notice any concerns I might be missing?\"\n\n\"How do we seem together?\"\n• \"Do you think this person is good for me?\"\n• \"Is there anything you'd want to tell me that I might not want to hear?\"\n\nGive permission for hard truth.",
           "icon": "help_outline"
         },
         {
@@ -783,7 +783,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "What If Counsel Says No?",
-          "text": "If trusted people raise concerns:\n\n• Take it seriously, they see what you can't\n• Ask for specifics, not vague concerns\n• Consider whether multiple people share the same concern\n• Don't dismiss it because you disagree\n• Slow down, time will reveal truth\n\nPeople who ignored counsel from everyone rarely end well. Consider: what would it take for you to change your mind?",
+          "text": "If trusted people raise concerns:\n• Take it seriously, they see what you can't\n• Ask for specifics, not vague concerns\n• Consider whether multiple people share the same concern\n• Don't dismiss it because you disagree\n• Slow down, time will reveal truth\n\nPeople who ignored counsel from everyone rarely end well.\n\nConsider: what would it take for you to change your mind?",
           "icon": "warning"
         },
         {
@@ -820,7 +820,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "What Engagement Means",
-          "text": "Engagement is not:\n• Extended dating\n• A \"trial run\" for marriage\n• Something to do when you're unsure but hopeful\n\nEngagement IS:\n• A public promise to marry\n• The final preparation period\n• A commitment to follow through absent major new concerns\n\nDon't get engaged hoping to become sure. Get engaged because you ARE sure.",
+          "text": "Engagement is not:\n• Extended dating\n• A \"trial run\" for marriage\n• Something to do when you're unsure but hopeful\n\nEngagement IS:\n• A public promise to marry\n• The final preparation period\n• A commitment to follow through absent major new concerns\n\nDon't get engaged hoping to become sure.\n\nGet engaged because you ARE sure.",
           "icon": "diamond"
         },
         {
@@ -828,7 +828,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Questions to Answer Before Engagement",
-          "text": "Before getting engaged, you should be able to answer YES to:\n\n• Do I know this person's character deeply?\n• Have we navigated conflict together?\n• Are we spiritually aligned?\n• Have we discussed all major life topics?\n• Has sufficient time passed (usually 12-18+ months)?\n• Do trusted people support this?\n• Do I have peace, not just excitement?",
+          "text": "Before getting engaged, you should be able to answer YES to:\n• Do I know this person's character deeply?\n• Have we navigated conflict together?\n• Are we spiritually aligned?\n• Have we discussed all major life topics?\n• Has sufficient time passed (usually 12-18+ months)?\n• Do trusted people support this?\n• Do I have peace, not just excitement?",
           "icon": "help_outline"
         },
         {
@@ -836,7 +836,7 @@
           "cardType": "question",
           "cardNumber": 3,
           "title": "The Time Factor",
-          "text": "{red|How long do you think a couple should date before engagement?}",
+          "text": "How long do you think a couple should date before engagement?",
           "prompts": [
             "6 months to 1 year",
             "1-2 years",
@@ -864,7 +864,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Signs You're Not Ready",
-          "text": "Pause if:\n\n• You have unresolved doubts you're pushing down\n• You haven't seen them handle major stress or failure\n• There are topics you've avoided discussing\n• Trusted people have concerns you haven't addressed\n• You're hoping they'll change after marriage\n• You feel pressure from time, age, or circumstances",
+          "text": "Pause if:\n• You have unresolved doubts you're pushing down\n• You haven't seen them handle major stress or failure\n• There are topics you've avoided discussing\n• Trusted people have concerns you haven't addressed\n• You're hoping they'll change after marriage\n• You feel pressure from time, age, or circumstances",
           "icon": "pause"
         },
         {
@@ -901,7 +901,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Why Premarital Counseling Matters",
-          "text": "Research shows couples who complete premarital counseling:\n\n• Have 30% higher marital success rates\n• Report higher relationship satisfaction\n• Communicate more effectively\n• Handle conflict better\n• Have clearer expectations\n\nThis small investment yields lifelong returns.",
+          "text": "Research shows couples who complete premarital counseling:\n• Have 30% higher marital success rates\n• Report higher relationship satisfaction\n• Communicate more effectively\n• Handle conflict better\n• Have clearer expectations\n\nThis small investment yields lifelong returns.",
           "icon": "trending_up"
         },
         {
@@ -909,7 +909,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What Premarital Counseling Covers",
-          "text": "Good premarital preparation addresses:\n\n• Communication and conflict skills\n• Expectations about roles and responsibilities\n• Financial planning and philosophy\n• Family of origin issues\n• Sexual expectations and intimacy\n• Spiritual life together\n• Children and parenting\n\nIt surfaces hidden assumptions that cause conflict later.",
+          "text": "Good premarital preparation addresses:\n• Communication and conflict skills\n• Expectations about roles and responsibilities\n• Financial planning and philosophy\n• Family of origin issues\n• Sexual expectations and intimacy\n• Spiritual life together\n• Children and parenting\n\nIt surfaces hidden assumptions that cause conflict later.",
           "icon": "list"
         },
         {
@@ -917,7 +917,7 @@
           "cardType": "question",
           "cardNumber": 3,
           "title": "Your Premarital Plan",
-          "text": "{red|What type of premarital preparation would you want to pursue?}",
+          "text": "What type of premarital preparation would you want to pursue?",
           "prompts": [
             "Counseling with a pastor",
             "Professional marriage counseling",
@@ -938,7 +938,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "What If Issues Surface?",
-          "text": "Sometimes premarital counseling reveals serious concerns. This is a FEATURE, not a bug.\n\nBetter to discover dealbreakers during engagement than after marriage. A broken engagement, while painful, is infinitely better than a devastating divorce.\n\nDon't skip premarital preparation because you're afraid of what might surface.",
+          "text": "Sometimes premarital counseling reveals serious concerns.\n\nThis is a FEATURE, not a bug.\n\nBetter to discover dealbreakers during engagement than after marriage. A broken engagement, while painful, is infinitely better than a devastating divorce.\n\nDon't skip premarital preparation because you're afraid of what might surface.",
           "icon": "lightbulb"
         },
         {
@@ -946,7 +946,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Commitment to Preparation",
-          "text": "Make this commitment now, before you're engaged:\n\n\"I will not marry anyone without completing meaningful premarital preparation together.\"\n\nThis isn't a lack of trust, it's wisdom. Every couple benefits, no matter how compatible they seem.",
+          "text": "Make this commitment now, before you're engaged:\n\n• \"I will not marry anyone without completing meaningful premarital preparation together.\"\n\n• This isn't a lack of trust, it's wisdom.\n\n• Every couple benefits, no matter how compatible they seem.",
           "icon": "verified"
         },
         {
@@ -983,7 +983,7 @@
           "cardType": "reflection",
           "cardNumber": 1,
           "title": "Review What Matters Most",
-          "text": "Reflect on everything you've learned:\n\n• Character over chemistry\n• Spiritual alignment\n• Emotional health\n• Family background awareness\n• Core compatibility\n• Healthy conflict patterns\n• Deal breaker awareness\n• Community input\n• Appropriate timing\n\nYou now have tools most people lack when making this decision.",
+          "text": "Reflect on everything you've learned:\n• Character over chemistry\n• Spiritual alignment\n• Emotional health\n• Family background awareness\n• Core compatibility\n• Healthy conflict patterns\n• Deal breaker awareness\n• Community input\n• Appropriate timing\n\nYou now have tools most people lack when making this decision.",
           "icon": "psychology",
           "responseType": "open-text"
         },
@@ -1028,7 +1028,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Spouse Selection Commitment",
-          "text": "Write a commitment statement to yourself about how you will choose:\n\n\"I commit to choosing my spouse with wisdom, not just feelings. I will prioritize... I will not ignore... I will involve... I will wait until... I trust God to...\"\n\nThis framework is your gift to your future self and your future marriage.",
+          "text": "Write a commitment statement to yourself about how you will choose:\n\n\"I commit to choosing my spouse with wisdom, not just feelings. I will prioritize. I will not ignore. I will involve. I will wait until. I trust God to.\"\n\nThis framework is your gift to your future self and your future marriage.",
           "responseType": "open-text",
           "icon": "favorite"
         }

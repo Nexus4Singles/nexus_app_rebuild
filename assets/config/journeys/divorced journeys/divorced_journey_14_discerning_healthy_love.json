@@ -53,7 +53,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Love That Did Not Last",
-          "text": "{red|**You once believed you found love.** You were certain. And you were wrong, or at least it did not last. You committed your life to it. And it ended.\n\n**This raises unsettling questions.** Was it ever really love?}{red| If it was, why did it not last?}{red| If it was not, how did you get it so wrong?}\n\n**Your confidence in understanding love may be shaken.** The word itself may feel hollow or confusing.\n\n**This journey helps you rebuild a clear understanding of what healthy, lasting love actually looks like, so you can recognize it when you encounter it again.**",
+          "text": "**You once believed you found love.** You were certain. And you were wrong, or at least it did not last. You committed your life to it. And it ended.\n\n**This raises unsettling questions.** Was it ever really love? If it was, why did it not last? If it was not, how did you get it so wrong?\n\n**Your confidence in understanding love may be shaken.** The word itself may feel hollow or confusing.\n\n**This journey helps you rebuild a clear understanding of what healthy, lasting love actually looks like, so you can recognize it when you encounter it again.**",
           "icon": "favorite"
         },
         {
@@ -69,7 +69,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "What Love Is",
-          "text": "**The Bible offers a different vision of love.**\n\n**Love is patient and kind.** Love does not envy or boast. It is not proud or rude. It is not self-seeking or easily angered. It keeps no record of wrongs. Love does not delight in evil but rejoices in truth. It always protects, trusts, hopes, and perseveres. Love never fails. (1 ({red|Corinthians 13:4-8}))\n\n**This love is characterized by how it acts, not just how it feels.** It is patient even when frustrated. Kind even when inconvenienced. Committed even when difficult.\n\n**This is the love that lasts.**",
+          "text": "**The Bible offers a different vision of love.**\n\n**Love is patient and kind.** Love does not envy or boast. It is not proud or rude. It is not self-seeking or easily angered. It keeps no record of wrongs. Love does not delight in evil but rejoices in truth. It always protects, trusts, hopes, and perseveres. Love never fails. (1 (Corinthians 13:4-8)\n\n**This love is characterized by how it acts, not just how it feels.** It is patient even when frustrated. Kind even when inconvenienced. Committed even when difficult.\n\n**This is the love that lasts.**",
           "icon": "menu_book"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Love Understanding",
-          "text": "{red|How would you describe your current understanding of love?}",
+          "text": "How would you describe your current understanding of love?",
           "prompts": [
             "Confused - I am not sure what love really is anymore",
             "Skeptical - I doubt whether lasting love exists",
@@ -97,7 +97,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Love Beliefs",
-          "text": "{red|**Examine your current beliefs about love.**\n\nWhat do you believe love is?}{red| How would you define it?}{red| How has your understanding of love changed since your divorce?}{red| What did you learn about love from your marriage, both positive and negative?}{red| What kind of love do you want in the future?}\n\nWrite about your love beliefs:",
+          "text": "**Examine your current beliefs about love.**\n\nWhat do you believe love is? How would you define it? How has your understanding of love changed since your divorce? What did you learn about love from your marriage, both positive and negative? What kind of love do you want in the future?\n\nWrite about your love beliefs:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -166,7 +166,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Experience",
-          "text": "{red|**Reflect on infatuation and love in your experience.**\n\nLooking back at your marriage, what was infatuation and what was lasting love?}{red| Have you mistaken infatuation for love in the past?}{red| How can you tell when you are infatuated versus genuinely loving?}{red| What would help you make better distinctions in the future?}\n\nWrite about your experience:",
+          "text": "**Reflect on infatuation and love in your experience.**\n\nLooking back at your marriage, what was infatuation and what was lasting love? Have you mistaken infatuation for love in the past? How can you tell when you are infatuated versus genuinely loving? What would help you make better distinctions in the future?\n\nWrite about your experience:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -203,7 +203,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Mutual Respect",
-          "text": "{red|**Love without respect is not love.** It is possession, or convenience, or need. But it is not love.\n\n**Respect in a relationship looks like this: they value your thoughts, even when they disagree.** They listen when you speak, actually listen, not just wait for their turn to talk. They honor your boundaries without making you fight for them.\n\n**Respect means you are treated as an equal.** Not as a child to be managed. Not as an extension of them. Not as less-than because of gender or income or education. An equal.\n\n**It means they speak well of you, to your face and behind your back.** They do not mock you, even jokingly, in ways that cut. They do not roll their eyes at your opinions or make you feel small.\n\n**When respect is absent, you feel it in your body before you can name it.** You feel dismissed. Overlooked. Like your thoughts do not matter. Like you are tolerated rather than valued.\n\n**When respect is present, you feel seen.** Safe. Like your perspective is considered even when it is not adopted.\n\nWhat did respect look like in your first marriage?}{red| Was it mutual?}{red| Did it erode?} If respect was missing, pay close attention to it now. Do not settle for anything less than a partner who genuinely respects who you are.",
+          "text": "**Love without respect is not love.** It is possession, or convenience, or need. But it is not love.\n\n**Respect in a relationship looks like this: they value your thoughts, even when they disagree.** They listen when you speak, actually listen, not just wait for their turn to talk. They honor your boundaries without making you fight for them.\n\n**Respect means you are treated as an equal.** Not as a child to be managed. Not as an extension of them. Not as less-than because of gender or income or education. An equal.\n\n**It means they speak well of you, to your face and behind your back.** They do not mock you, even jokingly, in ways that cut. They do not roll their eyes at your opinions or make you feel small.\n\n**When respect is absent, you feel it in your body before you can name it.** You feel dismissed. Overlooked. Like your thoughts do not matter. Like you are tolerated rather than valued.\n\n**When respect is present, you feel seen.** Safe. Like your perspective is considered even when it is not adopted.\n\nWhat did respect look like in your first marriage? Was it mutual? Did it erode? If respect was missing, pay close attention to it now. Do not settle for anything less than a partner who genuinely respects who you are.",
           "icon": "handshake"
         },
         {
@@ -211,7 +211,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Safety and Trust",
-          "text": "{red|Can you be yourself with them?}{red| Your real self, not the version you perform.\n\nCan you admit when you are struggling without fearing they will think less of you?}{red| Can you share your fears, your shame, your imperfections without bracing for attack?}\n\n{red|**That is emotional safety.** The knowledge that vulnerability will not be used against you. That what you share in intimacy will not become ammunition in arguments. That your weaknesses are safe with them.\n\n**Trust is related but distinct.** Trust is knowing they will do what they say. That their words mean something. That when they are not with you, they are still choosing you.\n\n**Trust takes time to build and seconds to destroy.** It is built through consistent small faithfulnesses. Kept promises. Honest answers. Reliable follow-through.\n\n**Without safety and trust, you cannot have intimacy.** You can have companionship, maybe. Sex, certainly. But not true intimacy, the kind where you are fully known and fully loved anyway. That requires safety.\n\nAsk yourself: Do I feel safe with this person?}{red| Can I trust them with my heart?} Not based on how you wish they were, but based on how they have actually shown up.\n\n**Your gut knows the answer.** Listen to it.",
+          "text": "Can you be yourself with them? Your real self, not the version you perform.\n\nCan you admit when you are struggling without fearing they will think less of you? Can you share your fears, your shame, your imperfections without bracing for attack?\n\n**That is emotional safety.** The knowledge that vulnerability will not be used against you. That what you share in intimacy will not become ammunition in arguments. That your weaknesses are safe with them.\n\n**Trust is related but distinct.** Trust is knowing they will do what they say. That their words mean something. That when they are not with you, they are still choosing you.\n\n**Trust takes time to build and seconds to destroy.** It is built through consistent small faithfulnesses. Kept promises. Honest answers. Reliable follow-through.\n\n**Without safety and trust, you cannot have intimacy.** You can have companionship, maybe. Sex, certainly. But not true intimacy, the kind where you are fully known and fully loved anyway. That requires safety.\n\nAsk yourself: Do I feel safe with this person? Can I trust them with my heart? Not based on how you wish they were, but based on how they have actually shown up.\n\n**Your gut knows the answer.** Listen to it.",
           "icon": "shield"
         },
         {
@@ -235,7 +235,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Assessing Your Past",
-          "text": "{red|**Assess the presence of these marks in your past marriage.**\n\nWas there genuine mutual respect?}{red| Did you experience emotional safety and trust?}{red| Did the relationship support your growth?}{red| Was communication effective?}\n\n{red|What was present and what was missing?}\n\nWrite your assessment:",
+          "text": "**Assess the presence of these marks in your past marriage.**\n\nWas there genuine mutual respect? Did you experience emotional safety and trust? Did the relationship support your growth? Was communication effective?\n\nWhat was present and what was missing?\n\nWrite your assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -244,7 +244,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Healthy Love Criteria",
-          "text": "{red|**Establish criteria for healthy love in your future.**\n\nBased on these marks and your experience, what will you look for?}\n\nI will look for mutual respect that shows up as:\n\nI will look for safety and trust that shows up as:\n\nI will look for growth support that shows up as:\n\nI will look for effective communication that shows up as:\n\nWrite your healthy love criteria:",
+          "text": "**Establish criteria for healthy love in your future.**\n\nBased on these marks and your experience, what will you look for?\n\nI will look for mutual respect that shows up as:\n\nI will look for safety and trust that shows up as:\n\nI will look for growth support that shows up as:\n\nI will look for effective communication that shows up as:\n\nWrite your healthy love criteria:",
           "icon": "task_alt"
         }
       ]
@@ -296,7 +296,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Red Flags You Missed",
-          "text": "{red|**Reflect on red flags in your past.**\n\nLooking back at your marriage, were there red flags you ignored or explained away?}{red| What led you to overlook them?}{red| What would you do differently now?}{red| Which red flags are you most susceptible to missing?}\n\nWrite about red flags you missed:",
+          "text": "**Reflect on red flags in your past.**\n\nLooking back at your marriage, were there red flags you ignored or explained away? What led you to overlook them? What would you do differently now? Which red flags are you most susceptible to missing?\n\nWrite about red flags you missed:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -349,7 +349,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Character Green Flags",
-          "text": "{red|What does a healthy person actually look like?}{red| Not perfect. Healthy.\n\n**They tell the truth, even when it is uncomfortable.** You do not catch them in small lies, which are the doorway to big ones. What they say matches what they do.\n\n**They take responsibility.** When they mess up, they own it. No blame-shifting, no excuses, no rewriting history to make themselves the victim. Just honest acknowledgment and genuine effort to do better.\n\n**They are kind to people who cannot do anything for them.** Watch how they treat servers, drivers, people they do not need to impress. That is who they really are.\n\n**They have done their own work.** They have been to counseling, or read the books, or somehow wrestled with their issues. They are not expecting you to fix them or complete them.\n\n**Their faith is real.** Not performance for church. Not cultural Christianity. An actual relationship with God that shapes how they treat people, spend money, make decisions.\n\n**They can be wrong.** They can receive feedback without becoming defensive. They can say those three hard words: I was wrong.\n\n**None of this means they are perfect.** But it means the foundation is there. It means when hard times come, and they will come, you are building with someone who has the character to weather them.\n\nDoes the person you are considering have these qualities?} Watch carefully. Time will tell.",
+          "text": "What does a healthy person actually look like? Not perfect. Healthy.\n\n**They tell the truth, even when it is uncomfortable.** You do not catch them in small lies, which are the doorway to big ones. What they say matches what they do.\n\n**They take responsibility.** When they mess up, they own it. No blame-shifting, no excuses, no rewriting history to make themselves the victim. Just honest acknowledgment and genuine effort to do better.\n\n**They are kind to people who cannot do anything for them.** Watch how they treat servers, drivers, people they do not need to impress. That is who they really are.\n\n**They have done their own work.** They have been to counseling, or read the books, or somehow wrestled with their issues. They are not expecting you to fix them or complete them.\n\n**Their faith is real.** Not performance for church. Not cultural Christianity. An actual relationship with God that shapes how they treat people, spend money, make decisions.\n\n**They can be wrong.** They can receive feedback without becoming defensive. They can say those three hard words: I was wrong.\n\n**None of this means they are perfect.** But it means the foundation is there. It means when hard times come, and they will come, you are building with someone who has the character to weather them.\n\nDoes the person you are considering have these qualities? Watch carefully. Time will tell.",
           "icon": "person"
         },
         {
@@ -373,7 +373,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Green Flags in Your Past",
-          "text": "{red|**Reflect on green flags in your past relationships.**\n\nWhat green flags were present in your marriage?}{red| What was genuinely good?}{red| What green flags were missing that you now know to look for?}{red| What green flags matter most to you for the future?}\n\nWrite about green flags in your experience:",
+          "text": "**Reflect on green flags in your past relationships.**\n\nWhat green flags were present in your marriage? What was genuinely good? What green flags were missing that you now know to look for? What green flags matter most to you for the future?\n\nWrite about green flags in your experience:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -418,7 +418,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Key Compatibility Areas",
-          "text": "{red|**Chemistry gets you together.** Compatibility keeps you together.\n\n**Think about faith.** Not just Do we both check the Christian box?}{red| but Do we pursue God in similar ways?}{red| Will we be able to pray together, serve together, grow together spiritually?}\n\n{red|**Think about values.** What do you each prioritize?}{red| Family, career, adventure, security, service, comfort?}{red| When those priorities conflict, which wins?}{red| Because they will conflict.\n\n**Think about life goals.** Do you want kids?}{red| How many?}{red| Where do you want to live?}{red| What does retirement look like?}{red| What kind of lifestyle do you expect?}{red| These are not small questions. Misalignment here will tear at a marriage.\n\n**Think about money.** How do you each relate to it?}{red| Spender or saver?}{red| Generous or cautious?}{red| Transparent or private?}{red| Financial conflict is one of the top predictors of divorce. Get clear on this.\n\n**Think about family.** How involved will extended family be?}{red| How will you handle holidays?}{red| If there are children from previous marriages, how will they fit?}\n\n**Chemistry makes you want to be together.** Compatibility determines whether being together is actually workable.\n\n**You can have incredible chemistry with someone you are fundamentally incompatible with.** That relationship will be passionate and painful. Look at both.",
+          "text": "**Chemistry gets you together.** Compatibility keeps you together.\n\n**Think about faith.** Not just Do we both check the Christian box? but Do we pursue God in similar ways? Will we be able to pray together, serve together, grow together spiritually?\n\n**Think about values.** What do you each prioritize? Family, career, adventure, security, service, comfort? When those priorities conflict, which wins? Because they will conflict.\n\n**Think about life goals.** Do you want kids? How many? Where do you want to live? What does retirement look like? What kind of lifestyle do you expect? These are not small questions. Misalignment here will tear at a marriage.\n\n**Think about money.** How do you each relate to it? Spender or saver? Generous or cautious? Transparent or private? Financial conflict is one of the top predictors of divorce. Get clear on this.\n\n**Think about family.** How involved will extended family be? How will you handle holidays? If there are children from previous marriages, how will they fit?\n\n**Chemistry makes you want to be together.** Compatibility determines whether being together is actually workable.\n\n**You can have incredible chemistry with someone you are fundamentally incompatible with.** That relationship will be passionate and painful. Look at both.",
           "icon": "category"
         },
         {
@@ -434,7 +434,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Compatibility in Your Past",
-          "text": "{red|**Reflect on compatibility in your past marriage.**\n\nWhere were you compatible with your ex?}{red| Where were you incompatible?}{red| Did incompatibility issues contribute to your divorce?}{red| How?}{red| What did you learn about what compatibility you need?}{red| What compatibility issues did you overlook that you would not overlook now?}\n\nWrite about compatibility in your past:",
+          "text": "**Reflect on compatibility in your past marriage.**\n\nWhere were you compatible with your ex? Where were you incompatible? Did incompatibility issues contribute to your divorce? How? What did you learn about what compatibility you need? What compatibility issues did you overlook that you would not overlook now?\n\nWrite about compatibility in your past:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -443,7 +443,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Evaluating Compatibility",
-          "text": "{red|How do you evaluate compatibility with someone?}\n\n{red|**Have conversations about the important areas.** Do not avoid topics because they are uncomfortable.\n\n**Observe over time.** What they do reveals more than what they say.\n\n**Pay attention to friction.** Where do you consistently clash?}{red| Is it negotiable?}\n\n{red|**Imagine daily life together.** Can you picture building an actual life, not just dating?}\n\n**Seek input from others.** People who know you can see compatibility issues you might miss.\n\n**Do not assume love will overcome incompatibility.** It rarely does on the big things.",
+          "text": "How do you evaluate compatibility with someone?\n\n**Have conversations about the important areas.** Do not avoid topics because they are uncomfortable.\n\n**Observe over time.** What they do reveals more than what they say.\n\n**Pay attention to friction.** Where do you consistently clash? Is it negotiable?\n\n**Imagine daily life together.** Can you picture building an actual life, not just dating?\n\n**Seek input from others.** People who know you can see compatibility issues you might miss.\n\n**Do not assume love will overcome incompatibility.** It rarely does on the big things.",
           "icon": "tips_and_updates"
         },
         {
@@ -487,7 +487,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What Time Reveals",
-          "text": "{red|**Here is what waiting does for you.**\n\n**In the beginning, you see their representative.** The version they show when they are trying to impress. Everyone has one. It is not lying, exactly. It is just putting your best foot forward.\n\n**But the representative cannot last.** Over time, real life intrudes. Stress happens. The infatuation chemicals fade. And you start to see the actual person.\n\n**You see how they handle conflict.** Not if, when. The first real fight tells you so much. Do they fight fair?}{red| Can they repair?}{red| Do they hold grudges?}\n\n{red|**You see how they handle stress.** Job loss, family crisis, health scare. Who do they become when things are hard?}{red| That is who you will be married to in hard times.\n\n**You see whether their character holds.** The integrity that seemed solid, does it stay solid when it costs them something?}{red| The kindness that seemed genuine, is it still there when they are tired?}\n\n{red|**You see what ordinary life together looks like.** Not just dates and romance. Regular Tuesday evenings. Grocery shopping. Being sick. The mundane reality of two lives merging.\n\n**This takes time.** More time than you want to give it, probably. But the alternative is committing to someone you do not actually know yet.\n\nHow long is long enough?} There is no magic number. But one year should be a minimum. Two is better. Enough to see them in different seasons, under different pressures, past the honeymoon.\n\n**Do not rush this.** The rest of your life is at stake.",
+          "text": "**Here is what waiting does for you.**\n\n**In the beginning, you see their representative.** The version they show when they are trying to impress. Everyone has one. It is not lying, exactly. It is just putting your best foot forward.\n\n**But the representative cannot last.** Over time, real life intrudes. Stress happens. The infatuation chemicals fade. And you start to see the actual person.\n\n**You see how they handle conflict.** Not if, when. The first real fight tells you so much. Do they fight fair? Can they repair? Do they hold grudges?\n\n**You see how they handle stress.** Job loss, family crisis, health scare. Who do they become when things are hard? That is who you will be married to in hard times.\n\n**You see whether their character holds.** The integrity that seemed solid, does it stay solid when it costs them something? The kindness that seemed genuine, is it still there when they are tired?\n\n**You see what ordinary life together looks like.** Not just dates and romance. Regular Tuesday evenings. Grocery shopping. Being sick. The mundane reality of two lives merging.\n\n**This takes time.** More time than you want to give it, probably. But the alternative is committing to someone you do not actually know yet.\n\nHow long is long enough? There is no magic number. But one year should be a minimum. Two is better. Enough to see them in different seasons, under different pressures, past the honeymoon.\n\n**Do not rush this.** The rest of your life is at stake.",
           "icon": "visibility"
         },
         {
@@ -495,7 +495,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Seasons of Relationship",
-          "text": "{red|**Healthy relationships pass through seasons, and each reveals something.**\n\n**The honeymoon season: Everything feels perfect.** Infatuation is high. Enjoy it but do not trust it completely.\n\n**The reality season: Flaws emerge.** Infatuation fades. You see who they really are.\n\n**The conflict season: You disagree about something significant.** How you navigate this reveals much.\n\n**The ordinary season: No drama, just daily life.** Can you be content in the mundane together?}\n\n**You need to experience all these seasons before major commitment.**",
+          "text": "**Healthy relationships pass through seasons, and each reveals something.**\n\n**The honeymoon season: Everything feels perfect.** Infatuation is high. Enjoy it but do not trust it completely.\n\n**The reality season: Flaws emerge.** Infatuation fades. You see who they really are.\n\n**The conflict season: You disagree about something significant.** How you navigate this reveals much.\n\n**The ordinary season: No drama, just daily life.** Can you be content in the mundane together?\n\n**You need to experience all these seasons before major commitment.**",
           "icon": "ac_unit"
         },
         {
@@ -503,7 +503,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Time in Your Past",
-          "text": "{red|**Reflect on the role of time in your past relationship.**\n\nHow long did you date before committing to marriage?}{red| Did time reveal things you did not see initially?}{red| What?}{red| Do you think you rushed or took appropriate time?}{red| What would you do differently regarding timing?}\n\nWrite about time in your past:",
+          "text": "**Reflect on the role of time in your past relationship.**\n\nHow long did you date before committing to marriage? Did time reveal things you did not see initially? What? Do you think you rushed or took appropriate time? What would you do differently regarding timing?\n\nWrite about time in your past:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -564,7 +564,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "What to Ask",
-          "text": "{red|**When seeking input, ask specific questions.**\n\nWhat do you observe about this person?}{red| How do they treat me?}{red| Others?}\n\n{red|Do you see any red flags I might be missing?}\n\n{red|Does this relationship seem healthy to you from the outside?}\n\n{red|Do you see me thriving in this relationship or diminishing?}\n\n{red|Knowing my history and patterns, are there concerns I should consider?}\n\n{red|If you had concerns, would you tell me?} Please do.\n\n**Open-ended questions invite honest feedback.**",
+          "text": "**When seeking input, ask specific questions.**\n\nWhat do you observe about this person? How do they treat me? Others?\n\nDo you see any red flags I might be missing?\n\nDoes this relationship seem healthy to you from the outside?\n\nDo you see me thriving in this relationship or diminishing?\n\nKnowing my history and patterns, are there concerns I should consider?\n\nIf you had concerns, would you tell me? Please do.\n\n**Open-ended questions invite honest feedback.**",
           "icon": "help"
         },
         {
@@ -572,7 +572,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Input in Your Past",
-          "text": "{red|**Reflect on the role of others' input in your past.**\n\nDid trusted people have concerns about your ex that you dismissed?}{red| Did you seek input before committing to your marriage?}{red| Who in your life gives you honest, wise relationship input?}{red| How receptive are you to hearing concerns from others?}\n\nWrite about input in your past:",
+          "text": "**Reflect on the role of others' input in your past.**\n\nDid trusted people have concerns about your ex that you dismissed? Did you seek input before committing to your marriage? Who in your life gives you honest, wise relationship input? How receptive are you to hearing concerns from others?\n\nWrite about input in your past:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -581,7 +581,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Receiving Hard Feedback",
-          "text": "{red|**The most valuable input is often the hardest to hear.**\n\n**If someone expresses concern about your relationship, resist the urge to defend or dismiss.**\n\n**Consider the source.** Is this person trustworthy and motivated by your good?}\n\n{red|**Sit with it.** Even if you disagree initially, give the feedback time to settle.\n\n**Look for patterns.** If multiple trusted people express similar concerns, pay attention.\n\n**Remember past regrets.** Did you dismiss input before that you wish you had heeded?}\n\n**The feedback that stings may be the feedback you need.**",
+          "text": "**The most valuable input is often the hardest to hear.**\n\n**If someone expresses concern about your relationship, resist the urge to defend or dismiss.**\n\n**Consider the source.** Is this person trustworthy and motivated by your good?\n\n**Sit with it.** Even if you disagree initially, give the feedback time to settle.\n\n**Look for patterns.** If multiple trusted people express similar concerns, pay attention.\n\n**Remember past regrets.** Did you dismiss input before that you wish you had heeded?\n\n**The feedback that stings may be the feedback you need.**",
           "icon": "feedback"
         },
         {
@@ -617,7 +617,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Shaken Confidence",
-          "text": "{red|**You do not trust yourself anymore.**\n\n**That is the quiet wound underneath everything.** You chose your ex. You believed in that relationship. You committed your life to someone who turned out to be wrong for you, or who became someone different, or who hurt you in ways you never saw coming.\n\n**So now you doubt.** Every time you meet someone promising, a voice whispers: You thought your ex was promising too. Look how that turned out.\n\n**Every time you feel attracted, you wonder if your attractions are broken.** Every time someone seems trustworthy, you remember that your ex seemed trustworthy too.\n\n**This doubt makes sense.** Your judgment failed you, or seemed to. Why would you trust it again?}\n\n**But here is what the doubt does not account for: you are not the same person you were.** You have learned things. Paid tuition in pain for an education you did not want. You see things now that you could not see before.\n\n**The doubt also does not account for this: you probably saw more than you admitted.** The red flags you explained away. The gut feelings you overruled. Some part of you knew.\n\n**Your judgment is not broken.** It may have been overruled by hope, by loneliness, by the desire for it to work. But the judgment itself, the part that saw clearly, it was there.\n\n**Your job now is to listen to it.** To trust the part of you that sees truth, even when other parts want to look away.",
+          "text": "**You do not trust yourself anymore.**\n\n**That is the quiet wound underneath everything.** You chose your ex. You believed in that relationship. You committed your life to someone who turned out to be wrong for you, or who became someone different, or who hurt you in ways you never saw coming.\n\n**So now you doubt.** Every time you meet someone promising, a voice whispers: You thought your ex was promising too. Look how that turned out.\n\n**Every time you feel attracted, you wonder if your attractions are broken.** Every time someone seems trustworthy, you remember that your ex seemed trustworthy too.\n\n**This doubt makes sense.** Your judgment failed you, or seemed to. Why would you trust it again?\n\n**But here is what the doubt does not account for: you are not the same person you were.** You have learned things. Paid tuition in pain for an education you did not want. You see things now that you could not see before.\n\n**The doubt also does not account for this: you probably saw more than you admitted.** The red flags you explained away. The gut feelings you overruled. Some part of you knew.\n\n**Your judgment is not broken.** It may have been overruled by hope, by loneliness, by the desire for it to work. But the judgment itself, the part that saw clearly, it was there.\n\n**Your job now is to listen to it.** To trust the part of you that sees truth, even when other parts want to look away.",
           "icon": "psychology"
         },
         {
@@ -641,7 +641,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Discernment Assessment",
-          "text": "{red|**Assess your current confidence in your discernment.**\n\nHow much do you currently trust your ability to evaluate relationships?}{red| What specifically shakes your confidence?}{red| What grounds give you confidence in your judgment?}{red| What would help you trust yourself more without becoming overconfident?}\n\nWrite your discernment assessment:",
+          "text": "**Assess your current confidence in your discernment.**\n\nHow much do you currently trust your ability to evaluate relationships? What specifically shakes your confidence? What grounds give you confidence in your judgment? What would help you trust yourself more without becoming overconfident?\n\nWrite your discernment assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -702,7 +702,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Discernment Insight",
-          "text": "{red|What is the most important thing you have learned about discerning healthy love?}\n\n{red|What do you want to remember when evaluating a relationship in the future?}\n\nWrite your key discernment insight:",
+          "text": "What is the most important thing you have learned about discerning healthy love?\n\nWhat do you want to remember when evaluating a relationship in the future?\n\nWrite your key discernment insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -711,7 +711,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Discernment Commitments",
-          "text": "{red|What commitments will you make for discerning healthy love?}\n\n{red|How will you evaluate potential relationships against what you have learned?}{red| How will you use time wisely?}{red| How will you seek input from others?}{red| How will you trust your judgment while remaining humble?}\n\nWrite your discernment commitments:",
+          "text": "What commitments will you make for discerning healthy love?\n\nHow will you evaluate potential relationships against what you have learned? How will you use time wisely? How will you seek input from others? How will you trust your judgment while remaining humble?\n\nWrite your discernment commitments:",
           "responseType": "open-text",
           "icon": "verified"
         },

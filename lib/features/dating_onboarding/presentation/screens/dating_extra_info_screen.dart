@@ -281,7 +281,7 @@ class _Body extends StatelessWidget {
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               children: [
                 _LabeledField(
-                  label: 'City',
+                  label: 'City of Residence',
                   child: TextField(
                     controller: cityCtrl,
                     textCapitalization: TextCapitalization.words,
@@ -297,7 +297,7 @@ class _Body extends StatelessWidget {
                   label: 'Country of Residence',
                   child: _PickerTile(
                     value: countryOfResidence,
-                    hint: 'Select country of residence',
+                    hint: 'Select Country of Residence',
                     onTap: () {
                       FocusScope.of(context).unfocus();
                       onPickCountry();
@@ -310,7 +310,7 @@ class _Body extends StatelessWidget {
                   label: 'Nationality',
                   child: _PickerTile(
                     value: nationality,
-                    hint: 'Select nationality',
+                    hint: 'Select Nationality',
                     onTap: () {
                       FocusScope.of(context).unfocus();
                       onPickNationality();
@@ -323,7 +323,7 @@ class _Body extends StatelessWidget {
                   label: 'Education Level',
                   child: _PickerTile(
                     value: education,
-                    hint: 'Select education level',
+                    hint: 'Select Education evel',
                     onTap: () {
                       FocusScope.of(context).unfocus();
                       onPickEducation();
@@ -349,7 +349,7 @@ class _Body extends StatelessWidget {
                   label: 'Church Name',
                   child: _PickerTile(
                     value: church,
-                    hint: 'Select your church',
+                    hint: 'Select your Church',
                     onTap: () {
                       FocusScope.of(context).unfocus();
                       onPickChurch();
@@ -360,7 +360,7 @@ class _Body extends StatelessWidget {
                 if (showOtherChurch) ...[
                   const SizedBox(height: 12),
                   _LabeledField(
-                    label: 'Enter your church name',
+                    label: 'Enter your Church name',
                     child: TextField(
                       controller: otherChurchCtrl,
                       style: AppTextStyles.bodyMedium,

@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Current State",
-          "text": "{red|How would you describe your current state regarding remarriage?}",
+          "text": "How would you describe your current state regarding remarriage?",
           "prompts": [
             "I deeply want a relationship and think I am ready",
             "I want a relationship but suspect I may not be fully ready",
@@ -98,7 +98,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Motivations",
-          "text": "{red|**Examine your motivations for wanting remarriage.**\n\nWhy do you want to be married again?}{red| What do you hope a new marriage will provide?}{red| Are any of your motivations about escaping something rather than building something?}{red| What fears drive your desire for remarriage?}\n\nWrite honestly about your motivations:",
+          "text": "**Examine your motivations for wanting remarriage.**\n\nWhy do you want to be married again? What do you hope a new marriage will provide? Are any of your motivations about escaping something rather than building something? What fears drive your desire for remarriage?\n\nWrite honestly about your motivations:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -143,7 +143,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Signs of Healing",
-          "text": "{red|How do you know if you have actually healed?}{red| Not just survived, but healed?}\n\n**You can think about your ex without your stomach clenching.** Their name comes up and you do not spiral. You can remember the marriage, the good and the bad, without being hijacked by emotion.\n\n**You have moved through grief to acceptance.** Not happiness about what happened, but acceptance that it happened. The raging and bargaining have quieted. The loss is part of your story now, not the whole story.\n\n**You have looked honestly at your part.** Not as self-flagellation, but as understanding. You know what you contributed, what you would do differently, what you have learned.\n\n**You have released them.** Not necessarily forgiven in the sense of warm feelings, but released. You are no longer waiting for apology, revenge, or acknowledgment. The debt is written off.\n\n**And here is the big one: you can be alone without panic.** You would like a partner, but you do not need one to survive. Solitude is uncomfortable sometimes, but it is not unbearable.\n\n**If this sounds like you, you may be healing.** If it does not, that is information too. Not judgment. Just information about where the work still needs to happen.",
+          "text": "How do you know if you have actually healed? Not just survived, but healed?\n\n**You can think about your ex without your stomach clenching.** Their name comes up and you do not spiral. You can remember the marriage, the good and the bad, without being hijacked by emotion.\n\n**You have moved through grief to acceptance.** Not happiness about what happened, but acceptance that it happened. The raging and bargaining have quieted. The loss is part of your story now, not the whole story.\n\n**You have looked honestly at your part.** Not as self-flagellation, but as understanding. You know what you contributed, what you would do differently, what you have learned.\n\n**You have released them.** Not necessarily forgiven in the sense of warm feelings, but released. You are no longer waiting for apology, revenge, or acknowledgment. The debt is written off.\n\n**And here is the big one: you can be alone without panic.** You would like a partner, but you do not need one to survive. Solitude is uncomfortable sometimes, but it is not unbearable.\n\n**If this sounds like you, you may be healing.** If it does not, that is information too. Not judgment. Just information about where the work still needs to happen.",
           "icon": "check_circle"
         },
         {
@@ -159,7 +159,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Healing Assessment",
-          "text": "{red|**Honestly assess your healing from divorce.**\n\n**Review the signs of healing and unfinished healing.** Which describe you?}\n\n{red|Where are you genuinely healed?}{red| Where do you still have work to do?}{red| What emotions about your ex and your marriage remain unresolved?}\n\nWrite your honest healing assessment:",
+          "text": "**Honestly assess your healing from divorce.**\n\n**Review the signs of healing and unfinished healing.** Which describe you?\n\nWhere are you genuinely healed? Where do you still have work to do? What emotions about your ex and your marriage remain unresolved?\n\nWrite your honest healing assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -176,7 +176,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Healing Plan",
-          "text": "{red|Based on your assessment, what healing work remains?}\n\nAreas where I still need healing:\n\nSpecific steps I will take to continue healing:\n\nHow I will know when I have healed sufficiently:\n\nWrite your continued healing plan:",
+          "text": "Based on your assessment, what healing work remains?\n\nAreas where I still need healing:\n\nSpecific steps I will take to continue healing:\n\nHow I will know when I have healed sufficiently:\n\nWrite your continued healing plan:",
           "icon": "task_alt"
         }
       ]
@@ -204,7 +204,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Still Living in Your Head",
-          "text": "{red|**Your divorce is final.** The papers are signed. You live in different places, maybe different cities. And yet.\n\n**They are still in your head.** Taking up space. Coloring your thoughts.\n\n**You wake up and think about them.** You see something that reminds you of them. You rehearse conversations, things you wish you had said, things you imagine saying if you saw them again.\n\n**You wonder what they are doing.** Whether they are happy. Whether they think about you.\n\n**Or maybe the thoughts are darker.** You replay what they did. You imagine confrontations. You wish them harm, or you wish they would suffer, or you wish they would finally see what they lost.\n\n**Either way, positive or negative, longing or hostile, they are living rent-free in your mind.**\n\n**This is a problem for a future relationship.** Because if your ex is taking up that much space, there is not room for someone new. Every person you meet will be compared, filtered, seen through the lens of your ex.\n\nHow much of your mental real estate is still occupied?} The honest answer matters.",
+          "text": "**Your divorce is final.** The papers are signed. You live in different places, maybe different cities. And yet.\n\n**They are still in your head.** Taking up space. Coloring your thoughts.\n\n**You wake up and think about them.** You see something that reminds you of them. You rehearse conversations, things you wish you had said, things you imagine saying if you saw them again.\n\n**You wonder what they are doing.** Whether they are happy. Whether they think about you.\n\n**Or maybe the thoughts are darker.** You replay what they did. You imagine confrontations. You wish them harm, or you wish they would suffer, or you wish they would finally see what they lost.\n\n**Either way, positive or negative, longing or hostile, they are living rent-free in your mind.**\n\n**This is a problem for a future relationship.** Because if your ex is taking up that much space, there is not room for someone new. Every person you meet will be compared, filtered, seen through the lens of your ex.\n\nHow much of your mental real estate is still occupied? The honest answer matters.",
           "icon": "person_remove"
         },
         {
@@ -228,7 +228,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Ex Freedom Assessment",
-          "text": "{red|**Honestly assess your emotional freedom from your ex.**\n\nHow often do you think about your ex?}{red| What type of entanglement do you experience: longing, anger, obsession, fear, or others?}{red| How do you respond when you see them, hear about them, or learn about their life?}{red| Can you genuinely wish them well?}\n\nWrite your ex freedom assessment:",
+          "text": "**Honestly assess your emotional freedom from your ex.**\n\nHow often do you think about your ex? What type of entanglement do you experience: longing, anger, obsession, fear, or others? How do you respond when you see them, hear about them, or learn about their life? Can you genuinely wish them well?\n\nWrite your ex freedom assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -237,7 +237,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Building Freedom",
-          "text": "{red|**If you are still emotionally entangled, you can build freedom.**\n\n**Stop feeding the entanglement.** Do not check their social media. Do not ask about them. Do not replay grievances.\n\n**Process the underlying emotions.** What is the longing really about?}{red| What is the anger protecting?} Work through it.\n\n**Forgive and release.** Holding on to resentment keeps you tied to them.\n\n**Invest in your own life.** Fill your mental space with your own growth, relationships, and activities.\n\n**Freedom comes through intentional detachment and building a full life without them.**",
+          "text": "**If you are still emotionally entangled, you can build freedom.**\n\n**Stop feeding the entanglement.** Do not check their social media. Do not ask about them. Do not replay grievances.\n\n**Process the underlying emotions.** What is the longing really about? What is the anger protecting? Work through it.\n\n**Forgive and release.** Holding on to resentment keeps you tied to them.\n\n**Invest in your own life.** Fill your mental space with your own growth, relationships, and activities.\n\n**Freedom comes through intentional detachment and building a full life without them.**",
           "icon": "tips_and_updates"
         },
         {
@@ -273,7 +273,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Paradox of Readiness",
-          "text": "{red|Here is the cruel paradox of love after divorce:\n\n**You are most ready for marriage when you no longer need it.**\n\n**Read that again.**\n\n**If you need a relationship to feel complete, if you need someone to fill the emptiness, if you need partnership to have a life worth living, you will bring desperation into your next marriage.** And desperation is poison.\n\n**Desperate people choose poorly.** They see red flags and explain them away because being with someone, anyone, is better than being alone. They settle. They cling. They suffocate.\n\n**But if you can be content alone, if you have built a life that has meaning without a partner, if you have found wholeness in yourself, then you can choose freely.**\n\n**You can be selective.** You can walk away from what is not right. You can enter a relationship from fullness rather than emptiness.\n\n**The best marriages are not two half people trying to become whole through each other.** That is codependency. The best marriages are two whole people who choose to share their already-complete lives.\n\nAre you whole?}{red| Or are you looking for someone to complete you?}\n\n**If it is the second, you are not ready yet.** No matter how much you want to be.",
+          "text": "Here is the cruel paradox of love after divorce:\n\n**You are most ready for marriage when you no longer need it.**\n\n**Read that again.**\n\n**If you need a relationship to feel complete, if you need someone to fill the emptiness, if you need partnership to have a life worth living, you will bring desperation into your next marriage.** And desperation is poison.\n\n**Desperate people choose poorly.** They see red flags and explain them away because being with someone, anyone, is better than being alone. They settle. They cling. They suffocate.\n\n**But if you can be content alone, if you have built a life that has meaning without a partner, if you have found wholeness in yourself, then you can choose freely.**\n\n**You can be selective.** You can walk away from what is not right. You can enter a relationship from fullness rather than emptiness.\n\n**The best marriages are not two half people trying to become whole through each other.** That is codependency. The best marriages are two whole people who choose to share their already-complete lives.\n\nAre you whole? Or are you looking for someone to complete you?\n\n**If it is the second, you are not ready yet.** No matter how much you want to be.",
           "icon": "person"
         },
         {
@@ -281,7 +281,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Alone vs Lonely",
-          "text": "{red|Can you be alone?}\n\n{red|**Not just tolerate it.** Not just white-knuckle through an evening without distraction. Actually be with yourself, in silence, without crawling out of your skin.\n\n**There is a difference between being alone and being lonely.** Being alone is a circumstance. Being lonely is a condition. You can be alone and content. You can be married and desperately lonely.\n\nWhat happens when you are alone?}{red| Do you immediately reach for your phone, the TV, noise, anything to fill the silence?}{red| Do you feel a creeping dread when you face an evening with no plans?}{red| Does solitude feel like punishment?}\n\n{red|Or can you sit with yourself?}{red| Enjoy your own company?}{red| Find that being alone is uncomfortable sometimes but not unbearable?}\n\n**This matters because marriage will not cure loneliness.** If you cannot be alone with yourself, you will still be lonely when you are married. You will just have someone to blame for it.\n\n**And if you enter marriage because you cannot stand being alone, you have not chosen your partner.** You have chosen not-aloneness. They are just the warm body that came along.\n\n**Learn to be alone.** Not forever. But well enough that when you choose someone, you are choosing them, not escape.",
+          "text": "Can you be alone?\n\n**Not just tolerate it.** Not just white-knuckle through an evening without distraction. Actually be with yourself, in silence, without crawling out of your skin.\n\n**There is a difference between being alone and being lonely.** Being alone is a circumstance. Being lonely is a condition. You can be alone and content. You can be married and desperately lonely.\n\nWhat happens when you are alone? Do you immediately reach for your phone, the TV, noise, anything to fill the silence? Do you feel a creeping dread when you face an evening with no plans? Does solitude feel like punishment?\n\nOr can you sit with yourself? Enjoy your own company? Find that being alone is uncomfortable sometimes but not unbearable?\n\n**This matters because marriage will not cure loneliness.** If you cannot be alone with yourself, you will still be lonely when you are married. You will just have someone to blame for it.\n\n**And if you enter marriage because you cannot stand being alone, you have not chosen your partner.** You have chosen not-aloneness. They are just the warm body that came along.\n\n**Learn to be alone.** Not forever. But well enough that when you choose someone, you are choosing them, not escape.",
           "icon": "compare"
         },
         {
@@ -297,7 +297,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Solo Assessment",
-          "text": "{red|**Assess your capacity to be content alone.**\n\nHow comfortable are you spending time by yourself?}{red| Do you have a fulfilling life independent of romantic relationship?}{red| Do you feel whole as a person, or do you feel like something is missing without a partner?}{red| Are any of the desperation signs true of you?}\n\nWrite your solo assessment:",
+          "text": "**Assess your capacity to be content alone.**\n\nHow comfortable are you spending time by yourself? Do you have a fulfilling life independent of romantic relationship? Do you feel whole as a person, or do you feel like something is missing without a partner? Are any of the desperation signs true of you?\n\nWrite your solo assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -350,7 +350,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Identity Lost in Marriage",
-          "text": "{red|**Some people lose themselves in marriage.**\n\n**They abandon their interests, friends, and desires to merge entirely with their spouse.** They have no identity apart from the relationship.\n\n**This is not intimacy.** It is enmeshment. It is unhealthy for both partners.\n\n**If you lost yourself in your first marriage, you need to rebuild a solid identity before remarrying.** Otherwise, you will repeat the pattern.\n\nWho are you apart from any relationship?}{red| What do you value, enjoy, and believe?}{red| What makes you distinctly you?}",
+          "text": "**Some people lose themselves in marriage.**\n\n**They abandon their interests, friends, and desires to merge entirely with their spouse.** They have no identity apart from the relationship.\n\n**This is not intimacy.** It is enmeshment. It is unhealthy for both partners.\n\n**If you lost yourself in your first marriage, you need to rebuild a solid identity before remarrying.** Otherwise, you will repeat the pattern.\n\nWho are you apart from any relationship? What do you value, enjoy, and believe? What makes you distinctly you?",
           "icon": "person_off"
         },
         {
@@ -358,7 +358,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Components of Identity",
-          "text": "{red|**A solid identity includes several components.**\n\nValues: What matters most to you?}{red| What principles guide your decisions?}\n\n{red|Beliefs: What do you believe about God, life, relationships, and yourself?}\n\n{red|Passions: What brings you alive?}{red| What do you love to do?}\n\n{red|Purpose: What gives your life meaning?}{red| What are you here for?}\n\n{red|Boundaries: What are your limits?}{red| What will you accept and not accept?}\n\n{red|Strengths: What are you good at?}{red| What gifts do you bring?}\n\n{red|Can you articulate these clearly?} They form the foundation of who you are.",
+          "text": "**A solid identity includes several components.**\n\nValues: What matters most to you? What principles guide your decisions?\n\nBeliefs: What do you believe about God, life, relationships, and yourself?\n\nPassions: What brings you alive? What do you love to do?\n\nPurpose: What gives your life meaning? What are you here for?\n\nBoundaries: What are your limits? What will you accept and not accept?\n\nStrengths: What are you good at? What gifts do you bring?\n\nCan you articulate these clearly? They form the foundation of who you are.",
           "icon": "category"
         },
         {
@@ -366,7 +366,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Identity Assessment",
-          "text": "{red|**Assess the clarity and strength of your identity.**\n\nHow clearly can you articulate your values, beliefs, passions, purpose, boundaries, and strengths?}{red| Did you lose yourself in your first marriage?}{red| How so?}{red| What aspects of your identity need strengthening?}{red| Who are you apart from any romantic relationship?}\n\nWrite your identity assessment:",
+          "text": "**Assess the clarity and strength of your identity.**\n\nHow clearly can you articulate your values, beliefs, passions, purpose, boundaries, and strengths? Did you lose yourself in your first marriage? How so? What aspects of your identity need strengthening? Who are you apart from any romantic relationship?\n\nWrite your identity assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -375,7 +375,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Building Solid Identity",
-          "text": "{red|**If your identity needs strengthening, work on it intentionally.**\n\n**Explore your values.** What do you actually believe and prioritize?}\n\n{red|**Reconnect with old interests and discover new ones.** What do you enjoy?}\n\n{red|**Develop your own friendships.** Not just shared friends, but people who are yours.\n\n**Clarify your boundaries.** What are your limits and non-negotiables?}\n\n{red|**Identify your purpose.** What gives your life meaning beyond relationship?}\n\n**A clear identity is not selfish.** It is the foundation for healthy interdependence.",
+          "text": "**If your identity needs strengthening, work on it intentionally.**\n\n**Explore your values.** What do you actually believe and prioritize?\n\n**Reconnect with old interests and discover new ones.** What do you enjoy?\n\n**Develop your own friendships.** Not just shared friends, but people who are yours.\n\n**Clarify your boundaries.** What are your limits and non-negotiables?\n\n**Identify your purpose.** What gives your life meaning beyond relationship?\n\n**A clear identity is not selfish.** It is the foundation for healthy interdependence.",
           "icon": "construction"
         },
         {
@@ -419,7 +419,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Areas to Assess",
-          "text": "{red|What is your emotional baseline these days?}\n\n{red|**Not on your best days.** Not when everything is going well. Your baseline. The state you return to when nothing particular is happening.\n\nAre your moods generally stable, or do you swing dramatically?}{red| A partner cannot be your emotional regulator. If your moods are unpredictable, that is work to do before remarriage.\n\nHow is your anxiety?}{red| Everyone has some. But if anxiety is running your life, making decisions for you, keeping you awake, controlling your choices, that needs attention first.\n\nWhat about depression?}{red| Not sadness, which is normal after divorce, but the heavy, persistent weight that makes everything hard. Depression does not disqualify you from love, but it does need to be managed.\n\nHow do you see yourself?}{red| If your self-esteem is in shambles, you will either choose someone who treats you badly because you think that is what you deserve, or you will need constant reassurance that exhausts your partner.\n\nCan you regulate your emotions?}{red| When you are angry, do you explode?}{red| When you are hurt, do you shut down?}{red| When you are anxious, do you spiral?} These patterns will play out in marriage, amplified.\n\n**This is not about being perfect.** No one is emotionally perfect. It is about being healthy enough that you are bringing something to a marriage rather than just needing something from it.",
+          "text": "What is your emotional baseline these days?\n\n**Not on your best days.** Not when everything is going well. Your baseline. The state you return to when nothing particular is happening.\n\nAre your moods generally stable, or do you swing dramatically? A partner cannot be your emotional regulator. If your moods are unpredictable, that is work to do before remarriage.\n\nHow is your anxiety? Everyone has some. But if anxiety is running your life, making decisions for you, keeping you awake, controlling your choices, that needs attention first.\n\nWhat about depression? Not sadness, which is normal after divorce, but the heavy, persistent weight that makes everything hard. Depression does not disqualify you from love, but it does need to be managed.\n\nHow do you see yourself? If your self-esteem is in shambles, you will either choose someone who treats you badly because you think that is what you deserve, or you will need constant reassurance that exhausts your partner.\n\nCan you regulate your emotions? When you are angry, do you explode? When you are hurt, do you shut down? When you are anxious, do you spiral? These patterns will play out in marriage, amplified.\n\n**This is not about being perfect.** No one is emotionally perfect. It is about being healthy enough that you are bringing something to a marriage rather than just needing something from it.",
           "icon": "checklist"
         },
         {
@@ -435,7 +435,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Emotional Health Assessment",
-          "text": "{red|**Honestly assess your current emotional health.**\n\nHow stable are your moods?}{red| How well do you manage anxiety?}{red| Are you struggling with depression or low self-worth?}{red| How well do you regulate your emotions under stress?}{red| Are there areas where professional help might be needed?}\n\nWrite your emotional health assessment:",
+          "text": "**Honestly assess your current emotional health.**\n\nHow stable are your moods? How well do you manage anxiety? Are you struggling with depression or low self-worth? How well do you regulate your emotions under stress? Are there areas where professional help might be needed?\n\nWrite your emotional health assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -496,7 +496,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Realistic Expectations",
-          "text": "**Marcus went into his second marriage expecting it to be easier.** He had learned so much. He had chosen better. But six months in, he was fighting again, different fights but fights nonetheless. It took him a year to accept that remarriage was not a reward for surviving divorce. It was another marriage, with all that entails. Once he stopped expecting easy, he could start building something real.\n\n**Realistic expectations acknowledge difficulty while maintaining hope.** Your new spouse will be imperfect, a flawed human like you. You must bring your own healing into the marriage, not expect the marriage to heal you. If children are involved, blending families will be complicated and take years. You will need to build new patterns together, not assume things will work automatically.\n\n**Scripture offers this grounding wisdom: Hope deferred makes the heart sick, but a longing fulfilled is a tree of life.** (({red|Proverbs 13:12})) Unrealistic expectations create deferred hope when reality falls short of fantasy. Realistic expectations position you for genuine fulfillment rather than perpetual disappointment.",
+          "text": "**Marcus went into his second marriage expecting it to be easier.** He had learned so much. He had chosen better. But six months in, he was fighting again, different fights but fights nonetheless. It took him a year to accept that remarriage was not a reward for surviving divorce. It was another marriage, with all that entails. Once he stopped expecting easy, he could start building something real.\n\n**Realistic expectations acknowledge difficulty while maintaining hope.** Your new spouse will be imperfect, a flawed human like you. You must bring your own healing into the marriage, not expect the marriage to heal you. If children are involved, blending families will be complicated and take years. You will need to build new patterns together, not assume things will work automatically.\n\n**Scripture offers this grounding wisdom: Hope deferred makes the heart sick, but a longing fulfilled is a tree of life.** (Proverbs 13:12) Unrealistic expectations create deferred hope when reality falls short of fantasy. Realistic expectations position you for genuine fulfillment rather than perpetual disappointment.",
           "icon": "check_circle"
         },
         {
@@ -504,7 +504,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Expectations",
-          "text": "{red|**Examine your expectations for remarriage.**\n\nWhat do you expect remarriage to be like?}{red| What do you expect from a new spouse?}{red| What do you expect about blended family dynamics if applicable?}{red| Are any of your expectations unrealistic?}\n\nWrite about your expectations:",
+          "text": "**Examine your expectations for remarriage.**\n\nWhat do you expect remarriage to be like? What do you expect from a new spouse? What do you expect about blended family dynamics if applicable? Are any of your expectations unrealistic?\n\nWrite about your expectations:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -549,7 +549,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "A Comprehensive Check",
-          "text": "{red|**This is the part where we get honest.**\n\n**Not hopeful.** Not optimistic. Not telling yourself what you want to hear. Honest.\n\n**You have explored many dimensions of readiness in this journey.** Now it is time to look at the full picture and ask: Am I actually ready?}\n\n{red|**Not ready as in I want to be ready.** Not ready as in I am tired of waiting. Actually ready, in the sense that bringing yourself into a marriage right now would be bringing a whole, healed, prepared person.\n\n**This is not a test with a passing score.** It is a mirror. You look at it and see what is there.\n\nWhere are you strong?}{red| Where have you done the work?}{red| What areas can you say, honestly, I have dealt with that?}\n\n{red|Where are you still struggling?}{red| What keeps coming up?}{red| What have you been avoiding?}\n\n**Be honest with yourself.** No one else needs to see this assessment. It is for you. And what you see will tell you whether you are ready, or what still needs attention before you are.\n\n**The goal is not to shame yourself for not being ready.** The goal is to know, truly know, where you stand. Because that knowledge will either give you confidence to move forward or wisdom to wait.",
+          "text": "**This is the part where we get honest.**\n\n**Not hopeful.** Not optimistic. Not telling yourself what you want to hear. Honest.\n\n**You have explored many dimensions of readiness in this journey.** Now it is time to look at the full picture and ask: Am I actually ready?\n\n**Not ready as in I want to be ready.** Not ready as in I am tired of waiting. Actually ready, in the sense that bringing yourself into a marriage right now would be bringing a whole, healed, prepared person.\n\n**This is not a test with a passing score.** It is a mirror. You look at it and see what is there.\n\nWhere are you strong? Where have you done the work? What areas can you say, honestly, I have dealt with that?\n\nWhere are you still struggling? What keeps coming up? What have you been avoiding?\n\n**Be honest with yourself.** No one else needs to see this assessment. It is for you. And what you see will tell you whether you are ready, or what still needs attention before you are.\n\n**The goal is not to shame yourself for not being ready.** The goal is to know, truly know, where you stand. Because that knowledge will either give you confidence to move forward or wisdom to wait.",
           "icon": "checklist"
         },
         {
@@ -582,7 +582,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Interpreting Your Assessment",
-          "text": "{red|How do you interpret your assessment results?}\n\n**If most areas show ready or mostly ready, you may be approaching readiness for remarriage.** Continue growing but you are in a good place.\n\n**If several areas show still working, you are making progress but may benefit from more time and focused growth before serious remarriage consideration.**\n\n**If multiple areas show not yet, you likely have significant work to do before you are ready for a healthy remarriage.**\n\n**There is no shame in any result.** It simply indicates where you are and what you need.",
+          "text": "How do you interpret your assessment results?\n\n**If most areas show ready or mostly ready, you may be approaching readiness for remarriage.** Continue growing but you are in a good place.\n\n**If several areas show still working, you are making progress but may benefit from more time and focused growth before serious remarriage consideration.**\n\n**If multiple areas show not yet, you likely have significant work to do before you are ready for a healthy remarriage.**\n\n**There is no shame in any result.** It simply indicates where you are and what you need.",
           "icon": "analytics"
         },
         {
@@ -642,7 +642,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Timing Assessment",
-          "text": "{red|**Assess the timing question for yourself.**\n\nBased on what you have learned, do you think you are ready to remarry now?}{red| What indicators suggest you may be ready?}{red| What indicators suggest you may need more time?}{red| What would need to change for you to be clearly ready?}\n\nWrite your timing assessment:",
+          "text": "**Assess the timing question for yourself.**\n\nBased on what you have learned, do you think you are ready to remarry now? What indicators suggest you may be ready? What indicators suggest you may need more time? What would need to change for you to be clearly ready?\n\nWrite your timing assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -703,7 +703,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Readiness Insight",
-          "text": "{red|What is the most important thing you have learned about your readiness through this journey?}\n\n{red|What do you want to remember as you move toward possible remarriage?}\n\nWrite your key readiness insight:",
+          "text": "What is the most important thing you have learned about your readiness through this journey?\n\nWhat do you want to remember as you move toward possible remarriage?\n\nWrite your key readiness insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -712,7 +712,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Readiness Commitments",
-          "text": "{red|What commitments will you make about remarriage readiness?}\n\n{red|How will you continue preparing yourself?}{red| What will you do if you realize you are not yet ready?}{red| How will you resist pressure to rush before you are prepared?}{red| What support will you seek for ongoing growth?}\n\nWrite your readiness commitments:",
+          "text": "What commitments will you make about remarriage readiness?\n\nHow will you continue preparing yourself? What will you do if you realize you are not yet ready? How will you resist pressure to rush before you are prepared? What support will you seek for ongoing growth?\n\nWrite your readiness commitments:",
           "responseType": "open-text",
           "icon": "verified"
         },

@@ -18,6 +18,9 @@ class DatingProfile {
 
   final DateTime createdAt;
 
+  /// Schema version: 1 for legacy v1 profiles, 2 for new v2 profiles
+  final int schemaVersion;
+
   /// Normalized to lowercase. 'legacy' if missing.
   final String verificationStatus;
 
@@ -56,6 +59,7 @@ class DatingProfile {
     this.profession,
     required this.photos,
     required this.createdAt,
+    this.schemaVersion = 2,
     required this.verificationStatus,
     this.isActive = true,
     this.maritalStatus,
@@ -350,6 +354,7 @@ class DatingProfile {
       photos: photos,
       createdAt: _asDate(json['createdAt']),
 
+      schemaVersion: (json['schemaVersion'] as int?) ?? 1,
       verificationStatus: normalizedVerificationStatus,
       isActive: (json['isActive'] as bool?) ?? true,
 

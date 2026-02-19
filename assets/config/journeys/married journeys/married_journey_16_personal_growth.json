@@ -53,7 +53,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "You Bring Yourself Everywhere",
-          "text": "{red|**James had been married twice.** Both marriages ended with similar complaints from his wives: he was emotionally unavailable, defensive, and quick to shut down during conflict.\n\nAfter his second divorce, a counselor asked him a hard question: 'What is the common factor in both failed marriages?}'\n\n**The answer was painful but obvious.** James was the common factor. He had brought the same unresolved issues, the same defensive patterns, the same emotional limitations into both relationships.\n\n**You cannot escape yourself by changing partners.** You bring yourself, your patterns, your wounds, your blind spots, everywhere you go. The only path to a healthier marriage is becoming a healthier you.",
+          "text": "**James had been married twice.** Both marriages ended with similar complaints from his wives: he was emotionally unavailable, defensive, and quick to shut down during conflict.\n\nAfter his second divorce, a counselor asked him a hard question: 'What is the common factor in both failed marriages?'\n\n**The answer was painful but obvious.** James was the common factor. He had brought the same unresolved issues, the same defensive patterns, the same emotional limitations into both relationships.\n\n**You cannot escape yourself by changing partners.** You bring yourself, your patterns, your wounds, your blind spots, everywhere you go. The only path to a healthier marriage is becoming a healthier you.",
           "icon": "person"
         },
         {
@@ -61,7 +61,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "The Speck and the Log",
-          "text": "{red|Jesus taught: 'Why do you see the speck that is in your brother's eye, but do not notice the log that is in your own eye?}' (({red|Matthew 7:3}))\n\n**This applies powerfully to marriage.** It is remarkably easy to see your spouse's flaws clearly while remaining blind to your own. You can articulate exactly what they need to change while having little awareness of how you contribute to problems.\n\n**But here is the truth: you cannot control your spouse's growth.** You cannot force them to change. You can only control your own growth, your own choices, your own transformation.\n\n**Focusing on the log in your own eye is not about self-condemnation.** It is about taking responsibility for what you can actually change.",
+          "text": "Jesus taught: 'Why do you see the speck that is in your brother's eye, but do not notice the log that is in your own eye?' (Matthew 7:3)\n\n**This applies powerfully to marriage.** It is remarkably easy to see your spouse's flaws clearly while remaining blind to your own. You can articulate exactly what they need to change while having little awareness of how you contribute to problems.\n\n**But here is the truth: you cannot control your spouse's growth.** You cannot force them to change. You can only control your own growth, your own choices, your own transformation.\n\n**Focusing on the log in your own eye is not about self-condemnation.** It is about taking responsibility for what you can actually change.",
           "icon": "visibility"
         },
         {
@@ -69,7 +69,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Marriage as a Mirror",
-          "text": "{red|**Marriage has a way of exposing things about us that we might otherwise never see.**\n\n**Your spouse sees you in moments of stress, fatigue, and frustration.** They experience your defensive reactions, your selfish tendencies, your communication failures. They know your blind spots sometimes better than you do.\n\n**This can feel threatening.** But it can also be a gift. Marriage becomes a mirror that shows us where we need to grow.\n\nThe question is: will you look in the mirror honestly, or will you blame the mirror for showing you an uncomfortable reflection?}",
+          "text": "**Marriage has a way of exposing things about us that we might otherwise never see.**\n\n**Your spouse sees you in moments of stress, fatigue, and frustration.** They experience your defensive reactions, your selfish tendencies, your communication failures. They know your blind spots sometimes better than you do.\n\n**This can feel threatening.** But it can also be a gift. Marriage becomes a mirror that shows us where we need to grow.\n\nThe question is: will you look in the mirror honestly, or will you blame the mirror for showing you an uncomfortable reflection?",
           "icon": "self_improvement"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "What Marriage Has Revealed",
-          "text": "{red|**Think honestly about what marriage has revealed about you.**\n\nWhat weaknesses or patterns has marriage exposed that you might not have seen as a single person?}\n\n{red|What feedback has your spouse given you repeatedly that you have been resistant to hear?}\n\n{red|What do you know about yourself that you wish were different?}\n\nWrite about what marriage has shown you about yourself:",
+          "text": "**Think honestly about what marriage has revealed about you.**\n\nWhat weaknesses or patterns has marriage exposed that you might not have seen as a single person?\n\nWhat feedback has your spouse given you repeatedly that you have been resistant to hear?\n\nWhat do you know about yourself that you wish were different?\n\nWrite about what marriage has shown you about yourself:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -86,7 +86,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Growth Edge",
-          "text": "{red|What area of personal growth would most benefit your marriage right now?}",
+          "text": "What area of personal growth would most benefit your marriage right now?",
           "prompts": [
             "Managing my emotions when I am upset",
             "Being less defensive when criticized",
@@ -153,7 +153,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Why It Matters in Marriage",
-          "text": "{red|**Self-awareness transforms marriage communication.**\n\n**Without it, conversations sound like: 'You always do this.**' 'Why do you have to be like that?}' Or there is withdrawal without explanation, or explosive reactions that seem to come from nowhere.\n\n**With it, conversations become: 'I am feeling hurt because of what happened earlier.**' 'I notice I get anxious when we talk about money.' 'I need a moment because I am feeling overwhelmed.'\n\n**When you can name your internal experience, you can share it rather than act it out.** You can invite understanding rather than trigger defensiveness.\n\n**Your spouse is not a mind reader.** They cannot know what you do not tell them. And you cannot tell them what you do not know yourself.",
+          "text": "**Self-awareness transforms marriage communication.**\n\n**Without it, conversations sound like: 'You always do this.**' 'Why do you have to be like that?' Or there is withdrawal without explanation, or explosive reactions that seem to come from nowhere.\n\n**With it, conversations become: 'I am feeling hurt because of what happened earlier.**' 'I notice I get anxious when we talk about money.' 'I need a moment because I am feeling overwhelmed.'\n\n**When you can name your internal experience, you can share it rather than act it out.** You can invite understanding rather than trigger defensiveness.\n\n**Your spouse is not a mind reader.** They cannot know what you do not tell them. And you cannot tell them what you do not know yourself.",
           "icon": "forum"
         },
         {
@@ -161,7 +161,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Emotional Awareness",
-          "text": "{red|**Honestly assess your emotional self-awareness.**\n\nHow easily can you identify what you are feeling in a given moment?}\n\n{red|How often do you react emotionally without understanding why?}\n\n{red|What emotions are easiest for you to recognize?}{red| Which are harder?}\n\n{red|How does your level of self-awareness affect your communication with your spouse?}\n\nWrite about your current level of emotional awareness:",
+          "text": "**Honestly assess your emotional self-awareness.**\n\nHow easily can you identify what you are feeling in a given moment?\n\nHow often do you react emotionally without understanding why?\n\nWhat emotions are easiest for you to recognize? Which are harder?\n\nHow does your level of self-awareness affect your communication with your spouse?\n\nWrite about your current level of emotional awareness:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -170,7 +170,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Building Awareness",
-          "text": "{red|You can develop greater emotional self-awareness through practice:\n\n**Pause before reacting.** When you notice an emotional charge, stop and ask yourself what you are actually feeling right now.\n\n**Expand your emotional vocabulary.** 'Angry' might actually be 'hurt,' 'afraid,' 'disappointed,' or 'embarrassed.' Get specific about what you feel.\n\n**Notice body sensations.** Where do you feel emotions physically?} Learn to read your body's signals.\n\n**Reflect afterward.** After emotional moments, ask yourself what you were really feeling, what triggered it, and what was underneath the surface emotion.\n\n**Journal regularly.** Writing about your inner experience builds awareness over time and helps you see patterns.",
+          "text": "You can develop greater emotional self-awareness through practice:\n\n**Pause before reacting.** When you notice an emotional charge, stop and ask yourself what you are actually feeling right now.\n\n**Expand your emotional vocabulary.** 'Angry' might actually be 'hurt,' 'afraid,' 'disappointed,' or 'embarrassed.' Get specific about what you feel.\n\n**Notice body sensations.** Where do you feel emotions physically? Learn to read your body's signals.\n\n**Reflect afterward.** After emotional moments, ask yourself what you were really feeling, what triggered it, and what was underneath the surface emotion.\n\n**Journal regularly.** Writing about your inner experience builds awareness over time and helps you see patterns.",
           "icon": "school"
         },
         {
@@ -178,7 +178,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "The Awareness Practice",
-          "text": "{red|**This week, practice emotional check-ins three times per day: morning, afternoon, and evening.**\n\nPause and ask yourself:\n\nWhat am I feeling right now?}{red| Try to name specific emotions.\n\nWhere do I feel it in my body?}\n\n{red|What might be causing this feeling?}\n\n**Keep a brief log of what you discover.** At the end of the week, review for patterns.\n\n**This simple practice, done consistently, dramatically increases emotional self-awareness.**",
+          "text": "**This week, practice emotional check-ins three times per day: morning, afternoon, and evening.**\n\nPause and ask yourself:\n\nWhat am I feeling right now? Try to name specific emotions.\n\nWhere do I feel it in my body?\n\nWhat might be causing this feeling?\n\n**Keep a brief log of what you discover.** At the end of the week, review for patterns.\n\n**This simple practice, done consistently, dramatically increases emotional self-awareness.**",
           "icon": "task_alt"
         }
       ]
@@ -230,7 +230,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Regulation Challenges",
-          "text": "{red|Which emotions are hardest for you to regulate in your marriage?}",
+          "text": "Which emotions are hardest for you to regulate in your marriage?",
           "prompts": [
             "Anger - I say or do things I regret",
             "Anxiety - I spiral into worst-case thinking",
@@ -252,7 +252,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Flooding Triggers",
-          "text": "{red|**Think about times when your emotions have overwhelmed your ability to respond wisely.**\n\nWhat situations or topics trigger emotional flooding for you?}\n\n{red|What does it feel like in your body when you are getting flooded?}\n\n{red|What do you typically do when flooded?}{red| What is the impact on your spouse?}\n\n{red|What would be different if you could stay regulated in those moments?}\n\nWrite about your flooding patterns:",
+          "text": "**Think about times when your emotions have overwhelmed your ability to respond wisely.**\n\nWhat situations or topics trigger emotional flooding for you?\n\nWhat does it feel like in your body when you are getting flooded?\n\nWhat do you typically do when flooded? What is the impact on your spouse?\n\nWhat would be different if you could stay regulated in those moments?\n\nWrite about your flooding patterns:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -289,7 +289,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Defensive Wall",
-          "text": "{red|**When Sarah told her husband Mark that she felt lonely in their marriage, his immediate response was defensive: 'I work hard all day to provide for this family.** What more do you want?}'\n\n**He heard her statement as an attack and responded by defending himself.** But Sarah was not attacking. She was sharing her heart, hoping to be understood and to work together on the problem.\n\n**Mark's defensiveness accomplished nothing positive.** It shut down the conversation, left Sarah feeling more alone, and prevented any possibility of addressing the real issue.\n\n**Defensiveness is a wall we put up to protect ourselves from feeling criticized or inadequate.** But that wall also keeps out connection, growth, and understanding.",
+          "text": "**When Sarah told her husband Mark that she felt lonely in their marriage, his immediate response was defensive: 'I work hard all day to provide for this family.** What more do you want?'\n\n**He heard her statement as an attack and responded by defending himself.** But Sarah was not attacking. She was sharing her heart, hoping to be understood and to work together on the problem.\n\n**Mark's defensiveness accomplished nothing positive.** It shut down the conversation, left Sarah feeling more alone, and prevented any possibility of addressing the real issue.\n\n**Defensiveness is a wall we put up to protect ourselves from feeling criticized or inadequate.** But that wall also keeps out connection, growth, and understanding.",
           "icon": "shield"
         },
         {
@@ -313,7 +313,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Defensive Patterns",
-          "text": "{red|**Reflect honestly on your defensive reactions.**\n\nWhat forms does your defensiveness typically take?}\n\n{red|What topics or types of feedback trigger defensiveness most?}\n\n{red|What do you fear will happen if you do not defend yourself?}\n\n{red|How has your defensiveness affected your spouse and your marriage?}\n\nWrite about your defensive patterns:",
+          "text": "**Reflect honestly on your defensive reactions.**\n\nWhat forms does your defensiveness typically take?\n\nWhat topics or types of feedback trigger defensiveness most?\n\nWhat do you fear will happen if you do not defend yourself?\n\nHow has your defensiveness affected your spouse and your marriage?\n\nWrite about your defensive patterns:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -322,7 +322,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "The Alternative to Defense",
-          "text": "{red|**Instead of defending, try receiving.**\n\n**Listen first: Let your spouse finish without interrupting to defend yourself.**\n\n**Seek to understand: Ask clarifying questions.** 'Can you help me understand what you mean?}{red|'\n\n**Acknowledge their experience: 'I can see why you would feel that way.**' This is not agreeing you are wrong. It is validating their perspective.\n\nLook for the kernel of truth: Even if the feedback feels unfair, is there anything valid in it?}\n\n**Respond, do not react: Take time to consider before responding.** You do not have to agree with everything, but you can engage thoughtfully.\n\n**Separate feedback from identity: Feedback about behavior is not a verdict on your worth as a person.**\n\n**This requires security in your identity in Christ, not in being perfect or always right.**",
+          "text": "**Instead of defending, try receiving.**\n\n**Listen first: Let your spouse finish without interrupting to defend yourself.**\n\n**Seek to understand: Ask clarifying questions.** 'Can you help me understand what you mean?'\n\n**Acknowledge their experience: 'I can see why you would feel that way.**' This is not agreeing you are wrong. It is validating their perspective.\n\nLook for the kernel of truth: Even if the feedback feels unfair, is there anything valid in it?\n\n**Respond, do not react: Take time to consider before responding.** You do not have to agree with everything, but you can engage thoughtfully.\n\n**Separate feedback from identity: Feedback about behavior is not a verdict on your worth as a person.**\n\n**This requires security in your identity in Christ, not in being perfect or always right.**",
           "icon": "hearing"
         },
         {
@@ -330,7 +330,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "The Openness Practice",
-          "text": "{red|**This week, practice receiving feedback without defending.**\n\nWhen your spouse shares something difficult:\n\n1. Notice your defensive impulse but do not act on it 2. Take a breath 3. Say: 'Thank you for telling me. Help me understand more.' 4. Listen without interrupting 5. Reflect back what you heard 6. Ask: 'What would help?}'\n\n**This does not mean agreeing with everything.** It means hearing before responding.\n\n**Try this at least twice this week and notice what happens.**",
+          "text": "**This week, practice receiving feedback without defending.**\n\nWhen your spouse shares something difficult:\n\n1. Notice your defensive impulse but do not act on it\n2. Take a breath\n3. Say: 'Thank you for telling me. Help me understand more.' 4. Listen without interrupting\n5. Reflect back what you heard\n6. Ask: 'What would help?'\n\n**This does not mean agreeing with everything.** It means hearing before responding.\n\n**Try this at least twice this week and notice what happens.**",
           "icon": "task_alt"
         }
       ]
@@ -374,7 +374,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Signs Your Past Is Affecting Your Present",
-          "text": "{red|How do you know when past wounds are being activated?}\n\n{red|**Disproportionate reactions: Your emotional response is bigger than the situation warrants.**\n\n**Triggering patterns: Certain situations consistently provoke strong reactions in you.**\n\n**Repeating dynamics: You keep recreating similar relationship problems.**\n\n**Old familiar feelings: The emotions feel like ones you have felt before, perhaps from childhood.**\n\n**Physical symptoms: Your body reacts strongly with fight, flight, or freeze responses.**\n\n**Black-and-white thinking: You see your spouse as all bad in the moment, or yourself as completely worthless.**\n\nWhen you notice these signs, it is worth asking: what from my past might be getting activated here?}",
+          "text": "How do you know when past wounds are being activated?\n\n**Disproportionate reactions: Your emotional response is bigger than the situation warrants.**\n\n**Triggering patterns: Certain situations consistently provoke strong reactions in you.**\n\n**Repeating dynamics: You keep recreating similar relationship problems.**\n\n**Old familiar feelings: The emotions feel like ones you have felt before, perhaps from childhood.**\n\n**Physical symptoms: Your body reacts strongly with fight, flight, or freeze responses.**\n\n**Black-and-white thinking: You see your spouse as all bad in the moment, or yourself as completely worthless.**\n\nWhen you notice these signs, it is worth asking: what from my past might be getting activated here?",
           "icon": "lightbulb"
         },
         {
@@ -382,7 +382,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Wound Inventory",
-          "text": "{red|**Reflect on your own history and its impact on your marriage.**\n\nWhat painful experiences from your past might be affecting how you relate to your spouse?}\n\n{red|What triggers strong reactions in you that might be connected to old wounds?}\n\n{red|How have past relationships shaped your expectations and fears in marriage?}\n\n{red|What healing do you sense you might need?}\n\nWrite about the past wounds that may be affecting your present:",
+          "text": "**Reflect on your own history and its impact on your marriage.**\n\nWhat painful experiences from your past might be affecting how you relate to your spouse?\n\nWhat triggers strong reactions in you that might be connected to old wounds?\n\nHow have past relationships shaped your expectations and fears in marriage?\n\nWhat healing do you sense you might need?\n\nWrite about the past wounds that may be affecting your present:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -391,7 +391,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "The Path to Healing",
-          "text": "Healing old wounds is possible, but it requires intentional work:\n\n**Acknowledge the wounds: You cannot heal what you will not admit exists.** Name what happened and how it affected you.\n\n**Grieve the losses: Allow yourself to feel the pain of what you lost or never had.** Grief is part of healing.\n\n**Separate past from present: Practice recognizing when old wounds are being triggered so you can respond to the present situation rather than react from the past.**\n\n**Seek professional help: Some wounds require more than self-help.** Therapy with a skilled counselor can facilitate deep healing.\n\n**Invite God into the process: 'He heals the brokenhearted and binds up their wounds.**' (({red|Psalm 147:3})) God is present in your healing journey.\n\n**Be patient: Healing is a process, not an event.** It takes time.",
+          "text": "Healing old wounds is possible, but it requires intentional work:\n\n**Acknowledge the wounds: You cannot heal what you will not admit exists.** Name what happened and how it affected you.\n\n**Grieve the losses: Allow yourself to feel the pain of what you lost or never had.** Grief is part of healing.\n\n**Separate past from present: Practice recognizing when old wounds are being triggered so you can respond to the present situation rather than react from the past.**\n\n**Seek professional help: Some wounds require more than self-help.** Therapy with a skilled counselor can facilitate deep healing.\n\n**Invite God into the process: 'He heals the brokenhearted and binds up their wounds.**' (Psalm 147:3) God is present in your healing journey.\n\n**Be patient: Healing is a process, not an event.** It takes time.",
           "icon": "healing"
         },
         {
@@ -399,7 +399,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "One Step Toward Healing",
-          "text": "{red|Choose one step to take toward healing past wounds:\n\n**Acknowledge one specific wound and write about its impact on your marriage.**\n\n**Have a conversation with your spouse about how your past affects your present, helping them understand your triggers.**\n\n**Schedule an appointment with a counselor to begin working on deeper healing.**\n\n**Spend time in prayer, inviting God into your wounded places and asking for healing.**\n\nWhat one step will you take this week toward healing?}",
+          "text": "Choose one step to take toward healing past wounds:\n\n**Acknowledge one specific wound and write about its impact on your marriage.**\n\n**Have a conversation with your spouse about how your past affects your present, helping them understand your triggers.**\n\n**Schedule an appointment with a counselor to begin working on deeper healing.**\n\n**Spend time in prayer, inviting God into your wounded places and asking for healing.**\n\nWhat one step will you take this week toward healing?",
           "icon": "task_alt"
         }
       ]
@@ -427,7 +427,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Blame Game",
-          "text": "**It started in the Garden of Eden.** When God asked Adam about eating the forbidden fruit, Adam said, 'The woman you gave me, she gave me fruit from the tree.' (({red|Genesis 3:12}))\n\n**Notice what he did.** He blamed Eve. He even subtly blamed God: the woman you gave me. He took no responsibility for his own choice.\n\n**We have been doing the same thing ever since.** When things go wrong in marriage, the instinct is to point outward rather than inward.\n\n**'I would not have yelled if you had not provoked me.**' 'I only did that because you did this first.' 'If you would change, I would not act this way.'\n\n**But this is the opposite of maturity.** Mature people take responsibility for their own behavior regardless of what others do.",
+          "text": "**It started in the Garden of Eden.** When God asked Adam about eating the forbidden fruit, Adam said, 'The woman you gave me, she gave me fruit from the tree.' (Genesis 3:12)\n\n**Notice what he did.** He blamed Eve. He even subtly blamed God: the woman you gave me. He took no responsibility for his own choice.\n\n**We have been doing the same thing ever since.** When things go wrong in marriage, the instinct is to point outward rather than inward.\n\n**'I would not have yelled if you had not provoked me.**' 'I only did that because you did this first.' 'If you would change, I would not act this way.'\n\n**But this is the opposite of maturity.** Mature people take responsibility for their own behavior regardless of what others do.",
           "icon": "person"
         },
         {
@@ -451,7 +451,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Responsibility Assessment",
-          "text": "{red|**Honestly assess how well you take responsibility in your marriage.**\n\nWhen things go wrong, what is your first instinct: to look at your own contribution or to focus on what your spouse did?}\n\n{red|How often do your apologies include qualifiers or excuses?}\n\n{red|What feedback has your spouse given you that you have deflected rather than owned?}\n\n{red|What is one thing you know you do that negatively affects your marriage that you have not fully taken responsibility for?}\n\nWrite your honest assessment:",
+          "text": "**Honestly assess how well you take responsibility in your marriage.**\n\nWhen things go wrong, what is your first instinct: to look at your own contribution or to focus on what your spouse did?\n\nHow often do your apologies include qualifiers or excuses?\n\nWhat feedback has your spouse given you that you have deflected rather than owned?\n\nWhat is one thing you know you do that negatively affects your marriage that you have not fully taken responsibility for?\n\nWrite your honest assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -460,7 +460,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "A Better Apology",
-          "text": "{red|A mature, responsibility-taking apology includes:\n\n1. Naming specifically what you did: Not 'I am sorry if I hurt you' but 'I am sorry I raised my voice and said hurtful things.'\n\n2. Acknowledging the impact: 'I know that made you feel disrespected and hurt.'\n\n3. Taking full responsibility: 'There is no excuse for that. I was wrong.'\n\n4. Expressing genuine remorse: 'I feel terrible that I treated you that way.'\n\n5. Committing to change: 'I am going to work on controlling my anger. Here is what I am going to do differently.'\n\n6. Asking for forgiveness: 'Will you forgive me?}'\n\n**No deflection.** No qualifiers. No bringing up what they did. Just owning your part fully.",
+          "text": "A mature, responsibility-taking apology includes:\n\n1. Naming specifically what you did: Not 'I am sorry if I hurt you' but 'I am sorry I raised my voice and said hurtful things.'\n\n2. Acknowledging the impact: 'I know that made you feel disrespected and hurt.'\n\n3. Taking full responsibility: 'There is no excuse for that. I was wrong.'\n\n4. Expressing genuine remorse: 'I feel terrible that I treated you that way.'\n\n5. Committing to change: 'I am going to work on controlling my anger. Here is what I am going to do differently.'\n\n6. Asking for forgiveness: 'Will you forgive me?'\n\n**No deflection.** No qualifiers. No bringing up what they did. Just owning your part fully.",
           "icon": "check_circle"
         },
         {
@@ -468,7 +468,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "The Responsibility Conversation",
-          "text": "**Think of one area where you have not fully taken responsibility in your marriage.**\n\nThis week, have a conversation with your spouse where you:\n\n1. Name what you have done wrong or how you have contributed to a problem 2. Apologize using the full apology format 3. Ask what else they have wanted you to take responsibility for 4. Listen without defending 5. Commit to specific change\n\n**This conversation takes courage.** But it can be transformative for your marriage.",
+          "text": "**Think of one area where you have not fully taken responsibility in your marriage.**\n\nThis week, have a conversation with your spouse where you:\n\n1. Name what you have done wrong or how you have contributed to a problem\n2. Apologize using the full apology format\n3. Ask what else they have wanted you to take responsibility for\n4. Listen without defending\n5. Commit to specific change\n\n**This conversation takes courage.** But it can be transformative for your marriage.",
           "icon": "forum"
         }
       ]
@@ -512,7 +512,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "How Character Grows",
-          "text": "Character development follows a pattern:\n\n**Awareness: Recognizing where you fall short.** You cannot grow in patience if you do not recognize your impatience.\n\n**Desire: Genuinely wanting to develop the virtue, not just knowing you should.**\n\n**Practice: Deliberately exercising the virtue in small situations.** Character is built through repeated action.\n\n**Failure and recovery: You will fail.** Growth comes from getting back up and trying again.\n\n**Grace: Character development is not just self-improvement.** It involves the Holy Spirit transforming you. 'The fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control.' (({red|Galatians 5:22-23}))\n\n**Character growth is a lifetime project.** The goal is progress, not perfection.",
+          "text": "Character development follows a pattern:\n\n**Awareness: Recognizing where you fall short.** You cannot grow in patience if you do not recognize your impatience.\n\n**Desire: Genuinely wanting to develop the virtue, not just knowing you should.**\n\n**Practice: Deliberately exercising the virtue in small situations.** Character is built through repeated action.\n\n**Failure and recovery: You will fail.** Growth comes from getting back up and trying again.\n\n**Grace: Character development is not just self-improvement.** It involves the Holy Spirit transforming you. 'The fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control.' (Galatians 5:22-23)\n\n**Character growth is a lifetime project.** The goal is progress, not perfection.",
           "icon": "trending_up"
         },
         {
@@ -520,7 +520,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Character Growth Edge",
-          "text": "{red|Which character virtue do you most need to develop for your marriage to flourish?}",
+          "text": "Which character virtue do you most need to develop for your marriage to flourish?",
           "prompts": [
             "Patience - I get frustrated too quickly",
             "Humility - I struggle to admit I am wrong",
@@ -542,7 +542,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Virtue in Action",
-          "text": "{red|**Think about the virtue you identified as your growth edge.**\n\nWhat would it look like in practice in your marriage?}\n\n{red|What situations trigger the opposite behavior?}\n\n{red|What small steps could you take to develop this virtue?}\n\n{red|How would your marriage be different if you grew significantly in this area?}\n\nWrite about how you will develop this virtue:",
+          "text": "**Think about the virtue you identified as your growth edge.**\n\nWhat would it look like in practice in your marriage?\n\nWhat situations trigger the opposite behavior?\n\nWhat small steps could you take to develop this virtue?\n\nHow would your marriage be different if you grew significantly in this area?\n\nWrite about how you will develop this virtue:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -551,7 +551,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "The Virtue Practice",
-          "text": "{red|**Choose one virtue to focus on developing this week.**\n\n**Each morning: Pray for God's help in developing this virtue today.**\n\n**Throughout the day: Look for opportunities to practice it, especially small ones.**\n\n**Each evening: Reflect on how you did.** Where did you succeed?}{red| Where did you fall short?}{red| What will you do tomorrow?}\n\n**At the end of the week: Evaluate your progress and decide whether to continue with this virtue or move to another.**\n\n**Small, consistent practice over time builds lasting character.**",
+          "text": "**Choose one virtue to focus on developing this week.**\n\n**Each morning: Pray for God's help in developing this virtue today.**\n\n**Throughout the day: Look for opportunities to practice it, especially small ones.**\n\n**Each evening: Reflect on how you did.** Where did you succeed? Where did you fall short? What will you do tomorrow?\n\n**At the end of the week: Evaluate your progress and decide whether to continue with this virtue or move to another.**\n\n**Small, consistent practice over time builds lasting character.**",
           "icon": "task_alt"
         }
       ]
@@ -587,7 +587,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Identity in Christ",
-          "text": "Scripture describes believers as:\n\n**Children of God: 'See what kind of love the Father has given to us, that we should be called children of God; and so we are.**' (1 ({red|John 3:1}))\n\n**Chosen and beloved: 'Put on then, as God's chosen ones, holy and beloved.**..' (({red|Colossians 3:12}))\n\n**Completely accepted: 'There is therefore now no condemnation for those who are in Christ Jesus.**' (({red|Romans 8:1}))\n\n**Fully known and loved: 'I am convinced that neither death nor life.**..will be able to separate us from the love of God in Christ Jesus our Lord.' (({red|Romans 8:38-39}))\n\n**When this identity is secure, you do not need your spouse to validate your worth.** You already have it. You can receive their love as a gift rather than desperately needing it as a lifeline.",
+          "text": "Scripture describes believers as:\n\n**Children of God: 'See what kind of love the Father has given to us, that we should be called children of God; and so we are.**' (1 (John 3:1)\n\n**Chosen and beloved: 'Put on then, as God's chosen ones, holy and beloved.**..' (Colossians 3:12)\n\n**Completely accepted: 'There is therefore now no condemnation for those who are in Christ Jesus.**' (Romans 8:1)\n\n**Fully known and loved: 'I am convinced that neither death nor life.**..will be able to separate us from the love of God in Christ Jesus our Lord.' (Romans 8:38-39)\n\n**When this identity is secure, you do not need your spouse to validate your worth.** You already have it. You can receive their love as a gift rather than desperately needing it as a lifeline.",
           "icon": "church"
         },
         {
@@ -603,7 +603,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Identity Sources",
-          "text": "{red|**Reflect honestly on where you look for your sense of worth and identity.**\n\nHow much does your sense of value depend on your spouse's opinion of you?}\n\n{red|What happens to your emotional state when your spouse is critical or distant?}\n\n{red|In what ways do you look to your spouse for something that only God can provide?}\n\n{red|How would your marriage be different if your identity were fully secure in Christ?}\n\nWrite about your identity sources:",
+          "text": "**Reflect honestly on where you look for your sense of worth and identity.**\n\nHow much does your sense of value depend on your spouse's opinion of you?\n\nWhat happens to your emotional state when your spouse is critical or distant?\n\nIn what ways do you look to your spouse for something that only God can provide?\n\nHow would your marriage be different if your identity were fully secure in Christ?\n\nWrite about your identity sources:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -620,7 +620,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Identity Grounding Practice",
-          "text": "{red|This week, practice grounding your identity in Christ:\n\n**Each morning, spend five minutes meditating on a Scripture about your identity in Christ.**\n\n**Throughout the day, when you notice yourself seeking validation from your spouse, pause and remind yourself of your true identity.**\n\n**When criticism comes, practice separating the feedback from your fundamental worth.**\n\nJournal about what you notice: when do you most seek validation?}{red| What triggers identity insecurity?}\n\n**This practice, done consistently, strengthens your identity foundation.**",
+          "text": "This week, practice grounding your identity in Christ:\n\n**Each morning, spend five minutes meditating on a Scripture about your identity in Christ.**\n\n**Throughout the day, when you notice yourself seeking validation from your spouse, pause and remind yourself of your true identity.**\n\n**When criticism comes, practice separating the feedback from your fundamental worth.**\n\nJournal about what you notice: when do you most seek validation? What triggers identity insecurity?\n\n**This practice, done consistently, strengthens your identity foundation.**",
           "icon": "task_alt"
         }
       ]
@@ -648,7 +648,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Growth as a Lifestyle",
-          "text": "**Many people approach personal growth in bursts.** They read a book, attend a retreat, or do a journey like this one, make some changes, and then slowly drift back to old patterns.\n\n**Real transformation requires something different: a lifestyle of growth.** Consistent habits and rhythms that keep you developing over time.\n\n**'But grow in the grace and knowledge of our Lord and Savior Jesus Christ.**' (2 ({red|Peter 3:18}))\n\n**Growth is not optional for Christians.** It is expected. And it does not happen accidentally. It happens through intentional practices sustained over time.",
+          "text": "**Many people approach personal growth in bursts.** They read a book, attend a retreat, or do a journey like this one, make some changes, and then slowly drift back to old patterns.\n\n**Real transformation requires something different: a lifestyle of growth.** Consistent habits and rhythms that keep you developing over time.\n\n**'But grow in the grace and knowledge of our Lord and Savior Jesus Christ.**' (2 (Peter 3:18)\n\n**Growth is not optional for Christians.** It is expected. And it does not happen accidentally. It happens through intentional practices sustained over time.",
           "icon": "autorenew"
         },
         {
@@ -672,7 +672,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Current Growth Practices",
-          "text": "{red|**Assess your current habits around personal growth.**\n\nWhat practices do you currently have that support your growth?}\n\n{red|What growth habits have you started but not sustained?}\n\n{red|What gaps exist in your growth lifestyle?}\n\n{red|What is one sustainable practice you could add that would support ongoing development?}\n\nWrite about your current growth practices:",
+          "text": "**Assess your current habits around personal growth.**\n\nWhat practices do you currently have that support your growth?\n\nWhat growth habits have you started but not sustained?\n\nWhat gaps exist in your growth lifestyle?\n\nWhat is one sustainable practice you could add that would support ongoing development?\n\nWrite about your current growth practices:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -681,7 +681,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Next Growth Step",
-          "text": "{red|What growth practice would you most benefit from adding to your life?}",
+          "text": "What growth practice would you most benefit from adding to your life?",
           "prompts": [
             "Regular time for self-reflection",
             "Consistent reading or learning",
@@ -703,7 +703,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Growth Plan",
-          "text": "{red|Create a simple, sustainable personal growth plan:\n\nDaily: What will you do each day?}{red| (Even five to ten minutes counts.)\n\nWeekly: What will you do each week to support your growth?}\n\n{red|Monthly: How will you review your progress and adjust?}\n\n{red|Accountability: Who will you share this plan with?}\n\n**Write your growth plan with specific, realistic commitments you can actually sustain.**",
+          "text": "Create a simple, sustainable personal growth plan:\n\nDaily: What will you do each day? (Even five to ten minutes counts.)\n\nWeekly: What will you do each week to support your growth?\n\nMonthly: How will you review your progress and adjust?\n\nAccountability: Who will you share this plan with?\n\n**Write your growth plan with specific, realistic commitments you can actually sustain.**",
           "icon": "task_alt"
         }
       ]
@@ -747,7 +747,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Insight",
-          "text": "{red|What is the most important thing you have learned or been reminded of through this journey?}\n\n{red|What do you want to remember and apply going forward?}\n\nWrite your key insight:",
+          "text": "What is the most important thing you have learned or been reminded of through this journey?\n\nWhat do you want to remember and apply going forward?\n\nWrite your key insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -756,7 +756,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Growth Commitment",
-          "text": "{red|Based on what you have learned, what specific commitments will you make to ongoing personal growth?}\n\n{red|What will you work on?}{red| What practices will you adopt?}{red| How will you stay accountable?}\n\nWrite your specific growth commitments:",
+          "text": "Based on what you have learned, what specific commitments will you make to ongoing personal growth?\n\nWhat will you work on? What practices will you adopt? How will you stay accountable?\n\nWrite your specific growth commitments:",
           "responseType": "open-text",
           "icon": "verified"
         },
@@ -773,7 +773,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Share With Your Spouse",
-          "text": "{red|**Share with your spouse what you have learned and committed to through this journey.**\n\nTell them:\n\nWhat you have realized about yourself What you are committing to work on How they can support your growth How you hope your growth will bless your marriage\n\nAsk them:\n\nWhat growth would they most appreciate seeing in you?}{red| How can you be accountable to each other for growth?}\n\n**This vulnerability invites partnership in your development.**",
+          "text": "**Share with your spouse what you have learned and committed to through this journey.**\n\nTell them:\n\nWhat you have realized about yourself What you are committing to work on How they can support your growth How you hope your growth will bless your marriage\n\nAsk them:\n\nWhat growth would they most appreciate seeing in you? How can you be accountable to each other for growth?\n\n**This vulnerability invites partnership in your development.**",
           "icon": "forum"
         }
       ]

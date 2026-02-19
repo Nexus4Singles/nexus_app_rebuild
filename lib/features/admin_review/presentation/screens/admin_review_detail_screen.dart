@@ -43,16 +43,25 @@ class _AdminReviewDetailScreenState
     } catch (_) {}
   }
 
-  Future<void> _stopAll() async {
+  @override
+  void deactivate() {
+    // Stop audio and reset UI state when screen is deactivated (navigating away)
     try {
-      await _media.stopAudio();
+      _media.stopAudio(); // Fire and forget, don't await in deactivate
     } catch (_) {}
-    if (mounted) setState(() => _isPlaying = false);
+    _currentlyPlayingUrl = null;
+    _isPlaying = false;
+    super.deactivate();
   }
 
   @override
   void dispose() {
-    _stopAll();
+    // Extra safety: stop audio again in dispose
+    try {
+      _media.stopAudio(); // Fire and forget
+    } catch (_) {}
+    _currentlyPlayingUrl = null;
+    _isPlaying = false;
     super.dispose();
   }
 

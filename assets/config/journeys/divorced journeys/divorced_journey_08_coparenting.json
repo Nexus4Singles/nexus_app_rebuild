@@ -61,7 +61,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What Children Need",
-          "text": "{red|**Your children did not ask for this.**\n\n**They did not choose to have their world split in two.** They did not choose to shuttle between houses, to have two bedrooms, to spend holidays wondering which parent is alone.\n\n**They love you both.** Even if one of you is clearly more at fault. Even if one of you hurt the other unforgivably. Your children love both of their parents, and asking them to stop is asking them to cut off part of themselves.\n\n**This is the central challenge of co-parenting: to protect your children from a war they did not start and cannot escape.**\n\n**It means biting your tongue when you want to criticize their other parent.** It means smiling when they come home full of stories about fun at the other house. It means being civil to someone you might hate.\n\n**It is incredibly hard.** And it is necessary.\n\n**Because your children are watching.** They are learning from you how adults handle conflict. How to treat people who have hurt you. Whether anger gets the final word.\n\nWhat do you want them to learn?}",
+          "text": "**Your children did not ask for this.**\n\n**They did not choose to have their world split in two.** They did not choose to shuttle between houses, to have two bedrooms, to spend holidays wondering which parent is alone.\n\n**They love you both.** Even if one of you is clearly more at fault. Even if one of you hurt the other unforgivably. Your children love both of their parents, and asking them to stop is asking them to cut off part of themselves.\n\n**This is the central challenge of co-parenting: to protect your children from a war they did not start and cannot escape.**\n\n**It means biting your tongue when you want to criticize their other parent.** It means smiling when they come home full of stories about fun at the other house. It means being civil to someone you might hate.\n\n**It is incredibly hard.** And it is necessary.\n\n**Because your children are watching.** They are learning from you how adults handle conflict. How to treat people who have hurt you. Whether anger gets the final word.\n\nWhat do you want them to learn?",
           "icon": "favorite"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Co-parenting Situation",
-          "text": "{red|How would you describe your current co-parenting relationship?}",
+          "text": "How would you describe your current co-parenting relationship?",
           "prompts": [
             "Cooperative - we work together reasonably well",
             "Businesslike - civil but not warm",
@@ -99,7 +99,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Co-parenting Challenges",
-          "text": "{red|**Identify your main co-parenting challenges.**\n\nWhat makes co-parenting difficult for you?}{red| Where does conflict with your ex most affect your children?}{red| What do your children need that is hard to provide given your co-parenting situation?}{red| What would improve if you could change one thing about your co-parenting?}\n\nWrite about your co-parenting challenges:",
+          "text": "**Identify your main co-parenting challenges.**\n\nWhat makes co-parenting difficult for you? Where does conflict with your ex most affect your children? What do your children need that is hard to provide given your co-parenting situation? What would improve if you could change one thing about your co-parenting?\n\nWrite about your co-parenting challenges:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -152,7 +152,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Shielding Strategies",
-          "text": "**Protecting children requires intentional strategies.**\n\n**Scripture warns parents not to provoke their children to anger or exasperate them.** (({red|Ephesians 6:4}), ({red|Colossians 3:21})) Exposing children to parental conflict does exactly this, burdening them with adult pain they cannot process or escape.\n\n**Never argue in front of the children.** If conflict arises during exchanges, walk away. Handle it later without them present.\n\n**Do not use children as messengers.** Communicate directly with your co-parent, even if difficult.\n\n**Do not interrogate children about the other home.** Let them share naturally without pressure.\n\n**Do not bad-mouth your ex.** Whatever you think of them, they are your child's parent. Speak neutrally or positively.\n\n**Do not burden children with adult information.** Financial disputes, legal matters, and relationship details are not for them.\n\n**Do not make them choose.** Let them love both parents freely.\n\n**Every interaction is a chance to shield or expose them.** Choose wisely.",
+          "text": "**Protecting children requires intentional strategies.**\n\n**Scripture warns parents not to provoke their children to anger or exasperate them.** (Ephesians 6:4), (Colossians 3:21) Exposing children to parental conflict does exactly this, burdening them with adult pain they cannot process or escape.\n\n**Never argue in front of the children.** If conflict arises during exchanges, walk away. Handle it later without them present.\n\n**Do not use children as messengers.** Communicate directly with your co-parent, even if difficult.\n\n**Do not interrogate children about the other home.** Let them share naturally without pressure.\n\n**Do not bad-mouth your ex.** Whatever you think of them, they are your child's parent. Speak neutrally or positively.\n\n**Do not burden children with adult information.** Financial disputes, legal matters, and relationship details are not for them.\n\n**Do not make them choose.** Let them love both parents freely.\n\n**Every interaction is a chance to shield or expose them.** Choose wisely.",
           "icon": "shield"
         },
         {
@@ -160,7 +160,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Shielding Assessment",
-          "text": "{red|**Honestly assess how well you are shielding your children from conflict.**\n\nAre there ways you have exposed them to adult conflict?}{red| Have you used them as messengers, confidants, or in other inappropriate roles?}{red| What do your children see and hear about your conflict with your ex?}{red| Where do you need to improve in protecting them?}\n\nWrite your shielding assessment:",
+          "text": "**Honestly assess how well you are shielding your children from conflict.**\n\nAre there ways you have exposed them to adult conflict? Have you used them as messengers, confidants, or in other inappropriate roles? What do your children see and hear about your conflict with your ex? Where do you need to improve in protecting them?\n\nWrite your shielding assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -229,7 +229,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Communication Assessment",
-          "text": "{red|**Assess your current communication with your co-parent.**\n\nWhat methods do you currently use to communicate?}{red| What works well?}{red| What leads to conflict?}{red| How often does communication stay focused on children versus drift to other issues?}{red| What would improve your co-parent communication?}\n\nWrite your communication assessment:",
+          "text": "**Assess your current communication with your co-parent.**\n\nWhat methods do you currently use to communicate? What works well? What leads to conflict? How often does communication stay focused on children versus drift to other issues? What would improve your co-parent communication?\n\nWrite your communication assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -238,7 +238,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "The BIFF Response",
-          "text": "**When you receive a hostile or provocative message from your co-parent, the BIFF method helps you respond well.**\n\n**Brief: Keep your response short.** Long responses give more ammunition.\n\n**Informative: Provide relevant information about the children.**\n\n**Friendly: Maintain a civil tone even if they do not.**\n\n**Firm: State your position clearly without being aggressive.**\n\n**Example: Their message is an angry paragraph about you being a terrible parent.** Your BIFF response: Thanks for letting me know about Tuesday. I can pick up the kids at 5. Let me know if that works.\n\n**You address the relevant issue and ignore the rest.**",
+          "text": "**When you receive a hostile or provocative message from your co-parent, the BIFF method helps you respond well.**\n\n**Brief: Keep your response short.** Long responses give more ammunition.\n\n**Informative: Provide relevant information about the children.**\n\n**Friendly: Maintain a civil tone even if they do not.**\n\n**Firm: State your position clearly without being aggressive.**\n\n**Example: Their message is an angry paragraph about you being a terrible parent.** Your BIFF response: Thanks for letting me know about Tuesday. I can pick up the kids at\n5. Let me know if that works.\n\n**You address the relevant issue and ignore the rest.**",
           "icon": "edit"
         },
         {
@@ -298,7 +298,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Consistency Assessment",
-          "text": "{red|**Assess the consistency between your two homes.**\n\nWhat is consistent across both homes?}{red| What is significantly different?}{red| What differences seem to be hardest on your children?}{red| What areas would benefit most from more consistency?}{red| What is realistic to align given your co-parenting relationship?}\n\nWrite your consistency assessment:",
+          "text": "**Assess the consistency between your two homes.**\n\nWhat is consistent across both homes? What is significantly different? What differences seem to be hardest on your children? What areas would benefit most from more consistency? What is realistic to align given your co-parenting relationship?\n\nWrite your consistency assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -367,7 +367,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Children's Adjustment",
-          "text": "{red|**Reflect on how your children are adjusting to the divorce.**\n\nWhat signs of grief or struggle have you noticed in each child?}{red| How is each child responding differently?}{red| What have you done to support their adjustment?}{red| What do you think they need that you have not been providing?}\n\nWrite about your children's adjustment:",
+          "text": "**Reflect on how your children are adjusting to the divorce.**\n\nWhat signs of grief or struggle have you noticed in each child? How is each child responding differently? What have you done to support their adjustment? What do you think they need that you have not been providing?\n\nWrite about your children's adjustment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -412,7 +412,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The High-Conflict Reality",
-          "text": "{red|**Your children now live in two homes, but they need to feel like they have one team of parents working for their good.** Think of yourselves as two departments in the same company: separate offices, different management styles, but united in the mission.\n\n**This is the ideal.** It requires two willing partners.\n\nBut what if your co-parent is not willing?}\n\n{red|What if they are hostile, unreasonable, impossible to work with?}{red| What if every attempt at cooperation is met with aggression or manipulation?}\n\n**You cannot control them.** You can only control yourself.\n\n**This means being the stable parent even if they are not.** Being civil even when they are not. Taking the high road even when they are digging tunnels.\n\n**It means protecting your children from your reactions, even when their other parent's behavior is indefensible.**\n\n**It means documenting everything, keeping records, having evidence if you ever need it.**\n\n**And it means accepting that you cannot create peaceful co-parenting alone.** If they insist on war, you may need to minimize contact, use parallel parenting strategies, and focus on making your home a place of peace regardless of what happens in theirs.\n\n**This is unfair.** You should not have to do this alone. But your children need at least one parent who rises above the conflict. Let it be you.",
+          "text": "**Your children now live in two homes, but they need to feel like they have one team of parents working for their good.** Think of yourselves as two departments in the same company: separate offices, different management styles, but united in the mission.\n\n**This is the ideal.** It requires two willing partners.\n\nBut what if your co-parent is not willing?\n\nWhat if they are hostile, unreasonable, impossible to work with? What if every attempt at cooperation is met with aggression or manipulation?\n\n**You cannot control them.** You can only control yourself.\n\n**This means being the stable parent even if they are not.** Being civil even when they are not. Taking the high road even when they are digging tunnels.\n\n**It means protecting your children from your reactions, even when their other parent's behavior is indefensible.**\n\n**It means documenting everything, keeping records, having evidence if you ever need it.**\n\n**And it means accepting that you cannot create peaceful co-parenting alone.** If they insist on war, you may need to minimize contact, use parallel parenting strategies, and focus on making your home a place of peace regardless of what happens in theirs.\n\n**This is unfair.** You should not have to do this alone. But your children need at least one parent who rises above the conflict. Let it be you.",
           "icon": "warning"
         },
         {
@@ -436,7 +436,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Conflict Assessment",
-          "text": "{red|**Assess the level of conflict in your co-parenting relationship.**\n\nIs your co-parenting relationship genuinely high-conflict or difficult but manageable?}{red| What specific behaviors make your ex difficult to co-parent with?}{red| What strategies have you tried?}{red| What has worked or not worked?}{red| Do you need to shift to a more parallel parenting approach?}\n\nWrite your conflict assessment:",
+          "text": "**Assess the level of conflict in your co-parenting relationship.**\n\nIs your co-parenting relationship genuinely high-conflict or difficult but manageable? What specific behaviors make your ex difficult to co-parent with? What strategies have you tried? What has worked or not worked? Do you need to shift to a more parallel parenting approach?\n\nWrite your conflict assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -489,7 +489,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "When Your Ex Has a New Partner",
-          "text": "{red|**Introducing a new partner to your children is not a small decision.**\n\n**Your children have already lost the family they knew.** Now you are asking them to make room for someone new. This is harder than it looks from the adult side.\n\n**Too fast is dangerous.** Children who meet a parade of partners learn that relationships are temporary. They may struggle to attach, or attach too quickly, or refuse to attach at all.\n\n**The general wisdom: wait until the relationship is serious and stable before introductions.** Months, not weeks. And even then, go slowly.\n\n**Watch your children, not just your partner.** How are they actually responding, not how you hope they are responding?}{red| Are they withdrawn?}{red| Acting out?}{red| Asking worried questions?}\n\n**Do not force bonding.** Let relationships develop naturally. Your partner does not need to become a parent figure immediately, or ever. They need to become a safe adult in your children's lives. That is enough to start.\n\n**And remember: your children may have complicated feelings about your happiness.** They might resent that you have moved on. They might feel disloyal to their other parent. They might fear losing you to someone new.\n\n**These feelings are not rational, but they are real.** Make room for them. Reassure your children that your love for them is not diminished by your love for someone else.\n\n**They will adjust.** But they need time, patience, and the certainty that they still come first.",
+          "text": "**Introducing a new partner to your children is not a small decision.**\n\n**Your children have already lost the family they knew.** Now you are asking them to make room for someone new. This is harder than it looks from the adult side.\n\n**Too fast is dangerous.** Children who meet a parade of partners learn that relationships are temporary. They may struggle to attach, or attach too quickly, or refuse to attach at all.\n\n**The general wisdom: wait until the relationship is serious and stable before introductions.** Months, not weeks. And even then, go slowly.\n\n**Watch your children, not just your partner.** How are they actually responding, not how you hope they are responding? Are they withdrawn? Acting out? Asking worried questions?\n\n**Do not force bonding.** Let relationships develop naturally. Your partner does not need to become a parent figure immediately, or ever. They need to become a safe adult in your children's lives. That is enough to start.\n\n**And remember: your children may have complicated feelings about your happiness.** They might resent that you have moved on. They might feel disloyal to their other parent. They might fear losing you to someone new.\n\n**These feelings are not rational, but they are real.** Make room for them. Reassure your children that your love for them is not diminished by your love for someone else.\n\n**They will adjust.** But they need time, patience, and the certainty that they still come first.",
           "icon": "psychology"
         },
         {
@@ -505,7 +505,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your New Partner Situation",
-          "text": "{red|**Reflect on new partners in your co-parenting situation.**\n\nDoes your ex have a new partner?}{red| How has that affected co-parenting and your children?}{red| Are you dating or considering dating?}{red| What concerns do you have about introducing someone?}{red| What boundaries or guidelines do you want around new partners in your children's lives?}{red| What emotions do you need to manage around this topic?}\n\nWrite about your new partner situation:",
+          "text": "**Reflect on new partners in your co-parenting situation.**\n\nDoes your ex have a new partner? How has that affected co-parenting and your children? Are you dating or considering dating? What concerns do you have about introducing someone? What boundaries or guidelines do you want around new partners in your children's lives? What emotions do you need to manage around this topic?\n\nWrite about your new partner situation:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -522,7 +522,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your New Partner Guidelines",
-          "text": "{red|**Establish your own guidelines around new partners.**\n\nHow long will I wait before introducing someone to my children?}\n\n{red|How will I introduce a new partner?}{red| What steps will I take?}\n\n{red|How will I handle my children's feelings about new partners?}\n\n{red|What boundaries are important to me about new partners in my children's lives?}\n\nWrite your new partner guidelines:",
+          "text": "**Establish your own guidelines around new partners.**\n\nHow long will I wait before introducing someone to my children?\n\nHow will I introduce a new partner? What steps will I take?\n\nHow will I handle my children's feelings about new partners?\n\nWhat boundaries are important to me about new partners in my children's lives?\n\nWrite your new partner guidelines:",
           "icon": "task_alt"
         }
       ]
@@ -550,7 +550,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Challenge of Special Times",
-          "text": "{red|**Holidays, birthdays, school events, and family milestones become complicated after divorce.**\n\nWho gets the kids for Christmas?}{red| How do you handle a birthday?}{red| What about graduation when both parents and extended families want to attend?}\n\n**These occasions carry emotional weight.** They highlight the loss of the intact family. They create logistics challenges. They can spark conflict.\n\n**But they are also opportunities.** To show your children that they can be celebrated by both parents. To model cooperation. To create new traditions that work for your restructured family.\n\n**With planning and flexibility, special occasions can be navigated well.**",
+          "text": "**Holidays, birthdays, school events, and family milestones become complicated after divorce.**\n\nWho gets the kids for Christmas? How do you handle a birthday? What about graduation when both parents and extended families want to attend?\n\n**These occasions carry emotional weight.** They highlight the loss of the intact family. They create logistics challenges. They can spark conflict.\n\n**But they are also opportunities.** To show your children that they can be celebrated by both parents. To model cooperation. To create new traditions that work for your restructured family.\n\n**With planning and flexibility, special occasions can be navigated well.**",
           "icon": "celebration"
         },
         {
@@ -574,7 +574,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Special Occasion Challenges",
-          "text": "{red|**Reflect on special occasions in your co-parenting.**\n\nWhat holidays or occasions have been most challenging?}{red| How have you handled them so far?}{red| What worked or did not?}{red| What upcoming special occasions need planning?}{red| What would make special occasions easier for your children?}\n\nWrite about your special occasion challenges:",
+          "text": "**Reflect on special occasions in your co-parenting.**\n\nWhat holidays or occasions have been most challenging? How have you handled them so far? What worked or did not? What upcoming special occasions need planning? What would make special occasions easier for your children?\n\nWrite about your special occasion challenges:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -643,7 +643,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Self-Care Assessment",
-          "text": "{red|**Assess your current self-care.**\n\nHow are you doing physically, emotionally, socially, and spiritually?}{red| What self-care practices have you maintained?}{red| What has fallen away?}{red| What signs of depletion are you experiencing?}{red| What would help you be a better resourced parent?}\n\nWrite your self-care assessment:",
+          "text": "**Assess your current self-care.**\n\nHow are you doing physically, emotionally, socially, and spiritually? What self-care practices have you maintained? What has fallen away? What signs of depletion are you experiencing? What would help you be a better resourced parent?\n\nWrite your self-care assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -704,7 +704,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Co-parenting Insight",
-          "text": "{red|What is the most important thing you have learned or realized through this journey about co-parenting?}\n\n{red|What do you want to remember when co-parenting gets difficult?}\n\nWrite your key insight:",
+          "text": "What is the most important thing you have learned or realized through this journey about co-parenting?\n\nWhat do you want to remember when co-parenting gets difficult?\n\nWrite your key insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -713,7 +713,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Co-parenting Commitments",
-          "text": "{red|What specific commitments will you make for your ongoing co-parenting?}\n\n{red|How will you continue to put your children first?}{red| How will you manage conflict with your co-parent?}{red| How will you support your children's wellbeing?}{red| How will you take care of yourself?}\n\nWrite your co-parenting commitments:",
+          "text": "What specific commitments will you make for your ongoing co-parenting?\n\nHow will you continue to put your children first? How will you manage conflict with your co-parent? How will you support your children's wellbeing? How will you take care of yourself?\n\nWrite your co-parenting commitments:",
           "responseType": "open-text",
           "icon": "verified"
         },

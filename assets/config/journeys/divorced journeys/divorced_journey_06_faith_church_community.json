@@ -61,7 +61,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Common Spiritual Struggles",
-          "text": "{red|**Jennifer stopped going to church after her divorce.** Not because she had lost her faith, but because she could not bear the looks, the whispered conversations, the couples sitting together while she sat alone. The place that was supposed to be her sanctuary had become a place of shame.\n\n**Divorced people often experience specific spiritual struggles.**\n\n**Distance from God: Feeling like He is far away or unavailable.**\n\n**Anger at God: Blaming Him for not preventing the divorce or not fixing your spouse.**\n\n**Shame and guilt: Feeling disqualified from God's love or blessing.**\n\n**Confusion about God's will: Wondering if you missed His guidance or are now outside His plan.**\n\n**Loss of spiritual practices: Finding it hard to pray, read Scripture, or engage spiritually.**\n\n**Church discomfort: Feeling out of place, judged, or unwelcome in Christian community.**\n\n**Doubt: Questioning beliefs you once held firmly.**\n\nWhich of these resonate with your experience?}",
+          "text": "**Jennifer stopped going to church after her divorce.** Not because she had lost her faith, but because she could not bear the looks, the whispered conversations, the couples sitting together while she sat alone. The place that was supposed to be her sanctuary had become a place of shame.\n\n**Divorced people often experience specific spiritual struggles.**\n\n**Distance from God: Feeling like He is far away or unavailable.**\n\n**Anger at God: Blaming Him for not preventing the divorce or not fixing your spouse.**\n\n**Shame and guilt: Feeling disqualified from God's love or blessing.**\n\n**Confusion about God's will: Wondering if you missed His guidance or are now outside His plan.**\n\n**Loss of spiritual practices: Finding it hard to pray, read Scripture, or engage spiritually.**\n\n**Church discomfort: Feeling out of place, judged, or unwelcome in Christian community.**\n\n**Doubt: Questioning beliefs you once held firmly.**\n\nWhich of these resonate with your experience?",
           "icon": "psychology"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Spiritual State",
-          "text": "{red|How would you describe your spiritual state since your divorce?}",
+          "text": "How would you describe your spiritual state since your divorce?",
           "prompts": [
             "Closer to God - my faith has actually grown through this",
             "Stable - my faith remains mostly intact",
@@ -99,7 +99,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Spiritual Struggles",
-          "text": "{red|**Take time to honestly explore your spiritual state.**\n\nHow has divorce affected your relationship with God?}{red| What questions or doubts have emerged?}{red| What spiritual practices have you abandoned or maintained?}{red| What do you need from God right now?}\n\nWrite about your spiritual struggles:",
+          "text": "**Take time to honestly explore your spiritual state.**\n\nHow has divorce affected your relationship with God? What questions or doubts have emerged? What spiritual practices have you abandoned or maintained? What do you need from God right now?\n\nWrite about your spiritual struggles:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -136,7 +136,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Lie of Disqualification",
-          "text": "{red|**There is a lie that divorce plants deep in your heart, maybe so deep you have not said it out loud.**\n\n**God loves me less now.**\n\n**You feel it when you pray and the words feel hollow.** When you read Scripture and it seems to be talking to other people, better people. When you see others blessed and wonder if you forfeited blessing when your marriage ended.\n\n**The lie has variations.** God is disappointed in me. I am no longer in His will. I had my chance and I blew it. I am damaged goods now.\n\n**Maybe the lie was planted by someone's comment at church.** Maybe by a sermon about the sanctity of marriage that felt like a verdict on your life. Maybe by the silence of Christians who did not know what to say to you.\n\n**But wherever it came from, it is a lie.**\n\n**God's love is not based on your marital status.** It was never based on your performance. It is based on His character, which does not change when your circumstances do.\n\n**The same God who loved you before your divorce loves you now.** No less. Not grudgingly. Fully.\n\nCan you believe that?}{red| Or does the lie still have its grip on you?}",
+          "text": "**There is a lie that divorce plants deep in your heart, maybe so deep you have not said it out loud.**\n\n**God loves me less now.**\n\n**You feel it when you pray and the words feel hollow.** When you read Scripture and it seems to be talking to other people, better people. When you see others blessed and wonder if you forfeited blessing when your marriage ended.\n\n**The lie has variations.** God is disappointed in me. I am no longer in His will. I had my chance and I blew it. I am damaged goods now.\n\n**Maybe the lie was planted by someone's comment at church.** Maybe by a sermon about the sanctity of marriage that felt like a verdict on your life. Maybe by the silence of Christians who did not know what to say to you.\n\n**But wherever it came from, it is a lie.**\n\n**God's love is not based on your marital status.** It was never based on your performance. It is based on His character, which does not change when your circumstances do.\n\n**The same God who loved you before your divorce loves you now.** No less. Not grudgingly. Fully.\n\nCan you believe that? Or does the lie still have its grip on you?",
           "icon": "cancel"
         },
         {
@@ -144,7 +144,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What Scripture Says",
-          "text": "**Scripture is clear about the nature of God's love.**\n\n**Nothing can separate you from it.** Neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers, neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God. (({red|Romans 8:38-39}))\n\n**His love is everlasting.** I have loved you with an everlasting love; I have drawn you with unfailing kindness. (({red|Jeremiah 31:3}))\n\n**It does not depend on your performance.** God demonstrates His own love for us in this: while we were still sinners, Christ died for us. (({red|Romans 5:8}))\n\n**Divorce is not on the list of things that separate you from God's love.** Because nothing is.",
+          "text": "**Scripture is clear about the nature of God's love.**\n\n**Nothing can separate you from it.** Neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers, neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God. (Romans 8:38-39)\n\n**His love is everlasting.** I have loved you with an everlasting love; I have drawn you with unfailing kindness. (Jeremiah 31:3)\n\n**It does not depend on your performance.** God demonstrates His own love for us in this: while we were still sinners, Christ died for us. (Romans 5:8)\n\n**Divorce is not on the list of things that separate you from God's love.** Because nothing is.",
           "icon": "menu_book"
         },
         {
@@ -152,7 +152,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "God's Posture Toward You",
-          "text": "{red|What is God's posture toward you right now, as a divorced person?}\n\n**He is not standing with arms crossed in disappointment.** He is running toward you with open arms, like the father of the prodigal son.\n\n**He is not withholding love until you prove yourself worthy.** He offers love freely to you as you are.\n\n**He is not keeping a record of failures.** If you have confessed, He has forgiven. The record is clean.\n\n**He is close to the brokenhearted.** Your pain does not push Him away. It draws Him near.\n\n**His love for you today is the same as it was before your divorce.** Unchanged. Undiminished. Unconditional.",
+          "text": "What is God's posture toward you right now, as a divorced person?\n\n**He is not standing with arms crossed in disappointment.** He is running toward you with open arms, like the father of the prodigal son.\n\n**He is not withholding love until you prove yourself worthy.** He offers love freely to you as you are.\n\n**He is not keeping a record of failures.** If you have confessed, He has forgiven. The record is clean.\n\n**He is close to the brokenhearted.** Your pain does not push Him away. It draws Him near.\n\n**His love for you today is the same as it was before your divorce.** Unchanged. Undiminished. Unconditional.",
           "icon": "favorite"
         },
         {
@@ -160,7 +160,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "What You Have Believed",
-          "text": "{red|**Explore what you have believed about God's love since your divorce.**\n\nHave you felt that God loves you less?}{red| Have you felt disqualified from His blessing?}{red| What messages have contributed to these beliefs?}{red| What would change if you truly believed His love is unchanged?}\n\nWrite about what you have believed:",
+          "text": "**Explore what you have believed about God's love since your divorce.**\n\nHave you felt that God loves you less? Have you felt disqualified from His blessing? What messages have contributed to these beliefs? What would change if you truly believed His love is unchanged?\n\nWrite about what you have believed:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -205,7 +205,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Feelings You Hide",
-          "text": "{red|Can we be honest about something you might be afraid to admit?}\n\n{red|**You might be angry at God.**\n\n**Not mildly disappointed.** Angry. Maybe even furious.\n\n**Because you prayed.** You begged Him to save your marriage. You did everything you knew to do, and you asked Him to do what you could not. And either He said no, or He was silent, or He let it fall apart anyway.\n\nWhere was He?}{red| Where was the God who promised to be near to the brokenhearted?}{red| Where was the God who said to ask and you would receive?}\n\n**Some people feel guilty for being angry at God.** They think it is wrong, disrespectful, evidence of weak faith.\n\n**But look at the Psalms.** They are full of anger at God. David shouted at Him. Job accused Him. Jeremiah complained bitterly. These were not weak believers. They were honest ones.\n\n**God can handle your anger.** He would rather you bring it to Him, raw and unfiltered, than stuff it down and let it become a wall between you.\n\n**You are allowed to be angry at Him.** You are allowed to tell Him exactly how you feel. You might be surprised how different your relationship with Him becomes when you stop pretending to be okay.",
+          "text": "Can we be honest about something you might be afraid to admit?\n\n**You might be angry at God.**\n\n**Not mildly disappointed.** Angry. Maybe even furious.\n\n**Because you prayed.** You begged Him to save your marriage. You did everything you knew to do, and you asked Him to do what you could not. And either He said no, or He was silent, or He let it fall apart anyway.\n\nWhere was He? Where was the God who promised to be near to the brokenhearted? Where was the God who said to ask and you would receive?\n\n**Some people feel guilty for being angry at God.** They think it is wrong, disrespectful, evidence of weak faith.\n\n**But look at the Psalms.** They are full of anger at God. David shouted at Him. Job accused Him. Jeremiah complained bitterly. These were not weak believers. They were honest ones.\n\n**God can handle your anger.** He would rather you bring it to Him, raw and unfiltered, than stuff it down and let it become a wall between you.\n\n**You are allowed to be angry at Him.** You are allowed to tell Him exactly how you feel. You might be surprised how different your relationship with Him becomes when you stop pretending to be okay.",
           "icon": "visibility_off"
         },
         {
@@ -213,7 +213,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Biblical Honesty",
-          "text": "{red|**Scripture is full of people who were brutally honest with God.**\n\nThe Psalms include cries like Why, Lord, do you stand far off?}{red| Why do you hide yourself in times of trouble?}{red| (({red|Psalm 10:1})) and My God, my God, why have you forsaken me?} (({red|Psalm 22:1}))\n\n**Job accused God of being unjust.** Jeremiah complained that God had deceived him. Habakkuk demanded answers about why God allowed evil.\n\n**These are not examples of bad faith.** They are examples of honest faith. Faith that brings everything to God, including the hard stuff.\n\n**If the Bible includes these prayers, you have permission to pray them too.**",
+          "text": "**Scripture is full of people who were brutally honest with God.**\n\nThe Psalms include cries like Why, Lord, do you stand far off? Why do you hide yourself in times of trouble? (Psalm 10:1) and My God, my God, why have you forsaken me? (Psalm 22:1)\n\n**Job accused God of being unjust.** Jeremiah complained that God had deceived him. Habakkuk demanded answers about why God allowed evil.\n\n**These are not examples of bad faith.** They are examples of honest faith. Faith that brings everything to God, including the hard stuff.\n\n**If the Bible includes these prayers, you have permission to pray them too.**",
           "icon": "menu_book"
         },
         {
@@ -229,7 +229,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Honest Feelings",
-          "text": "{red|What honest feelings toward God have you been hiding?}\n\n{red|Are you angry at Him?}{red| About what specifically?}{red| Are you disappointed?}{red| What did you expect that did not happen?}{red| Are you confused?}{red| What questions do you have?}{red| Are you hurt?}{red| How?}\n\nWrite your honest feelings toward God:",
+          "text": "What honest feelings toward God have you been hiding?\n\nAre you angry at Him? About what specifically? Are you disappointed? What did you expect that did not happen? Are you confused? What questions do you have? Are you hurt? How?\n\nWrite your honest feelings toward God:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -238,7 +238,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "God's Response to Honesty",
-          "text": "{red|How does God respond when we bring our honest pain to Him?}\n\n**He listens.** He does not interrupt or dismiss. He receives what we bring.\n\n**He does not condemn.** He does not punish us for being honest. He already knew what we felt.\n\n**He meets us.** In the honesty, something shifts. His presence becomes more real.\n\n**He may not answer all our questions.** But He answers our heart's deeper need: to be heard, to be loved, to know He is there.\n\n**God is not threatened by your anger.** He is big enough to handle it and loving enough to meet you in it.",
+          "text": "How does God respond when we bring our honest pain to Him?\n\n**He listens.** He does not interrupt or dismiss. He receives what we bring.\n\n**He does not condemn.** He does not punish us for being honest. He already knew what we felt.\n\n**He meets us.** In the honesty, something shifts. His presence becomes more real.\n\n**He may not answer all our questions.** But He answers our heart's deeper need: to be heard, to be loved, to know He is there.\n\n**God is not threatened by your anger.** He is big enough to handle it and loving enough to meet you in it.",
           "icon": "favorite"
         },
         {
@@ -274,7 +274,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Questions Without Easy Answers",
-          "text": "{red|**Spiritual dryness after divorce can feel like wandering in a desert.** The landscape that once felt alive with God's presence now seems barren. You pray and hear nothing. You read Scripture and feel empty. The wilderness is disorienting, but it is also where many have found God in new ways.\n\n**Divorce raises questions that do not have easy answers.**\n\nWhy did God not save your marriage when you prayed?}{red| Does He even answer prayer, or is it all random?}{red| If He could have stopped this and did not, what does that mean about His goodness?}\n\n{red|If you were married in the church, before God, and the marriage failed, what does that mean about God's role in marriage?}{red| About His promises?}{red| About covenant?}\n\n**These questions can feel dangerous to ask.** Like questioning God is betrayal. Like a good Christian would just trust.\n\n**But honest questions asked in faith are not betrayal.** They are how faith matures. The believers with the deepest faith are often those who have wrestled hardest with the hardest questions.\n\n**You may not get answers.** Or the answers may come slowly, over years. But the wrestling itself is valuable. It is how you move from inherited faith to owned faith, from easy belief to tested belief.\n\n**Do not be afraid of your questions.** Bring them to God. He is not threatened by them.",
+          "text": "**Spiritual dryness after divorce can feel like wandering in a desert.** The landscape that once felt alive with God's presence now seems barren. You pray and hear nothing. You read Scripture and feel empty. The wilderness is disorienting, but it is also where many have found God in new ways.\n\n**Divorce raises questions that do not have easy answers.**\n\nWhy did God not save your marriage when you prayed? Does He even answer prayer, or is it all random? If He could have stopped this and did not, what does that mean about His goodness?\n\nIf you were married in the church, before God, and the marriage failed, what does that mean about God's role in marriage? About His promises? About covenant?\n\n**These questions can feel dangerous to ask.** Like questioning God is betrayal. Like a good Christian would just trust.\n\n**But honest questions asked in faith are not betrayal.** They are how faith matures. The believers with the deepest faith are often those who have wrestled hardest with the hardest questions.\n\n**You may not get answers.** Or the answers may come slowly, over years. But the wrestling itself is valuable. It is how you move from inherited faith to owned faith, from easy belief to tested belief.\n\n**Do not be afraid of your questions.** Bring them to God. He is not threatened by them.",
           "icon": "help"
         },
         {
@@ -282,7 +282,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "God and Unanswered Prayer",
-          "text": "{red|One of the hardest questions: Why did God not answer my prayers to save my marriage?}\n\n**There are no fully satisfying answers to this question.** But some perspectives help.\n\n**God respects human free will.** He did not force your spouse to change. Their choices were theirs.\n\n**Prayer is not a formula that guarantees specific outcomes.** Jesus prayed in Gethsemane for the cup to pass, and it did not.\n\n**God's no or not yet is not absence of love.** His ways and timing are beyond our understanding.\n\n**Unanswered prayer does not mean God was not there or does not care.** It means we live in a broken world where His kingdom is coming but not yet fully here.\n\n**Holding this tension is hard but necessary for mature faith.**",
+          "text": "One of the hardest questions: Why did God not answer my prayers to save my marriage?\n\n**There are no fully satisfying answers to this question.** But some perspectives help.\n\n**God respects human free will.** He did not force your spouse to change. Their choices were theirs.\n\n**Prayer is not a formula that guarantees specific outcomes.** Jesus prayed in Gethsemane for the cup to pass, and it did not.\n\n**God's no or not yet is not absence of love.** His ways and timing are beyond our understanding.\n\n**Unanswered prayer does not mean God was not there or does not care.** It means we live in a broken world where His kingdom is coming but not yet fully here.\n\n**Holding this tension is hard but necessary for mature faith.**",
           "icon": "psychology"
         },
         {
@@ -290,7 +290,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "What the Bible Says",
-          "text": "**The Bible's teaching on divorce is more nuanced than some suggest.**\n\n**Yes, God hates divorce (({red|Malachi 2:16})).** He designed marriage to be permanent. Divorce is never His ideal.\n\n**But Scripture also recognizes exceptions.** Jesus mentioned sexual immorality as grounds for divorce (({red|Matthew 19:9})). Paul mentioned abandonment by an unbelieving spouse (1 ({red|Corinthians 7:15})).\n\n**Many scholars also recognize abuse and patterns of destructive behavior as violations of the marriage covenant.**\n\n**The point is not to find a loophole but to recognize that divorce in a fallen world is sometimes the result of sin done to you, not just by you.**\n\n**If you divorced for legitimate reasons, you are not living in defiance of Scripture.** You are living in the painful reality of a fallen world.",
+          "text": "**The Bible's teaching on divorce is more nuanced than some suggest.**\n\n**Yes, God hates divorce (Malachi 2:16).** He designed marriage to be permanent. Divorce is never His ideal.\n\n**But Scripture also recognizes exceptions.** Jesus mentioned sexual immorality as grounds for divorce (Matthew 19:9). Paul mentioned abandonment by an unbelieving spouse (1 (Corinthians 7:15).\n\n**Many scholars also recognize abuse and patterns of destructive behavior as violations of the marriage covenant.**\n\n**The point is not to find a loophole but to recognize that divorce in a fallen world is sometimes the result of sin done to you, not just by you.**\n\n**If you divorced for legitimate reasons, you are not living in defiance of Scripture.** You are living in the painful reality of a fallen world.",
           "icon": "menu_book"
         },
         {
@@ -298,7 +298,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Questions",
-          "text": "{red|What hard questions about faith and divorce are you wrestling with?}\n\n{red|What questions about God trouble you?}{red| What questions about the Bible and divorce concern you?}{red| What do you fear might be true?}{red| What do you hope is true?}\n\nWrite your hard questions:",
+          "text": "What hard questions about faith and divorce are you wrestling with?\n\nWhat questions about God trouble you? What questions about the Bible and divorce concern you? What do you fear might be true? What do you hope is true?\n\nWrite your hard questions:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -307,7 +307,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Living With Uncertainty",
-          "text": "**Some questions may never be fully answered in this life.** Living with uncertainty is part of faith.\n\n**Faith is being sure of what we hope for and certain of what we do not see.** (({red|Hebrews 11:1}))\n\n**You can have unanswered questions and still have genuine faith.** You can wrestle and still trust. You can be confused about some things and certain about others.\n\n**Hold onto what you do know: God loves you.** He is good. He has not abandoned you. He can redeem anything.\n\n**Let the unanswered questions sit alongside these certainties.** They can coexist.",
+          "text": "**Some questions may never be fully answered in this life.** Living with uncertainty is part of faith.\n\n**Faith is being sure of what we hope for and certain of what we do not see.** (Hebrews 11:1)\n\n**You can have unanswered questions and still have genuine faith.** You can wrestle and still trust. You can be confused about some things and certain about others.\n\n**Hold onto what you do know: God loves you.** He is good. He has not abandoned you. He can redeem anything.\n\n**Let the unanswered questions sit alongside these certainties.** They can coexist.",
           "icon": "balance"
         },
         {
@@ -343,7 +343,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Church Complications",
-          "text": "{red|**Church after divorce can feel like showing up to a party where you no longer belong.**\n\n**Everyone else seems to be in couples.** The small groups are for married people. The family events assume a configuration you no longer have. The sermon illustrations are about marriages that work, and yours did not.\n\n**You sit alone in a pew that used to hold two.** You notice the glances, or you imagine them. You wonder what people are thinking. You wonder what they have heard.\n\n**Maybe someone said something.** A comment about the sanctity of marriage that felt pointed. A verse quoted that landed like a verdict. An awkward conversation where you could tell they did not know what to say.\n\n**Maybe no one said anything, but the silence was worse.** The friends who stopped calling. The invitations that stopped coming. The sense that you had become an uncomfortable reminder that even Christian marriages fail.\n\n**This is not how church is supposed to be.** It is not how Jesus treated broken people. But it is sometimes how His people treat each other.\n\n**You have options.** You can stay and find your place, which may require courage and thick skin. You can leave and find a community that welcomes you without stigma. You can take a break while you heal, though isolation has its own dangers.\n\nWhat do you need right now from a faith community?}{red| And where might you find it?}",
+          "text": "**Church after divorce can feel like showing up to a party where you no longer belong.**\n\n**Everyone else seems to be in couples.** The small groups are for married people. The family events assume a configuration you no longer have. The sermon illustrations are about marriages that work, and yours did not.\n\n**You sit alone in a pew that used to hold two.** You notice the glances, or you imagine them. You wonder what people are thinking. You wonder what they have heard.\n\n**Maybe someone said something.** A comment about the sanctity of marriage that felt pointed. A verse quoted that landed like a verdict. An awkward conversation where you could tell they did not know what to say.\n\n**Maybe no one said anything, but the silence was worse.** The friends who stopped calling. The invitations that stopped coming. The sense that you had become an uncomfortable reminder that even Christian marriages fail.\n\n**This is not how church is supposed to be.** It is not how Jesus treated broken people. But it is sometimes how His people treat each other.\n\n**You have options.** You can stay and find your place, which may require courage and thick skin. You can leave and find a community that welcomes you without stigma. You can take a break while you heal, though isolation has its own dangers.\n\nWhat do you need right now from a faith community? And where might you find it?",
           "icon": "groups"
         },
         {
@@ -367,7 +367,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Church Experience",
-          "text": "{red|**Reflect on your experience with church since your divorce.**\n\nHow has church felt since your divorce?}{red| Do you feel welcomed and supported, or judged and marginalized?}{red| What do you need from a church community that you are not currently getting?}{red| What would help you engage with church more fully?}\n\nWrite about your church experience:",
+          "text": "**Reflect on your experience with church since your divorce.**\n\nHow has church felt since your divorce? Do you feel welcomed and supported, or judged and marginalized? What do you need from a church community that you are not currently getting? What would help you engage with church more fully?\n\nWrite about your church experience:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -376,7 +376,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Church Status",
-          "text": "{red|How would you describe your current relationship with church?}",
+          "text": "How would you describe your current relationship with church?",
           "prompts": [
             "Fully engaged at a church that supports me well",
             "Attending but feeling disconnected or out of place",
@@ -398,7 +398,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Church Plan",
-          "text": "{red|**Create a plan for engaging with church community.**\n\nIf you are staying at your current church, what steps will you take to engage more fully or address challenges?}\n\n{red|If you are looking for a new church, what will you look for and how will you search?}\n\n{red|If you have stepped back, what would help you re-engage?}\n\n{red|Are there divorce recovery groups or other specific communities you could join?}\n\nWrite your church engagement plan:",
+          "text": "**Create a plan for engaging with church community.**\n\nIf you are staying at your current church, what steps will you take to engage more fully or address challenges?\n\nIf you are looking for a new church, what will you look for and how will you search?\n\nIf you have stepped back, what would help you re-engage?\n\nAre there divorce recovery groups or other specific communities you could join?\n\nWrite your church engagement plan:",
           "icon": "task_alt"
         }
       ]
@@ -426,7 +426,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Need for People",
-          "text": "{red|**You cannot heal in isolation.** You were designed for community.\n\n**Healing happens best in the context of supportive relationships.** People who see you, know your story, and walk with you.\n\n**This does not mean you need dozens of close friends.** A few genuine connections are more valuable than many shallow ones.\n\n**But you do need some people.** People who check on you. People you can be honest with. People who remind you of truth when you forget.\n\nDo you have these people?} If not, building community needs to be a priority.",
+          "text": "**You cannot heal in isolation.** You were designed for community.\n\n**Healing happens best in the context of supportive relationships.** People who see you, know your story, and walk with you.\n\n**This does not mean you need dozens of close friends.** A few genuine connections are more valuable than many shallow ones.\n\n**But you do need some people.** People who check on you. People you can be honest with. People who remind you of truth when you forget.\n\nDo you have these people? If not, building community needs to be a priority.",
           "icon": "diversity_3"
         },
         {
@@ -450,7 +450,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Support Assessment",
-          "text": "{red|**Assess your current support network.**\n\nWho do you have who truly knows and supports you?}{red| What types of support are you getting?}{red| What is missing?}{red| Where could you find the community you need?}{red| What barriers keep you from connecting with others?}\n\nWrite your support assessment:",
+          "text": "**Assess your current support network.**\n\nWho do you have who truly knows and supports you? What types of support are you getting? What is missing? Where could you find the community you need? What barriers keep you from connecting with others?\n\nWrite your support assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -519,7 +519,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Spiritual Practices",
-          "text": "{red|**Reflect on your current spiritual practices.**\n\nWhat spiritual practices have you maintained through your divorce?}{red| What practices have fallen away?}{red| What feels accessible to you right now?}{red| What feels too hard?}{red| What do you need from spiritual practices in this season?}\n\nWrite about your spiritual practices:",
+          "text": "**Reflect on your current spiritual practices.**\n\nWhat spiritual practices have you maintained through your divorce? What practices have fallen away? What feels accessible to you right now? What feels too hard? What do you need from spiritual practices in this season?\n\nWrite about your spiritual practices:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -528,7 +528,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Most Helpful Practice",
-          "text": "{red|Which spiritual practice do you think would be most helpful for you in this season?}",
+          "text": "Which spiritual practice do you think would be most helpful for you in this season?",
           "prompts": [
             "Simple daily prayer even if brief",
             "Reading Psalms that express my feelings",
@@ -579,7 +579,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Fear of Disqualification",
-          "text": "{red|**Divorce can make you feel disqualified.** Like you have been moved to God's bench. Like He will use other people now, the ones who did not fail.\n\n**You hear about leaders who stepped down after divorce.** You see positions that seem closed to you now. You feel marked, limited, sidelined.\n\n**Here is what you might not know: some of the people God has used most powerfully were people with messy pasts.**\n\n**Moses was a murderer.** David was an adulterer. Peter denied Jesus three times. Paul spent years persecuting Christians. These were not people who had it together. They were people who had failed spectacularly and been restored.\n\n**God does not use perfect people.** He uses available people. People who have been broken and put back together. People whose failures have made them humble and dependent on Him.\n\n**Your divorce does not disqualify you.** It might even qualify you in ways you cannot yet see. Who better to minister to someone in crisis than someone who has been there?}{red| Who better to speak about grace than someone who has needed it desperately?}\n\n**You are not damaged goods.** You are experienced goods. And God wastes nothing.",
+          "text": "**Divorce can make you feel disqualified.** Like you have been moved to God's bench. Like He will use other people now, the ones who did not fail.\n\n**You hear about leaders who stepped down after divorce.** You see positions that seem closed to you now. You feel marked, limited, sidelined.\n\n**Here is what you might not know: some of the people God has used most powerfully were people with messy pasts.**\n\n**Moses was a murderer.** David was an adulterer. Peter denied Jesus three times. Paul spent years persecuting Christians. These were not people who had it together. They were people who had failed spectacularly and been restored.\n\n**God does not use perfect people.** He uses available people. People who have been broken and put back together. People whose failures have made them humble and dependent on Him.\n\n**Your divorce does not disqualify you.** It might even qualify you in ways you cannot yet see. Who better to minister to someone in crisis than someone who has been there? Who better to speak about grace than someone who has needed it desperately?\n\n**You are not damaged goods.** You are experienced goods. And God wastes nothing.",
           "icon": "explore"
         },
         {
@@ -603,7 +603,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Sense of Purpose",
-          "text": "{red|**Reflect on your sense of purpose since your divorce.**\n\nHave you felt disqualified from God's purposes?}{red| What ministry or contribution opportunities have you lost or stepped back from?}{red| What might God still want to do through you?}{red| How might your painful experience actually prepare you for something?}\n\nWrite about your sense of purpose:",
+          "text": "**Reflect on your sense of purpose since your divorce.**\n\nHave you felt disqualified from God's purposes? What ministry or contribution opportunities have you lost or stepped back from? What might God still want to do through you? How might your painful experience actually prepare you for something?\n\nWrite about your sense of purpose:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -620,7 +620,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Affirming Your Purpose",
-          "text": "**Write an affirmation of God's continued purpose for your life.**\n\n**My divorce does not disqualify me from God's purposes.** He still has plans for me.\n\n**I am not sidelined.** I am being prepared for something.\n\n**My pain can become ministry.** My experience gives me something to offer.\n\n**I will stay open to where God is leading.** I trust His timing and His plans.\n\n**For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.** (({red|Jeremiah 29:11}))\n\nWrite your purpose affirmation:",
+          "text": "**Write an affirmation of God's continued purpose for your life.**\n\n**My divorce does not disqualify me from God's purposes.** He still has plans for me.\n\n**I am not sidelined.** I am being prepared for something.\n\n**My pain can become ministry.** My experience gives me something to offer.\n\n**I will stay open to where God is leading.** I trust His timing and His plans.\n\n**For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.** (Jeremiah 29:11)\n\nWrite your purpose affirmation:",
           "icon": "verified"
         }
       ]
@@ -648,7 +648,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Grace for Each Day",
-          "text": "{red|**The journey ahead may seem overwhelming.** How will you make it?}{red| How will you heal?}{red| How will you rebuild your life?}\n\n**The answer is grace.** Not grace to see the whole path at once, but grace sufficient for today.\n\n**My grace is sufficient for you, for my power is made perfect in weakness.** (2 ({red|Corinthians 12:9}))\n\n**You do not need to know how you will handle next month or next year.** You need grace for today. And that grace is available.\n\n**Tomorrow will have its own grace.** Today has enough.",
+          "text": "**The journey ahead may seem overwhelming.** How will you make it? How will you heal? How will you rebuild your life?\n\n**The answer is grace.** Not grace to see the whole path at once, but grace sufficient for today.\n\n**My grace is sufficient for you, for my power is made perfect in weakness.** (2 (Corinthians 12:9)\n\n**You do not need to know how you will handle next month or next year.** You need grace for today. And that grace is available.\n\n**Tomorrow will have its own grace.** Today has enough.",
           "icon": "spa"
         },
         {
@@ -672,7 +672,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Where You Need Grace",
-          "text": "{red|**Identify where you most need grace right now.**\n\nWhat feels too hard without God's help?}{red| Where are you being too hard on yourself?}{red| What fears about the future require grace?}{red| Where do you need to receive what God is offering?}\n\nWrite about where you need grace:",
+          "text": "**Identify where you most need grace right now.**\n\nWhat feels too hard without God's help? Where are you being too hard on yourself? What fears about the future require grace? Where do you need to receive what God is offering?\n\nWrite about where you need grace:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -733,7 +733,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Insight",
-          "text": "{red|What is the most important thing you have learned or received through this journey about faith and community after divorce?}\n\n{red|What do you want to remember when you struggle spiritually?}\n\nWrite your key insight:",
+          "text": "What is the most important thing you have learned or received through this journey about faith and community after divorce?\n\nWhat do you want to remember when you struggle spiritually?\n\nWrite your key insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -742,7 +742,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Commitments",
-          "text": "{red|What commitments will you make for your ongoing spiritual health?}\n\n{red|How will you nurture your relationship with God?}{red| How will you engage with church or Christian community?}{red| How will you handle spiritual struggles when they arise?}{red| How will you extend grace to yourself?}\n\nWrite your commitments:",
+          "text": "What commitments will you make for your ongoing spiritual health?\n\nHow will you nurture your relationship with God? How will you engage with church or Christian community? How will you handle spiritual struggles when they arise? How will you extend grace to yourself?\n\nWrite your commitments:",
           "responseType": "open-text",
           "icon": "verified"
         },

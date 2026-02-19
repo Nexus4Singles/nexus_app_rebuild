@@ -61,7 +61,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Ways Trust Gets Damaged",
-          "text": "{red|**Trust gets damaged in different ways.** The way yours was damaged shapes what rebuilding looks like for you.\n\n**If your spouse cheated, you learned that people can look you in the eye and lie.** That someone can share your bed and share themselves with someone else. That the person who promised to be faithful was not. Now you wonder if anyone can be trusted to tell the truth about anything.\n\n**If you were abandoned, you learned that people leave.** That promises to stay mean nothing. That you can give someone your whole life and they can decide you are not worth keeping. Now you wonder if anyone will actually stay.\n\n**If you were abused, physically or emotionally, you learned that people hurt the ones they claim to love.** That closeness is dangerous. That the person who was supposed to protect you was the one you needed protection from. Now you wonder if anyone is safe.\n\n**If your spouse simply became someone different, you learned that people change.** That who you married is not necessarily who you end up with. That the ground can shift beneath you without warning. Now you wonder if anything is stable.\n\nWhat kind of damage are you carrying?} That determines what you need to heal.",
+          "text": "**Trust gets damaged in different ways.** The way yours was damaged shapes what rebuilding looks like for you.\n\n**If your spouse cheated, you learned that people can look you in the eye and lie.** That someone can share your bed and share themselves with someone else. That the person who promised to be faithful was not. Now you wonder if anyone can be trusted to tell the truth about anything.\n\n**If you were abandoned, you learned that people leave.** That promises to stay mean nothing. That you can give someone your whole life and they can decide you are not worth keeping. Now you wonder if anyone will actually stay.\n\n**If you were abused, physically or emotionally, you learned that people hurt the ones they claim to love.** That closeness is dangerous. That the person who was supposed to protect you was the one you needed protection from. Now you wonder if anyone is safe.\n\n**If your spouse simply became someone different, you learned that people change.** That who you married is not necessarily who you end up with. That the ground can shift beneath you without warning. Now you wonder if anything is stable.\n\nWhat kind of damage are you carrying? That determines what you need to heal.",
           "icon": "psychology"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Trust Damage",
-          "text": "{red|How would you describe your current ability to trust the opposite sex?}",
+          "text": "How would you describe your current ability to trust the opposite sex?",
           "prompts": [
             "Severely damaged - I cannot imagine trusting anyone",
             "Significantly damaged - Trust feels very difficult",
@@ -98,7 +98,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Trust Story",
-          "text": "{red|**Explore how your divorce damaged your trust.**\n\nWhat specific experiences in your marriage or divorce damaged your trust?}{red| What did you learn about trust from what happened?}{red| How has damaged trust affected you since the divorce?}{red| What fears do you have about trusting again?}\n\nWrite your trust story:",
+          "text": "**Explore how your divorce damaged your trust.**\n\nWhat specific experiences in your marriage or divorce damaged your trust? What did you learn about trust from what happened? How has damaged trust affected you since the divorce? What fears do you have about trusting again?\n\nWrite your trust story:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -143,7 +143,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Common Trust Patterns",
-          "text": "{red|See if you recognize yourself in any of these:\n\n**The Wall Builder keeps everyone at a distance.** They have friends, sort of. They date, sometimes. But no one ever really gets in. The wall looks like independence or self-sufficiency, but it is fear dressed up to look like strength.\n\n**The Tester sets up trials.** They create situations to see if this person will fail like the last one did. If you really loved me, you would... If you were trustworthy, you would... They are looking for proof of what they already believe: that people cannot be trusted.\n\n**The Investigator is always watching.** Checking phones, if they can. Noticing inconsistencies. Building a case. They feel safest when they have all the information, which is never enough information.\n\n**The Withdrawer gets close, then backs away.** When intimacy starts to build, when trust starts to form, they find reasons to create distance. It is safer to leave than to be left.\n\n**The Controller tries to manage every variable.** If they can control enough, maybe they will not get hurt. This looks like jealousy, possessiveness, or micromanaging. It comes from terror.\n\nWhich one are you?} Maybe more than one. These patterns were your survival strategies. They kept you safe in an unsafe situation. But they will suffocate any healthy relationship that tries to grow.",
+          "text": "See if you recognize yourself in any of these:\n\n**The Wall Builder keeps everyone at a distance.** They have friends, sort of. They date, sometimes. But no one ever really gets in. The wall looks like independence or self-sufficiency, but it is fear dressed up to look like strength.\n\n**The Tester sets up trials.** They create situations to see if this person will fail like the last one did. If you really loved me, you would... If you were trustworthy, you would... They are looking for proof of what they already believe: that people cannot be trusted.\n\n**The Investigator is always watching.** Checking phones, if they can. Noticing inconsistencies. Building a case. They feel safest when they have all the information, which is never enough information.\n\n**The Withdrawer gets close, then backs away.** When intimacy starts to build, when trust starts to form, they find reasons to create distance. It is safer to leave than to be left.\n\n**The Controller tries to manage every variable.** If they can control enough, maybe they will not get hurt. This looks like jealousy, possessiveness, or micromanaging. It comes from terror.\n\nWhich one are you? Maybe more than one. These patterns were your survival strategies. They kept you safe in an unsafe situation. But they will suffocate any healthy relationship that tries to grow.",
           "icon": "category"
         },
         {
@@ -159,7 +159,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Patterns",
-          "text": "{red|**Identify your personal trust patterns.**\n\nWhich of the common patterns describe you: wall builder, tester, investigator, withdrawer, controller, denier, or others?}\n\n{red|What situations trigger your protective patterns?}{red| How do you typically respond when triggered?}{red| How have these patterns affected your relationships since your divorce?}\n\nWrite about your trust patterns:",
+          "text": "**Identify your personal trust patterns.**\n\nWhich of the common patterns describe you: wall builder, tester, investigator, withdrawer, controller, denier, or others?\n\nWhat situations trigger your protective patterns? How do you typically respond when triggered? How have these patterns affected your relationships since your divorce?\n\nWrite about your trust patterns:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -212,7 +212,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Healthy Caution vs Fear Walls",
-          "text": "{red|**Healthy caution and fear-based walls can look similar from the outside.** But they come from completely different places.\n\n**Healthy caution adjusts to evidence.** This person has shown themselves to be kind, consistent, honest. I will trust them a little more. Or: This person just lied to me. I will trust them less. It is responsive. It changes based on what is actually happening.\n\n**Fear walls are not about the person in front of you.** They are about the person who hurt you before. This person has shown themselves to be trustworthy for months, but you are still waiting for them to turn. Still bracing for the betrayal. Still keeping part of yourself locked away. Because your walls are not about them. They are about you.\n\n**Healthy caution protects you from actual danger.** Fear walls protect you from everyone, including people who would never hurt you.\n\n**Healthy caution allows love to grow over time.** Fear walls keep love from ever taking root.\n\nThe hardest question: Are your current defenses protecting you from real threats, or are they protecting you from the ghost of your ex?}\n\n**If you are honest, you probably know the answer.**",
+          "text": "**Healthy caution and fear-based walls can look similar from the outside.** But they come from completely different places.\n\n**Healthy caution adjusts to evidence.** This person has shown themselves to be kind, consistent, honest. I will trust them a little more. Or: This person just lied to me. I will trust them less. It is responsive. It changes based on what is actually happening.\n\n**Fear walls are not about the person in front of you.** They are about the person who hurt you before. This person has shown themselves to be trustworthy for months, but you are still waiting for them to turn. Still bracing for the betrayal. Still keeping part of yourself locked away. Because your walls are not about them. They are about you.\n\n**Healthy caution protects you from actual danger.** Fear walls protect you from everyone, including people who would never hurt you.\n\n**Healthy caution allows love to grow over time.** Fear walls keep love from ever taking root.\n\nThe hardest question: Are your current defenses protecting you from real threats, or are they protecting you from the ghost of your ex?\n\n**If you are honest, you probably know the answer.**",
           "icon": "compare"
         },
         {
@@ -228,7 +228,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Caution or Walls Assessment",
-          "text": "{red|**Honestly assess whether you are operating from healthy caution or fear-based walls.**\n\nDo you adjust your trust based on actual evidence of each person's character?}{red| Could any amount of good behavior earn your trust?}{red| Do you recognize trustworthy people when you encounter them?}{red| Have you let anyone get close since your divorce?}\n\nWrite your assessment of caution versus walls:",
+          "text": "**Honestly assess whether you are operating from healthy caution or fear-based walls.**\n\nDo you adjust your trust based on actual evidence of each person's character? Could any amount of good behavior earn your trust? Do you recognize trustworthy people when you encounter them? Have you let anyone get close since your divorce?\n\nWrite your assessment of caution versus walls:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -237,7 +237,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "The Cost of Walls",
-          "text": "{red|**Fear-based walls have significant costs.**\n\n**They keep out love along with hurt.** You cannot have connection without vulnerability.\n\n**They fulfill your fear.** If you never trust anyone, you guarantee you will not find trustworthy love.\n\n**They leave you lonely.** Walls isolate you even in rooms full of people.\n\n**They let your ex win.** If your ex's betrayal permanently destroys your capacity for love, they continue to harm you indefinitely.\n\nIs the protection walls provide worth these costs?}",
+          "text": "**Fear-based walls have significant costs.**\n\n**They keep out love along with hurt.** You cannot have connection without vulnerability.\n\n**They fulfill your fear.** If you never trust anyone, you guarantee you will not find trustworthy love.\n\n**They leave you lonely.** Walls isolate you even in rooms full of people.\n\n**They let your ex win.** If your ex's betrayal permanently destroys your capacity for love, they continue to harm you indefinitely.\n\nIs the protection walls provide worth these costs?",
           "icon": "lock"
         },
         {
@@ -245,7 +245,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Examining Your Defenses",
-          "text": "{red|**Examine your current defenses honestly.**\n\nWhich of my self-protective behaviors are healthy caution?}\n\n{red|Which might be fear-based walls that prevent connection?}\n\n{red|What would I lose if I lowered some of my walls?}\n\n{red|What might I gain?}\n\n{red|Am I willing to consider that some of my protection might be excessive?}\n\nWrite your examination:",
+          "text": "**Examine your current defenses honestly.**\n\nWhich of my self-protective behaviors are healthy caution?\n\nWhich might be fear-based walls that prevent connection?\n\nWhat would I lose if I lowered some of my walls?\n\nWhat might I gain?\n\nAm I willing to consider that some of my protection might be excessive?\n\nWrite your examination:",
           "icon": "search"
         }
       ]
@@ -273,7 +273,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Learning to See Trustworthiness",
-          "text": "{red|**One reason trust feels so hard after divorce is that you may question your ability to judge character.**\n\n**You trusted your ex, and they turned out to be untrustworthy.** How can you trust your judgment now?}\n\n**But trustworthiness has recognizable markers.** You can learn to see them. And you may have better discernment now than you did before, having learned from painful experience.\n\n**Knowing what to look for helps you extend trust wisely rather than blindly or not at all.**",
+          "text": "**One reason trust feels so hard after divorce is that you may question your ability to judge character.**\n\n**You trusted your ex, and they turned out to be untrustworthy.** How can you trust your judgment now?\n\n**But trustworthiness has recognizable markers.** You can learn to see them. And you may have better discernment now than you did before, having learned from painful experience.\n\n**Knowing what to look for helps you extend trust wisely rather than blindly or not at all.**",
           "icon": "verified_user"
         },
         {
@@ -297,7 +297,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Discernment Reflection",
-          "text": "{red|**Reflect on your ability to discern trustworthiness.**\n\nLooking back, were there red flags with your ex that you missed or ignored?}{red| What have you learned about recognizing trustworthy versus untrustworthy people?}{red| Do you currently have trustworthy people in your life?}{red| What makes them trustworthy?}{red| What would help you feel more confident in your ability to judge character?}\n\nWrite your discernment reflection:",
+          "text": "**Reflect on your ability to discern trustworthiness.**\n\nLooking back, were there red flags with your ex that you missed or ignored? What have you learned about recognizing trustworthy versus untrustworthy people? Do you currently have trustworthy people in your life? What makes them trustworthy? What would help you feel more confident in your ability to judge character?\n\nWrite your discernment reflection:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -314,7 +314,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Trustworthiness Checklist",
-          "text": "{red|**Create a personal checklist for assessing trustworthiness.**\n\nBased on what you have learned and your own experience, what markers of trustworthiness matter most to you?}\n\n{red|What red flags are non-negotiable for you?}\n\n{red|How will you give yourself time to observe these things rather than rushing?}\n\nWrite your trustworthiness checklist:",
+          "text": "**Create a personal checklist for assessing trustworthiness.**\n\nBased on what you have learned and your own experience, what markers of trustworthiness matter most to you?\n\nWhat red flags are non-negotiable for you?\n\nHow will you give yourself time to observe these things rather than rushing?\n\nWrite your trustworthiness checklist:",
           "icon": "task_alt"
         }
       ]
@@ -350,7 +350,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Levels of Trust",
-          "text": "{red|**Here is how trust actually works in healthy relationships.**\n\n**You share something small and see how they handle it.** Maybe a minor vulnerability. A preference you have not told many people. Something that would not destroy you if they used it against you, but would sting.\n\n**If they handle it well, you share a little more.** If they handle that well, a little more. Each layer builds on the one before.\n\n**This is not a test in the manipulative sense.** It is how trust naturally grows. No one shares their deepest wounds on a first date. Or they should not. Trust is earned through accumulated evidence over time.\n\n**The key is paying attention.** Are they careful with what you share?}{red| Do they remember what matters to you?}{red| Do they honor the trust you have given, or do they treat it carelessly?}\n\n**If they handle small trust well, you can risk bigger trust.** If they mishandle small trust, that is information too. Better to learn from a small breach than a devastating one.\n\n**This is the ladder.** Rung by rung. Not jumping to the top and hoping the ladder holds. Not refusing to climb at all. One rung at a time, testing each one before putting your full weight on it.\n\n**You can learn to trust again.** But you have to do it this way.",
+          "text": "**Here is how trust actually works in healthy relationships.**\n\n**You share something small and see how they handle it.** Maybe a minor vulnerability. A preference you have not told many people. Something that would not destroy you if they used it against you, but would sting.\n\n**If they handle it well, you share a little more.** If they handle that well, a little more. Each layer builds on the one before.\n\n**This is not a test in the manipulative sense.** It is how trust naturally grows. No one shares their deepest wounds on a first date. Or they should not. Trust is earned through accumulated evidence over time.\n\n**The key is paying attention.** Are they careful with what you share? Do they remember what matters to you? Do they honor the trust you have given, or do they treat it carelessly?\n\n**If they handle small trust well, you can risk bigger trust.** If they mishandle small trust, that is information too. Better to learn from a small breach than a devastating one.\n\n**This is the ladder.** Rung by rung. Not jumping to the top and hoping the ladder holds. Not refusing to climb at all. One rung at a time, testing each one before putting your full weight on it.\n\n**You can learn to trust again.** But you have to do it this way.",
           "icon": "stairs"
         },
         {
@@ -358,7 +358,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Testing and Observing",
-          "text": "{red|**At each level, test and observe before extending more trust.**\n\n**Share something small.** See how they handle it. Did they keep it confidential?}{red| Did they respond with care?}{red| Did they use it against you?}\n\n{red|**Make a small commitment.** See if they follow through. Are they reliable in small things?}\n\n{red|**Observe their behavior over time.** Is there consistency?}{red| Do their words match their actions?}\n\n**Based on what you observe, decide whether to extend more trust or hold back.**\n\n**This is not paranoid testing.** It is wise discernment.",
+          "text": "**At each level, test and observe before extending more trust.**\n\n**Share something small.** See how they handle it. Did they keep it confidential? Did they respond with care? Did they use it against you?\n\n**Make a small commitment.** See if they follow through. Are they reliable in small things?\n\n**Observe their behavior over time.** Is there consistency? Do their words match their actions?\n\n**Based on what you observe, decide whether to extend more trust or hold back.**\n\n**This is not paranoid testing.** It is wise discernment.",
           "icon": "visibility"
         },
         {
@@ -366,7 +366,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Trust Extension",
-          "text": "{red|**Reflect on how you have been extending trust.**\n\nDo you tend toward all or nothing, either fully trusting too fast or not trusting at all?}{red| Have you practiced gradual trust extension?}{red| How has that gone?}{red| What level of trust feels safe for you right now?}{red| What would help you extend trust more gradually?}\n\nWrite about your trust extension approach:",
+          "text": "**Reflect on how you have been extending trust.**\n\nDo you tend toward all or nothing, either fully trusting too fast or not trusting at all? Have you practiced gradual trust extension? How has that gone? What level of trust feels safe for you right now? What would help you extend trust more gradually?\n\nWrite about your trust extension approach:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -383,7 +383,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Gradual Trust Plan",
-          "text": "{red|**Create a plan for extending trust gradually.**\n\nWhat level of trust am I comfortable extending right now?}\n\n{red|What small tests or observations will help me know whether to extend more?}\n\n{red|How will I resist the temptation to give too much too fast?}\n\n{red|How will I respond if trust is broken at an early level?}\n\nWrite your gradual trust plan:",
+          "text": "**Create a plan for extending trust gradually.**\n\nWhat level of trust am I comfortable extending right now?\n\nWhat small tests or observations will help me know whether to extend more?\n\nHow will I resist the temptation to give too much too fast?\n\nHow will I respond if trust is broken at an early level?\n\nWrite your gradual trust plan:",
           "icon": "task_alt"
         }
       ]
@@ -411,7 +411,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Trust Requires Vulnerability",
-          "text": "{red|**Here is the cruel paradox: you cannot have real love without vulnerability, and vulnerability is exactly what got you hurt.**\n\n**To be truly known, you have to let someone see you.** Not the polished version. The real one. The one with fears and flaws and wounds. The one who cries at unexpected moments and has irrational anxieties and is not always strong.\n\n**But the last time you let someone see that person, they used it against you.** Or they left. Or they proved that being known was not safe.\n\n**So now you have a choice.** You can protect yourself completely, show no one the real you, and guarantee that you will never be truly loved. Because what they love will be a performance, not you.\n\n**Or you can risk again.** Open up again. Let someone see you, knowing that it might end in pain.\n\n**This is not a choice anyone can make for you.** And there is no shame if you are not ready. Vulnerability after trauma takes time. It takes healing. It takes being in a place where you could survive being hurt again.\n\n**But eventually, if you want love, you have to risk something.** There is no safe path to intimacy. Just a path where you choose the risks carefully and take them anyway.\n\nAre you ready for that?} It is okay if you are not. And it is okay if, despite the fear, you want to try.",
+          "text": "**Here is the cruel paradox: you cannot have real love without vulnerability, and vulnerability is exactly what got you hurt.**\n\n**To be truly known, you have to let someone see you.** Not the polished version. The real one. The one with fears and flaws and wounds. The one who cries at unexpected moments and has irrational anxieties and is not always strong.\n\n**But the last time you let someone see that person, they used it against you.** Or they left. Or they proved that being known was not safe.\n\n**So now you have a choice.** You can protect yourself completely, show no one the real you, and guarantee that you will never be truly loved. Because what they love will be a performance, not you.\n\n**Or you can risk again.** Open up again. Let someone see you, knowing that it might end in pain.\n\n**This is not a choice anyone can make for you.** And there is no shame if you are not ready. Vulnerability after trauma takes time. It takes healing. It takes being in a place where you could survive being hurt again.\n\n**But eventually, if you want love, you have to risk something.** There is no safe path to intimacy. Just a path where you choose the risks carefully and take them anyway.\n\nAre you ready for that? It is okay if you are not. And it is okay if, despite the fear, you want to try.",
           "icon": "lock_open"
         },
         {
@@ -435,7 +435,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Vulnerability Assessment",
-          "text": "{red|**Assess your current capacity for vulnerability.**\n\nHow open are you with people in your life right now?}{red| What holds you back from being more vulnerable?}{red| With whom do you feel safest being open?}{red| What aspects of vulnerability are hardest for you?}\n\nWrite your vulnerability assessment:",
+          "text": "**Assess your current capacity for vulnerability.**\n\nHow open are you with people in your life right now? What holds you back from being more vulnerable? With whom do you feel safest being open? What aspects of vulnerability are hardest for you?\n\nWrite your vulnerability assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -452,7 +452,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "A Small Vulnerability Step",
-          "text": "{red|**Identify one small vulnerability step you can take this week.**\n\nWith whom will I share something?}{red| Choose someone relatively safe.\n\nWhat will I share?}{red| Something personal but not your deepest wound.\n\nHow will I take this step?}{red| What will I actually say?}\n\n{red|How will I acknowledge my courage afterward?}\n\nWrite your vulnerability step:",
+          "text": "**Identify one small vulnerability step you can take this week.**\n\nWith whom will I share something? Choose someone relatively safe.\n\nWhat will I share? Something personal but not your deepest wound.\n\nHow will I take this step? What will I actually say?\n\nHow will I acknowledge my courage afterward?\n\nWrite your vulnerability step:",
           "icon": "task_alt"
         }
       ]
@@ -480,7 +480,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Self-Trust Problem",
-          "text": "{red|**Rebuilding trust is like climbing a ladder.** You start on the bottom rung, small acts of reliability. Each rung is built on the one below. Skip rungs and you fall. Rush and the ladder shakes. Slow and steady is how trust is rebuilt.\n\n**After divorce, you may not only distrust others.** You may distrust yourself.\n\n**You chose your ex.** You believed them. You committed your life to them. And you were wrong.\n\nHow can you trust your own judgment now?}{red| If you were fooled before, how do you know you will not be fooled again?}\n\n**This self-doubt is paralyzing.** Even if you meet someone wonderful, you may not trust yourself to see them clearly.\n\n**Rebuilding trust with others requires rebuilding trust with yourself.**",
+          "text": "**Rebuilding trust is like climbing a ladder.** You start on the bottom rung, small acts of reliability. Each rung is built on the one below. Skip rungs and you fall. Rush and the ladder shakes. Slow and steady is how trust is rebuilt.\n\n**After divorce, you may not only distrust others.** You may distrust yourself.\n\n**You chose your ex.** You believed them. You committed your life to them. And you were wrong.\n\nHow can you trust your own judgment now? If you were fooled before, how do you know you will not be fooled again?\n\n**This self-doubt is paralyzing.** Even if you meet someone wonderful, you may not trust yourself to see them clearly.\n\n**Rebuilding trust with others requires rebuilding trust with yourself.**",
           "icon": "person"
         },
         {
@@ -488,7 +488,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Why You Were Not Just Stupid",
-          "text": "{red|**Rebuilding trust in your own judgment starts with understanding why you lost it.**\n\n**You chose your ex.** You believed their words, ignored warnings maybe, committed your life to them. And it turned out badly.\n\n**So now you second-guess everything.** Maybe you should not date that person. Maybe you are attracted to the wrong things. Maybe your picker is broken.\n\n**Here is what you need to know: your judgment was not completely wrong.**\n\n**Think about what you saw that you ignored.** The red flags you explained away. The concerns friends raised that you dismissed. Some part of you knew, did it not?} Some part of you saw the problems and hoped they would not matter.\n\n**That part of you was right.** You just did not listen.\n\n**Your judgment is not broken.** It was overruled by hope, by love, by the desire for this to work out. Those are human things. They do not mean you are incapable of seeing clearly.\n\n**What you need now is not to distrust yourself completely.** It is to listen to yourself more carefully. To notice when something feels off instead of explaining it away. To honor the part of you that sees clearly, even when other parts want to look away.\n\n**You can trust yourself.** But you have to be honest with yourself first.",
+          "text": "**Rebuilding trust in your own judgment starts with understanding why you lost it.**\n\n**You chose your ex.** You believed their words, ignored warnings maybe, committed your life to them. And it turned out badly.\n\n**So now you second-guess everything.** Maybe you should not date that person. Maybe you are attracted to the wrong things. Maybe your picker is broken.\n\n**Here is what you need to know: your judgment was not completely wrong.**\n\n**Think about what you saw that you ignored.** The red flags you explained away. The concerns friends raised that you dismissed. Some part of you knew, did it not? Some part of you saw the problems and hoped they would not matter.\n\n**That part of you was right.** You just did not listen.\n\n**Your judgment is not broken.** It was overruled by hope, by love, by the desire for this to work out. Those are human things. They do not mean you are incapable of seeing clearly.\n\n**What you need now is not to distrust yourself completely.** It is to listen to yourself more carefully. To notice when something feels off instead of explaining it away. To honor the part of you that sees clearly, even when other parts want to look away.\n\n**You can trust yourself.** But you have to be honest with yourself first.",
           "icon": "lightbulb"
         },
         {
@@ -504,7 +504,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Self-Trust",
-          "text": "{red|**Explore your trust in your own judgment.**\n\nHow much do you trust yourself to judge character now?}{red| What specifically makes you doubt your judgment?}{red| What have you learned from your marriage that improves your discernment?}{red| What would help you trust yourself more?}\n\nWrite about your self-trust:",
+          "text": "**Explore your trust in your own judgment.**\n\nHow much do you trust yourself to judge character now? What specifically makes you doubt your judgment? What have you learned from your marriage that improves your discernment? What would help you trust yourself more?\n\nWrite about your self-trust:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -549,7 +549,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Specific Fears",
-          "text": "{red|**General distrust often masks specific fears.** You are not just afraid of trusting. You are afraid of specific things that trust might lead to.\n\n**Identifying your specific fears helps you address them directly rather than fighting vague anxiety.**\n\n**Common specific fears include fear of being cheated on again, fear of being abandoned, fear of being controlled or abused, fear of wasting more years on the wrong person, fear of losing yourself in a relationship, and fear of your own judgment failing.**\n\nWhat specifically are you afraid of?}",
+          "text": "**General distrust often masks specific fears.** You are not just afraid of trusting. You are afraid of specific things that trust might lead to.\n\n**Identifying your specific fears helps you address them directly rather than fighting vague anxiety.**\n\n**Common specific fears include fear of being cheated on again, fear of being abandoned, fear of being controlled or abused, fear of wasting more years on the wrong person, fear of losing yourself in a relationship, and fear of your own judgment failing.**\n\nWhat specifically are you afraid of?",
           "icon": "psychology"
         },
         {
@@ -573,7 +573,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Specific Fears",
-          "text": "{red|**Identify your specific trust fears.**\n\nWhat exactly are you afraid will happen if you trust again?}{red| Where do these fears come from?}{red| How do these specific fears affect your behavior in relationships?}{red| What would help you address each fear?}\n\nWrite about your specific fears:",
+          "text": "**Identify your specific trust fears.**\n\nWhat exactly are you afraid will happen if you trust again? Where do these fears come from? How do these specific fears affect your behavior in relationships? What would help you address each fear?\n\nWrite about your specific fears:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -582,7 +582,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Working Through Fear",
-          "text": "{red|**Fears can be worked through, not eliminated but reduced in their power.**\n\n**Name the fear specifically.** Vague fear is harder to address than specific fear.\n\n**Examine the evidence.** Is this fear based on what is actually likely, or on what happened before?}\n\n{red|**Challenge catastrophic thinking.** Even if the feared thing happened, could you survive it?}\n\n**Take small risks.** Gradual exposure to feared situations, when safe, reduces fear over time.\n\n**Get support.** A therapist can help with deep-seated fears that do not respond to self-work.",
+          "text": "**Fears can be worked through, not eliminated but reduced in their power.**\n\n**Name the fear specifically.** Vague fear is harder to address than specific fear.\n\n**Examine the evidence.** Is this fear based on what is actually likely, or on what happened before?\n\n**Challenge catastrophic thinking.** Even if the feared thing happened, could you survive it?\n\n**Take small risks.** Gradual exposure to feared situations, when safe, reduces fear over time.\n\n**Get support.** A therapist can help with deep-seated fears that do not respond to self-work.",
           "icon": "psychology"
         },
         {
@@ -626,7 +626,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "God's Faithfulness",
-          "text": "{red|**Nathan realized his biggest trust problem was not trusting others.** It was not trusting himself. He had chosen wrong before. How could he trust his own judgment?} Working on self-trust, learning why he had missed red flags, was the foundation everything else was built on.\n\n**Scripture emphasizes God's faithfulness as the foundation for trust.**\n\n**Know therefore that the Lord your God is God; he is the faithful God, keeping his covenant of love to a thousand generations.** (({red|Deuteronomy 7:9}))\n\n**Great is your faithfulness.** (({red|Lamentations 3:23}))\n\n**If we are faithless, he remains faithful.** (2 ({red|Timothy 2:13}))\n\n**God's faithfulness does not depend on our faithfulness.** He is trustworthy even when humans are not.\n\n**This provides a secure base from which to risk trusting others.**",
+          "text": "**Nathan realized his biggest trust problem was not trusting others.** It was not trusting himself. He had chosen wrong before. How could he trust his own judgment? Working on self-trust, learning why he had missed red flags, was the foundation everything else was built on.\n\n**Scripture emphasizes God's faithfulness as the foundation for trust.**\n\n**Know therefore that the Lord your God is God; he is the faithful God, keeping his covenant of love to a thousand generations.** (Deuteronomy 7:9)\n\n**Great is your faithfulness.** (Lamentations 3:23)\n\n**If we are faithless, he remains faithful.** (2 (Timothy 2:13)\n\n**God's faithfulness does not depend on our faithfulness.** He is trustworthy even when humans are not.\n\n**This provides a secure base from which to risk trusting others.**",
           "icon": "menu_book"
         },
         {
@@ -642,7 +642,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Trust and Faith",
-          "text": "{red|**Reflect on the relationship between your faith and your ability to trust.**\n\nHow has your divorce affected your trust in God?}{red| How does your relationship with God affect your ability to trust humans?}{red| What spiritual resources help you with trust issues?}{red| How might deeper security in God help you trust people?}\n\nWrite about your trust and faith:",
+          "text": "**Reflect on the relationship between your faith and your ability to trust.**\n\nHow has your divorce affected your trust in God? How does your relationship with God affect your ability to trust humans? What spiritual resources help you with trust issues? How might deeper security in God help you trust people?\n\nWrite about your trust and faith:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -703,7 +703,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Trust Insight",
-          "text": "{red|What is the most important thing you have learned through this journey about trust?}\n\n{red|What do you want to remember when trust feels impossible?}\n\nWrite your key trust insight:",
+          "text": "What is the most important thing you have learned through this journey about trust?\n\nWhat do you want to remember when trust feels impossible?\n\nWrite your key trust insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -712,7 +712,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Trust Commitments",
-          "text": "{red|What commitments will you make for rebuilding trust?}\n\n{red|How will you practice extending trust gradually?}{red| How will you work on vulnerability?}{red| How will you address your specific fears?}{red| How will you build your trust foundation in God?}\n\nWrite your trust commitments:",
+          "text": "What commitments will you make for rebuilding trust?\n\nHow will you practice extending trust gradually? How will you work on vulnerability? How will you address your specific fears? How will you build your trust foundation in God?\n\nWrite your trust commitments:",
           "responseType": "open-text",
           "icon": "verified"
         },

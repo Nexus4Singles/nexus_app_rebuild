@@ -433,6 +433,7 @@ class _DatingContactInfoScreenState
               FieldValue.serverTimestamp(), // IMPORTANT: Set creation timestamp for sorting
           'verificationStatus': 'pending',
           'verificationQueuedAt': FieldValue.serverTimestamp(),
+          'schemaVersion': 2, // Mark as v2 profile
           // Profile searchable attributes (for dating.{field} queries)
           'maritalStatus': canonMaritalStatus, // Use canonicalized value
           'haveKids': null, // TODO: Collect in dedicated onboarding screen
@@ -461,10 +462,60 @@ class _DatingContactInfoScreenState
           },
         };
 
+        // Save both root-level fields (for DatingProfile display) and dating object
         await fs.collection('users').doc(uid).set({
+          // Root-level fields for dating profile visibility/search
+          'photos':
+              photoUrls, // CRITICAL: photos must be at root for DatingProfile.fromFirestore
+          'createdAt': FieldValue.serverTimestamp(), // Also at root for sorting
+          'schemaVersion': 2, // Mark schema version at root
+          'age': d.age, // Basic fields for sorting/filtering
+          'gender': gender,
+          'name': userData?['name'], // Preserve display name
+          // Dating nested structure
           'dating': payload,
         }, SetOptions(merge: true));
         print('[DATING_SAVE] ✅ Firestore write successful');
+        print(
+          '[DATING_SAVE]   Root-level photos (${photoUrls.length}): $photoUrls',
+        );
+        print(
+          '[DATING_SAVE]   reviewPack.photoUrls (${payload['reviewPack']['photoUrls'].length}): ${payload['reviewPack']['photoUrls']}',
+        );
+
+        // Track nationality and country for collection updates
+        print('[DATING_SAVE] Tracking nationality and country...');
+        try {
+          // Track nationality if provided
+          if (d.nationality?.isNotEmpty ?? false) {
+            await fs
+                .collection('nationalities')
+                .doc(d.nationality!.trim())
+                .set({
+                  'name': d.nationality!.trim(),
+                  'count': FieldValue.increment(1),
+                  'lastUpdatedAt': FieldValue.serverTimestamp(),
+                }, SetOptions(merge: true));
+            print('[DATING_SAVE] ✅ Tracked nationality: ${d.nationality}');
+          }
+
+          // Track country of residence if provided
+          if (d.countryOfResidence?.isNotEmpty ?? false) {
+            await fs
+                .collection('countriesOfResidence')
+                .doc(d.countryOfResidence!.trim())
+                .set({
+                  'name': d.countryOfResidence!.trim(),
+                  'count': FieldValue.increment(1),
+                  'lastUpdatedAt': FieldValue.serverTimestamp(),
+                }, SetOptions(merge: true));
+            print('[DATING_SAVE] ✅ Tracked country: ${d.countryOfResidence}');
+          }
+        } catch (trackError) {
+          print(
+            '[DATING_SAVE] ⚠️ Error tracking nationality/country: $trackError',
+          );
+        }
       } else {
         print(
           '[DATING_SAVE] ⚠️ Skipped Firestore write: ready=$ready, fs=${fs != null}, uid=$uid',

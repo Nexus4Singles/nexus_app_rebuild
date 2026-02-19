@@ -190,7 +190,35 @@ class DatingProfileService {
       if (audio3Url != null && audio3Url.trim().isNotEmpty) audio3Url.trim(),
     ];
 
-    final updateData = <String, dynamic>{
+    // Build the new dating sub-map (overwrite whole `dating` map)
+    final datingMap = <String, dynamic>{
+      'profileCompleted': true,
+      'profileCompletedAt': FieldValue.serverTimestamp(),
+      // Store a compact review pack used by moderation + search
+      'reviewPack': _buildReviewPack(photoUrls: photoUrls, audioUrls: audioUrls),
+      // Keep a simple searchable nationality/country inside dating as well
+      'nationality': nationality,
+      'countryOfResidence': country,
+    };
+
+    // If the user was previously verified and we changed evidence, bump to pending
+    final previousDating = (existing['dating'] is Map)
+        ? (existing['dating'] as Map).cast<String, dynamic>()
+        : <String, dynamic>{};
+    final currentStatus = previousDating['verificationStatus']?.toString();
+    if (currentStatus == 'verified') {
+      datingMap['verificationStatus'] = 'pending';
+      datingMap['pendingAt'] = FieldValue.serverTimestamp();
+      // Clear prior decisions
+      datingMap['verifiedAt'] = null;
+      datingMap['verifiedBy'] = null;
+      datingMap['rejectedAt'] = null;
+      datingMap['rejectedBy'] = null;
+      datingMap['rejectionReason'] = null;
+    }
+
+    // Top-level fields we want to write / overwrite
+    final topLevel = <String, dynamic>{
       'age': age,
       'nationality': nationality,
       'location': cityCountry,
@@ -205,36 +233,34 @@ class DatingProfileService {
       // legacy photo fields
       for (int i = 0; i < 4; i++)
         'profileUrl${i + 1}': i < photoUrls.length ? photoUrls[i] : null,
-      // legacy audio fields
+      // legacy audio fields (kept at top-level for compatibility)
       'audio1Url': audio1Url,
       'audio2Url': audio2Url,
       'audio3Url': audio3Url,
       // contact
       'instagramUsername': instagramUsername,
       'twitterUsername': twitterUsername,
-      'phoneNumber':
-          whatsappNumber, // WhatsApp stored as phoneNumber in some UIs
+      'phoneNumber': whatsappNumber,
       'facebookUsername': facebookUsername,
       'telegramUsername': telegramUsername,
       'snapchatUsername': snapchatUsername,
-      // v2 completion flag
-      'dating.profileCompleted': true,
-      'dating.profileCompletedAt': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
     };
 
-    // moderation bumps when evidence changes
-    updateData.addAll(
-      _datingModerationUpdates(
-        existingUserDoc: existing,
-        photoUrls: photoUrls,
-        audioUrls: audioUrls,
-        bumpToPendingIfVerified: true,
-      ),
-    );
+    // Prepare the final write: if the document exists, update specific fields
+    // and overwrite the `dating` map. If it does not exist, create a new doc
+    // with the full payload (safe for new users).
+    if (!doc.exists) {
+      final full = <String, dynamic>{}..addAll(topLevel)..addAll({'dating': datingMap});
+      await userRef.set(full);
+    } else {
+      // Use update to overwrite the `dating` map and set top-level fields.
+      final updatePayload = <String, dynamic>{}..addAll(topLevel)..addAll({'dating': datingMap});
 
-    await userRef.set(updateData, SetOptions(merge: true));
-    
+      // Perform the update
+      await userRef.update(updatePayload);
+    }
+
     // Track unique nationality and country
     await trackNationalityAndCountry(nationality, country);
   }

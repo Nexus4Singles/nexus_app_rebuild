@@ -9,19 +9,7 @@ import '../providers/user_provider.dart';
 // SUBSCRIPTION SERVICE
 // ============================================================================
 
-/// Subscription plans available in Nexus
-enum SubscriptionPlan {
-  free('free', 'Free', 0),
-  monthly('monthly', 'Monthly Premium', 2999), // NGN
-  quarterly('quarterly', 'Quarterly Premium', 6999),
-  yearly('yearly', 'Yearly Premium', 19999);
-
-  final String id;
-  final String displayName;
-  final int priceNGN;
-
-  const SubscriptionPlan(this.id, this.displayName, this.priceNGN);
-}
+/// Premium feature constants (prices managed by RevenueCat/Store configs)
 
 /// Premium features available with subscription
 class PremiumFeatures {
@@ -65,10 +53,28 @@ class SubscriptionService {
       final data = doc.data();
       if (data == null) return false;
 
+      // Check new subscription structure first
+      final subscriptionData = data['subscription'] as Map<String, dynamic>?;
+      if (subscriptionData != null) {
+        final isActive = subscriptionData['isActive'] as bool? ?? false;
+        if (!isActive) return false;
+
+        // Check expiration date
+        final expiryDate = subscriptionData['expiryDate'];
+        if (expiryDate != null) {
+          if (expiryDate is Timestamp) {
+            return expiryDate.toDate().isAfter(DateTime.now());
+          } else if (expiryDate is DateTime) {
+            return expiryDate.isAfter(DateTime.now());
+          }
+        }
+        return isActive;
+      }
+
+      // Fallback: Check legacy onPremium flag with expiration
       final onPremium = data['onPremium'] as bool? ?? false;
       if (!onPremium) return false;
 
-      // Check expiration
       final expDate = data['subExpDate'] as Timestamp?;
       if (expDate == null) return false;
 
@@ -168,52 +174,6 @@ class SubscriptionService {
 
     final doc = await fs.collection('chats').doc(chatId).get();
     return doc.exists ? doc : null;
-  }
-
-  /// Activate premium subscription
-  Future<void> activatePremium({
-    required String userId,
-    required SubscriptionPlan plan,
-    required String subscriberId, // RevenueCat subscriber ID
-  }) async {
-    final fs = _fsOrNull;
-    if (fs == null) return;
-    try {
-      DateTime expirationDate;
-      switch (plan) {
-        case SubscriptionPlan.monthly:
-          expirationDate = DateTime.now().add(const Duration(days: 30));
-          break;
-        case SubscriptionPlan.quarterly:
-          expirationDate = DateTime.now().add(const Duration(days: 90));
-          break;
-        case SubscriptionPlan.yearly:
-          expirationDate = DateTime.now().add(const Duration(days: 365));
-          break;
-        default:
-          throw Exception('Invalid plan');
-      }
-
-      await fs.collection('users').doc(userId).update({
-        'onPremium': true,
-        'subExpDate': Timestamp.fromDate(expirationDate),
-        'subscriberId': subscriberId,
-        'prevSubscribed': true,
-      });
-    } catch (e) {
-      throw Exception('Failed to activate premium: $e');
-    }
-  }
-
-  /// Deactivate premium subscription
-  Future<void> deactivatePremium(String userId) async {
-    final fs = _fsOrNull;
-    if (fs == null) return;
-    try {
-      await fs.collection('users').doc(userId).update({'onPremium': false});
-    } catch (e) {
-      throw Exception('Failed to deactivate premium: $e');
-    }
   }
 
   /// Get subscription expiration date

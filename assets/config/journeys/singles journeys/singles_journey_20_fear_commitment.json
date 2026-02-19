@@ -53,7 +53,7 @@
           "cardType": "question",
           "cardNumber": 1,
           "title": "Your Relationship History",
-          "text": "Fear of commitment rarely means you do not want closeness.\nIt usually means part of you is afraid of what closeness might demand, expose, or repeat.\n\nIf you have ever wanted connection and escape at the same time, pause here.\nThis journey is not about forcing yourself to commit, but about understanding what your fear has been protecting.\n\nThink about your dating history. Which patterns have you noticed?",
+          "text": "Fear of commitment rarely means you do not want closeness.\nIt usually means part of you is afraid of what closeness might demand, expose, or repeat.\n\nIf you have ever wanted connection and escape at the same time, pause here.\n\nThis journey is not about forcing yourself to commit, but about understanding what your fear has been protecting.\n\nThink about your dating history.\n\nWhich patterns have you noticed?",
           "prompts": [
             "I pull away when relationships get serious",
             "I find deal-breaking flaws in everyone",
@@ -74,7 +74,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What Commitment Fear Looks Like",
-          "text": "Commitment fear manifests as:\n\n• **The Exit Finder**: Always looking for reasons to leave\n• **The Perfectionist**: No one is ever good enough\n• **The Unavailable Lover**: Only attracted to people who can't commit\n• **The Panic Retreater**: Feels trapped when things get serious\n• **The Future Avoider**: Can't discuss long-term plans",
+          "text": "Commitment fear manifests as:\n\n**The Exit Finder: Always looking for reasons to leave**\n\n**The Perfectionist: No one is ever good enough**\n\nThe Unavailable Lover: Only attracted to people who can't commit\n\n**The Panic Retreater: Feels trapped when things get serious**\n\n**The Future Avoider: Can't discuss long-term plans**",
           "icon": "category"
         },
         {
@@ -102,7 +102,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "The Purpose of the Pattern",
-          "text": "Your commitment avoidance isn't random, it's protective.\n\nAt some point, your mind learned that intimacy equals danger. The avoidance pattern attempts to protect you from pain.\n\nThe pattern isn't your enemy. It's a misguided protector that needs updating.",
+          "text": "Your commitment avoidance isn't random, it's protective.\n\nAt some point, your mind learned that intimacy equals danger.\n\nThe avoidance pattern attempts to protect you from pain.\n\nThe pattern isn't your enemy. It's a misguided protector that needs updating.",
           "icon": "shield"
         },
         {
@@ -110,7 +110,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "The Cost of Avoidance",
-          "text": "Consider what your commitment fear has cost you:\n\n• Relationships that could have flourished\n• Years of connection you've missed\n• The deep partnership you long for\n\nThe protection has become its own prison. The wall that keeps out pain also keeps out love.",
+          "text": "Consider what your commitment fear has cost you:\n• Relationships that could have flourished\n• Years of connection you've missed\n• The deep partnership you long for\n\nThe protection has become its own prison.\n\nThe wall that keeps out pain also keeps out love.",
           "icon": "heart_broken",
           "responseType": "open-text"
         },
@@ -148,7 +148,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Common Roots of Commitment Fear",
-          "text": "Commitment fear often grows from:\n\n**Family of Origin**:\n• Parents who divorced or had troubled marriage\n• Abandonment by a parent\n• Emotional unavailability from caregivers\n\n**Past Relationships**:\n• Betrayal or infidelity\n• Painful breakup\n• Emotional abuse",
+          "text": "Commitment fear often grows from:\n\nFamily of Origin: • Parents who divorced or had troubled marriage\n• Abandonment by a parent\n• Emotional unavailability from caregivers\n\nPast Relationships:\n• Betrayal or infidelity\n• Painful breakup\n• Emotional abuse",
           "icon": "account_tree"
         },
         {
@@ -156,7 +156,7 @@
           "cardType": "question",
           "cardNumber": 2,
           "title": "Your Family's Relationship Legacy",
-          "text": "{red|What did you learn about committed relationships from your family?}",
+          "text": "What did you learn about committed relationships from your family?",
           "prompts": [
             "Commitment leads to pain",
             "People who love you leave",
@@ -177,7 +177,7 @@
           "cardType": "question",
           "cardNumber": 3,
           "title": "Past Relationship Wounds",
-          "text": "{red|Have any of these happened in your past relationships?}",
+          "text": "Have any of these happened in your past relationships?",
           "prompts": [
             "I was cheated on or betrayed",
             "I was left without warning",
@@ -197,7 +197,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "The Brain's Protective Response",
-          "text": "Your brain learned: intimacy → pain.\n\nNow, when a relationship gets close, your brain signals danger. The anxiety isn't about this person, it's about what your brain associates with commitment.\n\nYour alarm system is responding to old threats, not current reality.",
+          "text": "Your brain learned: intimacy → pain.\n\nNow, when a relationship gets close, your brain signals danger.\n\nThe anxiety isn't about this person, it's about what your brain associates with commitment.\n\nYour alarm system is responding to old threats, not current reality.",
           "icon": "psychology"
         },
         {
@@ -205,7 +205,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Connecting Past to Present",
-          "text": "The person who hurt you is not everyone. The marriage you witnessed is not all marriages. The abandonment you experienced was about them, not your worth.\n\nYour past explains your pattern, but it doesn't have to dictate your future.",
+          "text": "The person who hurt you is not everyone.\n\nThe marriage you witnessed is not all marriages.\n\nThe abandonment you experienced was about them, not your worth.\n\nYour past explains your pattern, but it doesn't have to dictate your future.",
           "icon": "link",
           "responseType": "open-text"
         },
@@ -243,7 +243,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Four Attachment Styles",
-          "text": "**Secure**: Comfortable with intimacy and independence\n\n**Anxious**: Craves closeness, fears abandonment\n\n**Avoidant**: Values independence, uncomfortable with closeness\n\n**Disorganized**: Wants closeness but finds it frightening\n\nCommitment fear often indicates avoidant attachment.",
+          "text": "**Secure: Comfortable with intimacy and independence**\n\n**Anxious: Craves closeness, fears abandonment**\n\n**Avoidant: Values independence, uncomfortable with closeness**\n\n**Disorganized: Wants closeness but finds it frightening**\n\nCommitment fear often indicates avoidant attachment.",
           "icon": "hub"
         },
         {
@@ -251,7 +251,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "The Avoidant Pattern",
-          "text": "Avoidant attachment develops when caregivers were emotionally unavailable. The child learns: 'I can only depend on myself.'\n\nIn adult relationships, avoidants:\n• Feel uncomfortable with closeness\n• Pull away when partners want more\n• Find flaws to justify distance\n• Feel 'trapped' by commitment",
+          "text": "Avoidant attachment develops when caregivers were emotionally unavailable.\n\nThe child learns: 'I can only depend on myself.'\n\nIn adult relationships, avoidants:\n• Feel uncomfortable with closeness\n• Pull away when partners want more\n• Find flaws to justify distance\n• Feel 'trapped' by commitment",
           "icon": "person_off"
         },
         {
@@ -279,7 +279,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "The Good News",
-          "text": "Attachment styles are NOT permanent. They were learned and can be updated.\n\nResearch shows:\n• Self-awareness enables change\n• Therapy can rewire attachment patterns\n• Healthy relationships create 'earned secure' attachment\n\nYour attachment style is your starting point, not your destiny.",
+          "text": "Attachment styles are NOT permanent.\n\nThey were learned and can be updated.\n\nResearch shows:\n• Self-awareness enables change\n• Therapy can rewire attachment patterns\n• Healthy relationships create 'earned secure' attachment\n\nYour attachment style is your starting point, not your destiny.",
           "icon": "trending_up"
         },
         {
@@ -287,7 +287,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Moving Toward Security",
-          "text": "Building secure attachment involves:\n\n• Recognizing avoidant impulses without acting on them\n• Practicing staying present when you want to flee\n• Working with a therapist on attachment wounds\n• Choosing secure partners and learning from them",
+          "text": "Building secure attachment involves:\n• Recognizing avoidant impulses without acting on them\n• Practicing staying present when you want to flee\n• Working with a therapist on attachment wounds\n• Choosing secure partners and learning from them",
           "icon": "trending_flat"
         },
         {
@@ -324,7 +324,7 @@
           "cardType": "question",
           "cardNumber": 1,
           "title": "Your Core Fears",
-          "text": "{red|What specifically frightens you about lifelong commitment?}",
+          "text": "What specifically frightens you about lifelong commitment?",
           "prompts": [
             "Losing my freedom",
             "Making the wrong choice",
@@ -345,7 +345,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "The Fear of Losing Freedom",
-          "text": "Many fear losing their independence, interests, identity.\n\nThe truth: Healthy marriage doesn't erase individuality. Two whole people join; they don't dissolve.\n\nThe question: Is this fear based on reality, or on unhealthy marriages you witnessed?",
+          "text": "Many fear losing their independence, interests, identity.\n\nThe truth: Healthy marriage doesn't erase individuality.\n\nTwo whole people join; they don't dissolve.\n\nThe question: Is this fear based on reality, or on unhealthy marriages you witnessed?",
           "icon": "lock_open"
         },
         {
@@ -353,7 +353,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "The Fear of Choosing Wrong",
-          "text": "The paralysis of 'what if there's someone better?' keeps many single.\n\nThe truth: No one is perfect. Every choice closes options. But refusing to choose guarantees loneliness.\n\n{red|Is your standard 'good enough for healthy marriage' or 'perfect enough for zero risk'?}",
+          "text": "The paralysis of 'what if there's someone better?' keeps many single.\n\nThe truth: No one is perfect.\n\nEvery choice closes options.\n\nBut refusing to choose guarantees loneliness.\n\nIs your standard 'good enough for healthy marriage' or 'perfect enough for zero risk'?",
           "icon": "help_outline"
         },
         {
@@ -361,7 +361,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "The Fear of Being Known",
-          "text": "Perhaps deepest: 'If they really knew me, they'd leave.'\n\nThis keeps intimacy at surface level. If they leave, at least they didn't reject the 'real' you.\n\nThe truth: You cannot be loved fully without being known fully. The risk is real, but so is the reward.",
+          "text": "Perhaps deepest: 'If they really knew me, they'd leave.'\n\nThis keeps intimacy at surface level. If they leave, at least they didn't reject the 'real' you.\n\nThe truth: You cannot be loved fully without being known fully.\n\nThe risk is real, but so is the reward.",
           "icon": "person"
         },
         {
@@ -390,7 +390,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Examining Your Fear",
-          "text": "Examine your primary fear:\n\nMy biggest fear is:\n\nWhere this came from:\n\n{red|Is this fear based on reality or past experience?}\n\n{red|What would be true if this fear wasn't controlling me?}",
+          "text": "Examine your primary fear:\n\nMy biggest fear is:\n\nWhere this came from:\n\nWhat would be true if this fear wasn't controlling me?",
           "responseType": "open-text",
           "icon": "edit_note"
         }
@@ -419,7 +419,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Common Sabotage Tactics",
-          "text": "People avoid commitment through:\n\n**Fault-finding**: Magnifying flaws into dealbreakers\n**Comparison**: Wondering if someone better exists\n**Distancing**: Pulling back when close\n**Picking fights**: Creating conflict for distance\n**Ghosting**: Exiting before things get serious",
+          "text": "People avoid commitment through:\n\n• **Fault-finding: Magnifying flaws into dealbreakers**\n\n• **Comparison: Wondering if someone better exists**\n\n• **Distancing: Pulling back when close**\n\n• **Picking fights: Creating conflict for distance**\n\n• **Ghosting: Exiting before things get serious**",
           "icon": "list"
         },
         {
@@ -456,7 +456,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "The Pattern Mirror",
-          "text": "Think back to the last few relationships or situations where closeness began to increase.\n\nWrite down the moment you felt the urge to pull away, lose interest, or create distance.\n\n{red|What story did you tell yourself in that moment?}\n{red|What were you afraid would happen if you stayed present?}\n\nDo not judge your answer.\nThis exercise is about clarity, not self-criticism.",
+          "text": "Think back to the last few relationships or situations where closeness began to increase.\n\nWrite down the moment you felt the urge to pull away, lose interest, or create distance.\n\nWhat story did you tell yourself in that moment?\nWhat were you afraid would happen if you stayed present?\n\nDo not judge your answer.\n\nThis exercise is about clarity, not self-criticism.",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -465,7 +465,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "The Distancing Dance",
-          "text": "Avoidants create distance when close:\n\n• Becoming critical or cold\n• Working more, being less available\n• Picking fights about minor issues\n• Withdrawing affection\n\nThis isn't conscious cruelty, it's automatic protection. But it destroys relationships.",
+          "text": "Avoidants create distance when close:\n• Becoming critical or cold\n• Working more, being less available\n• Picking fights about minor issues\n• Withdrawing affection\n\nThis isn't conscious cruelty, it's automatic protection.\n\nBut it destroys relationships.",
           "icon": "social_distance"
         },
         {
@@ -473,7 +473,7 @@
           "cardType": "question",
           "cardNumber": 6,
           "title": "Recognizing the Trigger",
-          "text": "{red|When do your sabotage behaviors emerge?}",
+          "text": "When do your sabotage behaviors emerge?",
           "prompts": [
             "After meeting their family",
             "When talking about the future",
@@ -522,7 +522,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Anxiety Response",
-          "text": "When intimacy increases, you may feel:\n\n• Tightness in chest or stomach\n• Urge to flee or create distance\n• Sudden doubts about the relationship\n• Fantasy about other options\n\nThese are anxiety symptoms, not reliable relationship information.",
+          "text": "When intimacy increases, you may feel:\n• Tightness in chest or stomach\n• Urge to flee or create distance\n• Sudden doubts about the relationship\n• Fantasy about other options\n\nThese are anxiety symptoms, not reliable relationship information.",
           "icon": "favorite"
         },
         {
@@ -530,7 +530,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Anxiety vs. Discernment",
-          "text": "Critical question:\n\n**Anxiety**: Activated by closeness itself, regardless of partner quality\n\n**Discernment**: Response to actual red flags\n\nTest: Does this feeling arise with every relationship once it gets serious? If yes, it's your pattern, not this partner.",
+          "text": "Critical question:\n\nAnxiety: Activated by closeness itself, regardless of partner quality\n\n**Discernment: Response to actual red flags**\n\n**Test:** Does this feeling arise with every relationship once it gets serious? If yes, it's your pattern, not this partner.",
           "icon": "compare"
         },
         {
@@ -538,7 +538,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "The STOP Technique",
-          "text": "When anxiety hits:\n\n**S**top, Don't act on the impulse\n**T**ake a breath, Calm your nervous system\n**O**bserve, 'This is my avoidant pattern'\n**P**roceed wisely, Choose rather than react\n\nThis creates space between stimulus and response.",
+          "text": "When anxiety hits:\n\n• **S** top, Don't act on the impulse\n• **T** ake a breath, Calm your nervous system\n• **O** bserve, 'This is my avoidant pattern'\n• **P** roceed wisely, Choose rather than react\n\n• This creates space between stimulus and response.",
           "icon": "pan_tool"
         },
         {
@@ -546,7 +546,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Surfing the Anxiety",
-          "text": "Anxiety is like a wave, it rises, peaks, and falls.\n\n• Notice it without judgment\n• Remind yourself: 'This is my pattern, not truth'\n• Let the feeling exist without acting\n• Wait for the wave to pass\n\nThe urge to flee feels urgent. But you can wait it out.",
+          "text": "Anxiety is like a wave, it rises, peaks, and falls.\n\n• Notice it without judgment\n• **Remind yourself:** 'This is my pattern, not truth'\n• Let the feeling exist without acting\n• Wait for the wave to pass\n\nThe urge to flee feels urgent.\n\nBut you can wait it out.",
           "icon": "waves"
         },
         {
@@ -554,7 +554,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Anxiety Signals",
-          "text": "{red|How do you experience intimacy anxiety?}",
+          "text": "How do you experience intimacy anxiety?",
           "prompts": [
             "Physical sensations",
             "Critical thoughts about partner",
@@ -603,7 +603,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Beliefs That Drive Avoidance",
-          "text": "Commitment-avoidant people often believe:\n\n• 'If they knew me, they'd leave'\n• 'Commitment means losing myself'\n• 'I'm better off alone'\n• 'There's always someone better'\n\nThese feel like facts. They're conclusions from past pain.",
+          "text": "Commitment-avoidant people often believe:\n• 'If they knew me, they'd leave'\n• 'Commitment means losing myself'\n• 'I'm better off alone'\n• 'There's always someone better'\n\nThese feel like facts.\n\nThey're conclusions from past pain.",
           "icon": "psychology"
         },
         {
@@ -631,7 +631,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Examining the Evidence",
-          "text": "Challenge beliefs by asking:\n\n• Is this actually true?\n• What evidence contradicts it?\n• Would I tell a friend this is fact?\n• Is this belief serving me?\n• What if I didn't believe this?",
+          "text": "Challenge beliefs by asking:\n• Is this actually true?\n• What evidence contradicts it?\n• Would I tell a friend this is fact?\n• Is this belief serving me?\n• What if I didn't believe this?",
           "icon": "fact_check"
         },
         {
@@ -639,7 +639,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Biblical Truth",
-          "text": "Scripture offers different beliefs:\n\n• 'It is not good for man to be alone' (Genesis 2:18})\n• 'Two are better than one' ({red)\n• 'Perfect love casts out fear' ({red|1 John 4:18})\n\nCommitment is God's design, not a trap.",
+          "text": "Scripture offers different beliefs:\n• 'It is not good for man to be alone' (Genesis 2:18)\n• 'Two are better than one'\n• 'Perfect love casts out fear' (1 John 4:18)\n\nCommitment is God's design, not a trap.",
           "icon": "menu_book"
         },
         {
@@ -647,7 +647,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "New Beliefs to Practice",
-          "text": "Consider adopting:\n\n• 'Healthy intimacy enhances me'\n• 'Past pain doesn't predict future relationships'\n• 'I can be close AND maintain my identity'\n• 'Vulnerability is courage, not weakness'\n• 'I am capable of loving and being loved'",
+          "text": "Consider adopting:\n• 'Healthy intimacy enhances me'\n• 'Past pain doesn't predict future relationships'\n• 'I can be close AND maintain my identity'\n• 'Vulnerability is courage, not weakness'\n• 'I am capable of loving and being loved'",
           "icon": "lightbulb"
         },
         {
@@ -684,7 +684,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Wounds That Need Healing",
-          "text": "Commitment fear often protects:\n\n• Abandonment wounds\n• Betrayal wounds\n• Loss-of-self wounds\n• Rejection wounds\n• Trauma wounds\n\nThe fear is a symptom. The wound is the cause.",
+          "text": "Commitment fear often protects:\n• Abandonment wounds\n• Betrayal wounds\n• Loss-of-self wounds\n• Rejection wounds\n• Trauma wounds\n\nThe fear is a symptom.\n\nThe wound is the cause.",
           "icon": "healing"
         },
         {
@@ -713,7 +713,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "The Healing Process",
-          "text": "Healing involves:\n\n1. **Acknowledging** the wound exists\n2. **Feeling** the pain rather than numbing\n3. **Processing** with safe people or professionals\n4. **Grieving** what was lost\n5. **Integrating** the experience\n6. **Choosing** new beliefs and behaviors",
+          "text": "Healing involves:\n\n1.\n\n**Acknowledging** the wound exists\n2.\n\n**Feeling** the pain rather than numbing\n3.\n\n**Processing** with safe people or professionals\n4.\n\n**Grieving** what was lost\n5.\n\n**Integrating** the experience\n6.\n\n**Choosing** new beliefs and behaviors",
           "icon": "timeline"
         },
         {
@@ -721,7 +721,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "When Professional Help Is Needed",
-          "text": "Consider therapy if:\n\n• Your patterns have lasted years\n• You've tried to change but can't\n• There's significant trauma in your history\n• The wounds feel too big to process alone\n• You keep repeating the same cycle\n\nSeeking help is wisdom, not weakness.",
+          "text": "Consider therapy if:\n• Your patterns have lasted years\n• You've tried to change but can't\n• There's significant trauma in your history\n• The wounds feel too big to process alone\n• You keep repeating the same cycle\n\nSeeking help is wisdom, not weakness.",
           "icon": "support_agent"
         },
         {
@@ -729,7 +729,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "God's Healing",
-          "text": "\"He heals the brokenhearted and binds up their wounds.\" ({red|Psalm 147:3})\n\nGod doesn't just want you to manage your fear, He wants to heal the wound beneath it. Invite Him into these places.\n\nHealing is possible. Freedom is available.",
+          "text": "\"He heals the brokenhearted and binds up their wounds.\" (Psalm 147:3)\n\nGod doesn't just want you to manage your fear, He wants to heal the wound beneath it.\n\nInvite Him into these places.\n\nHealing is possible.\n\nFreedom is available.",
           "icon": "menu_book"
         },
         {
@@ -774,7 +774,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Small Commitments First",
-          "text": "Build commitment capacity by:\n\n• Following through on small promises\n• Staying in friendships through difficulty\n• Finishing what you start\n• Keeping commitments to yourself\n• Practicing consistency in daily life\n\nReliability in small things builds capacity for big things.",
+          "text": "Build commitment capacity by:\n• Following through on small promises\n• Staying in friendships through difficulty\n• Finishing what you start\n• Keeping commitments to yourself\n• Practicing consistency in daily life\n\nReliability in small things builds capacity for big things.",
           "icon": "trending_up"
         },
         {
@@ -782,7 +782,7 @@
           "cardType": "question",
           "cardNumber": 3,
           "title": "Your Current Commitment Patterns",
-          "text": "{red|How do you handle commitments in other areas of life?}",
+          "text": "How do you handle commitments in other areas of life?",
           "prompts": [
             "I often bail on plans",
             "I struggle to finish projects",
@@ -802,7 +802,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Practicing Presence",
-          "text": "Train yourself to stay present:\n\n• When the urge to flee arises, stay anyway\n• When you want to criticize, find something to appreciate\n• When you feel trapped, remind yourself this is a choice\n• When doubt comes, talk about it rather than acting on it",
+          "text": "Train yourself to stay present:\n• When the urge to flee arises, stay anyway\n• When you want to criticize, find something to appreciate\n• When you feel trapped, remind yourself this is a choice\n• When doubt comes, talk about it rather than acting on it",
           "icon": "self_improvement"
         },
         {
@@ -810,7 +810,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Building Relational Muscles",
-          "text": "Specific practices that build capacity:\n\n• Regular vulnerability with safe people\n• Staying in conflict until resolution\n• Making and keeping promises\n• Practicing interdependence\n• Sharing feelings when uncomfortable\n• Receiving help from others",
+          "text": "Specific practices that build capacity:\n• Regular vulnerability with safe people\n• Staying in conflict until resolution\n• Making and keeping promises\n• Practicing interdependence\n• Sharing feelings when uncomfortable\n• Receiving help from others",
           "icon": "people"
         },
         {
@@ -847,7 +847,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "From Insight to Action",
-          "text": "You now understand:\n\n• Your commitment fear patterns\n• The roots of those patterns\n• Your specific sabotage tactics\n• How to manage anxiety\n• New beliefs to embrace\n\nNow the real work: doing something different when it matters.",
+          "text": "You now understand:\n• Your commitment fear patterns\n• The roots of those patterns\n• Your specific sabotage tactics\n• How to manage anxiety\n• New beliefs to embrace\n\nNow the real work: doing something different when it matters.",
           "icon": "directions"
         },
         {
@@ -855,7 +855,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "When Anxiety Hits",
-          "text": "In the moment of anxiety:\n\n**Old response**: Act on fear, distance, criticize, flee\n\n**New response**: Recognize the pattern, use STOP, stay present, communicate, reach out for support\n\nThe anxiety will come. Your response can change.",
+          "text": "In the moment of anxiety:\n\n**Old response: Act on fear, distance, criticize, flee**\n\nNew response: Recognize the pattern, use STOP, stay present, communicate, reach out for support\n\nThe anxiety will come.\n\nYour response can change.",
           "icon": "swap_horiz"
         },
         {
@@ -871,7 +871,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Choosing a Secure Partner",
-          "text": "Your healing is accelerated by choosing secure partners:\n\n• Someone who gives space without abandoning\n• Someone who stays present through your anxiety\n• Someone who doesn't trigger your wounds unnecessarily\n• Someone patient with your process\n\nAvoid anxious partners who escalate your avoidance.",
+          "text": "Your healing is accelerated by choosing secure partners:\n• Someone who gives space without abandoning\n• Someone who stays present through your anxiety\n• Someone who doesn't trigger your wounds unnecessarily\n• Someone patient with your process\n\nAvoid anxious partners who escalate your avoidance.",
           "icon": "people"
         },
         {
@@ -928,7 +928,7 @@
           "cardType": "reflection",
           "cardNumber": 1,
           "title": "How Far You've Come",
-          "text": "Reflect on your journey:\n\n• You've named your patterns\n• You've understood their roots\n• You've identified specific fears\n• You've recognized sabotage tactics\n• You've learned anxiety management\n• You've begun healing wounds\n• You've built new capacity\n\nThis awareness is powerful. It creates choice where there was compulsion.",
+          "text": "Reflect on your journey:\n• You've named your patterns\n• You've understood their roots\n• You've identified specific fears\n• You've recognized sabotage tactics\n• You've learned anxiety management\n• You've begun healing wounds\n• You've built new capacity\n\nThis awareness is powerful. It creates choice where there was compulsion.",
           "icon": "emoji_events",
           "responseType": "open-text"
         },
@@ -937,7 +937,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "The Ongoing Journey",
-          "text": "Healing commitment fear is not a one-time event. It's ongoing:\n\n• Old patterns will resurface\n• Anxiety will still arise\n• You'll be tempted to revert\n\nThe difference: now you have awareness, tools, and choice. Progress isn't perfection, it's choosing differently more often.",
+          "text": "Healing commitment fear is not a one-time event. It's ongoing:\n• Old patterns will resurface\n• Anxiety will still arise\n• You'll be tempted to revert\n\nThe difference: now you have awareness, tools, and choice.\n\nProgress isn't perfection, it's choosing differently more often.",
           "icon": "timeline"
         },
         {
@@ -945,7 +945,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "The Love That Awaits",
-          "text": "On the other side of your fear is the love you've longed for:\n\n• Deep knowing and being known\n• Partnership through life's journey\n• Security without suffocation\n• Intimacy that enhances rather than diminishes\n\nThis is possible. It's worth the risk. It's worth the work.",
+          "text": "On the other side of your fear is the love you've longed for:\n• Deep knowing and being known\n• Partnership through life's journey\n• Security without suffocation\n• Intimacy that enhances rather than diminishes\n\nThis is possible. It's worth the risk. It's worth the work.",
           "icon": "favorite"
         },
         {
@@ -953,7 +953,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Biggest Takeaway",
-          "text": "{red|What is the most important insight from this journey?}",
+          "text": "What is the most important insight from this journey?",
           "prompts": [
             "Understanding where my fear comes from",
             "Recognizing my specific patterns",
@@ -974,7 +974,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Next Step",
-          "text": "{red|What is your most important next step?}",
+          "text": "What is your most important next step?",
           "prompts": [
             "Find a therapist to work with",
             "Practice new behaviors in friendships",
@@ -995,7 +995,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Commitment Declaration",
-          "text": "Write your commitment to transformation:\n\nI acknowledge that my fear of commitment has cost me...\n\nI commit to choosing differently by...\n\nI believe that lasting love is possible for me because...\n\nWith God's help, I will...",
+          "text": "Write your commitment to transformation:\n\n• I acknowledge that my fear of commitment has cost me.\n\n• I commit to choosing differently by.\n\n• I believe that lasting love is possible for me because.\n\n• With God's help, I will.",
           "responseType": "open-text",
           "icon": "verified"
         }

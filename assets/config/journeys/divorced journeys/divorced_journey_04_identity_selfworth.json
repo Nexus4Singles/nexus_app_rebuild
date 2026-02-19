@@ -53,7 +53,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Identity Disruption",
-          "text": "{red|**For years, your spouse was like a mirror reflecting back who you were.** Now that mirror is gone, and you find yourself asking: without that reflection, who am I?}\n\n{red|**When Karen's divorce was finalized, she sat in her car and realized she did not know who she was anymore.**\n\n**For fifteen years, she had been Mark's wife.** She introduced herself that way. Her social life revolved around being part of a couple. Her future was planned as part of a pair.\n\n**Now she was just Karen.** But who was that?} She had lost herself somewhere in the marriage, and now she had to figure out who she was on her own.\n\n**This identity crisis is common after divorce.** You were someone's spouse. That role shaped how you saw yourself. Without it, you may feel lost, uncertain, or undefined.",
+          "text": "**For years, your spouse was like a mirror reflecting back who you were.** Now that mirror is gone, and you find yourself asking: without that reflection, who am I?\n\n**When Karen's divorce was finalized, she sat in her car and realized she did not know who she was anymore.**\n\n**For fifteen years, she had been Mark's wife.** She introduced herself that way. Her social life revolved around being part of a couple. Her future was planned as part of a pair.\n\n**Now she was just Karen.** But who was that? She had lost herself somewhere in the marriage, and now she had to figure out who she was on her own.\n\n**This identity crisis is common after divorce.** You were someone's spouse. That role shaped how you saw yourself. Without it, you may feel lost, uncertain, or undefined.",
           "icon": "person_search"
         },
         {
@@ -61,7 +61,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "How Marriage Shapes Identity",
-          "text": "{red|**Marriage reshapes you in ways you do not notice until it is over.**\n\n**You stopped being just you.** You became half of something. We instead of I. Our life instead of my life. At some point, you started using plural pronouns without thinking about it.\n\n**You might have given up pieces of yourself along the way.** Hobbies that did not fit the marriage. Friends they did not like. Dreams that got put on hold and then forgotten. Parts of you that went underground because there was not room for them.\n\n**You might have become someone different, someone shaped by the marriage itself.** The way their criticism made you smaller. The way their needs became more important than yours. The way you learned to manage their moods at the expense of knowing your own.\n\n**Or maybe the marriage was good, and you simply grew together in ways that mean you cannot untangle where you end and where the we begins.**\n\nEither way, divorce leaves you with a question you have not had to answer in years: Who am I without them?}{red| Who am I, just me, alone?}\n\n**That question is terrifying.** It is also an invitation.",
+          "text": "**Marriage reshapes you in ways you do not notice until it is over.**\n\n**You stopped being just you.** You became half of something. We instead of I. Our life instead of my life. At some point, you started using plural pronouns without thinking about it.\n\n**You might have given up pieces of yourself along the way.** Hobbies that did not fit the marriage. Friends they did not like. Dreams that got put on hold and then forgotten. Parts of you that went underground because there was not room for them.\n\n**You might have become someone different, someone shaped by the marriage itself.** The way their criticism made you smaller. The way their needs became more important than yours. The way you learned to manage their moods at the expense of knowing your own.\n\n**Or maybe the marriage was good, and you simply grew together in ways that mean you cannot untangle where you end and where the we begins.**\n\nEither way, divorce leaves you with a question you have not had to answer in years: Who am I without them? Who am I, just me, alone?\n\n**That question is terrifying.** It is also an invitation.",
           "icon": "psychology"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Identity Experience",
-          "text": "{red|How strongly has divorce affected your sense of identity?}",
+          "text": "How strongly has divorce affected your sense of identity?",
           "prompts": [
             "Severely - I do not know who I am anymore",
             "Significantly - Major parts of my identity feel disrupted",
@@ -98,7 +98,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Identity Questions",
-          "text": "{red|What questions are you asking about your identity since the divorce?}\n\n{red|What parts of yourself feel lost or unclear?}{red| What roles or identities are you grieving?}{red| What do you wonder about who you are now?}{red| What aspects of yourself do you want to rediscover or develop?}\n\nWrite about your identity questions:",
+          "text": "What questions are you asking about your identity since the divorce?\n\nWhat parts of yourself feel lost or unclear? What roles or identities are you grieving? What do you wonder about who you are now? What aspects of yourself do you want to rediscover or develop?\n\nWrite about your identity questions:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -135,7 +135,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Before the Marriage",
-          "text": "{red|**Think back to who you were before your marriage.** Close your eyes for a moment. Who was that person?}\n\n{red|What were your interests, hobbies, passions?}{red| What did you love to do?}{red| What excited you?}\n\n{red|What were your friendships like?}{red| Who were you close to?}{red| What did your social life look like?}\n\n{red|What were your dreams and goals?}{red| What did you want to accomplish?}{red| Where did you want to go?}\n\n{red|What was your personality like?}{red| How did others describe you?}{red| What made you uniquely you?}\n\n**Some of these things may have continued into your marriage.** Others may have been lost along the way.",
+          "text": "**Think back to who you were before your marriage.** Close your eyes for a moment. Who was that person?\n\nWhat were your interests, hobbies, passions? What did you love to do? What excited you?\n\nWhat were your friendships like? Who were you close to? What did your social life look like?\n\nWhat were your dreams and goals? What did you want to accomplish? Where did you want to go?\n\nWhat was your personality like? How did others describe you? What made you uniquely you?\n\n**Some of these things may have continued into your marriage.** Others may have been lost along the way.",
           "icon": "history"
         },
         {
@@ -143,7 +143,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "How You Changed in Marriage",
-          "text": "{red|**Now think about who you became during the marriage.**\n\n**Not who you were supposed to be.** Who you actually were.\n\nDid you grow?}{red| Were there ways you expanded, became more yourself, flourished because of the relationship?}{red| Some marriages do that. They make both people bigger.\n\nOr did you shrink?}{red| Did you become smaller, quieter, more careful?}{red| Did you lose access to parts of yourself that did not fit?}{red| Did you start to feel like you were performing a role instead of living a life?}\n\n{red|Did you become someone you liked, or someone you barely recognize?}\n\n{red|**Think about the person you were at the end of the marriage.** How much of that person was really you, and how much was adaptation to survive the relationship?}\n\n{red|**This is not about blame.** Some changes were healthy. Some were necessary. But knowing which parts of your married self were authentic and which were accommodation helps you know what to keep and what to let go as you rebuild.\n\nWho were you in that marriage?}{red| And how much of that person do you want to carry forward?}",
+          "text": "**Now think about who you became during the marriage.**\n\n**Not who you were supposed to be.** Who you actually were.\n\nDid you grow? Were there ways you expanded, became more yourself, flourished because of the relationship? Some marriages do that. They make both people bigger.\n\nOr did you shrink? Did you become smaller, quieter, more careful? Did you lose access to parts of yourself that did not fit? Did you start to feel like you were performing a role instead of living a life?\n\nDid you become someone you liked, or someone you barely recognize?\n\n**Think about the person you were at the end of the marriage.** How much of that person was really you, and how much was adaptation to survive the relationship?\n\n**This is not about blame.** Some changes were healthy. Some were necessary. But knowing which parts of your married self were authentic and which were accommodation helps you know what to keep and what to let go as you rebuild.\n\nWho were you in that marriage? And how much of that person do you want to carry forward?",
           "icon": "transform"
         },
         {
@@ -151,7 +151,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "What Got Lost",
-          "text": "{red|**Many people lose parts of themselves in marriage.**\n\n**Interests get abandoned.** You stop doing things you loved because your spouse was not interested or did not approve.\n\n**Friendships fade.** You drift from close friends as couple life takes over or as your spouse discourages those relationships.\n\n**Dreams get shelved.** Your goals get subordinated to theirs or to the demands of the marriage.\n\n**Voice gets silenced.** You stop expressing your opinions, needs, or feelings to avoid conflict.\n\n**Identity gets absorbed.** You become so focused on being a spouse that you forget who you are apart from that role.\n\nWhat got lost in your marriage that you want to reclaim?}",
+          "text": "**Many people lose parts of themselves in marriage.**\n\n**Interests get abandoned.** You stop doing things you loved because your spouse was not interested or did not approve.\n\n**Friendships fade.** You drift from close friends as couple life takes over or as your spouse discourages those relationships.\n\n**Dreams get shelved.** Your goals get subordinated to theirs or to the demands of the marriage.\n\n**Voice gets silenced.** You stop expressing your opinions, needs, or feelings to avoid conflict.\n\n**Identity gets absorbed.** You become so focused on being a spouse that you forget who you are apart from that role.\n\nWhat got lost in your marriage that you want to reclaim?",
           "icon": "search_off"
         },
         {
@@ -159,7 +159,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Before and During",
-          "text": "{red|**Reflect on who you were before and during your marriage.**\n\nWho were you before you got married?}{red| What were your interests, relationships, dreams, personality?}{red| How did you change during the marriage?}{red| What healthy growth occurred?}{red| What unhealthy losses?}{red| What parts of yourself got lost or diminished?}\n\nWrite about your before and during:",
+          "text": "**Reflect on who you were before and during your marriage.**\n\nWho were you before you got married? What were your interests, relationships, dreams, personality? How did you change during the marriage? What healthy growth occurred? What unhealthy losses? What parts of yourself got lost or diminished?\n\nWrite about your before and during:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -168,7 +168,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "What You Want to Reclaim",
-          "text": "{red|What lost aspect of yourself do you most want to reclaim?}",
+          "text": "What lost aspect of yourself do you most want to reclaim?",
           "prompts": [
             "Interests and hobbies I abandoned",
             "Friendships I let fade",
@@ -191,7 +191,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "One Step to Reclaim",
-          "text": "{red|**Choose one thing from your past self that you want to reclaim, and take a step toward it this week.**\n\n**If you abandoned an interest, engage in it again.** If you lost a friendship, reach out to reconnect. If you stopped expressing yourself, share your real opinion about something. If you lost confidence, do something that challenges you.\n\nWhat is one thing you will reclaim this week?}{red| What step will you take?}\n\nWrite your reclaiming step:",
+          "text": "**Choose one thing from your past self that you want to reclaim, and take a step toward it this week.**\n\n**If you abandoned an interest, engage in it again.** If you lost a friendship, reach out to reconnect. If you stopped expressing yourself, share your real opinion about something. If you lost confidence, do something that challenges you.\n\nWhat is one thing you will reclaim this week? What step will you take?\n\nWrite your reclaiming step:",
           "icon": "redo"
         }
       ]
@@ -219,7 +219,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Worth Wound",
-          "text": "{red|**There is a question underneath everything, the one you might be afraid to ask out loud.**\n\nAm I worth less now?}\n\n{red|**You used to be married.** Now you are divorced. In some circles, that feels like a demotion. Like you have been moved to a lower category of person. Less successful. Less chosen. Less worthy of respect.\n\n**The question gets louder when you fill out forms.** Single, divorced, married. There it is in black and white. A checkbox that feels like a verdict.\n\n**It gets louder when you see how people react.** The pity. The slight distance. The sense that you are now a cautionary tale instead of an equal.\n\n**It gets louder in your own head.** The culture teaches that married is better. Whole. Complete. And you were married, and it failed, so what does that make you?}\n\n**Here is the truth that will take time to believe: your worth was never based on being married.** It is not based on being chosen by one particular person. It is not based on a relationship status.\n\n**You had worth before marriage.** You had worth during marriage. You have worth now.\n\n**Not because you earned it.** Because you exist. Because you are human. Because, if you believe Scripture, you are made in the image of God and loved by Him regardless of your marital status.\n\n**The checkbox is not a verdict.** It is just a checkbox.",
+          "text": "**There is a question underneath everything, the one you might be afraid to ask out loud.**\n\nAm I worth less now?\n\n**You used to be married.** Now you are divorced. In some circles, that feels like a demotion. Like you have been moved to a lower category of person. Less successful. Less chosen. Less worthy of respect.\n\n**The question gets louder when you fill out forms.** Single, divorced, married. There it is in black and white. A checkbox that feels like a verdict.\n\n**It gets louder when you see how people react.** The pity. The slight distance. The sense that you are now a cautionary tale instead of an equal.\n\n**It gets louder in your own head.** The culture teaches that married is better. Whole. Complete. And you were married, and it failed, so what does that make you?\n\n**Here is the truth that will take time to believe: your worth was never based on being married.** It is not based on being chosen by one particular person. It is not based on a relationship status.\n\n**You had worth before marriage.** You had worth during marriage. You have worth now.\n\n**Not because you earned it.** Because you exist. Because you are human. Because, if you believe Scripture, you are made in the image of God and loved by Him regardless of your marital status.\n\n**The checkbox is not a verdict.** It is just a checkbox.",
           "icon": "star"
         },
         {
@@ -227,7 +227,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Where Worth Actually Comes From",
-          "text": "{red|If worth does not come from being chosen by a spouse, where does it come from?}\n\n**True worth is intrinsic.** You have value simply because you exist. You are a human being made in the image of God. That gives you inherent dignity and worth.\n\n**True worth is given by God.** He created you, loves you, and sent His Son for you. His valuation of you is the one that matters.\n\n**True worth is not earned.** You do not become valuable by achieving, performing, or being chosen. You already are valuable.\n\n**This means your worth was intact before marriage, during marriage, and after marriage.** It was never dependent on your spouse.",
+          "text": "If worth does not come from being chosen by a spouse, where does it come from?\n\n**True worth is intrinsic.** You have value simply because you exist. You are a human being made in the image of God. That gives you inherent dignity and worth.\n\n**True worth is given by God.** He created you, loves you, and sent His Son for you. His valuation of you is the one that matters.\n\n**True worth is not earned.** You do not become valuable by achieving, performing, or being chosen. You already are valuable.\n\n**This means your worth was intact before marriage, during marriage, and after marriage.** It was never dependent on your spouse.",
           "icon": "favorite"
         },
         {
@@ -235,7 +235,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "The Lie of Being Unchosen",
-          "text": "{red|**Divorce plants a lie: You are unchosen.** Unwanted. Not enough.\n\n**This lie is powerful because it taps into deep human fears.** We all want to be chosen, wanted, valued.\n\n**But one person not choosing you does not make you unchosen.** Your ex is not the final authority on your worth. Their decision is about them, not a verdict on you.\n\n**Furthermore, you are chosen.** Chosen by God before the foundation of the world. Chosen as His child. Chosen and loved.\n\n**The lie says you are rejected.** The truth says you are beloved. Which voice will you believe?}",
+          "text": "**Divorce plants a lie: You are unchosen.** Unwanted. Not enough.\n\n**This lie is powerful because it taps into deep human fears.** We all want to be chosen, wanted, valued.\n\n**But one person not choosing you does not make you unchosen.** Your ex is not the final authority on your worth. Their decision is about them, not a verdict on you.\n\n**Furthermore, you are chosen.** Chosen by God before the foundation of the world. Chosen as His child. Chosen and loved.\n\n**The lie says you are rejected.** The truth says you are beloved. Which voice will you believe?",
           "icon": "cancel"
         },
         {
@@ -243,7 +243,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Worth Wounds",
-          "text": "{red|**Explore how divorce has affected your sense of worth.**\n\nWhat lies about your worth have you believed since the divorce?}{red| How has rejection affected how you see yourself?}{red| In what ways have you felt not enough?}{red| What would change if you truly believed your worth was not determined by your ex?}\n\nWrite about your worth wounds:",
+          "text": "**Explore how divorce has affected your sense of worth.**\n\nWhat lies about your worth have you believed since the divorce? How has rejection affected how you see yourself? In what ways have you felt not enough? What would change if you truly believed your worth was not determined by your ex?\n\nWrite about your worth wounds:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -252,7 +252,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Truths About Your Worth",
-          "text": "Here are truths to counter the lies:\n\n**You are made in God's image.** This gives you inherent dignity and worth. (({red|Genesis 1:27}))\n\n**You are loved with an everlasting love.** God's love for you is not based on your performance or status. (({red|Jeremiah 31:3}))\n\n**You are chosen and precious.** Before you did anything, God chose you. (1 ({red|Peter 2:9}))\n\n**Your worth is not determined by your marital status.** Married people are not more valuable than single people.\n\n**One person's rejection does not define your value.** Your ex does not have that authority.\n\n**You are enough.** Not because you are perfect, but because you are His.",
+          "text": "Here are truths to counter the lies:\n\n**You are made in God's image.** This gives you inherent dignity and worth. (Genesis 1:27)\n\n**You are loved with an everlasting love.** God's love for you is not based on your performance or status. (Jeremiah 31:3)\n\n**You are chosen and precious.** Before you did anything, God chose you. (1 (Peter 2:9)\n\n**Your worth is not determined by your marital status.** Married people are not more valuable than single people.\n\n**One person's rejection does not define your value.** Your ex does not have that authority.\n\n**You are enough.** Not because you are perfect, but because you are His.",
           "icon": "menu_book"
         },
         {
@@ -296,7 +296,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Categories to Explore",
-          "text": "{red|**Consider these categories as you rediscover your uniqueness.**\n\nNatural abilities: What are you naturally good at?}{red| What comes easily to you?}\n\n{red|Learned skills: What have you developed through education and experience?}\n\n{red|Personality strengths: What aspects of your personality are assets?}{red| Are you creative, analytical, compassionate, organized, adventurous?}\n\n{red|Character qualities: What virtues do you possess?}{red| Honesty, perseverance, kindness, courage?}\n\n{red|Passions: What do you care deeply about?}{red| What energizes you?}\n\n{red|Experiences: What have you been through that has given you wisdom or perspective?}\n\n**You have more to offer than you may currently see.**",
+          "text": "**Consider these categories as you rediscover your uniqueness.**\n\nNatural abilities: What are you naturally good at? What comes easily to you?\n\nLearned skills: What have you developed through education and experience?\n\nPersonality strengths: What aspects of your personality are assets? Are you creative, analytical, compassionate, organized, adventurous?\n\nCharacter qualities: What virtues do you possess? Honesty, perseverance, kindness, courage?\n\nPassions: What do you care deeply about? What energizes you?\n\nExperiences: What have you been through that has given you wisdom or perspective?\n\n**You have more to offer than you may currently see.**",
           "icon": "category"
         },
         {
@@ -304,7 +304,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "What Others See",
-          "text": "{red|**Sometimes others see our gifts more clearly than we do.**\n\n**Think about positive feedback you have received.** What have people thanked you for?}{red| What have you been complimented on?}{red| What do people come to you for help with?}\n\n{red|**Think about what friends and family would say about your strengths.** If asked what is great about you, what would they say?}\n\n{red|**Think about past accomplishments.** What have you achieved?}{red| What have you done well?}{red| What are you proud of?}\n\n**Your self-perception may be distorted by divorce.** Outside perspectives can help you see yourself more accurately.",
+          "text": "**Sometimes others see our gifts more clearly than we do.**\n\n**Think about positive feedback you have received.** What have people thanked you for? What have you been complimented on? What do people come to you for help with?\n\n**Think about what friends and family would say about your strengths.** If asked what is great about you, what would they say?\n\n**Think about past accomplishments.** What have you achieved? What have you done well? What are you proud of?\n\n**Your self-perception may be distorted by divorce.** Outside perspectives can help you see yourself more accurately.",
           "icon": "groups"
         },
         {
@@ -312,7 +312,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Unique Gifts",
-          "text": "{red|**Take time to identify your unique gifts and strengths.**\n\nWhat are you naturally good at?}{red| What skills have you developed?}{red| What personality traits are strengths?}{red| What do others appreciate about you?}{red| What are you proud of having done or become?}\n\nList your unique gifts and strengths:",
+          "text": "**Take time to identify your unique gifts and strengths.**\n\nWhat are you naturally good at? What skills have you developed? What personality traits are strengths? What do others appreciate about you? What are you proud of having done or become?\n\nList your unique gifts and strengths:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -321,7 +321,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Greatest Strength",
-          "text": "{red|What do you think is your single greatest strength or gift?}",
+          "text": "What do you think is your single greatest strength or gift?",
           "prompts": [
             "Compassion and care for others",
             "Intelligence and problem-solving ability",
@@ -346,7 +346,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Using Your Gifts",
-          "text": "{red|**Your gifts are meant to be used.** Identify one way you will use a gift or strength this week.\n\n**If you are compassionate, find someone to encourage.** If you are creative, make something. If you are good at organizing, tackle a project. If you are a good communicator, share your story.\n\n**Using your gifts reinforces your sense of identity and worth.**\n\nWhat gift will you use this week and how?}",
+          "text": "**Your gifts are meant to be used.** Identify one way you will use a gift or strength this week.\n\n**If you are compassionate, find someone to encourage.** If you are creative, make something. If you are good at organizing, tackle a project. If you are a good communicator, share your story.\n\n**Using your gifts reinforces your sense of identity and worth.**\n\nWhat gift will you use this week and how?",
           "icon": "task_alt"
         }
       ]
@@ -374,7 +374,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Passion and Purpose",
-          "text": "{red|**Somewhere in you, there are things you love.** Things that light you up. Things you could lose yourself in for hours.\n\nDo you remember what they are?}\n\n{red|**Marriage can bury these things.** Sometimes because there was not time. Sometimes because your spouse did not share them. Sometimes because you forgot yourself in the work of being a couple.\n\nWhat did you used to love before the marriage absorbed everything?}{red| What used to make you feel alive?}\n\n{red|And what new things have you discovered, maybe even through the pain of divorce?}{red| Sometimes crisis reveals interests you did not know you had. Books that speak to you. Activities that calm you. Ways of being in the world that feel like coming home.\n\n**Purpose is different from passion.** Passion is what you love. Purpose is why you are here.\n\n**Some people have a clear sense of purpose.** Most are still figuring it out. And that is okay. You do not need a grand mission statement. You need something that gets you out of bed, something that makes you feel like your life matters.\n\n**This is a time of rediscovery.** Not just finding yourself, but maybe finding parts of yourself that never got a chance to exist before. The you that is possible now that you have the space to become it.\n\nWhat lights you up?}{red| What makes you feel like you are where you are supposed to be?}",
+          "text": "**Somewhere in you, there are things you love.** Things that light you up. Things you could lose yourself in for hours.\n\nDo you remember what they are?\n\n**Marriage can bury these things.** Sometimes because there was not time. Sometimes because your spouse did not share them. Sometimes because you forgot yourself in the work of being a couple.\n\nWhat did you used to love before the marriage absorbed everything? What used to make you feel alive?\n\nAnd what new things have you discovered, maybe even through the pain of divorce? Sometimes crisis reveals interests you did not know you had. Books that speak to you. Activities that calm you. Ways of being in the world that feel like coming home.\n\n**Purpose is different from passion.** Passion is what you love. Purpose is why you are here.\n\n**Some people have a clear sense of purpose.** Most are still figuring it out. And that is okay. You do not need a grand mission statement. You need something that gets you out of bed, something that makes you feel like your life matters.\n\n**This is a time of rediscovery.** Not just finding yourself, but maybe finding parts of yourself that never got a chance to exist before. The you that is possible now that you have the space to become it.\n\nWhat lights you up? What makes you feel like you are where you are supposed to be?",
           "icon": "local_fire_department"
         },
         {
@@ -382,7 +382,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Finding What Energizes You",
-          "text": "{red|**To rediscover your passions, pay attention to what energizes you.**\n\nWhat activities make time fly?}{red| When do you lose yourself in engagement?}\n\n{red|What topics fascinate you?}{red| What do you enjoy learning about?}\n\n{red|What makes you feel alive?}{red| When do you feel most like yourself?}\n\n{red|What did you love before your marriage that you stopped doing?}\n\n**Your passions may have been dormant, but they have not disappeared.** They are waiting to be rekindled.\n\n**Giving yourself permission to pursue what you love is part of rebuilding identity.**",
+          "text": "**To rediscover your passions, pay attention to what energizes you.**\n\nWhat activities make time fly? When do you lose yourself in engagement?\n\nWhat topics fascinate you? What do you enjoy learning about?\n\nWhat makes you feel alive? When do you feel most like yourself?\n\nWhat did you love before your marriage that you stopped doing?\n\n**Your passions may have been dormant, but they have not disappeared.** They are waiting to be rekindled.\n\n**Giving yourself permission to pursue what you love is part of rebuilding identity.**",
           "icon": "bolt"
         },
         {
@@ -390,7 +390,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Finding Your Why",
-          "text": "{red|**Purpose goes deeper than passion.** It is about meaning and contribution.\n\nWhat breaks your heart about the world?}{red| What problems do you want to help solve?}\n\n{red|What do you want your life to be about?}{red| When you reach the end, what will matter?}\n\n{red|What unique contribution can you make?}{red| Given your gifts, experiences, and passions, what are you positioned to offer?}\n\n**Purpose does not have to be grand.** It can be raising good humans, bringing beauty into the world, caring for those who suffer, or simply loving people well.\n\n**Knowing your why provides direction and meaning that transcends your circumstances.**",
+          "text": "**Purpose goes deeper than passion.** It is about meaning and contribution.\n\nWhat breaks your heart about the world? What problems do you want to help solve?\n\nWhat do you want your life to be about? When you reach the end, what will matter?\n\nWhat unique contribution can you make? Given your gifts, experiences, and passions, what are you positioned to offer?\n\n**Purpose does not have to be grand.** It can be raising good humans, bringing beauty into the world, caring for those who suffer, or simply loving people well.\n\n**Knowing your why provides direction and meaning that transcends your circumstances.**",
           "icon": "explore"
         },
         {
@@ -398,7 +398,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Passions and Purpose",
-          "text": "{red|**Explore your passions and sense of purpose.**\n\nWhat activities, topics, or pursuits energize you?}{red| What did you used to love that you want to return to?}{red| What do you care deeply about in the world?}{red| What do you want your life to be about?}\n\nWrite about your passions and purpose:",
+          "text": "**Explore your passions and sense of purpose.**\n\nWhat activities, topics, or pursuits energize you? What did you used to love that you want to return to? What do you care deeply about in the world? What do you want your life to be about?\n\nWrite about your passions and purpose:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -407,7 +407,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Permission to Pursue",
-          "text": "{red|**Give yourself permission to pursue what you love.**\n\n**You may have spent years prioritizing others' interests.** You may feel guilty focusing on yourself. You may not think your passions matter.\n\n**But pursuing your passions is not selfish.** It is part of becoming who you are meant to be. It fills you up so you have more to give.\n\n**You do not need someone else's permission.** You do not need to justify it. You can choose to invest in what makes you come alive.\n\nWhat would it look like to give yourself permission to pursue your passions?}",
+          "text": "**Give yourself permission to pursue what you love.**\n\n**You may have spent years prioritizing others' interests.** You may feel guilty focusing on yourself. You may not think your passions matter.\n\n**But pursuing your passions is not selfish.** It is part of becoming who you are meant to be. It fills you up so you have more to give.\n\n**You do not need someone else's permission.** You do not need to justify it. You can choose to invest in what makes you come alive.\n\nWhat would it look like to give yourself permission to pursue your passions?",
           "icon": "check_circle"
         },
         {
@@ -415,7 +415,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Pursuing Passion This Week",
-          "text": "{red|**Identify one passion or interest you will pursue this week.**\n\n**It does not have to be big.** Read about something you find fascinating. Do an activity you love. Take a class. Join a group.\n\n**The goal is to start rekindling what makes you come alive.**\n\nWhat passion will you pursue this week?}{red| What specific step will you take?}",
+          "text": "**Identify one passion or interest you will pursue this week.**\n\n**It does not have to be big.** Read about something you find fascinating. Do an activity you love. Take a class. Join a group.\n\n**The goal is to start rekindling what makes you come alive.**\n\nWhat passion will you pursue this week? What specific step will you take?",
           "icon": "task_alt"
         }
       ]
@@ -443,7 +443,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Unstable and the Stable",
-          "text": "{red|**Some identity foundations are built on sand.** They feel solid until the storms come.\n\nIf your identity is based on your job, what happens when you lose it?}{red| If based on your appearance, what happens as you age?}{red| If based on your marriage, what happens in divorce?}\n\n**Identity built on things that can be taken away will always be vulnerable.**\n\n**But there is a foundation that cannot be shaken: who you are in Christ.** This identity is not based on your performance, your relationships, or your circumstances. It is based on what God has done and who He says you are.\n\n**Building on this foundation creates stability that survives life's storms, including divorce.**",
+          "text": "**Some identity foundations are built on sand.** They feel solid until the storms come.\n\nIf your identity is based on your job, what happens when you lose it? If based on your appearance, what happens as you age? If based on your marriage, what happens in divorce?\n\n**Identity built on things that can be taken away will always be vulnerable.**\n\n**But there is a foundation that cannot be shaken: who you are in Christ.** This identity is not based on your performance, your relationships, or your circumstances. It is based on what God has done and who He says you are.\n\n**Building on this foundation creates stability that survives life's storms, including divorce.**",
           "icon": "foundation"
         },
         {
@@ -451,7 +451,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What God Says About You",
-          "text": "{red|**God sees you differently than you see yourself right now.**\n\n**You look in the mirror and see failure.** He sees a child He loves.\n\n**You feel defined by the divorce.** He defines you by whose you are, not what happened to you.\n\n**You wonder if you are disqualified from good things.** He is preparing good things for you that you cannot yet imagine.\n\n**This is not positive thinking.** It is not pretending the pain is not real. It is anchoring your identity in something that cannot be taken away.\n\n**Your marriage could be taken away.** Your sense of yourself could be shattered. The life you planned could be destroyed.\n\nBut your standing with God?}{red| That cannot be stolen. It was never based on your performance in the first place. It was always, only, based on His love and Christ's work.\n\n**Chosen.** Beloved. Adopted. Forgiven. These are not descriptions you have to earn. They are what is true about you because of who He is.\n\n**The world says your divorce defines you.** God says your divorce is something that happened to you, not who you are.\n\nWhich voice will you believe?}",
+          "text": "**God sees you differently than you see yourself right now.**\n\n**You look in the mirror and see failure.** He sees a child He loves.\n\n**You feel defined by the divorce.** He defines you by whose you are, not what happened to you.\n\n**You wonder if you are disqualified from good things.** He is preparing good things for you that you cannot yet imagine.\n\n**This is not positive thinking.** It is not pretending the pain is not real. It is anchoring your identity in something that cannot be taken away.\n\n**Your marriage could be taken away.** Your sense of yourself could be shattered. The life you planned could be destroyed.\n\nBut your standing with God? That cannot be stolen. It was never based on your performance in the first place. It was always, only, based on His love and Christ's work.\n\n**Chosen.** Beloved. Adopted. Forgiven. These are not descriptions you have to earn. They are what is true about you because of who He is.\n\n**The world says your divorce defines you.** God says your divorce is something that happened to you, not who you are.\n\nWhich voice will you believe?",
           "icon": "menu_book"
         },
         {
@@ -467,7 +467,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Identity Foundation",
-          "text": "{red|**Reflect on what your identity has been built on and what you want it to be built on.**\n\nWhat have you based your identity on in the past?}{red| Marriage, career, appearance, achievement?}{red| How has divorce exposed the instability of those foundations?}{red| How firmly is your identity rooted in who God says you are?}\n\nWrite about your identity foundation:",
+          "text": "**Reflect on what your identity has been built on and what you want it to be built on.**\n\nWhat have you based your identity on in the past? Marriage, career, appearance, achievement? How has divorce exposed the instability of those foundations? How firmly is your identity rooted in who God says you are?\n\nWrite about your identity foundation:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -484,7 +484,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Identity Anchoring Practice",
-          "text": "{red|**Choose one identity truth from Scripture to anchor yourself in this week.**\n\nI am a child of God (({red|John 1:12})) I am loved unconditionally (({red|Romans 8:39})) I am forgiven completely (({red|Psalm 103:12})) I am chosen and precious (1 ({red|Peter 2:9})) I am a new creation (2 ({red|Corinthians 5:17})) I am God's masterpiece (({red|Ephesians 2:10}))\n\n**Write the verse on a card.** Read it every morning and evening. When lies attack, speak this truth.\n\nWhich truth will you anchor in this week?}",
+          "text": "**Choose one identity truth from Scripture to anchor yourself in this week.**\n\nI am a child of God (John 1:12) I am loved unconditionally (Romans 8:39) I am forgiven completely (Psalm 103:12) I am chosen and precious (1 (Peter 2:9) I am a new creation (2 (Corinthians 5:17) I am God's masterpiece (Ephesians 2:10)\n\n**Write the verse on a card.** Read it every morning and evening. When lies attack, speak this truth.\n\nWhich truth will you anchor in this week?",
           "icon": "task_alt"
         }
       ]
@@ -536,7 +536,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Current Narrative",
-          "text": "{red|**Examine the narrative you have been telling yourself about your divorce.**\n\nWhat story do you tell about what happened?}{red| Is it primarily a victim story, shame story, hopeless story, or something else?}{red| How is this narrative affecting your identity and future?}{red| What would a more redemptive narrative sound like?}\n\nWrite about your current narrative:",
+          "text": "**Examine the narrative you have been telling yourself about your divorce.**\n\nWhat story do you tell about what happened? Is it primarily a victim story, shame story, hopeless story, or something else? How is this narrative affecting your identity and future? What would a more redemptive narrative sound like?\n\nWrite about your current narrative:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -581,7 +581,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Confidence Collapse",
-          "text": "{red|**Divorce can collapse confidence in several ways.**\n\n**You may doubt your judgment.** You chose this person. You did not see the problems. How can you trust your decisions now?}\n\n{red|**You may doubt your lovability.** If they did not want you, maybe no one will.\n\n**You may doubt your competence.** You are now handling things alone that you used to share. Can you really do this?}\n\n{red|**You may doubt your future.** If this happened, what else might go wrong?}\n\n**This confidence collapse is normal after divorce.** But it does not have to be permanent. Confidence can be rebuilt.",
+          "text": "**Divorce can collapse confidence in several ways.**\n\n**You may doubt your judgment.** You chose this person. You did not see the problems. How can you trust your decisions now?\n\n**You may doubt your lovability.** If they did not want you, maybe no one will.\n\n**You may doubt your competence.** You are now handling things alone that you used to share. Can you really do this?\n\n**You may doubt your future.** If this happened, what else might go wrong?\n\n**This confidence collapse is normal after divorce.** But it does not have to be permanent. Confidence can be rebuilt.",
           "icon": "trending_down"
         },
         {
@@ -605,7 +605,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Confidence Assessment",
-          "text": "{red|**Assess your current confidence.**\n\nWhere has your confidence been most damaged by divorce?}{red| What areas of life do you feel most insecure about?}{red| What would you attempt if you had more confidence?}{red| What has built your confidence in the past?}\n\nWrite about your confidence assessment:",
+          "text": "**Assess your current confidence.**\n\nWhere has your confidence been most damaged by divorce? What areas of life do you feel most insecure about? What would you attempt if you had more confidence? What has built your confidence in the past?\n\nWrite about your confidence assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -614,7 +614,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Confidence Priority",
-          "text": "{red|What area most needs confidence rebuilding?}",
+          "text": "What area most needs confidence rebuilding?",
           "prompts": [
             "Trusting my own judgment and decisions",
             "Believing I am lovable and valuable",
@@ -664,7 +664,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Beyond Recovery",
-          "text": "{red|**Identity rebuilding is not just about getting back to who you were.** It is about becoming who you want to be.\n\n**You are not the same person you were before your marriage.** You have been through something significant. You have learned things, developed strengths, and gained perspective you did not have before.\n\n**This is an opportunity not just to recover lost parts of yourself but to become a new, better version of who you are.**\n\nWhat kind of person do you want to become?}{red| Who do you want to be in this new chapter of your life?}",
+          "text": "**Identity rebuilding is not just about getting back to who you were.** It is about becoming who you want to be.\n\n**You are not the same person you were before your marriage.** You have been through something significant. You have learned things, developed strengths, and gained perspective you did not have before.\n\n**This is an opportunity not just to recover lost parts of yourself but to become a new, better version of who you are.**\n\nWhat kind of person do you want to become? Who do you want to be in this new chapter of your life?",
           "icon": "person_add"
         },
         {
@@ -672,7 +672,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Envisioning Your Future Self",
-          "text": "{red|**Two years after his divorce, Marcus barely recognized himself, and for the first time, that was a good thing.** He was healthier, more self-aware, kinder to himself. The divorce had nearly destroyed him. But in rebuilding, he had become someone he actually liked.\n\n**Imagine yourself one year from now, or five years from now, having done the work of healing and growth.**\n\nWhat does that person look like?}{red| How do they carry themselves?}{red| What confidence do they have?}\n\n{red|How do they spend their time?}{red| What relationships do they have?}{red| What are they doing with their life?}\n\n{red|How do they think about themselves?}{red| What do they believe about their worth?}{red| How do they handle difficulty?}\n\n{red|What character qualities do they have?}{red| What strengths have they developed?}\n\n**This future self is not fantasy.** It is possibility. And you can become that person.",
+          "text": "**Two years after his divorce, Marcus barely recognized himself, and for the first time, that was a good thing.** He was healthier, more self-aware, kinder to himself. The divorce had nearly destroyed him. But in rebuilding, he had become someone he actually liked.\n\n**Imagine yourself one year from now, or five years from now, having done the work of healing and growth.**\n\nWhat does that person look like? How do they carry themselves? What confidence do they have?\n\nHow do they spend their time? What relationships do they have? What are they doing with their life?\n\nHow do they think about themselves? What do they believe about their worth? How do they handle difficulty?\n\nWhat character qualities do they have? What strengths have they developed?\n\n**This future self is not fantasy.** It is possibility. And you can become that person.",
           "icon": "preview"
         },
         {
@@ -680,7 +680,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Becoming Your Future Self",
-          "text": "{red|**You become your future self through small daily choices.**\n\n**Act as if.** Begin acting like the person you want to become, even before you feel like it. Behavior often precedes feelings.\n\n**Make choices aligned with your future self.** When facing decisions, ask what would my best future self do?}\n\n**Develop habits that shape you.** The person you become is largely shaped by what you do daily.\n\n**Surround yourself with people who call out the best in you.** Community shapes identity.\n\n**Practice becoming.** Identity is not fixed. You are always becoming. Be intentional about what you are becoming.",
+          "text": "**You become your future self through small daily choices.**\n\n**Act as if.** Begin acting like the person you want to become, even before you feel like it. Behavior often precedes feelings.\n\n**Make choices aligned with your future self.** When facing decisions, ask what would my best future self do?\n\n**Develop habits that shape you.** The person you become is largely shaped by what you do daily.\n\n**Surround yourself with people who call out the best in you.** Community shapes identity.\n\n**Practice becoming.** Identity is not fixed. You are always becoming. Be intentional about what you are becoming.",
           "icon": "stairs"
         },
         {
@@ -688,7 +688,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Future Self",
-          "text": "{red|**Describe your future self in detail.**\n\nWho do you want to be one year from now?}{red| Five years from now?}{red| What qualities do you want to have?}{red| How do you want to live?}{red| What do you want to be known for?}{red| What would make you proud of who you have become?}\n\nWrite a description of your future self:",
+          "text": "**Describe your future self in detail.**\n\nWho do you want to be one year from now? Five years from now? What qualities do you want to have? How do you want to live? What do you want to be known for? What would make you proud of who you have become?\n\nWrite a description of your future self:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -697,7 +697,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "The Gap and the Bridge",
-          "text": "{red|**There is a gap between who you are now and who you want to become.** That gap is not a problem. It is normal.\n\n**The bridge across the gap is built one step at a time.** Each choice that aligns with your future self narrows the gap.\n\n**You do not have to become your future self overnight.** You just need to take the next step.\n\nWhat is one step you could take today that would move you toward becoming the person you want to be?}\n\n**Small steps, taken consistently, lead to transformation.**",
+          "text": "**There is a gap between who you are now and who you want to become.** That gap is not a problem. It is normal.\n\n**The bridge across the gap is built one step at a time.** Each choice that aligns with your future self narrows the gap.\n\n**You do not have to become your future self overnight.** You just need to take the next step.\n\nWhat is one step you could take today that would move you toward becoming the person you want to be?\n\n**Small steps, taken consistently, lead to transformation.**",
           "icon": "directions_walk"
         },
         {
@@ -749,7 +749,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Identity Insight",
-          "text": "{red|What is the most important thing you have learned or realized about your identity through this journey?}\n\n{red|What do you want to remember when you forget who you are?}\n\nWrite your key identity insight:",
+          "text": "What is the most important thing you have learned or realized about your identity through this journey?\n\nWhat do you want to remember when you forget who you are?\n\nWrite your key identity insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },

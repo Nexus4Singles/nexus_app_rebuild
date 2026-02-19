@@ -54,7 +54,7 @@
           "cardNumber": 1,
           "title": "What Shared Faith Provides",
           "icon": "psychology",
-          "text": "Spiritual alignment is more than shared beliefs or church attendance.\nIt is about how faith shapes daily choices, values, and the way love is lived out.\n\nIf you have ever assumed spiritual compatibility without exploring it deeply, this journey will help you discern alignment with wisdom and honesty.\n\nA shared spiritual foundation provides: Common purpose. Your marriage is about more than yourselves. You are on mission together for God's kingdom. Shared values framework. When decisions arise, you have a common reference point in Scripture. Resources for hard times. Prayer, community, and God's presence sustain you when your own strength fails. Forgiveness capacity. The gospel teaches you how to forgive each other as you have been forgiven. Transcendent perspective. Marriage is temporary; eternity is forever. This perspective shapes everything."
+          "text": "Spiritual alignment is more than shared beliefs or church attendance.\nIt is about how faith shapes daily choices, values, and the way love is lived out.\n\nIf you have ever assumed spiritual compatibility without exploring it deeply, this journey will help you discern alignment with wisdom and honesty.\n\nA shared spiritual foundation provides: Common purpose.\n\nYour marriage is about more than yourselves.\n\nYou are on mission together for God's kingdom.\n\nShared values framework.\n\nWhen decisions arise, you have a common reference point in Scripture.\n\nResources for hard times.\n\nPrayer, community, and God's presence sustain you when your own strength fails.\n\nForgiveness capacity.\n\nThe gospel teaches you how to forgive each other as you have been forgiven.\n\nTranscendent perspective.\n\nMarriage is temporary; eternity is forever.\n\nThis perspective shapes everything."
         },
         {
           "cardId": "c2",
@@ -62,7 +62,7 @@
           "cardNumber": 2,
           "title": "Two Marriages Under Pressure",
           "icon": "menu_book",
-          "text": "When job loss and health crisis hit simultaneously, David and Rachel's marriage was tested severely. They had built their relationship on faith. They prayed together daily. They were deeply connected to their church community. When the storm hit, they had resources. They prayed through their fear. Their community rallied around them. The crisis actually deepened their marriage. Their neighbors, also facing hardship, had no such foundation. When crisis came, they turned on each other rather than toward God together. Their marriage did not survive. Same storm. Different foundations. Different outcomes."
+          "text": "When job loss and health crisis hit simultaneously, David and Rachel's marriage was tested severely.\n\nThey had built their relationship on faith.\n\nThey prayed together daily.\n\nThey were deeply connected to their church community.\n\nWhen the storm hit, they had resources.\n\nThey prayed through their fear.\n\nTheir community rallied around them.\n\nThe crisis actually deepened their marriage.\n\nTheir neighbors, also facing hardship, had no such foundation.\n\nWhen crisis came, they turned on each other rather than toward God together.\n\nTheir marriage did not survive.\n\nSame storm.\n\nDifferent foundations.\n\nDifferent outcomes."
         },
         {
           "cardId": "c3",
@@ -70,7 +70,7 @@
           "cardNumber": 3,
           "title": "Beyond Both Being Christian",
           "icon": "lightbulb",
-          "text": "Many couples are both Christians but do not have a shared spiritual foundation. They attend church (sometimes together, sometimes separately).\nThey believe the same things (generally).\nThey pray (individually, rarely together). But their faith operates in parallel rather than together. It is like two people walking in the same direction on opposite sides of the street. A shared spiritual foundation means your faith is connected. You grow together, not just alongside each other."
+          "text": "Many couples are both Christians but do not have a shared spiritual foundation.\n\nThey attend church (sometimes together, sometimes separately).\nThey believe the same things (generally).\nThey pray (individually, rarely together). But their faith operates in parallel rather than together. It is like two people walking in the same direction on opposite sides of the street. A shared spiritual foundation means your faith is connected.\n\nYou grow together, not just alongside each other."
         },
         {
           "cardId": "c4",
@@ -78,7 +78,7 @@
           "cardNumber": 4,
           "title": "Your Spiritual Foundation Vision",
           "icon": "edit_note",
-          "text": "{red|What does a shared spiritual foundation mean to you? What would it look like in your marriage?}",
+          "text": "What does a shared spiritual foundation mean to you? What would it look like in your marriage?",
           "responseType": "open-text"
         },
         {
@@ -87,7 +87,7 @@
           "cardNumber": 5,
           "title": "A Prayer for Foundation",
           "icon": "volunteer_activism",
-          "text": "Lord, I want a marriage built on You, not just on compatibility or feelings. Help me build a spiritual foundation now that will sustain marriage for a lifetime. Amen.",
+          "text": "Lord, I want a marriage built on You, not just on compatibility or feelings.\n\nHelp me build a spiritual foundation now that will sustain marriage for a lifetime.\n\nAmen.",
           "responseType": "open-text"
         }
       ]
@@ -116,7 +116,7 @@
           "cardNumber": 1,
           "title": "The Individual Foundation",
           "icon": "psychology",
-          "text": "Healthy shared faith requires healthy individual faith. Ask yourself: Do I have a personal relationship with God, not just inherited faith? Do I pursue God through Scripture, prayer, and worship on my own? Is my faith my own, or am I dependent on others to sustain it? Am I growing spiritually, or have I plateaued? Do I have spiritual community and accountability? If your personal faith is weak, you will either be spiritually dependent on your spouse (unhealthy) or unable to build shared faith at all."
+          "text": "Healthy shared faith requires healthy individual faith.\n\nAsk yourself: Do I have a personal relationship with God, not just inherited faith? Do I pursue God through Scripture, prayer, and worship on my own? Is my faith my own, or am I dependent on others to sustain it? Am I growing spiritually, or have I plateaued? Do I have spiritual community and accountability? If your personal faith is weak, you will either be spiritually dependent on your spouse (unhealthy) or unable to build shared faith at all."
         },
         {
           "cardId": "c2",
@@ -124,7 +124,7 @@
           "cardNumber": 2,
           "title": "Spiritual Health Assessment",
           "icon": "task_alt",
-          "text": "Rate yourself honestly (1 = struggling, 5 = thriving): __ Personal prayer life\n__ Scripture reading and study\n__ Connection to church community\n__ Application of faith to daily decisions\n__ Spiritual growth over the past year\n__ Accountability relationships\n__ Service and generosity Areas of strength: ________________\nAreas needing growth: ________________",
+          "text": "Rate yourself honestly (1 = struggling, 5 = thriving): __ Personal prayer life\n__ Scripture reading and study\n__ Connection to church community\n__ Application of faith to daily decisions\n__ Spiritual growth over the past year\n__ Accountability relationships\n__ Service and generosity\n\nAreas of strength: ________________\nAreas needing growth: ________________",
           "responseType": "open-text"
         },
         {
@@ -133,7 +133,7 @@
           "cardNumber": 3,
           "title": "Your Spiritual Journey",
           "icon": "edit_note",
-          "text": "{red|Where are you in your faith journey right now? Thriving? Growing? Stuck? Struggling? What would spiritual health look like for you?}",
+          "text": "Where are you in your faith journey right now? Thriving? Growing? Stuck? Struggling? What would spiritual health look like for you?",
           "responseType": "open-text"
         },
         {
@@ -142,7 +142,7 @@
           "cardNumber": 4,
           "title": "Grow Before and During Dating",
           "icon": "auto_awesome",
-          "text": "Whether single or dating, prioritize your own spiritual growth: Develop consistent personal practices. Prayer, Scripture, worship that do not depend on anyone else. Build spiritual community. Connection to believers who know and encourage you. Pursue growth areas. Address weaknesses in your faith intentionally. A strong individual faith is the best thing you bring to shared spiritual life."
+          "text": "Whether single or dating, prioritize your own spiritual growth: Develop consistent personal practices.\n\nPrayer, Scripture, worship that do not depend on anyone else.\n\nBuild spiritual community.\n\nConnection to believers who know and encourage you.\n\nPursue growth areas.\n\nAddress weaknesses in your faith intentionally. A strong individual faith is the best thing you bring to shared spiritual life."
         },
         {
           "cardId": "c5",
@@ -150,7 +150,7 @@
           "cardNumber": 5,
           "title": "A Prayer for Personal Growth",
           "icon": "volunteer_activism",
-          "text": "Lord, grow my personal faith. I want to bring spiritual health to my future marriage, not spiritual neediness. Make my faith my own, deep and growing. Amen.",
+          "text": "Lord, grow my personal faith. I want to bring spiritual health to my future marriage, not spiritual neediness.\n\nMake my faith my own, deep and growing.\n\nAmen.",
           "responseType": "open-text"
         }
       ]
@@ -179,7 +179,7 @@
           "cardNumber": 1,
           "title": "Practices for Spiritual Connection",
           "icon": "psychology",
-          "text": "Ways to grow together spiritually while dating: Pray together. Start simple. Even a brief prayer at the end of a date builds connection. Discuss faith. Talk about what you are learning, questions you have, ways God is working. Attend church together. Worship side by side. Discuss the sermon afterward. Serve together. Join a ministry or service project as a couple. Read Scripture together. A devotional or book of the Bible you both engage with. Share spiritual histories. Tell each other your faith journeys."
+          "text": "Ways to grow together spiritually while dating: Pray together.\n\nStart simple.\n\nEven a brief prayer at the end of a date builds connection.\n\nDiscuss faith.\n\nTalk about what you are learning, questions you have, ways God is working.\n\nAttend church together.\n\nWorship side by side.\n\nDiscuss the sermon afterward.\n\nServe together.\n\nJoin a ministry or service project as a couple.\n\nRead Scripture together. A devotional or book of the Bible you both engage with.\n\nShare spiritual histories.\n\nTell each other your faith journeys."
         },
         {
           "cardId": "c2",
@@ -187,7 +187,7 @@
           "cardNumber": 2,
           "title": "Implementing Spiritual Practices",
           "icon": "task_alt",
-          "text": "Choose practices to implement: Daily or weekly: ________________\n(Example: Pray together at the end of each date) Regularly: ________________\n(Example: Attend church together every Sunday) Occasionally: ________________\n(Example: Serve together monthly) Start with one or two. Build from there.",
+          "text": "Choose practices to implement: Daily or weekly: ________________\n(Example: Pray together at the end of each date) Regularly: ________________\n(Example: Attend church together every Sunday) Occasionally: ________________\n(Example: Serve together monthly) Start with one or two.\n\nBuild from there.",
           "responseType": "open-text"
         },
         {
@@ -195,7 +195,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Faith in Daily Life Scan",
-          "text": "Think about how faith shows up in everyday decisions.\n\nWrite a few lines about how you currently practice faith when no one is watching.\n\nThen reflect on what kind of spiritual life you hope to share with a future spouse.\nAlignment grows clearer when faith moves from words into lived practice.",
+          "text": "Think about how faith shows up in everyday decisions.\n\nWrite a few lines about how you currently practice faith when no one is watching.\n\nThen reflect on what kind of spiritual life you hope to share with a future spouse.\n\nAlignment grows clearer when faith moves from words into lived practice.",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -205,7 +205,7 @@
           "cardNumber": 4,
           "title": "Starting Small",
           "icon": "lightbulb",
-          "text": "Praying together can feel awkward at first. That is normal. Start simple: - Hold hands and one person prays briefly\n- Take turns with short prayers\n- Thank God for each other Do not worry about eloquence. God hears the heart, not the vocabulary. The awkwardness fades with practice. The intimacy that develops through shared prayer is unlike anything else."
+          "text": "Praying together can feel awkward at first.\n\nThat is normal.\n\nStart simple: - Hold hands and one person prays briefly\n- Take turns with short prayers\n- Thank God for each other Do not worry about eloquence.\n\nGod hears the heart, not the vocabulary.\n\nThe awkwardness fades with practice.\n\nThe intimacy that develops through shared prayer is unlike anything else."
         },
         {
           "cardId": "c4",
@@ -213,7 +213,7 @@
           "cardNumber": 5,
           "title": "Your Spiritual Connection Plan",
           "icon": "edit_note",
-          "text": "{red|What spiritual practices will you implement in dating? What do you want spiritual life to look like with a partner?}",
+          "text": "What spiritual practices will you implement in dating? What do you want spiritual life to look like with a partner?",
           "responseType": "open-text"
         },
         {
@@ -222,7 +222,7 @@
           "cardNumber": 6,
           "title": "A Prayer for Growing Together",
           "icon": "volunteer_activism",
-          "text": "Lord, help me build spiritual connection in relationship. Overcome the awkwardness. Develop practices that draw us closer to You and each other. Amen.",
+          "text": "Lord, help me build spiritual connection in relationship.\n\nOvercome the awkwardness.\n\nDevelop practices that draw us closer to You and each other.\n\nAmen.",
           "responseType": "open-text"
         }
       ]
@@ -251,7 +251,7 @@
           "cardNumber": 1,
           "title": "Why Prayer Together Matters",
           "icon": "psychology",
-          "text": "Praying together does several things: Creates spiritual intimacy. You are vulnerable before God together, which bonds you uniquely. Aligns your hearts. Praying for the same things moves you in the same direction. Invites God into your relationship. You explicitly welcome His involvement. Builds trust. Hearing someone pray reveals their heart. Research shows couples who pray together regularly divorce at rates below 1 percent. The practice matters."
+          "text": "Praying together does several things: Creates spiritual intimacy.\n\nYou are vulnerable before God together, which bonds you uniquely.\n\nAligns your hearts.\n\nPraying for the same things moves you in the same direction.\n\nInvites God into your relationship.\n\nYou explicitly welcome His involvement.\n\nBuilds trust.\n\nHearing someone pray reveals their heart.\n\nResearch shows couples who pray together regularly divorce at rates below 1 percent.\n\nThe practice matters."
         },
         {
           "cardId": "c2",
@@ -259,7 +259,7 @@
           "cardNumber": 2,
           "title": "Overcoming the Awkwardness",
           "icon": "lightbulb",
-          "text": "Many couples find praying together awkward at first. Here is why, and what to do: It feels vulnerable. Start with simple, low-pressure prayers. You might feel judged. Agree that this is not about performance. You do not know what to say. Use prompts: thankfulness, requests, prayers for each other. One person is more comfortable. Take turns. Let the less comfortable person set the pace. The awkwardness is temporary. Push through it."
+          "text": "Many couples find praying together awkward at first.\n\nHere is why, and what to do: It feels vulnerable.\n\nStart with simple, low-pressure prayers.\n\nYou might feel judged.\n\nAgree that this is not about performance.\n\nYou do not know what to say.\n\nUse prompts: thankfulness, requests, prayers for each other.\n\nOne person is more comfortable.\n\nTake turns.\n\nLet the less comfortable person set the pace.\n\nThe awkwardness is temporary.\n\nPush through it."
         },
         {
           "cardId": "c3",
@@ -267,7 +267,7 @@
           "cardNumber": 3,
           "title": "Prayer Prompts for Couples",
           "icon": "task_alt",
-          "text": "Use these prompts to get started: Thankfulness: \"Lord, thank You for...\" (name specific things) Requests: \"Lord, we ask for...\" (guidance, provision, help) For each other: \"Lord, I pray for [name] that...\" (bless them, help them) For your relationship: \"Lord, would You...\" (guide, protect, bless) Submission: \"Lord, we submit to Your will about...\" (major decisions) Start with one or two prompts. Build from there.",
+          "text": "Use these prompts to get started: Thankfulness:\n\n\"Lord, thank You for.\" (name specific things) Requests:\n\n\"Lord, we ask for.\" (guidance, provision, help) For each other:\n\n\"Lord, I pray for [name] that.\" (bless them, help them) For your relationship:\n\n\"Lord, would You.\" (guide, protect, bless) Submission:\n\n\"Lord, we submit to Your will about.\" (major decisions) Start with one or two prompts.\n\nBuild from there.",
           "responseType": "open-text"
         },
         {
@@ -276,7 +276,7 @@
           "cardNumber": 4,
           "title": "Your Prayer Experience",
           "icon": "edit_note",
-          "text": "{red|Have you prayed with a dating partner before? What was it like? What makes praying together difficult for you?}",
+          "text": "Have you prayed with a dating partner before? What was it like? What makes praying together difficult for you?",
           "responseType": "open-text"
         },
         {
@@ -285,7 +285,7 @@
           "cardNumber": 5,
           "title": "A Prayer About Prayer",
           "icon": "volunteer_activism",
-          "text": "Lord, I want prayer to be central to my relationships. Overcome my awkwardness and self-consciousness. Help me be vulnerable before You with my partner. Amen.",
+          "text": "Lord, I want prayer to be central to my relationships.\n\nOvercome my awkwardness and self-consciousness.\n\nHelp me be vulnerable before You with my partner.\n\nAmen.",
           "responseType": "open-text"
         }
       ]
@@ -314,7 +314,7 @@
           "cardNumber": 1,
           "title": "Why Faith Conversations Matter",
           "icon": "psychology",
-          "text": "Talking about faith does several things: Reveals hearts. What someone believes shows who they are. Builds understanding. You learn how your partner processes faith. Creates connection. Sharing spiritual experiences bonds you. Surfaces differences. Better to discover disagreements now than after marriage. Stimulates growth. Iron sharpens iron. Discussing faith helps both of you grow."
+          "text": "Talking about faith does several things: Reveals hearts.\n\nWhat someone believes shows who they are.\n\nBuilds understanding.\n\nYou learn how your partner processes faith.\n\nCreates connection.\n\nSharing spiritual experiences bonds you.\n\nSurfaces differences.\n\nBetter to discover disagreements now than after marriage.\n\nStimulates growth.\n\nIron sharpens iron.\n\nDiscussing faith helps both of you grow."
         },
         {
           "cardId": "c2",
@@ -331,7 +331,7 @@
           "cardNumber": 3,
           "title": "Creating Space for Real Conversation",
           "icon": "lightbulb",
-          "text": "Good faith conversations require: Safety. No judgment for questions or struggles. Honesty. Share what you really think, not just what sounds good. Curiosity. Ask follow-up questions. Seek to understand. Patience. Some topics require multiple conversations. The goal is not agreement on everything. It is deep understanding of each other's faith."
+          "text": "Good faith conversations require: Safety. No judgment for questions or struggles.\n\nHonesty. Share what you really think, not just what sounds good.\n\nCuriosity. Ask follow-up questions.\n\nSeek to understand.\n\nPatience. Some topics require multiple conversations.\n\nThe goal is not agreement on everything. It is deep understanding of each other's faith."
         },
         {
           "cardId": "c4",
@@ -339,7 +339,7 @@
           "cardNumber": 4,
           "title": "Your Faith Conversations",
           "icon": "edit_note",
-          "text": "{red|How comfortable are you discussing faith with a partner? What do you want a partner to know about your faith?}",
+          "text": "How comfortable are you discussing faith with a partner? What do you want a partner to know about your faith?",
           "responseType": "open-text"
         },
         {
@@ -348,7 +348,7 @@
           "cardNumber": 5,
           "title": "A Prayer for Deep Conversation",
           "icon": "volunteer_activism",
-          "text": "Lord, help me share my faith openly. Give me words to express what You mean to me. Create space for honest conversation about spiritual things. Amen.",
+          "text": "Lord, help me share my faith openly.\n\nGive me words to express what You mean to me.\n\nCreate space for honest conversation about spiritual things.\n\nAmen.",
           "responseType": "open-text"
         }
       ]
@@ -377,7 +377,7 @@
           "cardNumber": 1,
           "title": "Types of Spiritual Differences",
           "icon": "psychology",
-          "text": "Spiritual differences can include: Denominational backgrounds. Different traditions, practices, and emphases. Conviction levels. One more passionate or committed than the other. Spiritual practices. Different preferences for how to engage faith. Theological positions. Different views on secondary doctrinal issues. Church involvement. Different expectations for frequency and depth. Some differences enrich. Others divide. Wisdom distinguishes between them."
+          "text": "Spiritual differences can include: Denominational backgrounds.\n\nDifferent traditions, practices, and emphases.\n\nConviction levels.\n\nOne more passionate or committed than the other.\n\nSpiritual practices.\n\nDifferent preferences for how to engage faith.\n\nTheological positions.\n\nDifferent views on secondary doctrinal issues.\n\nChurch involvement.\n\nDifferent expectations for frequency and depth.\n\nSome differences enrich.\n\nOthers divide.\n\nWisdom distinguishes between them."
         },
         {
           "cardId": "c2",
@@ -385,7 +385,7 @@
           "cardNumber": 2,
           "title": "What Can and Cannot Be Different",
           "icon": "lightbulb",
-          "text": "Essential alignment (must agree): - Core beliefs about who Jesus is and what He did\n- Commitment to following Christ as Lord\n- The authority and importance of Scripture\n- Desire to grow spiritually together Acceptable differences (can work through): - Denominational traditions and practices\n- Preferences for worship style\n- Secondary theological positions\n- Specific spiritual practices The core must be the same. The expressions can vary."
+          "text": "Essential alignment (must agree):\n- Core beliefs about who Jesus is and what He did\n- Commitment to following Christ as Lord\n- The authority and importance of Scripture\n- Desire to grow spiritually together Acceptable differences (can work through):\n- Denominational traditions and practices\n- Preferences for worship style\n- Secondary theological positions\n- Specific spiritual practices The core must be the same.\n\nThe expressions can vary."
         },
         {
           "cardId": "c3",
@@ -402,7 +402,7 @@
           "cardNumber": 4,
           "title": "Your Difference Tolerance",
           "icon": "edit_note",
-          "text": "{red|What spiritual differences could you accept in a partner? What differences would concern you?}",
+          "text": "What spiritual differences could you accept in a partner? What differences would concern you?",
           "responseType": "open-text"
         },
         {
@@ -411,7 +411,7 @@
           "cardNumber": 5,
           "title": "A Prayer for Unity in Diversity",
           "icon": "volunteer_activism",
-          "text": "Lord, help me navigate spiritual differences wisely. Show me what is essential and what is secondary. May differences enrich rather than divide. Amen.",
+          "text": "Lord, help me navigate spiritual differences wisely.\n\nShow me what is essential and what is secondary.\n\nMay differences enrich rather than divide.\n\nAmen.",
           "responseType": "open-text"
         }
       ]
@@ -440,7 +440,7 @@
           "cardNumber": 1,
           "title": "Why Paces Differ",
           "icon": "psychology",
-          "text": "Spiritual growth paces differ for many reasons: Different starting points. One may have been a Christian longer or had more formation. Different seasons. Life circumstances affect capacity for growth. Different wiring. Some process faith more internally; others more externally. Different struggles. Personal battles can slow growth temporarily. Unequal pace does not mean unequal commitment. Context matters."
+          "text": "Spiritual growth paces differ for many reasons: Different starting points.\n\nOne may have been a Christian longer or had more formation.\n\nDifferent seasons.\n\nLife circumstances affect capacity for growth.\n\nDifferent wiring.\n\nSome process faith more internally; others more externally.\n\nDifferent struggles.\n\nPersonal battles can slow growth temporarily.\n\nUnequal pace does not mean unequal commitment.\n\nContext matters."
         },
         {
           "cardId": "c2",
@@ -448,7 +448,7 @@
           "cardNumber": 2,
           "title": "Responding to Different Paces",
           "icon": "lightbulb",
-          "text": "If you are ahead: - Do not look down on them or become impatient\n- Encourage without pressuring\n- Model without demanding If you are behind: - Do not feel shame or become defensive\n- Stay open to growth rather than resisting\n- Communicate honestly about where you are The goal is growing together, not growing at identical speeds."
+          "text": "If you are ahead: - Do not look down on them or become impatient\n- Encourage without pressuring\n- Model without demanding\n\nIf you are behind: - Do not feel shame or become defensive\n- Stay open to growth rather than resisting\n- Communicate honestly about where you are The goal is growing together, not growing at identical speeds."
         },
         {
           "cardId": "c3",
@@ -456,7 +456,7 @@
           "cardNumber": 3,
           "title": "Your Growth Patterns",
           "icon": "edit_note",
-          "text": "{red|Have you experienced different growth paces in a relationship? How did you handle it? Would you be patient with a partner who grows more slowly?}",
+          "text": "Have you experienced different growth paces in a relationship? How did you handle it? Would you be patient with a partner who grows more slowly?",
           "responseType": "open-text"
         },
         {
@@ -465,7 +465,7 @@
           "cardNumber": 4,
           "title": "A Prayer for Patience and Humility",
           "icon": "volunteer_activism",
-          "text": "Lord, give me patience with different paces. If I am ahead, keep me humble. If I am behind, keep me growing. May we pursue You together regardless of speed. Amen.",
+          "text": "Lord, give me patience with different paces. If I am ahead, keep me humble. If I am behind, keep me growing.\n\nMay we pursue You together regardless of speed.\n\nAmen.",
           "responseType": "open-text"
         },
         {
@@ -473,7 +473,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Grace for the Journey",
-          "text": "Spiritual growth isn't a competition. Neither partner is 'better' because they're further along. The one who is growing faster has an opportunity to encourage without condescension. The one growing slower has an opportunity to receive without defensiveness. Both need humility. Both need grace. Growth happens best in an atmosphere of acceptance and gentle encouragement.",
+          "text": "Spiritual growth isn't a competition.\n\nNeither partner is 'better' because they're further along.\n\nThe one who is growing faster has an opportunity to encourage without condescension.\n\nThe one growing slower has an opportunity to receive without defensiveness.\n\nBoth need humility.\n\nBoth need grace.\n\nGrowth happens best in an atmosphere of acceptance and gentle encouragement.",
           "icon": "favorite"
         },
         {
@@ -481,7 +481,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Commitment to Mutual Growth",
-          "text": "Write your commitment for handling different growth paces: If I'm growing faster, I will... If my partner is growing faster, I will... We will support each other by...",
+          "text": "Write your commitment for handling different growth paces: If I'm growing faster, I will. If my partner is growing faster, I will. We will support each other by.",
           "responseType": "open-text",
           "icon": "edit_note"
         }
@@ -511,7 +511,7 @@
           "cardNumber": 1,
           "title": "Why Church Together Matters",
           "icon": "psychology",
-          "text": "Shared church involvement provides: Teaching. You both receive the same instruction and can discuss it together. Community. You build relationships with other couples who support your faith. Accountability. Others who know you and can speak into your relationship. Service opportunities. Places to use your gifts together. Future foundation. A church home for your marriage and potential children."
+          "text": "Shared church involvement provides: Teaching.\n\nYou both receive the same instruction and can discuss it together.\n\nCommunity. You build relationships with other couples who support your faith.\n\nAccountability. Others who know you and can speak into your relationship.\n\nService opportunities.\n\nPlaces to use your gifts together.\n\nFuture foundation. A church home for your marriage and potential children."
         },
         {
           "cardId": "c2",
@@ -519,7 +519,7 @@
           "cardNumber": 2,
           "title": "Navigating Different Church Backgrounds",
           "icon": "lightbulb",
-          "text": "If you come from different churches or denominations: Visit both. Experience each other's backgrounds with openness. Discuss non-negotiables. What matters most to each of you in a church? Look for fit for both. Neither should feel like they are giving up everything. Consider a new church together. Sometimes starting fresh works best. The goal: a church home where you both can grow and serve."
+          "text": "If you come from different churches or denominations: Visit both.\n\nExperience each other's backgrounds with openness.\n\nDiscuss non-negotiables.\n\nWhat matters most to each of you in a church? Look for fit for both.\n\nNeither should feel like they are giving up everything.\n\nConsider a new church together.\n\nSometimes starting fresh works best.\n\nThe goal: a church home where you both can grow and serve."
         },
         {
           "cardId": "c3",
@@ -536,7 +536,7 @@
           "cardNumber": 4,
           "title": "Your Church Vision",
           "icon": "edit_note",
-          "text": "{red|What does church involvement mean to you? What would you want it to look like in marriage?}",
+          "text": "What does church involvement mean to you? What would you want it to look like in marriage?",
           "responseType": "open-text"
         },
         {
@@ -545,7 +545,7 @@
           "cardNumber": 5,
           "title": "A Prayer for Community",
           "icon": "volunteer_activism",
-          "text": "Lord, lead us to a church home where we can grow together. Surround us with community that supports our faith and our relationship. Amen.",
+          "text": "Lord, lead us to a church home where we can grow together.\n\nSurround us with community that supports our faith and our relationship.\n\nAmen.",
           "responseType": "open-text"
         }
       ]
@@ -574,7 +574,7 @@
           "cardNumber": 1,
           "title": "What Spiritual Leadership Is",
           "icon": "psychology",
-          "text": "Biblical spiritual leadership is: Initiative. He takes initiative to pursue God together, not waiting for her to drive it. Servant leadership. Leading by serving, as Christ led the church by dying for it. Prioritizing spiritual health. Making faith development a priority for the family. Modeling. Living out faith personally, not just directing others. It is NOT: - Domination or control\n- Exclusive spiritual activity (she just follows)\n- Perfection (he has it all figured out)"
+          "text": "Biblical spiritual leadership is: Initiative. He takes initiative to pursue God together, not waiting for her to drive it.\n\nServant leadership.\n\nLeading by serving, as Christ led the church by dying for it.\n\nPrioritizing spiritual health.\n\nMaking faith development a priority for the family.\n\nModeling. Living out faith personally, not just directing others. It is NOT:\n- Domination or control\n- Exclusive spiritual activity (she just follows)\n- Perfection (he has it all figured out)"
         },
         {
           "cardId": "c2",
@@ -582,7 +582,7 @@
           "cardNumber": 2,
           "title": "Partnership, Not Hierarchy",
           "icon": "lightbulb",
-          "text": "Spiritual leadership works best as partnership: He leads by initiating, serving, and taking responsibility for spiritual direction. She contributes her gifts, insights, and spiritual strength as an ally and partner. Both bring their unique spiritual contributions to the family. Both are accountable to God and to each other. This is not about one person being more spiritual. It is about complementary roles in pursuing God together."
+          "text": "Spiritual leadership works best as partnership: He leads by initiating, serving, and taking responsibility for spiritual direction.\n\nShe contributes her gifts, insights, and spiritual strength as an ally and partner.\n\nBoth bring their unique spiritual contributions to the family.\n\nBoth are accountable to God and to each other.\n\nThis is not about one person being more spiritual. It is about complementary roles in pursuing God together."
         },
         {
           "cardId": "c3",
@@ -590,7 +590,7 @@
           "cardNumber": 3,
           "title": "Your Leadership Expectations",
           "icon": "edit_note",
-          "text": "{red|What does spiritual leadership mean to you? What would you want it to look like in your marriage? For men: Are you prepared to lead spiritually?}\nFor women: What do you want in a spiritual leader?",
+          "text": "What does spiritual leadership mean to you? What would you want it to look like in your marriage? For men: Are you prepared to lead spiritually?\nFor women: What do you want in a spiritual leader?",
           "responseType": "open-text"
         },
         {
@@ -599,7 +599,7 @@
           "cardNumber": 4,
           "title": "Evaluating Spiritual Leadership",
           "icon": "task_alt",
-          "text": "For women evaluating a potential husband: Does he pursue God personally without you pushing?\n{red|Does he take initiative spiritually in your relationship?}\n{red|Could you follow his spiritual direction? For men preparing for leadership: Are you growing in your own faith consistently?}\n{red|Do you take initiative spiritually, or wait for others?}\n{red|Are you developing the character to lead a family spiritually?}",
+          "text": "For women evaluating a potential husband: Does he pursue God personally without you pushing?\nCould you follow his spiritual direction? For men preparing for leadership: Are you growing in your own faith consistently?\nAre you developing the character to lead a family spiritually?",
           "responseType": "open-text"
         },
         {
@@ -608,7 +608,7 @@
           "cardNumber": 5,
           "title": "A Prayer for Leadership and Partnership",
           "icon": "volunteer_activism",
-          "text": "Lord, prepare me for spiritual partnership in marriage. For men: Make me a leader who serves, who takes initiative, who models faith.\nFor women: Make me a partner who strengthens, who contributes, who supports. Amen.",
+          "text": "Lord, prepare me for spiritual partnership in marriage.\n\nFor men: Make me a leader who serves, who takes initiative, who models faith.\n\nFor women: Make me a partner who strengthens, who contributes, who supports.\n\nAmen.",
           "responseType": "open-text"
         }
       ]
@@ -637,7 +637,7 @@
           "cardNumber": 1,
           "title": "Elements of a Spiritual Home",
           "icon": "psychology",
-          "text": "What could spiritual life look like in your marriage? Daily rhythms. Morning or evening prayers, Scripture reading, devotions together. Weekly rhythms. Church attendance, small group, Sabbath practices. Seasonal rhythms. Retreats, fasts, special celebrations. Family practices. How you would raise children in faith. Hospitality. Opening your home for fellowship and ministry. Service. Serving together in church and community. Generosity. Giving together as an act of worship."
+          "text": "What could spiritual life look like in your marriage? Daily rhythms.\n\nMorning or evening prayers, Scripture reading, devotions together.\n\nWeekly rhythms.\n\nChurch attendance, small group, Sabbath practices.\n\nSeasonal rhythms.\n\nRetreats, fasts, special celebrations.\n\nFamily practices.\n\nHow you would raise children in faith.\n\nHospitality. Opening your home for fellowship and ministry.\n\nService. Serving together in church and community.\n\nGenerosity. Giving together as an act of worship."
         },
         {
           "cardId": "c2",
@@ -645,7 +645,7 @@
           "cardNumber": 2,
           "title": "Your Spiritual Marriage Vision",
           "icon": "edit_note",
-          "text": "Imagine your future marriage. What does spiritual life look like? Describe daily, weekly, and yearly rhythms. How is God present in your home?",
+          "text": "Imagine your future marriage.\n\nWhat does spiritual life look like? Describe daily, weekly, and yearly rhythms.\n\nHow is God present in your home?",
           "responseType": "open-text"
         },
         {
@@ -663,7 +663,7 @@
           "cardNumber": 4,
           "title": "Vision Pulls You Forward",
           "icon": "auto_awesome",
-          "text": "A clear vision has power: It gives direction. You know what you are building toward. It guides decisions. Choices can be evaluated against the vision. It provides motivation. When it is hard, the vision reminds you why it matters. Do not drift into marriage without a vision. Create one together."
+          "text": "A clear vision has power: It gives direction.\n\nYou know what you are building toward. It guides decisions.\n\nChoices can be evaluated against the vision. It provides motivation.\n\nWhen it is hard, the vision reminds you why it matters. Do not drift into marriage without a vision.\n\nCreate one together."
         },
         {
           "cardId": "c5",
@@ -671,7 +671,7 @@
           "cardNumber": 5,
           "title": "A Prayer for Vision",
           "icon": "volunteer_activism",
-          "text": "Lord, give me a vision for a faith-centered home. Show me what You want my future marriage to look like spiritually. Help me find a partner who shares this vision. Amen.",
+          "text": "Lord, give me a vision for a faith-centered home.\n\nShow me what You want my future marriage to look like spiritually.\n\nHelp me find a partner who shares this vision.\n\nAmen.",
           "responseType": "open-text"
         }
       ]
@@ -700,7 +700,7 @@
           "cardNumber": 1,
           "title": "What You Have Built",
           "icon": "lightbulb",
-          "text": "Across this journey, you have developed: - Understanding of why shared faith matters for marriage\n- Assessment of your individual spiritual health\n- Practices for growing together spiritually\n- Tools for praying together and discussing faith\n- Wisdom for navigating differences and different paces\n- Vision for church and community involvement\n- Understanding of spiritual leadership and partnership\n- A vision for spiritual life in your marriage This is a comprehensive foundation for faith-centered relationship."
+          "text": "Across this journey, you have developed:\n- Understanding of why shared faith matters for marriage\n- Assessment of your individual spiritual health\n- Practices for growing together spiritually\n- Tools for praying together and discussing faith\n- Wisdom for navigating differences and different paces\n- Vision for church and community involvement\n- Understanding of spiritual leadership and partnership\n- A vision for spiritual life in your marriage This is a comprehensive foundation for faith-centered relationship."
         },
         {
           "cardId": "c2",
@@ -717,7 +717,7 @@
           "cardNumber": 3,
           "title": "Your Foundation Commitment",
           "icon": "edit_note",
-          "text": "Write out your commitment to building relationships on shared faith. What will you do? What will you require? What will you build?",
+          "text": "Write out your commitment to building relationships on shared faith.\n\nWhat will you do? What will you require? What will you build?",
           "responseType": "open-text"
         },
         {
@@ -726,7 +726,7 @@
           "cardNumber": 4,
           "title": "The Only Sure Foundation",
           "icon": "auto_awesome",
-          "text": "Everything else can shift. Feelings change. Circumstances vary. Health fails. Finances fluctuate. But Christ remains. \"Jesus Christ is the same yesterday and today and forever.\" ({red|Hebrews 13:8}) A marriage built on Him has a foundation that cannot be shaken. When everything else fails, He remains. Build on the Rock. Nothing else will hold."
+          "text": "Everything else can shift.\n\nFeelings change.\n\nCircumstances vary.\n\nHealth fails.\n\nFinances fluctuate.\n\nBut Christ remains.\n\n\"Jesus Christ is the same yesterday and today and forever.\" (Hebrews 13:8) A marriage built on Him has a foundation that cannot be shaken.\n\nWhen everything else fails, He remains.\n\nBuild on the Rock.\n\nNothing else will hold."
         },
         {
           "cardId": "c5",
@@ -734,7 +734,7 @@
           "cardNumber": 5,
           "title": "A Prayer of Commitment",
           "icon": "volunteer_activism",
-          "text": "Lord, I commit to building my relationships on You. I will grow my own faith. I will pursue shared spiritual life with my partner. I will pray together, discuss faith, serve together, and build a home where You are honored. May Christ be the foundation of my marriage, now and always. Amen.",
+          "text": "Lord, I commit to building my relationships on You. I will grow my own faith. I will pursue shared spiritual life with my partner. I will pray together, discuss faith, serve together, and build a home where You are honored.\n\nMay Christ be the foundation of my marriage, now and always.\n\nAmen.",
           "responseType": "open-text"
         },
         {
@@ -743,7 +743,7 @@
           "cardNumber": 6,
           "title": "Your Declaration",
           "icon": "verified",
-          "text": "Declare this over your relationships: \"I will build on Christ. I will grow my own faith so I have something to bring.\nI will pursue partners who share my commitment to Christ.\nI will pray with my partner, not just alongside them.\nI will discuss faith openly and honestly.\nI will navigate differences with grace and wisdom.\nI will build shared church and community.\nI will embrace spiritual partnership. My marriage will be founded on the Rock.\nWhen storms come, it will stand.\"",
+          "text": "Declare this over your relationships: \"I will build on Christ. I will grow my own faith so I have something to bring.\nI will pursue partners who share my commitment to Christ.\nI will pray with my partner, not just alongside them.\nI will discuss faith openly and honestly.\nI will navigate differences with grace and wisdom.\nI will build shared church and community.\nI will embrace spiritual partnership. My marriage will be founded on the Rock.\n\nWhen storms come, it will stand.\"",
           "responseType": "open-text"
         }
       ]

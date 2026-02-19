@@ -10,6 +10,11 @@ enum NotificationType {
   chatMessage('chat_message', 'New Message'),
   adminMessage('admin_message', 'Admin Message'),
   profileVerified('profile_verified', 'Profile Verified'),
+  profilePendingVerification(
+    'profile_pending_verification',
+    'Profile Pending Verification',
+  ),
+  profileRejected('profile_rejected', 'Profile Rejected'),
   journeyPurchased('journey_purchased', 'Journey Purchased'),
   subscriptionActivated('subscription_activated', 'Premium Activated'),
   subscriptionExpiring('subscription_expiring', 'Subscription Expiring'),
@@ -72,6 +77,33 @@ class NotificationPayload extends Equatable {
       body:
           'Congratulations! Your profile has been verified and is now visible to other users.',
       data: {'route': '/search'},
+    );
+  }
+
+  factory NotificationPayload.profilePendingVerification() {
+    return const NotificationPayload(
+      type: NotificationType.profilePendingVerification,
+      title: '🔍 Profile Under Review',
+      body:
+          'Your dating profile has been submitted and is now under review by our team. You\'ll be notified once a decision is made.',
+      data: {'route': '/profile', 'verificationStatus': 'pending'},
+    );
+  }
+
+  factory NotificationPayload.profileRejected({String? rejectionReason}) {
+    final reason =
+        rejectionReason?.isNotEmpty == true
+            ? rejectionReason
+            : 'Your profile did not meet our verification requirements.';
+    return NotificationPayload(
+      type: NotificationType.profileRejected,
+      title: '❌ Profile Rejected',
+      body: 'Your profile was not approved: "$reason"',
+      data: {
+        'route': '/profile',
+        'verificationStatus': 'rejected',
+        'rejectionReason': reason,
+      },
     );
   }
 

@@ -5,6 +5,7 @@ import '../../../../core/providers/user_provider.dart';
 
 import '../../../../core/theme/theme.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/utils/rich_text_parser.dart';
 import '../../../../core/widgets/guest_guard.dart';
 import '../../../../core/ui/icon_mapper.dart';
 import '../../domain/journey_v1_models.dart';
@@ -208,6 +209,7 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                               child: Text('No cards found for this activity.'),
                             )
                             : _CardShell(
+                              cardIndex: _cardIndex,
                               child: _MissionCardRenderer(
                                 card: m.cards[_cardIndex],
                                 journeyId: widget.journeyId,
@@ -525,38 +527,73 @@ class _SessionHero extends StatelessWidget {
   }
 }
 
-class _CardShell extends StatelessWidget {
+class _CardShell extends StatefulWidget {
   final Widget child;
-  const _CardShell({required this.child});
+  final int cardIndex;
+
+  const _CardShell({required this.child, required this.cardIndex});
+
+  @override
+  State<_CardShell> createState() => _CardShellState();
+}
+
+class _CardShellState extends State<_CardShell> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant _CardShell oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // When the card index changes, reset scroll to top
+    if (widget.cardIndex != oldWidget.cardIndex) {
+      if (_scrollController.hasClients) {
+        try {
+          _scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+          );
+        } catch (_) {
+          // fallback to jump
+          _scrollController.jumpTo(0);
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isDark = Theme.of(context).brightness == Brightness.dark;
-        return Container(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-          decoration: BoxDecoration(
-            color: AppColors.getSurface(context),
-            borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: AppColors.getBorder(context)),
-            boxShadow: [
-              BoxShadow(
-                color: isDark ? AppColors.shadowDark : AppColors.shadow,
-                blurRadius: 18,
-                offset: const Offset(0, 14),
-              ),
-            ],
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+      decoration: BoxDecoration(
+        color: AppColors.getSurface(context),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: AppColors.getBorder(context)),
+        boxShadow: [
+          BoxShadow(
+            color: isDark ? AppColors.shadowDark : AppColors.shadow,
+            blurRadius: 18,
+            offset: const Offset(0, 14),
           ),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: child,
-            ),
-          ),
-        );
-      },
+        ],
+      ),
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        physics: const ClampingScrollPhysics(),
+        child: widget.child,
+      ),
     );
   }
 }
@@ -1117,112 +1154,13 @@ Widget? _flavorBadge(String? flavor) {
   );
 }
 
-/// Inline renderer supports:
+/// Delegates to [RichTextParser.buildInlineSpans] which correctly handles:
+/// ✅ {red|text} (including multi-line spans — extracted *before* newline splits)
 /// ✅ "Label:" bolding at start of line
 /// ✅ **bold**
 /// ✅ *italic*
 List<TextSpan> _buildInlineSpans(String text, TextStyle baseStyle) {
-  // First: split by newline so we can bold "Label:" per line
-  final lines = text.split('\n');
-  final spans = <TextSpan>[];
-
-  for (var i = 0; i < lines.length; i++) {
-    final raw = lines[i];
-
-    final match = RegExp(
-      r'^([A-Za-z0-9\s\-\(\)]+):\s*(.*)$',
-    ).firstMatch(raw.trim());
-
-    if (match != null) {
-      final label = match.group(1)!.trim();
-      final rest = match.group(2) ?? '';
-
-      spans.add(
-        TextSpan(
-          children: [
-            TextSpan(
-              text: '$label: ',
-              style: baseStyle.copyWith(fontWeight: FontWeight.w700),
-            ),
-            ..._buildEmphasisSpans(rest, baseStyle),
-          ],
-        ),
-      );
-    } else {
-      spans.addAll(_buildEmphasisSpans(raw, baseStyle));
-    }
-
-    if (i != lines.length - 1) {
-      spans.add(const TextSpan(text: '\n'));
-    }
-  }
-
-  return spans;
-}
-
-/// Supports **bold**, *italic*, and {red|text} for colored emphasis.
-/// Allows nesting of formatting (e.g., {red|**text**} for red bold text).
-List<TextSpan> _buildEmphasisSpans(String input, TextStyle baseStyle) {
-  final spans = <TextSpan>[];
-
-  // Tokenize by {red|...}, **bold**, or *italic*
-  final regex = RegExp(r'(\{red\|[^}]*\}|\*\*.*?\*\*|\*.*?\*)');
-  final matches = regex.allMatches(input);
-
-  var lastIndex = 0;
-
-  for (final m in matches) {
-    if (m.start > lastIndex) {
-      spans.add(
-        TextSpan(text: input.substring(lastIndex, m.start), style: baseStyle),
-      );
-    }
-
-    final token = input.substring(m.start, m.end);
-
-    if (token.startsWith('{red|') && token.endsWith('}')) {
-      final inner = token.substring(5, token.length - 1);
-      // Process inner content for nested bold/italic
-      final innerSpans = _buildEmphasisSpans(
-        inner,
-        baseStyle.copyWith(
-          color: AppColors.primary,
-          fontWeight: FontWeight.w600,
-        ),
-      );
-      spans.addAll(innerSpans);
-    } else if (token.startsWith('**') &&
-        token.endsWith('**') &&
-        token.length > 4) {
-      final inner = token.substring(2, token.length - 2);
-      spans.add(
-        TextSpan(
-          text: inner,
-          style: baseStyle.copyWith(fontWeight: FontWeight.w700),
-        ),
-      );
-    } else if (token.startsWith('*') &&
-        token.endsWith('*') &&
-        token.length > 2) {
-      final inner = token.substring(1, token.length - 1);
-      spans.add(
-        TextSpan(
-          text: inner,
-          style: baseStyle.copyWith(fontStyle: FontStyle.italic),
-        ),
-      );
-    } else {
-      spans.add(TextSpan(text: token, style: baseStyle));
-    }
-
-    lastIndex = m.end;
-  }
-
-  if (lastIndex < input.length) {
-    spans.add(TextSpan(text: input.substring(lastIndex), style: baseStyle));
-  }
-
-  return spans;
+  return RichTextParser.buildInlineSpans(text, baseStyle);
 }
 
 class _BulletLine extends StatelessWidget {

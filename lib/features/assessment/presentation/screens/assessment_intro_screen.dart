@@ -226,7 +226,7 @@ class AssessmentIntroScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 60),
                     SizedBox(
                       width: double.infinity,
                       height: 50,

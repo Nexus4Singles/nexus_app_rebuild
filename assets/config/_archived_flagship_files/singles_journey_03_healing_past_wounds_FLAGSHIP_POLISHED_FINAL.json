@@ -1,0 +1,837 @@
+{
+  "journeyId": "singles_healing_past_wounds",
+  "title": "Healing from Past Relationship Wounds",
+  "subtitle": "Breaking free from the pain that's been holding you back",
+  "summary": "Your past relationships didn't just end, they left marks. The betrayals, the heartbreaks, the slow erosions of trust all shaped how you see love and yourself. This journey guides you through the difficult but necessary work of healing what was broken, so you can enter your next relationship whole instead of wounded.",
+  "targetUserCategory": "singles",
+  "priorityRank": 3,
+  "estimatedDays": 14,
+  "totalActivities": 11,
+  "difficulty": "intermediate",
+  "themeColor": "#7B9E89",
+  "cover": {
+    "themeTag": "Healing",
+    "accentIcon": "healing",
+    "heroImage": "assets/images/journeys/Singles_journey3.jpg",
+    "heroImageDescription": "A broken object (pottery or heart-shaped) being mended with gold (kintsugi style), representing beautiful healing from brokenness. Warm, hopeful, artistic."
+  },
+  "frameworks": [
+    "attachment_theory",
+    "trauma_informed_care",
+    "biblical_restoration"
+  ],
+  "targetOutcomes": [
+    "Identify and name the specific wounds from past relationships",
+    "Understand how those wounds affect your current patterns and choices",
+    "Process grief and loss rather than burying it",
+    "Release bitterness and resentment that keeps you chained to the past",
+    "Rebuild trust in yourself and in the possibility of healthy love",
+    "Enter future relationships from healing rather than from woundedness"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_wounds_you_carry",
+      "isFree": true,
+      "title": "The Wounds You Carry into Every Room",
+      "subtitle": "Naming what you've been avoiding",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite_border",
+      "emotionalIntensity": "high",
+      "activityType": "confrontation",
+      "whyThisMatters": "Most people don't realize how much their past is running their present. The walls you built for protection now keep out the good along with the bad. The fears you developed from being hurt are making decisions for you. Until you name and face these wounds, they will continue to control your story.",
+      "frameworkBasis": {
+        "conceptKey": "activity_1_concept",
+        "explanation": "Most people don't realize how much their past is running their present. The walls you built for protection now keep out the good along with the bad. T..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Past That Won't Stay Past",
+          "icon": "psychology",
+          "text": "Some wounds do not announce themselves loudly.\nThey show up as guardedness, mistrust, or a quiet ache you cannot quite explain.\n\nIf part of you wants closeness but hesitates to open fully, you are not weak.\nThis journey is an invitation to heal at a pace that honors your story.\n\nYou've probably heard the advice: \"Just move on. Get over it. Don't look back.\"\n\nIf only it were that simple.\n\nThe truth is, relational wounds don't just disappear because time passes. They go underground. They hide in your nervous system, your expectations, your triggers, your walls.\n\nThat moment when you shut down during an argument? That's a wound talking.\n\nThat impulse to leave before you can be left? That's a wound protecting you.\n\nThat difficulty trusting even when someone proves trustworthy? That's a wound remembering.\n\nYou carry these wounds into every room, every date, every potential relationship, whether you realize it or not."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Wall Builder",
+          "icon": "menu_book",
+          "text": "Michael was a good man. Successful career, strong faith, genuinely kind. But he hadn't been in a serious relationship in seven years.\n\nOn the surface, he said he just hadn't found the right person. But underneath, something else was happening.\n\nSeven years ago, his fiancée had ended their engagement three months before the wedding. She left him for someone else, someone he thought was his friend.\n\nMichael never fully processed that betrayal. He just pushed through. Built walls. Told himself he was fine.\n\nBut every time he started getting close to someone new, he'd find reasons to pull back. He'd become critical, distant, unavailable. He was unconsciously sabotaging relationships to avoid ever feeling that kind of pain again.\n\nHis wound was making his choices for him. And it took him years to see it."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What Unhealed Wounds Do",
+          "icon": "lightbulb",
+          "text": "When relationship wounds go unhealed, they don't stay neutral. They actively shape your future.\n\n**Unhealed wounds create walls.\n**You build defenses to keep pain out, but those same walls keep love out too.\n\n**Unhealed wounds distort perception.\n**You start seeing threats everywhere. Every small conflict feels like the beginning of the end.\n\n**Unhealed wounds attract unhealthy patterns.\n**You unconsciously recreate dynamics that feel familiar, even if they're harmful.\n\n**Unhealed wounds make you unavailable.\n**You might be physically present but emotionally miles away, protecting yourself by withholding yourself.\n\nThe wound always wins until it's healed."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Naming Your Wounds",
+          "icon": "edit_note",
+          "text": "{red|What are the significant wounds you carry from past relationships?}\n\nThis could include betrayal, abandonment, rejection, emotional abuse, being cheated on, having your trust broken, not feeling chosen, or any other relational pain.\n\nBe specific. Name them. They lose some power when brought into the light.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "The Walls They Built",
+          "icon": "edit_note",
+          "text": "{red|How have these wounds affected your approach to relationships?}\n\n{red|What walls have you built? What fears do you carry? What do you avoid or what do you do excessively to protect yourself?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "teaching",
+          "cardNumber": 6,
+          "title": "The Promise of Healing",
+          "icon": "auto_awesome",
+          "text": "Here's what you need to know: wounds can heal.\n\nNot quickly. Not easily. Not by pretending they don't exist.\n\nBut with intention, courage, and God's grace, even the deepest relational wounds can become places of strength instead of sources of fear.\n\n\"He heals the brokenhearted and binds up their wounds.\", Psalm 147:3\n\nThis isn't a promise that the pain never happened. It's a promise that it doesn't have to define your future.\n\nThis journey will be intense. It will require you to feel things you've been avoiding. But on the other side is freedom you haven't experienced in a long time."
+        },
+        {
+          "cardId": "c7",
+          "cardType": "reflection",
+          "cardNumber": 7,
+          "title": "A Prayer to Begin",
+          "icon": "volunteer_activism",
+          "text": "Lord, I've been carrying wounds I've tried to ignore, walls I've built to stay safe, and pain I've pushed down rather than processed.\n\nI'm tired of my past controlling my future.\n\nGive me courage for this journey. I know it will hurt to revisit these places, but I trust that You are with me in the pain.\n\nHeal what was broken. Restore what was stolen. Free me from the prison of my own protection.\n\nI want to enter my future relationships whole, not wounded. I believe You can do this.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_types_of_wounds",
+      "isFree": false,
+      "title": "Different Wounds, Different Healing",
+      "subtitle": "Understanding the unique damage from different kinds of hurt",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "category",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Not all wounds are created equal. Being ghosted after three dates hurts differently than being cheated on after three years. A slow erosion of trust wounds differently than a sudden betrayal. Understanding the specific nature of your wounds helps you know what kind of healing you need.",
+      "frameworkBasis": {
+        "conceptKey": "activity_2_concept",
+        "explanation": "Not all wounds are created equal. Being ghosted after three dates hurts differently than being cheated on after three years. A slow erosion of trust w..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "A Map of Relational Wounds",
+          "icon": "psychology",
+          "text": "Relationship wounds tend to fall into distinct categories, each with unique impacts:\n\n**Betrayal Wounds\n**Cheating, lies discovered, confidences broken. These shatter your ability to trust and make you hypervigilant in future relationships.\n\n**Abandonment Wounds\n**Being left, ghosted, or watching someone choose to walk away. These create fear of getting too close, because closeness leads to loss.\n\n**Rejection Wounds\n**Not being chosen, being told you're not enough, being replaced. These attack your sense of worth and make you question if you're lovable.\n\n**Abuse Wounds\n**Emotional manipulation, verbal attacks, control, or physical harm. These distort your understanding of normal and make you doubt your own perception.\n\n**Erosion Wounds\n**Slow deaths, relationships that didn't end with a bang but faded through neglect, criticism, or emotional distance. These are subtle but devastating."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Primary Wound Type",
+          "icon": "checklist",
+          "text": "Which type of wound has affected you most deeply?",
+          "prompts": [
+            "Betrayal - trust was broken through lies or cheating",
+            "Abandonment - I was left or walked away from",
+            "Rejection - I wasn't chosen or was told I wasn't enough",
+            "Abuse - I experienced manipulation, control, or harm",
+            "Erosion - the relationship slowly died through neglect",
+            "Multiple types have deeply affected me"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Thank you for your honesty. This awareness will guide your growth."
+          }
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "How Each Wound Shows Up",
+          "icon": "lightbulb",
+          "text": "Each wound type creates distinct patterns in future relationships:\n\n**Betrayal** → Constant suspicion, checking phones, difficulty believing someone is faithful even when they are.\n\n**Abandonment** → Clinging too tightly OR pushing away before you can be left. Fear of being too much or not enough to make someone stay.\n\n**Rejection** → Settling for less than you deserve. Constant need for reassurance. Difficulty believing someone actually wants you.\n\n**Abuse** → Tolerance for mistreatment that seems \"normal.\" Difficulty trusting your own feelings. Flinching at conflict.\n\n**Erosion** → Fear of commitment. Expecting relationships to fade. Difficulty trusting that love can last.\n\nRecognizing your pattern is the first step to changing it."
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "The Unfinished Goodbye",
+          "text": "Think about a relationship that ended without the closure you needed.\n\nWrite what you wish you could have said, without explaining or defending yourself.\nThen write what you wish you had heard in return.\n\nYou are not reopening the wound.\nYou are allowing honesty to loosen what has been quietly held.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Tracing Your Pattern",
+          "icon": "edit_note",
+          "text": "Based on your primary wound type, how has it shown up in your relationships or dating life?\n\n{red|What behaviors, fears, or patterns can you trace back to that wound?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 6,
+          "title": "The Path Forward",
+          "icon": "healing",
+          "text": "Healing looks different depending on what was wounded:\n\n**Betrayal** needs rebuilt trust through consistent evidence over time, both trust in others and trust in your own judgment.\n\n**Abandonment** needs the experience of someone staying, even through difficulty. It also needs the deep knowledge that your worth isn't dependent on whether someone stays.\n\n**Rejection** needs truth about your inherent value spoken consistently until it reaches your heart, not just your head.\n\n**Abuse** often needs professional support to untangle distorted perceptions and reclaim your sense of self.\n\n**Erosion** needs hope restored, evidence that love can be sustained and maintained.\n\nThis journey will address elements of all of these. But be honest about where your deepest need is."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 7,
+          "title": "A Prayer for Specific Healing",
+          "icon": "volunteer_activism",
+          "text": "Father, You know exactly what was done to me and how it affected me.\n\nYou see the specific ways I've been wounded and the specific walls I've built in response.\n\nMeet me in the exact place where I'm most broken. Bring healing that addresses my actual wounds, not generic comfort.\n\nIf I need to rebuild trust, show me how. If I need to believe I'm worth staying for, convince my heart. If I need to rediscover my own perception, restore it.\n\nYou are the God who sees. You know what I need.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_grieving_losses",
+      "isFree": false,
+      "title": "Grieving What You Lost",
+      "subtitle": "The essential step most people skip",
+      "timeBoxMinutes": 30,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "water_drop",
+      "emotionalIntensity": "very_high",
+      "activityType": "healing",
+      "whyThisMatters": "When a relationship ends, you lose more than a person. You lose a future you imagined, a version of yourself, plans and dreams that will never happen. Most people try to skip grief and go straight to \"moving on.\" But grief that isn't processed doesn't disappear, it just goes underground and resurfaces later.",
+      "frameworkBasis": {
+        "conceptKey": "activity_3_concept",
+        "explanation": "When a relationship ends, you lose more than a person. You lose a future you imagined, a version of yourself, plans and dreams that will never happen...."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Losses No One Talks About",
+          "icon": "psychology",
+          "text": "When you lose a relationship, you don't just lose the person. You lose:\n\n**The future you imagined**, The wedding you pictured, the home you'd build, the life you planned together.\n\n**The person you were with them**, There was a version of yourself that existed in that relationship that no longer has a place.\n\n**The shared dreams**, The places you'd travel, the children you'd raise, the retirement you'd share.\n\n**The investment**, The years, the energy, the vulnerability, the parts of yourself you gave.\n\n**The story**, The narrative you were telling yourself about your life that no longer makes sense.\n\nThese losses are real. They deserve grief, even if the person is still alive and the relationship needed to end."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why We Skip Grief",
+          "icon": "lightbulb",
+          "text": "Most people rush past grief because:\n\n**It's painful.** The only way out is through, and through hurts.It feels weak.** We've been taught to \"stay strong\" and \"move on,\" as if grief is failure.\n\n**It takes time.** We live in a culture of quick fixes, and grief refuses to be hurried.\n\n**We don't know how.** No one taught us how to grieve something that isn't death.**\n\nBut skipped grief doesn't vanish. It stores in your body. It surfaces as anxiety, depression, numbness, or sudden tears years later. It makes you build walls to avoid ever feeling that pain again.\n\nGrief that is felt is grief that can finish. Grief that is avoided is grief that lingers indefinitely."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "What Did You Lose?",
+          "icon": "edit_note",
+          "text": "Be specific about what you lost when that relationship ended.\n\nNot just the person, the future, the dreams, the investment, the version of yourself, the story you were telling.\n\nName each loss. Give it words.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "action",
+          "cardNumber": 4,
+          "title": "Permission to Grieve",
+          "icon": "self_improvement",
+          "text": "This is your permission slip.\n\nYou are allowed to be sad about what ended, even if it needed to end.\n\nYou are allowed to miss what you had, even if it wasn't perfect.\n\nYou are allowed to grieve the future that will never happen, even as you build a new one.\n\nYou are allowed to cry, even if it's been years.\n\nSet aside 15 minutes after this activity, alone, uninterrupted. Let yourself feel whatever comes up. Don't judge it, fix it, or rush it.\n\nIf tears come, let them. They are not weakness. They are release.\n\nIf anger comes, let it. It's part of grief.\n\nIf numbness comes, just sit in it. Sometimes grief starts quiet.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "God's Heart for Your Grief",
+          "icon": "auto_awesome",
+          "text": "Jesus wept at Lazarus's tomb, even knowing He was about to raise him from the dead.\n\nHe didn't rebuke Mary and Martha for their grief. He entered into it with them.\n\nGod is not impatient with your sadness. He is not frustrated that you haven't \"moved on\" yet. He is near to the brokenhearted, not distant from them.\n\n\"You keep track of all my sorrows. You have collected all my tears in your bottle. You have recorded each one in your book.\", Psalm 56:8\n\nEvery tear you've cried matters to Him. Your grief is not wasted. It's witnessed."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer Through Tears",
+          "icon": "volunteer_activism",
+          "text": "Lord, I've tried to be strong. I've tried to move on. I've tried to skip the pain.\n\nBut the grief is still here, waiting.\n\nToday I stop running. I let myself feel what I've been avoiding.\n\nSit with me in this. Don't fix it yet, just be here.\n\nCollect my tears as the Psalm says You do. Let nothing be wasted.\n\nAnd when the grief has done its work, lead me out the other side into freedom.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_releasing_bitterness",
+      "isFree": false,
+      "title": "Breaking the Chains of Bitterness",
+      "subtitle": "Why holding on hurts you more than them",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "link_off",
+      "emotionalIntensity": "very_high",
+      "activityType": "healing",
+      "whyThisMatters": "Bitterness feels like protection, but it's actually a prison. When you carry resentment toward someone who hurt you, you stay connected to them in the most toxic way possible. Forgiveness isn't about letting them off the hook, it's about releasing yourself from the hook they left in you.",
+      "frameworkBasis": {
+        "conceptKey": "activity_4_concept",
+        "explanation": "Bitterness feels like protection, but it's actually a prison. When you carry resentment toward someone who hurt you, you stay connected to them in the..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Bitter Truth About Bitterness",
+          "icon": "psychology",
+          "text": "When someone hurts you deeply, bitterness seems like the appropriate response. It feels like justice, like protection, like holding them accountable.\n\nBut here's what bitterness actually does:\n\n**It chains you to the person who hurt you.** Every day you carry resentment, they're still affecting your life, living rent-free in your mind.\n\n**It poisons your other relationships.** Bitterness leaks. It makes you suspicious, cynical, guarded with people who don't deserve it.\n\n**It blocks your healing.** You can't fully heal from something you're still actively feeding with daily resentment.\n\n**It hurts you more than them.** They may not even know you're bitter. But you feel it every day.\n\nSomeone said, \"Bitterness is like drinking poison and waiting for the other person to die.\" They were right."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Forgiveness Is Not",
+          "icon": "lightbulb",
+          "text": "Before we talk about forgiveness, let's clear up what it isn't:\n\n**Forgiveness is not saying what they did was okay.** It wasn't. Forgiveness doesn't rewrite history.Forgiveness is not forgetting. Your memory protects you from repeating the same mistake.Forgiveness is not trusting them again. Trust is earned through changed behavior over time. Forgiveness can happen without restored trust.\n\n**Forgiveness is not reconciliation.** Some relationships should not be restored. You can forgive someone and still never speak to them again.\n\n**Forgiveness is not a feeling.** It's a decision. The feelings often follow later.**\n\nForgiveness is releasing your right to make them pay.** It's cutting the chain that keeps you bound to them. It's choosing your freedom over your revenge."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Who Are You Holding?",
+          "icon": "edit_note",
+          "text": "{red|Who from your relational past are you still bitter toward?}\n\n{red|What did they do that you haven't released? How has holding onto this affected you, your mood, your other relationships, your openness to love?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Prison Guard",
+          "icon": "menu_book",
+          "text": "A woman I know carried bitterness toward her ex-husband for years. He had cheated, lied, and left her with two young children.\n\nThe bitterness felt justified. He deserved it. But years later, she was still single, still struggling to trust anyone, still replaying the offense in her mind.\n\n\"I realized, \" she told me, \"that I had become the prison guard of my own bitterness. I thought I was punishing him, but he had moved on. He was remarried, seemed happy. I was the only one still imprisoned.\"\n\nWhen she finally chose to forgive, not because he deserved it, but because she deserved freedom, something shifted. The weight she'd carried for years began to lift.\n\n\"Forgiveness, \" she said, \"wasn't about letting him win. It was about refusing to let what he did control the rest of my life.\""
+        },
+        {
+          "cardId": "c5",
+          "cardType": "action",
+          "cardNumber": 5,
+          "title": "The Forgiveness Declaration",
+          "icon": "task_alt",
+          "text": "Forgiveness is a choice, not a feeling. You may need to make this choice repeatedly until your feelings catch up.\n\nIf you're ready, speak this out loud:\n\n\"I choose today to forgive [name] for [what they did].\n\nI release my right to make them pay.\nI release my fantasy of revenge or justice.\nI release the bitterness I've been carrying.\n\nThis doesn't mean what they did was okay.\nThis doesn't mean I will trust them again.\nThis means I choose my freedom over my resentment.\n\nI am no longer chained to what they did to me.\"\n\nIf you're not ready, that's okay. Ask God to make you willing to be willing.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer of Release",
+          "icon": "volunteer_activism",
+          "text": "Lord, You know what was done to me. You saw every wound, every betrayal, every moment of pain.\n\nI've been carrying bitterness because it felt like the only justice I would get. But I see now that it's only hurting me.\n\nI choose to forgive, not because they deserve it, but because I deserve freedom.\n\nHelp me release what I cannot undo. Break the chain that still connects me to them.\n\nWhere my feelings haven't caught up with my choice, help them follow in time.\n\nI am no longer the prison guard of my own resentment.\n\nI am free.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_trusting_yourself",
+      "isFree": false,
+      "title": "Rebuilding Trust in Yourself",
+      "subtitle": "Healing the doubt that asks 'How could I have been so wrong?'",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified_user",
+      "emotionalIntensity": "moderate",
+      "activityType": "healing",
+      "whyThisMatters": "When a relationship goes badly wrong, it doesn't just damage your trust in others, it damages your trust in yourself. You question your judgment, your discernment, your ability to read people. This self-doubt is often more crippling than the original wound because it makes you afraid to trust your own perceptions going forward.",
+      "frameworkBasis": {
+        "conceptKey": "activity_5_concept",
+        "explanation": "When a relationship goes badly wrong, it doesn't just damage your trust in others, it damages your trust in yourself. You question your judgment, your..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Hidden Wound",
+          "icon": "psychology",
+          "text": "After a relationship reveals someone's true colors, after a betrayal, manipulation, or painful ending, there's a question that haunts you:\n\n\"How could I not have seen it?\"\n\nThis question attacks your self-trust at its core:\n\n\"My judgment was wrong. How can I ever trust it again?\"\n\n\"I was fooled. What else might I be wrong about?\"\n\n\"I thought they were different. What if the next person isn't either?\"\n\nThis self-doubt is often more damaging than the original hurt. Because while someone else broke your trust, this causes you to break trust with yourself."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Truth About Your Judgment",
+          "icon": "lightbulb",
+          "text": "Here's something important: being deceived by someone doesn't mean your judgment is broken. It means you were dealing with a deceiver.\n\nSome people are skilled at hiding who they really are. They've practiced it. They know how to present one face while concealing another.\n\nYour judgment isn't flawed for not seeing through a skilled mask. Your heart isn't broken for believing someone who was committed to being believed.\n\nYes, there may be warning signs you missed. There may be lessons to learn. But there's a difference between learning from the past and condemning yourself for it.\n\nYou can sharpen your discernment without destroying your self-trust."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Where Self-Trust Was Damaged",
+          "icon": "edit_note",
+          "text": "{red|How has your past relationship experience affected your trust in yourself?}\n\n{red|Do you doubt your judgment? Question your ability to read people? Second-guess your perceptions?}\n\nDescribe specifically how your self-trust was damaged.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Rebuilding the Foundation",
+          "icon": "verified",
+          "text": "Rebuilding self-trust happens through small, consistent actions:\n\n**Honor your feelings.** If something feels off, don't immediately dismiss it. Your intuition is an asset, not a liability.\n\n**Make and keep small promises to yourself.** Every time you do what you said you would, you prove to yourself that you're trustworthy.\n\n**Reflect on times your judgment WAS right.** You've also correctly identified good people, avoided bad situations, and made wise calls. Those count.\n\n**Distinguish between red flags missed and red flags that weren't there.** Sometimes there truly were no warning signs. Don't blame yourself for not seeing what wasn't visible.\n\n**Get outside perspective.** When you're unsure of your own judgment, trusted friends can help you see clearly."
+        },
+        {
+          "cardId": "c5",
+          "cardType": "action",
+          "cardNumber": 5,
+          "title": "A Self-Trust Inventory",
+          "icon": "task_alt",
+          "text": "This week, complete this inventory:\n\n1. Write down three times your judgment about a person WAS correct, you accurately assessed someone's character.\n\n2. Write down the actual red flags from your past relationship, were they visible at the time, or only in hindsight?\n\n3. Write down one small promise you'll make to yourself this week and keep it.\n\nEach of these rebuilds your evidence that you CAN trust yourself.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Self-Trust",
+          "icon": "volunteer_activism",
+          "text": "Lord, I've been hard on myself since that relationship ended.\n\nI've questioned my judgment, doubted my discernment, and wondered if I can ever trust my own perception again.\n\nHelp me see clearly: where I made mistakes, show me so I can learn. Where I was simply deceived by someone committed to deceiving, release me from self-blame.\n\nRestore my trust in myself. Sharpen my discernment without making me paranoid.\n\nI want to move forward wisely, not fearfully.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_rebound_trap",
+      "isFree": false,
+      "title": "The Rebound Trap: Why Rushing Backfires",
+      "subtitle": "Understanding the urge to fill the void, and why it doesn't work",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "speed",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "After a painful ending, the temptation to find someone new is powerful. A new person seems like the solution to loneliness, the proof that you're still desirable, the shortcut past pain. But rebound relationships typically delay healing rather than accelerate it, and often create new wounds on top of old ones.",
+      "frameworkBasis": {
+        "conceptKey": "activity_6_concept",
+        "explanation": "After a painful ending, the temptation to find someone new is powerful. A new person seems like the solution to loneliness, the proof that you're stil..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What Drives the Rebound Urge",
+          "icon": "psychology",
+          "text": "After a relationship ends, several forces push you toward finding someone new quickly:\n\n**The void.** There's an absence where a person used to be, someone to text, someone to plan with, someone to touch. A new person seems to fill that absence.\n\n**The ego wound.** Being rejected or left creates a bruise on your self-worth. Attention from someone new soothes that bruise.\n\n**The pain avoidance.** Grieving hurts. A new relationship provides distraction from the grief you don't want to feel.\n\n**The fear.** What if you never find someone? A new person calms that fear.\n\nEach of these is understandable. But each is also a setup for a rebound that won't work."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why Rebounds Usually Fail",
+          "icon": "lightbulb",
+          "text": "Rebound relationships struggle because you're not really available:\n\n**You're not healed.** You bring unprocessed pain, unfinished grief, and active wounds into the new relationship. The new person becomes collateral damage in your healing process.\n\n**You're comparing.** Everything the new person does gets measured against the old relationship, either \"they're better than my ex\" or \"my ex did this differently.\"\n\n**You're using, not loving.** Even if you don't mean to, you're using the new person to fill a void, soothe an ego, or avoid pain. That's not fair to them.\n\n**You haven't learned yet.** Without time to process what happened, you're likely to repeat the same patterns or choose the same type of person.\n\nRebounds often end in more pain, for both people involved."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Checking Your Motivation",
+          "icon": "edit_note",
+          "text": "If you're currently tempted to rush into something new (or already have), what's driving that urge?\n\nBe honest: Is it genuine readiness? Or is it loneliness, ego, pain avoidance, or fear?",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Gift of Time",
+          "icon": "verified",
+          "text": "There's no universal formula for how long healing takes. But there is wisdom in taking time.\n\nTime to grieve without distraction.\n\nTime to process what happened and what you learned.\n\nTime to rebuild your own identity outside of a relationship.\n\nTime to become the kind of person who attracts healthy love, not desperate love.\n\nThis doesn't mean you must be fully healed before dating again. But there's a difference between healed enough and completely unhealed.\n\nThe goal is to enter your next relationship as a whole person bringing gifts, not a wounded person seeking rescue."
+        },
+        {
+          "cardId": "c5",
+          "cardType": "action",
+          "cardNumber": 5,
+          "title": "Readiness Markers",
+          "icon": "task_alt",
+          "text": "Before entering a new relationship, consider whether you can honestly say:\n\n• I can think about my ex without intense emotional reaction (rage, longing, obsession)\n\n• I've processed what happened and learned what I need to learn\n\n• I'm not looking for someone to fill a void or fix my pain\n\n• I'm genuinely interested in knowing this person, not just having \"a person\"\n\n• I have something healthy to offer, not just wounds to heal\n\nIf most of these are true, you may be ready. If most are false, more time is wisdom, not weakness.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Patience",
+          "icon": "volunteer_activism",
+          "text": "Lord, the loneliness is real. The void is real. The urge to find someone new is strong.\n\nBut I don't want to repeat past mistakes. I don't want to use someone else to avoid my own healing. I don't want to start something new on an unfinished foundation.\n\nGive me patience to do this right.\n\nHelp me trust that the time I spend healing now will pay off in the health of my future relationship.\n\nProtect me from rushing. Protect others from my unhealed wounds.\n\nI trust Your timing more than my loneliness.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_rewriting_narrative",
+      "isFree": false,
+      "title": "Rewriting the Story You Tell Yourself",
+      "subtitle": "Moving from victim to survivor to overcomer",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "history_edu",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "After a painful relationship, you develop a narrative, a story you tell yourself (and others) about what happened. That narrative powerfully shapes how you heal. Some narratives keep you stuck in victimhood. Others propel you toward growth. Learning to tell a healthier story is crucial for moving forward.",
+      "frameworkBasis": {
+        "conceptKey": "activity_7_concept",
+        "explanation": "After a painful relationship, you develop a narrative, a story you tell yourself (and others) about what happened. That narrative powerfully shapes how..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Power of Your Narrative",
+          "icon": "psychology",
+          "text": "Every person processes painful experiences through story. The narrative you create about what happened determines how you move forward.\n\n**Victim narratives** sound like: \"They ruined me. I'll never recover. This always happens to me. I was completely innocent.\"\n\n**Growth narratives** sound like: \"That was painful, but I learned important things. I'm stronger now. I can see patterns I want to change. I'm not defined by what happened.\"\n\nBoth might describe the same events. But they lead to very different futures.\n\nVictim narratives keep you stuck, dependent on others changing for you to be okay.\n\nGrowth narratives empower you to take ownership of your healing and your future."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Narrative Balance",
+          "icon": "lightbulb",
+          "text": "Let's be clear: some people really were victims. Bad things happened that weren't their fault. Acknowledging that is important.\n\nBut there's a difference between acknowledging victimization and building your identity around it.\n\nA healthy narrative:\n\n• Acknowledges what was done wrong without excusing it\n• Takes ownership of your own contribution (if any) without excessive self-blame\n• Identifies what you learned and how you've grown\n• Points toward a future rather than staying anchored in the past\n• Allows for complexity, good and bad, gain and loss\n\nThe goal isn't to minimize pain or let anyone off the hook. It's to tell a story that empowers rather than imprisons."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Current Narrative",
+          "icon": "edit_note",
+          "text": "{red|How do you currently tell the story of your past relationship(s)?}\n\n{red|When you describe what happened to a friend or replay it in your own mind, what's the narrative? Who's the villain? Who's the victim? What's the theme?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "action",
+          "cardNumber": 4,
+          "title": "Rewriting Your Story",
+          "icon": "task_alt",
+          "text": "Try writing a new version of your story. Include:\n\n1. What happened (briefly, facts, not emotions)\n\n2. What you learned about yourself\n\n3. What you learned about what you want and don't want in a partner\n\n4. How you've grown since then\n\n5. What this experience is preparing you for\n\nThis isn't about denying pain or pretending it was all for good. It's about refusing to let the story end with you as a permanent victim.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "God's Narrative Power",
+          "icon": "auto_awesome",
+          "text": "Scripture is full of people whose painful stories became powerful testimonies:\n\nJoseph was betrayed by his brothers, sold into slavery, and imprisoned for years. His eventual narrative? \"You intended to harm me, but God intended it for good.\" ({red|Genesis 50:20})\n\nHe didn't pretend it wasn't painful. He didn't minimize the betrayal. But he told a story that gave meaning to suffering.\n\nGod specializes in turning victim stories into overcomer stories. Not by erasing what happened, but by redeeming it.\n\nYour painful chapter doesn't have to be the end of your story. It can be the setup for something you can't yet imagine."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for a New Story",
+          "icon": "volunteer_activism",
+          "text": "Lord, I've been telling myself a certain story about what happened to me.\n\nSome of that story is true and important. But some of it has kept me stuck.\n\nHelp me tell a truer, more complete story, one that acknowledges pain without drowning in it. One that takes responsibility where I should without carrying blame that isn't mine.\n\nMake me an overcomer, not a permanent victim.\n\nI trust You to write redemption into my narrative.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_recognizing_healthy",
+      "isFree": false,
+      "title": "Learning What Healthy Love Looks Like",
+      "subtitle": "Recalibrating your expectations after dysfunction",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "When you've been in unhealthy relationships, your sense of \"normal\" gets distorted. What felt intense might have been unstable. What felt passionate might have been chaos. After dysfunction, healthy love can actually feel boring or unfamiliar. This activity recalibrates your understanding of what you should actually be looking for.",
+      "frameworkBasis": {
+        "conceptKey": "activity_8_concept",
+        "explanation": "When you've been in unhealthy relationships, your sense of \"normal\" gets distorted. What felt intense might have been unstable. What felt passionate m..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "When Healthy Feels Wrong",
+          "icon": "psychology",
+          "text": "Here's something that surprises many people after leaving unhealthy relationships:\n\nHealthy love can feel weird at first.\n\nIf you're used to intensity, stability feels boring.\n\nIf you're used to drama, peace feels suspicious.\n\nIf you're used to chasing, being pursued feels uncomfortable.\n\nIf you're used to unpredictability, consistency feels stale.\n\nYour nervous system has been trained by dysfunction. When someone treats you well, your gut might say \"this doesn't feel right\" simply because it's unfamiliar.\n\nThis is why so many people leave healthy partners for unhealthy ones, they mistake familiarity for compatibility and chaos for chemistry."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Markers of Healthy Love",
+          "icon": "lightbulb",
+          "text": "Healthy love is characterized by:\n\n**Safety.** You can be yourself without fear of punishment, abandonment, or humiliation.\n\n**Consistency.** They show up reliably. You're not constantly wondering where you stand.\n\n**Respect.** They treat you as an equal, value your opinions, and honor your boundaries.\n\n**Trust.** Words match actions. You don't have to check up on them or question everything.\n\n**Growth.** Both people are committed to becoming better. Iron sharpens iron.\n\n**Peace.** More calm than chaos. Arguments happen but don't destroy. Reconciliation is possible.\n\n**Mutuality.** Both giving, both receiving. Not one person doing all the work.\n\nIf this list sounds less exciting than what you're used to, that might be a sign your \"exciting\" was actually unhealthy."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Calibration Check",
+          "icon": "edit_note",
+          "text": "Based on your past relationships, what has your sense of \"normal\" been?\n\n{red|Have you confused intensity with connection? Drama with passion? Chaos with chemistry?}\n\n{red|What might need to be recalibrated?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "action",
+          "cardNumber": 4,
+          "title": "Your Healthy Love Vision",
+          "icon": "task_alt",
+          "text": "Write a description of what you want a healthy relationship to look like.\n\nDon't describe a person (tall, successful, attractive). Describe an experience:\n\n• How do you feel when you're with them?\n• How do conflicts get resolved?\n• What does a typical week together look like?\n• How do they treat you when you're struggling?\n• What role does faith play?\n\nThis becomes your standard, what you're looking for, not settling for.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Love God Describes",
+          "icon": "auto_awesome",
+          "text": "Want to know what healthy love looks like? Paul described it:\n\n\"Love is patient, love is kind. It does not envy, it does not boast, it is not proud. It does not dishonor others, it is not self-seeking, it is not easily angered, it keeps no record of wrongs. Love does not delight in evil but rejoices with the truth. It always protects, always trusts, always hopes, always perseveres.\", 1 Corinthians 13:4-7\n\nThis is the standard. Not butterflies (those fade). Not passion alone (that waxes and wanes). Not intensity (that's often dysfunction in disguise).\n\nPatience. Kindness. Protection. Trust. Perseverance.\n\nDon't settle for less."
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Recalibration",
+          "icon": "volunteer_activism",
+          "text": "Lord, I know my sense of normal has been distorted by unhealthy experiences.\n\nI've confused intensity for connection. I've mistaken drama for passion. I've accepted less than I deserve because it felt familiar.\n\nRecalibrate my heart.\n\nHelp me recognize healthy love when it comes, even if it feels unfamiliar at first. Give me patience to let something stable grow, rather than chasing something intense that destroys.\n\nI want love that looks like You describe, not love that looks like what I'm used to.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_opening_again",
+      "isFree": false,
+      "title": "Opening Your Heart Again",
+      "subtitle": "The courage to be vulnerable after being hurt",
+      "timeBoxMinutes": 25,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "lock_open",
+      "emotionalIntensity": "high",
+      "activityType": "commitment",
+      "whyThisMatters": "The walls you built to protect yourself served a purpose. But those same walls, if kept indefinitely, will prevent you from ever experiencing the love you want. At some point, you have to choose vulnerability again, not naively, but courageously. This activity helps you prepare for that choice.",
+      "frameworkBasis": {
+        "conceptKey": "activity_9_concept",
+        "explanation": "The walls you built to protect yourself served a purpose. But those same walls, if kept indefinitely, will prevent you from ever experiencing the love..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Vulnerability Paradox",
+          "icon": "psychology",
+          "text": "Here's the uncomfortable truth about love:\n\nYou cannot experience deep connection without vulnerability.\n\nAnd you cannot be vulnerable without risk.\n\nThe walls you built after being hurt make sense. They protected you during a time when you needed protection. But walls that protect also isolate.\n\nAt some point, you face a choice: stay safe and alone, or take the risk that love requires.\n\nThis doesn't mean being reckless. It doesn't mean trusting everyone immediately. It means choosing to believe that the possibility of love is worth the possibility of pain.\n\nThat choice requires courage."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Man Behind the Wall",
+          "icon": "menu_book",
+          "text": "James had been hurt badly in his early thirties, a fiancée who left, friends who sided with her, a faith community that didn't know how to help.\n\nHe rebuilt his life. Good job. Good friends. Active in church. From the outside, he was doing great.\n\nBut at 42, he was still single, and he knew why. Every time anyone got close, he found reasons to pull back. The walls he'd built were invisible but impenetrable.\n\n\"I'm scared, \" he finally admitted in counseling. \"I know the walls are keeping out the good along with the bad. But taking them down feels like walking into traffic and hoping not to get hit.\"\n\nHis therapist smiled. \"You're not walking into traffic. You're walking into a world that contains both traffic and gardens. The walls keep out both. Wisdom is learning to navigate, not avoiding the journey altogether.\"\n\nJames is still working on it. But he's dating again, carefully, prayerfully, with eyes open. He chose courage over comfort."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Wall Inventory",
+          "icon": "edit_note",
+          "text": "{red|What walls have you built to protect yourself? How do they show up?}\n\n{red|Do you avoid getting close? End things before they can hurt you? Test people excessively? Withhold your true self?}\n\nBe specific about your protective patterns.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Risk God Took",
+          "icon": "auto_awesome",
+          "text": "Consider: God Himself chose vulnerability.\n\nHe created humans knowing many would reject Him. He loved Israel knowing they would be unfaithful. He sent His Son knowing humanity would crucify Him.\n\nGod didn't protect Himself from the risk of love. He leaned into it.\n\n\"This is how God showed his love among us: He sent his one and only Son into the world.\", 1 John 4:9\n\nIf God was willing to be wounded by love, perhaps the invitation is to follow His example, not naively, but bravely.\n\nYou can be wise AND open. Discerning AND vulnerable. Careful AND courageous."
+        },
+        {
+          "cardId": "c5",
+          "cardType": "action",
+          "cardNumber": 5,
+          "title": "A Step Toward Openness",
+          "icon": "task_alt",
+          "text": "You don't have to take down all your walls at once. But consider one small step toward openness this week:\n\n• Share something real with a friend you usually keep at surface level\n\n• If you're dating, resist the urge to sabotage or pull back at the first sign of vulnerability\n\n• Write down what you're actually feeling instead of suppressing it\n\n• Pray honestly to God about your fears instead of pretending you're fine\n\nChoose one. Take the step. Notice what happens.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "reflection",
+          "cardNumber": 6,
+          "title": "A Prayer for Courage",
+          "icon": "volunteer_activism",
+          "text": "Lord, I've been hiding behind walls built from pain.\n\nThey've kept me safe, but they've also kept me alone.\n\nI want to love again. But I'm scared.\n\nGive me courage to lower my defenses, not carelessly, but wisely. Help me trust that the possibility of love is worth the risk of pain.\n\nYou modeled vulnerability for me. You didn't protect Yourself from being wounded by love. Help me follow Your example.\n\nI choose openness over isolation. I choose courage over comfort.\n\nBe my protection as I take down my own walls.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_boundaries_openness",
+      "isFree": false,
+      "title": "Boundaries and Openness: Both at Once",
+      "subtitle": "How to protect yourself without closing yourself off",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "tune",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Some people build walls so high nothing gets through. Others have no protection at all and get hurt repeatedly. The goal is to be both open AND boundaried, available for healthy love while protected from unhealthy treatment. This is wisdom, not compromise.",
+      "frameworkBasis": {
+        "conceptKey": "activity_10_concept",
+        "explanation": "Some people build walls so high nothing gets through. Others have no protection at all and get hurt repeatedly. The goal is to be both open AND bounda..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Both/And of Healthy Relating",
+          "icon": "psychology",
+          "text": "After being hurt, people tend to swing to extremes:\n\n**Extreme 1: Walls everywhere.\n**No one gets in. Safe, but isolated. Protects from pain but also prevents love.\n\n**Extreme 2: No boundaries at all.\n**Let everyone in immediately. Get hurt again and again. Confuses vulnerability with lack of discernment.\n\nThe healthy middle ground:\n\nOpen heart + wise boundaries.You can be emotionally available AND still protect yourself from toxic people.\n\nYou can be vulnerable AND still require respect.\n\nYou can let someone in AND still have standards.\n\nThis is maturity, not walls, not doormat, but a gate that opens for the right people in the right way at the right time."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Wise Openness Looks Like",
+          "icon": "lightbulb",
+          "text": "Healthy vulnerability includes:\n\n**Gradual access.** You don't give everything at once. Trust is earned over time through consistent behavior.\n\n**Observation periods.** You watch how someone treats others, handles conflict, and responds to stress before going deeper.\n\n**Responsive boundaries.** If someone violates your trust or crosses a line, you respond accordingly, not with drama, but with clarity.\n\n**Self-awareness.** You know your triggers and vulnerabilities and don't put yourself in situations that exploit them.\n\n**Outside perspective.** You let trusted friends speak into your relationships, especially if you know your judgment has been compromised before.\n\nThis isn't being guarded or paranoid. It's being wise."
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Boundary Balance",
+          "icon": "edit_note",
+          "text": "{red|Where do you tend to fall on the spectrum?}\n\nToo walled off (keeping everyone at distance)?\nToo open (giving access too quickly, not protecting yourself)?\n\n{red|What would it look like for you to move toward healthy balance?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "action",
+          "cardNumber": 4,
+          "title": "Your Boundary Framework",
+          "icon": "task_alt",
+          "text": "Create a simple framework for yourself:\n\n**Level 1: Surface access.\n**What can anyone know about you? (General life facts, interests)\n\n**Level 2: Friend access.\n**What do you share only with trusted friends? (Struggles, fears, history)\n\n**Level 3: Intimate access.\n**What is reserved for a committed partner? (Deepest wounds, complete vulnerability)\n\n**Red lines.\n**What behaviors automatically reduce someone's access level? (Lying, disrespect, violation of trust)\n\nThis framework lets you be open AND protected.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for Wise Openness",
+          "icon": "volunteer_activism",
+          "text": "Lord, help me find the balance.\n\nI don't want to be so walled off that love can't reach me. I don't want to be so unprotected that I keep getting hurt.\n\nGive me wisdom to know who deserves access and at what pace.\n\nGive me discernment to spot red flags early.\n\nGive me courage to be vulnerable with those who've earned it.\n\nI want to be open AND wise. Available AND boundaried.\n\nHelp me build a gate, not a wall.\n\nAmen.",
+          "responseType": "open-text"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_moving_forward",
+      "isFree": false,
+      "title": "From Wounded to Whole: Your Next Chapter",
+      "subtitle": "Consolidating your healing and committing to your future",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "flight_takeoff",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You've done significant work in this journey, naming wounds, grieving losses, releasing bitterness, rebuilding trust, and preparing to love again. This final activity consolidates what you've learned and sets you up for the future you're now ready to create.",
+      "frameworkBasis": {
+        "conceptKey": "activity_11_concept",
+        "explanation": "You've done significant work in this journey, naming wounds, grieving losses, releasing bitterness, rebuilding trust, and preparing to love again. This..."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You've Accomplished",
+          "icon": "lightbulb",
+          "text": "Take a moment to recognize the ground you've covered:\n\nYou **named wounds** you'd been avoiding, bringing them into the light where healing can happen.\n\nYou **grieved losses** you might have been rushing past, giving your heart the time it needed.\n\nYou **released bitterness** that was poisoning you more than anyone else.**\n\nYou **rebuilt self-trust** that had been shattered by past experiences.**\n\nYou **recalibrated expectations** for what healthy love actually looks like.**\n\nYou **chose courage** over the comfort of walls.**\n\nYou **developed wisdom** to be both open and protected.**\n\nThis is real progress.** You're not the same person who started this journey."
+        },
+        {
+          "cardId": "c2",
+          "cardType": "reflection",
+          "cardNumber": 2,
+          "title": "Your Healing Inventory",
+          "icon": "edit_note",
+          "text": "{red|What has shifted in you during this journey?}\n\n{red|What do you understand now that you didn't before? What burden feels lighter? What clarity do you have that you lacked?}",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Road Ahead",
+          "icon": "route",
+          "text": "Healing isn't finished when this journey ends. It continues as you apply what you've learned.\n\n**Expect some setbacks.** Old pain might resurface. Triggers might fire. This doesn't mean the healing wasn't real, it means healing is a process.\n\n**Keep practicing.** The forgiveness you declared may need to be declared again. The boundaries you set may need to be reinforced. The trust you're rebuilding needs more evidence.\n\n**Be patient with yourself.** You won't do this perfectly. Growth is rarely linear.Stay connected.** Don't isolate.** Let trusted people speak into your life and relationships.\n\nThe goal isn't perfection. It's progress toward wholeness."
+        },
+        {
+          "cardId": "c4",
+          "cardType": "action",
+          "cardNumber": 4,
+          "title": "Three Commitments",
+          "icon": "task_alt",
+          "text": "As you complete this journey, make three commitments:\n\n**1. I commit to continued healing.\n**I will not declare myself \"fixed\" and stop growing. I will keep processing, learning, and becoming whole.\n\n**2. I commit to healthy patterns.\n**I will not repeat the same mistakes. I will apply what I've learned about boundaries, healthy love, and my own patterns.\n\n**3. I commit to courageous love.\n**I will not let fear win. I will choose openness over isolation, even though it requires vulnerability.\n\nWrite these somewhere you'll see them.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "A Prayer for the Journey Ahead",
+          "icon": "volunteer_activism",
+          "text": "Lord, thank You for meeting me in this journey.\n\nThank You for healing that has begun, for burdens that feel lighter, for clarity I didn't have before.\n\nI know I'm not finished. But I'm not where I was either.\n\nAs I move forward, keep healing what's still wounded. Keep sharpening my discernment. Keep giving me courage to love again.\n\nI trust You with my future, the relationships I'll have, the person I'll become, the love I'll give and receive.\n\nMy past no longer controls me. My wounds no longer define me.\n\nI am moving forward, whole and hopeful.\n\nAmen.",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Declaration",
+          "icon": "verified",
+          "text": "Before completing this journey, declare this over yourself:\n\n\"I am no longer defined by what was done to me.\n\nMy wounds are being healed. My story is being rewritten. My future is not controlled by my past.\n\nI am capable of healthy love. I am worthy of being chosen. I am ready to begin again.\n\nI carry lessons from my past, not chains.\n\nI am moving forward, wounded but healing, cautious but open, scarred but hopeful.\n\nThis is my new chapter.\"",
+          "responseType": "open-text"
+        }
+      ]
+    }
+  ],
+  "heroImage": "assets/images/journeys/Singles_journey3.jpg"
+}

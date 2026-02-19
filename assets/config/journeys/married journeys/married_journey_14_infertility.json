@@ -69,7 +69,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Permission to Grieve",
-          "text": "{red|**You have permission to grieve.**\n\n**You do not have to be strong all the time.** You do not have to look on the bright side. You do not have to be grateful for what you have while ignoring what you have lost.\n\n**Grief is not a lack of faith.** The Bible is full of lament. Hannah wept bitterly over her childlessness (1 Samuel 1). The psalmist cried out, 'How long, O Lord?}' (Psalm 13). Jesus himself wept at a tomb.\n\n**God is not threatened by your grief.** He invites it. 'The Lord is near to the brokenhearted and saves the crushed in spirit.' (({red|Psalm 34:18}))\n\n**Your pain is seen, even when others do not see it.**",
+          "text": "**You have permission to grieve.**\n\n**You do not have to be strong all the time.** You do not have to look on the bright side. You do not have to be grateful for what you have while ignoring what you have lost.\n\n**Grief is not a lack of faith.** The Bible is full of lament. Hannah wept bitterly over her childlessness (1 Samuel 1). The psalmist cried out, 'How long, O Lord?' (Psalm 13). Jesus himself wept at a tomb.\n\n**God is not threatened by your grief.** He invites it. 'The Lord is near to the brokenhearted and saves the crushed in spirit.' (Psalm 34:18)\n\n**Your pain is seen, even when others do not see it.**",
           "icon": "volunteer_activism"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Naming Your Losses",
-          "text": "{red|**Take a moment to honestly name what you have lost or are losing in this journey.**\n\nWhat dreams have been delayed or shattered?}{red| What grief have you been carrying that no one else sees?}{red| What emotions have you been pushing down or hiding?}\n\n**Write openly about your losses.** No one else needs to read this. Let yourself be honest:",
+          "text": "**Take a moment to honestly name what you have lost or are losing in this journey.**\n\nWhat dreams have been delayed or shattered? What grief have you been carrying that no one else sees? What emotions have you been pushing down or hiding?\n\n**Write openly about your losses.** No one else needs to read this. Let yourself be honest:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -86,7 +86,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Where You Are Right Now",
-          "text": "{red|Which best describes where you are in your infertility journey?}",
+          "text": "Which best describes where you are in your infertility journey?",
           "prompts": [
             "Recently started trying and beginning to worry something is wrong",
             "In the midst of testing and diagnosis",
@@ -108,7 +108,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "One Honest Conversation",
-          "text": "{red|**This week, have one honest conversation with your spouse about how you are really doing.**\n\n**Not the version you present to family.** Not the optimistic spin you put on social media. The real truth about how this is affecting you.\n\nSome prompts to consider:\n\nWhat is the hardest part for you right now?}{red| What grief are you carrying that I might not fully see?}{red| What do you need from me that you have not been asking for?}\n\n**This is not about solving anything.** It is about being seen by the person who matters most.",
+          "text": "**This week, have one honest conversation with your spouse about how you are really doing.**\n\n**Not the version you present to family.** Not the optimistic spin you put on social media. The real truth about how this is affecting you.\n\nSome prompts to consider:\n\nWhat is the hardest part for you right now? What grief are you carrying that I might not fully see? What do you need from me that you have not been asking for?\n\n**This is not about solving anything.** It is about being seen by the person who matters most.",
           "icon": "forum"
         }
       ]
@@ -160,7 +160,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Grief Patterns",
-          "text": "{red|How do you tend to process your grief about infertility?}",
+          "text": "How do you tend to process your grief about infertility?",
           "prompts": [
             "I need to talk about it and process out loud",
             "I need quiet time alone to process internally",
@@ -181,7 +181,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Understanding Your Spouse",
-          "text": "{red|**Think about how your spouse has been grieving.**\n\nHow does their grief show up?}{red| What do they do when they are hurting?}\n\n{red|How is their grief style different from yours?}\n\n{red|Have there been times when their different grief response felt hurtful to you, even though they were not trying to hurt you?}\n\n{red|What do you think they actually need, even if they express it differently than you would?}\n\nWrite your observations about your spouse's grief:",
+          "text": "**Think about how your spouse has been grieving.**\n\nHow does their grief show up? What do they do when they are hurting?\n\nHow is their grief style different from yours?\n\nHave there been times when their different grief response felt hurtful to you, even though they were not trying to hurt you?\n\nWhat do you think they actually need, even if they express it differently than you would?\n\nWrite your observations about your spouse's grief:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -218,7 +218,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "A Series of Hard Choices",
-          "text": "{red|The infertility journey is a series of decisions:\n\nShould we pursue testing?}{red| Which tests?}{red| Should we try medication?}{red| For how long?}{red| Should we try IUI?}{red| How many cycles?}{red| Should we try IVF?}{red| Can we afford it?}{red| What about donor eggs, donor sperm, surrogacy?}{red| What about adoption?}{red| Foster care?}{red| When is it time to stop trying?}\n\n**Each decision point carries weight.** Each involves hope and fear, money and time, physical and emotional cost.\n\n**And each decision is one you must make together, even when you do not fully agree.**",
+          "text": "The infertility journey is a series of decisions:\n\nShould we pursue testing? Which tests? Should we try medication? For how long? Should we try IUI? How many cycles? Should we try IVF? Can we afford it? What about donor eggs, donor sperm, surrogacy? What about adoption? Foster care? When is it time to stop trying?\n\n**Each decision point carries weight.** Each involves hope and fear, money and time, physical and emotional cost.\n\n**And each decision is one you must make together, even when you do not fully agree.**",
           "icon": "fork_right"
         },
         {
@@ -234,7 +234,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Principles for Deciding Together",
-          "text": "{red|Some principles to guide your decisions:\n\n**Unity over speed: It is better to take longer to decide than to move forward with one spouse reluctantly being dragged along.**\n\n**Both voices matter equally: Even if one partner has more medical involvement, both have equal say in decisions.**\n\n**Set boundaries in advance: Decide your limits before emotions are high.** How many cycles?}{red| How much money?}{red| When will you reassess?}\n\n**Reassess, do not just continue: After each step, pause and decide together whether to continue rather than defaulting to the next thing.**\n\n**Keep your marriage primary: No treatment is worth destroying your relationship.** Your marriage must be protected throughout.\n\n**Pray together: Invite God into these decisions.** Seek wisdom together.",
+          "text": "Some principles to guide your decisions:\n\n**Unity over speed: It is better to take longer to decide than to move forward with one spouse reluctantly being dragged along.**\n\n**Both voices matter equally: Even if one partner has more medical involvement, both have equal say in decisions.**\n\n**Set boundaries in advance: Decide your limits before emotions are high.** How many cycles? How much money? When will you reassess?\n\n**Reassess, do not just continue: After each step, pause and decide together whether to continue rather than defaulting to the next thing.**\n\n**Keep your marriage primary: No treatment is worth destroying your relationship.** Your marriage must be protected throughout.\n\n**Pray together: Invite God into these decisions.** Seek wisdom together.",
           "icon": "groups"
         },
         {
@@ -242,7 +242,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Current Decision Point",
-          "text": "{red|What decisions are you currently facing or anticipating in your infertility journey?}\n\n{red|Where do you and your spouse see things similarly?}{red| Where do you see things differently?}{red| What fears or values are driving your perspective?}{red| What do you need to understand better about your spouse's perspective?}\n\nWrite about where you are in your decision-making process:",
+          "text": "What decisions are you currently facing or anticipating in your infertility journey?\n\nWhere do you and your spouse see things similarly? Where do you see things differently? What fears or values are driving your perspective? What do you need to understand better about your spouse's perspective?\n\nWrite about where you are in your decision-making process:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -251,7 +251,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "A Framework for Discussion",
-          "text": "{red|When facing a treatment decision, work through these questions together:\n\n1. What are we actually deciding?}{red| Get specific about the choice in front of you.\n\n2. What are our options?}{red| List all possibilities, including waiting and stopping.\n\n3. What matters most to each of us?}{red| Share the values and fears driving your perspective.\n\n4. What are our limits?}{red| Financial, emotional, physical, spiritual, timeline.\n\n5. What would we regret?}{red| Consider both directions: trying and not trying.\n\n6. What does wisdom say?}{red| Consider medical advice, wise counsel, prayer.\n\n7. What can we agree on?} Find the common ground and build from there.",
+          "text": "When facing a treatment decision, work through these questions together:\n\n1. What are we actually deciding? Get specific about the choice in front of you.\n\n2. What are our options? List all possibilities, including waiting and stopping.\n\n3. What matters most to each of us? Share the values and fears driving your perspective.\n\n4. What are our limits? Financial, emotional, physical, spiritual, timeline.\n\n5. What would we regret? Consider both directions: trying and not trying.\n\n6. What does wisdom say? Consider medical advice, wise counsel, prayer.\n\n7. What can we agree on? Find the common ground and build from there.",
           "icon": "checklist"
         },
         {
@@ -259,7 +259,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Decision Conversation",
-          "text": "{red|**If you have a treatment decision in front of you, use the framework from the previous card to discuss it together.**\n\nIf you do not have an immediate decision, use this time to discuss your general approach:\n\nWhat are our overall limits for this journey?}{red| How will we make decisions together as they arise?}{red| What would cause us to pause and reassess?}{red| How will we protect our marriage regardless of what we decide?}\n\n**Write down any agreements you reach.**",
+          "text": "**If you have a treatment decision in front of you, use the framework from the previous card to discuss it together.**\n\nIf you do not have an immediate decision, use this time to discuss your general approach:\n\nWhat are our overall limits for this journey? How will we make decisions together as they arise? What would cause us to pause and reassess? How will we protect our marriage regardless of what we decide?\n\n**Write down any agreements you reach.**",
           "icon": "forum"
         }
       ]
@@ -311,7 +311,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Honest Assessment",
-          "text": "{red|**Reflect honestly on how infertility has affected your intimate life.**\n\nHow has the pressure changed your experience of sex?}{red| What emotions come up for you around intimacy now?}{red| What do you miss about how things used to be?}{red| What do you need that you have not been asking for?}\n\nWrite openly about the impact on your intimacy:",
+          "text": "**Reflect honestly on how infertility has affected your intimate life.**\n\nHow has the pressure changed your experience of sex? What emotions come up for you around intimacy now? What do you miss about how things used to be? What do you need that you have not been asking for?\n\nWrite openly about the impact on your intimacy:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -320,7 +320,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Biggest Intimacy Challenge",
-          "text": "{red|What has been the hardest part of maintaining intimacy through infertility?}",
+          "text": "What has been the hardest part of maintaining intimacy through infertility?",
           "prompts": [
             "The pressure of timed intercourse",
             "Feeling like my body is broken or has failed",
@@ -370,7 +370,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Things People Say",
-          "text": "{red|If you have faced infertility, you have heard them all:\n\n\"So when are you two going to start a family?}{red|\" \"Just relax and it will happen.\" \"Have you tried... [insert random suggestion]?}\" \"Everything happens for a reason.\" \"At least you can enjoy your freedom.\" \"You could always just adopt.\" \"My friend tried this one thing and got pregnant immediately.\" \"Maybe God is telling you something.\"\n\n**Anna dreaded every family gathering.** \"The questions never stopped,\" she said. \"My sister-in-law would update everyone on her pregnancy while glancing at me with pity. My mother-in-law would ask if we had 'tried harder.' My uncle would make jokes about how we must be doing it wrong. By the time we left, I was destroyed every single time.\"\n\n**Most people mean well.** They do not understand how these comments land. But well-meaning does not mean pain-free.\n\n**Every baby shower invitation, every pregnancy announcement, every holiday question reopens the wound.**",
+          "text": "If you have faced infertility, you have heard them all:\n\n\"So when are you two going to start a family?\" \"Just relax and it will happen.\" \"Have you tried... [insert random suggestion]?\" \"Everything happens for a reason.\" \"At least you can enjoy your freedom.\" \"You could always just adopt.\" \"My friend tried this one thing and got pregnant immediately.\" \"Maybe God is telling you something.\"\n\n**Anna dreaded every family gathering.** \"The questions never stopped,\" she said. \"My sister-in-law would update everyone on her pregnancy while glancing at me with pity. My mother-in-law would ask if we had 'tried harder.' My uncle would make jokes about how we must be doing it wrong. By the time we left, I was destroyed every single time.\"\n\n**Most people mean well.** They do not understand how these comments land. But well-meaning does not mean pain-free.\n\n**Every baby shower invitation, every pregnancy announcement, every holiday question reopens the wound.**",
           "icon": "chat_bubble"
         },
         {
@@ -394,7 +394,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Most Painful Interactions",
-          "text": "{red|**Think about the social situations that have been hardest for you.**\n\nWhat comments or questions hurt the most?}{red| What situations do you dread?}{red| How have you typically responded, and how has that worked?}{red| What do you wish people understood?}\n\nWrite about your most challenging interactions:",
+          "text": "**Think about the social situations that have been hardest for you.**\n\nWhat comments or questions hurt the most? What situations do you dread? How have you typically responded, and how has that worked? What do you wish people understood?\n\nWrite about your most challenging interactions:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -411,7 +411,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Plan",
-          "text": "{red|Create a plan together for handling social challenges:\n\nWhat is our standard response to 'when are you having kids?}{red|' questions?}\n\n{red|Who are the safe people we can be honest with?}\n\n{red|What events or situations do we need to approach carefully?}\n\n{red|How will we support each other when one of us is struggling socially?}\n\n{red|How will we handle pregnancy announcements from people close to us?}\n\n**Write down your agreed-upon approaches.**",
+          "text": "Create a plan together for handling social challenges:\n\nWhat is our standard response to 'when are you having kids?' questions?\n\nWho are the safe people we can be honest with?\n\nWhat events or situations do we need to approach carefully?\n\nHow will we support each other when one of us is struggling socially?\n\nHow will we handle pregnancy announcements from people close to us?\n\n**Write down your agreed-upon approaches.**",
           "icon": "task_alt"
         }
       ]
@@ -439,7 +439,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Questions That Come",
-          "text": "{red|Infertility raises hard spiritual questions:\n\nWhy would God withhold something so good?}{red| Is He punishing me for something?}{red| Does He hear my prayers?}{red| Why does He give babies to people who do not want them while withholding from us?}{red| Can I trust a God who allows this pain?}{red| What did I do wrong?}{red| Is there something wrong with my faith?}\n\n**These questions can feel dangerous to ask.** But they are not evidence of weak faith. They are the cries of a heart in pain, and God is big enough to handle them.",
+          "text": "Infertility raises hard spiritual questions:\n\nWhy would God withhold something so good? Is He punishing me for something? Does He hear my prayers? Why does He give babies to people who do not want them while withholding from us? Can I trust a God who allows this pain? What did I do wrong? Is there something wrong with my faith?\n\n**These questions can feel dangerous to ask.** But they are not evidence of weak faith. They are the cries of a heart in pain, and God is big enough to handle them.",
           "icon": "help"
         },
         {
@@ -447,7 +447,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What Scripture Shows",
-          "text": "**The Bible does not shy away from infertility or the pain it causes.**\n\n**Hannah wept bitterly and poured out her anguish to God, and He did not rebuke her for it (1 Samuel 1).**\n\n**Rachel cried out to Jacob, 'Give me children, or I shall die!**' Her desperation is recorded without criticism (({red|Genesis 30:1})).\n\n**Elizabeth called her barrenness a 'disgrace' and praised God when He removed it (({red|Luke 1:25})).**\n\n**The Bible acknowledges that infertility is painful.** It does not dismiss it or tell sufferers to simply have more faith.\n\n**And notably, God often worked through barren women to accomplish His purposes: Sarah, Rebekah, Rachel, Hannah, Elizabeth.** He was not absent. He was working in ways they could not see.",
+          "text": "**The Bible does not shy away from infertility or the pain it causes.**\n\n**Hannah wept bitterly and poured out her anguish to God, and He did not rebuke her for it (1 Samuel 1).**\n\n**Rachel cried out to Jacob, 'Give me children, or I shall die!**' Her desperation is recorded without criticism (Genesis 30:1).\n\n**Elizabeth called her barrenness a 'disgrace' and praised God when He removed it (Luke 1:25).**\n\n**The Bible acknowledges that infertility is painful.** It does not dismiss it or tell sufferers to simply have more faith.\n\n**And notably, God often worked through barren women to accomplish His purposes: Sarah, Rebekah, Rachel, Hannah, Elizabeth.** He was not absent. He was working in ways they could not see.",
           "icon": "menu_book"
         },
         {
@@ -455,7 +455,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Permission to Lament",
-          "text": "{red|**Biblical faith includes lament.** Nearly one-third of the Psalms are laments, honest cries of pain, confusion, and even accusation toward God.\n\n'How long, O Lord?}{red| Will you forget me forever?}{red|' (({red|Psalm 13:1})) 'Why, O Lord, do you stand far away?}{red|' (({red|Psalm 10:1})) 'My God, my God, why have you forsaken me?}' (({red|Psalm 22:1}))\n\n**These are not examples of weak faith.** They are honest engagement with a God who invites our raw emotions.\n\n**You can be angry.** You can be confused. You can question. Bring it all to God. He would rather have your honest anguish than your polished performance.\n\n**Lament is not the opposite of faith.** It is a form of faith that trusts God enough to be honest with Him.",
+          "text": "**Biblical faith includes lament.** Nearly one-third of the Psalms are laments, honest cries of pain, confusion, and even accusation toward God.\n\n'How long, O Lord? Will you forget me forever?' (Psalm 13:1) 'Why, O Lord, do you stand far away?' (Psalm 10:1) 'My God, my God, why have you forsaken me?' (Psalm 22:1)\n\n**These are not examples of weak faith.** They are honest engagement with a God who invites our raw emotions.\n\n**You can be angry.** You can be confused. You can question. Bring it all to God. He would rather have your honest anguish than your polished performance.\n\n**Lament is not the opposite of faith.** It is a form of faith that trusts God enough to be honest with Him.",
           "icon": "volunteer_activism"
         },
         {
@@ -463,7 +463,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Honest Prayers",
-          "text": "{red|If you could say anything to God about your infertility journey, with complete honesty and no filter, what would you say?}\n\n{red|What questions do you have for Him?}{red| What emotions are you feeling toward Him?}{red| What do you need from Him?}\n\nWrite your honest prayer:",
+          "text": "If you could say anything to God about your infertility journey, with complete honesty and no filter, what would you say?\n\nWhat questions do you have for Him? What emotions are you feeling toward Him? What do you need from Him?\n\nWrite your honest prayer:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -472,7 +472,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Faith Without Answers",
-          "text": "**Here is a hard truth: you may never know why.**\n\n**God did not explain to Hannah why she had to wait so long.** He did not explain to Elizabeth why she spent decades in disgrace. He often does not explain.\n\n**Faith is not having all the answers.** Faith is trusting God when you do not have answers.\n\n**'Trust in the Lord with all your heart, and do not lean on your own understanding.**' (({red|Proverbs 3:5}))\n\n**This does not mean suppressing your questions or pretending you do not hurt.** It means bringing your questions and pain to a God who is present even when silent, working even when invisible.\n\n**You can hold unresolved questions and genuine trust at the same time.**",
+          "text": "**Here is a hard truth: you may never know why.**\n\n**God did not explain to Hannah why she had to wait so long.** He did not explain to Elizabeth why she spent decades in disgrace. He often does not explain.\n\n**Faith is not having all the answers.** Faith is trusting God when you do not have answers.\n\n**'Trust in the Lord with all your heart, and do not lean on your own understanding.**' (Proverbs 3:5)\n\n**This does not mean suppressing your questions or pretending you do not hurt.** It means bringing your questions and pain to a God who is present even when silent, working even when invisible.\n\n**You can hold unresolved questions and genuine trust at the same time.**",
           "icon": "psychology"
         },
         {
@@ -532,7 +532,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Marriage Health Check",
-          "text": "{red|**Honestly assess how your marriage is doing in the midst of infertility.**\n\nWhat is going well?}{red| Where are you staying connected?}\n\n{red|What is concerning?}{red| Where do you see strain?}\n\n{red|What does your spouse need from you right now that you have not been giving?}\n\n{red|What do you need from them that you have not been asking for?}\n\nWrite your honest assessment:",
+          "text": "**Honestly assess how your marriage is doing in the midst of infertility.**\n\nWhat is going well? Where are you staying connected?\n\nWhat is concerning? Where do you see strain?\n\nWhat does your spouse need from you right now that you have not been giving?\n\nWhat do you need from them that you have not been asking for?\n\nWrite your honest assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -541,7 +541,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Biggest Marital Challenge",
-          "text": "{red|What has been the biggest challenge to your marriage through infertility?}",
+          "text": "What has been the biggest challenge to your marriage through infertility?",
           "prompts": [
             "We grieve differently and struggle to support each other",
             "We disagree about treatment decisions or next steps",
@@ -563,7 +563,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "The Marriage Protection Commitment",
-          "text": "{red|**Together, make a commitment to protect your marriage through this journey.**\n\nDiscuss and agree:\n\nHow will we stay connected beyond fertility issues?}\n\n{red|How will we handle disagreements about the journey?}\n\n{red|What will we do if we see our marriage struggling?}\n\n**Finish this sentence together: 'No matter what happens with fertility, we commit to.**..'\n\n**Write your commitment and sign it together.**",
+          "text": "**Together, make a commitment to protect your marriage through this journey.**\n\nDiscuss and agree:\n\nHow will we stay connected beyond fertility issues?\n\nHow will we handle disagreements about the journey?\n\nWhat will we do if we see our marriage struggling?\n\n**Finish this sentence together: 'No matter what happens with fertility, we commit to.**..'\n\n**Write your commitment and sign it together.**",
           "icon": "handshake"
         }
       ]
@@ -607,7 +607,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Questions to Explore Together",
-          "text": "{red|If you are considering alternative paths, explore these questions together:\n\nRegarding adoption or foster care: Are we both genuinely drawn to this path?}{red| What type of adoption fits us (domestic, international, foster)?}{red| Are we prepared for the unique challenges adopted children may face?}{red| What are our expectations about birth family involvement?}\n\n{red|Regarding donor options: How do we feel about using genetic material that is not ours?}{red| How would we handle questions from our child about their origins?}{red| What boundaries would we set?}\n\n{red|Regarding living child-free: Can we envision a fulfilling life without children?}{red| What would give our lives meaning and purpose?}{red| How do we feel about this path honestly, not just as resignation?}",
+          "text": "If you are considering alternative paths, explore these questions together:\n\nRegarding adoption or foster care: Are we both genuinely drawn to this path? What type of adoption fits us (domestic, international, foster)? Are we prepared for the unique challenges adopted children may face? What are our expectations about birth family involvement?\n\nRegarding donor options: How do we feel about using genetic material that is not ours? How would we handle questions from our child about their origins? What boundaries would we set?\n\nRegarding living child-free: Can we envision a fulfilling life without children? What would give our lives meaning and purpose? How do we feel about this path honestly, not just as resignation?",
           "icon": "help"
         },
         {
@@ -615,7 +615,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Honest Feelings",
-          "text": "{red|**Reflect honestly on alternative paths to parenthood.**\n\nWhich options feel open to you?}{red| Which feel closed?}{red| What emotions come up when you consider adoption, donor options, or living child-free?}{red| What fears or concerns do you have about any of these paths?}{red| Where are you and your spouse potentially not aligned?}\n\nWrite about your honest feelings regarding alternative paths:",
+          "text": "**Reflect honestly on alternative paths to parenthood.**\n\nWhich options feel open to you? Which feel closed? What emotions come up when you consider adoption, donor options, or living child-free? What fears or concerns do you have about any of these paths? Where are you and your spouse potentially not aligned?\n\nWrite about your honest feelings regarding alternative paths:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -632,7 +632,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "An Exploratory Conversation",
-          "text": "{red|**Have a no-pressure conversation with your spouse about alternative paths.**\n\n**This is not a decision-making conversation.** It is an exploration.\n\nShare honestly: What paths feel open or closed to me right now?}{red| What draws me to or concerns me about each option?}{red| What do I need before I could consider any alternative path?}\n\n**Listen to understand, not to convince.**\n\n**Schedule this conversation this week.**",
+          "text": "**Have a no-pressure conversation with your spouse about alternative paths.**\n\n**This is not a decision-making conversation.** It is an exploration.\n\nShare honestly: What paths feel open or closed to me right now? What draws me to or concerns me about each option? What do I need before I could consider any alternative path?\n\n**Listen to understand, not to convince.**\n\n**Schedule this conversation this week.**",
           "icon": "forum"
         }
       ]
@@ -668,7 +668,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Reclaiming Your Life",
-          "text": "{red|While continuing to hope and pursue children, you can also reclaim parts of your life:\n\n**Your marriage: Remember that you married each other, not the idea of children.** Invest in your relationship as a couple.\n\nYour interests: What did you love before infertility consumed everything?}{red| Art, travel, hobbies, learning?}\n\n**Your relationships: Friends and family need you, and you need them.** Do not isolate.\n\n**Your work and calling: Your career, ministry, or vocation has value.**\n\n**Your health: Take care of your body and mind for your own sake, not just for fertility.**\n\n**Your spiritual life: Your relationship with God is not dependent on this outcome.**\n\n**None of this means giving up hope.** It means not letting hope for one thing destroy everything else.",
+          "text": "While continuing to hope and pursue children, you can also reclaim parts of your life:\n\n**Your marriage: Remember that you married each other, not the idea of children.** Invest in your relationship as a couple.\n\nYour interests: What did you love before infertility consumed everything? Art, travel, hobbies, learning?\n\n**Your relationships: Friends and family need you, and you need them.** Do not isolate.\n\n**Your work and calling: Your career, ministry, or vocation has value.**\n\n**Your health: Take care of your body and mind for your own sake, not just for fertility.**\n\n**Your spiritual life: Your relationship with God is not dependent on this outcome.**\n\n**None of this means giving up hope.** It means not letting hope for one thing destroy everything else.",
           "icon": "interests"
         },
         {
@@ -676,7 +676,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "A Biblical Perspective",
-          "text": "**Scripture reminds us that our value and purpose are not determined by whether we have children.**\n\n**Jesus never had children.** Neither did Paul. Many significant figures in Scripture and church history were childless.\n\n**'For we are his workmanship, created in Christ Jesus for good works, which God prepared beforehand, that we should walk in them.**' (({red|Ephesians 2:10}))\n\n**God has purposes for your life.** Some of those purposes might include raising children. But His plans for you are not limited to that one possibility.\n\n**You are valuable.** You have something to offer the world. Your life matters.",
+          "text": "**Scripture reminds us that our value and purpose are not determined by whether we have children.**\n\n**Jesus never had children.** Neither did Paul. Many significant figures in Scripture and church history were childless.\n\n**'For we are his workmanship, created in Christ Jesus for good works, which God prepared beforehand, that we should walk in them.**' (Ephesians 2:10)\n\n**God has purposes for your life.** Some of those purposes might include raising children. But His plans for you are not limited to that one possibility.\n\n**You are valuable.** You have something to offer the world. Your life matters.",
           "icon": "menu_book"
         },
         {
@@ -684,7 +684,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Beyond Infertility",
-          "text": "{red|**Reflect on your life beyond infertility.**\n\nWhat parts of your life have been neglected while focusing on fertility?}\n\n{red|What brings you joy and meaning outside of the hope for children?}\n\n{red|What would it look like to live a full, meaningful life even if children never come?}\n\n{red|What do you want your life to be about beyond your fertility status?}\n\nWrite about your life beyond infertility:",
+          "text": "**Reflect on your life beyond infertility.**\n\nWhat parts of your life have been neglected while focusing on fertility?\n\nWhat brings you joy and meaning outside of the hope for children?\n\nWhat would it look like to live a full, meaningful life even if children never come?\n\nWhat do you want your life to be about beyond your fertility status?\n\nWrite about your life beyond infertility:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -693,7 +693,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Both/And Hope",
-          "text": "**Hope does not have to be all-or-nothing.**\n\n**You can hope for children AND build a meaningful life in the meantime.**\n\n**You can pursue treatment AND not let treatment consume you.**\n\n**You can grieve AND still find joy.**\n\n**You can be uncertain about the outcome AND trust that God is good.**\n\n**This is not denial or resignation.** It is mature, resilient hope that can withstand whatever comes.\n\n**'We rejoice in our sufferings, knowing that suffering produces endurance, and endurance produces character, and character produces hope, and hope does not put us to shame.**' (({red|Romans 5:3-5}))",
+          "text": "**Hope does not have to be all-or-nothing.**\n\n**You can hope for children AND build a meaningful life in the meantime.**\n\n**You can pursue treatment AND not let treatment consume you.**\n\n**You can grieve AND still find joy.**\n\n**You can be uncertain about the outcome AND trust that God is good.**\n\n**This is not denial or resignation.** It is mature, resilient hope that can withstand whatever comes.\n\n**'We rejoice in our sufferings, knowing that suffering produces endurance, and endurance produces character, and character produces hope, and hope does not put us to shame.**' (Romans 5:3-5)",
           "icon": "balance"
         },
         {
@@ -701,7 +701,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "One Life-Giving Step",
-          "text": "{red|**This week, take one step to reclaim a part of your life that has been neglected.**\n\nPossibilities:\n\nPlan a date with your spouse that has nothing to do with fertility Reconnect with a friend you have been distant from Revisit a hobby or interest you used to enjoy Serve someone else and get outside your own pain Do something that brings you joy\n\nWhat one life-giving step will you take this week?}",
+          "text": "**This week, take one step to reclaim a part of your life that has been neglected.**\n\nPossibilities:\n\nPlan a date with your spouse that has nothing to do with fertility Reconnect with a friend you have been distant from Revisit a hobby or interest you used to enjoy Serve someone else and get outside your own pain Do something that brings you joy\n\nWhat one life-giving step will you take this week?",
           "icon": "wb_sunny"
         }
       ]
@@ -737,7 +737,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "The Uncertainty Ahead",
-          "text": "**We cannot promise you a baby.** No journey, no treatment, no amount of faith can guarantee that outcome.\n\n**But here is what we can promise: you can face whatever comes together.** You can build a strong marriage through this. You can find meaning and purpose regardless of outcome.\n\n**The uncertainty is painful.** But uncertainty faced together, with love and faith, is bearable.\n\n**'When you pass through the waters, I will be with you; and through the rivers, they shall not overwhelm you.**' (({red|Isaiah 43:2}))\n\n**God does not promise you will not face deep waters.** He promises He will be with you in them. And so will your spouse.",
+          "text": "**We cannot promise you a baby.** No journey, no treatment, no amount of faith can guarantee that outcome.\n\n**But here is what we can promise: you can face whatever comes together.** You can build a strong marriage through this. You can find meaning and purpose regardless of outcome.\n\n**The uncertainty is painful.** But uncertainty faced together, with love and faith, is bearable.\n\n**'When you pass through the waters, I will be with you; and through the rivers, they shall not overwhelm you.**' (Isaiah 43:2)\n\n**God does not promise you will not face deep waters.** He promises He will be with you in them. And so will your spouse.",
           "icon": "help_outline"
         },
         {
@@ -745,7 +745,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Insight",
-          "text": "{red|What is the most important thing you have learned or been reminded of through this journey?}\n\n{red|What do you want to remember and hold onto going forward?}\n\nWrite your key insight:",
+          "text": "What is the most important thing you have learned or been reminded of through this journey?\n\nWhat do you want to remember and hold onto going forward?\n\nWrite your key insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -754,7 +754,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "What Your Spouse Needs",
-          "text": "{red|Based on what you have learned, what does your spouse most need from you as you continue this journey together?}\n\n{red|How can you better support them?}{red| What will you do differently?}\n\nWrite what you commit to giving your spouse:",
+          "text": "Based on what you have learned, what does your spouse most need from you as you continue this journey together?\n\nHow can you better support them? What will you do differently?\n\nWrite what you commit to giving your spouse:",
           "responseType": "open-text",
           "icon": "favorite"
         },

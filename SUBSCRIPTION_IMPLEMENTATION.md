@@ -11,9 +11,9 @@ The subscription system has been successfully implemented with the following fea
 
 ### 2. Subscription Tiers
 - **Free**: Limited to 3 chat conversations
-- **Monthly Premium**: ₦2,999/month
-- **Quarterly Premium**: ₦7,999/quarter (Save ₦1,000)
-- **Yearly Premium**: ₦24,999/year (Save ₦10,989)
+- **Monthly Premium**: Pricing fetched dynamically from App Store/Play Store (varies by country) 
+
+**Note**: Pricing is no longer hardcoded. All subscription prices are fetched from RevenueCat, which pulls from the respective app stores. This ensures prices are always in sync across regions and can be updated without app releases.
 
 ### 3. Journey Purchases
 - Separate section for one-off journey/course purchases
@@ -45,8 +45,8 @@ lib/features/subscription/
 - **No Subscription View**:
   - Premium card with gradient design
   - Feature comparison
-  - Subscription plan cards with savings indicators
-  - "Most Popular" badge for quarterly plan
+  - Monthly subscription plan card with dynamic pricing from store
+  - Price loaded directly from RevenueCat (country-specific)
 
 ### ✅ Premium Gates
 - Updated compatibility data button on user profiles
@@ -70,15 +70,12 @@ lib/features/subscription/
 
 ### Step 2: Configure App Store & Play Store
 1. **iOS (App Store Connect)**:
-   - Create subscription products with IDs:
-     - `monthly_premium`
-     - `quarterly_premium`
-     - `yearly_premium`
-   - Configure pricing per territory
+   - Create subscription product with ID: `monthly_premium`
+   - Configure pricing per territory (prices will vary by country)
    - Add to RevenueCat dashboard
 
 2. **Android (Google Play Console)**:
-   - Create subscription products with same IDs
+   - Create subscription product with same ID: `monthly_premium`
    - Configure pricing
    - Add to RevenueCat dashboard
 

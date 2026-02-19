@@ -61,7 +61,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Why Assessment Matters",
-          "text": "{red|**Before we talk about budgets and debt strategies, let us acknowledge something.**\n\n**The financial fear after divorce is real.** It is not about spreadsheets. It is about survival.\n\nCan I make it?}{red| Can I support myself?}{red| Can I support my kids?}{red| What if something goes wrong and there is no safety net?}\n\n{red|**This fear can be paralyzing.** It can keep you awake at night. It can make you feel like you are drowning, like the numbers are a wave that will pull you under.\n\n**Here is what you need to know: you are not going to drown.**\n\n**This journey will give you a map.** A way to see where you actually stand. A path from here to stability.\n\n**It will not be instant.** Financial recovery takes time. But it is possible. People in worse situations than yours have rebuilt. You can too.\n\n**First, though, you have to look at the numbers.** Many people avoid this because looking feels worse than not knowing. It does not. The monster in the closet is always smaller when you turn on the light.\n\nReady to turn on the light?}",
+          "text": "**Before we talk about budgets and debt strategies, let us acknowledge something.**\n\n**The financial fear after divorce is real.** It is not about spreadsheets. It is about survival.\n\nCan I make it? Can I support myself? Can I support my kids? What if something goes wrong and there is no safety net?\n\n**This fear can be paralyzing.** It can keep you awake at night. It can make you feel like you are drowning, like the numbers are a wave that will pull you under.\n\n**Here is what you need to know: you are not going to drown.**\n\n**This journey will give you a map.** A way to see where you actually stand. A path from here to stability.\n\n**It will not be instant.** Financial recovery takes time. But it is possible. People in worse situations than yours have rebuilt. You can too.\n\n**First, though, you have to look at the numbers.** Many people avoid this because looking feels worse than not knowing. It does not. The monster in the closet is always smaller when you turn on the light.\n\nReady to turn on the light?",
           "icon": "visibility"
         },
         {
@@ -69,7 +69,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Key Areas to Assess",
-          "text": "{red|**A complete financial assessment includes several areas.**\n\nIncome: What money comes in each month?}{red| Salary, child support, alimony, other sources.\n\nExpenses: What are your monthly obligations?}{red| Housing, utilities, food, transportation, insurance, debt payments, childcare, everything.\n\nAssets: What do you own?}{red| Savings, retirement accounts, property, vehicles, valuables.\n\nDebts: What do you owe?} Credit cards, loans, legal fees, other obligations.\n\n**Net worth: Assets minus debts gives you your overall financial position.**\n\n**Cash flow: Income minus expenses shows whether you are gaining or losing ground each month.**\n\n**These numbers tell the story of your financial reality.**",
+          "text": "**A complete financial assessment includes several areas.**\n\nIncome: What money comes in each month? Salary, child support, alimony, other sources.\n\nExpenses: What are your monthly obligations? Housing, utilities, food, transportation, insurance, debt payments, childcare, everything.\n\nAssets: What do you own? Savings, retirement accounts, property, vehicles, valuables.\n\nDebts: What do you owe? Credit cards, loans, legal fees, other obligations.\n\n**Net worth: Assets minus debts gives you your overall financial position.**\n\n**Cash flow: Income minus expenses shows whether you are gaining or losing ground each month.**\n\n**These numbers tell the story of your financial reality.**",
           "icon": "list"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Financial Situation",
-          "text": "{red|How would you describe your current financial situation after divorce?}",
+          "text": "How would you describe your current financial situation after divorce?",
           "prompts": [
             "Stable - I am managing well financially",
             "Tight but manageable - I can cover basics with little extra",
@@ -99,7 +99,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Financial Picture",
-          "text": "{red|**Begin assessing your financial situation.**\n\nWhat is your approximate monthly income from all sources?}{red| What are your major monthly expenses?}{red| Do you have savings?}{red| Approximately how much?}{red| Do you have debt?}{red| Approximately how much?}{red| Are you currently gaining ground, losing ground, or breaking even each month?}\n\nWrite what you know about your financial picture:",
+          "text": "**Begin assessing your financial situation.**\n\nWhat is your approximate monthly income from all sources? What are your major monthly expenses? Do you have savings? Approximately how much? Do you have debt? Approximately how much? Are you currently gaining ground, losing ground, or breaking even each month?\n\nWrite what you know about your financial picture:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -136,7 +136,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Emotional Weight",
-          "text": "{red|**Financial stress is not just a practical problem.** It is an emotional one.\n\n**Fear about the future keeps you awake at night.** Will I be able to pay rent?}{red| What if an emergency happens?}{red| How will I ever retire?}\n\n**Shame about your situation makes you want to hide.** You compare yourself to others and feel like a failure.\n\n**Anxiety pervades everything.** The weight of money worries colors your whole life.\n\n**Grief may be present too.** The financial life you had is gone. The security you expected has vanished.\n\n**These emotions are real and valid.** They also need to be managed so they do not paralyze you.",
+          "text": "**Financial stress is not just a practical problem.** It is an emotional one.\n\n**Fear about the future keeps you awake at night.** Will I be able to pay rent? What if an emergency happens? How will I ever retire?\n\n**Shame about your situation makes you want to hide.** You compare yourself to others and feel like a failure.\n\n**Anxiety pervades everything.** The weight of money worries colors your whole life.\n\n**Grief may be present too.** The financial life you had is gone. The security you expected has vanished.\n\n**These emotions are real and valid.** They also need to be managed so they do not paralyze you.",
           "icon": "psychology"
         },
         {
@@ -144,7 +144,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "When Emotions Cloud Judgment",
-          "text": "{red|**Knowing where you stand financially is the foundation everything else builds on.**\n\n**This might be the first time you have had to manage money alone.** Or you might have always handled finances and now you have less to manage. Either way, you need a clear picture.\n\nHere is what you need to know:\n\nWhat comes in?}{red| All income, from all sources. Your paycheck, any support payments, any other income.\n\nWhat goes out?}{red| Everything you spend. The big things like rent and car payments. The small things that add up. All of it.\n\nWhat do you own?}{red| Assets. The value of your home if you have one. Savings. Retirement accounts. Anything that could be converted to cash if needed.\n\nWhat do you owe?} Every debt. Credit cards, car loans, student loans, medical bills. The total picture.\n\n**This is not about judgment.** It is about clarity. You cannot navigate without a map, and this is how you draw the map.\n\n**Some people discover they are in better shape than they feared.** Some discover the opposite. Either way, knowing is better than not knowing. Because once you know, you can plan. And a plan gives you power.",
+          "text": "**Knowing where you stand financially is the foundation everything else builds on.**\n\n**This might be the first time you have had to manage money alone.** Or you might have always handled finances and now you have less to manage. Either way, you need a clear picture.\n\nHere is what you need to know:\n\nWhat comes in? All income, from all sources. Your paycheck, any support payments, any other income.\n\nWhat goes out? Everything you spend. The big things like rent and car payments. The small things that add up. All of it.\n\nWhat do you own? Assets. The value of your home if you have one. Savings. Retirement accounts. Anything that could be converted to cash if needed.\n\nWhat do you owe? Every debt. Credit cards, car loans, student loans, medical bills. The total picture.\n\n**This is not about judgment.** It is about clarity. You cannot navigate without a map, and this is how you draw the map.\n\n**Some people discover they are in better shape than they feared.** Some discover the opposite. Either way, knowing is better than not knowing. Because once you know, you can plan. And a plan gives you power.",
           "icon": "warning"
         },
         {
@@ -160,7 +160,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Financial Emotions",
-          "text": "{red|**Explore the emotional side of your financial situation.**\n\nWhat emotions come up when you think about money?}{red| How is financial stress affecting your daily life?}{red| What fears about money keep you up at night?}{red| How have emotions affected your financial decisions?}\n\nWrite about your financial emotions:",
+          "text": "**Explore the emotional side of your financial situation.**\n\nWhat emotions come up when you think about money? How is financial stress affecting your daily life? What fears about money keep you up at night? How have emotions affected your financial decisions?\n\nWrite about your financial emotions:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -169,7 +169,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Faith and Financial Fear",
-          "text": "**For those with faith, financial fear can be brought to God.**\n\n**Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.** (({red|Philippians 4:6}))\n\n**This does not mean God will make you wealthy or remove all financial difficulty.** It means He is present with you in the struggle and can provide peace that transcends circumstances.\n\n**Trusting God with your finances does not replace practical action.** It provides the peace and clarity needed to take that action wisely.\n\n**God is not surprised by your financial situation.** He can be trusted even here.",
+          "text": "**For those with faith, financial fear can be brought to God.**\n\n**Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.** (Philippians 4:6)\n\n**This does not mean God will make you wealthy or remove all financial difficulty.** It means He is present with you in the struggle and can provide peace that transcends circumstances.\n\n**Trusting God with your finances does not replace practical action.** It provides the peace and clarity needed to take that action wisely.\n\n**God is not surprised by your financial situation.** He can be trusted even here.",
           "icon": "church"
         },
         {
@@ -221,7 +221,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Making It Balance",
-          "text": "{red|**The goal is income equal to or greater than expenses.** If expenses exceed income, something must change.\n\n**First, look for expenses to cut.** What is truly necessary versus nice to have?}{red| Subscriptions you do not use?}{red| Spending that could be reduced?}\n\n{red|**Second, look for income to increase.** Overtime?}{red| Side work?}{red| Selling items you no longer need?}{red| Better paying job?}\n\n**Third, prioritize ruthlessly.** If you cannot cover everything, decide what matters most. Housing, utilities, food, and transportation come before entertainment.\n\n**The goal is not perfection but sustainability.** A budget that you can actually follow that keeps you stable.",
+          "text": "**The goal is income equal to or greater than expenses.** If expenses exceed income, something must change.\n\n**First, look for expenses to cut.** What is truly necessary versus nice to have? Subscriptions you do not use? Spending that could be reduced?\n\n**Second, look for income to increase.** Overtime? Side work? Selling items you no longer need? Better paying job?\n\n**Third, prioritize ruthlessly.** If you cannot cover everything, decide what matters most. Housing, utilities, food, and transportation come before entertainment.\n\n**The goal is not perfection but sustainability.** A budget that you can actually follow that keeps you stable.",
           "icon": "balance"
         },
         {
@@ -246,7 +246,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Committing to Your Budget",
-          "text": "{red|**Finalize and commit to your budget.**\n\n**Review your draft budget.** Does it cover essentials?}{red| Is it realistic?}{red| Can you actually follow it?}\n\n**Make adjustments as needed until income and expenses balance or income exceeds expenses.**\n\n**Choose a tracking method you will use.**\n\n**Commit to following this budget for one month before making major changes.** It takes time to see if it works.\n\nWrite your budget commitment and tracking method:",
+          "text": "**Finalize and commit to your budget.**\n\n**Review your draft budget.** Does it cover essentials? Is it realistic? Can you actually follow it?\n\n**Make adjustments as needed until income and expenses balance or income exceeds expenses.**\n\n**Choose a tracking method you will use.**\n\n**Commit to following this budget for one month before making major changes.** It takes time to see if it works.\n\nWrite your budget commitment and tracking method:",
           "icon": "verified"
         }
       ]
@@ -282,7 +282,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Know What You Owe",
-          "text": "{red|**Looking at debt can feel like staring up at a mountain from the bottom.**\n\nHow will I ever climb that?} It is too high. It will take forever. I might as well give up.\n\n**Do not give up.** People climb mountains all the time. Not in one leap, but one step at a time.\n\n**Here is the truth about debt: it responds to consistent pressure.** Small payments, made reliably, over time, will bring down even large debts. It is not about making huge payments. It is about not stopping.\n\n**There are strategies that help.** The debt snowball focuses on your smallest debt first. You throw everything extra at it while paying minimums on the rest. When it is gone, you roll that payment to the next smallest. The wins build momentum.\n\n**The debt avalanche focuses on your highest interest rate first.** Mathematically, this saves the most money. But it can take longer to see progress.\n\n**Either works.** The best strategy is the one you will actually stick with.\n\n**What matters is having a plan and working the plan.** Not perfectly. Not without setbacks. But consistently, over time.\n\n**The mountain is climbable.** You just have to start walking.",
+          "text": "**Looking at debt can feel like staring up at a mountain from the bottom.**\n\nHow will I ever climb that? It is too high. It will take forever. I might as well give up.\n\n**Do not give up.** People climb mountains all the time. Not in one leap, but one step at a time.\n\n**Here is the truth about debt: it responds to consistent pressure.** Small payments, made reliably, over time, will bring down even large debts. It is not about making huge payments. It is about not stopping.\n\n**There are strategies that help.** The debt snowball focuses on your smallest debt first. You throw everything extra at it while paying minimums on the rest. When it is gone, you roll that payment to the next smallest. The wins build momentum.\n\n**The debt avalanche focuses on your highest interest rate first.** Mathematically, this saves the most money. But it can take longer to see progress.\n\n**Either works.** The best strategy is the one you will actually stick with.\n\n**What matters is having a plan and working the plan.** Not perfectly. Not without setbacks. But consistently, over time.\n\n**The mountain is climbable.** You just have to start walking.",
           "icon": "list"
         },
         {
@@ -307,7 +307,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Finding Extra for Debt",
-          "text": "{red|**Paying only minimums keeps you in debt for years.** Finding extra money to throw at debt accelerates payoff.\n\n**Look at your budget for areas to trim temporarily.** What could you reduce or eliminate while in debt payoff mode?}\n\n**Consider additional income.** Side gigs, overtime, selling items, or using skills for extra work.\n\n**Use windfalls wisely.** Tax refunds, bonuses, gifts, or unexpected money can make a big dent in debt.\n\n**Every extra dollar paid toward debt saves interest and shortens your payoff timeline.** Small amounts add up.",
+          "text": "**Paying only minimums keeps you in debt for years.** Finding extra money to throw at debt accelerates payoff.\n\n**Look at your budget for areas to trim temporarily.** What could you reduce or eliminate while in debt payoff mode?\n\n**Consider additional income.** Side gigs, overtime, selling items, or using skills for extra work.\n\n**Use windfalls wisely.** Tax refunds, bonuses, gifts, or unexpected money can make a big dent in debt.\n\n**Every extra dollar paid toward debt saves interest and shortens your payoff timeline.** Small amounts add up.",
           "icon": "attach_money"
         },
         {
@@ -315,7 +315,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Debt Elimination Plan",
-          "text": "{red|**Create your debt elimination plan.**\n\nWhich strategy will you use: snowball (smallest first) or avalanche (highest interest first)?}\n\n{red|What order will you pay off your debts?}\n\n{red|How much extra can you put toward debt each month beyond minimums?}\n\n{red|Where will that extra come from?}\n\n{red|What is your target date for being debt-free?}\n\nWrite your debt elimination plan:",
+          "text": "**Create your debt elimination plan.**\n\nWhich strategy will you use: snowball (smallest first) or avalanche (highest interest first)?\n\nWhat order will you pay off your debts?\n\nHow much extra can you put toward debt each month beyond minimums?\n\nWhere will that extra come from?\n\nWhat is your target date for being debt-free?\n\nWrite your debt elimination plan:",
           "icon": "task_alt"
         }
       ]
@@ -343,7 +343,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Why Emergency Funds Matter",
-          "text": "{red|**There is a kind of peace that comes from having a financial cushion.** Even a small one.\n\n**An emergency fund is money set aside for emergencies.** Not vacations, not wants, not retail therapy. Money that sits there, untouched, waiting for the car to break down or the medical bill to arrive or the job to disappear.\n\n**After divorce, building this fund can feel impossible.** There is barely enough to cover regular expenses, let alone extra.\n\n**Start small anyway.**\n\n**Ten dollars a week becomes five hundred in a year.** Twenty becomes a thousand. It adds up faster than you expect.\n\n**The goal eventually is three to six months of expenses.** That might seem absurd right now. But you do not have to get there immediately. You have to start moving in that direction.\n\nWhy does this matter so much?}\n\n**Because financial emergencies are not if, they are when.** And when they come, you need to have a way to handle them that does not involve going deeper into debt.\n\n**Because there is a feeling that comes from knowing you have a cushion.** It changes how you sleep. It changes how you face each day.\n\n**Because every dollar in that fund is evidence that you are building something.** That you are moving from crisis to stability.\n\n**Start small.** Start now.",
+          "text": "**There is a kind of peace that comes from having a financial cushion.** Even a small one.\n\n**An emergency fund is money set aside for emergencies.** Not vacations, not wants, not retail therapy. Money that sits there, untouched, waiting for the car to break down or the medical bill to arrive or the job to disappear.\n\n**After divorce, building this fund can feel impossible.** There is barely enough to cover regular expenses, let alone extra.\n\n**Start small anyway.**\n\n**Ten dollars a week becomes five hundred in a year.** Twenty becomes a thousand. It adds up faster than you expect.\n\n**The goal eventually is three to six months of expenses.** That might seem absurd right now. But you do not have to get there immediately. You have to start moving in that direction.\n\nWhy does this matter so much?\n\n**Because financial emergencies are not if, they are when.** And when they come, you need to have a way to handle them that does not involve going deeper into debt.\n\n**Because there is a feeling that comes from knowing you have a cushion.** It changes how you sleep. It changes how you face each day.\n\n**Because every dollar in that fund is evidence that you are building something.** That you are moving from crisis to stability.\n\n**Start small.** Start now.",
           "icon": "savings"
         },
         {
@@ -367,7 +367,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Savings Status",
-          "text": "{red|**Assess your current savings situation.**\n\nHow much do you currently have in emergency savings?}{red| How close is that to your starter goal of five hundred to one thousand dollars?}{red| How close to your ultimate goal of three to six months expenses?}{red| What has prevented you from saving in the past?}\n\nWrite about your savings status:",
+          "text": "**Assess your current savings situation.**\n\nHow much do you currently have in emergency savings? How close is that to your starter goal of five hundred to one thousand dollars? How close to your ultimate goal of three to six months expenses? What has prevented you from saving in the past?\n\nWrite about your savings status:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -384,7 +384,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Emergency Fund Plan",
-          "text": "{red|**Create a plan to build your emergency fund.**\n\nWhat is your starter goal?}{red| Usually five hundred to one thousand dollars.\n\nHow much can you save each paycheck or month toward this goal?}\n\n{red|When will you set up automatic transfers?}\n\n{red|What additional sources could contribute: windfalls, selling items, reduced expenses?}\n\n{red|When do you expect to reach your starter goal?}\n\nWrite your emergency fund plan:",
+          "text": "**Create a plan to build your emergency fund.**\n\nWhat is your starter goal? Usually five hundred to one thousand dollars.\n\nHow much can you save each paycheck or month toward this goal?\n\nWhen will you set up automatic transfers?\n\nWhat additional sources could contribute: windfalls, selling items, reduced expenses?\n\nWhen do you expect to reach your starter goal?\n\nWrite your emergency fund plan:",
           "icon": "task_alt"
         }
       ]
@@ -420,7 +420,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Options for Increasing Income",
-          "text": "{red|**Several options exist for increasing income.**\n\n**Advance in your current job.** Could you take on more responsibility, get a raise, or pursue a promotion?}\n\n{red|**Find a better paying job.** Is your current job paying market rate?}{red| Could you find something better?}\n\n{red|**Add a part-time job.** Temporary second work can accelerate financial goals.\n\n**Develop a side hustle.** Freelancing, consulting, or gig work using your skills.\n\n**Monetize hobbies.** Could something you enjoy doing generate income?}\n\n**Sell items.** Things you no longer need can become cash.\n\n**Pursue education or training.** Sometimes investing in yourself leads to higher earning potential.\n\n**Not all options are available to everyone.** Consider what might work for your situation.",
+          "text": "**Several options exist for increasing income.**\n\n**Advance in your current job.** Could you take on more responsibility, get a raise, or pursue a promotion?\n\n**Find a better paying job.** Is your current job paying market rate? Could you find something better?\n\n**Add a part-time job.** Temporary second work can accelerate financial goals.\n\n**Develop a side hustle.** Freelancing, consulting, or gig work using your skills.\n\n**Monetize hobbies.** Could something you enjoy doing generate income?\n\n**Sell items.** Things you no longer need can become cash.\n\n**Pursue education or training.** Sometimes investing in yourself leads to higher earning potential.\n\n**Not all options are available to everyone.** Consider what might work for your situation.",
           "icon": "work"
         },
         {
@@ -436,7 +436,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Income Options",
-          "text": "{red|**Explore your options for increasing income.**\n\nIs there potential to earn more in your current job?}{red| Would a job change improve your income?}{red| What skills do you have that could generate additional income?}{red| Do you have time and energy for additional work?}{red| How much?}{red| What constraints limit your options?}\n\nWrite about your income options:",
+          "text": "**Explore your options for increasing income.**\n\nIs there potential to earn more in your current job? Would a job change improve your income? What skills do you have that could generate additional income? Do you have time and energy for additional work? How much? What constraints limit your options?\n\nWrite about your income options:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -445,7 +445,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Most Viable Option",
-          "text": "{red|Which income-increasing option seems most viable for you right now?}",
+          "text": "Which income-increasing option seems most viable for you right now?",
           "prompts": [
             "Seeking a raise or promotion at current job",
             "Looking for a better paying job",
@@ -468,7 +468,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Income Growth Plan",
-          "text": "{red|**If increasing income would help your situation, create a plan.**\n\nWhat is one concrete step you could take toward increasing income?}\n\n{red|What timeline makes sense for this step?}\n\n{red|What barriers might you face and how could you address them?}\n\n**If increasing income is not viable right now, note that and focus energy on managing what you have.**\n\nWrite your income growth plan or decision:",
+          "text": "**If increasing income would help your situation, create a plan.**\n\nWhat is one concrete step you could take toward increasing income?\n\nWhat timeline makes sense for this step?\n\nWhat barriers might you face and how could you address them?\n\n**If increasing income is not viable right now, note that and focus energy on managing what you have.**\n\nWrite your income growth plan or decision:",
           "icon": "task_alt"
         }
       ]
@@ -520,7 +520,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Financial Confidence",
-          "text": "{red|**Assess your current financial knowledge and confidence.**\n\nWhat aspects of financial management do you feel confident about?}{red| What areas feel overwhelming or confusing?}{red| What financial tasks have you never done that you now need to do?}{red| What would help you feel more confident?}\n\nWrite about your financial confidence:",
+          "text": "**Assess your current financial knowledge and confidence.**\n\nWhat aspects of financial management do you feel confident about? What areas feel overwhelming or confusing? What financial tasks have you never done that you now need to do? What would help you feel more confident?\n\nWrite about your financial confidence:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -537,7 +537,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Financial Learning Plan",
-          "text": "{red|**Create a plan to build your financial knowledge and confidence.**\n\nWhat is one financial skill you want to develop first?}\n\n{red|What resource will you use to learn it?}\n\n{red|What is one financial task you have been avoiding that you will tackle this week?}\n\n{red|Who could you ask for help or guidance?}\n\nWrite your financial learning plan:",
+          "text": "**Create a plan to build your financial knowledge and confidence.**\n\nWhat is one financial skill you want to develop first?\n\nWhat resource will you use to learn it?\n\nWhat is one financial task you have been avoiding that you will tackle this week?\n\nWho could you ask for help or guidance?\n\nWrite your financial learning plan:",
           "icon": "task_alt"
         }
       ]
@@ -565,7 +565,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Stewardship Not Ownership",
-          "text": "{red|Can we talk about something that might feel uncomfortable?}\n\n**Contentment.** And giving.\n\n**When you are struggling financially, contentment can sound like a cruel joke.** Be content with what you have. Easy for someone to say who has enough.\n\n**But contentment is not about having enough by the world's standards.** It is about finding peace regardless of circumstances. It is about not letting financial stress steal every good thing. It is about recognizing that, even in difficulty, there are things to be grateful for.\n\n**This is not toxic positivity.** Your situation may genuinely be hard. Contentment does not mean pretending it is not.\n\n**It means not letting the hardship define everything.** It means still being able to see beauty, receive kindness, experience joy. Even while you struggle.\n\n**And giving.** You might think you have nothing to give. But giving is not just money. It is time, attention, kindness. It is being generous with what you have, even when what you have is limited.\n\n**There is something that happens when you give even from scarcity.** It reminds you that you are not just a consumer of resources but a contributor. That you have something to offer. That you are part of the flow, not just trying to capture as much as possible.\n\n**Start where you are.** Give what you can. Find what contentment is available to you. It will not fix your finances. But it might save your soul while your finances recover.",
+          "text": "Can we talk about something that might feel uncomfortable?\n\n**Contentment.** And giving.\n\n**When you are struggling financially, contentment can sound like a cruel joke.** Be content with what you have. Easy for someone to say who has enough.\n\n**But contentment is not about having enough by the world's standards.** It is about finding peace regardless of circumstances. It is about not letting financial stress steal every good thing. It is about recognizing that, even in difficulty, there are things to be grateful for.\n\n**This is not toxic positivity.** Your situation may genuinely be hard. Contentment does not mean pretending it is not.\n\n**It means not letting the hardship define everything.** It means still being able to see beauty, receive kindness, experience joy. Even while you struggle.\n\n**And giving.** You might think you have nothing to give. But giving is not just money. It is time, attention, kindness. It is being generous with what you have, even when what you have is limited.\n\n**There is something that happens when you give even from scarcity.** It reminds you that you are not just a consumer of resources but a contributor. That you have something to offer. That you are part of the flow, not just trying to capture as much as possible.\n\n**Start where you are.** Give what you can. Find what contentment is available to you. It will not fix your finances. But it might save your soul while your finances recover.",
           "icon": "volunteer_activism"
         },
         {
@@ -573,7 +573,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Giving When It Is Hard",
-          "text": "{red|**Steven left his marriage with nothing but his car and his clothes.** Three years later, he had a small apartment, an emergency fund, and zero debt. It was not wealth, but it was stability he had built himself. That felt like more than money.\n\n**Giving is a core biblical practice.** But what about when you can barely pay your bills?}\n\nSome perspectives to hold in tension:\n\n**God calls us to generosity.** Giving is part of faithful living and acknowledges that He is our provider.\n\n**God does not want you to neglect legitimate obligations.** Providing for your family and meeting basic needs are also biblical commands.\n\n**The heart matters more than the amount.** The widow's mite was precious to Jesus because of her heart, not its monetary value.\n\n**Giving can be an act of faith.** Trusting God by giving even when tight can be powerful.\n\n**No condemnation.** If you truly cannot give right now, God understands. This is a season.\n\n**Pray about what is right for you in this season, and follow your conscience.**",
+          "text": "**Steven left his marriage with nothing but his car and his clothes.** Three years later, he had a small apartment, an emergency fund, and zero debt. It was not wealth, but it was stability he had built himself. That felt like more than money.\n\n**Giving is a core biblical practice.** But what about when you can barely pay your bills?\n\nSome perspectives to hold in tension:\n\n**God calls us to generosity.** Giving is part of faithful living and acknowledges that He is our provider.\n\n**God does not want you to neglect legitimate obligations.** Providing for your family and meeting basic needs are also biblical commands.\n\n**The heart matters more than the amount.** The widow's mite was precious to Jesus because of her heart, not its monetary value.\n\n**Giving can be an act of faith.** Trusting God by giving even when tight can be powerful.\n\n**No condemnation.** If you truly cannot give right now, God understands. This is a season.\n\n**Pray about what is right for you in this season, and follow your conscience.**",
           "icon": "favorite"
         },
         {
@@ -581,7 +581,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Trusting God as Provider",
-          "text": "**Financial difficulty tests our trust in God as provider.**\n\n**When money is tight, it is tempting to rely entirely on your own efforts and leave God out of the equation.** Or to become bitter that He has not provided more.\n\n**But God promises to provide for our needs.** Not necessarily our wants, but our needs. And He often provides through unexpected means.\n\n**Trusting Him does not mean being passive.** Work hard, be wise, make good decisions. But hold it all with open hands, knowing ultimately He provides.\n\n**Do not be anxious about what you will eat or drink or wear.** Your heavenly Father knows that you need them. Seek first His kingdom and His righteousness, and all these things will be given to you as well. (({red|Matthew 6:31-33}))",
+          "text": "**Financial difficulty tests our trust in God as provider.**\n\n**When money is tight, it is tempting to rely entirely on your own efforts and leave God out of the equation.** Or to become bitter that He has not provided more.\n\n**But God promises to provide for our needs.** Not necessarily our wants, but our needs. And He often provides through unexpected means.\n\n**Trusting Him does not mean being passive.** Work hard, be wise, make good decisions. But hold it all with open hands, knowing ultimately He provides.\n\n**Do not be anxious about what you will eat or drink or wear.** Your heavenly Father knows that you need them. Seek first His kingdom and His righteousness, and all these things will be given to you as well. (Matthew 6:31-33)",
           "icon": "church"
         },
         {
@@ -589,7 +589,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Stewardship Reflection",
-          "text": "{red|**Reflect on stewardship and giving in your current situation.**\n\nHow do you view your relationship with money and God?}{red| Have you been able to give?}{red| How has that felt?}{red| What tensions do you feel between tight finances and biblical generosity?}{red| What would faithful stewardship look like for you in this season?}\n\nWrite your stewardship reflection:",
+          "text": "**Reflect on stewardship and giving in your current situation.**\n\nHow do you view your relationship with money and God? Have you been able to give? How has that felt? What tensions do you feel between tight finances and biblical generosity? What would faithful stewardship look like for you in this season?\n\nWrite your stewardship reflection:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -598,7 +598,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Contentment in Scarcity",
-          "text": "**Contentment is a biblical virtue that does not depend on circumstances.**\n\n**I have learned to be content whatever the circumstances.** I know what it is to be in need, and I know what it is to have plenty. I have learned the secret of being content in any and every situation. (({red|Philippians 4:11-12}))\n\n**Contentment does not mean giving up or not working toward improvement.** It means finding peace in the present while working toward a better future.\n\n**Contentment is possible in financial difficulty.** Not because the difficulty is pleasant, but because your security is in God, not in money.\n\n**This does not come naturally.** It is learned, as Paul says. Practice contentment as a spiritual discipline.",
+          "text": "**Contentment is a biblical virtue that does not depend on circumstances.**\n\n**I have learned to be content whatever the circumstances.** I know what it is to be in need, and I know what it is to have plenty. I have learned the secret of being content in any and every situation. (Philippians 4:11-12)\n\n**Contentment does not mean giving up or not working toward improvement.** It means finding peace in the present while working toward a better future.\n\n**Contentment is possible in financial difficulty.** Not because the difficulty is pleasant, but because your security is in God, not in money.\n\n**This does not come naturally.** It is learned, as Paul says. Practice contentment as a spiritual discipline.",
           "icon": "self_improvement"
         },
         {
@@ -606,7 +606,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Stewardship Commitment",
-          "text": "{red|**Make a stewardship commitment appropriate for your situation.**\n\nHow will you honor God with your finances in this season?}\n\n{red|What will giving look like for you, even if small?}\n\n{red|How will you practice trust in God as your provider?}\n\n{red|How will you cultivate contentment amid financial difficulty?}\n\nWrite your stewardship commitment:",
+          "text": "**Make a stewardship commitment appropriate for your situation.**\n\nHow will you honor God with your finances in this season?\n\nWhat will giving look like for you, even if small?\n\nHow will you practice trust in God as your provider?\n\nHow will you cultivate contentment amid financial difficulty?\n\nWrite your stewardship commitment:",
           "icon": "verified"
         }
       ]
@@ -634,7 +634,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Beyond Survival Mode",
-          "text": "{red|**When finances are tight, survival mode is necessary.** You focus on getting through this month, paying this bill, handling this crisis.\n\n**But survival mode is not meant to be permanent.** At some point, you need to lift your eyes and look further ahead.\n\nWhat do you want your financial life to look like in five years?}{red| Ten years?}{red| At retirement?}\n\n**These questions may seem irrelevant when you are struggling now.** But beginning to think about them gives you direction and hope. You are not just surviving. You are building toward something.",
+          "text": "**When finances are tight, survival mode is necessary.** You focus on getting through this month, paying this bill, handling this crisis.\n\n**But survival mode is not meant to be permanent.** At some point, you need to lift your eyes and look further ahead.\n\nWhat do you want your financial life to look like in five years? Ten years? At retirement?\n\n**These questions may seem irrelevant when you are struggling now.** But beginning to think about them gives you direction and hope. You are not just surviving. You are building toward something.",
           "icon": "visibility"
         },
         {
@@ -658,7 +658,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Financial Vision",
-          "text": "{red|**Begin to envision your long-term financial future.**\n\nWhat do you want your financial life to look like in five years?}{red| What about in ten years or at retirement?}{red| What long-term financial goals matter most to you?}{red| What is one small step toward long-term health you could take now?}\n\nWrite your financial vision:",
+          "text": "**Begin to envision your long-term financial future.**\n\nWhat do you want your financial life to look like in five years? What about in ten years or at retirement? What long-term financial goals matter most to you? What is one small step toward long-term health you could take now?\n\nWrite your financial vision:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -675,7 +675,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "One Step Toward the Future",
-          "text": "{red|**Identify one step you can take now toward long-term financial health.**\n\n**This might be starting retirement contributions (even small ones).** Setting a goal date for debt freedom. Beginning to research insurance needs. Creating or updating a will.\n\n**It does not have to be big.** It just has to be movement in the right direction.\n\nWhat is your one step toward long-term financial health?}",
+          "text": "**Identify one step you can take now toward long-term financial health.**\n\n**This might be starting retirement contributions (even small ones).** Setting a goal date for debt freedom. Beginning to research insurance needs. Creating or updating a will.\n\n**It does not have to be big.** It just has to be movement in the right direction.\n\nWhat is your one step toward long-term financial health?",
           "icon": "task_alt"
         }
       ]
@@ -719,7 +719,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Financial Insight",
-          "text": "{red|What is the most important thing you have learned or realized through this journey about your finances?}\n\n{red|What do you want to remember when financial stress rises?}\n\nWrite your key financial insight:",
+          "text": "What is the most important thing you have learned or realized through this journey about your finances?\n\nWhat do you want to remember when financial stress rises?\n\nWrite your key financial insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -728,7 +728,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Financial Commitments",
-          "text": "{red|What specific commitments will you make for your ongoing financial health?}\n\n{red|How will you manage your budget?}{red| How will you continue addressing debt?}{red| How will you build savings?}{red| How will you handle financial anxiety when it arises?}\n\nWrite your financial commitments:",
+          "text": "What specific commitments will you make for your ongoing financial health?\n\nHow will you manage your budget? How will you continue addressing debt? How will you build savings? How will you handle financial anxiety when it arises?\n\nWrite your financial commitments:",
           "responseType": "open-text",
           "icon": "verified"
         },

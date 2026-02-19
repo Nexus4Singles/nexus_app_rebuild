@@ -528,7 +528,7 @@ class _NoSubscriptionView extends ConsumerWidget {
 
           // Subscription Plans
           Text(
-            'Choose Your Plan',
+            'Activate Your Subscription',
             style: AppTextStyles.titleLarge.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -559,7 +559,7 @@ class _NoSubscriptionView extends ConsumerWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'All subscriptions auto-renew. Cancel anytime from this screen. Prices may vary by country.',
+                    'This subscription will auto-renew. Cancel anytime from your Playstore or Appstore subscription settings.',
                     style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.getTextSecondary(context),
                       height: 1.4,
@@ -618,10 +618,18 @@ class _NoSubscriptionView extends ConsumerWidget {
       );
 
       // Make purchase
-      await RevenueCatService.purchasePackage(monthlyPackage);
+      final customerInfo = await RevenueCatService.purchasePackage(
+        monthlyPackage,
+      );
 
       if (!context.mounted) return;
       Navigator.pop(context); // Close loading dialog
+
+      // If `customerInfo` is null, the user cancelled the native purchase
+      // sheet. Treat this as a non-error and simply return.
+      if (customerInfo == null) {
+        return;
+      }
 
       // Record purchase in Firestore
       await ref
@@ -851,18 +859,90 @@ class _FeatureTile extends StatelessWidget {
   }
 }
 
-// Subscription Plan Card
-class _SubscriptionPlanCard extends ConsumerWidget {
+// Subscription Plan Card - fetches price from RevenueCat
+class _SubscriptionPlanCard extends ConsumerStatefulWidget {
   final SubscriptionTier tier;
   final VoidCallback? onSubscribePressed;
 
   const _SubscriptionPlanCard({required this.tier, this.onSubscribePressed});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final pricePerMonth = tier.priceNGN;
-    final savings = null;
+  ConsumerState<_SubscriptionPlanCard> createState() =>
+      _SubscriptionPlanCardState();
+}
 
+class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
+  String _monthlyPrice = '';
+  bool _isLoadingPrice = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMonthlyPrice();
+  }
+
+  Future<void> _loadMonthlyPrice() async {
+    try {
+      print('🟡 [SubscriptionCard] Loading monthly price from RevenueCat...');
+
+      final offerings = await RevenueCatService.getOfferings();
+      if (offerings == null || offerings.current == null) {
+        print('🔴 [SubscriptionCard] No offerings available');
+        if (mounted) {
+          setState(() => _isLoadingPrice = false);
+        }
+        return;
+      }
+
+      // Find the monthly subscription package
+      final packages = offerings.current!.availablePackages;
+      print(
+        '🟡 [SubscriptionCard] Available packages: ${packages.map((p) => p.storeProduct.identifier).toList()}',
+      );
+
+      Package? monthlyPackage;
+
+      // Try 1: Match 'monthly' pattern (e.g., $rc_monthly, nexus_monthly_premium)
+      for (final p in packages) {
+        if (p.storeProduct.identifier.toLowerCase().contains('monthly')) {
+          monthlyPackage = p;
+          print(
+            '🟢 [SubscriptionCard] Found monthly package: ${p.storeProduct.identifier}',
+          );
+          break;
+        }
+      }
+
+      // Try 2: If not found, take first package as fallback
+      if (monthlyPackage == null && packages.isNotEmpty) {
+        monthlyPackage = packages.first;
+        print(
+          '🟡 [SubscriptionCard] No "monthly" match found, using first package: ${monthlyPackage.storeProduct.identifier}',
+        );
+      }
+
+      if (monthlyPackage != null && mounted) {
+        print(
+          '🟢 [SubscriptionCard] Setting price: ${monthlyPackage.storeProduct.priceString} (currency: ${monthlyPackage.storeProduct.currencyCode})',
+        );
+        setState(() {
+          _monthlyPrice = monthlyPackage!.storeProduct.priceString;
+          _isLoadingPrice = false;
+        });
+      } else if (mounted) {
+        print('🔴 [SubscriptionCard] No package found, showing fallback');
+        setState(() => _isLoadingPrice = false);
+      }
+    } catch (e) {
+      print('🔴 [SubscriptionCard] Error loading price: $e');
+      if (mounted) {
+        setState(() => _isLoadingPrice = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
@@ -880,58 +960,43 @@ class _SubscriptionPlanCard extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        tier.displayName,
+                        widget.tier.displayName,
                         style: AppTextStyles.titleLarge.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '₦$pricePerMonth/month',
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.getTextSecondary(context),
-                        ),
-                      ),
-                      if (savings != null) ...[
-                        const SizedBox(height: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.success.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            savings,
-                            style: AppTextStyles.caption.copyWith(
-                              color: AppColors.success,
-                              fontWeight: FontWeight.bold,
+                      const SizedBox(height: 8),
+                      // Show price loaded from store/RevenueCat
+                      if (_isLoadingPrice)
+                        SizedBox(
+                          width: 60,
+                          height: 16,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.getTextSecondary(
+                                context,
+                              ).withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(4),
                             ),
                           ),
+                        )
+                      else if (_monthlyPrice.isNotEmpty)
+                        Text(
+                          _monthlyPrice,
+                          style: AppTextStyles.titleMedium.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary,
+                          ),
+                        )
+                      else
+                        Text(
+                          'Price from store',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.getTextSecondary(context),
+                          ),
                         ),
-                      ],
                     ],
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      '₦${tier.priceNGN}',
-                      style: AppTextStyles.headlineMedium.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                    Text(
-                      'total',
-                      style: AppTextStyles.caption.copyWith(
-                        color: AppColors.getTextSecondary(context),
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
@@ -940,8 +1005,8 @@ class _SubscriptionPlanCard extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
             child: ElevatedButton(
               onPressed: () async {
-                if (onSubscribePressed != null) {
-                  onSubscribePressed!();
+                if (widget.onSubscribePressed != null) {
+                  widget.onSubscribePressed!();
                 }
               },
               style: ElevatedButton.styleFrom(

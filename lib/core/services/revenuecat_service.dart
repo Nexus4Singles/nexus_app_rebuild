@@ -39,20 +39,32 @@ class RevenueCatService {
     }
   }
 
-  static Future<void> purchaseSubscription(Package package) async {
-    try {
-      await Purchases.purchasePackage(package);
-    } catch (e) {
-      print('Error purchasing subscription: $e');
-      rethrow;
-    }
+  /// Purchase a subscription package. Returns the [CustomerInfo] on success,
+  /// or `null` when the user cancels the platform purchase sheet.
+  static Future<CustomerInfo?> purchaseSubscription(Package package) async {
+    return purchasePackage(package);
   }
 
-  static Future<CustomerInfo> purchasePackage(Package package) async {
+  /// Purchase a package (subscriptions or one-time). Returns [CustomerInfo]
+  /// on success, or `null` if the user cancelled the native purchase UI.
+  static Future<CustomerInfo?> purchasePackage(Package package) async {
     try {
       return await Purchases.purchasePackage(package);
     } catch (e) {
-      print('Error purchasing package: $e');
+      final msg = e.toString().toLowerCase();
+      // Heuristic checks for user-initiated cancellation messages from
+      // platform SDKs. If detected, return null to indicate a cancelled
+      // purchase (not an error the user needs to see).
+      if (msg.contains('cancel') ||
+          msg.contains('user cancelled') ||
+          msg.contains('user canceled') ||
+          msg.contains('purchase cancelled') ||
+          msg.contains('purchase canceled')) {
+        print('🟡 [RevenueCatService] Purchase cancelled by user: $e');
+        return null;
+      }
+
+      print('🔴 [RevenueCatService] Error purchasing package: $e');
       rethrow;
     }
   }
@@ -100,7 +112,8 @@ class RevenueCatService {
         }
 
         throw Exception(
-            'Failed to open App Store subscriptions management on iOS. None of the URL schemes worked.');
+          'Failed to open App Store subscriptions management on iOS. None of the URL schemes worked.',
+        );
       } else if (Platform.isAndroid) {
         // Android - Try multiple approaches
         const appPackage = 'com.nexusapp';
@@ -128,7 +141,8 @@ class RevenueCatService {
         }
 
         throw Exception(
-            'Failed to open Google Play subscriptions management on Android. None of the URL schemes worked.');
+          'Failed to open Google Play subscriptions management on Android. None of the URL schemes worked.',
+        );
       }
     } catch (e) {
       print('🔴 [RevenueCatService] manageSubscriptions error: $e');

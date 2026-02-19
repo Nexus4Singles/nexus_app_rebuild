@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Grief Right Now",
-          "text": "{red|How would you describe your current relationship with grief?}",
+          "text": "How would you describe your current relationship with grief?",
           "prompts": [
             "I am actively grieving and feeling the pain intensely",
             "I have been avoiding or suppressing my grief",
@@ -99,7 +99,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Losses",
-          "text": "{red|**Take time to name what you have lost.**\n\nWhat did you lose when your marriage ended?} Think beyond the obvious. Think about tangible losses and intangible ones. Think about present losses and future losses.\n\n**Writing them down validates their reality and the legitimacy of your grief.**\n\nList what you have lost:",
+          "text": "**Take time to name what you have lost.**\n\nWhat did you lose when your marriage ended? Think beyond the obvious. Think about tangible losses and intangible ones. Think about present losses and future losses.\n\n**Writing them down validates their reality and the legitimacy of your grief.**\n\nList what you have lost:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -136,7 +136,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Emotional Intensity",
-          "text": "{red|**Kevin had always been the steady one.** Calm under pressure, emotionally stable, the person friends came to for advice. But after his divorce, he found himself sobbing in parking lots, snapping at coworkers over nothing, and lying awake at 3 AM with his heart racing. Who was this person he had become?}\n\n**Divorce often brings emotions more intense than people expect.**\n\n**You might feel overwhelming sadness that takes your breath away.** Rage that surprises you with its intensity. Fear about the future that wakes you at night. Shame that makes you want to hide from the world.\n\n**You might feel relief and then guilt for feeling relief.** Loneliness that aches physically. Jealousy when your ex moves on. Despair that things will never be okay.\n\n**These emotions can come in waves, hitting suddenly and intensely.** They can shift rapidly, leaving you feeling unstable. They can feel bigger than you can handle.\n\n**This emotional intensity is normal, even though it does not feel normal.**",
+          "text": "**Kevin had always been the steady one.** Calm under pressure, emotionally stable, the person friends came to for advice. But after his divorce, he found himself sobbing in parking lots, snapping at coworkers over nothing, and lying awake at 3 AM with his heart racing. Who was this person he had become?\n\n**Divorce often brings emotions more intense than people expect.**\n\n**You might feel overwhelming sadness that takes your breath away.** Rage that surprises you with its intensity. Fear about the future that wakes you at night. Shame that makes you want to hide from the world.\n\n**You might feel relief and then guilt for feeling relief.** Loneliness that aches physically. Jealousy when your ex moves on. Despair that things will never be okay.\n\n**These emotions can come in waves, hitting suddenly and intensely.** They can shift rapidly, leaving you feeling unstable. They can feel bigger than you can handle.\n\n**This emotional intensity is normal, even though it does not feel normal.**",
           "icon": "thunderstorm"
         },
         {
@@ -160,7 +160,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Emotional Landscape",
-          "text": "{red|**Take inventory of the emotions you have been experiencing.**\n\nWhat emotions have been strongest for you?}{red| What emotions surprised you?}{red| What emotions have you been trying to avoid or suppress?}{red| How have your emotions changed over time since the divorce?}\n\nDescribe your emotional landscape:",
+          "text": "**Take inventory of the emotions you have been experiencing.**\n\nWhat emotions have been strongest for you? What emotions surprised you? What emotions have you been trying to avoid or suppress? How have your emotions changed over time since the divorce?\n\nDescribe your emotional landscape:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -169,7 +169,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Most Difficult Emotion",
-          "text": "{red|Which emotion has been the hardest for you to deal with?}",
+          "text": "Which emotion has been the hardest for you to deal with?",
           "prompts": [
             "Overwhelming sadness and grief",
             "Intense anger or rage",
@@ -229,7 +229,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Common Grief Experiences",
-          "text": "{red|**Grief moves through you in recognizable ways, though never in a straight line.**\n\n**There is the fog at the beginning.** You go through motions. You sign papers, make arrangements, answer questions. Part of you is watching from a distance, not quite believing this is your life now.\n\n**There is the pain when the fog lifts.** The moment you realize this is real, and it is not going away. This is when the weight hits. Some people describe it as physical, like something pressing on their chest.\n\n**There is the anger that surprises you.** At them, at yourself, at God, at the unfairness of it all. Sometimes the anger feels better than the sadness. Sometimes it scares you with its intensity.\n\n**There is the bargaining you do with yourself.** What if I had done this differently?}{red| What if we tried again?} Your mind searches for a way to undo what cannot be undone.\n\n**There is the depression that settles in.** Not the dramatic grief of early days, but a gray flatness where nothing seems to matter much. This is often the longest season.\n\n**And eventually, there is acceptance.** Not happiness. Not approval. Just the quiet recognition that this is what happened, and you are learning to live with it.\n\n**You will visit all of these.** Multiple times. In no particular order.",
+          "text": "**Grief moves through you in recognizable ways, though never in a straight line.**\n\n**There is the fog at the beginning.** You go through motions. You sign papers, make arrangements, answer questions. Part of you is watching from a distance, not quite believing this is your life now.\n\n**There is the pain when the fog lifts.** The moment you realize this is real, and it is not going away. This is when the weight hits. Some people describe it as physical, like something pressing on their chest.\n\n**There is the anger that surprises you.** At them, at yourself, at God, at the unfairness of it all. Sometimes the anger feels better than the sadness. Sometimes it scares you with its intensity.\n\n**There is the bargaining you do with yourself.** What if I had done this differently? What if we tried again? Your mind searches for a way to undo what cannot be undone.\n\n**There is the depression that settles in.** Not the dramatic grief of early days, but a gray flatness where nothing seems to matter much. This is often the longest season.\n\n**And eventually, there is acceptance.** Not happiness. Not approval. Just the quiet recognition that this is what happened, and you are learning to live with it.\n\n**You will visit all of these.** Multiple times. In no particular order.",
           "icon": "list"
         },
         {
@@ -245,7 +245,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Signs of Healthy Grieving",
-          "text": "{red|How do you know if you are grieving in healthy ways?}\n\n**You allow yourself to feel the emotions rather than numbing or avoiding them.** You have moments of relief and even happiness alongside the grief. You can function in daily life most of the time, even if imperfectly.\n\n**You reach out to others for support rather than isolating completely.** You take care of basic needs like eating, sleeping, and hygiene. You have hope, even if faint, that things will eventually improve.\n\n**You are gradually able to think about the future, not just the past.** You begin to find meaning or learning in the experience. Over time, the intensity decreases, even if slowly.",
+          "text": "How do you know if you are grieving in healthy ways?\n\n**You allow yourself to feel the emotions rather than numbing or avoiding them.** You have moments of relief and even happiness alongside the grief. You can function in daily life most of the time, even if imperfectly.\n\n**You reach out to others for support rather than isolating completely.** You take care of basic needs like eating, sleeping, and hygiene. You have hope, even if faint, that things will eventually improve.\n\n**You are gradually able to think about the future, not just the past.** You begin to find meaning or learning in the experience. Over time, the intensity decreases, even if slowly.",
           "icon": "check_circle"
         },
         {
@@ -253,7 +253,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Where You Are in the Process",
-          "text": "{red|**Reflect on where you are in your grief process.**\n\nWhich grief experiences have you had?}{red| Shock, pain, anger, bargaining, depression, acceptance?}{red| Which are you currently experiencing most?}{red| Do you notice any progress over time, even if uneven?}{red| What gives you hope that healing is possible?}\n\nDescribe where you are in your grief journey:",
+          "text": "**Reflect on where you are in your grief process.**\n\nWhich grief experiences have you had? Shock, pain, anger, bargaining, depression, acceptance? Which are you currently experiencing most? Do you notice any progress over time, even if uneven? What gives you hope that healing is possible?\n\nDescribe where you are in your grief journey:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -298,7 +298,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What You Are Sad About",
-          "text": "{red|**The sadness has layers you are still discovering.**\n\n**You are sad about the obvious things.** The person. The relationship. The life you thought you would have.\n\nBut there is more, is there not?}\n\n**You are sad about the version of yourself that existed in that marriage.** The inside jokes no one else will understand. The shorthand that took years to develop. The way they knew to make your coffee.\n\n**You are sad about the future that will not happen.** The anniversary you will not celebrate. The grandchildren you will not share. Growing old with someone who knew you when you were young.\n\n**You are sad about the way you have to explain it.** The pity in people's eyes. The questions you do not want to answer. Having to say the words out loud, again and again.\n\n**You are sad about the holidays, the empty chair, the traditions that feel hollow now.**\n\n**And maybe, underneath all of it, you are sad about the hope you have lost.** The belief that love could last, that commitment meant something, that your story would be different.\n\n**All of this sadness is legitimate.** All of it deserves to be felt.",
+          "text": "**The sadness has layers you are still discovering.**\n\n**You are sad about the obvious things.** The person. The relationship. The life you thought you would have.\n\nBut there is more, is there not?\n\n**You are sad about the version of yourself that existed in that marriage.** The inside jokes no one else will understand. The shorthand that took years to develop. The way they knew to make your coffee.\n\n**You are sad about the future that will not happen.** The anniversary you will not celebrate. The grandchildren you will not share. Growing old with someone who knew you when you were young.\n\n**You are sad about the way you have to explain it.** The pity in people's eyes. The questions you do not want to answer. Having to say the words out loud, again and again.\n\n**You are sad about the holidays, the empty chair, the traditions that feel hollow now.**\n\n**And maybe, underneath all of it, you are sad about the hope you have lost.** The belief that love could last, that commitment meant something, that your story would be different.\n\n**All of this sadness is legitimate.** All of it deserves to be felt.",
           "icon": "list"
         },
         {
@@ -314,7 +314,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Sadness",
-          "text": "{red|**Take time to sit with and express your sadness.**\n\nWhat are you most sad about regarding your divorce?}{red| What losses hurt the most?}{red| What dreams are you grieving?}{red| What do you miss that you will never have again?}\n\n**Let yourself feel as you write.** This is a safe space to be sad.\n\nWrite about your sadness:",
+          "text": "**Take time to sit with and express your sadness.**\n\nWhat are you most sad about regarding your divorce? What losses hurt the most? What dreams are you grieving? What do you miss that you will never have again?\n\n**Let yourself feel as you write.** This is a safe space to be sad.\n\nWrite about your sadness:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -323,7 +323,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "God in the Sadness",
-          "text": "**God is not distant from your sadness.** He is present in it.\n\n**The Lord is close to the brokenhearted and saves those who are crushed in spirit.** (({red|Psalm 34:18}))\n\n**Jesus himself was described as a man of sorrows, acquainted with grief.** He wept openly. He understands what you are feeling.\n\n**You can bring your sadness to God without cleaning it up first.** Lament is a biblical form of prayer. The Psalms are full of raw expressions of grief brought honestly before God.\n\n**God does not expect you to be strong or have it together.** He invites you to pour out your heart to Him, sadness and all.",
+          "text": "**God is not distant from your sadness.** He is present in it.\n\n**The Lord is close to the brokenhearted and saves those who are crushed in spirit.** (Psalm 34:18)\n\n**Jesus himself was described as a man of sorrows, acquainted with grief.** He wept openly. He understands what you are feeling.\n\n**You can bring your sadness to God without cleaning it up first.** Lament is a biblical form of prayer. The Psalms are full of raw expressions of grief brought honestly before God.\n\n**God does not expect you to be strong or have it together.** He invites you to pour out your heart to Him, sadness and all.",
           "icon": "volunteer_activism"
         },
         {
@@ -383,7 +383,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Anger",
-          "text": "{red|**Take time to acknowledge and express your anger.**\n\nWhat are you angry about regarding your divorce?}{red| Who are you angry at?}{red| What did they do?}{red| What injustices or wrongs fuel your anger?}{red| How intense is your anger?}{red| Where do you feel it in your body?}\n\n**Let yourself express it fully here.** This is a safe place.\n\nWrite about your anger:",
+          "text": "**Take time to acknowledge and express your anger.**\n\nWhat are you angry about regarding your divorce? Who are you angry at? What did they do? What injustices or wrongs fuel your anger? How intense is your anger? Where do you feel it in your body?\n\n**Let yourself express it fully here.** This is a safe place.\n\nWrite about your anger:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -392,7 +392,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Anger Patterns",
-          "text": "{red|How have you been handling your anger?}",
+          "text": "How have you been handling your anger?",
           "prompts": [
             "Stuffing it and pretending I am not angry",
             "Exploding at others inappropriately",
@@ -450,7 +450,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "The Impact of Betrayal",
-          "text": "{red|**Betrayal does not just hurt.** It shatters something foundational.\n\n**It shatters trust, obviously.** But not just trust in them. Trust in yourself. You thought you knew this person. You built your life on that knowing. If you were that wrong about them, what else are you wrong about?}{red| Can you trust your own perception anymore?}\n\n{red|**It shatters your story.** You thought you knew what your marriage was. Now you have to reinterpret everything. Every memory is suspect. Was any of it real?}{red| When they said they loved you, were they already lying?}{red| The past becomes a minefield you have to walk through again.\n\n**It shatters your safety.** The person who was supposed to be your refuge became the source of your deepest wound. Where do you go now to feel safe?}{red| Who can you trust if not the one who stood before God and promised to be faithful?}\n\n**It shatters your sense of reality.** They looked you in the eye and lied. Maybe for months. Maybe years. You lived in a world that was not what you thought it was. That kind of deception makes you feel crazy, makes you question everything.\n\n**These wounds are specific to betrayal.** They require specific healing. And they take longer than people expect.",
+          "text": "**Betrayal does not just hurt.** It shatters something foundational.\n\n**It shatters trust, obviously.** But not just trust in them. Trust in yourself. You thought you knew this person. You built your life on that knowing. If you were that wrong about them, what else are you wrong about? Can you trust your own perception anymore?\n\n**It shatters your story.** You thought you knew what your marriage was. Now you have to reinterpret everything. Every memory is suspect. Was any of it real? When they said they loved you, were they already lying? The past becomes a minefield you have to walk through again.\n\n**It shatters your safety.** The person who was supposed to be your refuge became the source of your deepest wound. Where do you go now to feel safe? Who can you trust if not the one who stood before God and promised to be faithful?\n\n**It shatters your sense of reality.** They looked you in the eye and lied. Maybe for months. Maybe years. You lived in a world that was not what you thought it was. That kind of deception makes you feel crazy, makes you question everything.\n\n**These wounds are specific to betrayal.** They require specific healing. And they take longer than people expect.",
           "icon": "psychology"
         },
         {
@@ -466,7 +466,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Betrayal Experience",
-          "text": "{red|**If betrayal was part of your marriage ending, take time to process it.**\n\nWhat betrayals did you experience?}{red| Be specific. How did the betrayal affect you?}{red| What wounds did it leave?}{red| What do you still struggle with as a result of the betrayal?}{red| What do you need in order to heal from this?}\n\n**If betrayal was not a major part of your story, you may skip this reflection or consider more subtle forms of broken trust.**\n\nWrite about your betrayal experience:",
+          "text": "**If betrayal was part of your marriage ending, take time to process it.**\n\nWhat betrayals did you experience? Be specific. How did the betrayal affect you? What wounds did it leave? What do you still struggle with as a result of the betrayal? What do you need in order to heal from this?\n\n**If betrayal was not a major part of your story, you may skip this reflection or consider more subtle forms of broken trust.**\n\nWrite about your betrayal experience:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -511,7 +511,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Pain of Rejection",
-          "text": "{red|**Rejection might be the deepest wound of all.**\n\n**Someone who knew you completely, who saw you at your worst and your most vulnerable, decided you were not enough.** Not worth staying for. Not worth fighting for. Not worth choosing.\n\n**It does not matter if the decision was right.** It does not matter if you are better off without them. It does not even matter if you initiated the divorce. The rejection is still there, hiding under the practical reasons.\n\n**This kind of rejection goes to the core of who you are.** It asks questions you do not want to answer. Am I lovable?}{red| Was I ever?}{red| Is there something fundamentally wrong with me that makes people leave?}\n\n**Rejection after divorce is especially brutal because it comes from the one person whose job was to never reject you.** When the whole world tells you no, you are supposed to be able to go home to someone who says yes. Now that person has said no too.\n\n**The wound is real.** But the questions it raises, those are lies. We will address them. But first, you need to know that what you are feeling is not weakness. It is the normal response to one of the deepest hurts humans can experience.",
+          "text": "**Rejection might be the deepest wound of all.**\n\n**Someone who knew you completely, who saw you at your worst and your most vulnerable, decided you were not enough.** Not worth staying for. Not worth fighting for. Not worth choosing.\n\n**It does not matter if the decision was right.** It does not matter if you are better off without them. It does not even matter if you initiated the divorce. The rejection is still there, hiding under the practical reasons.\n\n**This kind of rejection goes to the core of who you are.** It asks questions you do not want to answer. Am I lovable? Was I ever? Is there something fundamentally wrong with me that makes people leave?\n\n**Rejection after divorce is especially brutal because it comes from the one person whose job was to never reject you.** When the whole world tells you no, you are supposed to be able to go home to someone who says yes. Now that person has said no too.\n\n**The wound is real.** But the questions it raises, those are lies. We will address them. But first, you need to know that what you are feeling is not weakness. It is the normal response to one of the deepest hurts humans can experience.",
           "icon": "person_off"
         },
         {
@@ -535,7 +535,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Rejection and Failure Feelings",
-          "text": "{red|**Honestly explore your feelings of rejection and failure.**\n\nIn what ways do you feel rejected?}{red| How does that rejection feel?}{red| In what ways do you feel like a failure?}{red| What narratives play in your head?}{red| How are these feelings affecting your sense of self?}{red| What would you say to a friend who felt this way about their divorce?}\n\nWrite about your rejection and failure feelings:",
+          "text": "**Honestly explore your feelings of rejection and failure.**\n\nIn what ways do you feel rejected? How does that rejection feel? In what ways do you feel like a failure? What narratives play in your head? How are these feelings affecting your sense of self? What would you say to a friend who felt this way about their divorce?\n\nWrite about your rejection and failure feelings:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -596,7 +596,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Addressing Loneliness",
-          "text": "**Several things help address loneliness.**\n\n**Connect with others.** Reach out to friends and family. Join groups or communities. Do not isolate even when you feel like it.\n\n**Develop your relationship with yourself.** Learn to enjoy your own company. Pursue interests and activities you love.\n\n**Deepen your relationship with God.** Spiritual connection addresses the deepest loneliness. God promises to never leave or forsake you. \"God sets the lonely in families\" ({red|Psalm 68:6|God sets the lonely in families}). He sees your isolation and moves toward it, not away from it.\n\n**Create structure.** Empty time intensifies loneliness. Having routines, plans, and purposes helps.\n\n**Allow the feelings.** Trying to escape loneliness through busyness or unhealthy coping does not work. Sometimes you need to sit with it and let it move through.\n\n**Be patient.** Loneliness often decreases over time as you build a new life.",
+          "text": "**Several things help address loneliness.**\n\n**Connect with others.** Reach out to friends and family. Join groups or communities. Do not isolate even when you feel like it.\n\n**Develop your relationship with yourself.** Learn to enjoy your own company. Pursue interests and activities you love.\n\n**Deepen your relationship with God.** Spiritual connection addresses the deepest loneliness. God promises to never leave or forsake you. \"God sets the lonely in families\" (Psalm 68:6|God sets the lonely in families). He sees your isolation and moves toward it, not away from it.\n\n**Create structure.** Empty time intensifies loneliness. Having routines, plans, and purposes helps.\n\n**Allow the feelings.** Trying to escape loneliness through busyness or unhealthy coping does not work. Sometimes you need to sit with it and let it move through.\n\n**Be patient.** Loneliness often decreases over time as you build a new life.",
           "icon": "tips_and_updates"
         },
         {
@@ -604,7 +604,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Loneliness",
-          "text": "{red|**Explore your experience of loneliness.**\n\nWhen does loneliness hit you hardest?}{red| What does it feel like in your body?}{red| How have you been trying to cope with it?}{red| What do you miss most about having a partner?}\n\nWrite about your loneliness:",
+          "text": "**Explore your experience of loneliness.**\n\nWhen does loneliness hit you hardest? What does it feel like in your body? How have you been trying to cope with it? What do you miss most about having a partner?\n\nWrite about your loneliness:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -613,7 +613,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Loneliness Patterns",
-          "text": "{red|How have you been coping with loneliness?}",
+          "text": "How have you been coping with loneliness?",
           "prompts": [
             "Reaching out to friends and family",
             "Staying busy to avoid feeling it",
@@ -688,7 +688,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Triggers",
-          "text": "{red|**Identify your triggers and patterns.**\n\nWhat things trigger intense emotions about your divorce?}{red| Which triggers do you know to expect?}{red| Which have surprised you?}{red| How have you typically responded when triggered?}\n\nWrite about your triggers:",
+          "text": "**Identify your triggers and patterns.**\n\nWhat things trigger intense emotions about your divorce? Which triggers do you know to expect? Which have surprised you? How have you typically responded when triggered?\n\nWrite about your triggers:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -749,7 +749,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Processing Progress",
-          "text": "{red|**Reflect on what you have processed and what remains.**\n\nWhat emotions have you made progress on?}{red| What still feels heavy or unresolved?}{red| What have you learned about yourself through this processing?}{red| What do you need to continue working on?}\n\nWrite about your processing progress:",
+          "text": "**Reflect on what you have processed and what remains.**\n\nWhat emotions have you made progress on? What still feels heavy or unresolved? What have you learned about yourself through this processing? What do you need to continue working on?\n\nWrite about your processing progress:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -758,7 +758,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Commitment",
-          "text": "{red|Based on what you have learned, what commitments will you make to continued emotional processing?}\n\n{red|How will you continue to work through your emotions?}{red| What practices will you maintain?}{red| What support will you seek?}{red| How will you be patient and gentle with yourself?}\n\nWrite your commitments:",
+          "text": "Based on what you have learned, what commitments will you make to continued emotional processing?\n\nHow will you continue to work through your emotions? What practices will you maintain? What support will you seek? How will you be patient and gentle with yourself?\n\nWrite your commitments:",
           "responseType": "open-text",
           "icon": "verified"
         },

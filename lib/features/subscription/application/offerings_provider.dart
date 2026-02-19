@@ -53,21 +53,30 @@ final journeyPackageProvider = FutureProvider<Package?>((ref) async {
   }
 });
 
-/// Provider to get subscription packages
-final subscriptionPackagesProvider = FutureProvider<Map<String, Package?>>((
-  ref,
-) async {
+/// Provider to get subscription packages (monthly only)
+final subscriptionPackagesProvider = FutureProvider<Package?>((ref) async {
   try {
     final offering = await ref.watch(subscriptionOfferingProvider.future);
-    if (offering == null) return {};
+    if (offering == null) return null;
 
-    return {
-      'monthly': offering.getPackage('\$rc_monthly'),
-      'quarterly': offering.getPackage('\$rc_quarterly'),
-      'yearly': offering.getPackage('\$rc_annual'),
-    };
+    // Fetch the monthly subscription package from RevenueCat
+    final monthlyPackage = offering.getPackage('\$rc_monthly');
+    if (monthlyPackage != null) {
+      return monthlyPackage;
+    }
+
+    // Fallback: try to find package containing 'monthly' in identifier
+    final packages = offering.availablePackages;
+    for (final p in packages) {
+      if (p.storeProduct.identifier.toLowerCase().contains('monthly')) {
+        return p;
+      }
+    }
+
+    // Last resort: return first available package
+    return packages.isNotEmpty ? packages.first : null;
   } catch (e) {
-    print('Error fetching subscription packages: $e');
-    return {};
+    print('Error fetching subscription package: $e');
+    return null;
   }
 });

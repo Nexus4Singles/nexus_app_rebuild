@@ -18,8 +18,17 @@ class NotificationService {
   String? _fcmToken;
   String? get fcmToken => _fcmToken;
 
+  // Guard to prevent multiple initializations
+  bool _initialized = false;
+
   /// Initialize FCM and local notifications
   Future<void> initialize() async {
+    // Only initialize once - prevent duplicate listeners
+    if (_initialized) {
+      print('NotificationService already initialized');
+      return;
+    }
+    _initialized = true;
     // Request permission (iOS)
     final settings = await _firebaseMessaging.requestPermission(
       alert: true,
@@ -363,6 +372,27 @@ class NotificationHelpers {
   }) async {
     final payload = NotificationPayload.subscriptionExpiring(
       daysLeft: daysLeft,
+    );
+
+    await _service.sendNotificationToUser(userId: userId, payload: payload);
+  }
+
+  /// Send profile pending verification notification
+  static Future<void> sendProfilePendingVerificationNotification({
+    required String userId,
+  }) async {
+    final payload = NotificationPayload.profilePendingVerification();
+
+    await _service.sendNotificationToUser(userId: userId, payload: payload);
+  }
+
+  /// Send profile rejected notification
+  static Future<void> sendProfileRejectedNotification({
+    required String userId,
+    String? rejectionReason,
+  }) async {
+    final payload = NotificationPayload.profileRejected(
+      rejectionReason: rejectionReason,
     );
 
     await _service.sendNotificationToUser(userId: userId, payload: payload);

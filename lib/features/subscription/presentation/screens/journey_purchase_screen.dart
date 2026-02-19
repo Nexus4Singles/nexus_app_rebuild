@@ -8,7 +8,8 @@ import '../../../../core/services/revenuecat_service.dart';
 import '../../../../core/providers/auth_provider.dart';
 import '../../../challenges/domain/journey_v1_models.dart';
 import '../../../challenges/providers/journeys_providers.dart';
-import '../../application/subscription_provider.dart' hide isJourneyPurchasedProvider;
+import '../../application/subscription_provider.dart'
+    hide isJourneyPurchasedProvider;
 
 /// Minimal journey purchase screen - shows ONE selected journey with price & purchase button
 /// Navigated to from challenges_screen when user clicks "Unlock Journey"
@@ -36,7 +37,7 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
   Future<void> _loadActualPrice() async {
     try {
       print('🟡 [JourneyPurchase] _loadActualPrice starting...');
-      
+
       final offerings = await RevenueCatService.getOfferings();
       if (offerings == null || offerings.current == null) {
         print('🔴 [JourneyPurchase] No offerings available from RevenueCat');
@@ -52,21 +53,27 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
       );
       final category = journeyWithCategory?.$2 ?? 'singles';
       final productId = _getProductIdForCategory(category);
-      
-      print('🟡 [JourneyPurchase] Looking for product: $productId (category: $category)');
+
+      print(
+        '🟡 [JourneyPurchase] Looking for product: $productId (category: $category)',
+      );
 
       // Search for package
       Package? journeyPackage;
 
       // First try current offering
       if (offerings.current != null) {
-        print('🟡 [JourneyPurchase] Current offering packages: ${offerings.current!.availablePackages.map((p) => p.storeProduct.identifier).toList()}');
-        
+        print(
+          '🟡 [JourneyPurchase] Current offering packages: ${offerings.current!.availablePackages.map((p) => p.storeProduct.identifier).toList()}',
+        );
+
         for (final p in offerings.current!.availablePackages) {
           if (p.storeProduct.identifier.toLowerCase() ==
               productId.toLowerCase()) {
             journeyPackage = p;
-            print('🟢 [JourneyPurchase] Found package in current offering: ${p.storeProduct.identifier}');
+            print(
+              '🟢 [JourneyPurchase] Found package in current offering: ${p.storeProduct.identifier}',
+            );
             break;
           }
         }
@@ -74,13 +81,17 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
 
       // If not found in current, search all offerings
       if (journeyPackage == null) {
-        print('🟡 [JourneyPurchase] Not in current, searching all offerings...');
+        print(
+          '🟡 [JourneyPurchase] Not in current, searching all offerings...',
+        );
         for (final offering in offerings.all.values) {
           for (final p in offering.availablePackages) {
             if (p.storeProduct.identifier.toLowerCase() ==
                 productId.toLowerCase()) {
               journeyPackage = p;
-              print('🟢 [JourneyPurchase] Found package in offering: ${p.storeProduct.identifier}');
+              print(
+                '🟢 [JourneyPurchase] Found package in offering: ${p.storeProduct.identifier}',
+              );
               break;
             }
           }
@@ -89,12 +100,16 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
       }
 
       if (journeyPackage != null && mounted) {
-        print('🟢 [JourneyPurchase] Setting price to: ${journeyPackage.storeProduct.price}');
+        print(
+          '🟢 [JourneyPurchase] Setting price to: ${journeyPackage.storeProduct.price}',
+        );
         setState(() {
           _actualPrice = journeyPackage!.storeProduct.price;
         });
       } else {
-        print('🔴 [JourneyPurchase] Package not found for productId: $productId');
+        print(
+          '🔴 [JourneyPurchase] Package not found for productId: $productId',
+        );
       }
       // If package not found, price remains 0 and pricing card won't show
     } catch (e) {
@@ -121,24 +136,22 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
   @override
   Widget build(BuildContext context) {
     // Check if journey is already purchased
-    final isPurchasedAsync = ref.watch(isJourneyPurchasedProvider(widget.journey.id));
-    
+    final isPurchasedAsync = ref.watch(
+      isJourneyPurchasedProvider(widget.journey.id),
+    );
+
     return isPurchasedAsync.when(
-      loading: () => _buildScaffold(
-        context,
-        isPurchased: false,
-        isLoading: true,
-      ),
-      error: (_, __) => _buildScaffold(
-        context,
-        isPurchased: false,
-        isLoading: false,
-      ),
-      data: (isPurchased) => _buildScaffold(
-        context,
-        isPurchased: isPurchased,
-        isLoading: false,
-      ),
+      loading:
+          () => _buildScaffold(context, isPurchased: false, isLoading: true),
+      error:
+          (_, __) =>
+              _buildScaffold(context, isPurchased: false, isLoading: false),
+      data:
+          (isPurchased) => _buildScaffold(
+            context,
+            isPurchased: isPurchased,
+            isLoading: false,
+          ),
     );
   }
 
@@ -327,11 +340,17 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
                       decoration: BoxDecoration(
                         color: Colors.green.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: Colors.green.withOpacity(0.3)),
+                        border: Border.all(
+                          color: Colors.green.withOpacity(0.3),
+                        ),
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.check_circle, color: Colors.green, size: 24),
+                          Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                            size: 24,
+                          ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
@@ -360,7 +379,8 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: _isPurchasing || isLoading ? null : _handlePurchase,
+                        onPressed:
+                            _isPurchasing || isLoading ? null : _handlePurchase,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           foregroundColor: Colors.white,
@@ -464,19 +484,29 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
       // Extract actual price from the package
       final actualPrice = journeyPackage.storeProduct.price;
       final priceCurrency = journeyPackage.storeProduct.currencyCode;
-      
+
       print('🟡 [JourneyPurchase] Package details:');
       print('   - Product ID: ${journeyPackage.storeProduct.identifier}');
       print('   - Price: $actualPrice');
       print('   - Currency: $priceCurrency');
       print('   - Category: $category');
-      
-      await RevenueCatService.purchasePackage(journeyPackage);
+
+      final customerInfo = await RevenueCatService.purchasePackage(
+        journeyPackage,
+      );
 
       if (!mounted) return;
 
-      print('🟢 [JourneyPurchase] Purchase completed, now recording to Firestore...');
-      
+      // If customerInfo is null the user cancelled the native purchase UI.
+      if (customerInfo == null) {
+        print('🟡 [JourneyPurchase] Purchase cancelled by user');
+        return;
+      }
+
+      print(
+        '🟢 [JourneyPurchase] Purchase completed, now recording to Firestore...',
+      );
+
       // Record journey purchase in Firestore with actual price paid
       final userId = ref.read(currentUserIdProvider);
       if (userId != null) {
@@ -484,7 +514,7 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
         print('   - journeyId: ${widget.journey.id}');
         print('   - pricePaid: $actualPrice');
         print('   - currency: $priceCurrency');
-        
+
         await ref
             .read(subscriptionNotifierProvider.notifier)
             .recordJourneyPurchase(
@@ -494,7 +524,7 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
               currency: priceCurrency,
               revenueCatTransactionId: journeyPackage.storeProduct.identifier,
             );
-        
+
         print('🟢 [JourneyPurchase] Successfully recorded to Firestore');
       } else {
         print('🔴 [JourneyPurchase] ERROR: userId is null');
@@ -523,6 +553,7 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
       }
     }
   }
+
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), backgroundColor: Colors.red),

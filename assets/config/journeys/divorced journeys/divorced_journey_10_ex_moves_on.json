@@ -61,7 +61,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Why It Hurts Even When You Do Not Want Them",
-          "text": "{red|**Here is what confuses you: you do not even want them back.** Maybe they hurt you too badly. Maybe you know it was wrong. Maybe you are genuinely glad it is over.\n\nSo why does seeing them with someone else feel like a knife in your chest?}\n\n{red|**Because it is not really about them.** It is about you.\n\n**It is about feeling replaced.** Someone else is in the seat you used to occupy. Someone else is hearing their laugh, sleeping in their bed, being introduced as theirs. You have been erased and overwritten.\n\n**It is about the comparison you cannot help making.** What does this person have that I did not?}{red| Are they prettier?}{red| Funnier?}{red| Easier?}{red| The questions are corrosive, and you cannot stop asking them.\n\n**It is about the timeline.** They have moved on. You have not. Does that mean they are winning?}{red| Does that mean you are stuck?}\n\n{red|**And it is about the finality.** Some part of you, maybe a part you did not even know existed, held onto the possibility. What if we worked it out?}{red| What if they came back?} Seeing them with someone new kills that possibility dead.\n\n**That is why it hurts.** Not because you want them. Because of everything their moving on means about you.",
+          "text": "**Here is what confuses you: you do not even want them back.** Maybe they hurt you too badly. Maybe you know it was wrong. Maybe you are genuinely glad it is over.\n\nSo why does seeing them with someone else feel like a knife in your chest?\n\n**Because it is not really about them.** It is about you.\n\n**It is about feeling replaced.** Someone else is in the seat you used to occupy. Someone else is hearing their laugh, sleeping in their bed, being introduced as theirs. You have been erased and overwritten.\n\n**It is about the comparison you cannot help making.** What does this person have that I did not? Are they prettier? Funnier? Easier? The questions are corrosive, and you cannot stop asking them.\n\n**It is about the timeline.** They have moved on. You have not. Does that mean they are winning? Does that mean you are stuck?\n\n**And it is about the finality.** Some part of you, maybe a part you did not even know existed, held onto the possibility. What if we worked it out? What if they came back? Seeing them with someone new kills that possibility dead.\n\n**That is why it hurts.** Not because you want them. Because of everything their moving on means about you.",
           "icon": "psychology"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Situation",
-          "text": "{red|What is your current situation with your ex moving on?}",
+          "text": "What is your current situation with your ex moving on?",
           "prompts": [
             "I just found out and am reeling",
             "I have known for a while but still struggling",
@@ -99,7 +99,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Reaction",
-          "text": "{red|**Describe your reaction to your ex moving on.**\n\nHow did you find out?}{red| What emotions hit you?}{red| What was the intensity?}{red| What thoughts have been cycling through your mind?}{red| How has it affected your daily life and functioning?}\n\nWrite about your reaction:",
+          "text": "**Describe your reaction to your ex moving on.**\n\nHow did you find out? What emotions hit you? What was the intensity? What thoughts have been cycling through your mind? How has it affected your daily life and functioning?\n\nWrite about your reaction:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -136,7 +136,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "A Storm of Emotions",
-          "text": "{red|**When you find out they have moved on, you do not feel one thing.** You feel everything.\n\n**Jealousy burns first.** You see them with someone new and something animal wakes up. This is my territory. Except it is not anymore.\n\n**Then anger.** How dare they be happy?}{red| How dare they find someone while you are still picking up pieces?}{red| They caused this wreckage and now they get to walk away into someone else's arms?}\n\n{red|**Underneath the anger, sadness.** This is really over. Whatever hope you were secretly holding, however small, is gone now. The door is not just closed. It is bricked over.\n\n**Fear creeps in.** What if they were right?}{red| What if you are unlovable?}{red| What if they find happiness and you spend the rest of your life alone?}\n\n{red|**Shame, too.** You should be over this. It has been months, or years. What is wrong with you that this still has power?}\n\n**And loneliness.** Because now you know they have someone, and you do not, and the contrast is unbearable.\n\n**All of this.** At once. Crashing in waves. No wonder you feel like you are drowning.",
+          "text": "**When you find out they have moved on, you do not feel one thing.** You feel everything.\n\n**Jealousy burns first.** You see them with someone new and something animal wakes up. This is my territory. Except it is not anymore.\n\n**Then anger.** How dare they be happy? How dare they find someone while you are still picking up pieces? They caused this wreckage and now they get to walk away into someone else's arms?\n\n**Underneath the anger, sadness.** This is really over. Whatever hope you were secretly holding, however small, is gone now. The door is not just closed. It is bricked over.\n\n**Fear creeps in.** What if they were right? What if you are unlovable? What if they find happiness and you spend the rest of your life alone?\n\n**Shame, too.** You should be over this. It has been months, or years. What is wrong with you that this still has power?\n\n**And loneliness.** Because now you know they have someone, and you do not, and the contrast is unbearable.\n\n**All of this.** At once. Crashing in waves. No wonder you feel like you are drowning.",
           "icon": "psychology"
         },
         {
@@ -160,7 +160,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Specific Emotions",
-          "text": "{red|**Identify the specific emotions you are experiencing.**\n\nWhich emotions from the storm are strongest for you: jealousy, anger, sadness, fear, shame, betrayal, loneliness, confusion, or others?}\n\n**For your top two or three emotions, write about what specifically triggers them and what thoughts accompany them.**\n\nWrite about your specific emotions:",
+          "text": "**Identify the specific emotions you are experiencing.**\n\nWhich emotions from the storm are strongest for you: jealousy, anger, sadness, fear, shame, betrayal, loneliness, confusion, or others?\n\n**For your top two or three emotions, write about what specifically triggers them and what thoughts accompany them.**\n\nWrite about your specific emotions:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -229,7 +229,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Destructive Urges",
-          "text": "{red|**Be honest about the destructive urges you are experiencing.**\n\nWhat behaviors have you engaged in that made things worse: social media stalking, contact, bad-mouthing?}\n\n{red|What urges are you currently fighting?}{red| What triggers these urges?}{red| What has been the result when you have given in?}\n\nWrite about your destructive urges:",
+          "text": "**Be honest about the destructive urges you are experiencing.**\n\nWhat behaviors have you engaged in that made things worse: social media stalking, contact, bad-mouthing?\n\nWhat urges are you currently fighting? What triggers these urges? What has been the result when you have given in?\n\nWrite about your destructive urges:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -246,7 +246,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Resistance Plan",
-          "text": "{red|**Create a plan to resist destructive behaviors.**\n\nSocial media: What steps will I take to stop checking?}{red| Will I block or unfollow?}\n\n{red|Contact: What will I do when I am tempted to reach out?}\n\n{red|Accountability: Who will I tell about my urges to help me stay strong?}\n\n{red|Replacement: What will I do instead when urges hit?}\n\nWrite your resistance plan:",
+          "text": "**Create a plan to resist destructive behaviors.**\n\nSocial media: What steps will I take to stop checking? Will I block or unfollow?\n\nContact: What will I do when I am tempted to reach out?\n\nAccountability: Who will I tell about my urges to help me stay strong?\n\nReplacement: What will I do instead when urges hit?\n\nWrite your resistance plan:",
           "icon": "task_alt"
         }
       ]
@@ -274,7 +274,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Timeline Trap",
-          "text": "{red|**They have already found someone.** You are still alone.\n\n**The math seems obvious.** They are ahead. You are behind. They won the race to move on.\n\n**But this is not a race.** And even if it were, moving on fastest is not the same as winning.\n\n**Think about it.** Someone who jumps into a new relationship immediately after a divorce, what are they actually doing?}{red| Processing their grief?}{red| Working through their issues?}{red| Learning from what went wrong?}\n\n{red|Or are they running?}{red| Filling the silence with someone new so they do not have to feel the emptiness?}{red| Looking for a bandage instead of healing the wound?}\n\n**Fast does not mean healthy.** Fast often means the opposite.\n\n**You are not behind because you are still hurting.** You are taking the time to actually heal. To become someone who can show up differently next time. To deal with what needs dealing with before you bring it into someone else's life.\n\n**That is not losing.** That is wisdom. Even if it feels like losing right now.",
+          "text": "**They have already found someone.** You are still alone.\n\n**The math seems obvious.** They are ahead. You are behind. They won the race to move on.\n\n**But this is not a race.** And even if it were, moving on fastest is not the same as winning.\n\n**Think about it.** Someone who jumps into a new relationship immediately after a divorce, what are they actually doing? Processing their grief? Working through their issues? Learning from what went wrong?\n\nOr are they running? Filling the silence with someone new so they do not have to feel the emptiness? Looking for a bandage instead of healing the wound?\n\n**Fast does not mean healthy.** Fast often means the opposite.\n\n**You are not behind because you are still hurting.** You are taking the time to actually heal. To become someone who can show up differently next time. To deal with what needs dealing with before you bring it into someone else's life.\n\n**That is not losing.** That is wisdom. Even if it feels like losing right now.",
           "icon": "schedule"
         },
         {
@@ -298,7 +298,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Timeline Feelings",
-          "text": "{red|**Reflect on how your ex's timeline has affected you.**\n\nHave you felt behind or like you are losing a race?}{red| Has their quick move-on made you doubt your own progress?}{red| Have you been tempted to rush into something just to catch up?}{red| What would it mean to fully honor your own pace?}\n\nWrite about your timeline feelings:",
+          "text": "**Reflect on how your ex's timeline has affected you.**\n\nHave you felt behind or like you are losing a race? Has their quick move-on made you doubt your own progress? Have you been tempted to rush into something just to catch up? What would it mean to fully honor your own pace?\n\nWrite about your timeline feelings:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -367,7 +367,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your False Conclusions",
-          "text": "{red|**Identify the false conclusions your mind has been generating.**\n\nWhat painful interpretations have you been making about your ex's new relationship?}\n\n{red|**For each one, write a truer counter-statement.**\n\nWhich lie has been most destructive for you?}\n\nWrite your false conclusions and counter-truths:",
+          "text": "**Identify the false conclusions your mind has been generating.**\n\nWhat painful interpretations have you been making about your ex's new relationship?\n\n**For each one, write a truer counter-statement.**\n\nWhich lie has been most destructive for you?\n\nWrite your false conclusions and counter-truths:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -376,7 +376,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Practicing Truth-Telling",
-          "text": "{red|**When lies arise, practice telling yourself the truth.**\n\n**Notice the painful thought.** Oh, I am telling myself that I will never find anyone.\n\n**Challenge it.** Is this actually true?}{red| What evidence do I have?}{red| What would I tell a friend who said this?}\n\n**Replace it with truth.** My ex's new relationship says nothing about my future. Many people find love after divorce.\n\n**This takes practice.** Lies feel true when you are hurting. But consistently replacing them with truth weakens their power.",
+          "text": "**When lies arise, practice telling yourself the truth.**\n\n**Notice the painful thought.** Oh, I am telling myself that I will never find anyone.\n\n**Challenge it.** Is this actually true? What evidence do I have? What would I tell a friend who said this?\n\n**Replace it with truth.** My ex's new relationship says nothing about my future. Many people find love after divorce.\n\n**This takes practice.** Lies feel true when you are hurting. But consistently replacing them with truth weakens their power.",
           "icon": "swap_horiz"
         },
         {
@@ -412,7 +412,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "When It Happened Fast",
-          "text": "{red|**Life is not a race where everyone runs the same track.** Your ex moving on faster does not mean you are behind. You are on different tracks entirely. Comparison only makes sense if you are trying to reach the same destination by the same route. You are not.\n\n**Sometimes your ex does not just move on.** They move on immediately. Or they were already with someone before the marriage ended.\n\n**This raises painful questions.** Were they cheating?}{red| Were they just waiting for the marriage to end?}{red| Did they ever really care?}\n\n**The speed of their transition makes you question everything.** It feels like the marriage meant nothing to them.\n\n**This is a specific kind of pain that deserves acknowledgment.** A rapid move-on is harder than one that takes time.",
+          "text": "**Life is not a race where everyone runs the same track.** Your ex moving on faster does not mean you are behind. You are on different tracks entirely. Comparison only makes sense if you are trying to reach the same destination by the same route. You are not.\n\n**Sometimes your ex does not just move on.** They move on immediately. Or they were already with someone before the marriage ended.\n\n**This raises painful questions.** Were they cheating? Were they just waiting for the marriage to end? Did they ever really care?\n\n**The speed of their transition makes you question everything.** It feels like the marriage meant nothing to them.\n\n**This is a specific kind of pain that deserves acknowledgment.** A rapid move-on is harder than one that takes time.",
           "icon": "bolt"
         },
         {
@@ -436,7 +436,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Experience of Speed",
-          "text": "{red|**Reflect on the timeline of your ex's new relationship.**\n\nHow quickly did they move on?}{red| Do you have reason to believe there was overlap with your marriage?}{red| What questions does their speed raise for you?}{red| What specific pain does the rapid transition cause?}\n\nWrite about your experience of their speed:",
+          "text": "**Reflect on the timeline of your ex's new relationship.**\n\nHow quickly did they move on? Do you have reason to believe there was overlap with your marriage? What questions does their speed raise for you? What specific pain does the rapid transition cause?\n\nWrite about your experience of their speed:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -445,7 +445,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "You May Never Know",
-          "text": "{red|**You may never know the full truth about your ex's timeline.**\n\nWere they cheating?}{red| When did they actually start seeing this person?}{red| Were they emotionally involved before physically?}\n\n**You may suspect but never confirm.** You may have partial information that torments you.\n\n**At some point, you may need to accept not knowing.** The obsessive search for answers keeps you stuck.\n\n**What you do know is enough.** Your marriage ended. They moved on. You need to heal. The details do not change that.",
+          "text": "**You may never know the full truth about your ex's timeline.**\n\nWere they cheating? When did they actually start seeing this person? Were they emotionally involved before physically?\n\n**You may suspect but never confirm.** You may have partial information that torments you.\n\n**At some point, you may need to accept not knowing.** The obsessive search for answers keeps you stuck.\n\n**What you do know is enough.** Your marriage ended. They moved on. You need to heal. The details do not change that.",
           "icon": "help_outline"
         },
         {
@@ -505,7 +505,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Children-Related Concerns",
-          "text": "{red|**Reflect on how your ex's new relationship affects your children and your feelings about it.**\n\nWhat are your concerns about your children and the new partner?}{red| How have your children responded to the new partner?}{red| What has been hardest for you about this situation?}{red| How have you been handling it with your kids?}\n\nWrite about your children-related concerns:",
+          "text": "**Reflect on how your ex's new relationship affects your children and your feelings about it.**\n\nWhat are your concerns about your children and the new partner? How have your children responded to the new partner? What has been hardest for you about this situation? How have you been handling it with your kids?\n\nWrite about your children-related concerns:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -550,7 +550,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Where Attention Goes",
-          "text": "{red|**There is a saying: where attention goes, energy flows.**\n\n**The more you focus on your ex's new relationship, the more emotional energy you pour into something you cannot control.**\n\n**Every minute spent wondering about them, checking on them, or obsessing about them is a minute not spent on your own life.**\n\n**You have limited emotional resources.** Do you want to spend them on their relationship or on building your own future?}\n\n**Shifting your focus is not denial.** It is wisdom.",
+          "text": "**There is a saying: where attention goes, energy flows.**\n\n**The more you focus on your ex's new relationship, the more emotional energy you pour into something you cannot control.**\n\n**Every minute spent wondering about them, checking on them, or obsessing about them is a minute not spent on your own life.**\n\n**You have limited emotional resources.** Do you want to spend them on their relationship or on building your own future?\n\n**Shifting your focus is not denial.** It is wisdom.",
           "icon": "person"
         },
         {
@@ -574,7 +574,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Attention Audit",
-          "text": "{red|**Honestly assess where your attention has been going.**\n\nHow much mental energy have you been spending on your ex's new relationship?}{red| What areas of your own life have been neglected while you focused on them?}{red| What would you like to invest your attention in instead?}{red| What would change if you fully shifted your focus to your own life?}\n\nWrite your attention audit:",
+          "text": "**Honestly assess where your attention has been going.**\n\nHow much mental energy have you been spending on your ex's new relationship? What areas of your own life have been neglected while you focused on them? What would you like to invest your attention in instead? What would change if you fully shifted your focus to your own life?\n\nWrite your attention audit:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -583,7 +583,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Building Your Life",
-          "text": "{red|**This is an opportunity to build a life you love.**\n\n**You get to decide what comes next.** No longer constrained by a marriage that was not working, you have freedom to create something new.\n\nWhat have you always wanted to do?}{red| What dreams did you set aside?}\n\n**This is not about proving anything to your ex.** It is about living fully for yourself.\n\n**The best response to your ex moving on is not to stalk them or match them.** It is to build such a good life that you forget to check on them.",
+          "text": "**This is an opportunity to build a life you love.**\n\n**You get to decide what comes next.** No longer constrained by a marriage that was not working, you have freedom to create something new.\n\nWhat have you always wanted to do? What dreams did you set aside?\n\n**This is not about proving anything to your ex.** It is about living fully for yourself.\n\n**The best response to your ex moving on is not to stalk them or match them.** It is to build such a good life that you forget to check on them.",
           "icon": "construction"
         },
         {
@@ -619,7 +619,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Peace That Does Not Depend on Them",
-          "text": "{red|**As long as your peace depends on what your ex does, you have given them control of your life.**\n\n**Think about that.** If their happiness can destroy yours, they are still the center of your world. If their choices determine your mood, you are still in relationship with them, just a miserable, one-sided one.\n\n**True freedom is not when they fail or suffer or regret.** True freedom is when it genuinely does not matter to you either way.\n\n**That sounds impossible right now.** How can you not care?}{red| They hurt you. They are out there living their life while you struggle. How can that not matter?}\n\n{red|**But caring and peace are different things.**\n\n**You can acknowledge that this is hard and still find calm.** You can wish them well, genuinely, because their happiness does not threaten yours. You can reach a place where news of them does not ruin your day.\n\n**This is not suppression.** It is not pretending. It is actually getting free.\n\n**The goal is a life so full, an identity so secure, a future so hopeful, that what your ex does becomes just information.** Interesting, maybe. No longer devastating.\n\nIs that where you are?} Probably not yet. But it is where you are headed. Keep going.",
+          "text": "**As long as your peace depends on what your ex does, you have given them control of your life.**\n\n**Think about that.** If their happiness can destroy yours, they are still the center of your world. If their choices determine your mood, you are still in relationship with them, just a miserable, one-sided one.\n\n**True freedom is not when they fail or suffer or regret.** True freedom is when it genuinely does not matter to you either way.\n\n**That sounds impossible right now.** How can you not care? They hurt you. They are out there living their life while you struggle. How can that not matter?\n\n**But caring and peace are different things.**\n\n**You can acknowledge that this is hard and still find calm.** You can wish them well, genuinely, because their happiness does not threaten yours. You can reach a place where news of them does not ruin your day.\n\n**This is not suppression.** It is not pretending. It is actually getting free.\n\n**The goal is a life so full, an identity so secure, a future so hopeful, that what your ex does becomes just information.** Interesting, maybe. No longer devastating.\n\nIs that where you are? Probably not yet. But it is where you are headed. Keep going.",
           "icon": "spa"
         },
         {
@@ -643,7 +643,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Peace Assessment",
-          "text": "{red|**Assess your current peace in relation to your ex.**\n\nHow much does your emotional state depend on what they are doing?}{red| What would it take for you to have peace regardless of their choices?}{red| What internal sources of peace do you have access to?}{red| What practices help you find calm when thoughts of them arise?}\n\nWrite your peace assessment:",
+          "text": "**Assess your current peace in relation to your ex.**\n\nHow much does your emotional state depend on what they are doing? What would it take for you to have peace regardless of their choices? What internal sources of peace do you have access to? What practices help you find calm when thoughts of them arise?\n\nWrite your peace assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -652,7 +652,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Peace Through Faith",
-          "text": "**For those with faith, God offers peace that transcends circumstances.**\n\n**Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.** And the peace of God, which transcends all understanding, will guard your hearts and minds. (({red|Philippians 4:6-7}))\n\n**This peace does not depend on your ex's choices.** It depends on God's presence and faithfulness.\n\n**Bringing your pain about your ex's new relationship to God and trusting Him with it can open the door to peace that truly transcends.**",
+          "text": "**For those with faith, God offers peace that transcends circumstances.**\n\n**Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.** And the peace of God, which transcends all understanding, will guard your hearts and minds. (Philippians 4:6-7)\n\n**This peace does not depend on your ex's choices.** It depends on God's presence and faithfulness.\n\n**Bringing your pain about your ex's new relationship to God and trusting Him with it can open the door to peace that truly transcends.**",
           "icon": "church"
         },
         {
@@ -704,7 +704,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Insight",
-          "text": "{red|What is the most important thing you have learned through this journey about handling your ex moving on?}\n\n{red|What do you want to remember when the pain resurfaces?}\n\nWrite your key insight:",
+          "text": "What is the most important thing you have learned through this journey about handling your ex moving on?\n\nWhat do you want to remember when the pain resurfaces?\n\nWrite your key insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -713,7 +713,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Commitments",
-          "text": "{red|What commitments will you make going forward?}\n\n{red|How will you handle difficult emotions when they arise?}{red| How will you avoid destructive behaviors?}{red| How will you focus on your own life?}{red| How will you cultivate peace independent of your ex?}\n\nWrite your commitments:",
+          "text": "What commitments will you make going forward?\n\nHow will you handle difficult emotions when they arise? How will you avoid destructive behaviors? How will you focus on your own life? How will you cultivate peace independent of your ex?\n\nWrite your commitments:",
           "responseType": "open-text",
           "icon": "verified"
         },

@@ -50,8 +50,16 @@ class _PurchaseSheetState extends ConsumerState<PurchaseSheet>
     setState(() => _isPurchasing = true);
 
     try {
-      // TODO: Implement actual RevenueCat purchase call
-      await RevenueCatService.purchaseSubscription(package);
+      // Call RevenueCat and treat a `null` response as a user cancellation.
+      final customerInfo = await RevenueCatService.purchaseSubscription(
+        package,
+      );
+
+      if (customerInfo == null) {
+        // User cancelled platform purchase sheet — close the purchase sheet silently.
+        if (mounted) Navigator.pop(context);
+        return;
+      }
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

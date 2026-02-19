@@ -53,7 +53,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Earthquake",
-          "text": "{red|**When trust breaks in marriage, it feels like an earthquake.** The ground you built your life on suddenly shifts, and nothing feels stable anymore.\n\n**You question everything.** Was any of it real?}{red| How did I not see this coming?}{red| Can I ever feel safe with this person again?}\n\n**The betrayed spouse feels lost in a world that no longer makes sense.** The spouse who broke trust often feels desperate, ashamed, and unsure how to fix what they destroyed.\n\n**Both of you are standing in the rubble wondering if anything can be salvaged.**\n\n**This journey exists because the answer is yes, something can be rebuilt.** But it will not be quick, it will not be easy, and it will require more from both of you than you might imagine.",
+          "text": "**When trust breaks in marriage, it feels like an earthquake.** The ground you built your life on suddenly shifts, and nothing feels stable anymore.\n\n**You question everything.** Was any of it real? How did I not see this coming? Can I ever feel safe with this person again?\n\n**The betrayed spouse feels lost in a world that no longer makes sense.** The spouse who broke trust often feels desperate, ashamed, and unsure how to fix what they destroyed.\n\n**Both of you are standing in the rubble wondering if anything can be salvaged.**\n\n**This journey exists because the answer is yes, something can be rebuilt.** But it will not be quick, it will not be easy, and it will require more from both of you than you might imagine.",
           "icon": "landscape"
         },
         {
@@ -61,7 +61,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What Trust Actually Is",
-          "text": "**Trust is the belief that your spouse has your best interests at heart and will not intentionally harm you.** It is the security that allows you to be vulnerable, to relax your guard, to build a life together without constantly watching your back.\n\n**Trust says I can count on you.** I can believe what you tell me. I can let you into the places where I could be hurt because I believe you will handle those places with care.\n\n**\"The one who has integrity walks securely\" ({red|Proverbs 10:9|The one who has integrity walks securely}).** Integrity creates security. When integrity is violated, that security collapses.\n\n**Trust is built slowly through thousands of small moments where your spouse proves reliable, honest, and safe.** But it can be shattered in a single moment of betrayal.\n\n**The cruel math of trust is that it takes years to build and seconds to destroy.** This is why betrayal hurts so deeply. It does not just damage the present. It rewrites the past and threatens the future.",
+          "text": "**Trust is the belief that your spouse has your best interests at heart and will not intentionally harm you.** It is the security that allows you to be vulnerable, to relax your guard, to build a life together without constantly watching your back.\n\n**Trust says I can count on you.** I can believe what you tell me. I can let you into the places where I could be hurt because I believe you will handle those places with care.\n\n**\"The one who has integrity walks securely\" (Proverbs 10:9|The one who has integrity walks securely).** Integrity creates security. When integrity is violated, that security collapses.\n\n**Trust is built slowly through thousands of small moments where your spouse proves reliable, honest, and safe.** But it can be shattered in a single moment of betrayal.\n\n**The cruel math of trust is that it takes years to build and seconds to destroy.** This is why betrayal hurts so deeply. It does not just damage the present. It rewrites the past and threatens the future.",
           "icon": "psychology"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Situation",
-          "text": "{red|Which best describes your current situation in this journey?}",
+          "text": "Which best describes your current situation in this journey?",
           "prompts": [
             "I am the one whose trust was broken and I am trying to heal",
             "I am the one who broke trust and I am trying to repair it",
@@ -96,7 +96,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Naming What Happened",
-          "text": "{red|**Before you can rebuild, you need to name what broke.** This is not about rehashing every detail or keeping score. It is about honest acknowledgment of what happened.\n\nIf trust was broken by your spouse, what specifically happened?}{red| What did you believe that turned out to be false?}{red| What was the impact on you?}\n\n{red|If you are the one who broke trust, what did you do?}{red| Not the minimized version, but the honest truth of what happened and how it affected your spouse?}\n\nWrite an honest account of what happened to break trust in your marriage:",
+          "text": "**Before you can rebuild, you need to name what broke.** This is not about rehashing every detail or keeping score. It is about honest acknowledgment of what happened.\n\nIf trust was broken by your spouse, what specifically happened? What did you believe that turned out to be false? What was the impact on you?\n\nIf you are the one who broke trust, what did you do? Not the minimized version, but the honest truth of what happened and how it affected your spouse?\n\nWrite an honest account of what happened to break trust in your marriage:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -105,7 +105,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "The Road Ahead",
-          "text": "**Rebuilding trust is possible, but you need to know what it requires.**\n\n**For the one who broke trust, it requires complete honesty going forward, patient endurance of your spouse's pain, consistent trustworthy behavior over time, and accepting that you cannot control the timeline of healing.**\n\n**For the one who was betrayed, it requires allowing yourself to grieve, choosing whether to work toward forgiveness, learning to risk trusting again eventually, and accepting that this will change you.**\n\n**For both of you, it requires commitment to doing the hard work even when it feels impossible.**\n\n**This journey will guide you through each of these elements.** The path is long, but many couples have walked it before you and emerged with a marriage stronger than before.\n\n**'He heals the brokenhearted and binds up their wounds.**' (({red|Psalm 147:3}))",
+          "text": "**Rebuilding trust is possible, but you need to know what it requires.**\n\n**For the one who broke trust, it requires complete honesty going forward, patient endurance of your spouse's pain, consistent trustworthy behavior over time, and accepting that you cannot control the timeline of healing.**\n\n**For the one who was betrayed, it requires allowing yourself to grieve, choosing whether to work toward forgiveness, learning to risk trusting again eventually, and accepting that this will change you.**\n\n**For both of you, it requires commitment to doing the hard work even when it feels impossible.**\n\n**This journey will guide you through each of these elements.** The path is long, but many couples have walked it before you and emerged with a marriage stronger than before.\n\n**'He heals the brokenhearted and binds up their wounds.**' (Psalm 147:3)",
           "icon": "route"
         }
       ]
@@ -133,7 +133,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "What You Are Experiencing Is Real",
-          "text": "**If your spouse broke your trust, what you are feeling is not an overreaction.** It is a normal response to an abnormal situation.\n\n**You may feel intense pain that comes in waves, sometimes overwhelming you when you least expect it.** You may feel anger that surprises you with its intensity. You may feel profound sadness and grief for the marriage you thought you had.\n\n**\"My heart is in anguish within me; the terrors of death have fallen on me.** Fear and trembling have beset me; horror has overwhelmed me\" ({red|Psalm 55:4-5|My heart is in anguish within me; the terrors of death have fallen on me.** Fear and trembling have beset me; horror has overwhelmed me}). David knew this kind of betrayal pain. You are not alone in what you feel.\n\n**You may find yourself obsessing over details, replaying conversations, looking for signs you missed.** You may have trouble sleeping, eating, or concentrating on anything else.\n\n**You may feel shame, wondering what you did wrong or why you were not enough.** You may feel fear about whether you can ever trust anyone again.\n\n**All of these responses are normal.** You are not going crazy. You are processing a profound wound.",
+          "text": "**If your spouse broke your trust, what you are feeling is not an overreaction.** It is a normal response to an abnormal situation.\n\n**You may feel intense pain that comes in waves, sometimes overwhelming you when you least expect it.** You may feel anger that surprises you with its intensity. You may feel profound sadness and grief for the marriage you thought you had.\n\n**\"My heart is in anguish within me; the terrors of death have fallen on me. Fear and trembling have beset me; horror has overwhelmed me\" (Psalm 55:4-5|My heart is in anguish within me; the terrors of death have fallen on me.** Fear and trembling have beset me; horror has overwhelmed me). David knew this kind of betrayal pain. You are not alone in what you feel.\n\n**You may find yourself obsessing over details, replaying conversations, looking for signs you missed.** You may have trouble sleeping, eating, or concentrating on anything else.\n\n**You may feel shame, wondering what you did wrong or why you were not enough.** You may feel fear about whether you can ever trust anyone again.\n\n**All of these responses are normal.** You are not going crazy. You are processing a profound wound.",
           "icon": "psychology"
         },
         {
@@ -165,7 +165,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Pain Right Now",
-          "text": "{red|**Take a moment to honestly assess what you are experiencing right now.**\n\nWhat emotions are most present for you today?}{red| What aspects of the betrayal hurt the most?}{red| What are you grieving?}{red| What do you need that you are not getting?}{red| What fears do you have about the future?}\n\nWrite whatever needs to come out:",
+          "text": "**Take a moment to honestly assess what you are experiencing right now.**\n\nWhat emotions are most present for you today? What aspects of the betrayal hurt the most? What are you grieving? What do you need that you are not getting? What fears do you have about the future?\n\nWrite whatever needs to come out:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -174,7 +174,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "One Step Toward Healing",
-          "text": "{red|**Healing happens through small steps, not giant leaps.** Choose one thing you will do this week to care for yourself in the midst of this pain.\n\n**You might talk to a trusted friend or counselor about what you are going through.** You might journal your feelings to get them outside of your head. You might take a walk each day to move your body and clear your mind. You might set a boundary around how much you will discuss the betrayal each day to prevent it from consuming every moment.\n\nWhat is one step you will take this week to care for yourself as you heal?}\n\n**Remember that caring for yourself is not selfish.** You cannot rebuild a marriage from a place of complete depletion.",
+          "text": "**Healing happens through small steps, not giant leaps.** Choose one thing you will do this week to care for yourself in the midst of this pain.\n\n**You might talk to a trusted friend or counselor about what you are going through.** You might journal your feelings to get them outside of your head. You might take a walk each day to move your body and clear your mind. You might set a boundary around how much you will discuss the betrayal each day to prevent it from consuming every moment.\n\nWhat is one step you will take this week to care for yourself as you heal?\n\n**Remember that caring for yourself is not selfish.** You cannot rebuild a marriage from a place of complete depletion.",
           "icon": "directions_walk"
         }
       ]
@@ -202,7 +202,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Beyond Sorry",
-          "text": "{red|**If you broke your spouse's trust, saying sorry is not enough.** Sorry is a word. What is needed is repentance, which is a complete change of direction.\n\n**Many people who break trust want to apologize quickly and move on.** They say I said I was sorry, what more do you want?} They want the consequences to end, the conversations to stop, life to return to normal.\n\n**But the person you wounded does not have that option.** They cannot just move on. The pain does not disappear because you apologized. The trust does not rebuild because you feel bad about what you did.\n\n**If you want to rebuild this marriage, you need to understand that the process will be long, painful, and largely outside your control.** Your job is not to manage the timeline. Your job is to become someone worthy of trust again.",
+          "text": "**If you broke your spouse's trust, saying sorry is not enough.** Sorry is a word. What is needed is repentance, which is a complete change of direction.\n\n**Many people who break trust want to apologize quickly and move on.** They say I said I was sorry, what more do you want? They want the consequences to end, the conversations to stop, life to return to normal.\n\n**But the person you wounded does not have that option.** They cannot just move on. The pain does not disappear because you apologized. The trust does not rebuild because you feel bad about what you did.\n\n**If you want to rebuild this marriage, you need to understand that the process will be long, painful, and largely outside your control.** Your job is not to manage the timeline. Your job is to become someone worthy of trust again.",
           "icon": "psychology"
         },
         {
@@ -234,7 +234,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Honest Ownership",
-          "text": "{red|**This is your opportunity to practice full ownership without excuse.**\n\n**Write out exactly what you did.** Do not minimize or explain it away. Then write about the impact on your spouse. What did your choices cost them?}{red| What have they had to experience because of what you did?}\n\n**This is not about beating yourself up endlessly.** It is about demonstrating that you truly understand the weight of what happened.\n\nWrite your honest ownership:",
+          "text": "**This is your opportunity to practice full ownership without excuse.**\n\n**Write out exactly what you did.** Do not minimize or explain it away. Then write about the impact on your spouse. What did your choices cost them? What have they had to experience because of what you did?\n\n**This is not about beating yourself up endlessly.** It is about demonstrating that you truly understand the weight of what happened.\n\nWrite your honest ownership:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -243,7 +243,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "What Genuine Repentance Looks Like",
-          "text": "**Moving forward, genuine repentance includes several ongoing elements.**\n\n**Complete honesty from this point on, even when the truth is uncomfortable.**\n\n**Patient endurance of your spouse's pain without becoming defensive or demanding they heal faster.**\n\n**Answering their questions, even if you have answered them before, because repetition is part of their processing.**\n\n**Consistent trustworthy behavior over time, understanding that one good week does not rebuild years of trust.**\n\n**Accepting accountability measures like transparency with devices, finances, or schedules for as long as your spouse needs them.**\n\n**This week, ask your spouse what they need from you right now.** Listen without defending. Then do what they ask.\n\n**'Godly sorrow brings repentance that leads to salvation and leaves no regret.**' (2 ({red|Corinthians 7:10}))",
+          "text": "**Moving forward, genuine repentance includes several ongoing elements.**\n\n**Complete honesty from this point on, even when the truth is uncomfortable.**\n\n**Patient endurance of your spouse's pain without becoming defensive or demanding they heal faster.**\n\n**Answering their questions, even if you have answered them before, because repetition is part of their processing.**\n\n**Consistent trustworthy behavior over time, understanding that one good week does not rebuild years of trust.**\n\n**Accepting accountability measures like transparency with devices, finances, or schedules for as long as your spouse needs them.**\n\n**This week, ask your spouse what they need from you right now.** Listen without defending. Then do what they ask.\n\n**'Godly sorrow brings repentance that leads to salvation and leaves no regret.**' (2 (Corinthians 7:10)",
           "icon": "check_circle"
         }
       ]
@@ -295,7 +295,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Mapping Your Damage",
-          "text": "{red|Based on what happened in your marriage, which components of trust were damaged?}\n\n**Consider reliability, honesty, care, and fidelity.** Some may be severely damaged, some moderately, some may actually be intact.\n\nWrite your assessment of which components of trust were damaged and how badly:",
+          "text": "Based on what happened in your marriage, which components of trust were damaged?\n\n**Consider reliability, honesty, care, and fidelity.** Some may be severely damaged, some moderately, some may actually be intact.\n\nWrite your assessment of which components of trust were damaged and how badly:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -304,7 +304,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Rebuilding Each Component",
-          "text": "**Each component of trust rebuilds in its own way.**\n\n**Reliability rebuilds through consistent follow through over time.** Do what you say you will do, repeatedly, until a pattern emerges that can be trusted. \"Let your yes be yes, and your no be no\" ({red|Matthew 5:37|Let your yes be yes, and your no be no}).\n\n**Honesty rebuilds through radical transparency.** Tell the truth even when it is uncomfortable. Volunteer information. Let your spouse verify what you say until they no longer need to. \"Therefore each of you must put off falsehood and speak truthfully\" ({red|Ephesians 4:25|(Matthew 5:37). **Honesty rebuilds through radical transparency.** Tell the truth even when it is uncomfortable. Volunteer information. Let your spouse verify what you say until they no longer need to.}).\n\n**Care rebuilds through demonstrating genuine concern for your spouse's wellbeing.** Show through actions that you are prioritizing them, considering their feelings, and protecting them from harm.\n\n**Fidelity rebuilds through maintained boundaries, accountability, and consistent faithfulness over time.** The longer the track record, the more trust can grow.\n\n**All of these take time.** There are no shortcuts.",
+          "text": "**Each component of trust rebuilds in its own way.**\n\n**Reliability rebuilds through consistent follow through over time.** Do what you say you will do, repeatedly, until a pattern emerges that can be trusted. \"Let your yes be yes, and your no be no\" (Matthew 5:37|Let your yes be yes, and your no be no).\n\n**Honesty rebuilds through radical transparency.** Tell the truth even when it is uncomfortable. Volunteer information. Let your spouse verify what you say until they no longer need to. \"Therefore each of you must put off falsehood and speak truthfully\" (Ephesians 4:25|(Matthew 5:37). **Honesty rebuilds through radical transparency.** Tell the truth even when it is uncomfortable. Volunteer information. Let your spouse verify what you say until they no longer need to.).\n\n**Care rebuilds through demonstrating genuine concern for your spouse's wellbeing.** Show through actions that you are prioritizing them, considering their feelings, and protecting them from harm.\n\n**Fidelity rebuilds through maintained boundaries, accountability, and consistent faithfulness over time.** The longer the track record, the more trust can grow.\n\n**All of these take time.** There are no shortcuts.",
           "icon": "construction"
         },
         {
@@ -312,7 +312,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Rebuilding Focus",
-          "text": "{red|Based on your damage assessment, what needs the most attention in your rebuilding efforts?}\n\n**If reliability was damaged, the focus needs to be on consistent follow through.**\n\n**If honesty was damaged, the focus needs to be on radical transparency.**\n\n**If care was damaged, the focus needs to be on demonstrating genuine priority for your spouse's wellbeing.**\n\n**If fidelity was damaged, the focus needs to be on accountability and maintained boundaries.**\n\n**Discuss with your spouse which component feels most urgent to address first.** Then identify specific actions that would begin rebuilding that component.\n\nWrite your rebuilding focus and initial actions:",
+          "text": "Based on your damage assessment, what needs the most attention in your rebuilding efforts?\n\n**If reliability was damaged, the focus needs to be on consistent follow through.**\n\n**If honesty was damaged, the focus needs to be on radical transparency.**\n\n**If care was damaged, the focus needs to be on demonstrating genuine priority for your spouse's wellbeing.**\n\n**If fidelity was damaged, the focus needs to be on accountability and maintained boundaries.**\n\n**Discuss with your spouse which component feels most urgent to address first.** Then identify specific actions that would begin rebuilding that component.\n\nWrite your rebuilding focus and initial actions:",
           "responseType": "open-text",
           "icon": "edit_note"
         }
@@ -373,7 +373,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Transparency Needs",
-          "text": "{red|What transparency measures would help you feel more secure right now?}\n\n{red|If you are the wounded spouse, what do you need access to?}{red| What would help you feel safer?}{red| Be specific.\n\nIf you broke trust, what are you willing to open up?}{red| Are there areas where you feel resistance?}{red| Why might that be?}\n\nWrite your transparency needs or offerings:",
+          "text": "What transparency measures would help you feel more secure right now?\n\nIf you are the wounded spouse, what do you need access to? What would help you feel safer? Be specific.\n\nIf you broke trust, what are you willing to open up? Are there areas where you feel resistance? Why might that be?\n\nWrite your transparency needs or offerings:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -418,7 +418,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "For the One Who Broke Trust",
-          "text": "{red|**Answering questions is one of the hardest parts of the rebuilding process.** You may feel like you have already told them everything. You may be exhausted by the repetition. You may want to say can we please just move forward?}\n\n**But consider what you are really asking.** You are asking your spouse to stop processing their pain on your timeline. You are asking them to be over it before they actually are.\n\n**Every question they ask is an opportunity to demonstrate that you are safe now.** Patient, honest answers say I will sit in this discomfort because I caused it and because your healing matters more than my comfort.\n\n**Impatient or defensive responses say my comfort matters more than your healing.** And that reinforces the very wound you are trying to repair.",
+          "text": "**Answering questions is one of the hardest parts of the rebuilding process.** You may feel like you have already told them everything. You may be exhausted by the repetition. You may want to say can we please just move forward?\n\n**But consider what you are really asking.** You are asking your spouse to stop processing their pain on your timeline. You are asking them to be over it before they actually are.\n\n**Every question they ask is an opportunity to demonstrate that you are safe now.** Patient, honest answers say I will sit in this discomfort because I caused it and because your healing matters more than my comfort.\n\n**Impatient or defensive responses say my comfort matters more than your healing.** And that reinforces the very wound you are trying to repair.",
           "icon": "hourglass_empty"
         },
         {
@@ -442,7 +442,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Question Dynamic",
-          "text": "{red|**Reflect on how questions and disclosure are working in your relationship right now.**\n\nIf you are the wounded spouse, what questions do you still have?}{red| Are you getting honest answers?}{red| Do you feel heard when you ask?}\n\n{red|If you broke trust, how are you handling the questions?}{red| Are you being patient and honest?}{red| Where do you feel resistance?}\n\n{red|What would help this dynamic work better for both of you?}\n\nWrite your reflection:",
+          "text": "**Reflect on how questions and disclosure are working in your relationship right now.**\n\nIf you are the wounded spouse, what questions do you still have? Are you getting honest answers? Do you feel heard when you ask?\n\nIf you broke trust, how are you handling the questions? Are you being patient and honest? Where do you feel resistance?\n\nWhat would help this dynamic work better for both of you?\n\nWrite your reflection:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -512,7 +512,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Consistency Assessment",
-          "text": "{red|**If you broke trust, honestly assess your consistency over the past weeks or months.** Have you been following through on commitments?}{red| Have there been any lies or deceptions?}{red| Where have you been consistent and where have you struggled?}\n\n{red|If your trust was broken, have you noticed any consistent changes in your spouse's behavior?}{red| What would help you recognize and acknowledge the progress that may be happening?}\n\nWrite your honest assessment:",
+          "text": "**If you broke trust, honestly assess your consistency over the past weeks or months.** Have you been following through on commitments? Have there been any lies or deceptions? Where have you been consistent and where have you struggled?\n\nIf your trust was broken, have you noticed any consistent changes in your spouse's behavior? What would help you recognize and acknowledge the progress that may be happening?\n\nWrite your honest assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -558,7 +558,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What Forgiveness Is",
-          "text": "**Forgiveness is a decision to release the debt.** It is saying you hurt me and you owe me, but I am choosing not to make you pay.\n\n**Forgiveness is refusing to hold the offense as a weapon to be used against them forever.** It is choosing not to bring it up in every argument or use it to control and punish.\n\n**Forgiveness is for your sake as much as theirs.** Unforgiveness is like drinking poison and waiting for the other person to die. It keeps you chained to the offense.\n\n**Forgiveness is a process that takes time.** You may choose forgiveness and then find anger rising again. That does not mean you failed. It means you need to choose again.\n\n**Forgiveness is ultimately an act of faith, trusting that God will bring justice and healing even when the person who hurt you does not fully pay for what they did.**\n\n**'Be kind and compassionate to one another, forgiving each other, just as in Christ God forgave you.**' (({red|Ephesians 4:32}))",
+          "text": "**Forgiveness is a decision to release the debt.** It is saying you hurt me and you owe me, but I am choosing not to make you pay.\n\n**Forgiveness is refusing to hold the offense as a weapon to be used against them forever.** It is choosing not to bring it up in every argument or use it to control and punish.\n\n**Forgiveness is for your sake as much as theirs.** Unforgiveness is like drinking poison and waiting for the other person to die. It keeps you chained to the offense.\n\n**Forgiveness is a process that takes time.** You may choose forgiveness and then find anger rising again. That does not mean you failed. It means you need to choose again.\n\n**Forgiveness is ultimately an act of faith, trusting that God will bring justice and healing even when the person who hurt you does not fully pay for what they did.**\n\n**'Be kind and compassionate to one another, forgiving each other, just as in Christ God forgave you.**' (Ephesians 4:32)",
           "icon": "favorite"
         },
         {
@@ -566,7 +566,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "The Forgiveness Journey",
-          "text": "**Forgiveness is rarely a moment.** It is usually a journey with stages.\n\n**First comes acknowledging the wound.** You cannot forgive what you have not named. The hurt must be recognized in its full weight.\n\n**Then comes feeling the pain.** You cannot rush past the grief and anger to get to forgiveness. Those emotions need to be processed. Even Jesus wept at Lazarus's tomb, fully experiencing grief before moving to action.\n\n**Then comes choosing to forgive.** This is the decision point where you release the debt even though you are still hurting. \"Bear with each other and forgive one another if any of you has a grievance against someone. Forgive as the Lord forgave you\" ({red|Colossians 3:13|Bear with each other and forgive one another if any of you has a grievance against someone. Forgive as the Lord forgave you}).\n\n**Then comes the ongoing choice.** When pain resurfaces, you choose forgiveness again. Peter asked Jesus how many times he should forgive. \"Jesus answered, 'I tell you, not seven times, but seventy-seven times'\" ({red|Matthew 18:22|(Colossians 3:13). **Then comes the ongoing choice.** When pain resurfaces, you choose forgiveness again. Peter asked Jesus how many times he should forgive.}). Forgiveness is not a single event.\n\n**Finally comes the experience of freedom.** Over time, the offense loses its grip. You can think about it without being overwhelmed. You are no longer defined by what happened to you.\n\n**This journey takes months or years, not days or weeks.**",
+          "text": "**Forgiveness is rarely a moment.** It is usually a journey with stages.\n\n**First comes acknowledging the wound.** You cannot forgive what you have not named. The hurt must be recognized in its full weight.\n\n**Then comes feeling the pain.** You cannot rush past the grief and anger to get to forgiveness. Those emotions need to be processed. Even Jesus wept at Lazarus's tomb, fully experiencing grief before moving to action.\n\n**Then comes choosing to forgive.** This is the decision point where you release the debt even though you are still hurting. \"Bear with each other and forgive one another if any of you has a grievance against someone. Forgive as the Lord forgave you\" (Colossians 3:13|Bear with each other and forgive one another if any of you has a grievance against someone. Forgive as the Lord forgave you).\n\n**Then comes the ongoing choice.** When pain resurfaces, you choose forgiveness again. Peter asked Jesus how many times he should forgive. \"Jesus answered, 'I tell you, not seven times, but seventy-seven times'\" (Matthew 18:22|(Colossians 3:13). **Then comes the ongoing choice.** When pain resurfaces, you choose forgiveness again. Peter asked Jesus how many times he should forgive.). Forgiveness is not a single event.\n\n**Finally comes the experience of freedom.** Over time, the offense loses its grip. You can think about it without being overwhelmed. You are no longer defined by what happened to you.\n\n**This journey takes months or years, not days or weeks.**",
           "icon": "route"
         },
         {
@@ -582,7 +582,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Where Are You in the Forgiveness Journey?",
-          "text": "{red|**Honestly assess where you are in the forgiveness journey.**\n\nAre you still in the stage of acknowledging the wound and feeling the pain?}\n\n{red|Have you made a choice to forgive, even if you have to keep making it?}\n\n{red|Are there aspects you have forgiven and others you have not?}\n\n{red|What is making forgiveness difficult for you?}\n\nWrite where you honestly are:",
+          "text": "**Honestly assess where you are in the forgiveness journey.**\n\nAre you still in the stage of acknowledging the wound and feeling the pain?\n\nHave you made a choice to forgive, even if you have to keep making it?\n\nAre there aspects you have forgiven and others you have not?\n\nWhat is making forgiveness difficult for you?\n\nWrite where you honestly are:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -591,7 +591,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "A Step Toward Forgiveness",
-          "text": "{red|**You cannot force yourself to the end of the forgiveness journey.** But you can take one step.\n\n**If you have not fully acknowledged the wound, spend time this week writing out exactly how you were hurt and what it cost you.**\n\n**If you are stuck in the pain, consider whether you need support through counseling to process emotions you cannot get through alone.**\n\n**If you are ready to choose forgiveness, consider writing a letter to your spouse, whether or not you share it, that says what they did, how it hurt, and your choice to release the debt.**\n\n**If you have chosen forgiveness but find it resurfacing, pray this week for the grace to choose again.**\n\nWhat is your one step this week?}",
+          "text": "**You cannot force yourself to the end of the forgiveness journey.** But you can take one step.\n\n**If you have not fully acknowledged the wound, spend time this week writing out exactly how you were hurt and what it cost you.**\n\n**If you are stuck in the pain, consider whether you need support through counseling to process emotions you cannot get through alone.**\n\n**If you are ready to choose forgiveness, consider writing a letter to your spouse, whether or not you share it, that says what they did, how it hurt, and your choice to release the debt.**\n\n**If you have chosen forgiveness but find it resurfacing, pray this week for the grace to choose again.**\n\nWhat is your one step this week?",
           "icon": "directions_walk"
         }
       ]
@@ -643,7 +643,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Current Position",
-          "text": "{red|**Honestly assess where you and your spouse currently stand.**\n\nDo you feel more like adversaries or partners right now?}\n\n{red|What would need to change for you to feel like you are working together instead of against each other?}\n\n{red|What is your role in making that shift happen?}\n\nWrite your honest assessment:",
+          "text": "**Honestly assess where you and your spouse currently stand.**\n\nDo you feel more like adversaries or partners right now?\n\nWhat would need to change for you to feel like you are working together instead of against each other?\n\nWhat is your role in making that shift happen?\n\nWrite your honest assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -660,7 +660,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Choosing Partnership",
-          "text": "{red|**This week, have a conversation about becoming partners in rebuilding.**\n\n**Discuss what each of you sees as your role in the rebuilding process.** Talk about what you need from each other to feel like you are on the same team. Identify the real enemy, whether that is the addiction, the deception, the patterns, or whatever damaged your marriage.\n\n**Make a statement together, even if it feels forced at first.** We are in this together. We are fighting for our marriage, not against each other.\n\n**If you realize you need professional help, commit to finding a counselor this week.** Do not let another month pass in the adversary position when help is available.\n\nWhat will you do to move toward partnership this week?}",
+          "text": "**This week, have a conversation about becoming partners in rebuilding.**\n\n**Discuss what each of you sees as your role in the rebuilding process.** Talk about what you need from each other to feel like you are on the same team. Identify the real enemy, whether that is the addiction, the deception, the patterns, or whatever damaged your marriage.\n\n**Make a statement together, even if it feels forced at first.** We are in this together. We are fighting for our marriage, not against each other.\n\n**If you realize you need professional help, commit to finding a counselor this week.** Do not let another month pass in the adversary position when help is available.\n\nWhat will you do to move toward partnership this week?",
           "icon": "group_add"
         }
       ]
@@ -688,7 +688,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Paradox of Stronger After Breaking",
-          "text": "{red|**It seems impossible.** How could a marriage be stronger after betrayal than it was before?}\n\n**Yet couples who do the hard work of rebuilding often report exactly this.** Not that they are glad the betrayal happened. They would never wish for it. But they recognize that something better emerged from the wreckage than what existed before.\n\n**This happens because betrayal forces everything into the open.** Issues that were buried must now be addressed. Patterns that were unhealthy must now be changed. Communication that was superficial must now go deeper.\n\n**The couple who rebuilds does not go back to the old marriage.** They build a new one. And with intention and effort, the new marriage can be more honest, more connected, and more resilient than the old one ever was.",
+          "text": "**It seems impossible.** How could a marriage be stronger after betrayal than it was before?\n\n**Yet couples who do the hard work of rebuilding often report exactly this.** Not that they are glad the betrayal happened. They would never wish for it. But they recognize that something better emerged from the wreckage than what existed before.\n\n**This happens because betrayal forces everything into the open.** Issues that were buried must now be addressed. Patterns that were unhealthy must now be changed. Communication that was superficial must now go deeper.\n\n**The couple who rebuilds does not go back to the old marriage.** They build a new one. And with intention and effort, the new marriage can be more honest, more connected, and more resilient than the old one ever was.",
           "icon": "trending_up"
         },
         {
@@ -704,7 +704,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Examining the Old Foundation",
-          "text": "{red|**Think about your marriage before the betrayal.** Without excusing what happened, what weaknesses existed in the foundation?}\n\n{red|Were there communication problems?}{red| Emotional distance?}{red| Unaddressed conflict?}{red| Individual issues that were being ignored?}{red| Patterns that were not healthy?}\n\n**This is not about blame.** It is about understanding what needs to be different going forward.\n\nWrite your honest assessment of what was weak in the old foundation:",
+          "text": "**Think about your marriage before the betrayal.** Without excusing what happened, what weaknesses existed in the foundation?\n\nWere there communication problems? Emotional distance? Unaddressed conflict? Individual issues that were being ignored? Patterns that were not healthy?\n\n**This is not about blame.** It is about understanding what needs to be different going forward.\n\nWrite your honest assessment of what was weak in the old foundation:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -729,7 +729,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Designing Your New Foundation",
-          "text": "{red|**Together, discuss what you want to build in your new foundation.**\n\nWhat was missing before that needs to be present now?}\n\n{red|What patterns need to change?}\n\n{red|What practices will you put in place to maintain honesty, intimacy, and health?}\n\n{red|What kind of marriage do you want to create going forward?}\n\nWrite your vision for the new foundation of your marriage:\n\n**This vision is not just words on paper.** It is a commitment to build something better than what was broken.",
+          "text": "**Together, discuss what you want to build in your new foundation.**\n\nWhat was missing before that needs to be present now?\n\nWhat patterns need to change?\n\nWhat practices will you put in place to maintain honesty, intimacy, and health?\n\nWhat kind of marriage do you want to create going forward?\n\nWrite your vision for the new foundation of your marriage:\n\n**This vision is not just words on paper.** It is a commitment to build something better than what was broken.",
           "responseType": "open-text",
           "icon": "edit_note"
         }
@@ -782,7 +782,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Living with Your Scar",
-          "text": "{red|**Think about what living with this scar will look like for your marriage.**\n\nWhat triggers or difficult dates might you need to navigate together?}\n\n{red|How will you handle the moments when the scar aches?}\n\n{red|What might be the gift in this scar for your future?}\n\nWrite your thoughts:",
+          "text": "**Think about what living with this scar will look like for your marriage.**\n\nWhat triggers or difficult dates might you need to navigate together?\n\nHow will you handle the moments when the scar aches?\n\nWhat might be the gift in this scar for your future?\n\nWrite your thoughts:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -791,7 +791,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Scripture on Scars and Redemption",
-          "text": "**Even Jesus carries scars.** After His resurrection, He showed His disciples the wounds in His hands and side. The scars were not erased by resurrection. They became proof of what He had overcome.\n\n**Your marriage scars can be similar.** Not evidence of defeat but evidence of survival. Not marks of shame but marks of redemption.\n\n**'He was pierced for our transgressions, he was crushed for our iniquities; the punishment that brought us peace was on him, and by his wounds we are healed.**' (({red|Isaiah 53:5}))\n\n**God specializes in redemption.** He takes broken things and makes them new, not by pretending the breaking never happened, but by bringing beauty from ashes.",
+          "text": "**Even Jesus carries scars.** After His resurrection, He showed His disciples the wounds in His hands and side. The scars were not erased by resurrection. They became proof of what He had overcome.\n\n**Your marriage scars can be similar.** Not evidence of defeat but evidence of survival. Not marks of shame but marks of redemption.\n\n**'He was pierced for our transgressions, he was crushed for our iniquities; the punishment that brought us peace was on him, and by his wounds we are healed.**' (Isaiah 53:5)\n\n**God specializes in redemption.** He takes broken things and makes them new, not by pretending the breaking never happened, but by bringing beauty from ashes.",
           "icon": "auto_stories"
         },
         {
@@ -843,7 +843,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Greatest Insight",
-          "text": "{red|What is the most important thing you have learned through this journey?}\n\n{red|What do you want to remember when the road gets hard?}\n\n{red|What has shifted in how you see your situation, your spouse, or your future?}\n\nWrite your greatest insight:",
+          "text": "What is the most important thing you have learned through this journey?\n\nWhat do you want to remember when the road gets hard?\n\nWhat has shifted in how you see your situation, your spouse, or your future?\n\nWrite your greatest insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -852,7 +852,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "What Your Spouse Needs",
-          "text": "{red|Based on what you have learned, what does your spouse most need from you going forward?}\n\n{red|If you broke trust, what does your spouse need to see from you to continue healing?}\n\n{red|If your trust was broken, what does your spouse need from you to stay engaged in the rebuilding?}\n\nBe specific about what you will give them:",
+          "text": "Based on what you have learned, what does your spouse most need from you going forward?\n\nIf you broke trust, what does your spouse need to see from you to continue healing?\n\nIf your trust was broken, what does your spouse need from you to stay engaged in the rebuilding?\n\nBe specific about what you will give them:",
           "responseType": "open-text",
           "icon": "favorite"
         },
@@ -861,7 +861,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "A Prayer for Your Restoration",
-          "text": "**Father, we come to You as broken people trying to rebuild what was shattered.**\n\n**For the one who caused this wound, give them genuine repentance, patient endurance, and the grace to become someone worthy of trust again.**\n\n**For the one who carries the wound, give them healing, the ability to forgive, and the courage to risk trusting again someday.**\n\n**For both of them together, give them strength for the long road, partnership instead of adversary, and a vision for something beautiful rising from the ashes.**\n\n**Redeem what the enemy meant for destruction.** Bring beauty from these ashes. May this marriage become a testimony of Your grace.\n\nAmen.\n\n**'He makes everything beautiful in its time.**' (({red|Ecclesiastes 3:11}))",
+          "text": "**Father, we come to You as broken people trying to rebuild what was shattered.**\n\n**For the one who caused this wound, give them genuine repentance, patient endurance, and the grace to become someone worthy of trust again.**\n\n**For the one who carries the wound, give them healing, the ability to forgive, and the courage to risk trusting again someday.**\n\n**For both of them together, give them strength for the long road, partnership instead of adversary, and a vision for something beautiful rising from the ashes.**\n\n**Redeem what the enemy meant for destruction.** Bring beauty from these ashes. May this marriage become a testimony of Your grace.\n\nAmen.\n\n**'He makes everything beautiful in its time.**' (Ecclesiastes 3:11)",
           "icon": "volunteer_activism"
         },
         {

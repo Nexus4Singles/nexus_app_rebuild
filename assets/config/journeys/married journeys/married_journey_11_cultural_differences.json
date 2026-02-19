@@ -77,7 +77,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Cultural Scripts",
-          "text": "{red|**Think about the culture you grew up in, whether ethnic, regional, religious, or socioeconomic.**\n\nWhat were the unspoken rules about:\n\nHow family members treated each other?}{red| How conflicts were handled?}{red| What roles men and women played?}{red| How emotions were expressed?}{red| What success looked like?}\n\nWrite about the cultural scripts you absorbed growing up:",
+          "text": "**Think about the culture you grew up in, whether ethnic, regional, religious, or socioeconomic.**\n\nWhat were the unspoken rules about:\n\nHow family members treated each other? How conflicts were handled? What roles men and women played? How emotions were expressed? What success looked like?\n\nWrite about the cultural scripts you absorbed growing up:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -86,7 +86,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "The Difference Level",
-          "text": "{red|How would you describe the cultural differences between you and your spouse?}",
+          "text": "How would you describe the cultural differences between you and your spouse?",
           "prompts": [
             "Very different, we come from distinctly different cultural backgrounds",
             "Moderately different, some significant differences in background",
@@ -106,7 +106,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "The Curiosity Shift",
-          "text": "{red|**This week, practice shifting from judgment to curiosity when cultural differences emerge.**\n\nInstead of: 'Why do they always do it that way?}' Try: 'I wonder what in their background makes that feel natural to them.'\n\n**Instead of: 'That's not how it should be done.**' Try: 'That's different from what I'm used to. Tell me more about why that matters to you.'\n\n**Notice one moment this week where you catch yourself judging your spouse's culturally-influenced behavior and choose curiosity instead.**\n\n**Write down what you observed.**",
+          "text": "**This week, practice shifting from judgment to curiosity when cultural differences emerge.**\n\nInstead of: 'Why do they always do it that way?' Try: 'I wonder what in their background makes that feel natural to them.'\n\n**Instead of: 'That's not how it should be done.**' Try: 'That's different from what I'm used to. Tell me more about why that matters to you.'\n\n**Notice one moment this week where you catch yourself judging your spouse's culturally-influenced behavior and choose curiosity instead.**\n\n**Write down what you observed.**",
           "icon": "psychology"
         }
       ]
@@ -134,7 +134,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Two Different Worlds",
-          "text": "{red|**Chen grew up in a family where parents were consulted on major decisions, where adult children were expected to contribute financially to parents, and where family gatherings happened every weekend.**\n\n**His wife Amanda came from a family where adult children were expected to be independent, where asking parents for input on decisions would be seen as immature, and where seeing family monthly was considered close.**\n\n**Neither family was dysfunctional.** They just operated from completely different cultural scripts about what family involvement should look like.\n\nNow Chen and Amanda face questions like: How much money should they send to his parents?}{red| How often should they visit her family?}{red| Whose family traditions do they follow?} And each question triggers different cultural expectations.",
+          "text": "**Chen grew up in a family where parents were consulted on major decisions, where adult children were expected to contribute financially to parents, and where family gatherings happened every weekend.**\n\n**His wife Amanda came from a family where adult children were expected to be independent, where asking parents for input on decisions would be seen as immature, and where seeing family monthly was considered close.**\n\n**Neither family was dysfunctional.** They just operated from completely different cultural scripts about what family involvement should look like.\n\nNow Chen and Amanda face questions like: How much money should they send to his parents? How often should they visit her family? Whose family traditions do they follow? And each question triggers different cultural expectations.",
           "icon": "groups"
         },
         {
@@ -142,7 +142,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Common Pressure Points",
-          "text": "Intercultural couples often face tension around:\n\n**Financial obligations**: Some cultures expect substantial financial support of extended family.** Others see this as inappropriate or enabling.\n\n**Time expectations**: How often you visit, how long you stay, whether holidays are negotiable.**\n\n**Decision involvement**: Whether parents should be consulted on major choices about careers, homes, children.**\n\n**Living arrangements**: Expectations about whether parents will live with you eventually, how close you should live.**\n\n**Respect and deference**: How to speak to elders, whether disagreement is acceptable, what honor looks like in practice.**\n\n**Child-raising input**: How much say grandparents have in how you raise your children.**\n\n**Each of these can become a battleground if not navigated with understanding.**",
+          "text": "Intercultural couples often face tension around:\n\n**Financial obligations:** Some cultures expect substantial financial support of extended family. Others see this as inappropriate or enabling.\n\n**Time expectations:** How often you visit, how long you stay, whether holidays are negotiable.\n\n**Decision involvement:** Whether parents should be consulted on major choices about careers, homes, children.\n\n**Living arrangements:** Expectations about whether parents will live with you eventually, how close you should live.\n\n**Respect and deference:** How to speak to elders, whether disagreement is acceptable, what honor looks like in practice.\n\n**Child-raising input:** How much say grandparents have in how you raise your children.\n\n**Each of these can become a battleground if not navigated with understanding.**",
           "icon": "warning"
         },
         {
@@ -150,7 +150,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Neither Fully Right",
-          "text": "{red|**Here's a hard truth: on many of these issues, neither cultural approach is objectively right or wrong.**\n\nIs it better to be independent or interconnected with extended family?}{red| Scripture actually seems to value both leaving and cleaving (({red|Genesis 2:24})) while also honoring parents (({red|Exodus 20:12})) and caring for family (1 ({red|Timothy 5:8})).\n\n**The question isn't which culture got it right.** The question is: what approach honors God, respects both families, and protects your marriage?}\n\n**This often requires creating something new, neither fully his cultural approach nor fully hers, but a thoughtful integration that works for your unique situation.**",
+          "text": "**Here's a hard truth: on many of these issues, neither cultural approach is objectively right or wrong.**\n\nIs it better to be independent or interconnected with extended family? Scripture actually seems to value both leaving and cleaving (Genesis 2:24) while also honoring parents (Exodus 20:12) and caring for family (1 (Timothy 5:8).\n\n**The question isn't which culture got it right.** The question is: what approach honors God, respects both families, and protects your marriage?\n\n**This often requires creating something new, neither fully his cultural approach nor fully hers, but a thoughtful integration that works for your unique situation.**",
           "icon": "balance"
         },
         {
@@ -158,7 +158,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Family Pressure Points",
-          "text": "{red|**Think honestly about where extended family expectations create tension in your marriage.**\n\nWhere does your family's expectations clash with your spouse's family's expectations?}\n\n{red|Where do you feel caught between loyalty to your family of origin and loyalty to your spouse?}\n\n{red|What family expectations feel burdensome but hard to push back against?}\n\nWrite about the specific pressure points you face:",
+          "text": "**Think honestly about where extended family expectations create tension in your marriage.**\n\nWhere does your family's expectations clash with your spouse's family's expectations?\n\nWhere do you feel caught between loyalty to your family of origin and loyalty to your spouse?\n\nWhat family expectations feel burdensome but hard to push back against?\n\nWrite about the specific pressure points you face:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -167,7 +167,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Creating a United Front",
-          "text": "**The key principle: your marriage comes first.**\n\n**'Therefore a man shall leave his father and his mother and hold fast to his wife.**' (({red|Genesis 2:24}))\n\n**This doesn't mean abandoning or dishonoring extended family.** It means that when you married, you created a new primary family unit. That unit needs to make decisions together, even when those decisions disappoint extended family.\n\nPractically this means:\n\nDiscussing expectations privately before responding to family requests Presenting a united front even when you disagree internally Not throwing your spouse under the bus to your family Setting boundaries together, not individually\n\n**Your families may not like every decision you make.** But a marriage where both spouses feel they come first is worth protecting.",
+          "text": "**The key principle: your marriage comes first.**\n\n**'Therefore a man shall leave his father and his mother and hold fast to his wife.**' (Genesis 2:24)\n\n**This doesn't mean abandoning or dishonoring extended family.** It means that when you married, you created a new primary family unit. That unit needs to make decisions together, even when those decisions disappoint extended family.\n\nPractically this means:\n\nDiscussing expectations privately before responding to family requests Presenting a united front even when you disagree internally Not throwing your spouse under the bus to your family Setting boundaries together, not individually\n\n**Your families may not like every decision you make.** But a marriage where both spouses feel they come first is worth protecting.",
           "icon": "shield"
         },
         {
@@ -175,7 +175,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "The Expectations Conversation",
-          "text": "{red|**Have a conversation with your spouse about extended family expectations.**\n\nDiscuss:\n\nWhat does each of our families expect from us?}{red| Which expectations feel reasonable?}{red| Which feel burdensome?}{red| Where are we currently not on the same page?}{red| What boundaries might we need to set together?}\n\n**Remember: this conversation is about understanding and planning together, not about criticizing each other's families.**\n\n**Schedule this conversation for this week.**",
+          "text": "**Have a conversation with your spouse about extended family expectations.**\n\nDiscuss:\n\nWhat does each of our families expect from us? Which expectations feel reasonable? Which feel burdensome? Where are we currently not on the same page? What boundaries might we need to set together?\n\n**Remember: this conversation is about understanding and planning together, not about criticizing each other's families.**\n\n**Schedule this conversation for this week.**",
           "icon": "forum"
         }
       ]
@@ -211,7 +211,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Direct vs. Indirect",
-          "text": "**One of the biggest cultural communication differences is directness.**\n\n**Direct communication cultures** value saying exactly what you mean.** Clarity is respected. Hinting is seen as passive-aggressive or confusing.\n\n**Indirect communication cultures** value reading between the lines.** Direct statements can feel harsh or rude. Preserving face and harmony matters more than explicit clarity.\n\n**Neither is superior.** Both have strengths and weaknesses.\n\nBut when a direct communicator marries an indirect communicator:\n\nThe direct one may seem aggressive, insensitive, or blunt The indirect one may seem unclear, passive-aggressive, or hard to read\n\n**Understanding this difference can reframe frustrations as cultural rather than personal.**",
+          "text": "**One of the biggest cultural communication differences is directness.**\n\n**Direct communication cultures** value saying exactly what you mean. Clarity is respected. Hinting is seen as passive-aggressive or confusing.\n\n**Indirect communication cultures** value reading between the lines. Direct statements can feel harsh or rude. Preserving face and harmony matters more than explicit clarity.\n\n**Neither is superior.** Both have strengths and weaknesses.\n\nBut when a direct communicator marries an indirect communicator:\n\nThe direct one may seem aggressive, insensitive, or blunt The indirect one may seem unclear, passive-aggressive, or hard to read\n\n**Understanding this difference can reframe frustrations as cultural rather than personal.**",
           "icon": "swap_horiz"
         },
         {
@@ -219,7 +219,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Other Communication Differences",
-          "text": "{red|Beyond directness, cultures differ in:\n\n**Emotional expression**: Some cultures are emotionally expressive.** Passion, volume, and intensity show you care. Others are emotionally restrained. Calm control shows maturity and respect.\n\n**Conflict approach**: Some address conflict head-on immediately.** Others prefer cooling off periods and indirect resolution.\n\n**Eye contact and physical space**: What shows respect?}{red| What feels aggressive or intimate?}\n\n{red|**Interruption norms**: Is talking over each other engagement or rudeness?}\n\n{red|**Silence**: Is silence awkward and concerning, or respectful and thoughtful?}\n\n**What feels normal to you may feel strange or uncomfortable to your spouse based purely on cultural programming.**",
+          "text": "Beyond directness, cultures differ in:\n\n**Emotional expression:** Some cultures are emotionally expressive. Passion, volume, and intensity show you care. Others are emotionally restrained. Calm control shows maturity and respect.\n\n**Conflict approach:** Some address conflict head-on immediately. Others prefer cooling off periods and indirect resolution.\n\n**Eye contact and physical space**: What shows respect? What feels aggressive or intimate?\n\n**Interruption norms**: Is talking over each other engagement or rudeness?\n\n**Silence**: Is silence awkward and concerning, or respectful and thoughtful?\n\n**What feels normal to you may feel strange or uncomfortable to your spouse based purely on cultural programming.**",
           "icon": "settings_voice"
         },
         {
@@ -227,7 +227,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Communication Patterns",
-          "text": "{red|Which description fits your natural communication style better?}",
+          "text": "Which description fits your natural communication style better?",
           "prompts": [
             "I prefer direct, clear communication and say what I mean",
             "I prefer indirect communication where context and cues matter",
@@ -247,7 +247,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Misunderstanding Patterns",
-          "text": "{red|**Think about recurring misunderstandings in your marriage.**\n\nAre there times your spouse completely misreads what you meant?}{red| Are there times you're confused by how they communicate?}{red| Do you sometimes feel they're being rude when they may just be being direct?}{red| Do you sometimes feel they're being unclear when they expect you to read context?}\n\nDescribe a pattern of communication misunderstanding that might have cultural roots:",
+          "text": "**Think about recurring misunderstandings in your marriage.**\n\nAre there times your spouse completely misreads what you meant? Are there times you're confused by how they communicate? Do you sometimes feel they're being rude when they may just be being direct? Do you sometimes feel they're being unclear when they expect you to read context?\n\nDescribe a pattern of communication misunderstanding that might have cultural roots:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -292,7 +292,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Individual vs. Collective",
-          "text": "**One of the deepest cultural divides is between individualistic and collectivist values.**\n\n**Individualistic cultures** emphasize personal achievement, independence, and individual rights.** What's best for the individual often takes priority.\n\n**Collectivist cultures** emphasize group harmony, interdependence, and social obligations.** What's best for the family or community often takes priority.\n\nThis affects everything:\n\n**Career decisions: Follow your passion vs.** do what benefits family Marriage boundaries: Your marriage is your own vs. family has input Child-rearing: Raise independent children vs. raise connected children Finances: Your money is yours vs. money flows through the family\n\n**Neither orientation is entirely right.** Both have biblical support. But navigating a marriage across this divide requires conscious effort.",
+          "text": "**One of the deepest cultural divides is between individualistic and collectivist values.**\n\n**Individualistic cultures** emphasize personal achievement, independence, and individual rights. What's best for the individual often takes priority.\n\n**Collectivist cultures** emphasize group harmony, interdependence, and social obligations. What's best for the family or community often takes priority.\n\nThis affects everything:\n\n**Career decisions: Follow your passion vs.** do what benefits family Marriage boundaries: Your marriage is your own vs. family has input Child-rearing: Raise independent children vs. raise connected children Finances: Your money is yours vs. money flows through the family\n\n**Neither orientation is entirely right.** Both have biblical support. But navigating a marriage across this divide requires conscious effort.",
           "icon": "groups"
         },
         {
@@ -300,7 +300,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "What Scripture Says",
-          "text": "The Bible doesn't endorse one culture over another, but it does provide principles:\n\n**'There is neither Jew nor Gentile.**.. for you are all one in Christ Jesus.' (({red|Galatians 3:28})) Your primary identity is in Christ, not your culture.\n\n**'Leave father and mother and hold fast to your wife.**' (({red|Genesis 2:24})) Marriage creates a new primary loyalty.\n\n**'Honor your father and mother.**' (({red|Exodus 20:12})) Family obligations don't disappear.\n\n**'Do nothing from selfish ambition.**.. count others more significant than yourselves.' (({red|Philippians 2:3-4})) Consider each other's needs above your own.\n\n**Both spouses are called to humble themselves, to prioritize the marriage while honoring family, and to seek unity in Christ above cultural loyalty.**",
+          "text": "The Bible doesn't endorse one culture over another, but it does provide principles:\n\n**'There is neither Jew nor Gentile.**.. for you are all one in Christ Jesus.' (Galatians 3:28) Your primary identity is in Christ, not your culture.\n\n**'Leave father and mother and hold fast to your wife.**' (Genesis 2:24) Marriage creates a new primary loyalty.\n\n**'Honor your father and mother.**' (Exodus 20:12) Family obligations don't disappear.\n\n**'Do nothing from selfish ambition.**.. count others more significant than yourselves.' (Philippians 2:3-4) Consider each other's needs above your own.\n\n**Both spouses are called to humble themselves, to prioritize the marriage while honoring family, and to seek unity in Christ above cultural loyalty.**",
           "icon": "menu_book"
         },
         {
@@ -308,7 +308,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Core Value Differences",
-          "text": "{red|**Think about the deeper value differences between you and your spouse.**\n\nWhere do your fundamental priorities differ?}{red| What does success look like to each of you?}{red| How do you each think about individual desires versus family obligations?}{red| What assumptions about life do you hold that your spouse doesn't share?}\n\nDescribe the deeper value differences you're aware of:",
+          "text": "**Think about the deeper value differences between you and your spouse.**\n\nWhere do your fundamental priorities differ? What does success look like to each of you? How do you each think about individual desires versus family obligations? What assumptions about life do you hold that your spouse doesn't share?\n\nDescribe the deeper value differences you're aware of:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -317,7 +317,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Finding Common Ground",
-          "text": "{red|**When core values differ, you need to find common ground that transcends both cultures.**\n\n**Start with shared faith values.** What does Scripture say about the issue at hand?} Let that be the foundation, not either cultural tradition.\n\n**Identify the valid concern in each position.** Usually both cultural values are getting at something legitimate.\n\n**Create solutions that honor both concerns where possible.** This might look different from what either culture would prescribe.\n\n**Accept that you won't always agree.** Some differences will persist. The goal is understanding and respect, not perfect alignment.\n\n**Prioritize your marriage.** When forced to choose between your culture and your spouse, choose your spouse.",
+          "text": "**When core values differ, you need to find common ground that transcends both cultures.**\n\n**Start with shared faith values.** What does Scripture say about the issue at hand? Let that be the foundation, not either cultural tradition.\n\n**Identify the valid concern in each position.** Usually both cultural values are getting at something legitimate.\n\n**Create solutions that honor both concerns where possible.** This might look different from what either culture would prescribe.\n\n**Accept that you won't always agree.** Some differences will persist. The goal is understanding and respect, not perfect alignment.\n\n**Prioritize your marriage.** When forced to choose between your culture and your spouse, choose your spouse.",
           "icon": "handshake"
         },
         {
@@ -325,7 +325,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "A Values Conversation",
-          "text": "{red|**Have a deep conversation with your spouse about values.**\n\nEach share: What values did your culture teach you to prioritize?}{red| Which of those values still feel important to you?}{red| Where do you see our values clashing?}{red| What shared values can we build our marriage on?}\n\n**The goal isn't to win but to understand each other's hearts and find common ground.**\n\n**Schedule this conversation this week.**",
+          "text": "**Have a deep conversation with your spouse about values.**\n\nEach share: What values did your culture teach you to prioritize? Which of those values still feel important to you? Where do you see our values clashing? What shared values can we build our marriage on?\n\n**The goal isn't to win but to understand each other's hearts and find common ground.**\n\n**Schedule this conversation this week.**",
           "icon": "forum"
         }
       ]
@@ -369,7 +369,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Strategies for Blending",
-          "text": "There are several approaches to blending traditions:\n\n**Alternate**: Do his family's way one year, her family's way the next.** Simple but can feel like someone always loses.\n\n**Combine**: Find ways to incorporate elements from both traditions.** Christmas Eve with one family, Christmas Day with the other.\n\n**Create new**: Start fresh traditions that are uniquely yours, informed by both backgrounds but not identical to either.**\n\n**Prioritize meaning**: Ask what each tradition means to your spouse.** Keep the meaningful elements even if you change the form.\n\n**Divide by importance**: Each spouse gets priority on traditions that matter most to them.**\n\n**The best approach is usually some combination, thoughtfully tailored to your situation.**",
+          "text": "There are several approaches to blending traditions:\n\n**Alternate:** Do his family's way one year, her family's way the next. Simple but can feel like someone always loses.\n\n**Combine:** Find ways to incorporate elements from both traditions. Christmas Eve with one family, Christmas Day with the other.\n\n**Create new:** Start fresh traditions that are uniquely yours, informed by both backgrounds but not identical to either.\n\n**Prioritize meaning:** Ask what each tradition means to your spouse. Keep the meaningful elements even if you change the form.\n\n**Divide by importance:** Each spouse gets priority on traditions that matter most to them.\n\n**The best approach is usually some combination, thoughtfully tailored to your situation.**",
           "icon": "merge"
         },
         {
@@ -377,7 +377,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Tradition Inventory",
-          "text": "{red|List the important traditions from your background:\n\nHolidays and how they were celebrated Family gatherings and their rhythms Food traditions Religious observances Cultural celebrations\n\nFor each, note: How important is this to me?}{red| What does it mean to me?}{red| Is it something I want to continue?}\n\nWrite your tradition inventory:",
+          "text": "List the important traditions from your background:\n\nHolidays and how they were celebrated Family gatherings and their rhythms Food traditions Religious observances Cultural celebrations\n\nFor each, note: How important is this to me? What does it mean to me? Is it something I want to continue?\n\nWrite your tradition inventory:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -394,7 +394,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Tradition Plan",
-          "text": "{red|**Choose one upcoming holiday or annual celebration.**\n\nTogether, discuss and decide:\n\nWhat elements from each background will you include?}{red| What new elements might you create?}{red| How will you handle extended family expectations?}{red| What will this celebration look like for your family?}\n\n**Write out your plan for this one celebration.**\n\n**As you work through this process, you're building skills to navigate all future tradition blending.**",
+          "text": "**Choose one upcoming holiday or annual celebration.**\n\nTogether, discuss and decide:\n\nWhat elements from each background will you include? What new elements might you create? How will you handle extended family expectations? What will this celebration look like for your family?\n\n**Write out your plan for this one celebration.**\n\n**As you work through this process, you're building skills to navigate all future tradition blending.**",
           "icon": "task_alt"
         }
       ]
@@ -430,7 +430,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Parenting Style Differences",
-          "text": "{red|Cultures differ significantly in parenting approaches:\n\n**Discipline**: From strict authoritarian styles to permissive approaches.** What counts as appropriate correction?}\n\n{red|**Independence**: When should children do things themselves?}{red| How much should parents help?}\n\n{red|**Education**: How much pressure is appropriate?}{red| What counts as success?}\n\n{red|**Respect**: How should children address adults?}{red| What behavior is expected?}\n\n{red|**Freedom**: How much autonomy do children get?}{red| At what ages?}\n\n{red|**Emotional expression**: Should children be allowed to express strong emotions?}{red| How?}\n\n**You and your spouse may have different instincts on all of these based on how you were raised.**",
+          "text": "Cultures differ significantly in parenting approaches:\n\n**Discipline:** From strict authoritarian styles to permissive approaches. What counts as appropriate correction?\n\n**Independence**: When should children do things themselves? How much should parents help?\n\n**Education**: How much pressure is appropriate? What counts as success?\n\n**Respect**: How should children address adults? What behavior is expected?\n\n**Freedom**: How much autonomy do children get? At what ages?\n\n**Emotional expression**: Should children be allowed to express strong emotions? How?\n\n**You and your spouse may have different instincts on all of these based on how you were raised.**",
           "icon": "family_restroom"
         },
         {
@@ -438,7 +438,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Unified Parenting Principles",
-          "text": "**Despite cultural differences, you need to parent as a team.**\n\n**Decide together**: Major parenting approaches should be discussed and agreed upon, not defaulted to whoever feels more strongly.**\n\n**Present unity to kids**: Children shouldn't learn to play cultural differences against parents.** 'Dad's culture does it this way' shouldn't be a manipulation tactic.\n\n**Learn from both approaches**: Your spouse's culturally-different approach might actually address weaknesses in yours.**\n\n**Let Scripture guide**: Biblical principles transcend culture.** 'Train up a child in the way he should go' (({red|Proverbs 22:6})) applies across cultures.\n\n**Adapt to your children**: Some children might need more from one cultural approach, some from another.** Be responsive.",
+          "text": "**Despite cultural differences, you need to parent as a team.**\n\n**Decide together:** Major parenting approaches should be discussed and agreed upon, not defaulted to whoever feels more strongly.\n\n**Present unity to kids:** Children shouldn't learn to play cultural differences against parents. 'Dad's culture does it this way' shouldn't be a manipulation tactic.\n\n**Learn from both approaches:** Your spouse's culturally-different approach might actually address weaknesses in yours.\n\n**Let Scripture guide:** Biblical principles transcend culture. 'Train up a child in the way he should go' (Proverbs 22:6) applies across cultures.\n\n**Adapt to your children:** Some children might need more from one cultural approach, some from another. Be responsive.",
           "icon": "groups"
         },
         {
@@ -446,7 +446,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Parenting Instincts",
-          "text": "{red|**Think about how your culture shaped your parents' approach, and how that affects your instincts.**\n\nWhat parenting approaches from your background do you want to continue?}{red| What approaches do you want to change?}{red| Where do your parenting instincts clash with your spouse's?}{red| What strengths might your spouse's cultural approach bring?}\n\nWrite about your culturally-shaped parenting instincts:",
+          "text": "**Think about how your culture shaped your parents' approach, and how that affects your instincts.**\n\nWhat parenting approaches from your background do you want to continue? What approaches do you want to change? Where do your parenting instincts clash with your spouse's? What strengths might your spouse's cultural approach bring?\n\nWrite about your culturally-shaped parenting instincts:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -463,7 +463,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Parenting Plan",
-          "text": "{red|Whether you have children now or plan to, discuss together:\n\nWhat values from each culture do we want to pass on?}{red| How will we handle discipline and expectations?}{red| How will we give our children connection to both backgrounds?}{red| Where are we currently not aligned that we need to work on?}\n\n**Write three agreements you make together about parenting across cultures.**",
+          "text": "Whether you have children now or plan to, discuss together:\n\nWhat values from each culture do we want to pass on? How will we handle discipline and expectations? How will we give our children connection to both backgrounds? Where are we currently not aligned that we need to work on?\n\n**Write three agreements you make together about parenting across cultures.**",
           "icon": "task_alt"
         }
       ]
@@ -491,7 +491,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Same Faith, Different Expression",
-          "text": "{red|**James grew up Baptist: services were casual, worship was contemporary, faith was personal and emotional.** His wife Maria grew up Catholic: services were formal, worship was liturgical, faith was communal and sacramental.\n\n**Both love Jesus.** Both want to follow Him. But their instincts about how to do that differ significantly.\n\nWhere should they attend church?}{red| How should they pray together?}{red| What does their daily spiritual life look like?}{red| How will they raise their children spiritually?}\n\n**These questions are challenging even when both spouses share core beliefs.** The traditions that shaped your faith run deep.",
+          "text": "**James grew up Baptist: services were casual, worship was contemporary, faith was personal and emotional.** His wife Maria grew up Catholic: services were formal, worship was liturgical, faith was communal and sacramental.\n\n**Both love Jesus.** Both want to follow Him. But their instincts about how to do that differ significantly.\n\nWhere should they attend church? How should they pray together? What does their daily spiritual life look like? How will they raise their children spiritually?\n\n**These questions are challenging even when both spouses share core beliefs.** The traditions that shaped your faith run deep.",
           "icon": "church"
         },
         {
@@ -499,7 +499,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Essentials and Expressions",
-          "text": "{red|**It helps to distinguish between essentials and expressions.**\n\n**Essentials**: Core Christian beliefs like the deity of Christ, salvation by grace through faith, the authority of Scripture.** These are non-negotiable.\n\n**Expressions**: How worship happens, church structure, specific practices, secondary doctrines.** These vary across traditions.\n\n**Focus on unity in essentials.** Disagree respectfully on expressions.\n\nAsk: Is this issue about the core of our faith, or about how our different traditions express that faith?}\n\n**Often couples fight about expressions while agreeing completely on essentials.** Recognizing this creates space for grace.",
+          "text": "**It helps to distinguish between essentials and expressions.**\n\n**Essentials:** Core Christian beliefs like the deity of Christ, salvation by grace through faith, the authority of Scripture. These are non-negotiable.\n\n**Expressions:** How worship happens, church structure, specific practices, secondary doctrines. These vary across traditions.\n\n**Focus on unity in essentials.** Disagree respectfully on expressions.\n\nAsk: Is this issue about the core of our faith, or about how our different traditions express that faith?\n\n**Often couples fight about expressions while agreeing completely on essentials.** Recognizing this creates space for grace.",
           "icon": "filter_alt"
         },
         {
@@ -507,7 +507,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Practical Navigation",
-          "text": "Some practical considerations:\n\n**Church choice**: This is often the hardest decision.** Options include attending one spouse's tradition, finding a church that bridges both, or alternating between traditions.\n\n**Personal practice**: You may maintain some individual practices from your traditions while building shared ones.**\n\n**Children's faith formation**: You'll need to decide together how to raise children spiritually.** Confusion isn't good for them, but exposure to different expressions can be enriching.\n\n**Extended family**: Religious differences with in-laws can complicate things further.** Set boundaries while maintaining respect.\n\n**Growth together**: Whatever you decide, prioritize growing spiritually together, not just parallel.**",
+          "text": "Some practical considerations:\n\n**Church choice:** This is often the hardest decision. Options include attending one spouse's tradition, finding a church that bridges both, or alternating between traditions.\n\n**Personal practice:** You may maintain some individual practices from your traditions while building shared ones.\n\n**Children's faith formation:** You'll need to decide together how to raise children spiritually. Confusion isn't good for them, but exposure to different expressions can be enriching.\n\n**Extended family:** Religious differences with in-laws can complicate things further. Set boundaries while maintaining respect.\n\n**Growth together:** Whatever you decide, prioritize growing spiritually together, not just parallel.",
           "icon": "settings"
         },
         {
@@ -515,7 +515,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Faith Background",
-          "text": "{red|**Think about your faith background and what you bring to your marriage.**\n\nWhat tradition shaped your faith?}{red| What practices are important to you?}{red| What do you appreciate about your spouse's faith tradition?}{red| What has been difficult about navigating different traditions?}{red| What spiritual practices do you want in your home and marriage?}\n\nWrite about your faith tradition and its impact on your marriage:",
+          "text": "**Think about your faith background and what you bring to your marriage.**\n\nWhat tradition shaped your faith? What practices are important to you? What do you appreciate about your spouse's faith tradition? What has been difficult about navigating different traditions? What spiritual practices do you want in your home and marriage?\n\nWrite about your faith tradition and its impact on your marriage:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -524,7 +524,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Building Spiritual Unity",
-          "text": "{red|**'Make every effort to keep the unity of the Spirit through the bond of peace.**' (({red|Ephesians 4:3}))\n\nDespite different traditions, you can build deep spiritual unity:\n\n**Pray together** in whatever form feels authentic to you both\n\n**Study Scripture together**, letting God's Word transcend traditions\n\n**Serve together**, uniting in mission even if worship styles differ\n\n**Learn from each other's traditions**.** What can Catholicism teach a Protestant?}{red| What can a charismatic learn from a liturgical tradition?}\n\n**Focus on Jesus**.** He is the center, not any tradition.\n\n**Your different backgrounds can become richness rather than division if you approach them with humility and curiosity.**",
+          "text": "**'Make every effort to keep the unity of the Spirit through the bond of peace.**' (Ephesians 4:3)\n\nDespite different traditions, you can build deep spiritual unity:\n\n**Pray together** in whatever form feels authentic to you both\n\n**Study Scripture together**, letting God's Word transcend traditions\n\n**Serve together**, uniting in mission even if worship styles differ\n\n**Learn from each other's traditions.** What can Catholicism teach a Protestant? What can a charismatic learn from a liturgical tradition?\n\n**Focus on Jesus.** He is the center, not any tradition.\n\n**Your different backgrounds can become richness rather than division if you approach them with humility and curiosity.**",
           "icon": "favorite"
         },
         {
@@ -532,7 +532,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Spiritual Unity Plan",
-          "text": "{red|Discuss together:\n\nWhat church or churches will we attend?}{red| What shared spiritual practices will we build into our marriage?}{red| How will we handle areas where our traditions differ?}{red| How will we raise our children spiritually?}{red| What do we want to learn from each other's backgrounds?}\n\n**Write down three commitments you make together for spiritual unity.**",
+          "text": "Discuss together:\n\nWhat church or churches will we attend? What shared spiritual practices will we build into our marriage? How will we handle areas where our traditions differ? How will we raise our children spiritually? What do we want to learn from each other's backgrounds?\n\n**Write down three commitments you make together for spiritual unity.**",
           "icon": "task_alt"
         }
       ]
@@ -576,7 +576,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "A United Response",
-          "text": "**The key to handling external pressure is unity.**\n\n**Defend each other to family**.** Your spouse should never feel like you're siding with your family against them. 'That's my wife/husband you're talking about' is sometimes necessary.\n\n**Set boundaries together**.** Decide as a couple what you will and won't tolerate, then enforce those boundaries consistently.\n\n**Don't internalize criticism**.** Others' discomfort with your marriage is their issue, not evidence that something's wrong with you.\n\n**Have pre-planned responses**.** Know how you'll respond to common comments or questions so you're not caught off guard.\n\n**Debrief together**.** After difficult encounters, process together rather than carrying the weight alone.",
+          "text": "**The key to handling external pressure is unity.**\n\n**Defend each other to family.** Your spouse should never feel like you're siding with your family against them. 'That's my wife/husband you're talking about' is sometimes necessary.\n\n**Set boundaries together.** Decide as a couple what you will and won't tolerate, then enforce those boundaries consistently.\n\n**Don't internalize criticism.** Others' discomfort with your marriage is their issue, not evidence that something's wrong with you.\n\n**Have pre-planned responses.** Know how you'll respond to common comments or questions so you're not caught off guard.\n\n**Debrief together.** After difficult encounters, process together rather than carrying the weight alone.",
           "icon": "shield"
         },
         {
@@ -584,7 +584,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Pressure You've Faced",
-          "text": "{red|**Think about external pressure you've experienced related to your cultural differences.**\n\nWhat criticism or disapproval have you faced from family?}{red| What comments or misunderstandings have come from friends or community?}{red| How have you handled these situations so far?}{red| What has been most hurtful or challenging?}\n\nWrite about the external pressure you've experienced:",
+          "text": "**Think about external pressure you've experienced related to your cultural differences.**\n\nWhat criticism or disapproval have you faced from family? What comments or misunderstandings have come from friends or community? How have you handled these situations so far? What has been most hurtful or challenging?\n\nWrite about the external pressure you've experienced:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -593,7 +593,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Grace and Boundaries",
-          "text": "{red|**You need both grace and boundaries.**\n\n**Grace**: Many people who make insensitive comments aren't malicious, just ignorant.** Sometimes education and patience work better than confrontation.\n\n**Boundaries**: Some behavior is unacceptable regardless of intent.** You don't have to tolerate ongoing disrespect.\n\nAsk: Is this person ignorant but teachable, or persistently disrespectful?}{red| Is this a one-time comment or a pattern?}{red| Is engaging helpful or will it just escalate?}{red| What does protecting my spouse require here?}\n\n**Sometimes the gracious thing is patient education.** Sometimes it's firm boundary-setting. Wisdom discerns which situation calls for which response.",
+          "text": "**You need both grace and boundaries.**\n\n**Grace:** Many people who make insensitive comments aren't malicious, just ignorant. Sometimes education and patience work better than confrontation.\n\n**Boundaries:** Some behavior is unacceptable regardless of intent. You don't have to tolerate ongoing disrespect.\n\nAsk: Is this person ignorant but teachable, or persistently disrespectful? Is this a one-time comment or a pattern? Is engaging helpful or will it just escalate? What does protecting my spouse require here?\n\n**Sometimes the gracious thing is patient education.** Sometimes it's firm boundary-setting. Wisdom discerns which situation calls for which response.",
           "icon": "balance"
         },
         {
@@ -601,7 +601,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Boundary Conversation",
-          "text": "{red|**Have a conversation with your spouse about external pressure.**\n\nDiscuss: What external criticism or pressure is currently affecting us?}{red| How will we respond to family members who are critical?}{red| What boundaries do we need to set with anyone?}{red| How can I better support you when you face criticism?}\n\n**End by affirming to each other: Our marriage is worth protecting, and we will face outside pressure together.**\n\n**Write one boundary you agree to enforce together.**",
+          "text": "**Have a conversation with your spouse about external pressure.**\n\nDiscuss: What external criticism or pressure is currently affecting us? How will we respond to family members who are critical? What boundaries do we need to set with anyone? How can I better support you when you face criticism?\n\n**End by affirming to each other: Our marriage is worth protecting, and we will face outside pressure together.**\n\n**Write one boundary you agree to enforce together.**",
           "icon": "forum"
         }
       ]
@@ -637,7 +637,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What Your Spouse Has Taught You",
-          "text": "{red|**Think about what you've gained from being married to someone from a different background.**\n\nHave you become more flexible?}{red| More patient?}{red| More curious?}\n\n{red|Have you discovered foods, traditions, perspectives you never would have encountered?}\n\n{red|Has your worldview expanded?}{red| Have your assumptions been challenged in helpful ways?}\n\n{red|Have you developed skills in communication, negotiation, empathy that serve you in all relationships?}\n\n**The friction of difference polishes us.** The exposure to other ways of seeing the world stretches us. Your spouse has given you gifts you wouldn't have received any other way.",
+          "text": "**Think about what you've gained from being married to someone from a different background.**\n\nHave you become more flexible? More patient? More curious?\n\nHave you discovered foods, traditions, perspectives you never would have encountered?\n\nHas your worldview expanded? Have your assumptions been challenged in helpful ways?\n\nHave you developed skills in communication, negotiation, empathy that serve you in all relationships?\n\n**The friction of difference polishes us.** The exposure to other ways of seeing the world stretches us. Your spouse has given you gifts you wouldn't have received any other way.",
           "icon": "school"
         },
         {
@@ -645,7 +645,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Gifts From Difference",
-          "text": "{red|**Take time to reflect on what your spouse's cultural background has given you.**\n\nWhat have I learned from their culture that has enriched my life?}{red| What perspectives have they brought that I was missing?}{red| How has navigating our differences made me a better person?}{red| What do I appreciate about how their culture shaped them?}\n\nWrite about the gifts you've received from your spouse's cultural background:",
+          "text": "**Take time to reflect on what your spouse's cultural background has given you.**\n\nWhat have I learned from their culture that has enriched my life? What perspectives have they brought that I was missing? How has navigating our differences made me a better person? What do I appreciate about how their culture shaped them?\n\nWrite about the gifts you've received from your spouse's cultural background:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -670,7 +670,7 @@
           "cardType": "teaching",
           "cardNumber": 6,
           "title": "A Biblical Perspective",
-          "text": "**'After this I looked, and behold, a great multitude that no one could number, from every nation, from all tribes and peoples and languages, standing before the throne.**' (({red|Revelation 7:9}))\n\n**God's vision of heaven includes cultural diversity, not erasing it.** The beauty of many cultures worshipping together is part of His design.\n\n**Your intercultural marriage is a small picture of that heavenly reality: different backgrounds united by something greater than culture.** It's a witness to what God is doing in the world.\n\n**Be encouraged.** What you're building isn't just personally meaningful. It's a reflection of God's heart for unity in diversity.",
+          "text": "**'After this I looked, and behold, a great multitude that no one could number, from every nation, from all tribes and peoples and languages, standing before the throne.**' (Revelation 7:9)\n\n**God's vision of heaven includes cultural diversity, not erasing it.** The beauty of many cultures worshipping together is part of His design.\n\n**Your intercultural marriage is a small picture of that heavenly reality: different backgrounds united by something greater than culture.** It's a witness to what God is doing in the world.\n\n**Be encouraged.** What you're building isn't just personally meaningful. It's a reflection of God's heart for unity in diversity.",
           "icon": "auto_stories"
         }
       ]
@@ -706,7 +706,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "The Foundation: Christ Above Culture",
-          "text": "**'There is neither Jew nor Gentile, neither slave nor free, nor is there male and female, for you are all one in Christ Jesus.**' (({red|Galatians 3:28}))\n\n**Your ultimate identity is not your culture.** It's being children of God, united in Christ.\n\n**This doesn't erase your cultural backgrounds, but it provides common ground that transcends them.** When cultural differences create tension, you can return to this foundation: you are both Christians first, cultural beings second.\n\n**Building your marriage on Christ gives you a firm place to stand when cultural pressures push and pull.**",
+          "text": "**'There is neither Jew nor Gentile, neither slave nor free, nor is there male and female, for you are all one in Christ Jesus.**' (Galatians 3:28)\n\n**Your ultimate identity is not your culture.** It's being children of God, united in Christ.\n\n**This doesn't erase your cultural backgrounds, but it provides common ground that transcends them.** When cultural differences create tension, you can return to this foundation: you are both Christians first, cultural beings second.\n\n**Building your marriage on Christ gives you a firm place to stand when cultural pressures push and pull.**",
           "icon": "church"
         },
         {
@@ -714,7 +714,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Insight",
-          "text": "{red|What's the most important thing you've learned about navigating cultural differences through this journey?}\n\n{red|What do you want to remember and practice going forward?}",
+          "text": "What's the most important thing you've learned about navigating cultural differences through this journey?\n\nWhat do you want to remember and practice going forward?",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -723,7 +723,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "What Your Spouse Needs",
-          "text": "{red|Based on what you've learned, what does your spouse most need from you regarding cultural differences?}\n\n{red|How can you better honor their background?}{red| What adjustments will you make?}\n\nWrite what you commit to giving your spouse:",
+          "text": "Based on what you've learned, what does your spouse most need from you regarding cultural differences?\n\nHow can you better honor their background? What adjustments will you make?\n\nWrite what you commit to giving your spouse:",
           "responseType": "open-text",
           "icon": "favorite"
         },

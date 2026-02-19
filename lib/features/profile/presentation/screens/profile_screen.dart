@@ -21,6 +21,7 @@ import 'package:nexus_app_v2/core/widgets/guest_guard.dart';
 import 'package:nexus_app_v2/core/providers/user_provider.dart';
 import 'package:nexus_app_v2/core/moderation/moderation_models.dart';
 import 'package:nexus_app_v2/core/moderation/moderation_providers.dart';
+import 'package:country_picker/country_picker.dart';
 
 import '../../../../core/models/user_model.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -3939,16 +3940,16 @@ class _AboutEditor extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: 8),
-          _InputField(
+          _CountryPickerField(
             label: 'Country',
-            initialValue: country,
-            onChanged:
-                (v) => onChanged(
+            selectedCountry: country,
+            onCountrySelected:
+                (countryName) => onChanged(
                   _AboutEditorValue(
                     name: name,
                     age: age,
                     city: city,
-                    country: v,
+                    country: countryName,
                     nationality: nationality,
                     educationLevel: educationLevel,
                     profession: profession,
@@ -3958,17 +3959,17 @@ class _AboutEditor extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: 8),
-          _InputField(
+          _CountryPickerField(
             label: 'Nationality',
-            initialValue: nationality,
-            onChanged:
-                (v) => onChanged(
+            selectedCountry: nationality,
+            onCountrySelected:
+                (countryName) => onChanged(
                   _AboutEditorValue(
                     name: name,
                     age: age,
                     city: city,
                     country: country,
-                    nationality: v,
+                    nationality: countryName,
                     educationLevel: educationLevel,
                     profession: profession,
                     churchName: churchName,
@@ -4579,6 +4580,96 @@ class _InputField extends StatelessWidget {
             ),
           ),
           onChanged: onChanged,
+        ),
+      ],
+    );
+  }
+}
+
+/// Country Picker Field - opens country picker when tapped
+class _CountryPickerField extends StatelessWidget {
+  final String label;
+  final String selectedCountry;
+  final void Function(String countryName) onCountrySelected;
+
+  const _CountryPickerField({
+    required this.label,
+    required this.selectedCountry,
+    required this.onCountrySelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: AppTextStyles.labelMedium.copyWith(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              showCountryPicker(
+                context: context,
+                showPhoneCode: false,
+                countryListTheme: CountryListThemeData(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  inputDecoration: InputDecoration(
+                    labelText: 'Search $label',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: AppColors.getBorder(context),
+                      ),
+                    ),
+                    prefixIcon: const Icon(Icons.search),
+                  ),
+                  searchTextStyle: AppTextStyles.bodySmall,
+                ),
+                onSelect: (Country country) {
+                  onCountrySelected(country.name);
+                },
+              );
+            },
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              decoration: BoxDecoration(
+                color: AppColors.getSurface(context),
+                border: Border.all(color: AppColors.getBorder(context)),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      selectedCountry.isEmpty
+                          ? 'Select $label'
+                          : selectedCountry,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        fontSize: 13,
+                        color:
+                            selectedCountry.isEmpty
+                                ? AppColors.textSecondary
+                                : AppColors.getTextPrimary(context),
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_drop_down_rounded,
+                    color: AppColors.getTextMuted(context),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ],
     );

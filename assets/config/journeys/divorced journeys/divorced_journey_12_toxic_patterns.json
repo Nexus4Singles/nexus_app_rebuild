@@ -61,7 +61,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Why This Work Is Essential",
-          "text": "{red|**Here is the hard truth no one wants to hear: if you do not do this work, you will probably end up in the same place again.**\n\n**Different person, same problems.**\n\n**The statistics bear this out.** Second marriages fail at a higher rate than first marriages. Not because second marriages are cursed, but because people carry their unaddressed issues into them.\n\n**You think you are choosing differently this time.** You think you have learned your lesson. You think this person is nothing like your ex.\n\n**But you are still you.** With the same patterns, the same triggers, the same blind spots, the same ways of relating that you have always had. And those patterns will find their match, or create one, in any relationship you enter.\n\n**This is not a punishment.** It is just how patterns work. They repeat until they are interrupted.\n\n**The good news is that patterns can be interrupted.** They can be seen, understood, and changed. You are not doomed to repeat your marriage forever. But only if you do the work.\n\n**That is why this journey matters.** Not as homework. Not as self-flagellation. But as the price of admission to a different future.\n\nAre you willing to look honestly at yourself?} It is uncomfortable. It is also the only way out.",
+          "text": "**Here is the hard truth no one wants to hear: if you do not do this work, you will probably end up in the same place again.**\n\n**Different person, same problems.**\n\n**The statistics bear this out.** Second marriages fail at a higher rate than first marriages. Not because second marriages are cursed, but because people carry their unaddressed issues into them.\n\n**You think you are choosing differently this time.** You think you have learned your lesson. You think this person is nothing like your ex.\n\n**But you are still you.** With the same patterns, the same triggers, the same blind spots, the same ways of relating that you have always had. And those patterns will find their match, or create one, in any relationship you enter.\n\n**This is not a punishment.** It is just how patterns work. They repeat until they are interrupted.\n\n**The good news is that patterns can be interrupted.** They can be seen, understood, and changed. You are not doomed to repeat your marriage forever. But only if you do the work.\n\n**That is why this journey matters.** Not as homework. Not as self-flagellation. But as the price of admission to a different future.\n\nAre you willing to look honestly at yourself? It is uncomfortable. It is also the only way out.",
           "icon": "warning"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Readiness",
-          "text": "{red|How ready are you to honestly examine your own patterns?}",
+          "text": "How ready are you to honestly examine your own patterns?",
           "prompts": [
             "Very ready - I know I have work to do",
             "Somewhat ready - I am willing but it feels hard",
@@ -97,7 +97,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Initial Pattern Awareness",
-          "text": "{red|**Begin to identify patterns you might carry.**\n\nWhat patterns or behaviors have others pointed out in you, whether your ex, family members, or friends?}{red| What relationship dynamics seem to repeat in your life?}{red| What do you suspect might be patterns you carry without full awareness?}\n\nWrite your initial pattern awareness:",
+          "text": "**Begin to identify patterns you might carry.**\n\nWhat patterns or behaviors have others pointed out in you, whether your ex, family members, or friends? What relationship dynamics seem to repeat in your life? What do you suspect might be patterns you carry without full awareness?\n\nWrite your initial pattern awareness:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -134,7 +134,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Control and Manipulation",
-          "text": "{red|**Let us talk about control.** It is one of the most common toxic patterns, and one of the hardest to see in yourself.\n\n**Control in relationships looks like needing to know where your partner is at all times.** Checking their phone, their email, their social media. Getting upset when they spend time with others without you. Making decisions for both of you without really asking.\n\n**It looks like financial control: managing all the money, giving an allowance, questioning every purchase.** It looks like isolating your partner from friends and family, subtly or overtly.\n\n**Manipulation is control's sneaky sibling.** It is getting what you want through indirect means. Playing the victim so they feel guilty. Sulking until they give in. Weaponizing tears, silence, or affection. Making them doubt their own perceptions.\n\nHere is the uncomfortable question: do you recognize yourself in any of this?}\n\n**Not in your ex.** In you.\n\n**Many people who were controlled become controllers.** Many who were manipulated learned the skill. It is a pattern, passed down or picked up, and it destroys relationships from the inside.\n\n**If this is you, there is hope.** But only if you can see it first.",
+          "text": "**Let us talk about control.** It is one of the most common toxic patterns, and one of the hardest to see in yourself.\n\n**Control in relationships looks like needing to know where your partner is at all times.** Checking their phone, their email, their social media. Getting upset when they spend time with others without you. Making decisions for both of you without really asking.\n\n**It looks like financial control: managing all the money, giving an allowance, questioning every purchase.** It looks like isolating your partner from friends and family, subtly or overtly.\n\n**Manipulation is control's sneaky sibling.** It is getting what you want through indirect means. Playing the victim so they feel guilty. Sulking until they give in. Weaponizing tears, silence, or affection. Making them doubt their own perceptions.\n\nHere is the uncomfortable question: do you recognize yourself in any of this?\n\n**Not in your ex.** In you.\n\n**Many people who were controlled become controllers.** Many who were manipulated learned the skill. It is a pattern, passed down or picked up, and it destroys relationships from the inside.\n\n**If this is you, there is hope.** But only if you can see it first.",
           "icon": "admin_panel_settings"
         },
         {
@@ -174,7 +174,7 @@
           "cardType": "reflection",
           "cardNumber": 6,
           "title": "Your Pattern Recognition",
-          "text": "{red|**Honestly assess which toxic patterns might apply to you.**\n\n**Review the patterns discussed: control and manipulation, anger and contempt, withdrawal and avoidance, codependency and enabling, dishonesty and betrayal.**\n\nWhich of these have you exhibited in your marriage?}{red| Which ones do you recognize as ongoing tendencies?} Be specific about how these patterns showed up.\n\nWrite your honest pattern recognition:",
+          "text": "**Honestly assess which toxic patterns might apply to you.**\n\n**Review the patterns discussed: control and manipulation, anger and contempt, withdrawal and avoidance, codependency and enabling, dishonesty and betrayal.**\n\nWhich of these have you exhibited in your marriage? Which ones do you recognize as ongoing tendencies? Be specific about how these patterns showed up.\n\nWrite your honest pattern recognition:",
           "responseType": "open-text",
           "icon": "edit_note"
         }
@@ -219,7 +219,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "What You Learned About Marriage",
-          "text": "{red|**Consider specifically what you learned about marriage from your family.**\n\nHow did your parents handle conflict?}{red| Did they fight, avoid, or resolve?}\n\n{red|How was affection shown?}{red| Was it warm or cold?}\n\n{red|Who held power in the relationship?}{red| Was it equal or unbalanced?}\n\n{red|How were emotions handled?}{red| Were they expressed, suppressed, or explosive?}\n\n{red|Was there respect?}{red| Or contempt, criticism, and put-downs?}\n\n{red|Was there trust?}{red| Or secrets, lies, and betrayal?}\n\n**Your answers reveal the template you unconsciously brought into your own marriage.**",
+          "text": "**Consider specifically what you learned about marriage from your family.**\n\nHow did your parents handle conflict? Did they fight, avoid, or resolve?\n\nHow was affection shown? Was it warm or cold?\n\nWho held power in the relationship? Was it equal or unbalanced?\n\nHow were emotions handled? Were they expressed, suppressed, or explosive?\n\nWas there respect? Or contempt, criticism, and put-downs?\n\nWas there trust? Or secrets, lies, and betrayal?\n\n**Your answers reveal the template you unconsciously brought into your own marriage.**",
           "icon": "school"
         },
         {
@@ -227,7 +227,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Family of Origin",
-          "text": "{red|**Explore your family of origin patterns.**\n\n**Describe your parents' marriage or the primary relationship you observed growing up.** What unhealthy patterns did you observe?}{red| What did you learn about relationships that may not have been healthy?}{red| How do you see these patterns showing up in your own relationships?}\n\nWrite about your family of origin:",
+          "text": "**Explore your family of origin patterns.**\n\n**Describe your parents' marriage or the primary relationship you observed growing up.** What unhealthy patterns did you observe? What did you learn about relationships that may not have been healthy? How do you see these patterns showing up in your own relationships?\n\nWrite about your family of origin:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -296,7 +296,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Honest Contribution",
-          "text": "{red|**Examine your contribution to your marriage's dysfunction honestly.**\n\nWhat behaviors of yours contributed to problems in your marriage?}{red| How did you respond to your ex's behavior in unhealthy ways?}{red| What did you enable or allow that you should not have?}{red| Looking back, what would you do differently?}\n\nWrite your honest assessment of your contribution:",
+          "text": "**Examine your contribution to your marriage's dysfunction honestly.**\n\nWhat behaviors of yours contributed to problems in your marriage? How did you respond to your ex's behavior in unhealthy ways? What did you enable or allow that you should not have? Looking back, what would you do differently?\n\nWrite your honest assessment of your contribution:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -373,7 +373,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Attachment Style",
-          "text": "{red|**Reflect on your attachment patterns.**\n\nBased on the descriptions, which attachment style do you most identify with?}{red| How has this style shown up in your marriage and other relationships?}{red| What early experiences might have shaped your attachment style?}{red| How might your attachment style have contributed to dynamics in your marriage?}\n\nWrite about your attachment style:",
+          "text": "**Reflect on your attachment patterns.**\n\nBased on the descriptions, which attachment style do you most identify with? How has this style shown up in your marriage and other relationships? What early experiences might have shaped your attachment style? How might your attachment style have contributed to dynamics in your marriage?\n\nWrite about your attachment style:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -418,7 +418,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "The Four Horsemen",
-          "text": "{red|**Research identifies four destructive conflict patterns, called the Four Horsemen, that predict divorce.**\n\n**Criticism: attacking your partner's character rather than addressing specific behavior.** You always versus I feel frustrated when.\n\n**Contempt: communicating disgust and superiority through mockery, sarcasm, eye-rolling, or name-calling.** The most destructive of all.\n\n**Defensiveness: refusing to accept responsibility, making excuses, or counter-attacking when confronted.**\n\n**Stonewalling: shutting down, withdrawing from interaction, or refusing to engage.**\n\nWhich of these do you recognize in yourself?}",
+          "text": "**Research identifies four destructive conflict patterns, called the Four Horsemen, that predict divorce.**\n\n**Criticism: attacking your partner's character rather than addressing specific behavior.** You always versus I feel frustrated when.\n\n**Contempt: communicating disgust and superiority through mockery, sarcasm, eye-rolling, or name-calling.** The most destructive of all.\n\n**Defensiveness: refusing to accept responsibility, making excuses, or counter-attacking when confronted.**\n\n**Stonewalling: shutting down, withdrawing from interaction, or refusing to engage.**\n\nWhich of these do you recognize in yourself?",
           "icon": "warning"
         },
         {
@@ -434,7 +434,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Conflict Patterns",
-          "text": "{red|**Honestly examine your conflict patterns.**\n\nWhich of the Four Horsemen do you tend toward: criticism, contempt, defensiveness, or stonewalling?}{red| What other destructive patterns were present in your conflicts?}{red| How did your conflict patterns interact with your ex's patterns?}{red| What would healthy conflict look like for you?}\n\nWrite about your conflict patterns:",
+          "text": "**Honestly examine your conflict patterns.**\n\nWhich of the Four Horsemen do you tend toward: criticism, contempt, defensiveness, or stonewalling? What other destructive patterns were present in your conflicts? How did your conflict patterns interact with your ex's patterns? What would healthy conflict look like for you?\n\nWrite about your conflict patterns:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -487,7 +487,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Expressing Patterns",
-          "text": "{red|How do you express yourself in relationships?}{red| Really?}\n\n{red|**Not how you think you do.** How you actually do, according to someone who has been on the receiving end.\n\nDo you say what you mean, or do you hint and hope they figure it out?}{red| Many people expect mind-reading. They drop clues instead of making requests. Then they resent when the other person does not understand.\n\nDo you use I statements or you statements?}{red| I feel hurt when you do not call versus You never call and you obviously do not care about me. Same information, completely different impact.\n\nDo you express emotions or just thoughts?}{red| Some people are articulate about ideas and incoherent about feelings. They can discuss anything except what they actually feel.\n\nDo you speak respectfully when you are upset, or do your words become weapons?}{red| Criticism, sarcasm, name-calling, contempt. Things you cannot take back.\n\nDo you bring up problems, or do you swallow them until you explode?}{red| The silent collectors, who say nothing until it becomes everything at once.\n\n**These patterns can be changed.** But first you have to see them. Ask someone who loves you enough to be honest. What is it like to be on the receiving end of my communication?} The answer might be uncomfortable. It might also be the beginning of something different.",
+          "text": "How do you express yourself in relationships? Really?\n\n**Not how you think you do.** How you actually do, according to someone who has been on the receiving end.\n\nDo you say what you mean, or do you hint and hope they figure it out? Many people expect mind-reading. They drop clues instead of making requests. Then they resent when the other person does not understand.\n\nDo you use I statements or you statements? I feel hurt when you do not call versus You never call and you obviously do not care about me. Same information, completely different impact.\n\nDo you express emotions or just thoughts? Some people are articulate about ideas and incoherent about feelings. They can discuss anything except what they actually feel.\n\nDo you speak respectfully when you are upset, or do your words become weapons? Criticism, sarcasm, name-calling, contempt. Things you cannot take back.\n\nDo you bring up problems, or do you swallow them until you explode? The silent collectors, who say nothing until it becomes everything at once.\n\n**These patterns can be changed.** But first you have to see them. Ask someone who loves you enough to be honest. What is it like to be on the receiving end of my communication? The answer might be uncomfortable. It might also be the beginning of something different.",
           "icon": "record_voice_over"
         },
         {
@@ -495,7 +495,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Listening Patterns",
-          "text": "{red|**Listening is often the weaker skill for most people.**\n\nDo you truly listen to understand?}{red| Or are you preparing your response while your partner talks?}\n\n{red|Do you reflect back what you heard?}{red| Or do you assume you understand?}\n\n{red|Can you listen without becoming defensive?}{red| Or does any criticism trigger self-protection?}\n\n{red|Do you validate your partner's feelings?}{red| Or do you dismiss, minimize, or argue with their emotions?}\n\n{red|Do you stay present?}{red| Or do you check out, get distracted, or shut down?}\n\n**Poor listening leaves partners feeling unheard and alone.**",
+          "text": "**Listening is often the weaker skill for most people.**\n\nDo you truly listen to understand? Or are you preparing your response while your partner talks?\n\nDo you reflect back what you heard? Or do you assume you understand?\n\nCan you listen without becoming defensive? Or does any criticism trigger self-protection?\n\nDo you validate your partner's feelings? Or do you dismiss, minimize, or argue with their emotions?\n\nDo you stay present? Or do you check out, get distracted, or shut down?\n\n**Poor listening leaves partners feeling unheard and alone.**",
           "icon": "hearing"
         },
         {
@@ -503,7 +503,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Communication Patterns",
-          "text": "{red|**Examine your communication patterns honestly.**\n\nWhat are your strengths in expressing yourself?}{red| What are your weaknesses in expressing yourself?}{red| What are your strengths as a listener?}{red| What are your weaknesses as a listener?}{red| What communication complaints did your ex have about you?}\n\nWrite about your communication patterns:",
+          "text": "**Examine your communication patterns honestly.**\n\nWhat are your strengths in expressing yourself? What are your weaknesses in expressing yourself? What are your strengths as a listener? What are your weaknesses as a listener? What communication complaints did your ex have about you?\n\nWrite about your communication patterns:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -512,7 +512,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "Building Better Communication",
-          "text": "{red|**Communication skills can be improved with practice.**\n\n**Practice I statements: I feel X when Y instead of You always Z.**\n\n**Practice reflective listening: What I hear you saying is.**.. Did I get that right?}\n\n**Practice emotional expression: Work on identifying and articulating your feelings.**\n\n**Practice staying curious: Ask questions to understand rather than assuming.**\n\n**Practice timing: Choose good moments for important conversations.**\n\n**These skills feel awkward at first but become natural with practice.**",
+          "text": "**Communication skills can be improved with practice.**\n\n**Practice I statements: I feel X when Y instead of You always Z.**\n\n**Practice reflective listening: What I hear you saying is.**.. Did I get that right?\n\n**Practice emotional expression: Work on identifying and articulating your feelings.**\n\n**Practice staying curious: Ask questions to understand rather than assuming.**\n\n**Practice timing: Choose good moments for important conversations.**\n\n**These skills feel awkward at first but become natural with practice.**",
           "icon": "tips_and_updates"
         },
         {
@@ -564,7 +564,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Red Flags Ignored",
-          "text": "{red|**Often the red flags were there from the beginning, but you ignored them.**\n\n**You may have explained them away, made excuses, or believed you could change the person.**\n\n**You may have been so eager for the relationship to work that you overlooked warning signs.**\n\n**You may have dismissed your own intuition when it sensed something was wrong.**\n\nLooking back at your marriage, were there red flags you ignored?}{red| What led you to ignore them?}",
+          "text": "**Often the red flags were there from the beginning, but you ignored them.**\n\n**You may have explained them away, made excuses, or believed you could change the person.**\n\n**You may have been so eager for the relationship to work that you overlooked warning signs.**\n\n**You may have dismissed your own intuition when it sensed something was wrong.**\n\nLooking back at your marriage, were there red flags you ignored? What led you to ignore them?",
           "icon": "flag"
         },
         {
@@ -572,7 +572,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Selection Patterns",
-          "text": "{red|**Examine your patterns in choosing partners.**\n\nWhat drew you to your ex initially?}{red| Looking back, were there red flags you ignored?}{red| What were they?}{red| Do you see patterns across your romantic history in the type of person you choose?}{red| How might your selection patterns connect to your family of origin?}\n\nWrite about your selection patterns:",
+          "text": "**Examine your patterns in choosing partners.**\n\nWhat drew you to your ex initially? Looking back, were there red flags you ignored? What were they? Do you see patterns across your romantic history in the type of person you choose? How might your selection patterns connect to your family of origin?\n\nWrite about your selection patterns:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -649,7 +649,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Change Strategy",
-          "text": "{red|**Develop a strategy for changing your patterns.**\n\nWhat specific patterns are your top priorities for change?}{red| What professional help might you need?}{red| Who can provide accountability for you?}{red| How will you practice new patterns in daily life?}{red| How will you extend grace to yourself through setbacks?}\n\nWrite your change strategy:",
+          "text": "**Develop a strategy for changing your patterns.**\n\nWhat specific patterns are your top priorities for change? What professional help might you need? Who can provide accountability for you? How will you practice new patterns in daily life? How will you extend grace to yourself through setbacks?\n\nWrite your change strategy:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -702,7 +702,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Pattern Insight",
-          "text": "{red|What is the most important thing you have learned about your patterns through this journey?}\n\n{red|What do you want to remember as you move toward future relationships?}\n\nWrite your key pattern insight:",
+          "text": "What is the most important thing you have learned about your patterns through this journey?\n\nWhat do you want to remember as you move toward future relationships?\n\nWrite your key pattern insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -711,7 +711,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your New Patterns",
-          "text": "{red|**Describe the new patterns you want to build.**\n\nWhat healthy patterns will replace your toxic ones?}{red| How will you handle conflict differently?}{red| How will you communicate differently?}{red| What kind of partner will you choose?}\n\nWrite about your new patterns:",
+          "text": "**Describe the new patterns you want to build.**\n\nWhat healthy patterns will replace your toxic ones? How will you handle conflict differently? How will you communicate differently? What kind of partner will you choose?\n\nWrite about your new patterns:",
           "responseType": "open-text",
           "icon": "edit_note"
         },

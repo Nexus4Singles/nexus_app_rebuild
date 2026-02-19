@@ -387,14 +387,22 @@ exports.sendPushNotification = functions.firestore
       const userData = userDoc.data();
       
       if (!userData || !userData.fcmToken || !userData.fcmToken.token) {
-        console.log(`No FCM token found for user: ${userId}`);
+        console.log(`⚠️ No FCM token found for user: ${userId}`);
         return null;
       }
 
       const fcmToken = userData.fcmToken.token;
       const payload = notification.payload;
+      const notificationType = payload.type || 'system';
 
-      // Build FCM message
+      // Determine priority based on notification type
+      // Verification and rejection notifications get high priority
+      const isHighPriority = 
+        notificationType === 'profile_pending_verification' ||
+        notificationType === 'profile_rejected' ||
+        notificationType === 'profile_verified';
+
+      // Build FCM message with platform-specific configurations
       const message = {
         token: fcmToken,
         notification: {
@@ -402,45 +410,66 @@ exports.sendPushNotification = functions.firestore
           body: payload.body || '',
         },
         data: {
-          type: payload.type,
-          route: payload.route || '/',
+          type: notificationType,
+          route: payload.data?.route || '/',
           notificationId: notificationId,
           ...Object.fromEntries(
             Object.entries(payload.data || {}).map(([key, value]) => [key, String(value)])
           ),
         },
+        // iOS configuration
         apns: {
+          headers: {
+            'apns-priority': isHighPriority ? '10' : '10', // 10 = immediate
+          },
           payload: {
             aps: {
               sound: 'default',
               badge: 1,
+              // Critical alerts for rejection - will bypass DND
+              'mutable-content': isHighPriority ? 1 : 0,
+              'thread-id': isHighPriority ? 'verification' : 'general',
             },
           },
         },
+        // Android configuration  
         android: {
-          priority: 'high',
+          priority: isHighPriority ? 'high' : 'normal',
           notification: {
             sound: 'default',
-            channelId: 'nexus_default_channel',
+            channelId: isHighPriority ? 'verification_alerts' : 'nexus_default_channel',
+            // Use big text for rejection reasons
+            ...(notificationType === 'profile_rejected' && {
+              title: payload.title,
+              body: payload.body,
+              bigText: payload.body,
+            }),
           },
+          // Ensure immediate delivery for verification events
+          ...(isHighPriority && {
+            ttl: {
+              seconds: 3600, // 1 hour
+            },
+          }),
         },
       };
 
       // Send notification via FCM
       const response = await admin.messaging().send(message);
-      console.log(`✅ Push notification sent successfully: ${response}`);
+      console.log(`✅ Push notification sent (${notificationType}): ${response}`);
 
       // Mark notification as sent
-      await snapshot.ref.update({ isSent: true });
+      await snapshot.ref.update({ isSent: true, sentAt: admin.firestore.FieldValue.serverTimestamp() });
 
       return response;
     } catch (error) {
-      console.error('❌ Error sending push notification:', error);
+      console.error(`❌ Error sending push notification: ${error.message}`);
       
       // Mark notification as failed
       await snapshot.ref.update({
         isSent: false,
         error: error.message,
+        errorAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
       return null;
@@ -569,6 +598,199 @@ exports.onProfileVerified = functions.firestore
         return null;
       } catch (error) {
         console.error('❌ Error creating profile verified notification:', error);
+        return null;
+      }
+    }
+
+    return null;
+  });
+
+/**
+ * Send notification when user's dating profile is submitted for verification (pending)
+ * Triggers on: users/{userId} (when dating.verificationStatus changes to pending)
+ */
+exports.onProfilePendingVerification = functions.firestore
+  .document('users/{userId}')
+  .onUpdate(async (change, context) => {
+    const { userId } = context.params;
+    const before = change.before.data();
+    const after = change.after.data();
+
+    // Skip if either doc is missing (v1 compatibility)
+    if (!before || !after) {
+      return null;
+    }
+
+    // Get dating objects (handle Map type)
+    const beforeDating = (before.dating && typeof before.dating === 'object') ? before.dating : {};
+    const afterDating = (after.dating && typeof after.dating === 'object') ? after.dating : {};
+
+    const beforeStatus = beforeDating.verificationStatus?.toString()?.toLowerCase();
+    const afterStatus = afterDating.verificationStatus?.toString()?.toLowerCase();
+
+    // Check if dating profile just went to 'pending' status
+    // Only send if transitioning from non-pending state (avoids duplicate notifications on retries)
+    if (afterStatus === 'pending' && beforeStatus !== 'pending') {
+      try {
+        // Create notification payload
+        const notificationRef = admin
+          .firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('notifications')
+          .doc();
+
+        const notification = {
+          id: notificationRef.id,
+          userId: userId,
+          payload: {
+            type: 'profile_pending_verification',
+            title: 'Profile Under Review 🔍',
+            body: 'Your dating profile has been submitted and is now under review by our team. You\'ll be notified once a decision is made.',
+            route: '/profile',
+            data: { verificationStatus: 'pending' },
+          },
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          isRead: false,
+          isSent: false,
+        };
+
+        await notificationRef.set(notification);
+        console.log(`✅ Profile pending verification notification queued for user: ${userId}`);
+
+        return null;
+      } catch (error) {
+        console.error('❌ Error creating profile pending notification:', error);
+        return null;
+      }
+    }
+
+    return null;
+  });
+
+/**
+ * Send notification when user's dating profile is rejected by admin
+ * Triggers on: users/{userId} (when dating.verificationStatus changes to rejected)
+ */
+exports.onProfileRejected = functions.firestore
+  .document('users/{userId}')
+  .onUpdate(async (change, context) => {
+    const { userId } = context.params;
+    const before = change.before.data();
+    const after = change.after.data();
+
+    // Skip if either doc is missing (v1 compatibility)
+    if (!before || !after) {
+      return null;
+    }
+
+    // Get dating objects (handle Map type)
+    const beforeDating = (before.dating && typeof before.dating === 'object') ? before.dating : {};
+    const afterDating = (after.dating && typeof after.dating === 'object') ? after.dating : {};
+
+    const beforeStatus = beforeDating.verificationStatus?.toString()?.toLowerCase();
+    const afterStatus = afterDating.verificationStatus?.toString()?.toLowerCase();
+
+    // Check if dating profile just was rejected
+    if (afterStatus === 'rejected' && beforeStatus !== 'rejected') {
+      try {
+        // Extract rejection reason if available
+        const rejectionReason = afterDating.rejectionReason?.toString() || 'Your profile did not meet our verification requirements.';
+
+        // Create notification payload
+        const notificationRef = admin
+          .firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('notifications')
+          .doc();
+
+        const notification = {
+          id: notificationRef.id,
+          userId: userId,
+          payload: {
+            type: 'profile_rejected',
+            title: 'Profile Rejected ❌',
+            body: `Your profile was not approved: "${rejectionReason}"`, 
+            route: '/profile',
+            data: { 
+              verificationStatus: 'rejected',
+              rejectionReason: rejectionReason 
+            },
+          },
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          isRead: false,
+          isSent: false,
+        };
+
+        await notificationRef.set(notification);
+        console.log(`✅ Profile rejection notification queued for user: ${userId}`);
+
+        return null;
+      } catch (error) {
+        console.error('❌ Error creating profile rejection notification:', error);
+        return null;
+      }
+    }
+
+    return null;
+  });
+
+/**
+ * Send notification when user's dating profile is verified by admin
+ * Triggers on: users/{userId} (when dating.verificationStatus changes to verified)
+ */
+exports.onDatingProfileVerified = functions.firestore
+  .document('users/{userId}')
+  .onUpdate(async (change, context) => {
+    const { userId } = context.params;
+    const before = change.before.data();
+    const after = change.after.data();
+
+    // Skip if either doc is missing (v1 compatibility)
+    if (!before || !after) {
+      return null;
+    }
+
+    // Get dating objects (handle Map type)
+    const beforeDating = (before.dating && typeof before.dating === 'object') ? before.dating : {};
+    const afterDating = (after.dating && typeof after.dating === 'object') ? after.dating : {};
+
+    const beforeStatus = beforeDating.verificationStatus?.toString()?.toLowerCase();
+    const afterStatus = afterDating.verificationStatus?.toString()?.toLowerCase();
+
+    // Check if dating profile just was verified
+    if (afterStatus === 'verified' && beforeStatus !== 'verified') {
+      try {
+        // Create notification payload
+        const notificationRef = admin
+          .firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('notifications')
+          .doc();
+
+        const notification = {
+          id: notificationRef.id,
+          userId: userId,
+          payload: {
+            type: 'profile_verified',
+            title: 'Profile Verified! ✅',
+            body: 'Congratulations! Your dating profile has been verified and is now visible to other users.',
+            route: '/search',
+            data: { verificationStatus: 'verified' },
+          },
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          isRead: false,
+          isSent: false,
+        };
+
+        await notificationRef.set(notification);
+        console.log(`✅ Dating profile verification notification queued for user: ${userId}`);
+
+        return null;
+      } catch (error) {
+        console.error('❌ Error creating dating profile verification notification:', error);
         return null;
       }
     }

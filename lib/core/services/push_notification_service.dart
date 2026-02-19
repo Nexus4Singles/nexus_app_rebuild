@@ -196,9 +196,19 @@ class PushNotificationService {
   // Storage key for settings
   static const _settingsKey = 'notification_settings';
 
+  // Guard to prevent multiple initializations
+  bool _initialized = false;
+
   /// Initialize the push notification service
   /// Call this during app startup
   Future<void> initialize(String? userId) async {
+    // Only initialize once - prevent duplicate listeners
+    if (_initialized) {
+      print('PushNotificationService already initialized');
+      return;
+    }
+    _initialized = true;
+
     // Request permission
     final settings = await requestPermission();
     if (settings.pushEnabled) {
@@ -219,7 +229,6 @@ class PushNotificationService {
       // Configure message handlers
       _configureMessageHandlers();
     }
-
   }
 
   /// Request notification permission
@@ -261,8 +270,7 @@ class PushNotificationService {
   Future<void> deleteToken() async {
     try {
       await _messaging.deleteToken();
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   /// Save FCM token to Firestore
@@ -274,8 +282,7 @@ class PushNotificationService {
         'tokenUpdatedAt': FieldValue.serverTimestamp(),
         'platform': Platform.isIOS ? 'ios' : 'android',
       });
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   /// Remove FCM token from Firestore (for logout)
@@ -285,8 +292,7 @@ class PushNotificationService {
         'fcmToken': FieldValue.delete(),
         'notificationToken': FieldValue.delete(),
       });
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   /// Configure message handlers
@@ -338,16 +344,14 @@ class PushNotificationService {
   Future<void> subscribeToTopic(String topic) async {
     try {
       await _messaging.subscribeToTopic(topic);
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   /// Unsubscribe from a topic
   Future<void> unsubscribeFromTopic(String topic) async {
     try {
       await _messaging.unsubscribeFromTopic(topic);
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   /// Load notification settings from local storage
@@ -358,8 +362,7 @@ class PushNotificationService {
       if (json != null) {
         return AppNotificationSettings.fromJson(jsonDecode(json));
       }
-    } catch (e) {
-    }
+    } catch (e) {}
     return const AppNotificationSettings();
   }
 
@@ -368,8 +371,7 @@ class PushNotificationService {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_settingsKey, jsonEncode(settings.toJson()));
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   /// Check if a specific notification type is enabled

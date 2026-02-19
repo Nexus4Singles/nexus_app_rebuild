@@ -263,7 +263,7 @@ class ChatConversation {
 
 /// Service for managing chat functionality
 class ChatService {
-  static const int _kFreeChatPartnerLimit = 3;
+  static const int _kFreeChatPartnerLimit = 1;
 
   String _chatIdFor(String u1, String u2) {
     final a = u1.trim();
@@ -299,13 +299,32 @@ class ChatService {
       final data = doc.data();
       if (data == null) return false;
 
-      bool flag(String k) => (data[k] == true);
+      // Check new subscription structure first
+      final subscriptionData = data['subscription'] as Map<String, dynamic>?;
+      if (subscriptionData != null) {
+        final isActive = subscriptionData['isActive'] as bool? ?? false;
+        if (!isActive) return false;
 
-      return flag('onPremium') ||
-          flag('isPremium') ||
-          flag('premium') ||
-          flag('subscriptionActive') ||
-          flag('hasActiveSubscription');
+        // Check expiration date
+        final expiryDate = subscriptionData['expiryDate'];
+        if (expiryDate != null) {
+          if (expiryDate is Timestamp) {
+            return expiryDate.toDate().isAfter(DateTime.now());
+          } else if (expiryDate is DateTime) {
+            return expiryDate.isAfter(DateTime.now());
+          }
+        }
+        return isActive;
+      }
+
+      // Fallback: Check legacy onPremium flag with expiration
+      final onPremium = data['onPremium'] as bool? ?? false;
+      if (!onPremium) return false;
+
+      final expDate = data['subExpDate'] as Timestamp?;
+      if (expDate == null) return false;
+
+      return expDate.toDate().isAfter(DateTime.now());
     } catch (_) {
       // Fail-closed: treat as not premium.
       return false;

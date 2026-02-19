@@ -61,7 +61,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "What Spiritual Intimacy Is",
-          "text": "**Spiritual intimacy goes beyond shared beliefs.** \"For where two or three gather in my name, there am I with them\" ({red|Matthew 18:20|For where two or three gather in my name, there am I with them}). When you and your spouse engage spiritually together, Christ is uniquely present.\n\nSpiritual intimacy includes:\n\nPraying together regularly and meaningfully, not just at meals\n\nSharing what God is teaching you, what you are struggling with, what you are learning in Scripture\n\nDiscussing spiritual questions, doubts, and growth areas openly\n\nSupporting each other's individual walks with God\n\nMaking decisions together with prayer and discernment\n\nServing and ministering together as a team\n\nHolding each other accountable in faith\n\nExperiencing God's presence together\n\n**This kind of intimacy creates a bond that goes deeper than emotional or physical connection alone.** \"Though one may be overpowered, two can defend themselves\" ({red|Ecclesiastes 4:12|Though one may be overpowered, two can defend themselves}). Your faith together is stronger than your faith alone.",
+          "text": "**Spiritual intimacy goes beyond shared beliefs.** \"For where two or three gather in my name, there am I with them\" (Matthew 18:20|For where two or three gather in my name, there am I with them). When you and your spouse engage spiritually together, Christ is uniquely present.\n\nSpiritual intimacy includes:\n\nPraying together regularly and meaningfully, not just at meals\n\nSharing what God is teaching you, what you are struggling with, what you are learning in Scripture\n\nDiscussing spiritual questions, doubts, and growth areas openly\n\nSupporting each other's individual walks with God\n\nMaking decisions together with prayer and discernment\n\nServing and ministering together as a team\n\nHolding each other accountable in faith\n\nExperiencing God's presence together\n\n**This kind of intimacy creates a bond that goes deeper than emotional or physical connection alone.** \"Though one may be overpowered, two can defend themselves\" (Ecclesiastes 4:12|Though one may be overpowered, two can defend themselves). Your faith together is stronger than your faith alone.",
           "icon": "favorite"
         },
         {
@@ -69,7 +69,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Why It Matters",
-          "text": "**A cord of three strands is not quickly broken.** (({red|Ecclesiastes 4:12}))\n\n**This verse is often quoted at weddings to describe marriage with God at the center.** When both spouses are connected to God and to each other spiritually, the relationship has a strength that cannot be achieved otherwise.\n\n**Spiritual intimacy provides a shared foundation for navigating life's challenges.** It gives you a common ultimate purpose and direction. It creates accountability and growth. It connects you at the deepest level of your being. It invites God's active presence into your marriage.\n\n**Your marriage can survive without spiritual intimacy.** But it will never reach its fullest potential.",
+          "text": "**A cord of three strands is not quickly broken.** (Ecclesiastes 4:12)\n\n**This verse is often quoted at weddings to describe marriage with God at the center.** When both spouses are connected to God and to each other spiritually, the relationship has a strength that cannot be achieved otherwise.\n\n**Spiritual intimacy provides a shared foundation for navigating life's challenges.** It gives you a common ultimate purpose and direction. It creates accountability and growth. It connects you at the deepest level of your being. It invites God's active presence into your marriage.\n\n**Your marriage can survive without spiritual intimacy.** But it will never reach its fullest potential.",
           "icon": "link"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Spiritual Connection",
-          "text": "{red|How would you describe the current state of spiritual intimacy in your marriage?}",
+          "text": "How would you describe the current state of spiritual intimacy in your marriage?",
           "prompts": [
             "We have strong spiritual connection and regularly share our faith lives",
             "We have some spiritual connection but could go deeper",
@@ -98,7 +98,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Barriers to Spiritual Intimacy",
-          "text": "{red|**Think about what has prevented deeper spiritual connection in your marriage.**\n\nWhat makes it awkward or difficult to pray together?}{red| What keeps you from sharing your spiritual life with your spouse?}{red| What fears or barriers exist around spiritual intimacy?}{red| What would need to change for you to connect more deeply spiritually?}\n\nWrite about the barriers you face:",
+          "text": "**Think about what has prevented deeper spiritual connection in your marriage.**\n\nWhat makes it awkward or difficult to pray together? What keeps you from sharing your spiritual life with your spouse? What fears or barriers exist around spiritual intimacy? What would need to change for you to connect more deeply spiritually?\n\nWrite about the barriers you face:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -107,7 +107,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "One Step Closer",
-          "text": "{red|**This week, take one small step toward greater spiritual intimacy.**\n\n**Possibilities include praying together for five minutes before bed, sharing one thing God is teaching you, reading a short Scripture passage together and discussing it briefly, asking your spouse how you can pray for them specifically, or sharing a spiritual struggle or question you have been wrestling with.**\n\n**The goal is not perfection but starting somewhere.**\n\nWhat one step will you take this week?}",
+          "text": "**This week, take one small step toward greater spiritual intimacy.**\n\n**Possibilities include praying together for five minutes before bed, sharing one thing God is teaching you, reading a short Scripture passage together and discussing it briefly, asking your spouse how you can pray for them specifically, or sharing a spiritual struggle or question you have been wrestling with.**\n\n**The goal is not perfection but starting somewhere.**\n\nWhat one step will you take this week?",
           "icon": "task_alt"
         }
       ]
@@ -151,7 +151,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Spiritual Journey",
-          "text": "{red|**Reflect on your own spiritual history.**\n\nWhat was faith like in your family growing up?}{red| What church experiences shaped you, positively or negatively?}{red| How did you come to personal faith, or are you still searching?}{red| What have been the highs and lows of your spiritual journey?}{red| Where is your faith right now?}\n\nWrite a summary of your spiritual journey:",
+          "text": "**Reflect on your own spiritual history.**\n\nWhat was faith like in your family growing up? What church experiences shaped you, positively or negatively? How did you come to personal faith, or are you still searching? What have been the highs and lows of your spiritual journey? Where is your faith right now?\n\nWrite a summary of your spiritual journey:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -204,7 +204,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Prayer Barrier",
-          "text": "{red|**Research suggests that fewer than ten percent of Christian couples pray together regularly beyond mealtimes.**\n\nWhy is something so simple so difficult?}\n\n**Prayer is intimate.** When you pray aloud with your spouse, you reveal your heart, your fears, your needs. That vulnerability can feel uncomfortable.\n\n**Different styles create awkwardness.** If one spouse prays eloquently and the other feels tongue-tied, it creates self-consciousness.\n\n**Busy lives crowd it out.** Without intentionality, prayer gets lost in the rush of daily life.\n\n**Past baggage affects it.** Negative experiences with prayer or forced religiosity can create resistance.\n\n**Yet couples who pray together consistently report stronger marriages, deeper connection, and greater spiritual growth.** The barrier is worth breaking through.",
+          "text": "**Research suggests that fewer than ten percent of Christian couples pray together regularly beyond mealtimes.**\n\nWhy is something so simple so difficult?\n\n**Prayer is intimate.** When you pray aloud with your spouse, you reveal your heart, your fears, your needs. That vulnerability can feel uncomfortable.\n\n**Different styles create awkwardness.** If one spouse prays eloquently and the other feels tongue-tied, it creates self-consciousness.\n\n**Busy lives crowd it out.** Without intentionality, prayer gets lost in the rush of daily life.\n\n**Past baggage affects it.** Negative experiences with prayer or forced religiosity can create resistance.\n\n**Yet couples who pray together consistently report stronger marriages, deeper connection, and greater spiritual growth.** The barrier is worth breaking through.",
           "icon": "block"
         },
         {
@@ -228,7 +228,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Prayer Current State",
-          "text": "{red|Which best describes your current prayer life as a couple?}",
+          "text": "Which best describes your current prayer life as a couple?",
           "prompts": [
             "We pray together regularly and it feels natural",
             "We pray together sometimes but could be more consistent",
@@ -249,7 +249,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Prayer Barriers",
-          "text": "{red|**Think honestly about what makes praying together difficult for you.**\n\nWhat feels awkward or uncomfortable about praying with your spouse?}{red| What fears do you have about shared prayer?}{red| What practical barriers get in the way?}{red| What would make prayer together feel more natural?}\n\nWrite about your prayer barriers:",
+          "text": "**Think honestly about what makes praying together difficult for you.**\n\nWhat feels awkward or uncomfortable about praying with your spouse? What fears do you have about shared prayer? What practical barriers get in the way? What would make prayer together feel more natural?\n\nWrite about your prayer barriers:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -258,7 +258,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your First Step",
-          "text": "{red|**Commit to praying together this week.**\n\nDiscuss with your spouse: When will we pray together?}{red| Pick a specific time. How long?}{red| Start with five minutes if this is new. What format?}{red| Taking turns, sentence prayers, or one person leading.\n\n**Then do it.** Even if it feels awkward, follow through.\n\nAfter a week, evaluate: What worked?}{red| What was hard?}{red| What will we adjust?}\n\n**The goal is to establish a sustainable prayer rhythm, even if it starts small.**",
+          "text": "**Commit to praying together this week.**\n\nDiscuss with your spouse: When will we pray together? Pick a specific time. How long? Start with five minutes if this is new. What format? Taking turns, sentence prayers, or one person leading.\n\n**Then do it.** Even if it feels awkward, follow through.\n\nAfter a week, evaluate: What worked? What was hard? What will we adjust?\n\n**The goal is to establish a sustainable prayer rhythm, even if it starts small.**",
           "icon": "task_alt"
         }
       ]
@@ -286,7 +286,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "Same Faith, Different Expression",
-          "text": "{red|**John loves structured liturgy, ancient prayers, and quiet contemplation.** He connects with God through solitude and reflection.\n\n**His wife Lisa loves contemporary worship, spontaneous prayer, and community.** She connects with God through expressive praise and service.\n\n**Both love Jesus.** Both are growing in faith. But they experience and express that faith very differently.\n\n**These differences can become sources of conflict or judgment.** Why does she need all that emotion?}{red| Why is he so cold and formal?} Or they can become sources of enrichment as each spouse expands the other's experience of God.",
+          "text": "**John loves structured liturgy, ancient prayers, and quiet contemplation.** He connects with God through solitude and reflection.\n\n**His wife Lisa loves contemporary worship, spontaneous prayer, and community.** She connects with God through expressive praise and service.\n\n**Both love Jesus.** Both are growing in faith. But they experience and express that faith very differently.\n\n**These differences can become sources of conflict or judgment.** Why does she need all that emotion? Why is he so cold and formal? Or they can become sources of enrichment as each spouse expands the other's experience of God.",
           "icon": "compare_arrows"
         },
         {
@@ -302,7 +302,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Avoiding Judgment",
-          "text": "**The temptation when spouses differ spiritually is to judge.** My way of connecting with God is right. Theirs is inferior, immature, or misguided.\n\n**But Scripture shows remarkable diversity in how people encountered God.** David danced in worship. Elijah heard God in silence. Paul reasoned from Scripture. Peter acted impulsively. Mary sat at Jesus' feet while Martha served. All were used by God. All encountered Him genuinely.\n\n**\"There is one body and one Spirit, just as you were called to one hope when you were called; one Lord, one faith, one baptism; one God and Father of all\" ({red|Ephesians 4:4-6|There is one body and one Spirit, just as you were called to one hope when you were called; one Lord, one faith, one baptism; one God and Father of all}).** Unity does not require uniformity.\n\n**\"Accept the one whose faith is weak, without quarreling over disputable matters\" ({red|Romans 14:1|There is one body and one Spirit, just as you were called to one hope when you were called; one Lord, one faith, one baptism; one God and Father of all}).** Paul instructed the church to extend grace on secondary matters. How much more should spouses extend this grace to each other.\n\n**You can share the same faith while expressing it differently.** The goal is mutual respect and support, not making your spouse be spiritual in your way.",
+          "text": "**The temptation when spouses differ spiritually is to judge.** My way of connecting with God is right. Theirs is inferior, immature, or misguided.\n\n**But Scripture shows remarkable diversity in how people encountered God.** David danced in worship. Elijah heard God in silence. Paul reasoned from Scripture. Peter acted impulsively. Mary sat at Jesus' feet while Martha served. All were used by God. All encountered Him genuinely.\n\n**\"There is one body and one Spirit, just as you were called to one hope when you were called; one Lord, one faith, one baptism; one God and Father of all\" (Ephesians 4:4-6|There is one body and one Spirit, just as you were called to one hope when you were called; one Lord, one faith, one baptism; one God and Father of all).** Unity does not require uniformity.\n\n**\"Accept the one whose faith is weak, without quarreling over disputable matters\" (Romans 14:1|There is one body and one Spirit, just as you were called to one hope when you were called; one Lord, one faith, one baptism; one God and Father of all).** Paul instructed the church to extend grace on secondary matters. How much more should spouses extend this grace to each other.\n\n**You can share the same faith while expressing it differently.** The goal is mutual respect and support, not making your spouse be spiritual in your way.",
           "icon": "gavel"
         },
         {
@@ -310,7 +310,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Spiritual Differences",
-          "text": "{red|**Reflect on how you and your spouse differ spiritually.**\n\nHow do your worship preferences differ?}{red| How do your spiritual practices differ?}{red| Where do you approach faith differently?}{red| Have these differences caused tension?}{red| What could you learn from your spouse's spiritual approach?}\n\nWrite about your spiritual differences:",
+          "text": "**Reflect on how you and your spouse differ spiritually.**\n\nHow do your worship preferences differ? How do your spiritual practices differ? Where do you approach faith differently? Have these differences caused tension? What could you learn from your spouse's spiritual approach?\n\nWrite about your spiritual differences:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -327,7 +327,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "The Differences Conversation",
-          "text": "{red|**Have a conversation with your spouse about your spiritual differences.**\n\nShare openly: How do you best connect with God?}{red| What spiritual practices are most meaningful to you?}{red| Where do our differences create tension?}{red| What could we learn from each other's approach?}{red| What shared practices can we agree on despite our differences?}\n\n**The goal is understanding and finding workable unity, not changing each other.**",
+          "text": "**Have a conversation with your spouse about your spiritual differences.**\n\nShare openly: How do you best connect with God? What spiritual practices are most meaningful to you? Where do our differences create tension? What could we learn from each other's approach? What shared practices can we agree on despite our differences?\n\n**The goal is understanding and finding workable unity, not changing each other.**",
           "icon": "forum"
         }
       ]
@@ -379,7 +379,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Current Rhythms",
-          "text": "{red|**Assess your current shared spiritual rhythms.**\n\nWhat spiritual practices do you currently do together regularly?}{red| What have you tried that did not stick?}{red| Why?}{red| What gaps exist in your spiritual rhythms as a couple?}{red| What rhythms would you like to establish or strengthen?}\n\nWrite about your current rhythms and desired changes:",
+          "text": "**Assess your current shared spiritual rhythms.**\n\nWhat spiritual practices do you currently do together regularly? What have you tried that did not stick? Why? What gaps exist in your spiritual rhythms as a couple? What rhythms would you like to establish or strengthen?\n\nWrite about your current rhythms and desired changes:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -388,7 +388,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Priority Rhythm",
-          "text": "{red|Which spiritual rhythm would be most valuable to establish or strengthen in your marriage right now?}",
+          "text": "Which spiritual rhythm would be most valuable to establish or strengthen in your marriage right now?",
           "prompts": [
             "Daily prayer together",
             "Regular Scripture reading or devotional time",
@@ -409,7 +409,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Rhythm Plan",
-          "text": "{red|**Together with your spouse, create a plan for shared spiritual rhythms.**\n\nDiscuss and decide: What daily rhythm will we establish?}{red| When will it happen?}{red| What weekly rhythm will we maintain?}{red| How will we handle weeks when our rhythm gets disrupted?}{red| When will we evaluate how our rhythms are working?}\n\n**Schedule a check-in in one month.**\n\n**Write your agreed-upon rhythm plan and commit to starting this week.**",
+          "text": "**Together with your spouse, create a plan for shared spiritual rhythms.**\n\nDiscuss and decide: What daily rhythm will we establish? When will it happen? What weekly rhythm will we maintain? How will we handle weeks when our rhythm gets disrupted? When will we evaluate how our rhythms are working?\n\n**Schedule a check-in in one month.**\n\n**Write your agreed-upon rhythm plan and commit to starting this week.**",
           "icon": "task_alt"
         }
       ]
@@ -437,7 +437,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "More Than Individual Study",
-          "text": "**Both Mark and Julie read their Bibles regularly.** But they read separately, at different times, studying different passages. They rarely discussed what they were learning.\n\n**There is nothing wrong with individual Bible study.** It is essential. But something powerful happens when couples engage Scripture together.\n\n**\"Your word is a lamp for my feet, a light on my path\" ({red|Psalm 119:105|Your word is a lamp for my feet, a light on my path}).** When couples share this light together, they can navigate life with greater clarity. You see things your spouse sees that you would have missed. You wrestle with application together. You build shared language and understanding. You hold each other accountable to live what you learn. You develop a common foundation for decisions and values.\n\n**\"All Scripture is God-breathed and is useful for teaching, rebuking, correcting and training in righteousness\" (2 {red|Timothy 3:16|All Scripture is God-breathed and is useful for teaching, rebuking, correcting and training in righteousness}).** When you engage this teaching together, you grow together.\n\n**Individual study plus shared engagement creates the richest experience.**",
+          "text": "**Both Mark and Julie read their Bibles regularly.** But they read separately, at different times, studying different passages. They rarely discussed what they were learning.\n\n**There is nothing wrong with individual Bible study.** It is essential. But something powerful happens when couples engage Scripture together.\n\n**\"Your word is a lamp for my feet, a light on my path\" (Psalm 119:105|Your word is a lamp for my feet, a light on my path).** When couples share this light together, they can navigate life with greater clarity. You see things your spouse sees that you would have missed. You wrestle with application together. You build shared language and understanding. You hold each other accountable to live what you learn. You develop a common foundation for decisions and values.\n\n**\"All Scripture is God-breathed and is useful for teaching, rebuking, correcting and training in righteousness\" (2 Timothy 3:16|All Scripture is God-breathed and is useful for teaching, rebuking, correcting and training in righteousness).** When you engage this teaching together, you grow together.\n\n**Individual study plus shared engagement creates the richest experience.**",
           "icon": "menu_book"
         },
         {
@@ -453,7 +453,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Discussion That Goes Deep",
-          "text": "{red|**When discussing Scripture together, go beyond surface observations.**\n\nAsk questions like: What does this passage reveal about God's character?}{red| What does it reveal about human nature?}{red| How does this apply to our marriage specifically?}{red| What would change if we took this seriously?}{red| What questions does this raise?}{red| How does this challenge or comfort us?}\n\n**Be willing to sit with difficult passages and questions together.** You do not have to resolve everything immediately.\n\n**The goal is not just information but transformation.**",
+          "text": "**When discussing Scripture together, go beyond surface observations.**\n\nAsk questions like: What does this passage reveal about God's character? What does it reveal about human nature? How does this apply to our marriage specifically? What would change if we took this seriously? What questions does this raise? How does this challenge or comfort us?\n\n**Be willing to sit with difficult passages and questions together.** You do not have to resolve everything immediately.\n\n**The goal is not just information but transformation.**",
           "icon": "forum"
         },
         {
@@ -461,7 +461,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Scripture Engagement",
-          "text": "{red|**Reflect on how you currently engage Scripture as a couple.**\n\nHow often do you read or discuss Scripture together?}{red| What has worked well when you have done this?}{red| What barriers keep you from engaging Scripture together more?}{red| What format of shared Scripture engagement appeals to you?}\n\nWrite about your current Scripture engagement and what you would like:",
+          "text": "**Reflect on how you currently engage Scripture as a couple.**\n\nHow often do you read or discuss Scripture together? What has worked well when you have done this? What barriers keep you from engaging Scripture together more? What format of shared Scripture engagement appeals to you?\n\nWrite about your current Scripture engagement and what you would like:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -478,7 +478,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Scripture Plan",
-          "text": "{red|**Create a plan for engaging Scripture together as a couple.**\n\nDecide together: What format will we use such as reading together, devotional, book study, or sharing insights?}{red| What will we read or study first?}{red| When will we do this, being specific about day and time?}{red| How long will each session be?}\n\n**Start this week.** Even one short session is a beginning.\n\n**Write your Scripture engagement plan.**",
+          "text": "**Create a plan for engaging Scripture together as a couple.**\n\nDecide together: What format will we use such as reading together, devotional, book study, or sharing insights? What will we read or study first? When will we do this, being specific about day and time? How long will each session be?\n\n**Start this week.** Even one short session is a beginning.\n\n**Write your Scripture engagement plan.**",
           "icon": "task_alt"
         }
       ]
@@ -530,7 +530,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "How You Support",
-          "text": "{red|**Reflect on how you currently support your spouse's spiritual growth.**\n\nIn what ways do you actively encourage their individual walk with God?}{red| What could you do better to support their spiritual life?}{red| Do you ever subtly compete or feel threatened by their spiritual growth?}{red| What specific encouragement or support does your spouse need from you right now?}\n\nWrite about how you can better support your spouse's spiritual growth:",
+          "text": "**Reflect on how you currently support your spouse's spiritual growth.**\n\nIn what ways do you actively encourage their individual walk with God? What could you do better to support their spiritual life? Do you ever subtly compete or feel threatened by their spiritual growth? What specific encouragement or support does your spouse need from you right now?\n\nWrite about how you can better support your spouse's spiritual growth:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -539,7 +539,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Spouse's Needs",
-          "text": "{red|What do you think your spouse most needs from you to support their spiritual growth?}",
+          "text": "What do you think your spouse most needs from you to support their spiritual growth?",
           "prompts": [
             "More protected time for personal devotions",
             "Encouragement and expressed interest in their spiritual life",
@@ -561,7 +561,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "The Support Conversation",
-          "text": "{red|**Have a conversation with your spouse about supporting each other's spiritual growth.**\n\nAsk each other: What do you need from me to support your personal walk with God?}{red| What obstacles to spiritual growth can I help remove?}{red| How can I encourage you without pressuring you?}{red| What would help you know I am cheering for your spiritual life?}\n\n**Commit to specific ways you will support each other's individual spiritual growth.**",
+          "text": "**Have a conversation with your spouse about supporting each other's spiritual growth.**\n\nAsk each other: What do you need from me to support your personal walk with God? What obstacles to spiritual growth can I help remove? How can I encourage you without pressuring you? What would help you know I am cheering for your spiritual life?\n\n**Commit to specific ways you will support each other's individual spiritual growth.**",
           "icon": "forum"
         }
       ]
@@ -605,7 +605,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "The Deuteronomy Model",
-          "text": "**These commandments that I give you today are to be on your hearts.** Impress them on your children. Talk about them when you sit at home and when you walk along the road, when you lie down and when you get up. (({red|Deuteronomy 6:6-7}))\n\n**This passage describes faith woven into every part of life.** It is not about adding more activities but about integrating faith into what you already do.\n\n**When you sit: mealtimes, rest, conversation.** When you walk: transitions, driving, daily activities. When you lie down: bedtime, rest, reflection. When you get up: morning routines, starting the day.\n\n**Every part of life becomes an opportunity for faith to be present.**",
+          "text": "**These commandments that I give you today are to be on your hearts.** Impress them on your children. Talk about them when you sit at home and when you walk along the road, when you lie down and when you get up. (Deuteronomy 6:6-7)\n\n**This passage describes faith woven into every part of life.** It is not about adding more activities but about integrating faith into what you already do.\n\n**When you sit: mealtimes, rest, conversation.** When you walk: transitions, driving, daily activities. When you lie down: bedtime, rest, reflection. When you get up: morning routines, starting the day.\n\n**Every part of life becomes an opportunity for faith to be present.**",
           "icon": "menu_book"
         },
         {
@@ -613,7 +613,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Home Environment",
-          "text": "{red|**Assess the current spiritual environment of your home.**\n\nIn what ways does your home currently reflect your faith?}{red| Where is faith naturally integrated into daily life?}{red| What areas of home life are disconnected from faith?}{red| What would someone observe about your faith from spending a week in your home?}\n\nWrite about your current home environment:",
+          "text": "**Assess the current spiritual environment of your home.**\n\nIn what ways does your home currently reflect your faith? Where is faith naturally integrated into daily life? What areas of home life are disconnected from faith? What would someone observe about your faith from spending a week in your home?\n\nWrite about your current home environment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -622,7 +622,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Priority Area",
-          "text": "{red|Which area of your home environment would most benefit from intentional faith integration?}",
+          "text": "Which area of your home environment would most benefit from intentional faith integration?",
           "prompts": [
             "Physical environment such as visual reminders and resources",
             "Conversation patterns and talking about faith naturally",
@@ -644,7 +644,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Home Plan",
-          "text": "{red|**Discuss with your spouse how you want to strengthen the faith environment of your home.**\n\n**Choose one or two specific changes to make.** What will you add, change, or emphasize?}{red| How will you implement this practically?}{red| When will you start?}\n\n**Examples include adding Scripture art to your home, starting a practice of sharing highs and lows at dinner with gratitude, being more intentional about Sabbath rest, or opening your home for hospitality monthly.**\n\n**Write your plan for strengthening your home environment.**",
+          "text": "**Discuss with your spouse how you want to strengthen the faith environment of your home.**\n\n**Choose one or two specific changes to make.** What will you add, change, or emphasize? How will you implement this practically? When will you start?\n\n**Examples include adding Scripture art to your home, starting a practice of sharing highs and lows at dinner with gratitude, being more intentional about Sabbath rest, or opening your home for hospitality monthly.**\n\n**Write your plan for strengthening your home environment.**",
           "icon": "task_alt"
         }
       ]
@@ -696,7 +696,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Service Together",
-          "text": "{red|**Reflect on serving together in your marriage.**\n\nHow do you currently serve together, if at all?}{red| What are you both passionate about?}{red| What gifts do you each bring that could complement each other in service?}{red| What opportunities exist that might fit you as a couple?}\n\nWrite about your current or potential service together:",
+          "text": "**Reflect on serving together in your marriage.**\n\nHow do you currently serve together, if at all? What are you both passionate about? What gifts do you each bring that could complement each other in service? What opportunities exist that might fit you as a couple?\n\nWrite about your current or potential service together:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -705,7 +705,7 @@
           "cardType": "question",
           "cardNumber": 5,
           "title": "Your Service Interest",
-          "text": "{red|What type of shared service most interests you as a couple?}",
+          "text": "What type of shared service most interests you as a couple?",
           "prompts": [
             "Serving in church ministry together",
             "Hospitality and opening our home",
@@ -727,7 +727,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Your Service Step",
-          "text": "{red|**Discuss with your spouse about serving together.**\n\nExplore: What are we passionate about?}{red| What could we realistically do given our current season?}{red| What opportunities exist in our church or community?}{red| What would we need to adjust to make room for shared service?}\n\n**Commit to one step such as researching a specific opportunity, trying a one-time service project together, or talking to a church leader about where you could serve.**\n\n**Write your next step toward serving together.**",
+          "text": "**Discuss with your spouse about serving together.**\n\nExplore: What are we passionate about? What could we realistically do given our current season? What opportunities exist in our church or community? What would we need to adjust to make room for shared service?\n\n**Commit to one step such as researching a specific opportunity, trying a one-time service project together, or talking to a church leader about where you could serve.**\n\n**Write your next step toward serving together.**",
           "icon": "task_alt"
         }
       ]
@@ -763,7 +763,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "The Lifelong Journey",
-          "text": "**Spiritual unity is not a destination you arrive at but a journey you continue.**\n\n**There will be seasons of deep connection and seasons of distance.** There will be times of rapid growth and times of struggle. There will be rhythms that work and rhythms that need adjustment.\n\n**The commitment is not to perfection but to ongoing pursuit.** To keep seeking God together even when it is hard. To keep growing even when progress is slow.\n\n**Let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up.** (({red|Galatians 6:9}))",
+          "text": "**Spiritual unity is not a destination you arrive at but a journey you continue.**\n\n**There will be seasons of deep connection and seasons of distance.** There will be times of rapid growth and times of struggle. There will be rhythms that work and rhythms that need adjustment.\n\n**The commitment is not to perfection but to ongoing pursuit.** To keep seeking God together even when it is hard. To keep growing even when progress is slow.\n\n**Let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up.** (Galatians 6:9)",
           "icon": "timeline"
         },
         {
@@ -771,7 +771,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Key Insight",
-          "text": "{red|What is the most important thing you have learned or been reminded of through this journey about spiritual unity in marriage?}\n\n{red|What do you want to remember and apply going forward?}\n\nWrite your key insight:",
+          "text": "What is the most important thing you have learned or been reminded of through this journey about spiritual unity in marriage?\n\nWhat do you want to remember and apply going forward?\n\nWrite your key insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -780,7 +780,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Specific Commitments",
-          "text": "{red|Based on what you have learned, what specific commitments will you make to spiritual unity?}\n\n{red|What rhythms will you establish?}{red| What practices will you maintain?}{red| How will you support each other's growth?}\n\nWrite your specific commitments:",
+          "text": "Based on what you have learned, what specific commitments will you make to spiritual unity?\n\nWhat rhythms will you establish? What practices will you maintain? How will you support each other's growth?\n\nWrite your specific commitments:",
           "responseType": "open-text",
           "icon": "verified"
         },

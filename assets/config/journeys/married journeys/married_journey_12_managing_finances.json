@@ -53,7 +53,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Fight That Is Not About the Purchase",
-          "text": "**She bought shoes that he thinks were too expensive.** He signed up for a subscription she thinks is wasteful. The argument that follows feels intense, out of proportion to the actual dollars involved.\n\n**That is because money fights are never just about money.** They are about what money represents: security, freedom, values, priorities, respect, trust, and vision for the future.\n\n**\"For where your treasure is, there your heart will be also\" ({red|Matthew 6:21|For where your treasure is, there your heart will be also}).** Jesus knew that money reveals the heart. Financial conflicts expose what you each value most deeply.\n\n**When she bought those shoes, maybe she was expressing a need to feel beautiful or to have something for herself in a life that feels consumed by giving to others.** When he criticizes the purchase, she hears that her needs do not matter.\n\n**When he signed up for that subscription, maybe he was trying to hold onto something that brings him joy in a stressful life.** When she criticizes the expense, he hears that he is not trusted to make any decisions.\n\n**The shoes and the subscription are just the surface.** The real conflict runs much deeper.",
+          "text": "**She bought shoes that he thinks were too expensive.** He signed up for a subscription she thinks is wasteful. The argument that follows feels intense, out of proportion to the actual dollars involved.\n\n**That is because money fights are never just about money.** They are about what money represents: security, freedom, values, priorities, respect, trust, and vision for the future.\n\n**\"For where your treasure is, there your heart will be also\" (Matthew 6:21|For where your treasure is, there your heart will be also).** Jesus knew that money reveals the heart. Financial conflicts expose what you each value most deeply.\n\n**When she bought those shoes, maybe she was expressing a need to feel beautiful or to have something for herself in a life that feels consumed by giving to others.** When he criticizes the purchase, she hears that her needs do not matter.\n\n**When he signed up for that subscription, maybe he was trying to hold onto something that brings him joy in a stressful life.** When she criticizes the expense, he hears that he is not trusted to make any decisions.\n\n**The shoes and the subscription are just the surface.** The real conflict runs much deeper.",
           "icon": "layers"
         },
         {
@@ -77,7 +77,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "What Money Means to You",
-          "text": "{red|What does money primarily represent to you?}",
+          "text": "What does money primarily represent to you?",
           "prompts": [
             "Security, I need savings to feel safe",
             "Freedom, money enables choices and experiences",
@@ -99,7 +99,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Money Conflicts",
-          "text": "{red|**Think about financial disagreements you have had with your spouse.**\n\nWhat patterns do you notice in your conflicts?}{red| What do you think money represents to your spouse?}{red| When you fight about money, what is really at stake beneath the surface?}{red| How might your different money meanings be creating friction?}\n\nWrite your reflection on what is really happening in your money conflicts:",
+          "text": "**Think about financial disagreements you have had with your spouse.**\n\nWhat patterns do you notice in your conflicts? What do you think money represents to your spouse? When you fight about money, what is really at stake beneath the surface? How might your different money meanings be creating friction?\n\nWrite your reflection on what is really happening in your money conflicts:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -144,7 +144,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Questions That Reveal Your Story",
-          "text": "{red|**To understand your money story, consider questions like these.**\n\nWhat was money like in your childhood home?}{red| Was there enough or were things tight?}{red| Was money discussed openly or was it a secret topic?}{red| Did your parents fight about money or handle it peacefully?}\n\n{red|What messages did you receive about money?}{red| Was it evil or good?}{red| Hard to come by or abundant?}{red| Something to save obsessively or spend freely?}\n\n{red|What was your first money memory that carried emotional weight?}{red| What did that experience teach you?}\n\n{red|How did your family handle financial setbacks?}{red| What did you learn from watching that?}\n\n{red|What did you tell yourself you would do differently than your parents with money?}{red| What did you tell yourself you would replicate?}\n\n**These questions reveal the story that shaped your financial instincts.**",
+          "text": "**To understand your money story, consider questions like these.**\n\nWhat was money like in your childhood home? Was there enough or were things tight? Was money discussed openly or was it a secret topic? Did your parents fight about money or handle it peacefully?\n\nWhat messages did you receive about money? Was it evil or good? Hard to come by or abundant? Something to save obsessively or spend freely?\n\nWhat was your first money memory that carried emotional weight? What did that experience teach you?\n\nHow did your family handle financial setbacks? What did you learn from watching that?\n\nWhat did you tell yourself you would do differently than your parents with money? What did you tell yourself you would replicate?\n\n**These questions reveal the story that shaped your financial instincts.**",
           "icon": "help_outline"
         },
         {
@@ -229,7 +229,7 @@
           "cardType": "question",
           "cardNumber": 4,
           "title": "Your Financial Personality",
-          "text": "{red|Which description fits you better?}",
+          "text": "Which description fits you better?",
           "prompts": [
             "I am primarily a saver who feels anxious when spending and secure when saving",
             "I am primarily a spender who enjoys using money and feels constrained by excessive saving",
@@ -256,7 +256,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Appreciating Your Balance",
-          "text": "{red|**This week, practice seeing your different financial orientations as gifts rather than problems.**\n\n**If you are the saver, thank your spouse for the life and enjoyment they bring to your finances.** Acknowledge that without them, you might save but never actually live.\n\n**If you are the spender, thank your spouse for the security and wisdom they bring.** Acknowledge that without them, you might enjoy today but jeopardize tomorrow.\n\n**Have a conversation about how you can leverage both orientations rather than fighting about them.** What would it look like to honor both saving and spending in your financial life?}",
+          "text": "**This week, practice seeing your different financial orientations as gifts rather than problems.**\n\n**If you are the saver, thank your spouse for the life and enjoyment they bring to your finances.** Acknowledge that without them, you might save but never actually live.\n\n**If you are the spender, thank your spouse for the security and wisdom they bring.** Acknowledge that without them, you might enjoy today but jeopardize tomorrow.\n\n**Have a conversation about how you can leverage both orientations rather than fighting about them.** What would it look like to honor both saving and spending in your financial life?",
           "icon": "favorite"
         }
       ]
@@ -292,7 +292,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Elements of Financial Vision",
-          "text": "{red|**A complete financial vision addresses several areas.**\n\nLifestyle asks what kind of life do we want to live?}{red| Where do we want to live?}{red| How do we want to spend our time?}{red| What experiences matter to us?}\n\n{red|Security asks what level of financial safety do we need to feel at peace?}{red| How much emergency fund?}{red| What insurance?}{red| What retirement provision?}\n\n{red|Generosity asks how do we want to give?}{red| What causes matter to us?}{red| What level of generosity do we aspire to?}\n\n{red|Legacy asks what do we want to leave behind?}{red| For our children?}{red| For causes we care about?}{red| For the next generation?}\n\n{red|Freedom asks what would financial freedom look like for us?}{red| What options do we want to have?}{red| What constraints do we want to eliminate?}\n\n**Your vision should address each of these in ways that reflect your shared values.**",
+          "text": "**A complete financial vision addresses several areas.**\n\nLifestyle asks what kind of life do we want to live? Where do we want to live? How do we want to spend our time? What experiences matter to us?\n\nSecurity asks what level of financial safety do we need to feel at peace? How much emergency fund? What insurance? What retirement provision?\n\nGenerosity asks how do we want to give? What causes matter to us? What level of generosity do we aspire to?\n\nLegacy asks what do we want to leave behind? For our children? For causes we care about? For the next generation?\n\nFreedom asks what would financial freedom look like for us? What options do we want to have? What constraints do we want to eliminate?\n\n**Your vision should address each of these in ways that reflect your shared values.**",
           "icon": "list"
         },
         {
@@ -300,7 +300,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Financial Dreams",
-          "text": "{red|**Before discussing with your spouse, clarify your own financial dreams.**\n\nWhat does your ideal financial future look like?}{red| What experiences do you want to have?}{red| What security do you need?}{red| How generous do you want to be?}{red| What legacy do you want to leave?}\n\n**Dream without immediate concern for how.** Just describe what you would love your financial life to enable.\n\nWrite your financial dreams:",
+          "text": "**Before discussing with your spouse, clarify your own financial dreams.**\n\nWhat does your ideal financial future look like? What experiences do you want to have? What security do you need? How generous do you want to be? What legacy do you want to leave?\n\n**Dream without immediate concern for how.** Just describe what you would love your financial life to enable.\n\nWrite your financial dreams:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -309,7 +309,7 @@
           "cardType": "action",
           "cardNumber": 4,
           "title": "The Vision Conversation",
-          "text": "{red|**Have a dedicated conversation with your spouse about your financial vision.**\n\n**Share your individual dreams from the previous reflection.** Listen to your spouse's dreams with genuine interest. Look for overlap, places where your dreams align naturally.\n\n**Discuss areas of difference.** Where do your visions diverge?}{red| Can you find creative ways to honor both?}{red| What compromises might work?}\n\n**Work toward a shared vision statement that captures what you are both excited to build together.** This does not have to be perfect. It just needs to be shared.",
+          "text": "**Have a dedicated conversation with your spouse about your financial vision.**\n\n**Share your individual dreams from the previous reflection.** Listen to your spouse's dreams with genuine interest. Look for overlap, places where your dreams align naturally.\n\n**Discuss areas of difference.** Where do your visions diverge? Can you find creative ways to honor both? What compromises might work?\n\n**Work toward a shared vision statement that captures what you are both excited to build together.** This does not have to be perfect. It just needs to be shared.",
           "icon": "forum"
         },
         {
@@ -354,7 +354,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Owner and the Steward",
-          "text": "**The most fundamental shift in biblical thinking about money is recognizing who the owner actually is.**\n\n**'The earth is the Lord's, and everything in it, the world, and all who live in it.**' (({red|Psalm 24:1}))\n\n**God owns everything.** We are not owners but stewards, managers entrusted with resources that ultimately belong to Him. This changes everything about how we think about our money.\n\n**As owners, we feel entitled to do whatever we want with our resources.** As stewards, we ask what the Owner wants done with what He has entrusted to us.\n\n**This is not a burden but a relief.** The pressure of ownership, the anxiety of protecting what is mine, the fear of loss, all decrease when we recognize that we are managers, not owners. The resources were never really ours to lose.",
+          "text": "**The most fundamental shift in biblical thinking about money is recognizing who the owner actually is.**\n\n**'The earth is the Lord's, and everything in it, the world, and all who live in it.**' (Psalm 24:1)\n\n**God owns everything.** We are not owners but stewards, managers entrusted with resources that ultimately belong to Him. This changes everything about how we think about our money.\n\n**As owners, we feel entitled to do whatever we want with our resources.** As stewards, we ask what the Owner wants done with what He has entrusted to us.\n\n**This is not a burden but a relief.** The pressure of ownership, the anxiety of protecting what is mine, the fear of loss, all decrease when we recognize that we are managers, not owners. The resources were never really ours to lose.",
           "icon": "volunteer_activism"
         },
         {
@@ -362,7 +362,7 @@
           "cardType": "teaching",
           "cardNumber": 2,
           "title": "Principles for Stewards",
-          "text": "**Scripture provides principles for faithful stewardship.**\n\n**Faithfulness means managing well whatever you have been given, whether much or little.** 'Whoever can be trusted with very little can also be trusted with much.' (({red|Luke 16:10}))\n\n**Generosity means holding resources with open hands, ready to give as needs arise and as God directs.** 'Give, and it will be given to you.' (({red|Luke 6:38}))\n\n**Contentment means finding satisfaction in God rather than in accumulation.** 'Godliness with contentment is great gain.' (1 ({red|Timothy 6:6}))\n\n**Provision means caring for your family's legitimate needs.** 'Anyone who does not provide for their relatives, and especially for their own household, has denied the faith.' (1 ({red|Timothy 5:8}))\n\n**Freedom from love of money means keeping money as a tool, not an idol.** 'For the love of money is a root of all kinds of evil.' (1 ({red|Timothy 6:10}))\n\n**These principles shape how faithful stewards manage what they have been given.**",
+          "text": "**Scripture provides principles for faithful stewardship.**\n\n**Faithfulness means managing well whatever you have been given, whether much or little.** 'Whoever can be trusted with very little can also be trusted with much.' (Luke 16:10)\n\n**Generosity means holding resources with open hands, ready to give as needs arise and as God directs.** 'Give, and it will be given to you.' (Luke 6:38)\n\n**Contentment means finding satisfaction in God rather than in accumulation.** 'Godliness with contentment is great gain.' (1 (Timothy 6:6)\n\n**Provision means caring for your family's legitimate needs.** 'Anyone who does not provide for their relatives, and especially for their own household, has denied the faith.' (1 (Timothy 5:8)\n\n**Freedom from love of money means keeping money as a tool, not an idol.** 'For the love of money is a root of all kinds of evil.' (1 (Timothy 6:10)\n\n**These principles shape how faithful stewards manage what they have been given.**",
           "icon": "menu_book"
         },
         {
@@ -370,7 +370,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "The Generosity Priority",
-          "text": "**One of the most countercultural aspects of biblical stewardship is the priority of generosity.** Giving is not what faithful stewards do with leftovers. It is a first priority.\n\n**'Honor the Lord with your wealth, with the firstfruits of all your crops.**' (({red|Proverbs 3:9}))\n\n**Firstfruits means giving first, not last.** It means deciding what you will give before deciding what you will spend or save. It means treating generosity as a non-negotiable priority rather than a nice addition if there is anything remaining.\n\n**This does not mean giving foolishly or neglecting legitimate responsibilities.** But it does mean that generosity is planned and prioritized, not just the accidental overflow of surplus.\n\n**For many couples, deciding together what they will give and committing to that as a first priority transforms their entire financial life.** It puts money in proper perspective and opens the heart in ways that affect everything else.",
+          "text": "**One of the most countercultural aspects of biblical stewardship is the priority of generosity.** Giving is not what faithful stewards do with leftovers. It is a first priority.\n\n**'Honor the Lord with your wealth, with the firstfruits of all your crops.**' (Proverbs 3:9)\n\n**Firstfruits means giving first, not last.** It means deciding what you will give before deciding what you will spend or save. It means treating generosity as a non-negotiable priority rather than a nice addition if there is anything remaining.\n\n**This does not mean giving foolishly or neglecting legitimate responsibilities.** But it does mean that generosity is planned and prioritized, not just the accidental overflow of surplus.\n\n**For many couples, deciding together what they will give and committing to that as a first priority transforms their entire financial life.** It puts money in proper perspective and opens the heart in ways that affect everything else.",
           "icon": "volunteer_activism"
         },
         {
@@ -378,7 +378,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Freedom from Financial Anxiety",
-          "text": "**One of the great gifts of biblical stewardship is freedom from financial anxiety.** When you truly believe that God owns it all and that He provides for His children, worry loosens its grip.\n\n**'Therefore I tell you, do not worry about your life, what you will eat or drink; or about your body, what you will wear.**.. But seek first his kingdom and his righteousness, and all these things will be given to you as well.' (({red|Matthew 6:25}), 33)\n\n**This does not mean passive irresponsibility.** We are called to work diligently and manage wisely. But it does mean we do not have to carry the crushing weight of ultimate responsibility for our provision.\n\n**When financial anxiety rises, it often reveals that we have forgotten who the real Owner and Provider is.** We have begun carrying weight that was never ours to bear.\n\n**Returning to stewardship thinking, releasing outcomes to God while faithfully managing what He provides, brings peace that financial success alone cannot provide.**",
+          "text": "**One of the great gifts of biblical stewardship is freedom from financial anxiety.** When you truly believe that God owns it all and that He provides for His children, worry loosens its grip.\n\n**'Therefore I tell you, do not worry about your life, what you will eat or drink; or about your body, what you will wear.**.. But seek first his kingdom and his righteousness, and all these things will be given to you as well.' (Matthew 6:25), 33)\n\n**This does not mean passive irresponsibility.** We are called to work diligently and manage wisely. But it does mean we do not have to carry the crushing weight of ultimate responsibility for our provision.\n\n**When financial anxiety rises, it often reveals that we have forgotten who the real Owner and Provider is.** We have begun carrying weight that was never ours to bear.\n\n**Returning to stewardship thinking, releasing outcomes to God while faithfully managing what He provides, brings peace that financial success alone cannot provide.**",
           "icon": "spa"
         },
         {
@@ -386,7 +386,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Stewardship Assessment",
-          "text": "{red|**Reflect on how biblical stewardship principles apply to your financial life.**\n\nDo you truly think of your money as God's, entrusted to you to manage?}{red| How central is generosity in your financial priorities?}{red| Where does financial anxiety have a grip on you?}{red| What would change if you fully embraced stewardship thinking?}\n\nWrite your reflection:",
+          "text": "**Reflect on how biblical stewardship principles apply to your financial life.**\n\nDo you truly think of your money as God's, entrusted to you to manage? How central is generosity in your financial priorities? Where does financial anxiety have a grip on you? What would change if you fully embraced stewardship thinking?\n\nWrite your reflection:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -395,7 +395,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Practicing Stewardship",
-          "text": "{red|**This week, practice thinking like a steward rather than an owner.**\n\nWhen making financial decisions, ask what would the Owner want done with this resource?}\n\n{red|**Discuss with your spouse what generosity priority you want to commit to.** What percentage or amount will you give first, before other allocations?}\n\n**When financial anxiety rises, pause and remember who the true Owner and Provider is.** Release the outcome to Him while committing to faithful management.\n\n**Stewardship is not just a concept.** It is a daily practice that transforms your relationship with money.",
+          "text": "**This week, practice thinking like a steward rather than an owner.**\n\nWhen making financial decisions, ask what would the Owner want done with this resource?\n\n**Discuss with your spouse what generosity priority you want to commit to.** What percentage or amount will you give first, before other allocations?\n\n**When financial anxiety rises, pause and remember who the true Owner and Provider is.** Release the outcome to Him while committing to faithful management.\n\n**Stewardship is not just a concept.** It is a daily practice that transforms your relationship with money.",
           "icon": "directions_walk"
         }
       ]
@@ -447,7 +447,7 @@
           "cardType": "teaching",
           "cardNumber": 4,
           "title": "Personal Spending Freedom",
-          "text": "{red|**One of the most important elements of a workable budget is personal spending money that each spouse can use without discussion or justification.**\n\n**This might be called fun money, personal allowance, or whatever term works for you.** The amount depends on your budget, but even a small amount provides important freedom.\n\n**Personal spending money eliminates constant small negotiations.** Instead of discussing every purchase, each person has a pool they can use as they wish. Want to buy lunch out?}{red| Use your personal money. Want a new book or gadget?} Personal money.\n\n**This preserves autonomy within the partnership.** Neither spouse has to ask permission for every small want. Neither has to justify personal preferences to the other.\n\n**The amount should be equal or equitable for both spouses.** One person having generous personal spending while the other has nothing creates resentment.",
+          "text": "**One of the most important elements of a workable budget is personal spending money that each spouse can use without discussion or justification.**\n\n**This might be called fun money, personal allowance, or whatever term works for you.** The amount depends on your budget, but even a small amount provides important freedom.\n\n**Personal spending money eliminates constant small negotiations.** Instead of discussing every purchase, each person has a pool they can use as they wish. Want to buy lunch out? Use your personal money. Want a new book or gadget? Personal money.\n\n**This preserves autonomy within the partnership.** Neither spouse has to ask permission for every small want. Neither has to justify personal preferences to the other.\n\n**The amount should be equal or equitable for both spouses.** One person having generous personal spending while the other has nothing creates resentment.",
           "icon": "account_balance_wallet"
         },
         {
@@ -491,7 +491,7 @@
           "cardType": "teaching",
           "cardNumber": 1,
           "title": "The Weight of Debt",
-          "text": "**Debt is not just a financial problem.** It is a relational problem. Debt creates stress that spills into every area of marriage.\n\n**Debt limits choices.** When you owe money, a portion of your income is already spoken for before you can decide how to use it. Career changes, giving opportunities, and life decisions are all constrained by debt obligations.\n\n**Debt creates conflict.** Financial stress is one of the leading causes of marital conflict, and debt amplifies that stress significantly.\n\n**Debt steals from the future.** Money paid to interest is money that cannot build your life, provide security, or serve your vision.\n\n**'The borrower is slave to the lender.**' (({red|Proverbs 22:7}))\n\n**Getting out of debt is one of the most significant things you can do for your marriage.** It removes a chronic stressor and opens options that debt forecloses.",
+          "text": "**Debt is not just a financial problem.** It is a relational problem. Debt creates stress that spills into every area of marriage.\n\n**Debt limits choices.** When you owe money, a portion of your income is already spoken for before you can decide how to use it. Career changes, giving opportunities, and life decisions are all constrained by debt obligations.\n\n**Debt creates conflict.** Financial stress is one of the leading causes of marital conflict, and debt amplifies that stress significantly.\n\n**Debt steals from the future.** Money paid to interest is money that cannot build your life, provide security, or serve your vision.\n\n**'The borrower is slave to the lender.**' (Proverbs 22:7)\n\n**Getting out of debt is one of the most significant things you can do for your marriage.** It removes a chronic stressor and opens options that debt forecloses.",
           "icon": "trending_down"
         },
         {
@@ -523,7 +523,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Debt and Savings Assessment",
-          "text": "{red|**Honestly assess your current debt and savings situation.**\n\n**List all debts with balances and interest rates.** Calculate your total debt.\n\n**List all savings accounts and balances.** Calculate your total savings.\n\nHow do these numbers make you feel?}{red| What would change if you were debt free with solid savings?}\n\nWrite your honest assessment:",
+          "text": "**Honestly assess your current debt and savings situation.**\n\n**List all debts with balances and interest rates.** Calculate your total debt.\n\n**List all savings accounts and balances.** Calculate your total savings.\n\nHow do these numbers make you feel? What would change if you were debt free with solid savings?\n\nWrite your honest assessment:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -577,7 +577,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Joint Decision Framework",
-          "text": "{red|**For decisions above your threshold, you need a framework for how you will decide together.**\n\n**Discussion first means neither spouse commits to a purchase until you have talked about it.** No surprising each other with major purchases.\n\n**Both voices matter means the decision incorporates both perspectives.** One person does not simply overrule the other.\n\n**Disagreement protocol clarifies what happens when you cannot agree.** Do you wait until you reach consensus?}{red| Does one person have final say in certain categories?}{red| Do you have a cooling off period before deciding?}\n\n**No end runs means neither spouse manipulates the process by committing to something and then claiming it is too late to undo.**\n\n**Clarity on these processes prevents the feeling of being steamrolled or ignored that makes financial conflicts so painful.**",
+          "text": "**For decisions above your threshold, you need a framework for how you will decide together.**\n\n**Discussion first means neither spouse commits to a purchase until you have talked about it.** No surprising each other with major purchases.\n\n**Both voices matter means the decision incorporates both perspectives.** One person does not simply overrule the other.\n\n**Disagreement protocol clarifies what happens when you cannot agree.** Do you wait until you reach consensus? Does one person have final say in certain categories? Do you have a cooling off period before deciding?\n\n**No end runs means neither spouse manipulates the process by committing to something and then claiming it is too late to undo.**\n\n**Clarity on these processes prevents the feeling of being steamrolled or ignored that makes financial conflicts so painful.**",
           "icon": "handshake"
         },
         {
@@ -585,7 +585,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Current Process",
-          "text": "{red|**Reflect on how financial decisions currently happen in your marriage.**\n\nDo you have a clear spending threshold?}{red| Does each spouse feel respected in how decisions are made?}{red| Are there recent conflicts that stemmed from process issues rather than the purchase itself?}{red| What needs to change about how you make financial decisions together?}\n\nWrite your reflection:",
+          "text": "**Reflect on how financial decisions currently happen in your marriage.**\n\nDo you have a clear spending threshold? Does each spouse feel respected in how decisions are made? Are there recent conflicts that stemmed from process issues rather than the purchase itself? What needs to change about how you make financial decisions together?\n\nWrite your reflection:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -647,7 +647,7 @@
           "cardType": "teaching",
           "cardNumber": 3,
           "title": "Listening to Understand",
-          "text": "{red|**In financial conversations, truly listening to your spouse is more powerful than having the right answer.**\n\n**\"My dear brothers and sisters, take note of this: Everyone should be quick to listen, slow to speak and slow to become angry\" ({red|James 1:19|My dear brothers and sisters, take note of this: Everyone should be quick to listen, slow to speak and slow to become angry}).** This wisdom applies powerfully to money conversations.\n\n**Seek to understand before being understood.** Before advocating for your position, make sure you fully understand theirs. Ask questions. Reflect back what you hear.\n\n**Validate their perspective even when you disagree.** I understand why that is important to you does not mean you agree. It means you acknowledge their viewpoint as legitimate.\n\n**Look beneath the surface.** Remember that money arguments are rarely just about money. What underlying concern or value is your spouse expressing?}\n\n**Avoid preparing your rebuttal while they are talking.** If you are formulating your response, you are not truly listening.\n\n**When your spouse feels genuinely heard, their defensiveness drops and productive problem solving becomes possible.**",
+          "text": "**In financial conversations, truly listening to your spouse is more powerful than having the right answer.**\n\n**\"My dear brothers and sisters, take note of this: Everyone should be quick to listen, slow to speak and slow to become angry\" (James 1:19|My dear brothers and sisters, take note of this: Everyone should be quick to listen, slow to speak and slow to become angry).** This wisdom applies powerfully to money conversations.\n\n**Seek to understand before being understood.** Before advocating for your position, make sure you fully understand theirs. Ask questions. Reflect back what you hear.\n\n**Validate their perspective even when you disagree.** I understand why that is important to you does not mean you agree. It means you acknowledge their viewpoint as legitimate.\n\n**Look beneath the surface.** Remember that money arguments are rarely just about money. What underlying concern or value is your spouse expressing?\n\n**Avoid preparing your rebuttal while they are talking.** If you are formulating your response, you are not truly listening.\n\n**When your spouse feels genuinely heard, their defensiveness drops and productive problem solving becomes possible.**",
           "icon": "hearing"
         },
         {
@@ -663,7 +663,7 @@
           "cardType": "reflection",
           "cardNumber": 5,
           "title": "Your Financial Communication Patterns",
-          "text": "{red|**Reflect honestly on how financial communication typically goes in your marriage.**\n\nWhich negative patterns do you fall into?}{red| Criticism, defensiveness, contempt, or stonewalling?}{red| How well do you listen to understand rather than to respond?}{red| Do your money conversations typically end with both people feeling heard, or does one person usually feel steamrolled?}\n\n{red|What needs to change about how you communicate about money?}\n\nWrite your reflection:",
+          "text": "**Reflect honestly on how financial communication typically goes in your marriage.**\n\nWhich negative patterns do you fall into? Criticism, defensiveness, contempt, or stonewalling? How well do you listen to understand rather than to respond? Do your money conversations typically end with both people feeling heard, or does one person usually feel steamrolled?\n\nWhat needs to change about how you communicate about money?\n\nWrite your reflection:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -672,7 +672,7 @@
           "cardType": "action",
           "cardNumber": 6,
           "title": "Practicing Better Communication",
-          "text": "{red|**This week, practice healthier financial communication.**\n\n**If you need to discuss a financial concern, plan how you will start softly.** Write out your opening if that helps.\n\n**In your next money conversation, consciously focus on listening to understand before advocating your position.** Ask questions and reflect back what you hear.\n\n**If you notice the conversation escalating, call a timeout.** It is okay to pause and resume when you are both calmer.\n\n**Afterward, evaluate how it went.** What worked well?}{red| What would you do differently?}\n\n**Better communication about money is a skill that improves with practice.**",
+          "text": "**This week, practice healthier financial communication.**\n\n**If you need to discuss a financial concern, plan how you will start softly.** Write out your opening if that helps.\n\n**In your next money conversation, consciously focus on listening to understand before advocating your position.** Ask questions and reflect back what you hear.\n\n**If you notice the conversation escalating, call a timeout.** It is okay to pause and resume when you are both calmer.\n\n**Afterward, evaluate how it went.** What worked well? What would you do differently?\n\n**Better communication about money is a skill that improves with practice.**",
           "icon": "directions_walk"
         }
       ]
@@ -716,7 +716,7 @@
           "cardType": "reflection",
           "cardNumber": 3,
           "title": "Your Greatest Insight",
-          "text": "{red|What is the most important thing you learned about money and marriage through this journey?}\n\n{red|What do you want to remember when financial stress rises or conflicts emerge?}{red| What has shifted in how you understand your spouse's relationship with money?}\n\nWrite your greatest insight:",
+          "text": "What is the most important thing you learned about money and marriage through this journey?\n\nWhat do you want to remember when financial stress rises or conflicts emerge? What has shifted in how you understand your spouse's relationship with money?\n\nWrite your greatest insight:",
           "responseType": "open-text",
           "icon": "lightbulb"
         },
@@ -725,7 +725,7 @@
           "cardType": "reflection",
           "cardNumber": 4,
           "title": "Your Financial Partnership Goals",
-          "text": "{red|Based on this journey, what specific goals do you have for your financial partnership?}\n\n{red|**Consider goals for debt reduction, savings growth, generosity levels, communication practices, and overall financial health.**\n\nWhat do you want your financial situation to look like one year from now?}{red| Five years from now?}\n\nWrite your goals:",
+          "text": "Based on this journey, what specific goals do you have for your financial partnership?\n\n**Consider goals for debt reduction, savings growth, generosity levels, communication practices, and overall financial health.**\n\nWhat do you want your financial situation to look like one year from now? Five years from now?\n\nWrite your goals:",
           "responseType": "open-text",
           "icon": "edit_note"
         },
@@ -734,7 +734,7 @@
           "cardType": "teaching",
           "cardNumber": 5,
           "title": "A Prayer for Your Finances",
-          "text": "**Father, thank You for everything You have entrusted to us.** Help us remember that it all belongs to You and we are stewards, not owners.\n\n**Give us wisdom to manage well what You provide.** Give us generosity to hold it loosely and give freely. Give us contentment to find satisfaction in You rather than in accumulation.\n\n**Protect our marriage from the conflicts that money can create.** Help us understand each other's stories and fears. Help us communicate with kindness and seek solutions that honor both of us.\n\n**May our financial life reflect Your values, serve Your purposes, and build the life You have for us together.**\n\nAmen.\n\n**'For where your treasure is, there your heart will be also.**' (({red|Matthew 6:21}))",
+          "text": "**Father, thank You for everything You have entrusted to us.** Help us remember that it all belongs to You and we are stewards, not owners.\n\n**Give us wisdom to manage well what You provide.** Give us generosity to hold it loosely and give freely. Give us contentment to find satisfaction in You rather than in accumulation.\n\n**Protect our marriage from the conflicts that money can create.** Help us understand each other's stories and fears. Help us communicate with kindness and seek solutions that honor both of us.\n\n**May our financial life reflect Your values, serve Your purposes, and build the life You have for us together.**\n\nAmen.\n\n**'For where your treasure is, there your heart will be also.**' (Matthew 6:21)",
           "icon": "volunteer_activism"
         },
         {

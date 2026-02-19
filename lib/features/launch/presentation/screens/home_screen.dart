@@ -144,7 +144,8 @@ class HomeScreen extends ConsumerWidget {
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.fromLTRB(20, 16, 20, 220 + bottomInset),
+        padding: EdgeInsets.fromLTRB(20, 16, 20, 80 + bottomInset),
+        physics: const ClampingScrollPhysics(),
         children: [
           // Greeting Header
           if (isGuest)
@@ -300,8 +301,19 @@ class HomeScreen extends ConsumerWidget {
                   const SizedBox(height: 16),
                   _MarriageCoachCard(
                     onTap: () {
-                      ref.read(selectedTabProvider.notifier).state =
-                          NavTab.counselling;
+                      // If counselling tab is visible for the user's status, switch tab.
+                      // Otherwise navigate directly to the booking screen.
+                      if (NavConfig.isTabVisible(
+                        NavTab.counselling,
+                        effectiveStatus,
+                      )) {
+                        ref.read(selectedTabProvider.notifier).state =
+                            NavTab.counselling;
+                      } else {
+                        Navigator.of(
+                          context,
+                        ).pushNamed(AppNavRoutes.bookMarriageCoach);
+                      }
                     },
                   ),
                   const SizedBox(height: 16),

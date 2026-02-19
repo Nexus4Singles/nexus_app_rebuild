@@ -178,13 +178,18 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
         final ok = await _isHumanPhoto(img.path);
         if (!ok) {
           HapticFeedback.mediumImpact();
-          _toast('Skipped ${img.name}: Please upload photos with human faces.');
+          _toast(
+            "We couldn't detect a human face in that photo. Please upload a clear photo of yourself (good lighting, face visible).",
+          );
           continue;
         }
 
         setState(() {
           _photoPaths.add(img.path);
         });
+
+        // Show success message for accepted photo
+        _toast('✅ Photo added successfully!');
       }
 
       // Auto-save on photo add
@@ -250,19 +255,37 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
             localPath: path,
             objectKey: key,
           );
+          if (publicUrl.isEmpty) {
+            _toast('Upload returned empty URL for photo ${i + 1}');
+            setState(() => _busy = false);
+            return;
+          }
           uploadedUrls.add(publicUrl);
-          print('[PHOTOS] Uploaded photo ${i + 1}: $publicUrl');
+          print(
+            '[PHOTOS] ✅ Uploaded photo ${i + 1}/$_photoPaths.length: $publicUrl',
+          );
         } catch (e) {
+          print('[PHOTOS] ❌ Upload failed for photo ${i + 1}: $e');
           _toast('Failed to upload photo ${i + 1}: $e');
           setState(() => _busy = false);
           return;
         }
       }
 
+      print(
+        '[PHOTOS] All uploads complete. Saving ${uploadedUrls.length} URLs to draft...',
+      );
       // Save uploaded photo URLs to the draft
       ref
           .read(datingOnboardingDraftProvider.notifier)
           .setPhotoUrls(uploadedUrls);
+
+      // Verify URLs were saved
+      final updatedDraft = ref.read(datingOnboardingDraftProvider);
+      print(
+        '[PHOTOS] Draft updated - photoUrls count: ${updatedDraft.photoUrls.length}',
+      );
+      print('[PHOTOS] Draft photoUrls: ${updatedDraft.photoUrls}');
 
       if (!context.mounted) return;
       Navigator.of(context).pushNamed('/dating/setup/audio');
@@ -273,6 +296,8 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
   }
 
   void _toast(String msg) {
+    // Clear any existing snackbar before showing new one
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 }

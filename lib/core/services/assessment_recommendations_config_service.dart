@@ -108,12 +108,11 @@ class AssessmentRecommendationsConfigService {
         final parts = journeyId.split('_');
         final typePart = parts.first; // e.g., "married"
 
-        // Try numbered files like married_journey_01_restoring_friendship.json with optional _FLAGSHIP_POLISHED_FINAL suffix
+        // Try numbered files like married_journey_01_restoring_friendship.json
         for (int i = 1; i <= 30; i++) {
           final numberedId =
               '${typePart}_journey_${i.toString().padLeft(2, '0')}_${parts.skip(1).join('_')}';
 
-          // Try without suffix first
           path = '$folderPath/$numberedId.json';
 
           try {
@@ -131,25 +130,7 @@ class AssessmentRecommendationsConfigService {
             );
             return subtitle;
           } catch (e2) {
-            // Try with _FLAGSHIP_POLISHED_FINAL suffix (for newer json files)
-            path = '$folderPath/${numberedId}_FLAGSHIP_POLISHED_FINAL.json';
-            try {
-              final journeyJson = await rootBundle
-                  .loadString(path)
-                  .timeout(
-                    const Duration(seconds: 1),
-                    onTimeout: () => throw TimeoutException('Loading $path'),
-                  );
-              final data = jsonDecode(journeyJson) as Map<String, dynamic>;
-              final subtitle = (data['subtitle'] as String?) ?? '';
-              _journeySubtitleCache[journeyId] = subtitle;
-              print(
-                '[ConfigService] ✓ Loaded subtitle from numbered file with suffix ($numberedId + _FLAGSHIP_POLISHED_FINAL): "${subtitle.isEmpty ? '(empty)' : subtitle.substring(0, min(50, subtitle.length))}"',
-              );
-              return subtitle;
-            } catch (e3) {
-              // Continue to next number
-            }
+            // Continue to next number
           }
         }
 

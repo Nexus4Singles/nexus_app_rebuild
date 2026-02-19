@@ -17,6 +17,8 @@ import '../domain/dating_preferences.dart';
 import 'dating_preferences_provider.dart';
 import 'dating_dismissed_profiles_provider.dart';
 import '../domain/enhanced_compatibility_scorer.dart';
+import 'package:nexus_app_v2/core/session/effective_relationship_status_provider.dart';
+import 'package:nexus_app_v2/core/constants/app_constants.dart';
 
 // ============================================================================
 // IMAGE CACHE INVALIDATION
@@ -473,6 +475,63 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
 
   if (kDebugMode) {
     // ignore: avoid_print
+  }
+
+  // Prioritize by relationship status for widows/divorcees when user has no marital filter
+  try {
+    final userRel = ref.read(effectiveRelationshipStatusProvider);
+    if (results.items.isNotEmpty && filters.maritalStatus == null) {
+      String? desired;
+      if (userRel == RelationshipStatus.widowed) desired = 'widowed';
+      if (userRel == RelationshipStatus.divorced) desired = 'divorced';
+
+      if (desired != null) {
+        final matching = results.items
+            .where((p) => (p.maritalStatus ?? '').toLowerCase() == desired)
+            .toList();
+        final others = results.items
+            .where((p) => (p.maritalStatus ?? '').toLowerCase() != desired)
+            .toList();
+
+        if (matching.isNotEmpty) {
+          results = DatingSearchResult(
+            items: [...matching, ...others],
+            emptyHint: results.emptyHint,
+          );
+          print('[DatingSearchResultsProvider] Prioritized by relationship: ${matching.length} $desired profiles first');
+        }
+      }
+    }
+  } catch (_) {
+    // If relationship provider not available or error occurs, skip prioritization
+  }
+
+  // Prioritize local profiles when user has no country preference
+  // Free users see local profiles first, then international (maintains 10/day limit across both)
+  if (results.items.isNotEmpty &&
+      preferences?.countryOfResidence != null &&
+      filters.countryOfResidence == null) {
+    final userCountry = preferences!.countryOfResidence!;
+
+    // Partition: local profiles first, international second
+    final localProfiles = results.items
+        .where((p) => p.country == userCountry)
+        .toList();
+    final internationalProfiles = results.items
+        .where((p) => p.country != userCountry)
+        .toList();
+
+    if (localProfiles.isNotEmpty || internationalProfiles.isNotEmpty) {
+      // Combine with local first, preserving sort order within each group
+      final prioritizedItems = [...localProfiles, ...internationalProfiles];
+      results = DatingSearchResult(
+        items: prioritizedItems,
+        emptyHint: results.emptyHint,
+      );
+      print(
+        '[DatingSearchResultsProvider] Prioritized by location: ${localProfiles.length} local ($userCountry), ${internationalProfiles.length} international',
+      );
+    }
   }
 
   // Check if user is premium

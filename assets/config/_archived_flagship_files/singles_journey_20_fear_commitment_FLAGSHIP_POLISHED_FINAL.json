@@ -1,0 +1,1006 @@
+{
+  "journeyId": "singles_fear_commitment",
+  "title": "Overcoming Fear of Commitment",
+  "subtitle": "Breaking free from patterns that sabotage relationships",
+  "summary": "Some people want marriage but find themselves unable to move toward it. They date, feel connection, and then pull away. They find fatal flaws in every partner. They keep one foot out the door. If you recognize these patterns, this journey is for you. We'll explore the roots of commitment fear, understand the self-protective mechanisms at work, and build the capacity to move toward lasting love.",
+  "targetUserCategory": "singles",
+  "priorityRank": 20,
+  "estimatedDays": 14,
+  "totalActivities": 11,
+  "difficulty": "advanced",
+  "themeColor": "#3498DB",
+  "cover": {
+    "themeTag": "Freedom",
+    "accentIcon": "lock_open",
+    "heroImage": "assets/images/journeys/Singles_journey20.jpg",
+    "heroImageDescription": "A person stepping through an open doorway into light, representing freedom from fear and movement toward commitment."
+  },
+  "frameworks": [
+    "attachment_theory",
+    "self_sabotage_patterns",
+    "fear_processing",
+    "commitment_capacity"
+  ],
+  "targetOutcomes": [
+    "Understand the roots of your commitment fear",
+    "Recognize your specific self-sabotage patterns",
+    "Process the wounds that drive avoidance",
+    "Develop healthier responses to intimacy anxiety",
+    "Build capacity for sustained commitment",
+    "Move toward relationship with confidence"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_recognizing_patterns",
+      "isFree": true,
+      "title": "Recognizing the Pattern",
+      "subtitle": "Identifying commitment avoidance in yourself",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "pattern",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "The first step to change is recognizing the pattern. Many people who fear commitment don't realize it, they think they just haven't found 'the right person.' Understanding your patterns opens the door to transformation.",
+      "frameworkBasis": {
+        "conceptKey": "pattern_recognition",
+        "explanation": "Self-sabotage operates unconsciously. Awareness is the first step toward choice."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "question",
+          "cardNumber": 1,
+          "title": "Your Relationship History",
+          "text": "Fear of commitment rarely means you do not want closeness.\nIt usually means part of you is afraid of what closeness might demand, expose, or repeat.\n\nIf you have ever wanted connection and escape at the same time, pause here.\nThis journey is not about forcing yourself to commit, but about understanding what your fear has been protecting.\n\nThink about your dating history. Which patterns have you noticed?",
+          "prompts": [
+            "I pull away when relationships get serious",
+            "I find deal-breaking flaws in everyone",
+            "I'm attracted to unavailable people",
+            "I end things before they can end me",
+            "I'm paralyzed by the decision",
+            "Others say I self-sabotage"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These patterns point to underlying fears about commitment. You're not alone, and these can change."
+          },
+          "icon": "history"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Commitment Fear Looks Like",
+          "text": "Commitment fear manifests as:\n\n• **The Exit Finder**: Always looking for reasons to leave\n• **The Perfectionist**: No one is ever good enough\n• **The Unavailable Lover**: Only attracted to people who can't commit\n• **The Panic Retreater**: Feels trapped when things get serious\n• **The Future Avoider**: Can't discuss long-term plans",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Primary Pattern",
+          "text": "Which commitment avoidance style resonates most?",
+          "prompts": [
+            "The Exit Finder - always looking for problems",
+            "The Perfectionist - no one measures up",
+            "The Unavailable Lover - drawn to unavailable people",
+            "The Panic Retreater - feel trapped by closeness",
+            "The Future Avoider - can't think long-term"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Naming your pattern moves you from 'this is just how I am' to 'this is something I can change.'"
+          },
+          "icon": "fingerprint"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Purpose of the Pattern",
+          "text": "Your commitment avoidance isn't random, it's protective.\n\nAt some point, your mind learned that intimacy equals danger. The avoidance pattern attempts to protect you from pain.\n\nThe pattern isn't your enemy. It's a misguided protector that needs updating.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "The Cost of Avoidance",
+          "text": "Consider what your commitment fear has cost you:\n\n• Relationships that could have flourished\n• Years of connection you've missed\n• The deep partnership you long for\n\nThe protection has become its own prison. The wall that keeps out pain also keeps out love.",
+          "icon": "heart_broken",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Naming Your Pattern",
+          "text": "Write honestly about your commitment avoidance:\n\nMy pattern looks like:\n\nHow long this has been happening:\n\nWhat it has cost me:\n\nWhy I want to change:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_roots_fear",
+      "isFree": false,
+      "title": "The Roots of Your Fear",
+      "subtitle": "Understanding where commitment fear comes from",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "park",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Commitment fear grows from experiences where intimacy was paired with pain. Understanding your roots enables healing.",
+      "frameworkBasis": {
+        "conceptKey": "origin_wounds",
+        "explanation": "Present patterns trace to past experiences where closeness led to hurt."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Common Roots of Commitment Fear",
+          "text": "Commitment fear often grows from:\n\n**Family of Origin**:\n• Parents who divorced or had troubled marriage\n• Abandonment by a parent\n• Emotional unavailability from caregivers\n\n**Past Relationships**:\n• Betrayal or infidelity\n• Painful breakup\n• Emotional abuse",
+          "icon": "account_tree"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Family's Relationship Legacy",
+          "text": "{red|What did you learn about committed relationships from your family?}",
+          "prompts": [
+            "Commitment leads to pain",
+            "People who love you leave",
+            "Closeness means losing yourself",
+            "Love isn't safe",
+            "I never saw a healthy model",
+            "My family modeled healthy commitment"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These early lessons became unconscious beliefs that now drive your behavior."
+          },
+          "icon": "family_restroom"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Past Relationship Wounds",
+          "text": "{red|Have any of these happened in your past relationships?}",
+          "prompts": [
+            "I was cheated on or betrayed",
+            "I was left without warning",
+            "I lost myself in a relationship",
+            "I was controlled or manipulated",
+            "A relationship ended in devastating pain"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These experiences taught your nervous system that intimacy is dangerous. That lesson needs updating."
+          },
+          "icon": "heart_broken"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Brain's Protective Response",
+          "text": "Your brain learned: intimacy → pain.\n\nNow, when a relationship gets close, your brain signals danger. The anxiety isn't about this person, it's about what your brain associates with commitment.\n\nYour alarm system is responding to old threats, not current reality.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Connecting Past to Present",
+          "text": "The person who hurt you is not everyone. The marriage you witnessed is not all marriages. The abandonment you experienced was about them, not your worth.\n\nYour past explains your pattern, but it doesn't have to dictate your future.",
+          "icon": "link",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Tracing Your Roots",
+          "text": "Connect your pattern to its origins:\n\nExperiences that taught me intimacy is dangerous:\n\nBeliefs I developed:\n\nHow these affect my relationships today:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_attachment_style",
+      "isFree": false,
+      "title": "Understanding Your Attachment Style",
+      "subtitle": "How early relationships shape adult patterns",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "link",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Attachment theory explains why we relate to partners the way we do. Understanding your style illuminates your commitment struggles.",
+      "frameworkBasis": {
+        "conceptKey": "attachment_theory",
+        "explanation": "Our earliest relationships create templates for how we expect intimacy to work."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Four Attachment Styles",
+          "text": "**Secure**: Comfortable with intimacy and independence\n\n**Anxious**: Craves closeness, fears abandonment\n\n**Avoidant**: Values independence, uncomfortable with closeness\n\n**Disorganized**: Wants closeness but finds it frightening\n\nCommitment fear often indicates avoidant attachment.",
+          "icon": "hub"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Avoidant Pattern",
+          "text": "Avoidant attachment develops when caregivers were emotionally unavailable. The child learns: 'I can only depend on myself.'\n\nIn adult relationships, avoidants:\n• Feel uncomfortable with closeness\n• Pull away when partners want more\n• Find flaws to justify distance\n• Feel 'trapped' by commitment",
+          "icon": "person_off"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Identifying Your Style",
+          "text": "Which statements resonate with you?",
+          "prompts": [
+            "I feel smothered when people want closeness",
+            "I prefer to handle things myself",
+            "Partners often want more than I can give",
+            "I feel relief when relationships end",
+            "Deep intimacy makes me anxious"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These are markers of avoidant attachment. Understanding this is key to changing it."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Good News",
+          "text": "Attachment styles are NOT permanent. They were learned and can be updated.\n\nResearch shows:\n• Self-awareness enables change\n• Therapy can rewire attachment patterns\n• Healthy relationships create 'earned secure' attachment\n\nYour attachment style is your starting point, not your destiny.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Moving Toward Security",
+          "text": "Building secure attachment involves:\n\n• Recognizing avoidant impulses without acting on them\n• Practicing staying present when you want to flee\n• Working with a therapist on attachment wounds\n• Choosing secure partners and learning from them",
+          "icon": "trending_flat"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Attachment Awareness",
+          "text": "Reflect on your attachment:\n\nMy attachment style seems to be:\n\nHow this shows up in relationships:\n\nOne way I want to grow toward security:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_specific_fears",
+      "isFree": false,
+      "title": "Naming Your Specific Fears",
+      "subtitle": "What exactly are you afraid of?",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "visibility",
+      "emotionalIntensity": "high",
+      "activityType": "exercise",
+      "whyThisMatters": "Generic 'fear of commitment' is too vague. What specifically terrifies you? Naming your precise fears enables you to address them.",
+      "frameworkBasis": {
+        "conceptKey": "fear_specificity",
+        "explanation": "Vague fears are impossible to challenge. Specific fears can be examined."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "question",
+          "cardNumber": 1,
+          "title": "Your Core Fears",
+          "text": "{red|What specifically frightens you about lifelong commitment?}",
+          "prompts": [
+            "Losing my freedom",
+            "Making the wrong choice",
+            "Being trapped",
+            "Getting hurt again",
+            "Losing myself",
+            "Being truly known and rejected"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These specific fears are operating beneath your avoidance. Now we can examine them."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Fear of Losing Freedom",
+          "text": "Many fear losing their independence, interests, identity.\n\nThe truth: Healthy marriage doesn't erase individuality. Two whole people join; they don't dissolve.\n\nThe question: Is this fear based on reality, or on unhealthy marriages you witnessed?",
+          "icon": "lock_open"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Fear of Choosing Wrong",
+          "text": "The paralysis of 'what if there's someone better?' keeps many single.\n\nThe truth: No one is perfect. Every choice closes options. But refusing to choose guarantees loneliness.\n\n{red|Is your standard 'good enough for healthy marriage' or 'perfect enough for zero risk'?}",
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "The Fear of Being Known",
+          "text": "Perhaps deepest: 'If they really knew me, they'd leave.'\n\nThis keeps intimacy at surface level. If they leave, at least they didn't reject the 'real' you.\n\nThe truth: You cannot be loved fully without being known fully. The risk is real, but so is the reward.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Primary Fear",
+          "text": "Your single biggest fear about commitment?",
+          "prompts": [
+            "Losing my identity/freedom",
+            "Choosing the wrong person",
+            "Being trapped forever",
+            "Getting hurt again",
+            "Being truly seen and rejected",
+            "Missing out on other possibilities"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "This core fear is driving your avoidance. Addressing it directly is key to freedom."
+          },
+          "icon": "priority_high"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Examining Your Fear",
+          "text": "Examine your primary fear:\n\nMy biggest fear is:\n\nWhere this came from:\n\n{red|Is this fear based on reality or past experience?}\n\n{red|What would be true if this fear wasn't controlling me?}",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_sabotage_mechanisms",
+      "isFree": false,
+      "title": "How You Sabotage Relationships",
+      "subtitle": "Recognizing your avoidance tactics",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "warning",
+      "emotionalIntensity": "moderate",
+      "activityType": "exercise",
+      "whyThisMatters": "Self-sabotage operates on autopilot. Identifying your tactics allows you to catch them and make different choices.",
+      "frameworkBasis": {
+        "conceptKey": "sabotage_awareness",
+        "explanation": "Unconscious patterns only change when made conscious."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Common Sabotage Tactics",
+          "text": "People avoid commitment through:\n\n**Fault-finding**: Magnifying flaws into dealbreakers\n**Comparison**: Wondering if someone better exists\n**Distancing**: Pulling back when close\n**Picking fights**: Creating conflict for distance\n**Ghosting**: Exiting before things get serious",
+          "icon": "list"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Sabotage Tactics",
+          "text": "Which have you used?",
+          "prompts": [
+            "Finding fatal flaws in partners",
+            "Comparing them to ideals",
+            "Pulling away when close",
+            "Starting fights for distance",
+            "Avoiding future conversations",
+            "Ending things preemptively"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These are learned behaviors that can be unlearned."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Fault-Finding Mechanism",
+          "text": "How it works:\n\n1. Relationship progresses, intimacy increases\n2. Anxiety rises (closeness = danger)\n3. Brain searches for exit ramp\n4. Small flaw gets magnified\n5. Flaw becomes reason to leave\n6. Relief! Danger avoided.\n\nThe flaw is real, but it's the excuse, not the real reason.",
+          "icon": "search"
+        },
+        {
+          "cardId": "cX",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "The Pattern Mirror",
+          "text": "Think back to the last few relationships or situations where closeness began to increase.\n\nWrite down the moment you felt the urge to pull away, lose interest, or create distance.\n\n{red|What story did you tell yourself in that moment?}\n{red|What were you afraid would happen if you stayed present?}\n\nDo not judge your answer.\nThis exercise is about clarity, not self-criticism.",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Distancing Dance",
+          "text": "Avoidants create distance when close:\n\n• Becoming critical or cold\n• Working more, being less available\n• Picking fights about minor issues\n• Withdrawing affection\n\nThis isn't conscious cruelty, it's automatic protection. But it destroys relationships.",
+          "icon": "social_distance"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 6,
+          "title": "Recognizing the Trigger",
+          "text": "{red|When do your sabotage behaviors emerge?}",
+          "prompts": [
+            "After meeting their family",
+            "When talking about the future",
+            "When they express deep love",
+            "When considering engagement",
+            "When the relationship feels 'too good'"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These triggers reveal when your protective mechanisms activate."
+          },
+          "icon": "bolt"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 7,
+          "title": "Mapping Your Sabotage",
+          "text": "Document your pattern:\n\nMy primary tactics:\n\nWhen they emerge:\n\nWhat I tell myself to justify it:\n\nWhat's really happening underneath:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_anxiety_management",
+      "isFree": false,
+      "title": "Managing Intimacy Anxiety",
+      "subtitle": "Staying present when fear arises",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "You can't eliminate intimacy anxiety, but you can learn to manage it without sabotaging relationships.",
+      "frameworkBasis": {
+        "conceptKey": "anxiety_tolerance",
+        "explanation": "The goal isn't eliminating anxiety but acting wisely despite it."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Anxiety Response",
+          "text": "When intimacy increases, you may feel:\n\n• Tightness in chest or stomach\n• Urge to flee or create distance\n• Sudden doubts about the relationship\n• Fantasy about other options\n\nThese are anxiety symptoms, not reliable relationship information.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Anxiety vs. Discernment",
+          "text": "Critical question:\n\n**Anxiety**: Activated by closeness itself, regardless of partner quality\n\n**Discernment**: Response to actual red flags\n\nTest: Does this feeling arise with every relationship once it gets serious? If yes, it's your pattern, not this partner.",
+          "icon": "compare"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The STOP Technique",
+          "text": "When anxiety hits:\n\n**S**top, Don't act on the impulse\n**T**ake a breath, Calm your nervous system\n**O**bserve, 'This is my avoidant pattern'\n**P**roceed wisely, Choose rather than react\n\nThis creates space between stimulus and response.",
+          "icon": "pan_tool"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Surfing the Anxiety",
+          "text": "Anxiety is like a wave, it rises, peaks, and falls.\n\n• Notice it without judgment\n• Remind yourself: 'This is my pattern, not truth'\n• Let the feeling exist without acting\n• Wait for the wave to pass\n\nThe urge to flee feels urgent. But you can wait it out.",
+          "icon": "waves"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Anxiety Signals",
+          "text": "{red|How do you experience intimacy anxiety?}",
+          "prompts": [
+            "Physical sensations",
+            "Critical thoughts about partner",
+            "Urge to be alone",
+            "Fantasies about being single",
+            "Wanting to run away"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Knowing your signals helps you recognize the pattern in real-time."
+          },
+          "icon": "notifications_active"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Anxiety Plan",
+          "text": "Create your plan:\n\nHow I'll recognize it:\n\nWhat I'll tell myself:\n\nWhat I'll do instead of fleeing:\n\nWho I'll reach out to:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_rewriting_beliefs",
+      "isFree": false,
+      "title": "Rewriting Your Core Beliefs",
+      "subtitle": "Challenging the lies that drive avoidance",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "edit_note",
+      "emotionalIntensity": "moderate",
+      "activityType": "exercise",
+      "whyThisMatters": "Beneath behaviors are beliefs. These can be examined and updated.",
+      "frameworkBasis": {
+        "conceptKey": "belief_restructuring",
+        "explanation": "We act according to what we believe. Changing beliefs changes behavior."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Beliefs That Drive Avoidance",
+          "text": "Commitment-avoidant people often believe:\n\n• 'If they knew me, they'd leave'\n• 'Commitment means losing myself'\n• 'I'm better off alone'\n• 'There's always someone better'\n\nThese feel like facts. They're conclusions from past pain.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Limiting Beliefs",
+          "text": "Which beliefs operate in you?",
+          "prompts": [
+            "Commitment means losing freedom",
+            "I'll end up hurt",
+            "I can only count on myself",
+            "There might be someone better",
+            "I don't deserve lasting love"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These beliefs can be examined and updated."
+          },
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Examining the Evidence",
+          "text": "Challenge beliefs by asking:\n\n• Is this actually true?\n• What evidence contradicts it?\n• Would I tell a friend this is fact?\n• Is this belief serving me?\n• What if I didn't believe this?",
+          "icon": "fact_check"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Biblical Truth",
+          "text": "Scripture offers different beliefs:\n\n• 'It is not good for man to be alone' (Genesis 2:18})\n• 'Two are better than one' ({red)\n• 'Perfect love casts out fear' ({red|1 John 4:18})\n\nCommitment is God's design, not a trap.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "New Beliefs to Practice",
+          "text": "Consider adopting:\n\n• 'Healthy intimacy enhances me'\n• 'Past pain doesn't predict future relationships'\n• 'I can be close AND maintain my identity'\n• 'Vulnerability is courage, not weakness'\n• 'I am capable of loving and being loved'",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Belief Transformation",
+          "text": "Replace a limiting belief:\n\nOld belief:\n\nWhere it came from:\n\nWhy it's not necessarily true:\n\nNew belief I'm choosing:",
+          "responseType": "open-text",
+          "icon": "swap_horiz"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_healing_wounds",
+      "isFree": false,
+      "title": "Healing the Underlying Wounds",
+      "subtitle": "Addressing the pain beneath the pattern",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "healing",
+      "emotionalIntensity": "high",
+      "activityType": "exercise",
+      "whyThisMatters": "Strategies help, but lasting freedom requires healing the wounds that created the fear. This may require professional support.",
+      "frameworkBasis": {
+        "conceptKey": "wound_healing",
+        "explanation": "Unhealed wounds drive protective patterns. Healing enables new responses."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Wounds That Need Healing",
+          "text": "Commitment fear often protects:\n\n• Abandonment wounds\n• Betrayal wounds\n• Loss-of-self wounds\n• Rejection wounds\n• Trauma wounds\n\nThe fear is a symptom. The wound is the cause.",
+          "icon": "healing"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "question",
+          "cardNumber": 2,
+          "title": "Your Wounds",
+          "text": "Which wounds might be driving your commitment fear?",
+          "prompts": [
+            "Abandonment by someone I loved",
+            "Betrayal in a past relationship",
+            "Losing myself in a relationship",
+            "Rejection when I was vulnerable",
+            "Witnessing destructive relationships",
+            "Other trauma affecting intimacy"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These wounds deserve attention and healing. You don't have to carry them forever."
+          },
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Healing Process",
+          "text": "Healing involves:\n\n1. **Acknowledging** the wound exists\n2. **Feeling** the pain rather than numbing\n3. **Processing** with safe people or professionals\n4. **Grieving** what was lost\n5. **Integrating** the experience\n6. **Choosing** new beliefs and behaviors",
+          "icon": "timeline"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "When Professional Help Is Needed",
+          "text": "Consider therapy if:\n\n• Your patterns have lasted years\n• You've tried to change but can't\n• There's significant trauma in your history\n• The wounds feel too big to process alone\n• You keep repeating the same cycle\n\nSeeking help is wisdom, not weakness.",
+          "icon": "support_agent"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "God's Healing",
+          "text": "\"He heals the brokenhearted and binds up their wounds.\" ({red|Psalm 147:3})\n\nGod doesn't just want you to manage your fear, He wants to heal the wound beneath it. Invite Him into these places.\n\nHealing is possible. Freedom is available.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Healing Steps",
+          "text": "Plan your healing journey:\n\nThe wound I most need to address:\n\nOne step I'll take toward healing:\n\nWho I'll process this with:\n\nWhat I'm asking God to do:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_building_capacity",
+      "isFree": false,
+      "title": "Building Commitment Capacity",
+      "subtitle": "Growing your ability to move toward lasting love",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "fitness_center",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Commitment capacity is like a muscle, it can be developed. Small, intentional practices build your ability to sustain closeness.",
+      "frameworkBasis": {
+        "conceptKey": "capacity_building",
+        "explanation": "The ability to commit grows through practice. Start small and build."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Commitment as a Skill",
+          "text": "Commitment isn't just a decision, it's a capacity that can be developed.\n\nPeople with commitment fear often have underdeveloped 'commitment muscles.' The solution isn't just deciding differently; it's building new capabilities through practice.",
+          "icon": "fitness_center"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Small Commitments First",
+          "text": "Build commitment capacity by:\n\n• Following through on small promises\n• Staying in friendships through difficulty\n• Finishing what you start\n• Keeping commitments to yourself\n• Practicing consistency in daily life\n\nReliability in small things builds capacity for big things.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "question",
+          "cardNumber": 3,
+          "title": "Your Current Commitment Patterns",
+          "text": "{red|How do you handle commitments in other areas of life?}",
+          "prompts": [
+            "I often bail on plans",
+            "I struggle to finish projects",
+            "I change jobs/situations frequently",
+            "I'm reliable in non-romantic areas",
+            "I follow through consistently"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Commitment patterns in other areas often predict romantic commitment capacity."
+          },
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Practicing Presence",
+          "text": "Train yourself to stay present:\n\n• When the urge to flee arises, stay anyway\n• When you want to criticize, find something to appreciate\n• When you feel trapped, remind yourself this is a choice\n• When doubt comes, talk about it rather than acting on it",
+          "icon": "self_improvement"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Relational Muscles",
+          "text": "Specific practices that build capacity:\n\n• Regular vulnerability with safe people\n• Staying in conflict until resolution\n• Making and keeping promises\n• Practicing interdependence\n• Sharing feelings when uncomfortable\n• Receiving help from others",
+          "icon": "people"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Capacity-Building Plan",
+          "text": "Plan your growth:\n\nOne small commitment I'll keep this week:\n\nA relationship where I'll practice presence:\n\nA vulnerability I'll share with someone safe:\n\nHow I'll respond when I want to flee:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_choosing_differently",
+      "isFree": false,
+      "title": "Choosing Differently This Time",
+      "subtitle": "Applying what you've learned to real relationships",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "directions",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Understanding your patterns is step one. Choosing differently in actual relationships is where transformation happens.",
+      "frameworkBasis": {
+        "conceptKey": "behavioral_change",
+        "explanation": "Insight must translate to action. New choices create new outcomes."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "From Insight to Action",
+          "text": "You now understand:\n\n• Your commitment fear patterns\n• The roots of those patterns\n• Your specific sabotage tactics\n• How to manage anxiety\n• New beliefs to embrace\n\nNow the real work: doing something different when it matters.",
+          "icon": "directions"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "When Anxiety Hits",
+          "text": "In the moment of anxiety:\n\n**Old response**: Act on fear, distance, criticize, flee\n\n**New response**: Recognize the pattern, use STOP, stay present, communicate, reach out for support\n\nThe anxiety will come. Your response can change.",
+          "icon": "swap_horiz"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Communicating Your Process",
+          "text": "Consider sharing your journey with a partner:\n\n'I have patterns of pulling away when relationships get close. I'm working on it. If you see me doing this, please tell me. I might need to take space, but I'll come back.'\n\nThis creates partnership in your healing.",
+          "icon": "forum"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Choosing a Secure Partner",
+          "text": "Your healing is accelerated by choosing secure partners:\n\n• Someone who gives space without abandoning\n• Someone who stays present through your anxiety\n• Someone who doesn't trigger your wounds unnecessarily\n• Someone patient with your process\n\nAvoid anxious partners who escalate your avoidance.",
+          "icon": "people"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Next Relationship",
+          "text": "In your next relationship, what will you do differently?",
+          "prompts": [
+            "Communicate when I feel like fleeing",
+            "Stay when I want to run",
+            "Challenge my critical thoughts",
+            "Discuss the future despite discomfort",
+            "Ask for help from others"
+          ],
+          "responseType": "multi-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "These new behaviors will feel uncomfortable. That's how you know you're growing."
+          },
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your New Response Plan",
+          "text": "Write your commitment:\n\nWhen anxiety arises, I will:\n\nInstead of [old behavior], I will [new behavior]:\n\nI will communicate by saying:\n\nI will reach out to:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 11,
+      "id": "act_11_freedom_commitment",
+      "isFree": false,
+      "title": "Moving Toward Freedom and Love",
+      "subtitle": "Committing to your own transformation",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "moderate",
+      "activityType": "action",
+      "whyThisMatters": "This journey ends with a beginning, your commitment to live differently. The love you long for is possible. It requires courage to move toward it.",
+      "frameworkBasis": {
+        "conceptKey": "transformation_commitment",
+        "explanation": "Lasting change requires ongoing commitment. This is a beginning, not an end."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "reflection",
+          "cardNumber": 1,
+          "title": "How Far You've Come",
+          "text": "Reflect on your journey:\n\n• You've named your patterns\n• You've understood their roots\n• You've identified specific fears\n• You've recognized sabotage tactics\n• You've learned anxiety management\n• You've begun healing wounds\n• You've built new capacity\n\nThis awareness is powerful. It creates choice where there was compulsion.",
+          "icon": "emoji_events",
+          "responseType": "open-text"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Ongoing Journey",
+          "text": "Healing commitment fear is not a one-time event. It's ongoing:\n\n• Old patterns will resurface\n• Anxiety will still arise\n• You'll be tempted to revert\n\nThe difference: now you have awareness, tools, and choice. Progress isn't perfection, it's choosing differently more often.",
+          "icon": "timeline"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Love That Awaits",
+          "text": "On the other side of your fear is the love you've longed for:\n\n• Deep knowing and being known\n• Partnership through life's journey\n• Security without suffocation\n• Intimacy that enhances rather than diminishes\n\nThis is possible. It's worth the risk. It's worth the work.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Biggest Takeaway",
+          "text": "{red|What is the most important insight from this journey?}",
+          "prompts": [
+            "Understanding where my fear comes from",
+            "Recognizing my specific patterns",
+            "Learning to manage anxiety differently",
+            "Believing change is possible",
+            "Knowing I need professional help",
+            "Having a plan for next time"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Hold onto this insight. Return to it when old patterns try to reassert themselves."
+          },
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Next Step",
+          "text": "{red|What is your most important next step?}",
+          "prompts": [
+            "Find a therapist to work with",
+            "Practice new behaviors in friendships",
+            "Share my journey with someone trusted",
+            "Apply this in my current relationship",
+            "Work on healing specific wounds",
+            "Continue building commitment capacity"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Take this step within the next week. Momentum matters."
+          },
+          "icon": "directions"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Commitment Declaration",
+          "text": "Write your commitment to transformation:\n\nI acknowledge that my fear of commitment has cost me.\n\nI commit to choosing differently by.\n\nI believe that lasting love is possible for me because.\n\nWith God's help, I will.",
+          "responseType": "open-text",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "heroImage": "assets/images/journeys/Singles_journey20.jpg"
+}
