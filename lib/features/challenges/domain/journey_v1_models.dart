@@ -140,14 +140,17 @@ class MissionV1 {
 }
 
 class MissionCardV1 {
-  final String type; // mission_card, instruction_card, choice_card, tip_card
+  final String type; // mission_card, instruction_card, choice_card, tip_card, reflection_card
   final String icon;
   final String title;
   final String? flavor; // e.g. teaching, reflection, action, question, tip
   final String? text;
   final List<String>? bullets;
-  final String? prompt;
-  final List<String>? options;
+  final String? prompt; // Single prompt (legacy or new format)
+  final List<String>? prompts; // Multiple prompts array (new format)
+  final List<String>? options; // Choice options (legacy format)
+  final String? reflection; // Reflection prompt text
+  final String? responseType; // e.g. 'open-text', 'single-select', 'multiple-select'
 
   MissionCardV1({
     required this.type,
@@ -157,12 +160,42 @@ class MissionCardV1 {
     this.text,
     this.bullets,
     this.prompt,
+    this.prompts,
     this.options,
+    this.reflection,
+    this.responseType,
   });
 
   factory MissionCardV1.fromJson(Map<String, dynamic> json) {
+    // Handle both 'type' and 'cardType' field names for compatibility
+    final cardType = (json['type'] ?? json['cardType'] ?? 'instruction_card') as String;
+    
+    // Get options from either 'options' field or convert from 'prompts' array
+    List<String>? finalOptions;
+    List<String>? promptsList;
+    
+    // First, try to get prompts array (new format)
+    final promptsFromJson = (json['prompts'] as List<dynamic>?)
+        ?.map((e) => e.toString())
+        .toList();
+    
+    if (promptsFromJson != null && promptsFromJson.isNotEmpty) {
+      promptsList = promptsFromJson;
+      // For question cards with prompts, convert prompts to options
+      if (cardType == 'question' || cardType == 'choice_card') {
+        finalOptions = promptsFromJson;
+      }
+    }
+    
+    // Fall back to options field if present
+    if (finalOptions == null) {
+      finalOptions = (json['options'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList();
+    }
+
     return MissionCardV1(
-      type: (json['type'] ?? 'instruction_card') as String,
+      type: cardType,
       icon: (json['icon'] ?? 'sparkles') as String,
       title: (json['title'] ?? '') as String,
       flavor: json['flavor'] as String?,
@@ -172,10 +205,10 @@ class MissionCardV1 {
               ?.map((e) => e.toString())
               .toList(),
       prompt: json['prompt'] as String?,
-      options:
-          (json['options'] as List<dynamic>?)
-              ?.map((e) => e.toString())
-              .toList(),
+      prompts: promptsList,
+      options: finalOptions,
+      reflection: json['reflection'] as String?,
+      responseType: json['responseType'] as String?,
     );
   }
 }

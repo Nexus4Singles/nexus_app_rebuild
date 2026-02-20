@@ -728,15 +728,30 @@ class _MissionCardRenderer extends StatelessWidget {
         );
 
       case 'choice_card':
+      case 'question':
         final key = 'card_$cardIndex';
         final selected = choiceSelections[key];
+        // Use prompts array if available, fall back to prompt string
+        final promptText = card.prompt ?? 
+            (card.prompts?.isNotEmpty == true ? card.prompts!.first : '');
         return _ChoiceCard(
           title: card.title,
           flavor: card.flavor,
-          prompt: card.prompt ?? '',
+          prompt: promptText,
           options: card.options ?? const [],
           selected: selected,
           onSelected: onChoiceSelected,
+          reflection: card.reflection,
+        );
+
+      case 'reflection_card':
+      case 'reflection':
+        return _ReflectionCard(
+          title: card.title,
+          flavor: card.flavor ?? 'reflection',
+          text: card.text ?? '',
+          reflection: card.reflection ?? '',
+          responseType: card.responseType ?? 'open-text',
         );
 
       default:
@@ -884,6 +899,7 @@ class _ChoiceCard extends StatelessWidget {
   final List<String> options;
   final String? selected;
   final ValueChanged<String> onSelected;
+  final String? reflection; // Optional reflection prompt after selection
 
   const _ChoiceCard({
     required this.title,
@@ -892,6 +908,7 @@ class _ChoiceCard extends StatelessWidget {
     required this.options,
     required this.selected,
     required this.onSelected,
+    this.reflection,
   });
 
   @override
@@ -1013,6 +1030,184 @@ class _ChoiceCard extends StatelessWidget {
               ),
             );
           }),
+
+          // Show reflection prompt if user has selected an option and reflection exists
+          if (selected != null && reflection != null && reflection!.isNotEmpty) ...[
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.06),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: AppColors.primary.withOpacity(0.20),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.lightbulb_outline,
+                        size: 18,
+                        color: AppColors.primary,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Reflection',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  RichText(
+                    text: TextSpan(
+                      children: _buildInlineSpans(
+                        reflection!,
+                        AppTextStyles.bodySmall.copyWith(
+                          height: 1.55,
+                          color: AppColors.getTextPrimary(context),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Reflection card for guided reflection exercises
+class _ReflectionCard extends StatelessWidget {
+  final String title;
+  final String flavor;
+  final String text;
+  final String reflection;
+  final String responseType; // 'open-text', 'single-select', 'multiple-select'
+
+  const _ReflectionCard({
+    required this.title,
+    required this.flavor,
+    required this.text,
+    required this.reflection,
+    required this.responseType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final badge = _flavorBadge(flavor);
+    final bgColor = _flavorColor(flavor);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+      decoration: BoxDecoration(
+        color: bgColor.withOpacity(0.06),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: bgColor.withOpacity(0.20)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    fontWeight: FontWeight.w700,
+                    height: 1.2,
+                  ),
+                ),
+              ),
+              if (badge != null) badge,
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          // Instructions/context
+          if (text.isNotEmpty) ...[
+            RichText(
+              text: TextSpan(
+                children: _buildInlineSpans(
+                  text,
+                  AppTextStyles.bodySmall.copyWith(
+                    height: 1.55,
+                    color: AppColors.getTextSecondary(context),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 14),
+          ],
+
+          // Main reflection prompt
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: isDark
+                  ? bgColor.withOpacity(0.15)
+                  : bgColor.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: bgColor.withOpacity(0.25),
+                width: 1,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.edit_note_outlined,
+                      size: 16,
+                      color: bgColor,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Take a moment to reflect:',
+                      style: AppTextStyles.labelSmall.copyWith(
+                        color: bgColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                RichText(
+                  text: TextSpan(
+                    children: _buildInlineSpans(
+                      reflection,
+                      AppTextStyles.bodyMedium.copyWith(
+                        height: 1.6,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.getTextPrimary(context),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 12),
+          Text(
+            'Response type: $responseType',
+            style: AppTextStyles.labelSmall.copyWith(
+              color: AppColors.getTextSecondary(context),
+              fontSize: 11,
+            ),
+          ),
         ],
       ),
     );
