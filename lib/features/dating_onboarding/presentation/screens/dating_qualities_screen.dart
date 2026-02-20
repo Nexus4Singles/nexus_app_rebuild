@@ -169,26 +169,33 @@ class _ProgressHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Text(
-            subtitle,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.getTextMuted(context),
+        const DatingProfileProgressBar(currentStep: 4, totalSteps: 9),
+        const SizedBox(height: 12),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Text(
+                subtitle,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.getTextMuted(context),
+                ),
+              ),
             ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            color: AppColors.getSurface(context),
-            borderRadius: BorderRadius.circular(999),
-            border: Border.all(color: AppColors.getBorder(context)),
-          ),
-          child: Text(counter, style: AppTextStyles.labelLarge),
+            const SizedBox(width: 12),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.getSurface(context),
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(color: AppColors.getBorder(context)),
+              ),
+              child: Text(counter, style: AppTextStyles.labelLarge),
+            ),
+          ],
         ),
       ],
     );

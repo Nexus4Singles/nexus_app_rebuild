@@ -115,3 +115,5 @@ node_modules/
 functions/node_modules/
 
 android/app/keystore.jks
+key.properties
+android/app/keystore.jks

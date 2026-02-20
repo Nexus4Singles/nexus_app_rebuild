@@ -811,35 +811,38 @@ class _CircleIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final enabled = onTap != null;
-    return Column(
-      children: [
-        InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(999),
-          child: Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color:
-                  enabled
-                      ? AppColors.getSurface(context)
-                      : AppColors.getSurface(context).withOpacity(0.6),
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColors.getBorder(context)),
-            ),
-            child: Icon(
-              icon,
-              size: 22,
-              color:
-                  enabled
-                      ? AppColors.getTextPrimary(context)
-                      : AppColors.getTextMuted(context),
+    return Padding(
+      padding: const EdgeInsets.only(top: 18.0),
+      child: Column(
+        children: [
+          InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(999),
+            child: Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color:
+                    enabled
+                        ? AppColors.getSurface(context)
+                        : AppColors.getSurface(context).withOpacity(0.6),
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.getBorder(context)),
+              ),
+              child: Icon(
+                icon,
+                size: 22,
+                color:
+                    enabled
+                        ? AppColors.getTextPrimary(context)
+                        : AppColors.getTextMuted(context),
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(label, style: AppTextStyles.caption.copyWith(fontSize: 12)),
-      ],
+          const SizedBox(height: 4),
+          Text(label, style: AppTextStyles.caption.copyWith(fontSize: 12)),
+        ],
+      ),
     );
   }
 }
