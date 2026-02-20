@@ -1103,8 +1103,11 @@ class _ReflectionCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Parse content with proper line breaks
+    // If reflection is empty, use text as the reflection content
+    final effectiveReflectionText = reflection.isNotEmpty ? reflection : text;
+
     final textBlocks = _parseRichContent(text);
-    final reflectionBlocks = _parseRichContent(reflection);
+    final reflectionBlocks = _parseRichContent(effectiveReflectionText);
 
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
@@ -1137,7 +1140,9 @@ class _ReflectionCard extends StatelessWidget {
           const SizedBox(height: 12),
 
           // Instructions/context with proper spacing
-          if (textBlocks.isNotEmpty) ...[
+          // Only show text section if we have a separate reflection field
+          // (if no reflection field, text becomes the main reflection content)
+          if (textBlocks.isNotEmpty && reflection.isNotEmpty) ...[
             ..._buildBodyWidgets(
               textBlocks,
               AppTextStyles.bodyMedium.copyWith(
