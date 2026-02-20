@@ -731,9 +731,10 @@ class _MissionCardRenderer extends StatelessWidget {
       case 'question':
         final key = 'card_$cardIndex';
         final selected = choiceSelections[key];
-        // Use prompts array if available, fall back to prompt string
+        // Priority: prompt field → text field (for question cards) → first prompt from array
         final promptText =
             card.prompt ??
+            card.text ??
             (card.prompts?.isNotEmpty == true ? card.prompts!.first : '');
         return _ChoiceCard(
           title: card.title,
@@ -783,7 +784,7 @@ class _InfoCard extends StatelessWidget {
     final hasBullets = bullets != null && bullets!.isNotEmpty;
     final badge = _flavorBadge(flavor);
     final bgColor = _flavorColor(flavor);
-    
+
     // Parse text content with proper line breaks and formatting
     final textBlocks = _parseRichContent(text);
 
@@ -830,7 +831,7 @@ class _InfoCard extends StatelessWidget {
             ),
           ],
 
-          // Handle bullets separately with proper formatting  
+          // Handle bullets separately with proper formatting
           if (hasBullets) ...[
             if (textBlocks.isNotEmpty) const SizedBox(height: 8),
             ...bullets!.map(
@@ -1028,7 +1029,9 @@ class _ChoiceCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.primary.withOpacity(0.08),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.primary.withOpacity(0.25)),
+                  border: Border.all(
+                    color: AppColors.primary.withOpacity(0.25),
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -1320,7 +1320,9 @@ class _DimensionSection extends StatelessWidget {
                 name: d.dimensionName,
                 percentage: d.percentage,
                 insight: d.bestInsight,
+                genderInsight: d.genderInsightText,
                 microStep: d.bestMicroStep,
+                genderMicroStep: d.genderMicroStep,
                 barColor: barColor,
               ),
             ),
@@ -1335,20 +1337,25 @@ class _DimensionCard extends StatelessWidget {
   final String name;
   final int percentage;
   final String? insight;
+  final String? genderInsight;
   final String? microStep;
+  final String? genderMicroStep;
   final Color barColor;
 
   const _DimensionCard({
     required this.name,
     required this.percentage,
     required this.insight,
+    this.genderInsight,
     required this.microStep,
+    this.genderMicroStep,
     required this.barColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    final insightText = (insight ?? '').trim();
+    final insightText = (genderInsight ?? insight ?? '').trim();
+    final microStepText = (genderMicroStep ?? microStep ?? '').trim();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1409,6 +1416,36 @@ class _DimensionCard extends StatelessWidget {
             style: AppTextStyles.bodySmall.copyWith(
               color: AppColors.getTextSecondary(context),
               height: 1.45,
+            ),
+          ),
+        ],
+        if (microStepText.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: barColor.withOpacity(0.06),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.lightbulb_outline_rounded,
+                  size: 14,
+                  color: barColor,
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    microStepText,
+                    style: AppTextStyles.labelSmall.copyWith(
+                      color: barColor,
+                      height: 1.3,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
