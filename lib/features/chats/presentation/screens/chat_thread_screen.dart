@@ -29,28 +29,38 @@ final _userDocByIdProvider =
           .map((doc) => doc.exists ? doc.data() : null);
     });
 
+/// Get the best available avatar URL from user data
+/// FIXED: Safely iterates through all photos to find first valid one
+/// Handles cases where photos at beginning of list are deleted/empty
 String? _bestAvatarUrl(Map<String, dynamic>? u) {
   if (u == null) return null;
 
   // Common locations:
   // - profileUrl
-  // - photos[0]
-  // - nexus2.photos[0]
+  // - photos[0..n] (iterate to find first valid)
+  // - nexus2.photos[0..n] (iterate to find first valid)
   final direct = (u['profileUrl'] ?? '').toString().trim();
   if (direct.isNotEmpty) return direct;
 
+  // FIXED: Iterate through all photos to find first valid (non-empty) one
+  // This handles cases where photos are deleted from Firestore
   final photos = u['photos'];
   if (photos is List && photos.isNotEmpty) {
-    final v = (photos.first ?? '').toString().trim();
-    if (v.isNotEmpty) return v;
+    for (final photo in photos) {
+      final v = (photo ?? '').toString().trim();
+      if (v.isNotEmpty) return v;
+    }
   }
 
   final nexus2 = u['nexus2'];
   if (nexus2 is Map) {
+    // FIXED: Iterate through nexus2 photos as well
     final n2photos = nexus2['photos'];
     if (n2photos is List && n2photos.isNotEmpty) {
-      final v = (n2photos.first ?? '').toString().trim();
-      if (v.isNotEmpty) return v;
+      for (final photo in n2photos) {
+        final v = (photo ?? '').toString().trim();
+        if (v.isNotEmpty) return v;
+      }
     }
     final n2url = (nexus2['profileUrl'] ?? '').toString().trim();
     if (n2url.isNotEmpty) return n2url;
@@ -60,7 +70,6 @@ String? _bestAvatarUrl(Map<String, dynamic>? u) {
 }
 
 // Audio recording duration constraints (in seconds)
-const int _minAudioDuration = 1; // Minimum 1 second
 const int _maxAudioDuration = 600; // Maximum 10 minutes for chat voice notes
 
 enum _MessageKind { text, image, audio }
@@ -340,9 +349,21 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   }
 
   @override
+  void deactivate() {
+    // Stop audio playback when navigating away from screen
+    try {
+      _player.stop();
+    } catch (_) {}
+    super.deactivate();
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     _scroll.dispose();
+    try {
+      _player.stop();
+    } catch (_) {}
     _player.dispose();
     _recorder.dispose();
     super.dispose();
@@ -579,7 +600,9 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       // image_picker handles permissions internally, so we call it directly
       final picked = await _picker.pickImage(
         source: ImageSource.gallery,
-        imageQuality: 85,
+        imageQuality: 75,
+        maxWidth: 1440,
+        maxHeight: 1440,
       );
 
       if (picked == null) {
@@ -693,8 +716,8 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       await _recorder.start(
         const RecordConfig(
           encoder: AudioEncoder.aacLc,
-          bitRate: 128000,
-          sampleRate: 44100,
+          bitRate: 64000,
+          sampleRate: 24000,
         ),
         path: path,
       );
@@ -772,6 +795,9 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
     _recordingTimer?.cancel();
     _recordingTimer = null;
 
+    // CRITICAL: Capture recorded duration BEFORE resetting it
+    final timerBasedDuration = _recordingDuration;
+
     final stoppedPath = await _recorder.stop();
 
     setState(() {
@@ -831,30 +857,39 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
             };
 
     // Compute duration (seconds) safely without interrupting playback.
-    int durationSeconds = 0;
-    try {
-      final tmp = AudioPlayer();
-      await tmp.setFilePath(path);
-      durationSeconds = tmp.duration?.inSeconds ?? 0;
-      await tmp.dispose();
-    } catch (_) {
-      durationSeconds = 0;
+    // Use timer-based duration as primary source, AudioPlayer as secondary
+    int durationSeconds = timerBasedDuration.inSeconds;
+
+    // If timer duration seems off, try to read actual file duration via AudioPlayer
+    if (durationSeconds == 0) {
+      try {
+        final tmp = AudioPlayer();
+        await tmp.setFilePath(path);
+
+        // Wait for duration to load - use longer timeout
+        for (int attempt = 0; attempt < 3; attempt++) {
+          await Future.delayed(
+            Duration(
+              milliseconds: 300 + (attempt * 200), // 300ms, 500ms, 700ms
+            ),
+          );
+          final dur = tmp.duration?.inSeconds ?? 0;
+          if (dur > 0) {
+            durationSeconds = dur;
+            break;
+          }
+        }
+
+        await tmp.dispose();
+      } catch (e) {
+        debugPrint('[Chat] Failed to read audio duration: $e');
+        // Keep durationSeconds as is (0 or timer-based)
+      }
     }
 
-    // Validate duration meets minimum requirement
-    if (durationSeconds < _minAudioDuration) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Recording too short. Please record at least $_minAudioDuration second. You recorded ${durationSeconds}s.',
-          ),
-        ),
-      );
-      return;
-    }
+    // No minimum duration validation - send any audio like WhatsApp (even 1 second or less)
 
-    // Validate duration doesn't exceed maximum
+    // Validate duration doesn't exceed maximum (safety limit only)
     if (durationSeconds > _maxAudioDuration) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -1859,12 +1894,12 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                   if (amBlocked) {
                     return Container(
                       padding: const EdgeInsets.all(12),
-                      color: Colors.red.shade100,
+                      color: AppColors.errorLight,
                       child: Row(
                         children: [
                           Icon(
                             Icons.block,
-                            color: Colors.red.shade700,
+                            color: AppColors.errorDark,
                             size: 20,
                           ),
                           const SizedBox(width: 12),
@@ -1872,7 +1907,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                             child: Text(
                               'You have blocked this user. They cannot send you messages.',
                               style: TextStyle(
-                                color: Colors.red.shade700,
+                                color: AppColors.errorDark,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -2497,6 +2532,9 @@ class _MessageBody extends StatelessWidget {
           if (path == null || path.isEmpty) {
             body = Text('(missing image)', style: AppTextStyles.bodyMedium);
           } else {
+            // Check if it's a URL or local path
+            final isUrl = path.startsWith('http');
+
             body = GestureDetector(
               onTap: () {
                 Navigator.of(context).push(
@@ -2505,7 +2543,10 @@ class _MessageBody extends StatelessWidget {
                     barrierColor: Colors.black87,
                     barrierDismissible: true,
                     pageBuilder:
-                        (_, __, ___) => _FullScreenImageViewer(filePath: path),
+                        (_, __, ___) => _FullScreenImageViewer(
+                          filePath: path,
+                          isUrl: isUrl,
+                        ),
                     transitionsBuilder: (_, anim, __, child) {
                       return FadeTransition(opacity: anim, child: child);
                     },
@@ -2514,16 +2555,41 @@ class _MessageBody extends StatelessWidget {
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(14),
-                child: Image.file(
-                  File(path),
-                  fit: BoxFit.cover,
-                  errorBuilder:
-                      (_, __, ___) => Container(
-                        height: 160,
-                        alignment: Alignment.center,
-                        color: AppColors.getBackground(context),
-                        child: const Icon(Icons.broken_image_outlined),
-                      ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: 240,
+                      maxHeight: 360,
+                    ),
+                    child:
+                        isUrl
+                            ? CachedImage(
+                              path,
+                              fit: BoxFit.cover,
+                              errorWidget: Container(
+                                height: 160,
+                                width: 160,
+                                alignment: Alignment.center,
+                                color: AppColors.getBackground(context),
+                                child: const Icon(Icons.broken_image_outlined),
+                              ),
+                            )
+                            : Image.file(
+                              File(path),
+                              fit: BoxFit.cover,
+                              errorBuilder:
+                                  (_, __, ___) => Container(
+                                    height: 160,
+                                    width: 160,
+                                    alignment: Alignment.center,
+                                    color: AppColors.getBackground(context),
+                                    child: const Icon(
+                                      Icons.broken_image_outlined,
+                                    ),
+                                  ),
+                            ),
+                  ),
                 ),
               ),
             );
@@ -2791,8 +2857,9 @@ class _PremiumFeatureRow extends StatelessWidget {
 /// Full-screen image viewer with pinch-to-zoom and swipe-to-dismiss
 class _FullScreenImageViewer extends StatelessWidget {
   final String filePath;
+  final bool isUrl;
 
-  const _FullScreenImageViewer({required this.filePath});
+  const _FullScreenImageViewer({required this.filePath, this.isUrl = false});
 
   @override
   Widget build(BuildContext context) {
@@ -2809,18 +2876,31 @@ class _FullScreenImageViewer extends StatelessWidget {
                 maxScale: 4.0,
                 child: Hero(
                   tag: filePath,
-                  child: Image.file(
-                    File(filePath),
-                    fit: BoxFit.contain,
-                    errorBuilder:
-                        (_, __, ___) => const Center(
-                          child: Icon(
-                            Icons.broken_image_outlined,
-                            color: Colors.white54,
-                            size: 64,
+                  child:
+                      isUrl
+                          ? CachedImage(
+                            filePath,
+                            fit: BoxFit.contain,
+                            errorWidget: const Center(
+                              child: Icon(
+                                Icons.broken_image_outlined,
+                                color: Colors.white54,
+                                size: 64,
+                              ),
+                            ),
+                          )
+                          : Image.file(
+                            File(filePath),
+                            fit: BoxFit.contain,
+                            errorBuilder:
+                                (_, __, ___) => const Center(
+                                  child: Icon(
+                                    Icons.broken_image_outlined,
+                                    color: Colors.white54,
+                                    size: 64,
+                                  ),
+                                ),
                           ),
-                        ),
-                  ),
                 ),
               ),
             ),

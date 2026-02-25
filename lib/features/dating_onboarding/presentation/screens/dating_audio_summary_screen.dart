@@ -34,9 +34,13 @@ class _DatingAudioSummaryScreenState
   @override
   void initState() {
     super.initState();
-    // Listen to player state changes to track when playback completes
+    // Listen to player state changes to track when playback completes or starts playing
     _player.playerStateStream.listen((state) {
-      // Only update when playback actually completes
+      // Stop spinner when audio actually starts playing (not just when file is loaded)
+      if (state.playing && _isLoading) {
+        setState(() => _isLoading = false);
+      }
+      // Reset when playback completes
       if (state.processingState == ProcessingState.completed) {
         setState(() {
           _playingIndex = null;
@@ -130,6 +134,9 @@ class _DatingAudioSummaryScreenState
 
   @override
   void dispose() {
+    try {
+      _player.stop();
+    } catch (_) {}
     _player.dispose();
     super.dispose();
   }

@@ -31,6 +31,7 @@ Widget _buildPdfUploadWidget({
       const SizedBox(height: 8),
       if (file == null)
         GestureDetector(
+          behavior: HitTestBehavior.opaque,
           onTap: onTap,
           child: Container(
             height: 60,
@@ -85,6 +86,7 @@ Widget _buildPdfUploadWidget({
                 ),
               ),
               GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 onTap: onRemove,
                 child: Container(
                   padding: const EdgeInsets.all(8),
@@ -942,7 +944,7 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Please upload a nice picture as this would be used to create your profile. AI-generated pictures are not acceptable and using them could invalidate your application.',
+                    'Please upload a nice professional picture as this would be used to create your profile. AI-generated pictures are not acceptable and using them could invalidate your application.',
                     style: TextStyle(
                       color: Colors.orange.shade700,
                       fontSize: 12,
@@ -1095,6 +1097,8 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
                             );
                             Future.delayed(const Duration(seconds: 2), () {
                               if (!mounted) return;
+                              // Dismiss keyboard before navigation
+                              FocusScope.of(context).unfocus();
                               if (Navigator.of(context).canPop()) {
                                 Navigator.pop(context);
                               } else {
@@ -1516,6 +1520,7 @@ Widget _buildPhotoUploadWidget({
                 top: 8,
                 right: 8,
                 child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: onRemove,
                   child: Container(
                     width: 36,

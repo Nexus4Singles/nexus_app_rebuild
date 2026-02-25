@@ -1,0 +1,804 @@
+{
+  "journeyId": "divorced_processing_pain",
+  "title": "Processing Past Relationship Pain",
+  "subtitle": "Working through the grief and hurt of your divorce",
+  "summary": "**Divorce brings profound pain that must be processed, not bypassed.** The grief, anger, betrayal, rejection, and loss you feel are real and deserve attention. This journey helps you acknowledge and work through the full range of emotions, grieve what you have lost, process specific wounds and betrayals, and move toward genuine healing rather than simply moving on.",
+  "targetUserCategory": "divorced",
+  "priorityRank": 2,
+  "estimatedDays": 16,
+  "totalActivities": 10,
+  "difficulty": "advanced",
+  "themeColor": "#37474F",
+  "cover": {
+    "themeTag": "Healing",
+    "accentIcon": "healing",
+    "heroImage": "assets/images/journeys/divorced_journey2.jpg",
+    "heroImageDescription": "A person in a contemplative healing posture, perhaps near water or in nature, suggesting processing and peace emerging from pain."
+  },
+  "frameworks": [
+    "grief_theory",
+    "trauma_processing",
+    "emotional_regulation",
+    "biblical_lament"
+  ],
+  "targetOutcomes": [
+    "Acknowledge and validate the full range of emotions you are experiencing",
+    "Understand grief as a necessary process not a problem to fix",
+    "Work through specific wounds and betrayals",
+    "Process anger in healthy ways",
+    "Address feelings of rejection and failure",
+    "Move toward genuine healing rather than superficial recovery"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_permission_to_grieve",
+      "isFree": true,
+      "title": "Permission to Grieve: Honoring Your Pain",
+      "subtitle": "Understanding why grief is necessary and not weakness",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "sentiment_dissatisfied",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Many people try to rush past the pain of divorce or feel guilty for grieving. But grief is not weakness or lack of faith. It is the natural and necessary response to significant loss. This activity gives you permission to grieve fully.",
+      "frameworkBasis": {
+        "conceptKey": "grief_necessity",
+        "explanation": "Grief is the natural human response to loss and must be processed not bypassed for genuine healing to occur."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Losses of Divorce",
+          "text": "**The grief caught you off guard.** You knew divorce would be hard, but you did not expect this, the heaviness that makes it hard to get out of bed, the tears that come without warning, the ache that has no specific location but is everywhere.\n\n**Divorce involves more losses than most people realize.**\n\n**You lost your spouse, the person you expected to share your life with.** You lost your marriage, the relationship and all its history. You lost your dreams, the future you imagined together.\n\n**You may have lost your home, your community, your financial security, your daily routines.** You may have lost your role as a full-time parent, your shared friends, your relationship with in-laws you cared about.\n\n**You lost a version of yourself, the person you were in that marriage, and the identity of being married.**\n\n**These are real losses.** They deserve to be grieved, not minimized or rushed past.",
+          "icon": "heart_broken"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why Grief Is Necessary",
+          "text": "**Grief is not a problem to be solved.** It is a process to be honored.\n\n**Think of grief like a river after heavy rain.** You can try to dam it, to hold it back. For a while, it might seem to work. But the water keeps rising. Eventually, it will break through, often with more destruction than if you had let it flow naturally.\n\n**When we experience significant loss, grief is the natural human response.** It is how we process what happened and adjust to a new reality. Trying to skip grief does not work. The pain does not disappear. It goes underground and emerges later, often in destructive ways.\n\n**Unprocessed grief can become depression, anxiety, bitterness, or emotional numbness.** It can sabotage future relationships. It can keep you stuck without knowing why.\n\n**Processed grief, while painful, eventually leads to healing, acceptance, and the capacity for new life.** The only way out is through.\n\n**Grieving your divorce is not wallowing or weakness.** It is the work of healing.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Grief Is Not Lack of Faith",
+          "text": "**Some people feel guilty for grieving, as if it means they lack faith or trust in God.**\n\n**But Jesus himself wept at the tomb of Lazarus, even knowing he would raise him from the dead.** David wrote psalms of lament. Jeremiah was called the weeping prophet. The Bible is full of grief expressed openly before God.\n\n**Grieving is not the opposite of faith.** In fact, bringing your grief to God is an act of faith. It says you trust Him enough to be honest about your pain.\n\n**You do not honor God by pretending you are fine when you are not.** You honor Him by bringing your real heart, including your broken heart, to Him.\n\n**Give yourself permission to grieve without spiritual guilt.**",
+          "icon": "church"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Grief Right Now",
+          "text": "How would you describe your current relationship with grief?",
+          "prompts": [
+            "I am actively grieving and feeling the pain intensely",
+            "I have been avoiding or suppressing my grief",
+            "I go back and forth between feeling it and pushing it away",
+            "I feel numb and disconnected from my emotions",
+            "I thought I was done grieving but it keeps coming back",
+            "I feel stuck in grief and cannot seem to move forward",
+            "I feel guilty for still grieving"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are in your grief process, this journey will help you move through it in healthy ways."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Losses",
+          "text": "**Take time to name what you have lost.**\n\nWhat did you lose when your marriage ended?\n\nThink beyond the obvious. Think about tangible losses and intangible ones. Think about present losses and future losses.\n\n**Writing them down validates their reality and the legitimacy of your grief.**\n\nList what you have lost:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Giving Yourself Permission",
+          "text": "Say these words to yourself, out loud if possible:\n\n**I give myself permission to grieve.** My losses are real. My pain is legitimate. I am not weak for feeling this. Grieving is not lack of faith. It is honesty before God. I will not rush this process. I will not pretend I am fine when I am not. I trust that grief, though painful, leads to healing.\n\n**Write these words or your own version in a place you can return to when you need reminding.**",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_emotions_of_divorce",
+      "isFree": false,
+      "title": "The Emotional Storm: Navigating Intense Feelings",
+      "subtitle": "Understanding and accepting the full range of divorce emotions",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "thunderstorm",
+      "emotionalIntensity": "very_high",
+      "activityType": "teaching",
+      "whyThisMatters": "Divorce creates an emotional storm. You may experience intense feelings that surprise, frighten, or confuse you. Understanding these emotions as normal helps you process them rather than being controlled by them.",
+      "frameworkBasis": {
+        "conceptKey": "emotional_awareness",
+        "explanation": "Recognizing and naming emotions is the first step in processing them effectively."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Emotional Intensity",
+          "text": "**Kevin had always been the steady one.** Calm under pressure, emotionally stable, the person friends came to for advice. But after his divorce, he found himself sobbing in parking lots, snapping at coworkers over nothing, and lying awake at 3 AM with his heart racing. Who was this person he had become?\n\n**Divorce often brings emotions more intense than people expect.**\n\n**You might feel overwhelming sadness that takes your breath away.** Rage that surprises you with its intensity. Fear about the future that wakes you at night. Shame that makes you want to hide from the world.\n\n**You might feel relief and then guilt for feeling relief.** Loneliness that aches physically. Jealousy when your ex moves on. Despair that things will never be okay.\n\n**These emotions can come in waves, hitting suddenly and intensely.** They can shift rapidly, leaving you feeling unstable. They can feel bigger than you can handle.\n\n**This emotional intensity is normal, even though it does not feel normal.**",
+          "icon": "thunderstorm"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Common Divorce Emotions",
+          "text": "**Divorce typically brings a complex mix of emotions.**\n\n**Sadness and grief over what was lost.** Anger at your ex, at yourself, or at life. Fear about the future and the unknown. Shame about the failure of your marriage. Guilt about your part in what went wrong.\n\n**Rejection and hurt from being left or from the breakdown of love.** Loneliness as you adjust to being alone. Confusion about what happened and what comes next. Relief that the struggle is over.\n\n**Anxiety about practical matters like finances, living situations, and children.** Jealousy about your ex's life. Hopelessness that things will ever improve. Numbness as your mind protects itself from overwhelm.\n\n**You may experience all of these at different times, sometimes several at once.**",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Emotions Are Not Facts",
+          "text": "**While your emotions are real and valid, they are not always accurate reflections of reality.**\n\n**You may feel like a complete failure, but that does not mean you are one.** You may feel like you will never be happy again, but that does not mean you will not. You may feel worthless, but that does not mean you are.\n\n**Emotions provide information, but they can be distorted by pain, exhaustion, and trauma.** They are weather, not climate. They tell you something about this moment, not about all of reality.\n\n**This does not mean you should dismiss your emotions.** Feel them fully. But hold them with some perspective. The intensity will not last forever.",
+          "icon": "info"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Emotional Landscape",
+          "text": "**Take inventory of the emotions you have been experiencing.**\n\nWhat emotions have been strongest for you?\n\nWhat emotions surprised you?\n\nWhat emotions have you been trying to avoid or suppress?\n\nHow have your emotions changed over time since the divorce?\n\nDescribe your emotional landscape:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Most Difficult Emotion",
+          "text": "Which emotion has been the hardest for you to deal with?",
+          "prompts": [
+            "Overwhelming sadness and grief",
+            "Intense anger or rage",
+            "Debilitating fear and anxiety",
+            "Crushing shame or embarrassment",
+            "Deep feelings of rejection",
+            "Painful loneliness",
+            "Hopelessness about the future",
+            "Guilt and self-blame",
+            "Emotional numbness or disconnection"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "This journey will help you work through this and other difficult emotions."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Emotion Tracking",
+          "text": "**This week, practice tracking your emotions.**\n\n**Three times a day, pause and ask yourself what you are feeling right now.** Try to name specific emotions, not just good or bad.\n\n**Notice what triggered the emotion.** Notice where you feel it in your body. Notice how intense it is on a scale of one to ten.\n\n**This practice builds emotional awareness, which is the foundation for emotional processing.**\n\n**Start this practice today and continue through this journey.**",
+          "icon": "track_changes"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_grief_process",
+      "isFree": false,
+      "title": "The Grief Journey: Understanding How Healing Unfolds",
+      "subtitle": "What to expect as you move through grief",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "timeline",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Understanding the grief process helps you make sense of what you are experiencing and trust that healing is possible. Grief does not follow a neat linear path, but knowing what to expect provides reassurance.",
+      "frameworkBasis": {
+        "conceptKey": "grief_stages",
+        "explanation": "Grief typically involves recognizable experiences though not in a fixed linear sequence that lead eventually to acceptance and integration."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Grief Is Not Linear",
+          "text": "**You may have heard of stages of grief: denial, anger, bargaining, depression, acceptance.** These stages are real experiences, but grief does not move through them in a neat line.\n\n**Instead, grief is more like waves.** Some days you feel better. Then a wave hits and you are back in intense pain. Some weeks feel like progress. Then you spiral backward.\n\n**You might experience anger on Monday, acceptance on Tuesday, and denial on Wednesday.** You might think you are done with sadness and then have it return months later.\n\n**This is normal.** It does not mean you are doing grief wrong. It means you are human, processing a significant loss in the messy way humans do.",
+          "icon": "waves"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Common Grief Experiences",
+          "text": "**Grief moves through you in recognizable ways, though never in a straight line.**\n\n**There is the fog at the beginning.** You go through motions. You sign papers, make arrangements, answer questions. Part of you is watching from a distance, not quite believing this is your life now.\n\n**There is the pain when the fog lifts.** The moment you realize this is real, and it is not going away. This is when the weight hits. Some people describe it as physical, like something pressing on their chest.\n\n**There is the anger that surprises you.** At them, at yourself, at God, at the unfairness of it all. Sometimes the anger feels better than the sadness. Sometimes it scares you with its intensity.\n\n**There is the bargaining you do with yourself.** What if I had done this differently? What if we tried again? Your mind searches for a way to undo what cannot be undone.\n\n**There is the depression that settles in.** Not the dramatic grief of early days, but a gray flatness where nothing seems to matter much. This is often the longest season.\n\n**And eventually, there is acceptance.** Not happiness. Not approval. Just the quiet recognition that this is what happened, and you are learning to live with it.\n\n**You will visit all of these.** Multiple times. In no particular order.",
+          "icon": "list"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "How Long Does Grief Take",
+          "text": "**People often ask how long grief takes.** The honest answer is that it varies significantly.\n\n**Research suggests that acute grief from divorce often lasts one to two years, with gradual improvement over time.** But this is an average, not a rule.\n\n**Factors affecting grief duration include the length of the marriage, how it ended, whether there was betrayal or abuse, your support system, your coping skills, and whether there are ongoing connections like co-parenting.**\n\n**Grief is not something to rush through.** Trying to speed past it usually backfires. At the same time, if you are stuck in acute grief for years without improvement, professional support may help.",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Signs of Healthy Grieving",
+          "text": "How do you know if you are grieving in healthy ways?\n\n**You allow yourself to feel the emotions rather than numbing or avoiding them.** You have moments of relief and even happiness alongside the grief. You can function in daily life most of the time, even if imperfectly.\n\n**You reach out to others for support rather than isolating completely.** You take care of basic needs like eating, sleeping, and hygiene. You have hope, even if faint, that things will eventually improve.\n\n**You are gradually able to think about the future, not just the past.** You begin to find meaning or learning in the experience. Over time, the intensity decreases, even if slowly.",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Where You Are in the Process",
+          "text": "**Reflect on where you are in your grief process.**\n\nWhich grief experiences have you had? Shock, pain, anger, bargaining, depression, acceptance?\n\nWhich are you currently experiencing most?\n\nDo you notice any progress over time, even if uneven?\n\nWhat gives you hope that healing is possible?\n\nDescribe where you are in your grief journey:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Trusting the Process",
+          "text": "**Write a statement of trust in the grief process.**\n\n**Acknowledge where you are.** Acknowledge that grief is not linear. Commit to allowing the process to unfold rather than rushing or avoiding it.\n\n**Example: I am in the middle of grief right now, and some days are very hard.** I trust that this is a process, not a permanent state. I will allow myself to feel what I feel and believe that healing is coming, even when I cannot see it.\n\nWrite your own trust statement:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_processing_sadness",
+      "isFree": false,
+      "title": "The Weight of Sadness: Processing Grief and Loss",
+      "subtitle": "Working through the deep sadness of divorce",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "water_drop",
+      "emotionalIntensity": "very_high",
+      "activityType": "teaching",
+      "whyThisMatters": "Sadness is often the core emotion of grief. Learning to sit with it, express it, and move through it is essential for healing. This activity provides space and guidance for processing the deep sadness of divorce.",
+      "frameworkBasis": {
+        "conceptKey": "sadness_processing",
+        "explanation": "Sadness must be felt and expressed to be processed. Avoiding it prolongs grief rather than shortening it."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Core of Grief",
+          "text": "**At the heart of grief is sadness.** Deep, heavy sadness that settles into your bones. Some days it feels like wearing a lead blanket you cannot take off.\n\n**This sadness can feel overwhelming.** It can make your chest ache. It can make simple tasks feel impossible. It can wake you in the night or hit you unexpectedly during the day.\n\n**Some people cry easily.** Others feel the sadness but cannot cry. Both are normal.\n\n**Sadness is not comfortable.** Many people try to avoid it through busyness, distraction, substances, or premature new relationships. But avoiding sadness does not make it go away. It just delays the inevitable processing.\n\n**The path through sadness is to feel it, express it, and let it move through you.**",
+          "icon": "water_drop"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What You Are Sad About",
+          "text": "**The sadness has layers you are still discovering.**\n\n**You are sad about the obvious things.** The person. The relationship. The life you thought you would have.\n\nBut there is more, is there not?\n\n**You are sad about the version of yourself that existed in that marriage.** The inside jokes no one else will understand. The shorthand that took years to develop. The way they knew to make your coffee.\n\n**You are sad about the future that will not happen.** The anniversary you will not celebrate. The grandchildren you will not share. Growing old with someone who knew you when you were young.\n\n**You are sad about the way you have to explain it.** The pity in people's eyes. The questions you do not want to answer. Having to say the words out loud, again and again.\n\n**You are sad about the holidays, the empty chair, the traditions that feel hollow now.**\n\n**And maybe, underneath all of it, you are sad about the hope you have lost.** The belief that love could last, that commitment meant something, that your story would be different.\n\n**All of this sadness is legitimate.** All of it deserves to be felt.",
+          "icon": "list"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Expressing Sadness",
+          "text": "**Sadness needs to be expressed to be processed.**\n\n**Crying is a natural way to express sadness.** Tears actually contain stress hormones. Crying literally helps release what is built up inside.\n\n**If you cannot cry, other forms of expression work too.** Writing about your sadness, talking to someone who listens, creating art that expresses your grief.\n\n**Some people find rituals helpful: visiting meaningful places, looking at photos, writing letters never sent.** These create containers for grief expression.\n\n**Avoid the temptation to always be strong.** You do not have to cry in public or fall apart at work. But you need somewhere, sometime, to let the sadness out.",
+          "icon": "edit"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Sadness",
+          "text": "**Take time to sit with and express your sadness.**\n\nWhat are you most sad about regarding your divorce?\n\nWhat losses hurt the most?\n\nWhat dreams are you grieving?\n\nWhat do you miss that you will never have again?\n\n**Let yourself feel as you write.** This is a safe space to be sad.\n\nWrite about your sadness:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "God in the Sadness",
+          "text": "**God is not distant from your sadness.** He is present in it.\n\n**The Lord is close to the brokenhearted and saves those who are crushed in spirit.** (Psalm 34:18)\n\n**Jesus himself was described as a man of sorrows, acquainted with grief.** He wept openly. He understands what you are feeling.\n\n**You can bring your sadness to God without cleaning it up first.** Lament is a biblical form of prayer. The Psalms are full of raw expressions of grief brought honestly before God.\n\n**God does not expect you to be strong or have it together.** He invites you to pour out your heart to Him, sadness and all.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "A Lament Prayer",
+          "text": "**Write a lament prayer to God about your sadness.**\n\n**A lament includes three elements: complaint about what is wrong, request for God's help, and trust that God hears and cares.**\n\n**Be honest.** Tell God exactly how you feel. Ask for what you need. Affirm, even weakly, that He is present.\n\n**Example: God, I am so sad.** My marriage is over and my heart is broken. I do not understand why this happened. Please comfort me. Please help me through this darkness. I trust that You are here even when I cannot feel You.\n\nWrite your lament prayer:",
+          "icon": "edit"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_processing_anger",
+      "isFree": false,
+      "title": "The Fire of Anger: Processing Rage and Resentment",
+      "subtitle": "Working through anger in healthy ways",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "local_fire_department",
+      "emotionalIntensity": "very_high",
+      "activityType": "teaching",
+      "whyThisMatters": "Anger is a natural response to the pain and injustice of divorce. But anger can be destructive if not processed well. This activity helps you acknowledge your anger and channel it constructively.",
+      "frameworkBasis": {
+        "conceptKey": "anger_processing",
+        "explanation": "Anger is a legitimate emotional response to hurt and injustice that needs healthy expression and eventual release."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Anger Is Legitimate",
+          "text": "**Elena was not an angry person.** She had always been the peacemaker, the one who smoothed things over. But after discovering her husband's affair, she felt rage like she had never known. She screamed into pillows. She imagined confrontations that would never happen. The intensity of her own anger frightened her.\n\n**Anger in divorce is not only common, it is appropriate.** Something wrong happened. You were hurt. Anger is a natural response to hurt and injustice.\n\n**You might be angry at your ex for what they did or failed to do.** Angry at yourself for choices you made. Angry at others who contributed to the breakdown. Angry at God for allowing this to happen.\n\n**Some people feel guilty about their anger, especially if they were taught that anger is always sinful.** But Scripture says be angry and do not sin. Anger itself is not the problem. What we do with it matters.\n\n**Your anger contains information.** It tells you about what you value, what was violated, and what hurt you.",
+          "icon": "local_fire_department"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Destructive vs Constructive Anger",
+          "text": "**Anger becomes destructive when it is stuffed, suppressed and leaking out as bitterness, passive aggression, or eventual explosion.**\n\n**Anger becomes destructive when it is vented harmfully through rage directed at others, verbal attacks, physical aggression, or constant bitter talk.**\n\n**Anger becomes destructive when it is held indefinitely, nursing grievances and refusing to move toward eventual release.**\n\n**Anger becomes constructive when it is acknowledged honestly and expressed appropriately.** When it motivates positive change or boundary-setting. When it is processed and eventually released.\n\n**The goal is not to never feel angry.** It is to handle anger in ways that lead to healing, not destruction.",
+          "icon": "compare_arrows"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Healthy Anger Expression",
+          "text": "**There are healthy ways to express and process anger.**\n\n**Physical release helps.** Exercise, hitting a punching bag, or vigorous activity can discharge the physical energy of anger safely.\n\n**Writing can help.** Writing angry letters you never send, journaling your rage, or making lists of grievances gets the anger out of your head.\n\n**Talking helps.** Expressing anger to a safe person like a counselor, trusted friend, or support group provides outlet and perspective.\n\n**Prayer can include anger.** The Psalms are full of angry prayers. God can handle your rage.\n\n**The key is finding outlets that express the anger without causing harm to yourself or others.**",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Anger",
+          "text": "**Take time to acknowledge and express your anger.**\n\nWhat are you angry about regarding your divorce?\n\nWho are you angry at?\n\nWhat did they do?\n\nWhat injustices or wrongs fuel your anger?\n\nHow intense is your anger?\n\nWhere do you feel it in your body?\n\n**Let yourself express it fully here.** This is a safe place.\n\nWrite about your anger:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Anger Patterns",
+          "text": "How have you been handling your anger?",
+          "prompts": [
+            "Stuffing it and pretending I am not angry",
+            "Exploding at others inappropriately",
+            "Venting constantly to anyone who will listen",
+            "Turning it inward into depression or self-blame",
+            "Using substances or other numbing behaviors",
+            "Finding some healthy outlets but struggling",
+            "Processing it reasonably well overall"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Recognizing your patterns helps you move toward healthier ways of handling anger."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Anger Plan",
+          "text": "**Create a plan for processing your anger constructively.**\n\n**Identify two or three healthy outlets you will use when anger rises.** These might include physical activity, writing, talking to a specific person, or prayer.\n\n**Identify what you will avoid doing when angry.** This might include contacting your ex in anger, venting on social media, or taking it out on others.\n\n**When I feel angry, I will use these healthy outlets.** When I feel angry, I will avoid these harmful responses.\n\nWrite your anger plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_betrayal_wounds",
+      "isFree": false,
+      "title": "When Trust Was Broken: Processing Betrayal Wounds",
+      "subtitle": "Healing from infidelity, deception, and broken promises",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "heart_broken",
+      "emotionalIntensity": "very_high",
+      "activityType": "teaching",
+      "whyThisMatters": "Many divorces involve betrayal, whether infidelity, deception, broken promises, or other trust violations. These wounds require specific processing. Even if betrayal was not part of your story, broken trust in some form was likely present.",
+      "frameworkBasis": {
+        "conceptKey": "betrayal_trauma",
+        "explanation": "Betrayal creates a specific type of trauma that affects the capacity to trust and requires intentional healing."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Wound of Betrayal",
+          "text": "**Betrayal wounds differently than other hurts because it comes from someone you trusted.**\n\n**You were supposed to be able to count on this person.** They made promises to you. You built your life assuming their faithfulness.\n\n**When that trust was violated, it was not just the specific act that hurt.** It was the destruction of your sense of safety, your ability to trust your own judgment, and your belief in the relationship itself.\n\n**Betrayal can take many forms: infidelity, hidden addictions, financial deception, emotional affairs, or simply the slow betrayal of promises unkept and commitment abandoned.**",
+          "icon": "heart_broken"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Impact of Betrayal",
+          "text": "**Betrayal does not just hurt.** It shatters something foundational.\n\n**It shatters trust, obviously.** But not just trust in them. Trust in yourself. You thought you knew this person. You built your life on that knowing. If you were that wrong about them, what else are you wrong about? Can you trust your own perception anymore?\n\n**It shatters your story.** You thought you knew what your marriage was. Now you have to reinterpret everything. Every memory is suspect. Was any of it real? When they said they loved you, were they already lying? The past becomes a minefield you have to walk through again.\n\n**It shatters your safety.** The person who was supposed to be your refuge became the source of your deepest wound. Where do you go now to feel safe? Who can you trust if not the one who stood before God and promised to be faithful?\n\n**It shatters your sense of reality.** They looked you in the eye and lied. Maybe for months. Maybe years. You lived in a world that was not what you thought it was. That kind of deception makes you feel crazy, makes you question everything.\n\n**These wounds are specific to betrayal.** They require specific healing. And they take longer than people expect.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Processing Betrayal",
+          "text": "**Healing from betrayal requires specific work.**\n\n**Acknowledge what happened.** Do not minimize the betrayal or make excuses for it. What happened was wrong.\n\n**Feel the feelings.** Betrayal brings grief, anger, shame, and fear. All of these need expression.\n\n**Separate their choices from your worth.** The betrayal says something about them, not about your value as a person.\n\n**Stop seeking more information eventually.** At some point, more details do not help. They just reopen the wound.\n\n**Rebuild trust in yourself first.** Before you can trust others again, you need to trust your own judgment and ability to protect yourself.\n\n**Be patient.** Betrayal wounds heal slowly. Do not rush the process.",
+          "icon": "healing"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Betrayal Experience",
+          "text": "**If betrayal was part of your marriage ending, take time to process it.**\n\nWhat betrayals did you experience?\n\nBe specific.\n\nHow did the betrayal affect you?\n\nWhat wounds did it leave?\n\nWhat do you still struggle with as a result of the betrayal?\n\nWhat do you need in order to heal from this?\n\n**If betrayal was not a major part of your story, you may skip this reflection or consider more subtle forms of broken trust.**\n\nWrite about your betrayal experience:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Their Sin, Not Yours",
+          "text": "**If you were betrayed, you need to hear this clearly: their betrayal was their sin, not yours.**\n\n**You did not cause it.** No matter what problems existed in the marriage, betrayal is a choice the betrayer made. You are not responsible for their choices.\n\n**You are not foolish for trusting.** Trusting your spouse is what you were supposed to do. Their deception does not make your trust stupid. It makes their deception wrong.\n\n**Your worth is not diminished.** Betrayal can make you feel worthless or unlovable. But the betrayal reveals something about their character, not about your value.\n\n**This does not mean you were a perfect spouse.** But whatever your failings, they do not justify betrayal. Place responsibility where it belongs.",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "A Declaration of Truth",
+          "text": "**If you experienced betrayal, write and speak a declaration of truth.**\n\n**What happened to me was wrong.** I did not deserve it. I did not cause it.\n\n**Their choices reflect their character, not my worth.**\n\n**I am worthy of faithful love.** The betrayal does not define me.\n\n**I will heal from this.** I will learn to trust again, starting with myself.\n\nWrite your own declaration of truth about the betrayal you experienced:",
+          "icon": "record_voice_over"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_rejection_failure",
+      "isFree": false,
+      "title": "Rejection and Failure: Processing the Hardest Feelings",
+      "subtitle": "Working through feelings of being unwanted and unsuccessful",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "person_off",
+      "emotionalIntensity": "very_high",
+      "activityType": "teaching",
+      "whyThisMatters": "Divorce often brings intense feelings of rejection and failure. These feelings can damage your sense of self and your hope for the future. Processing them is essential for rebuilding your identity and confidence.",
+      "frameworkBasis": {
+        "conceptKey": "rejection_processing",
+        "explanation": "Feelings of rejection and failure must be processed and challenged with truth to prevent them from defining identity."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Pain of Rejection",
+          "text": "**Rejection might be the deepest wound of all.**\n\n**Someone who knew you completely, who saw you at your worst and your most vulnerable, decided you were not enough.** Not worth staying for. Not worth fighting for. Not worth choosing.\n\n**It does not matter if the decision was right.** It does not matter if you are better off without them. It does not even matter if you initiated the divorce. The rejection is still there, hiding under the practical reasons.\n\n**This kind of rejection goes to the core of who you are.** It asks questions you do not want to answer. Am I lovable? Was I ever? Is there something fundamentally wrong with me that makes people leave?\n\n**Rejection after divorce is especially brutal because it comes from the one person whose job was to never reject you.** When the whole world tells you no, you are supposed to be able to go home to someone who says yes. Now that person has said no too.\n\n**The wound is real.** But the questions it raises, those are lies. We will address them. But first, you need to know that what you are feeling is not weakness. It is the normal response to one of the deepest hurts humans can experience.",
+          "icon": "person_off"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Weight of Failure",
+          "text": "**Failure sits heavy on divorced people.** Heavier than almost anyone else understands.\n\n**Marriage was supposed to be forever.** You knew the statistics when you got married. You thought you would be different. You made promises, in public, before God. And you could not keep them.\n\n**Every divorced person carries some version of this shame.** The sense that you failed at one of the most important things a person can do. That everyone else managed to figure it out except you. That your marriage certificate turned into evidence of your inadequacy.\n\n**The shame is worse if you come from a background where divorce is rare or condemned.** Worse if you were the person others looked to as an example. Worse if you really tried, really gave it everything, and still failed.\n\n**Here is what the shame does not account for: marriage requires two people.** You can only control one of them. You can do everything right and still have a marriage fail because the other person gave up, or changed, or was never who you thought they were.\n\n**Failure in marriage is real, but it is rarely the simple failure the shame suggests.** And it is never the final word on your worth or your future.\n\n**You are more than your marriage.** You are more than your divorce.",
+          "icon": "trending_down"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Challenging the Narrative",
+          "text": "**The narratives of rejection and failure need to be challenged with truth.** These painful stories are like wounds that fester in darkness. Bringing them into the light of truth allows healing to begin.\n\n**One person not choosing you does not mean you are unchosen by everyone.** Their rejection says as much about them as about you.\n\n**A marriage ending does not mean you are a failure as a person.** It means this relationship failed. You are more than your marriage.\n\n**You likely did many things right even though the marriage ended.** Your effort was not worthless even if the outcome was not what you wanted.\n\n**Divorce does not disqualify you from love, happiness, or a meaningful future.** Many people have found great love after divorce.\n\n**The narrative you tell yourself about what the divorce means shapes how you move forward.** Choose a narrative that is honest but not cruel.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Rejection and Failure Feelings",
+          "text": "**Honestly explore your feelings of rejection and failure.**\n\nIn what ways do you feel rejected?\n\nHow does that rejection feel?\n\nIn what ways do you feel like a failure?\n\nWhat narratives play in your head?\n\nHow are these feelings affecting your sense of self?\n\nWhat would you say to a friend who felt this way about their divorce?\n\nWrite about your rejection and failure feelings:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Your Worth Beyond Marriage",
+          "text": "**Your worth is not determined by your marital status or your marriage's success.**\n\n**Scripture teaches that you are valuable because you are made in God's image, loved by Him, and redeemed by Christ.** None of that changes because of divorce.\n\n**Your identity is not spouse or divorcee.** It is child of God, beloved, chosen.\n\n**Your value is not based on another person wanting you.** You had worth before marriage, during marriage, and after marriage. That worth is intrinsic.\n\n**Divorce does not reduce your value.** It does not disqualify you from good things. It does not define your future.\n\n**You are more than your marriage, and you are more than your divorce.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Rewriting the Narrative",
+          "text": "**Write a new narrative about your divorce that is honest but not cruel.**\n\n**Acknowledge what happened without defining yourself by it.**\n\n**Old narrative example: I am a failure.** I could not make my marriage work. No one will want me.\n\n**New narrative example: My marriage ended, which is painful.** I contributed to some problems and my ex contributed to others. This ending does not define my worth or my future. I am still valuable and capable of love.\n\nWrite your new narrative:",
+          "icon": "edit"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_loneliness",
+      "isFree": false,
+      "title": "The Ache of Loneliness: Processing Isolation and Loss of Companionship",
+      "subtitle": "Working through the pain of being alone",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "person",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Divorce brings loneliness. Even if your marriage was unhappy, the loss of daily companionship leaves a void. Processing loneliness and learning to be alone without being destroyed by it is essential for healing.",
+      "frameworkBasis": {
+        "conceptKey": "loneliness_processing",
+        "explanation": "Loneliness is a painful but normal response to loss of companionship that can be processed and eventually transformed."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Reality of Loneliness",
+          "text": "**Loneliness after divorce is physical.** It lives in your body.\n\n**It is the emptiness of a bed that used to hold two people.** The pillow that stays cold. The reaching in the night for someone who is not there.\n\n**It is the silence of a house without another adult.** The sounds that used to be comforting, keys in the door, someone moving in the next room, now absent. The quiet is louder than noise.\n\n**It is the moments with no one to share them with.** Something funny happens and you turn to tell them, then remember. Something hard happens and there is no one to help you carry it.\n\n**It is being in a crowd and feeling more alone than when you are by yourself.** Watching couples and feeling like an outsider to your own species. Wondering if anyone will ever know you that well again.\n\n**The loneliness can feel like it will never end.** Like you will always be this alone, this unknown, this unchosen.\n\n**It will not always feel this way.** But right now, the loneliness is real, and it deserves to be acknowledged, not pushed aside or fixed with busyness or premature relationships.\n\n**Sit with it.** Let yourself feel it. It is part of the grief.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Alone vs Lonely",
+          "text": "**There is a difference between being alone and being lonely.**\n\n**Being alone is a circumstance.** You do not have a partner. You may live by yourself. You spend time without company.\n\n**Being lonely is a feeling.** It is the painful sense of lacking connection, of being isolated, of not mattering to anyone.\n\n**You can be alone without being lonely, enjoying solitude and your own company.** You can also be lonely in a crowd or even in a marriage.\n\n**The goal after divorce is not necessarily to stop being alone.** It is to develop the capacity to be alone without being destroyed by loneliness. And to build connections that reduce loneliness whether or not you have a partner.",
+          "icon": "compare_arrows"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Addressing Loneliness",
+          "text": "**Several things help address loneliness.**\n\n**Connect with others.** Reach out to friends and family. Join groups or communities. Do not isolate even when you feel like it.\n\n**Develop your relationship with yourself.** Learn to enjoy your own company. Pursue interests and activities you love.\n\n**Deepen your relationship with God.** Spiritual connection addresses the deepest loneliness. God promises to never leave or forsake you. \"God sets the lonely in families\" (Psalm 68:6). He sees your isolation and moves toward it, not away from it.\n\n**Create structure.** Empty time intensifies loneliness. Having routines, plans, and purposes helps.\n\n**Allow the feelings.** Trying to escape loneliness through busyness or unhealthy coping does not work. Sometimes you need to sit with it and let it move through.\n\n**Be patient.** Loneliness often decreases over time as you build a new life.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Loneliness",
+          "text": "**Explore your experience of loneliness.**\n\nWhen does loneliness hit you hardest?\n\nWhat does it feel like in your body?\n\nHow have you been trying to cope with it?\n\nWhat do you miss most about having a partner?\n\nWrite about your loneliness:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Loneliness Patterns",
+          "text": "How have you been coping with loneliness?",
+          "prompts": [
+            "Reaching out to friends and family",
+            "Staying busy to avoid feeling it",
+            "Isolating and withdrawing from others",
+            "Considering or pursuing new romantic connections too quickly",
+            "Using substances or unhealthy behaviors to numb it",
+            "Spending time with God and in spiritual practices",
+            "Learning to be comfortable alone",
+            "Struggling significantly and unsure what to do"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Recognizing your patterns helps you move toward healthier ways of addressing loneliness."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Loneliness Plan",
+          "text": "**Create a plan for addressing loneliness in healthy ways.**\n\n**People I will reach out to for connection.**\n\n**Activities I will pursue that I enjoy.**\n\n**Spiritual practices I will engage in.**\n\n**How I will structure my most lonely times like evenings and weekends.**\n\n**What I will avoid doing when lonely.**\n\nWrite your loneliness plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_triggers_setbacks",
+      "isFree": false,
+      "title": "Navigating Triggers: Handling Emotional Setbacks",
+      "subtitle": "Managing moments when pain returns unexpectedly",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "notifications_active",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "Healing is not linear. Triggers can bring back intense pain unexpectedly. Learning to navigate triggers and setbacks helps you stay on the healing path even when it feels like you are going backward.",
+      "frameworkBasis": {
+        "conceptKey": "trigger_management",
+        "explanation": "Understanding and managing emotional triggers is essential for navigating the non-linear path of healing."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What Triggers Are",
+          "text": "**Triggers are things that suddenly bring back intense emotions related to your divorce.**\n\n**They might be places you went together, songs you shared, dates that were significant, seeing your ex or hearing about them, or encountering couples who seem happy.**\n\n**They might be holidays, anniversaries, or family events.** Smells, tastes, or physical sensations associated with your marriage. Milestones your children hit that you imagined celebrating together.\n\n**Triggers can be obvious or unexpected.** You might know certain things will be hard. Others blindside you.\n\n**When triggered, emotions that seemed manageable suddenly intensify.** You may feel like you are back at square one, even if you have been doing well.",
+          "icon": "notifications_active"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Triggers Are Not Failure",
+          "text": "**Being triggered does not mean you are not healing.**\n\n**Triggers happen even to people who are well along in their recovery.** The brain stores memories in ways that can be reactivated unexpectedly. This is normal neurology, not personal failure.\n\n**Getting triggered does not erase your progress.** The work you have done is not lost. You may feel like you are back at the beginning, but you are not. You have tools and understanding you did not have before.\n\n**Triggers tend to decrease in intensity and frequency over time.** But they may never disappear entirely. Even years later, something might briefly bring back old pain. This is normal.\n\n**The goal is not to never be triggered but to know how to handle triggers when they come.**",
+          "icon": "info"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Handling Triggers",
+          "text": "**When triggered, several strategies help.**\n\n**Recognize it is a trigger.** Name what is happening. This is a trigger. This intense feeling is temporary.\n\n**Breathe and ground yourself.** Take deep breaths. Notice your physical surroundings. Feel your feet on the floor.\n\n**Allow the feeling without fighting it.** Resistance often intensifies emotions. Let it wash through.\n\n**Use your coping tools.** Whatever healthy strategies have helped before, use them now.\n\n**Reach out if needed.** Contact a supportive person if the trigger is overwhelming.\n\n**Be gentle with yourself afterward.** Triggers are exhausting. Rest and recover.\n\n**Remind yourself of truth.** This feeling will pass. I am healing. One bad moment does not define my progress.",
+          "icon": "healing"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Triggers",
+          "text": "**Identify your triggers and patterns.**\n\nWhat things trigger intense emotions about your divorce?\n\nWhich triggers do you know to expect?\n\nWhich have surprised you?\n\nHow have you typically responded when triggered?\n\nWrite about your triggers:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Anticipated Triggers",
+          "text": "**Some triggers can be anticipated and prepared for.**\n\n**Holidays will likely be hard.** Plan ahead for how you will handle them.\n\n**Anniversaries and significant dates may bring pain.** Decide in advance how to spend those days.\n\n**Family events where you used to appear as a couple will be different.** Prepare yourself mentally.\n\n**Seeing mutual friends or your ex's family may be difficult.** Have a plan.\n\n**Milestones like children's graduations or weddings may trigger grief about your family not being intact.**\n\n**You cannot avoid all triggers.** But for the ones you can anticipate, having a plan reduces their power.",
+          "icon": "event"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Trigger Plan",
+          "text": "**Create a plan for handling triggers.**\n\n**Anticipated triggers I need to prepare for in the coming months.**\n\n**My strategy for handling triggers when they come: recognition, grounding, coping.**\n\n**People I can reach out to when triggered.**\n\n**Truths I will remind myself of: This is temporary.** I am healing. One bad moment does not erase my progress.\n\nWrite your trigger plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_moving_toward_healing",
+      "isFree": false,
+      "title": "Moving Toward Healing: Commitment to Continued Processing",
+      "subtitle": "Committing to the ongoing work of emotional healing",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "trending_up",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "Processing pain is ongoing work. This activity helps you consolidate what you have learned, commit to continued processing, and look toward the healing that lies ahead.",
+      "frameworkBasis": {
+        "conceptKey": "healing_commitment",
+        "explanation": "Genuine healing requires ongoing commitment to processing emotions rather than avoiding them."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Done",
+          "text": "**Through this journey, you have done significant emotional work.**\n\n**You gave yourself permission to grieve.** You explored the full range of divorce emotions. You understood the grief process. You processed sadness, anger, betrayal, rejection, and loneliness. You developed strategies for handling triggers.\n\n**This work is not easy.** Many people avoid it entirely, and they stay stuck as a result. You have faced your pain honestly, which is the path to genuine healing.\n\n**This is not the end of processing.** Emotions will continue to arise. But you now have understanding and tools to work with them.",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Healing Is Ahead",
+          "text": "**Healing is possible.** Not instant, not linear, but real.\n\n**People do recover from divorce.** The intense pain you feel now will not last forever. Many people eventually find peace, wholeness, and even gratitude for what they learned.\n\n**Marcus could not imagine surviving his divorce.** For months, he woke up every day wondering how he would make it through. The grief seemed endless, the loneliness unbearable. But he kept doing the work. He let himself feel the sadness instead of numbing it. He talked to a counselor. He leaned on friends even when it felt weak. He wrote in his journal and prayed messy prayers. Three years later, Marcus describes himself as a different person. \"I would not wish that pain on anyone,\" he says. \"But I would not trade who I became through it. I know myself now. I know what I need. I know I can survive hard things. And I actually feel grateful, not for the divorce, but for who I am on the other side of it.\"\n\n**Healing does not mean forgetting or pretending it did not hurt.** It means integrating the experience into your life in a way that does not dominate or define you.\n\n**You will always carry this experience.** But it will shift from an open wound to a scar. Scars tell stories. They mark where you have been hurt and where you have healed. This scar will become part of your story, not the whole story.\n\n**The work you are doing now is building the foundation for that healing.**",
+          "icon": "wb_sunny"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Processing Progress",
+          "text": "**Reflect on what you have processed and what remains.**\n\nWhat emotions have you made progress on?\n\nWhat still feels heavy or unresolved?\n\nWhat have you learned about yourself through this processing?\n\nWhat do you need to continue working on?\n\nWrite about your processing progress:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Commitment",
+          "text": "Based on what you have learned, what commitments will you make to continued emotional processing?\n\nHow will you continue to work through your emotions?\n\nWhat practices will you maintain?\n\nWhat support will you seek?\n\nHow will you be patient and gentle with yourself?\n\nWrite your commitments:",
+          "responseType": "open-text",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Healing",
+          "text": "**Father, thank You for being present with me in this pain.**\n\n**Thank You for the progress I have made in processing my grief, anger, and hurt.** Continue to heal what is still wounded.\n\n**Help me feel what I need to feel without being destroyed by it.** Give me courage to keep doing this hard work.\n\n**Comfort me in my loneliness.** Strengthen me when triggers come. Remind me that this pain is not forever.\n\n**I trust that You are making all things new, including me.** Bring me through this valley to the healing that awaits.\n\n**In Jesus' name, Amen.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Next Step",
+          "text": "**Identify your next step in the healing journey.**\n\n**Consider continuing with the next journey in this series: Healing and Restoration After Divorce.**\n\n**Consider whether you would benefit from professional support like a counselor or therapist.**\n\n**Consider joining a support group for people going through divorce.**\n\n**Identify one specific next step and commit to taking it.**\n\nWrite your next step:",
+          "icon": "arrow_forward"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Processing in Progress",
+    "summaryText": "You have done significant work in processing the pain of your divorce. This is not easy work, and you should acknowledge your courage in facing it. Remember that processing is ongoing. Continue to allow yourself to feel, to grieve, and to heal. The pain you carry now will not last forever.",
+    "keyTakeaways": [
+      "Grief is necessary and not weakness or lack of faith",
+      "Divorce brings intense emotions that are normal and valid",
+      "Grief is not linear but moves in waves",
+      "Sadness must be felt and expressed to be processed",
+      "Anger is legitimate and needs healthy expression",
+      "Betrayal wounds require specific processing",
+      "Feelings of rejection and failure need to be challenged with truth",
+      "Loneliness can be addressed through connection and growing comfortable alone",
+      "Triggers are normal and do not erase your progress"
+    ],
+    "nextRecommendedJourneys": [
+      "Healing and Restoration After Divorce",
+      "Rebuilding Your Identity and Self-worth",
+      "Letting Go of Resentment and Lingering Conflict"
+    ]
+  }
+}

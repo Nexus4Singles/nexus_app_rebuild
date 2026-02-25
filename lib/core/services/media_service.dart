@@ -390,9 +390,9 @@ class MediaService {
   // ============================================================================
 
   /// Start recording audio
-  /// maxDuration: Maximum recording duration in seconds (default 60)
+  /// maxDuration: Maximum recording duration in seconds (default 90)
   Future<bool> startRecording({
-    int maxDuration = 60,
+    int maxDuration = 90,
     Function(Duration)? onDurationUpdate,
     Function(double)? onAmplitudeUpdate,
   }) async {
@@ -504,8 +504,7 @@ class MediaService {
         if (await file.exists()) {
           await file.delete();
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     }
   }
 
@@ -526,7 +525,7 @@ class MediaService {
         await _audioPlayer.stop();
 
         if (path.startsWith('http')) {
-          await _audioPlayer.play(UrlSource(path));
+          await _audioPlayer.play(UrlSource(path, mimeType: 'audio/mpeg'));
         } else {
           await _audioPlayer.play(DeviceFileSource(path));
         }
@@ -542,7 +541,7 @@ class MediaService {
       try {
         await _ensurePlayerReady();
         await _audioPlayer.stop();
-        await _audioPlayer.play(UrlSource(url));
+        await _audioPlayer.play(UrlSource(url, mimeType: 'audio/mpeg'));
       } catch (e) {
         throw MediaException('Failed to play audio from URL: $e');
       }
@@ -588,7 +587,9 @@ class MediaService {
         await _ensurePlayerReady();
         await _audioPlayer.stop();
         await _audioPlayer.setSource(
-          path.startsWith('http') ? UrlSource(path) : DeviceFileSource(path),
+          path.startsWith('http')
+              ? UrlSource(path, mimeType: 'audio/mpeg')
+              : DeviceFileSource(path),
         );
         return await _audioPlayer.getDuration();
       } catch (_) {

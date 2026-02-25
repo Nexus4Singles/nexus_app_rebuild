@@ -8,22 +8,45 @@ import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 ///   regardless of any old `force_guest` flag.
 /// - Otherwise (no user, anonymous user, or force_guest flag), you ARE a guest.
 ///
-/// This provider now watches authStateProvider so it automatically updates
-/// when auth state changes (login/logout).
-final isGuestProvider = FutureProvider<bool>((ref) async {
-  // Watch auth state to invalidate when it changes
+/// This provider STREAMS auth state changes so it automatically updates
+/// when user logs in/out, ensuring real-time accuracy.
+///
+/// ✅ NOW: StreamProvider - watches auth state in real-time
+/// ✅ Previously: FutureProvider - checked once, cached stale guest status
+final isGuestProvider = StreamProvider<bool>((ref) async* {
+  // Watch auth state stream to invalidate when it changes
   final authAsync = ref.watch(authStateProvider);
 
-  final user = authAsync.valueOrNull;
+  if (!authAsync.hasValue) {
+    yield true; // Assume guest if auth not ready
+    return;
+  }
+
+  final user = authAsync.value;
 
   // Real authenticated user = not a guest
-  if (user != null && !user.isAnonymous) return false;
+  if (user != null && !user.isAnonymous) {
+    print('[isGuestProvider] ✓ Authenticated user: NOT a guest');
+    yield false;
+    return;
+  }
 
-  // No user or anonymous user = guest
-  // Also respect explicit force_guest flag for testing
-  if (user == null || user.isAnonymous) return true;
+  // Check for explicit force_guest flag
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final forceGuest = prefs.getBool('force_guest') ?? false;
 
-  final prefs = await SharedPreferences.getInstance();
-  final forceGuest = prefs.getBool('force_guest') ?? false;
-  return forceGuest;
+    if (user == null || user.isAnonymous || forceGuest) {
+      print(
+        '[isGuestProvider] ✓ IS a guest (user=$user, anon=${user?.isAnonymous}, forceGuest=$forceGuest)',
+      );
+      yield true;
+    } else {
+      yield false;
+    }
+  } catch (e) {
+    print('[isGuestProvider] Error checking guest status: $e');
+    // If error checking prefs, default to guest
+    yield true;
+  }
 });

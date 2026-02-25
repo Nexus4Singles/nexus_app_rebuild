@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -335,44 +337,58 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
 
                   // Purchase Button or Purchased Status
                   if (isPurchased)
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: Colors.green.withOpacity(0.3),
+                    InkWell(
+                      onTap:
+                          () => Navigator.of(
+                            context,
+                          ).pushNamed('/journey/${widget.journey.id}'),
+                      borderRadius: BorderRadius.circular(14),
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.green.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: Colors.green.withOpacity(0.3),
+                          ),
                         ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                            size: 24,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Journey Purchased',
-                                  style: AppTextStyles.labelLarge.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green,
-                                  ),
-                                ),
-                                Text(
-                                  'You have access to all sessions',
-                                  style: AppTextStyles.bodySmall.copyWith(
-                                    color: AppColors.getTextSecondary(context),
-                                  ),
-                                ),
-                              ],
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle,
+                              color: Colors.green,
+                              size: 24,
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Journey Purchased',
+                                    style: AppTextStyles.labelLarge.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Tap to start your journey',
+                                    style: AppTextStyles.bodySmall.copyWith(
+                                      color: AppColors.getTextSecondary(
+                                        context,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: Colors.green,
+                              size: 16,
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   else
@@ -530,18 +546,29 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
         print('🔴 [JourneyPurchase] ERROR: userId is null');
       }
 
-      // Invalidate the purchased journeys provider to refresh UI immediately
+      // Invalidate providers to refresh UI with newly purchased journey
       ref.invalidate(purchasedJourneysProvider);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${widget.journey.title} unlocked! 🎉'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      ref.invalidate(
+        journeyCatalogProvider,
+      ); // Refresh catalog to include newly purchased journey
 
       if (mounted) {
-        Navigator.pop(context);
+        // Show success snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${widget.journey.title} unlocked! 🎉 Restarting app to activate your journey...',
+            ),
+            duration: const Duration(seconds: 3),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        // Schedule app restart after brief delay to let snackbar display
+        Future.delayed(const Duration(seconds: 2), () {
+          // Exit app - OS will automatically relaunch it
+          SystemNavigator.pop();
+        });
       }
     } catch (e) {
       if (mounted) {

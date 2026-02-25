@@ -97,12 +97,7 @@ class AccountDisabledScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // TODO: Implement support contact (email, support chat, etc.)
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Support contact coming soon'),
-                      ),
-                    );
+                    Navigator.of(context).pushNamed('/contact');
                   },
                   icon: const Icon(Icons.mail_outline_rounded),
                   label: const Text('Contact Support'),

@@ -1,0 +1,788 @@
+{
+  "journeyId": "divorced_faith_church_community",
+  "title": "Faith, Church, and Community After Divorce",
+  "subtitle": "Navigating your spiritual life and finding belonging again",
+  "summary": "**Divorce affects your spiritual life in profound ways.** You may feel distant from God, confused about what you believe, or unsure where you fit in church anymore. This journey helps you process how divorce has affected your faith, work through spiritual questions and struggles, find or rebuild community, and discover that God's love and purpose for you remain unchanged even after the end of your marriage.",
+  "targetUserCategory": "divorced",
+  "priorityRank": 6,
+  "estimatedDays": 14,
+  "totalActivities": 10,
+  "difficulty": "intermediate",
+  "themeColor": "#1565C0",
+  "cover": {
+    "themeTag": "Faith",
+    "accentIcon": "church",
+    "heroImage": "assets/images/journeys/divorced_journey6.jpg",
+    "heroImageDescription": "A person walking toward a church or sitting peacefully in a sanctuary, conveying return, belonging, and spiritual renewal."
+  },
+  "frameworks": [
+    "spiritual_formation",
+    "faith_crisis",
+    "community_belonging",
+    "biblical_identity"
+  ],
+  "targetOutcomes": [
+    "Process how divorce has affected your relationship with God",
+    "Work through spiritual questions and struggles honestly",
+    "Understand God's grace and love for you after divorce",
+    "Find or rebuild supportive Christian community",
+    "Navigate church involvement as a divorced person",
+    "Rebuild spiritual practices that sustain you"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_faith_after_divorce",
+      "isFree": true,
+      "title": "Where Is God in This? Faith After Divorce",
+      "subtitle": "Processing how divorce has affected your spiritual life",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "church",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Divorce often creates spiritual crisis. You may feel abandoned by God, angry at Him, or confused about what you believe. This activity creates space to honestly explore how divorce has affected your faith.",
+      "frameworkBasis": {
+        "conceptKey": "faith_crisis",
+        "explanation": "Major life disruptions often trigger faith crises that require honest processing to navigate."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Spiritual Impact",
+          "text": "**Divorce does not just affect your relationship status.** It often shakes your faith to its foundations. The same God you prayed to for your marriage is the God you must now face in your divorce. That can feel unbearably complicated.\n\n**You may wonder where God was when your marriage fell apart.** You may question whether He heard your prayers. You may feel abandoned by the One who was supposed to protect you.\n\n**You may be angry at God for allowing this to happen.** You may struggle to trust Him when something you trusted Him with has failed.\n\n**You may feel shame that separates you from God.** You may wonder if He is disappointed in you or if you have forfeited His blessing.\n\n**These spiritual struggles are common after divorce.** You are not alone in them.",
+          "icon": "church"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Common Spiritual Struggles",
+          "text": "**Jennifer stopped going to church after her divorce.** Not because she had lost her faith, but because she could not bear the looks, the whispered conversations, the couples sitting together while she sat alone. The place that was supposed to be her sanctuary had become a place of shame.\n\n**Divorced people often experience specific spiritual struggles.**\n\n**Distance from God: Feeling like He is far away or unavailable.**\n\n**Anger at God: Blaming Him for not preventing the divorce or not fixing your spouse.**\n\n**Shame and guilt: Feeling disqualified from God's love or blessing.**\n\n**Confusion about God's will: Wondering if you missed His guidance or are now outside His plan.**\n\n**Loss of spiritual practices: Finding it hard to pray, read Scripture, or engage spiritually.**\n\n**Church discomfort: Feeling out of place, judged, or unwelcome in Christian community.**\n\n**Doubt: Questioning beliefs you once held firmly.**\n\nWhich of these resonate with your experience?",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Faith Crisis Is Normal",
+          "text": "**If your faith has been shaken by divorce, know that this is normal.** It does not mean your faith was fake or that you are a spiritual failure.\n\n**Major life disruptions often trigger faith crises.** The Psalms are full of people crying out to God in confusion and pain, asking where He is and why He has allowed suffering.\n\n**A faith crisis can actually lead to deeper, more mature faith.** Faith that has been tested and survived is stronger than untested faith.\n\n**The goal is not to pretend everything is fine spiritually.** It is to bring your honest struggles to God and let Him meet you there.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Spiritual State",
+          "text": "How would you describe your spiritual state since your divorce?",
+          "prompts": [
+            "Closer to God - my faith has actually grown through this",
+            "Stable - my faith remains mostly intact",
+            "Struggling - I am having significant spiritual difficulties",
+            "Distant - I feel far from God and disconnected",
+            "Angry - I am upset with God about what happened",
+            "Confused - I do not know what I believe anymore",
+            "Ashamed - I feel disqualified from God's love"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are spiritually, this journey will help you process and move toward healing."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Spiritual Struggles",
+          "text": "**Take time to honestly explore your spiritual state.**\n\nHow has divorce affected your relationship with God?\n\nWhat questions or doubts have emerged?\n\nWhat spiritual practices have you abandoned or maintained?\n\nWhat do you need from God right now?\n\nWrite about your spiritual struggles:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Bringing Your Honest Self to God",
+          "text": "**God invites your honesty, not a cleaned-up version of yourself.**\n\n**Pray honestly about where you are.** Tell Him your struggles, your questions, your anger, your confusion. He already knows. Telling Him is for your sake, not His.\n\n**God, here is where I really am spiritually since my divorce.** [Tell Him honestly.] I am not going to pretend things are fine when they are not. Meet me here. Help me find my way back to You, or forward to a deeper relationship with You.\n\nWrite your honest prayer:",
+          "icon": "volunteer_activism"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_gods_love_unchanged",
+      "isFree": false,
+      "title": "Loved Without Condition: God's Unchanging Love for You",
+      "subtitle": "Understanding that divorce does not change how God sees you",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Many divorced people feel that God loves them less or that they have disqualified themselves from His blessing. This activity addresses these lies with the truth of God's unchanging love.",
+      "frameworkBasis": {
+        "conceptKey": "unconditional_love",
+        "explanation": "God's love is not based on performance or circumstances and remains constant through divorce."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Lie of Disqualification",
+          "text": "**There is a lie that divorce plants deep in your heart, maybe so deep you have not said it out loud.**\n\n**God loves me less now.**\n\n**You feel it when you pray and the words feel hollow.** When you read Scripture and it seems to be talking to other people, better people. When you see others blessed and wonder if you forfeited blessing when your marriage ended.\n\n**The lie has variations.** God is disappointed in me. I am no longer in His will. I had my chance and I blew it. I am damaged goods now.\n\n**Maybe the lie was planted by someone's comment at church.** Maybe by a sermon about the sanctity of marriage that felt like a verdict on your life. Maybe by the silence of Christians who did not know what to say to you.\n\n**But wherever it came from, it is a lie.**\n\n**God's love is not based on your marital status.** It was never based on your performance. It is based on His character, which does not change when your circumstances do.\n\n**The same God who loved you before your divorce loves you now.** No less. Not grudgingly. Fully.\n\nCan you believe that? Or does the lie still have its grip on you?",
+          "icon": "cancel"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Scripture Says",
+          "text": "**Scripture is clear about the nature of God's love.**\n\n**Nothing can separate you from it.** Neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers, neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God. (Romans 8:38-39)\n\n**His love is everlasting.** I have loved you with an everlasting love; I have drawn you with unfailing kindness. (Jeremiah 31:3)\n\n**It does not depend on your performance.** God demonstrates His own love for us in this: while we were still sinners, Christ died for us. (Romans 5:8)\n\n**Divorce is not on the list of things that separate you from God's love.** Because nothing is.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "God's Posture Toward You",
+          "text": "What is God's posture toward you right now, as a divorced person?\n\n**He is not standing with arms crossed in disappointment.** He is running toward you with open arms, like the father of the prodigal son.\n\n**He is not withholding love until you prove yourself worthy.** He offers love freely to you as you are.\n\n**He is not keeping a record of failures.** If you have confessed, He has forgiven. The record is clean.\n\n**He is close to the brokenhearted.** Your pain does not push Him away. It draws Him near.\n\n**His love for you today is the same as it was before your divorce.** Unchanged. Undiminished. Unconditional.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "What You Have Believed",
+          "text": "**Explore what you have believed about God's love since your divorce.**\n\nHave you felt that God loves you less?\n\nHave you felt disqualified from His blessing?\n\nWhat messages have contributed to these beliefs?\n\nWhat would change if you truly believed His love is unchanged?\n\nWrite about what you have believed:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Receiving Love Again",
+          "text": "**Knowing God loves you and feeling loved by Him can be different things.** The knowledge must move from head to heart.\n\n**Receiving God's love again may require confessing the lie that you believed, that you were disqualified.** Asking God to help you feel what you know to be true. Meditating on Scripture that declares His love. Letting yourself be loved without trying to earn it.\n\n**You may need to return to His love repeatedly.** Each time shame whispers that you are disqualified, return to the truth. His love has not changed.\n\n**Receiving love is not selfish.** It is what enables you to heal and eventually give love to others.",
+          "icon": "self_improvement"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "A Prayer to Receive Love",
+          "text": "**Pray to receive God's unchanging love.**\n\n**Father, I confess that I have believed You love me less because of my divorce.** I have felt disqualified from Your blessing.\n\n**I reject that lie.** Your Word says nothing can separate me from Your love. Not even this.\n\n**Help me receive Your love again.** Help the truth move from my head to my heart. Let me feel what I know to be true.\n\n**I am loved.** Unconditionally. Unchangingly. Even now.\n\n**Thank You for loving me.**\n\n**In Jesus' name, Amen.**\n\nWrite your own prayer to receive God's love:",
+          "icon": "volunteer_activism"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_anger_at_god",
+      "isFree": false,
+      "title": "Honest with God: Processing Anger and Disappointment",
+      "subtitle": "Bringing your hard feelings to God rather than hiding them",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "chat",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Many people feel angry at God after divorce but are afraid to express it. This activity gives permission to bring honest feelings to God, which is essential for spiritual healing.",
+      "frameworkBasis": {
+        "conceptKey": "honest_lament",
+        "explanation": "Biblical lament provides a model for bringing honest negative emotions to God."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Feelings You Hide",
+          "text": "Can we be honest about something you might be afraid to admit?\n\n**You might be angry at God.**\n\n**Not mildly disappointed.** Angry. Maybe even furious.\n\n**Because you prayed.** You begged Him to save your marriage. You did everything you knew to do, and you asked Him to do what you could not. And either He said no, or He was silent, or He let it fall apart anyway.\n\nWhere was He? Where was the God who promised to be near to the brokenhearted? Where was the God who said to ask and you would receive?\n\n**Some people feel guilty for being angry at God.** They think it is wrong, disrespectful, evidence of weak faith.\n\n**But look at the Psalms.** They are full of anger at God. David shouted at Him. Job accused Him. Jeremiah complained bitterly. These were not weak believers. They were honest ones.\n\n**God can handle your anger.** He would rather you bring it to Him, raw and unfiltered, than stuff it down and let it become a wall between you.\n\n**You are allowed to be angry at Him.** You are allowed to tell Him exactly how you feel. You might be surprised how different your relationship with Him becomes when you stop pretending to be okay.",
+          "icon": "visibility_off"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Biblical Honesty",
+          "text": "**Scripture is full of people who were brutally honest with God.**\n\nThe Psalms include cries like Why, Lord, do you stand far off? Why do you hide yourself in times of trouble? (Psalm 10:1) and My God, my God, why have you forsaken me? (Psalm 22:1)\n\n**Job accused God of being unjust.** Jeremiah complained that God had deceived him. Habakkuk demanded answers about why God allowed evil.\n\n**These are not examples of bad faith.** They are examples of honest faith. Faith that brings everything to God, including the hard stuff.\n\n**If the Bible includes these prayers, you have permission to pray them too.**",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Lament as Worship",
+          "text": "**Lament is a form of worship.** It is bringing your honest heart to God and trusting Him with it.\n\n**Lament includes complaint: telling God exactly what is wrong and how you feel about it.**\n\n**Lament includes request: asking God for what you need.**\n\n**Lament includes trust: affirming, even weakly, that God is still God and can be trusted.**\n\n**Lamenting is not the same as rejecting God.** It is engaging Him honestly. It says I am hurt and confused, but I am bringing it to You rather than turning away.\n\n**Honest lament often leads to breakthrough.** Getting the feelings out creates space for God to respond.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Honest Feelings",
+          "text": "What honest feelings toward God have you been hiding?\n\nAre you angry at Him?\n\nAbout what specifically?\n\nAre you disappointed?\n\nWhat did you expect that did not happen?\n\nAre you confused?\n\nWhat questions do you have?\n\nAre you hurt?\n\nHow?\n\nWrite your honest feelings toward God:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "God's Response to Honesty",
+          "text": "How does God respond when we bring our honest pain to Him?\n\n**He listens.** He does not interrupt or dismiss. He receives what we bring.\n\n**He does not condemn.** He does not punish us for being honest. He already knew what we felt.\n\n**He meets us.** In the honesty, something shifts. His presence becomes more real.\n\n**He may not answer all our questions.** But He answers our heart's deeper need: to be heard, to be loved, to know He is there.\n\n**God is not threatened by your anger.** He is big enough to handle it and loving enough to meet you in it.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Honest Prayer",
+          "text": "**Pray an honest prayer to God.** Do not clean it up. Tell Him exactly where you are.\n\n**Include your complaints: what is wrong and how you feel about it.** Include your requests: what you need from Him. Include your trust: even if faint, your choice to stay in relationship with Him.\n\n**God, here is the truth about how I feel.** [Tell Him everything.] I need [name what you need]. I choose to keep coming to You even though I am struggling. Meet me here.\n\nWrite your honest lament prayer:",
+          "icon": "edit"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_spiritual_questions",
+      "isFree": false,
+      "title": "Hard Questions: Wrestling with Divorce and Faith",
+      "subtitle": "Engaging the difficult theological questions divorce raises",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "help",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Divorce raises hard questions about God, faith, and what the Bible says. This activity helps you engage these questions honestly without simplistic answers.",
+      "frameworkBasis": {
+        "conceptKey": "theological_wrestling",
+        "explanation": "Wrestling with hard questions is part of developing mature faith rather than a sign of weak faith."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Questions Without Easy Answers",
+          "text": "**Spiritual dryness after divorce can feel like wandering in a desert.** The landscape that once felt alive with God's presence now seems barren. You pray and hear nothing. You read Scripture and feel empty. The wilderness is disorienting, but it is also where many have found God in new ways.\n\n**Divorce raises questions that do not have easy answers.**\n\nWhy did God not save your marriage when you prayed? Does He even answer prayer, or is it all random? If He could have stopped this and did not, what does that mean about His goodness?\n\nIf you were married in the church, before God, and the marriage failed, what does that mean about God's role in marriage? About His promises? About covenant?\n\n**These questions can feel dangerous to ask.** Like questioning God is betrayal. Like a good Christian would just trust.\n\n**But honest questions asked in faith are not betrayal.** They are how faith matures. The believers with the deepest faith are often those who have wrestled hardest with the hardest questions.\n\n**You may not get answers.** Or the answers may come slowly, over years. But the wrestling itself is valuable. It is how you move from inherited faith to owned faith, from easy belief to tested belief.\n\n**Do not be afraid of your questions.** Bring them to God. He is not threatened by them.",
+          "icon": "help"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "God and Unanswered Prayer",
+          "text": "One of the hardest questions: Why did God not answer my prayers to save my marriage?\n\n**There are no fully satisfying answers to this question.** But some perspectives help.\n\n**God respects human free will.** He did not force your spouse to change. Their choices were theirs.\n\n**Prayer is not a formula that guarantees specific outcomes.** Jesus prayed in Gethsemane for the cup to pass, and it did not.\n\n**God's no or not yet is not absence of love.** His ways and timing are beyond our understanding.\n\n**Unanswered prayer does not mean God was not there or does not care.** It means we live in a broken world where His kingdom is coming but not yet fully here.\n\n**Holding this tension is hard but necessary for mature faith.**",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What the Bible Says",
+          "text": "**The Bible's teaching on divorce is more nuanced than some suggest.**\n\n**Yes, God hates divorce (Malachi 2:16).** He designed marriage to be permanent. Divorce is never His ideal.\n\n**But Scripture also recognizes exceptions.** Jesus mentioned sexual immorality as grounds for divorce (Matthew 19:9). Paul mentioned abandonment by an unbelieving spouse (1 (Corinthians 7:15).\n\n**Many scholars also recognize abuse and patterns of destructive behavior as violations of the marriage covenant.**\n\n**The point is not to find a loophole but to recognize that divorce in a fallen world is sometimes the result of sin done to you, not just by you.**\n\n**If you divorced for legitimate reasons, you are not living in defiance of Scripture.** You are living in the painful reality of a fallen world.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Questions",
+          "text": "What hard questions about faith and divorce are you wrestling with?\n\nWhat questions about God trouble you?\n\nWhat questions about the Bible and divorce concern you?\n\nWhat do you fear might be true?\n\nWhat do you hope is true?\n\nWrite your hard questions:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Living With Uncertainty",
+          "text": "**Some questions may never be fully answered in this life.** Living with uncertainty is part of faith.\n\n**Faith is being sure of what we hope for and certain of what we do not see.** (Hebrews 11:1)\n\n**You can have unanswered questions and still have genuine faith.** You can wrestle and still trust. You can be confused about some things and certain about others.\n\n**Hold onto what you do know: God loves you.** He is good. He has not abandoned you. He can redeem anything.\n\n**Let the unanswered questions sit alongside these certainties.** They can coexist.",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "What You Know for Sure",
+          "text": "**Amid your questions, identify what you do know for sure.**\n\nComplete these sentences:\n\n**Even though I have questions, I know that God is.**..\n\n**Even though I do not understand everything, I trust that.**..\n\n**Even though my faith has been shaken, I believe that.**..\n\n**These certainties become anchors that hold you steady while you wrestle with uncertainty.**\n\nWrite your certainties:",
+          "icon": "anchor"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_church_challenges",
+      "isFree": false,
+      "title": "Finding Your Place: Navigating Church After Divorce",
+      "subtitle": "Dealing with the challenges of Christian community as a divorced person",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "groups",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Church can feel complicated after divorce. You may feel out of place, judged, or unsure where you belong. This activity addresses the unique challenges of navigating Christian community as a divorced person.",
+      "frameworkBasis": {
+        "conceptKey": "church_belonging",
+        "explanation": "Finding authentic belonging in Christian community after divorce requires navigating real challenges."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Church Complications",
+          "text": "**Church after divorce can feel like showing up to a party where you no longer belong.**\n\n**Everyone else seems to be in couples.** The small groups are for married people. The family events assume a configuration you no longer have. The sermon illustrations are about marriages that work, and yours did not.\n\n**You sit alone in a pew that used to hold two.** You notice the glances, or you imagine them. You wonder what people are thinking. You wonder what they have heard.\n\n**Maybe someone said something.** A comment about the sanctity of marriage that felt pointed. A verse quoted that landed like a verdict. An awkward conversation where you could tell they did not know what to say.\n\n**Maybe no one said anything, but the silence was worse.** The friends who stopped calling. The invitations that stopped coming. The sense that you had become an uncomfortable reminder that even Christian marriages fail.\n\n**This is not how church is supposed to be.** It is not how Jesus treated broken people. But it is sometimes how His people treat each other.\n\n**You have options.** You can stay and find your place, which may require courage and thick skin. You can leave and find a community that welcomes you without stigma. You can take a break while you heal, though isolation has its own dangers.\n\nWhat do you need right now from a faith community? And where might you find it?",
+          "icon": "groups"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What You Need From Church",
+          "text": "**As a divorced person, you need specific things from a church community.**\n\n**Grace, not judgment.** A community that understands that divorce happens to good people and that you need support, not condemnation.\n\n**Belonging.** A place where you fit, where singles are valued, and where you are not an afterthought.\n\n**Truth with love.** Biblical teaching delivered with compassion and nuance, not simplistic judgment.\n\n**Support.** People who will walk with you through the hard season, not just give advice.\n\n**Hope.** A vision for your future as a person of value with purpose and possibility.\n\n**Not every church provides these things well.** You may need to evaluate whether your current church meets your needs.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Evaluating Your Options",
+          "text": "**You have options regarding church after divorce.**\n\n**Stay at your current church if it provides what you need and if you can navigate the complications.**\n\n**Find a new church if your current one is not meeting your needs or if the history there is too painful.**\n\n**Take a break if you need time to heal, but be careful that a break does not become permanent isolation.**\n\n**Look for divorce recovery groups, whether at your church or elsewhere.** Being with others who understand can be healing.\n\n**Seek out churches that have thriving singles ministries and do not treat divorced people as second-class.**\n\n**The goal is finding genuine community, not just church attendance.**",
+          "icon": "search"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Church Experience",
+          "text": "**Reflect on your experience with church since your divorce.**\n\nHow has church felt since your divorce?\n\nDo you feel welcomed and supported, or judged and marginalized?\n\nWhat do you need from a church community that you are not currently getting?\n\nWhat would help you engage with church more fully?\n\nWrite about your church experience:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Church Status",
+          "text": "How would you describe your current relationship with church?",
+          "prompts": [
+            "Fully engaged at a church that supports me well",
+            "Attending but feeling disconnected or out of place",
+            "Sporadically attending with mixed feelings",
+            "Taking a break but planning to return",
+            "Searching for a new church",
+            "Dropped out and unsure about returning",
+            "Want to engage but do not know where to start"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are, finding supportive Christian community is important for your healing."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Church Plan",
+          "text": "**Create a plan for engaging with church community.**\n\nIf you are staying at your current church, what steps will you take to engage more fully or address challenges?\n\nIf you are looking for a new church, what will you look for and how will you search?\n\nIf you have stepped back, what would help you re-engage?\n\nAre there divorce recovery groups or other specific communities you could join?\n\nWrite your church engagement plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_finding_community",
+      "isFree": false,
+      "title": "You Need People: Building Supportive Community",
+      "subtitle": "Creating connections that support your healing journey",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "diversity_3",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Beyond formal church involvement, you need genuine community. People who know you, support you, and walk with you. This activity focuses on building supportive relationships for your healing journey.",
+      "frameworkBasis": {
+        "conceptKey": "healing_community",
+        "explanation": "Healing happens best in the context of supportive relationships and genuine community."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Need for People",
+          "text": "**You cannot heal in isolation.** You were designed for community.\n\n**Healing happens best in the context of supportive relationships.** People who see you, know your story, and walk with you.\n\n**This does not mean you need dozens of close friends.** A few genuine connections are more valuable than many shallow ones.\n\n**But you do need some people.** People who check on you. People you can be honest with. People who remind you of truth when you forget.\n\nDo you have these people? If not, building community needs to be a priority.",
+          "icon": "diversity_3"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Types of Support",
+          "text": "**Different relationships provide different types of support.**\n\n**Professional support comes from counselors or therapists who have training to help you process trauma and rebuild.**\n\n**Peer support comes from others who have been through divorce and understand what you are experiencing.**\n\n**Friendship support comes from close friends who may not fully understand but who love you and are present.**\n\n**Mentorship support comes from older or wiser believers who can provide guidance and perspective.**\n\n**Community support comes from groups you belong to that provide belonging and connection.**\n\n**You may need different types of support at different times.** It is okay to seek out what you need.",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Where to Find Community",
+          "text": "**Community can be found in various places.**\n\n**Divorce recovery groups specifically address what you are going through.** Many churches and organizations offer them.\n\n**Small groups at church provide ongoing connection and spiritual support.**\n\n**Counseling or therapy groups offer professional guidance in a group context.**\n\n**Online communities can provide connection if local options are limited.**\n\n**Existing friendships may need intentional nurturing to provide the support you need.**\n\n**New connections can be formed through activities, volunteering, or classes.**\n\n**The key is being intentional.** Community rarely happens by accident.",
+          "icon": "search"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Support Assessment",
+          "text": "**Assess your current support network.**\n\nWho do you have who truly knows and supports you?\n\nWhat types of support are you getting?\n\nWhat is missing?\n\nWhere could you find the community you need?\n\nWhat barriers keep you from connecting with others?\n\nWrite your support assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Overcoming Barriers",
+          "text": "**Several things can keep you from building community.**\n\n**Shame may make you want to hide.** But isolation increases shame while connection decreases it.\n\n**Exhaustion may make socializing feel like too much work.** But even small connections help.\n\n**Fear of judgment may keep you from being honest.** But the right people will not judge.\n\n**Pride may make you resist asking for help.** But needing help is human, not weakness.\n\n**Past hurt may make you protective.** But guarding against everyone keeps out the good along with the bad.\n\n**Recognize your barriers so you can work through them.**",
+          "icon": "block"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Community Building Plan",
+          "text": "**Create a plan to build supportive community.**\n\n**Specific people I will intentionally connect with this week.**\n\n**Groups I will explore joining, such as divorce recovery, small group, or other communities.**\n\n**Barriers I need to overcome and how I will address them.**\n\n**One step I will take this week toward building community.**\n\nWrite your community building plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_spiritual_practices",
+      "isFree": false,
+      "title": "Reconnecting with God: Rebuilding Spiritual Practices",
+      "subtitle": "Reestablishing rhythms that nurture your soul",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "self_improvement",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Divorce often disrupts spiritual practices. Prayer, Scripture reading, and worship may have fallen away. This activity helps you rebuild sustainable spiritual rhythms that nurture your soul in this season.",
+      "frameworkBasis": {
+        "conceptKey": "spiritual_disciplines",
+        "explanation": "Spiritual practices provide structure for ongoing connection with God and soul care."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "When Practices Fall Away",
+          "text": "**Rebuilding community after divorce is like rebuilding a bridge that was washed out.** You cannot simply use the old materials. Some need to be discarded, some salvaged, and new ones brought in. The new bridge may look different, but it can be just as strong.\n\n**Divorce often disrupts spiritual practices.**\n\n**Prayer may feel pointless after unanswered prayers about your marriage.** Scripture may feel confusing or even painful. Worship may feel empty or hypocritical.\n\n**You may have simply been too exhausted and overwhelmed to maintain spiritual disciplines.** Survival took all your energy.\n\n**Or you may have intentionally stepped back, needing distance from spiritual things that felt complicated.**\n\n**Whatever the reason, if your spiritual practices have fallen away, rebuilding them matters for your ongoing healing and connection with God.**",
+          "icon": "trending_down"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Practices for This Season",
+          "text": "**Spiritual practices in a season of healing may look different than in normal times.**\n\n**Simplify.** You do not need to maintain an elaborate quiet time. Even a few minutes of connection with God matters.\n\n**Be honest.** Your prayers can be raw and real. Lament is a spiritual practice.\n\n**Focus on comfort.** Seek out Scriptures and songs that bring comfort rather than conviction. There is a season for everything.\n\n**Receive more than you give.** This is a season to let God minister to you rather than focusing on performance.\n\n**Be gentle with yourself.** If you miss a day or a week, return without guilt. God is not keeping score.\n\n**The goal is connection, not perfection.**",
+          "icon": "spa"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Specific Practice Suggestions",
+          "text": "Some specific practices that help in seasons of pain:\n\n**The Psalms.** Many psalms express exactly what you may be feeling. Read them as your prayers.\n\n**Short, honest prayers.** You do not need to pray at length. Short cries to God throughout the day count.\n\n**Worshiping through tears.** Put on worship music and let yourself feel. God receives worship that comes through pain.\n\n**Nature.** Spending time outside can be a form of worship and connection with the Creator.\n\n**Journaling.** Writing to God can be a form of prayer when spoken words are hard.\n\n**Silence.** Sometimes just being still in God's presence without words is enough.\n\n**Find what works for you in this season.**",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Spiritual Practices",
+          "text": "**Reflect on your current spiritual practices.**\n\nWhat spiritual practices have you maintained through your divorce?\n\nWhat practices have fallen away?\n\nWhat feels accessible to you right now?\n\nWhat feels too hard?\n\nWhat do you need from spiritual practices in this season?\n\nWrite about your spiritual practices:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "question",
+          "cardNumber": 5,
+          "title": "Your Most Helpful Practice",
+          "text": "Which spiritual practice do you think would be most helpful for you in this season?",
+          "prompts": [
+            "Simple daily prayer even if brief",
+            "Reading Psalms that express my feelings",
+            "Listening to worship music",
+            "Journaling my thoughts and prayers",
+            "Silence and stillness with God",
+            "Being in nature as worship",
+            "Reading comforting Scripture passages",
+            "Attending church regularly"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Starting with one practice and building consistency is better than trying to do everything at once."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Spiritual Practice Plan",
+          "text": "**Create a simple, sustainable plan for spiritual practices.**\n\n**One practice I will commit to doing regularly.**\n\n**When and how I will do this practice.**\n\n**What I will do when I miss or struggle.**\n\n**How I will be gentle with myself in this process.**\n\nWrite your spiritual practice plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_purpose_remains",
+      "isFree": false,
+      "title": "Still Purposed: God's Plan for You Has Not Changed",
+      "subtitle": "Understanding that divorce does not disqualify you from God's purposes",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "explore",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Many divorced people feel they have been sidelined from God's purposes, that their usefulness is diminished. This activity affirms that God still has purpose for your life.",
+      "frameworkBasis": {
+        "conceptKey": "divine_purpose",
+        "explanation": "God's purposes for individuals continue through and beyond major life disruptions like divorce."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Fear of Disqualification",
+          "text": "**Divorce can make you feel disqualified.** Like you have been moved to God's bench. Like He will use other people now, the ones who did not fail.\n\n**You hear about leaders who stepped down after divorce.** You see positions that seem closed to you now. You feel marked, limited, sidelined.\n\n**Here is what you might not know: some of the people God has used most powerfully were people with messy pasts.**\n\n**Moses was a murderer.** David was an adulterer. Peter denied Jesus three times. Paul spent years persecuting Christians. These were not people who had it together. They were people who had failed spectacularly and been restored.\n\n**God does not use perfect people.** He uses available people. People who have been broken and put back together. People whose failures have made them humble and dependent on Him.\n\n**Your divorce does not disqualify you.** It might even qualify you in ways you cannot yet see. Who better to minister to someone in crisis than someone who has been there? Who better to speak about grace than someone who has needed it desperately?\n\n**You are not damaged goods.** You are experienced goods. And God wastes nothing.",
+          "icon": "explore"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Biblical Examples",
+          "text": "**Scripture is full of people God used powerfully despite major failures.**\n\n**David committed adultery and murder, yet remained a man after God's own heart and continued leading.**\n\n**Peter denied Christ three times, yet became a pillar of the early church.**\n\n**Paul persecuted Christians, yet became the greatest missionary.**\n\n**Rahab was a prostitute, yet is in the lineage of Christ.**\n\n**The woman at the well had five husbands, yet became the first evangelist to her town.**\n\n**God's pattern is using broken people.** If He only used perfect people, He would have no one to use.",
+          "icon": "menu_book"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Your Unique Contribution",
+          "text": "**Your divorce does not diminish your potential contribution.** In some ways, it may actually expand it.\n\n**You can now minister to others going through divorce with credibility and compassion you did not have before.**\n\n**You have gained wisdom and perspective that can help others navigate difficulty.**\n\n**Your dependence on God may be deeper than before, making you more usable.**\n\n**Your testimony of God's faithfulness through difficulty is powerful.**\n\n**What feels like disqualification may actually be preparation for a different and deeper ministry.**",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Sense of Purpose",
+          "text": "**Reflect on your sense of purpose since your divorce.**\n\nHave you felt disqualified from God's purposes?\n\nWhat ministry or contribution opportunities have you lost or stepped back from?\n\nWhat might God still want to do through you?\n\nHow might your painful experience actually prepare you for something?\n\nWrite about your sense of purpose:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Finding Purpose Again",
+          "text": "**Finding your purpose after divorce may take time.** Be patient with the process.\n\n**Heal first.** You cannot pour from an empty cup. Focus on your recovery before rushing back into service.\n\n**Stay open.** Watch for where God might be leading. New opportunities may emerge.\n\n**Use your pain.** Consider how your experience could help others. Comfort others with the comfort you have received.\n\n**Start small.** You do not need a grand ministry. Small acts of faithfulness matter.\n\n**Trust God's timing.** He is not finished with you. Your purpose will become clearer.",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Affirming Your Purpose",
+          "text": "**Write an affirmation of God's continued purpose for your life.**\n\n**My divorce does not disqualify me from God's purposes.** He still has plans for me.\n\n**I am not sidelined.** I am being prepared for something.\n\n**My pain can become ministry.** My experience gives me something to offer.\n\n**I will stay open to where God is leading.** I trust His timing and His plans.\n\n**For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.** (Jeremiah 29:11)\n\nWrite your purpose affirmation:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_grace_for_journey",
+      "isFree": false,
+      "title": "Grace for the Journey: Receiving What You Need",
+      "subtitle": "Experiencing God's sufficient grace for each day",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "spa",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "The journey of healing requires grace, both from God and toward yourself. This activity helps you receive the grace you need for each day of the journey.",
+      "frameworkBasis": {
+        "conceptKey": "sufficient_grace",
+        "explanation": "God's grace is sufficient for each day's needs and sustains believers through difficult seasons."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Grace for Each Day",
+          "text": "**The journey ahead may seem overwhelming.** How will you make it? How will you heal? How will you rebuild your life?\n\n**The answer is grace.** Not grace to see the whole path at once, but grace sufficient for today.\n\n**My grace is sufficient for you, for my power is made perfect in weakness.** (2 (Corinthians 12:9)\n\n**You do not need to know how you will handle next month or next year.** You need grace for today. And that grace is available.\n\n**Tomorrow will have its own grace.** Today has enough.",
+          "icon": "spa"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Receiving Grace",
+          "text": "**Daniel visited seven churches before finding one that felt like home.** It was smaller than his old church, less polished. But when he shared that he was divorced, the pastor simply said, 'You are welcome here.' That was enough.\n\n**Finding your place may take time.** Here is what to look for:\n\n**A community where you can be honest.** Where you do not have to pretend your life is put together. Where brokenness is acknowledged, not hidden.\n\n**A theology of grace.** Not cheap grace that ignores sin, but real grace that acknowledges failure and offers restoration. Churches that talk about redemption should actually practice it.\n\n**A place for you.** Not just tolerance of divorced people, but actual belonging. Groups you can join. Relationships you can build. A way to contribute.\n\n**Leaders who understand.** They do not have to have gone through divorce themselves, but they need to have walked with people who have. Cluelessness in leadership adds injury to injury.\n\n**You may not find all of this in one place.** You may need to patch together community from multiple sources for a while. That is okay.\n\n**What you need is connection.** People who know you, love you, and walk with you. That is what church is supposed to be. Keep looking until you find it.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Grace Toward Yourself",
+          "text": "**Part of receiving God's grace is extending it to yourself.**\n\n**Be patient with your healing.** It takes time. You are not behind schedule.\n\n**Forgive yourself for your failures.** If God has forgiven you, you can forgive yourself.\n\n**Accept your limitations.** You cannot do everything. That is okay.\n\n**Celebrate small victories.** Every step forward matters, even small ones.\n\n**Treat yourself with kindness.** You are going through something hard. Compassion for yourself is appropriate.\n\n**Grace toward yourself is not self-indulgence.** It is receiving and extending the same grace God offers.",
+          "icon": "self_improvement"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Where You Need Grace",
+          "text": "**Identify where you most need grace right now.**\n\nWhat feels too hard without God's help?\n\nWhere are you being too hard on yourself?\n\nWhat fears about the future require grace?\n\nWhere do you need to receive what God is offering?\n\nWrite about where you need grace:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Daily Grace Practice",
+          "text": "**Consider making grace a daily practice.**\n\n**Each morning, ask for grace for the day.** Lord, I need Your grace today. Give me what I need.\n\n**Throughout the day, receive grace for each moment.** When you struggle, ask again.\n\n**Each evening, thank God for the grace He provided.** Notice where He came through.\n\n**Extend grace to yourself throughout.** When you fail, receive forgiveness and move on.\n\n**This daily rhythm of asking, receiving, and thanking keeps you connected to the source of what you need.**",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Receiving Grace Now",
+          "text": "**Take time to receive grace right now.**\n\n**God, I need Your grace.** I cannot do this journey on my own strength.\n\n**I receive Your grace for today.** Not for the whole future, but for this day.\n\n**Help me extend grace to myself.** To be patient with my healing. To forgive my failures. To trust Your sufficiency.\n\n**Your grace is enough.** I receive it now.\n\n**Thank You for grace that meets me where I am.**\n\n**In Jesus' name, Amen.**\n\nWrite your own grace prayer:",
+          "icon": "volunteer_activism"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_faith_commitment",
+      "isFree": false,
+      "title": "Walking Forward: Your Faith and Community Commitment",
+      "subtitle": "Committing to ongoing spiritual health and connection",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You have done significant work on faith and community. This activity helps you consolidate what you have learned and commit to ongoing spiritual health and connection.",
+      "frameworkBasis": {
+        "conceptKey": "spiritual_commitment",
+        "explanation": "Ongoing spiritual health requires commitment to practices and community that sustain faith."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Explored",
+          "text": "**Through this journey, you have done important spiritual work.**\n\n**You have honestly assessed how divorce affected your faith.** You have received truth about God's unchanging love. You have brought honest feelings to God.\n\n**You have wrestled with hard questions.** You have navigated church challenges. You have begun building supportive community.\n\n**You have considered spiritual practices for this season.** You have affirmed God's continued purpose for you. You have received grace for the journey.\n\n**This is significant progress in your spiritual healing.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Ongoing Journey",
+          "text": "**Spiritual healing and growth continue beyond this journey.**\n\n**There will be hard days when faith feels distant.** Days when questions return. Days when community feels inadequate.\n\n**But you now have tools and truths to draw on.** You know God loves you. You know you can be honest with Him. You know where to find support.\n\n**Keep walking.** Keep seeking. Keep receiving grace. The path forward is open, and God walks it with you.",
+          "icon": "directions_walk"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Insight",
+          "text": "What is the most important thing you have learned or received through this journey about faith and community after divorce?\n\nWhat do you want to remember when you struggle spiritually?\n\nWrite your key insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Commitments",
+          "text": "What commitments will you make for your ongoing spiritual health?\n\nHow will you nurture your relationship with God?\n\nHow will you engage with church or Christian community?\n\nHow will you handle spiritual struggles when they arise?\n\nHow will you extend grace to yourself?\n\nWrite your commitments:",
+          "responseType": "open-text",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Blessing for Your Journey",
+          "text": "**May the Lord bless you and keep you.** May His face shine upon you and be gracious to you. May He turn His face toward you and give you peace.\n\n**May you know His love that never fails.** May you find community that supports you. May you experience His grace as sufficient for each day.\n\n**May your faith grow deeper through this difficulty.** May you emerge knowing God better than before. May you fulfill every purpose He has for you.\n\n**You are loved.** You are not alone. Go in peace.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Faith Declaration",
+          "text": "**Write a declaration of faith for your journey forward.**\n\n**I believe God loves me unchangingly, even after divorce.**\n\n**I will bring my honest self to Him, struggles and all.**\n\n**I will seek and build community that supports my healing.**\n\n**I will practice spiritual rhythms that nurture my soul.**\n\n**I believe God still has purpose for my life.**\n\n**I receive His grace for each day.**\n\n**I will walk forward in faith, trusting Him with my future.**\n\nWrite your faith declaration:",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Faith Renewed",
+    "summaryText": "You have done significant work in processing how divorce has affected your faith and community. Remember that God's love for you is unchanged, that honest struggle is part of faith, and that community is essential for your healing. Keep walking forward, receiving grace for each day.",
+    "keyTakeaways": [
+      "Faith struggles after divorce are normal and not a sign of spiritual failure",
+      "God's love for you has not changed because of your divorce",
+      "Honest lament is a form of worship and brings you closer to God",
+      "Hard questions can coexist with genuine faith",
+      "Church community after divorce requires intentional navigation",
+      "Supportive relationships are essential for healing",
+      "Spiritual practices in this season can be simple and grace-filled",
+      "God still has purpose for your life",
+      "Grace is sufficient for each day of the journey"
+    ],
+    "nextRecommendedJourneys": [
+      "Healing and Restoration After Divorce",
+      "Letting Go of Resentment and Lingering Conflict",
+      "Rebuilding Your Identity and Self-worth"
+    ]
+  }
+}

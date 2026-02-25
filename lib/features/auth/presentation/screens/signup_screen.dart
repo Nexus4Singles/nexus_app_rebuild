@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/theme.dart';
@@ -43,6 +44,9 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     }
     if (value.trim().length < 3) {
       return 'Username must be at least 3 characters';
+    }
+    if (value.trim().length > 12) {
+      return 'Username must be 12 characters or fewer';
     }
     return null;
   }
@@ -244,11 +248,14 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     controller: _username,
                     enabled: !_busy,
                     textCapitalization: TextCapitalization.words,
+                    inputFormatters: [LengthLimitingTextInputFormatter(12)],
+                    maxLength: 12,
                     validator: _validateUsername,
                     style: AppTextStyles.bodyLarge,
                     decoration: InputDecoration(
                       labelText: 'Username',
-                      hintText: 'Choose a username',
+                      hintText: 'Choose a username (max 12 chars)',
+                      helperText: 'Maximum 12 characters',
                       labelStyle: AppTextStyles.bodyMedium.copyWith(
                         color: AppColors.getTextSecondary(context),
                       ),

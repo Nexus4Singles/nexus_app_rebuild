@@ -1,13 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:nexus_app_v2/core/constants/app_constants.dart';
 import 'package:nexus_app_v2/core/providers/relationship_status_provider.dart';
 import 'package:nexus_app_v2/core/providers/user_provider.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 import 'package:nexus_app_v2/core/theme/app_colors.dart';
 import 'package:nexus_app_v2/core/theme/app_text_styles.dart';
 import 'package:nexus_app_v2/core/user/current_user_doc_provider.dart';
 import 'package:nexus_app_v2/core/session/effective_relationship_status_provider.dart';
+import 'package:nexus_app_v2/features/dating_search/presentation/screens/dating_preferences_setup_screen.dart';
 
 class RelationshipStatusEditor extends ConsumerWidget {
   final String currentStatus;
@@ -91,6 +97,11 @@ class RelationshipStatusEditor extends ConsumerWidget {
                     ),
                   ],
                 ),
+              ),
+              const SizedBox(width: 8),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: AppColors.getTextSecondary(context),
               ),
             ],
           ),
@@ -379,6 +390,11 @@ void showRelationshipStatusDialog(
 
                                           // ignore: avoid_print
                                           print(
+                                            '[RelationshipStatusDialog] BEFORE UPDATE: auth state ready for update',
+                                          );
+
+                                          // ignore: avoid_print
+                                          print(
                                             '[RelationshipStatusDialog] Calling updateRelationshipStatus...',
                                           );
                                           await updater
@@ -393,6 +409,18 @@ void showRelationshipStatusDialog(
                                           );
 
                                           if (sbContext.mounted) {
+                                            // Clear the "preferences setup after status change" flag
+                                            // so that if user reactivates dating, it will show setup again
+                                            final prefs =
+                                                await SharedPreferences.getInstance();
+                                            await prefs.remove(
+                                              'preferences_setup_after_status_change',
+                                            );
+                                            // ignore: avoid_print
+                                            print(
+                                              '[RelationshipStatusDialog] ✓ Cleared preferences setup flag for new status',
+                                            );
+
                                             // Close dialog - Firestore listeners automatically handle UI updates
                                             Navigator.pop(dialogContext);
                                             // ignore: avoid_print
@@ -593,17 +621,16 @@ void _showReactivateDatingProfileDialog(
                   }
 
                   if (context.mounted) {
-                    // Show success message
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Dating profile reactivated! Your profile is now visible. ✓',
-                        ),
-                        backgroundColor: AppColors.primary,
+                    // Navigate to dating preferences setup screen instead of showing success
+                    // This allows them to set up preferences for their new status
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder:
+                            (_) => const DatingPreferencesSetupScreen(
+                              isReactivatingAfterStatusChange: true,
+                            ),
                       ),
                     );
-
-                    onSuccess();
                   }
                 } catch (e) {
                   if (context.mounted) {

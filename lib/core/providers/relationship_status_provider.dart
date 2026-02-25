@@ -37,6 +37,17 @@ class RelationshipStatusUpdater {
     final userRef = _firestore.collection('users').doc(uid);
     final batch = _firestore.batch();
 
+    // DIAGNOSTIC: Log admin status BEFORE update
+    try {
+      final preUpdateDoc = await userRef.get();
+      final preIsAdmin = preUpdateDoc.data()?['isAdmin'] as bool? ?? false;
+      // ignore: avoid_print
+      print('[RelationshipStatusUpdater] 📋 BEFORE UPDATE: isAdmin=$preIsAdmin');
+    } catch (e) {
+      // ignore: avoid_print
+      print('[RelationshipStatusUpdater] Could not read isAdmin before update: $e');
+    }
+
     // Update user's relationship status in BOTH v1 (nexus) and v2 (nexus2) fields
     // This ensures the change is read immediately, even for v1 accounts
     batch.update(userRef, {
@@ -117,7 +128,7 @@ class RelationshipStatusUpdater {
         newStatus.toLowerCase() == 'widowed' ||
         newStatus.toLowerCase() == 'single') {
       // If transitioning FROM married to eligible status,
-      // set dating profile to pending admin review
+      // set dating profile to pending admin review AND reactivate if it was archived
       final isTransitioningFromMarried = oldStatus?.toLowerCase() == 'married';
 
       if (isTransitioningFromMarried) {
@@ -125,7 +136,28 @@ class RelationshipStatusUpdater {
         print(
           '[RelationshipStatusUpdater] Transitioning FROM MARRIED to $newStatus: setting verification status to pending for admin review',
         );
+        
+        // Log what we're about to preserve before the update
+        try {
+          final currentDoc = await userRef.get();
+          final currentData = currentDoc.data();
+          final currentDating = currentData?['dating'] as Map?;
+          final currentPhotos = currentData?['photos'] as List?;
+          final currentAudio = currentData?['audioPrompts'] as List?;
+          final datingPhotos = currentDating?['reviewPack']?['photoUrls'] as List?;
+          final datingAudio = currentDating?['audioPrompts'] as List?;
+          // ignore: avoid_print
+          print(
+            '[RelationshipStatusUpdater] 📸 BEFORE UPDATE - Root Photos: ${currentPhotos?.length ?? 0}, Root Audio: ${currentAudio?.length ?? 0}, Dating Photos: ${datingPhotos?.length ?? 0}, Dating Audio: ${datingAudio?.length ?? 0}',
+          );
+        } catch (e) {
+          // ignore: avoid_print
+          print('[RelationshipStatusUpdater] Could not log current state: $e');
+        }
+        
+        // Reactivate archived dating profile (restore it)
         batch.update(userRef, {
+          'dating.isActive': true,  // Reactivate archived profile
           'dating.optIn': true,
           'dating.verificationStatus': 'pending',
           'dating.verificationQueuedAt': FieldValue.serverTimestamp(),
@@ -161,9 +193,15 @@ class RelationshipStatusUpdater {
       final nexus0 = (data0?['nexus'] as Map?)?.cast<String, dynamic>();
       final nexus20 = (data0?['nexus2'] as Map?)?.cast<String, dynamic>();
       final optIn0 = (data0?['dating'] as Map?)?.cast<String, dynamic>();
+      final photos0 = (data0?['photos'] as List?);
+      final audio0 = (data0?['audioPrompts'] as List?);
       // ignore: avoid_print
       print(
         '[RelationshipStatusUpdater] 🔍 IMMEDIATE (0ms): nexus=${nexus0?['relationshipStatus']}, nexus2=${nexus20?['relationshipStatus']}, optIn=${optIn0?['optIn']}',
+      );
+      // ignore: avoid_print
+      print(
+        '[RelationshipStatusUpdater] 📸 IMMEDIATE (0ms): Photos: ${photos0?.length ?? 0}, AudioPrompts: ${audio0?.length ?? 0}',
       );
     } catch (e) {
       // ignore: avoid_print
@@ -178,9 +216,15 @@ class RelationshipStatusUpdater {
       final nexus500 = (data500?['nexus'] as Map?)?.cast<String, dynamic>();
       final nexus2500 = (data500?['nexus2'] as Map?)?.cast<String, dynamic>();
       final optIn500 = (data500?['dating'] as Map?)?.cast<String, dynamic>();
+      final photos500 = (data500?['photos'] as List?);
+      final audio500 = (data500?['audioPrompts'] as List?);
       // ignore: avoid_print
       print(
         '[RelationshipStatusUpdater] 🔍 AT 500ms: nexus=${nexus500?['relationshipStatus']}, nexus2=${nexus2500?['relationshipStatus']}, optIn=${optIn500?['optIn']}',
+      );
+      // ignore: avoid_print
+      print(
+        '[RelationshipStatusUpdater] 📸 AT 500ms: Photos: ${photos500?.length ?? 0}, AudioPrompts: ${audio500?.length ?? 0}',
       );
     } catch (e) {
       // ignore: avoid_print
@@ -195,9 +239,15 @@ class RelationshipStatusUpdater {
       final nexus2s = (data2s?['nexus'] as Map?)?.cast<String, dynamic>();
       final nexus22s = (data2s?['nexus2'] as Map?)?.cast<String, dynamic>();
       final optIn2s = (data2s?['dating'] as Map?)?.cast<String, dynamic>();
+      final photos2s = (data2s?['photos'] as List?);
+      final audio2s = (data2s?['audioPrompts'] as List?);
       // ignore: avoid_print
       print(
         '[RelationshipStatusUpdater] 🔍 AT 2s: nexus=${nexus2s?['relationshipStatus']}, nexus2=${nexus22s?['relationshipStatus']}, optIn=${optIn2s?['optIn']}',
+      );
+      // ignore: avoid_print
+      print(
+        '[RelationshipStatusUpdater] 📸 AT 2s: Photos: ${photos2s?.length ?? 0}, AudioPrompts: ${audio2s?.length ?? 0}',
       );
 
       if (nexus2s?['relationshipStatus'] != newStatus) {

@@ -5,6 +5,7 @@ import '../constants/app_constants.dart';
 import '../auth/auth_providers.dart';
 import '../bootstrap/firebase_ready_provider.dart';
 import '../user/dating_opt_in_provider.dart';
+import '../user/is_admin_provider.dart';
 import '../session/effective_relationship_status_provider.dart';
 import '../widgets/guest_guard.dart';
 import 'dating_profile_status_provider.dart';
@@ -40,6 +41,21 @@ class DatingProfileGate {
         primaryText: 'Create an account',
         onCreateAccount: () => Navigator.of(context).pushNamed('/signup'),
       );
+      return;
+    }
+
+    // Admin bypass: Admins can access search and chat without profile verification
+    final isAdminAsync = ref.read(isAdminProvider);
+    final isAdmin = isAdminAsync.maybeWhen(
+      data: (admin) => admin,
+      orElse: () => false,
+    );
+
+    if (isAdmin) {
+      print(
+        '[DatingProfileGate] ✓ Admin user → bypassing dating profile requirements',
+      );
+      await onAllowed();
       return;
     }
 

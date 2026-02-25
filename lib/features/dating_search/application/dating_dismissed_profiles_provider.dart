@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 
 /// Model for a dismissed profile entry
 class DismissedProfileEntry {
@@ -32,40 +33,87 @@ class DismissedProfileEntry {
   }
 }
 
-/// Provider to get list of active dismissed profiles (not expired)
-final dismissedProfilesProvider = FutureProvider<List<String>>((ref) async {
-  final fs = ref.watch(firestoreInstanceProvider);
-  final uid = FirebaseAuth.instance.currentUser?.uid;
+/// Provider to STREAM list of active dismissed profiles (not expired) in real-time
+///
+/// ✅ NOW: StreamProvider - listens to Firestore document changes
+/// ✅ Previously: FutureProvider - read-once, could show stale data
+///
+/// Real-time updates ensure that recent dismissals are immediately reflected
+/// and don't appear in next search results
+final dismissedProfilesProvider = StreamProvider<List<String>>((ref) async* {
+  // Watch auth state to invalidate on user changes
+  final authAsync = ref.watch(authStateProvider);
 
-  if (fs == null || uid == null) return [];
+  if (!authAsync.hasValue) {
+    yield [];
+    return;
+  }
+
+  final authState = authAsync.value;
+  final uid = authState?.uid;
+
+  if (uid == null || authState == null) {
+    yield [];
+    return;
+  }
+
+  final fs = ref.watch(firestoreInstanceProvider);
+  if (fs == null) {
+    yield [];
+    return;
+  }
 
   try {
-    final doc =
-        await fs
+    print(
+      '[dismissedProfilesProvider] Setting up real-time listener for uid=$uid',
+    );
+
+    // Listen to real-time changes from Firestore
+    await for (final doc
+        in fs
             .collection('users')
             .doc(uid)
             .collection('dating')
             .doc('dismissedProfiles')
-            .get();
+            .snapshots()) {
+      try {
+        if (!doc.exists) {
+          print('[dismissedProfilesProvider] ✓ No dismissed profiles yet');
+          yield [];
+          continue;
+        }
 
-    if (!doc.exists) return [];
+        final data = doc.data() ?? {};
+        final entries =
+            (data['entries'] as List<dynamic>?)
+                ?.map(
+                  (e) =>
+                      DismissedProfileEntry.fromMap(e as Map<String, dynamic>),
+                )
+                .toList() ??
+            [];
 
-    final data = doc.data() ?? {};
-    final entries =
-        (data['entries'] as List<dynamic>?)
-            ?.map(
-              (e) => DismissedProfileEntry.fromMap(e as Map<String, dynamic>),
-            )
-            .toList() ??
-        [];
+        // Filter out expired dismissals and return only active profile IDs
+        final activeDismissed =
+            entries
+                .where((e) => !e.isExpired())
+                .map((e) => e.profileId)
+                .toList();
 
-    // Filter out expired dismissals and return only active profile IDs
-    return entries
-        .where((e) => !e.isExpired())
-        .map((e) => e.profileId)
-        .toList();
-  } catch (_) {
-    return [];
+        print(
+          '[dismissedProfilesProvider] ✓ Real-time update: ${activeDismissed.length} active dismissed profiles',
+        );
+        yield activeDismissed;
+      } catch (parseError) {
+        print(
+          '[dismissedProfilesProvider] Error parsing dismissed profiles: $parseError',
+        );
+        yield [];
+      }
+    }
+  } catch (e) {
+    print('[dismissedProfilesProvider] ✗ Error setting up listener: $e');
+    yield [];
   }
 });
 

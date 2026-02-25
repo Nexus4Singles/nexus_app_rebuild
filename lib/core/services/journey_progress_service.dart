@@ -6,6 +6,7 @@ class JourneyProgressService {
   static const _kLastCompletePrefix =
       'journey_last_complete:'; // + journeyId (yyyy-mm-dd)
   static const _kStreakPrefix = 'journey_streak:'; // + journeyId (int)
+  static const _kInProgressPrefix = 'journey_in_progress:'; // + journeyId
 
   final FirestoreService _firestore;
 
@@ -113,6 +114,29 @@ class JourneyProgressService {
 
     // Sync removal to Firestore
     _syncToFirestore(journeyId, uid, current.toList(), null, null, prefs);
+  }
+
+  /// Mark a mission as in-progress (user started but hasn't completed)
+  Future<void> markMissionInProgress(
+    String journeyId,
+    String missionId,
+    String uid,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = '$_kInProgressPrefix$journeyId';
+    await prefs.setString(key, missionId);
+  }
+
+  /// Get the in-progress mission ID for a journey (if any)
+  Future<String?> getInProgressMissionId(String journeyId) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('$_kInProgressPrefix$journeyId');
+  }
+
+  /// Clear in-progress when mission is completed
+  Future<void> clearInProgress(String journeyId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('$_kInProgressPrefix$journeyId');
   }
 
   /// Non-blocking sync to Firestore

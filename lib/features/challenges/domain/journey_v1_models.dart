@@ -30,6 +30,38 @@ class JourneyCatalogV1 {
     }
     return null;
   }
+
+  JourneyV1? findByReference(String reference) {
+    final raw = reference.trim();
+    if (raw.isEmpty) return null;
+
+    // 1) Canonical ID exact match
+    for (final j in journeys) {
+      if (j.id == raw) return j;
+    }
+
+    // 2) Canonical ID case-insensitive fallback
+    final lowered = raw.toLowerCase();
+    for (final j in journeys) {
+      if (j.id.toLowerCase() == lowered) return j;
+    }
+
+    // 3) Legacy title exact match
+    for (final j in journeys) {
+      if (j.title == raw) return j;
+    }
+
+    // 4) Legacy title case-insensitive fallback
+    for (final j in journeys) {
+      if (j.title.toLowerCase() == lowered) return j;
+    }
+
+    return null;
+  }
+
+  String? resolveJourneyId(String reference) {
+    return findByReference(reference)?.id;
+  }
 }
 
 class JourneyV1 {
@@ -121,14 +153,52 @@ class MissionV1 {
 
   factory MissionV1.fromJson(Map<String, dynamic> json) {
     final cardsJson = (json['cards'] as List<dynamic>? ?? []);
+
+    int _readInt(List<String> keys, int fallback) {
+      for (final key in keys) {
+        final value = json[key];
+        if (value is int) return value;
+        if (value is num) return value.toInt();
+        if (value is String) {
+          final parsed = int.tryParse(value.trim());
+          if (parsed != null) return parsed;
+        }
+      }
+      return fallback;
+    }
+
+    bool _readBool(List<String> keys, bool fallback) {
+      for (final key in keys) {
+        final value = json[key];
+        if (value is bool) return value;
+      }
+      return fallback;
+    }
+
+    final missionNumber = _readInt([
+      'missionNumber',
+      'activityNumber',
+      'number',
+      'index',
+    ], 0);
+    final isFree = _readBool(['isFree'], missionNumber == 1);
+    final requiresPartnerPresent = _readBool([
+      'requiresPartnerPresent',
+      'requiresCompanion',
+    ], false);
+
     return MissionV1(
-      missionNumber: (json['missionNumber'] ?? 0) as int,
+      missionNumber: missionNumber,
       id: (json['id'] ?? '') as String,
-      isFree: (json['isFree'] ?? false) as bool,
+      isFree: isFree,
       title: (json['title'] ?? '') as String,
       subtitle: (json['subtitle'] ?? '') as String,
-      timeBoxMinutes: (json['timeBoxMinutes'] ?? 5) as int,
-      requiresPartnerPresent: (json['requiresPartnerPresent'] ?? false) as bool,
+      timeBoxMinutes: _readInt([
+        'timeBoxMinutes',
+        'duration',
+        'durationMinutes',
+      ], 5),
+      requiresPartnerPresent: requiresPartnerPresent,
       icon: (json['icon'] ?? 'sparkles') as String,
       whyThisMatters: (json['whyThisMatters'] ?? '') as String,
       cards:

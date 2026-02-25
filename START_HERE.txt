@@ -44,7 +44,7 @@ HOW:      Combine existing data intelligently:
           ✅ 35 hobbies (already captured, users select 5)
           ✅ 58 desired qualities (already captured, users select 8)
           ✅ 10 compatibility quiz fields (already captured)
-          ✅ 3x 60-sec audio recordings (already captured)
+          ✅ 3x 90-sec audio recordings (already captured)
           ✅ 2+ photos (already captured)
           ✅ Social media (already captured)
 

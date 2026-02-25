@@ -2,39 +2,74 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 import '../domain/dating_preferences.dart';
 
-/// Provider to watch dating preferences for current user
-final datingPreferencesProvider = FutureProvider<DatingPreferences?>((
+/// Provider to STREAM dating preferences for current user in real-time.
+///
+/// ✅ NOW: StreamProvider - listens to Firestore document changes
+/// ✅ Previously: FutureProvider - read-once, cached stale data
+///
+/// This ensures preferences updates are reflected immediately in search results
+/// without waiting for manual refresh or app restart.
+final datingPreferencesProvider = StreamProvider<DatingPreferences?>((
   ref,
-) async {
-  final fs = ref.watch(firestoreInstanceProvider);
-  final uid = FirebaseAuth.instance.currentUser?.uid;
+) async* {
+  // Watch auth state to invalidate on user changes
+  final authAsync = ref.watch(authStateProvider);
 
-  if (fs == null || uid == null) return null;
+  if (!authAsync.hasValue) {
+    yield null;
+    return;
+  }
+
+  final authState = authAsync.value;
+  final uid = authState?.uid;
+
+  if (uid == null || authState == null) {
+    yield null;
+    return;
+  }
+
+  final fs = ref.watch(firestoreInstanceProvider);
+  if (fs == null) {
+    yield null;
+    return;
+  }
 
   try {
-    final doc =
-        await fs
+    print(
+      '[DatingPreferencesProvider] Setting up real-time listener for uid=$uid',
+    );
+
+    // Listen to real-time changes from Firestore
+    await for (final doc
+        in fs
             .collection('users')
             .doc(uid)
             .collection('dating')
             .doc('preferences')
-            .get();
+            .snapshots()) {
+      if (!doc.exists) {
+        print('[DatingPreferencesProvider] ✗ No prefs doc found for uid=$uid');
+        yield null;
+        continue;
+      }
 
-    if (!doc.exists) {
-      print('[DatingPreferencesProvider] No prefs doc found in Firestore');
-      return null;
+      try {
+        final prefs = DatingPreferences.fromFirestore(doc.data() ?? {});
+        print(
+          '[DatingPreferencesProvider] ✓ Real-time update: minAge=${prefs.minAge}, maxAge=${prefs.maxAge}, country=${prefs.countryOfResidence}',
+        );
+        yield prefs;
+      } catch (parseError) {
+        print('[DatingPreferencesProvider] Error parsing prefs: $parseError');
+        yield null;
+      }
     }
-
-    final prefs = DatingPreferences.fromFirestore(doc.data() ?? {});
-    print(
-      '[DatingPreferencesProvider] Loaded prefs: minAge=${prefs.minAge}, maxAge=${prefs.maxAge}, country=${prefs.countryOfResidence}',
-    );
-    return prefs;
   } catch (e) {
-    print('[DatingPreferencesProvider] Error loading prefs: $e');
-    return null;
+    print('[DatingPreferencesProvider] ✗ Error setting up listener: $e');
+    yield null;
   }
 });
 

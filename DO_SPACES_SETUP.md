@@ -52,7 +52,7 @@ flutter build ios --release \
 ### 📝 Implementation Details
 
 #### Audio Upload Flow
-1. User records 3 audio prompts (60s max, 45s min each)
+1. User records 3 audio prompts (90s max, 45s min each)
 2. Files are saved locally during recording
 3. On "Complete Profile" button:
    - All 3 audio files are uploaded to DO Spaces via presigned URLs

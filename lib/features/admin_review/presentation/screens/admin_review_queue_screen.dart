@@ -85,7 +85,12 @@ class _DatingProfilesTab extends ConsumerWidget {
                   '🎤 $audioCount',
                 ].join(' • '),
               ),
-              trailing: const Icon(Icons.chevron_right_rounded),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.chevron_right_rounded),
+                ],
+              ),
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(

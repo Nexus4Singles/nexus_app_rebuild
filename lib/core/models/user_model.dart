@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import '../constants/app_constants.dart';
 
 /// Nexus 2.0 extension data stored in users/{uid}/nexus2
 /// This keeps Nexus 1.0 fields untouched and adds new fields safely
 class Nexus2Data extends Equatable {
   final String relationshipStatus;
-  final String gender;
   final List<String> primaryGoals;
   final bool onboardingCompleted;
   final DateTime? onboardedAt;
@@ -17,7 +17,6 @@ class Nexus2Data extends Equatable {
 
   const Nexus2Data({
     required this.relationshipStatus,
-    required this.gender,
     this.primaryGoals = const [],
     this.onboardingCompleted = false,
     this.onboardedAt,
@@ -30,19 +29,11 @@ class Nexus2Data extends Equatable {
   /// Create from Firestore document
   factory Nexus2Data.fromMap(Map<String, dynamic>? map) {
     if (map == null) {
-      return const Nexus2Data(relationshipStatus: '', gender: '');
+      return const Nexus2Data(relationshipStatus: '');
     }
-
-    // Normalize gender for v1/v2 compatibility
-    final rawGender = map['gender'] as String? ?? '';
-    final normalizedGender =
-        rawGender.isNotEmpty
-            ? (UserModel._normalizeGender(rawGender) ?? rawGender)
-            : '';
 
     return Nexus2Data(
       relationshipStatus: map['relationshipStatus'] as String? ?? '',
-      gender: normalizedGender,
       primaryGoals:
           (map['primaryGoals'] as List<dynamic>?)
               ?.map((e) => e.toString())
@@ -60,11 +51,10 @@ class Nexus2Data extends Equatable {
     );
   }
 
-  /// Convert to map for Firestore
+  /// Convert to map for Firestore (only v2-specific fields, no profile duplicates)
   Map<String, dynamic> toMap() {
     return {
       'relationshipStatus': relationshipStatus,
-      'gender': gender,
       'primaryGoals': primaryGoals,
       'onboardingCompleted': onboardingCompleted,
       'onboardedAt':
@@ -85,7 +75,6 @@ class Nexus2Data extends Equatable {
   /// Create a copy with updated fields
   Nexus2Data copyWith({
     String? relationshipStatus,
-    String? gender,
     List<String>? primaryGoals,
     bool? onboardingCompleted,
     DateTime? onboardedAt,
@@ -96,7 +85,6 @@ class Nexus2Data extends Equatable {
   }) {
     return Nexus2Data(
       relationshipStatus: relationshipStatus ?? this.relationshipStatus,
-      gender: gender ?? this.gender,
       primaryGoals: primaryGoals ?? this.primaryGoals,
       onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
       onboardedAt: onboardedAt ?? this.onboardedAt,
@@ -112,13 +100,10 @@ class Nexus2Data extends Equatable {
   RelationshipStatus get relationshipStatusEnum =>
       RelationshipStatus.fromValue(relationshipStatus);
 
-  Gender get genderEnum => Gender.fromValue(gender);
-
   List<UserGoal> get primaryGoalsEnum =>
       primaryGoals.map((g) => UserGoal.fromValue(g)).toList();
 
-  bool get isValid =>
-      relationshipStatus.isNotEmpty && gender.isNotEmpty && onboardingCompleted;
+  bool get isValid => relationshipStatus.isNotEmpty && onboardingCompleted;
 
   bool get isSingle =>
       relationshipStatusEnum == RelationshipStatus.singleNeverMarried ||
@@ -129,7 +114,6 @@ class Nexus2Data extends Equatable {
   @override
   List<Object?> get props => [
     relationshipStatus,
-    gender,
     primaryGoals,
     onboardingCompleted,
     onboardedAt,
@@ -410,6 +394,20 @@ class UserModel extends Equatable {
       ...(_parseStringList(data['audioPrompts']) ?? const <String>[]),
     ];
 
+    // DEBUG: Log audio consolidation
+    debugPrint('🎵 [UserModel.fromMap] Audio consolidation for user $id:');
+    debugPrint('  reviewPack?.audioUrls: ${reviewPack?['audioUrls']}');
+    debugPrint('  dating?.audioPrompts: ${dating?['audioPrompts']}');
+    debugPrint('  data[audioPrompts]: ${data['audioPrompts']}');
+    debugPrint('  → Final audioUrls count: ${audioUrls.length}');
+    if (audioUrls.isNotEmpty) {
+      for (int i = 0; i < audioUrls.length; i++) {
+        debugPrint(
+          '    [$i]: ${audioUrls[i].substring(0, (audioUrls[i].length > 60 ? 60 : audioUrls[i].length))}${audioUrls[i].length > 60 ? '...' : ''}',
+        );
+      }
+    }
+
     bool _looksLikeUrl(String s) {
       final t = s.trim().toLowerCase();
       return t.startsWith('http://') ||
@@ -437,19 +435,19 @@ class UserModel extends Equatable {
     return UserModel(
       id: id,
       name: _firstString(data, [
+        ['dating', 'profile', 'name'],
         ['name'],
         ['displayName'],
         ['nexus2', 'profile', 'name'],
-        ['dating', 'profile', 'name'],
       ]),
       username: _firstString(data, [
+        ['dating', 'profile', 'username'],
         ['username'],
         ['userName'],
         ['handle'], // v1 legacy
         ['user_name'], // v1 snake_case
         ['displayName'], // some v1 users
         ['nexus2', 'profile', 'username'],
-        ['dating', 'profile', 'username'],
       ]),
 
       email: _firstString(data, [
@@ -457,55 +455,55 @@ class UserModel extends Equatable {
         ['nexus2', 'profile', 'email'],
       ]),
       profileUrl: _firstString(data, [
+        ['dating', 'profile', 'profileUrl'],
         ['profileUrl'],
         ['photoUrl'],
         ['avatarUrl'],
         ['nexus2', 'profile', 'profileUrl'],
-        ['dating', 'profile', 'profileUrl'],
       ]),
       age:
+          _intFrom(_getPath(data, ['dating', 'profile', 'age'])) ??
           _intFrom(_getPath(data, ['age'])) ??
-          _intFrom(_getPath(data, ['nexus2', 'profile', 'age'])) ??
-          _intFrom(_getPath(data, ['dating', 'profile', 'age'])),
+          _intFrom(_getPath(data, ['nexus2', 'profile', 'age'])),
       gender: _normalizeGender(
         _firstString(data, [
+          ['dating', 'profile', 'gender'],
           ['gender'],
           ['nexus2', 'profile', 'gender'],
-          ['dating', 'profile', 'gender'],
         ]),
       ),
       // Note: typo in original v1 key: bestQualotiesOrTraits
       bestQualotiesOrTraits: _firstString(data, [
+        ['dating', 'profile', 'bestQualitiesOrTraits'],
         ['bestQualitiesOrTraits'],
         ['best_qualities_or_traits'], // v1 snake_case
         ['nexus2', 'profile', 'bestQualitiesOrTraits'],
-        ['dating', 'profile', 'bestQualitiesOrTraits'],
       ]),
       city: _firstString(data, [
+        ['dating', 'profile', 'city'],
         ['city'],
         ['location', 'city'], // v1 nested
         ['nexus2', 'profile', 'city'],
-        ['dating', 'profile', 'city'],
       ]),
 
       countLike: _intFrom(_getPath(data, ['countLike'])),
       desiredQualities: _firstString(data, [
+        ['dating', 'profile', 'desiredQualities'],
         ['desiredQualities'],
         ['desired_qualities'], // v1 snake_case
         ['partnerQualities'], // legacy wording
         ['nexus2', 'profile', 'desiredQualities'],
-        ['dating', 'profile', 'desiredQualities'],
       ]),
 
       hobbies: _firstStringList(data, [
+        ['dating', 'profile', 'hobbies'],
         ['hobbies'],
         ['nexus2', 'profile', 'hobbies'],
-        ['dating', 'profile', 'hobbies'],
       ]),
       photos: _firstStringList(data, [
+        ['dating', 'profile', 'photos'],
         ['photos'],
         ['nexus2', 'profile', 'photos'],
-        ['dating', 'profile', 'photos'],
         ['dating', 'photos'],
       ]),
       audioPrompts: audioUrls,
@@ -517,17 +515,17 @@ class UserModel extends Equatable {
       matchedUsers: _parseStringList(data['matchedUsers']),
       unRecommendUsers: _parseStringList(data['unRecommendUsers']),
       educationLevel: _firstString(data, [
+        ['dating', 'profile', 'educationLevel'],
         ['educationLevel'],
         ['education_level'], // ← ADD
         ['education'], // ← ADD
         ['nexus2', 'profile', 'educationLevel'],
-        ['dating', 'profile', 'educationLevel'],
       ]),
 
       profession: _firstString(data, [
+        ['dating', 'profile', 'profession'],
         ['profession'],
         ['nexus2', 'profile', 'profession'],
-        ['dating', 'profile', 'profession'],
       ]),
       relationshipWithGod: _firstString(data, [
         ['relationshipWithGod'],
@@ -548,31 +546,32 @@ class UserModel extends Equatable {
       isVerified: _isUserVerified(data),
       notificationToken: _stringFrom(data['notificationToken']),
       phoneNumber: _firstString(data, [
+        ['dating', 'profile', 'phoneNumber'],
         ['phoneNumber'],
         ['phone'],
         ['nexus2', 'profile', 'phoneNumber'],
-        ['dating', 'profile', 'phoneNumber'],
       ]),
       registrationProgress: _stringFrom(data['registrationProgress']),
       country: _firstString(data, [
+        ['dating', 'profile', 'country'],
         // v1: residence display sometimes stored as location.place ("Lagos, Nigeria")
         ['location', 'place'],
         ['country'],
         ['countryOfResidence'], // v1 search schema
         ['country_name'],
         ['nexus2', 'profile', 'country'],
-        ['dating', 'profile', 'country'],
       ]),
 
       countryCode: _firstString(data, [
+        ['dating', 'profile', 'countryCode'],
         ['countryCode'],
         ['country_code'],
         ['countryIso'],
         ['nexus2', 'profile', 'countryCode'],
-        ['dating', 'profile', 'countryCode'],
       ]),
 
       nationality: _firstString(data, [
+        ['dating', 'profile', 'nationality'],
         ['nationality'],
         ['nationalityName'],
         ['nationality_name'], // v1 variant
@@ -582,16 +581,15 @@ class UserModel extends Equatable {
         ['country'], // v1: top-level country often stored as nationality
         ['location', 'country'], // v1: nationality wrongly nested here
         ['nexus2', 'profile', 'nationality'],
-        ['dating', 'profile', 'nationality'],
       ]),
 
       nationalityCode: _firstString(data, [
+        ['dating', 'profile', 'nationalityCode'],
         ['nationalityCode'],
         ['nationality_code'],
         ['countryOfOriginCode'], // v1 variant
         ['country_of_origin_code'], // v1 snake_case
         ['nexus2', 'profile', 'nationalityCode'],
-        ['dating', 'profile', 'nationalityCode'],
       ]),
 
       facebookUsername: _firstString(data, [
@@ -615,11 +613,11 @@ class UserModel extends Equatable {
         ['nexus2', 'profile', 'snapchatUsername'],
       ]),
       churchName: _firstString(data, [
+        ['dating', 'profile', 'churchName'],
         ['churchName'],
         ['church_name'], // v1 snake_case
         ['church'], // legacy
         ['nexus2', 'profile', 'churchName'],
-        ['dating', 'profile', 'churchName'],
       ]),
 
       compatibility: data['compatibility'] as Map<String, dynamic>?,

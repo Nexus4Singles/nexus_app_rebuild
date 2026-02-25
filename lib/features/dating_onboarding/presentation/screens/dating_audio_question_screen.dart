@@ -26,7 +26,7 @@ class DatingAudioQuestionScreen extends ConsumerStatefulWidget {
 
 class _DatingAudioQuestionScreenState
     extends ConsumerState<DatingAudioQuestionScreen> {
-  static const int _maxSeconds = 60;
+  static const int _maxSeconds = 90;
   static const int _minSeconds = 45;
 
   final _recorder = AudioRecorder();
@@ -76,6 +76,9 @@ class _DatingAudioQuestionScreenState
   @override
   void dispose() {
     _timer?.cancel();
+    try {
+      _player.stop();
+    } catch (_) {}
     _player.dispose();
     _recorder.dispose();
     super.dispose();
@@ -710,7 +713,7 @@ class _RecordButton extends StatelessWidget {
 
     if (isRecording) {
       if (canStop) {
-        // 45-60s range: show stop icon so user can finalize the recording
+        // 45-90s range: show stop icon so user can finalize the recording
         icon = Icons.stop_rounded;
       } else {
         // < 45s: show pause icon while recording, mic icon while paused

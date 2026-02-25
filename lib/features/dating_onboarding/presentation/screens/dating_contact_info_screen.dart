@@ -11,6 +11,7 @@ import 'package:nexus_app_v2/features/dating_onboarding/application/dating_onboa
 import 'package:nexus_app_v2/features/dating_onboarding/presentation/widgets/dating_profile_progress_bar.dart';
 import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
 import 'package:nexus_app_v2/core/bootstrap/firebase_ready_provider.dart';
+import 'package:nexus_app_v2/core/providers/service_providers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 /// Canonicalize strings for consistent Firestore queries
@@ -415,7 +416,9 @@ class _DatingContactInfoScreenState
         final userDoc = await fs.collection('users').doc(uid).get();
         final userData = userDoc.data();
         final nexus2 = userData?['nexus2'] as Map<String, dynamic>?;
-        final gender = nexus2?['gender'] as String?;
+        // Gender is now consolidated to dating.profile
+        final datingProfile = nexus2?['dating']?['profile'] as Map?;
+        final gender = datingProfile?['gender'] as String?;
         final relationshipStatus = nexus2?['relationshipStatus'] as String?;
 
         // Canonicalize all searchable fields for consistent Firestore queries
@@ -436,9 +439,10 @@ class _DatingContactInfoScreenState
           'schemaVersion': 2, // Mark as v2 profile
           // Profile searchable attributes (for dating.{field} queries)
           'maritalStatus': canonMaritalStatus, // Use canonicalized value
-          'haveKids': null, // TODO: Collect in dedicated onboarding screen
-          'longDistance': null, // TODO: Collect in dedicated onboarding screen
-          'genotype': null, // TODO: Collect in dedicated onboarding screen
+          'haveKids': null, // Placeholder until dedicated onboarding capture
+          'longDistance':
+              null, // Placeholder until dedicated onboarding capture
+          'genotype': null, // Placeholder until dedicated onboarding capture
           // Review pack for admin queue
           'reviewPack': {
             'photoUrls': photoUrls,
@@ -483,38 +487,23 @@ class _DatingContactInfoScreenState
           '[DATING_SAVE]   reviewPack.photoUrls (${payload['reviewPack']['photoUrls'].length}): ${payload['reviewPack']['photoUrls']}',
         );
 
-        // Track nationality and country for collection updates
-        print('[DATING_SAVE] Tracking nationality and country...');
+        // Track nationality and country through service (centralized handling)
+        print('[DATING_SAVE] Tracking nationality and country via service...');
         try {
-          // Track nationality if provided
+          final profileService = ref.read(datingProfileServiceProvider);
           if (d.nationality?.isNotEmpty ?? false) {
-            await fs
-                .collection('nationalities')
-                .doc(d.nationality!.trim())
-                .set({
-                  'name': d.nationality!.trim(),
-                  'count': FieldValue.increment(1),
-                  'lastUpdatedAt': FieldValue.serverTimestamp(),
-                }, SetOptions(merge: true));
+            await profileService.trackNationality(d.nationality!);
             print('[DATING_SAVE] ✅ Tracked nationality: ${d.nationality}');
           }
-
-          // Track country of residence if provided
           if (d.countryOfResidence?.isNotEmpty ?? false) {
-            await fs
-                .collection('countriesOfResidence')
-                .doc(d.countryOfResidence!.trim())
-                .set({
-                  'name': d.countryOfResidence!.trim(),
-                  'count': FieldValue.increment(1),
-                  'lastUpdatedAt': FieldValue.serverTimestamp(),
-                }, SetOptions(merge: true));
+            await profileService.trackCountryOfResidence(d.countryOfResidence!);
             print('[DATING_SAVE] ✅ Tracked country: ${d.countryOfResidence}');
           }
         } catch (trackError) {
           print(
-            '[DATING_SAVE] ⚠️ Error tracking nationality/country: $trackError',
+            '[DATING_SAVE] ❌ CRITICAL - Error tracking nationality/country: $trackError',
           );
+          rethrow; // Re-throw so caller can handle appropriately
         }
       } else {
         print(

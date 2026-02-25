@@ -292,6 +292,9 @@ class HomeScreen extends ConsumerWidget {
                               ),
                             ),
                         onAllowed: () async {
+                          ref
+                              .read(journeysOpenedFromHomeProvider.notifier)
+                              .state = true;
                           ref.read(selectedTabProvider.notifier).state =
                               NavTab.challenges;
                         },

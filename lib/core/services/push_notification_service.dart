@@ -274,15 +274,22 @@ class PushNotificationService {
   }
 
   /// Save FCM token to Firestore
+  /// Saves to both fcmToken (singular) for app compatibility
+  /// and fcmTokens (array) for CloudFunction daily limit resets
   Future<void> saveTokenToFirestore(String userId, String token) async {
     try {
       await _fs.collection('users').doc(userId).update({
         'fcmToken': token,
         'notificationToken': token, // Nexus 1.0 compatibility
+        'fcmTokens': FieldValue.arrayUnion([
+          token,
+        ]), // For CloudFunction daily resets
         'tokenUpdatedAt': FieldValue.serverTimestamp(),
         'platform': Platform.isIOS ? 'ios' : 'android',
       });
-    } catch (e) {}
+    } catch (e) {
+      print('[PushNotificationService] Error saving FCM token: $e');
+    }
   }
 
   /// Remove FCM token from Firestore (for logout)

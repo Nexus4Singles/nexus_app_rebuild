@@ -149,6 +149,22 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
 
         final m = activity;
 
+        // Mark as in-progress when user opens the activity
+        final currentUserAsync = ref.watch(currentUserProvider);
+        currentUserAsync.maybeWhen(
+          data: (user) {
+            if (user?.id != null) {
+              final progressSvc = ref.read(journeyProgressServiceProvider);
+              progressSvc.markMissionInProgress(
+                widget.journeyId,
+                widget.missionId,
+                user!.id,
+              );
+            }
+          },
+          orElse: () {},
+        );
+
         // hydrate choices once we have activity
         _hydrateChoices(m);
 
@@ -193,9 +209,10 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 0),
                     child: Text(
-                      'We highly recommend using a journal to document as you go on this journey!',
+                      'We recommend using a Journal to document on this journey!',
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.getTextSecondary(context),
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w700,
                         fontSize: 12,
                       ),
                       textAlign: TextAlign.center,
@@ -272,6 +289,8 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                             m.id,
                             uid,
                           );
+                          // Clear in-progress when completed
+                          await progressSvc.clearInProgress(widget.journeyId);
                         }
 
                         if (!mounted) return;
@@ -431,12 +450,10 @@ class _SessionHero extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.bodyLarge.copyWith(
                     color: textColor,
                     fontWeight: FontWeight.w600, // milder font weight
-                    height: 1.12,
+                    height: 1.28,
                   ),
                 ),
               ),
@@ -498,11 +515,9 @@ class _SessionHero extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             subtitle,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
             style: AppTextStyles.bodySmall.copyWith(
               color: secondary,
-              height: 1.5,
+              height: 1.6,
               fontWeight: FontWeight.w500,
               letterSpacing: 0.2,
             ),
@@ -756,6 +771,14 @@ class _MissionCardRenderer extends StatelessWidget {
           responseType: card.responseType ?? 'open-text',
         );
 
+      case 'action':
+      case 'action_card':
+        return _ActionCard(
+          title: card.title,
+          flavor: card.flavor ?? 'action',
+          text: card.text ?? '',
+        );
+
       default:
         return _InfoCard(
           title: card.title,
@@ -783,7 +806,6 @@ class _InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasBullets = bullets != null && bullets!.isNotEmpty;
     final badge = _flavorBadge(flavor);
-    final bgColor = _flavorColor(flavor);
 
     // Parse text content with proper line breaks and formatting
     final textBlocks = _parseRichContent(text);
@@ -791,9 +813,9 @@ class _InfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
       decoration: BoxDecoration(
-        color: bgColor.withOpacity(0.06),
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: bgColor.withOpacity(0.20)),
+        border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1022,58 +1044,103 @@ class _ChoiceCard extends StatelessWidget {
               reflection != null &&
               reflection!.isNotEmpty) ...[
             const SizedBox(height: 20),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: AppColors.primary.withOpacity(0.25),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.auto_awesome,
-                          size: 18,
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.08),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.primary.withOpacity(0.25)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.auto_awesome,
+                        size: 18,
+                        color: AppColors.primary,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Take a moment to reflect:',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          fontWeight: FontWeight.w700,
                           color: AppColors.primary,
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Take a moment to reflect:',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: _buildBodyWidgets(
-                            _parseRichContent(reflection!),
-                            AppTextStyles.bodyMedium.copyWith(
-                              height: 1.6,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.getTextPrimary(context),
-                            ),
-                          ),
-                        ),
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  ..._buildBodyWidgets(
+                    _parseRichContent(reflection!),
+                    AppTextStyles.bodyMedium.copyWith(
+                      height: 1.6,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.getTextPrimary(context),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _ActionCard extends StatelessWidget {
+  final String title;
+  final String? flavor;
+  final String text;
+
+  const _ActionCard({required this.title, required this.text, this.flavor});
+
+  @override
+  Widget build(BuildContext context) {
+    final badge = _flavorBadge(flavor ?? 'action');
+    final blocks = _parseRichContent(text);
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+      decoration: BoxDecoration(
+        color: AppColors.getSurface(context),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.getBorder(context)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    fontWeight: FontWeight.w700,
+                    height: 1.25,
+                    fontSize: 15,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+              ),
+              if (badge != null) badge,
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (blocks.isNotEmpty)
+            ..._buildBodyWidgets(
+              blocks,
+              AppTextStyles.bodyMedium.copyWith(
+                height: 1.65,
+                letterSpacing: 0.25,
+                fontWeight: FontWeight.w500,
+                color: AppColors.getTextPrimary(context),
+              ),
+            ),
         ],
       ),
     );
@@ -1100,7 +1167,6 @@ class _ReflectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final badge = _flavorBadge(flavor);
     final bgColor = _flavorColor(flavor);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Parse content with proper line breaks
     // If reflection is empty, use text as the reflection content
@@ -1112,13 +1178,13 @@ class _ReflectionCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
       decoration: BoxDecoration(
-        color: bgColor.withOpacity(0.06),
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: bgColor.withOpacity(0.20)),
+        border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max, // Fill available height
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1149,60 +1215,46 @@ class _ReflectionCard extends StatelessWidget {
                 height: 1.65,
                 letterSpacing: 0.25,
                 fontWeight: FontWeight.w500,
-                color: AppColors.getTextSecondary(context),
+                color: AppColors.getTextPrimary(context),
               ),
             ),
             const SizedBox(height: 16),
           ],
 
-          // Main reflection prompt - takes remaining space
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color:
-                    isDark
-                        ? bgColor.withOpacity(0.15)
-                        : bgColor.withOpacity(0.08),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: bgColor.withOpacity(0.25), width: 1),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.auto_awesome, size: 16, color: bgColor),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Take a moment to reflect:',
-                        style: AppTextStyles.labelSmall.copyWith(
-                          color: bgColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 14),
-                  // Reflection content with proper line breaks
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: _buildBodyWidgets(
-                          reflectionBlocks,
-                          AppTextStyles.bodyMedium.copyWith(
-                            height: 1.6,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.getTextPrimary(context),
-                          ),
-                        ),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.getSurface(context),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.getBorder(context), width: 1),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.auto_awesome, size: 16, color: bgColor),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Take a moment to reflect:',
+                      style: AppTextStyles.labelSmall.copyWith(
+                        color: bgColor,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                ..._buildBodyWidgets(
+                  reflectionBlocks,
+                  AppTextStyles.bodyMedium.copyWith(
+                    height: 1.6,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.getTextPrimary(context),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
 
@@ -1210,14 +1262,14 @@ class _ReflectionCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: bgColor.withOpacity(0.12),
+              color: AppColors.getSurface(context),
               borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: bgColor.withOpacity(0.25)),
+              border: Border.all(color: AppColors.getBorder(context)),
             ),
             child: Text(
               'Response type: $responseType',
               style: AppTextStyles.labelSmall.copyWith(
-                color: bgColor,
+                color: AppColors.primary,
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
               ),
@@ -1246,7 +1298,8 @@ class _Block {
 /// - "- ..." / "* ..." / "• ..."
 /// - blank lines = paragraph breaks
 List<_Block> _parseRichContent(String raw) {
-  final lines = raw.split('\n');
+  final normalizedRaw = _normalizeOverBoldContent(raw);
+  final lines = normalizedRaw.split('\n');
 
   final blocks = <_Block>[];
   final buffer = <String>[];
@@ -1263,13 +1316,11 @@ List<_Block> _parseRichContent(String raw) {
   for (final line in lines) {
     final trimmed = line.trimRight();
 
-    // blank line -> paragraph break
     if (trimmed.trim().isEmpty) {
       flushParagraph();
       continue;
     }
 
-    // bullet line?
     final bulletMatch = RegExp(r'^\s*([-*•])\s+(.*)$').firstMatch(trimmed);
     if (bulletMatch != null) {
       flushParagraph();
@@ -1282,6 +1333,50 @@ List<_Block> _parseRichContent(String raw) {
 
   flushParagraph();
   return blocks;
+}
+
+String _normalizeOverBoldContent(String raw) {
+  final lines = raw.split('\n');
+  final fullyBoldLinePattern = RegExp(r'^\*\*([^*]|\*(?!\*))+\*\*$');
+
+  var nonEmptyLineCount = 0;
+  var fullyBoldLineCount = 0;
+
+  for (final line in lines) {
+    final trimmed = line.trim();
+    if (trimmed.isEmpty) continue;
+    nonEmptyLineCount++;
+    if (fullyBoldLinePattern.hasMatch(trimmed)) {
+      fullyBoldLineCount++;
+    }
+  }
+
+  if (nonEmptyLineCount == 0) return raw;
+
+  final fullyBoldRatio = fullyBoldLineCount / nonEmptyLineCount;
+  if (fullyBoldRatio < 0.8) {
+    return raw;
+  }
+
+  final normalized = lines
+      .map((line) {
+        final trimmed = line.trim();
+        if (!fullyBoldLinePattern.hasMatch(trimmed)) return line;
+
+        final leadingWhitespaceLength = line.length - line.trimLeft().length;
+        final trailingWhitespaceLength = line.length - line.trimRight().length;
+        final leading = line.substring(0, leadingWhitespaceLength);
+        final trailing =
+            trailingWhitespaceLength > 0
+                ? line.substring(line.length - trailingWhitespaceLength)
+                : '';
+
+        final inner = trimmed.substring(2, trimmed.length - 2);
+        return '$leading$inner$trailing';
+      })
+      .join('\n');
+
+  return normalized;
 }
 
 /// Builds widgets from parsed blocks with spacing.
@@ -1343,9 +1438,9 @@ Widget? _flavorBadge(String? flavor) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
     decoration: BoxDecoration(
-      color: bg.withOpacity(0.10),
+      color: Colors.transparent,
       borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: bg.withOpacity(0.22)),
+      border: Border.all(color: bg.withOpacity(0.25)),
     ),
     child: Row(
       mainAxisSize: MainAxisSize.min,

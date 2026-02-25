@@ -24,9 +24,11 @@ import 'package:nexus_app_v2/core/moderation/moderation_providers.dart';
 import 'package:country_picker/country_picker.dart';
 
 import '../../../../core/models/user_model.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:just_audio/just_audio.dart' as ja;
+import 'package:audioplayers/audioplayers.dart';
 import 'package:nexus_app_v2/core/services/media_service.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:nexus_app_v2/features/profile/presentation/widgets/relationship_status_editor.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -391,12 +393,30 @@ class ProfileScreen extends ConsumerWidget {
                             isViewingOtherUser
                                 ? 'Listen to their responses'
                                 : 'Audio recordings cannot be changed after profile creation',
-                        child: _AudioPromptsSection(
-                          audioUrls: profile.audioPrompts ?? const [],
-                          isLocked: false,
-                          isViewingOtherUser: isViewingOtherUser,
-                          username: profile.username,
-                          gender: profile.gender,
+                        child: Builder(
+                          builder: (context) {
+                            final urls = profile.audioPrompts ?? const [];
+                            debugPrint(
+                              '🎵 [PROFILE] Audio prompts from Firestore:',
+                            );
+                            debugPrint('  Total: ${urls.length}');
+                            for (int i = 0; i < urls.length; i++) {
+                              final url = urls[i];
+                              debugPrint(
+                                '  [$i]: ${url.isEmpty ? "EMPTY" : url.substring(0, (url.length > 50 ? 50 : url.length))}...',
+                              );
+                            }
+                            if (urls.isEmpty) {
+                              debugPrint('  ⚠️ NO AUDIO PROMPTS FOUND!');
+                            }
+                            return _AudioPromptsSection(
+                              audioUrls: urls,
+                              isLocked: false,
+                              isViewingOtherUser: isViewingOtherUser,
+                              username: profile.username,
+                              gender: profile.gender,
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -456,7 +476,7 @@ class _BasicProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final p = profile;
-    final name = (p.username ?? p.name ?? 'User').trim();
+    final name = (p.name ?? p.username ?? 'User').trim();
     final email = (p.email ?? '').trim();
 
     return Scaffold(
@@ -1262,8 +1282,8 @@ class _HeroCarouselState extends State<_HeroCarousel> {
                         ? _InitialsAvatar(
                           profile: widget.profile,
                           name:
-                              (widget.profile.username ??
-                                      widget.profile.name ??
+                              (widget.profile.name ??
+                                      widget.profile.username ??
                                       'User')
                                   .trim(),
                         )
@@ -1331,10 +1351,10 @@ class _SendMessageCta extends ConsumerWidget {
   const _SendMessageCta({required this.profile, required this.viewerUid});
 
   String _displayName() {
-    final u = (profile.username ?? '').trim();
-    if (u.isNotEmpty) return u;
     final n = (profile.name ?? '').trim();
     if (n.isNotEmpty) return n;
+    final u = (profile.username ?? '').trim();
+    if (u.isNotEmpty) return u;
     return 'User';
   }
 
@@ -1637,14 +1657,18 @@ class _ProfileAudioController {
   final AudioPlayer _player = AudioPlayer();
   String? currentUrl;
 
-  Duration duration = Duration.zero;
+  Duration duration = const Duration(seconds: 90); // Placeholder: 1:30
   Duration position = Duration.zero;
   PlayerState state = PlayerState.stopped;
+  bool isBuffering = false; // Track if audio is currently loading/buffering
 
   bool _initialized = false;
   bool _hasSource = false;
 
-  // Track cached durations for URLs to avoid reloading
+  // Track playback status for each URL
+  final Map<String, bool> _urlsPlaying = {};
+
+  // Cache preloaded durations for URLs
   final Map<String, Duration> _durationCache = {};
 
   String? lastError;
@@ -1659,91 +1683,80 @@ class _ProfileAudioController {
       await _player.setReleaseMode(ReleaseMode.stop);
     } catch (_) {}
 
-    _player.onDurationChanged.listen((d) {
-      duration = d;
-      // Cache the duration for this URL
-      if (currentUrl != null) {
-        _durationCache[currentUrl!] = d;
-      }
-      notify();
-    });
+    _player.onDurationChanged.listen(
+      (d) {
+        duration = d;
+        notify();
+      },
+      onError: (e) {
+        lastError = 'Duration error: $e';
+        debugPrint('🎵 [AUDIO] Duration error: $e');
+        notify();
+      },
+    );
 
-    _player.onPositionChanged.listen((p) {
-      position = p;
-      notify();
-    });
+    _player.onPositionChanged.listen(
+      (p) {
+        position = p;
+        notify();
+      },
+      onError: (e) {
+        lastError = 'Position error: $e';
+        debugPrint('🎵 [AUDIO] Position error: $e');
+        notify();
+      },
+    );
 
-    _player.onPlayerStateChanged.listen((s) {
-      state = s;
-      notify();
-    });
+    _player.onPlayerStateChanged.listen(
+      (s) {
+        state = s;
+        notify();
+      },
+      onError: (e) {
+        lastError = 'Player state error: $e';
+        debugPrint('🎵 [AUDIO] Player state error: $e');
+        notify();
+      },
+    );
   }
 
-  /// Get duration for a specific URL (loads metadata via just_audio)
-  Future<Duration> getDurationForUrl(String url) async {
-    final u = url.trim();
-    if (u.isEmpty) return Duration.zero;
-
-    // If cached, return immediately
-    if (_durationCache.containsKey(u)) {
-      return _durationCache[u]!;
-    }
-
-    try {
-      final probe = ja.AudioPlayer();
-      final d = await probe.setUrl(u);
-      await probe.dispose();
-      if (d != null && d != Duration.zero) {
-        _durationCache[u] = d;
-        return d;
-      }
-    } catch (_) {}
-    return Duration.zero;
+  /// Check if URL is currently playing/buffering
+  bool isLoadingUrl(String url) {
+    return _urlsPlaying[url.trim().replaceAll('@', '%40')] == true;
   }
 
-  /// Preload duration for a URL without playing it
-  Future<void> preloadDuration(String url) async {
-    final u = url.trim();
-    if (u.isEmpty) return;
-
-    // Return cached duration if available
-    if (_durationCache.containsKey(u)) {
-      duration = _durationCache[u]!;
-      _notify?.call();
-      return;
-    }
-
-    try {
-      final probe = ja.AudioPlayer();
-      final d = await probe.setUrl(u);
-      await probe.dispose();
-      if (d != null && d != Duration.zero) {
-        _durationCache[u] = d;
-        if (currentUrl == u || currentUrl == null) {
-          duration = d;
-        }
-        _notify?.call();
-      }
-    } catch (_) {}
+  /// Mark URL as loading
+  void _setUrlLoading(String url, bool loading) {
+    _urlsPlaying[url] = loading;
+    _notify?.call();
   }
 
   Future<void> playOrPause(String url) async {
     lastError = null;
-    _notify?.call();
-    final u = url.trim();
+    var u = url.trim();
     if (u.isEmpty) return;
 
     try {
+      // Validate URL is HTTPS for security
+      if (!u.startsWith('https://') && !u.startsWith('http://')) {
+        lastError = 'Invalid URL scheme. Must be http or https.';
+        debugPrint('🎵 [AUDIO] Invalid URL scheme: $u');
+        _notify?.call();
+        return;
+      }
+
+      // URL-encode special characters that break AVFoundation parser
+      // Specifically @ symbols in email addresses need to be %40
+      u = u.replaceAll('@', '%40');
+
+      debugPrint('🎵 [AUDIO] playOrPause - Encoded URL: $u');
+
       if (currentUrl != u) {
         currentUrl = u;
         position = Duration.zero;
-
-        // Use cached duration if available
-        if (_durationCache.containsKey(u)) {
-          duration = _durationCache[u]!;
-        } else {
-          duration = Duration.zero;
-        }
+        duration = const Duration(seconds: 90); // Placeholder: 1:30
+        isBuffering = true;
+        _setUrlLoading(u, true);
 
         // stop only if we previously had a source
         if (_hasSource) {
@@ -1752,12 +1765,30 @@ class _ProfileAudioController {
           } catch (_) {}
         }
 
-        await _player.play(UrlSource(u));
+        debugPrint('🎵 [AUDIO] Attempting to play: $u');
+        try {
+          await _player.play(UrlSource(u));
+          debugPrint('🎵 [AUDIO] Play initiated successfully');
+        } catch (playError) {
+          debugPrint('❌ [AUDIO] Play failed with error: $playError');
+          lastError = playError.toString();
+          isBuffering = false;
+          _setUrlLoading(u, false);
+          rethrow;
+        }
         _hasSource = true;
+
+        // Stop showing spinner after 3 seconds (audio should be buffering by then)
+        Future.delayed(const Duration(seconds: 3), () {
+          if (currentUrl == u) {
+            isBuffering = false;
+            _setUrlLoading(u, false);
+          }
+        });
         return;
       }
 
-      // Same URL: toggle pause/play (avoid resume() — it often fails on iOS if native player isn't ready)
+      // Same URL: toggle pause/play
       if (state == PlayerState.playing) {
         try {
           await _player.pause();
@@ -1768,10 +1799,11 @@ class _ProfileAudioController {
       await _player.play(UrlSource(u));
       _hasSource = true;
     } catch (e) {
+      debugPrint('❌ [AUDIO] Exception in playOrPause: $e');
       lastError = e.toString();
+      isBuffering = false;
       _notify?.call();
     }
-    ;
   }
 
   Future<void> seek(Duration d) async {
@@ -1779,7 +1811,6 @@ class _ProfileAudioController {
     try {
       await _player.seek(d);
     } catch (_) {}
-    ;
   }
 
   Future<void> stop() async {
@@ -1796,9 +1827,47 @@ class _ProfileAudioController {
     _hasSource = false;
   }
 
+  /// Preload duration for a URL without playing it
+  /// This loads metadata to show correct duration before user plays
+  Future<void> preloadDuration(String url) async {
+    final u = url.trim().replaceAll('@', '%40');
+    if (u.isEmpty) return;
+    if (_durationCache.containsKey(u)) return;
+
+    try {
+      // Create temporary player to load duration metadata
+      final tempPlayer = AudioPlayer();
+      bool durationFound = false;
+
+      tempPlayer.onDurationChanged.listen((d) {
+        if (!durationFound && d != Duration.zero) {
+          durationFound = true;
+          _durationCache[u] = d;
+          debugPrint('🎵 [AUDIO] Preloaded duration for $u: ${d.inSeconds}s');
+          _notify?.call();
+        }
+      });
+
+      // Start playback briefly to load metadata
+      await tempPlayer.play(UrlSource(u));
+      await Future.delayed(const Duration(milliseconds: 100));
+      await tempPlayer.stop();
+
+      // Dispose temp player after delay
+      Future.delayed(const Duration(seconds: 1), () {
+        try {
+          tempPlayer.dispose();
+        } catch (_) {}
+      });
+    } catch (e) {
+      debugPrint('⚠️ [AUDIO] Failed to preload duration: $e');
+    }
+  }
+
   void dispose() {
     currentUrl = null;
     _hasSource = false;
+    isBuffering = false;
 
     try {
       _player.stop();
@@ -1807,7 +1876,6 @@ class _ProfileAudioController {
     try {
       _player.dispose();
     } catch (_) {}
-    ;
   }
 }
 
@@ -1840,6 +1908,13 @@ class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
     _controller.init(() {
       if (mounted) setState(() {});
     });
+
+    // Preload audio durations so they display correctly before playback
+    for (final url in widget.audioUrls) {
+      if (url.trim().isNotEmpty) {
+        _controller.preloadDuration(url);
+      }
+    }
   }
 
   @override
@@ -1945,147 +2020,154 @@ class _AudioPromptTile extends StatefulWidget {
 
 class _AudioPromptTileState extends State<_AudioPromptTile> {
   @override
-  void initState() {
-    super.initState();
-    // Preload the duration when the tile is created
-    if ((widget.url ?? '').trim().isNotEmpty) {
-      widget.controller.preloadDuration(widget.url!);
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant _AudioPromptTile oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // If the URL changed, preload the new duration
-    if (oldWidget.url != widget.url && (widget.url ?? '').trim().isNotEmpty) {
-      widget.controller.preloadDuration(widget.url!);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     final hasUrl = (widget.url ?? '').trim().isNotEmpty;
-    final isCurrent =
-        hasUrl && (widget.controller.currentUrl == (widget.url ?? '').trim());
-    final isPlaying =
+    final encodedUrl = hasUrl ? widget.url!.trim().replaceAll('@', '%40') : '';
+    final isCurrent = hasUrl && (widget.controller.currentUrl == encodedUrl);
+    final isPlayingThisUrl =
         isCurrent && widget.controller.state == PlayerState.playing;
+    final isLoadingThisUrl =
+        hasUrl && widget.controller.isLoadingUrl(encodedUrl);
 
-    // Get duration specific to this audio URL (not the shared controller duration)
-    final Future<Duration> audioDurationFuture =
-        hasUrl
-            ? widget.controller.getDurationForUrl(widget.url!)
-            : Future.value(Duration.zero);
+    // Use controller's duration directly (no async probing)
+    final duration = widget.controller.duration;
+    final position = isCurrent ? widget.controller.position : Duration.zero;
+    final borderColor = Theme.of(context).dividerColor;
 
-    return FutureBuilder<Duration>(
-      future: audioDurationFuture,
-      builder: (context, snapshot) {
-        final audioDuration = snapshot.data ?? Duration.zero;
-        final duration =
-            audioDuration.inMilliseconds == 0
-                ? const Duration(seconds: 1)
-                : audioDuration;
-        // Position is only relevant for the currently playing audio
-        final position = isCurrent ? widget.controller.position : Duration.zero;
-        final borderColor = Theme.of(context).dividerColor;
-        return Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: borderColor),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Audio prompt question
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Text(
-                  widget.prompt,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: borderColor),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Audio prompt question
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Text(
+              widget.prompt,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontWeight: FontWeight.w600,
               ),
-              Row(
-                children: [
-                  InkWell(
-                    onTap:
-                        (!widget.isLocked && hasUrl)
-                            ? () async {
-                              await widget.controller.playOrPause(widget.url!);
-                            }
-                            : null,
+            ),
+          ),
+          Row(
+            children: [
+              // Play button or loading spinner
+              if (isLoadingThisUrl)
+                Container(
+                  height: 34,
+                  width: 44,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(999),
-                    child: Container(
-                      height: 34,
-                      width: 44,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(999),
-                        border: Border.all(
-                          color: Theme.of(context).dividerColor,
+                    border: Border.all(color: Theme.of(context).dividerColor),
+                  ),
+                  child: Center(
+                    child: SizedBox(
+                      height: 18,
+                      width: 18,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation(
+                          Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                      child: Icon(
-                        widget.isLocked
-                            ? Icons.lock_rounded
-                            : hasUrl
-                            ? (isPlaying
-                                ? Icons.pause_rounded
-                                : Icons.play_arrow_rounded)
-                            : Icons.mic_none_rounded,
-                        color: Theme.of(context).colorScheme.primary,
-                        size: 22,
-                      ),
                     ),
                   ),
-                ],
-              ),
-              if (!widget.isLocked && hasUrl) ...[
-                const SizedBox(height: 8),
-                Slider(
-                  value:
-                      isCurrent
-                          ? position.inMilliseconds
-                              .clamp(0, duration.inMilliseconds)
-                              .toDouble()
-                          : 0,
-                  max: duration.inMilliseconds.toDouble(),
-                  activeColor: Theme.of(context).colorScheme.primary,
-                  inactiveColor: Theme.of(
-                    context,
-                  ).colorScheme.primary.withOpacity(0.2),
-                  onChanged: (v) async {
-                    if (!isCurrent) return;
-                    await widget.controller.seek(
-                      Duration(milliseconds: v.toInt()),
-                    );
-                  },
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      _formatDuration(isCurrent ? position : Duration.zero),
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
+                )
+              else
+                InkWell(
+                  onTap:
+                      (!widget.isLocked && hasUrl)
+                          ? () async {
+                            debugPrint(
+                              '🎵 [UI] Play button tapped for URL: ${widget.url}',
+                            );
+                            await widget.controller.playOrPause(widget.url!);
+                          }
+                          : null,
+                  borderRadius: BorderRadius.circular(999),
+                  child: Container(
+                    height: 34,
+                    width: 44,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(color: Theme.of(context).dividerColor),
                     ),
-                    Text(
-                      _formatDuration(duration),
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
+                    child: Icon(
+                      widget.isLocked
+                          ? Icons.lock_rounded
+                          : hasUrl
+                          ? (isPlayingThisUrl
+                              ? Icons.pause_rounded
+                              : Icons.play_arrow_rounded)
+                          : Icons.mic_none_rounded,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 22,
                     ),
-                  ],
+                  ),
                 ),
-              ],
+              if (isCurrent && widget.controller.lastError != null)
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Text(
+                      '❌ ${widget.controller.lastError}',
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: Colors.red,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
             ],
           ),
-        );
-      },
+          if (!widget.isLocked && hasUrl) ...[
+            const SizedBox(height: 8),
+            Slider(
+              value:
+                  isCurrent
+                      ? position.inMilliseconds
+                          .clamp(0, duration.inMilliseconds)
+                          .toDouble()
+                      : 0,
+              max: duration.inMilliseconds.toDouble(),
+              activeColor: Theme.of(context).colorScheme.primary,
+              inactiveColor: Theme.of(
+                context,
+              ).colorScheme.primary.withOpacity(0.2),
+              onChanged: (v) async {
+                if (!isCurrent) return;
+                await widget.controller.seek(Duration(milliseconds: v.toInt()));
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  _formatDuration(isCurrent ? position : Duration.zero),
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                Text(
+                  _formatDuration(duration),
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
     );
   }
 }
@@ -2244,7 +2326,9 @@ class _GalleryGrid extends StatelessWidget {
     if (photos.isEmpty) {
       return Text(
         'No photos added yet.',
-        style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+        style: AppTextStyles.bodySmall.copyWith(
+          color: AppColors.getTextSecondary(context),
+        ),
       );
     }
 
@@ -2277,7 +2361,7 @@ class _GalleryGrid extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
-                    color: AppColors.border,
+                    color: AppColors.getBorder(context),
                     child: GestureDetector(
                       onTap: () {
                         _openPhotoViewer(
@@ -2714,8 +2798,8 @@ class _ProfileLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
-      body: const Center(child: CircularProgressIndicator()),
+      backgroundColor: AppColors.getBackground(context),
+      body: Center(child: CircularProgressIndicator(color: AppColors.primary)),
     );
   }
 }
@@ -2912,10 +2996,13 @@ class _InitialsAvatar extends StatelessWidget {
       );
     }
 
-    // For v2/new users: show first letter of username
+    // For v2/new users: prefer name initials, then fallback to username
+    final displayName = (profile.name ?? '').trim();
     final username = (profile.username ?? '').trim();
     final initials =
-        username.isNotEmpty
+        displayName.isNotEmpty
+            ? displayName[0].toUpperCase()
+            : username.isNotEmpty
             ? username[0].toUpperCase()
             : _initialsFromName(name);
 
@@ -2961,10 +3048,8 @@ String _buildLocation(String? city, String? country) {
   final k = (country ?? '').trim();
 
   if (c.isNotEmpty && k.isNotEmpty) {
-    final lc = c.toLowerCase();
-    final lk = k.toLowerCase();
-    // Avoid duplicating city if residence string already includes it.
-    if (lk.contains(lc)) return k;
+    // Avoid duplicating city if country string already contains it (case-insensitive check)
+    if (k.toLowerCase().contains(c.toLowerCase())) return k;
     return '$c, $k';
   }
 
@@ -3061,7 +3146,7 @@ class _PhotoViewerScreenState extends State<_PhotoViewerScreen> {
     final photos = widget.photos;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       body: SafeArea(
         child: Stack(
           children: [
@@ -3098,13 +3183,13 @@ class _PhotoViewerScreenState extends State<_PhotoViewerScreen> {
                       color: AppColors.overlay,
                       borderRadius: BorderRadius.circular(999),
                       border: Border.all(
-                        color: AppColors.border.withOpacity(0.24),
+                        color: AppColors.getBorder(context).withOpacity(0.24),
                       ),
                     ),
                     child: Text(
                       '${_index + 1}/${photos.length}',
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textOnPrimary,
+                        color: AppColors.getTextPrimary(context),
                       ),
                     ),
                   ),
@@ -3143,9 +3228,11 @@ class _ViewerIconButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.overlay,
           borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: AppColors.border.withOpacity(0.24)),
+          border: Border.all(
+            color: AppColors.getBorder(context).withOpacity(0.24),
+          ),
         ),
-        child: Icon(icon, color: AppColors.textOnPrimary),
+        child: Icon(icon, color: AppColors.getTextPrimary(context)),
       ),
     );
   }
@@ -3216,7 +3303,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
     if (_hobbies.length > 5) _hobbies = _hobbies.take(5).toList();
 
     _qualities = _parseChipList(p.desiredQualities);
-    if (_qualities.length > 5) _qualities = _qualities.take(5).toList();
+    if (_qualities.length > 8) _qualities = _qualities.take(8).toList();
 
     // Contact defaults from profile
     _instagram = p.instagramUsername ?? '';
@@ -3277,7 +3364,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
   }
 
   void _markDirty() {
-    if (!_dirty) setState(() => _dirty = true);
+    setState(() => _dirty = true);
   }
 
   Future<void> _save() async {
@@ -3331,16 +3418,30 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
               ? uploadedPhotos.first
               : widget.profile.profileUrl;
 
+      final trimmedName =
+          _name.trim().isEmpty
+              ? (widget.profile.name ?? '').trim()
+              : _name.trim();
+      final trimmedCity = _city.trim();
+      final trimmedCountry = _country.trim();
+      final trimmedNationality = _nationality.trim();
+      final trimmedEducation = _educationLevel.trim();
+      final trimmedProfession = _profession.trim();
+      final trimmedChurch = _churchName.trim();
+      final desiredQualitiesValue = _qualities.join(', ');
+
       final updates = <String, dynamic>{
-        'name': _name.trim().isEmpty ? widget.profile.name ?? '' : _name.trim(),
+        'name': trimmedName,
+        'username': trimmedName,
+        'displayName': trimmedName,
         'age': _age,
-        'city': _city.trim(),
-        'country': _country.trim(),
-        'nationality': _nationality.trim(),
-        'educationLevel': _educationLevel.trim(),
-        'profession': _profession.trim(),
-        'churchName': _churchName.trim(),
-        'desiredQualities': _qualities.join(', '),
+        'city': trimmedCity,
+        'country': trimmedCountry,
+        'nationality': trimmedNationality,
+        'educationLevel': trimmedEducation,
+        'profession': trimmedProfession,
+        'churchName': trimmedChurch,
+        'desiredQualities': desiredQualitiesValue,
         'hobbies': _hobbies,
         'photos': uploadedPhotos,
         'profileUrl': profileUrl,
@@ -3351,9 +3452,35 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
         'facebookUsername': _facebook.trim(),
         'telegramUsername': _telegram.trim(),
         'snapchatUsername': _snapchat.trim(),
+        'dating.profile.name': trimmedName,
+        'dating.profile.username': trimmedName,
+        'dating.profile.age': _age,
+        'dating.profile.city': trimmedCity,
+        'dating.profile.country': trimmedCountry,
+        'dating.profile.nationality': trimmedNationality,
+        'dating.profile.educationLevel': trimmedEducation,
+        'dating.profile.profession': trimmedProfession,
+        'dating.profile.churchName': trimmedChurch,
+        'dating.profile.desiredQualities': desiredQualitiesValue,
+        'dating.profile.hobbies': _hobbies,
+        'dating.profile.photos': uploadedPhotos,
+        'dating.profile.profileUrl': profileUrl,
+        'dating.profile.phoneNumber': _whatsapp.trim(),
+        // Clean up accidental alias fields previously introduced.
+        'userName': FieldValue.delete(),
+        'user_name': FieldValue.delete(),
+        'handle': FieldValue.delete(),
+        'fullName': FieldValue.delete(),
+        'full_name': FieldValue.delete(),
+        'dating.profile.userName': FieldValue.delete(),
+        'dating.profile.user_name': FieldValue.delete(),
+        'dating.profile.displayName': FieldValue.delete(),
+        'nexus2.profile.name': FieldValue.delete(),
+        'nexus2.profile.username': FieldValue.delete(),
+        'nexus2.profile.displayName': FieldValue.delete(),
         // Also update nested dating fields to ensure dating search visibility
-        'dating.countryOfResidence': _country.trim(),
-        'dating.nationality': _nationality.trim(),
+        'dating.countryOfResidence': trimmedCountry,
+        'dating.nationality': trimmedNationality,
         'updatedAt': FieldValue.serverTimestamp(),
       };
 
@@ -3364,15 +3491,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
 
       // Persist locally as a best-effort cache for offline reloads
       final updatedProfile = widget.profile.copyWith(
-        name: updates['name'] as String?,
+        name: trimmedName,
+        username: trimmedName,
         age: _age,
-        city: _city.trim(),
-        country: _country.trim(),
-        nationality: _nationality.trim(),
-        educationLevel: _educationLevel.trim(),
-        profession: _profession.trim(),
-        churchName: _churchName.trim(),
-        desiredQualities: _qualities.join(', '),
+        city: trimmedCity,
+        country: trimmedCountry,
+        nationality: trimmedNationality,
+        educationLevel: trimmedEducation,
+        profession: trimmedProfession,
+        churchName: trimmedChurch,
+        desiredQualities: desiredQualitiesValue,
         hobbies: _hobbies,
         photos: uploadedPhotos,
         profileUrl: profileUrl,
@@ -3922,7 +4050,7 @@ class _AboutEditor extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           _InputField(
-            label: 'City',
+            label: 'City of Residence',
             initialValue: city,
             onChanged:
                 (v) => onChanged(
@@ -3941,7 +4069,7 @@ class _AboutEditor extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           _CountryPickerField(
-            label: 'Country',
+            label: 'Country of Residence',
             selectedCountry: country,
             onCountrySelected:
                 (countryName) => onChanged(
@@ -4052,7 +4180,7 @@ class _AboutEditor extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _DropdownField(
-                    label: 'Church (optional)',
+                    label: 'Church',
                     value: hasChurch ? (isOther ? 'Other' : churchName) : '',
                     items: items,
                     onChanged: (v) {
@@ -4148,6 +4276,18 @@ class _InterestsEditorState extends ConsumerState<_InterestsEditor> {
   }
 
   @override
+  void didUpdateWidget(_InterestsEditor oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Sync state when parent widget values change
+    if (oldWidget.hobbies != widget.hobbies) {
+      _selectedHobbies = [...widget.hobbies];
+    }
+    if (oldWidget.qualities != widget.qualities) {
+      _selectedQualities = [...widget.qualities];
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
       future: _OnboardingListsCache.load(context),
@@ -4203,7 +4343,7 @@ class _InterestsEditorState extends ConsumerState<_InterestsEditor> {
               _SelectableInterestGrid(
                 items: hobbyItems,
                 selected: _selectedHobbies,
-                max: 8,
+                max: 5,
                 onToggle: (v) {
                   setState(() {
                     if (_selectedHobbies.contains(v)) {
@@ -4239,7 +4379,7 @@ class _InterestsEditorState extends ConsumerState<_InterestsEditor> {
               _SelectableInterestGrid(
                 items: qualityItems,
                 selected: _selectedQualities,
-                max: 5,
+                max: 8,
                 onToggle: (v) {
                   setState(() {
                     if (_selectedQualities.contains(v)) {
@@ -4527,7 +4667,7 @@ class _ContactEditor extends StatelessWidget {
   }
 }
 
-class _InputField extends StatelessWidget {
+class _InputField extends StatefulWidget {
   final String label;
   final String initialValue;
   final TextInputType? keyboardType;
@@ -4541,23 +4681,51 @@ class _InputField extends StatelessWidget {
     this.inputFormatters,
     required this.onChanged,
   });
+
+  @override
+  State<_InputField> createState() => _InputFieldState();
+}
+
+class _InputFieldState extends State<_InputField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.initialValue);
+  }
+
+  @override
+  void didUpdateWidget(_InputField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialValue != widget.initialValue) {
+      _controller.text = widget.initialValue;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
+          widget.label,
           style: AppTextStyles.labelMedium.copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: 6),
-        TextFormField(
-          initialValue: initialValue,
-          keyboardType: keyboardType,
-          inputFormatters: inputFormatters,
+        TextField(
+          controller: _controller,
+          keyboardType: widget.keyboardType,
+          inputFormatters: widget.inputFormatters,
           style: AppTextStyles.bodySmall.copyWith(fontSize: 13),
           decoration: InputDecoration(
             filled: true,
@@ -4579,7 +4747,7 @@ class _InputField extends StatelessWidget {
               borderSide: BorderSide(color: AppColors.primary),
             ),
           ),
-          onChanged: onChanged,
+          onChanged: widget.onChanged,
         ),
       ],
     );
@@ -5034,9 +5202,7 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
   }
 
   Map<String, String> _pronouns() {
-    final g1 = _normGender(profile.gender);
-    final g2 = _normGender(profile.nexus2?.gender);
-    final g = g1.isNotEmpty ? g1 : g2;
+    final g = _normGender(profile.gender);
 
     if (g == 'female') {
       return const <String, String>{

@@ -89,9 +89,31 @@ Map<String, dynamic> buildUserV2Patch({
     patch['dating_enabled'] = true;
   }
 
-  // Verification status (safe default)
+  // Verification status (based on eligibility)
+  // For legacy v1 users, only verify if they meet v2 eligibility criteria:
+  // 1. Has photos
+  // 2. registration_progress == 'completed'
+  // 3. compatibility_setted == true
   if (!datingMap.containsKey('verificationStatus')) {
-    datingPatch['verificationStatus'] = 'unverified';
+    if (isLegacy) {
+      final photos = raw['photos'];
+      final hasPhotos = (photos is List) && photos.isNotEmpty;
+      final regProgress =
+          (raw['registration_progress'] ?? '').toString().toLowerCase().trim();
+      final compatSetted = raw['compatibility_setted'] == true;
+
+      if (hasPhotos && regProgress == 'completed' && compatSetted) {
+        // Eligible: auto-verify this v1 user
+        datingPatch['verificationStatus'] = 'verified';
+        datingPatch['verifiedAt'] = FieldValue.serverTimestamp();
+        datingPatch['verifiedBy'] = 'legacy_v1_migration';
+      } else {
+        // Not eligible: leave unverified
+        datingPatch['verificationStatus'] = 'unverified';
+      }
+    } else {
+      datingPatch['verificationStatus'] = 'unverified';
+    }
   }
 
   // Discoverability / visibility for search (choose a conservative key that can be used later).

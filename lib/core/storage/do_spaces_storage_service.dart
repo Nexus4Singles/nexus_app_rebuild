@@ -44,8 +44,7 @@ class DoSpacesStorageService implements MediaStorageService {
     }
 
     onProgress?.call(0.0);
-
-    final bytes = await file.readAsBytes();
+    final fileLength = await file.length();
     final contentType = _guessContentType(localPath);
     final type = _guessPresignType(contentType);
 
@@ -89,15 +88,21 @@ class DoSpacesStorageService implements MediaStorageService {
 
     // 2) upload
     try {
-      final putResp = await http.put(
-        Uri.parse(uploadUrl),
-        headers: <String, String>{
-          // Spaces object must be public-read; header must match presigned signature.
-          'Content-Type': contentType,
-          'x-amz-acl': 'public-read',
-        },
-        body: bytes,
+      final request = http.StreamedRequest('PUT', Uri.parse(uploadUrl));
+      request.headers.addAll(<String, String>{
+        // Spaces object must be public-read; header must match presigned signature.
+        'Content-Type': contentType,
+        'x-amz-acl': 'public-read',
+        'Content-Length': fileLength.toString(),
+      });
+      request.contentLength = fileLength;
+      await request.sink.addStream(file.openRead());
+      await request.sink.close();
+
+      final streamedResp = await request.send().timeout(
+        const Duration(seconds: 45),
       );
+      final putResp = await http.Response.fromStream(streamedResp);
       final preview =
           putResp.body.length > 200
               ? '${putResp.body.substring(0, 200)}...'

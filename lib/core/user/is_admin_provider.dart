@@ -1,37 +1,80 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../providers/auth_provider.dart';
 
-/// Admin gate checks both Firebase Auth custom claims and Firestore isAdmin field:
-/// - First checks Firebase Auth custom claims (server-side admin claims)
-/// - Then checks Firestore users collection for isAdmin field
-final isAdminProvider = FutureProvider<bool>((ref) async {
-  final user = FirebaseAuth.instance.currentUser;
-  if (user == null) return false;
+/// Admin gate checks both Firebase Auth custom claims and Firestore isAdmin field in real-time:
+/// - Listens to Firestore isAdmin field changes
+/// - Falls back to Firebase Auth custom claims if Firestore unavailable
+/// - Invalidates immediately when user auth state changes
+///
+/// ✅ NOW: StreamProvider - watches isAdmin field in real-time
+/// ✅ Previously: FutureProvider - checked once, cached old status
+final isAdminProvider = StreamProvider<bool>((ref) async* {
+  // Watch auth state so stream resets when user changes
+  final authAsync = ref.watch(authStateProvider);
 
-  // First check: Firebase Auth custom claims
-  try {
-    final token = await user.getIdTokenResult(true);
-    final claims = token.claims ?? const <String, Object?>{};
-    if (claims['admin'] == true) return true;
-  } catch (e) {
-    // Continue to Firestore check if Auth claims fail
+  if (!authAsync.hasValue) {
+    yield false;
+    return;
   }
 
-  // Second check: Firestore isAdmin field
+  final authState = authAsync.value;
+  final user = authState;
+
+  if (user == null) {
+    print('[isAdminProvider] ✗ No authenticated user');
+    yield false;
+    return;
+  }
+
+  if (user.isAnonymous) {
+    print('[isAdminProvider] ✗ User is anonymous');
+    yield false;
+    return;
+  }
+
+  final uid = user.uid;
+  print('[isAdminProvider] Checking admin status for uid=$uid');
+
+  // First check: Firebase Auth custom claims (cached token)
   try {
-    final doc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .get();
-    
-    if (doc.exists) {
-      final isAdmin = doc.data()?['isAdmin'] as bool? ?? false;
-      return isAdmin;
+    final token = await user.getIdTokenResult(false); // false = use cached
+    final claims = token.claims ?? const <String, Object?>{};
+    if (claims['admin'] == true) {
+      print('[isAdminProvider] ✅ Admin (from auth claims)');
+      yield true;
+      return;
     }
   } catch (e) {
-    // Continue to return false if Firestore check fails
+    print('[isAdminProvider] ⚠️  Auth claims check failed: $e');
   }
 
-  return false;
+  // Second check: Watch Firestore in real-time for isAdmin field
+  try {
+    print('[isAdminProvider] Setting up real-time listener for uid=$uid');
+    await for (final doc
+        in FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .snapshots()) {
+      try {
+        if (!doc.exists) {
+          print('[isAdminProvider] ✗ User doc does not exist');
+          yield false;
+          continue;
+        }
+
+        final isAdmin = doc.data()?['isAdmin'] as bool? ?? false;
+        print('[isAdminProvider] ✅ Real-time update: isAdmin=$isAdmin');
+        yield isAdmin;
+      } catch (parseError) {
+        print('[isAdminProvider] Error parsing admin status: $parseError');
+        yield false;
+      }
+    }
+  } catch (e) {
+    print('[isAdminProvider] ✗ Error setting up real-time listener: $e');
+    yield false;
+  }
 });

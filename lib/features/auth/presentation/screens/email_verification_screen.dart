@@ -138,7 +138,7 @@ class _EmailVerificationScreenState
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Verification email sent! Check your inbox.'),
-          backgroundColor: Colors.green,
+          backgroundColor: AppColors.success,
         ),
       );
 
@@ -163,7 +163,7 @@ class _EmailVerificationScreenState
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to resend email: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.error,
         ),
       );
 

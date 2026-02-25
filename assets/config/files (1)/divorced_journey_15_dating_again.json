@@ -1,0 +1,758 @@
+{
+  "journeyId": "divorced_dating_again",
+  "title": "Dating Again with Wisdom",
+  "subtitle": "Navigating the dating world after divorce",
+  "summary": "**Dating after divorce is a unique experience.** You are older, wiser, and carrying experiences your younger self did not have. The dating world may have changed since you were last in it. This journey helps you approach dating with wisdom, navigate the practical realities of dating as a divorced person, avoid common pitfalls, honor God in the process, and find your way toward healthy relationship without repeating past mistakes.",
+  "targetUserCategory": "divorced",
+  "priorityRank": 15,
+  "estimatedDays": 14,
+  "totalActivities": 10,
+  "difficulty": "intermediate",
+  "themeColor": "#FF7043",
+  "cover": {
+    "themeTag": "Dating",
+    "accentIcon": "explore",
+    "heroImage": "assets/images/journeys/divorced_journey15.jpg",
+    "heroImageDescription": "A person stepping forward on a path with both confidence and thoughtfulness, symbolizing intentional movement into new relationship possibilities."
+  },
+  "frameworks": [
+    "dating_wisdom",
+    "boundary_setting",
+    "intentional_relationship",
+    "faith_integration"
+  ],
+  "targetOutcomes": [
+    "Approach dating with realistic expectations and healthy mindset",
+    "Navigate practical aspects of dating after divorce",
+    "Set and maintain appropriate boundaries",
+    "Handle the unique challenges of dating with children",
+    "Honor God and your values in dating relationships",
+    "Move toward healthy relationship without repeating past mistakes"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_dating_again_realities",
+      "isFree": true,
+      "title": "Back Out There: The Realities of Dating After Divorce",
+      "subtitle": "Understanding what dating looks like at this stage of life",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "explore",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Dating after divorce is different from dating in your youth. Understanding these differences helps you approach it with appropriate expectations and wisdom.",
+      "frameworkBasis": {
+        "conceptKey": "post_divorce_dating",
+        "explanation": "Dating after divorce has unique characteristics that require adjusted expectations and approaches."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "A Different Season",
+          "text": "**Dating again after divorce is like learning to walk after an injury.** You remember how it used to work. But your body has changed, the terrain has changed, and you have to find a new way to move. It feels awkward at first. That is normal.\n\n**Dating after divorce is not like dating when you were young.**\n\n**You are older now, with more life experience and hopefully more wisdom.** You know yourself better. You have learned from painful experience what you need and what you cannot accept.\n\n**But you also carry baggage you did not have before.** Wounds, patterns, perhaps children. The stakes feel higher.\n\n**The dating world itself may have changed.** Apps, different social norms, a different pool of potential partners.\n\n**Approaching dating with wisdom means acknowledging these differences rather than pretending you are twenty-two again.**",
+          "icon": "explore"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What You Bring",
+          "text": "What do you bring to the dating table as a divorced person?\n\n**The answer is complicated.** You bring gifts, and you bring baggage. Both are real.\n\n**You bring maturity that comes only from life experience.** You have been through things. You know what you want and what you cannot live with. You no longer have the illusions of youth.\n\n**You bring the ability to appreciate what you once took for granted.** Partnership, companionship, someone who shows up. You know now how precious these are.\n\n**But you also bring wounds.** Scars from your divorce that may still be tender. Trust that was broken and may not be fully rebuilt. Patterns you developed to survive that might not serve you now.\n\n**You bring a history that not everyone will want to deal with.** An ex who still exists in the world, maybe in your life if you have children. Established ways of doing things. Less flexibility than someone who has never built a life with another person.\n\n**And if you have children, you bring a package deal.** A beautiful one, but a complex one.\n\n**This is not about making yourself more marketable.** It is about being honest about who you are now. The right person will see the whole picture and want it anyway. The wrong person will want only parts of you.\n\n**Know what you bring.** The gifts and the baggage. Both are yours.",
+          "icon": "inventory_2"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Dating Landscape",
+          "text": "**The dating landscape for divorced adults has specific features.**\n\n**Many potential partners are also divorced.** You may be dating people with their own wounds, children, and histories.\n\n**Online dating is prevalent.** Apps and websites are how many people meet, for better or worse.\n\n**Time is more limited.** Work, children, and established responsibilities compete with dating.\n\n**The pool is different.** You are not dating from a college campus or young adult social scene.\n\n**Social pressure may be different.** Some friends push you to date. Others have opinions about how soon or who.\n\n**Understanding this landscape helps you navigate it wisely.**",
+          "icon": "map"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Dating Status",
+          "text": "Where are you currently in your dating journey?",
+          "prompts": [
+            "Not yet dating and considering when to start",
+            "Just beginning to date again",
+            "Actively dating and looking for guidance",
+            "Dating someone and evaluating the relationship",
+            "Taking a break from dating to focus on growth",
+            "Uncertain whether I want to date at all"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Wherever you are, this journey will provide wisdom for navigating dating after divorce."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Dating Thoughts",
+          "text": "**Reflect on your thoughts and feelings about dating again.**\n\nHow do you feel about the prospect of dating? Excited? Anxious? Ambivalent?\n\nWhat concerns do you have about dating after divorce?\n\nWhat do you hope to find through dating?\n\nWhat feels different about dating now versus before you were married?\n\nWrite about your dating thoughts:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Dating Intention",
+          "text": "**Set an intention for how you will approach dating.**\n\n**I will approach dating with wisdom, not desperation.**\n\n**I will be honest about who I am and what I bring.**\n\n**I will take appropriate time rather than rushing.**\n\n**I will honor God and my values in how I date.**\n\n**I will learn from my past without letting it paralyze me.**\n\nWrite your dating intention in your own words:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_when_to_start",
+      "isFree": false,
+      "title": "Ready to Date? Knowing When to Begin",
+      "subtitle": "Discerning whether you are ready to start dating",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "schedule",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Starting to date before you are ready leads to poor choices and potential harm to yourself and others. Discerning the right time protects everyone involved.",
+      "frameworkBasis": {
+        "conceptKey": "dating_readiness",
+        "explanation": "Readiness for dating requires sufficient healing and emotional availability for new relationship."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Timing Question",
+          "text": "**One of the most common questions after divorce is when to start dating.**\n\n**There is no universal answer.** Some people need years. Others may be ready sooner. It depends on many factors.\n\n**Starting too soon risks bringing unhealed wounds into new relationships, making poor choices from desperation, and hurting others who get involved with you before you are ready.**\n\n**Waiting appropriately is not about following a rule.** It is about being genuinely ready to engage in healthy relationship.",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Signs You May Not Be Ready",
+          "text": "How do you know if you are not ready yet?\n\n**You are not ready if your ex still dominates your inner world.** If you think about them constantly, if you are still riding waves of intense emotion, if unfinished business with them takes up significant mental space.\n\n**You are not ready if you are dating to fill a void.** If the loneliness is driving you. If being alone feels unbearable. If you need someone, anyone, to make you feel okay. That is not readiness. That is desperation, and desperation leads to poor choices.\n\n**You are not ready if you have not processed your divorce.** If you are still in the fog, still angry, still bargaining with reality. If you have not grieved and reached some kind of acceptance.\n\n**You are not ready if you have not looked at yourself.** If you have not examined your patterns, your contribution, what you need to do differently. You will repeat what you do not understand.\n\n**You are not ready if you cannot be alone.** Not temporarily. If the idea of being single for an extended time is intolerable, you are running from something. And what you are running from, you will bring into your next relationship.\n\n**These are not judgments.** They are warning signs. If they apply to you, it does not mean you are broken. It means you have more work to do before you are ready.\n\n**Better to do that work now than to damage yourself or someone else by rushing.**",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Signs You May Be Ready",
+          "text": "**Other signs suggest you may be ready to date.**\n\n**Your ex no longer dominates your emotional landscape.** You can think of them without intense reaction.\n\n**You have done healing work.** Grief has been processed, patterns examined, lessons learned.\n\n**You are content alone.** Dating is a choice, not a desperate need.\n\n**You have something to offer.** You are bringing a healthy self, not looking for someone to fix you.\n\n**You have realistic expectations.** You understand what dating involves and are prepared for it.\n\n**These signs suggest readiness to engage in healthy dating.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Readiness Assessment",
+          "text": "**Assess your readiness for dating.**\n\n**Review the signs of readiness and unreadiness.** Which describe you?\n\nHave you done sufficient healing work to date healthily?\n\nAre you dating or wanting to date from a healthy place or from desperation?\n\nWhat would need to be true for you to be fully ready?\n\nWrite your readiness assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Word About Children",
+          "text": "**If you have children, their wellbeing factors into your dating readiness.**\n\nHow are your children adjusting to the divorce? Are they stable enough for you to introduce dating?\n\nWill your dating take time and energy from children who need you?\n\nAre you prepared to navigate the complications of introducing romantic interests to your children?\n\n**Your children's needs do not mean you can never date.** But they should be considered in your timing and approach.",
+          "icon": "child_care"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Timing Decision",
+          "text": "**Make a thoughtful decision about dating timing.**\n\n**Based on my assessment, I believe I am (ready to date / nearly ready / not yet ready).**\n\n**If ready: How I will approach dating wisely.**\n\n**If not ready: What I need to do to become ready, and approximately when I might reassess.**\n\nWrite your timing decision:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_how_to_meet",
+      "isFree": false,
+      "title": "Finding People: Where and How to Meet Potential Partners",
+      "subtitle": "Navigating the practical realities of meeting people",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "people",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Practically, how do you meet people to date? This activity addresses the various ways divorced adults find potential partners.",
+      "frameworkBasis": {
+        "conceptKey": "meeting_methods",
+        "explanation": "Understanding various methods for meeting potential partners enables wise choices about approach."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Practical Question",
+          "text": "Even if you are ready to date, how do you actually meet people?\n\n**This practical question stumps many divorced adults.** You are no longer in school or the social scenes of young adulthood. Your life is established in ways that may not naturally introduce you to potential partners.\n\n**Multiple methods exist, each with advantages and drawbacks.** Understanding your options helps you choose approaches that fit your situation and values.",
+          "icon": "people"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Online Dating",
+          "text": "**Let us talk about online dating, since that is probably where you will end up.**\n\n**The good news: there are a lot of people out there.** More than you could ever meet through your normal life. You can filter for what matters, religion, age, values, before investing time.\n\n**The hard news: it can feel like a marketplace, and that is because it is one.** Profiles are advertisements. Photos are carefully chosen. First impressions are curated.\n\n**People lie.** Not everyone, but enough. About their age, their photos, their situation. That person you have been texting for weeks may not be who they seem.\n\n**It can become addictive, the endless scroll, the dopamine hit of a match, the hope that the next profile will be the one.** This is by design. The apps want you to keep swiping.\n\n**If you choose online dating, go in with eyes open.** Be honest in your own profile, even when others are not. Take time to move from texting to meeting, enough to gauge character but not so much that you build a fantasy. Meet in public. Trust your gut when you finally see them in person.\n\n**Do not let it become your whole life.** Online dating is one tool, not the only one. Real life still exists. Churches, activities, friends of friends, these still work.\n\n**And if it becomes discouraging, take breaks.** The apps will still be there. Your soul needs protecting more than your dating life needs optimizing.",
+          "icon": "phone_android"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Meeting Through Life",
+          "text": "**You can also meet people through normal life activities.**\n\n**Church and faith communities: A natural place to meet people with shared values, though it requires wisdom about dating within community.**\n\n**Interests and activities: Pursuing hobbies, classes, volunteer work, or groups brings you into contact with people who share your interests.**\n\n**Friends and family: Introductions from people who know you well can be valuable.**\n\n**Work and professional circles: Requires care about boundaries but is how some people meet.**\n\n**These methods are slower but may lead to more organic connections with people you can observe in context.**",
+          "icon": "groups"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Meeting Method Thoughts",
+          "text": "**Reflect on how you might meet potential partners.**\n\nWhat methods appeal to you?\n\nWhich do not?\n\nWhat are your concerns about online dating specifically?\n\nWhat opportunities exist in your current life to meet people?\n\nWhat would you need to do to expand your opportunities?\n\nWrite about your meeting method thoughts:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Multi-faceted Approach",
+          "text": "**Consider a multi-faceted approach rather than relying on one method.**\n\n**Try online dating but do not let it become your only approach.**\n\n**Engage in activities that naturally connect you with people.**\n\n**Let friends and family know you are open to introductions.**\n\n**Be open to meeting people in unexpected places.**\n\n**Different methods reach different people.** Diversifying increases your chances of finding someone compatible.",
+          "icon": "hub"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Meeting Plan",
+          "text": "**Create a plan for how you will meet potential partners.**\n\nMethods I will use:\n\nHow I will approach online dating if applicable:\n\nActivities or communities I will engage in:\n\nPeople I will ask about introductions:\n\nWrite your meeting plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_boundaries",
+      "isFree": false,
+      "title": "Boundaries in Dating: Protecting Yourself and Others",
+      "subtitle": "Setting and maintaining healthy boundaries while dating",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "shield",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Healthy dating requires clear boundaries. This activity helps you establish what you will and will not do while dating, protecting yourself and honoring your values.",
+      "frameworkBasis": {
+        "conceptKey": "dating_boundaries",
+        "explanation": "Clear boundaries in dating protect emotional and physical wellbeing while honoring values."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why Boundaries Matter",
+          "text": "**Boundaries are the difference between dating well and getting hurt again.**\n\n**After divorce, your boundaries may be confused.** Maybe you never had good ones. Maybe your marriage eroded them. Maybe you are so hungry for connection that you are tempted to abandon them.\n\n**Boundaries determine how fast things move.** Whether you jump into bed or take your time. Whether you share everything immediately or let trust build gradually. Whether you see red flags and address them or explain them away because you want it to work.\n\n**Without boundaries, you are unprotected.** You will move too fast and commit before you really know someone. You will give more than you get and call it love. You will tolerate behavior that should be unacceptable because setting limits feels like risking rejection.\n\n**Boundaries are not walls.** Walls keep everyone out. Boundaries let the right people in and keep the wrong people out. They are filters, not fortresses.\n\n**You get to decide what your boundaries are.** How physical you will be and when. How much access you will give to your life and your children. What behavior you will accept and what you will not.\n\n**Decide before you are in the moment.** It is much harder to think clearly when emotions are high and someone is telling you what you want to hear.\n\nWhat are your boundaries? Have you actually defined them?",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Emotional Boundaries",
+          "text": "**Rebecca's first date in fifteen years was a disaster.** She talked about her ex too much, laughed too nervously, and spilled wine on her shirt. She cried in her car afterward. But she went on another date. And another. Eventually, the awkwardness became comfort, and comfort became confidence.\n\n**Emotional boundaries protect your heart.**\n\n**Pacing emotional intimacy: Not sharing your deepest wounds immediately.** Letting emotional closeness develop gradually as trust is established.\n\n**Not getting attached too quickly: Guarding your heart until you know the person is trustworthy.**\n\n**Maintaining your identity: Not losing yourself in the excitement of new relationship.**\n\n**Handling rejection: Having boundaries around how much rejection affects your self-worth.**\n\n**Emotional boundaries help you engage in dating without being devastated by its normal disappointments.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Physical Boundaries",
+          "text": "**Physical boundaries honor God and protect you.**\n\n**As Christians, we believe sexual intimacy belongs within marriage.** This means dating should not include sexual intercourse.\n\nBut what about other physical affection? You need to determine what is appropriate for you at various stages of dating.\n\n**Consider where lines become too tempting.** What leads you toward compromise? Set boundaries before those points.\n\n**Be clear about your boundaries and communicate them.** Someone who does not respect your physical boundaries is not someone to continue with.",
+          "icon": "do_not_touch"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Practical Boundaries",
+          "text": "**Practical boundaries protect your time, resources, and life.**\n\nHow much time will you give to dating versus other responsibilities?\n\nHow soon will you introduce someone to your children?\n\nHow much will you share about your divorce early on?\n\nWill you date only Christians or are you open to others?\n\nHow will you handle financial aspects of dating?\n\n**These practical boundaries vary by person but thinking through them in advance helps you act wisely.**",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Boundary Reflection",
+          "text": "**Reflect on boundaries in your dating life.**\n\nWhere have you struggled with boundaries in dating, past or present?\n\nWhat emotional boundaries do you need?\n\nWhat physical boundaries are you committed to?\n\nWhat practical boundaries would serve you well?\n\nWrite your boundary reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Boundary Commitments",
+          "text": "**Establish your dating boundary commitments.**\n\nEmotional boundaries I will maintain:\n\nPhysical boundaries I am committed to:\n\nPractical boundaries I will establish:\n\nHow I will communicate and enforce these boundaries:\n\nWrite your boundary commitments:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_sharing_your_story",
+      "isFree": false,
+      "title": "Telling Your Story: Sharing About Your Divorce",
+      "subtitle": "Navigating when and how to share your divorce history",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "history_edu",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "At some point, you will need to share about your divorce with people you date. How and when you do this matters. This activity provides guidance.",
+      "frameworkBasis": {
+        "conceptKey": "story_sharing",
+        "explanation": "Wise sharing of divorce history balances honesty with appropriate pacing and boundary setting."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Your Story Is Part of You",
+          "text": "**Your divorce is part of your story.** Anyone you date seriously will need to know about it eventually.\n\n**This can feel vulnerable.** You may worry about judgment, about answering hard questions, or about how your history will be received.\n\n**But hiding or minimizing your divorce is not honest.** The right person will be able to receive your full story.\n\n**The question is not whether to share but when and how to share wisely.**",
+          "icon": "history_edu"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Timing Your Disclosure",
+          "text": "When do you tell them you were married before?\n\n**Too early is a mistake.** First dates are not the time to unpack your divorce story. You are still strangers. Pouring out the details of your failed marriage puts too much weight on a fragile new connection. It can feel like trauma-dumping, even if you are just trying to be honest.\n\n**Too late is also a mistake.** Waiting until you are deeply involved to mention you were married before feels deceptive. It raises questions about what else you might be hiding.\n\n**The basic fact, I was married before and I am now divorced, can come up relatively early.** When it is relevant to conversation. When they ask about your past. When it would be weird not to mention it.\n\n**The details come later.** How long you were married. What went wrong. How it affected you. What you learned. These are conversations for when you have built some trust, some foundation.\n\n**When you share, be honest but not bitter.** If you cannot talk about your ex without venom, you are not ready to date. If every sentence is about what they did to you, that is a signal, both to your date and to yourself.\n\n**The goal is to share your history in a way that is honest and appropriate to the level of the relationship.** Not hiding it. Not overwhelming with it. Just integrating it as part of your story, which it is.",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "What to Share",
+          "text": "**Consider what aspects of your divorce to share at different stages.**\n\n**Early dating: Basic facts.** You were married, now divorced, perhaps how long ago. Enough for them to know your situation without extensive detail.\n\n**Growing relationship: More context.** What went wrong, what you learned, where you are in healing. Enough for them to understand your journey.\n\n**Serious relationship: Fuller disclosure.** The details they would need to know before committing to you. Anything that would significantly affect life together.\n\n**You do not owe everyone your full story.** But someone you might marry deserves to know it.",
+          "icon": "chat"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "How to Share",
+          "text": "**How you share about your divorce matters.**\n\n**Own your part.** Do not present yourself as purely victim. Share honestly about your contribution.\n\n**Avoid excessive ex-bashing.** Constantly villainizing your ex raises red flags about you.\n\n**Show growth.** What have you learned? How have you changed? What are you doing to be healthier?\n\n**Be appropriately vulnerable.** Share genuinely without making it a dramatic production.\n\n**Watch their response.** How they receive your story tells you about them.",
+          "icon": "record_voice_over"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Story Reflection",
+          "text": "**Reflect on sharing your divorce story.**\n\nHow do you feel about sharing your divorce with people you date?\n\nWhat parts of your story feel most vulnerable to share?\n\nHow have past disclosure experiences gone?\n\nWhat would wise sharing look like for you?\n\nWrite your story reflection:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Sharing Plan",
+          "text": "**Create a plan for sharing your divorce story.**\n\nWhat I will share in early dating:\n\nWhat I will share as a relationship develops:\n\nHow I will frame my story to be honest but not ex-bashing:\n\nHow I will show what I have learned and how I have grown:\n\nWrite your sharing plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_dating_with_children",
+      "isFree": false,
+      "title": "Dating as a Parent: Navigating Children in the Mix",
+      "subtitle": "Wisely handling dating when you have children",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "family_restroom",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "If you have children, dating involves additional considerations. This activity addresses how to date wisely as a parent.",
+      "frameworkBasis": {
+        "conceptKey": "dating_with_children",
+        "explanation": "Dating as a parent requires balancing personal needs with children's wellbeing and wise introduction timing."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Children Change the Equation",
+          "text": "**If you have children, dating is not just about you.**\n\n**Your dating affects your children.** It takes time and attention that might otherwise go to them. It introduces potential for more loss if relationships end. It may eventually mean a stepparent and blended family.\n\n**This does not mean you should not date.** But it means you must date with your children's wellbeing in mind, not just your own desires.\n\n**Wise dating as a parent protects your children while pursuing healthy relationship.**",
+          "icon": "family_restroom"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "When to Introduce",
+          "text": "When do your children meet the person you are dating?\n\n**Later than you want.** That is the general answer.\n\n**Your children do not need to meet everyone you go out with.** They do not need to watch a parade of people coming through, getting attached to some of them, losing them when the relationship ends. They have already lost enough.\n\n**Wait until the relationship is serious.** Not just exciting. Serious. Stable. With real potential for long-term commitment.\n\n**Wait until you have seen this person enough to know they are safe.** Not just safe as in will not harm your children. Safe as in trustworthy, consistent, someone you would actually want influencing your kids.\n\n**Think about your children's readiness, not just yours.** How are they adjusting to the divorce? Are they ready to see you with someone new? Do they even know you are dating?\n\n**When you do introduce, go slow.** A brief meeting, not a weekend together. Let familiarity build gradually. Do not force bonding. Do not ask your children to treat this person as a parent figure before anyone is ready for that.\n\n**And know this: once you introduce them, things are different.** Your children will form opinions, attachments, maybe hopes or fears. If the relationship ends, they lose too.\n\n**This is why waiting matters.** Protect your children. They did not ask for any of this.",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "How to Introduce",
+          "text": "**When you do introduce, do so gradually and thoughtfully.**\n\n**Start with low-pressure settings.** A casual activity rather than a formal meet the family dinner.\n\n**Do not force connection.** Let relationships develop naturally. Your children may need time.\n\n**Maintain one-on-one time.** Continue spending time with just you and your children, not always as a group.\n\n**Watch your children's reactions.** They are telling you something about their adjustment.\n\n**Be patient.** Integration takes time, often much longer than you want.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Evaluating Partners as Parents",
+          "text": "**When you are a parent, you must evaluate potential partners not just as partners but as potential stepparents.**\n\nHow do they relate to children in general?\n\nHow do they treat your children when they meet?\n\nDo they understand and respect your parenting responsibilities?\n\nAre they patient with the complications children bring?\n\nDo they have realistic expectations about blended family dynamics?\n\n**Someone wonderful for you might not be right for your children.** Both matter.",
+          "icon": "person_search"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Children and Dating",
+          "text": "**Reflect on how children factor into your dating.**\n\nHow are your children adjusting to the divorce?\n\nWhat concerns do you have about introducing dating to them?\n\nHow will you balance your dating with their needs?\n\nWhat qualities must a partner have in relation to your children?\n\nWrite about your children and dating:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Parenting and Dating Plan",
+          "text": "**Create a plan for dating as a parent.**\n\nHow long will I date someone before introducing them to my children:\n\nHow I will introduce someone when the time comes:\n\nHow I will maintain focus on my children while dating:\n\nWhat I will look for in a partner regarding my children:\n\nWrite your parenting and dating plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_common_pitfalls",
+      "isFree": false,
+      "title": "Pitfalls to Avoid: Common Dating Mistakes After Divorce",
+      "subtitle": "Learning from mistakes others have made",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "warning",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Divorced people tend to make certain predictable mistakes in dating. Knowing these pitfalls helps you avoid them.",
+      "frameworkBasis": {
+        "conceptKey": "dating_pitfalls",
+        "explanation": "Awareness of common dating mistakes enables avoidance and healthier choices."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Learning from Others",
+          "text": "**Think of dating as a mutual interview, not a performance to win approval.** You are not just trying to be chosen. You are also choosing. Pay attention to whether this person is right for you, not just whether they like you.\n\n**Many divorced people make similar dating mistakes.** Learning from their experiences can help you avoid the same pitfalls.\n\n**These mistakes are understandable.** They come from the unique vulnerabilities of dating after divorce. But they lead to poor outcomes.\n\n**Awareness is protective.** If you know what to watch for, you can catch yourself before making these mistakes.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Rushing and Settling",
+          "text": "**Two traps wait for divorced people who date.** They look different but come from the same place.\n\n**Rushing is moving too fast.** Getting exclusive after three dates. Saying I love you in a month. Planning a future before you have seen them handle conflict, stress, or the fading of infatuation.\n\n**You rush because the connection feels so good after so much pain.** Because being wanted is intoxicating. Because you do not want to be alone anymore and this person is right here, wanting you back.\n\n**Settling is accepting less than you should.** Ignoring red flags because at least they are interested. Tolerating behavior that would be unacceptable if you were not so afraid of being single. Staying with someone who is clearly not right because leaving means starting over.\n\n**You settle because you have convinced yourself this might be as good as it gets.** Because the alternative is facing your loneliness. Because hope dies hard and you keep thinking it will get better.\n\n**Both traps come from desperation.** From not being okay with being alone. From needing a relationship too much.\n\n**The antidote is the same: being content single.** When you are okay alone, you can afford to take your time. When you do not need anyone to complete you, you can choose freely.\n\nAre you rushing? Are you settling? The honest answers matter more than you want them to.",
+          "icon": "speed"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Choosing Familiar Dysfunction",
+          "text": "**Many divorced people choose partners remarkably similar to their ex in unhealthy ways.**\n\n**This is often unconscious.** You are drawn to what feels familiar, even if familiar is dysfunctional.\n\n**The controlling ex becomes a controlling new partner.** The emotionally unavailable spouse becomes an emotionally unavailable boyfriend.\n\n**Protection: Be aware of your patterns.** Ask trusted friends if they see you repeating choices. Be suspicious if someone feels right too quickly.",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "teaching",
+          "cardNumber": 4,
+          "title": "Bringing Unfinished Business",
+          "text": "**Another pitfall is bringing unfinished business into new relationships.**\n\n**Unresolved pain: Taking out hurt from your divorce on someone who was not involved.**\n\n**Unexamined patterns: Repeating the same dynamics without awareness.**\n\n**Ongoing ex-focus: Being so consumed with your ex that you cannot be present with someone new.**\n\n**Unrealistic expectations: Expecting the new person to heal wounds only you can heal.**\n\n**The new person deserves to be with you, not with a version of you still tangled in the past.**",
+          "icon": "inventory"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Pitfall Awareness",
+          "text": "**Reflect on which pitfalls you are most susceptible to.**\n\nWhich of these pitfalls are you most likely to fall into?\n\nHave you already made any of these mistakes?\n\nWhat would help you avoid these pitfalls going forward?\n\nWhat would trusted friends say about your dating tendencies?\n\nWrite your pitfall awareness:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Pitfall Prevention Plan",
+          "text": "**Create a plan to avoid common dating pitfalls.**\n\nPitfalls I am most susceptible to:\n\nHow I will guard against rushing or settling:\n\nHow I will avoid choosing familiar dysfunction:\n\nHow I will ensure I bring my best, healed self to dating:\n\nWrite your pitfall prevention plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_honoring_god",
+      "isFree": false,
+      "title": "Dating and Faith: Honoring God in Your Dating Life",
+      "subtitle": "Integrating your faith into how you date",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "church",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "As a Christian, your dating life should honor God. This activity addresses how to integrate faith into dating after divorce.",
+      "frameworkBasis": {
+        "conceptKey": "faith_integrated_dating",
+        "explanation": "Dating as a Christian involves integrating faith into choices, behavior, and partner criteria."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Dating as a Christian",
+          "text": "**Your faith should shape every area of life, including dating.**\n\n**This means bringing your values into your dating decisions.** Who you date, how you date, what you do while dating, and what you are looking for.\n\n**It also means trusting God with this area of your life.** Bringing Him your desires, fears, and questions. Seeking His guidance.\n\n**Dating as a Christian does not mean it will be easy or that God will magically provide the perfect person.** But it means you walk through dating with Him, not apart from Him.",
+          "icon": "church"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Dating Only Christians?",
+          "text": "Should you date only Christians?\n\n**Scripture warns against being unequally yoked with unbelievers (2 (Corinthians 6:14).** This principle applies to the most intimate partnership of marriage.\n\n**Dating someone who does not share your faith creates challenges.** Different values, different priorities, different foundations for life and family.\n\n**This does not mean every Christian is right for you.** Shared faith is necessary but not sufficient. But dating someone without shared faith has built-in complications.\n\n**Consider this carefully as you determine who you will date.**",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Purity in Dating",
+          "text": "**As Christians, we are called to purity in our dating relationships.**\n\n**This means honoring God with your body.** Sexual intimacy belongs within marriage. Dating should not cross those boundaries, even if culture says otherwise.\n\n**It also means purity in your intentions.** Dating to find a spouse, not to use people for entertainment or emotional fulfillment.\n\n**Purity is challenging, especially as an adult who has been married and knows what physical intimacy is like.** But it is still the standard God calls us to.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Faith and Your Dating",
+          "text": "**Reflect on how faith integrates with your dating.**\n\nHow does your faith shape who you are willing to date?\n\nHow does it shape how you date?\n\nWhere do you struggle to honor God in dating?\n\nWhat would it look like to fully integrate your faith into your dating life?\n\nWrite about faith and your dating:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Praying About Dating",
+          "text": "**Prayer should accompany your dating journey.**\n\n**Pray for wisdom in who you date and how you evaluate people.**\n\n**Pray for strength to maintain your boundaries and values.**\n\n**Pray for God's guidance in major decisions.**\n\n**Pray about specific people you are considering or dating.**\n\n**Pray for your future spouse, whoever they may be.**\n\n**God cares about this area of your life.** Bring it to Him regularly.",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Faith-Integrated Dating Commitment",
+          "text": "**Commit to honoring God in your dating life.**\n\n**I will seek partners who share my faith.**\n\n**I will maintain physical and emotional purity in dating.**\n\n**I will bring my dating life before God in prayer.**\n\n**I will make decisions that honor Him even when difficult.**\n\n**I trust Him with my desire for relationship.**\n\nWrite your faith-integrated dating commitment:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_handling_rejection",
+      "isFree": false,
+      "title": "When It Does Not Work Out: Handling Rejection and Disappointment",
+      "subtitle": "Navigating the inevitable setbacks in dating",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "healing",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Dating involves rejection and disappointment. Learning to handle these setbacks well is essential for sustaining your dating journey.",
+      "frameworkBasis": {
+        "conceptKey": "rejection_handling",
+        "explanation": "Healthy handling of dating rejection prevents discouragement and maintains emotional wellbeing."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Rejection Is Part of Dating",
+          "text": "**You are going to get rejected.** Prepare yourself now.\n\n**Not maybe.** Definitely. If you date, you will face rejection. People you are interested in will not be interested back. Relationships that seem promising will fizzle. Someone you thought was wonderful will choose someone else.\n\n**This will hurt.** After divorce, it may hurt more than it should, because you have already been rejected in the most profound way possible. Every new rejection can feel like confirmation of your worst fears. See? No one wants me. I am unlovable.\n\n**But rejection is not a verdict on your worth.** It is information about fit.\n\n**When someone rejects you, it usually means you were not right for each other.** Not that you are defective. Not that you will never find love. Just that this particular combination did not work.\n\n**Sometimes rejection protects you from something that would have been worse.** The person who ghosted you might have broken your heart later. The relationship that did not work out might have been wrong in ways you could not see yet.\n\n**This does not make rejection feel good.** But it can help you hold it more loosely.\n\n**Rejection is the price of admission to the dating world.** You cannot meet the right person without encountering some wrong ones along the way. That is how it works.\n\nCan you handle that? If not, you may not be ready to date yet.",
+          "icon": "healing"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Not Taking It Personally",
+          "text": "**Timothy dated the wrong person twice after his divorce.** Same pattern, different face. After the second one ended, he paused. He worked with a counselor to understand what drew him to unhealthy relationships. The third time, he chose differently. She was not his usual type. She became his wife.\n\n**The key to handling rejection is not taking it too personally.**\n\n**Rejection usually says more about fit than about your worth.** They are looking for something you are not. Or you are looking for something they are not.\n\n**Rejection protects you from relationships that would not have worked.** Better to be rejected early than to commit to the wrong person.\n\n**Your worth is not determined by whether any particular person wants you.** It is determined by God, who says you are valuable and loved.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Processing Disappointment",
+          "text": "**When relationships do not work out, allow yourself to feel disappointment.**\n\n**Do not pretend it does not hurt.** Acknowledge your feelings.\n\n**But do not catastrophize.** One failed relationship is not proof you will always be alone.\n\n**Learn what you can.** Was there something to learn from this experience?\n\n**Move forward.** Do not let disappointment paralyze you or make you give up on dating entirely.\n\n**Processing disappointment healthily keeps you in the game without accumulating bitterness.**",
+          "icon": "sentiment_dissatisfied"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Rejection Experience",
+          "text": "**Reflect on how you handle rejection and disappointment.**\n\nHow have you handled dating rejection in the past?\n\nDo you tend to take rejection too personally?\n\nHow does your divorce experience affect how you handle rejection?\n\nWhat would help you handle disappointment more healthily?\n\nWrite about your rejection experience:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Resilience",
+          "text": "**You can build resilience for handling dating's disappointments.**\n\n**Ground your worth in God, not in dating outcomes.** You are loved regardless.\n\n**Maintain a full life.** Dating is part of your life, not all of it.\n\n**Keep perspective.** One rejection is one rejection, not a life sentence.\n\n**Have support.** Friends who can encourage you through disappointments.\n\n**Take breaks when needed.** It is okay to step back from dating if you need to recover.\n\n**Resilience keeps you going through the inevitable challenges of dating.**",
+          "icon": "fitness_center"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Resilience Plan",
+          "text": "**Create a plan for building dating resilience.**\n\nHow I will keep my worth grounded in God, not dating outcomes:\n\nHow I will maintain a full life beyond dating:\n\nHow I will process disappointment without catastrophizing:\n\nSupport I will lean on when dating is discouraging:\n\nWrite your resilience plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_dating_commitment",
+      "isFree": false,
+      "title": "Dating Well: Your Commitment to Wisdom",
+      "subtitle": "Committing to approach dating with wisdom and integrity",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You have explored many aspects of dating after divorce. This activity helps you consolidate what you have learned and commit to dating with wisdom.",
+      "frameworkBasis": {
+        "conceptKey": "dating_commitment",
+        "explanation": "Committing to wise dating practices increases likelihood of healthy relationship outcomes."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Explored",
+          "text": "**Through this journey, you have explored many facets of dating after divorce.**\n\n**You have considered when to start dating and how to meet people.** You have established boundaries and thought about sharing your story.\n\n**You have addressed dating as a parent and common pitfalls to avoid.** You have integrated faith into your approach and prepared for handling rejection.\n\n**This equips you to date with greater wisdom and intention.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Dating as a Journey",
+          "text": "**Dating is a journey, not just a destination.**\n\n**The goal is not just to find someone but to grow as a person in the process.** To learn about yourself, about what you need, and about how to relate healthily.\n\n**Even dates that do not lead to marriage are not failures if you learn from them.**\n\n**Approach dating with curiosity and growth orientation, not just anxiety about the outcome.**",
+          "icon": "route"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Dating Insight",
+          "text": "What is the most important thing you have learned about dating through this journey?\n\nWhat do you want to remember as you navigate dating after divorce?\n\nWrite your key dating insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Dating Commitments",
+          "text": "What commitments will you make about dating?\n\nHow will you approach dating with wisdom rather than desperation?\n\nHow will you maintain your boundaries and values?\n\nHow will you handle the challenges of dating after divorce?\n\nHow will you honor God in your dating life?\n\nWrite your dating commitments:",
+          "responseType": "open-text",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Your Dating Journey",
+          "text": "**Father, I am stepping into the world of dating again.**\n\n**Give me wisdom about when to date and who to date.** Help me maintain my boundaries and honor You in how I conduct myself.\n\n**Protect me from pitfalls and poor choices.** Give me discernment to recognize healthy love and red flags.\n\n**Help me be patient and trust Your timing.** If there is someone for me, lead me to them in Your way.\n\n**I trust You with this part of my life.**\n\n**In Jesus' name, Amen.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Dating Declaration",
+          "text": "**Write a declaration of your commitment to dating well.**\n\n**I commit to dating with wisdom, not desperation.**\n\n**I will maintain my boundaries, my values, and my faith.**\n\n**I will protect my children if applicable and be patient.**\n\n**I will learn from disappointments without being defined by them.**\n\n**I trust God with my desire for relationship.**\n\n**I will bring my best, healthiest self to dating.**\n\nWrite your dating declaration:",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Dating with Wisdom",
+    "summaryText": "You have done significant work preparing to date after divorce with wisdom and intention. Remember that dating is both a means to finding a partner and an opportunity for continued growth. Maintain your boundaries, honor your values, trust God with the process, and bring your best self to each interaction. The right relationship is worth waiting and preparing for.",
+    "keyTakeaways": [
+      "Dating after divorce is different from dating in youth and requires adjusted approach",
+      "Readiness for dating requires sufficient healing and healthy motivation",
+      "Multiple methods exist for meeting potential partners each with advantages",
+      "Clear boundaries protect your wellbeing and honor your values",
+      "Sharing your divorce story requires wisdom about timing and framing",
+      "Dating as a parent requires considering children's wellbeing",
+      "Common pitfalls like rushing settling and choosing familiar dysfunction can be avoided",
+      "Faith should shape who you date and how you date",
+      "Rejection and disappointment are normal and can be handled with resilience"
+    ],
+    "nextRecommendedJourneys": [
+      "Preparing for a New Covenant",
+      "Discerning Healthy Love Again",
+      "Emotional Readiness for Remarriage"
+    ]
+  }
+}

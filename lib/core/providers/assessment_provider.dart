@@ -63,22 +63,32 @@ final relationshipAwareAssessmentProvider = FutureProvider<AssessmentConfig?>((
   final status = ref.watch(effectiveRelationshipStatusProvider);
   final configLoader = ref.watch(configLoaderProvider);
 
-  switch (status) {
-    case RelationshipStatus.singleNeverMarried:
-      return configLoader.loadSinglesReadinessConfig();
-    case RelationshipStatus.divorced:
-      return configLoader.loadRemarriageDivorcedConfig();
-    case RelationshipStatus.widowed:
-      return configLoader.loadRemarriageWidowedConfig();
-    case RelationshipStatus.married:
-      return configLoader.loadMarriageHealthCheckConfig();
-  }
+  print(
+    '[relationshipAwareAssessmentProvider] Loading config for status: $status',
+  );
+
+  final config = switch (status) {
+    RelationshipStatus.singleNeverMarried =>
+      await configLoader.loadSinglesReadinessConfig(),
+    RelationshipStatus.divorced =>
+      await configLoader.loadRemarriageDivorcedConfig(),
+    RelationshipStatus.widowed =>
+      await configLoader.loadRemarriageWidowedConfig(),
+    RelationshipStatus.married =>
+      await configLoader.loadMarriageHealthCheckConfig(),
+  };
+
+  print(
+    '[relationshipAwareAssessmentProvider] ✓ Loaded config: ${config.assessmentId}, dimensions=${config.dimensions.map((d) => d.name).toList()}',
+  );
+
+  return config;
 });
 
 /// Provider for getting user's gender
 final userGenderProvider = Provider<String?>((ref) {
   final user = ref.watch(currentUserProvider).valueOrNull;
-  return user?.nexus2?.gender;
+  return user?.gender;
 });
 
 /// Provider for personalizing assessment question with gender-aware text

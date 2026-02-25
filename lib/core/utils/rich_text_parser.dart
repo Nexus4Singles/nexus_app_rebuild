@@ -13,6 +13,29 @@ import '../theme/app_colors.dart';
 class RichTextParser {
   RichTextParser._();
 
+  static final RegExp _malformedBibleCitationRegex = RegExp(
+    r'\(((?:[1-3]\s*)?[A-Za-z]+(?:\s+[A-Za-z]+){0,5}\s+\d{1,3}:\d{1,3}(?:-\d{1,3})?)\|[^)]*\)',
+  );
+
+  // Bare Bible reference without parentheses: "James 1:27" or "1 John 2:3"
+  // Matches at word boundaries followed by punctuation or whitespace
+  static final RegExp _bareReferenceRegex = RegExp(
+    r'\b((?:[1-3]\s+)?[A-Za-z]+(?:\s+[A-Za-z]+){0,5}\s+\d{1,3}:\d{1,3}(?:-\d{1,3})?)\b(?=[.,;:\s]|$)',
+  );
+
+  // Bible reference with pipe but no opening paren: "James 1:27|." or "James 1:27|text)"
+  // Much more conservative: just match the ref, pipe, and minimal trailing content
+  // This prevents consuming large chunks of text with [^)]*
+  static final RegExp _bareRefWithPipeRegex = RegExp(
+    r'(?<!\()((?:[1-3]\s+)?[A-Za-z]+(?:\s+[A-Za-z]+){0,5}\s+\d{1,3}:\d{1,3}(?:-\d{1,3})?)\|[.,;:]?',
+  );
+
+  // Malformed reference with extra opening paren: "(2 (Corinthians 7:10)" → "(2 Corinthians 7:10)"
+  // Pattern: opening paren, optional digit+space, then another opening paren, then book name
+  static final RegExp _doubleOpenParenRegex = RegExp(
+    r'\(([1-3]\s+)\(([A-Za-z]+(?:\s+[A-Za-z]+){0,5}\s+\d{1,3}:\d{1,3}(?:-\d{1,3})?)\)',
+  );
+
   /// Builds a [RichText] widget from a formatted string.
   ///
   /// Use this as a drop-in replacement for `Text(formattedString, style: ...)`.
@@ -33,7 +56,7 @@ class RichTextParser {
   ///
   /// Useful when you need a clean string (e.g., for accessibility / semantics).
   static String stripFormatting(String text) {
-    var result = text;
+    var result = _sanitizeMalformedBibleCitations(text);
     // Strip {red|...} → keep inner content
     result = result.replaceAllMapped(
       RegExp(r'\{red\|([^}]*)\}'),
@@ -58,10 +81,12 @@ class RichTextParser {
   /// - `*italic*`
   /// - `{red|text}` (including multi-line spans)
   static List<TextSpan> buildInlineSpans(String text, TextStyle baseStyle) {
+    final sanitized = _sanitizeMalformedBibleCitations(text);
+
     // Pre-process: if ** bold markers wrap around {red|} tags, split them
     // so that {red|} extraction doesn't orphan the ** markers.
     // e.g. **"quote" ({red|Ref}).** → **"quote" (**{red|Ref}**).**
-    final processed = _splitBoldAroundRed(text);
+    final processed = _splitBoldAroundRed(sanitized);
 
     // Now split into segments: regular text and {red|...} blocks.
     final segments = <_Segment>[];
@@ -235,6 +260,51 @@ class RichTextParser {
 
     buf.write(text.substring(lastEnd));
     return buf.toString();
+  }
+
+  static String _sanitizeMalformedBibleCitations(String text) {
+    // 1. Fix double opening paren: (2 (Corinthians → (2 Corinthians
+    var result = text.replaceAllMapped(_doubleOpenParenRegex, (m) {
+      final digit = (m.group(1) ?? '').trim();
+      final ref = (m.group(2) ?? '').trim();
+      if (digit.isEmpty || ref.isEmpty) return m.group(0) ?? '';
+      return '($digit $ref)';
+    });
+
+    // 2. Fix malformed citations with pipe: (Ref|text) → (Ref)
+    result = result.replaceAllMapped(_malformedBibleCitationRegex, (m) {
+      final ref = (m.group(1) ?? '').trim();
+      if (ref.isEmpty) return m.group(0) ?? '';
+      return '($ref)';
+    });
+
+    // 3. Fix bare references with pipe (no opening paren): Ref|text → (Ref)
+    result = result.replaceAllMapped(_bareRefWithPipeRegex, (m) {
+      final ref = (m.group(1) ?? '').trim();
+      if (ref.isEmpty) return m.group(0) ?? '';
+      // Preserve trailing punctuation if present
+      final fullMatch = m.group(0)!;
+      final trailingMatch = RegExp(r'[.,;:]?$').firstMatch(fullMatch);
+      final trailing = trailingMatch?.group(0) ?? '';
+      return '($ref)$trailing';
+    });
+
+    // 4. Fix bare references without pipe: James 1:27 → (James 1:27)
+    result = result.replaceAllMapped(_bareReferenceRegex, (m) {
+      final ref = (m.group(1) ?? '').trim();
+      if (ref.isEmpty) return m.group(0) ?? '';
+      // Check if already wrapped in parentheses—skip if so
+      final fullMatch = m.group(0)!;
+      if (fullMatch.startsWith('(') && fullMatch.endsWith(')')) {
+        return fullMatch;
+      }
+      // Preserve trailing punctuation if present
+      final trailingMatch = RegExp(r'[.,;:]?$').firstMatch(fullMatch);
+      final trailing = trailingMatch?.group(0) ?? '';
+      return '($ref)$trailing';
+    });
+
+    return result;
   }
 }
 

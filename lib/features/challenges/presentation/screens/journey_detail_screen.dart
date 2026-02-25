@@ -71,8 +71,51 @@ class _JourneyDetailScreenState extends ConsumerState<JourneyDetailScreen> {
     }
 
     final id = widget.id;
-    final journey = ref.watch(journeyByIdProvider(id));
+    final catalogAsync = ref.watch(journeyCatalogProvider);
+
+    if (catalogAsync.isLoading) {
+      // ignore: avoid_print
+      print('[JourneyDetailScreen] Loading catalog for journey id=$id');
+      return Scaffold(
+        backgroundColor: AppColors.getBackground(context),
+        appBar: AppBar(
+          title: const Text('Journey'),
+          backgroundColor: AppColors.getBackground(context),
+          surfaceTintColor: AppColors.getBackground(context),
+          elevation: 0,
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (catalogAsync.hasError) {
+      // ignore: avoid_print
+      print(
+        '[JourneyDetailScreen] ❌ Catalog error for journey id=$id: ${catalogAsync.error}',
+      );
+      return Scaffold(
+        backgroundColor: AppColors.getBackground(context),
+        appBar: AppBar(
+          title: const Text('Journey'),
+          backgroundColor: AppColors.getBackground(context),
+          surfaceTintColor: AppColors.getBackground(context),
+          elevation: 0,
+        ),
+        body: const Center(
+          child: Text('Unable to load journeys. Please try again.'),
+        ),
+      );
+    }
+
+    final catalog = catalogAsync.value;
+    final journey = catalog?.findByReference(id);
     if (journey == null) {
+      final availableIds =
+          (catalog?.journeys ?? const <JourneyV1>[]).map((j) => j.id).toList();
+      // ignore: avoid_print
+      print(
+        '[JourneyDetailScreen] ❌ Journey not found. requested=$id, catalogCategory=${catalog?.category}, catalogCount=${availableIds.length}, sampleIds=${availableIds.take(8).toList()}',
+      );
       return Scaffold(
         backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
@@ -84,6 +127,11 @@ class _JourneyDetailScreenState extends ConsumerState<JourneyDetailScreen> {
         body: const Center(child: Text('Journey not found')),
       );
     }
+
+    // ignore: avoid_print
+    print(
+      '[JourneyDetailScreen] ✅ Journey resolved. requested=$id, resolved=${journey.id}, title=${journey.title}, matchMode=${journey.id == id ? 'id' : 'reference-fallback'}',
+    );
 
     final purchaseAsync = ref.watch(isJourneyPurchasedProvider(journey.id));
 
@@ -236,6 +284,12 @@ class _Body extends ConsumerWidget {
           totalMinutes: totalMinutes,
         ),
         const SizedBox(height: 14),
+        // Weekly stats card (journey-specific, with progress)
+        _WeeklyStatsCard(
+          journey: journey,
+          completedMissionIds: completedMissionIds,
+        ),
+        const SizedBox(height: 4),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -266,6 +320,40 @@ class _Body extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 12),
+        // Continue banner for in-progress activity
+        FutureBuilder<String?>(
+          future: ref
+              .read(journeyProgressServiceProvider)
+              .getInProgressMissionId(journey.id),
+          builder: (context, snapshot) {
+            final inProgressMissionId = snapshot.data;
+            if (inProgressMissionId != null &&
+                !completedMissionIds.contains(inProgressMissionId)) {
+              try {
+                final inProgressActivity = activities.firstWhere(
+                  (a) => a.id == inProgressMissionId,
+                  orElse: () => throw Exception('Not found'),
+                );
+                return _ContinueBanner(
+                  activity: inProgressActivity,
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/journey/${journey.id}/activity/${inProgressActivity.id}',
+                      arguments: {
+                        'journeyId': journey.id,
+                        'missionId': inProgressActivity.id,
+                      },
+                    );
+                  },
+                );
+              } catch (_) {
+                // Activity not found, don't show banner
+              }
+            }
+            return const SizedBox.shrink();
+          },
+        ),
         ...activities.asMap().entries.map((entry) {
           final idx = entry.key;
           final m = entry.value;
@@ -282,6 +370,7 @@ class _Body extends ConsumerWidget {
               isLocked: isLocked,
               isDone: isDone,
               showRail: !isLast,
+              isPurchased: isPurchased,
               onTap: () {
                 if (isLocked) {
                   _showUnlockSheet(
@@ -673,6 +762,7 @@ class _ActivityCard extends StatelessWidget {
   final bool isLocked;
   final bool isDone;
   final bool showRail;
+  final bool isPurchased;
   final VoidCallback onTap;
 
   const _ActivityCard({
@@ -680,6 +770,7 @@ class _ActivityCard extends StatelessWidget {
     required this.isLocked,
     required this.isDone,
     required this.showRail,
+    required this.isPurchased,
     required this.onTap,
   });
 
@@ -746,7 +837,23 @@ class _ActivityCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 4),
-                      if (isFree && activity.missionNumber == 1)
+                      if (isDone)
+                        Container(
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            color: AppColors.success.withOpacity(0.12),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Icon(
+                            Icons.check_rounded,
+                            size: 14,
+                            color: AppColors.success,
+                          ),
+                        )
+                      else if (isFree &&
+                          activity.missionNumber == 1 &&
+                          !isPurchased)
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 6,
@@ -1002,4 +1109,206 @@ String _prettyTag(String t) {
   final s = t.trim();
   if (s.isEmpty) return '';
   return s[0].toUpperCase() + s.substring(1);
+}
+
+class _ContinueBanner extends StatelessWidget {
+  final MissionV1 activity;
+  final VoidCallback onTap;
+
+  const _ContinueBanner({required this.activity, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            theme.colorScheme.primary.withOpacity(0.15),
+            theme.colorScheme.primary.withOpacity(0.08),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: theme.colorScheme.primary.withOpacity(0.25),
+          width: 1.5,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            child: Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    Icons.play_arrow_rounded,
+                    color: theme.colorScheme.primary,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Continue where you left off',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          color: theme.colorScheme.onSurface.withOpacity(0.7),
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        activity.title,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                          color: theme.colorScheme.primary,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  color: theme.colorScheme.primary.withOpacity(0.5),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _WeeklyStatsCard extends StatelessWidget {
+  final JourneyV1 journey;
+  final Set<String> completedMissionIds;
+
+  const _WeeklyStatsCard({
+    required this.journey,
+    required this.completedMissionIds,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final total = journey.missions.length;
+    final completed = completedMissionIds.length;
+
+    // Only show if there's progress
+    if (completed == 0) return const SizedBox.shrink();
+
+    final percent = total > 0 ? ((completed / total) * 100).toInt() : 0;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              theme.colorScheme.primary.withOpacity(0.08),
+              theme.colorScheme.primary.withOpacity(0.04),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: theme.colorScheme.primary.withOpacity(0.15),
+            width: 1,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Title + ratio
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Your Progress',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    ),
+                  ),
+                  Text(
+                    '$completed/$total',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              // Progress bar
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: LinearProgressIndicator(
+                  value: completed / total,
+                  minHeight: 6,
+                  backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                  valueColor: AlwaysStoppedAnimation(
+                    theme.colorScheme.primary.withOpacity(0.7),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              // Motivation message (journey-specific)
+              Text(
+                _buildPersonalizedMessage(journey.title, percent),
+                style: theme.textTheme.labelSmall?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 11,
+                  color: theme.colorScheme.onSurface.withOpacity(0.7),
+                  height: 1.4,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  String _buildPersonalizedMessage(String journeyTitle, int percent) {
+    // Journey-specific messages tied to completion %
+    if (percent < 25) {
+      return '$journeyTitle • You\'ve started something transformative';
+    } else if (percent < 50) {
+      return '$journeyTitle • You\'re discovering who you really are';
+    } else if (percent < 75) {
+      return '$journeyTitle • You\'re more than halfway there';
+    } else if (percent < 100) {
+      return '$journeyTitle • You\'re so close to the finish line';
+    } else {
+      return '$journeyTitle • You completed this journey!';
+    }
+  }
 }

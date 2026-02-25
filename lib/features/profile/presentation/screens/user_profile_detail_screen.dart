@@ -4,13 +4,30 @@ import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/providers/auth_status_provider.dart';
 import 'package:nexus_app_v2/core/providers/service_providers.dart';
 
-class UserProfileDetailScreen extends ConsumerWidget {
+class UserProfileDetailScreen extends ConsumerStatefulWidget {
   final String name;
 
   const UserProfileDetailScreen({super.key, required this.name});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<UserProfileDetailScreen> createState() =>
+      _UserProfileDetailScreenState();
+}
+
+class _UserProfileDetailScreenState
+    extends ConsumerState<UserProfileDetailScreen> {
+  @override
+  void deactivate() {
+    // Stop audio playback when navigating away from screen
+    final media = ref.read(mediaServiceProvider);
+    try {
+      media.stopAudio();
+    } catch (_) {}
+    super.deactivate();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final isLoggedIn = ref.watch(isLoggedInProvider);
     final media = ref.read(mediaServiceProvider);
 
@@ -53,7 +70,7 @@ class UserProfileDetailScreen extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(name, style: AppTextStyles.headlineSmall),
+                        Text(widget.name, style: AppTextStyles.headlineSmall),
                         const SizedBox(height: 4),
                         Text(
                           'Safe Mode profile view',
@@ -106,7 +123,7 @@ class UserProfileDetailScreen extends ConsumerWidget {
                               );
                               return;
                             }
-                            // TODO: Replace with real profile audio prompt URL/path.
+                            // Temporary sample URL for profile audio playback.
                             const testUrl =
                                 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
                             try {

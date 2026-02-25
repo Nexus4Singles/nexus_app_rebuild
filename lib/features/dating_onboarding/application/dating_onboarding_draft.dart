@@ -195,13 +195,13 @@ class DatingOnboardingDraftNotifier
         final json = jsonDecode(jsonString) as Map<String, dynamic>;
         state = DatingOnboardingDraft.fromJson(json);
         print(
-          '[DRAFT] Loaded draft from SharedPreferences: age=${state.age}, country=${state.countryOfResidence}',
+          '[DRAFT] 📥 Loaded from SharedPreferences: age=${state.age}, city=${state.city}, country=${state.countryOfResidence}, hobbies=${state.hobbies.length}, qualities=${state.desiredQualities.length}',
         );
       } else {
-        print('[DRAFT] No saved draft found in SharedPreferences');
+        print('[DRAFT] 📭 No saved draft found - starting fresh');
       }
     } catch (e) {
-      print('[DRAFT] Error loading draft: $e');
+      print('[DRAFT] ❌ Error loading draft: $e');
     }
   }
 
@@ -218,12 +218,14 @@ class DatingOnboardingDraftNotifier
       final prefs = await SharedPreferences.getInstance();
       final jsonString = jsonEncode(state.toJson());
       await prefs.setString(_storageKey, jsonString);
+      print('[DRAFT] 💾 Saved to SharedPreferences: age=${state.age}, city=${state.city}, hobbies=${state.hobbies.length}, qualities=${state.desiredQualities.length}');
     } catch (e) {
-      print('[DRAFT] Error saving draft: $e');
+      print('[DRAFT] ❌ Error saving draft: $e');
     }
   }
 
   void setAge(int age) {
+    print('[DRAFT] ✏️ Updating age: ${state.age} → $age');
     state = state.copyWith(age: age);
     _saveDraft();
   }
@@ -237,6 +239,15 @@ class DatingOnboardingDraftNotifier
     String? churchName,
     String? otherChurchName,
   }) {
+    print('[DRAFT] ✏️ Updating extra info:');
+    if (city != null) print('  city: ${state.city} → $city');
+    if (countryOfResidence != null) print('  country: ${state.countryOfResidence} → $countryOfResidence');
+    if (nationality != null) print('  nationality: ${state.nationality} → $nationality');
+    if (educationLevel != null) print('  education: ${state.educationLevel} → $educationLevel');
+    if (profession != null) print('  profession: ${state.profession} → $profession');
+    if (churchName != null) print('  church: ${state.churchName} → $churchName');
+    if (otherChurchName != null) print('  otherChurch: ${state.otherChurchName} → $otherChurchName');
+    
     state = state.copyWith(
       city: city ?? state.city,
       countryOfResidence: countryOfResidence ?? state.countryOfResidence,
@@ -250,11 +261,13 @@ class DatingOnboardingDraftNotifier
   }
 
   void setHobbies(List<String> hobbies) {
+    print('[DRAFT] ✏️ Updating hobbies: ${state.hobbies} → $hobbies');
     state = state.copyWith(hobbies: hobbies);
     _saveDraft();
   }
 
   void setDesiredQualities(List<String> qualities) {
+    print('[DRAFT] ✏️ Updating desired qualities: ${state.desiredQualities} → $qualities');
     state = state.copyWith(desiredQualities: qualities);
     _saveDraft();
   }
@@ -398,8 +411,25 @@ class DatingOnboardingDraftNotifier
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_storageKey);
+      print('[DRAFT] Draft cleared and reset to empty state');
     } catch (e) {
-      // Ignore errors
+      print('[DRAFT] Error resetting draft: $e');
+    }
+  }
+
+  /// Clear all draft data when user deletes their existing profile or starts fresh
+  /// This is called:
+  /// - When entering the dating profile creation flow
+  /// - When user deletes their existing dating profile
+  /// - When user explicitly exits/discards the creation process
+  Future<void> clearDraftForFreshStart() async {
+    state = const DatingOnboardingDraft();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_storageKey);
+      print('[DRAFT] Draft cleared for fresh profile creation start');
+    } catch (e) {
+      print('[DRAFT] Error clearing draft for fresh start: $e');
     }
   }
 }

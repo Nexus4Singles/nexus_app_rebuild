@@ -68,7 +68,7 @@ class DatingAudioScreen extends StatelessWidget {
                     ),
                     const TextSpan(text: ' and a maximum of '),
                     TextSpan(
-                      text: '60 seconds',
+                      text: '90 seconds',
                       style: AppTextStyles.bodyMedium.copyWith(
                         height: 1.45,
                         fontWeight: FontWeight.bold,

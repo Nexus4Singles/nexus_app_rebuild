@@ -10,8 +10,15 @@ import 'features/stories/presentation/screens/stories_screen.dart';
 import 'features/dating_search/presentation/screens/new_dating_search_screen.dart';
 import 'features/counselling/presentation/screens/book_marriage_coach_screen.dart';
 
-class AppShell extends ConsumerWidget {
+class AppShell extends ConsumerStatefulWidget {
   const AppShell({super.key});
+
+  @override
+  ConsumerState<AppShell> createState() => _AppShellState();
+}
+
+class _AppShellState extends ConsumerState<AppShell> {
+  final Map<NavTab, Widget> _tabScreenCache = {};
 
   Widget _screenForTab(NavTab tab) {
     switch (tab) {
@@ -30,6 +37,16 @@ class AppShell extends ConsumerWidget {
       case NavTab.profile:
         return const ProfileScreen();
     }
+  }
+
+  Widget _cachedScreenForTab(NavTab tab) {
+    return _tabScreenCache.putIfAbsent(
+      tab,
+      () => KeyedSubtree(
+        key: PageStorageKey<String>('app-shell-tab-${tab.name}'),
+        child: _screenForTab(tab),
+      ),
+    );
   }
 
   IconData _iconForTab(NavTab tab) {
@@ -52,7 +69,8 @@ class AppShell extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final ref = this.ref;
     // Initialize FCM for push notifications
     ref.watch(fcmInitializationProvider);
 
@@ -80,63 +98,19 @@ class AppShell extends ConsumerWidget {
     }
 
     final _index = tabConfigs.indexWhere((c) => c.id == selectedTab);
-    final currentTab = tabConfigs[_index].id;
+    final children = [
+      for (final config in tabConfigs) _cachedScreenForTab(config.id),
+    ];
 
     return Scaffold(
-      body: _screenForTab(currentTab),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final ctx = context;
-          await showModalBottomSheet<void>(
-            context: ctx,
-            builder:
-                (_) => SafeArea(
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      ListTile(
-                        title: const Text('Push /chats/abc'),
-                        onTap: () => Navigator.of(ctx).pushNamed('/chats/abc'),
-                      ),
-                      ListTile(
-                        title: const Text('Push /profile/u123'),
-                        onTap:
-                            () => Navigator.of(ctx).pushNamed('/profile/u123'),
-                      ),
-                      ListTile(
-                        title: const Text('Push /journey/p987'),
-                        onTap:
-                            () => Navigator.of(ctx).pushNamed('/journey/p987'),
-                      ),
-                      ListTile(
-                        title: const Text('Push /journey/p987/session/2'),
-                        onTap:
-                            () => Navigator.of(
-                              ctx,
-                            ).pushNamed('/journey/p987/session/2'),
-                      ),
-                      ListTile(
-                        title: const Text('Push /story/s55'),
-                        onTap: () => Navigator.of(ctx).pushNamed('/story/s55'),
-                      ),
-                      ListTile(
-                        title: const Text('Push /story/s55/poll'),
-                        onTap:
-                            () =>
-                                Navigator.of(ctx).pushNamed('/story/s55/poll'),
-                      ),
-                    ],
-                  ),
-                ),
-          );
-        },
-        child: const Icon(Icons.bug_report),
-      ),
+      body: IndexedStack(index: _index, children: children),
+      floatingActionButton: null, // Removed debug button
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
-        onTap:
-            (i) =>
-                ref.read(selectedTabProvider.notifier).state = tabConfigs[i].id,
+        onTap: (i) {
+          ref.read(journeysOpenedFromHomeProvider.notifier).state = false;
+          ref.read(selectedTabProvider.notifier).state = tabConfigs[i].id;
+        },
         type: BottomNavigationBarType.fixed,
         items:
             tabConfigs

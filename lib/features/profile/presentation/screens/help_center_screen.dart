@@ -31,14 +31,6 @@ class HelpCenterScreen extends StatelessWidget {
           const _SectionTitle('Quick actions'),
           ListTile(
             contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.support_agent),
-            title: const Text('Contact Support'),
-            subtitle: const Text('Get help from the Nexus team'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => Navigator.of(context).pushNamed('/contact-support'),
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.info_outline),
             title: const Text('About Nexus'),
             subtitle: const Text('What Nexus is and how it helps'),
@@ -58,23 +50,23 @@ class HelpCenterScreen extends StatelessWidget {
           const _SectionTitle('FAQs'),
           const _FaqItem(
             q: 'What is Nexus?',
-            a: 'Nexus is a faith-aligned relationship growth platform. It combines practical learning, reflection, and guided activities to help you build healthier communication, boundaries, and emotional habits. Some versions may include dating and community features.',
+            a: 'Nexus is a personal and marital growth ecosystem that seeks to help single, married, divorced, or widowed individuals build Kingdom marriages and families, the way God intended.',
           ),
           const _FaqItem(
             q: 'Do I need an account to use Nexus?',
-            a: 'You can explore some parts as a guest (where available). Creating an account helps you save progress, personalize recommendations, and access additional features.',
+            a: 'You can explore some parts as a guest (read weekly stories). Creating an account helps you save progress, take personalize assesments and journey recommendations, and access additional features.',
           ),
           const _FaqItem(
-            q: 'How do assessments work?',
-            a: 'Assessments are short check-ins designed to highlight patterns and growth areas. Results are informational—not a diagnosis—and are used to recommend relevant Programs or activities.',
+            q: 'How do Assessments work?',
+            a: 'Assessments are short and practical questions designed to highlight patterns and growth areas. Results are informational—not a diagnosis—and are used to recommend relevant Journeys you could take to resolve growth areas identified',
           ),
           const _FaqItem(
-            q: 'What are “Programs” or “Activities”?',
-            a: 'Programs are guided learning journeys broken into sessions/activities. They include small practical steps like reflection prompts, communication scripts, boundary exercises, and habits you can practice consistently.',
+            q: 'What are "Journeys" or “Activities”?',
+            a: 'Journeys are guided learning programs broken into activities. They include small practical steps like reflection prompts, communication scripts, boundary exercises, and habits you can practice consistently.',
           ),
           const _FaqItem(
-            q: 'Can I use Nexus if I’m married, single, divorced, or widowed?',
-            a: 'Yes. Nexus supports multiple relationship journeys. Your experience may be tailored based on your selected relationship status to keep recommendations relevant and respectful.',
+            q: 'Can I use Nexus if I’m married?',
+            a: 'Yes. Nexus supports multiple relationship journeys. Whether you\'re single, divorced, widowed, or married, your experience is tailored to your selected marital status.',
           ),
           const _FaqItem(
             q: 'How do I report bad behavior or safety concerns?',
@@ -86,12 +78,14 @@ class HelpCenterScreen extends StatelessWidget {
           ),
 
           const SizedBox(height: 16),
-          const _SectionTitle('Still need help?'),
-          FilledButton.icon(
-            onPressed:
-                () => Navigator.of(context).pushNamed('/contact-support'),
-            icon: const Icon(Icons.support_agent),
-            label: const Text('Contact Support'),
+          const Text(
+            'Still need help?',
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+          ),
+          const SizedBox(height: 8),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pushNamed('/contact'),
+            child: const Text('Contact Support'),
           ),
         ],
       ),
@@ -128,12 +122,29 @@ class HelpCenterScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Nexus helps people build healthier relationships through practical, faith-aligned guidance.\n\n'
+                  'Family is the smallest unit that shapes society and we are on a mission to raise Godly families through kingdom relationships and marriages. We have created Nexus as a personal and marital growth ecosystem that seeks to help single, married, divorced, or widowed individuals build kingdom marriages and families, the way God intended.\n\n'
                   'Inside Nexus you’ll find:\n'
-                  '• Short assessments to reflect on patterns\n'
-                  '• Guided Programs made up of small activities\n'
-                  '• Tools for communication, boundaries, healing, and growth\n\n'
-                  'Nexus is designed to be supportive and respectful across different life seasons—single, married, divorced, or widowed.\n\n'
+                  '• A Purposeful Dating section for singles, divorced or widowed individuals seeking relationships leading to marriage.\n'
+                  '• Practical Assessments to reflect on patterns\n'
+                  '• Guided Journeys made up of small activities to enhance your knowledge and provide you with clarity on how to strengthen your relationships or marriage, using biblical principles.\n'
+                  '• Beautiful weekly stories that uncover powerful lessons for navigating relationships and marriage.\n'
+                  '• Expert guidance from professional Marriage Counsellors and Family Therapists (Coming Soon).\n\n'
+                  'Nexus is designed to be supportive and respectful across different life seasons—',
+                ),
+                RichText(
+                  text: const TextSpan(
+                    children: [
+                      TextSpan(text: 'single, married, divorced, or widowed'),
+                      TextSpan(text: '.\n\n'),
+                    ],
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                const Text(
+                  ''
                   'Important: Nexus is educational and is not medical, mental health, or legal advice. If you need professional or emergency support, please contact a qualified provider or local emergency services.',
                 ),
                 const SizedBox(height: 12),

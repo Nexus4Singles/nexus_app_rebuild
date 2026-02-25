@@ -6,6 +6,8 @@ import '../../../../core/router/app_routes.dart';
 import '../../../../core/router/safe_nav.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/ui/icon_mapper.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/providers/tab_selection_provider.dart';
 import '../../../../core/providers/user_provider.dart';
 import '../../domain/journey_v1_models.dart';
 import '../../providers/journeys_providers.dart';
@@ -17,6 +19,7 @@ class ChallengesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final catalogAsync = ref.watch(journeyCatalogProvider);
     final userAsync = ref.watch(currentUserProvider);
+    final openedFromHome = ref.watch(journeysOpenedFromHomeProvider);
     String? userGender = userAsync.maybeWhen(
       data: (user) => user?.gender,
       orElse: () => null,
@@ -27,6 +30,17 @@ class ChallengesScreen extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
+        leading:
+            openedFromHome
+                ? IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_new),
+                  onPressed: () {
+                    ref.read(journeysOpenedFromHomeProvider.notifier).state =
+                        false;
+                    ref.read(selectedTabProvider.notifier).state = NavTab.home;
+                  },
+                )
+                : null,
         title: Text(
           'Journeys',
           style: Theme.of(

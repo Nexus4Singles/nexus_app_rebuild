@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:io';
 
@@ -22,6 +23,14 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Initialize App Check with provider selection based on platform
+  // Uses DeviceCheck on iOS and Play Integrity API on Android
+  await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.playIntegrity,
+    appleProvider: AppleProvider.deviceCheck,
+  );
+
   await ContentCacheService().init();
   await RevenueCatService.init();
   await appEntry();

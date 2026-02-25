@@ -8,6 +8,7 @@ import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
 import 'package:nexus_app_v2/core/services/media_service.dart';
 import 'package:nexus_app_v2/core/providers/service_providers.dart';
 import 'package:nexus_app_v2/core/services/duplicate_detection_service.dart';
+import 'package:nexus_app_v2/core/theme/app_colors.dart';
 
 class AdminReviewDetailScreen extends ConsumerStatefulWidget {
   final String userId;
@@ -241,6 +242,45 @@ class _AdminReviewDetailScreenState
           await fs.collection('users').doc(widget.userId).update(payload);
         }
 
+        Future<void> deleteReviewPack() async {
+          final confirmDelete = await showDialog<bool>(
+            context: context,
+            builder:
+                (ctx) => AlertDialog(
+                  title: const Text('Delete review pack?'),
+                  content: const Text(
+                    'This will delete all photos and audio in the review pack. This action cannot be undone.',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(ctx).pop(false),
+                      child: const Text('Cancel'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => Navigator.of(ctx).pop(true),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.error,
+                      ),
+                      child: const Text('Delete'),
+                    ),
+                  ],
+                ),
+          );
+
+          if (confirmDelete != true) return;
+
+          final payload = <String, dynamic>{
+            'dating.reviewPack': FieldValue.delete(),
+          };
+
+          await fs.collection('users').doc(widget.userId).update(payload);
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Review pack deleted')),
+            );
+          }
+        }
+
         return Scaffold(
           appBar: AppBar(title: Text('Review: $name')),
           body: Padding(
@@ -250,6 +290,56 @@ class _AdminReviewDetailScreenState
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Status badge
+                    Builder(
+                      builder: (_) {
+                        final status =
+                            dating?['verificationStatus']?.toString() ??
+                            'unknown';
+                        final account =
+                            (data['account'] is Map)
+                                ? data['account'] as Map
+                                : null;
+                        final disabled =
+                            (account?['disabled'] == true) ||
+                            (account?['isDisabled'] == true);
+
+                        Color badgeColor = AppColors.textMuted;
+                        if (disabled) {
+                          badgeColor = AppColors.error;
+                        } else if (status == 'verified') {
+                          badgeColor = AppColors.success;
+                        } else if (status == 'rejected') {
+                          badgeColor = AppColors.warning;
+                        } else if (status == 'pending') {
+                          badgeColor = AppColors.info;
+                        }
+
+                        String badgeText = status.toUpperCase();
+                        if (disabled) badgeText = '⛔ DISABLED';
+
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: badgeColor.withOpacity(0.2),
+                            border: Border.all(color: badgeColor),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            badgeText,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: badgeColor,
+                              fontSize: 14,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 12),
                     Text('Status: ${status ?? "unknown"}'),
                     const SizedBox(height: 6),
 
@@ -463,6 +553,18 @@ class _AdminReviewDetailScreenState
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: deleteReviewPack,
+                    icon: const Icon(Icons.delete_outline_rounded),
+                    label: const Text('Delete Review Pack'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                    ),
+                  ),
                 ),
               ],
             ),

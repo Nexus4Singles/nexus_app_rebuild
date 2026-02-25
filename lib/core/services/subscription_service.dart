@@ -212,13 +212,40 @@ final subscriptionServiceProvider = Provider<SubscriptionService>((ref) {
   return SubscriptionService();
 });
 
-/// Provider for checking if current user is premium
-final isPremiumProvider = FutureProvider<bool>((ref) async {
-  final userId = ref.watch(currentUserIdProvider);
-  if (userId == null) return false;
+/// Provider for checking if current user is premium in real-time
+///
+/// ✅ NOW: StreamProvider - watches user premium status in real-time
+/// ✅ BEFORE: FutureProvider - checked once, cached stale status
+final isPremiumProvider = StreamProvider<bool>((ref) async* {
+  // Watch current user provider which streams real-time updates from Firestore
+  final currentUserAsync = ref.watch(currentUserProvider);
 
-  final subscriptionService = ref.watch(subscriptionServiceProvider);
-  return subscriptionService.isPremium(userId);
+  await for (final userOrNull
+      in currentUserAsync.valueOrNull != null
+          ? Stream.value(currentUserAsync.valueOrNull).asBroadcastStream()
+          : Stream.empty()) {
+    if (userOrNull == null) {
+      yield false;
+      continue;
+    }
+
+    // Use subscription service to check if premium
+    final subscriptionService = ref.watch(subscriptionServiceProvider);
+    try {
+      final isPremium = await subscriptionService.isPremium(userOrNull.uid);
+      print(
+        '[isPremiumProvider] ✓ Real-time update: isPremium=$isPremium for uid=${userOrNull.uid}',
+      );
+      yield isPremium;
+    } catch (e) {
+      print('[isPremiumProvider] Error checking premium: $e');
+      // Fallback to quick check
+      final isPremium =
+          userOrNull.onPremium == true &&
+          (userOrNull.subExpDate?.isAfter(DateTime.now()) ?? false);
+      yield isPremium;
+    }
+  }
 });
 
 /// Provider for message permission with a specific user
@@ -231,13 +258,39 @@ final messagePermissionProvider =
       return subscriptionService.canSendMessage(userId, recipientId);
     });
 
-/// Provider for subscription expiration date
-final subscriptionExpirationProvider = FutureProvider<DateTime?>((ref) async {
-  final userId = ref.watch(currentUserIdProvider);
-  if (userId == null) return null;
+/// Provider for subscription expiration date in real-time
+///
+/// ✅ NOW: StreamProvider - watches expiration date in real-time
+/// ✅ BEFORE: FutureProvider - checked once, could show stale date
+final subscriptionExpirationProvider = StreamProvider<DateTime?>((ref) async* {
+  // Watch current user provider which streams real-time updates from Firestore
+  final currentUserAsync = ref.watch(currentUserProvider);
 
-  final subscriptionService = ref.watch(subscriptionServiceProvider);
-  return subscriptionService.getExpirationDate(userId);
+  await for (final userOrNull
+      in currentUserAsync.valueOrNull != null
+          ? Stream.value(currentUserAsync.valueOrNull).asBroadcastStream()
+          : Stream.empty()) {
+    if (userOrNull == null) {
+      yield null;
+      continue;
+    }
+
+    // Use subscription service to get expiration date
+    final subscriptionService = ref.watch(subscriptionServiceProvider);
+    try {
+      final expDate = await subscriptionService.getExpirationDate(
+        userOrNull.uid,
+      );
+      print(
+        '[subscriptionExpirationProvider] ✓ Real-time update: expDate=$expDate for uid=${userOrNull.uid}',
+      );
+      yield expDate;
+    } catch (e) {
+      print('[subscriptionExpirationProvider] Error getting expiration: $e');
+      // Fallback to user's cached expiration date
+      yield userOrNull.subExpDate;
+    }
+  }
 });
 
 /// Quick check provider using cached user data

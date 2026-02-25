@@ -135,7 +135,8 @@ class _SavedProfileCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final photo = profile.photos.isNotEmpty ? profile.photos.first : null;
+    // FIXED: Use validProfilePhoto getter which handles deleted/missing photos
+    final photo = profile.validProfilePhoto;
     final subtitle = [
       if (profile.displayLocation.trim().isNotEmpty) profile.displayLocation,
       if ((profile.profession ?? '').trim().isNotEmpty)
@@ -169,11 +170,20 @@ class _SavedProfileCard extends ConsumerWidget {
             InkWell(
               borderRadius: BorderRadius.circular(14),
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => ProfileScreen(userId: profile.uid),
-                  ),
-                );
+                try {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => ProfileScreen(userId: profile.uid),
+                    ),
+                  );
+                } catch (e) {
+                  // FIXED: Catch navigation errors to prevent Navigator history issues
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error opening profile: $e')),
+                    );
+                  }
+                }
               },
               child: Row(
                 children: [
@@ -196,11 +206,12 @@ class _SavedProfileCard extends ConsumerWidget {
                                 fit: BoxFit.cover,
                                 cacheWidth: 128,
                                 cacheHeight: 128,
-                                errorBuilder: (_, __, ___) => Icon(
-                                  Icons.person,
-                                  size: 32,
-                                  color: AppColors.primary,
-                                ),
+                                errorBuilder:
+                                    (_, __, ___) => Icon(
+                                      Icons.person,
+                                      size: 32,
+                                      color: AppColors.primary,
+                                    ),
                               ),
                     ),
                   ),

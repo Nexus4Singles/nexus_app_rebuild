@@ -85,7 +85,7 @@ class JourneyDetailScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          // TODO: List activities here
+          // Activities list placeholder
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(

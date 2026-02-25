@@ -226,8 +226,8 @@ final searchResultsProvider =
         return [];
       }
 
-      // Get gender from root level (Nexus 1.0) or nexus2 (Nexus 2.0)
-      final userGender = currentUser.gender ?? currentUser.nexus2?.gender;
+      // Get gender (read from dating.profile in priority, fallback to root)
+      final userGender = currentUser.gender;
 
       // Get blocked users list
       final blockedUsers = currentUser.blocked ?? [];

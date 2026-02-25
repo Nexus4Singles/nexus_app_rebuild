@@ -36,13 +36,24 @@ final datingProfileStatusProvider = StreamProvider<DatingProfileStatus>((ref) {
     final isLegacy = (svInt == null || svInt < 2);
 
     if (isLegacy) {
+      print(
+        '[datingProfileStatusProvider] ✓ Legacy v1 user (schemaVersion=$svInt) → returning .complete',
+      );
       return Stream.value(DatingProfileStatus.complete);
     }
 
     // v2 path: check datingProfiles/{uid} completeness.
+    print(
+      '[datingProfileStatusProvider] v2 user (schemaVersion=$svInt); checking datingProfiles/$uid',
+    );
     return fs.collection('datingProfiles').doc(uid).snapshots().map((doc) {
       final data = doc.data();
-      if (data == null) return DatingProfileStatus.none;
+      if (data == null) {
+        print(
+          '[datingProfileStatusProvider] ✗ No datingProfiles/$uid doc found → returning .none',
+        );
+        return DatingProfileStatus.none;
+      }
 
       final name = (data['name'] as String?)?.trim() ?? '';
       final age = data['age'];
@@ -54,6 +65,10 @@ final datingProfileStatusProvider = StreamProvider<DatingProfileStatus>((ref) {
 
       final complete =
           name.isNotEmpty && ageOk && gender.isNotEmpty && photosOk;
+
+      print(
+        '[datingProfileStatusProvider] v2 profile check: uid=$uid, name="$name" (ok=${name.isNotEmpty}), age=$age (ok=$ageOk), gender="$gender" (ok=${gender.isNotEmpty}), photos=${(photos is List ? photos.length : 0)} (ok=$photosOk) → ${complete ? '.complete' : '.incomplete'}',
+      );
 
       return complete
           ? DatingProfileStatus.complete

@@ -40,7 +40,7 @@ class TermsScreen extends StatelessWidget {
               _buildSection(
                 context,
                 '1) WHO NEXUS IS FOR',
-                'Nexus is a relationship and personal growth platform that may include educational content, assessments, activities ("Programs"), and community or dating-related features. You must be at least the minimum age required in your country to use Nexus. You are responsible for ensuring your use is legal where you live.',
+                'Nexus is a personal and marital growth ecosystem that seeks to help **single, married, divorced, or widowed** individuals build Kingdom marriages and families, the way God intended.',
               ),
               const SizedBox(height: 20),
               _buildSection(
@@ -79,8 +79,8 @@ class TermsScreen extends StatelessWidget {
               const SizedBox(height: 20),
               _buildSection(
                 context,
-                '5) PROGRAMS, ASSESSMENTS, AND RECOMMENDATIONS',
-                'Assessments and recommendations are informational tools designed to help guide your experience. They may not be accurate for every person and should not be treated as definitive diagnosis, judgment, or label. You are responsible for your choices and actions.',
+                '5) ASSESSMENTS, AND JOURNEYS',
+                'Assessment Results and Recommended Journeys are informational tools designed to help guide your experience. They may not be accurate for every person and should not be treated as definitive diagnosis, judgment, or label. You are responsible for your choices and actions.',
               ),
               const SizedBox(height: 20),
               _buildSection(
@@ -150,7 +150,7 @@ class TermsScreen extends StatelessWidget {
               _buildSection(
                 context,
                 '14) CONTACT',
-                'If you have questions about these Terms, contact us at:\n\nnexusgodlydating@gmail.com',
+                'If you have questions about these Terms, contact us at:\n\ncontact@nexus4singles.com',
               ),
               const SizedBox(height: 40),
             ],

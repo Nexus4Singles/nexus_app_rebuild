@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:nexus_app_v2/core/models/story_model.dart' hide Story;
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/router/safe_nav.dart';
+import 'package:nexus_app_v2/core/providers/user_provider.dart';
 import 'package:nexus_app_v2/features/stories/data/story_repository.dart';
 import 'package:nexus_app_v2/features/stories/domain/story_models.dart';
 import 'package:nexus_app_v2/features/stories/presentation/screens/story_poll_screen.dart';
@@ -24,9 +25,12 @@ class StoriesScreen extends ConsumerWidget {
         backgroundColor: AppColors.getBackground(context),
         surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => navigateBackToHome(context),
+        leading: Visibility(
+          visible: !ref.watch(userIsMarriedProvider),
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            onPressed: () => navigateBackToHome(context),
+          ),
         ),
         titleSpacing: 20,
         title: Text(

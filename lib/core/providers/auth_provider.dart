@@ -371,9 +371,17 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
   /// Update username for the current user
   Future<void> updateUsername(String username) async {
-    // TODO: Wire to Firestore once FirestoreService exposes an update method.
-    // Keeping as no-op for now to avoid compile errors.
-    return;
+    final user = _authService.currentUser;
+    if (user == null || user.isAnonymous) return;
+
+    final normalized = username.trim();
+    if (normalized.isEmpty) return;
+
+    await _firestoreService.updateUserFields(user.uid, {
+      'username': normalized,
+      'dating.profile.username': normalized,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
   }
 
   /// Send password reset email

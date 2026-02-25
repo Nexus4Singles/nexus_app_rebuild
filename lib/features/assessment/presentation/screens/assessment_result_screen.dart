@@ -78,7 +78,7 @@ class AssessmentResultScreen extends ConsumerWidget {
     }
 
     print(
-      '[AssessmentResultScreen] ✓ Building result screen for: ${result.assessmentId}',
+      '[AssessmentResultScreen] ✓ Building result screen for: ${result.assessmentId}, dimensionScores=${result.dimensionScores.length}, answers=${result.answers.length}',
     );
 
     // Fetch config if needed
@@ -363,6 +363,9 @@ class AssessmentResultScreen extends ConsumerWidget {
                   AssessmentResultJourneyCard(
                     journeys: bundle.recommendedJourneys,
                     onTapJourney: (journeyId) {
+                      print(
+                        '[AssessmentResultScreen] ▶️ Tap recommended journey: id=$journeyId',
+                      );
                       Navigator.pushNamed(context, '/journey/$journeyId');
                     },
                   ),

@@ -49,7 +49,7 @@ class CachedImage extends StatelessWidget {
       return _buildPlaceholder();
     }
 
-    print('[CachedImage] Loading: $imageUrl (width=$width, height=$height)');
+    // DEBUG: Loading image - skipped to reduce log noise
 
     final image = CachedNetworkImage(
       imageUrl: imageUrl,
@@ -64,17 +64,15 @@ class CachedImage extends StatelessWidget {
       memCacheHeight: (height?.toInt() ?? 400) * 2,
       cacheManager: _SimpleCacheManager.instance,
       progressIndicatorBuilder: (context, url, downloadProgress) {
-        print(
-          '[CachedImage] Loading progress: $url - ${downloadProgress.progress}',
-        );
+        // DEBUG: Loading progress - skipped to reduce log noise
         return placeholder ?? _buildLoadingPlaceholder();
       },
       errorWidget: (context, url, error) {
-        print('[CachedImage] Error loading image: $url\nError: $error');
+        // DEBUG: Error loading image - skipped to reduce log noise
         return errorWidget ?? _buildErrorPlaceholder();
       },
       imageBuilder: (context, imageProvider) {
-        print('[CachedImage] Successfully loaded: $imageUrl');
+        // DEBUG: Successfully loaded - skipped to reduce log noise
         return Image(
           image: imageProvider,
           fit: fit,

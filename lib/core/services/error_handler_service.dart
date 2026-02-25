@@ -224,7 +224,7 @@ class ErrorHandlerService {
     // In debug mode, print to console
     if (error is AppError && error.code != null) {}
     if (stackTrace != null) {}
-    // TODO: In production, send to Firebase Crashlytics:
+    // In production, send to Firebase Crashlytics:
     // FirebaseCrashlytics.instance.recordError(error, stackTrace);
   }
 
@@ -289,7 +289,7 @@ class ErrorHandlerService {
                   textColor: Colors.white,
                   onPressed: () {
                     // Navigate to contact support
-                    safePushNamed(context, '/contact-support');
+                    safePushNamed(context, '/contact');
                   },
                 )
                 : onRetry != null
@@ -395,7 +395,7 @@ class ErrorHandlerService {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  safePushNamed(context, '/contact-support');
+                  safePushNamed(context, '/contact');
                 },
                 child: Text(
                   'Contact Support',
@@ -444,7 +444,7 @@ class ErrorHandlerService {
             ),
           ],
         ),
-        backgroundColor: Colors.green,
+        backgroundColor: AppColors.success,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         duration: const Duration(seconds: 3),
@@ -469,7 +469,7 @@ class ErrorHandlerService {
             ),
           ],
         ),
-        backgroundColor: Colors.orange,
+        backgroundColor: AppColors.warning,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         duration: const Duration(seconds: 4),

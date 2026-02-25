@@ -341,7 +341,7 @@ const _quizSteps = <_QuizStep>[
   _QuizStep(
     key: 'regularSourceOfIncome',
     title: 'Do you have a stable source of income?',
-    options: ['Yes', 'No', 'Sometimes'],
+    options: ['Yes', 'No'],
   ),
   _QuizStep(
     key: 'marrySomeoneNotFS',

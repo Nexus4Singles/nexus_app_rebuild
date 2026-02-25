@@ -43,28 +43,38 @@ String _displayNameFromOtherId(String otherUserId) {
   return 'User ${id.substring(0, 6)}';
 }
 
+/// Get the best available avatar URL from user data
+/// FIXED: Safely iterates through all photos to find first valid one
+/// Handles cases where photos at beginning of list are deleted/empty
 String? _bestAvatarUrl(Map<String, dynamic>? u) {
   if (u == null) return null;
 
   // Common locations:
   // - profileUrl
-  // - photos[0]
-  // - nexus2.photos[0]
+  // - photos[0..n] (iterate to find first valid)
+  // - nexus2.photos[0..n] (iterate to find first valid)
   final direct = (u['profileUrl'] ?? '').toString().trim();
   if (direct.isNotEmpty) return direct;
 
+  // FIXED: Iterate through all photos to find first valid (non-empty) one
+  // This handles cases where photos are deleted from Firestore
   final photos = u['photos'];
   if (photos is List && photos.isNotEmpty) {
-    final v = (photos.first ?? '').toString().trim();
-    if (v.isNotEmpty) return v;
+    for (final photo in photos) {
+      final v = (photo ?? '').toString().trim();
+      if (v.isNotEmpty) return v;
+    }
   }
 
   final nexus2 = u['nexus2'];
   if (nexus2 is Map) {
+    // FIXED: Iterate through nexus2 photos as well
     final n2photos = nexus2['photos'];
     if (n2photos is List && n2photos.isNotEmpty) {
-      final v = (n2photos.first ?? '').toString().trim();
-      if (v.isNotEmpty) return v;
+      for (final photo in n2photos) {
+        final v = (photo ?? '').toString().trim();
+        if (v.isNotEmpty) return v;
+      }
     }
     final n2url = (nexus2['profileUrl'] ?? '').toString().trim();
     if (n2url.isNotEmpty) return n2url;

@@ -25,7 +25,7 @@ class DatingPoolGuidelinesModal extends StatelessWidget {
                   children: [
                     // Header
                     Text(
-                      'Nexus Dating Pool',
+                      'Dating Profile Guide',
                       style: AppTextStyles.headlineLarge.copyWith(
                         fontWeight: FontWeight.w700,
                         color: AppColors.primary,
@@ -50,16 +50,16 @@ class DatingPoolGuidelinesModal extends StatelessWidget {
                     const SizedBox(height: 16),
                     _GuidelineItem(
                       icon: '👂',
-                      title: 'Why Audio Matters',
+                      title: 'Why Great Pictures Matter',
                       description:
-                          'Recordings reveal beliefs & thought processes because people want to know who you are beyond your looks',
+                          'Your Pictures are the entry point to creating a great first impression. Most Opposite Gender Users will not bother to listen to your recordings, if you dont upload nice pictures.',
                     ),
                     const SizedBox(height: 16),
                     _GuidelineItem(
                       icon: '💬',
-                      title: 'Communication is Key',
+                      title: 'Why Your Audio Recordings Matter',
                       description:
-                          'Take your audio recordings seriously. Strong communication skills give users a great impression about you',
+                          'Your audio recordings reveal your beliefs & thought processes because people want to know who you are beyond your looks. Kindly take these recordings seriously.',
                     ),
                     const SizedBox(height: 16),
                     _GuidelineItem(
@@ -73,14 +73,14 @@ class DatingPoolGuidelinesModal extends StatelessWidget {
                       icon: '💎',
                       title: 'Our Mission',
                       description:
-                          'An intentional movement to see more kingdom marriages exist',
+                          'An intentional movement to see more kingdom marriages exist by providing you with the visibility to find or to be found;',
                     ),
                     const SizedBox(height: 16),
                     _GuidelineItem(
                       icon: '✨',
                       title: 'Your Journey',
                       description:
-                          'We provide the visibility you need; you rely on the HolySpirit for discernment',
+                          'Don\'t hesitate to share your love story with us if you find someone here and get married! We would love to celebrate with you and share your story as a testimony to inspire others.',
                     ),
                     const SizedBox(height: 24),
 

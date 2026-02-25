@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nexus_app_v2/core/services/chat_service.dart';
 import 'package:nexus_app_v2/core/services/duplicate_detection_service.dart';
+import 'package:nexus_app_v2/core/services/media_cache_service.dart';
 
 import '../services/media_service.dart';
 import '../services/dating_profile_service.dart';
@@ -24,6 +25,17 @@ import 'package:nexus_app_v2/core/user/current_user_disabled_provider.dart';
 final mediaServiceProvider = Provider<MediaService>((ref) {
   final service = MediaService();
   ref.onDispose(() => service.dispose());
+  return service;
+});
+
+/// Provider for MediaCacheService instance
+final mediaCacheServiceProvider = Provider<MediaCacheService>((ref) {
+  final service = MediaCacheService.instance;
+  // Initialize cache in background
+  Future(() => service.init()).ignore();
+  ref.onDispose(() {
+    // Cache persists across sessions, no cleanup needed
+  });
   return service;
 });
 
@@ -207,11 +219,16 @@ final getOrCreateChatProvider = FutureProvider.family<String, String>((
 /// State notifier for chat operations
 class ChatNotifier extends StateNotifier<AsyncValue<void>> {
   final ChatService _chatService;
+  final MediaService _mediaService;
   final String _currentUserId;
   final Future<bool> Function() _isDisabled;
 
-  ChatNotifier(this._chatService, this._currentUserId, this._isDisabled)
-    : super(const AsyncValue.data(null));
+  ChatNotifier(
+    this._chatService,
+    this._mediaService,
+    this._currentUserId,
+    this._isDisabled,
+  ) : super(const AsyncValue.data(null));
 
   /// Send a text message (optionally includes metadata e.g. reply info)
   Future<ChatMessage?> sendMessage({
@@ -243,7 +260,7 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
     }
   }
 
-  /// Send an image message (stored as local file path in Firestore)
+  /// Send an image message (sends immediately, uploads in background)
   Future<ChatMessage?> sendImage({
     required String chatId,
     required String receiverId,
@@ -262,18 +279,25 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
         if (caption != null) 'caption': caption,
       };
 
-      // Store image as local file path in Firestore
-      // No cloud upload needed for chat images
+      // OPTIMIZED: Send message immediately with local path or URL
+      // Upload happens in background for better UX (instant message delivery)
       final message = await _chatService.sendMessage(
         chatId: chatId,
         senderId: _currentUserId,
         receiverId: receiverId,
-        content: imageUrl, // Store local path directly
+        content: imageUrl, // Send immediately with original content
         type: MessageType.image,
         metadata: merged.isEmpty ? null : merged,
       );
+      debugPrint('[Chat] ✅ Image message sent immediately: $imageUrl');
 
       state = const AsyncValue.data(null);
+
+      // Upload to cloud storage in background (non-blocking)
+      if (!imageUrl.startsWith('http')) {
+        _uploadImageInBackground(chatId, message.id, imageUrl);
+      }
+
       return message;
     } catch (e, st) {
       state = AsyncValue.error(e, st);
@@ -281,7 +305,43 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
     }
   }
 
-  /// Send an audio message (content is a URL for prod; can be a local path in dev)
+  /// Background task: upload image and update message with cloud URL
+  void _uploadImageInBackground(
+    String chatId,
+    String messageId,
+    String localPath,
+  ) {
+    // Fire-and-forget: upload doesn't block message send
+    Future(() async {
+      try {
+        final imageFile = File(localPath);
+        if (!await imageFile.exists()) {
+          debugPrint('[Chat] ⚠️ Local image file no longer exists: $localPath');
+          return;
+        }
+
+        final cloudUrl = await _mediaService.uploadChatImage(
+          userId: _currentUserId,
+          chatId: chatId,
+          imageFile: imageFile,
+        );
+
+        if (cloudUrl.isEmpty) {
+          debugPrint('[Chat] ⚠️ Image upload returned empty URL');
+          return;
+        }
+
+        // Update message with cloud URL
+        await _chatService.updateMessageContent(chatId, messageId, cloudUrl);
+        debugPrint('[Chat] ✅ Image uploaded and message updated: $cloudUrl');
+      } catch (e) {
+        debugPrint('[Chat] ⚠️ Background image upload failed: $e');
+        // User's message already sent, upload failure is non-critical
+      }
+    });
+  }
+
+  /// Send an audio message (sends immediately with local path, uploads in background)
   Future<ChatMessage?> sendAudio({
     required String chatId,
     required String receiverId,
@@ -300,23 +360,83 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
         'duration': durationSeconds,
       };
 
-      // Store audio as local file path in Firestore
-      // No cloud upload needed for chat audio
+      // Validate local file exists before sending
+      if (!audioUrl.startsWith('http')) {
+        final audioFile = File(audioUrl);
+        if (!await audioFile.exists()) {
+          throw StateError('Audio file not found: $audioUrl');
+        }
+        // Wait a moment to ensure file is fully flushed to disk
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+
+      // Send message immediately with current URL (local path or cloud URL)
       final message = await _chatService.sendMessage(
         chatId: chatId,
         senderId: _currentUserId,
         receiverId: receiverId,
-        content: audioUrl, // Store local path directly
+        content: audioUrl,
         type: MessageType.audio,
         metadata: merged,
       );
+      debugPrint(
+        '[Chat] ✅ Audio message sent immediately: $audioUrl (${durationSeconds}s)',
+      );
 
       state = const AsyncValue.data(null);
+
+      // Upload to cloud storage in background (non-blocking)
+      if (!audioUrl.startsWith('http')) {
+        _uploadAudioInBackground(chatId, message.id, audioUrl, durationSeconds);
+      }
+
       return message;
     } catch (e, st) {
       state = AsyncValue.error(e, st);
       rethrow;
     }
+  }
+
+  /// Background task: upload audio and update message with cloud URL
+  void _uploadAudioInBackground(
+    String chatId,
+    String messageId,
+    String localPath,
+    int durationSeconds,
+  ) {
+    // Fire-and-forget: upload doesn't block message send
+    Future(() async {
+      try {
+        final audioFile = File(localPath);
+        if (!await audioFile.exists()) {
+          debugPrint('[Chat] ⚠️ Local audio file no longer exists: $localPath');
+          return;
+        }
+
+        final fileSize = await audioFile.length();
+        debugPrint(
+          '[Chat] 🎵 Uploading audio: ${durationSeconds}s, ${fileSize}B',
+        );
+
+        final cloudUrl = await _mediaService.uploadChatAudio(
+          userId: _currentUserId,
+          chatId: chatId,
+          filePath: localPath,
+        );
+
+        if (cloudUrl.isEmpty) {
+          debugPrint('[Chat] ⚠️ Audio upload returned empty URL');
+          return;
+        }
+
+        // Update message with cloud URL
+        await _chatService.updateMessageContent(chatId, messageId, cloudUrl);
+        debugPrint('[Chat] ✅ Audio uploaded and message updated: $cloudUrl');
+      } catch (e) {
+        debugPrint('[Chat] ⚠️ Background audio upload failed: $e');
+        // User's message already sent, upload failure is non-critical
+      }
+    });
   }
 
   /// Mark messages as read in this chat
@@ -342,6 +462,7 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
 final chatNotifierProvider =
     StateNotifierProvider<ChatNotifier, AsyncValue<void>>((ref) {
       final chatService = ref.watch(chatServiceProvider);
+      final mediaService = ref.watch(mediaServiceProvider);
       final userId = ref.watch(currentUserIdProvider);
 
       if (userId == null) {
@@ -349,7 +470,7 @@ final chatNotifierProvider =
       }
 
       Future<bool> isDisabled() => ref.read(currentUserDisabledProvider.future);
-      return ChatNotifier(chatService, userId, isDisabled);
+      return ChatNotifier(chatService, mediaService, userId, isDisabled);
     });
 
 // ============================================================================

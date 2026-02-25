@@ -15,7 +15,9 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isDarkMode = ref.watch(isDarkModeProvider);
     final isAdminAsync = ref.watch(isAdminProvider);
-    final isAdmin = isAdminAsync.maybeWhen(data: (v) => v, orElse: () => false);
+
+    // Extract admin status: true if confirmed, false if loading/error/false
+    final isAdmin = isAdminAsync.asData?.value ?? false;
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
@@ -105,7 +107,7 @@ class SettingsScreen extends ConsumerWidget {
                 iconColor: AppColors.primary,
                 iconBgColor: AppColors.primarySoft,
                 title: 'Help Center',
-                subtitle: 'FAQs and quick actions',
+                subtitle: 'FAQs and Support Resources',
                 onTap: () => Navigator.of(context).pushNamed('/help'),
               ),
               _Divider(),

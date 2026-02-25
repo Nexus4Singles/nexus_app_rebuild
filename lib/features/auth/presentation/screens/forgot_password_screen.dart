@@ -160,19 +160,23 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.1),
+                    color: AppColors.error.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.red.withOpacity(0.3)),
+                    border: Border.all(color: AppColors.error.withOpacity(0.3)),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.error_outline, color: Colors.red, size: 20),
+                      Icon(
+                        Icons.error_outline,
+                        color: AppColors.error,
+                        size: 20,
+                      ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           _error!,
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: Colors.red,
+                            color: AppColors.error,
                           ),
                         ),
                       ),
@@ -185,15 +189,17 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
+                    color: AppColors.success.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.green.withOpacity(0.3)),
+                    border: Border.all(
+                      color: AppColors.success.withOpacity(0.3),
+                    ),
                   ),
                   child: Row(
                     children: [
                       Icon(
                         Icons.check_circle_outline,
-                        color: Colors.green,
+                        color: AppColors.success,
                         size: 20,
                       ),
                       const SizedBox(width: 12),
@@ -201,7 +207,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                         child: Text(
                           _message!,
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: Colors.green,
+                            color: AppColors.success,
                           ),
                         ),
                       ),

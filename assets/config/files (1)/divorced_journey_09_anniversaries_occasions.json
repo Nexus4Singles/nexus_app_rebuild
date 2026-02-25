@@ -1,0 +1,760 @@
+{
+  "journeyId": "divorced_anniversaries_occasions",
+  "title": "Navigating Special Anniversaries After Divorce",
+  "subtitle": "Finding your way through emotionally charged dates and events",
+  "summary": "**After divorce, certain dates and occasions carry unexpected emotional weight.** Your wedding anniversary, holidays you celebrated together, your ex's birthday, and other meaningful dates can trigger grief, loneliness, and painful memories. This journey helps you anticipate these difficult moments, develop strategies for navigating them, create new meanings and traditions, and find peace on days that used to belong to your marriage.",
+  "targetUserCategory": "divorced",
+  "priorityRank": 9,
+  "estimatedDays": 12,
+  "totalActivities": 10,
+  "difficulty": "intermediate",
+  "themeColor": "#7B1FA2",
+  "cover": {
+    "themeTag": "Navigating",
+    "accentIcon": "event",
+    "heroImage": "assets/images/journeys/divorced_journey9.jpg",
+    "heroImageDescription": "A calendar with certain dates highlighted, or a person looking contemplatively at changing seasons, representing the passage of meaningful time."
+  },
+  "frameworks": [
+    "grief_processing",
+    "cognitive_reframing",
+    "ritual_creation",
+    "emotional_preparation"
+  ],
+  "targetOutcomes": [
+    "Identify dates and occasions that may be emotionally difficult",
+    "Understand why these times trigger strong emotions",
+    "Develop strategies for navigating difficult dates",
+    "Create new traditions and meanings for special occasions",
+    "Build support systems for emotionally charged times",
+    "Find peace and even joy on days that once belonged to your marriage"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_emotional_calendar",
+      "isFree": true,
+      "title": "The Emotional Calendar: Why Certain Dates Hurt",
+      "subtitle": "Understanding the power of anniversaries and special occasions",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "event",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Certain dates carry emotional weight after divorce. Understanding why these times are difficult helps you prepare for and navigate them more effectively.",
+      "frameworkBasis": {
+        "conceptKey": "anniversary_reactions",
+        "explanation": "Anniversary reactions are common grief responses where significant dates trigger emotional experiences."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Power of Dates",
+          "text": "**Special dates after divorce are like landmines buried in the calendar.** You are walking along, doing fine, and then a date arrives and suddenly you are back in the pain. The explosion catches you off guard every time.\n\n**You might be surprised by how much certain dates affect you after divorce.**\n\n**Your wedding anniversary arrives and grief hits unexpectedly.** The holidays feel hollow without your former family intact. Your ex's birthday comes and you do not know what to feel.\n\n**These anniversary reactions are common and normal.** Our minds attach meaning to dates, and those dates can trigger powerful emotional responses even years later.\n\n**Understanding this phenomenon helps you prepare rather than being blindsided.** You can anticipate difficult dates and develop strategies for navigating them.",
+          "icon": "event"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why Dates Carry Weight",
+          "text": "Why do certain dates hurt so much? It seems irrational. It is just a day on the calendar.\n\n**But your mind does not work that way.**\n\n**Your brain has filed away memories by date.** The anniversary of your wedding is not just March 15th or whatever day it was. It is the day you wore that dress, made those vows, believed those words. Your brain stored all of it together, and when the date returns, so does everything attached to it.\n\n**There is more.** Holidays and special occasions are built on rituals. The way you always did Christmas morning. The restaurant you went to on birthdays. The inside jokes about Thanksgiving. When those rituals are gone, the day itself feels wrong. Like a song with missing notes.\n\n**And then there is what the day represents.** Your wedding anniversary is not just a memory. It is a monument to hopes that did not survive. A marker of where you thought you would be versus where you are.\n\n**The date arrives, and all of this crashes into the present at once.** That is why it hurts so much. Not irrational at all, actually. Just human.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Common Difficult Dates",
+          "text": "**Different dates affect people differently, but some are commonly challenging.**\n\n**Wedding anniversary: The day you made vows that are now broken.**\n\n**Date you met or started dating: The beginning of what has ended.**\n\n**Holidays: Christmas, Thanksgiving, Easter, and other celebrations that were shared.**\n\n**Your ex's birthday: A day you used to celebrate together.**\n\n**Your birthday: Especially the first one without your spouse.**\n\n**Valentine's Day: A holiday centered on romantic love.**\n\n**The anniversary of separation or divorce: Marking the ending.**\n\n**Family events: Graduations, weddings, funerals that involve both families.**\n\nWhich dates are most difficult for you?",
+          "icon": "calendar_month"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Most Difficult Date",
+          "text": "Which type of date or occasion is most emotionally difficult for you?",
+          "prompts": [
+            "Wedding anniversary",
+            "Major holidays like Christmas or Thanksgiving",
+            "My birthday",
+            "My ex's birthday",
+            "Valentine's Day",
+            "The date of separation or divorce",
+            "Family events and milestones",
+            "Dates connected to specific memories"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "This journey will help you navigate this and other difficult dates with greater peace."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Emotional Calendar",
+          "text": "**Create your emotional calendar by identifying dates that may be difficult.**\n\n**List the specific dates that carry emotional weight for you related to your marriage and divorce.**\n\n**For each date, note what makes it significant and what emotions it tends to trigger.**\n\nAre there dates coming up soon that you need to prepare for?\n\nWrite your emotional calendar:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Acknowledging the Challenge",
+          "text": "**The first step in navigating difficult dates is acknowledging that they may be hard.**\n\n**I acknowledge that certain dates and occasions may be emotionally difficult for me.**\n\n**I will not pretend these days do not matter or shame myself for being affected by them.**\n\n**I will prepare for difficult dates rather than being blindsided by them.**\n\n**I believe I can learn to navigate these occasions in healthy ways.**\n\nWrite your acknowledgment in your own words:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_wedding_anniversary",
+      "isFree": false,
+      "title": "The Day You Said Forever: Your Wedding Anniversary",
+      "subtitle": "Navigating the anniversary of vows that ended",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite_border",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "For many divorced people, their wedding anniversary is one of the most emotionally charged dates. This activity specifically addresses how to navigate this day.",
+      "frameworkBasis": {
+        "conceptKey": "wedding_anniversary",
+        "explanation": "Wedding anniversaries after divorce require intentional navigation to process grief and create new meaning."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Weight of This Day",
+          "text": "**Your wedding anniversary.**\n\n**The date you circled on calendars for years.** The date you celebrated, maybe with dinner, maybe with cards, maybe with quiet acknowledgment that you had made it another year together.\n\nNow what do you do with it?\n\n**Some people wake up on that date and feel it immediately, a weight on the chest before they even remember why.** Others get through half the day before it hits them. Some see it coming for weeks and dread its approach.\n\n**The day you promised forever.** The day you believed it.\n\n**There is no manual for this.** No right way to handle the anniversary of vows that broke. Some people grieve. Some rage. Some feel strangely numb. Some feel everything at once.\n\n**The only wrong response is pretending it does not matter when it clearly does.** Whatever you feel on this day, let yourself feel it.",
+          "icon": "favorite_border"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What You Might Feel",
+          "text": "**On your wedding anniversary, you might feel grief that takes your breath away.** The person you married is gone, or the person they became is someone you do not recognize, or the life you built together has crumbled. Grief makes sense.\n\n**You might feel anger.** At them. At yourself. At the unfairness that other people are celebrating anniversaries while yours is a wound.\n\n**You might feel something unexpected: nostalgia.** Even if the marriage was bad at the end, it was not always bad. There were good moments. Good years, maybe. Remembering those can be its own kind of pain.\n\n**You might feel relief, especially if the marriage was harmful.** And then you might feel guilty for feeling relief on a day that was supposed to mean forever.\n\n**You might feel loneliness so acute it is physical.**\n\n**You might feel nothing.** Numbness is a feeling too, a circuit breaker when the emotional load is too high.\n\n**Whatever you feel, it is valid.** You do not need to justify it or talk yourself into feeling something else. This is your grief to feel however it comes.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Approaches to the Day",
+          "text": "**Different approaches work for different people.**\n\n**Acknowledge and grieve: Set aside time to feel your feelings, perhaps through journaling, prayer, or talking with a friend.**\n\n**Distract and fill: Plan activities that occupy your mind and time, not as avoidance but as balance.**\n\n**Create new meaning: Use the day for something meaningful but different, like serving others or pursuing a personal goal.**\n\n**Celebrate survival: Mark how far you have come since the divorce.**\n\n**Treat it as ordinary: For some, the best approach is to treat it as any other day, reducing its power.**\n\n**The right approach depends on where you are in your healing journey.** It may change from year to year.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Anniversary Experience",
+          "text": "**Reflect on your wedding anniversary.**\n\nHow have you handled this date since your divorce?\n\nWhat emotions typically surface?\n\nWhat has helped or not helped in the past?\n\nWhat approach might work better going forward?\n\nWrite about your anniversary experience:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Reframing the Date",
+          "text": "**Over time, you may be able to reframe what your wedding anniversary means.**\n\n**It could become a day of gratitude for lessons learned, even painful ones.**\n\n**It could become a day to acknowledge growth and resilience.**\n\n**It could become a day to remember that you once loved and were loved, regardless of how it ended.**\n\n**It could become a day that simply fades in significance as new life chapters take center stage.**\n\n**Reframing takes time.** Do not force it. But remain open to the possibility that this date can mean something different someday.",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Anniversary Plan",
+          "text": "**Create a plan for your wedding anniversary.**\n\nWhen is the date?\n\nHow will I acknowledge my emotions on that day?\n\nWhat activities or support will help me navigate it?\n\nWhat meaning or reframe might I hold, even if loosely?\n\nWho can I reach out to if I struggle?\n\nWrite your anniversary plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_holidays",
+      "isFree": false,
+      "title": "Holidays Reimagined: Navigating Celebrations Alone",
+      "subtitle": "Finding meaning in holidays without your spouse",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "celebration",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Holidays that were once family celebrations can feel empty or painful after divorce. This activity helps you find new ways to navigate and even enjoy holidays.",
+      "frameworkBasis": {
+        "conceptKey": "holiday_navigation",
+        "explanation": "Holidays after divorce require new traditions and intentional planning to find joy and meaning."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Holidays After Divorce",
+          "text": "**Holidays can be particularly difficult after divorce.**\n\n**They are built around family, togetherness, and tradition.** When your family structure has changed, the holidays feel different.\n\n**You may be alone on days meant for gathering.** You may have to share children with your ex. You may face family events without your spouse by your side.\n\n**The contrast between holiday expectations and your reality can be painful.** Everyone seems happy and together while you feel broken and alone.\n\n**But holidays can be navigated.** With intention, they can even become good again.",
+          "icon": "celebration"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Specific Holiday Challenges",
+          "text": "**Beth dreaded Christmas so much she considered leaving the country.** But she could not escape; her kids needed her. So she created new traditions: Christmas Eve movies in pajamas, breakfast at a diner on Christmas morning. Different was not the same as ruined.\n\n**Different holidays bring different challenges.**\n\n**Christmas and similar major holidays: The biggest family celebrations, often with the most traditions and expectations.**\n\n**Thanksgiving: Centered on gratitude when you may not feel grateful, and on family gathering.**\n\n**Valentine's Day: A holiday explicitly about romantic love.**\n\n**Easter and religious holidays: May involve church community where you feel your status acutely.**\n\n**Mother's Day or Father's Day: Complicated if you are co-parenting.**\n\n**New Year's Eve: Often celebrated with a partner, and a time for reflecting on the year.**\n\n**Each holiday may need its own strategy.**",
+          "icon": "calendar_month"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Strategies for Holidays",
+          "text": "**Several strategies help with holiday navigation.**\n\n**Lower expectations: Accept that holidays may not look like they used to.** Good enough is okay.\n\n**Create new traditions: You can establish rituals that are yours, not attached to your marriage.**\n\n**Serve others: Volunteering shifts focus outward and provides meaning.**\n\n**Gather your people: Spend time with friends or family who support you.**\n\n**Allow yourself to opt out: You do not have to participate in every celebration.** It is okay to have quiet holidays.\n\n**Plan ahead: Decide in advance how you will handle each holiday rather than being caught unprepared.**\n\n**Be gentle with yourself: Holidays are allowed to be hard.** Do not add self-criticism to the difficulty.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Holiday Experience",
+          "text": "**Reflect on holidays since your divorce.**\n\nWhich holidays have been most difficult?\n\nWhy?\n\nWhat have you tried that worked or did not work?\n\nWhat holiday traditions did you lose that you grieve?\n\nWhat new traditions might you create?\n\nWrite about your holiday experience:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Finding Gratitude in Hard Times",
+          "text": "**Gratitude can coexist with grief, even on holidays.**\n\n**You can be thankful for what you have while also sad about what you have lost.** These are not mutually exclusive.\n\n**Practicing gratitude on holidays does not mean pretending everything is fine.** It means choosing to notice the good alongside the hard.\n\nWhat can you be grateful for this holiday season, even amid the difficulty?\n\n**Gratitude does not erase pain, but it can provide balance and perspective.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Holiday Plan",
+          "text": "**Create a plan for navigating upcoming holidays.**\n\nWhich holidays are coming up that need planning?\n\nHow will I approach each one?\n\nWhat strategies will I use?\n\nWhat new traditions might I create?\n\nWho will I spend time with?\n\nHow will I practice self-care and self-compassion?\n\nWrite your holiday plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_birthdays",
+      "isFree": false,
+      "title": "Birthdays: Yours, Theirs, and Others",
+      "subtitle": "Navigating birthday emotions after divorce",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "cake",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Birthdays can be surprisingly difficult after divorce. Your own birthday, your ex's birthday, and children's birthdays all carry emotional weight. This activity addresses birthday navigation.",
+      "frameworkBasis": {
+        "conceptKey": "birthday_navigation",
+        "explanation": "Birthdays after divorce require intentional navigation as they highlight changed relationships and family structure."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Birthday Complications",
+          "text": "**Birthdays become complicated after divorce in various ways.**\n\n**Your own birthday may feel lonely without your spouse's celebration.** It marks another year in a life you did not plan.\n\n**Your ex's birthday brings up confusing feelings.** Do you acknowledge it? Ignore it? What if your children are involved?\n\n**Children's birthdays may require coordination with your ex, sharing the celebration, and managing family dynamics.**\n\n**Friends' and family members' birthdays might involve gatherings where your changed status is visible.**\n\n**Each type of birthday brings its own challenges.**",
+          "icon": "cake"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Your Birthday",
+          "text": "**Your birthday is coming, and you are dreading it.**\n\n**Not because of getting older.** Because of being alone.\n\n**Birthdays are when someone is supposed to make a fuss over you.** Cake and presents and the sense that today, you matter a little more than usual. When that someone is gone, the day can feel like an indictment. Proof that you are alone. Evidence that no one is going to make you feel special.\n\n**Here is the truth: you can grieve that your spouse is not there to celebrate you.** That is real loss. And you can also refuse to let your birthday become a day of self-pity.\n\n**You can ask friends to mark the day with you.** People want to show up for you, but they might not know you need it. Ask.\n\n**You can celebrate yourself.** Not as a sad substitute for someone else doing it, but as an act of self-respect. You made it another year. Through the hardest season of your life, maybe. That deserves acknowledgment.\n\n**You can make it a day of intention.** What do you want this next year of your life to hold? What are you grateful for? What is worth celebrating even in the difficulty?\n\n**Your birthday can still be good.** Different than before. But good.",
+          "icon": "person_celebrate"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Your Ex's Birthday",
+          "text": "**Your ex's birthday can bring unexpected feelings.**\n\n**You spent years celebrating this day.** You may have memories attached to it. You may feel strangely compelled to acknowledge it or confused about whether to.\n\n**There is no rule about how to handle your ex's birthday.** Some people send a simple message, especially if they have children together. Others ignore it completely. Neither is wrong.\n\n**If the date triggers strong emotions, allow yourself to feel them without acting on them impulsively.**\n\n**Over time, this date will likely become less significant to you.**",
+          "icon": "person"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Birthday Experiences",
+          "text": "**Reflect on how birthdays have been since your divorce.**\n\nHow have you handled your own birthday?\n\nHow have you handled your ex's birthday?\n\nIf you have children, how have their birthdays been navigated?\n\nWhat would make birthday occasions easier?\n\nWrite about your birthday experiences:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Children's Birthdays",
+          "text": "**If you have children, their birthdays require coordination.**\n\n**Some co-parents do joint celebrations.** This can be wonderful if the relationship is civil enough, showing children that both parents can come together for them.\n\n**Others have separate celebrations.** This may be necessary if conflict is high, and children can still enjoy both.\n\n**Whatever approach, focus on your child.** Their birthday is about them, not about parental conflict or competition.\n\n**Avoid using birthday celebrations to compete, one-up, or exclude the other parent.** Your children will remember how they felt, not who threw the better party.",
+          "icon": "child_care"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Birthday Plan",
+          "text": "**Create a plan for handling birthdays.**\n\nHow will I make my own birthday meaningful?\n\nHow will I handle my ex's birthday?\n\nIf applicable, how will I handle children's birthdays in co-parenting?\n\nWhat support might I need on difficult birthday occasions?\n\nWrite your birthday plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_valentines_day",
+      "isFree": false,
+      "title": "Love Day Alone: Navigating Valentine's Day",
+      "subtitle": "Finding peace on a holiday designed for couples",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Valentine's Day can feel like salt in a wound when you are divorced. This activity specifically addresses how to navigate this couple-centered holiday.",
+      "frameworkBasis": {
+        "conceptKey": "valentines_navigation",
+        "explanation": "Valentine's Day requires intentional navigation for those not in romantic relationships."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Valentine Challenge",
+          "text": "**Valentine's Day is coming.** You have been trying not to notice.\n\n**But it is everywhere.** The displays in stores. The commercials. The heart-shaped everything. The relentless message that love is in the air, unless you are divorced, in which case it is just another reminder of what you do not have.\n\n**This holiday can feel designed to mock you.** Couples everywhere, celebrating what you lost. Social media full of flowers and romantic dinners while you are figuring out what to do with an evening alone.\n\n**The loneliness is sharper on Valentine's Day.** The questions louder. Will anyone ever love me again? Am I going to feel this alone forever?\n\n**Here is the truth about Valentine's Day: it is a manufactured holiday.** The pressure to celebrate is commercial, not cosmic. Your worth as a human being has nothing to do with whether you have a date on February 14th.\n\n**That probably does not make it feel better.** But it might help to remember that this day has exactly as much power as you give it. And you get to decide how much that is.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Reframing the Day",
+          "text": "**Valentine's Day does not have to be about romantic love exclusively.**\n\n**You can celebrate other loves: love for friends, family, children, or yourself.**\n\n**You can use it as a day of self-care: doing something kind for yourself.**\n\n**You can ignore it entirely: opting out of a holiday that does not serve you right now.**\n\n**You can gather with other single friends: creating an anti-Valentine celebration or just enjoying each other's company.**\n\n**You can serve others: focusing outward rather than on what you lack.**\n\n**The day means what you decide it means.**",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Protecting Your Heart",
+          "text": "Some practical strategies for Valentine's Day:\n\n**Limit social media exposure.** Seeing everyone's romantic posts can intensify loneliness.\n\n**Plan something for yourself.** Do not leave the day unplanned and empty.\n\n**Connect with supportive people.** Do not isolate.\n\n**Avoid dwelling on what you lack.** Focus on what you have.\n\n**Be gentle with yourself.** If you feel sad, that is okay. Do not add self-criticism.\n\n**Remember this is temporary.** Your relationship status now is not forever. This season will pass.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Valentine Experience",
+          "text": "**Reflect on Valentine's Day since your divorce.**\n\nHow has this holiday affected you?\n\nWhat has helped or not helped?\n\nHow would you like to approach it differently?\n\nWhat would make this day more bearable or even good?\n\nWrite about your Valentine experience:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Celebrating Yourself",
+          "text": "**Valentine's Day can be a day to practice love toward yourself.**\n\nHow would you treat yourself if you were your own romantic partner? Do that.\n\n**Buy yourself flowers or a treat.** Have a nice meal. Take yourself on a date. Practice positive self-talk.\n\n**This is not sad or pathetic.** It is healthy self-love. You deserve care and kindness, including from yourself.\n\n**Learning to love yourself well is actually preparation for healthy love in the future.**",
+          "icon": "self_improvement"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Valentine Plan",
+          "text": "**Create a plan for Valentine's Day.**\n\nHow will I spend the day?\n\nWhat will I do to care for myself?\n\nWho will I connect with?\n\nHow will I protect myself from things that intensify pain?\n\nWhat positive meaning can I attach to the day?\n\nWrite your Valentine plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_divorce_anniversary",
+      "isFree": false,
+      "title": "Marking the Ending: The Anniversary of Your Divorce",
+      "subtitle": "Processing the date your marriage officially ended",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "event_note",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "The anniversary of your separation or divorce finalization marks the end of your marriage. This date often triggers complex emotions and deserves intentional navigation.",
+      "frameworkBasis": {
+        "conceptKey": "divorce_anniversary",
+        "explanation": "The anniversary of divorce marks a significant life transition and often triggers grief responses."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Day It Ended",
+          "text": "**There is a date that marks when it was official.**\n\n**The day the papers were signed.** The day the judge declared it done. The day your marriage legally ceased to exist.\n\n**This anniversary is different from the others.** It is not a happy date corrupted by loss. It was never happy. It is the date of the ending itself.\n\n**Some people feel this one coming for weeks.** Others forget until it arrives and wonder why they feel so heavy. Some mark it consciously, even ritualistically. Others try to ignore it entirely.\n\n**What makes this date complicated is that the emotions are rarely simple.** You might grieve and feel relieved at the same time. You might be angry that it came to this and grateful that it is over. You might feel failure and freedom in the same breath.\n\n**The anniversary of your divorce is a marker.** It says: one year ago, or two, or five, your marriage ended. It forces you to reckon with what that means, how far you have come, how much has changed.\n\nWhat do you want to do with this date?",
+          "icon": "event_note"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Mixed Emotions",
+          "text": "**It is possible to feel relief and grief simultaneously about your divorce anniversary.**\n\n**You may be relieved the marriage is over, especially if it was harmful.** And still grieve the loss of what you hoped for.\n\n**You may be glad to be free.** And still sad about what freedom cost.\n\n**You may see the divorce as necessary.** And still wish it had not been necessary.\n\n**These mixed emotions are normal.** You do not have to resolve them into a single feeling. They can coexist.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Ways to Mark the Date",
+          "text": "**Different people handle their divorce anniversary differently.**\n\n**Acknowledge and reflect: Use the day to process how far you have come and what you have learned.**\n\n**Grieve intentionally: Give yourself space to feel sad about the ending.**\n\n**Celebrate freedom: If the marriage was difficult, mark your liberation.**\n\n**Ignore it: Treat it as any other day, reducing its power.**\n\n**Create new meaning: Use the date for something positive like starting a new project or tradition.**\n\n**Seek support: Spend time with people who understand and care.**\n\n**The right approach depends on your circumstances and where you are in healing.**",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Divorce Anniversary",
+          "text": "**Reflect on your divorce anniversary.**\n\nWhen is the date?\n\nHow long has it been?\n\nWhat emotions surface around this date?\n\nHow have you handled it in the past?\n\nWhat would help you navigate it well?\n\nWrite about your divorce anniversary:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Marking Progress",
+          "text": "**Your divorce anniversary can become a marker of progress rather than just loss.**\n\n**Each year, you can reflect on how far you have come.** How you have healed. What you have learned. How you have grown.\n\n**The first anniversary is often hardest.** Subsequent years may get easier as you build a new life.\n\n**Consider keeping a journal entry each year on this date.** Over time, you may be amazed at the progress you see.\n\n**This date does not have to be only about ending.** It can also be about beginning.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Anniversary of Ending Plan",
+          "text": "**Create a plan for your divorce anniversary.**\n\nHow will I acknowledge the date?\n\nWhat emotions will I make space for?\n\nHow will I mark progress and growth?\n\nWho can support me on this day?\n\nWhat meaning can this date hold going forward?\n\nWrite your plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_family_events",
+      "isFree": false,
+      "title": "Family Gatherings: Navigating Events with Extended Family",
+      "subtitle": "Handling family occasions after divorce",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "groups",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Family events like reunions, weddings, and funerals become more complicated after divorce. This activity addresses how to navigate gatherings with extended family.",
+      "frameworkBasis": {
+        "conceptKey": "family_event_navigation",
+        "explanation": "Extended family events require navigation of changed relationships and potential awkwardness."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Changed Family Dynamics",
+          "text": "**Divorce changes your relationship with extended family.**\n\n**Your own family events may feel different without your spouse.** You may face questions, sympathy, or judgment from relatives.\n\n**Your ex's family, who may have become your family too, is now complicated or off-limits.**\n\n**Events involving both families, like children's milestones, require navigating the presence of your ex.**\n\n**Family gatherings that were once comfortable may now feel awkward, painful, or isolating.**",
+          "icon": "groups"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Your Own Family Events",
+          "text": "**Attending your own family events after divorce brings challenges.**\n\n**You may face questions about your divorce or your ex.** Prepare simple responses you are comfortable with.\n\n**You may feel your single status acutely among coupled relatives.** Remember your worth is not determined by relationship status.\n\n**You may grieve that your spouse is not there.** Allow the grief without letting it overwhelm the event.\n\n**You may need to set boundaries around topics you will not discuss.** It is okay to redirect conversations.\n\n**Family can also be a source of support.** Lean on relatives who are helpful rather than avoiding all family contact.",
+          "icon": "family_restroom"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Events with Your Ex Present",
+          "text": "**Some events require you and your ex to be in the same space.**\n\n**Children's graduations, weddings, or other milestones.** Family funerals. Shared friend events.\n\n**In these situations, focus on the purpose of the event rather than on your ex.** You are there for your child, to honor the deceased, or to support a friend.\n\n**Be civil and brief in interactions with your ex.** You do not need to have long conversations.\n\n**Plan ahead.** Know where you will sit, who will be with you for support, and how you will handle direct interaction.\n\n**Do not let your ex's presence ruin an important occasion.** You have as much right to be there as they do.",
+          "icon": "people"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Family Event Challenges",
+          "text": "**Reflect on family events since your divorce.**\n\nWhat family events have been difficult?\n\nHow have you handled being at events with your ex?\n\nWhat family relationships have changed since the divorce?\n\nWhat would help you navigate family events better?\n\nWrite about your family event challenges:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Setting Boundaries",
+          "text": "**You can set boundaries around family events.**\n\n**You can choose which events to attend and which to skip.**\n\n**You can decide what information you will share and what is private.**\n\n**You can limit time at events if being there too long is draining.**\n\n**You can bring a supportive friend or family member for backup.**\n\n**You can leave if the situation becomes harmful.**\n\n**Boundaries are not rude.** They are necessary for your wellbeing. Family members who love you will understand.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Family Event Plan",
+          "text": "**Create a plan for navigating family events.**\n\nWhat upcoming family events need planning?\n\nHow will I prepare for events where my ex may be present?\n\nWhat boundaries do I need to set with family members?\n\nWho can support me at family gatherings?\n\nWrite your family event plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_new_traditions",
+      "isFree": false,
+      "title": "Something New: Creating Your Own Traditions",
+      "subtitle": "Building meaningful rituals for your new life",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "auto_awesome",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "Old traditions were tied to your marriage. Creating new traditions helps you build meaningful rituals for your new life chapter. This activity helps you imagine and implement new traditions.",
+      "frameworkBasis": {
+        "conceptKey": "tradition_creation",
+        "explanation": "New traditions provide meaning, structure, and positive anticipation in a restructured life."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Why New Traditions Matter",
+          "text": "**Here is something you might not have considered: this is your chance to start over.**\n\n**Not just to survive holidays and occasions, but to remake them.** The traditions that belonged to your marriage are gone, or painful, or no longer fit. That is loss. But it is also a blank page.\n\nWhat if you could design your holidays from scratch? What would you keep? What would you throw away? What have you always wanted to do but never did because it was not your tradition, it was ours?\n\n**Maybe you always wanted a quiet Christmas instead of the chaos of big gatherings.** Now you can have it.\n\n**Maybe you want to travel for Thanksgiving instead of cooking all day.** No one is stopping you.\n\n**Maybe there is a birthday ritual that would feel meaningful to you, something you can call your own.**\n\n**Creating new traditions is not about replacing what you lost.** It is about building something that fits who you are now. Something that is yours.\n\nWhat would that look like?",
+          "icon": "auto_awesome"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Types of New Traditions",
+          "text": "**Andrew's wedding anniversary used to be the best day of the year.** The first one after the divorce, he took the day off work, hiked to the top of a mountain alone, and let himself grieve. By the third year, it was just another day. Time had done its quiet work.\n\n**New traditions can be created for various occasions.**\n\n**Holiday traditions: New ways of celebrating Christmas, Thanksgiving, or other holidays that work for your situation.**\n\n**Personal rituals: Things you do for yourself regularly, like a monthly self-care day or an annual solo trip.**\n\n**Friend traditions: Regular gatherings with friends who have become like family.**\n\n**Parent-child traditions if you have children: Special things you do together that are uniquely yours.**\n\n**Seasonal traditions: Ways you mark the changing of seasons or times of year.**\n\n**Gratitude traditions: Regular practices of reflection and thanksgiving.**\n\nWhat kind of traditions would add meaning to your life?",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Creating Meaningful Rituals",
+          "text": "**When creating new traditions, consider several factors.**\n\n**What matters to you: Build traditions around what you value, not what you feel you should do.**\n\n**What is sustainable: Traditions only work if you can actually maintain them.**\n\n**What brings joy: The point is to add something good to your life.**\n\n**What connects you: Traditions are often better shared, whether with friends, family, or children.**\n\n**What marks transitions: Rituals can help you mark the passage of time and seasons.**\n\n**Start small.** One or two meaningful traditions are better than many that feel like obligations.",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Traditions Lost and Desired",
+          "text": "**Reflect on traditions in your life.**\n\nWhat traditions from your marriage do you grieve losing?\n\nWhat traditions have you already started creating?\n\nWhat new traditions would you like to establish?\n\nWhat would make special occasions more meaningful in your new life?\n\nWrite about traditions lost and desired:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Involving Others",
+          "text": "**Traditions are often richer when shared.**\n\n**If you have children, involve them in creating new traditions.** Let them have input on what you do and how. This gives them ownership and something positive to anticipate.\n\n**If you are close to friends, create traditions together.** Friendsgiving, annual trips, regular gatherings.\n\n**If family is supportive, adapt family traditions or create new ones that fit your situation.**\n\n**You can also have traditions that are just for you.** Solo rituals of self-care, reflection, or celebration.",
+          "icon": "groups"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your New Traditions",
+          "text": "**Plan one or more new traditions to implement.**\n\nWhat new tradition will I create?\n\nWhat occasion or time will it mark?\n\nWho will be involved?\n\nWhat will make it meaningful?\n\nWhen will I start?\n\nWrite your new tradition plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_support_systems",
+      "isFree": false,
+      "title": "Not Alone: Building Support for Difficult Dates",
+      "subtitle": "Creating a support network for emotionally challenging times",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "support",
+      "emotionalIntensity": "light",
+      "activityType": "practical",
+      "whyThisMatters": "You should not navigate difficult dates alone. Having support in place for challenging times makes a significant difference. This activity helps you build your support network.",
+      "frameworkBasis": {
+        "conceptKey": "support_network",
+        "explanation": "Having support in place for difficult dates reduces isolation and provides resources for coping."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Power of Support",
+          "text": "**Difficult dates are harder alone.** Support makes a significant difference.\n\n**Having someone to talk to when emotions surge.** Someone to spend time with on lonely holidays. Someone who checks on you around hard dates.\n\n**Support does not make the difficulty disappear.** But it makes it bearable. It reminds you that you are not alone.\n\n**Building support for difficult dates requires being proactive.** Identifying who can help. Asking for what you need. Planning ahead.\n\n**You do not have to white-knuckle your way through hard times alone.**",
+          "icon": "support"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Types of Support",
+          "text": "**Different types of support help in different ways.**\n\n**Emotional support: Someone who listens, understands, and validates your feelings.**\n\n**Practical support: Someone who will do things with you, take you out, or help with logistics.**\n\n**Spiritual support: Someone who will pray with you, point you to truth, or sit with you in faith questions.**\n\n**Professional support: A therapist or counselor who can help you process difficult emotions.**\n\n**Online support: Communities or groups where you can connect with others who understand.**\n\n**You may need different types of support for different occasions.**",
+          "icon": "category"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Asking for Help",
+          "text": "**Asking for help can feel vulnerable, but it is necessary.**\n\n**Be specific in your requests.** Instead of I need support, try Could you check on me on my wedding anniversary? I think it will be hard.\n\n**Ask in advance.** Do not wait until you are in crisis. Set up support before difficult dates arrive.\n\n**Be honest about what you need.** Do you need someone to listen? To distract you? To sit with you? Different needs require different responses.\n\n**Accept help when offered.** When people offer support, take them up on it.\n\n**People who love you want to help.** Let them.",
+          "icon": "record_voice_over"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Support Assessment",
+          "text": "**Assess your current support for difficult dates.**\n\nWho do you currently rely on for support?\n\nAre there gaps in your support network?\n\nWhat types of support do you need that you are not getting?\n\nWho might be able to provide support that you have not asked?\n\nWrite your support assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Your Support Plan",
+          "text": "**Be intentional about support for upcoming difficult dates.**\n\n**Look at your emotional calendar from earlier in this journey.** Identify dates that may need extra support.\n\n**For each date, identify who you can reach out to.** Schedule contact or plans in advance.\n\n**Have backup plans.** If your first support option is not available, who else can you call?\n\n**Consider joining a divorce support group if you have not already.** Built-in community of people who understand.\n\n**Your support plan is part of preparing for difficult dates.**",
+          "icon": "engineering"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Support Network Plan",
+          "text": "**Create your support plan for difficult dates.**\n\nWho are the key people in my support network?\n\nFor upcoming difficult dates, who will I reach out to?\n\nWhat specific asks will I make?\n\nWhat backup plans do I have?\n\nAre there support gaps I need to fill?\n\nWrite your support network plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_peace_commitment",
+      "isFree": false,
+      "title": "Finding Peace: Your Commitment to Navigate Well",
+      "subtitle": "Committing to navigate special occasions with intention and grace",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You have done significant work on navigating difficult dates. This activity helps you consolidate what you have learned and commit to approaching special occasions with intention going forward.",
+      "frameworkBasis": {
+        "conceptKey": "occasion_commitment",
+        "explanation": "Ongoing peace with special occasions requires commitment to the strategies and perspectives developed."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Explored",
+          "text": "**Through this journey, you have done important work.** You have faced the calendar with courage instead of dread, and you have begun to reclaim these days as your own.\n\n**You have identified your emotional calendar of difficult dates.** You have addressed specific challenges like your wedding anniversary, holidays, birthdays, and your divorce anniversary.\n\n**You have learned strategies for Valentine's Day and family events.** You have explored creating new traditions and building support systems.\n\n**You are better prepared now to navigate special occasions with intention and grace.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Progress Over Time",
+          "text": "**The first year is brutal.**\n\n**Every occasion is a first.** The first Thanksgiving alone. The first Christmas without them. The first birthday, anniversary, Valentine's Day. Each one is a fresh wound because you have never done this before.\n\n**But here is what people on the other side will tell you: the seconds are easier.** Not easy. Easier.\n\n**By the second year, you know what to expect.** You have survived it once. The shock is gone, even if the sadness is not.\n\n**By the third year, you might have new traditions forming.** New rhythms. A different kind of normal.\n\n**By the fifth year, some dates that once devastated you may pass almost without notice.** Not because you do not remember. Because you have built a life that is bigger than the loss.\n\n**This does not mean you will forget.** It does not mean certain dates will never sting. But the sting lessens. The grief softens. The days get easier to navigate.\n\n**Scripture promises: Weeping may stay for the night, but rejoicing comes in the morning.** (Psalm 30:5) The morning may take longer than a literal night. But it comes.\n\n**You are in the hardest part now.** It will not always be this hard.\n\n**Trust that.** Keep going.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Insight",
+          "text": "What is the most important thing you have learned through this journey about navigating difficult dates?\n\nWhat do you want to remember when a hard date approaches?\n\nWrite your key insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Commitments",
+          "text": "What commitments will you make for navigating special occasions?\n\nHow will you prepare for difficult dates in advance?\n\nHow will you care for yourself during emotionally charged times?\n\nWhat new traditions will you build?\n\nHow will you use your support network?\n\nWrite your commitments:",
+          "responseType": "open-text",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Special Times",
+          "text": "**Father, certain dates and occasions are hard for me.**\n\n**Be with me on the difficult days.** Give me Your peace when grief surfaces. Remind me that I am not alone.\n\n**Help me create new traditions that bring meaning and joy.** Help me build support networks that carry me through hard times.\n\n**Redeem these occasions.** May days that used to bring pain eventually bring peace, and even celebration.\n\n**I trust You with my calendar and with my heart.**\n\n**In Jesus' name, Amen.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Navigation Declaration",
+          "text": "**Write a declaration for navigating special occasions.**\n\n**I will prepare for difficult dates with intention rather than being blindsided.**\n\n**I will allow myself to feel my emotions without letting them overwhelm me.**\n\n**I will create new traditions that bring meaning to my new life.**\n\n**I will lean on support and not try to navigate hard times alone.**\n\n**I believe these occasions can become easier, and I commit to the journey toward peace.**\n\nWrite your declaration:",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Navigating with Grace",
+    "summaryText": "You have done significant work in preparing to navigate anniversaries and special occasions after divorce. Remember that these dates tend to get easier over time. Prepare in advance, lean on support, create new traditions, and trust that peace is possible even on the most emotionally charged days.",
+    "keyTakeaways": [
+      "Certain dates carry emotional weight after divorce and this is normal",
+      "Your wedding anniversary can be navigated with planning and new meaning",
+      "Holidays can be reimagined with new traditions and adjusted expectations",
+      "Birthdays require intentional navigation for yourself your ex and children",
+      "Valentine's Day can be reframed as a day for self-love and friendship",
+      "Your divorce anniversary can become a marker of progress and growth",
+      "Family events require boundaries and preparation",
+      "New traditions provide meaning and positive anticipation",
+      "Support systems are essential for difficult dates"
+    ],
+    "nextRecommendedJourneys": [
+      "When Your Ex-Spouse Moves On Before You",
+      "Healing and Restoration After Divorce",
+      "Letting Go of Resentment and Lingering Conflict"
+    ]
+  }
+}

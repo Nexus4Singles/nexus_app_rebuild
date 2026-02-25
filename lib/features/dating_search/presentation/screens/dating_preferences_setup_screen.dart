@@ -3,13 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/widgets/nexus_country_picker.dart';
+import 'package:nexus_app_v2/core/user/is_admin_provider.dart';
 import 'package:nexus_app_v2/features/presurvey/presentation/screens/presurvey_relationship_status_screen.dart';
 import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 import 'package:nexus_app_v2/core/user/current_user_doc_provider.dart';
+import 'package:nexus_app_v2/core/dating/dating_verification_status_provider.dart';
+import 'package:nexus_app_v2/core/dating/dating_profile_exists_provider.dart';
 import '../../../auth/presentation/screens/signup_screen.dart';
 import '../../../auth/presentation/screens/login_screen.dart';
 import 'dart:async';
 import '../../domain/dating_preferences.dart';
+import '../../domain/dating_search_result.dart';
 import '../../application/dating_preferences_provider.dart';
 import '../../application/dating_search_results_provider.dart';
 import 'dating_preferences_confirmation_screen.dart';
@@ -20,11 +24,13 @@ import '../../application/dating_pool_guidelines_provider.dart';
 class DatingPreferencesSetupScreen extends ConsumerStatefulWidget {
   final VoidCallback? onComplete;
   final DatingPreferences? existingPreferences;
+  final bool isReactivatingAfterStatusChange;
 
   const DatingPreferencesSetupScreen({
     Key? key,
     this.onComplete,
     this.existingPreferences,
+    this.isReactivatingAfterStatusChange = false,
   }) : super(key: key);
 
   @override
@@ -48,6 +54,38 @@ class _DatingPreferencesSetupScreenState
   @override
   void initState() {
     super.initState();
+    _initializePreferences();
+  }
+
+  Future<void> _initializePreferences() async {
+    // Check if we're reactivating after status change - if so, try loading existing preferences
+    if (widget.isReactivatingAfterStatusChange &&
+        widget.existingPreferences == null) {
+      try {
+        final prefs = await ref.read(datingPreferencesProvider.future);
+        if (prefs != null && mounted) {
+          setState(() {
+            _minAge = prefs.minAge;
+            _maxAge = prefs.maxAge;
+            _country = prefs.countryOfResidence;
+            _allowLongDistance = prefs.allowLongDistance;
+            _openToKids = prefs.openToKids;
+            _openToMarriedBefore = prefs.openToMarriedBefore;
+            _genotype = prefs.genotypePreference;
+          });
+          print(
+            '[DatingPreferencesSetup] ✓ Loaded existing preferences for profile restoration',
+          );
+          return;
+        }
+      } catch (e) {
+        print(
+          '[DatingPreferencesSetup] Could not load existing preferences for restoration: $e',
+        );
+      }
+    }
+
+    // Use passed preferences or defaults
     if (widget.existingPreferences != null) {
       _minAge = widget.existingPreferences!.minAge;
       _maxAge = widget.existingPreferences!.maxAge;
@@ -59,10 +97,12 @@ class _DatingPreferencesSetupScreenState
     } else {
       _minAge = 21;
       _maxAge = 70;
-      // Show guidelines modal on first visit to dating search (non-editing mode)
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showGuidelinesModalIfNeeded();
-      });
+      // Show guidelines modal on first visit to dating search (non-editing mode, not reactivating)
+      if (!widget.isReactivatingAfterStatusChange) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _showGuidelinesModalIfNeeded();
+        });
+      }
     }
   }
 
@@ -124,6 +164,7 @@ class _DatingPreferencesSetupScreenState
       ref.invalidate(datingPreferencesProvider);
       ref.invalidate(datingSearchResultsProvider);
       ref.read(searchResultsCacheProvider.notifier).clear();
+      ref.read(searchResultsOffsetProvider.notifier).state = 0;
 
       // FIXED: Wait for preferences to actually reload from Firestore
       // Don't proceed until new preferences are loaded
@@ -133,9 +174,35 @@ class _DatingPreferencesSetupScreenState
         // If preferences fail to reload, proceed anyway
       }
 
+      // ✅ Mark that we completed preferences setup after status change
+      // This ensures next visit to search goes straight to results, not setup
+      if (widget.isReactivatingAfterStatusChange) {
+        final sharedPrefs = await SharedPreferences.getInstance();
+        await sharedPrefs.setBool(
+          'preferences_setup_after_status_change',
+          true,
+        );
+        print(
+          '[DatingPreferencesSetup] ✓ Marked preferences setup after status change',
+        );
+      }
+
       // If editing existing preferences, just pop back to results
       if (widget.existingPreferences != null) {
         if (mounted) Navigator.of(context).pop();
+        return;
+      }
+
+      // For reactivation scenarios, don't show "no profiles" screen
+      // Just navigate to confirmation/search results
+      if (widget.isReactivatingAfterStatusChange) {
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => const DatingPreferencesConfirmationScreen(),
+            ),
+          );
+        }
         return;
       }
 
@@ -214,30 +281,48 @@ class _DatingPreferencesSetupScreenState
       // Invalidate search results to force refresh with new preferences
       ref.invalidate(datingSearchResultsProvider);
       ref.read(searchResultsCacheProvider.notifier).clear();
+      ref.read(searchResultsOffsetProvider.notifier).state = 0;
       print(
         '[DatingPreferencesSetupScreen] Cache cleared, fetching results...',
       );
 
-      // FIXED: Add timeout to prevent endless loading spinner
-      // If search takes >20 seconds, assume something is wrong and show error
-      final resultsAsync = await ref
-          .read(cachedDatingSearchResultsProvider.future)
-          .timeout(
-            const Duration(seconds: 20),
-            onTimeout: () {
-              print(
-                '[DatingPreferencesSetupScreen] Search timeout after 20 seconds',
-              );
-              throw TimeoutException(
-                'Search took too long',
-                const Duration(seconds: 20),
-              );
-            },
-          );
+      DatingSearchResult? resultsAsync;
+      var fetchUncertain = false;
 
-      print(
-        '[DatingPreferencesSetupScreen] ✅ Got ${resultsAsync.items.length} results',
-      );
+      // World-class UX: avoid surfacing timeout failures.
+      // 1) Try normal cached fetch with timeout
+      // 2) Silent retry with direct base provider
+      // 3) If still slow/failing, continue to confirmation (no timeout screen)
+      try {
+        resultsAsync = await ref
+            .read(cachedDatingSearchResultsProvider.future)
+            .timeout(const Duration(seconds: 20));
+      } on TimeoutException {
+        print(
+          '[DatingPreferencesSetupScreen] Initial fetch timed out; retrying silently',
+        );
+        try {
+          resultsAsync = await ref
+              .read(datingSearchResultsProvider.future)
+              .timeout(const Duration(seconds: 12));
+        } on TimeoutException {
+          print(
+            '[DatingPreferencesSetupScreen] Retry timed out; proceeding without blocking user',
+          );
+          fetchUncertain = true;
+        } catch (e) {
+          print(
+            '[DatingPreferencesSetupScreen] Retry failed; proceeding without blocking user: $e',
+          );
+          fetchUncertain = true;
+        }
+      }
+
+      if (resultsAsync != null) {
+        print(
+          '[DatingPreferencesSetupScreen] ✅ Got ${resultsAsync.items.length} results',
+        );
+      }
 
       if (!mounted) {
         try {
@@ -258,6 +343,18 @@ class _DatingPreferencesSetupScreenState
       }
 
       if (!mounted) return;
+
+      if (fetchUncertain || resultsAsync == null) {
+        print(
+          '[DatingPreferencesSetupScreen] Proceeding to confirmation while results continue to resolve in background',
+        );
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => const DatingPreferencesConfirmationScreen(),
+          ),
+        );
+        return;
+      }
 
       // If no profiles match preferences, go directly to no profiles screen
       if (resultsAsync.items.isEmpty) {
@@ -416,9 +513,10 @@ class _DatingPreferencesSetupScreenState
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color:
-                        AppColors.getBackground(context) == Colors.white
-                            ? Colors.grey[100]
-                            : Colors.grey[800],
+                        AppColors.getBackground(context) ==
+                                AppColors.backgroundLight
+                            ? AppColors.getSurface(context).withOpacity(0.5)
+                            : AppColors.getSurface(context).withOpacity(0.15),
                   ),
                   child: IconButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -494,10 +592,20 @@ class _DatingPreferencesSetupScreenState
   Widget build(BuildContext context) {
     final isEditing = widget.existingPreferences != null;
 
-    // Check dating verification status from Firestore
-    final userDoc = ref.watch(currentUserDocProvider).valueOrNull;
-    final dating = (userDoc?['dating'] as Map?)?.cast<String, dynamic>();
-    final verificationStatus = dating?['verificationStatus']?.toString();
+    // Check if dating profile exists (checking if dating doc exists, not if it's "complete")
+    // This will be true even if profile is pending verification
+    final profileExistsAsync = ref.watch(datingProfileExistsProvider);
+    final hasDatingProfile = profileExistsAsync.maybeWhen(
+      data: (exists) => exists,
+      orElse: () => false,
+    );
+
+    // Watch verification status from stream provider (automatically updates when admin approves)
+    final verificationStatusAsync = ref.watch(datingVerificationStatusProvider);
+    final verificationStatus = verificationStatusAsync.maybeWhen(
+      data: (status) => status,
+      orElse: () => null,
+    );
     final isVerified = verificationStatus == 'verified';
 
     return Scaffold(
@@ -657,20 +765,44 @@ class _DatingPreferencesSetupScreenState
                       _isLoading
                           ? null
                           : () {
-                            if (!isVerified) {
+                            // DIAGNOSTIC: Log current verification state
+                            print(
+                              '[DatingPreferencesSetupScreen] Save button pressed: isEditing=$isEditing, hasDatingProfile=$hasDatingProfile (profile exists), isVerified=$isVerified, verificationStatus=$verificationStatus',
+                            );
+
+                            // Check if user is authenticated (not guest)
+                            final authAsync = ref.read(authStateProvider);
+                            final isSignedIn = authAsync.maybeWhen(
+                              data: (u) => u != null,
+                              orElse: () => false,
+                            );
+
+                            if (!isSignedIn) {
+                              print(
+                                '[DatingPreferencesSetupScreen] ❌ User not authenticated (guest)',
+                              );
+                              _showGuestGateModal();
+                              return;
+                            }
+
+                            // Check if user has a dating profile
+                            if (!hasDatingProfile) {
+                              print(
+                                '[DatingPreferencesSetupScreen] ❌ Profile does not exist - user must create profile first',
+                              );
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Row(
                                     children: [
                                       const Icon(
-                                        Icons.hourglass_top_rounded,
+                                        Icons.person_add_disabled,
                                         color: Colors.white,
                                         size: 20,
                                       ),
                                       const SizedBox(width: 10),
                                       const Expanded(
                                         child: Text(
-                                          'Your profile is pending admin verification. You\'ll be able to save preferences once approved.',
+                                          'You need to create a dating profile first before you can search or save preferences.',
                                         ),
                                       ),
                                     ],
@@ -685,7 +817,110 @@ class _DatingPreferencesSetupScreenState
                               );
                               return;
                             }
-                            _savePreferences();
+
+                            // Admin bypass: admins can save preferences without verification
+                            final isAdminAsync = ref.read(isAdminProvider);
+                            final isAdmin = isAdminAsync.maybeWhen(
+                              data: (admin) => admin,
+                              orElse: () => false,
+                            );
+
+                            if (isAdmin) {
+                              print(
+                                '[DatingPreferencesSetupScreen] ✅ Admin user - bypassing verification check',
+                              );
+                              print(
+                                '[DatingPreferencesSetupScreen] ✅ All checks passed - saving preferences (admin)',
+                              );
+                              _savePreferences();
+                              return;
+                            }
+
+                            // ⚠️ CRITICAL FIX: Proper verification gating logic
+                            // Gate BOTH new setup AND editing if profile is unverified
+                            // If verification status is null, it means not yet fetched from Firestore
+                            if (verificationStatus != null && isVerified) {
+                              print(
+                                '[DatingPreferencesSetupScreen] ✅ Profile verified (status=$verificationStatus) - saving preferences',
+                              );
+                              _savePreferences();
+                              return;
+                            }
+
+                            // If we get here, profile is either unverified or verification status unknown
+                            if (verificationStatus == null) {
+                              print(
+                                '[DatingPreferencesSetupScreen] ⚠️  VERIFICATION STATUS NULL - checking if user can view search results',
+                              );
+                              // If user is NOT in edit mode (first-time setup), gate them
+                              if (!isEditing) {
+                                print(
+                                  '[DatingPreferencesSetupScreen] First-time setup with null verification - blocking',
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.hourglass_top_rounded,
+                                          color: Colors.white,
+                                          size: 20,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        const Expanded(
+                                          child: Text(
+                                            'Your profile is pending admin verification. You\'ll be able to save preferences once approved.',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    backgroundColor: AppColors.primary,
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: const Duration(seconds: 4),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                );
+                                return;
+                              }
+                              // If editing existing preferences, allow (they already have results)
+                              print(
+                                '[DatingPreferencesSetupScreen] ✅ Editing existing preferences with null verification - allowing (user has results)',
+                              );
+                              _savePreferences();
+                              return;
+                            }
+
+                            // Verification status is not 'verified'
+                            print(
+                              '[DatingPreferencesSetupScreen] ⏳ Profile unverified: status=$verificationStatus',
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.hourglass_top_rounded,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    const Expanded(
+                                      child: Text(
+                                        'Your profile is pending admin verification. You\'ll be able to save preferences once approved.',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                backgroundColor: AppColors.primary,
+                                behavior: SnackBarBehavior.floating,
+                                duration: const Duration(seconds: 4),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            );
                           },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
@@ -770,12 +1005,7 @@ class _PreferenceSection extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.getSurface(context),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color:
-                  Theme.of(context).brightness == Brightness.light
-                      ? Color(0xFFD1D5DB)
-                      : AppColors.border,
-            ),
+            border: Border.all(color: AppColors.getBorder(context)),
           ),
           child: child,
         ),
@@ -850,12 +1080,7 @@ class _CountrySelector extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color:
-                Theme.of(context).brightness == Brightness.light
-                    ? Color(0xFFD1D5DB)
-                    : AppColors.border,
-          ),
+          border: Border.all(color: AppColors.getBorder(context)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -907,11 +1132,6 @@ class _GenotypeSelector extends StatelessWidget {
           isSelected: selectedGenotype == 'AA',
           onTap: () => onChanged('AA'),
         ),
-        _PreferenceChip(
-          label: 'AS',
-          isSelected: selectedGenotype == 'AS',
-          onTap: () => onChanged('AS'),
-        ),
       ],
     );
   }
@@ -940,11 +1160,7 @@ class _PreferenceButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color:
-                isSelected
-                    ? AppColors.primary
-                    : (Theme.of(context).brightness == Brightness.light
-                        ? Color(0xFFD1D5DB)
-                        : AppColors.border),
+                isSelected ? AppColors.primary : AppColors.getBorder(context),
             width: 2,
           ),
         ),
@@ -989,11 +1205,7 @@ class _PreferenceChip extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color:
-                isSelected
-                    ? AppColors.primary
-                    : (Theme.of(context).brightness == Brightness.light
-                        ? Color(0xFFD1D5DB)
-                        : AppColors.border),
+                isSelected ? AppColors.primary : AppColors.getBorder(context),
           ),
         ),
         child: Text(

@@ -15,6 +15,11 @@ class UserInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final displayName =
+        profile.name != null && profile.name!.isNotEmpty
+            ? profile.name!
+            : (profile.username ?? '');
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -22,35 +27,29 @@ class UserInfoSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text.rich(
-                    TextSpan(
-                      text:
-                          profile.username != null &&
-                                  profile.username!.isNotEmpty
-                              ? profile.username!
-                              : (profile.name ?? ''),
-                      style: AppTextStyles.headlineLarge.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      children:
-                          profile.age != null
-                              ? [
-                                TextSpan(
-                                  text: ', ${profile.age}',
-                                  style: AppTextStyles.headlineLarge.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ]
-                              : [],
-                    ),
+              child: Text.rich(
+                TextSpan(
+                  text: displayName,
+                  style: AppTextStyles.headlineLarge.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
+                  children:
+                      profile.age != null
+                          ? [
+                            TextSpan(
+                              text: ', ${profile.age}',
+                              style: AppTextStyles.headlineLarge.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ]
+                          : [],
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
+            const SizedBox(width: 8),
             _VerificationBadge(isVerified: isVerified),
           ],
         ),

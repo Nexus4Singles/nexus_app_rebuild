@@ -80,6 +80,23 @@ class DatingProfile {
 
   bool get isVerified => verificationStatus == 'verified';
 
+  /// Get the best available profile photo URL
+  /// Returns first valid (non-empty) photo, or null if none exist
+  /// This handles cases where photos might be deleted from Firestore
+  String? get validProfilePhoto {
+    if (photos.isEmpty) return null;
+    // Return first non-empty photo URL
+    for (final photo in photos) {
+      if (photo.isNotEmpty && photo.trim().isNotEmpty) {
+        return photo;
+      }
+    }
+    return null;
+  }
+
+  /// Check if profile has at least one valid photo
+  bool get hasValidPhoto => validProfilePhoto != null;
+
   String get displayLocation {
     final c = (city ?? '').trim();
     final k = (country ?? '').trim();
@@ -352,7 +369,14 @@ class DatingProfile {
       profession: _pickNullable(json, ['profession']),
 
       photos: photos,
-      createdAt: _asDate(json['createdAt']),
+      // V1 profiles may store dates in different fields: createdAt (v2), profile_completed_on (v1), created_at (v1)
+      createdAt: _asDate(
+        json['createdAt'] ??
+            json['profile_completed_on'] ??
+            json['created_at'] ??
+            json['registeredAt'] ??
+            json['registered_at'],
+      ),
 
       schemaVersion: (json['schemaVersion'] as int?) ?? 1,
       verificationStatus: normalizedVerificationStatus,

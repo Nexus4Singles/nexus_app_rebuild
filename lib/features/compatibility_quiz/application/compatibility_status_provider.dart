@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nexus_app_v2/core/bootstrap/firebase_ready_provider.dart';
+import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 import 'package:nexus_app_v2/features/compatibility_quiz/data/compatibility_quiz_service.dart';
 
 enum CompatibilityStatus { unknown, incomplete, complete }
@@ -22,9 +23,9 @@ Future<bool> _isLegacyUser(String uid) async {
   return (svInt == null || svInt < 2);
 }
 
-final compatibilityStatusProvider = FutureProvider<CompatibilityStatus>((
+final compatibilityStatusProvider = StreamProvider<CompatibilityStatus>((
   ref,
-) async {
+) async* {
   final firebaseReady = ref.watch(firebaseReadyProvider);
 
   if (kDebugMode) {
@@ -32,7 +33,13 @@ final compatibilityStatusProvider = FutureProvider<CompatibilityStatus>((
     print('[CompatStatus] firebaseReady=$firebaseReady');
   }
 
-  final uid = FirebaseAuth.instance.currentUser?.uid;
+  // Watch auth state to trigger re-run on login/logout
+  final authAsync = ref.watch(authStateProvider);
+  final uid = authAsync.maybeWhen(
+    data: (auth) => auth?.uid,
+    orElse: () => null,
+  );
+
   if (kDebugMode) {
     // ignore: avoid_print
     print('[CompatStatus] uid=$uid');
@@ -43,37 +50,51 @@ final compatibilityStatusProvider = FutureProvider<CompatibilityStatus>((
       // ignore: avoid_print
       print('[CompatStatus] -> unknown (uid null/empty)');
     }
-    return CompatibilityStatus.unknown;
+    yield CompatibilityStatus.unknown;
+    return;
   }
 
   // If Firebase isn't "ready" (or you intentionally gate it), be permissive for legacy v1 users.
   if (!firebaseReady) {
     try {
       final legacy = await _isLegacyUser(uid);
-      if (legacy) return CompatibilityStatus.complete;
+      if (legacy) {
+        yield CompatibilityStatus.complete;
+        return;
+      }
     } catch (_) {}
-    return CompatibilityStatus.unknown;
+    yield CompatibilityStatus.unknown;
+    return;
   }
 
   final service = ref.read(compatibilityQuizServiceProvider);
 
   try {
     final ok = await service.isQuizComplete(uid);
-    if (ok) return CompatibilityStatus.complete;
+    if (ok) {
+      yield CompatibilityStatus.complete;
+      return;
+    }
 
     // If not complete, still allow legacy v1 users.
     try {
       final legacy = await _isLegacyUser(uid);
-      if (legacy) return CompatibilityStatus.complete;
+      if (legacy) {
+        yield CompatibilityStatus.complete;
+        return;
+      }
     } catch (_) {}
 
-    return CompatibilityStatus.incomplete;
+    yield CompatibilityStatus.incomplete;
   } catch (_) {
     // If the new check failed, still allow legacy users through.
     try {
       final legacy = await _isLegacyUser(uid);
-      if (legacy) return CompatibilityStatus.complete;
+      if (legacy) {
+        yield CompatibilityStatus.complete;
+        return;
+      }
     } catch (_) {}
-    return CompatibilityStatus.unknown;
+    yield CompatibilityStatus.unknown;
   }
 });

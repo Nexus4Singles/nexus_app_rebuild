@@ -41,7 +41,7 @@ final effectiveRelationshipStatusProvider = Provider<RelationshipStatus>((ref) {
     final guest = ref.watch(guestSessionProvider);
     // ignore: avoid_print
     print(
-      '[effectiveRelationshipStatusProvider] Anonymous user, using guest status',
+      '[effectiveRelationshipStatusProvider] Anonymous user (user=$user, anon=${user?.isAnonymous}), using guest status: ${guest?.relationshipStatus}',
     );
     return guest?.relationshipStatus ?? RelationshipStatus.singleNeverMarried;
   }
@@ -52,7 +52,7 @@ final effectiveRelationshipStatusProvider = Provider<RelationshipStatus>((ref) {
   if (doc == null) {
     // ignore: avoid_print
     print(
-      '[effectiveRelationshipStatusProvider] Doc is null, returning default',
+      '[effectiveRelationshipStatusProvider] Doc is null for signed-in user (${user.uid}), returning default',
     );
     return RelationshipStatus.singleNeverMarried;
   }

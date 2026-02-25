@@ -416,6 +416,9 @@ class DatingSearchService {
     int limit = 20,
   }) async {
     final genders = _genderQueryValues(genderToShow);
+    print(
+      '[DatingSearchService] ⚠️  CRITICAL DEBUG: Querying for genderToShow="$genderToShow" -> queryValues=$genders',
+    );
     if (genders.isEmpty)
       return const DatingSearchResult(items: <DatingProfile>[]);
 
@@ -437,6 +440,9 @@ class DatingSearchService {
     final futures = <Future<QuerySnapshot<Map<String, dynamic>>>>[];
     for (final g in genders) {
       // Build v2 verified query with server-side filters
+      print(
+        '[DatingSearchService] 🔍 Building Firestore query with gender="$g" (case-sensitive)',
+      );
       var verifiedQ = _fs
           .collection('users')
           .where('gender', isEqualTo: g)
@@ -514,12 +520,21 @@ class DatingSearchService {
 
     if (kDebugMode) {
       int totalSnapDocs = 0;
-      for (final s in snaps) {
-        totalSnapDocs += s.docs.length;
+      int v2Count = 0;
+      int v1Count = 0;
+
+      for (int i = 0; i < snaps.length; i++) {
+        totalSnapDocs += snaps[i].docs.length;
+        // First query is v2, then alternating v1 queries
+        if (i == 0) {
+          v2Count = snaps[i].docs.length;
+        } else {
+          v1Count += snaps[i].docs.length;
+        }
       }
       // ignore: avoid_print
       print(
-        '[DatingSearchService] Firestore query returned $totalSnapDocs total documents from ${snaps.length} queries',
+        '[DatingSearchService] Firestore query returned $totalSnapDocs total documents from ${snaps.length} queries | V2: $v2Count, V1: $v1Count',
       );
 
       // If 0 documents, do a diagnostic query to see if ANY profiles exist
@@ -640,13 +655,28 @@ class DatingSearchService {
       // ignore: avoid_print
       print('[DatingSearchService] combined=${combined.length} (pre-age)');
       if (combined.isNotEmpty) {
+        // Count epoch vs dated profiles
+        int epochCount = 0;
+        int datedCount = 0;
+        for (final p in combined.values) {
+          if (p.createdAt.millisecondsSinceEpoch == 0) {
+            epochCount++;
+          } else {
+            datedCount++;
+          }
+        }
+        print(
+          '[DatingSearchService] Profile dates: $datedCount with dates, $epochCount with epoch',
+        );
+
         final p0 = combined.values.first;
         // ignore: avoid_print
         print(
           '[DatingSearchService] pre-age sample: age=${p0.age}, '
           'country="${p0.country}", edu="${p0.educationLevel}", '
           'income="${p0.regularSourceOfIncome}", distance="${p0.longDistance}", '
-          'marital="${p0.maritalStatus}", kids="${p0.haveKids}", geno="${p0.genotype}"',
+          'marital="${p0.maritalStatus}", kids="${p0.haveKids}", geno="${p0.genotype}", '
+          'createdAt=${p0.createdAt}',
         );
       }
     }
@@ -675,43 +705,71 @@ class DatingSearchService {
     // 2. V1 profiles (schemaVersion < 2) WITH valid createdAt, sorted newest first
     // 3. V1 profiles WITHOUT createdAt (epoch = 0), appear last
     // Done in-memory instead of at Firestore level to avoid composite index requirement
-    final sortedProfiles =
-        combined.values.toList()..sort((a, b) {
-          // Tier 1: V2 (2+) comes before V1 (1)
-          final aIsV2 = a.schemaVersion >= 2;
-          final bIsV2 = b.schemaVersion >= 2;
-          if (aIsV2 && !bIsV2) return -1; // a is v2, b is v1 -> a first
-          if (!aIsV2 && bIsV2) return 1; // a is v1, b is v2 -> b first
 
-          // Tier 2: Within same version, profiles with dates before profiles without dates
-          final aIsEpoch = a.createdAt.millisecondsSinceEpoch == 0;
-          final bIsEpoch = b.createdAt.millisecondsSinceEpoch == 0;
-          if (aIsEpoch && !bIsEpoch)
-            return 1; // a has no date, b has date -> b first
-          if (!aIsEpoch && bIsEpoch)
-            return -1; // a has date, b has no date -> a first
+    // CRITICAL FIX: Create list ONCE to ensure consistent PRE/POST-SORT logging
+    final profileList = combined.values.toList();
 
-          // Tier 3: Sort by date descending (newest first)
-          return b.createdAt.compareTo(a.createdAt);
-        });
+    // Log PRE-SORT from the same list we'll sort
+    if (kDebugMode && profileList.isNotEmpty) {
+      final firstFew = profileList.take(15).toList();
+      final details = firstFew
+          .asMap()
+          .entries
+          .map((e) {
+            final idx = e.key;
+            final p = e.value;
+            final epoch =
+                p.createdAt.millisecondsSinceEpoch == 0 ? 'EPOCH' : '';
+            return '[${idx + 1}] ${p.name}(v${p.schemaVersion}, ${p.createdAt.year}-${p.createdAt.month.toString().padLeft(2, '0')}-${p.createdAt.day.toString().padLeft(2, '0')} $epoch)';
+          })
+          .join(' | ');
+      print('[DatingSearchService] 📋 PRE-SORT loaded profiles: $details');
+    }
+
+    // Sort the list in-place
+    profileList.sort((a, b) {
+      // Tier 1: V2 (2+) comes before V1 (1)
+      final aIsV2 = a.schemaVersion >= 2;
+      final bIsV2 = b.schemaVersion >= 2;
+      if (aIsV2 && !bIsV2) return -1; // a is v2, b is v1 -> a first
+      if (!aIsV2 && bIsV2) return 1; // a is v1, b is v2 -> b first
+
+      // Tier 2: Within same version, profiles with dates before profiles without dates
+      final aIsEpoch = a.createdAt.millisecondsSinceEpoch == 0;
+      final bIsEpoch = b.createdAt.millisecondsSinceEpoch == 0;
+      if (aIsEpoch && !bIsEpoch)
+        return 1; // a has no date, b has date -> b first
+      if (!aIsEpoch && bIsEpoch)
+        return -1; // a has date, b has no date -> a first
+
+      // Tier 3: Sort by date descending (newest first)
+      return b.createdAt.compareTo(a.createdAt);
+    });
+
+    // Log POST-SORT from the same sorted list
+    if (kDebugMode && profileList.isNotEmpty) {
+      final firstFew = profileList.take(15).toList();
+      final details = firstFew
+          .asMap()
+          .entries
+          .map((e) {
+            final idx = e.key;
+            final p = e.value;
+            final epoch =
+                p.createdAt.millisecondsSinceEpoch == 0 ? 'EPOCH' : '';
+            return '[${idx + 1}] ${p.name}(v${p.schemaVersion}, ${p.createdAt.year}-${p.createdAt.month.toString().padLeft(2, '0')}-${p.createdAt.day.toString().padLeft(2, '0')} $epoch)';
+          })
+          .join(' | ');
+      print('[DatingSearchService] ✅ POST-SORT (before age filter): $details');
+    }
+
+    final sortedProfiles = profileList;
 
     // Age filter first (always applied, even in unlimited mode)
     final afterAge =
         sortedProfiles
             .where((p) => p.age >= filters.minAge && p.age <= filters.maxAge)
             .toList();
-
-    if (kDebugMode && combined.isNotEmpty) {
-      // Log creation dates to verify newest profiles are first
-      final firstFew = combined.values.take(5).toList();
-      final creationDates = firstFew
-          .map((p) => '${p.name}(${p.createdAt})')
-          .join(', ');
-      // ignore: avoid_print
-      print(
-        '[DatingSearchService] Profile creation order (newest first): $creationDates',
-      );
-    }
 
     if (kDebugMode) {
       // Debug: Show age range being filtered

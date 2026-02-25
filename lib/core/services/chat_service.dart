@@ -870,6 +870,26 @@ class ChatService {
     );
   }
 
+  /// Update message content (used when media upload completes in background)
+  /// This allows sending messages immediately and uploading media asynchronously
+  Future<void> updateMessageContent(
+    String chatId,
+    String messageId,
+    String newContent,
+  ) async {
+    try {
+      await _messagesRef(chatId).doc(messageId).update({
+        'content': newContent,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+      debugPrint('[ChatService] Message $messageId updated with new content');
+    } catch (e) {
+      debugPrint('[ChatService] Failed to update message content: $e');
+      // Non-critical: message already sent with original content
+      // User can see local preview, cloud URL update is a background enhancement
+    }
+  }
+
   /// Get messages for a chat
   Future<List<ChatMessage>> getMessages(
     String chatId, {

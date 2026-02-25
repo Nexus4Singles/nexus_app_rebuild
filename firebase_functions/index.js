@@ -16,7 +16,9 @@ const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
 const { Parser } = require('json2csv');
 
-admin.initializeApp();
+admin.initializeApp({
+  storageBucket: 'nexus-visibility-app.appspot.com'
+});
 
 // ============================================================================
 // EMAIL CONFIGURATION
@@ -365,6 +367,334 @@ exports.onUserDeleted = functions.firestore
   });
 
 // ============================================================================
+// PUSH NOTIFICATIONS: FCM SERVICE
+// ============================================================================
+
+/**
+ * Send FCM push notification when notification document is created
+ * Triggers on: users/{userId}/notifications/{notificationId}
+ * 
+ * This Cloud Function:
+ * 1. Listens for new notification records created by the app
+ * 2. Retrieves the user's FCM token from Firestore
+ * 3. Sends an FCM message to that token using the admin SDK
+ * 4. Updates the notification record with sent status
+ */
+exports.sendPushNotification = functions.firestore
+  .document('users/{userId}/notifications/{notificationId}')
+  .onCreate(async (snapshot, context) => {
+    const { userId, notificationId } = context.params;
+    const notification = snapshot.data();
+
+    try {
+      // Get user's FCM token
+      const userDoc = await admin.firestore().collection('users').doc(userId).get();
+      const userData = userDoc.data();
+      
+      if (!userData || !userData.fcmToken) {
+        console.log(`⚠️ No FCM token found for user: ${userId}`);
+        // Mark as sent anyway so we don't retry infinitely
+        await admin.firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('notifications')
+          .doc(notificationId)
+          .update({
+            isSent: true,
+            sentAt: admin.firestore.FieldValue.serverTimestamp(),
+            sendError: 'No FCM token found',
+          });
+        return null;
+      }
+
+      // Handle both string token and object token formats for compatibility
+      const fcmToken = typeof userData.fcmToken === 'string' 
+        ? userData.fcmToken 
+        : userData.fcmToken.token;
+
+      if (!fcmToken) {
+        console.log(`⚠️ FCM token is empty for user: ${userId}`);
+        await admin.firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('notifications')
+          .doc(notificationId)
+          .update({
+            isSent: true,
+            sentAt: admin.firestore.FieldValue.serverTimestamp(),
+            sendError: 'FCM token is empty',
+          });
+        return null;
+      }
+
+      const payload = notification.payload || {};
+      const notificationType = payload.type || 'system';
+
+      // Determine priority based on notification type
+      const isHighPriority = 
+        notificationType === 'profile_pending_verification' ||
+        notificationType === 'profile_rejected' ||
+        notificationType === 'profile_verified' ||
+        notificationType === 'subscription_activated' ||
+        notificationType === 'new_message';
+
+      // Build FCM message with platform-specific configurations
+      const message = {
+        token: fcmToken,
+        notification: {
+          title: payload.title || 'Nexus',
+          body: payload.body || '',
+        },
+        android: {
+          priority: isHighPriority ? 'high' : 'normal',
+          notification: {
+            clickAction: 'FLUTTER_NOTIFICATION_CLICK',
+            sound: 'default',
+            channelId: 'nexus_default_channel',
+            icon: '@mipmap/ic_launcher',
+          },
+        },
+        webpush: {
+          headers: {
+            TTL: '3600',
+          },
+          notification: {
+            icon: '@mipmap/ic_launcher',
+            badge: '@mipmap/ic_launcher',
+          },
+        },
+        apns: {
+          headers: {
+            'apns-priority': isHighPriority ? '10' : '10',
+          },
+          payload: {
+            aps: {
+              alert: {
+                title: payload.title || 'Nexus',
+                body: payload.body || '',
+              },
+              badge: 1,
+              sound: 'default',
+            },
+          },
+        },
+      };
+
+      // Add custom data fields
+      if (payload && typeof payload === 'object') {
+        message.data = {};
+        for (const [key, value] of Object.entries(payload)) {
+          if (key !== 'title' && key !== 'body' && key !== 'type') {
+            message.data[key] = String(value);
+          }
+        }
+      }
+
+      console.log(`📤 Sending FCM to user ${userId}:`, {
+        token: fcmToken.substring(0, 20) + '...',
+        type: notificationType,
+        title: payload.title,
+      });
+
+      // Send message
+      const response = await admin.messaging().send(message);
+      console.log(`✅ FCM sent successfully: ${response}`);
+
+      // Update notification as sent
+      await admin.firestore()
+        .collection('users')
+        .doc(userId)
+        .collection('notifications')
+        .doc(notificationId)
+        .update({
+          isSent: true,
+          sentAt: admin.firestore.FieldValue.serverTimestamp(),
+          fcmMessageId: response,
+        });
+
+      return { success: true, messageId: response };
+
+    } catch (error) {
+      console.error(`❌ Error sending FCM to user ${userId}:`, error);
+
+      try {
+        // Update notification with error
+        await admin.firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('notifications')
+          .doc(notificationId)
+          .update({
+            isSent: false,
+            sendError: error.message,
+            lastAttemptAt: admin.firestore.FieldValue.serverTimestamp(),
+          });
+      } catch (updateError) {
+        console.error(`❌ Failed to update notification error status:`, updateError);
+      }
+
+      // Log specific error types
+      if (error.code === 'messaging/invalid-argument') {
+        console.error(`⚠️ Invalid FCM token for user ${userId}`);
+      } else if (error.code === 'messaging/mismatched-credential') {
+        console.error(`⚠️ Firebase credentials mismatch`);
+      } else if (error.code === 'messaging/registration-token-not-registered') {
+        console.error(`⚠️ FCM token not registered: ${userId}`);
+      }
+
+      return null;
+    }
+  });
+
+// ============================================================================
+// PUSH NOTIFICATIONS: TEST FCM MESSAGE (SINGLE DEVICE)
+// ============================================================================
+
+/**
+ * CALLABLE HTTP FUNCTION - Test FCM to a specific user
+ * 
+ * This function lets you send a test notification to a single user without
+ * creating a Firestore document. Perfect for testing before mass messaging.
+ * 
+ * Usage from client:
+ * const functions = firebase.functions();
+ * const testFCM = functions.httpsCallable('testSendNotification');
+ * await testFCM({
+ *   userId: 'user123',
+ *   title: 'Test Message',
+ *   body: 'This is a test notification',
+ *   type: 'test_message'
+ * });
+ * 
+ * Usage from Firebase Console terminal:
+ * firebase functions:shell
+ * testSendNotification({
+ *   userId: 'your-user-id',
+ *   title: 'Test Title',
+ *   body: 'Test Body'
+ * })
+ */
+exports.testSendNotification = functions.https.onCall(async (data, context) => {
+  // Optional: Require authentication (uncomment to enable)
+  // if (!context.auth) {
+  //   throw new functions.https.HttpsError('unauthenticated', 'User must be logged in');
+  // }
+
+  const { userId, title = 'Test Message', body = 'This is a test', type = 'test_message' } = data;
+
+  if (!userId) {
+    throw new functions.https.HttpsError(
+      'invalid-argument',
+      'userId is required'
+    );
+  }
+
+  try {
+    console.log(`🧪 TEST: Sending FCM to user: ${userId}`);
+
+    // Get user's FCM token
+    const userDoc = await admin.firestore().collection('users').doc(userId).get();
+    const userData = userDoc.data();
+
+    if (!userData || !userData.fcmToken) {
+      throw new functions.https.HttpsError(
+        'not-found',
+        `No FCM token found for user: ${userId}. Make sure they're logged in on the device.`
+      );
+    }
+
+    const fcmToken = typeof userData.fcmToken === 'string' 
+      ? userData.fcmToken 
+      : userData.fcmToken.token;
+
+    if (!fcmToken) {
+      throw new functions.https.HttpsError(
+        'failed-precondition',
+        `FCM token is empty for user: ${userId}`
+      );
+    }
+
+    // Build FCM message
+    const message = {
+      token: fcmToken,
+      notification: {
+        title: title,
+        body: body,
+      },
+      android: {
+        priority: 'high',
+        notification: {
+          clickAction: 'FLUTTER_NOTIFICATION_CLICK',
+          sound: 'default',
+          channelId: 'nexus_default_channel',
+          icon: '@mipmap/ic_launcher',
+        },
+      },
+      apns: {
+        headers: {
+          'apns-priority': '10',
+        },
+        payload: {
+          aps: {
+            alert: {
+              title: title,
+              body: body,
+            },
+            badge: 1,
+            sound: 'default',
+          },
+        },
+      },
+      data: {
+        type: type,
+        timestamp: new Date().toISOString(),
+      },
+    };
+
+    console.log(`📤 Sending test FCM:`, {
+      token: fcmToken.substring(0, 20) + '...',
+      title,
+      body,
+    });
+
+    // Send message
+    const response = await admin.messaging().send(message);
+    
+    console.log(`✅ Test FCM sent successfully: ${response}`);
+
+    return {
+      success: true,
+      messageId: response,
+      userId,
+      title,
+      body,
+      message: `✅ Test notification sent to ${userId}. Check your device!`,
+    };
+
+  } catch (error) {
+    console.error(`❌ Error sending test FCM:`, error);
+
+    // Provide helpful error messages
+    if (error.code === 'messaging/invalid-argument') {
+      throw new functions.https.HttpsError(
+        'invalid-argument',
+        `Invalid FCM token for user ${userId}. Token may have expired.`
+      );
+    } else if (error.code === 'messaging/registration-token-not-registered') {
+      throw new functions.https.HttpsError(
+        'failed-precondition',
+        `FCM token not registered. User may need to reinstall the app.`
+      );
+    } else {
+      throw new functions.https.HttpsError(
+        'internal',
+        `Failed to send test notification: ${error.message}`
+      );
+    }
+  }
+});
+
+// ============================================================================
 // MARKETING: WEEKLY USER REPORT
 // ============================================================================
 
@@ -375,7 +705,7 @@ exports.onUserDeleted = functions.firestore
  * Stores the CSV file in Cloud Storage for download
  */
 exports.weeklyUserReport = functions.pubsub
-  .schedule('0 9 ? * MON')
+  .schedule('0 9 * * 1')  // Google Cloud Scheduler cron: Monday at 9 AM UTC
   .timeZone('UTC')
   .onRun(async (context) => {
     try {
@@ -408,10 +738,10 @@ exports.weeklyUserReport = functions.pubsub
         users.push({
           email: userData.email || 'N/A',
           username: userData.username || 'N/A',
-          nationality: userData.nationality || 'N/A',
-          countryOfResidence: userData.country || 'N/A',
+          nationality: userData.dating?.profile?.nationality || userData.nationality || 'N/A',
+          countryOfResidence: userData.dating?.profile?.country || userData.country || 'N/A',
           dateJoined: userData.createdAt 
-            ? new Date(userData.createdAt.toDate()).toLocaleDateString('en-US')
+            ? userData.createdAt.toDate().toISOString().split('T')[0]  // ISO format: YYYY-MM-DD
             : 'N/A',
           createdAt: userData.createdAt
             ? userData.createdAt.toDate().toISOString()
@@ -483,42 +813,61 @@ exports.onCoachApplicationSubmitted = functions.firestore
     try {
       const data = snapshot.data();
       const applicationId = context.params.applicationId;
+      const userId = data.userId;  // Get userId from stored data
       const bucket = admin.storage().bucket();
 
-      console.log(`📝 Processing coach application: ${applicationId}`);
+      console.log(`📝 Processing coach application: ${applicationId} from user: ${userId}`);
 
       // Download attachments from Storage
       let attachments = [];
 
-      // Download profile photo
+      // Download profile photo from coaches/{userId}/ folder
       if (data.profilePhoto?.url) {
         try {
-          const photoFile = await bucket.file(
-            `coachApplications/${applicationId}/profilePhoto`
-          ).download();
-          attachments.push({
-            filename: data.profilePhoto.filename || 'profile-photo.jpg',
-            content: photoFile[0],
-            contentType: 'image/jpeg',
+          // List files in coaches/{userId}/ to find profile photo
+          const [files] = await bucket.getFiles({
+            prefix: `coaches/${userId}/profile_photo_`,
           });
-          console.log('✅ Profile photo downloaded');
+
+          if (files.length > 0) {
+            // Get the most recent profile photo (sorted by name which includes timestamp)
+            const photoFile = files.sort((a, b) => b.name.localeCompare(a.name))[0];
+            const photoContent = await photoFile.download();
+            attachments.push({
+              filename: data.profilePhoto.filename || 'profile-photo.jpg',
+              content: photoContent[0],
+              contentType: 'image/jpeg',
+            });
+            console.log('✅ Profile photo downloaded from:', photoFile.name);
+          } else {
+            console.warn('⚠️  Profile photo file not found in storage');
+          }
         } catch (err) {
           console.warn('⚠️  Could not download profile photo:', err.message);
         }
       }
 
-      // Download credentials PDF
+      // Download credentials PDF from coaches/{userId}/ folder
       if (data.credentialsPdf?.url) {
         try {
-          const pdfFile = await bucket.file(
-            `coachApplications/${applicationId}/credentials.pdf`
-          ).download();
-          attachments.push({
-            filename: 'credentials.pdf',
-            content: pdfFile[0],
-            contentType: 'application/pdf',
+          // List files in coaches/{userId}/ to find credentials PDF
+          const [files] = await bucket.getFiles({
+            prefix: `coaches/${userId}/credentials_`,
           });
-          console.log('✅ Credentials PDF downloaded');
+
+          if (files.length > 0) {
+            // Get the most recent credentials file (sorted by name which includes timestamp)
+            const pdfFile = files.sort((a, b) => b.name.localeCompare(a.name))[0];
+            const pdfContent = await pdfFile.download();
+            attachments.push({
+              filename: 'credentials.pdf',
+              content: pdfContent[0],
+              contentType: 'application/pdf',
+            });
+            console.log('✅ Credentials PDF downloaded from:', pdfFile.name);
+          } else {
+            console.warn('⚠️  Credentials PDF file not found in storage');
+          }
         } catch (err) {
           console.warn('⚠️  Could not download credentials PDF:', err.message);
         }
@@ -722,4 +1071,115 @@ exports.recalculatePollAggregate = functions.https.onCall(async (data, context) 
       `Failed to recalculate aggregate: ${error.message}`
     );
   }
+});
+
+// ============================================================================
+// JOURNEY CONTENT MANAGEMENT (Cloud-served JSON updates)
+// ============================================================================
+
+/**
+ * Fetches journey JSON files directly from cloud storage
+ * No app rebuild required - just upload new JSON to Storage!
+ * 
+ * Endpoint: GET /getJourney?category={category}&journeyId={journeyId}
+ * Storage path: journeys/{category}/{journeyId}.json
+ */
+exports.getJourney = functions.https.onRequest((req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+
+  (async () => {
+    try {
+      const { category, journeyId } = req.query;
+
+      if (!category || !journeyId) {
+        return res.status(400).json({
+          error: 'Missing parameters',
+          required: ['category', 'journeyId'],
+          example: '?category=married&journeyId=married_journey_01_communication_conflict',
+        });
+      }
+
+      const filePath = `journeys/${category}/${journeyId}.json`;
+      const bucket = admin.storage().bucket();
+      const file = bucket.file(filePath);
+      const [exists] = await file.exists();
+
+      if (!exists) {
+        return res.status(404).json({
+          error: `Journey not found: ${journeyId}`,
+          category,
+          path: filePath,
+        });
+      }
+
+      const [content] = await file.download();
+      const json = JSON.parse(content.toString());
+
+      res.set('Cache-Control', 'public, max-age=300'); // 5 min cache
+      return res.status(200).json(json);
+    } catch (error) {
+      console.error('Error fetching journey:', error);
+      return res.status(500).json({
+        error: 'Failed to fetch journey',
+        details: error.message,
+      });
+    }
+  })();
+});
+
+/**
+ * Lists all journey files in a category from Storage
+ * 
+ * Endpoint: GET /listJourneys?category={category}
+ */
+exports.listJourneys = functions.https.onRequest((req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+
+  (async () => {
+    try {
+      const { category } = req.query;
+
+      if (!category) {
+        return res.status(400).json({
+          error: 'Missing category parameter',
+          example: '?category=married',
+        });
+      }
+
+      const prefix = `journeys/${category}/`;
+      const bucket = admin.storage().bucket();
+      const [files] = await bucket.getFiles({ prefix });
+
+      const journeys = files
+        .map(f => f.name.replace(prefix, '').replace('.json', ''))
+        .filter(id => id && !id.includes('/'));
+
+      res.set('Cache-Control', 'public, max-age=300');
+      return res.status(200).json({
+        category,
+        count: journeys.length,
+        journeys,
+      });
+    } catch (error) {
+      console.error('Error listing journeys:', error);
+      return res.status(500).json({
+        error: 'Failed to list journeys',
+        details: error.message,
+      });
+    }
+  })();
 });

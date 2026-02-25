@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -12,6 +14,11 @@ import 'package:nexus_app_v2/core/services/revenuecat_service.dart';
 import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 import 'package:nexus_app_v2/features/subscription/application/subscription_provider.dart';
 import 'package:nexus_app_v2/features/subscription/domain/subscription_models.dart';
+import 'package:nexus_app_v2/features/challenges/presentation/screens/journey_detail_screen.dart';
+import 'package:nexus_app_v2/features/challenges/providers/journeys_providers.dart';
+
+// Note: Using journeyByIdProvider from journeys_providers.dart (cloud-first with fallback)
+// This replaces the old local repository-based loading
 
 class SubscriptionScreen extends ConsumerStatefulWidget {
   /// Optional: set initial tab index (0 = Dating Features, 1 = Journey Purchases)
@@ -637,12 +644,23 @@ class _NoSubscriptionView extends ConsumerWidget {
           .updateSubscription(isActive: true, tier: SubscriptionTier.monthly);
 
       if (!context.mounted) return;
+
+      // Show success snackbar and notify restart
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('🎉 Subscription activated! Enjoy premium features.'),
+        SnackBar(
+          content: const Text(
+            'Subscription unlocked! 🎉 Restarting app to activate your subscription...',
+          ),
+          duration: const Duration(seconds: 3),
           backgroundColor: Colors.green,
         ),
       );
+
+      // Schedule app restart after brief delay to let snackbar display
+      Future.delayed(const Duration(seconds: 2), () {
+        // Exit app - OS will automatically relaunch it
+        SystemNavigator.pop();
+      });
     } catch (e) {
       if (context.mounted) {
         final navigator = Navigator.of(context);
@@ -1045,13 +1063,34 @@ class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
 }
 
 // Journey Purchase Card
-class _JourneyPurchaseCard extends StatelessWidget {
+class _JourneyPurchaseCard extends ConsumerWidget {
   final PurchasedJourney journey;
 
   const _JourneyPurchaseCard({required this.journey});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final journey = ref.watch(journeyByIdProvider(this.journey.journeyId));
+
+    return InkWell(
+      onTap: () {
+        if (journey != null) {
+          // Navigate to journey detail screen (will fetch via cloud-first journeyByIdProvider)
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) => JourneyDetailScreen(id: this.journey.journeyId),
+            ),
+          );
+        }
+      },
+      borderRadius: BorderRadius.circular(16),
+      child: _buildCard(context),
+    );
+  }
+
+  Widget _buildCard(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(

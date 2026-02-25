@@ -668,6 +668,10 @@ class AssessmentResult extends Equatable {
     required String userId,
     required List<AssessmentAnswer> answers,
   }) {
+    print(
+      '[AssessmentResult.calculate] START: config=${config.assessmentId}, answers=${answers.length}, config.dimensions=${config.dimensions.length}',
+    );
+
     // Calculate total score
     final totalScore = answers.fold<int>(0, (sum, a) => sum + a.weight);
     final maxScore = answers.length * AppConfig.maxScorePerQuestion;
@@ -676,7 +680,9 @@ class AssessmentResult extends Equatable {
     // Calculate dimension scores
     final dimensionScores = <String, DimensionScore>{};
     for (final dimension in config.dimensions) {
-      final dimensionAnswers =
+      // Try multiple matching strategies to find answers for this dimension
+      // Strategy 1: Exact name match (primary)
+      var dimensionAnswers =
           answers
               .where(
                 (a) =>
@@ -684,13 +690,58 @@ class AssessmentResult extends Equatable {
               )
               .toList();
 
-      if (dimensionAnswers.isEmpty) continue;
+      // Strategy 2: ID match (as fallback)
+      if (dimensionAnswers.isEmpty) {
+        dimensionAnswers =
+            answers
+                .where(
+                  (a) =>
+                      a.dimension.toLowerCase() == dimension.id.toLowerCase(),
+                )
+                .toList();
+      }
+
+      // Strategy 3: Snake case match (convert "Attachment Security" → "attachment_security")
+      if (dimensionAnswers.isEmpty) {
+        dimensionAnswers =
+            answers.where((a) {
+              final questionDimensionSnakeCase = a.dimension
+                  .toLowerCase()
+                  .replaceAll(RegExp(r'[-&\s]+'), '_') // Also handle hyphens
+                  .replaceAll(RegExp(r'_+'), '_')
+                  .replaceAll(RegExp(r'^_|_$'), '');
+              return questionDimensionSnakeCase == dimension.id;
+            }).toList();
+      }
+
+      // Strategy 4: Partial/substring match (for cases where question dimension is a shorthand)
+      if (dimensionAnswers.isEmpty) {
+        dimensionAnswers =
+            answers.where((a) {
+              final qDim = a.dimension.toLowerCase();
+              final dimName = dimension.name.toLowerCase();
+              // Check if dimension name contains the question dimension
+              // (e.g., "How You Handle Conflict" contains "conflict")
+              return dimName.contains(qDim) || qDim.contains(dimName);
+            }).toList();
+      }
+
+      if (dimensionAnswers.isEmpty) {
+        print(
+          '[AssessmentResult.calculate] Skipping dimension "${dimension.name}" (id="${dimension.id}") - no matching answers',
+        );
+        continue;
+      }
 
       final dimTotal = dimensionAnswers.fold<int>(
         0,
         (sum, a) => sum + a.weight,
       );
       final dimMax = dimensionAnswers.length * AppConfig.maxScorePerQuestion;
+
+      print(
+        '[AssessmentResult.calculate] Created dimension "${dimension.name}": ${dimensionAnswers.length} answers, score=$dimTotal/$dimMax',
+      );
 
       dimensionScores[dimension.id] = DimensionScore(
         dimensionId: dimension.id,
@@ -701,6 +752,10 @@ class AssessmentResult extends Equatable {
         answers: dimensionAnswers,
       );
     }
+
+    print(
+      '[AssessmentResult.calculate] ✓ COMPLETE: ${dimensionScores.length} dimension scores created',
+    );
 
     // Determine overall tier
     SignalTier overallTier;

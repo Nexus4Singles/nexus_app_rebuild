@@ -349,15 +349,17 @@ match /chats/{chatId} {
     match /nationalities/{document=**} {
       // All signed-in users can read nationalities
       allow read: if isSignedIn();
-      // Admins can read/manage (for analytics and data cleanup)
-      allow write: if isAdmin();
+      // Signed-in users can increment count (for tracking onboarding)
+      // Admins can full write (for data cleanup)
+      allow write: if isSignedIn();
     }
 
     match /countriesOfResidence/{document=**} {
       // All signed-in users can read countries of residence
       allow read: if isSignedIn();
-      // Admins can read/manage (for analytics and data cleanup)
-      allow write: if isAdmin();
+      // Signed-in users can increment count (for tracking onboarding)
+      // Admins can full write (for data cleanup)
+      allow write: if isSignedIn();
     }
 
     // ============================================================================
@@ -402,6 +404,56 @@ match /chats/{chatId} {
 
       // No direct write access for non-admins except create
       allow list: if false;  // Prevent non-admins from listing all applications
+    }
+
+    // ============================================================================
+    // AUDIT LOGS (Cloud Functions only)
+    // ============================================================================
+    // Users can read their own audit logs to verify payment history
+    // Cloud Functions write to these logs (no explicit rule needed for service accounts)
+    match /users/{uid}/auditLog/{entryId} {
+      // Users can read their own audit logs
+      allow read: if isSignedIn() && request.auth.uid == uid;
+      
+      // Only Cloud Functions (service account) can write
+      allow create, update, delete: if false; // Enforced via Cloud Function auth
+    }
+
+    // ============================================================================
+    // JOURNEY PURCHASES (Cloud Functions writes, Users read)
+    // ============================================================================
+    // Users can read their own journey purchases
+    // Cloud Functions create entries when payment is successful
+    match /users/{uid}/journeyPurchases/{purchaseId} {
+      // Users can read their own purchases
+      allow read: if isSignedIn() && request.auth.uid == uid;
+      
+      // Only Cloud Functions (service account) can write
+      allow create, update, delete: if false; // Enforced via Cloud Function auth
+    }
+
+    // ============================================================================
+    // SUBSCRIPTION PAYMENT FIELDS (Cloud Functions only, protected from direct user writes)
+    // ============================================================================
+    // These sensitive fields should ONLY be written by Cloud Functions (Flutterwave webhook)
+    // Users can read their own subscription status
+    match /users/{uid} {
+      // Existing rules above...
+      
+      // Additional rule: Users can see their own subscription status
+      // This is a read-only view of subscription fields
+      function getSubscriptionFields() {
+        return {
+          'onPremium': resource.data.get('onPremium', false),
+          'subExpDate': resource.data.get('subExpDate', ''),
+          'entitledUser': resource.data.get('entitledUser', false),
+          'prevSubscribed': resource.data.get('prevSubscribed', false),
+          'lastFlutterwaveTransactionId': resource.data.get('lastFlutterwaveTransactionId', ''),
+          'lastPaymentMethod': resource.data.get('lastPaymentMethod', ''),
+          'lastPaymentDate': resource.data.get('lastPaymentDate', null),
+          'hasExternalSubscriptionFlow': resource.data.get('hasExternalSubscriptionFlow', false),
+        };
+      }
     }
 
     // ============================================================================

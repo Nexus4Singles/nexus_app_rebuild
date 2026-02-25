@@ -4,11 +4,11 @@ import '../../app_shell.dart';
 import 'placeholder_screen.dart';
 
 import '../constants/app_constants.dart';
+import '../widgets/disabled_account_gate.dart';
 
 import '../../features/launch/presentation/screens/home_screen.dart';
 import '../../features/dating_search/presentation/screens/search_screen.dart';
 import '../../features/launch/presentation/screens/onboarding_screen.dart';
-import '../../features/notifications/presentation/screens/notifications_screen.dart';
 import '../../features/dating_search/presentation/screens/new_dating_search_screen.dart';
 import '../../features/chats/presentation/screens/chats_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
@@ -27,7 +27,6 @@ import '../../features/profile/presentation/screens/contact_screen.dart';
 import '../../features/profile/presentation/screens/privacy_policy_screen.dart';
 import '../../features/profile/presentation/screens/terms_screen.dart';
 import '../../features/chats/presentation/screens/blocked_users_screen.dart';
-import '../../features/profile/presentation/screens/contact_support_screen.dart';
 import '../../features/profile/presentation/screens/help_center_screen.dart';
 
 import 'app_routes.dart';
@@ -112,6 +111,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
   // /journey/:id
   if (segments.length == 2 && segments[0] == 'journey') {
     final journeyId = segments[1];
+    // ignore: avoid_print
+    print('[AppRouter] /journey route resolved with id=$journeyId');
     return MaterialPageRoute(
       settings: settings,
       builder: (_) => JourneyDetailScreen(id: journeyId),
@@ -286,9 +287,17 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       );
 
     case '/notifications':
+      // Notifications route wrapped with DisabledAccountGate
+      // Rejected/disabled users are blocked from accessing any screen
+      // If app is open when notification clicked, they're caught here before HomeScreen
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const NotificationsStubScreen(),
+        builder:
+            (_) => const DisabledAccountGate(
+              child: HomeScreen(),
+              message:
+                  'Your account has been disabled. Please contact support.',
+            ),
       );
 
     case '/contact':

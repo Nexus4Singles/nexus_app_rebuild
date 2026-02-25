@@ -105,6 +105,20 @@ class CoachApplicationDetail {
     final credentialsPdf =
         (data['credentialsPdf'] is Map) ? data['credentialsPdf'] as Map : null;
 
+    final profilePhotoUrl = profilePhoto?['url'] as String?;
+    final credentialsPdfUrl = credentialsPdf?['url'] as String?;
+
+    // Debug logging for credentials PDF
+    print('[CoachApplicationDetail] Firestore data keys: ${data.keys.join(', ')}');
+    print('[CoachApplicationDetail] credentialsPdf field: ${data['credentialsPdf']}');
+    print('[CoachApplicationDetail] credentialsPdf type: ${data['credentialsPdf'].runtimeType}');
+    print('[CoachApplicationDetail] credentialsPdf URL extracted: $credentialsPdfUrl');
+    if (credentialsPdfUrl == null || credentialsPdfUrl.isEmpty) {
+      print('[⚠️ WARNING] No credentials PDF URL found! credentialsPdf=$credentialsPdf');
+    } else {
+      print('[✅ OK] Credentials PDF URL: $credentialsPdfUrl');
+    }
+
     return CoachApplicationDetail(
       applicationId: data['applicationId'] ?? docId,
       fullName: data['fullName'] ?? 'Unknown',
@@ -124,8 +138,8 @@ class CoachApplicationDetail {
       coachingPhilosophy: data['coachingPhilosophy'] ?? '',
       instagramHandle: data['instagramHandle'] as String?,
       linkedinProfile: data['linkedinProfile'] as String?,
-      profilePhotoUrl: profilePhoto?['url'] as String?,
-      credentialsPdfUrl: credentialsPdf?['url'] as String?,
+      profilePhotoUrl: profilePhotoUrl,
+      credentialsPdfUrl: credentialsPdfUrl,
       submittedAt: _asDate(data['submittedAt']) ?? DateTime.now(),
       emailSentAt: _asDate(data['emailSentAt']),
       status: data['status'] ?? 'pending',

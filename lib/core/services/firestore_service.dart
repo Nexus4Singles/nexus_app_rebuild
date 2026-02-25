@@ -199,6 +199,27 @@ class FirestoreService {
     }
   }
 
+  /// Update user PROFILE fields to dating.profile (consolidated location)
+  /// Profile fields: age, gender, name, city, country, photos, etc.
+  /// This is the NEW recommended method for profile updates
+  Future<void> updateUserProfileFields(
+    String uid,
+    Map<String, dynamic> fields,
+  ) async {
+    if (_db == null) return;
+
+    try {
+      final prefixedFields = <String, dynamic>{};
+      fields.forEach((key, value) {
+        prefixedFields['dating.profile.$key'] = value;
+      });
+      prefixedFields['updatedAt'] = FieldValue.serverTimestamp();
+      await _userDocRef(uid).set(prefixedFields, SetOptions(merge: true));
+    } catch (e) {
+      throw FirestoreException('Failed to update user profile fields: $e');
+    }
+  }
+
   /// Delete user document from Firestore
   /// This triggers Cloud Function to delete Firebase Auth user
   Future<void> deleteUser(String uid) async {
@@ -221,18 +242,15 @@ class FirestoreService {
 
     try {
       await _userDocRef(uid).set({
-        'nexus': {
-          'relationshipStatus': relationshipStatus,
-          'gender': gender,
-          'primaryGoals': primaryGoals,
-          'onboardingCompleted': true,
-          'onboardedAt': FieldValue.serverTimestamp(),
-          'schemaVersion': AppConfig.nexus2SchemaVersion,
+        // Profile field: should be in dating.profile (consolidated location)
+        'dating': {
+          'profile': {'gender': gender},
         },
-        // Temporary mirror for backwards compatibility while migrating codepaths.
+        // Dual-write gender to root for search queries (6-9 month backward compat)
+        'gender': gender,
+        // Nexus 2.0 metadata (non-profile fields only)
         'nexus2': {
           'relationshipStatus': relationshipStatus,
-          'gender': gender,
           'primaryGoals': primaryGoals,
           'onboardingCompleted': true,
           'onboardedAt': FieldValue.serverTimestamp(),
@@ -278,15 +296,26 @@ class FirestoreService {
     String assessmentId,
   ) async {
     try {
+      print(
+        '[FirestoreService] getLatestAssessmentResult: uid=$uid, assessmentId=$assessmentId',
+      );
+
       // ✅ New Nexus v2 storage first - filtering out archived assessments
       final latestSnap = await _latestAssessmentRef(uid, assessmentId).get();
       if (latestSnap.exists && latestSnap.data() != null) {
         final result = AssessmentResult.fromJson(latestSnap.data()!);
         // Only return if NOT archived
         if (!result.archived) {
+          print(
+            '[FirestoreService] ✓ Found v2 result: ${result.assessmentId}, dimensionScores=${result.dimensionScores.length}',
+          );
           return result;
         }
       }
+
+      print(
+        '[FirestoreService] No v2 result found, checking legacy storage...',
+      );
 
       // ✅ Fallback to legacy storage - fetch all and filter on client
       // (Firestore where filter excludes documents without the archived field)
@@ -297,7 +326,12 @@ class FirestoreService {
               .limit(100)
               .get();
 
-      if (query.docs.isEmpty) return null;
+      if (query.docs.isEmpty) {
+        print('[FirestoreService] ✓ No results found in legacy storage');
+        return null;
+      }
+
+      print('[FirestoreService] Found ${query.docs.length} legacy results');
 
       // Filter on client side to include documents without archived field
       final filtered =
@@ -306,7 +340,16 @@ class FirestoreService {
               .where((result) => !result.archived)
               .toList();
 
-      return filtered.isEmpty ? null : filtered.first;
+      if (filtered.isEmpty) {
+        print('[FirestoreService] ✓ All legacy results were archived');
+        return null;
+      }
+
+      final first = filtered.first;
+      print(
+        '[FirestoreService] ✓ Returning first legacy result: ${first.assessmentId}, dimensionScores=${first.dimensionScores.length}',
+      );
+      return first;
     } catch (e) {
       throw FirestoreException('Failed to get assessment result: $e');
     }
@@ -594,18 +637,21 @@ class FirestoreService {
 
         // Get current aggregate
         final aggregateDoc = await transaction.get(aggregateRef);
-        final currentAggregate = aggregateDoc.exists 
-            ? PollAggregate.fromJson(aggregateDoc.data()!)
-            : PollAggregate(
-                pollId: vote.pollId,
-                totalVotes: 0,
-                optionCounts: {},
-                updatedAt: DateTime.now(),
-              );
+        final currentAggregate =
+            aggregateDoc.exists
+                ? PollAggregate.fromJson(aggregateDoc.data()!)
+                : PollAggregate(
+                  pollId: vote.pollId,
+                  totalVotes: 0,
+                  optionCounts: {},
+                  updatedAt: DateTime.now(),
+                );
 
         // Calculate new optionCounts
-        final newOptionCounts = Map<String, int>.from(currentAggregate.optionCounts);
-        newOptionCounts[vote.selectedOptionId] = 
+        final newOptionCounts = Map<String, int>.from(
+          currentAggregate.optionCounts,
+        );
+        newOptionCounts[vote.selectedOptionId] =
             (newOptionCounts[vote.selectedOptionId] ?? 0) + 1;
 
         // Save vote

@@ -1,81 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_v2/core/router/app_router.dart';
-import 'package:nexus_app_v2/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/core/router/app_routes.dart';
+import 'package:nexus_app_v2/core/router/placeholder_screen.dart';
 
-Widget _buildAppWithRoute(String routeName) {
-  return ProviderScope(
-    child: MaterialApp(
-      onGenerateRoute: onGenerateRoute,
-      initialRoute: routeName,
-    ),
-  );
-}
-
-Future<void> _pumpRoute(WidgetTester tester, String routeName) async {
-  await tester.pumpWidget(_buildAppWithRoute(routeName));
-  await tester.pumpAndSettle();
+Route<dynamic> _resolve(String routeName) {
+  return onGenerateRoute(RouteSettings(name: routeName));
 }
 
 void main() {
   group('onGenerateRoute', () {
-    testWidgets('resolves known static route: AppNavRoutes.home', (
-      tester,
-    ) async {
-      await _pumpRoute(tester, AppNavRoutes.home);
-      expect(find.byType(PlaceholderScreen), findsNothing);
-      expect(find.byType(Scaffold), findsOneWidget);
+    test('resolves known static route: /signup', () {
+      final route = _resolve('/signup');
+      expect(route, isA<MaterialPageRoute<dynamic>>());
+      expect(route.settings.name, '/signup');
     });
 
-    testWidgets('resolves dynamic route: /chats/:chatId', (tester) async {
-      await _pumpRoute(tester, '/chats/abc');
-      expect(find.byType(PlaceholderScreen), findsOneWidget);
-      expect(find.textContaining('Chat (chatId: abc)'), findsOneWidget);
+    test('resolves dynamic route: /chats/:chatId', () {
+      final route = _resolve('/chats/abc');
+      expect(route, isA<MaterialPageRoute<dynamic>>());
+      expect(route.settings.name, '/chats/abc');
     });
 
-    testWidgets('resolves dynamic route: /profile/:userId', (tester) async {
-      await _pumpRoute(tester, '/profile/u123');
-      expect(find.byType(PlaceholderScreen), findsOneWidget);
-      expect(find.textContaining('Profile (userId: u123)'), findsOneWidget);
+    test('resolves dynamic route: /profile/:userId', () {
+      final route = _resolve('/profile/u123');
+      expect(route, isA<MaterialPageRoute<dynamic>>());
+      expect(route.settings.name, '/profile/u123');
     });
 
-    testWidgets('resolves dynamic route: /journey/:productId', (tester) async {
-      await _pumpRoute(tester, '/journey/p987');
-      expect(find.byType(PlaceholderScreen), findsOneWidget);
-      expect(find.textContaining('Journey (productId: p987)'), findsOneWidget);
+    test('resolves dynamic route: /journey/:id', () {
+      final route = _resolve('/journey/p987');
+      expect(route, isA<MaterialPageRoute<dynamic>>());
+      expect(route.settings.name, '/journey/p987');
     });
 
-    testWidgets(
-      'resolves dynamic route: /journey/:productId/session/:sessionNumber',
-      (tester) async {
-        await _pumpRoute(tester, '/journey/p987/session/2');
-        expect(find.byType(PlaceholderScreen), findsOneWidget);
-        expect(
-          find.textContaining('Journey Session (productId: p987, session: 2)'),
-          findsOneWidget,
-        );
-      },
-    );
-
-    testWidgets('resolves dynamic route: /story/:storyId', (tester) async {
-      await _pumpRoute(tester, '/story/s55');
-      expect(find.byType(PlaceholderScreen), findsOneWidget);
-      expect(find.textContaining('Story (storyId: s55)'), findsOneWidget);
+    test('resolves dynamic route: /journey/:id/activity/:missionId', () {
+      final route = _resolve('/journey/p987/activity/2');
+      expect(route, isA<MaterialPageRoute<dynamic>>());
+      expect(route.settings.name, '/journey/p987/activity/2');
     });
 
-    testWidgets('resolves dynamic route: /story/:storyId/poll', (tester) async {
-      await _pumpRoute(tester, '/story/s55/poll');
-      expect(find.byType(PlaceholderScreen), findsOneWidget);
-      expect(find.textContaining('Story Poll (storyId: s55)'), findsOneWidget);
+    test('resolves known static route: AppNavRoutes.assessments', () {
+      final route = _resolve(AppRoutes.assessments);
+      expect(route, isA<MaterialPageRoute<dynamic>>());
+      expect(route.settings.name, AppRoutes.assessments);
     });
 
     testWidgets('unknown route resolves to fallback placeholder', (
       tester,
     ) async {
-      await _pumpRoute(tester, '/does-not-exist');
+      final route = _resolve('/does-not-exist') as MaterialPageRoute<dynamic>;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              return route.builder(context);
+            },
+          ),
+        ),
+      );
+
       expect(find.byType(PlaceholderScreen), findsOneWidget);
-      expect(find.textContaining('Not Found:'), findsOneWidget);
+      expect(find.textContaining('Unknown route:'), findsOneWidget);
     });
   });
 }

@@ -30,13 +30,19 @@ admin.initializeApp();
 // 1. Enable 2FA on your Google account
 // 2. Go to myaccount.google.com → Security → App passwords
 // 3. Create new app password for "Mail"
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'nexusgodlydating@gmail.com',
-    pass: functions.config().gmail?.password || process.env.GMAIL_APP_PASSWORD,
-  },
-});
+let transporter;
+try {
+  transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'nexusgodlydating@gmail.com',
+      pass: functions.config().gmail?.password || process.env.GMAIL_APP_PASSWORD,
+    },
+  });
+} catch (e) {
+  console.warn('Gmail transporter initialization failed:', e.message);
+  transporter = null;
+}
 
 // ============================================================================
 // SUPPORT REQUEST EMAIL FUNCTION
@@ -475,6 +481,117 @@ exports.sendPushNotification = functions.firestore
       return null;
     }
   });
+
+/**
+ * TEST FCM: Send test notification to a single device
+ * 
+ * Callable HTTPS function - test FCM without creating Firestore documents
+ * Perfect for verifying notifications work before mass messaging
+ * 
+ * Usage in firebase shell:
+ * testPushNotification({userId: 'user-id', title: 'Test', body: 'Hello'})
+ */
+exports.testPushNotification = functions.https.onRequest(async (req, res) => {
+  const { userId, title = 'Test Message', body = 'This is a test', type = 'test_message' } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({
+      success: false,
+      error: 'userId is required'
+    });
+  }
+
+  try {
+    console.log(`🧪 TEST: Sending FCM to user: ${userId}`);
+
+    // Get user's FCM token
+    const userDoc = await admin.firestore().collection('users').doc(userId).get();
+    const userData = userDoc.data();
+
+    if (!userData || !userData.fcmToken) {
+      return res.status(404).json({
+        success: false,
+        error: `No FCM token found for user: ${userId}. Make sure they're logged in on the device.`
+      });
+    }
+
+    const fcmToken = typeof userData.fcmToken === 'string' 
+      ? userData.fcmToken 
+      : userData.fcmToken.token;
+
+    if (!fcmToken) {
+      return res.status(400).json({
+        success: false,
+        error: `FCM token is empty for user: ${userId}`
+      });
+    }
+
+    // Build FCM message
+    const message = {
+      token: fcmToken,
+      notification: {
+        title: title,
+        body: body,
+      },
+      android: {
+        priority: 'high',
+        notification: {
+          clickAction: 'FLUTTER_NOTIFICATION_CLICK',
+          sound: 'default',
+          channelId: 'nexus_default_channel',
+          icon: '@mipmap/ic_launcher',
+        },
+      },
+      apns: {
+        headers: {
+          'apns-priority': '10',
+        },
+        payload: {
+          aps: {
+            alert: {
+              title: title,
+              body: body,
+            },
+            badge: 1,
+            sound: 'default',
+          },
+        },
+      },
+      data: {
+        type: type,
+        timestamp: new Date().toISOString(),
+      },
+    };
+
+    console.log(`📤 Sending test FCM:`, {
+      token: fcmToken.substring(0, 20) + '...',
+      title,
+      body,
+    });
+
+    // Send message
+    const response = await admin.messaging().send(message);
+    
+    console.log(`✅ Test FCM sent successfully: ${response}`);
+
+    return res.json({
+      success: true,
+      messageId: response,
+      userId,
+      title,
+      body,
+      message: `✅ Test notification sent to ${userId}. Check your device!`,
+    });
+
+  } catch (error) {
+    console.error(`❌ Error sending test FCM:`, error);
+
+    return res.status(500).json({
+      success: false,
+      error: `Failed to send test notification: ${error.message}`
+    });
+  }
+});
 
 /**
  * Send notification when new chat message is received
@@ -982,7 +1099,7 @@ exports.getPresignedUploadUrl = functions.https.onRequest(async (req, res) => {
  * Stores the CSV file in Cloud Storage for download
  */
 exports.weeklyUserReport = functions.pubsub
-  .schedule('0 9 * * 1')
+  .schedule('0 9 * * 1')  // Google Cloud Scheduler cron: Monday at 9 AM UTC
   .timeZone('UTC')
   .onRun(async (context) => {
     try {
@@ -1015,10 +1132,10 @@ exports.weeklyUserReport = functions.pubsub
         users.push({
           email: userData.email || 'N/A',
           username: userData.username || 'N/A',
-          nationality: userData.nationality || 'N/A',
-          countryOfResidence: userData.country || 'N/A',
+          nationality: userData.dating?.profile?.nationality || userData.nationality || 'N/A',
+          countryOfResidence: userData.dating?.profile?.country || userData.country || 'N/A',
           dateJoined: userData.createdAt 
-            ? new Date(userData.createdAt.toDate()).toLocaleDateString('en-US')
+            ? userData.createdAt.toDate().toISOString().split('T')[0]  // ISO format: YYYY-MM-DD
             : 'N/A',
           createdAt: userData.createdAt
             ? userData.createdAt.toDate().toISOString()
@@ -1226,3 +1343,411 @@ exports.onCoachApplicationSubmitted = functions.firestore
       throw error;
     }
   });
+
+// ============================================================================
+// FLUTTERWAVE SUBSCRIPTION PAYMENT HANDLER
+// ============================================================================
+
+/**
+ * Production-ready Flutterwave webhook handler for external subscription + journey payments
+ * 
+ * Supports both:
+ * 1. Subscription payments (sets onPremium = true, subExpDate = 30 days)
+ * 2. Journey purchases (creates entry in users/{uid}/journeyPurchases collection)
+ * 
+ * V1/V2 COMPATIBILITY:
+ * - Works with v1 users (legacy schema) and v2 users seamlessly
+ * - Email normalization: handles uppercase/lowercase automatically
+ * - Stores dates as Firestore Timestamps (not strings) for proper schema compatibility
+ * - Gracefully handles both flat and nested field structures
+ * 
+ * SETUP INSTRUCTIONS:
+ * 1. Add secret to Firebase Secrets: firebase functions:secrets:set FLUTTERWAVE_WEBHOOK_SECRET
+ * 2. Deploy: firebase deploy --only functions:handleFlutterwaveSubscription
+ * 3. Configure Flutterwave webhook URL: https://region-projectid.cloudfunctions.net/handleFlutterwaveSubscription
+ * 4. Use tx_ref starting with "journey:" for journey purchases, otherwise treated as subscription
+ */
+
+const { onRequest } = require('firebase-functions/v2/https');
+
+exports.handleFlutterwaveSubscription = onRequest(
+  { 
+    cors: ['*'],
+    secrets: ['FLUTTERWAVE_WEBHOOK_SECRET'],
+    memory: '256MB',
+    timeoutSeconds: 60,
+  },
+  async (req, res) => {
+    const requestId = crypto.randomUUID();
+    
+    try {
+      console.log(`[${requestId}] Flutterwave webhook received`);
+
+      // ========== SECURITY VALIDATION ==========
+      
+      if (req.method !== 'POST') {
+        console.warn(`[${requestId}] Invalid method: ${req.method}`);
+        return res.status(405).json({ error: 'Method not allowed' });
+      }
+
+      const receivedHash = req.headers['verif-hash'];
+      const secret = process.env.FLUTTERWAVE_WEBHOOK_SECRET;
+      
+      if (!receivedHash || !secret) {
+        console.error(`[${requestId}] Missing verif-hash header or secret`);
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+
+      // Flutterwave includes the secret hash directly in the verif-hash header
+      // We just need to compare it to our stored secret
+      if (receivedHash !== secret) {
+        console.error(`[${requestId}] Invalid signature - received: ${receivedHash} but expected: ${secret}`);
+        return res.status(401).json({ error: 'Invalid signature' });
+      }
+
+      console.log(`[${requestId}] ✅ Signature verified successfully`);
+
+      // ========== PAYMENT VALIDATION ==========
+
+      const payload = req.body;
+
+      // Flutterwave sends fields at root level, not nested under 'data'
+      if (payload?.status !== 'successful') {
+        console.log(`[${requestId}] Payment not successful, status: ${payload?.status}`);
+        return res.status(200).json({ 
+          message: 'Payment was not successful',
+          requestId,
+        });
+      }
+
+      // Normalize email: lowercase and trim (handles any case variation)
+      // Flutterwave may prepend a hash to the email: "prefix_hash_actual@email.com"
+      // Extract the actual email by finding the part that contains @
+      let rawEmail = (payload?.customer?.email || '').toLowerCase().trim();
+      const emailParts = rawEmail.split('_');
+      const customerEmail = emailParts.find(part => part.includes('@')) || rawEmail;
+      const txnRef = payload?.txRef || '';
+      const amount = payload?.amount_settled || payload?.amount;
+      const transactionId = payload?.id;
+
+      if (!customerEmail || !amount || !transactionId) {
+        console.error(`[${requestId}] Missing payment details`, { customerEmail, amount, transactionId });
+        return res.status(400).json({ error: 'Invalid payment data' });
+      }
+
+      // Flutterwave subscriptions only - validate amount is 5,900 NGN
+      if (amount !== 5900) {
+        console.error(`[${requestId}] Invalid amount for Flutterwave: ${amount} (expected 5900)`);
+        return res.status(400).json({ error: 'Invalid subscription amount' });
+      }
+
+      console.log(`[${requestId}] Payment: SUBSCRIPTION | Email: ${customerEmail} | Amount: ${amount}`);
+
+      // ========== USER LOOKUP (v1/v2 compatible) ==========
+
+      // V1/V2: Email is lowercase in Firestore for both, so lowercase query works
+      const userQuerySnapshot = await admin.firestore()
+        .collection('users')
+        .where('email', '==', customerEmail)
+        .limit(1)
+        .get();
+
+      if (userQuerySnapshot.empty) {
+        console.error(`[${requestId}] ❌ User not found for email: ${customerEmail}`);
+        console.error(`[${requestId}] Email extraction details: raw="${rawEmail}" → extracted="${customerEmail}"`);
+        return res.status(404).json({ 
+          error: 'User not found',
+          requestId,
+          attemptedEmail: customerEmail,
+        });
+      }
+
+      const userDoc = userQuerySnapshot.docs[0];
+      const userId = userDoc.id;
+      const userData = userDoc.data() || {};
+
+      // ========== PROCESS PAYMENT (SUBSCRIPTION ONLY) ==========
+      // Flutterwave is limited to subscriptions (5,900 NGN)
+      // Journey purchases use RevenueCat only
+      
+      await handleSubscriptionPayment(
+        userDoc, userId, userData, amount, transactionId, requestId
+      );
+
+      return res.status(200).json({
+        success: true,
+        userId,
+        type: 'subscription',
+        message: 'Payment processed successfully',
+        requestId,
+      });
+
+    } catch (error) {
+      console.error(`[${requestId}] ❌ Error:`, error);
+      return res.status(500).json({
+        error: 'Internal server error',
+        requestId,
+      });
+    }
+  }
+);
+
+/**
+ * Handle subscription payment (30-day premium access)
+ * V1/V2 compatible - uses standard schema fields
+ */
+async function handleSubscriptionPayment(userDoc, userId, userData, amount, transactionId, requestId) {
+  // IDEMPOTENCY: Check if this transaction was already processed
+  if (userData.lastFlutterwaveTransactionId === transactionId) {
+    console.log(`[${requestId}] Duplicate subscription detected for txn ${transactionId}`);
+    return;
+  }
+
+  // Calculate 30-day expiry as Firestore Timestamp (not string)
+  const now = new Date();
+  const expiryDate = new Date(now.getTime() + (30 * 24 * 60 * 60 * 1000));
+
+  // Update subscription fields (v1/v2 compatible)
+  const updateData = {
+    // Standard subscription fields (v1 + v2)
+    onPremium: true,
+    subExpDate: admin.firestore.Timestamp.fromDate(expiryDate), // PROPER TIMESTAMP TYPE
+    entitledUser: true,
+    prevSubscribed: true,
+    
+    // External payment tracking
+    hasExternalSubscriptionFlow: true,
+    lastFlutterwaveTransactionId: transactionId,
+    
+    // Audit trail
+    lastPaymentMethod: 'flutterwave',
+    lastPaymentDate: admin.firestore.FieldValue.serverTimestamp(),
+    lastPaymentAmount: amount,
+    lastWebhookAt: admin.firestore.FieldValue.serverTimestamp(),
+  };
+
+  await userDoc.ref.update(updateData);
+
+  console.log(`[${requestId}] ✅ Firestore update complete for user=${userId}`);
+
+  // Send push notification for subscription activation
+  // Cloud Function sendPushNotification will detect this and send via FCM
+  const notificationRef = admin.firestore()
+    .collection('users')
+    .doc(userId)
+    .collection('notifications')
+    .doc();
+
+  const notificationPayload = {
+    type: 'subscription_activated',
+    title: '💎 Welcome to Premium!',
+    body: 'Your premium subscription is now active. Enjoy unlimited features!',
+    data: {
+      route: '/subscription',
+    },
+  };
+
+  await notificationRef.set({
+    payload: notificationPayload,
+    userId,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    isRead: false,
+    isSent: false,
+  });
+
+  console.log(`[${requestId}] ✅ Subscription notification queued for user=${userId}`);
+
+  // Create audit log entry
+  await admin.firestore()
+    .collection('users')
+    .doc(userId)
+    .collection('auditLog')
+    .add({
+      action: 'subscription_activated_external',
+      provider: 'flutterwave',
+      transactionId,
+      amount,
+      expiryDate: admin.firestore.Timestamp.fromDate(expiryDate),
+      timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      webhookRequestId: requestId,
+    });
+
+  console.log(`[${requestId}] ✅ Subscription activated: user=${userId}, expiry=${expiryDate.toISOString()}`);
+}
+
+/**
+ * Handle journey purchase (one-time course/journey purchase)
+ * Creates entry in users/{uid}/journeyPurchases subcollection
+ */
+async function handleJourneyPurchase(userDoc, userId, userData, txnRef, amount, transactionId, requestId) {
+  // Extract journey ID from txnRef (format: "journey:journey_id_v1")
+  const journeyId = txnRef.replace('journey:', '').trim();
+  
+  if (!journeyId) {
+    console.error(`[${requestId}] Invalid journey reference: ${txnRef}`);
+    throw new Error('Invalid journey reference');
+  }
+
+  // IDEMPOTENCY: Check if this transaction was already processed
+  const existingPurchase = await admin.firestore()
+    .collection('users')
+    .doc(userId)
+    .collection('journeyPurchases')
+    .where('transactionId', '==', transactionId)
+    .limit(1)
+    .get();
+
+  if (!existingPurchase.empty) {
+    console.log(`[${requestId}] Duplicate journey purchase detected for txn ${transactionId}`);
+    return;
+  }
+
+  // Create journey purchase entry
+  await admin.firestore()
+    .collection('users')
+    .doc(userId)
+    .collection('journeyPurchases')
+    .add({
+      journeyId,
+      transactionId,
+      amount,
+      provider: 'flutterwave',
+      purchaseDate: admin.firestore.FieldValue.serverTimestamp(),
+      isActive: true,
+      webhookRequestId: requestId,
+    });
+
+  // Also add to audit log for compliance
+  await admin.firestore()
+    .collection('users')
+    .doc(userId)
+    .collection('auditLog')
+    .add({
+      action: 'journey_purchased_external',
+      provider: 'flutterwave',
+      journeyId,
+      transactionId,
+      amount,
+      timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      webhookRequestId: requestId,
+    });
+
+  console.log(`[${requestId}] ✅ Journey purchased: user=${userId}, journey=${journeyId}`);
+}
+
+// ============================================================================
+// DAILY LIMIT RESET (for free users dating search)
+// ============================================================================
+
+const { resetDailyLimits } = require('./reset_daily_limits.js');
+exports.resetDailyLimits = resetDailyLimits;
+
+// ============================================================================
+// CLOUD JOURNEY FUNCTIONS - Fetch JSONs from Storage (no rebuild needed)
+// ============================================================================
+
+/**
+ * Fetch a single journey JSON from Storage
+ * 
+ * Endpoint: GET /getJourney?category={category}&journeyId={journeyId}
+ * Example: /getJourney?category=married&journeyId=married_journey_01_communication_conflict
+ */
+exports.getJourney = functions.https.onRequest((req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+
+  (async () => {
+    try {
+      const { category, journeyId } = req.query;
+
+      if (!category || !journeyId) {
+        return res.status(400).json({
+          error: 'Missing parameters',
+          required: ['category', 'journeyId'],
+          example: '?category=married&journeyId=married_journey_01_communication_conflict',
+        });
+      }
+
+      const filePath = `journeys/${category}/${journeyId}.json`;
+      const bucket = admin.storage().bucket();
+      const file = bucket.file(filePath);
+      const [exists] = await file.exists();
+
+      if (!exists) {
+        return res.status(404).json({
+          error: `Journey not found: ${journeyId}`,
+          category,
+          path: filePath,
+        });
+      }
+
+      const [content] = await file.download();
+      const json = JSON.parse(content.toString());
+
+      res.set('Cache-Control', 'public, max-age=300'); // 5 min cache
+      return res.status(200).json(json);
+    } catch (error) {
+      console.error('Error fetching journey:', error);
+      return res.status(500).json({
+        error: 'Failed to fetch journey',
+        details: error.message,
+      });
+    }
+  })();
+});
+
+/**
+ * Lists all journey files in a category from Storage
+ * 
+ * Endpoint: GET /listJourneys?category={category}
+ */
+exports.listJourneys = functions.https.onRequest((req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+
+  (async () => {
+    try {
+      const { category } = req.query;
+
+      if (!category) {
+        return res.status(400).json({
+          error: 'Missing category parameter',
+          example: '?category=married',
+        });
+      }
+
+      const prefix = `journeys/${category}/`;
+      const bucket = admin.storage().bucket();
+      const [files] = await bucket.getFiles({ prefix });
+
+      const journeys = files
+        .map(f => f.name.replace(prefix, '').replace('.json', ''))
+        .filter(id => id && !id.includes('/'));
+
+      res.set('Cache-Control', 'public, max-age=300');
+      return res.status(200).json({
+        category,
+        count: journeys.length,
+        journeys,
+      });
+    } catch (error) {
+      console.error('Error listing journeys:', error);
+      return res.status(500).json({
+        error: 'Failed to list journeys',
+        details: error.message,
+      });
+    }
+  })();
+});

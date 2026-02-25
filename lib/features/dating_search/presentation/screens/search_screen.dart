@@ -583,7 +583,8 @@ class _SearchResultRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final photo = profile.photos.isNotEmpty ? profile.photos.first : null;
+    // FIXED: Use validProfilePhoto getter which handles deleted/missing photos
+    final photo = profile.validProfilePhoto;
     final subtitle = [
       if (profile.displayLocation.trim().isNotEmpty) profile.displayLocation,
       if ((profile.profession ?? '').trim().isNotEmpty)
@@ -600,11 +601,20 @@ class _SearchResultRow extends ConsumerWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => ProfileScreen(userId: profile.uid),
-            ),
-          );
+          try {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => ProfileScreen(userId: profile.uid),
+              ),
+            );
+          } catch (e) {
+            // FIXED: Catch navigation errors to prevent Navigator history issues
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error opening profile: $e')),
+              );
+            }
+          }
         },
         child: Container(
           padding: const EdgeInsets.all(10),
@@ -734,9 +744,9 @@ class _SearchResultRow extends ConsumerWidget {
 
   /// Get badge color based on compatibility score
   Color _getScoreColor(int score) {
-    if (score >= 75) return const Color(0xFF4CAF50); // Green
-    if (score >= 50) return const Color(0xFFFFC107); // Yellow/Amber
-    return const Color(0xFFF44336); // Red
+    if (score >= 75) return AppColors.success; // Green
+    if (score >= 50) return AppColors.warning; // Orange/Amber
+    return AppColors.error; // Red
   }
 }
 

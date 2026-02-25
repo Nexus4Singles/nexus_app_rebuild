@@ -76,6 +76,7 @@ class DatingProfileService {
             : null;
 
     final currentStatus = dating?['verificationStatus']?.toString();
+    final isLockedByAdmin = dating?['verificationLockedByAdmin'] == true;
 
     final updates = <String, dynamic>{
       'dating.reviewPack': _buildReviewPack(
@@ -84,7 +85,10 @@ class DatingProfileService {
       ),
     };
 
-    if (bumpToPendingIfVerified && currentStatus == 'verified') {
+    // Only bump to pending if not locked by admin
+    if (bumpToPendingIfVerified &&
+        currentStatus == 'verified' &&
+        !isLockedByAdmin) {
       // Bump back to pending when user changes evidence content (photos/audio).
       updates['dating.verificationStatus'] = 'pending';
       updates['dating.pendingAt'] = FieldValue.serverTimestamp();
@@ -138,16 +142,44 @@ class DatingProfileService {
     final data = doc.data()!;
 
     // Simple weighted heuristic: 6 core buckets.
+    // Check dating.profile first (v2), then fallback to root (v1 compat)
+    final dating =
+        (data['dating'] is Map)
+            ? (data['dating'] as Map).cast<String, dynamic>()
+            : null;
+    final profile =
+        (dating?['profile'] is Map)
+            ? (dating!['profile'] as Map).cast<String, dynamic>()
+            : null;
+
     int done = 0;
     const int total = 6;
 
-    if ((data['age'] is int) && (data['age'] as int) > 0) done += 1;
-    if ((data['nationality']?.toString().trim().isNotEmpty ?? false)) done += 1;
-    if ((data['educationLevel']?.toString().trim().isNotEmpty ?? false))
-      done += 1;
-    if (_stringList(data['hobbies']).isNotEmpty) done += 1;
-    if (_stringList(data['desiredQualities']).isNotEmpty) done += 1;
-    if (_stringList(data['photos']).isNotEmpty) done += 1;
+    final age = (profile?['age'] ?? data['age']) as int?;
+    if ((age is int) && age > 0) done += 1;
+
+    final nationality =
+        (profile?['nationality'] ?? data['nationality'])?.toString().trim() ??
+        '';
+    if (nationality.isNotEmpty) done += 1;
+
+    final educationLevel =
+        (profile?['educationLevel'] ?? data['educationLevel'])
+            ?.toString()
+            .trim() ??
+        '';
+    if (educationLevel.isNotEmpty) done += 1;
+
+    final hobbies = _stringList(profile?['hobbies'] ?? data['hobbies']);
+    if (hobbies.isNotEmpty) done += 1;
+
+    final qualities = _stringList(
+      profile?['desiredQualities'] ?? data['desiredQualities'],
+    );
+    if (qualities.isNotEmpty) done += 1;
+
+    final photos = _stringList(profile?['photos'] ?? data['photos']);
+    if (photos.isNotEmpty) done += 1;
 
     final pct = ((done / total) * 100.0).round();
     return pct.clamp(0, 100);
@@ -199,9 +231,28 @@ class DatingProfileService {
         photoUrls: photoUrls,
         audioUrls: audioUrls,
       ),
-      // Keep a simple searchable nationality/country inside dating as well
-      'nationality': nationality,
-      'countryOfResidence': country,
+      // Nest all profile fields under 'profile' (consolidated location)
+      'profile': <String, dynamic>{
+        'age': age,
+        'nationality': nationality,
+        'country': country,
+        'educationLevel': educationLevel,
+        'profession': profession,
+        'church': church,
+        'hobbies': hobbies,
+        'desiredQualities': desiredQualities,
+        'profileUrl': photoUrls.isNotEmpty ? photoUrls.first : null,
+        'photos': photoUrls,
+        'audio1Url': audio1Url,
+        'audio2Url': audio2Url,
+        'audio3Url': audio3Url,
+        'instagramUsername': instagramUsername,
+        'twitterUsername': twitterUsername,
+        'phoneNumber': whatsappNumber,
+        'facebookUsername': facebookUsername,
+        'telegramUsername': telegramUsername,
+        'snapchatUsername': snapchatUsername,
+      },
     };
 
     // If the user was previously verified and we changed evidence, bump to pending
@@ -210,7 +261,9 @@ class DatingProfileService {
             ? (existing['dating'] as Map).cast<String, dynamic>()
             : <String, dynamic>{};
     final currentStatus = previousDating['verificationStatus']?.toString();
-    if (currentStatus == 'verified') {
+    final isLockedByAdmin = previousDating['verificationLockedByAdmin'] == true;
+
+    if (currentStatus == 'verified' && !isLockedByAdmin) {
       datingMap['verificationStatus'] = 'pending';
       datingMap['pendingAt'] = FieldValue.serverTimestamp();
       // Clear prior decisions
@@ -221,33 +274,12 @@ class DatingProfileService {
       datingMap['rejectionReason'] = null;
     }
 
-    // Top-level fields we want to write / overwrite
+    // Top-level fields: non-profile metadata + search-critical fields (dual-write)
+    // Profile data is now consolidated in dating.profile (see above)
+    // BUT we dual-write gender & country for search queries (6-9 month compat)
     final topLevel = <String, dynamic>{
-      'age': age,
-      'nationality': nationality,
-      'location': cityCountry,
-      'country': country,
-      'educationLevel': educationLevel,
-      'profession': profession,
-      'church': church,
-      'hobbies': hobbies,
-      'desiredQualities': desiredQualities,
-      'profileUrl': photoUrls.isNotEmpty ? photoUrls.first : null,
-      'photos': photoUrls,
-      // legacy photo fields
-      for (int i = 0; i < 4; i++)
-        'profileUrl${i + 1}': i < photoUrls.length ? photoUrls[i] : null,
-      // legacy audio fields (kept at top-level for compatibility)
-      'audio1Url': audio1Url,
-      'audio2Url': audio2Url,
-      'audio3Url': audio3Url,
-      // contact
-      'instagramUsername': instagramUsername,
-      'twitterUsername': twitterUsername,
-      'phoneNumber': whatsappNumber,
-      'facebookUsername': facebookUsername,
-      'telegramUsername': telegramUsername,
-      'snapchatUsername': snapchatUsername,
+      // Dual-write country for search compatibility
+      'country': country.isNotEmpty ? country : null,
       'updatedAt': FieldValue.serverTimestamp(),
     };
 
@@ -276,9 +308,10 @@ class DatingProfileService {
   }
 
   Future<void> saveAge(String uid, int age) async {
-    await _userDocRef(
-      uid,
-    ).update({'age': age, 'updatedAt': FieldValue.serverTimestamp()});
+    await _userDocRef(uid).update({
+      'dating.profile.age': age,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
   }
 
   Future<void> saveExtraInfo(
@@ -291,12 +324,13 @@ class DatingProfileService {
     String? church,
   }) async {
     await _userDocRef(uid).update({
-      'nationality': nationality,
-      'location': cityCountry,
+      'dating.profile.nationality': nationality,
+      'dating.profile.country': country,
+      'dating.profile.educationLevel': educationLevel,
+      'dating.profile.profession': profession,
+      'dating.profile.church': church,
+      // Dual-write country to root for search queries (6-9 month backward compat)
       'country': country,
-      'educationLevel': educationLevel,
-      'profession': profession,
-      'church': church,
       'updatedAt': FieldValue.serverTimestamp(),
     });
 
@@ -305,14 +339,15 @@ class DatingProfileService {
   }
 
   Future<void> saveHobbies(String uid, List<String> hobbies) async {
-    await _userDocRef(
-      uid,
-    ).update({'hobbies': hobbies, 'updatedAt': FieldValue.serverTimestamp()});
+    await _userDocRef(uid).update({
+      'dating.profile.hobbies': hobbies,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
   }
 
   Future<void> saveDesiredQualities(String uid, List<String> qualities) async {
     await _userDocRef(uid).update({
-      'desiredQualities': qualities,
+      'dating.profile.desiredQualities': qualities,
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }
@@ -324,16 +359,11 @@ class DatingProfileService {
     final existing = doc.data() ?? <String, dynamic>{};
 
     final updateData = <String, dynamic>{
-      'profileUrl': photoUrls.isNotEmpty ? photoUrls.first : null,
-      'photos': photoUrls,
+      'dating.profile.photos': photoUrls,
+      'dating.profile.profileUrl':
+          photoUrls.isNotEmpty ? photoUrls.first : null,
       'updatedAt': FieldValue.serverTimestamp(),
     };
-
-    // Nexus 1.x compatibility fields profileUrl1..4
-    for (int i = 0; i < 4; i++) {
-      updateData['profileUrl${i + 1}'] =
-          i < photoUrls.length ? photoUrls[i] : null;
-    }
 
     final audioUrls = _audioUrlsFromExisting(existing);
 
@@ -369,9 +399,9 @@ class DatingProfileService {
     final photoUrls = _stringList(existing['photos']);
 
     final updates = <String, dynamic>{
-      'audio1Url': audio1Url,
-      'audio2Url': audio2Url,
-      'audio3Url': audio3Url,
+      'dating.profile.audio1Url': audio1Url,
+      'dating.profile.audio2Url': audio2Url,
+      'dating.profile.audio3Url': audio3Url,
       'updatedAt': FieldValue.serverTimestamp(),
     };
 
@@ -397,12 +427,12 @@ class DatingProfileService {
     String? snapchatUsername,
   }) async {
     await _userDocRef(uid).update({
-      'instagramUsername': instagramUsername,
-      'twitterUsername': twitterUsername,
-      'phoneNumber': whatsappNumber,
-      'facebookUsername': facebookUsername,
-      'telegramUsername': telegramUsername,
-      'snapchatUsername': snapchatUsername,
+      'dating.profile.instagramUsername': instagramUsername,
+      'dating.profile.twitterUsername': twitterUsername,
+      'dating.profile.phoneNumber': whatsappNumber,
+      'dating.profile.facebookUsername': facebookUsername,
+      'dating.profile.telegramUsername': telegramUsername,
+      'dating.profile.snapchatUsername': snapchatUsername,
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }
@@ -412,17 +442,22 @@ class DatingProfileService {
     String field,
     dynamic value,
   ) async {
-    await _userDocRef(
-      uid,
-    ).update({field: value, 'updatedAt': FieldValue.serverTimestamp()});
+    await _userDocRef(uid).update({
+      'dating.profile.$field': value,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
   }
 
   Future<void> updateProfileFields(
     String uid,
     Map<String, dynamic> fields,
   ) async {
-    fields['updatedAt'] = FieldValue.serverTimestamp();
-    await _userDocRef(uid).update(fields);
+    final prefixedFields = <String, dynamic>{};
+    fields.forEach((key, value) {
+      prefixedFields['dating.profile.$key'] = value;
+    });
+    prefixedFields['updatedAt'] = FieldValue.serverTimestamp();
+    await _userDocRef(uid).update(prefixedFields);
   }
 
   /// Best-effort migration for legacy verification flags into v2 structure.
@@ -464,12 +499,19 @@ class DatingProfileService {
 
     try {
       final normalized = nationality.trim();
+      print('[DatingProfileService] Tracking nationality: $normalized');
       await _fs.collection('nationalities').doc(normalized).set({
         'name': normalized,
         'count': FieldValue.increment(1),
         'lastUpdatedAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
-    } catch (e) {}
+      print(
+        '[DatingProfileService] ✅ Successfully tracked nationality: $normalized',
+      );
+    } catch (e) {
+      print('[DatingProfileService] ❌ Error tracking nationality: $e');
+      rethrow;
+    }
   }
 
   /// Add a country of residence to the unique countries collection
@@ -478,12 +520,21 @@ class DatingProfileService {
 
     try {
       final normalized = country.trim();
+      print(
+        '[DatingProfileService] Tracking country of residence: $normalized',
+      );
       await _fs.collection('countriesOfResidence').doc(normalized).set({
         'name': normalized,
         'count': FieldValue.increment(1),
         'lastUpdatedAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
-    } catch (e) {}
+      print(
+        '[DatingProfileService] ✅ Successfully tracked country: $normalized',
+      );
+    } catch (e) {
+      print('[DatingProfileService] ❌ Error tracking country: $e');
+      rethrow;
+    }
   }
 
   /// Track both nationality and country when user completes profile

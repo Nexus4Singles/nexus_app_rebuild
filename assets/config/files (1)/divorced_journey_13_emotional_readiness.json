@@ -1,0 +1,758 @@
+{
+  "journeyId": "divorced_emotional_readiness",
+  "title": "Emotional Readiness for Remarriage",
+  "subtitle": "Ensuring you are truly ready to love again",
+  "summary": "**Just because time has passed since your divorce does not mean you are ready to remarry.** Emotional readiness involves more than wanting a relationship. It requires genuine healing from your past, resolution of lingering issues, and the capacity to bring your best self to a new marriage. This journey helps you honestly assess your emotional readiness, identify areas that still need work, and ensure you do not rush into remarriage before you are truly prepared.",
+  "targetUserCategory": "divorced",
+  "priorityRank": 13,
+  "estimatedDays": 14,
+  "totalActivities": 10,
+  "difficulty": "advanced",
+  "themeColor": "#00897B",
+  "cover": {
+    "themeTag": "Readiness",
+    "accentIcon": "check_circle",
+    "heroImage": "assets/images/journeys/divorced_journey13.jpg",
+    "heroImageDescription": "A person standing confidently at a threshold or doorway, ready to step forward into something new, symbolizing preparedness for a new chapter."
+  },
+  "frameworks": [
+    "readiness_assessment",
+    "emotional_healing",
+    "self_awareness",
+    "relationship_preparation"
+  ],
+  "targetOutcomes": [
+    "Honestly assess your current emotional readiness for remarriage",
+    "Identify signs that indicate readiness versus signs of unfinished work",
+    "Understand the difference between wanting a relationship and being ready for one",
+    "Recognize areas that still need healing before remarriage",
+    "Develop criteria for knowing when you are truly ready",
+    "Prepare emotionally for the unique challenges of remarriage"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_ready_or_wanting",
+      "isFree": true,
+      "title": "Ready or Just Wanting? The Difference That Matters",
+      "subtitle": "Understanding why wanting remarriage is not the same as being ready",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Many people rush into remarriage because they want companionship, not because they are emotionally ready. Understanding this distinction is crucial for a healthy second marriage.",
+      "frameworkBasis": {
+        "conceptKey": "readiness_distinction",
+        "explanation": "Distinguishing between desire for relationship and actual readiness prevents premature remarriage."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Longing for Love",
+          "text": "**Building a new relationship before you are emotionally ready is like building a house on a cracked foundation.** The house might look fine for a while. But eventually, the cracks will spread upward. What is built on instability becomes unstable.\n\n**After divorce, the longing for love and companionship can be intense.**\n\n**You may miss having a partner.** You may feel lonely in ways that ache. You may watch others in happy relationships and wonder if you will ever have that again.\n\n**This longing is natural and human.** There is nothing wrong with wanting to love and be loved.\n\n**But wanting something and being ready for it are not the same thing.** You can desperately want a relationship while being in no condition to sustain a healthy one.\n\n**This journey helps you distinguish between the two.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why the Distinction Matters",
+          "text": "**The distinction between wanting and readiness could save you from another divorce.**\n\n**Second marriages fail at even higher rates than first marriages.** That is not a curse. It is what happens when people bring unfinished business into new relationships.\n\n**They bring the wounds their ex inflicted, still raw, still bleeding onto whoever gets close.** They bring the patterns they developed, the defenses, the triggers, the ways of relating that destroyed their first marriage. They bring the hunger that comes from emptiness, a hunger that no partner can satisfy.\n\n**And they wonder why it falls apart again.**\n\n**Rushing into remarriage before you are ready is not just risky for you.** It is risky for the person you marry, who does not deserve to become the next casualty of your unprocessed past. It is risky for children, if there are any, who will endure another upheaval.\n\n**Taking time to become truly ready is not fear.** It is not being too cautious. It is wisdom. It is love for your future self, your future spouse, and anyone else who will be affected.\n\n**The longing is real.** But the readiness is what matters.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Signs You May Not Be Ready",
+          "text": "**Several signs suggest you may want a relationship but not be ready for one.**\n\n**You are still consumed with your ex, whether with anger, longing, or obsession.**\n\n**You are looking for someone to complete you or fix your loneliness.**\n\n**You have not processed the grief and loss of your marriage.**\n\n**You have not examined your contribution to your marriage's failure.**\n\n**You are jumping at any potential relationship rather than being selective.**\n\n**You feel panicked about being alone or running out of time.**\n\n**These signs suggest more healing work is needed before remarriage.**",
+          "icon": "report_problem"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Current State",
+          "text": "How would you describe your current state regarding remarriage?",
+          "prompts": [
+            "I deeply want a relationship and think I am ready",
+            "I want a relationship but suspect I may not be fully ready",
+            "I am unsure whether I want remarriage or just fear being alone",
+            "I am not interested in remarriage right now but want to be ready someday",
+            "I am currently in a relationship and wondering if I am ready for it to progress",
+            "I have already remarried and want to assess how ready I actually was"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Whatever your current state, this journey will help you honestly assess and build your readiness."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Motivations",
+          "text": "**Examine your motivations for wanting remarriage.**\n\nWhy do you want to be married again?\n\nWhat do you hope a new marriage will provide?\n\nAre any of your motivations about escaping something rather than building something?\n\nWhat fears drive your desire for remarriage?\n\nWrite honestly about your motivations:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Commitment to Honest Assessment",
+          "text": "**Commit to honestly assessing your readiness.**\n\n**I commit to examining my readiness for remarriage honestly, not just assuming I am ready because I want to be.**\n\n**I will distinguish between longing for relationship and genuine preparedness.**\n\n**I am willing to discover areas where I still need growth.**\n\n**I choose wisdom and patience over rushing into something I am not ready for.**\n\nWrite your commitment in your own words:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_healing_assessment",
+      "isFree": false,
+      "title": "How Healed Are You? Assessing Your Recovery",
+      "subtitle": "Evaluating how far you have come in healing from your divorce",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "healing",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "Genuine healing from your divorce is foundational to readiness for remarriage. This activity helps you honestly assess where you are in the healing process.",
+      "frameworkBasis": {
+        "conceptKey": "healing_assessment",
+        "explanation": "Assessing healing progress identifies whether sufficient recovery has occurred for healthy remarriage."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Healing Takes Time",
+          "text": "**Healing from divorce is not a quick process.** It takes time, often more than people expect or want.\n\n**Common wisdom suggests at least one year of healing for every five years of marriage, though this varies widely.**\n\n**Healing is not just about time passing.** It is about actively processing grief, working through pain, and emerging as a whole person.\n\n**Some people remarry quickly and do well.** Others wait years and still are not ready. The calendar alone does not determine readiness.",
+          "icon": "healing"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Signs of Healing",
+          "text": "How do you know if you have actually healed? Not just survived, but healed?\n\n**You can think about your ex without your stomach clenching.** Their name comes up and you do not spiral. You can remember the marriage, the good and the bad, without being hijacked by emotion.\n\n**You have moved through grief to acceptance.** Not happiness about what happened, but acceptance that it happened. The raging and bargaining have quieted. The loss is part of your story now, not the whole story.\n\n**You have looked honestly at your part.** Not as self-flagellation, but as understanding. You know what you contributed, what you would do differently, what you have learned.\n\n**You have released them.** Not necessarily forgiven in the sense of warm feelings, but released. You are no longer waiting for apology, revenge, or acknowledgment. The debt is written off.\n\n**And here is the big one: you can be alone without panic.** You would like a partner, but you do not need one to survive. Solitude is uncomfortable sometimes, but it is not unbearable.\n\n**If this sounds like you, you may be healing.** If it does not, that is information too. Not judgment. Just information about where the work still needs to happen.",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Signs of Unfinished Healing",
+          "text": "**Other signs suggest healing is not yet complete.**\n\n**Your ex still dominates your thoughts, whether with anger, longing, or obsession.**\n\n**You feel intense emotional reactions when you see them, hear about them, or encounter reminders.**\n\n**You have not genuinely grieved the loss.** You jumped quickly to anger, denial, or distraction.\n\n**You blame your ex entirely and have not examined your part.**\n\n**You cannot imagine being happy without a new relationship.**\n\n**You are looking for someone to rescue you from your pain.**\n\n**These signs suggest more healing work is needed.**",
+          "icon": "pending"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Healing Assessment",
+          "text": "**Honestly assess your healing from divorce.**\n\n**Review the signs of healing and unfinished healing.** Which describe you?\n\nWhere are you genuinely healed?\n\nWhere do you still have work to do?\n\nWhat emotions about your ex and your marriage remain unresolved?\n\nWrite your honest healing assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Continuing the Work",
+          "text": "**If your assessment reveals unfinished healing, that is valuable information.**\n\n**It does not mean you will never be ready.** It means you have more work to do first.\n\n**Continue the healing process.** Process remaining grief. Work on forgiveness. Examine your patterns. Build your independent identity.\n\n**This work is not wasted time.** It is investment in your future marriage's health.\n\n**Better to take longer and enter remarriage whole than to rush in still wounded.**",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Healing Plan",
+          "text": "Based on your assessment, what healing work remains?\n\nAreas where I still need healing:\n\nSpecific steps I will take to continue healing:\n\nHow I will know when I have healed sufficiently:\n\nWrite your continued healing plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_ex_relationship",
+      "isFree": false,
+      "title": "Your Ex in Your Head: Assessing Emotional Freedom",
+      "subtitle": "Evaluating how much your ex still occupies your emotional space",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "person_remove",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "You are not ready for remarriage if your ex still dominates your emotional landscape. This activity assesses how much freedom you have from your ex's hold on you.",
+      "frameworkBasis": {
+        "conceptKey": "emotional_freedom",
+        "explanation": "Freedom from emotional entanglement with an ex is necessary for healthy new relationship."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Still Living in Your Head",
+          "text": "**Your divorce is final.** The papers are signed. You live in different places, maybe different cities. And yet.\n\n**They are still in your head.** Taking up space. Coloring your thoughts.\n\n**You wake up and think about them.** You see something that reminds you of them. You rehearse conversations, things you wish you had said, things you imagine saying if you saw them again.\n\n**You wonder what they are doing.** Whether they are happy. Whether they think about you.\n\n**Or maybe the thoughts are darker.** You replay what they did. You imagine confrontations. You wish them harm, or you wish they would suffer, or you wish they would finally see what they lost.\n\n**Either way, positive or negative, longing or hostile, they are living rent-free in your mind.**\n\n**This is a problem for a future relationship.** Because if your ex is taking up that much space, there is not room for someone new. Every person you meet will be compared, filtered, seen through the lens of your ex.\n\nHow much of your mental real estate is still occupied? The honest answer matters.",
+          "icon": "person_remove"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Types of Entanglement",
+          "text": "**Grace started dating six months after her divorce.** He was wonderful, nothing like her ex. But she kept picking fights, kept waiting for betrayal, kept hearing her ex's voice when her new partner spoke. She realized she had brought her ex into the new relationship because she had never truly let him go.\n\n**Emotional entanglement with an ex takes various forms.**\n\n**Longing entanglement: You still wish you were together.** You fantasize about reconciliation. You compare everyone unfavorably to them.\n\n**Anger entanglement: You are consumed with resentment.** You replay grievances. You want them to suffer.\n\n**Obsessive entanglement: You cannot stop thinking about them, tracking them, or wondering about their life.**\n\n**Fear entanglement: You are terrified of becoming like them, choosing someone like them, or being hurt the same way.**\n\n**All of these keep you emotionally bound to your ex.**",
+          "icon": "link"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Signs of Freedom",
+          "text": "**Emotional freedom from your ex looks like this.**\n\n**They are not constantly on your mind.** You can go extended periods without thinking about them.\n\n**When you do think of them, it does not trigger intense emotions.** You might feel some sadness or even fondness, but not overwhelming feelings.\n\n**You can genuinely wish them well.** Not as a performance but authentically.\n\n**You are not tracking their life, checking their social media, or pumping mutual friends for information.**\n\n**They do not determine your emotional state.** Their actions, choices, or new relationships do not send you spiraling.\n\n**This is the freedom you need before remarriage.**",
+          "icon": "lock_open"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Ex Freedom Assessment",
+          "text": "**Honestly assess your emotional freedom from your ex.**\n\nHow often do you think about your ex?\n\nWhat type of entanglement do you experience: longing, anger, obsession, fear, or others?\n\nHow do you respond when you see them, hear about them, or learn about their life?\n\nCan you genuinely wish them well?\n\nWrite your ex freedom assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Freedom",
+          "text": "**If you are still emotionally entangled, you can build freedom.**\n\n**Stop feeding the entanglement.** Do not check their social media. Do not ask about them. Do not replay grievances.\n\n**Process the underlying emotions.** What is the longing really about? What is the anger protecting? Work through it.\n\n**Forgive and release.** Holding on to resentment keeps you tied to them.\n\n**Invest in your own life.** Fill your mental space with your own growth, relationships, and activities.\n\n**Freedom comes through intentional detachment and building a full life without them.**",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Freedom Building Plan",
+          "text": "**Create a plan for building greater freedom from your ex.**\n\nBehaviors I will stop that keep me entangled:\n\nEmotions I need to process to release the hold:\n\nHow I will fill my mental and emotional space with my own life:\n\n**My goal is to reach a place where my ex is a small, neutral part of my past, not a dominating presence in my present.**\n\nWrite your freedom building plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_alone_capacity",
+      "isFree": false,
+      "title": "Comfortable Alone: Can You Be Content Single?",
+      "subtitle": "Assessing your capacity to be fulfilled without a partner",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "person",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "A paradox of healthy marriage is that you must be able to be happy alone. If you cannot be content single, you will enter marriage with desperation that undermines it.",
+      "frameworkBasis": {
+        "conceptKey": "solo_contentment",
+        "explanation": "Capacity for contentment alone indicates readiness to enter marriage from wholeness rather than need."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Paradox of Readiness",
+          "text": "Here is the cruel paradox of love after divorce:\n\n**You are most ready for marriage when you no longer need it.**\n\n**Read that again.**\n\n**If you need a relationship to feel complete, if you need someone to fill the emptiness, if you need partnership to have a life worth living, you will bring desperation into your next marriage.** And desperation is poison.\n\n**Desperate people choose poorly.** They see red flags and explain them away because being with someone, anyone, is better than being alone. They settle. They cling. They suffocate.\n\n**But if you can be content alone, if you have built a life that has meaning without a partner, if you have found wholeness in yourself, then you can choose freely.**\n\n**You can be selective.** You can walk away from what is not right. You can enter a relationship from fullness rather than emptiness.\n\n**The best marriages are not two half people trying to become whole through each other.** That is codependency. The best marriages are two whole people who choose to share their already-complete lives.\n\nAre you whole? Or are you looking for someone to complete you?\n\n**If it is the second, you are not ready yet.** No matter how much you want to be.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Alone vs Lonely",
+          "text": "Can you be alone?\n\n**Not just tolerate it.** Not just white-knuckle through an evening without distraction. Actually be with yourself, in silence, without crawling out of your skin.\n\n**There is a difference between being alone and being lonely.** Being alone is a circumstance. Being lonely is a condition. You can be alone and content. You can be married and desperately lonely.\n\nWhat happens when you are alone? Do you immediately reach for your phone, the TV, noise, anything to fill the silence? Do you feel a creeping dread when you face an evening with no plans? Does solitude feel like punishment?\n\nOr can you sit with yourself? Enjoy your own company? Find that being alone is uncomfortable sometimes but not unbearable?\n\n**This matters because marriage will not cure loneliness.** If you cannot be alone with yourself, you will still be lonely when you are married. You will just have someone to blame for it.\n\n**And if you enter marriage because you cannot stand being alone, you have not chosen your partner.** You have chosen not-aloneness. They are just the warm body that came along.\n\n**Learn to be alone.** Not forever. But well enough that when you choose someone, you are choosing them, not escape.",
+          "icon": "compare"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Signs of Desperation",
+          "text": "**Several signs suggest desperation rather than healthy desire for relationship.**\n\n**You feel panicked about being alone.** The thought of remaining single terrifies you.\n\n**You are willing to settle for almost anyone.** Standards have dropped dramatically.\n\n**You move too fast in relationships, becoming serious before you know someone.**\n\n**Your identity feels empty without a partner.** You do not know who you are alone.\n\n**You are looking for someone to rescue you, fix your problems, or give your life meaning.**\n\n**These indicate you may need more time building a full life before remarriage.**",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Solo Assessment",
+          "text": "**Assess your capacity to be content alone.**\n\nHow comfortable are you spending time by yourself?\n\nDo you have a fulfilling life independent of romantic relationship?\n\nDo you feel whole as a person, or do you feel like something is missing without a partner?\n\nAre any of the desperation signs true of you?\n\nWrite your solo assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building a Full Single Life",
+          "text": "**If you struggle with being alone, build a fuller single life.**\n\n**Develop deep friendships.** Invest in relationships that provide connection and community.\n\n**Pursue interests and passions.** Fill your life with things that bring meaning and joy.\n\n**Grow spiritually.** Let your relationship with God provide grounding and purpose.\n\n**Find purpose beyond relationship.** Your life has meaning whether married or single.\n\n**Learn to enjoy your own company.** Practice solitude until it becomes comfortable.\n\n**A full single life is not just preparation for marriage.** It is a good life in itself.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Building Solo Contentment",
+          "text": "**Create a plan for building greater contentment with being single.**\n\nRelationships I will invest in for connection and community:\n\nInterests and activities I will pursue:\n\nHow I will find meaning and purpose independent of romantic relationship:\n\nPractices I will use to become more comfortable with solitude:\n\nWrite your solo contentment plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_identity_wholeness",
+      "isFree": false,
+      "title": "Whole Before Two: Having a Solid Identity",
+      "subtitle": "Assessing whether you have a clear sense of who you are",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "person_pin",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Healthy marriage requires two people with solid identities. If you do not know who you are, you cannot healthily merge your life with another's.",
+      "frameworkBasis": {
+        "conceptKey": "identity_formation",
+        "explanation": "Clear personal identity enables healthy interdependence rather than enmeshment or loss of self."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Knowing Who You Are",
+          "text": "**Healthy marriage is a union of two whole people.** Not two halves trying to become whole, but two complete individuals choosing to join lives.\n\n**This requires knowing who you are.** Your values, beliefs, desires, boundaries, strengths, weaknesses, and purpose.\n\n**If you do not have a clear identity, you risk losing yourself in marriage.** You become an extension of your spouse rather than a person in your own right.\n\n**Or you may expect your spouse to define you, placing an impossible burden on them.**\n\n**Be a whole person first.** Then bring that whole person into marriage.",
+          "icon": "person_pin"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Identity Lost in Marriage",
+          "text": "**Some people lose themselves in marriage.**\n\n**They abandon their interests, friends, and desires to merge entirely with their spouse.** They have no identity apart from the relationship.\n\n**This is not intimacy.** It is enmeshment. It is unhealthy for both partners.\n\n**If you lost yourself in your first marriage, you need to rebuild a solid identity before remarrying.** Otherwise, you will repeat the pattern.\n\nWho are you apart from any relationship? What do you value, enjoy, and believe? What makes you distinctly you?",
+          "icon": "person_off"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Components of Identity",
+          "text": "**A solid identity includes several components.**\n\nValues: What matters most to you? What principles guide your decisions?\n\nBeliefs: What do you believe about God, life, relationships, and yourself?\n\nPassions: What brings you alive? What do you love to do?\n\nPurpose: What gives your life meaning? What are you here for?\n\nBoundaries: What are your limits? What will you accept and not accept?\n\nStrengths: What are you good at? What gifts do you bring?\n\nCan you articulate these clearly? They form the foundation of who you are.",
+          "icon": "category"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Identity Assessment",
+          "text": "**Assess the clarity and strength of your identity.**\n\nHow clearly can you articulate your values, beliefs, passions, purpose, boundaries, and strengths?\n\nDid you lose yourself in your first marriage?\n\nHow so?\n\nWhat aspects of your identity need strengthening?\n\nWho are you apart from any romantic relationship?\n\nWrite your identity assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Solid Identity",
+          "text": "**If your identity needs strengthening, work on it intentionally.**\n\n**Explore your values.** What do you actually believe and prioritize?\n\n**Reconnect with old interests and discover new ones.** What do you enjoy?\n\n**Develop your own friendships.** Not just shared friends, but people who are yours.\n\n**Clarify your boundaries.** What are your limits and non-negotiables?\n\n**Identify your purpose.** What gives your life meaning beyond relationship?\n\n**A clear identity is not selfish.** It is the foundation for healthy interdependence.",
+          "icon": "construction"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Identity Building Plan",
+          "text": "**Create a plan for building or clarifying your identity.**\n\nMy core values are:\n\nPassions and interests I will cultivate:\n\nBoundaries I need to establish and maintain:\n\nMy sense of purpose is:\n\nSteps I will take to strengthen my independent identity:\n\nWrite your identity building plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_emotional_health",
+      "isFree": false,
+      "title": "Emotional Health Check: Your Current Emotional State",
+      "subtitle": "Assessing your overall emotional health and stability",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "favorite",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "You bring your emotional health, or lack thereof, into marriage. This activity assesses your current emotional state to identify areas needing attention.",
+      "frameworkBasis": {
+        "conceptKey": "emotional_health",
+        "explanation": "Overall emotional health determines capacity to engage in healthy relationship dynamics."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Bringing Your Emotional Self",
+          "text": "**A healthy relationship requires two people with full cups, each bringing wholeness to the partnership.** If you enter a relationship with an empty cup, desperate for someone to fill it, you will drain your partner and still feel empty. Fill your own cup first.\n\n**Whatever your emotional state, you will bring it into your next marriage.**\n\n**If you are generally healthy and stable, you will bring that.** If you are anxious, depressed, or emotionally volatile, you will bring that too.\n\n**Marriage does not fix emotional problems.** It may even intensify them as the stress and intimacy of marriage expose vulnerabilities.\n\n**Assessing your emotional health honestly helps you know whether you are ready, or whether you need to address issues first.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Areas to Assess",
+          "text": "What is your emotional baseline these days?\n\n**Not on your best days.** Not when everything is going well. Your baseline. The state you return to when nothing particular is happening.\n\nAre your moods generally stable, or do you swing dramatically? A partner cannot be your emotional regulator. If your moods are unpredictable, that is work to do before remarriage.\n\nHow is your anxiety? Everyone has some. But if anxiety is running your life, making decisions for you, keeping you awake, controlling your choices, that needs attention first.\n\nWhat about depression? Not sadness, which is normal after divorce, but the heavy, persistent weight that makes everything hard. Depression does not disqualify you from love, but it does need to be managed.\n\nHow do you see yourself? If your self-esteem is in shambles, you will either choose someone who treats you badly because you think that is what you deserve, or you will need constant reassurance that exhausts your partner.\n\nCan you regulate your emotions? When you are angry, do you explode? When you are hurt, do you shut down? When you are anxious, do you spiral? These patterns will play out in marriage, amplified.\n\n**This is not about being perfect.** No one is emotionally perfect. It is about being healthy enough that you are bringing something to a marriage rather than just needing something from it.",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "When Professional Help Is Needed",
+          "text": "**Rachel met someone wonderful eighteen months after her divorce.** He was kind, stable, everything her ex was not. But she noticed herself picking fights, testing him, waiting for him to prove he was just like the others. Her therapist helped her see what was happening: she was bringing her trauma into a healthy relationship and nearly destroying it. Six months of focused work later, she was ready. They married two years after that.\n\n**Some emotional health issues require professional attention before remarriage.**\n\n**Ongoing depression that affects your daily life and relationships.**\n\n**Significant anxiety that would impact your ability to be a present partner.**\n\n**Unresolved trauma that affects how you relate to others.**\n\n**Addiction or compulsive behaviors that are not under control.**\n\n**Personality issues that create chronic relationship problems.**\n\n**If any of these apply, seeking professional help is not weakness.** It is wisdom and responsibility toward yourself and any future partner.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Emotional Health Assessment",
+          "text": "**Honestly assess your current emotional health.**\n\nHow stable are your moods?\n\nHow well do you manage anxiety?\n\nAre you struggling with depression or low self-worth?\n\nHow well do you regulate your emotions under stress?\n\nAre there areas where professional help might be needed?\n\nWrite your emotional health assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Emotional Health",
+          "text": "**Emotional health can be built and strengthened.**\n\n**Basic self-care: Sleep, nutrition, exercise, and rest significantly affect emotional state.**\n\n**Healthy relationships: Supportive connections improve emotional health.**\n\n**Coping skills: Learn and practice healthy ways to manage stress and emotions.**\n\n**Professional support: Therapy can address issues that self-help cannot.**\n\n**Spiritual practices: Prayer, community, and faith provide resources for emotional wellbeing.**\n\n**Investing in your emotional health is investing in your future marriage.**",
+          "icon": "spa"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Emotional Health Plan",
+          "text": "**Create a plan for strengthening your emotional health.**\n\nAreas of emotional health I need to address:\n\nSelf-care practices I will maintain:\n\nProfessional support I may need:\n\nHow I will build better emotional regulation and coping skills:\n\nWrite your emotional health plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_realistic_expectations",
+      "isFree": false,
+      "title": "Eyes Wide Open: Realistic Expectations for Remarriage",
+      "subtitle": "Examining your expectations for a second marriage",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "visibility",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Unrealistic expectations set marriages up for failure. This activity examines your expectations for remarriage to ensure they are grounded in reality.",
+      "frameworkBasis": {
+        "conceptKey": "realistic_expectations",
+        "explanation": "Realistic expectations for remarriage enable satisfaction rather than disillusionment."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Expectations Shape Experience",
+          "text": "**Your expectations for remarriage will significantly shape your experience of it.**\n\n**If you expect remarriage to be easy because you have learned from your first marriage, you will be disappointed when it is hard.**\n\n**If you expect a new spouse to be the opposite of your ex in every way, you will be frustrated when they have their own flaws.**\n\n**If you expect remarriage to fix your loneliness, heal your wounds, or make you happy, you are setting yourself up for disillusionment.**\n\n**Realistic expectations are essential for a healthy second marriage.**",
+          "icon": "visibility"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Unrealistic Expectations",
+          "text": "Let me guess some things you might be telling yourself:\n\n**This time will be different because I have learned my lesson.** Maybe. But remarriage is not just first marriage with better information. It has its own challenges. Blended families, complicated histories, different baggage. Learning from your mistakes does not mean the road is smooth.\n\n**My new spouse will not have the flaws my ex had.** Correct. They will have different flaws. Every human being comes with flaws. If you are expecting someone without them, you are expecting someone who does not exist.\n\n**Marriage will heal me.** It will not. You cannot outsource your healing to another person. If you are not whole going in, marriage will expose that, not fix it.\n\n**We will blend families seamlessly.** No, you will not. Blended families take years to integrate, sometimes five to seven years. There will be conflict, loyalty issues, and complications you cannot predict.\n\n**Because we are older and wiser, we will not have the same problems.** You will not have the same problems. You will have different ones. Maturity helps, but it does not eliminate struggle.\n\n**Examine your expectations.** The unrealistic ones will set you up for disappointment. Better to see them now than to be blindsided later.",
+          "icon": "warning"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Realistic Expectations",
+          "text": "**Marcus went into his second marriage expecting it to be easier.** He had learned so much. He had chosen better. But six months in, he was fighting again, different fights but fights nonetheless. It took him a year to accept that remarriage was not a reward for surviving divorce. It was another marriage, with all that entails. Once he stopped expecting easy, he could start building something real.\n\n**Realistic expectations acknowledge difficulty while maintaining hope.** Your new spouse will be imperfect, a flawed human like you. You must bring your own healing into the marriage, not expect the marriage to heal you. If children are involved, blending families will be complicated and take years. You will need to build new patterns together, not assume things will work automatically.\n\n**Scripture offers this grounding wisdom: Hope deferred makes the heart sick, but a longing fulfilled is a tree of life.** (Proverbs 13:12) Unrealistic expectations create deferred hope when reality falls short of fantasy. Realistic expectations position you for genuine fulfillment rather than perpetual disappointment.",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Expectations",
+          "text": "**Examine your expectations for remarriage.**\n\nWhat do you expect remarriage to be like?\n\nWhat do you expect from a new spouse?\n\nWhat do you expect about blended family dynamics if applicable?\n\nAre any of your expectations unrealistic?\n\nWrite about your expectations:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "The Unique Challenges of Remarriage",
+          "text": "**Remarriage brings unique challenges beyond first marriage.**\n\n**Baggage from the past: Both partners bring wounds, patterns, and histories.**\n\n**Ex-spouses: Previous spouses may remain in the picture through children or other ties.**\n\n**Blended families: If children are involved, integrating families is one of the hardest things couples do.**\n\n**Different life stages: You may be at different places regarding careers, retirement, or life priorities.**\n\n**Trust issues: Previous hurt makes trusting harder.**\n\n**Understanding these challenges helps you prepare realistically.**",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Adjusting Expectations",
+          "text": "**Adjust any unrealistic expectations you have identified.**\n\nExpectations I need to revise:\n\nMore realistic versions of those expectations:\n\nUnique challenges of remarriage I need to prepare for:\n\nHow I will maintain hope while being realistic:\n\nWrite your adjusted expectations:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_readiness_checklist",
+      "isFree": false,
+      "title": "The Readiness Checklist: A Comprehensive Assessment",
+      "subtitle": "Working through key indicators of remarriage readiness",
+      "timeBoxMinutes": 24,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "checklist",
+      "emotionalIntensity": "moderate",
+      "activityType": "practical",
+      "whyThisMatters": "This activity provides a comprehensive checklist for assessing your readiness for remarriage across multiple dimensions.",
+      "frameworkBasis": {
+        "conceptKey": "comprehensive_assessment",
+        "explanation": "A comprehensive readiness checklist enables thorough self-assessment across relevant dimensions."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "A Comprehensive Check",
+          "text": "**This is the part where we get honest.**\n\n**Not hopeful.** Not optimistic. Not telling yourself what you want to hear. Honest.\n\n**You have explored many dimensions of readiness in this journey.** Now it is time to look at the full picture and ask: Am I actually ready?\n\n**Not ready as in I want to be ready.** Not ready as in I am tired of waiting. Actually ready, in the sense that bringing yourself into a marriage right now would be bringing a whole, healed, prepared person.\n\n**This is not a test with a passing score.** It is a mirror. You look at it and see what is there.\n\nWhere are you strong? Where have you done the work? What areas can you say, honestly, I have dealt with that?\n\nWhere are you still struggling? What keeps coming up? What have you been avoiding?\n\n**Be honest with yourself.** No one else needs to see this assessment. It is for you. And what you see will tell you whether you are ready, or what still needs attention before you are.\n\n**The goal is not to shame yourself for not being ready.** The goal is to know, truly know, where you stand. Because that knowledge will either give you confidence to move forward or wisdom to wait.",
+          "icon": "checklist"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Healing Readiness",
+          "text": "**Assess your healing readiness.**\n\n**I have genuinely grieved the loss of my marriage.**\n\n**I have processed the pain and reached acceptance.**\n\n**I have examined my contribution to my marriage's failure.**\n\n**I have forgiven my ex, releasing the debt even if not reconciling.**\n\n**I am no longer emotionally consumed by my ex.**\n\n**For each statement, honestly rate yourself: ready, mostly ready, still working, or not yet.**",
+          "icon": "healing"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Personal Readiness",
+          "text": "**Assess your personal readiness.**\n\n**I have a clear sense of my own identity apart from any relationship.**\n\n**I can be content alone, though I desire companionship.**\n\n**My overall emotional health is stable.**\n\n**I have addressed or am addressing toxic patterns from my past.**\n\n**I know what I want and need in a partner.**\n\n**I have realistic expectations for remarriage.**\n\n**For each statement, honestly rate yourself: ready, mostly ready, still working, or not yet.**",
+          "icon": "person"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Comprehensive Assessment",
+          "text": "**Complete your comprehensive readiness assessment.**\n\n**For each area, note your honest rating and any comments.**\n\nHealing readiness: Emotional freedom from ex: Capacity to be alone: Identity strength: Emotional health: Pattern work: Realistic expectations:\n\nWrite your comprehensive assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Interpreting Your Assessment",
+          "text": "How do you interpret your assessment results?\n\n**If most areas show ready or mostly ready, you may be approaching readiness for remarriage.** Continue growing but you are in a good place.\n\n**If several areas show still working, you are making progress but may benefit from more time and focused growth before serious remarriage consideration.**\n\n**If multiple areas show not yet, you likely have significant work to do before you are ready for a healthy remarriage.**\n\n**There is no shame in any result.** It simply indicates where you are and what you need.",
+          "icon": "analytics"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Readiness Summary",
+          "text": "**Summarize your readiness assessment.**\n\nOverall, I would describe my readiness for remarriage as:\n\nMy strongest areas of readiness are:\n\nAreas where I need continued growth are:\n\nMy plan for addressing growth areas is:\n\nWrite your readiness summary:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_wise_timing",
+      "isFree": false,
+      "title": "When Is the Right Time? Wisdom About Timing",
+      "subtitle": "Discerning the right timing for remarriage",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "schedule",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Timing matters in remarriage. This activity explores how to discern the right timing for entering a new marriage.",
+      "frameworkBasis": {
+        "conceptKey": "timing_wisdom",
+        "explanation": "Wise timing for remarriage considers multiple factors beyond just desire or opportunity."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Timing Matters",
+          "text": "**When you remarry matters, not just whom you marry.**\n\n**Remarrying too soon, before adequate healing and growth, significantly increases divorce risk.**\n\n**Waiting too long is less common but can happen if fear prevents moving forward when you are actually ready.**\n\n**The right time is when you are genuinely prepared, not just when you want to be or when an opportunity arises.**\n\n**Discerning timing requires honesty with yourself, input from others, and prayer for wisdom.**",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Too Soon Indicators",
+          "text": "**Derek waited three years before dating again.** Friends told him he was being too cautious. But when he finally met someone, he came to her whole. He did not need her to fix him. He wanted her, but he did not need her to survive. That made all the difference.\n\n**Several indicators suggest it may be too soon.**\n\n**You have not allowed adequate time for healing.** There is no magic number, but less than one to two years after divorce is often too fast.\n\n**You are still significantly affected by your ex or your divorce.**\n\n**You are rushing because of fear, loneliness, or external pressure.**\n\n**You have not done the work of examining your patterns and contribution.**\n\n**You are settling because you fear being alone or running out of time.**\n\n**If these apply, waiting is wise.**",
+          "icon": "fast_forward"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Ready Indicators",
+          "text": "**Other indicators suggest you may be ready.**\n\n**You have genuinely healed from your divorce.** Your ex does not dominate your emotional landscape.\n\n**You can be content alone, though you desire companionship.**\n\n**You have done the work of examining and addressing your patterns.**\n\n**You are choosing from a place of wholeness, not desperation.**\n\n**You have realistic expectations for what remarriage will be like.**\n\n**Wise others in your life affirm your readiness.**\n\n**You have peace, not just excitement, about moving forward.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Timing Assessment",
+          "text": "**Assess the timing question for yourself.**\n\nBased on what you have learned, do you think you are ready to remarry now?\n\nWhat indicators suggest you may be ready?\n\nWhat indicators suggest you may need more time?\n\nWhat would need to change for you to be clearly ready?\n\nWrite your timing assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Seeking Wisdom",
+          "text": "**Discerning the right timing benefits from wisdom beyond your own.**\n\n**Seek input from trusted others.** People who know you well can see things you cannot.\n\n**Consider professional perspective.** A therapist familiar with your journey can offer valuable insight.\n\n**Pray for guidance.** Ask God to make clear whether the timing is right.\n\n**Be honest with yourself.** Fear of the answer should not prevent asking the question.\n\n**Wisdom is available if you seek it.** Do not make this decision alone.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Timing Plan",
+          "text": "**Create a plan for discerning the right timing.**\n\nMy current sense of my timing readiness is:\n\nPeople I will seek input from:\n\nQuestions I will pray about:\n\nWhat would clearly indicate I am ready:\n\nWhat I will do to continue preparing while I wait:\n\nWrite your timing plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_readiness_commitment",
+      "isFree": false,
+      "title": "Ready Well: Your Commitment to Thorough Preparation",
+      "subtitle": "Committing to entering remarriage from wholeness",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You have done significant assessment work. This activity helps you consolidate what you have learned and commit to entering remarriage only when truly ready.",
+      "frameworkBasis": {
+        "conceptKey": "readiness_commitment",
+        "explanation": "Committing to thorough preparation honors yourself, your future spouse, and the institution of marriage."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Assessed",
+          "text": "**Through this journey, you have done significant self-assessment.**\n\n**You have distinguished between wanting remarriage and being ready for it.** You have assessed your healing, emotional freedom, and capacity to be alone.\n\n**You have examined your identity strength, emotional health, and expectations.** You have worked through a comprehensive readiness checklist.\n\n**You have considered the timing question and sought wisdom for discerning it.**\n\n**This honest assessment serves your future marriage well.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Honoring the Process",
+          "text": "**The time you invest in becoming ready is not wasted time.** It is the foundation for everything that follows.\n\n**It honors you.** You deserve to enter marriage as a whole person, bringing something rather than just needing something. You deserve to choose from freedom, not desperation.\n\n**It honors your future spouse.** Whoever they are, wherever they are, they deserve a partner who has done their work. Someone who has healed, grown, and prepared. Not someone who is going to use them as a therapist or a bandage.\n\n**It honors marriage itself.** Marriage is not a solution to loneliness or a graduation from singleness. It is a covenant, a sacred commitment, a profound joining of two lives. It deserves to be entered thoughtfully.\n\n**And it honors the people who did not wait.** The ones who rushed, who repeated patterns, who are now going through their second or third divorce. Their pain is a cautionary tale. You do not have to join them.\n\n**Be ready.** Really ready. Whatever it takes. However long it takes.\n\n**Your future marriage is worth the investment you make now.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Readiness Insight",
+          "text": "What is the most important thing you have learned about your readiness through this journey?\n\nWhat do you want to remember as you move toward possible remarriage?\n\nWrite your key readiness insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Readiness Commitments",
+          "text": "What commitments will you make about remarriage readiness?\n\nHow will you continue preparing yourself?\n\nWhat will you do if you realize you are not yet ready?\n\nHow will you resist pressure to rush before you are prepared?\n\nWhat support will you seek for ongoing growth?\n\nWrite your readiness commitments:",
+          "responseType": "open-text",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Readiness",
+          "text": "**Father, I want to enter my next marriage well-prepared.**\n\n**Help me honestly assess my readiness.** Give me patience if I am not yet ready and confidence if I am.\n\n**Complete the healing work in me.** Help me become the whole person You created me to be.\n\n**Guard me from rushing out of fear or loneliness.** Help me trust Your timing.\n\n**Prepare me for the person You may have for me, and prepare them for me.**\n\n**I want to do this right.**\n\n**In Jesus' name, Amen.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Readiness Declaration",
+          "text": "**Write a declaration about your commitment to readiness.**\n\n**I commit to entering remarriage only when I am genuinely ready, not just when I want to be.**\n\n**I will continue doing the work of healing, growth, and preparation.**\n\n**I will seek wisdom from others and from God about timing.**\n\n**I will resist pressure to rush and trust the process.**\n\n**I want to bring my best, most whole self to my next marriage.**\n\nWrite your readiness declaration:",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Prepared Heart",
+    "summaryText": "You have done significant work assessing your emotional readiness for remarriage. Remember that readiness is not about perfection but about sufficient healing, growth, and preparation. Continue the work in areas that need it, seek wisdom for timing, and trust that entering remarriage from wholeness will serve you and your future spouse well.",
+    "keyTakeaways": [
+      "Wanting remarriage and being ready for it are not the same",
+      "Genuine healing from divorce is foundational to readiness",
+      "Emotional freedom from your ex is necessary for healthy new relationship",
+      "Capacity to be content alone indicates readiness from wholeness not need",
+      "A solid identity enables healthy interdependence in marriage",
+      "Overall emotional health affects marriage capacity",
+      "Realistic expectations prevent disillusionment",
+      "Comprehensive self-assessment reveals areas needing growth",
+      "Wise timing considers multiple factors beyond opportunity"
+    ],
+    "nextRecommendedJourneys": [
+      "Discerning Healthy Love Again",
+      "Dating Again with Wisdom",
+      "Preparing for a New Covenant"
+    ]
+  }
+}

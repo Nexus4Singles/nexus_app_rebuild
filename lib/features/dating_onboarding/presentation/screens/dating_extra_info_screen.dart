@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:country_picker/country_picker.dart';
 
@@ -31,7 +32,8 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
   @override
   void initState() {
     super.initState();
-    // Load existing draft values
+    // Load existing draft values to allow resume/edit of profile
+    // User can exit at any time and come back to continue
     final draft = ref.read(datingOnboardingDraftProvider);
     _cityCtrl.text = draft.city ?? '';
     _otherChurchCtrl.text = draft.otherChurchName ?? '';
@@ -41,6 +43,10 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
     _profession = draft.profession;
     _church = draft.churchName;
     _showOtherChurch = _church == 'Other';
+
+    if (kDebugMode) {
+      print('[DatingExtraInfoScreen] Loaded draft data - age=${draft.age}, city=${draft.city}, country=${draft.countryOfResidence}');
+    }
 
     // Add listeners for auto-save on text changes
     _cityCtrl.addListener(_saveDraft);

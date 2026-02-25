@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../core/services/journeys_service.dart';
+import '../../../core/services/cloud_journeys_service.dart';
 import '../../../core/services/journey_entitlements_service.dart';
 import '../../../core/services/journey_progress_service.dart';
 import '../../../core/services/journey_mission_response_service.dart';
@@ -15,6 +16,7 @@ import '../../../core/providers/user_provider.dart';
 import '../domain/journey_v1_models.dart';
 
 final journeysServiceProvider = Provider((ref) => const JourneysService());
+final cloudJourneysServiceProvider = Provider((ref) => CloudJourneysService());
 final journeyProgressServiceProvider = Provider((ref) {
   final firestore = ref.watch(firestoreServiceProvider);
   return JourneyProgressService(firestore);
@@ -32,8 +34,21 @@ final journeyCatalogProvider = FutureProvider<JourneyCatalogV1>((ref) async {
   // ignore: avoid_print
   print('[journeyCatalogProvider] Loading catalog for status: $status');
 
-  final service = ref.watch(journeysServiceProvider);
-  final json = await service.loadCatalogForStatus(status);
+  // Try cloud first, fallback to assets
+  var json = <String, dynamic>{};
+  try {
+    final cloudService = ref.watch(cloudJourneysServiceProvider);
+    json = await cloudService.loadCatalogForStatus(status);
+    print('[journeyCatalogProvider] Loaded from CLOUD successfully');
+  } catch (e) {
+    print(
+      '[journeyCatalogProvider] Cloud loading failed, falling back to ASSETS: $e',
+    );
+    final service = ref.watch(journeysServiceProvider);
+    json = await service.loadCatalogForStatus(status);
+    print('[journeyCatalogProvider] Loaded from ASSETS');
+  }
+
   var catalog = JourneyCatalogV1.fromJson(json);
 
   // ignore: avoid_print
@@ -82,7 +97,22 @@ final journeyCatalogProvider = FutureProvider<JourneyCatalogV1>((ref) async {
 final journeyByIdProvider = Provider.family<JourneyV1?, String>((ref, id) {
   final catalogAsync = ref.watch(journeyCatalogProvider);
   return catalogAsync.maybeWhen(
-    data: (catalog) => catalog.findById(id),
+    data: (catalog) {
+      final found = catalog.findByReference(id);
+      if (found == null) {
+        // ignore: avoid_print
+        print(
+          '[journeyByIdProvider] ❌ Not found. requested=$id, category=${catalog.category}, catalogSize=${catalog.journeys.length}, sampleIds=${catalog.journeys.take(8).map((j) => j.id).toList()}',
+        );
+      } else {
+        final usedFallback = found.id != id;
+        // ignore: avoid_print
+        print(
+          '[journeyByIdProvider] ✅ Found. requested=$id, resolved=${found.id}, category=${catalog.category}, matchMode=${usedFallback ? 'reference-fallback' : 'id'}',
+        );
+      }
+      return found;
+    },
     orElse: () => null,
   );
 });
@@ -93,7 +123,7 @@ final journeyWithCategoryProvider =
       final catalogAsync = ref.watch(journeyCatalogProvider);
       return catalogAsync.maybeWhen(
         data: (catalog) {
-          final journey = catalog.findById(id);
+          final journey = catalog.findByReference(id);
           return journey != null ? (journey, catalog.category) : null;
         },
         orElse: () => null,

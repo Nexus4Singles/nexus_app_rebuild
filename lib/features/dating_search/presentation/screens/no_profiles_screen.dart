@@ -85,12 +85,7 @@ class NoProfilesScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.getSurface(context),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color:
-                        Theme.of(context).brightness == Brightness.light
-                            ? Color(0xFFD1D5DB)
-                            : AppColors.border,
-                  ),
+                  border: Border.all(color: AppColors.getBorder(context)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

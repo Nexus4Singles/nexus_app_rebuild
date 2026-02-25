@@ -1,0 +1,759 @@
+{
+  "journeyId": "divorced_ex_moves_on",
+  "title": "When Your Ex-Spouse Moves On Before You",
+  "subtitle": "Processing the pain of watching them start a new relationship",
+  "summary": "**Few things sting quite like discovering your ex has a new partner, especially when you are still healing.** Whether they moved on quickly or you simply were not ready for it, watching your former spouse in a new relationship triggers powerful emotions. This journey helps you process the pain, understand your reactions, avoid destructive responses, and find your way to peace regardless of what your ex is doing.",
+  "targetUserCategory": "divorced",
+  "priorityRank": 10,
+  "estimatedDays": 12,
+  "totalActivities": 10,
+  "difficulty": "advanced",
+  "themeColor": "#C62828",
+  "cover": {
+    "themeTag": "Processing",
+    "accentIcon": "heart_broken",
+    "heroImage": "assets/images/journeys/divorced_journey10.jpg",
+    "heroImageDescription": "A person standing at a crossroads or looking toward the horizon, symbolizing their own path forward regardless of where their ex has gone."
+  },
+  "frameworks": [
+    "grief_processing",
+    "comparison_management",
+    "emotional_regulation",
+    "self_focus"
+  ],
+  "targetOutcomes": [
+    "Understand why your ex moving on is so painful",
+    "Process the specific emotions this situation triggers",
+    "Avoid destructive responses like stalking social media or lashing out",
+    "Separate your worth and timeline from your ex's choices",
+    "Focus on your own healing rather than their new relationship",
+    "Find peace regardless of what your ex is doing"
+  ],
+  "activities": [
+    {
+      "activityNumber": 1,
+      "id": "act_1_the_sting",
+      "isFree": true,
+      "title": "The Unexpected Sting: Why This Hurts So Much",
+      "subtitle": "Understanding the pain of your ex's new relationship",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "heart_broken",
+      "emotionalIntensity": "very_high",
+      "activityType": "teaching",
+      "whyThisMatters": "Learning that your ex has moved on can be devastatingly painful, even if you did not want them back. This activity helps you understand why this hurts so much and validates your reaction.",
+      "frameworkBasis": {
+        "conceptKey": "secondary_loss",
+        "explanation": "An ex's new relationship represents a secondary loss that can trigger intense grief responses."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The News You Did Not Want",
+          "text": "**Seeing your ex move on can feel like a wound that was finally healing being ripped open again.** You thought you were past the worst of it. Then one photo, one piece of news, and the pain is as fresh as the day they left.\n\n**You found out your ex is seeing someone new.**\n\n**Maybe you saw it on social media.** Maybe your kids mentioned it. Maybe a well-meaning friend told you. Maybe you ran into them together.\n\n**However you learned it, the news hit you like a punch to the gut.** Even if you were the one who wanted the divorce. Even if you do not want them back. Even if you knew intellectually this would happen eventually.\n\n**The pain surprised you with its intensity.** You thought you were further along in healing. Now you wonder if you have made any progress at all.\n\n**This reaction is normal.** You are not crazy. You are not weak. This is genuinely hard.",
+          "icon": "heart_broken"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why It Hurts Even When You Do Not Want Them",
+          "text": "**Here is what confuses you: you do not even want them back.** Maybe they hurt you too badly. Maybe you know it was wrong. Maybe you are genuinely glad it is over.\n\nSo why does seeing them with someone else feel like a knife in your chest?\n\n**Because it is not really about them.** It is about you.\n\n**It is about feeling replaced.** Someone else is in the seat you used to occupy. Someone else is hearing their laugh, sleeping in their bed, being introduced as theirs. You have been erased and overwritten.\n\n**It is about the comparison you cannot help making.** What does this person have that I did not? Are they prettier? Funnier? Easier? The questions are corrosive, and you cannot stop asking them.\n\n**It is about the timeline.** They have moved on. You have not. Does that mean they are winning? Does that mean you are stuck?\n\n**And it is about the finality.** Some part of you, maybe a part you did not even know existed, held onto the possibility. What if we worked it out? What if they came back? Seeing them with someone new kills that possibility dead.\n\n**That is why it hurts.** Not because you want them. Because of everything their moving on means about you.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Grief Resurfaces",
+          "text": "**When your ex moves on, grief that seemed to be resolving can resurface with surprising force.**\n\n**You may feel like you are back at square one.** Like all your progress has evaporated.\n\n**This is not actually true.** You have not lost your healing. But you have encountered a new layer of grief that needs processing.\n\n**Grief is not linear.** It comes in waves. Your ex's new relationship is a wave, possibly a big one, but it is still part of the same grief process.\n\n**You will get through this wave.** It does not mean you have to start over.",
+          "icon": "waves"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "question",
+          "cardNumber": 4,
+          "title": "Your Situation",
+          "text": "What is your current situation with your ex moving on?",
+          "prompts": [
+            "I just found out and am reeling",
+            "I have known for a while but still struggling",
+            "They moved on very quickly after our split",
+            "They are now engaged or remarried",
+            "I do not know for sure but suspect they have someone",
+            "They have had multiple relationships since we split",
+            "I am preparing myself for when this eventually happens"
+          ],
+          "responseType": "single-select",
+          "followUpLogic": {
+            "condition": "any_selection",
+            "reaction": "Whatever your specific situation, this journey will help you process and find peace."
+          },
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "reflection",
+          "cardNumber": 5,
+          "title": "Your Reaction",
+          "text": "**Describe your reaction to your ex moving on.**\n\nHow did you find out?\n\nWhat emotions hit you?\n\nWhat was the intensity?\n\nWhat thoughts have been cycling through your mind?\n\nHow has it affected your daily life and functioning?\n\nWrite about your reaction:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Validating Your Pain",
+          "text": "**Before moving forward, validate your own pain.**\n\n**This hurts.** My reaction is normal and understandable.\n\n**I am not weak or pathetic for being affected by my ex moving on.**\n\n**This does not mean I have failed at healing.** It means I am human.\n\n**I will give myself permission to feel what I feel without shame.**\n\n**I will also commit to processing this pain in healthy ways rather than destructive ones.**\n\nWrite your validation in your own words:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 2,
+      "id": "act_2_specific_emotions",
+      "isFree": false,
+      "title": "The Emotional Storm: Processing What You Feel",
+      "subtitle": "Identifying and working through the specific emotions triggered",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "psychology",
+      "emotionalIntensity": "very_high",
+      "activityType": "teaching",
+      "whyThisMatters": "Your ex moving on triggers a storm of different emotions. Identifying and processing each one helps you work through this painful experience rather than being overwhelmed by it.",
+      "frameworkBasis": {
+        "conceptKey": "emotion_processing",
+        "explanation": "Identifying and processing specific emotions enables movement through them rather than being stuck."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "A Storm of Emotions",
+          "text": "**When you find out they have moved on, you do not feel one thing.** You feel everything.\n\n**Jealousy burns first.** You see them with someone new and something animal wakes up. This is my territory. Except it is not anymore.\n\n**Then anger.** How dare they be happy? How dare they find someone while you are still picking up pieces? They caused this wreckage and now they get to walk away into someone else's arms?\n\n**Underneath the anger, sadness.** This is really over. Whatever hope you were secretly holding, however small, is gone now. The door is not just closed. It is bricked over.\n\n**Fear creeps in.** What if they were right? What if you are unlovable? What if they find happiness and you spend the rest of your life alone?\n\n**Shame, too.** You should be over this. It has been months, or years. What is wrong with you that this still has power?\n\n**And loneliness.** Because now you know they have someone, and you do not, and the contrast is unbearable.\n\n**All of this.** At once. Crashing in waves. No wonder you feel like you are drowning.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Processing Jealousy",
+          "text": "**Jealousy is often the dominant emotion.** You see them with someone new and something burns inside.\n\n**Jealousy contains information.** It may reveal unresolved attachment. It may highlight your own longing for companionship. It may expose comparison thinking.\n\n**To process jealousy, acknowledge it without acting on it.** Name it clearly and let yourself feel it. Then remind yourself that their relationship is not about you. Their happiness does not diminish your worth or your future.\n\n**Jealousy fades when you stop feeding it.** More on that later.",
+          "icon": "local_fire_department"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Processing Comparison",
+          "text": "**Comparison thinking is poison.** You look at their new partner and wonder what they have that you lack.\n\n**You may compare appearance, success, personality, or simply the fact that they were chosen.**\n\n**This comparison is unfair and unhelpful.** You are comparing your insides to someone else's outside. You do not know the full picture of their new relationship.\n\n**Your ex's choice of a new partner says nothing about your worth.** People choose partners for all sorts of reasons, healthy and unhealthy.\n\n**Stop the comparison spiral when you notice it.** Redirect your attention to your own life and growth.",
+          "icon": "balance"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Specific Emotions",
+          "text": "**Identify the specific emotions you are experiencing.**\n\nWhich emotions from the storm are strongest for you: jealousy, anger, sadness, fear, shame, betrayal, loneliness, confusion, or others?\n\n**For your top two or three emotions, write about what specifically triggers them and what thoughts accompany them.**\n\nWrite about your specific emotions:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Allowing Without Acting",
+          "text": "**The goal is to allow your emotions without acting destructively on them.**\n\n**Allow the feeling.** Do not suppress or deny it. Let yourself feel jealous, angry, or sad.\n\n**Do not act destructively.** Do not send angry messages. Do not stalk social media. Do not bad-mouth them to everyone. Do not make major life decisions from this emotional state.\n\n**Feelings pass when felt.** Emotions that are acknowledged and processed move through. Emotions that are suppressed or acted out destructively tend to persist.\n\n**Feel it.** Name it. Let it move through. Do not let it drive your behavior.",
+          "icon": "self_improvement"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Emotion Processing Practice",
+          "text": "**Practice processing one of your difficult emotions.**\n\n**Choose one emotion you are feeling intensely right now.**\n\n**Name it clearly: I am feeling intense jealousy or whatever applies.**\n\n**Describe where you feel it in your body.**\n\n**Acknowledge it without judgment: This feeling is here.** It is okay to feel this.\n\n**Let yourself feel it for a few minutes without trying to fix it or act on it.**\n\n**Notice if the intensity shifts at all after allowing it.**\n\nWrite about this practice:",
+          "icon": "edit"
+        }
+      ]
+    },
+    {
+      "activityNumber": 3,
+      "id": "act_3_avoiding_destructive",
+      "isFree": false,
+      "title": "Do Not Go There: Avoiding Destructive Responses",
+      "subtitle": "Resisting behaviors that will make things worse",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "block",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "When your ex moves on, destructive impulses are strong. Stalking social media, sending messages, or lashing out will only make your pain worse. This activity helps you resist these urges.",
+      "frameworkBasis": {
+        "conceptKey": "impulse_management",
+        "explanation": "Managing destructive impulses during emotional pain prevents additional harm and regret."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Destructive Urges",
+          "text": "**When you are hurting, destructive urges feel compelling.**\n\n**The urge to check their social media constantly, looking for updates about the new relationship.**\n\n**The urge to contact them, whether to express anger, plead, or try to make them jealous.**\n\n**The urge to bad-mouth them or their new partner to mutual friends or your children.**\n\n**The urge to rush into your own relationship to prove you have moved on too.**\n\n**The urge to do something dramatic to get their attention.**\n\n**These urges feel like they will bring relief.** They will not. They will make everything worse.",
+          "icon": "block"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Why Social Media Stalking Hurts You",
+          "text": "**Christine found out about her ex's engagement through social media.** She was at work, surrounded by coworkers, when she saw the ring photo. She made it to the bathroom before the tears came. The logical part of her brain said she should be over him. Her heart had not gotten the memo.\n\n**Checking your ex's social media feels irresistible.** Just a quick look. You need to know what is happening.\n\n**But every time you look, you reopen the wound.** Every picture, every update, every sign of their happiness is salt in raw pain.\n\n**Social media shows a curated highlight reel, not reality.** You are comparing your internal experience to their external presentation.\n\n**Checking becomes compulsive.** Once is never enough. You keep going back, each time feeling worse.\n\n**The solution is to stop looking.** Block or unfollow them. Remove the option to check. Your healing depends on it.",
+          "icon": "visibility_off"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Why Contact Makes It Worse",
+          "text": "**You will be tempted to reach out.** At 2 AM when the hurt is loudest. After you see a photo that breaks you. When you have something perfectly cutting to say.\n\n**Do not do it.**\n\n**Do not send the angry message.** You think it will feel satisfying. It will not. You will feel worse five minutes after you hit send, and that feeling will last for days. They will not give you the response you want. They will either ignore you, which hurts, or respond badly, which hurts more.\n\n**Do not ask them about the new relationship.** You do not actually want the answers. Every detail will become a splinter you cannot remove, something you replay at night when you should be sleeping.\n\n**Do not try to make them jealous.** Posting strategic photos, mentioning potential dates, any of it. This is manipulation, and it keeps you tied to them. You are still performing for their attention. That is not freedom.\n\n**Do not plead.** If they wanted to be with you, they would be. No words you say will change that. You will only humiliate yourself and give them power.\n\n**The urge to contact them will feel overwhelming.** Treat it like an addiction. Because that is what it is. Every time you resist, you get a little stronger. Every time you give in, you have to start over.",
+          "icon": "do_not_disturb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Destructive Urges",
+          "text": "**Be honest about the destructive urges you are experiencing.**\n\nWhat behaviors have you engaged in that made things worse: social media stalking, contact, bad-mouthing?\n\nWhat urges are you currently fighting?\n\nWhat triggers these urges?\n\nWhat has been the result when you have given in?\n\nWrite about your destructive urges:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Strategies to Resist",
+          "text": "**Practical strategies help resist destructive urges.**\n\n**Block or unfollow your ex and their new partner on all social media.** Remove the temptation.\n\n**Tell a trusted friend about your urges.** Ask them to hold you accountable.\n\n**Delay the impulse.** When you feel the urge, wait 24 hours before acting. The urge often passes.\n\n**Replace the behavior.** When you want to check social media, do something else instead: call a friend, exercise, pray.\n\n**Remember the cost.** Before acting, remember how bad you felt last time you gave in.\n\n**You are stronger than your urges.** You can resist.",
+          "icon": "shield"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Resistance Plan",
+          "text": "**Create a plan to resist destructive behaviors.**\n\nSocial media: What steps will I take to stop checking?\n\nWill I block or unfollow?\n\nContact: What will I do when I am tempted to reach out?\n\nAccountability: Who will I tell about my urges to help me stay strong?\n\nReplacement: What will I do instead when urges hit?\n\nWrite your resistance plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 4,
+      "id": "act_4_timeline_comparison",
+      "isFree": false,
+      "title": "Your Pace, Not Theirs: Rejecting Timeline Comparison",
+      "subtitle": "Understanding that healing and moving on happen on your own schedule",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "schedule",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "Your ex moving on can make you feel like you are behind. But healing is not a race. This activity helps you reject timeline comparison and honor your own pace.",
+      "frameworkBasis": {
+        "conceptKey": "timeline_independence",
+        "explanation": "Healing timelines are individual and comparing your pace to your ex's creates unnecessary suffering."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Timeline Trap",
+          "text": "**They have already found someone.** You are still alone.\n\n**The math seems obvious.** They are ahead. You are behind. They won the race to move on.\n\n**But this is not a race.** And even if it were, moving on fastest is not the same as winning.\n\n**Think about it.** Someone who jumps into a new relationship immediately after a divorce, what are they actually doing? Processing their grief? Working through their issues? Learning from what went wrong?\n\nOr are they running? Filling the silence with someone new so they do not have to feel the emptiness? Looking for a bandage instead of healing the wound?\n\n**Fast does not mean healthy.** Fast often means the opposite.\n\n**You are not behind because you are still hurting.** You are taking the time to actually heal. To become someone who can show up differently next time. To deal with what needs dealing with before you bring it into someone else's life.\n\n**That is not losing.** That is wisdom. Even if it feels like losing right now.",
+          "icon": "schedule"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Quick Does Not Mean Better",
+          "text": "**Moving on quickly is not a sign of strength or success.**\n\n**Some people jump into new relationships to avoid dealing with the pain of the old one.** This is rebound behavior, and it often ends badly.\n\n**Some people need to feel wanted and cannot tolerate being alone.** This is not health. It is dependency.\n\n**Some people were emotionally checked out of the marriage long before it ended.** They had a head start on grieving.\n\n**You do not know what is really going on with your ex.** Their new relationship may or may not be healthy.\n\n**Taking time to heal properly is wisdom, not weakness.**",
+          "icon": "timer"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Your Timeline Matters",
+          "text": "**Your healing journey is uniquely yours.**\n\n**How long it takes depends on many factors: the length of your marriage, the nature of the ending, your support system, your coping skills, your life circumstances.**\n\n**There is no standard timeline.** Some people heal faster. Some slower. Neither is right or wrong.\n\n**The goal is not to move on quickly.** The goal is to heal thoroughly so that when you do move on, you bring health into your next chapter.\n\n**Rushing to catch up with your ex is a recipe for poor decisions and prolonged pain.**",
+          "icon": "route"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Timeline Feelings",
+          "text": "**Reflect on how your ex's timeline has affected you.**\n\nHave you felt behind or like you are losing a race?\n\nHas their quick move-on made you doubt your own progress?\n\nHave you been tempted to rush into something just to catch up?\n\nWhat would it mean to fully honor your own pace?\n\nWrite about your timeline feelings:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Honoring Your Process",
+          "text": "**Honor your own healing process without comparison.**\n\n**Acknowledge where you are.** You are exactly where you need to be in your journey.\n\n**Resist pressure to rush.** Do not date before you are ready just to prove something.\n\n**Celebrate your progress.** Look at how far you have come, not how far others have gone.\n\n**Trust the process.** Healing takes time. The work you are doing now will pay off.\n\n**Your pace is your pace.** Stop comparing and start honoring it.",
+          "icon": "self_improvement"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Timeline Declaration",
+          "text": "**Write a declaration about your own timeline.**\n\n**My healing happens on my schedule, not my ex's.**\n\n**I will not rush into something just to catch up or prove I have moved on.**\n\n**Their quick move does not mean I am behind.** It means we are different.\n\n**I choose to heal thoroughly rather than quickly.**\n\n**My worth is not measured by how fast I find someone new.**\n\nWrite your timeline declaration:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 5,
+      "id": "act_5_what_it_means",
+      "isFree": false,
+      "title": "What It Does Not Mean: Challenging False Conclusions",
+      "subtitle": "Rejecting the lies your mind tells you about their new relationship",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "lightbulb",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "When your ex moves on, your mind may draw false conclusions about what it means. This activity challenges those lies with truth.",
+      "frameworkBasis": {
+        "conceptKey": "cognitive_reframing",
+        "explanation": "Challenging false conclusions with truth reduces unnecessary suffering and promotes healing."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Lies Your Mind Tells",
+          "text": "**When your ex moves on, your mind may generate painful false conclusions.**\n\n**They are happier with the new person than they ever were with me.**\n\n**This proves I was the problem in our marriage.**\n\n**I will never find someone.** They got the one chance.\n\n**They never really loved me.** This proves it.\n\n**I am not worthy of lasting love.**\n\n**They won.** I lost.\n\n**These feel like logical conclusions.** They are not. They are lies generated by pain.",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Challenging the Lies",
+          "text": "**Each lie can be challenged with truth.**\n\n**Lie: They are happier now.** Truth: You do not actually know that. Social media shows highlights, not reality. New relationships have honeymoon phases.\n\n**Lie: I was the problem.** Truth: Marriages fail for complex reasons. Their new relationship says nothing about your worth.\n\n**Lie: I will never find someone.** Truth: Many divorced people find love again. Your ex's status has no bearing on your future.\n\n**Lie: They never loved me.** Truth: Their current actions do not erase past genuine love.\n\n**Lie: They won.** Truth: Life is not a competition. There is no winner or loser here.",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Their Relationship Is Not About You",
+          "text": "**Here is a hard but freeing truth: their new relationship is not about you.**\n\n**They did not find someone new to hurt you.** They found someone because they wanted to.\n\n**Their new partner is not a statement about your inadequacy.** They are just a person your ex is now with.\n\n**Their happiness, if they are happy, does not diminish you.** Two people can be happy independently.\n\n**Your ex has their own journey.** It no longer involves you. Let them go.",
+          "icon": "trending_flat"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your False Conclusions",
+          "text": "**Identify the false conclusions your mind has been generating.**\n\nWhat painful interpretations have you been making about your ex's new relationship?\n\n**For each one, write a truer counter-statement.**\n\nWhich lie has been most destructive for you?\n\nWrite your false conclusions and counter-truths:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Practicing Truth-Telling",
+          "text": "**When lies arise, practice telling yourself the truth.**\n\n**Notice the painful thought.** Oh, I am telling myself that I will never find anyone.\n\n**Challenge it.** Is this actually true? What evidence do I have? What would I tell a friend who said this?\n\n**Replace it with truth.** My ex's new relationship says nothing about my future. Many people find love after divorce.\n\n**This takes practice.** Lies feel true when you are hurting. But consistently replacing them with truth weakens their power.",
+          "icon": "swap_horiz"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Truth Card",
+          "text": "**Create a truth card to counter your most persistent lie.**\n\nMy most painful false conclusion is:\n\nThe truth that counters this lie is:\n\n**Write these down.** Keep them where you can see them. When the lie surfaces, read the truth.\n\nWrite your truth card:",
+          "icon": "note"
+        }
+      ]
+    },
+    {
+      "activityNumber": 6,
+      "id": "act_6_if_they_moved_quickly",
+      "isFree": false,
+      "title": "The Quick Move: When They Started Dating Immediately",
+      "subtitle": "Processing the pain of a rapid transition",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "bolt",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "When your ex started dating very quickly, or was already seeing someone before the divorce, the pain has a specific character. This activity addresses the unique hurt of a rapid transition.",
+      "frameworkBasis": {
+        "conceptKey": "rapid_transition",
+        "explanation": "When an ex moves on very quickly, it raises specific questions and wounds that need addressing."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "When It Happened Fast",
+          "text": "**Life is not a race where everyone runs the same track.** Your ex moving on faster does not mean you are behind. You are on different tracks entirely. Comparison only makes sense if you are trying to reach the same destination by the same route. You are not.\n\n**Sometimes your ex does not just move on.** They move on immediately. Or they were already with someone before the marriage ended.\n\n**This raises painful questions.** Were they cheating? Were they just waiting for the marriage to end? Did they ever really care?\n\n**The speed of their transition makes you question everything.** It feels like the marriage meant nothing to them.\n\n**This is a specific kind of pain that deserves acknowledgment.** A rapid move-on is harder than one that takes time.",
+          "icon": "bolt"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What Quick Transitions Often Mean",
+          "text": "**When your ex moves on immediately, or when they were already with someone before the ink dried, your mind goes to dark places.**\n\n**They never loved me.** I was nothing to them. They could not wait to replace me.\n\n**But quick transitions usually mean something else entirely.**\n\n**They might have been grieving the marriage long before it ended.** By the time you divorced, they had already done their crying. Their mourning finished before yours began.\n\n**They might be running from pain.** Some people cannot tolerate being alone with their thoughts. They need someone, anyone, to fill the space and drown out the silence. This is not strength. It is desperation.\n\n**They might have unfinished business from before you.** Some people are fundamentally unable to be alone. They jump from relationship to relationship because being with someone, even the wrong someone, feels safer than being with themselves.\n\n**And yes, they might have been cheating.** That says everything about their character and nothing about your worth.\n\n**Notice: none of these explanations are about you not being enough.** None of them are about you at all.\n\n**Their quick move tells their story.** It does not tell yours.",
+          "icon": "psychology"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "The Betrayal Dimension",
+          "text": "**If your ex was seeing someone before the marriage ended, there is a betrayal dimension to process.**\n\n**This is a violation of your marriage covenant.** Your anger is justified.\n\n**The new relationship is tainted by dishonesty.** However happy they appear, it began in deception.\n\n**You may need to grieve not just the divorce but the betrayal.** These are related but distinct.\n\n**Processing betrayal may require additional work, perhaps with a counselor.** It is a deep wound.",
+          "icon": "heart_broken"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Experience of Speed",
+          "text": "**Reflect on the timeline of your ex's new relationship.**\n\nHow quickly did they move on?\n\nDo you have reason to believe there was overlap with your marriage?\n\nWhat questions does their speed raise for you?\n\nWhat specific pain does the rapid transition cause?\n\nWrite about your experience of their speed:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "You May Never Know",
+          "text": "**You may never know the full truth about your ex's timeline.**\n\nWere they cheating? When did they actually start seeing this person? Were they emotionally involved before physically?\n\n**You may suspect but never confirm.** You may have partial information that torments you.\n\n**At some point, you may need to accept not knowing.** The obsessive search for answers keeps you stuck.\n\n**What you do know is enough.** Your marriage ended. They moved on. You need to heal. The details do not change that.",
+          "icon": "help_outline"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Releasing the Need to Know",
+          "text": "**Practice releasing the need to know every detail.**\n\n**I may never know the full truth about when my ex moved on or how.**\n\n**Obsessing over the timeline keeps me stuck and does not change anything.**\n\n**What I know is enough: my marriage ended and I need to heal.**\n\n**I release my need for complete answers.** I choose to focus on my own healing rather than their story.\n\nWrite your release statement:",
+          "icon": "lock_open"
+        }
+      ]
+    },
+    {
+      "activityNumber": 7,
+      "id": "act_7_children_involved",
+      "isFree": false,
+      "title": "When Kids Are Involved: Managing the Extra Complexity",
+      "subtitle": "Navigating your ex's new relationship when you share children",
+      "timeBoxMinutes": 22,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "family_restroom",
+      "emotionalIntensity": "high",
+      "activityType": "teaching",
+      "whyThisMatters": "When you share children with your ex, their new relationship affects you in additional ways. This activity addresses the unique challenges of navigating their new partner in a co-parenting context.",
+      "frameworkBasis": {
+        "conceptKey": "coparenting_new_partner",
+        "explanation": "An ex's new partner adds complexity to co-parenting that requires careful navigation."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "The Extra Layer of Pain",
+          "text": "**If you share children, this becomes exponentially harder.**\n\n**Someone you did not choose is now part of your children's lives.** They are at family dinners. They are present for bedtimes and homework and scraped knees. They might be there for moments you will miss, moments that should be yours.\n\n**This is a unique kind of pain.** You can tell yourself that your ex's romantic life is none of your business. But when your children are involved, it is your business. These are your kids, and a stranger is being given access to them.\n\n**You have almost no control over this.** That is the worst part. You cannot vet this person. You cannot supervise. You have to trust your ex's judgment, which is hard when their judgment already failed you.\n\n**Your children might like this person.** That will hurt in its own way. Your children might dislike them, and you will have to resist the urge to encourage that.\n\n**There is no easy way through this.** But there is a way through: focusing on what you can control, which is yourself and your own home. Making your space so full of love and stability that what happens at the other house matters less.\n\n**You are still their parent.** That does not change.",
+          "icon": "family_restroom"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "What You Can and Cannot Control",
+          "text": "**In this situation, clarity about control is essential.**\n\n**You cannot control who your ex dates or introduces to your children.**\n\n**You cannot control how much time the new partner spends with your kids.**\n\n**You cannot control whether your children like the new partner.**\n\n**You can raise genuine safety concerns through appropriate channels if they exist.**\n\n**You can control your own response and how you talk to your children about the situation.**\n\n**You can control the environment and relationships in your own home.**\n\n**Focus your energy on what you can control.**",
+          "icon": "tune"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Your Children's Experience",
+          "text": "**Your children are navigating their own complex feelings about your ex's new partner.**\n\n**They may like the new person and feel guilty about it.** Let them know it is okay to have positive feelings.\n\n**They may dislike the new person and need space to express that without you piling on.**\n\n**They may feel confused about loyalty and family structure.**\n\n**Do not put them in the middle.** Do not interrogate them about the new partner. Do not make them feel bad for any feelings they have.\n\n**Your job is to be a stable, supportive presence regardless of what happens at the other house.**",
+          "icon": "child_care"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Children-Related Concerns",
+          "text": "**Reflect on how your ex's new relationship affects your children and your feelings about it.**\n\nWhat are your concerns about your children and the new partner?\n\nHow have your children responded to the new partner?\n\nWhat has been hardest for you about this situation?\n\nHow have you been handling it with your kids?\n\nWrite about your children-related concerns:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Taking the High Road",
+          "text": "**For your children's sake, take the high road regarding your ex's new partner.**\n\n**Do not bad-mouth the new partner to your kids.** Even if you dislike them intensely.\n\n**Do not pump your kids for information about the new partner.**\n\n**Do not make your kids feel guilty for liking or spending time with the new partner.**\n\n**Do be a stable, loving presence in your home regardless of what happens elsewhere.**\n\n**Your children will remember how you handled this.** Handle it with grace.",
+          "icon": "trending_up"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Children-Centered Commitment",
+          "text": "**Make a commitment about how you will handle your ex's new partner regarding your children.**\n\n**I will not bad-mouth the new partner to my children.**\n\n**I will not interrogate my children about what happens at their other house.**\n\n**I will allow my children to have their own feelings without guilt.**\n\n**I will focus on being the best parent I can be in my own home.**\n\n**I will raise legitimate safety concerns appropriately if needed, but not use concerns as a weapon.**\n\nWrite your children-centered commitment:",
+          "icon": "verified"
+        }
+      ]
+    },
+    {
+      "activityNumber": 8,
+      "id": "act_8_focus_on_you",
+      "isFree": false,
+      "title": "Eyes on Your Own Lane: Refocusing on Your Life",
+      "subtitle": "Shifting attention from their relationship to your own growth",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "person",
+      "emotionalIntensity": "light",
+      "activityType": "teaching",
+      "whyThisMatters": "The more you focus on your ex's new relationship, the more you suffer. This activity helps you shift your attention back to your own life and growth.",
+      "frameworkBasis": {
+        "conceptKey": "self_focus",
+        "explanation": "Redirecting attention from an ex's life to your own growth accelerates healing and wellbeing."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Where Attention Goes",
+          "text": "**There is a saying: where attention goes, energy flows.**\n\n**The more you focus on your ex's new relationship, the more emotional energy you pour into something you cannot control.**\n\n**Every minute spent wondering about them, checking on them, or obsessing about them is a minute not spent on your own life.**\n\n**You have limited emotional resources.** Do you want to spend them on their relationship or on building your own future?\n\n**Shifting your focus is not denial.** It is wisdom.",
+          "icon": "person"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Your Life Deserves Attention",
+          "text": "**Victor did not go to his ex-wife's wedding, but he prayed for her that day.** It was not easy or natural. But he had realized that her happiness did not diminish his. There was enough joy in the world for both of them to find it.\n\n**Your own life is worthy of your attention and investment.**\n\n**Your healing matters.** Time and energy spent on your recovery produces returns.\n\n**Your growth matters.** This season can be one of tremendous personal development.\n\n**Your future matters.** What you build now shapes what comes next.\n\n**Your joy matters.** You deserve to experience good things, not just survive.\n\n**Your ex's new relationship does not deserve your attention.** Your own life does.",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Practical Refocusing",
+          "text": "**Refocusing your attention is simple to describe and difficult to do.**\n\n**When your mind drifts to them, you have to catch it and redirect it.** Every time. It is exhausting at first, like trying to stop a river with your hands.\n\nBut here is what helps:\n\n**Fill your life with things that matter to you.** Not distractions to numb the pain, though those have their place. Real things. Interests you have neglected. Goals you put on hold. People who matter. When your life has substance, there is less room for obsession.\n\n**Practice mindfulness.** This sounds like a buzzword, but it is just the practice of noticing your thoughts without getting swept away by them. Oh, I am thinking about them again. That is interesting. Now I am going to think about something else. Simple. Hard. Worth practicing.\n\n**Set physical boundaries.** If you have unblocked them on social media, block them again. If you drive past places hoping to see them, take a different route. Remove the opportunities to obsess.\n\n**And when you catch yourself down the rabbit hole, do not beat yourself up.** Just redirect. Again. And again. Until the redirection becomes more natural than the obsession.\n\n**This is how you take your life back.** Not all at once. One redirected thought at a time.",
+          "icon": "tips_and_updates"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Attention Audit",
+          "text": "**Honestly assess where your attention has been going.**\n\nHow much mental energy have you been spending on your ex's new relationship?\n\nWhat areas of your own life have been neglected while you focused on them?\n\nWhat would you like to invest your attention in instead?\n\nWhat would change if you fully shifted your focus to your own life?\n\nWrite your attention audit:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Building Your Life",
+          "text": "**This is an opportunity to build a life you love.**\n\n**You get to decide what comes next.** No longer constrained by a marriage that was not working, you have freedom to create something new.\n\nWhat have you always wanted to do? What dreams did you set aside?\n\n**This is not about proving anything to your ex.** It is about living fully for yourself.\n\n**The best response to your ex moving on is not to stalk them or match them.** It is to build such a good life that you forget to check on them.",
+          "icon": "construction"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Life Investment Plan",
+          "text": "**Create a plan for investing in your own life.**\n\n**Areas of my life I want to invest in: health, relationships, career, hobbies, spiritual growth, or other areas.**\n\n**Specific things I will do to build my own future.**\n\n**How I will redirect my attention when I catch myself obsessing about my ex.**\n\nWrite your life investment plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 9,
+      "id": "act_9_finding_peace",
+      "isFree": false,
+      "title": "Peace Despite Them: Finding Calm Regardless of Their Choices",
+      "subtitle": "Cultivating inner peace that does not depend on what your ex does",
+      "timeBoxMinutes": 20,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "spa",
+      "emotionalIntensity": "moderate",
+      "activityType": "teaching",
+      "whyThisMatters": "True peace does not depend on your ex's choices. This activity helps you cultivate inner calm that remains stable regardless of what they do.",
+      "frameworkBasis": {
+        "conceptKey": "independent_peace",
+        "explanation": "Lasting peace must be independent of an ex's choices and rooted in internal resources."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "Peace That Does Not Depend on Them",
+          "text": "**As long as your peace depends on what your ex does, you have given them control of your life.**\n\n**Think about that.** If their happiness can destroy yours, they are still the center of your world. If their choices determine your mood, you are still in relationship with them, just a miserable, one-sided one.\n\n**True freedom is not when they fail or suffer or regret.** True freedom is when it genuinely does not matter to you either way.\n\n**That sounds impossible right now.** How can you not care? They hurt you. They are out there living their life while you struggle. How can that not matter?\n\n**But caring and peace are different things.**\n\n**You can acknowledge that this is hard and still find calm.** You can wish them well, genuinely, because their happiness does not threaten yours. You can reach a place where news of them does not ruin your day.\n\n**This is not suppression.** It is not pretending. It is actually getting free.\n\n**The goal is a life so full, an identity so secure, a future so hopeful, that what your ex does becomes just information.** Interesting, maybe. No longer devastating.\n\nIs that where you are? Probably not yet. But it is where you are headed. Keep going.",
+          "icon": "spa"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "Where Peace Comes From",
+          "text": "**Lasting peace comes from internal sources, not external circumstances.**\n\n**Peace from identity: Knowing who you are and that your worth does not depend on being partnered.**\n\n**Peace from faith: Trusting God with your life and your future.**\n\n**Peace from acceptance: Accepting what you cannot control and letting go.**\n\n**Peace from gratitude: Focusing on what you have rather than what you lack.**\n\n**Peace from purpose: Having meaning and direction in your life.**\n\n**These sources of peace are available to you regardless of what your ex is doing.**",
+          "icon": "favorite"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "teaching",
+          "cardNumber": 3,
+          "title": "Practicing Detachment",
+          "text": "**Detachment is not not caring.** It is caring about yourself enough to stop letting them affect you.\n\n**Detachment means accepting that their life is theirs and yours is yours.**\n\n**Detachment means releasing the need to know what they are doing.**\n\n**Detachment means not taking their choices personally.**\n\n**Detachment means finding your stability internally rather than in their status.**\n\n**Practice detachment by noticing when you are emotionally hooked by something about them and consciously unhooking.**",
+          "icon": "link_off"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Peace Assessment",
+          "text": "**Assess your current peace in relation to your ex.**\n\nHow much does your emotional state depend on what they are doing?\n\nWhat would it take for you to have peace regardless of their choices?\n\nWhat internal sources of peace do you have access to?\n\nWhat practices help you find calm when thoughts of them arise?\n\nWrite your peace assessment:",
+          "responseType": "open-text",
+          "icon": "edit_note"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "Peace Through Faith",
+          "text": "**For those with faith, God offers peace that transcends circumstances.**\n\n**Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.** And the peace of God, which transcends all understanding, will guard your hearts and minds. (Philippians 4:6-7)\n\n**This peace does not depend on your ex's choices.** It depends on God's presence and faithfulness.\n\n**Bringing your pain about your ex's new relationship to God and trusting Him with it can open the door to peace that truly transcends.**",
+          "icon": "church"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Cultivating Independent Peace",
+          "text": "**Make a plan for cultivating peace that does not depend on your ex.**\n\n**Internal sources of peace I will nurture: identity, faith, gratitude, purpose.**\n\n**Practices that help me find calm: prayer, meditation, exercise, time with friends.**\n\n**How I will practice detachment when I get emotionally hooked.**\n\n**My declaration: My peace does not depend on my ex's choices.** I am cultivating calm from within.\n\nWrite your peace cultivation plan:",
+          "icon": "task_alt"
+        }
+      ]
+    },
+    {
+      "activityNumber": 10,
+      "id": "act_10_moving_forward",
+      "isFree": false,
+      "title": "Your Path Forward: Commitment to Healing",
+      "subtitle": "Committing to your own journey regardless of theirs",
+      "timeBoxMinutes": 18,
+      "requiresCompanion": false,
+      "companionInvolvementLevel": "solo",
+      "icon": "verified",
+      "emotionalIntensity": "moderate",
+      "activityType": "commitment",
+      "whyThisMatters": "You have done significant work processing your ex moving on. This activity helps you consolidate what you have learned and commit to your own path forward.",
+      "frameworkBasis": {
+        "conceptKey": "forward_commitment",
+        "explanation": "Committing to your own path forward regardless of your ex's choices enables healing and growth."
+      },
+      "cards": [
+        {
+          "cardId": "c1",
+          "cardType": "teaching",
+          "cardNumber": 1,
+          "title": "What You Have Processed",
+          "text": "**Through this journey, you have done important work.** You have looked at one of the most painful aspects of post-divorce life and refused to let it define you.\n\n**You have understood why your ex moving on hurts so much.** You have processed the storm of emotions. You have committed to avoiding destructive behaviors.\n\n**You have rejected timeline comparison and challenged false conclusions.** You have addressed specific situations like rapid transitions and children's involvement.\n\n**You have begun refocusing on your own life and cultivating peace that does not depend on them.**\n\n**This is significant progress.**",
+          "icon": "check_circle"
+        },
+        {
+          "cardId": "c2",
+          "cardType": "teaching",
+          "cardNumber": 2,
+          "title": "The Feelings May Return",
+          "text": "**Even after this work, difficult feelings may return.**\n\n**You may see them with their new partner unexpectedly.** You may hear news about their relationship. Your children may mention something.\n\n**When this happens, you have tools now.** You can process emotions without acting destructively. You can challenge false conclusions. You can refocus on your own life.\n\n**Healing is not about never feeling pain again.** It is about having resources to handle pain when it arises.",
+          "icon": "autorenew"
+        },
+        {
+          "cardId": "c3",
+          "cardType": "reflection",
+          "cardNumber": 3,
+          "title": "Your Key Insight",
+          "text": "What is the most important thing you have learned through this journey about handling your ex moving on?\n\nWhat do you want to remember when the pain resurfaces?\n\nWrite your key insight:",
+          "responseType": "open-text",
+          "icon": "lightbulb"
+        },
+        {
+          "cardId": "c4",
+          "cardType": "reflection",
+          "cardNumber": 4,
+          "title": "Your Commitments",
+          "text": "What commitments will you make going forward?\n\nHow will you handle difficult emotions when they arise?\n\nHow will you avoid destructive behaviors?\n\nHow will you focus on your own life?\n\nHow will you cultivate peace independent of your ex?\n\nWrite your commitments:",
+          "responseType": "open-text",
+          "icon": "verified"
+        },
+        {
+          "cardId": "c5",
+          "cardType": "teaching",
+          "cardNumber": 5,
+          "title": "A Prayer for Your Journey",
+          "text": "**Father, my ex has moved on and it hurts.**\n\n**Help me process this pain in healthy ways.** Keep me from destructive behaviors that make things worse.\n\n**Help me release them to their own journey and focus on mine.** Help me find peace that does not depend on what they are doing.\n\n**I trust You with my future.** I believe good things are ahead for me, regardless of what my ex is doing.\n\n**Help me walk forward in hope.**\n\n**In Jesus' name, Amen.**",
+          "icon": "volunteer_activism"
+        },
+        {
+          "cardId": "c6",
+          "cardType": "action",
+          "cardNumber": 6,
+          "title": "Your Forward Declaration",
+          "text": "**Write a declaration for your path forward.**\n\n**My ex has moved on.** This hurts, but it does not define me or my future.\n\n**I will not let their choices control my peace or my life.**\n\n**I am focused on my own healing, my own growth, and my own future.**\n\n**I am worthy of love regardless of what my ex is doing.**\n\n**I am walking forward on my own path.**\n\nWrite your forward declaration:",
+          "icon": "verified"
+        }
+      ]
+    }
+  ],
+  "journeyCompletionSummary": {
+    "congratulationsMessage": "Walking Your Own Path",
+    "summaryText": "You have done significant work in processing the pain of your ex moving on. Remember that their choices do not define your worth or your future. Keep your focus on your own life, cultivate peace that does not depend on them, and trust that your path forward is bright regardless of where their path takes them.",
+    "keyTakeaways": [
+      "The pain of your ex moving on is normal and valid",
+      "Their new relationship is not about you or your worth",
+      "Destructive behaviors like social media stalking make things worse",
+      "Your healing timeline is independent of theirs",
+      "False conclusions about their relationship should be challenged with truth",
+      "Quick transitions often say more about them than about you",
+      "Children require careful handling when a new partner is involved",
+      "Focusing on your own life accelerates healing",
+      "Peace is possible regardless of what your ex is doing"
+    ],
+    "nextRecommendedJourneys": [
+      "Developing Trust with the Opposite Sex Again",
+      "Rebuilding Your Identity and Self-worth",
+      "Dating Again with Wisdom"
+    ]
+  }
+}
