@@ -68,7 +68,8 @@ class CachedImage extends StatelessWidget {
         return placeholder ?? _buildLoadingPlaceholder();
       },
       errorWidget: (context, url, error) {
-        // DEBUG: Error loading image - skipped to reduce log noise
+        // Log image load failures for debugging
+        print('[CachedImage] Error loading image from $url: $error');
         return errorWidget ?? _buildErrorPlaceholder();
       },
       imageBuilder: (context, imageProvider) {

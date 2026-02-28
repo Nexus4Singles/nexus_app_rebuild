@@ -35,7 +35,7 @@ class StoriesScreen extends ConsumerWidget {
         titleSpacing: 20,
         title: Text(
           'Story of the Week',
-          style: AppTextStyles.headlineLarge.copyWith(
+          style: AppTextStyles.headlineSmall.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -73,52 +73,54 @@ class _StoryOfWeekView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
       children: [
         _HeroCover(
           imagePath: story.heroImageAsset,
           title: story.title,
-          chips: Row(
+          chips: Wrap(
+            spacing: 6,
+            runSpacing: 6,
             children: [
-              _ChipPill(text: story.category),
-              const SizedBox(width: 8),
+              ...story.tags.map((tag) => _ChipPill(text: tag)),
+              if (story.tags.isEmpty) _ChipPill(text: story.category),
               _ChipPill(text: '${story.readTimeMins} min read'),
             ],
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 14),
 
         _Card(
           child: Text(
             story.intro,
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: AppTextStyles.bodySmall.copyWith(
               color: AppColors.getTextPrimary(context),
-              height: 1.6,
+              height: 1.4,
               fontWeight: FontWeight.w400,
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
 
         ...story.sections.map(
           (s) => Padding(
-            padding: const EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 12),
             child: _SectionCard(heading: s.heading, body: s.body),
           ),
         ),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: 14),
         Text(
           story.takeawayTitle,
-          style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700),
+          style: AppTextStyles.titleSmall.copyWith(fontWeight: FontWeight.w700),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         _Card(
           child:
               story.takeaways.isEmpty
                   ? Text(
                     'Coming soon.',
-                    style: AppTextStyles.bodyMedium.copyWith(
+                    style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.getTextSecondary(context),
                     ),
                   )
@@ -132,58 +134,81 @@ class _StoryOfWeekView extends ConsumerWidget {
         const SizedBox(height: 18),
         _StoryActionsCard(story: story, canInteract: canInteract),
 
-        const SizedBox(height: 18),
+        const SizedBox(height: 14),
         Text(
           'Weekly Poll',
-          style: AppTextStyles.headlineMedium.copyWith(
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-        const SizedBox(height: 10),
-        _Card(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Icon(Icons.poll),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  canInteract
-                      ? 'Share your answer (vote to see results).'
-                      : 'Create an account to vote and see results.',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.getTextPrimary(context),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: ElevatedButton(
-            onPressed: () {
-              if (!canInteract) {
-                _showGuestGateDialog(context);
-                return;
-              }
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => StoryPollScreen(storyId: story.id),
-                ),
-              );
-            },
-            child: Text(story.pollCtaText),
-          ),
+          style: AppTextStyles.titleSmall.copyWith(fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 8),
-        Text(
-          'Guests can read stories. Voting/results are for signed-in users.',
-          style: AppTextStyles.labelSmall.copyWith(
-            color: AppColors.getTextSecondary(context),
+        GestureDetector(
+          onTap: () {
+            if (!canInteract) {
+              _showGuestGateDialog(context);
+              return;
+            }
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => StoryPollScreen(storyId: story.id),
+              ),
+            );
+          },
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.06),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: AppColors.primary.withOpacity(0.15)),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.12),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.poll_rounded,
+                    color: AppColors.primary,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        canInteract
+                            ? 'Share your perspective'
+                            : 'Create an account to vote',
+                        style: AppTextStyles.labelLarge.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.getTextPrimary(context),
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        canInteract
+                            ? 'Vote to see how others responded.'
+                            : 'Sign up to vote and see poll results.',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.getTextSecondary(context),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 16,
+                  color: AppColors.primary,
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -892,50 +917,46 @@ class _HeroCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(22),
-      child: Stack(
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.getSurface(context),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: AppColors.getBorder(context).withOpacity(0.5),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AspectRatio(
-            aspectRatio: 16 / 10,
+            aspectRatio: 16 / 9,
             child: _AdaptiveStoryImage(
               imagePath: imagePath,
               placeholder: 'assets/images/stories/placeholder_couple.jpg',
             ),
           ),
-          Positioned.fill(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withOpacity(0.10),
-                    Colors.black.withOpacity(0.55),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 14,
-            right: 14,
-            bottom: 14,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                chips,
-                const SizedBox(height: 10),
                 Text(
                   title,
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                    height: 1.05,
+                  style: AppTextStyles.titleMedium.copyWith(
+                    fontWeight: FontWeight.w700,
+                    height: 1.2,
                   ),
                 ),
+                const SizedBox(height: 8),
+                chips,
               ],
             ),
           ),
@@ -983,20 +1004,18 @@ class _SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return _Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             heading,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w900,
+            style: AppTextStyles.titleSmall.copyWith(
+              fontWeight: FontWeight.w700,
             ),
           ),
-          const SizedBox(height: 8),
-          Text(body, style: theme.textTheme.bodyMedium?.copyWith(height: 1.45)),
+          const SizedBox(height: 4),
+          Text(body, style: AppTextStyles.bodySmall.copyWith(height: 1.4)),
         ],
       ),
     );
@@ -1010,10 +1029,10 @@ class _Card extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: AppColors.getBorder(context).withOpacity(0.5),
         ),
@@ -1036,20 +1055,19 @@ class _ChipPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    final primary = Theme.of(context).colorScheme.primary;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: cs.surface.withOpacity(0.18),
+        color: primary.withOpacity(0.10),
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.white.withOpacity(0.25)),
+        border: Border.all(color: primary.withOpacity(0.20)),
       ),
       child: Text(
         text,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w800,
-          fontSize: 12,
+        style: AppTextStyles.labelSmall.copyWith(
+          color: primary,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
@@ -1063,12 +1081,17 @@ class _CheckRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          const Icon(Icons.check_circle_outline, size: 20),
-          const SizedBox(width: 10),
-          Expanded(child: Text(text)),
+          const Icon(Icons.check_circle_outline, size: 18),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: AppTextStyles.bodySmall.copyWith(height: 1.4),
+            ),
+          ),
         ],
       ),
     );

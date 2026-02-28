@@ -33,14 +33,11 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
   void initState() {
     super.initState();
     final draft = ref.read(datingOnboardingDraftProvider);
-
-    // Only load existing paths if the files actually exist
     for (final path in draft.photoPaths) {
       if (File(path).existsSync()) {
         _photoPaths.add(path);
       }
     }
-
     _faceDetector = FaceDetector(
       options: FaceDetectorOptions(
         enableTracking: false,
@@ -81,15 +78,19 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const _ProgressHeader(
-                  title: 'Add Photos',
-                  subtitle:
-                      'Add at least 2 Photos of yourself. We highly recommend uploading your best pictures because first impressions really matter. Profiles with AI-generated or indecent pictures will not be approved.',
+                const DatingProfileProgressBar(currentStep: 5, totalSteps: 9),
+                const SizedBox(height: 12),
+                Text(
+                  'Add at least 2 Photos of yourself. We highly recommend uploading your best pictures because first impressions really matter. Profiles with AI-generated or indecent pictures will not be approved.',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.getTextMuted(context),
+                    height: 1.3,
+                  ),
                 ),
                 const SizedBox(height: 12),
 
@@ -103,7 +104,7 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
                   top: false,
                   child: Column(
                     children: [
-                      const SizedBox(height: 18),
+                      const SizedBox(height: 12),
                       SizedBox(
                         width: double.infinity,
                         height: 54,
@@ -157,42 +158,24 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
         _toast('Maximum 5 photos allowed.');
         return;
       }
-
       setState(() => _busy = true);
-
-      // Enable multi-selection
       final images = await _picker.pickMultiImage(imageQuality: 90);
-
       if (images.isEmpty) return;
-
-      // Check how many photos we can add
       final remainingSlots = _maxPhotos - _photoPaths.length;
       final imagesToProcess = images.take(remainingSlots).toList();
-
-      if (images.length > remainingSlots) {
-        _toast('Only adding $remainingSlots photo(s). Maximum 5 total.');
-      }
-
-      // Validate each photo for human face
       for (final img in imagesToProcess) {
         final ok = await _isHumanPhoto(img.path);
         if (!ok) {
           HapticFeedback.mediumImpact();
           _toast(
-            "We couldn't detect a human face in that photo. Please upload a clear photo of yourself (good lighting, face visible).",
+            "We couldn't detect a human face. Please upload a clear photo of yourself.",
           );
           continue;
         }
-
         setState(() {
           _photoPaths.add(img.path);
         });
-
-        // Show success message for accepted photo
-        _toast('✅ Photo added successfully!');
       }
-
-      // Auto-save on photo add
       ref
           .read(datingOnboardingDraftProvider.notifier)
           .setPhotos(List.of(_photoPaths));
@@ -206,8 +189,6 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
   Future<bool> _isHumanPhoto(String path) async {
     final input = InputImage.fromFilePath(path);
     final faces = await _faceDetector.processImage(input);
-
-    // ✅ If no face detected -> reject
     return faces.isNotEmpty;
   }
 
@@ -215,8 +196,6 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
     setState(() {
       _photoPaths.removeAt(index);
     });
-
-    // Auto-save on photo removal
     ref
         .read(datingOnboardingDraftProvider.notifier)
         .setPhotos(List.of(_photoPaths));
@@ -224,69 +203,26 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
 
   Future<void> _onContinue(BuildContext context) async {
     setState(() => _busy = true);
-
     try {
-      // Check if we already uploaded these exact photos (URLs exist and count matches)
       final draft = ref.read(datingOnboardingDraftProvider);
-      final alreadyUploaded =
-          draft.photoUrls.isNotEmpty &&
-          draft.photoUrls.length == _photoPaths.length;
-
-      // If photos were already uploaded and count matches, skip re-upload
-      if (alreadyUploaded) {
-        print(
-          '[PHOTOS] Skipping upload — ${draft.photoUrls.length} URLs already exist',
-        );
+      if (draft.photoUrls.isNotEmpty &&
+          draft.photoUrls.length == _photoPaths.length) {
         if (!context.mounted) return;
         Navigator.of(context).pushNamed('/dating/setup/audio');
         return;
       }
-
-      print('[PHOTOS] Uploading ${_photoPaths.length} photos to DO Spaces...');
       final storage = ref.read(mediaStorageProvider);
       final List<String> uploadedUrls = [];
-
       for (var i = 0; i < _photoPaths.length; i++) {
         final path = _photoPaths[i];
         final key =
             'dating/photos/${DateTime.now().millisecondsSinceEpoch}_$i.jpg';
-        try {
-          final publicUrl = await storage.uploadImage(
-            localPath: path,
-            objectKey: key,
-          );
-          if (publicUrl.isEmpty) {
-            _toast('Upload returned empty URL for photo ${i + 1}');
-            setState(() => _busy = false);
-            return;
-          }
-          uploadedUrls.add(publicUrl);
-          print(
-            '[PHOTOS] ✅ Uploaded photo ${i + 1}/$_photoPaths.length: $publicUrl',
-          );
-        } catch (e) {
-          print('[PHOTOS] ❌ Upload failed for photo ${i + 1}: $e');
-          _toast('Failed to upload photo ${i + 1}: $e');
-          setState(() => _busy = false);
-          return;
-        }
+        final url = await storage.uploadImage(localPath: path, objectKey: key);
+        uploadedUrls.add(url);
       }
-
-      print(
-        '[PHOTOS] All uploads complete. Saving ${uploadedUrls.length} URLs to draft...',
-      );
-      // Save uploaded photo URLs to the draft
       ref
           .read(datingOnboardingDraftProvider.notifier)
           .setPhotoUrls(uploadedUrls);
-
-      // Verify URLs were saved
-      final updatedDraft = ref.read(datingOnboardingDraftProvider);
-      print(
-        '[PHOTOS] Draft updated - photoUrls count: ${updatedDraft.photoUrls.length}',
-      );
-      print('[PHOTOS] Draft photoUrls: ${updatedDraft.photoUrls}');
-
       if (!context.mounted) return;
       Navigator.of(context).pushNamed('/dating/setup/audio');
     } catch (e) {
@@ -296,34 +232,9 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
   }
 
   void _toast(String msg) {
-    // Clear any existing snackbar before showing new one
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
-  }
-}
-
-class _ProgressHeader extends StatelessWidget {
-  final String title;
-  final String subtitle;
-
-  const _ProgressHeader({required this.title, required this.subtitle});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const DatingProfileProgressBar(currentStep: 5, totalSteps: 9),
-        const SizedBox(height: 18),
-        Text(title, style: AppTextStyles.titleLarge),
-        const SizedBox(height: 10),
-        Text(
-          subtitle,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.getTextMuted(context),
-          ),
-        ),
-      ],
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(msg), backgroundColor: AppColors.primary),
     );
   }
 }
@@ -354,7 +265,6 @@ class _PhotoGrid extends StatelessWidget {
           if (i == photoPaths.length) {
             return _AddTile(onTap: onAdd);
           }
-
           final path = photoPaths[i];
           return _PhotoTile(path: path, onRemove: () => onRemove(i));
         },
@@ -366,7 +276,6 @@ class _PhotoGrid extends StatelessWidget {
 class _AddTile extends StatelessWidget {
   final VoidCallback? onTap;
   const _AddTile({required this.onTap});
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -392,42 +301,15 @@ class _AddTile extends StatelessWidget {
 class _PhotoTile extends StatelessWidget {
   final String path;
   final VoidCallback onRemove;
-
   const _PhotoTile({required this.path, required this.onRemove});
-
   @override
   Widget build(BuildContext context) {
-    final file = File(path);
-    final fileExists = file.existsSync();
-
     return Stack(
       children: [
         Positioned.fill(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(18),
-            child:
-                fileExists
-                    ? Image.file(
-                      file,
-                      fit: BoxFit.cover,
-                      cacheHeight: 500,
-                      cacheWidth: 500,
-                      errorBuilder:
-                          (_, __, ___) => Container(
-                            color: AppColors.getSurface(context),
-                            child: Icon(
-                              Icons.broken_image,
-                              color: AppColors.getTextMuted(context),
-                            ),
-                          ),
-                    )
-                    : Container(
-                      color: AppColors.getSurface(context),
-                      child: Icon(
-                        Icons.broken_image,
-                        color: AppColors.getTextMuted(context),
-                      ),
-                    ),
+            child: Image.file(File(path), fit: BoxFit.cover),
           ),
         ),
         Positioned(

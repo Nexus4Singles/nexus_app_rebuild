@@ -110,9 +110,12 @@ class PresurveyRelationshipStatusScreen extends ConsumerWidget {
           return;
         } catch (e) {
           if (!context.mounted) return;
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error: ${e.toString()}'),
+              backgroundColor: AppColors.primary,
+            ),
+          );
           return;
         }
       }
@@ -137,7 +140,7 @@ class PresurveyRelationshipStatusScreen extends ConsumerWidget {
         backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         centerTitle: true,
-        title: Text('Relationship Status', style: AppTextStyles.headlineLarge),
+        title: Text('Relationship Status', style: AppTextStyles.headlineMedium),
       ),
       body: SafeArea(
         child: Padding(

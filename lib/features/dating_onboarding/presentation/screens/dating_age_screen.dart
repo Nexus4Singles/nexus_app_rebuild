@@ -23,13 +23,12 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
   late FixedExtentScrollController _controller;
   int _selectedAge = 21;
   bool _syncedFromDraft = false;
-  bool _guidelinesModalShown = false; // Track if modal was shown this session
+  bool _guidelinesModalShown = false;
 
   @override
   void initState() {
     super.initState();
     _controller = FixedExtentScrollController();
-    // Reset guidelines flag and show modal for each new profile creation attempt
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _resetAndShowGuidelines();
     });
@@ -47,279 +46,109 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
   }
 
   Future<void> _onBackPressed() async {
-    // On first step (age), ask if user wants to discard progress
     final shouldDiscard = await showDialog<bool>(
       context: context,
-      builder:
-          (ctx) => AlertDialog(
-            title: const Text('Discard Profile Setup?'),
-            content: const Text(
-              'Going back will discard all progress. You\'ll need to start over.',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(ctx, false),
-                child: const Text('Continue'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(ctx, true),
-                child: const Text(
-                  'Discard',
-                  style: TextStyle(color: Colors.red),
-                ),
-              ),
-            ],
-          ),
+      builder: (ctx) => AlertDialog(
+        title: const Text('Discard Profile Setup?'),
+        content: const Text('Going back will discard all progress. You\'ll need to start over.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Continue')),
+          TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Discard', style: TextStyle(color: Colors.red))),
+        ],
+      ),
     );
-
     if (shouldDiscard == true && mounted) {
-      // Clear the draft and go back to main screen
       ref.read(datingOnboardingDraftProvider.notifier).reset();
       Navigator.of(context).pop();
     }
   }
 
   void _showGuidelinesManual() {
-    showDialog(
-      context: context,
-      builder:
-          (ctx) => DatingPoolGuidelinesModal(
-            onDismiss: () => Navigator.of(ctx).pop(),
-          ),
-    );
+    showDialog(context: context, builder: (ctx) => DatingPoolGuidelinesModal(onDismiss: () => Navigator.of(ctx).pop()));
   }
 
   Future<void> _resetAndShowGuidelines() async {
-    // Get current user ID to use user-specific key
     final userId = ref.watch(currentUserIdProvider);
-
-    // Reset the guidelines flag so the modal will show on this profile attempt
     final prefs = await SharedPreferences.getInstance();
-
-    // Remove both old device-level key and user-specific key
     await prefs.remove('dating_pool_guidelines_shown');
-    if (userId != null) {
-      await prefs.remove('dating_pool_guidelines_shown_$userId');
-    }
-
-    // Now show the guidelines modal
-    if (mounted) {
-      _showGuidelinesIfNeeded();
-    }
+    if (userId != null) await prefs.remove('dating_pool_guidelines_shown_$userId');
+    if (mounted) _showGuidelinesIfNeeded();
   }
 
   Future<void> _showGuidelinesIfNeeded() async {
-    // Prevent showing multiple times in this session
     if (_guidelinesModalShown) return;
-
-    // Get current user ID for user-specific key check
     final userId = ref.watch(currentUserIdProvider);
-    if (userId == null) return; // Not logged in yet
-
+    if (userId == null) return;
     final prefs = await SharedPreferences.getInstance();
-
-    // Check user-specific key to see if this user has seen guidelines
     final userSpecificKey = 'dating_pool_guidelines_shown_$userId';
-    final hasSeenGuidelines = prefs.getBool(userSpecificKey) ?? false;
-
-    if (hasSeenGuidelines == false && mounted) {
-      _guidelinesModalShown = true; // Mark as shown for this session
-
+    if (prefs.getBool(userSpecificKey) == false && mounted) {
+      _guidelinesModalShown = true;
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder:
-            (ctx) => DatingPoolGuidelinesModal(
-              onDismiss: () {
-                // Close modal immediately
-                Navigator.of(ctx).pop();
-
-                // Mark guidelines as seen only if widget is still mounted
-                // This prevents "ref after dispose" errors
-                if (mounted) {
-                  ref
-                      .read(markGuidelinesSeenProvider.notifier)
-                      .markAsRead()
-                      .catchError((e) {
-                        print('[DatingPoolGuidelines] Dismiss error: $e');
-                      });
-                }
-              },
-            ),
+        builder: (ctx) => DatingPoolGuidelinesModal(onDismiss: () {
+          Navigator.of(ctx).pop();
+          if (mounted) ref.read(markGuidelinesSeenProvider.notifier).markAsRead();
+        }),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Sync wheel once when draft age becomes available
     final draft = ref.watch(datingOnboardingDraftProvider);
-    final draftAge = draft.age;
-    if (!_syncedFromDraft && draftAge != null) {
-      final clamped = draftAge.clamp(_minAge, _maxAge);
+    if (!_syncedFromDraft && draft.age != null) {
+      final clamped = draft.age!.clamp(_minAge, _maxAge);
       _syncedFromDraft = true;
       _selectedAge = clamped;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        _controller.jumpToItem(clamped - _minAge);
-        setState(() {});
-      });
+      WidgetsBinding.instance.addPostFrameCallback((_) { if (mounted) { _controller.jumpToItem(clamped - _minAge); setState(() {}); }});
     }
 
     return WillPopScope(
-      onWillPop: () async {
-        await _onBackPressed();
-        return false;
-      },
+      onWillPop: () async { await _onBackPressed(); return false; },
       child: Scaffold(
         backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
-          elevation: 0,
-          backgroundColor: AppColors.getBackground(context),
-          surfaceTintColor: AppColors.getBackground(context),
-          foregroundColor: AppColors.textPrimary,
-          titleSpacing: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_rounded),
-            onPressed: _onBackPressed,
-          ),
-          title: Text(
-            'Age',
-            style: AppTextStyles.titleLarge.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+          elevation: 0, backgroundColor: AppColors.getBackground(context),
+          leading: IconButton(icon: const Icon(Icons.arrow_back_rounded), onPressed: _onBackPressed),
+          title: Text('Age', style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700)),
           centerTitle: true,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.info_outline_rounded),
-              onPressed: _showGuidelinesManual,
-              tooltip: 'Dating Pool Guidelines',
-            ),
-          ],
+          actions: [IconButton(icon: const Icon(Icons.info_outline_rounded), onPressed: _showGuidelinesManual)],
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Progress bar
                 const DatingProfileProgressBar(currentStep: 1, totalSteps: 9),
-                const SizedBox(height: 24),
-                Text('How old are you?', style: AppTextStyles.titleLarge),
-                const SizedBox(height: 10),
-                Text(
-                  'Nexus is for users between the ages of 21 to 70 years',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.getTextSecondary(context),
-                  ),
-                ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 12),
+                Text('How old are you?', style: AppTextStyles.headlineSmall),
+                const SizedBox(height: 6),
+                Text('Nexus is for users between the ages of 21 to 70 years', style: AppTextStyles.bodySmall.copyWith(color: AppColors.getTextSecondary(context))),
+                const SizedBox(height: 16),
                 Expanded(
                   child: Center(
                     child: Container(
-                      height: 280,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 14,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.getSurface(context),
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: AppColors.getBorder(context)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.04),
-                            blurRadius: 24,
-                            offset: const Offset(0, 12),
-                          ),
-                        ],
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: IgnorePointer(
-                              child: Center(
-                                child: Container(
-                                  height: 54,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary.withOpacity(0.08),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          ListWheelScrollView.useDelegate(
-                            controller: _controller,
-                            itemExtent: 52,
-                            physics: const FixedExtentScrollPhysics(),
-                            onSelectedItemChanged: (i) {
-                              setState(() => _selectedAge = _minAge + i);
-                              // Auto-save on selection change
-                              ref
-                                  .read(datingOnboardingDraftProvider.notifier)
-                                  .setAge(_selectedAge);
-                            },
-                            perspective: 0.003,
-                            diameterRatio: 1.5,
-                            childDelegate: ListWheelChildBuilderDelegate(
-                              builder: (_, i) {
-                                final age = _minAge + i;
-                                final selected = age == _selectedAge;
-                                return Center(
-                                  child: AnimatedDefaultTextStyle(
-                                    duration: const Duration(milliseconds: 180),
-                                    style:
-                                        selected
-                                            ? AppTextStyles.headlineMedium
-                                                .copyWith(
-                                                  fontWeight: FontWeight.w800,
-                                                  color:
-                                                      AppColors.getTextPrimary(
-                                                        context,
-                                                      ),
-                                                )
-                                            : AppTextStyles.titleLarge.copyWith(
-                                              color: AppColors.getTextSecondary(
-                                                context,
-                                              ),
-                                            ),
-                                    child: Text('$age'),
-                                  ),
-                                );
-                              },
-                              childCount: (_maxAge - _minAge) + 1,
-                            ),
-                          ),
-                        ],
+                      height: 220, // Reduced height for better fit
+                      decoration: BoxDecoration(color: AppColors.getSurface(context), borderRadius: BorderRadius.circular(24), border: Border.all(color: AppColors.getBorder(context))),
+                      child: ListWheelScrollView.useDelegate(
+                        controller: _controller, itemExtent: 52, physics: const FixedExtentScrollPhysics(),
+                        onSelectedItemChanged: (i) { setState(() => _selectedAge = _minAge + i); ref.read(datingOnboardingDraftProvider.notifier).setAge(_selectedAge); },
+                        childDelegate: ListWheelChildBuilderDelegate(
+                          builder: (_, i) {
+                            final age = _minAge + i;
+                            final sel = age == _selectedAge;
+                            return Center(child: Text('$age', style: sel ? AppTextStyles.headlineMedium.copyWith(fontWeight: FontWeight.w800, color: AppColors.getTextPrimary(context)) : AppTextStyles.titleLarge.copyWith(color: AppColors.getTextSecondary(context))));
+                          },
+                          childCount: (_maxAge - _minAge) + 1,
+                        ),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 18),
-                SizedBox(
-                  width: double.infinity,
-                  height: 54,
-                  child: ElevatedButton(
-                    onPressed: _continue,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
-                    child: Text(
-                      'Continue',
-                      style: AppTextStyles.labelLarge.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+                const SizedBox(height: 16),
+                SizedBox(width: double.infinity, height: 54, child: ElevatedButton(onPressed: _continue, child: const Text('Continue'))),
               ],
             ),
           ),

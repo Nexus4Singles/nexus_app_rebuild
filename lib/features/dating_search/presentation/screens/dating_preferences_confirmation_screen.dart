@@ -17,9 +17,9 @@ class _DatingPreferencesConfirmationScreenState
 
   Future<bool> _goToMatches() async {
     if (!mounted) return false;
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const SearchResultsGridScreen()),
-    );
+    Navigator.of(
+      context,
+    ).pop(); // Pop confirmation screen, parent IndexedStack will show matches
     return false;
   }
 
@@ -61,7 +61,7 @@ class _DatingPreferencesConfirmationScreenState
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
               child: Column(
                 children: [
                   // Animated checkmark icon
@@ -73,8 +73,8 @@ class _DatingPreferencesConfirmationScreenState
                       ),
                     ),
                     child: Container(
-                      width: 80,
-                      height: 80,
+                      width: 64,
+                      height: 64,
                       decoration: BoxDecoration(
                         color: AppColors.primary,
                         shape: BoxShape.circle,
@@ -82,13 +82,11 @@ class _DatingPreferencesConfirmationScreenState
                       child: const Icon(
                         Icons.check_rounded,
                         color: AppColors.textOnPrimary,
-                        size: 48,
+                        size: 40,
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 32),
-
+                  const SizedBox(height: 16),
                   // Main heading
                   Text(
                     'Preferences Set!',
@@ -98,9 +96,7 @@ class _DatingPreferencesConfirmationScreenState
                     ),
                     textAlign: TextAlign.center,
                   ),
-
-                  const SizedBox(height: 16),
-
+                  const SizedBox(height: 8),
                   // Subheading
                   Text(
                     'Here\'s what happens next',
@@ -110,9 +106,7 @@ class _DatingPreferencesConfirmationScreenState
                     ),
                     textAlign: TextAlign.center,
                   ),
-
-                  const SizedBox(height: 40),
-
+                  const SizedBox(height: 20),
                   // Feature list
                   _FeatureItem(
                     icon: Icons.auto_awesome,
@@ -120,27 +114,21 @@ class _DatingPreferencesConfirmationScreenState
                     description:
                         'Every day you\'ll see profiles that match your preferences. We refresh our results every 24 hours to show you new connections.',
                   ),
-
-                  const SizedBox(height: 24),
-
+                  const SizedBox(height: 12),
                   _FeatureItem(
                     icon: Icons.trending_up,
                     title: 'Growing Community',
                     description:
-                        'New users join Nexus every day. Check back frequently to discover fresh matches and expand your possibilities.',
+                        'New users join Nexus every day. Check back frequently to discover new profiles!',
                   ),
-
-                  const SizedBox(height: 24),
-
+                  const SizedBox(height: 12),
                   _FeatureItem(
                     icon: Icons.favorite,
                     title: 'Keep It Updated',
                     description:
                         'When you find your match and your relationship status changes, please update it to "Taken" on your Profile, so we don\'t show you to other users.',
                   ),
-
-                  const SizedBox(height: 24),
-
+                  const SizedBox(height: 16),
                   // Premium feature highlight
                   Container(
                     padding: const EdgeInsets.all(20),
@@ -188,7 +176,7 @@ class _DatingPreferencesConfirmationScreenState
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'View unlimited profiles daily instead of just 10. Never miss a match!',
+                                'View unlimited profiles daily instead of just 10!',
                                 style: AppTextStyles.bodySmall.copyWith(
                                   color: AppColors.getTextSecondary(context),
                                   height: 1.5,
@@ -200,9 +188,7 @@ class _DatingPreferencesConfirmationScreenState
                       ],
                     ),
                   ),
-
-                  const SizedBox(height: 48),
-
+                  const SizedBox(height: 20),
                   // CTA Button
                   SizedBox(
                     width: double.infinity,
@@ -225,8 +211,7 @@ class _DatingPreferencesConfirmationScreenState
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 8),
                 ],
               ),
             ),

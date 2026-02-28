@@ -68,6 +68,7 @@ class StoryRepository {
       id: s.storyId,
       title: s.title,
       category: s.tags.isNotEmpty ? s.tags.first : 'Story',
+      tags: s.tags,
       readTimeMins: s.readingTimeMins,
       heroImageAsset: hero ?? '',
       excerpt: intro,

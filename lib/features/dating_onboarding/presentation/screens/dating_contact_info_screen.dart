@@ -26,18 +26,6 @@ String _normAlnum(String? v) {
       .trim();
 }
 
-String _canonCountry(String? v) {
-  final s = _normAlnum(v);
-  if (s.isEmpty) return '';
-  if (s.contains('uk') ||
-      s.contains('united kingdom') ||
-      s.contains('great britain') ||
-      s.contains('britain'))
-    return 'united kingdom';
-  if (s.contains('usa') || s.contains('united states')) return 'united states';
-  return s;
-}
-
 String _canonMarital(String? v) {
   final s = _normAlnum(v);
   if (s.isEmpty) return '';
@@ -228,7 +216,7 @@ class _DatingContactInfoScreenState
                       padding: const EdgeInsets.only(bottom: 14),
                       child: Text(
                         "Kindly provide the details of at least one social media platform you feel comfortable sharing, where users can easily contact you in case you're away from the app and unable to see messages.",
-                        style: AppTextStyles.bodyMedium.copyWith(
+                        style: AppTextStyles.bodySmall.copyWith(
                           color: AppColors.getTextSecondary(context),
                         ),
                       ),
@@ -338,8 +326,9 @@ class _DatingContactInfoScreenState
 
     if (info.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please provide at least one contact method.'),
+        SnackBar(
+          content: const Text('Please provide at least one contact method.'),
+          backgroundColor: AppColors.primary,
         ),
       );
       return;
@@ -412,79 +401,169 @@ class _DatingContactInfoScreenState
         if (d.audio2Url?.isNotEmpty ?? false) audioUrls.add(d.audio2Url!);
         if (d.audio3Url?.isNotEmpty ?? false) audioUrls.add(d.audio3Url!);
 
+        // Collect audio durations (seconds) in matching order.
+        // Clamp each to 90s max as a safety net (prevents stale draft data
+        // or timer edge-cases from writing impossible values to Firestore).
+        const _maxRecordingSeconds = 90;
+        final audioDurations = <int>[];
+        if (d.audio1Url?.isNotEmpty ?? false)
+          audioDurations.add(
+            (d.audio1Duration ?? 0).clamp(0, _maxRecordingSeconds),
+          );
+        if (d.audio2Url?.isNotEmpty ?? false)
+          audioDurations.add(
+            (d.audio2Duration ?? 0).clamp(0, _maxRecordingSeconds),
+          );
+        if (d.audio3Url?.isNotEmpty ?? false)
+          audioDurations.add(
+            (d.audio3Duration ?? 0).clamp(0, _maxRecordingSeconds),
+          );
+
         // Get gender and relationship status from user doc
         final userDoc = await fs.collection('users').doc(uid).get();
         final userData = userDoc.data();
         final nexus2 = userData?['nexus2'] as Map<String, dynamic>?;
-        // Gender is now consolidated to dating.profile
-        final datingProfile = nexus2?['dating']?['profile'] as Map?;
-        final gender = datingProfile?['gender'] as String?;
+        // Gender: try dating.profile.gender → root gender (presurvey writes root)
+        final datingMap =
+            (userData?['dating'] is Map)
+                ? (userData!['dating'] as Map).cast<String, dynamic>()
+                : null;
+        final datingProfileMap =
+            (datingMap?['profile'] is Map)
+                ? (datingMap!['profile'] as Map).cast<String, dynamic>()
+                : null;
+        final gender =
+            datingProfileMap?['gender'] as String? ??
+            userData?['gender'] as String?;
         final relationshipStatus = nexus2?['relationshipStatus'] as String?;
 
-        // Canonicalize all searchable fields for consistent Firestore queries
-        final canonCountry = _canonCountry(d.countryOfResidence);
+        // Canonicalize marital status for consistent Firestore queries
         final canonMaritalStatus = _canonMarital(relationshipStatus);
 
-        final payload = <String, dynamic>{
-          // Flat fields specific to dating flow
-          'countryOfResidence':
-              canonCountry, // Store canonicalized for query consistency
-          'contactInfo': d.contactInfo,
-          'profileCompleted': true,
-          'isActive': true, // Dating profile is now active when completed
-          'createdAt':
-              FieldValue.serverTimestamp(), // IMPORTANT: Set creation timestamp for sorting
-          'verificationStatus': 'pending',
-          'verificationQueuedAt': FieldValue.serverTimestamp(),
-          'schemaVersion': 2, // Mark as v2 profile
-          // Profile searchable attributes (for dating.{field} queries)
-          'maritalStatus': canonMaritalStatus, // Use canonicalized value
-          'haveKids': null, // Placeholder until dedicated onboarding capture
-          'longDistance':
-              null, // Placeholder until dedicated onboarding capture
-          'genotype': null, // Placeholder until dedicated onboarding capture
-          // Review pack for admin queue
-          'reviewPack': {
+        // ── Build dot-notation update payload ──
+        // IMPORTANT: We use .update() with dot-notation keys instead of
+        // .set(merge:true) with a full 'dating' object. A nested object
+        // inside set(merge:true) REPLACES the entire map, wiping sibling
+        // fields like dating.optIn, dating.availability,
+        // dating.dailyLimitFirstHit, dating.shownProfileIds, etc.
+        // Dot-notation preserves all existing sibling fields.
+
+        // ── Map contactInfo display-keys → individual Firestore fields ──
+        // UserModel reads from root-level instagramUsername etc.
+        // Without this mapping, social media entered during onboarding
+        // would be stored in dating.contactInfo but never readable.
+        final ciInstagram = d.contactInfo['Instagram']?.trim() ?? '';
+        final ciTwitter = d.contactInfo['X']?.trim() ?? '';
+        final ciFacebook = d.contactInfo['Facebook']?.trim() ?? '';
+        final ciEmail = d.contactInfo['Email']?.trim() ?? '';
+        final ciPhone = d.contactInfo['Phone']?.trim() ?? '';
+        final ciWhatsApp = d.contactInfo['WhatsApp']?.trim() ?? '';
+        // If user provided a phone but no WhatsApp, use phone as the contact number
+        final ciPrimaryPhone = ciWhatsApp.isNotEmpty ? ciWhatsApp : ciPhone;
+
+        final updatePayload = <String, dynamic>{
+          // ── Root-level fields (needed by DatingProfile.fromFirestore) ──
+          // DatingProfile.fromFirestore reads ALL these from root level,
+          // NOT from dating.profile.*, so they MUST be written at root.
+          'photos': photoUrls,
+          'audioPrompts': audioUrls,
+          'audioDurations': audioDurations,
+          'createdAt': FieldValue.serverTimestamp(),
+          'schemaVersion': 2,
+          'age': d.age,
+          // Only write gender if non-null — avoid overwriting presurvey gender with null
+          if (gender != null) 'gender': gender,
+          'name': userData?['name'],
+          'city': d.city,
+          'country': d.countryOfResidence?.trim() ?? '',
+          'nationality': d.nationality,
+          'educationLevel': d.educationLevel,
+          'profession': d.profession,
+          'churchName': d.churchName ?? d.otherChurchName,
+          'hobbies': d.hobbies,
+          'desiredQualities': d.desiredQualities,
+          'profileUrl': photoUrls.isNotEmpty ? photoUrls.first : null,
+          'maritalStatus': canonMaritalStatus,
+          'isActive': true,
+
+          // ── Root-level social media (UserModel reads these) ──
+          if (ciInstagram.isNotEmpty) 'instagramUsername': ciInstagram,
+          if (ciTwitter.isNotEmpty) 'twitterUsername': ciTwitter,
+          if (ciFacebook.isNotEmpty) 'facebookUsername': ciFacebook,
+          if (ciPrimaryPhone.isNotEmpty) 'phoneNumber': ciPrimaryPhone,
+          if (ciEmail.isNotEmpty) 'email': ciEmail,
+
+          // ── dating.* flat fields (dot-notation preserves siblings) ──
+          'dating.contactInfo': d.contactInfo,
+          'dating.profileCompleted': true,
+          'dating.isActive': true,
+          'dating.createdAt': FieldValue.serverTimestamp(),
+          'dating.verificationStatus': 'pending',
+          'dating.verificationQueuedAt': FieldValue.serverTimestamp(),
+          'dating.schemaVersion': 2,
+          'dating.maritalStatus': canonMaritalStatus,
+          // Country of residence — used by dating_search_service Firestore
+          // WHERE queries (must match capitalized filter dropdown values).
+          'dating.countryOfResidence': d.countryOfResidence?.trim() ?? '',
+          'dating.haveKids': null,
+          'dating.longDistance': null,
+          'dating.genotype': null,
+          // Audio prompts at dating level (readable by UserModel.fromMap)
+          'dating.audioPrompts': audioUrls,
+
+          // ── dating.reviewPack (admin queue — written as full sub-map) ──
+          'dating.reviewPack': {
             'photoUrls': photoUrls,
             'audioUrls': audioUrls,
             'submittedAt': FieldValue.serverTimestamp(),
           },
-          // Mirror fields for admin query convenience
-          'gender': gender,
-          'relationshipStatus': relationshipStatus,
-          // Profile sub-map (matches UserModel expectations)
-          'profile': {
-            'age': d.age,
-            'city': d.city,
-            'country': canonCountry, // Also canonicalized for consistency
-            'nationality': d.nationality,
-            'educationLevel': d.educationLevel,
-            'profession': d.profession,
-            'churchName': d.churchName ?? d.otherChurchName,
-            'hobbies': d.hobbies,
-            'desiredQualities': d.desiredQualities,
-          },
+
+          // ── dating.profile fields (dot-notation preserves siblings) ──
+          // IMPORTANT: Must NOT use 'dating.profile': {fullMap} because that
+          // replaces the entire sub-document, wiping fields added by other
+          // write paths (e.g. profile_screen edit adds name, photos, etc.).
+          'dating.profile.age': d.age,
+          'dating.profile.city': d.city,
+          'dating.profile.country': d.countryOfResidence?.trim() ?? '',
+          'dating.profile.nationality': d.nationality,
+          'dating.profile.educationLevel': d.educationLevel,
+          'dating.profile.profession': d.profession,
+          'dating.profile.churchName': d.churchName ?? d.otherChurchName,
+          'dating.profile.hobbies': d.hobbies,
+          'dating.profile.desiredQualities': d.desiredQualities,
+          'dating.profile.photos': photoUrls,
+          'dating.profile.profileUrl':
+              photoUrls.isNotEmpty ? photoUrls.first : null,
+          if (gender != null) 'dating.profile.gender': gender,
+          if (userData?['name'] != null)
+            'dating.profile.name': userData!['name'],
+          // Social media — UserModel priority reads dating.profile.phoneNumber;
+          // others read from root but stored here for completeness.
+          if (ciInstagram.isNotEmpty)
+            'dating.profile.instagramUsername': ciInstagram,
+          if (ciTwitter.isNotEmpty) 'dating.profile.twitterUsername': ciTwitter,
+          if (ciFacebook.isNotEmpty)
+            'dating.profile.facebookUsername': ciFacebook,
+          if (ciPrimaryPhone.isNotEmpty)
+            'dating.profile.phoneNumber': ciPrimaryPhone,
         };
 
-        // Save both root-level fields (for DatingProfile display) and dating object
-        await fs.collection('users').doc(uid).set({
-          // Root-level fields for dating profile visibility/search
-          'photos':
-              photoUrls, // CRITICAL: photos must be at root for DatingProfile.fromFirestore
-          'createdAt': FieldValue.serverTimestamp(), // Also at root for sorting
-          'schemaVersion': 2, // Mark schema version at root
-          'age': d.age, // Basic fields for sorting/filtering
-          'gender': gender,
-          'name': userData?['name'], // Preserve display name
-          // Dating nested structure
-          'dating': payload,
-        }, SetOptions(merge: true));
-        print('[DATING_SAVE] ✅ Firestore write successful');
+        // Use .update() — document must exist (it does, from signup/presurvey).
+        // IMPORTANT: We cannot use .set(merge:true) as a fallback because
+        // Firestore's set() treats dot-notation keys (e.g. 'dating.contactInfo')
+        // as LITERAL field names, not nested paths. Only .update() interprets
+        // dots as nested paths. If the doc somehow doesn't exist, create it
+        // first, then update.
+        if (!userDoc.exists) {
+          await fs.collection('users').doc(uid).set(<String, dynamic>{});
+        }
+        await fs.collection('users').doc(uid).update(updatePayload);
+        print('[DATING_SAVE] ✅ Firestore write successful (dot-notation)');
         print(
           '[DATING_SAVE]   Root-level photos (${photoUrls.length}): $photoUrls',
         );
         print(
-          '[DATING_SAVE]   reviewPack.photoUrls (${payload['reviewPack']['photoUrls'].length}): ${payload['reviewPack']['photoUrls']}',
+          '[DATING_SAVE]   reviewPack.photoUrls (${photoUrls.length}): $photoUrls',
         );
 
         // Track nationality and country through service (centralized handling)

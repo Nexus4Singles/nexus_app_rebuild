@@ -1,5 +1,52 @@
 import 'dating_profile.dart';
 
+/// Structured breakdown of why no profiles matched.
+/// Allows the UI to show specific, actionable feedback.
+class NoProfilesBreakdown {
+  /// Total profiles fetched from Firestore (before any in-memory filter).
+  final int totalFetched;
+
+  /// Profiles remaining after applying the age bracket filter.
+  final int afterAgeFilter;
+
+  /// Profiles remaining after applying the country filter.
+  final int afterCountryFilter;
+
+  /// The user's selected age range.
+  final int minAge;
+  final int maxAge;
+
+  /// The user's selected country (display name).
+  final String? countryName;
+
+  /// Which filter step caused the result to drop to zero.
+  /// null if results are non-empty.
+  final String? eliminatingFilter;
+
+  const NoProfilesBreakdown({
+    required this.totalFetched,
+    required this.afterAgeFilter,
+    required this.afterCountryFilter,
+    required this.minAge,
+    required this.maxAge,
+    this.countryName,
+    this.eliminatingFilter,
+  });
+
+  /// True when there are profiles in the system but none in the age bracket.
+  bool get noProfilesInAgeBracket => totalFetched > 0 && afterAgeFilter == 0;
+
+  /// True when there are profiles in the age bracket but none in the country.
+  bool get noProfilesInCountry => afterAgeFilter > 0 && afterCountryFilter == 0;
+
+  /// True when both age and country together yield zero.
+  bool get noProfilesForAgePlusCountry =>
+      totalFetched > 0 && afterAgeFilter == 0 && afterCountryFilter == 0;
+
+  /// True when there are zero profiles system-wide for this gender.
+  bool get noProfilesAtAll => totalFetched == 0;
+}
+
 class DatingSearchResult {
   final List<DatingProfile> items;
 
@@ -37,6 +84,10 @@ class DatingSearchResult {
   /// When user reaches this limit, they see "End of current search results"
   final int maxPaginationPages;
 
+  /// Structured breakdown of why no profiles were found.
+  /// Only populated when items is empty.
+  final NoProfilesBreakdown? noProfilesBreakdown;
+
   const DatingSearchResult({
     required this.items,
     this.emptyHint,
@@ -47,6 +98,7 @@ class DatingSearchResult {
     this.allAvailableShownToday = false,
     this.shownProfileIds = const [],
     this.maxPaginationPages = 100,
+    this.noProfilesBreakdown,
   });
 
   bool get isEmpty => items.isEmpty;

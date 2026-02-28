@@ -451,11 +451,11 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
                   opacity: _titleFade,
                   child: Text(
                     'Nexus',
-                    style: AppTextStyles.headlineLarge.copyWith(
+                    style: AppTextStyles.headlineMedium.copyWith(
                       color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 1.5,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.2,
                     ),
                   ),
                 ),
@@ -513,7 +513,7 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
                     textAlign: TextAlign.center,
                     style: AppTextStyles.bodyMedium.copyWith(
                       color: Colors.white.withOpacity(0.9),
-                      fontSize: 14,
+                      fontSize: 12,
                       height: 1.4,
                       letterSpacing: 0.2,
                     ),

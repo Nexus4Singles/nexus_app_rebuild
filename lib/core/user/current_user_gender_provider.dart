@@ -75,7 +75,7 @@ final currentUserGenderProvider = StreamProvider<String?>((ref) async* {
   try {
     print('[currentUserGenderProvider] ✓ Firestore doc loaded: true');
 
-    // Extract BOTH values for reconciliation
+    // Extract gender from ALL possible storage locations
     String? v2Gender =
         (doc['nexus2'] as Map?)
             ?.cast<String, dynamic>()['gender']
@@ -84,6 +84,29 @@ final currentUserGenderProvider = StreamProvider<String?>((ref) async* {
             .trim();
 
     String? v1Gender = doc['gender']?.toString().toLowerCase().trim();
+
+    // Fallback: check dating.profile.gender (written during dating onboarding)
+    final datingMap =
+        (doc['dating'] is Map)
+            ? (doc['dating'] as Map).cast<String, dynamic>()
+            : null;
+    final datingProfileMap =
+        (datingMap?['profile'] is Map)
+            ? (datingMap!['profile'] as Map).cast<String, dynamic>()
+            : null;
+    String? datingGender =
+        (datingProfileMap?['gender'] ?? datingMap?['gender'])
+            ?.toString()
+            .toLowerCase()
+            .trim();
+    final datingValid =
+        datingGender != null &&
+        datingGender.isNotEmpty &&
+        (datingGender == 'male' || datingGender == 'female');
+
+    print(
+      '[currentUserGenderProvider]   dating.profile: $datingGender (valid=$datingValid)',
+    );
 
     // Validate both
     final v2Valid =
@@ -165,9 +188,37 @@ final currentUserGenderProvider = StreamProvider<String?>((ref) async* {
       return;
     }
 
+    // CASE: Only dating.profile.gender valid → use it and sync to root + v2
+    if (datingValid && !v1Valid && !v2Valid) {
+      print(
+        '[currentUserGenderProvider] ✓ Using dating.profile.gender: $datingGender (syncing to root)',
+      );
+      try {
+        final firestore = FirebaseFirestore.instance;
+        await firestore.collection('users').doc(uid).update({
+          'gender': datingGender,
+        });
+        print(
+          '[currentUserGenderProvider] ✓ Synced dating.profile.gender to root: $datingGender',
+        );
+      } catch (e) {
+        print('[currentUserGenderProvider] ✗ Failed to sync to root: $e');
+      }
+      yield datingGender;
+      return;
+    }
+
     // CASE: Neither valid
     print(
       '[currentUserGenderProvider] ✗ CRITICAL: Authenticated user has no valid gender (uid=$uid)',
+    );
+    print('[currentUserGenderProvider]   doc keys: ${doc.keys.toList()}');
+    print('[currentUserGenderProvider]   raw root gender: ${doc['gender']}');
+    print(
+      '[currentUserGenderProvider]   raw nexus2.gender: ${(doc['nexus2'] as Map?)?.cast<String, dynamic>()['gender']}',
+    );
+    print(
+      '[currentUserGenderProvider]   raw dating.profile.gender: ${datingProfileMap?['gender']}',
     );
     yield null;
   } catch (e) {

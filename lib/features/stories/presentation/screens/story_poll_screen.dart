@@ -125,7 +125,7 @@ class _StoryPollScreenState extends ConsumerState<StoryPollScreen> {
         ),
         title: Text(
           'Weekly Poll',
-          style: AppTextStyles.headlineLarge.copyWith(
+          style: AppTextStyles.headlineSmall.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -230,68 +230,137 @@ class _VoteView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final cs = Theme.of(context).colorScheme;
+    final isSelected = selectedOptionId != null && selectedOptionId!.isNotEmpty;
 
     return ListView(
       children: [
+        // ── Header card with icon + question ──
         _Card(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Weekly Poll',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: cs.primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(
+                      Icons.poll_rounded,
+                      size: 22,
+                      color: cs.primary,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      'Weekly Poll',
+                      style: AppTextStyles.titleSmall.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 6),
-              Text(poll.question, style: theme.textTheme.bodyLarge),
               const SizedBox(height: 10),
               Text(
-                'Guests can read stories, but voting/results are for signed-in users.',
-                style: theme.textTheme.bodySmall,
+                poll.question,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.getTextPrimary(context),
+                  height: 1.4,
+                ),
               ),
             ],
           ),
         ),
         const SizedBox(height: 14),
-        _Card(
-          child: Column(
-            children: [
-              ...poll.options.map(
-                (o) => Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: theme.dividerColor.withOpacity(0.35),
-                    ),
+
+        // ── Option tiles ──
+        ...poll.options.map((o) {
+          final isCurrent = o.id == selectedOptionId;
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: GestureDetector(
+              onTap: () => onSelect(o.id),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 14,
+                ),
+                decoration: BoxDecoration(
+                  color:
+                      isCurrent
+                          ? cs.primary.withOpacity(0.08)
+                          : AppColors.getSurface(context),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color:
+                        isCurrent
+                            ? cs.primary
+                            : AppColors.getBorder(context).withOpacity(0.4),
+                    width: isCurrent ? 1.5 : 1,
                   ),
-                  child: RadioListTile<String>(
-                    value: o.id,
-                    groupValue: selectedOptionId,
-                    onChanged: onSelect,
-                    title: Text(o.text),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.03),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
                     ),
-                    controlAffinity: ListTileControlAffinity.trailing,
-                  ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      width: 22,
+                      height: 22,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color:
+                              isCurrent
+                                  ? cs.primary
+                                  : AppColors.getBorder(context),
+                          width: isCurrent ? 6 : 2,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        o.text,
+                        style: AppTextStyles.bodySmall.copyWith(
+                          fontWeight:
+                              isCurrent ? FontWeight.w600 : FontWeight.w400,
+                          color: AppColors.getTextPrimary(context),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 4),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed:
-                      (selectedOptionId == null || selectedOptionId!.isEmpty)
-                          ? null
-                          : onVote,
-                  child: const Text('Vote to see results'),
-                ),
+            ),
+          );
+        }),
+
+        const SizedBox(height: 8),
+
+        // ── Vote button ──
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: ElevatedButton(
+            onPressed: isSelected ? onVote : null,
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
               ),
-            ],
+            ),
+            child: const Text('Vote to see results'),
           ),
         ),
       ],
@@ -312,16 +381,13 @@ class _ResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final cs = Theme.of(context).colorScheme;
     final counts = aggregate?.optionCounts ?? const <String, int>{};
     var total = aggregate?.totalVotes ?? 0;
 
-    // If totalVotes is somehow not set, calculate from counts as fallback
     if (total == 0 && counts.isNotEmpty) {
       total = counts.values.fold(0, (sum, count) => sum + count);
     }
-
-    // If still 0, use seedCounts as last resort
     if (total == 0 && poll.seedCounts.isNotEmpty) {
       total = poll.seedCounts.values.fold(0, (sum, count) => sum + count);
     }
@@ -331,39 +397,71 @@ class _ResultsView extends StatelessWidget {
 
     return ListView(
       children: [
+        // ── Header card ──
         _Card(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Poll Results',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: cs.primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(
+                      Icons.bar_chart_rounded,
+                      size: 22,
+                      color: cs.primary,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Poll Results',
+                          style: AppTextStyles.titleSmall.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          total == 0 ? 'Be the first to vote.' : '$total votes',
+                          style: AppTextStyles.labelSmall.copyWith(
+                            color: AppColors.getTextSecondary(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 6),
-              Text(poll.question, style: theme.textTheme.bodyLarge),
-              const SizedBox(height: 6),
+              const SizedBox(height: 10),
               Text(
-                total == 0 ? 'Be the first to vote.' : 'Total votes: $total',
-                style: theme.textTheme.bodySmall,
+                poll.question,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.getTextPrimary(context),
+                  height: 1.4,
+                ),
               ),
             ],
           ),
         ),
         const SizedBox(height: 14),
+
+        // ── Result bars ──
         _Card(
           child: Column(
             children: [
               ...poll.options.map((o) {
-                // Prefer aggregate counts (real-time votes), fall back to seedCounts (seed data)
                 var c = counts[o.id] ?? poll.seedCounts[o.id] ?? 0;
                 final isMine = o.id == votedOptionId;
 
-                // If this is the user's voted option and total shows their vote counted,
-                // but count is still 0 from aggregate, use 1 to show it accurately
                 if (isMine && c == 0 && counts[o.id] == null && total >= 1) {
-                  c = 1; // This vote was just submitted
+                  c = 1;
                 }
 
                 final pct =
@@ -372,34 +470,74 @@ class _ResultsView extends StatelessWidget {
                         : 0.0;
 
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.only(bottom: 14),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
+                          if (isMine)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 6),
+                              child: Icon(
+                                Icons.check_circle,
+                                size: 16,
+                                color: cs.primary,
+                              ),
+                            ),
                           Expanded(
                             child: Text(
-                              isMine ? '✓ ${o.text}' : o.text,
-                              style: TextStyle(
+                              o.text,
+                              style: AppTextStyles.bodySmall.copyWith(
                                 fontWeight:
                                     isMine ? FontWeight.w700 : FontWeight.w500,
+                                color:
+                                    isMine
+                                        ? cs.primary
+                                        : AppColors.getTextPrimary(context),
                               ),
                             ),
                           ),
-                          Text('${pct.toStringAsFixed(0)}%'),
+                          Text(
+                            '${pct.toStringAsFixed(0)}%',
+                            style: AppTextStyles.labelMedium.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color:
+                                  isMine
+                                      ? cs.primary
+                                      : AppColors.getTextSecondary(context),
+                            ),
+                          ),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(999),
-                        child: LinearProgressIndicator(
-                          value: pct / 100,
-                          minHeight: 8,
-                          backgroundColor: theme.colorScheme.surfaceVariant,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            theme.colorScheme.primary,
-                          ),
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: AppColors.getBorder(
+                                  context,
+                                ).withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(999),
+                              ),
+                            ),
+                            FractionallySizedBox(
+                              widthFactor: (pct / 100).clamp(0.0, 1.0),
+                              child: Container(
+                                height: 8,
+                                decoration: BoxDecoration(
+                                  color:
+                                      isMine
+                                          ? cs.primary
+                                          : cs.primary.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(999),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -410,13 +548,34 @@ class _ResultsView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 14),
+
+        // ── Insight card ──
         _Card(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.lightbulb_outline),
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: Colors.amber.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.lightbulb_rounded,
+                  size: 18,
+                  color: Colors.amber,
+                ),
+              ),
               const SizedBox(width: 10),
-              Expanded(child: Text(insight, style: theme.textTheme.bodyMedium)),
+              Expanded(
+                child: Text(
+                  insight,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.getTextPrimary(context),
+                    height: 1.4,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -431,13 +590,21 @@ class _Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: theme.dividerColor.withOpacity(0.35)),
+        color: AppColors.getSurface(context),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: AppColors.getBorder(context).withOpacity(0.5),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: child,
     );

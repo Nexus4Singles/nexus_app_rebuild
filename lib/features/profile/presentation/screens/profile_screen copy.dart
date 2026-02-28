@@ -24,8 +24,8 @@ import 'package:nexus_app_v2/core/moderation/moderation_providers.dart';
 import 'package:country_picker/country_picker.dart';
 
 import '../../../../core/models/user_model.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:just_audio/just_audio.dart' as ja;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:nexus_app_v2/core/services/media_service.dart';
 import 'package:nexus_app_v2/features/profile/presentation/widgets/relationship_status_editor.dart';
 import 'dart:convert';
@@ -94,9 +94,9 @@ Future<void> handleToggleDatingOptIn(
   }
 
   try {
-    await fs.collection('users').doc(uid).set({
-      'dating': {'optIn': nextValue},
-    }, SetOptions(merge: true));
+    await fs.collection('users').doc(uid).update({
+      'dating.optIn': nextValue,
+    });
 
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -393,6 +393,7 @@ class ProfileScreen extends ConsumerWidget {
                                 : 'Audio recordings cannot be changed after profile creation',
                         child: _AudioPromptsSection(
                           audioUrls: profile.audioPrompts ?? const [],
+                          audioDurations: profile.audioDurations ?? const [],
                           isLocked: false,
                           isViewingOtherUser: isViewingOtherUser,
                           username: profile.username,
@@ -533,9 +534,7 @@ class _BasicProfileScreen extends ConsumerWidget {
                                 child: Center(
                                   child: Text(
                                     _initialsFromName(name),
-                                    style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w700,
+                                    style: AppTextStyles.displayMedium.copyWith(
                                       color:
                                           Theme.of(
                                             context,
@@ -547,9 +546,7 @@ class _BasicProfileScreen extends ConsumerWidget {
                               const SizedBox(height: 14),
                               Text(
                                 name,
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w700,
+                                style: AppTextStyles.displaySmall.copyWith(
                                   color:
                                       Theme.of(context).colorScheme.onPrimary,
                                 ),
@@ -558,8 +555,7 @@ class _BasicProfileScreen extends ConsumerWidget {
                                 const SizedBox(height: 6),
                                 Text(
                                   email,
-                                  style: TextStyle(
-                                    fontSize: 14,
+                                  style: AppTextStyles.bodyMedium.copyWith(
                                     color: Theme.of(
                                       context,
                                     ).colorScheme.onPrimary.withOpacity(0.85),
@@ -765,9 +761,9 @@ Future<void> _setRelationshipStatusTagFirestore(
 ) async {
   final key = (v == RelationshipStatusTag.taken) ? 'taken' : 'available';
 
-  await FirebaseFirestore.instance.collection('users').doc(uid).set({
-    'dating': {'availability': key},
-  }, SetOptions(merge: true));
+  await FirebaseFirestore.instance.collection('users').doc(uid).update({
+    'dating.availability': key,
+  });
 }
 
 class _RelationshipStatusPill extends ConsumerWidget {
@@ -1267,11 +1263,25 @@ class _HeroCarouselState extends State<_HeroCarousel> {
                                       'User')
                                   .trim(),
                         )
-                        : Image.network(
-                          url,
+                        : CachedNetworkImage(
+                          imageUrl: url,
                           fit: BoxFit.cover,
-                          cacheWidth: 1080,
-                          cacheHeight: 1080,
+                          memCacheWidth: 1080,
+                          memCacheHeight: 1080,
+                          placeholder: (context, url) => Container(
+                            color: AppColors.border,
+                            child: const Center(
+                              child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              ),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Container(
+                            color: AppColors.border,
+                            child: const Icon(Icons.broken_image_rounded, color: AppColors.textSecondary),
+                          ),
                         ),
               ),
             );
@@ -1413,7 +1423,6 @@ class _SendMessageCta extends ConsumerWidget {
                       style: AppTextStyles.titleSmall.copyWith(
                         color: AppColors.textOnPrimary,
                         fontWeight: FontWeight.w600,
-                        fontSize: 14,
                       ),
                     ),
                   ),
@@ -1636,140 +1645,68 @@ final _profileAudioControllerProvider = Provider<_ProfileAudioController>((
 });
 
 class _ProfileAudioController {
-  final AudioPlayer _player = AudioPlayer();
+  final ja.AudioPlayer _player = ja.AudioPlayer();
   String? currentUrl;
 
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
-  PlayerState state = PlayerState.stopped;
+  bool isPlaying = false;
+  bool isLoading = false;
+  bool hasError = false;
 
   bool _initialized = false;
-  bool _hasSource = false;
 
-  // Track cached durations for URLs to avoid reloading
+  /// In-memory cache: URL → duration. Persists across screen navigations
+  /// because the provider uses keepAlive(). Populated by:
+  /// 1. Known durations from Firestore (seedDurations)
+  /// 2. Duration learned when user actually plays a track (durationStream)
   final Map<String, Duration> _durationCache = {};
 
-  String? lastError;
   VoidCallback? _notify;
 
-  Future<void> init(VoidCallback notify) async {
+  void init(VoidCallback notify) {
     _notify = notify;
     if (_initialized) return;
     _initialized = true;
 
-    try {
-      await _player.setReleaseMode(ReleaseMode.stop);
-    } catch (_) {}
+    _player.playerStateStream.listen((state) {
+      final playing = state.playing;
+      final proc = state.processingState;
 
-    _player.onDurationChanged.listen((d) {
-      duration = d;
-      // Cache the duration for this URL
-      if (currentUrl != null) {
-        _durationCache[currentUrl!] = d;
+      isPlaying = playing && proc == ja.ProcessingState.ready;
+      isLoading = proc == ja.ProcessingState.loading ||
+          proc == ja.ProcessingState.buffering;
+
+      if (proc == ja.ProcessingState.completed) {
+        isPlaying = false;
+        isLoading = false;
       }
       notify();
     });
 
-    _player.onPositionChanged.listen((p) {
+    _player.durationStream.listen((d) {
+      if (d != null && d.inMilliseconds > 0) {
+        duration = d;
+        if (currentUrl != null) _durationCache[currentUrl!] = d;
+        notify();
+      }
+    });
+
+    _player.positionStream.listen((p) {
       position = p;
       notify();
     });
-
-    _player.onPlayerStateChanged.listen((s) {
-      state = s;
-      notify();
-    });
   }
 
-  /// Get duration for a specific URL (loads metadata via just_audio)
-  Future<Duration> getDurationForUrl(String url) async {
-    final u = url.trim();
-    if (u.isEmpty) {
-      print('═══ 🎵 AUDIO: getDurationForUrl EMPTY URL');
-      return Duration.zero;
-    }
-
-    // If cached, return immediately
-    if (_durationCache.containsKey(u)) {
-      final cached = _durationCache[u]!;
-      print('═══ 🎵 AUDIO: getDurationForUrl CACHED ${cached.inSeconds}s');
-      return cached;
-    }
-
-    print('═══ 🎵 AUDIO: getDurationForUrl FETCHING $u');
-    ja.AudioPlayer? probe;
-    try {
-      probe = ja.AudioPlayer();
-      final d = await probe.setUrl(u);
-      print('═══ 🎵 AUDIO: probe.setUrl returned ${d?.inSeconds}s (null: ${d == null})');
-      
-      if (d != null && d != Duration.zero) {
-        _durationCache[u] = d;
-        print('═══ 🎵 AUDIO: CACHED DURATION ${d.inSeconds}s FOR $u');
-        return d;
-      } else {
-        print('═══ 🎵 AUDIO: WARNING - probe returned null or Duration.zero');
-      }
-    } catch (e) {
-      print('═══ 🎵 AUDIO: EXCEPTION IN getDurationForUrl: $e');
-    } finally {
-      try {
-        await probe?.dispose();
-      } catch (e) {
-        print('═══ 🎵 AUDIO: Exception disposing probe: $e');
-      }
-    }
-    return Duration.zero;
+  /// Pre-seed duration cache from Firestore data. Zero network requests.
+  void seedDurations(Map<String, Duration> known) {
+    _durationCache.addAll(known);
   }
 
-  /// Preload duration for a URL without playing it
-  Future<void> preloadDuration(String url) async {
-    final u = url.trim();
-    if (u.isEmpty) {
-      print('═══ 🎵 AUDIO: preloadDuration EMPTY URL');
-      return;
-    }
-
-    // Return cached duration if available
-    if (_durationCache.containsKey(u)) {
-      final cached = _durationCache[u]!;
-      print('═══ 🎵 AUDIO: preloadDuration CACHED HIT ${cached.inSeconds}s');
-      duration = cached;
-      _notify?.call();
-      return;
-    }
-
-    print('═══ 🎵 AUDIO: preloadDuration STARTING FOR $u');
-    ja.AudioPlayer? probe;
-    try {
-      probe = ja.AudioPlayer();
-      final d = await probe.setUrl(u);
-      print('═══ 🎵 AUDIO: preloadDuration probe.setUrl got ${d?.inSeconds}s');
-      
-      if (d != null && d != Duration.zero) {
-        _durationCache[u] = d;
-        if (currentUrl == u || currentUrl == null) {
-          duration = d;
-        }
-        _notify?.call();
-        print('═══ 🎵 AUDIO: preloadDuration NOTIFIED ${d.inSeconds}s');
-      } else {
-        print('═══ 🎵 AUDIO: WARNING - preloadDuration got null or zero');
-      }
-    } catch (e) {
-      print('═══ 🎵 AUDIO: EXCEPTION IN preloadDuration: $e');
-    } finally {
-      try {
-        await probe?.dispose();
-      } catch (e) {
-        print('═══ 🎵 AUDIO: Exception disposing probe in preloadDuration: $e');
-      }
-    }
-  }
+  Duration? getCachedDuration(String url) => _durationCache[url.trim()];
 
   Future<void> playOrPause(String url) async {
-    lastError = null;
-    _notify?.call();
+    hasError = false;
     final u = url.trim();
     if (u.isEmpty) return;
 
@@ -1777,82 +1714,56 @@ class _ProfileAudioController {
       if (currentUrl != u) {
         currentUrl = u;
         position = Duration.zero;
+        duration = _durationCache[u] ?? Duration.zero;
+        isLoading = true;
+        _notify?.call();
 
-        // Use cached duration if available
-        if (_durationCache.containsKey(u)) {
-          duration = _durationCache[u]!;
-        } else {
-          duration = Duration.zero;
-        }
-
-        // stop only if we previously had a source
-        if (_hasSource) {
-          try {
-            await _player.stop();
-          } catch (_) {}
-        }
-
-        await _player.play(UrlSource(u));
-        _hasSource = true;
+        await _player.setUrl(u);
+        await _player.play();
         return;
       }
 
-      // Same URL: toggle pause/play (avoid resume() — it often fails on iOS if native player isn't ready)
-      if (state == PlayerState.playing) {
-        try {
-          await _player.pause();
-        } catch (_) {}
-        return;
+      // Same URL — toggle
+      if (_player.playing) {
+        await _player.pause();
+      } else {
+        if (_player.processingState == ja.ProcessingState.completed) {
+          await _player.seek(Duration.zero);
+        }
+        await _player.play();
       }
-
-      await _player.play(UrlSource(u));
-      _hasSource = true;
     } catch (e) {
-      lastError = e.toString();
+      hasError = true;
+      isLoading = false;
+      isPlaying = false;
       _notify?.call();
     }
-    ;
   }
 
   Future<void> seek(Duration d) async {
-    if (!_hasSource) return;
-    try {
-      await _player.seek(d);
-    } catch (_) {}
-    ;
+    try { await _player.seek(d); } catch (_) {}
   }
 
   Future<void> stop() async {
     currentUrl = null;
     position = Duration.zero;
     duration = Duration.zero;
-
-    if (!_hasSource) return;
-
-    try {
-      await _player.stop();
-    } catch (_) {}
-
-    _hasSource = false;
+    isPlaying = false;
+    isLoading = false;
+    hasError = false;
+    try { await _player.stop(); } catch (_) {}
   }
 
   void dispose() {
     currentUrl = null;
-    _hasSource = false;
-
-    try {
-      _player.stop();
-    } catch (_) {}
-
-    try {
-      _player.dispose();
-    } catch (_) {}
-    ;
+    try { _player.stop(); } catch (_) {}
+    try { _player.dispose(); } catch (_) {}
   }
 }
 
 class _AudioPromptsSection extends ConsumerStatefulWidget {
   final List<String> audioUrls;
+  final List<int> audioDurations; // seconds per URL (from Firestore)
   final bool isLocked;
   final bool isViewingOtherUser;
   final String? username;
@@ -1860,6 +1771,7 @@ class _AudioPromptsSection extends ConsumerStatefulWidget {
 
   const _AudioPromptsSection({
     required this.audioUrls,
+    this.audioDurations = const [],
     required this.isLocked,
     required this.isViewingOtherUser,
     this.username,
@@ -1877,11 +1789,19 @@ class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
   @override
   void initState() {
     super.initState();
-    // Use provider to get persistent controller across navigations
     _controller = ref.read(_profileAudioControllerProvider);
     _controller.init(() {
       if (mounted) setState(() {});
     });
+    // Seed duration cache from Firestore data — zero network requests
+    final urls = widget.audioUrls.where((e) => e.trim().isNotEmpty).toList();
+    final durations = widget.audioDurations;
+    final known = <String, Duration>{};
+    for (int i = 0; i < urls.length; i++) {
+      final secs = i < durations.length ? durations[i] : 0;
+      if (secs > 0) known[urls[i].trim()] = Duration(seconds: secs);
+    }
+    if (known.isNotEmpty) _controller.seedDurations(known);
   }
 
   @override
@@ -1929,9 +1849,8 @@ class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
   @override
   Widget build(BuildContext context) {
     final username = widget.username ?? 'them';
-    print('═══ 🎵 AUDIO: ProfileAudioPrompts.build() called, isOtherUser=${widget.isViewingOtherUser}');
-    
-    // Normalize gender: handles variations like "Male", "male", "man", "Female", "female", "woman", etc.
+
+    // Normalize gender
     final genderNormalized =
         (widget.gender ?? '').toString().trim().toLowerCase();
     final isFemale = genderNormalized.startsWith('f');
@@ -1951,13 +1870,8 @@ class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
             ];
 
     final urls = widget.audioUrls.where((e) => e.trim().isNotEmpty).toList();
-    print('═══ 🎵 AUDIO: audioUrls count=${widget.audioUrls.length}, filtered URLs count=${urls.length}');
-    for (int i = 0; i < urls.length; i++) {
-      print('═══ 🎵 AUDIO: URL[$i]=${urls[i]}');
-    }
-    
+
     if (urls.isEmpty) {
-      print('═══ 🎵 AUDIO: No audio URLs - showing empty message');
       return Text(
         'No audio recordings available yet.',
         style: AppTextStyles.bodyMedium.copyWith(
@@ -1966,11 +1880,9 @@ class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
       );
     }
 
-    print('═══ 🎵 AUDIO: Creating ${urls.length} audio tiles');
     return Column(
       children: List.generate(3, (i) {
         final url = i < urls.length ? urls[i] : null;
-        print('═══ 🎵 AUDIO: Generating tile $i with URL=$url');
         return Padding(
           padding: EdgeInsets.only(bottom: i == 2 ? 0 : 12),
           child: _AudioPromptTile(
@@ -2003,183 +1915,135 @@ class _AudioPromptTile extends StatefulWidget {
 }
 
 class _AudioPromptTileState extends State<_AudioPromptTile> {
-  Duration _cachedDuration = Duration.zero;
-  bool _durationLoading = false;
-
-  Future<void> _fetchDurationInBackground(String url) async {
-    if (url.trim().isEmpty || _durationLoading) {
-      print('═══ 🎵 AUDIO: _fetchDurationInBackground SKIPPED (empty or loading)');
-      return;
-    }
-    
-    _durationLoading = true;
-    print('═══ 🎵 AUDIO: _fetchDurationInBackground STARTED');
-    try {
-      final duration = await widget.controller.getDurationForUrl(url);
-      print('═══ 🎵 AUDIO: _fetchDurationInBackground GOT ${duration.inSeconds}s');
-      if (mounted) {
-        setState(() {
-          _cachedDuration = duration;
-          print('═══ 🎵 AUDIO: _fetchDurationInBackground setState CALLED with ${duration.inSeconds}s');
-        });
-      } else {
-        print('═══ 🎵 AUDIO: _fetchDurationInBackground WIDGET NOT MOUNTED');
-      }
-    } catch (e) {
-      print('═══ 🎵 AUDIO: EXCEPTION IN _fetchDurationInBackground: $e');
-    } finally {
-      _durationLoading = false;
-      print('═══ 🎵 AUDIO: _fetchDurationInBackground COMPLETED');
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    print('═══ 🎵 AUDIO: >>>>>>>>>> _AudioPromptTileState.initState called');
-    print('═══ 🎵 AUDIO: url=${widget.url}');
-    print('═══ 🎵 AUDIO: url is empty: ${(widget.url ?? '').trim().isEmpty}');
-    
-    // Preload the duration in the background (doesn't block UI)
-    if ((widget.url ?? '').trim().isNotEmpty) {
-      print('═══ 🎵 AUDIO: >>>>> Starting preload and fetch');
-      widget.controller.preloadDuration(widget.url!);
-      _fetchDurationInBackground(widget.url!);
-    } else {
-      print('═══ 🎵 AUDIO: >>>>> SKIPPED - URL is empty or null');
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant _AudioPromptTile oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    print('═══ 🎵 AUDIO: didUpdateWidget Old: ${oldWidget.url}, New: ${widget.url}');
-    // If the URL changed, fetch the new duration in background
-    if (oldWidget.url != widget.url && (widget.url ?? '').trim().isNotEmpty) {
-      print('═══ 🎵 AUDIO: didUpdateWidget URL CHANGED - fetching new');
-      widget.controller.preloadDuration(widget.url!);
-      _cachedDuration = Duration.zero; // Reset for new URL
-      _fetchDurationInBackground(widget.url!);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final hasUrl = (widget.url ?? '').trim().isNotEmpty;
     final isCurrent =
         hasUrl && (widget.controller.currentUrl == (widget.url ?? '').trim());
-    final isPlaying =
-        isCurrent && widget.controller.state == PlayerState.playing;
+    final isPlaying = isCurrent && widget.controller.isPlaying;
+    final isBuffering = isCurrent && widget.controller.isLoading;
+    final hasErrorOnThis = isCurrent && widget.controller.hasError;
 
-    // Use cached duration directly (doesn't wait for Future)
-    final audioDuration = _cachedDuration;
-    final duration =
-        audioDuration.inMilliseconds == 0
-            ? const Duration(seconds: 1)
-            : audioDuration;
-    
+    // Read duration from controller's cache (filled by section-level preload)
+    final trimmedUrl = (widget.url ?? '').trim();
+    final cachedDur = widget.controller.getCachedDuration(trimmedUrl);
+    final audioDuration = cachedDur ?? (isCurrent ? widget.controller.duration : Duration.zero);
+    final hasDuration = audioDuration.inMilliseconds > 0;
+    final duration = hasDuration ? audioDuration : const Duration(seconds: 60);
+
     // Position is only relevant for the currently playing audio
     final position = isCurrent ? widget.controller.position : Duration.zero;
     final borderColor = Theme.of(context).dividerColor;
 
+    // Decide play button icon/widget
+    Widget playButtonChild;
+    if (widget.isLocked) {
+      playButtonChild = Icon(Icons.lock_rounded, color: Theme.of(context).colorScheme.primary, size: 22);
+    } else if (!hasUrl) {
+      playButtonChild = Icon(Icons.mic_none_rounded, color: Theme.of(context).colorScheme.primary, size: 22);
+    } else if (hasErrorOnThis) {
+      playButtonChild = Icon(Icons.refresh_rounded, color: Theme.of(context).colorScheme.error, size: 22);
+    } else if (isBuffering) {
+      playButtonChild = SizedBox(
+        width: 18,
+        height: 18,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      );
+    } else {
+      playButtonChild = Icon(
+        isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+        color: Theme.of(context).colorScheme.primary,
+        size: 22,
+      );
+    }
+
     return Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: borderColor),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: borderColor),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Audio prompt question
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Text(
+              widget.prompt,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
             children: [
-              // Audio prompt question
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Text(
-                  widget.prompt,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  InkWell(
-                    onTap:
-                        (!widget.isLocked && hasUrl)
-                            ? () async {
-                              await widget.controller.playOrPause(widget.url!);
-                            }
-                            : null,
+              InkWell(
+                onTap:
+                    (!widget.isLocked && hasUrl)
+                        ? () async {
+                          await widget.controller.playOrPause(widget.url!);
+                        }
+                        : null,
+                borderRadius: BorderRadius.circular(999),
+                child: Container(
+                  height: 34,
+                  width: 44,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(999),
-                    child: Container(
-                      height: 34,
-                      width: 44,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(999),
-                        border: Border.all(
-                          color: Theme.of(context).dividerColor,
-                        ),
-                      ),
-                      child: Icon(
-                        widget.isLocked
-                            ? Icons.lock_rounded
-                            : hasUrl
-                            ? (isPlaying
-                                ? Icons.pause_rounded
-                                : Icons.play_arrow_rounded)
-                            : Icons.mic_none_rounded,
-                        color: Theme.of(context).colorScheme.primary,
-                        size: 22,
-                      ),
-                    ),
+                    border: Border.all(color: Theme.of(context).dividerColor),
                   ),
-                ],
+                  child: Center(child: playButtonChild),
+                ),
               ),
-              if (!widget.isLocked && hasUrl) ...[
-                const SizedBox(height: 8),
-                Slider(
-                  value:
-                      isCurrent
-                          ? position.inMilliseconds
-                              .clamp(0, duration.inMilliseconds)
-                              .toDouble()
-                          : 0,
-                  max: duration.inMilliseconds.toDouble(),
-                  activeColor: Theme.of(context).colorScheme.primary,
-                  inactiveColor: Theme.of(
-                    context,
-                  ).colorScheme.primary.withOpacity(0.2),
-                  onChanged: (v) async {
-                    if (!isCurrent) return;
-                    await widget.controller.seek(
-                      Duration(milliseconds: v.toInt()),
-                    );
-                  },
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      _formatDuration(isCurrent ? position : Duration.zero),
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                    Text(
-                      _formatDuration(duration),
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
             ],
           ),
-        );
+          if (!widget.isLocked && hasUrl) ...[
+            const SizedBox(height: 8),
+            Slider(
+              value:
+                  isCurrent
+                      ? position.inMilliseconds
+                          .clamp(0, duration.inMilliseconds)
+                          .toDouble()
+                      : 0,
+              max: duration.inMilliseconds.toDouble(),
+              activeColor: Theme.of(context).colorScheme.primary,
+              inactiveColor: Theme.of(
+                context,
+              ).colorScheme.primary.withOpacity(0.2),
+              onChanged: (v) async {
+                if (!isCurrent) return;
+                await widget.controller.seek(Duration(milliseconds: v.toInt()));
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  isCurrent ? _formatDuration(position) : '00:00',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                Text(
+                  hasDuration ? _formatDuration(duration) : '--:--',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
   }
 }
 
@@ -2379,11 +2243,25 @@ class _GalleryGrid extends StatelessWidget {
                           initialIndex: i,
                         );
                       },
-                      child: Image.network(
-                        url,
+                      child: CachedNetworkImage(
+                        imageUrl: url,
                         fit: BoxFit.cover,
-                        cacheWidth: 400,
-                        cacheHeight: 400,
+                        memCacheWidth: 400,
+                        memCacheHeight: 400,
+                        placeholder: (context, url) => Container(
+                          color: AppColors.border,
+                          child: const Center(
+                            child: SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => const Icon(
+                          Icons.broken_image_rounded,
+                          color: AppColors.textSecondary,
+                        ),
                       ),
                     ),
                   ),
@@ -2502,7 +2380,7 @@ class _AccountTiles extends StatelessWidget {
                     (ctx) => AlertDialog(
                       title: const Text('Delete Dating Profile?'),
                       content: const Text(
-                        'This will remove your dating profile, photos, and audio prompts. '
+                        'This will remove your dating profile from view. '
                         'You can create a new dating profile anytime.',
                       ),
                       actions: [
@@ -2548,27 +2426,19 @@ class _AccountTiles extends StatelessWidget {
 
                 final fs = FirebaseFirestore.instance;
 
-                // Replace the 'dating' map with just {profileCompleted: false}.
-                // This wipes all photos/audio/profile data while giving
-                // datingProfileCompletedProvider an explicit `false` so it
-                // short-circuits before v1 fallback heuristics run.
+                // ARCHIVE approach: Preserve all dating data but mark
+                // the profile as inactive / not completed. The provider
+                // short-circuits on profileCompleted == false and
+                // isActive == false, so no v1 heuristic fallbacks
+                // will see the profile as completed.
+                // Using dot-notation so only these fields are touched —
+                // all other dating data (photos, audio, reviewPack, etc.)
+                // remains intact for potential future restoration.
                 await fs.collection('users').doc(uid).update({
-                  'dating': {'profileCompleted': false},
-                });
-
-                // Also clean up any top-level v1 dating fields that the
-                // provider's fallback heuristics might pick up.
-                await fs.collection('users').doc(uid).update({
-                  'profileUrl': FieldValue.delete(),
-                  'photos': FieldValue.delete(),
-                  'audioPrompts': FieldValue.delete(),
-                  'relationshipWithGod': FieldValue.delete(),
-                  'relationship_with_god': FieldValue.delete(),
-                  'roleOfHusband': FieldValue.delete(),
-                  'role_of_husband': FieldValue.delete(),
-                  'bestQualitiesOrTraits': FieldValue.delete(),
-                  'bestQualotiesOrTraits': FieldValue.delete(),
-                  'best_qualities_or_traits': FieldValue.delete(),
+                  'dating.profileCompleted': false,
+                  'dating.isActive': false,
+                  'dating.optIn': false,
+                  'dating.archivedAt': FieldValue.serverTimestamp(),
                 });
 
                 // Clear dating onboarding draft from SharedPreferences
@@ -2586,9 +2456,12 @@ class _AccountTiles extends StatelessWidget {
                   );
                 }
 
-                // The currentUserDocProvider is a stream — removing the dating
-                // field will automatically trigger a rebuild, which shows
-                // _BasicProfileScreen with the "Create Dating Profile" CTA.
+                // The currentUserDocProvider is a stream — setting
+                // dating.profileCompleted to false will automatically
+                // trigger a rebuild, which shows _BasicProfileScreen
+                // with the "Create Dating Profile" CTA.
+                // All dating data (photos, audio, profile info) is
+                // preserved for potential future restoration.
               } catch (e) {
                 // Close loading dialog using pre-captured navigator
                 try {
@@ -3049,9 +2922,18 @@ List<String> _combineProfileUrlAndPhotos(
   return list;
 }
 
+/// Title-case a string: "united kingdom" → "United Kingdom"
+String _titleCase(String s) {
+  if (s.isEmpty) return s;
+  return s.split(' ').map((w) {
+    if (w.isEmpty) return w;
+    return '${w[0].toUpperCase()}${w.substring(1)}';
+  }).join(' ');
+}
+
 String _buildLocation(String? city, String? country) {
-  final c = (city ?? '').trim();
-  final k = (country ?? '').trim();
+  final c = _titleCase((city ?? '').trim());
+  final k = _titleCase((country ?? '').trim());
 
   if (c.isNotEmpty && k.isNotEmpty) {
     final lc = c.toLowerCase();
@@ -3167,7 +3049,20 @@ class _PhotoViewerScreenState extends State<_PhotoViewerScreen> {
                 return InteractiveViewer(
                   minScale: 1,
                   maxScale: 4,
-                  child: Center(child: Image.network(url, fit: BoxFit.contain)),
+                  child: Center(
+                    child: CachedNetworkImage(
+                      imageUrl: url,
+                      fit: BoxFit.contain,
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.broken_image_rounded,
+                        size: 48,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ),
                 );
               },
             ),
@@ -3309,7 +3204,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
     if (_hobbies.length > 5) _hobbies = _hobbies.take(5).toList();
 
     _qualities = _parseChipList(p.desiredQualities);
-    if (_qualities.length > 5) _qualities = _qualities.take(5).toList();
+    if (_qualities.length > 8) _qualities = _qualities.take(8).toList();
 
     // Contact defaults from profile
     _instagram = p.instagramUsername ?? '';
@@ -3370,7 +3265,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
   }
 
   void _markDirty() {
-    if (!_dirty) setState(() => _dirty = true);
+    setState(() => _dirty = true);
   }
 
   Future<void> _save() async {
@@ -3424,57 +3319,84 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
               ? uploadedPhotos.first
               : widget.profile.profileUrl;
 
+      final trimmedName =
+          _name.trim().isEmpty ? widget.profile.name ?? '' : _name.trim();
+      final trimmedCity = _city.trim();
+      final trimmedCountry = _country.trim();
+      final trimmedNationality = _nationality.trim();
+      final trimmedEducation = _educationLevel.trim();
+      final trimmedProfession = _profession.trim();
+      final trimmedChurch = _churchName.trim();
+      final joinedQualities = _qualities.join(', ');
+      final trimmedInstagram = _instagram.trim();
+      final trimmedTwitter = _twitter.trim();
+      final trimmedWhatsapp = _whatsapp.trim();
+      final trimmedFacebook = _facebook.trim();
+      final trimmedTelegram = _telegram.trim();
+      final trimmedSnapchat = _snapchat.trim();
+
       final updates = <String, dynamic>{
-        'name': _name.trim().isEmpty ? widget.profile.name ?? '' : _name.trim(),
+        // Root-level fields (v1 compatibility)
+        'name': trimmedName,
         'age': _age,
-        'city': _city.trim(),
-        'country': _country.trim(),
-        'nationality': _nationality.trim(),
-        'educationLevel': _educationLevel.trim(),
-        'profession': _profession.trim(),
-        'churchName': _churchName.trim(),
-        'desiredQualities': _qualities.join(', '),
+        'city': trimmedCity,
+        'country': trimmedCountry,
+        'nationality': trimmedNationality,
+        'educationLevel': trimmedEducation,
+        'profession': trimmedProfession,
+        'churchName': trimmedChurch,
+        'desiredQualities': joinedQualities,
         'hobbies': _hobbies,
         'photos': uploadedPhotos,
         'profileUrl': profileUrl,
-        'instagramUsername': _instagram.trim(),
-        'twitterUsername': _twitter.trim(),
-        // WhatsApp stored as phoneNumber on UserModel
-        'phoneNumber': _whatsapp.trim(),
-        'facebookUsername': _facebook.trim(),
-        'telegramUsername': _telegram.trim(),
-        'snapchatUsername': _snapchat.trim(),
-        // Also update nested dating fields to ensure dating search visibility
-        'dating.profile.country': _country.trim(),
-        'dating.profile.nationality': _nationality.trim(),
+        'instagramUsername': trimmedInstagram,
+        'twitterUsername': trimmedTwitter,
+        'phoneNumber': trimmedWhatsapp,
+        'facebookUsername': trimmedFacebook,
+        'telegramUsername': trimmedTelegram,
+        'snapchatUsername': trimmedSnapchat,
+        // Nested dating.profile fields (UserModel reads these FIRST)
+        'dating.profile.name': trimmedName,
+        'dating.profile.age': _age,
+        'dating.profile.city': trimmedCity,
+        'dating.profile.country': trimmedCountry,
+        'dating.profile.nationality': trimmedNationality,
+        'dating.profile.educationLevel': trimmedEducation,
+        'dating.profile.profession': trimmedProfession,
+        'dating.profile.churchName': trimmedChurch,
+        'dating.profile.desiredQualities': joinedQualities,
+        'dating.profile.hobbies': _hobbies,
+        'dating.profile.photos': uploadedPhotos,
+        'dating.profile.profileUrl': profileUrl,
+        'dating.profile.phoneNumber': trimmedWhatsapp,
         'updatedAt': FieldValue.serverTimestamp(),
       };
 
       await fs
           .collection('users')
           .doc(widget.profile.id)
-          .set(updates, SetOptions(merge: true));
+          .update(updates);
 
       // Persist locally as a best-effort cache for offline reloads
       final updatedProfile = widget.profile.copyWith(
-        name: updates['name'] as String?,
+        name: trimmedName,
         age: _age,
-        city: _city.trim(),
-        country: _country.trim(),
-        nationality: _nationality.trim(),
-        educationLevel: _educationLevel.trim(),
-        profession: _profession.trim(),
-        churchName: _churchName.trim(),
-        desiredQualities: _qualities.join(', '),
+        city: trimmedCity,
+        country: trimmedCountry,
+        nationality: trimmedNationality,
+        educationLevel: trimmedEducation,
+        profession: trimmedProfession,
+        churchName: trimmedChurch,
+        desiredQualities: joinedQualities,
         hobbies: _hobbies,
         photos: uploadedPhotos,
         profileUrl: profileUrl,
-        instagramUsername: _instagram.trim(),
-        twitterUsername: _twitter.trim(),
-        phoneNumber: _whatsapp.trim(),
-        facebookUsername: _facebook.trim(),
-        telegramUsername: _telegram.trim(),
-        snapchatUsername: _snapchat.trim(),
+        instagramUsername: trimmedInstagram,
+        twitterUsername: trimmedTwitter,
+        phoneNumber: trimmedWhatsapp,
+        facebookUsername: trimmedFacebook,
+        telegramUsername: trimmedTelegram,
+        snapchatUsername: trimmedSnapchat,
       );
 
       await ref
@@ -3489,12 +3411,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
               ? (jsonDecode(raw) as Map<String, dynamic>)
               : <String, dynamic>{};
       decoded['draftContact'] = {
-        'instagram': _instagram.trim(),
-        'twitter': _twitter.trim(),
-        'whatsappNumber': _whatsapp.trim(),
-        'facebook': _facebook.trim(),
-        'telegram': _telegram.trim(),
-        'snapchat': _snapchat.trim(),
+        'instagram': trimmedInstagram,
+        'twitter': trimmedTwitter,
+        'whatsappNumber': trimmedWhatsapp,
+        'facebook': trimmedFacebook,
+        'telegram': trimmedTelegram,
+        'snapchat': trimmedSnapchat,
       };
       await prefs.setString(
         'draft_profile_' + widget.profile.id,
@@ -3513,6 +3435,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Profile saved.')));
+
+      // Auto-navigate back to the profile view after successful save
+      if (mounted) Navigator.of(context).pop();
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(
@@ -3868,13 +3793,27 @@ class _SmartImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final value = url.trim();
     if (value.startsWith('http')) {
-      return Image.network(
-        value,
+      return CachedNetworkImage(
+        imageUrl: value,
         fit: fit,
         width: double.infinity,
         height: double.infinity,
-        cacheWidth: 500,
-        cacheHeight: 500,
+        memCacheWidth: 500,
+        memCacheHeight: 500,
+        placeholder: (context, url) => Container(
+          color: AppColors.border,
+          child: const Center(
+            child: SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+          ),
+        ),
+        errorWidget: (context, url, error) => const Icon(
+          Icons.broken_image_rounded,
+          color: AppColors.textSecondary,
+        ),
       );
     }
     return Image.file(
@@ -4332,7 +4271,7 @@ class _InterestsEditorState extends ConsumerState<_InterestsEditor> {
               _SelectableInterestGrid(
                 items: qualityItems,
                 selected: _selectedQualities,
-                max: 5,
+                max: 8,
                 onToggle: (v) {
                   setState(() {
                     if (_selectedQualities.contains(v)) {
@@ -4642,7 +4581,6 @@ class _InputField extends StatelessWidget {
         Text(
           label,
           style: AppTextStyles.labelMedium.copyWith(
-            fontSize: 12,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -4651,7 +4589,7 @@ class _InputField extends StatelessWidget {
           initialValue: initialValue,
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
-          style: AppTextStyles.bodySmall.copyWith(fontSize: 13),
+          style: AppTextStyles.bodySmall,
           decoration: InputDecoration(
             filled: true,
             fillColor: AppColors.getSurface(context),
@@ -4699,7 +4637,6 @@ class _CountryPickerField extends StatelessWidget {
         Text(
           label,
           style: AppTextStyles.labelMedium.copyWith(
-            fontSize: 12,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -4747,7 +4684,6 @@ class _CountryPickerField extends StatelessWidget {
                           ? 'Select $label'
                           : selectedCountry,
                       style: AppTextStyles.bodySmall.copyWith(
-                        fontSize: 13,
                         color:
                             selectedCountry.isEmpty
                                 ? AppColors.textSecondary
@@ -4803,7 +4739,6 @@ class _DropdownField extends StatelessWidget {
         Text(
           label,
           style: AppTextStyles.labelMedium.copyWith(
-            fontSize: 12,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -4821,7 +4756,6 @@ class _DropdownField extends StatelessWidget {
               hint: Text(
                 'Select $label',
                 style: AppTextStyles.bodySmall.copyWith(
-                  fontSize: 13,
                   color: AppColors.textSecondary,
                 ),
               ),
@@ -4833,9 +4767,7 @@ class _DropdownField extends StatelessWidget {
                           child: Text(
                             e,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.bodySmall.copyWith(
-                              fontSize: 13,
-                            ),
+                            style: AppTextStyles.bodySmall,
                           ),
                         ),
                       )

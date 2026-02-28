@@ -4,42 +4,25 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:record/record.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart' as ja;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nexus_app_v2/core/storage/do_spaces_storage_service.dart';
-import 'package:nexus_app_v2/core/storage/do_spaces_config.dart';
 
 import '../theme/app_colors.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 
-/// Service for handling media operations: photos and audio recordings
+/// Service for handling media operations: photos and audio recordings.
+/// Migrated to just_audio for world-class stability and performance.
 class MediaService {
   final DoSpacesStorageService _spacesStorage = DoSpacesStorageService();
 
   final ImagePicker _imagePicker = ImagePicker();
   final AudioRecorder _audioRecorder = AudioRecorder();
-  final AudioPlayer _audioPlayer = AudioPlayer();
-
-  // Audio playback coordination (prevents overlapping plays + tap races)
-  bool _playerReady = false;
-  Future<void> _playQueue = Future.value();
-
-  Future<void> _ensurePlayerReady() async {
-    if (_playerReady) return;
-    await _audioPlayer.setReleaseMode(ReleaseMode.stop);
-    _playerReady = true;
-  }
-
-  Future<T> _enqueue<T>(Future<T> Function() op) {
-    final next = _playQueue.then((_) => op());
-    // Keep the queue alive even if an op throws
-    _playQueue = next.then((_) async {}).catchError((_) async {});
-    return next;
-  }
+  final ja.AudioPlayer _audioPlayer = ja.AudioPlayer();
 
   // Audio recording state
   bool _isRecording = false;
@@ -62,26 +45,21 @@ class MediaService {
   // PERMISSIONS
   // ============================================================================
 
-  /// Request camera permission
   Future<bool> requestCameraPermission() async {
     final status = await Permission.camera.request();
     return status.isGranted;
   }
 
-  /// Request microphone permission
   Future<bool> requestMicrophonePermission() async {
     final status = await Permission.microphone.request();
     return status.isGranted;
   }
 
-  /// Request photo library permission
   Future<bool> requestPhotoLibraryPermission() async {
     final status = await Permission.photos.request();
-    // On some platforms, this might not be needed
     return status.isGranted || status.isLimited;
   }
 
-  /// Check if microphone permission is granted
   Future<bool> hasMicrophonePermission() async {
     return await Permission.microphone.isGranted;
   }
@@ -90,7 +68,6 @@ class MediaService {
   // IMAGE PICKING
   // ============================================================================
 
-  /// Pick image from gallery
   Future<File?> pickImageFromGallery({
     int maxWidth = 1080,
     int maxHeight = 1080,
@@ -104,20 +81,12 @@ class MediaService {
         maxHeight: maxHeight.toDouble(),
         imageQuality: imageQuality,
       );
-
       if (pickedFile == null) return null;
-
-      if (cropToSquare) {
-        return await _cropImage(pickedFile.path);
-      }
-
+      if (cropToSquare) return await _cropImage(pickedFile.path);
       return File(pickedFile.path);
-    } catch (e) {
-      return null;
-    }
+    } catch (e) { return null; }
   }
 
-  /// Pick image from camera
   Future<File?> pickImageFromCamera({
     int maxWidth = 1080,
     int maxHeight = 1080,
@@ -125,11 +94,7 @@ class MediaService {
     bool cropToSquare = true,
   }) async {
     try {
-      final hasPermission = await requestCameraPermission();
-      if (!hasPermission) {
-        throw MediaException('Camera permission denied');
-      }
-
+      if (!await requestCameraPermission()) throw MediaException('Camera permission denied');
       final XFile? pickedFile = await _imagePicker.pickImage(
         source: ImageSource.camera,
         maxWidth: maxWidth.toDouble(),
@@ -137,291 +102,86 @@ class MediaService {
         imageQuality: imageQuality,
         preferredCameraDevice: CameraDevice.front,
       );
-
       if (pickedFile == null) return null;
-
-      if (cropToSquare) {
-        return await _cropImage(pickedFile.path);
-      }
-
+      if (cropToSquare) return await _cropImage(pickedFile.path);
       return File(pickedFile.path);
-    } catch (e) {
-      return null;
-    }
+    } catch (e) { return null; }
   }
 
-  /// Show image source picker dialog
   Future<File?> pickImage(BuildContext context) async {
     final source = await showModalBottomSheet<ImageSource>(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder:
-          (context) => SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 40,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Choose Photo Source',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ListTile(
-                    leading: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.photo_library,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                    title: const Text('Photo Library'),
-                    subtitle: const Text('Choose from your gallery'),
-                    onTap: () => Navigator.pop(context, ImageSource.gallery),
-                  ),
-                  ListTile(
-                    leading: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: AppColors.secondary.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(Icons.camera_alt, color: AppColors.secondary),
-                    ),
-                    title: const Text('Camera'),
-                    subtitle: const Text('Take a new photo'),
-                    onTap: () => Navigator.pop(context, ImageSource.camera),
-                  ),
-                  const SizedBox(height: 10),
-                ],
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Photo Library'),
+                onTap: () => Navigator.pop(context, ImageSource.gallery),
               ),
-            ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Camera'),
+                onTap: () => Navigator.pop(context, ImageSource.camera),
+              ),
+            ],
           ),
+        ),
+      ),
     );
-
     if (source == null) return null;
-
-    if (source == ImageSource.camera) {
-      return await pickImageFromCamera();
-    } else {
-      return await pickImageFromGallery();
-    }
+    return source == ImageSource.camera ? await pickImageFromCamera() : await pickImageFromGallery();
   }
 
   // ============================================================================
-  // FACE DETECTION (ML Kit)
+  // FACE DETECTION & CROPPING
   // ============================================================================
-  /// Detect if an image contains at least one human face.
-  ///
-  /// Returns:
-  /// - true: face detected
-  /// - false: no face detected
-  /// - null: detection failed technically (fail-open behavior)
+
   Future<bool?> hasHumanFace(String filePath) async {
     try {
-      final options = FaceDetectorOptions(
-        performanceMode: FaceDetectorMode.fast,
-        enableContours: false,
-        enableLandmarks: false,
-      );
-
-      final detector = FaceDetector(options: options);
-      final input = InputImage.fromFilePath(filePath);
-
-      final faces = await detector.processImage(input);
+      final detector = FaceDetector(options: FaceDetectorOptions(performanceMode: FaceDetectorMode.fast));
+      final faces = await detector.processImage(InputImage.fromFilePath(filePath));
       await detector.close();
-
       return faces.isNotEmpty;
-    } catch (e) {
-      return null;
-    }
+    } catch (_) { return null; }
   }
 
-  /// Crop image to square
   Future<File?> _cropImage(String sourcePath) async {
     try {
       final croppedFile = await ImageCropper().cropImage(
         sourcePath: sourcePath,
         aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
         uiSettings: [
-          AndroidUiSettings(
-            toolbarTitle: 'Crop Photo',
-            toolbarColor: AppColors.primary,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.square,
-            lockAspectRatio: true,
-            hideBottomControls: false,
-          ),
-          IOSUiSettings(
-            title: 'Crop Photo',
-            aspectRatioLockEnabled: true,
-            resetAspectRatioEnabled: false,
-            aspectRatioPickerButtonHidden: true,
-          ),
+          AndroidUiSettings(toolbarTitle: 'Crop Photo', toolbarColor: AppColors.primary, lockAspectRatio: true),
+          IOSUiSettings(title: 'Crop Photo', aspectRatioLockEnabled: true),
         ],
       );
-
-      if (croppedFile == null) return null;
-      return File(croppedFile.path);
-    } catch (e) {
-      return File(sourcePath); // Return original if crop fails
-    }
-  }
-
-  // ============================================================================
-  // IMAGE UPLOAD
-  // ============================================================================
-
-  String _buildPhotoObjectKey({
-    required String userId,
-    required int photoIndex,
-    required String extension,
-  }) {
-    final ts = DateTime.now().millisecondsSinceEpoch;
-    final safeExt =
-        extension.startsWith('.') ? extension.substring(1) : extension;
-    return 'users/$userId/photos/photo_${photoIndex}_$ts.$safeExt';
-  }
-
-  String _buildChatImageObjectKey({
-    required String userId,
-    required String chatId,
-    required String extension,
-  }) {
-    final ts = DateTime.now().millisecondsSinceEpoch;
-    final safeExt =
-        extension.startsWith('.') ? extension.substring(1) : extension;
-    return 'users/$userId/chats/$chatId/images/img_$ts.$safeExt';
-  }
-
-  String _buildChatAudioObjectKey({
-    required String userId,
-    required String chatId,
-    required String extension,
-  }) {
-    final ts = DateTime.now().millisecondsSinceEpoch;
-    final safeExt =
-        extension.startsWith('.') ? extension.substring(1) : extension;
-    return 'users/$userId/chats/$chatId/audio/aud_$ts.$safeExt';
-  }
-
-  String _buildPromptAudioObjectKey({
-    required String userId,
-    required int questionIndex,
-    required String extension,
-  }) {
-    final ts = DateTime.now().millisecondsSinceEpoch;
-    final safeExt =
-        extension.startsWith('.') ? extension.substring(1) : extension;
-    return 'users/$userId/audio_prompts/q_${questionIndex}_$ts.$safeExt';
-  }
-
-  String _objectKeyFromPublicUrl(String url) {
-    final bucket = DoSpacesConfig.bucket;
-    final marker = '/$bucket/';
-    final idx = url.indexOf(marker);
-    if (idx == -1) {
-      throw MediaException('Unsupported Spaces URL format');
-    }
-    return url.substring(idx + marker.length);
-  }
-
-  /// Upload image to Firebase Storage
-  /// Returns the download URL
-  Future<String> uploadProfilePhoto(
-    String userId,
-    File imageFile, {
-    int photoIndex = 0,
-    Function(double)? onProgress,
-  }) async {
-    try {
-      onProgress?.call(0.0);
-      final ext =
-          p.extension(imageFile.path).isNotEmpty
-              ? p.extension(imageFile.path)
-              : '.jpg';
-
-      final objectKey = _buildPhotoObjectKey(
-        userId: userId,
-        photoIndex: photoIndex,
-        extension: ext,
-      );
-
-      final url = await _spacesStorage.uploadImage(
-        localPath: imageFile.path,
-        objectKey: objectKey,
-      );
-      onProgress?.call(1.0);
-      return url;
-    } catch (e) {
-      throw MediaException('Failed to upload photo: $e');
-    }
-  }
-
-  /// Delete photo from Firebase Storage
-  Future<void> deleteProfilePhoto(String photoUrl) async {
-    try {
-      final objectKey = _objectKeyFromPublicUrl(photoUrl);
-      await _spacesStorage.deleteObject(objectKey: objectKey);
-    } catch (e) {
-      throw MediaException('Failed to delete photo: $e');
-    }
+      return croppedFile != null ? File(croppedFile.path) : File(sourcePath);
+    } catch (_) { return File(sourcePath); }
   }
 
   // ============================================================================
   // AUDIO RECORDING
   // ============================================================================
 
-  /// Start recording audio
-  /// maxDuration: Maximum recording duration in seconds (default 90)
   Future<bool> startRecording({
     int maxDuration = 90,
     Function(Duration)? onDurationUpdate,
     Function(double)? onAmplitudeUpdate,
   }) async {
     try {
-      // Check permission
-      final hasPermission = await requestMicrophonePermission();
-      if (!hasPermission) {
-        throw MediaException('Microphone permission denied');
-      }
+      if (!await requestMicrophonePermission()) throw MediaException('Microphone permission denied');
+      if (_isRecording) await stopRecording();
 
-      // Check if already recording
-      if (_isRecording) {
-        await stopRecording();
-      }
-
-      // Get temp directory for recording
       final directory = await getTemporaryDirectory();
-      final fileName = 'recording_${DateTime.now().millisecondsSinceEpoch}.m4a';
-      _currentRecordingPath = p.join(directory.path, fileName);
+      _currentRecordingPath = p.join(directory.path, 'recording_${DateTime.now().millisecondsSinceEpoch}.m4a');
 
-      // Configure and start recording with iOS-compatible settings
       await _audioRecorder.start(
-        const RecordConfig(
-          encoder: AudioEncoder.aacLc,
-          bitRate: 128000,
-          sampleRate:
-              44100, // Standard CD quality, universally supported on iOS
-          numChannels: 1,
-        ),
+        const RecordConfig(encoder: AudioEncoder.aacLc, bitRate: 128000, sampleRate: 44100, numChannels: 1),
         path: _currentRecordingPath!,
       );
 
@@ -430,187 +190,87 @@ class MediaService {
       onRecordingDurationUpdate = onDurationUpdate;
       onRecordingAmplitudeUpdate = onAmplitudeUpdate;
 
-      // Start duration timer
-      _recordingTimer = Timer.periodic(const Duration(milliseconds: 100), (
-        timer,
-      ) {
+      _recordingTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
         final duration = DateTime.now().difference(_recordingStartTime!);
-
-        // Auto-stop at max duration
-        if (duration.inSeconds >= maxDuration) {
-          stopRecording();
-          return;
-        }
-
+        if (duration.inSeconds >= maxDuration) { stopRecording(); return; }
         onRecordingDurationUpdate?.call(duration);
       });
 
-      // Start amplitude stream
       _startAmplitudeStream();
-
       return true;
-    } catch (e) {
-      _isRecording = false;
-      return false;
-    }
+    } catch (_) { _isRecording = false; return false; }
   }
 
-  /// Start listening to amplitude changes
   void _startAmplitudeStream() async {
     while (_isRecording) {
       try {
         final amplitude = await _audioRecorder.getAmplitude();
-        // Normalize amplitude to 0-1 range
-        final normalizedAmplitude = (amplitude.current + 60) / 60;
-        onRecordingAmplitudeUpdate?.call(normalizedAmplitude.clamp(0.0, 1.0));
+        onRecordingAmplitudeUpdate?.call(((amplitude.current + 60) / 60).clamp(0.0, 1.0));
         await Future.delayed(const Duration(milliseconds: 50));
-      } catch (e) {
-        break;
-      }
+      } catch (_) { break; }
     }
   }
 
-  /// Stop recording and return the file path
   Future<String?> stopRecording() async {
     try {
       _recordingTimer?.cancel();
-      _recordingTimer = null;
-
       if (!_isRecording) return null;
-
       final path = await _audioRecorder.stop();
-
-      // CRITICAL: Wait for iOS to flush audio buffer to disk
       await Future.delayed(const Duration(milliseconds: 500));
-
       _isRecording = false;
-      _recordingStartTime = null;
-      onRecordingDurationUpdate = null;
-      onRecordingAmplitudeUpdate = null;
-
       return path ?? _currentRecordingPath;
-    } catch (e) {
-      _isRecording = false;
-      return null;
-    }
-  }
-
-  /// Cancel recording and delete the file
-  Future<void> cancelRecording() async {
-    final path = await stopRecording();
-    if (path != null) {
-      try {
-        final file = File(path);
-        if (await file.exists()) {
-          await file.delete();
-        }
-      } catch (e) {}
-    }
-  }
-
-  /// Check if recording is in progress
-  Future<bool> isCurrentlyRecording() async {
-    return await _audioRecorder.isRecording();
+    } catch (_) { _isRecording = false; return null; }
   }
 
   // ============================================================================
-  // AUDIO PLAYBACK
+  // AUDIO PLAYBACK (just_audio implementation)
   // ============================================================================
 
-  /// Play audio from file path (exclusive: stops any current playback first)
   Future<void> playAudio(String path) async {
-    return _enqueue(() async {
-      try {
-        await _ensurePlayerReady();
-        await _audioPlayer.stop();
-
-        if (path.startsWith('http')) {
-          await _audioPlayer.play(UrlSource(path, mimeType: 'audio/mpeg'));
-        } else {
-          await _audioPlayer.play(DeviceFileSource(path));
-        }
-      } catch (e) {
-        throw MediaException('Failed to play audio: $e');
+    try {
+      if (path.startsWith('http')) {
+        await _audioPlayer.setUrl(path);
+      } else {
+        await _audioPlayer.setFilePath(path);
       }
-    });
+      await _audioPlayer.play();
+    } catch (e) { throw MediaException('Failed to play audio: $e'); }
   }
 
-  /// Play audio from URL (exclusive: stops any current playback first)
-  Future<void> playAudioFromUrl(String url) async {
-    return _enqueue(() async {
-      try {
-        await _ensurePlayerReady();
-        await _audioPlayer.stop();
-        await _audioPlayer.play(UrlSource(url, mimeType: 'audio/mpeg'));
-      } catch (e) {
-        throw MediaException('Failed to play audio from URL: $e');
-      }
-    });
-  }
+  Future<void> playAudioFromUrl(String url) async => playAudio(url);
+  Future<void> pauseAudio() async => await _audioPlayer.pause();
+  Future<void> resumeAudio() async => await _audioPlayer.play();
+  Future<void> stopAudio() async => await _audioPlayer.stop();
+  Future<void> seekAudio(Duration position) async => await _audioPlayer.seek(position);
 
-  /// Pause audio playback
-  Future<void> pauseAudio() async {
-    return _enqueue(() async {
-      await _ensurePlayerReady();
-      await _audioPlayer.pause();
-    });
-  }
-
-  /// Resume audio playback
-  Future<void> resumeAudio() async {
-    return _enqueue(() async {
-      await _ensurePlayerReady();
-      await _audioPlayer.resume();
-    });
-  }
-
-  /// Stop audio playback
-  Future<void> stopAudio() async {
-    return _enqueue(() async {
-      await _ensurePlayerReady();
-      await _audioPlayer.stop();
-    });
-  }
-
-  /// Seek to position
-  Future<void> seekAudio(Duration position) async {
-    return _enqueue(() async {
-      await _ensurePlayerReady();
-      await _audioPlayer.seek(position);
-    });
-  }
-
-  /// Get audio duration (queued; stops playback to avoid source conflicts)
   Future<Duration?> getAudioDuration(String path) async {
-    return _enqueue(() async {
-      try {
-        await _ensurePlayerReady();
-        await _audioPlayer.stop();
-        await _audioPlayer.setSource(
-          path.startsWith('http')
-              ? UrlSource(path, mimeType: 'audio/mpeg')
-              : DeviceFileSource(path),
-        );
-        return await _audioPlayer.getDuration();
-      } catch (_) {
-        return null;
-      }
-    });
+    try {
+      return path.startsWith('http') 
+          ? await _audioPlayer.setUrl(path) 
+          : await _audioPlayer.setFilePath(path);
+    } catch (_) { return null; }
   }
 
-  /// Listen to playback state changes
-  Stream<PlayerState> get onPlayerStateChanged =>
-      _audioPlayer.onPlayerStateChanged;
-
-  /// Listen to playback position changes
-  Stream<Duration> get onPositionChanged => _audioPlayer.onPositionChanged;
-
-  /// Listen to playback duration changes
-  Stream<Duration> get onDurationChanged => _audioPlayer.onDurationChanged;
+  Stream<ja.PlayerState> get onPlayerStateChanged => _audioPlayer.playerStateStream;
+  Stream<Duration> get onPositionChanged => _audioPlayer.positionStream;
+  Stream<Duration?> get onDurationChanged => _audioPlayer.durationStream;
 
   // ============================================================================
-  // CHAT MEDIA UPLOAD (DigitalOcean Spaces)
+  // STORAGE OPERATIONS (Cloud-managed keys)
   // ============================================================================
+
+  Future<String> uploadProfilePhoto(String userId, File imageFile, {int photoIndex = 0, Function(double)? onProgress}) async {
+    try {
+      // Keys are generated by the backend Cloud Function
+      return await _spacesStorage.uploadFile(localPath: imageFile.path, onProgress: onProgress);
+    } catch (e) { throw MediaException('Failed to upload photo: $e'); }
+  }
+
+  Future<String> uploadAudioRecording(String userId, String filePath, {required int questionIndex, Function(double)? onProgress}) async {
+    try {
+      return await _spacesStorage.uploadFile(localPath: filePath, onProgress: onProgress);
+    } catch (e) { throw MediaException('Failed to upload audio: $e'); }
+  }
 
   Future<String> uploadChatImage({
     required String userId,
@@ -619,26 +279,8 @@ class MediaService {
     Function(double)? onProgress,
   }) async {
     try {
-      onProgress?.call(0.0);
-      final ext =
-          p.extension(imageFile.path).isNotEmpty
-              ? p.extension(imageFile.path)
-              : '.jpg';
-      final objectKey = _buildChatImageObjectKey(
-        userId: userId,
-        chatId: chatId,
-        extension: ext,
-      );
-
-      final url = await _spacesStorage.uploadImage(
-        localPath: imageFile.path,
-        objectKey: objectKey,
-      );
-      onProgress?.call(1.0);
-      return url;
-    } catch (e) {
-      throw MediaException('Failed to upload chat image: $e');
-    }
+      return await _spacesStorage.uploadFile(localPath: imageFile.path, onProgress: onProgress);
+    } catch (e) { throw MediaException('Failed to upload chat image: $e'); }
   }
 
   Future<String> uploadChatAudio({
@@ -648,83 +290,10 @@ class MediaService {
     Function(double)? onProgress,
   }) async {
     try {
-      onProgress?.call(0.0);
-      final ext =
-          p.extension(filePath).isNotEmpty ? p.extension(filePath) : '.m4a';
-      final objectKey = _buildChatAudioObjectKey(
-        userId: userId,
-        chatId: chatId,
-        extension: ext,
-      );
-
-      final url = await _spacesStorage.uploadImage(
-        localPath: filePath,
-        objectKey: objectKey,
-      );
-      onProgress?.call(1.0);
-      return url;
-    } catch (e) {
-      throw MediaException('Failed to upload chat audio: $e');
-    }
+      return await _spacesStorage.uploadFile(localPath: filePath, onProgress: onProgress);
+    } catch (e) { throw MediaException('Failed to upload chat audio: $e'); }
   }
 
-  // ============================================================================
-  // AUDIO UPLOAD
-  // ============================================================================
-
-  /// Upload audio recording to Firebase Storage
-  /// Returns the download URL
-  Future<String> uploadAudioRecording(
-    String userId,
-    String filePath, {
-    required int questionIndex,
-    Function(double)? onProgress,
-  }) async {
-    try {
-      onProgress?.call(0.0);
-
-      final file = File(filePath);
-      if (!await file.exists()) {
-        throw MediaException('Audio file does not exist: $filePath');
-      }
-
-      final ext =
-          p.extension(filePath).isNotEmpty ? p.extension(filePath) : '.m4a';
-
-      // Reuse the existing helper (keeps object keys consistent + avoids unused warning).
-      final objectKey = _buildPromptAudioObjectKey(
-        userId: userId,
-        questionIndex: questionIndex,
-        extension: ext,
-      );
-
-      final url = await _spacesStorage.uploadImage(
-        localPath: filePath,
-        objectKey: objectKey,
-      );
-
-      onProgress?.call(1.0);
-      return url;
-    } catch (e) {
-      throw MediaException('Failed to upload audio: $e');
-    }
-  }
-
-  /// Delete audio from Firebase Storage
-  Future<void> deleteAudioRecording(String audioUrl) async {
-    try {
-      final objectKey = _objectKeyFromPublicUrl(audioUrl);
-      await _spacesStorage.deleteObject(objectKey: objectKey);
-    } catch (e) {
-      throw MediaException('Failed to delete audio: $e');
-    }
-  }
-
-  // ============================================================================
-  // CLEANUP
-  // ============================================================================
-
-  /// Dispose resources
   void dispose() {
     _recordingTimer?.cancel();
     _audioRecorder.dispose();
@@ -732,11 +301,9 @@ class MediaService {
   }
 }
 
-/// Exception for media operations
 class MediaException implements Exception {
   final String message;
   MediaException(this.message);
-
   @override
   String toString() => 'MediaException: $message';
 }

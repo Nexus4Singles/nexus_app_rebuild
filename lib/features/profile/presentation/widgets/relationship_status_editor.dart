@@ -360,10 +360,11 @@ void showRelationshipStatusDialog(
                                               ScaffoldMessenger.of(
                                                 sbContext,
                                               ).showSnackBar(
-                                                const SnackBar(
-                                                  content: Text(
+                                                SnackBar(
+                                                  content: const Text(
                                                     'User not found',
                                                   ),
+                                                  backgroundColor: AppColors.primary,
                                                 ),
                                               );
                                             }
@@ -637,7 +638,7 @@ void _showReactivateDatingProfileDialog(
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Error: ${e.toString()}'),
-                        backgroundColor: AppColors.error,
+                        backgroundColor: AppColors.primary,
                       ),
                     );
                   }

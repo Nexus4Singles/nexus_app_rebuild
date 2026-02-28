@@ -115,19 +115,19 @@ class ChatsScreen extends ConsumerWidget {
           titleSpacing: 20,
           title: Text(
             'Chats',
-            style: AppTextStyles.headlineLarge.copyWith(
+            style: AppTextStyles.headlineMedium.copyWith(
               fontWeight: FontWeight.w700,
             ),
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(16),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 520),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: AppColors.getSurface(context),
                   borderRadius: BorderRadius.circular(20),
@@ -159,27 +159,27 @@ class ChatsScreen extends ConsumerWidget {
                         size: 32,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
                     Text(
                       'Create an account to chat',
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.titleLarge.copyWith(
+                      style: AppTextStyles.titleMedium.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     Text(
-                      'You need an account to send and recieve messages',
+                      'You need an account to send and receive messages',
                       textAlign: TextAlign.center,
                       style: AppTextStyles.bodySmall.copyWith(
                         color: AppColors.getTextSecondary(context),
-                        height: 1.5,
+                        height: 1.4,
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
-                      height: 50,
+                      height: 46,
                       child: ElevatedButton(
                         onPressed:
                             () => Navigator.of(context).pushNamed('/signup'),
@@ -193,17 +193,16 @@ class ChatsScreen extends ConsumerWidget {
                         ),
                         child: Text(
                           'Create an account',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
+                          style: AppTextStyles.labelLarge.copyWith(
+                            color: Colors.white,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 10),
                     SizedBox(
                       width: double.infinity,
-                      height: 50,
+                      height: 46,
                       child: OutlinedButton(
                         onPressed:
                             () => Navigator.of(context).push(
@@ -219,9 +218,7 @@ class ChatsScreen extends ConsumerWidget {
                         ),
                         child: Text(
                           'Log in',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14,
+                          style: AppTextStyles.labelLarge.copyWith(
                             color: AppColors.getTextPrimary(context),
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -244,7 +241,7 @@ class ChatsScreen extends ConsumerWidget {
         appBar: AppBar(
           backgroundColor: AppColors.getBackground(context),
           elevation: 0,
-          title: Text('Chats', style: AppTextStyles.headlineLarge),
+          title: Text('Chats', style: AppTextStyles.headlineMedium),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16),
@@ -264,12 +261,12 @@ class ChatsScreen extends ConsumerWidget {
                 children: [
                   Text(
                     'Turn on dating to use chats',
-                    style: AppTextStyles.titleLarge,
+                    style: AppTextStyles.titleMedium,
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Chats are part of the dating experience. Enable dating in your profile to continue.',
-                    style: AppTextStyles.bodyMedium.copyWith(
+                    style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.getTextSecondary(context),
                     ),
                   ),
@@ -300,7 +297,7 @@ class ChatsScreen extends ConsumerWidget {
         appBar: AppBar(
           backgroundColor: AppColors.getBackground(context),
           elevation: 0,
-          title: Text('Chats', style: AppTextStyles.headlineLarge),
+          title: Text('Chats', style: AppTextStyles.headlineMedium),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16),
@@ -320,13 +317,13 @@ class ChatsScreen extends ConsumerWidget {
                 children: [
                   Text(
                     'Complete your dating profile',
-                    style: AppTextStyles.titleLarge,
+                    style: AppTextStyles.titleMedium,
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'You need a completed dating profile to use chats.',
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.bodyMedium.copyWith(
+                    style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.getTextSecondary(context),
                     ),
                   ),
@@ -339,7 +336,7 @@ class ChatsScreen extends ConsumerWidget {
                           () => Navigator.of(
                             context,
                           ).pushNamed('/dating/setup/age'),
-                      child: const Text('Complete profile'),
+                      child: const Text('Complete Profile'),
                     ),
                   ),
                 ],
@@ -362,169 +359,167 @@ class ChatsScreen extends ConsumerWidget {
         titleSpacing: 20,
         title: Text(
           'Chats',
-          style: AppTextStyles.headlineLarge.copyWith(
+          style: AppTextStyles.headlineMedium.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Recent Conversations',
-              style: AppTextStyles.titleLarge.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: conversationsAsync.when(
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, __) {
-                  // Permission-denied errors for v1 users are expected
-                  // (they have no v2 chats). Treat as empty state.
-                  final errStr = err.toString().toLowerCase();
-                  if (errStr.contains('permission-denied') ||
-                      errStr.contains('permission denied')) {
-                    return Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.chat_bubble_outline,
-                            size: 56,
-                            color: AppColors.primary.withOpacity(0.5),
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'You don\'t have any conversations yet',
-                            textAlign: TextAlign.center,
-                            style: AppTextStyles.titleLarge,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Start connecting with other members.\nNew conversations will appear here.',
-                            textAlign: TextAlign.center,
-                            style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.getTextSecondary(context),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          SizedBox(
-                            height: 46,
-                            child: ElevatedButton(
-                              onPressed:
-                                  () =>
-                                      ref
-                                          .read(selectedTabProvider.notifier)
-                                          .state = NavTab.search,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 32,
-                                  vertical: 12,
-                                ),
-                              ),
-                              child: const FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text('Start Connecting'),
-                              ),
-                            ),
-                          ),
-                        ],
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: conversationsAsync.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (err, __) {
+            // Permission-denied errors for v1 users are expected
+            // (they have no v2 chats). Treat as empty state.
+            final errStr = err.toString().toLowerCase();
+            if (errStr.contains('permission-denied') ||
+                errStr.contains('permission denied')) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.chat_bubble_outline,
+                      size: 56,
+                      color: AppColors.primary.withOpacity(0.5),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'You don\'t have any conversations yet',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'New conversations will appear here.',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.getTextSecondary(context),
                       ),
-                    );
-                  }
-                  // For other errors, show error message
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        'Could not load chats.\n${err.toString()}',
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.getTextSecondary(context),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 46,
+                      child: ElevatedButton(
+                        onPressed:
+                            () =>
+                                ref.read(selectedTabProvider.notifier).state =
+                                    NavTab.search,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 32,
+                            vertical: 12,
+                          ),
+                        ),
+                        child: const FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text('Start Connecting'),
                         ),
                       ),
                     ),
-                  );
-                },
-                data: (conversations) {
-                  final me = uid;
-                  if (me == null) {
-                    return Center(
-                      child: Text(
-                        'Please sign in to view your chats.',
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.getTextSecondary(context),
+                  ],
+                ),
+              );
+            }
+            // For other errors, show error message
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  'Could not load chats.\n${err.toString()}',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.getTextSecondary(context),
+                  ),
+                ),
+              ),
+            );
+          },
+          data: (conversations) {
+            final me = uid;
+            if (me == null) {
+              return Center(
+                child: Text(
+                  'Please sign in to view your chats.',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.getTextSecondary(context),
+                  ),
+                ),
+              );
+            }
+
+            // Only show chats where someone has actually messaged
+            // (lastMessage exists) OR there are unread messages.
+            final visible =
+                conversations.where((c) {
+                  final last = (c.lastMessage ?? '').trim();
+                  final unreadCount = c.getUnreadCount(me);
+                  return last.isNotEmpty || unreadCount > 0;
+                }).toList();
+
+            if (visible.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.chat_bubble_outline,
+                      size: 56,
+                      color: AppColors.primary.withOpacity(0.5),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'You don\'t have any conversations yet',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Start connecting with other users.\nNew conversations will appear here.',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.getTextSecondary(context),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 46,
+                      child: ElevatedButton(
+                        onPressed:
+                            () =>
+                                ref.read(selectedTabProvider.notifier).state =
+                                    NavTab.search,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 32,
+                            vertical: 12,
+                          ),
+                        ),
+                        child: const FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text('Start Connecting'),
                         ),
                       ),
-                    );
-                  }
+                    ),
+                  ],
+                ),
+              );
+            }
 
-                  // Only show chats where someone has actually messaged
-                  // (lastMessage exists) OR there are unread messages.
-                  final visible =
-                      conversations.where((c) {
-                        final last = (c.lastMessage ?? '').trim();
-                        final unreadCount = c.getUnreadCount(me);
-                        return last.isNotEmpty || unreadCount > 0;
-                      }).toList();
-
-                  if (visible.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.chat_bubble_outline,
-                            size: 56,
-                            color: AppColors.primary.withOpacity(0.5),
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'You don\'t have any conversations yet',
-                            textAlign: TextAlign.center,
-                            style: AppTextStyles.titleLarge,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Start connecting with other members.\nNew conversations will appear here.',
-                            textAlign: TextAlign.center,
-                            style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.getTextSecondary(context),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          SizedBox(
-                            height: 46,
-                            child: ElevatedButton(
-                              onPressed:
-                                  () =>
-                                      ref
-                                          .read(selectedTabProvider.notifier)
-                                          .state = NavTab.search,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 32,
-                                  vertical: 12,
-                                ),
-                              ),
-                              child: const FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text('Start Connecting'),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-
-                  return ListView.separated(
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Recent Conversations',
+                  style: AppTextStyles.titleMedium.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Expanded(
+                  child: ListView.separated(
                     itemCount: visible.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 10),
                     itemBuilder: (context, index) {
@@ -600,11 +595,11 @@ class ChatsScreen extends ConsumerWidget {
                         },
                       );
                     },
-                  );
-                },
-              ),
-            ),
-          ],
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -759,7 +754,6 @@ class _ChatRowState extends State<_ChatRow>
                                         widget.unread
                                             ? FontWeight.w700
                                             : FontWeight.w600,
-                                    fontSize: 16,
                                     letterSpacing: 0.3,
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -768,9 +762,8 @@ class _ChatRowState extends State<_ChatRow>
                               const SizedBox(width: 8),
                               Text(
                                 widget.time,
-                                style: AppTextStyles.labelSmall.copyWith(
+                                style: AppTextStyles.labelMedium.copyWith(
                                   color: AppColors.getTextSecondary(context),
-                                  fontSize: 12,
                                   fontWeight:
                                       widget.unread
                                           ? FontWeight.w600
@@ -876,10 +869,8 @@ class _ChatRowState extends State<_ChatRow>
       child: Center(
         child: Text(
           initials,
-          style: const TextStyle(
+          style: AppTextStyles.headlineMedium.copyWith(
             color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 20,
             letterSpacing: 0.5,
           ),
         ),

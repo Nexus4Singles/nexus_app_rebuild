@@ -1,5 +1,5 @@
 name: nexus_app_v2
-version: 2.0.0+35
+version: 2.0.0+37
 description: Nexus Dating App - v2 with enhanced features and dating profiles.
 publish_to: "none"
 
@@ -8,12 +8,9 @@ environment:
 
 dependencies:
   crypto: ^3.0.3
-
   http: ^1.2.2
   cached_network_image: ^3.4.1
   sqflite: ^2.3.0
-
-  # DigitalOcean Spaces (S3-compatible)
   just_audio: ^0.9.38
   google_mlkit_face_detection: ^0.13.1
   country_picker: ^2.0.27
@@ -39,7 +36,6 @@ dependencies:
   image_cropper: ^11.0.0
   file_picker: ^8.1.1
   record: ^6.1.2
-  audioplayers: ^6.5.1
   path_provider: ^2.1.5
   permission_handler: ^12.0.1
   google_mlkit_commons: ^0.11.0
@@ -51,10 +47,6 @@ dependencies:
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
-
-  #cloud_firestore: ^4.17.5
-
-
 
 flutter:
   assets:
@@ -73,16 +65,9 @@ flutter:
     - assets/config/engagement/
   uses-material-design: true
 
-  # Poppins font family with all weights
   fonts:
     - family: Poppins
       fonts:
-        - asset: assets/fonts/Poppins-Thin.ttf
-          weight: 100
-        - asset: assets/fonts/Poppins-ExtraLight.ttf
-          weight: 200
-        - asset: assets/fonts/Poppins-Light.ttf
-          weight: 300
         - asset: assets/fonts/Poppins-Regular.ttf
           weight: 400
         - asset: assets/fonts/Poppins-Medium.ttf
@@ -91,7 +76,3 @@ flutter:
           weight: 600
         - asset: assets/fonts/Poppins-Bold.ttf
           weight: 700
-        - asset: assets/fonts/Poppins-ExtraBold.ttf
-          weight: 800
-        - asset: assets/fonts/Poppins-Black.ttf
-          weight: 900

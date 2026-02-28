@@ -222,36 +222,65 @@ class DatingProfileService {
       if (audio3Url != null && audio3Url.trim().isNotEmpty) audio3Url.trim(),
     ];
 
-    // Build the new dating sub-map (overwrite whole `dating` map)
-    final datingMap = <String, dynamic>{
-      'profileCompleted': true,
-      'profileCompletedAt': FieldValue.serverTimestamp(),
-      // Store a compact review pack used by moderation + search
-      'reviewPack': _buildReviewPack(
-        photoUrls: photoUrls,
-        audioUrls: audioUrls,
-      ),
-      // Nest all profile fields under 'profile' (consolidated location)
-      'profile': <String, dynamic>{
-        'age': age,
-        'nationality': nationality,
-        'country': country,
-        'educationLevel': educationLevel,
-        'profession': profession,
-        'church': church,
-        'hobbies': hobbies,
-        'desiredQualities': desiredQualities,
-        'profileUrl': photoUrls.isNotEmpty ? photoUrls.first : null,
-        'photos': photoUrls,
-        'audio1Url': audio1Url,
-        'audio2Url': audio2Url,
-        'audio3Url': audio3Url,
-        'instagramUsername': instagramUsername,
-        'twitterUsername': twitterUsername,
-        'phoneNumber': whatsappNumber,
-        'facebookUsername': facebookUsername,
-        'telegramUsername': telegramUsername,
-        'snapchatUsername': snapchatUsername,
+    // Build the dating sub-fields using dot-notation to avoid wiping
+    // existing dating.* fields (e.g. optIn, availability, audioPrompts,
+    // dailyLimitFirstHit, shownProfileIds, etc.)
+    final reviewPack = _buildReviewPack(
+      photoUrls: photoUrls,
+      audioUrls: audioUrls,
+    );
+
+    // Use dot-notation updates to preserve sibling dating.* fields
+    // IMPORTANT: Must NOT use 'dating.profile': {fullMap} because that
+    // replaces the entire sub-document, wiping fields added by other
+    // write paths (e.g. profile_screen edit adds name, photos, etc.).
+    final datingUpdates = <String, dynamic>{
+      'dating.profileCompleted': true,
+      'dating.profileCompletedAt': FieldValue.serverTimestamp(),
+      'dating.reviewPack': reviewPack,
+      // dating.profile.* fields (dot-notation preserves unmentioned siblings)
+      'dating.profile.age': age,
+      'dating.profile.city': cityCountry,
+      'dating.profile.nationality': nationality,
+      'dating.profile.country': country,
+      'dating.profile.educationLevel': educationLevel,
+      'dating.profile.profession': profession,
+      'dating.profile.churchName': church,
+      'dating.profile.hobbies': hobbies,
+      'dating.profile.desiredQualities': desiredQualities,
+      'dating.profile.profileUrl':
+          photoUrls.isNotEmpty ? photoUrls.first : null,
+      'dating.profile.photos': photoUrls,
+      if (instagramUsername?.isNotEmpty ?? false)
+        'dating.profile.instagramUsername': instagramUsername,
+      if (twitterUsername?.isNotEmpty ?? false)
+        'dating.profile.twitterUsername': twitterUsername,
+      if (whatsappNumber?.isNotEmpty ?? false)
+        'dating.profile.phoneNumber': whatsappNumber,
+      if (facebookUsername?.isNotEmpty ?? false)
+        'dating.profile.facebookUsername': facebookUsername,
+      if (telegramUsername?.isNotEmpty ?? false)
+        'dating.profile.telegramUsername': telegramUsername,
+      if (snapchatUsername?.isNotEmpty ?? false)
+        'dating.profile.snapchatUsername': snapchatUsername,
+      // Keep dating.countryOfResidence in sync for search queries
+      if (country.isNotEmpty) 'dating.countryOfResidence': country,
+      // Also write audioPrompts at dating level for UserModel.fromMap
+      'dating.audioPrompts': audioUrls,
+      // Root-level audioPrompts as belt-and-suspenders fallback
+      'audioPrompts': audioUrls,
+      // dating.contactInfo — admin reference map
+      'dating.contactInfo': <String, String>{
+        if (instagramUsername?.isNotEmpty ?? false)
+          'Instagram': instagramUsername!,
+        if (twitterUsername?.isNotEmpty ?? false) 'X': twitterUsername!,
+        if (facebookUsername?.isNotEmpty ?? false)
+          'Facebook': facebookUsername!,
+        if (whatsappNumber?.isNotEmpty ?? false) 'WhatsApp': whatsappNumber!,
+        if (telegramUsername?.isNotEmpty ?? false)
+          'Telegram': telegramUsername!,
+        if (snapchatUsername?.isNotEmpty ?? false)
+          'Snapchat': snapchatUsername!,
       },
     };
 
@@ -264,44 +293,62 @@ class DatingProfileService {
     final isLockedByAdmin = previousDating['verificationLockedByAdmin'] == true;
 
     if (currentStatus == 'verified' && !isLockedByAdmin) {
-      datingMap['verificationStatus'] = 'pending';
-      datingMap['pendingAt'] = FieldValue.serverTimestamp();
+      datingUpdates['dating.verificationStatus'] = 'pending';
+      datingUpdates['dating.pendingAt'] = FieldValue.serverTimestamp();
       // Clear prior decisions
-      datingMap['verifiedAt'] = null;
-      datingMap['verifiedBy'] = null;
-      datingMap['rejectedAt'] = null;
-      datingMap['rejectedBy'] = null;
-      datingMap['rejectionReason'] = null;
+      datingUpdates['dating.verifiedAt'] = null;
+      datingUpdates['dating.verifiedBy'] = null;
+      datingUpdates['dating.rejectedAt'] = null;
+      datingUpdates['dating.rejectedBy'] = null;
+      datingUpdates['dating.rejectionReason'] = null;
     }
 
     // Top-level fields: non-profile metadata + search-critical fields (dual-write)
-    // Profile data is now consolidated in dating.profile (see above)
-    // BUT we dual-write gender & country for search queries (6-9 month compat)
+    // DatingProfile.fromFirestore reads ALL these from root level, so they
+    // MUST be written at root in addition to dating.profile.* paths.
     final topLevel = <String, dynamic>{
-      // Dual-write country for search compatibility
       'country': country.isNotEmpty ? country : null,
+      'city': cityCountry,
+      'churchName': church,
+      'isActive': true,
+      'age': age,
+      'nationality': nationality,
+      'educationLevel': educationLevel,
+      'profession': profession,
+      'hobbies': hobbies,
+      'desiredQualities': desiredQualities,
+      'profileUrl': photoUrls.isNotEmpty ? photoUrls.first : null,
+      'photos': photoUrls,
+      // Root-level social media (UserModel reads most socials from here)
+      if (instagramUsername?.isNotEmpty ?? false)
+        'instagramUsername': instagramUsername,
+      if (twitterUsername?.isNotEmpty ?? false)
+        'twitterUsername': twitterUsername,
+      if (facebookUsername?.isNotEmpty ?? false)
+        'facebookUsername': facebookUsername,
+      if (telegramUsername?.isNotEmpty ?? false)
+        'telegramUsername': telegramUsername,
+      if (snapchatUsername?.isNotEmpty ?? false)
+        'snapchatUsername': snapchatUsername,
+      if (whatsappNumber?.isNotEmpty ?? false) 'phoneNumber': whatsappNumber,
       'updatedAt': FieldValue.serverTimestamp(),
     };
 
-    // Prepare the final write: if the document exists, update specific fields
-    // and overwrite the `dating` map. If it does not exist, create a new doc
-    // with the full payload (safe for new users).
-    if (!doc.exists) {
-      final full =
-          <String, dynamic>{}
-            ..addAll(topLevel)
-            ..addAll({'dating': datingMap});
-      await userRef.set(full);
-    } else {
-      // Use update to overwrite the `dating` map and set top-level fields.
-      final updatePayload =
-          <String, dynamic>{}
-            ..addAll(topLevel)
-            ..addAll({'dating': datingMap});
+    // Merge top-level and dot-notation dating updates into one payload.
+    // Using dot-notation preserves existing dating.* sibling fields
+    // (e.g. optIn, availability, dailyLimitFirstHit, shownProfileIds).
+    final payload =
+        <String, dynamic>{}
+          ..addAll(topLevel)
+          ..addAll(datingUpdates);
 
-      // Perform the update
-      await userRef.update(updatePayload);
+    // IMPORTANT: We must use .update() because Firestore's set() treats
+    // dot-notation keys as literal field names, not nested paths. If the doc
+    // doesn't exist, create it first so .update() can proceed.
+    if (!doc.exists) {
+      await userRef.set(<String, dynamic>{});
     }
+    await userRef.update(payload);
 
     // Track unique nationality and country
     await trackNationalityAndCountry(nationality, country);
@@ -325,12 +372,20 @@ class DatingProfileService {
   }) async {
     await _userDocRef(uid).update({
       'dating.profile.nationality': nationality,
+      'dating.profile.city': cityCountry,
       'dating.profile.country': country,
       'dating.profile.educationLevel': educationLevel,
       'dating.profile.profession': profession,
-      'dating.profile.church': church,
-      // Dual-write country to root for search queries (6-9 month backward compat)
+      'dating.profile.churchName': church,
+      // Root-level dual-writes for DatingProfile.fromFirestore & search compat
       'country': country,
+      'city': cityCountry,
+      'nationality': nationality,
+      'educationLevel': educationLevel,
+      'profession': profession,
+      'churchName': church,
+      // Keep dating.countryOfResidence in sync for search queries
+      if (country.isNotEmpty) 'dating.countryOfResidence': country,
       'updatedAt': FieldValue.serverTimestamp(),
     });
 
@@ -362,6 +417,9 @@ class DatingProfileService {
       'dating.profile.photos': photoUrls,
       'dating.profile.profileUrl':
           photoUrls.isNotEmpty ? photoUrls.first : null,
+      // Root-level dual-writes for DatingProfile.fromFirestore
+      'photos': photoUrls,
+      'profileUrl': photoUrls.isNotEmpty ? photoUrls.first : null,
       'updatedAt': FieldValue.serverTimestamp(),
     };
 
@@ -399,9 +457,8 @@ class DatingProfileService {
     final photoUrls = _stringList(existing['photos']);
 
     final updates = <String, dynamic>{
-      'dating.profile.audio1Url': audio1Url,
-      'dating.profile.audio2Url': audio2Url,
-      'dating.profile.audio3Url': audio3Url,
+      // Audio URLs consolidated: written to dating.audioPrompts + dating.reviewPack.audioUrls
+      // (no longer duplicated as dating.profile.audio1Url/audio2Url/audio3Url)
       'updatedAt': FieldValue.serverTimestamp(),
     };
 
@@ -426,13 +483,40 @@ class DatingProfileService {
     String? telegramUsername,
     String? snapchatUsername,
   }) async {
+    // Build dating.contactInfo map for admin reference / sync
+    final contactInfoMap = <String, String>{
+      if (instagramUsername?.isNotEmpty ?? false)
+        'Instagram': instagramUsername!,
+      if (twitterUsername?.isNotEmpty ?? false) 'X': twitterUsername!,
+      if (facebookUsername?.isNotEmpty ?? false) 'Facebook': facebookUsername!,
+      if (whatsappNumber?.isNotEmpty ?? false) 'WhatsApp': whatsappNumber!,
+      if (telegramUsername?.isNotEmpty ?? false) 'Telegram': telegramUsername!,
+      if (snapchatUsername?.isNotEmpty ?? false) 'Snapchat': snapchatUsername!,
+    };
+
     await _userDocRef(uid).update({
-      'dating.profile.instagramUsername': instagramUsername,
-      'dating.profile.twitterUsername': twitterUsername,
-      'dating.profile.phoneNumber': whatsappNumber,
-      'dating.profile.facebookUsername': facebookUsername,
-      'dating.profile.telegramUsername': telegramUsername,
-      'dating.profile.snapchatUsername': snapchatUsername,
+      // dating.profile.* — UserModel reads phoneNumber from here first
+      // Only write non-null values to avoid storing explicit nulls in Firestore
+      if (instagramUsername != null)
+        'dating.profile.instagramUsername': instagramUsername,
+      if (twitterUsername != null)
+        'dating.profile.twitterUsername': twitterUsername,
+      if (whatsappNumber != null) 'dating.profile.phoneNumber': whatsappNumber,
+      if (facebookUsername != null)
+        'dating.profile.facebookUsername': facebookUsername,
+      if (telegramUsername != null)
+        'dating.profile.telegramUsername': telegramUsername,
+      if (snapchatUsername != null)
+        'dating.profile.snapchatUsername': snapchatUsername,
+      // Root-level — UserModel reads most social media from here
+      if (instagramUsername != null) 'instagramUsername': instagramUsername,
+      if (twitterUsername != null) 'twitterUsername': twitterUsername,
+      if (whatsappNumber != null) 'phoneNumber': whatsappNumber,
+      if (facebookUsername != null) 'facebookUsername': facebookUsername,
+      if (telegramUsername != null) 'telegramUsername': telegramUsername,
+      if (snapchatUsername != null) 'snapchatUsername': snapchatUsername,
+      // dating.contactInfo — admin reference map
+      'dating.contactInfo': contactInfoMap,
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }

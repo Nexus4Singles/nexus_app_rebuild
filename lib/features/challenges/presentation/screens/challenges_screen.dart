@@ -50,7 +50,16 @@ class ChallengesScreen extends ConsumerWidget {
         centerTitle: true,
       ),
       body: catalogAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text('Fetching Journeys...'),
+            ],
+          ),
+        ),
         error:
             (error, stack) => Center(
               child: Column(

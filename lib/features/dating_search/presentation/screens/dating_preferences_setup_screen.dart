@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
+import 'package:nexus_app_v2/core/providers/tab_selection_provider.dart';
+import 'package:nexus_app_v2/core/constants/app_constants.dart';
 import 'package:nexus_app_v2/core/widgets/nexus_country_picker.dart';
 import 'package:nexus_app_v2/core/user/is_admin_provider.dart';
 import 'package:nexus_app_v2/features/presurvey/presentation/screens/presurvey_relationship_status_screen.dart';
@@ -17,7 +19,6 @@ import '../../domain/dating_search_result.dart';
 import '../../application/dating_preferences_provider.dart';
 import '../../application/dating_search_results_provider.dart';
 import 'dating_preferences_confirmation_screen.dart';
-import 'no_profiles_screen.dart';
 import '../widgets/dating_pool_guidelines_modal.dart';
 import '../../application/dating_pool_guidelines_provider.dart';
 
@@ -98,6 +99,7 @@ class _DatingPreferencesSetupScreenState
       _minAge = 21;
       _maxAge = 70;
       // Show guidelines modal on first visit to dating search (non-editing mode, not reactivating)
+      // Only show if context will be rendered (not hidden in IndexedStack background)
       if (!widget.isReactivatingAfterStatusChange) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _showGuidelinesModalIfNeeded();
@@ -194,15 +196,9 @@ class _DatingPreferencesSetupScreenState
       }
 
       // For reactivation scenarios, don't show "no profiles" screen
-      // Just navigate to confirmation/search results
+      // Just call onComplete to switch parent IndexedStack
       if (widget.isReactivatingAfterStatusChange) {
-        if (mounted) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (_) => const DatingPreferencesConfirmationScreen(),
-            ),
-          );
-        }
+        if (widget.onComplete != null) widget.onComplete!();
         return;
       }
 
@@ -348,49 +344,19 @@ class _DatingPreferencesSetupScreenState
         print(
           '[DatingPreferencesSetupScreen] Proceeding to confirmation while results continue to resolve in background',
         );
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => const DatingPreferencesConfirmationScreen(),
-          ),
-        );
+        if (widget.onComplete != null) widget.onComplete!();
         return;
       }
 
-      // If no profiles match preferences, go directly to no profiles screen
+      // Always proceed to grid — it handles empty results inline
       if (resultsAsync.items.isEmpty) {
         print(
-          '[DatingPreferencesSetupScreen] No profiles found, showing no-profiles screen',
-        );
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder:
-                (_) => NoProfilesScreen(
-                  onRetry: () {
-                    ref.invalidate(datingSearchResultsProvider);
-                    ref.read(searchResultsCacheProvider.notifier).clear();
-                  },
-                  onEditPreferences: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder:
-                            (_) => DatingPreferencesSetupScreen(
-                              existingPreferences: prefs,
-                            ),
-                      ),
-                    );
-                  },
-                ),
-          ),
+          '[DatingPreferencesSetupScreen] No profiles found, proceeding to grid (inline empty state)',
         );
       } else {
-        // Otherwise show confirmation screen
         print('[DatingPreferencesSetupScreen] Showing confirmation screen');
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => const DatingPreferencesConfirmationScreen(),
-          ),
-        );
       }
+      if (widget.onComplete != null) widget.onComplete!();
     } catch (e) {
       print(
         '[DatingPreferencesSetupScreen] Error in _checkProfilesAndNavigate: $e',
@@ -541,14 +507,18 @@ class _DatingPreferencesSetupScreenState
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: AppColors.primary),
+    );
   }
 
   void _showGuidelinesModalIfNeeded() async {
     // Prevent showing multiple times in this session
     if (_guidelinesModalShown) return;
+
+    // Only show if this screen is actually visible as the dating tab
+    final selectedTab = ref.read(selectedTabProvider);
+    if (selectedTab != NavTab.search) return;
 
     // Get current user ID for user-specific key check
     final userId = ref.watch(currentUserIdProvider);
@@ -561,6 +531,16 @@ class _DatingPreferencesSetupScreenState
     final hasSeenGuidelines = prefs.getBool(userSpecificKey) ?? false;
 
     if (hasSeenGuidelines == false) {
+      // IMPORTANT: Only show the modal if the render object is actually attached
+      // This prevents the modal from showing when the widget is hidden in an IndexedStack
+      if (!mounted) return;
+      final renderObject = context.findRenderObject();
+      if (renderObject == null || !renderObject.attached) {
+        // Widget is not rendered yet (e.g., hidden in IndexedStack background)
+        // Don't show the modal
+        return;
+      }
+
       _guidelinesModalShown = true; // Mark as shown for this session
 
       showDialog(
@@ -590,6 +570,16 @@ class _DatingPreferencesSetupScreenState
 
   @override
   Widget build(BuildContext context) {
+    // Check if this is now visible and should show guidelines
+    // (handles case where screen is in IndexedStack but becomes visible later)
+    if (!_guidelinesModalShown &&
+        widget.existingPreferences == null &&
+        !widget.isReactivatingAfterStatusChange) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showGuidelinesModalIfNeeded();
+      });
+    }
+
     final isEditing = widget.existingPreferences != null;
 
     // Check if dating profile exists (checking if dating doc exists, not if it's "complete")

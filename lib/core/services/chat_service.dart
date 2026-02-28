@@ -539,9 +539,32 @@ class ChatService {
     final m1 = d1.data();
     final m2 = d2.data();
 
-    // v1 stores gender at root: users/{uid}.gender (often "Male"/"Female")
-    final g1 = _normalizeGender(m1?['gender']);
-    final g2 = _normalizeGender(m2?['gender']);
+    // Gender: check root, then dating.profile.gender, then dating.gender, then nexus2.gender
+    String? _extractGender(Map<String, dynamic>? m) {
+      if (m == null) return null;
+      final root = _normalizeGender(m['gender']);
+      if (root != null) return root;
+      final dating =
+          (m['dating'] is Map)
+              ? (m['dating'] as Map).cast<String, dynamic>()
+              : null;
+      final datingProfile =
+          (dating?['profile'] is Map)
+              ? (dating!['profile'] as Map).cast<String, dynamic>()
+              : null;
+      final dpG = _normalizeGender(
+        datingProfile?['gender'] ?? dating?['gender'],
+      );
+      if (dpG != null) return dpG;
+      final nexus2 =
+          (m['nexus2'] is Map)
+              ? (m['nexus2'] as Map).cast<String, dynamic>()
+              : null;
+      return _normalizeGender(nexus2?['gender']);
+    }
+
+    final g1 = _extractGender(m1);
+    final g2 = _extractGender(m2);
 
     final isOpposite =
         (g1 == 'male' && g2 == 'female') || (g1 == 'female' && g2 == 'male');
@@ -848,7 +871,10 @@ class ChatService {
       receiverId: receiverId,
       content: imageUrl,
       type: MessageType.image,
-      metadata: caption != null ? {'caption': caption} : null,
+      metadata: {
+        if (caption != null) 'caption': caption,
+        'uploadedAt': DateTime.now().toIso8601String(),
+      },
     );
   }
 
@@ -866,7 +892,10 @@ class ChatService {
       receiverId: receiverId,
       content: audioUrl,
       type: MessageType.audio,
-      metadata: {'duration': durationSeconds},
+      metadata: {
+        'duration': durationSeconds,
+        'uploadedAt': DateTime.now().toIso8601String(),
+      },
     );
   }
 

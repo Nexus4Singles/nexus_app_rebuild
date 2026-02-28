@@ -77,7 +77,7 @@ class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
             .toList();
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -88,7 +88,7 @@ class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
           const SizedBox(height: 12),
 
           _SearchField(controller: _search, onChanged: (_) => setState(() {})),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
 
           Expanded(
             child: _SelectableGrid(
@@ -103,7 +103,7 @@ class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
             top: false,
             child: Column(
               children: [
-                const SizedBox(height: 18),
+                const SizedBox(height: 12),
                 SizedBox(
                   width: double.infinity,
                   height: 54,
@@ -118,12 +118,7 @@ class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
                         borderRadius: BorderRadius.circular(18),
                       ),
                     ),
-                    child: Text(
-                      'Continue',
-                      style: AppTextStyles.labelLarge.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
+                    child: const Text('Continue'),
                   ),
                 ),
               ],
@@ -140,15 +135,11 @@ class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
         _selected.remove(quality);
       } else if (_selected.length >= _max) {
         HapticFeedback.mediumImpact();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('You can only select up to $_max qualities.')),
-        );
         return;
       } else {
         _selected.add(quality);
       }
 
-      // Auto-save on every toggle
       ref
           .read(datingOnboardingDraftProvider.notifier)
           .setDesiredQualities(_selected.toList());
@@ -156,7 +147,6 @@ class _DatingQualitiesScreenState extends ConsumerState<DatingQualitiesScreen> {
   }
 
   void _onContinue(BuildContext context) {
-    // Draft is already saved via auto-save
     Navigator.of(context).pushNamed('/dating/setup/photos');
   }
 }
@@ -175,25 +165,25 @@ class _ProgressHeader extends StatelessWidget {
         const DatingProfileProgressBar(currentStep: 4, totalSteps: 9),
         const SizedBox(height: 12),
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: Text(
                 subtitle,
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.bodySmall.copyWith(
                   color: AppColors.getTextMuted(context),
                 ),
               ),
             ),
             const SizedBox(width: 12),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: AppColors.getSurface(context),
                 borderRadius: BorderRadius.circular(999),
                 border: Border.all(color: AppColors.getBorder(context)),
               ),
-              child: Text(counter, style: AppTextStyles.labelLarge),
+              child: Text(counter, style: AppTextStyles.labelSmall),
             ),
           ],
         ),
@@ -219,18 +209,20 @@ class _SearchField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
         children: [
-          Icon(Icons.search, color: AppColors.getTextMuted(context)),
+          Icon(Icons.search, color: AppColors.getTextMuted(context), size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
               controller: controller,
               onChanged: onChanged,
+              style: AppTextStyles.bodySmall,
               decoration: InputDecoration(
                 hintText: 'Search qualities',
-                hintStyle: AppTextStyles.bodyMedium.copyWith(
+                hintStyle: AppTextStyles.bodySmall.copyWith(
                   color: AppColors.getTextMuted(context),
                 ),
                 border: InputBorder.none,
+                isDense: true,
               ),
             ),
           ),
@@ -240,7 +232,11 @@ class _SearchField extends StatelessWidget {
                 controller.clear();
                 onChanged('');
               },
-              icon: Icon(Icons.close, color: AppColors.getTextMuted(context)),
+              icon: Icon(
+                Icons.close,
+                color: AppColors.getTextMuted(context),
+                size: 18,
+              ),
             ),
         ],
       ),
@@ -267,7 +263,7 @@ class _SelectableGrid extends StatelessWidget {
       return Center(
         child: Text(
           'No matches found.',
-          style: AppTextStyles.bodyMedium.copyWith(
+          style: AppTextStyles.bodySmall.copyWith(
             color: AppColors.getTextMuted(context),
           ),
         ),
@@ -288,7 +284,7 @@ class _SelectableGrid extends StatelessWidget {
         final isSelected = selected.contains(value);
 
         return InkWell(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(14),
           onTap: () => onToggle(value),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 180),
@@ -314,7 +310,7 @@ class _SelectableGrid extends StatelessWidget {
                     value,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.bodyMedium.copyWith(
+                    style: AppTextStyles.bodySmall.copyWith(
                       fontWeight:
                           isSelected ? FontWeight.w700 : FontWeight.w500,
                     ),
@@ -323,7 +319,7 @@ class _SelectableGrid extends StatelessWidget {
                 const SizedBox(width: 8),
                 Icon(
                   isSelected ? Icons.check_circle : Icons.circle_outlined,
-                  size: 20,
+                  size: 18,
                   color:
                       isSelected
                           ? AppColors.primary

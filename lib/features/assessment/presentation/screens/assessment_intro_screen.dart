@@ -72,7 +72,7 @@ class AssessmentIntroScreen extends ConsumerWidget {
                         child: Center(
                           child: Text(
                             meta.emoji,
-                            style: const TextStyle(fontSize: 40),
+                            style: AppTextStyles.displayMedium,
                           ),
                         ),
                       ),
@@ -81,8 +81,7 @@ class AssessmentIntroScreen extends ConsumerWidget {
                     Center(
                       child: Text(
                         meta.title,
-                        style: AppTextStyles.headlineLarge.copyWith(
-                          fontSize: 20,
+                        style: AppTextStyles.headlineSmall.copyWith(
                           fontWeight: FontWeight.w800,
                         ),
                         textAlign: TextAlign.center,
@@ -93,7 +92,6 @@ class AssessmentIntroScreen extends ConsumerWidget {
                       child: Text(
                         meta.subtitle,
                         style: AppTextStyles.bodyMedium.copyWith(
-                          fontSize: 13,
                           color: AppColors.getTextSecondary(context),
                           height: 1.3,
                         ),
@@ -129,7 +127,6 @@ class AssessmentIntroScreen extends ConsumerWidget {
                           Text(
                             'What you\'ll get',
                             style: AppTextStyles.titleSmall.copyWith(
-                              fontSize: 13,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -150,7 +147,6 @@ class AssessmentIntroScreen extends ConsumerWidget {
                                     child: Text(
                                       d,
                                       style: AppTextStyles.bodySmall.copyWith(
-                                        fontSize: 12,
                                         height: 1.3,
                                       ),
                                     ),
@@ -173,7 +169,6 @@ class AssessmentIntroScreen extends ConsumerWidget {
                             child: Text(
                               meta.note,
                               style: AppTextStyles.bodySmall.copyWith(
-                                fontSize: 12,
                                 color: AppColors.getTextPrimary(context),
                                 height: 1.3,
                               ),
@@ -206,8 +201,7 @@ class AssessmentIntroScreen extends ConsumerWidget {
                               const SizedBox(width: 6),
                               Text(
                                 'How to Get the Most Out of This',
-                                style: AppTextStyles.bodySmall.copyWith(
-                                  fontSize: 12,
+                                style: AppTextStyles.labelLarge.copyWith(
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.primary,
                                 ),
@@ -218,7 +212,6 @@ class AssessmentIntroScreen extends ConsumerWidget {
                           Text(
                             'Your honesty is crucial. Answer based on how you truly feel and behave—not how you wish you were. The accuracy of your results depends on your authentic responses.\n\nTake your time and be genuine with yourself.',
                             style: AppTextStyles.bodySmall.copyWith(
-                              fontSize: 12,
                               color: AppColors.getTextSecondary(context),
                               height: 1.3,
                             ),
@@ -272,11 +265,10 @@ class AssessmentIntroScreen extends ConsumerWidget {
                           ),
                           elevation: 0,
                         ),
-                        child: const Text(
+                        child: Text(
                           'Start Assessment',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
+                          style: AppTextStyles.labelLarge.copyWith(
+                            color: Colors.white,
                           ),
                         ),
                       ),

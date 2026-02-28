@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
 
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
@@ -45,7 +46,10 @@ class ContactScreen extends StatelessWidget {
                         );
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Email copied')),
+                            const SnackBar(
+                              content: Text('Email copied'),
+                              backgroundColor: AppColors.success,
+                            ),
                           );
                         }
                       },

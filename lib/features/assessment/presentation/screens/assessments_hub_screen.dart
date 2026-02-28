@@ -45,7 +45,7 @@ class AssessmentsHubScreen extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () => navigateBackToHome(context),
         ),
-        title: Text("Assessments", style: AppTextStyles.headlineLarge),
+        title: Text("Assessments", style: AppTextStyles.headlineMedium),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),

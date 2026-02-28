@@ -17,7 +17,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         titleSpacing: 0,
         title: Text(
           'Privacy Policy',
-          style: AppTextStyles.headlineLarge.copyWith(
+          style: AppTextStyles.headlineMedium.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),

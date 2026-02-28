@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:nexus_app_v2/core/theme/theme.dart';
-import 'package:nexus_app_v2/core/dating/dating_profile_status_provider.dart';
 import '../../application/dating_preferences_provider.dart';
 import '../../domain/dating_preferences.dart';
 import 'dating_preferences_setup_screen.dart';
 import 'search_results_grid_screen.dart';
 
 /// Main dating search screen
-/// Routes to:
-/// 1. First-time users → preferences setup
-/// 2. Users with saved preferences → search results
-/// 3. Users without preferences → preferences setup
 class NewDatingSearchScreen extends ConsumerStatefulWidget {
   const NewDatingSearchScreen({Key? key}) : super(key: key);
 
@@ -34,11 +28,6 @@ class _NewDatingSearchScreenState extends ConsumerState<NewDatingSearchScreen>
     super.initState();
     _checkIfFirstSearch();
     _checkIfCompletedSetupAfterStatusChange();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   Future<void> _checkIfFirstSearch() async {
@@ -69,10 +58,17 @@ class _NewDatingSearchScreenState extends ConsumerState<NewDatingSearchScreen>
     await prefs.remove('preferences_setup_after_status_change');
   }
 
+  void _handlePreferencesComplete() {
+    setState(() {
+      _showSetupScreenCached = false;
+      _isFirstSearch = false;
+      _completedSetupAfterStatusChange = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    // Still loading first search check or status change setup check
     if (_isFirstSearch == null || _completedSetupAfterStatusChange == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
@@ -90,9 +86,9 @@ class _NewDatingSearchScreenState extends ConsumerState<NewDatingSearchScreen>
 
     return IndexedStack(
       index: _showSetupScreenCached! ? 0 : 1,
-      children: const [
-        DatingPreferencesSetupScreen(onComplete: _emptyCallback),
-        SearchResultsGridScreen(),
+      children: [
+        DatingPreferencesSetupScreen(onComplete: _handlePreferencesComplete),
+        const SearchResultsGridScreen(),
       ],
     );
   }
@@ -122,6 +118,4 @@ class _NewDatingSearchScreenState extends ConsumerState<NewDatingSearchScreen>
 
   @override
   bool get wantKeepAlive => true;
-
-  static void _emptyCallback() {}
 }

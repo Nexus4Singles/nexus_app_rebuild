@@ -31,6 +31,7 @@ class Story {
   final String id;
   final String title;
   final String category;
+  final List<String> tags;
   final int readTimeMins;
   final String heroImageAsset;
 
@@ -52,6 +53,7 @@ class Story {
     required this.id,
     required this.title,
     required this.category,
+    this.tags = const [],
     required this.readTimeMins,
     required this.heroImageAsset,
     required this.excerpt,
@@ -69,6 +71,10 @@ class Story {
       id: (json['id'] ?? '') as String,
       title: (json['title'] ?? '') as String,
       category: (json['category'] ?? 'General') as String,
+      tags:
+          ((json['tags'] as List<dynamic>?) ?? const [])
+              .whereType<String>()
+              .toList(),
       readTimeMins: (json['readTimeMins'] as num?)?.toInt() ?? 3,
       heroImageAsset: (json['heroImageAsset'] ?? '') as String,
       excerpt: (json['excerpt'] ?? '') as String,

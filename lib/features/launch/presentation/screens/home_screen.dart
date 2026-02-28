@@ -120,6 +120,11 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bottomInset = MediaQuery.of(context).padding.bottom;
+    final screenW = MediaQuery.of(context).size.width;
+    // Responsive scaling: compact for narrow screens (<375), normal otherwise
+    final isCompact = screenW < 375;
+    final hPad = isCompact ? 16.0 : 20.0;
+    final cardGap = isCompact ? 14.0 : 20.0;
 
     // Use the canonical guest logic (respects `force_guest` etc.)
     // This now watches auth state internally, so it auto-updates on login/logout
@@ -138,13 +143,13 @@ class HomeScreen extends ConsumerWidget {
         centerTitle: true,
         title: Text(
           'Home',
-          style: AppTextStyles.headlineLarge.copyWith(
+          style: AppTextStyles.headlineMedium.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.fromLTRB(20, 16, 20, 80 + bottomInset),
+        padding: EdgeInsets.fromLTRB(hPad, 14, hPad, 80 + bottomInset),
         physics: const ClampingScrollPhysics(),
         children: [
           // Greeting Header
@@ -154,12 +159,12 @@ class HomeScreen extends ConsumerWidget {
               children: [
                 Text(
                   'Hello 👋',
-                  style: AppTextStyles.titleLarge.copyWith(
+                  style: AppTextStyles.titleMedium.copyWith(
                     fontWeight: FontWeight.w700,
                     height: 1.1,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
                 Text(
                   'You can read our weekly stories without an account!',
                   style: AppTextStyles.bodySmall.copyWith(
@@ -192,26 +197,26 @@ class HomeScreen extends ConsumerWidget {
                           firstName.isEmpty
                               ? '${_greeting()} 👋'
                               : '${_greeting()}, $firstName 👋',
-                          style: AppTextStyles.titleLarge.copyWith(
+                          style: AppTextStyles.titleMedium.copyWith(
                             fontWeight: FontWeight.w700,
                             height: 1.1,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 4),
                         if (isReturningUser)
                           Text(
                             'Welcome back — continue where you left off',
-                            style: AppTextStyles.bodyMedium.copyWith(
+                            style: AppTextStyles.bodySmall.copyWith(
                               color: AppColors.getTextSecondary(context),
-                              height: 1.4,
+                              height: 1.3,
                             ),
                           )
                         else
                           Text(
                             'Explore different features below',
-                            style: AppTextStyles.bodyMedium.copyWith(
+                            style: AppTextStyles.bodySmall.copyWith(
                               color: AppColors.getTextSecondary(context),
-                              height: 1.4,
+                              height: 1.3,
                             ),
                           ),
                       ],
@@ -221,7 +226,7 @@ class HomeScreen extends ConsumerWidget {
               },
             ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: cardGap),
 
           // Assessment Card - Dynamic based on completion status
           _AssessmentCard(
@@ -232,7 +237,7 @@ class HomeScreen extends ConsumerWidget {
             descBuilder: (ctx, key) => _assessmentDescForKey(key),
           ),
 
-          const SizedBox(height: 20),
+          SizedBox(height: cardGap),
 
           _StoryOfWeekCard(
             onTap: () {
@@ -485,16 +490,15 @@ class _StartAssessmentCard extends ConsumerWidget {
           const SizedBox(height: 8),
           Text(
             descBuilder(context, statusKey),
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: AppTextStyles.bodySmall.copyWith(
               color: Colors.white.withOpacity(0.9),
               height: 1.4,
-              fontSize: 12,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
-            height: 50,
+            height: 46,
             child: ElevatedButton(
               onPressed: () async {
                 await GuestGuard.requireSignedIn(
@@ -526,7 +530,9 @@ class _StartAssessmentCard extends ConsumerWidget {
               ),
               child: Text(
                 'Start Assessment',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                style: AppTextStyles.buttonMedium.copyWith(
+                  color: AppColors.primary,
+                ),
               ),
             ),
           ),
@@ -631,10 +637,10 @@ class _ViewAssessmentResultCard extends StatelessWidget {
               _HomeTierPill(tier: result.overallTier),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
-            height: 50,
+            height: 46,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushNamed('/assessment/result');
@@ -649,7 +655,9 @@ class _ViewAssessmentResultCard extends StatelessWidget {
               ),
               child: Text(
                 'View Assessment Result',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                style: AppTextStyles.buttonMedium.copyWith(
+                  color: AppColors.primary,
+                ),
               ),
             ),
           ),
@@ -709,9 +717,12 @@ class _PremiumCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenW = MediaQuery.of(context).size.width;
+    final isCompact = screenW < 375;
+    final cardPad = isCompact ? 16.0 : 20.0;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(cardPad),
       decoration: BoxDecoration(
         gradient: gradient,
         color: gradient == null ? AppColors.surface : null,
@@ -778,27 +789,27 @@ class _StoryOfWeekCard extends StatelessWidget {
                 children: [
                   // Section Header Above Image
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
                     child: Row(
                       children: [
                         Container(
-                          width: 44,
-                          height: 44,
+                          width: 38,
+                          height: 38,
                           decoration: BoxDecoration(
                             color: AppColors.primary.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Icon(
                             Icons.auto_stories,
                             color: AppColors.primary,
-                            size: 22,
+                            size: 20,
                           ),
                         ),
-                        const SizedBox(width: 14),
+                        const SizedBox(width: 12),
                         Expanded(
                           child: Text(
                             'Story of the Week',
-                            style: AppTextStyles.titleMedium.copyWith(
+                            style: AppTextStyles.titleSmall.copyWith(
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -897,7 +908,7 @@ class _StoryOfWeekCard extends StatelessWidget {
                   ),
                   // Content Section
                   Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -915,29 +926,29 @@ class _StoryOfWeekCard extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 14),
+                          const SizedBox(height: 12),
                           Text(
                             story.excerpt,
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.bodyMedium.copyWith(
+                            style: AppTextStyles.bodySmall.copyWith(
                               color: AppColors.getTextSecondary(context),
-                              height: 1.5,
+                              height: 1.4,
                             ),
                           ),
                         ] else ...[
                           Text(
                             'A fresh story to guide your dating, marriage, and relationship life this week.',
-                            style: AppTextStyles.bodyMedium.copyWith(
+                            style: AppTextStyles.bodySmall.copyWith(
                               color: AppColors.getTextSecondary(context),
-                              height: 1.5,
+                              height: 1.4,
                             ),
                           ),
                         ],
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 14),
                         SizedBox(
                           width: double.infinity,
-                          height: 50,
+                          height: 46,
                           child: ElevatedButton(
                             onPressed: onTap,
                             style: ElevatedButton.styleFrom(
@@ -950,9 +961,8 @@ class _StoryOfWeekCard extends StatelessWidget {
                             ),
                             child: Text(
                               'Read Now',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
+                              style: AppTextStyles.buttonMedium.copyWith(
+                                color: Colors.white,
                               ),
                             ),
                           ),
@@ -1056,16 +1066,15 @@ class _JourneyCard extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             subtitle,
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: AppTextStyles.bodySmall.copyWith(
               color: Colors.white.withOpacity(0.9),
               height: 1.4,
-              fontSize: 12,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
-            height: 50,
+            height: 46,
             child: ElevatedButton(
               onPressed: onTap,
               style: ElevatedButton.styleFrom(
@@ -1078,7 +1087,9 @@ class _JourneyCard extends StatelessWidget {
               ),
               child: Text(
                 ctaText,
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                style: AppTextStyles.buttonMedium.copyWith(
+                  color: AppColors.primary,
+                ),
               ),
             ),
           ),
@@ -1140,7 +1151,7 @@ class _MarriageCoachCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
         decoration: BoxDecoration(
           color: AppColors.getCardBackground(context),
           borderRadius: BorderRadius.circular(16),
@@ -1210,10 +1221,9 @@ class _MarriageCoachCard extends StatelessWidget {
                     'Speak to a Marriage Coach',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.labelLarge.copyWith(
+                    style: AppTextStyles.bodyMedium.copyWith(
                       color: AppColors.getTextPrimary(context),
                       fontWeight: FontWeight.w700,
-                      fontSize: 12,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -1223,7 +1233,6 @@ class _MarriageCoachCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.getTextSecondary(context),
-                      fontSize: 11,
                       height: 1.3,
                     ),
                   ),

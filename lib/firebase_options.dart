@@ -51,8 +51,8 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDf3dWHYiGPUj9Ul4wfqUQgmK2BpdSw-os',
-    appId: '1:327599352691:android:ab5e0b946fb3a53105b306',
+    apiKey: 'AIzaSyBma35VjGIPZZnRIwIPm3XaJ7QrWlqbOvk',
+    appId: '1:327599352691:android:62d6e36242e7d92f05b306',
     messagingSenderId: '327599352691',
     projectId: 'nexus-visibility-app',
     storageBucket: 'nexus-visibility-app.appspot.com',
@@ -64,7 +64,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '327599352691',
     projectId: 'nexus-visibility-app',
     storageBucket: 'nexus-visibility-app.appspot.com',
-    iosBundleId: 'com.nexus4singles.nexusApp',
+    iosBundleId: 'com.nexus4singles.nexus',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(

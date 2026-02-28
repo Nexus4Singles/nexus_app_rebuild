@@ -45,19 +45,25 @@ class _DatingAudioQuestionScreenState
 
   String? _filePath;
 
+  // Stream subscriptions – cancelled in dispose() to prevent setState-after-dispose
+  StreamSubscription<PlayerState>? _playerStateSub;
+  StreamSubscription<Duration>? _positionSub;
+
   @override
   void initState() {
     super.initState();
     _loadExisting();
 
     // Listen to player state changes
-    _player.playerStateStream.listen((state) {
+    _playerStateSub = _player.playerStateStream.listen((state) {
+      if (!mounted) return;
       setState(() {
         _isPlaying = state.playing;
       });
 
       // Reset _isPlaying when playback completes
       if (state.processingState == ProcessingState.completed) {
+        if (!mounted) return;
         setState(() {
           _isPlaying = false;
           _playbackPosition = 0;
@@ -66,7 +72,8 @@ class _DatingAudioQuestionScreenState
     });
 
     // Listen to playback position changes
-    _player.positionStream.listen((position) {
+    _positionSub = _player.positionStream.listen((position) {
+      if (!mounted) return;
       setState(() {
         _playbackPosition = position.inMilliseconds;
       });
@@ -76,6 +83,8 @@ class _DatingAudioQuestionScreenState
   @override
   void dispose() {
     _timer?.cancel();
+    _playerStateSub?.cancel();
+    _positionSub?.cancel();
     try {
       _player.stop();
     } catch (_) {}
@@ -105,7 +114,7 @@ class _DatingAudioQuestionScreenState
         _filePath = null;
       } else {
         // File exists and has data, mark as having a recording
-        setState(() => _hasRecording = true);
+        if (mounted) setState(() => _hasRecording = true);
       }
     }
     // _recordedDuration stays 0 - user must record to enable Continue
@@ -172,7 +181,7 @@ class _DatingAudioQuestionScreenState
                 Text(
                   _questionText,
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.titleLarge.copyWith(height: 1.35),
+                  style: AppTextStyles.titleMedium.copyWith(height: 1.35),
                 ),
                 if (_helperText != null) ...[
                   const SizedBox(height: 8),
@@ -341,15 +350,18 @@ class _DatingAudioQuestionScreenState
         return;
       }
 
-      // Fully reset player state before loading a new source
+      // Fully reset player state before loading a new source.
+      // Use stop() only – avoid chaining stop+seek+setFilePath+seek+play
+      // which triggers "Cannot complete a future with itself" on the
+      // internal AudioPlayerPlatform future.
       try {
         await _player.stop();
-        await _player.seek(Duration.zero);
       } catch (_) {}
 
-      // Use setFilePath (simplest API, avoids double-wrapping)
+      // Use setFilePath (simplest API, avoids double-wrapping).
+      // setFilePath internally seeks to zero, so no extra seek needed.
       await _player.setFilePath(_filePath!);
-      await _player.seek(Duration.zero);
+      if (!mounted) return;
       await _player.play();
     } catch (e) {
       String errorMsg = 'Failed to play recording';
@@ -422,11 +434,11 @@ class _DatingAudioQuestionScreenState
 
       // Early guard: if simulator, warn once because iOS sims often produce empty audio.
       if (defaultTargetPlatform == TargetPlatform.iOS && !kIsWeb) {}
-      setState(() {});
+      if (mounted) setState(() {});
     } catch (e) {
       _toast('Failed to start recording: $e');
     } finally {
-      setState(() => _busy = false);
+      if (mounted) setState(() => _busy = false);
     }
   }
 
@@ -434,9 +446,11 @@ class _DatingAudioQuestionScreenState
     try {
       await _recorder.pause();
       _timer?.cancel();
-      setState(() {
-        _isPaused = true;
-      });
+      if (mounted) {
+        setState(() {
+          _isPaused = true;
+        });
+      }
     } catch (_) {}
   }
 
@@ -444,9 +458,11 @@ class _DatingAudioQuestionScreenState
     try {
       await _recorder.resume();
       _startTimer();
-      setState(() {
-        _isPaused = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isPaused = false;
+        });
+      }
     } catch (_) {}
   }
 
@@ -476,22 +492,25 @@ class _DatingAudioQuestionScreenState
     }
 
     // Get actual audio duration from timer (avoids creating a second AudioPlayer
-    // which can conflict with iOS audio session and cause -11829 playback errors)
-    _recordedDuration = _elapsed;
+    // which can conflict with iOS audio session and cause -11829 playback errors).
+    // Clamp to _maxSeconds as a safety net against any timer edge-case drift.
+    _recordedDuration = _elapsed.clamp(0, _maxSeconds);
 
-    setState(() {
-      _isRecording = false;
-      _isPaused = false;
-      _isPlaying = false;
-      _playbackPosition = 0;
-    });
+    if (mounted) {
+      setState(() {
+        _isRecording = false;
+        _isPaused = false;
+        _isPlaying = false;
+        _playbackPosition = 0;
+      });
+    }
 
     // Only save if minimum duration met and file is not tiny.
     // If `validate` is false (we're stopping because the user requested a restart),
     // skip validation and do not show any toast or re-enter restart flow.
     if (validate) {
       if (_recordedDuration >= _minSeconds && finalSize > 2048) {
-        setState(() => _hasRecording = true);
+        if (mounted) setState(() => _hasRecording = true);
         _saveDraftPath();
       } else {
         final reason =
@@ -529,14 +548,16 @@ class _DatingAudioQuestionScreenState
       } catch (_) {}
     }
 
-    setState(() {
-      _elapsed = 0;
-      _recordedDuration = 0;
-      _filePath = null;
-      _hasRecording = false;
-      _isPlaying = false;
-      _playbackPosition = 0;
-    });
+    if (mounted) {
+      setState(() {
+        _elapsed = 0;
+        _recordedDuration = 0;
+        _filePath = null;
+        _hasRecording = false;
+        _isPlaying = false;
+        _playbackPosition = 0;
+      });
+    }
 
     _saveDraftPath(clear: true);
   }
@@ -544,8 +565,11 @@ class _DatingAudioQuestionScreenState
   void _startTimer() {
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) async {
+      if (!mounted) return;
       if (!_isRecording || _isPaused) return;
 
+      // Guard: never increment past max (defensive against queued ticks)
+      if (_elapsed >= _maxSeconds) return;
       _elapsed++;
 
       // Cap at maxSeconds and stop IMMEDIATELY (cancel timer first to
@@ -553,28 +577,29 @@ class _DatingAudioQuestionScreenState
       if (_elapsed >= _maxSeconds) {
         _elapsed = _maxSeconds;
         _timer?.cancel();
-        setState(() {});
+        if (mounted) setState(() {});
         await _stop();
         return;
       }
 
-      setState(() {});
+      if (mounted) setState(() {});
     });
   }
 
   void _saveDraftPath({bool clear = false}) {
     final notifier = ref.read(datingOnboardingDraftProvider.notifier);
     if (clear) {
-      if (widget.questionNumber == 1) notifier.setAudio(a1: null);
-      if (widget.questionNumber == 2) notifier.setAudio(a2: null);
-      if (widget.questionNumber == 3) notifier.setAudio(a3: null);
+      if (widget.questionNumber == 1) notifier.setAudio(a1: null, d1: null);
+      if (widget.questionNumber == 2) notifier.setAudio(a2: null, d2: null);
+      if (widget.questionNumber == 3) notifier.setAudio(a3: null, d3: null);
       return;
     }
 
     if (_filePath == null) return;
-    if (widget.questionNumber == 1) notifier.setAudio(a1: _filePath);
-    if (widget.questionNumber == 2) notifier.setAudio(a2: _filePath);
-    if (widget.questionNumber == 3) notifier.setAudio(a3: _filePath);
+    final dur = _recordedDuration;
+    if (widget.questionNumber == 1) notifier.setAudio(a1: _filePath, d1: dur);
+    if (widget.questionNumber == 2) notifier.setAudio(a2: _filePath, d2: dur);
+    if (widget.questionNumber == 3) notifier.setAudio(a3: _filePath, d3: dur);
   }
 
   void _goNext(BuildContext context) async {
@@ -590,7 +615,9 @@ class _DatingAudioQuestionScreenState
   }
 
   void _toast(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(msg), backgroundColor: AppColors.primary),
+    );
   }
 
   String _formatTime(int seconds) {

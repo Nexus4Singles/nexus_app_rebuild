@@ -188,9 +188,8 @@ class _PresurveySplashScreenState extends ConsumerState<PresurveySplashScreen>
                           scale: _titleScale,
                           child: Text(
                             'Nexus',
-                            style: AppTextStyles.headlineLarge.copyWith(
+                            style: AppTextStyles.displaySmall.copyWith(
                               color: Colors.white,
-                              fontSize: 25,
                               fontWeight: FontWeight.w700,
                               letterSpacing: -0.4,
                             ),

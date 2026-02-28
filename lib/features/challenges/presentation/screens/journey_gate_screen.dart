@@ -213,10 +213,11 @@ class _LockedView extends ConsumerWidget {
                       ref.invalidate(isJourneyPurchasedProvider(journey.id));
 
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
+                        SnackBar(
+                          content: const Text(
                             'Unlocked. You can now access all activities.',
                           ),
+                          backgroundColor: AppColors.success,
                         ),
                       );
 

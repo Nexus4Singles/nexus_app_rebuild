@@ -55,10 +55,7 @@ final pendingReviewUsersProvider = StreamProvider<List<AdminReviewItem>>((ref) {
   final stream =
       fs
           .collection('users')
-          .where(
-            'dating.verificationStatus',
-            whereIn: ['pending', 'rejected'],
-          )
+          .where('dating.verificationStatus', whereIn: ['pending', 'rejected'])
           .orderBy('dating.verificationQueuedAt', descending: true)
           .limit(200)
           .snapshots();
@@ -93,11 +90,15 @@ final pendingReviewUsersProvider = StreamProvider<List<AdminReviewItem>>((ref) {
                   : <String>[];
 
           final name = (data['name'] ?? data['username'] ?? 'User').toString();
+          final nexus2 = (data['nexus2'] is Map) ? data['nexus2'] as Map : null;
 
-          // Stored mirrors
+          // Gender: try dating mirror, then root-level (always written)
           final gender =
               dating?['gender']?.toString() ?? data['gender']?.toString();
-          final rel = dating?['relationshipStatus']?.toString();
+          // RelationshipStatus: try dating mirror, then canonical nexus2 source
+          final rel =
+              dating?['relationshipStatus']?.toString() ??
+              nexus2?['relationshipStatus']?.toString();
 
           final queuedAt = _asDate(dating?['verificationQueuedAt']);
 

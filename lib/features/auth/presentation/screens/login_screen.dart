@@ -97,7 +97,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         titleSpacing: 0,
         title: Text(
           'Log In',
-          style: AppTextStyles.headlineLarge.copyWith(
+          style: AppTextStyles.headlineMedium.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -110,7 +110,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             children: [
               Text(
                 'Welcome Back',
-                style: AppTextStyles.headlineLarge.copyWith(
+                style: AppTextStyles.headlineMedium.copyWith(
                   fontWeight: FontWeight.w700,
                   height: 1.1,
                 ),
@@ -248,14 +248,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             height: 24,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation(AppColors.textOnPrimary),
+                              valueColor: AlwaysStoppedAnimation(
+                                AppColors.textOnPrimary,
+                              ),
                             ),
                           )
                           : Text(
                             'Log in',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 17,
+                            style: AppTextStyles.labelLarge.copyWith(
+                              color: AppColors.textOnPrimary,
                             ),
                           ),
                 ),
@@ -271,8 +272,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ).pushNamed('/forgot-password'),
                   child: Text(
                     'Forgot password?',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                    style: AppTextStyles.labelLarge.copyWith(
                       color: AppColors.primary,
                     ),
                   ),

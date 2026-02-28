@@ -27,7 +27,7 @@
         "female": "Growing Stronger: Do Not Rush What Is Working"
       },
       "genderSummary": {
-        "male": "You are on the right trajectory, and your answers show real growth. But some patterns from your previous marriage—how you handle conflict, how you set boundaries, how you process trust—still need intentional attention. The temptation for divorced men is to move forward before the work is done. Resist that. The gap between 'mostly healed' and 'genuinely ready' is where the best marriages begin.",
+        "male": "You are on the right trajectory, and your answers show real growth. But some patterns from your previous marriage (how you handle conflict, how you set boundaries, how you process trust) still need intentional attention. The temptation for divorced men is to move forward before the work is done. Resist that. The gap between 'mostly healed' and 'genuinely ready' is where the best marriages begin.",
         "female": "Your progress is real and worth celebrating. But some of what surfaced in your answers suggests tender places that still need tending: trust issues that flare under pressure, comparison patterns that creep in, or boundaries that are not yet instinctive. The woman who takes the time to finish her healing enters remarriage from a position of strength, not hope masking unfinished pain."
       },
       "narrativeFrame": "Your answers reveal a person in genuine transition, moving from brokenness toward wholeness. The progress is not imagined; it is real. But the areas flagged below are where the remaining work lives. Lean into them and you close the gap between healing and readiness."
@@ -41,7 +41,7 @@
       },
       "genderSummary": {
         "male": "Brother, your answers reveal patterns that have not yet changed: how you respond to emotional triggers, how you handle accountability, how you make meaning from what happened. These are the same patterns that, unaddressed, tend to repeat in second marriages. This is not a permanent label. It is a present reality. And the man who faces it honestly builds something far stronger the next time.",
-        "female": "Sister, your answers suggest that some deep places still need attention. The loneliness, the unresolved feelings, the way certain triggers still control your responses—these are not signs of weakness. They are signs that the healing is not done yet. And entering remarriage before it is done means your new partner inherits what your ex could not carry. You and your future husband both deserve better."
+        "female": "Sister, your answers suggest that some deep places still need attention. The loneliness, the unresolved feelings, the way certain triggers still control your responses. These are not signs of weakness. They are signs that the healing is not done yet. And entering remarriage before it is done means your new partner inherits what your ex could not carry. You and your future husband both deserve better."
       },
       "narrativeFrame": "This assessment surfaced some uncomfortable truths. But uncomfortable truths are infinitely better than comfortable lies, especially when your future marriage is at stake. The growth areas below are real, and each one can change with focused, supported effort."
     },
@@ -53,7 +53,7 @@
         "female": "A New Relationship Cannot Heal What Is Unresolved."
       },
       "genderSummary": {
-        "male": "Brother, your answers reveal a man who is still carrying the wreckage of his previous marriage. Unprocessed anger, broken trust patterns, spiritual crisis, and unhealthy coping—these will not improve with a new wife. They will repeat. Please seek professional help. A counselor, a pastor, a recovery group—someone who can walk you through the wreckage before you try to build again.",
+        "male": "Brother, your answers reveal a man who is still carrying the wreckage of his previous marriage. Unprocessed anger, broken trust patterns, spiritual crisis, and unhealthy coping. These will not improve with a new wife. They will repeat. Please seek professional help: a counselor, a pastor, a recovery group, or someone who can walk you through the wreckage before you try to build again.",
         "female": "Sister, your answers describe someone who is still in the storm, not past it. Pain this deep does not heal on a dating timeline. It heals in community, in counseling, in honest spiritual wrestling, and in time. A new man in your life right now would inherit every unresolved piece of your past. That is not fair to him, and it is not fair to you. Please reach out for help this week."
       },
       "narrativeFrame": "This result is not a life sentence. It is a snapshot of right now. Every pattern below can shift with the right support, honest work, and time. But the starting point is not a dating app; it is a counselor's office, a prayer closet, or a community that knows your real story."
@@ -187,7 +187,7 @@
       "insights": {
         "low": "Your understanding of what makes marriage work may be limited or idealized. Realistic expectations prevent disappointment in remarriage.",
         "medium": "You have a reasonable understanding but haven't thought deeply about all aspects. Reflecting on marriage's realities strengthens readiness.",
-        "high": "You have a realistic, mature understanding of marriage—work, grace, sacrifice, joy, and growth. This wisdom supports lasting love.",
+        "high": "You have a realistic, mature understanding of marriage, work, grace, sacrifice, joy, and growth. This wisdom supports lasting love.",
         "microStep": "Write down 5 realities of marriage you want to remember as you enter a new relationship.",
         "recommendedJourney": "mature_marriage_understanding_remarriage"
       }
@@ -229,7 +229,7 @@
       "id": "remarriage_posture",
       "name": "Your Approach to Love Again",
       "insights": {
-        "low": "You may approach remarriage with fear, desperation, or defensiveness. A healthier posture—open, wise, and hopeful—leads to better outcomes.",
+        "low": "You may approach remarriage with fear, desperation, or defensiveness. A healthier posture (open, wise, and hopeful) leads to better outcomes.",
         "medium": "You're generally hopeful but some protective walls remain. Balancing openness with wisdom strengthens your capacity to love again.",
         "high": "You approach remarriage with realistic hope, openness, and wisdom. You're neither desperate nor defensive. This healthy posture attracts healthy partnerships.",
         "microStep": "Write your ideal posture toward remarriage. What would it look like to be both open and wise?",
@@ -264,7 +264,7 @@
       "insights": {
         "low": "You may struggle to trust after being hurt. While caution is wise, excessive distrust prevents the vulnerability needed for healthy marriage.",
         "medium": "You can trust but carry some protective walls. Gradually opening your heart while maintaining healthy boundaries strengthens relationships.",
-        "high": "You trust wisely—you're open to a new partner while maintaining healthy discernment. You can be vulnerable without being reckless. This balance creates intimacy.",
+        "high": "You trust wisely, you're open to a new partner while maintaining healthy discernment. You can be vulnerable without being reckless. This balance creates intimacy.",
         "microStep": "Identify one way you could take a small trust risk with someone safe this week.",
         "recommendedJourney": "rebuilding_trust_capacity_remarriage"
       }
@@ -285,8 +285,8 @@
           "outcomeSignal": "emotional_state_steady",
           "outcomeLabel": "You are emotionally steady",
           "genderInsight": {
-            "male": "Hearing your ex's name without a charge shows real progress. Many men after divorce suppress the reaction rather than resolve it — your steadiness seems genuine, not performed.",
-            "female": "Emotional stability when your ex comes up shows you've done real work. Many women after divorce carry residual anger or grief longer — your peace here is earned."
+            "male": "Hearing your ex's name without a charge shows real progress. Many men after divorce suppress the reaction rather than resolve it. Your steadiness seems genuine, not performed.",
+            "female": "Emotional stability when your ex comes up shows you've done real work. Many women after divorce carry residual anger or grief longer. Your peace here is earned."
           }
         },
         {
@@ -298,7 +298,7 @@
           "outcomeLabel": "You feel brief emotions but move past them",
           "genderInsight": {
             "male": "A brief flicker when their name comes up is normal. For men post-divorce, this often shows as a jaw clench or stomach drop rather than a named emotion. Notice what the body is saying.",
-            "female": "A momentary reaction is human and honest. For women post-divorce, the flicker often carries layers — hurt, anger, grief, relief — all at once. Letting yourself feel it without judging it is progress."
+            "female": "A momentary reaction is human and honest. For women post-divorce, the flicker often carries layers: hurt, anger, grief, relief, all at once. Letting yourself feel it without judging it is progress."
           }
         },
         {
@@ -310,7 +310,7 @@
           "outcomeLabel": "Your body tenses up but you don't always show it",
           "genderInsight": {
             "male": "Your body is still reacting, which means the wound is still active. Men after divorce often push past this with willpower, but the body keeps score. Consider whether you've processed or just moved on.",
-            "female": "Physical reactions to their name mean there's unresolved emotional charge. Women post-divorce often think they're 'over it' because they can function — but functioning isn't the same as healing."
+            "female": "Physical reactions to their name mean there's unresolved emotional charge. Women post-divorce often think they're 'over it' because they can function. But functioning isn't the same as healing."
           }
         },
         {
@@ -319,10 +319,10 @@
           "signalTier": "AT_RISK",
           "weight": 0,
           "outcomeSignal": "emotional_state_emotional_flooding",
-          "outcomeLabel": "You experience emotional flooding—it takes real effort to manage",
+          "outcomeLabel": "You experience emotional flooding. It takes real effort to manage.",
           "genderInsight": {
-            "male": "Emotional flooding at the mention of their name means you are not ready for a new relationship yet. Many men rush into dating post-divorce to escape this feeling — that's how patterns repeat.",
-            "female": "If their name can still overwhelm you, your healing has more road ahead. Take the time — women who rush past this point often choose the next partner as a reaction to the last one."
+            "male": "Emotional flooding at the mention of their name means you are not ready for a new relationship yet. Many men rush into dating post-divorce to escape this feeling. That's how patterns repeat.",
+            "female": "If their name can still overwhelm you, your healing has more road ahead. Take the time. Women who rush past this point often choose the next partner as a reaction to the last one."
           }
         }
       ],
@@ -347,7 +347,7 @@
           "outcomeLabel": "You have integrated your experience into meaning",
           "genderInsight": {
             "male": "Being able to tell your marriage story with honesty and peace is rare for men post-divorce. Most men either avoid the topic or tell it as a war story. Your integrated narrative protects your next relationship.",
-            "female": "Honest, peaceful reflection on your marriage shows you've done deep processing work. Many women after divorce still tell the story through pain — your settled perspective means you've moved from surviving to understanding."
+            "female": "Honest, peaceful reflection on your marriage shows you've done deep processing work. Many women after divorce still tell the story through pain. Your settled perspective means you've moved from surviving to understanding."
           }
         },
         {
@@ -358,8 +358,8 @@
           "outcomeSignal": "meaning_making_partial_insight_blame_lens",
           "outcomeLabel": "You're gaining insight but still blame sometimes",
           "genderInsight": {
-            "male": "Still telling the story through a blame lens is common in men post-divorce, especially if the divorce felt initiated by her. Partial insight is progress — but your next partner needs you to see the full picture.",
-            "female": "A blame lens that still colors your narrative means the hurt is doing part of the storytelling. Women post-divorce often oscillate between over-blaming themselves and over-blaming him — finding the balance is the work."
+            "male": "Still telling the story through a blame lens is common in men post-divorce, especially if the divorce felt initiated by her. Partial insight is progress. But your next partner needs you to see the full picture.",
+            "female": "A blame lens that still colors your narrative means the hurt is doing part of the storytelling. Women post-divorce often oscillate between over-blaming themselves and over-blaming him. Finding the balance is the work."
           }
         },
         {
@@ -382,7 +382,7 @@
           "outcomeSignal": "meaning_making_fragmented_unprocessed",
           "outcomeLabel": "Your memories feel fragmented and unprocessed",
           "genderInsight": {
-            "male": "Fragmented, unprocessed experience means the divorce is still an open wound, not a scar with a story. Men often push through without processing — but the confusion doesn't resolve itself with time alone.",
+            "male": "Fragmented, unprocessed experience means the divorce is still an open wound, not a scar with a story. Men often push through without processing. But the confusion doesn't resolve itself with time alone.",
             "female": "Pain without clarity suggests the emotional processing hasn't caught up to the lived experience. Fragments of hurt without a coherent story will shape your next choices in ways you can't predict."
           }
         }
@@ -403,8 +403,8 @@
           "outcomeSignal": "memory_intrusion_notices_and_returns",
           "outcomeLabel": "You notice memories but stay present",
           "genderInsight": {
-            "male": "Being able to acknowledge a memory without it hijacking your mood shows genuine progress. Many men after divorce either suppress memories entirely or get pulled under by them — your middle path is healthy.",
-            "female": "Noticing a memory and returning to the present shows emotional resilience. For women post-divorce, memories often carry more emotional charge — your ability to hold and release them is powerful."
+            "male": "Being able to acknowledge a memory without it hijacking your mood shows genuine progress. Many men after divorce either suppress memories entirely or get pulled under by them. Your middle path is healthy.",
+            "female": "Noticing a memory and returning to the present shows emotional resilience. For women post-divorce, memories often carry more emotional charge. Your ability to hold and release them is powerful."
           }
         },
         {
@@ -440,7 +440,7 @@
           "outcomeLabel": "Happiness triggers guilt because joy and grief are tangled",
           "genderInsight": {
             "male": "Happiness triggering grief or fear is a sign that your nervous system hasn't yet learned that good things can last. Men who rush into new relationships from this place often sabotage the very happiness they're seeking.",
-            "female": "If good days make the pain worse, your psyche is protecting you from hope — because hope means vulnerability to loss again. This requires deeper healing work before a new relationship can thrive."
+            "female": "If good days make the pain worse, your psyche is protecting you from hope. Because hope means vulnerability to loss again. This requires deeper healing work before a new relationship can thrive."
           }
         }
       ],
@@ -472,7 +472,7 @@
           "outcomeSignal": "loneliness_driver_identity_and_belonging",
           "outcomeLabel": "You miss being known and have a deeper ache for belonging",
           "genderInsight": {
-            "male": "Naming the ache honestly is more than many men allow themselves to do. The loneliness is real — just don't let it rush you into something before you're ready.",
+            "male": "Naming the ache honestly is more than many men allow themselves to do. The loneliness is real. Just don't let it rush you into something before you're ready.",
             "female": "Feeling lonely AND knowing you're not ready is a mature place to be. The tension between wanting companionship and wanting to be whole first is actually a good sign."
           }
         },
@@ -484,7 +484,7 @@
           "outcomeSignal": "loneliness_driver_comfort_seeking",
           "outcomeLabel": "You're drawn to familiar comfort",
           "genderInsight": {
-            "male": "If loneliness is pushing you toward someone — anyone — that's your signal to slow down. Men who remarry to escape loneliness often recreate the same problems.",
+            "male": "If loneliness is pushing you toward someone (anyone) that's your signal to slow down. Men who remarry to escape loneliness often recreate the same problems.",
             "female": "Loneliness driving decisions rather than wisdom is a red flag for remarriage readiness. You're looking for a cure when you need healing first."
           }
         },
@@ -517,8 +517,8 @@
           "outcomeSignal": "healing_progress_holds_both",
           "outcomeLabel": "You hold both the good and difficult memories",
           "genderInsight": {
-            "male": "You've pursued active healing, not just waited for time to do the work. Many men treat divorce recovery like a project with a deadline — your willingness to go deeper sets you apart.",
-            "female": "Active healing work — counseling, honest processing, spiritual wrestling — shows you're not just surviving, you're transforming. This is exactly the foundation remarriage needs."
+            "male": "You've pursued active healing, not just waited for time to do the work. Many men treat divorce recovery like a project with a deadline. Your willingness to go deeper sets you apart.",
+            "female": "Active healing work (counseling, honest processing, spiritual wrestling) shows you're not just surviving. You're transforming. This is exactly the foundation remarriage needs."
           }
         },
         {
@@ -530,7 +530,7 @@
           "outcomeLabel": "You feel emotions but recover quickly",
           "genderInsight": {
             "male": "You're in process, which matters. For men, the temptation is to set a timeline and judge yourself against it. Healing doesn't have a completion date.",
-            "female": "Mid-journey is exactly right if you're doing real work. Women often feel pressure to 'be healed' by a certain point — let the process unfold at its own pace."
+            "female": "Mid-journey is exactly right if you're doing real work. Women often feel pressure to 'be healed' by a certain point. Let the process unfold at its own pace."
           }
         },
         {
@@ -541,7 +541,7 @@
           "outcomeSignal": "healing_progress_absorbed_by_memories",
           "outcomeLabel": "Your mood shifts quickly when memories surface",
           "genderInsight": {
-            "male": "Relying on time rather than intentional work is the most common male approach to post-divorce recovery — and the least effective. What you don't process, you carry.",
+            "male": "Relying on time rather than intentional work is the most common male approach to post-divorce recovery, and the least effective. What you don't process, you carry.",
             "female": "Moving forward without deep processing means the wound travels with you. It may hurt less, but it will shape who you choose and how you show up."
           }
         },
@@ -553,7 +553,7 @@
           "outcomeSignal": "healing_progress_avoidance_of_past",
           "outcomeLabel": "You actively avoid facing the past",
           "genderInsight": {
-            "male": "Relying on time rather than intentional work is the most common male approach to post-divorce recovery — and the least effective. What you don't process, you carry.",
+            "male": "Relying on time rather than intentional work is the most common male approach to post-divorce recovery, and the least effective. What you don't process, you carry.",
             "female": "Moving forward without deep processing means the wound travels with you. It may hurt less, but it will shape who you choose and how you show up."
           }
         }
@@ -575,7 +575,7 @@
           "outcomeLabel": "You take clear responsibility for your part",
           "genderInsight": {
             "male": "Naming your specific contribution without minimizing or deflecting is rare in men post-divorce. This clarity means you're unlikely to repeat the pattern blindly.",
-            "female": "Clear ownership of your part while holding the full complexity of what happened shows remarkable maturity. Many women overcorrect and take too much blame — your balance here is healthy."
+            "female": "Clear ownership of your part while holding the full complexity of what happened shows remarkable maturity. Many women overcorrect and take too much blame. Your balance here is healthy."
           }
         },
         {
@@ -586,8 +586,8 @@
           "outcomeSignal": "accountability_partial_tangled_with_pain",
           "outcomeLabel": "You recognize your part but it's mixed with blame",
           "genderInsight": {
-            "male": "Partial ownership tangled with hurt is honest. Men post-divorce often intellectualize their part without feeling the weight of it — head knowledge isn't the same as genuine accountability.",
-            "female": "You're working through the tangle of 'my part' versus 'what was done to me.' Women often absorb more blame than they should — make sure your accountability is accurate, not excessive."
+            "male": "Partial ownership tangled with hurt is honest. Men post-divorce often intellectualize their part without feeling the weight of it. Head knowledge isn't the same as genuine accountability.",
+            "female": "You're working through the tangle of 'my part' versus 'what was done to me.' Women often absorb more blame than they should. Make sure your accountability is accurate, not excessive."
           }
         },
         {
@@ -598,7 +598,7 @@
           "outcomeSignal": "accountability_victim_posture_dominant",
           "outcomeLabel": "You blame circumstances more than yourself",
           "genderInsight": {
-            "male": "Defensiveness about your contribution is common in men after divorce — especially if the divorce felt done TO you. But staying here means your next relationship inherits the blind spots.",
+            "male": "Defensiveness about your contribution is common in men after divorce. Especially if the divorce felt done TO you. But staying here means your next relationship inherits the blind spots.",
             "female": "If you're still primarily focused on what he did, the hurt is doing the talking. Your next relationship needs you to see your patterns clearly, even the subtle ones."
           }
         },
@@ -611,7 +611,7 @@
           "outcomeLabel": "You hold your ex entirely responsible",
           "genderInsight": {
             "male": "Full blame on your ex means the hardest work hasn't started yet. Men who don't own their part tend to choose the same type of partner and be surprised when the same problems appear.",
-            "female": "Complete externalization often feels justified — and parts of it may be true. But entering a new marriage without recognizing your patterns means history can repeat."
+            "female": "Complete externalization often feels justified. And parts of it may be true. But entering a new marriage without recognizing your patterns means history can repeat."
           }
         }
       ],
@@ -635,7 +635,7 @@
           "outcomeSignal": "growth_domain_emotional_self_awareness",
           "outcomeLabel": "You're growing in understanding your emotions",
           "genderInsight": {
-            "male": "Emotional self-awareness growth is the highest-value transformation for a man after divorce. Most men operate on autopilot emotionally — your willingness to understand your own patterns changes everything.",
+            "male": "Emotional self-awareness growth is the highest-value transformation for a man after divorce. Most men operate on autopilot emotionally. Your willingness to understand your own patterns changes everything.",
             "female": "Emotional self-awareness growth means you won't walk into your next relationship blind to your own triggers, needs, and patterns. This is the most protective growth a woman can make post-divorce."
           }
         },
@@ -647,7 +647,7 @@
           "outcomeSignal": "growth_domain_spiritual_maturity",
           "outcomeLabel": "You're developing stronger spiritual faith",
           "genderInsight": {
-            "male": "Spiritual deepening through divorce is powerful — many men's faith either shatters or solidifies. If yours deepened, it means you wrestled honestly with God rather than running from Him.",
+            "male": "Spiritual deepening through divorce is powerful. Many men's faith either shatters or solidifies. If yours deepened, it means you wrestled honestly with God rather than running from Him.",
             "female": "Faith that deepened through the pain of divorce means you didn't let the worst thing that happened to you define your theology. This spiritual resilience will anchor your next marriage."
           }
         },
@@ -672,7 +672,7 @@
           "outcomeLabel": "You're growing but aren't sure where you're headed",
           "genderInsight": {
             "male": "Inability to name specific growth after divorce means time has passed but transformation hasn't happened. Many men confuse 'I survived it' with 'I learned from it.' They're not the same thing.",
-            "female": "Not being able to point to clear growth is honest — and it tells you the processing work is still ahead. Time heals pain but doesn't automatically generate wisdom."
+            "female": "Not being able to point to clear growth is honest. And it tells you the processing work is still ahead. Time heals pain but doesn't automatically generate wisdom."
           }
         }
       ],
@@ -697,7 +697,7 @@
           "outcomeLabel": "Your pain has taught you real wisdom",
           "genderInsight": {
             "male": "Deep, experience-earned wisdom about sacrifice and dying to self shows you've extracted real meaning from your pain. This level of understanding in a man makes him a safer second husband.",
-            "female": "Being able to name what nobody prepares you for — the daily dying to self, the hidden costs — means your next marriage will be entered with eyes wide open."
+            "female": "Being able to name what nobody prepares you for (the daily dying to self, the hidden costs) means your next marriage will be entered with eyes wide open."
           }
         },
         {
@@ -708,8 +708,8 @@
           "outcomeSignal": "marriage_understanding_pattern_awareness",
           "outcomeLabel": "You're starting to see your harmful patterns",
           "genderInsight": {
-            "male": "Awareness of unseen patterns — how family background and unexamined habits shape marriage — shows you've dug below the surface. Most men blame circumstances; you're examining root causes.",
-            "female": "Pattern awareness growing means you're starting to see the invisible architecture that shaped your marriage — the inherited habits, the unspoken expectations. This insight protects your future."
+            "male": "Awareness of unseen patterns (how family background and unexamined habits shape marriage) shows you've dug below the surface. Most men blame circumstances. You're examining root causes.",
+            "female": "Pattern awareness growing means you're starting to see the invisible architecture that shaped your marriage, the inherited habits, the unspoken expectations. This insight protects your future."
           }
         },
         {
@@ -720,7 +720,7 @@
           "outcomeSignal": "marriage_understanding_partner_selection_focused",
           "outcomeLabel": "You know what to look for in a partner but miss deeper issues",
           "genderInsight": {
-            "male": "Focusing advice on partner selection suggests your understanding of marriage is still at the 'choose better' stage rather than the 'be better' stage. Both matter — but the second matters more.",
+            "male": "Focusing advice on partner selection suggests your understanding of marriage is still at the 'choose better' stage rather than the 'be better' stage. Both matter. But the second matters more.",
             "female": "If your primary lesson is 'know the person first,' you may be overweighting partner selection and underweighting your own patterns. The person you bring to the next marriage matters as much as the person you choose."
           }
         },
@@ -753,8 +753,8 @@
           "outcomeSignal": "change_basis_real_tested_change",
           "outcomeLabel": "You can show real evidence of your growth",
           "genderInsight": {
-            "male": "Pointing to specific, verifiable change — not just 'I've grown' — is the strongest answer a man can give. Your next wife needs evidence, not just assurance.",
-            "female": "Concrete evidence of change — counseling completed, patterns broken, new behaviors sustained — is the most reassuring thing you can offer a future partner."
+            "male": "Pointing to specific, verifiable change (not just 'I've grown') is the strongest answer a man can give. Your next wife needs evidence, not just assurance.",
+            "female": "Concrete evidence of change (counseling completed, patterns broken, new behaviors sustained) is the most reassuring thing you can offer a future partner."
           }
         },
         {
@@ -811,7 +811,7 @@
           "outcomeLabel": "You catch yourself mid-pattern and correct it",
           "genderInsight": {
             "male": "Real-time pattern correction as a father means your children won't inherit what was passed to you. For a man re-entering family life, this awareness is protective of everyone in the home.",
-            "female": "Catching inherited patterns while parenting shows you've done the work of examining your family of origin. Your children — and your next marriage — are safer because of it."
+            "female": "Catching inherited patterns while parenting shows you've done the work of examining your family of origin. Your children. And your next marriage. Are safer because of it."
           }
         },
         {
@@ -823,7 +823,7 @@
           "outcomeLabel": "You see your patterns but correct them slowly",
           "genderInsight": {
             "male": "After-the-fact awareness is still awareness. Many fathers don't connect their parenting reactions to their own upbringing at all. Your growing insight is a bridge to breaking the cycle.",
-            "female": "Recognizing the pattern after the moment has passed means the awareness is building. Each recognition shortens the delay — eventually it becomes real-time correction."
+            "female": "Recognizing the pattern after the moment has passed means the awareness is building. Each recognition shortens the delay. Eventually it becomes real-time correction."
           }
         },
         {
@@ -846,7 +846,7 @@
           "outcomeSignal": "family_patterns_future_home_unexamined_repetition",
           "outcomeLabel": "You repeat old patterns without noticing",
           "genderInsight": {
-            "male": "Unexamined repetition of childhood patterns is how generational damage survives. As a man entering a new marriage — possibly with children from both sides — this blind spot is serious.",
+            "male": "Unexamined repetition of childhood patterns is how generational damage survives. As a man entering a new marriage (possibly with children from both sides) this blind spot is serious.",
             "female": "Doing what feels natural without examining where it came from means your parents' marriage is being replicated through you. In remarriage, this adds complexity on top of complexity."
           }
         }
@@ -867,8 +867,8 @@
           "outcomeSignal": "trust_capacity_earned_trust_posture",
           "outcomeLabel": "You believe trust must be earned through actions",
           "genderInsight": {
-            "male": "Calibrated trust — neither cynical nor naive — is the healthiest position after divorce. For men, this often means letting go of the need to control the outcome.",
-            "female": "Your trust posture is wise — open but discerning. After what you've been through, this balance took real work to build."
+            "male": "Calibrated trust (neither cynical nor naive) is the healthiest position after divorce. For men, this often means letting go of the need to control the outcome.",
+            "female": "Your trust posture is wise, open but discerning. After what you've been through, this balance took real work to build."
           }
         },
         {
@@ -891,7 +891,7 @@
           "outcomeSignal": "trust_capacity_cynicism_as_shield",
           "outcomeLabel": "You use cynicism to protect yourself from being hurt again",
           "genderInsight": {
-            "male": "Cynicism after divorce is understandable but dangerous — it protects you from hurt while also blocking genuine connection. Marriage without vulnerability is a transaction.",
+            "male": "Cynicism after divorce is understandable but dangerous, it protects you from hurt while also blocking genuine connection. Marriage without vulnerability is a transaction.",
             "female": "If trust feels impossible after what happened, the wound from your marriage is still dictating your future. Healing trust capacity is some of the most important pre-remarriage work."
           }
         },
@@ -903,7 +903,7 @@
           "outcomeSignal": "trust_capacity_words_override_discernment",
           "outcomeLabel": "You let words override what your gut tells you",
           "genderInsight": {
-            "male": "Cynicism after divorce is understandable but dangerous — it protects you from hurt while also blocking genuine connection. Marriage without vulnerability is a transaction.",
+            "male": "Cynicism after divorce is understandable but dangerous, it protects you from hurt while also blocking genuine connection. Marriage without vulnerability is a transaction.",
             "female": "If trust feels impossible after what happened, the wound from your marriage is still dictating your future. Healing trust capacity is some of the most important pre-remarriage work."
           }
         }
@@ -928,8 +928,8 @@
           "outcomeSignal": "conflict_fear_conflict_normalized",
           "outcomeLabel": "You see conflict as normal, not as a threat",
           "genderInsight": {
-            "male": "Being able to stay present in disagreement without shutting down shows you've broken the pattern many men carry from failed marriages — where conflict meant the beginning of the end.",
-            "female": "Staying engaged through disagreement without jumping to worst-case thinking shows real growth. Many women after divorce associate conflict with the unraveling — your ability to separate the two is powerful."
+            "male": "Being able to stay present in disagreement without shutting down shows you've broken the pattern many men carry from failed marriages. Where conflict meant the beginning of the end.",
+            "female": "Staying engaged through disagreement without jumping to worst-case thinking shows real growth. Many women after divorce associate conflict with the unraveling. Your ability to separate the two is powerful."
           }
         },
         {
@@ -940,19 +940,19 @@
           "outcomeSignal": "conflict_fear_anxious_but_present",
           "outcomeLabel": "You feel anxious but stay in it",
           "genderInsight": {
-            "male": "Tension in conflict is normal after divorce. For men, the instinct is often to fix it immediately or withdraw — learning to sit in productive tension is a skill worth building.",
-            "female": "Anxiety in disagreement makes sense after what you've been through. Your nervous system learned that conflict leads to loss — retraining it takes time and safe experiences."
+            "male": "Tension in conflict is normal after divorce. For men, the instinct is often to fix it immediately or withdraw. Learning to sit in productive tension is a skill worth building.",
+            "female": "Anxiety in disagreement makes sense after what you've been through. Your nervous system learned that conflict leads to loss. Retraining it takes time and safe experiences."
           }
         },
         {
           "id": "C",
-          "text": "My mind races to the worst case—thinking this is how it starts again—and I want to run before it gets worse",
+          "text": "My mind races to the worst case, thinking this is how it starts again, and I want to run before it gets worse",
           "signalTier": "GUARDED",
           "weight": 1,
           "outcomeSignal": "conflict_fear_catastrophizing",
           "outcomeLabel": "You assume the worst because of past hurt",
           "genderInsight": {
-            "male": "Conflict avoidance after divorce often looks like 'keeping the peace' — but it's actually fear wearing a mask. Your next partner needs you to be able to disagree without disappearing.",
+            "male": "Conflict avoidance after divorce often looks like 'keeping the peace'. But it's actually fear wearing a mask. Your next partner needs you to be able to disagree without disappearing.",
             "female": "If disagreement makes you question the whole relationship, your divorce taught you that conflict = ending. That's a trauma response, not a truth. Good relationships include disagreement."
           }
         },
@@ -1021,7 +1021,7 @@
           "outcomeSignal": "healing_progress_functioning_around_the_wound",
           "outcomeLabel": "You've learned to function around the pain, not process it",
           "genderInsight": {
-            "male": "Functioning around the wound while believing you've healed is the most dangerous position for a man considering remarriage. Your next wife will discover the wound you think you've outgrown — usually in the first serious conflict.",
+            "male": "Functioning around the wound while believing you've healed is the most dangerous position for a man considering remarriage. Your next wife will discover the wound you think you've outgrown. Usually in the first serious conflict.",
             "female": "Getting better at performing normalcy is not the same as healing. If someone you trust asked 'are you really okay?' and the honest answer is no, that's the information your next relationship needs you to act on."
           }
         }
@@ -1029,7 +1029,7 @@
       "originalNumber": 21,
       "phase": {
         "title": "How You Engage Now",
-        "description": "This section probes how you show up in new relationships — trust, triggers, and conflict."
+        "description": "This section probes how you show up in new relationships, trust, triggers, and conflict."
       }
     },
     {
@@ -1046,8 +1046,8 @@
           "outcomeSignal": "trigger_response_sees_this_person_not_the_past",
           "outcomeLabel": "You see your new partner for who they are",
           "genderInsight": {
-            "male": "Separating your new partner from your ex in real-time shows you've processed the old relationship thoroughly. Many men after divorce project old fears onto new women — your clarity protects her from paying for someone else's sins.",
-            "female": "Seeing this person as themselves, not as a stand-in for your ex, means the past relationship has been properly filed — painful but separate. Your new partner deserves exactly this."
+            "male": "Separating your new partner from your ex in real-time shows you've processed the old relationship thoroughly. Many men after divorce project old fears onto new women, your clarity protects her from paying for someone else's sins.",
+            "female": "Seeing this person as themselves, not as a stand-in for your ex, means the past relationship has been properly filed, painful but separate. Your new partner deserves exactly this."
           }
         },
         {
@@ -1082,7 +1082,7 @@
           "outcomeSignal": "trigger_response_overwhelmed_by_past",
           "outcomeLabel": "The past intrudes and overwhelms you",
           "genderInsight": {
-            "male": "Being flooded by a similarity to your ex means the divorce wound is still very active. Any new partner will inevitably remind you of her in small ways — if each one triggers a crisis, you're not yet ready.",
+            "male": "Being flooded by a similarity to your ex means the divorce wound is still very active. Any new partner will inevitably remind you of her in small ways, if each one triggers a crisis, you're not yet ready.",
             "female": "Emotional flooding from similarities to your ex means your body hasn't differentiated past from present. This level of trigger reactivity requires professional support before remarriage."
           }
         }
@@ -1103,8 +1103,8 @@
           "outcomeSignal": "comparison_risk_minimal_redirected",
           "outcomeLabel": "You occasionally compare but quickly move past it",
           "genderInsight": {
-            "male": "Catching a comparison and releasing it shows emotional discipline. Men post-divorce often compare functionally — 'she doesn't do what my ex did' — your ability to see each person as their own is mature.",
-            "female": "Noticing comparison without letting it drive your choices shows real growth. Women post-divorce often compare emotionally — 'he doesn't make me feel like...' — your awareness here protects new love."
+            "male": "Catching a comparison and releasing it shows emotional discipline. Men post-divorce often compare functionally, 'she doesn't do what my ex did', your ability to see each person as their own is mature.",
+            "female": "Noticing comparison without letting it drive your choices shows real growth. Women post-divorce often compare emotionally, 'he doesn't make me feel like...', your awareness here protects new love."
           }
         },
         {
@@ -1116,7 +1116,7 @@
           "outcomeLabel": "You compare but actively work not to",
           "genderInsight": {
             "male": "Comparison creeping in and then redirecting is normal recovery behavior. Watch for the pattern of using new partners to prove your ex was wrong about you.",
-            "female": "Comparison that surfaces and then passes shows progress. Be aware of the subtle version — choosing someone who is the 'opposite' of your ex is still comparison driving the choice."
+            "female": "Comparison that surfaces and then passes shows progress. Be aware of the subtle version, choosing someone who is the 'opposite' of your ex is still comparison driving the choice."
           }
         },
         {
@@ -1127,7 +1127,7 @@
           "outcomeSignal": "comparison_risk_ex_as_benchmark",
           "outcomeLabel": "Your ex is still your measuring stick",
           "genderInsight": {
-            "male": "Using your ex as the measuring stick — positively or negatively — means she's still the reference point for your love life. Your next partner deserves to be seen on her own terms.",
+            "male": "Using your ex as the measuring stick, positively or negatively, means she's still the reference point for your love life. Your next partner deserves to be seen on her own terms.",
             "female": "If every quality in a new person gets measured against your ex, you haven't fully released that relationship. He's still taking up space in your future."
           }
         },
@@ -1164,8 +1164,8 @@
           "outcomeSignal": "accountability_visible_behavior_change",
           "outcomeLabel": "Others see real change in how you behave",
           "genderInsight": {
-            "male": "Having people in your life who can confirm you've changed — not just take your word for it — is the strongest accountability a man can build. Visible behavioral change, witnessed by others, is proof your insights have become actions.",
-            "female": "Friends confirming visible change means your growth isn't just an internal feeling — it's showing up in how you actually behave. This external validation is more reliable than self-assessment."
+            "male": "Having people in your life who can confirm you've changed, not just take your word for it, is the strongest accountability a man can build. Visible behavioral change, witnessed by others, is proof your insights have become actions.",
+            "female": "Friends confirming visible change means your growth isn't just an internal feeling, it's showing up in how you actually behave. This external validation is more reliable than self-assessment."
           }
         },
         {
@@ -1177,7 +1177,7 @@
           "outcomeLabel": "You're improving but slip back under pressure",
           "genderInsight": {
             "male": "Improving under normal conditions but reverting under stress means the old wiring is still active. For men, stress often strips away the new patterns and reveals the old defaults. The test of change is what you do when pushed.",
-            "female": "Reverting under pressure is honest and common. The old pattern was built over years — the new one is still fragile. Keep building, but don't declare victory until the pattern holds during a hard season."
+            "female": "Reverting under pressure is honest and common. The old pattern was built over years, the new one is still fragile. Keep building, but don't declare victory until the pattern holds during a hard season."
           }
         },
         {
@@ -1189,7 +1189,7 @@
           "outcomeLabel": "You understand the issue but haven't lived it out with a partner",
           "genderInsight": {
             "male": "Awareness without tested change means you could write a paper about your patterns but haven't yet proven you can override them in a real relationship. Insight without application is just theory.",
-            "female": "Knowing what needs to change but not having tested it means the growth is still intellectual. Your next relationship will be the real exam — and the stakes are high."
+            "female": "Knowing what needs to change but not having tested it means the growth is still intellectual. Your next relationship will be the real exam, and the stakes are high."
           }
         },
         {
@@ -1201,7 +1201,7 @@
           "outcomeLabel": "You know what's wrong but haven't changed it",
           "genderInsight": {
             "male": "Understanding a pattern but not changing it means the work of remarriage preparation hasn't started yet. Knowledge without change is the most common trap for intelligent men after divorce.",
-            "female": "Seeing the pattern clearly but still living it means something is blocking the translation from insight to action. This gap often requires structured support — not just more self-reflection."
+            "female": "Seeing the pattern clearly but still living it means something is blocking the translation from insight to action. This gap often requires structured support, not just more self-reflection."
           }
         }
       ],
@@ -1221,7 +1221,7 @@
           "outcomeSignal": "trust_capacity_honest_even_when_costly",
           "outcomeLabel": "You're honest no matter what it costs",
           "genderInsight": {
-            "male": "Choosing to be known honestly — even when it costs you — shows you've learned that image management destroys intimacy. Many men after divorce are tempted to present a 'fixed' version. Your transparency is braver.",
+            "male": "Choosing to be known honestly, even when it costs you, shows you've learned that image management destroys intimacy. Many men after divorce are tempted to present a 'fixed' version. Your transparency is braver.",
             "female": "Being willing to reveal unflattering truths about yourself shows you value authentic connection over looking good. After divorce, the temptation to seem more healed or together than you are is strong. Your honesty resists that."
           }
         },
@@ -1233,8 +1233,8 @@
           "outcomeSignal": "trust_capacity_intends_honesty_delays",
           "outcomeLabel": "You want to be honest but keep putting it off",
           "genderInsight": {
-            "male": "Planning to tell the truth but delaying means you know what's right but fear is slowing you down. For men, the delay is often about predicting and managing her reaction. Trust her with the truth — that's what real trust looks like.",
-            "female": "Wanting to be honest but waiting for the 'right moment' is often waiting for a moment that feels safe enough. But real honesty rarely feels safe — it feels scary and necessary."
+            "male": "Planning to tell the truth but delaying means you know what's right but fear is slowing you down. For men, the delay is often about predicting and managing her reaction. Trust her with the truth, that's what real trust looks like.",
+            "female": "Wanting to be honest but waiting for the 'right moment' is often waiting for a moment that feels safe enough. But real honesty rarely feels safe, it feels scary and necessary."
           }
         },
         {
@@ -1245,7 +1245,7 @@
           "outcomeSignal": "trust_capacity_manages_own_image",
           "outcomeLabel": "You carefully manage how people perceive you",
           "genderInsight": {
-            "male": "Managing your image in a new relationship is how old patterns survive into new situations. If you couldn't be fully honest in your first marriage, and you're still curating in the next, the pattern hasn't changed — just the audience.",
+            "male": "Managing your image in a new relationship is how old patterns survive into new situations. If you couldn't be fully honest in your first marriage, and you're still curating in the next, the pattern hasn't changed, just the audience.",
             "female": "Convincing yourself it's 'not a big deal' is how small dishonesty becomes the foundation of a new relationship. If it truly weren't a big deal, you wouldn't feel the pull to hide it."
           }
         },
@@ -1258,7 +1258,7 @@
           "outcomeLabel": "You hide things out of habit and don't know how to stop",
           "genderInsight": {
             "male": "If words alone can override your discernment, loneliness may be driving your decisions more than wisdom. Trust patterns, not promises.",
-            "female": "Wanting desperately to believe 'this one is different' is understandable — but it bypasses the discernment your painful experience has given you. Slow down."
+            "female": "Wanting desperately to believe 'this one is different' is understandable, but it bypasses the discernment your painful experience has given you. Slow down."
           }
         }
       ],
@@ -1278,7 +1278,7 @@
           "outcomeSignal": "conflict_fear_tolerates_unresolved_tension",
           "outcomeLabel": "You can sit with disagreement without needing resolution",
           "genderInsight": {
-            "male": "Sitting in unresolved tension without needing to fix it immediately is advanced relational skill — especially for a man whose marriage ended. You've learned that not every disagreement needs instant resolution to be survivable.",
+            "male": "Sitting in unresolved tension without needing to fix it immediately is advanced relational skill, especially for a man whose marriage ended. You've learned that not every disagreement needs instant resolution to be survivable.",
             "female": "Tolerating sustained disagreement without jumping to worst-case thinking shows your divorce hasn't made you fragile about conflict. This patience gives new relationships room to work through real issues at their own pace."
           }
         },
@@ -1290,8 +1290,8 @@
           "outcomeSignal": "conflict_fear_anxious_needs_resolution_fast",
           "outcomeLabel": "You get anxious and push too hard for resolution",
           "genderInsight": {
-            "male": "Needing resolution quickly after your divorce makes sense — unresolved things feel dangerous now. But pushing for premature closure can feel like pressure to your new partner. Learning to sit with 'not yet resolved' is the growth edge.",
-            "female": "Anxiety about sustained tension often comes from the divorce experience — where unresolved conflict signaled the beginning of the end. Retraining your nervous system to see tension as normal, not terminal, takes time."
+            "male": "Needing resolution quickly after your divorce makes sense, unresolved things feel dangerous now. But pushing for premature closure can feel like pressure to your new partner. Learning to sit with 'not yet resolved' is the growth edge.",
+            "female": "Anxiety about sustained tension often comes from the divorce experience, where unresolved conflict signaled the beginning of the end. Retraining your nervous system to see tension as normal, not terminal, takes time."
           }
         },
         {
@@ -1302,7 +1302,7 @@
           "outcomeSignal": "conflict_fear_disagreement_threatens_bond",
           "outcomeLabel": "Disagreement feels like it threatens everything",
           "genderInsight": {
-            "male": "If one disagreement makes you question the whole relationship, your divorce taught you that conflict leads to endings. But healthy relationships include disagreement — learning to separate 'we disagree' from 'this is over' is essential.",
+            "male": "If one disagreement makes you question the whole relationship, your divorce taught you that conflict leads to endings. But healthy relationships include disagreement, learning to separate 'we disagree' from 'this is over' is essential.",
             "female": "Questioning the relationship over one unresolved issue is your divorce brain talking. It learned that unresolved tension escalates to destruction. Unlearning that association is some of the most important pre-remarriage work."
           }
         },
@@ -1314,7 +1314,7 @@
           "outcomeSignal": "conflict_fear_capitulates_to_end_tension",
           "outcomeLabel": "You give in just to make the discomfort stop",
           "genderInsight": {
-            "male": "Shutting down or giving in just to stop the discomfort means you'd rather lose yourself than risk losing the relationship. This is exactly how you end up in a marriage where your needs are invisible — again.",
+            "male": "Shutting down or giving in just to stop the discomfort means you'd rather lose yourself than risk losing the relationship. This is exactly how you end up in a marriage where your needs are invisible, again.",
             "female": "giving in to end tension means your boundaries dissolve under sustained pressure. If you couldn't hold your ground in your last marriage, this pattern needs addressing before the next one."
           }
         }
@@ -1335,7 +1335,7 @@
           "outcomeSignal": "disclosure_boundaries_honest_and_appropriate",
           "outcomeLabel": "You share honestly and at the right time",
           "genderInsight": {
-            "male": "Sharing your divorce story with honesty and appropriate boundaries shows you've integrated the experience. Many men either hide it or over-disclose as therapy — your adjustment is mature.",
+            "male": "Sharing your divorce story with honesty and appropriate boundaries shows you've integrated the experience. Many men either hide it or over-disclose as therapy, your adjustment is mature.",
             "female": "Honest, appropriate disclosure means you can own your past without it owning you. This ability to share without shame or oversharing creates trust in new relationships."
           }
         },
@@ -1347,8 +1347,8 @@
           "outcomeSignal": "disclosure_boundaries_cautious_appropriate",
           "outcomeLabel": "You're careful but know when to open up",
           "genderInsight": {
-            "male": "Brief and factual is fine for early conversations. The growth edge for men is learning when to go deeper — especially with someone you're dating seriously. Staying surface forever isn't protective, it's avoidant.",
-            "female": "Cautious sharing while you calibrate is wise. Just make sure caution doesn't become a permanent wall — someone you're building a future with needs more than the headline."
+            "male": "Brief and factual is fine for early conversations. The growth edge for men is learning when to go deeper, especially with someone you're dating seriously. Staying surface forever isn't protective, it's avoidant.",
+            "female": "Cautious sharing while you calibrate is wise. Just make sure caution doesn't become a permanent wall, someone you're building a future with needs more than the headline."
           }
         },
         {
@@ -1371,7 +1371,7 @@
           "outcomeSignal": "disclosure_boundaries_shame_driven_concealment",
           "outcomeLabel": "You hide things because of shame",
           "genderInsight": {
-            "male": "Shame about your divorce is still controlling how you present yourself. Many men carry divorce as a badge of failure — but shame-driven concealment creates exactly the kind of dishonesty that damages new relationships.",
+            "male": "Shame about your divorce is still controlling how you present yourself. Many men carry divorce as a badge of failure, but shame-driven concealment creates exactly the kind of dishonesty that damages new relationships.",
             "female": "Deep discomfort with the question means the divorce still carries shame rather than story. Until you can name what happened without spiraling, that shame will leak into every new connection."
           }
         }
@@ -1396,7 +1396,7 @@
           "outcomeSignal": "remarriage_posture_open_with_wisdom",
           "outcomeLabel": "You're open but thoughtful about what you share",
           "genderInsight": {
-            "male": "Hope with healthy caution is the strongest remarriage posture for a man. Men who rush in with unchecked optimism or refuse to try from fear both miss the mark — you're in the sweet spot.",
+            "male": "Hope with healthy caution is the strongest remarriage posture for a man. Men who rush in with unchecked optimism or refuse to try from fear both miss the mark, you're in the sweet spot.",
             "female": "Open with wisdom means you've processed enough to try again but learned enough to try differently. This posture protects you from both recklessness and paralysis."
           }
         },
@@ -1408,8 +1408,8 @@
           "outcomeSignal": "remarriage_posture_willing_but_unsure",
           "outcomeLabel": "You want to remarry but aren't sure you're ready",
           "genderInsight": {
-            "male": "Not trusting your own judgment is actually wise for a recently divorced man — your judgment led you into the last marriage. Rebuilding discernment takes time, and knowing that shows humility.",
-            "female": "Wanting to be ready while questioning your own readiness shows the kind of self-awareness that protects against repeating patterns. Trust the process — your caution is evidence of growth."
+            "male": "Not trusting your own judgment is actually wise for a recently divorced man, your judgment led you into the last marriage. Rebuilding discernment takes time, and knowing that shows humility.",
+            "female": "Wanting to be ready while questioning your own readiness shows the kind of self-awareness that protects against repeating patterns. Trust the process, your caution is evidence of growth."
           }
         },
         {
@@ -1420,8 +1420,8 @@
           "outcomeSignal": "remarriage_posture_fear_based_resistance",
           "outcomeLabel": "You resist being vulnerable because you're afraid",
           "genderInsight": {
-            "male": "Resistance to vulnerability after divorce is common in men who feel they gave everything and lost it. But marriage without vulnerability is just cohabitation — the risk is the point.",
-            "female": "Fear-based resistance after being hurt makes sense — but staying behind the wall means your next chance at love can't reach you. The question is whether the protection has become a prison."
+            "male": "Resistance to vulnerability after divorce is common in men who feel they gave everything and lost it. But marriage without vulnerability is just cohabitation, the risk is the point.",
+            "female": "Fear-based resistance after being hurt makes sense, but staying behind the wall means your next chance at love can't reach you. The question is whether the protection has become a prison."
           }
         },
         {
@@ -1458,7 +1458,7 @@
           "outcomeLabel": "You're ready from a grounded, healthy place",
           "genderInsight": {
             "male": "Grounded readiness based on real work, not just time, means your next wife gets a man who learned from his marriage, not just survived it. This foundation matters enormously.",
-            "female": "Being ready because you've done the work — not because you're tired of being alone — means your next relationship starts from wholeness, not from need."
+            "female": "Being ready because you've done the work, not because you're tired of being alone, means your next relationship starts from wholeness, not from need."
           }
         },
         {
@@ -1481,8 +1481,8 @@
           "outcomeSignal": "readiness_orientation_desire_ahead_of_readiness",
           "outcomeLabel": "You want to remarry more than you're ready to",
           "genderInsight": {
-            "male": "Desire ahead of readiness is one of the most common traps for men after divorce. Loneliness and desire can convince you you're further along than you are — your honesty here is actually a strength.",
-            "female": "Knowing you'd bring baggage but wanting to try anyway is honest. The question is whether you'd be entering a relationship from desire or from readiness — they feel similar but produce very different outcomes."
+            "male": "Desire ahead of readiness is one of the most common traps for men after divorce. Loneliness and desire can convince you you're further along than you are, your honesty here is actually a strength.",
+            "female": "Knowing you'd bring baggage but wanting to try anyway is honest. The question is whether you'd be entering a relationship from desire or from readiness, they feel similar but produce very different outcomes."
           }
         },
         {
@@ -1494,7 +1494,7 @@
           "outcomeLabel": "Your loneliness is overriding your better judgment",
           "genderInsight": {
             "male": "Loneliness overriding wisdom is the primary driver of failed second marriages among men. The urgency to stop being alone can make anyone look like the right person.",
-            "female": "Loneliness pushing you to try before you're ready is how unhealthy patterns get recycled. The loneliness is real — but it's a terrible compass for choosing your next partner."
+            "female": "Loneliness pushing you to try before you're ready is how unhealthy patterns get recycled. The loneliness is real, but it's a terrible compass for choosing your next partner."
           }
         }
       ],
@@ -1514,7 +1514,7 @@
           "outcomeSignal": "emotional_state_holds_past_and_present_peacefully",
           "outcomeLabel": "You hold your past and your future peacefully together",
           "genderInsight": {
-            "male": "Holding past and present peacefully — gratitude for what was alongside hope for what's ahead — is the most integrated emotional state a divorced man can achieve. This means neither your past nor your future controls the other.",
+            "male": "Holding past and present peacefully, gratitude for what was alongside hope for what's ahead, is the most integrated emotional state a divorced man can achieve. This means neither your past nor your future controls the other.",
             "female": "Being able to hold a happy moment without your past hijacking it shows your emotional healing has reached a functional level. The past is a chapter, not the whole book."
           }
         },
@@ -1526,7 +1526,7 @@
           "outcomeSignal": "emotional_state_bittersweet_but_present",
           "outcomeLabel": "You feel bittersweet but stay focused on today",
           "genderInsight": {
-            "male": "A brief pang during a happy moment is normal — and the fact that it passes without stealing the joy shows resilience. For men, the tendency is to suppress the pang entirely. Feeling it and letting it go is healthier.",
+            "male": "A brief pang during a happy moment is normal, and the fact that it passes without stealing the joy shows resilience. For men, the tendency is to suppress the pang entirely. Feeling it and letting it go is healthier.",
             "female": "Bittersweet but staying present means your emotional range includes both grief and joy without one canceling the other. This capacity for complexity is exactly what remarriage requires."
           }
         },
@@ -1538,7 +1538,7 @@
           "outcomeSignal": "emotional_state_guilt_about_happiness",
           "outcomeLabel": "You struggle to believe you deserve happiness",
           "genderInsight": {
-            "male": "Guilt about being happy suggests your psyche hasn't given you permission to move forward. For men post-divorce, this sometimes shows as self-sabotage — undermining good things because you don't believe you deserve them.",
+            "male": "Guilt about being happy suggests your psyche hasn't given you permission to move forward. For men post-divorce, this sometimes shows as self-sabotage, undermining good things because you don't believe you deserve them.",
             "female": "Guilt about happiness after divorce often carries a hidden belief: 'I don't deserve this after what happened.' That belief will block every good thing that tries to enter your life, including new love."
           }
         },
@@ -1550,8 +1550,8 @@
           "outcomeSignal": "emotional_state_happiness_triggers_fear_of_loss",
           "outcomeLabel": "When you feel happy, you fear losing it",
           "genderInsight": {
-            "male": "Happy moments collapsing into fear means your nervous system has learned that good things get taken. This isn't pessimism — it's trauma. And it will make you sabotage or flee from any relationship that starts going well.",
-            "female": "If happiness triggers fear rather than enjoyment, your emotional system is in protective mode — bracing for the next loss before it happens. Until this pattern shifts, every good moment will feel fragile."
+            "male": "Happy moments collapsing into fear means your nervous system has learned that good things get taken. This isn't pessimism, it's trauma. And it will make you sabotage or flee from any relationship that starts going well.",
+            "female": "If happiness triggers fear rather than enjoyment, your emotional system is in protective mode, bracing for the next loss before it happens. Until this pattern shifts, every good moment will feel fragile."
           }
         }
       ],
@@ -1571,7 +1571,7 @@
           "outcomeSignal": "god_s_role_framing_daily_reliance_and_peace",
           "outcomeLabel": "You rely on God daily and feel at peace",
           "genderInsight": {
-            "male": "Daily reliance on God for direction about your future shows spiritual maturity. For men after divorce, surrendering control of the timeline and the outcome to God is particularly hard — and particularly important.",
+            "male": "Daily reliance on God for direction about your future shows spiritual maturity. For men after divorce, surrendering control of the timeline and the outcome to God is particularly hard, and particularly important.",
             "female": "Sensing God's peace and direction about your future means your spiritual life is active and integrated into your biggest decisions. This foundation will guide your next relationship from the start."
           }
         },
@@ -1583,7 +1583,7 @@
           "outcomeSignal": "god_s_role_framing_healing_oriented",
           "outcomeLabel": "You're oriented toward healing, not just moving on",
           "genderInsight": {
-            "male": "Bringing wounds to God as healer shows a posture of surrender. For men, the temptation is to fix yourself first and then involve God — your approach of healing through God rather than before God is wiser.",
+            "male": "Bringing wounds to God as healer shows a posture of surrender. For men, the temptation is to fix yourself first and then involve God, your approach of healing through God rather than before God is wiser.",
             "female": "A healing-oriented prayer life means you're letting God into the broken places rather than trying to clean up before inviting Him in. This vulnerability before God mirrors what healthy marriage requires."
           }
         },
@@ -1595,8 +1595,8 @@
           "outcomeSignal": "god_s_role_framing_believes_but_feels_distant",
           "outcomeLabel": "You believe but feel God is far away",
           "genderInsight": {
-            "male": "Feeling distant from God after divorce is common for men, especially if the church community took sides or the divorce triggered theological crisis. The distance doesn't mean God moved — but it does need addressing.",
-            "female": "God feeling distant when you most need direction can feel like abandonment on top of abandonment. This spiritual loneliness deserves focused attention — perhaps through a pastor or spiritual director."
+            "male": "Feeling distant from God after divorce is common for men, especially if the church community took sides or the divorce triggered theological crisis. The distance doesn't mean God moved, but it does need addressing.",
+            "female": "God feeling distant when you most need direction can feel like abandonment on top of abandonment. This spiritual loneliness deserves focused attention, perhaps through a pastor or spiritual director."
           }
         },
         {
@@ -1607,8 +1607,8 @@
           "outcomeSignal": "god_s_role_framing_spiritual_crisis",
           "outcomeLabel": "Your divorce created a spiritual crisis",
           "genderInsight": {
-            "male": "Anger at God after divorce is honest — and God can handle your anger. But entering a new marriage while spiritually angry or confused means building on a fractured foundation.",
-            "female": "Spiritual crisis from your marriage ending is a real faith test. The anger and confusion are valid — but they need to be wrestled through, not buried, before you can build again."
+            "male": "Anger at God after divorce is honest, and God can handle your anger. But entering a new marriage while spiritually angry or confused means building on a fractured foundation.",
+            "female": "Spiritual crisis from your marriage ending is a real faith test. The anger and confusion are valid, but they need to be wrestled through, not buried, before you can build again."
           }
         }
       ],
@@ -1628,7 +1628,7 @@
           "outcomeSignal": "spiritual_peace_clear_conscience",
           "outcomeLabel": "You feel spiritually at peace about your divorce",
           "genderInsight": {
-            "male": "Spiritual freedom about remarriage — after genuine conviction, repentance, and healing — means you're not carrying theological baggage into your next marriage. This peace is hard-won and real.",
+            "male": "Spiritual freedom about remarriage, after genuine conviction, repentance, and healing, means you're not carrying theological baggage into your next marriage. This peace is hard-won and real.",
             "female": "Clear conscience before God about remarriage means you've done the spiritual work, not just the emotional work. This theological peace removes a layer of doubt that could undermine your next marriage."
           }
         },
@@ -1652,7 +1652,7 @@
           "outcomeSignal": "spiritual_peace_theological_guilt",
           "outcomeLabel": "You carry unresolved guilt about your faith and divorce",
           "genderInsight": {
-            "male": "Theological guilt about remarriage can paralyze a man's ability to move forward. This isn't a question you can answer alone — seek trusted theological counsel from someone who understands both Scripture and grace.",
+            "male": "Theological guilt about remarriage can paralyze a man's ability to move forward. This isn't a question you can answer alone, seek trusted theological counsel from someone who understands both Scripture and grace.",
             "female": "Spiritual confusion about whether remarriage is right for you deserves more than your own internal debate. A trusted pastor or counselor who knows your story can help you find clarity."
           }
         },
@@ -1664,8 +1664,8 @@
           "outcomeSignal": "spiritual_peace_spiritual_paralysis",
           "outcomeLabel": "You feel spiritually paralyzed",
           "genderInsight": {
-            "male": "Spiritual paralysis about remarriage means your theology and your desire are in conflict. A man stuck here is neither free to love again nor at peace being alone. This needs resolution — through counsel, prayer, and community.",
-            "female": "Feeling spiritually stuck — unable to move forward or find peace staying still — is one of the heaviest burdens a Christian carries after divorce. You don't have to carry this alone."
+            "male": "Spiritual paralysis about remarriage means your theology and your desire are in conflict. A man stuck here is neither free to love again nor at peace being alone. This needs resolution, through counsel, prayer, and community.",
+            "female": "Feeling spiritually stuck, unable to move forward or find peace staying still, is one of the heaviest burdens a Christian carries after divorce. You don't have to carry this alone."
           }
         }
       ],
@@ -1697,8 +1697,8 @@
           "outcomeSignal": "family_patterns_future_home_vision_with_honest_gap",
           "outcomeLabel": "You see clearly where you want to be and what needs work",
           "genderInsight": {
-            "male": "Seeing the vision clearly while honestly naming the gap shows both aspiration and humility. Your next wife needs both — a man who aims high and admits where he falls short.",
-            "female": "Clear vision with honest acknowledgment of remaining gaps is the most realistic and attractive posture for remarriage. Perfection isn't the goal — self-awareness is."
+            "male": "Seeing the vision clearly while honestly naming the gap shows both aspiration and humility. Your next wife needs both, a man who aims high and admits where he falls short.",
+            "female": "Clear vision with honest acknowledgment of remaining gaps is the most realistic and attractive posture for remarriage. Perfection isn't the goal, self-awareness is."
           }
         },
         {
@@ -1709,8 +1709,8 @@
           "outcomeSignal": "family_patterns_future_home_vision_without_model",
           "outcomeLabel": "You have a vision but lack real examples to follow",
           "genderInsight": {
-            "male": "Wanting a healthy home without a model means you're building from scratch — which is hard but possible. Consider that your first marriage, despite failing, taught you what NOT to build.",
-            "female": "Not having a healthy model means you'll need to learn what you never saw. This isn't a disqualification — it's a growth challenge. Intentional study of healthy marriages can fill this gap."
+            "male": "Wanting a healthy home without a model means you're building from scratch, which is hard but possible. Consider that your first marriage, despite failing, taught you what NOT to build.",
+            "female": "Not having a healthy model means you'll need to learn what you never saw. This isn't a disqualification, it's a growth challenge. Intentional study of healthy marriages can fill this gap."
           }
         },
         {
@@ -1722,7 +1722,7 @@
           "outcomeLabel": "You fear repeating your family's patterns",
           "genderInsight": {
             "male": "Fear of recreating damage shows painful self-awareness. But staying paralyzed by that fear means the fear wins. Trust the work you've done, and trust that awareness itself is protective.",
-            "female": "Fear of repeating family damage shows you understand the stakes. But fear alone doesn't change patterns — intentional work does. The fact that you're afraid means you care enough to do differently."
+            "female": "Fear of repeating family damage shows you understand the stakes. But fear alone doesn't change patterns, intentional work does. The fact that you're afraid means you care enough to do differently."
           }
         }
       ],
@@ -1740,7 +1740,7 @@
     },
     "13": {
       "title": "How You Engage Now",
-      "description": "This section probes how you show up in new relationships — trust, triggers, and conflict."
+      "description": "This section probes how you show up in new relationships, trust, triggers, and conflict."
     },
     "19": {
       "title": "Your Future",

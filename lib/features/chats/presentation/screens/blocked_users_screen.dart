@@ -25,7 +25,7 @@ class BlockedUsersScreen extends StatelessWidget {
         titleSpacing: 0,
         title: Text(
           'Blocked Users',
-          style: AppTextStyles.headlineLarge.copyWith(
+          style: AppTextStyles.headlineMedium.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),

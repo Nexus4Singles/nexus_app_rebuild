@@ -137,7 +137,7 @@ class _DatingProfileCompleteScreenState
                           'Profile Complete!',
                           style: AppTextStyles.headlineLarge.copyWith(
                             fontWeight: FontWeight.w800,
-                            fontSize: 36,
+                            fontSize: 28,
                             letterSpacing: -0.5,
                           ),
                           textAlign: TextAlign.center,
@@ -145,10 +145,9 @@ class _DatingProfileCompleteScreenState
                         const SizedBox(height: 16),
                         Text(
                           'Your dating profile is ready to shine',
-                          style: AppTextStyles.bodyLarge.copyWith(
+                          style: AppTextStyles.bodyMedium.copyWith(
                             color: AppColors.getTextSecondary(context),
                             fontWeight: FontWeight.w500,
-                            fontSize: 16,
                           ),
                           textAlign: TextAlign.center,
                         ),

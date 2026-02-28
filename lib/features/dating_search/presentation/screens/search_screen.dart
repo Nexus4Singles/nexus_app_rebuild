@@ -153,7 +153,7 @@ class SearchScreen extends ConsumerWidget {
           titleSpacing: 20,
           title: Text(
             'Search',
-            style: AppTextStyles.headlineLarge.copyWith(
+            style: AppTextStyles.headlineMedium.copyWith(
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -413,7 +413,7 @@ class SearchResultsScreen extends ConsumerWidget {
           backgroundColor: AppColors.getBackground(context),
           surfaceTintColor: AppColors.getBackground(context),
           elevation: 0,
-          title: Text('Results', style: AppTextStyles.headlineLarge),
+          title: Text('Results', style: AppTextStyles.headlineMedium),
         ),
         body: SafeArea(
           child: Padding(
@@ -611,7 +611,10 @@ class _SearchResultRow extends ConsumerWidget {
             // FIXED: Catch navigation errors to prevent Navigator history issues
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error opening profile: $e')),
+                SnackBar(
+                  content: Text('Error opening profile: $e'),
+                  backgroundColor: AppColors.primary,
+                ),
               );
             }
           }

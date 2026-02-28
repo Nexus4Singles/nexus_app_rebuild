@@ -36,7 +36,7 @@ class _UserProfileDetailScreenState
       appBar: AppBar(
         backgroundColor: AppColors.getBackground(context),
         elevation: 0,
-        title: Text('Profile', style: AppTextStyles.headlineLarge),
+        title: Text('Profile', style: AppTextStyles.headlineMedium),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -115,10 +115,11 @@ class _UserProfileDetailScreenState
                           onPressed: () async {
                             if (!isLoggedIn) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
+                                SnackBar(
+                                  content: const Text(
                                     'Please sign in to play audio.',
                                   ),
+                                  backgroundColor: AppColors.primary,
                                 ),
                               );
                               return;
@@ -130,7 +131,10 @@ class _UserProfileDetailScreenState
                               await media.playAudioFromUrl(testUrl);
                             } catch (e) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Audio failed: $e')),
+                                SnackBar(
+                                  content: Text('Audio failed: $e'),
+                                  backgroundColor: AppColors.primary,
+                                ),
                               );
                             }
                           },

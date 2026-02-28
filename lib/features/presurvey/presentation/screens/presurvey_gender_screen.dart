@@ -95,7 +95,7 @@ class PresurveyGenderScreen extends ConsumerWidget {
         elevation: 0,
         foregroundColor: AppColors.textPrimary,
         centerTitle: true,
-        title: Text('Gender', style: AppTextStyles.headlineLarge),
+        title: Text('Gender', style: AppTextStyles.headlineMedium),
       ),
       body: SafeArea(
         child: Padding(
@@ -106,7 +106,7 @@ class PresurveyGenderScreen extends ConsumerWidget {
               Center(
                 child: Text(
                   'What is your gender?',
-                  style: AppTextStyles.headlineLarge.copyWith(fontSize: 26),
+                  style: AppTextStyles.displaySmall,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -155,8 +155,9 @@ class PresurveyGenderScreen extends ConsumerWidget {
 
                       if (g == null || g.toString().trim().isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please select your gender'),
+                          SnackBar(
+                            content: const Text('Please select your gender'),
+                            backgroundColor: AppColors.primary,
                           ),
                         );
                         return;
@@ -164,10 +165,11 @@ class PresurveyGenderScreen extends ConsumerWidget {
 
                       if (rel == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
+                          SnackBar(
+                            content: const Text(
                               'Please select your relationship status',
                             ),
+                            backgroundColor: AppColors.primary,
                           ),
                         );
                         return;
@@ -215,8 +217,9 @@ class PresurveyGenderScreen extends ConsumerWidget {
                       final g = guest?.gender;
                       if (g == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please select your gender'),
+                          SnackBar(
+                            content: const Text('Please select your gender'),
+                            backgroundColor: AppColors.primary,
                           ),
                         );
                         return;
@@ -228,9 +231,7 @@ class PresurveyGenderScreen extends ConsumerWidget {
 
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => const SignupScreen(),
-                        ),
+                        MaterialPageRoute(builder: (_) => const SignupScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(

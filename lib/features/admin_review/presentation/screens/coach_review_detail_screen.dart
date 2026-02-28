@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:nexus_app_v2/features/admin_review/application/coach_application_providers.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
 
 class CoachReviewDetailScreen extends ConsumerStatefulWidget {
   final String applicationId;
@@ -278,15 +279,21 @@ class _CoachReviewDetailScreenState
       );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Application approved successfully')),
+          const SnackBar(
+            content: Text('Application approved successfully'),
+            backgroundColor: AppColors.success,
+          ),
         );
         Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error approving: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error approving: $e'),
+            backgroundColor: AppColors.primary,
+          ),
+        );
       }
     } finally {
       if (mounted) setState(() => _isApproving = false);
@@ -349,16 +356,22 @@ class _CoachReviewDetailScreenState
         )).future,
       );
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Application rejected')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Application rejected'),
+            backgroundColor: AppColors.primary,
+          ),
+        );
         Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error rejecting: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error rejecting: $e'),
+            backgroundColor: AppColors.primary,
+          ),
+        );
       }
     } finally {
       if (mounted) setState(() => _isRejecting = false);
@@ -470,26 +483,26 @@ class _CoachReviewDetailScreenState
           print('[Download Button] Attempting to download: $label');
           print('[Download Button] URL: $url');
           print('[Download Button] URL is empty: ${url.isEmpty}');
-          
+
           try {
             final uri = Uri.parse(url);
             print('[Download Button] Parsed URI: $uri');
-            
+
             final canLaunch = await canLaunchUrl(uri);
             print('[Download Button] Can launch URL: $canLaunch');
-            
+
             if (canLaunch) {
               print('[Download Button] Launching URL...');
-              await launchUrl(
-                uri,
-                mode: LaunchMode.externalApplication,
-              );
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
               print('[Download Button] ✅ Successfully launched URL');
             } else {
               print('[Download Button] ❌ Cannot launch URL');
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Cannot open PDF download link')),
+                  const SnackBar(
+                    content: Text('Cannot open PDF download link'),
+                    backgroundColor: AppColors.primary,
+                  ),
                 );
               }
             }
@@ -497,7 +510,10 @@ class _CoachReviewDetailScreenState
             print('[Download Button] ❌ Error: $e');
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Download error: $e')),
+                SnackBar(
+                  content: Text('Download error: $e'),
+                  backgroundColor: AppColors.primary,
+                ),
               );
             }
           }

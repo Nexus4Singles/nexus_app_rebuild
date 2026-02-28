@@ -258,16 +258,15 @@ class _BookMarriageCoachScreenState
                         disabledBackgroundColor: AppColors.primary.withOpacity(
                           0.5,
                         ),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
                       ),
                       child: Text(
                         'Book a Session',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                        style: AppTextStyles.labelLarge.copyWith(
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -305,7 +304,7 @@ class _BookMarriageCoachScreenState
           width: 1.5,
         ),
       ),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -331,7 +330,7 @@ class _BookMarriageCoachScreenState
                   children: [
                     Text(
                       'Call for Applications',
-                      style: AppTextStyles.headlineSmall.copyWith(
+                      style: AppTextStyles.titleMedium.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -424,15 +423,15 @@ class _BookMarriageCoachScreenState
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
               icon: const Icon(Icons.arrow_forward, size: 18),
-              label: const Text(
+              label: Text(
                 'Submit Your Application',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
               ),
             ),
           ),
@@ -497,9 +496,8 @@ class _CounselingCard extends StatelessWidget {
             Text(
               counseling.title,
               textAlign: TextAlign.center,
-              style: AppTextStyles.labelSmall.copyWith(
+              style: AppTextStyles.bodyMedium.copyWith(
                 fontWeight: FontWeight.w600,
-                fontSize: 15, // Increased font size
                 height: 1.25,
               ),
               maxLines: 2,
@@ -521,7 +519,6 @@ class _CounselingCard extends StatelessWidget {
                 style: AppTextStyles.labelSmall.copyWith(
                   color: _getTypeColor(counseling.type, context),
                   fontWeight: FontWeight.w600,
-                  fontSize: 9,
                 ),
               ),
             ),

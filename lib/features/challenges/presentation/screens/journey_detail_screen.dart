@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/auth/auth_providers.dart';
@@ -66,7 +67,16 @@ class _JourneyDetailScreenState extends ConsumerState<JourneyDetailScreen> {
     if (!isSignedIn) {
       return Scaffold(
         backgroundColor: AppColors.getBackground(context),
-        body: Center(child: CircularProgressIndicator()),
+        body: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text('Fetching Journeys...'),
+            ],
+          ),
+        ),
       );
     }
 
@@ -84,7 +94,16 @@ class _JourneyDetailScreenState extends ConsumerState<JourneyDetailScreen> {
           surfaceTintColor: AppColors.getBackground(context),
           elevation: 0,
         ),
-        body: const Center(child: CircularProgressIndicator()),
+        body: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text('Fetching Journeys...'),
+            ],
+          ),
+        ),
       );
     }
 
@@ -203,7 +222,17 @@ class _Shell extends ConsumerWidget {
         ),
       ),
       body: completedAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading:
+            () => const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16),
+                  Text('Fetching Journeys...'),
+                ],
+              ),
+            ),
         error:
             (e, __) => Center(
               child: Column(
@@ -270,6 +299,7 @@ class _Body extends ConsumerWidget {
       0,
       (sum, m) => sum + m.timeBoxMinutes,
     );
+    final isCompleted = done >= total && total > 0;
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
@@ -281,6 +311,7 @@ class _Body extends ConsumerWidget {
           done: done,
           total: total,
           isPurchased: isPurchased,
+          isCompleted: isCompleted,
           totalMinutes: totalMinutes,
         ),
         const SizedBox(height: 14),
@@ -391,6 +422,81 @@ class _Body extends ConsumerWidget {
             ),
           );
         }),
+        const SizedBox(height: 12),
+        // Show completion celebration when journey is complete
+        if (isCompleted)
+          _JourneyCompletionCard(
+            journey: journey,
+            onRestart: () async {
+              // Show confirmation dialog
+              showDialog(
+                context: context,
+                builder:
+                    (ctx) => AlertDialog(
+                      title: const Text('Restart Journey?'),
+                      content: const Text(
+                        'Would you like to restart this journey? Your previous entries will be saved.',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx),
+                          child: const Text('Cancel'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            Navigator.pop(ctx);
+                            final currentUserAsync = ref.watch(
+                              currentUserProvider,
+                            );
+                            final uid = currentUserAsync.maybeWhen(
+                              data: (user) => user?.id ?? '',
+                              orElse: () => '',
+                            );
+
+                            if (uid.isNotEmpty) {
+                              final progressSvc = ref.read(
+                                journeyProgressServiceProvider,
+                              );
+                              await progressSvc.restartJourney(journey.id, uid);
+
+                              // Invalidate the provider to refresh the UI
+                              ref.invalidate(
+                                completedMissionIdsProvider(journey.id),
+                              );
+                              ref.invalidate(
+                                isJourneyCompletedProvider(journey.id),
+                              );
+
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text(
+                                      'Journey restarted! You\'re ready to begin again.',
+                                    ),
+                                    duration: const Duration(seconds: 3),
+                                    behavior: SnackBarBehavior.floating,
+                                    backgroundColor: AppColors.success,
+                                  ),
+                                );
+                              }
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
+                          ),
+                          child: const Text(
+                            'Restart',
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
+                    ),
+              );
+            },
+          ),
         const SizedBox(height: 6),
         if (!isPurchased) _UnlockCta(journey: journey, isLoading: isLoading),
       ],
@@ -547,6 +653,7 @@ class _HeroHeader extends ConsumerWidget {
   final int done;
   final int total;
   final bool isPurchased;
+  final bool isCompleted;
   final int totalMinutes;
 
   const _HeroHeader({
@@ -555,6 +662,7 @@ class _HeroHeader extends ConsumerWidget {
     required this.done,
     required this.total,
     required this.isPurchased,
+    required this.isCompleted,
     required this.totalMinutes,
     Key? key,
   }) : super(key: key);
@@ -742,10 +850,31 @@ class _HeroHeader extends ConsumerWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  '$done of $total complete',
+                  isCompleted
+                      ? 'Journey Complete!'
+                      : '$done of $total complete',
                   style: AppTextStyles.bodySmall.copyWith(
                     color: secondaryColor,
                     fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+              if (isCompleted) ...[
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    icon: const Icon(Icons.refresh_rounded, size: 16),
+                    label: const Text('Restart Journey'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.getTextPrimary(context),
+                      side: BorderSide(color: AppColors.getBorder(context)),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onPressed:
+                        () =>
+                            _showRestartConfirmation(context, ref, journey.id),
                   ),
                 ),
               ],
@@ -753,6 +882,47 @@ class _HeroHeader extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showRestartConfirmation(
+    BuildContext context,
+    WidgetRef ref,
+    String journeyId,
+  ) {
+    showCupertinoDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return CupertinoAlertDialog(
+          title: const Text('Restart Journey?'),
+          content: const Text(
+            'Your current progress will be lost. This cannot be undone.',
+          ),
+          actions: [
+            CupertinoDialogAction(
+              child: const Text('Cancel'),
+              onPressed: () => Navigator.of(ctx).pop(),
+            ),
+            CupertinoDialogAction(
+              isDestructiveAction: true,
+              child: const Text('Restart'),
+              onPressed: () async {
+                final user = ref.read(currentUserProvider).value;
+                if (user != null) {
+                  await ref
+                      .read(journeyProgressServiceProvider)
+                      .restartJourney(journeyId, user.id);
+
+                  // Invalidate providers to force a refresh
+                  ref.invalidate(completedMissionIdsProvider(journeyId));
+                  ref.invalidate(isJourneyCompletedProvider(journeyId));
+                }
+                Navigator.of(ctx).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -838,19 +1008,7 @@ class _ActivityCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       if (isDone)
-                        Container(
-                          width: 24,
-                          height: 24,
-                          decoration: BoxDecoration(
-                            color: AppColors.success.withOpacity(0.12),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Icon(
-                            Icons.check_rounded,
-                            size: 14,
-                            color: AppColors.success,
-                          ),
-                        )
+                        _AnimatedCompletionCheckmark(theme: theme)
                       else if (isFree &&
                           activity.missionNumber == 1 &&
                           !isPurchased)
@@ -1310,5 +1468,269 @@ class _WeeklyStatsCard extends StatelessWidget {
     } else {
       return '$journeyTitle • You completed this journey!';
     }
+  }
+}
+
+/// Theme-aware animated checkmark widget for completed activities
+class _AnimatedCompletionCheckmark extends StatefulWidget {
+  final ThemeData theme;
+
+  const _AnimatedCompletionCheckmark({required this.theme});
+
+  @override
+  State<_AnimatedCompletionCheckmark> createState() =>
+      _AnimatedCompletionCheckmarkState();
+}
+
+class _AnimatedCompletionCheckmarkState
+    extends State<_AnimatedCompletionCheckmark>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _opacityAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
+
+    _opacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: _scaleAnimation,
+      child: FadeTransition(
+        opacity: _opacityAnimation,
+        child: Container(
+          width: 28,
+          height: 28,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                widget.theme.colorScheme.primary.withOpacity(0.15),
+                widget.theme.colorScheme.primary.withOpacity(0.08),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: widget.theme.colorScheme.primary.withOpacity(0.30),
+              width: 1.0,
+            ),
+          ),
+          child: Icon(
+            Icons.check_circle_rounded,
+            size: 16,
+            color: widget.theme.colorScheme.primary,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Celebration card shown when journey is completely finished
+class _JourneyCompletionCard extends StatefulWidget {
+  final JourneyV1 journey;
+  final VoidCallback onRestart;
+
+  const _JourneyCompletionCard({
+    required this.journey,
+    required this.onRestart,
+  });
+
+  @override
+  State<_JourneyCompletionCard> createState() => _JourneyCompletionCardState();
+}
+
+class _JourneyCompletionCardState extends State<_JourneyCompletionCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+  late Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 0.8,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    return SlideTransition(
+      position: _slideAnimation,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                theme.colorScheme.primary.withOpacity(isDark ? 0.25 : 0.12),
+                theme.colorScheme.primary.withOpacity(isDark ? 0.15 : 0.05),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: theme.colorScheme.primary.withOpacity(0.3),
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: theme.colorScheme.primary.withOpacity(0.15),
+                blurRadius: 24,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                // Celebration icon
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        theme.colorScheme.primary.withOpacity(0.25),
+                        theme.colorScheme.primary.withOpacity(0.10),
+                      ],
+                    ),
+                    border: Border.all(
+                      color: theme.colorScheme.primary.withOpacity(0.5),
+                      width: 2,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.celebration_rounded,
+                    size: 44,
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Title
+                Text(
+                  'Journey Complete! 🎉',
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 20,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+
+                // Message
+                Text(
+                  'You\'ve completed all activities in this journey. Celebrate your growth and transformation!',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    height: 1.6,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+
+                // Action buttons
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    ElevatedButton(
+                      onPressed: widget.onRestart,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.colorScheme.primary,
+                        foregroundColor: theme.colorScheme.onPrimary,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.refresh_rounded,
+                            size: 20,
+                            color: theme.colorScheme.onPrimary,
+                          ),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Restart Journey',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Begin again and deepen your understanding',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.onSurface.withOpacity(0.5),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

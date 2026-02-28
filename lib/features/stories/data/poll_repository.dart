@@ -19,13 +19,31 @@ class PollRepository {
   }
 
   Poll _mapRemotePoll(remote.Poll p) {
+    // Build insights map from per-option insightCopy, falling back to defaultInsightCopy
+    final insights = <String, String>{};
+    for (final o in p.options) {
+      final copy =
+          o.insightCopy.isNotEmpty ? o.insightCopy : p.defaultInsightCopy;
+      if (copy.isNotEmpty) {
+        insights[o.id] = copy;
+      }
+    }
+
+    // Build seedCounts from per-option vote counts
+    final seedCounts = <String, int>{};
+    for (final o in p.options) {
+      if (o.votes > 0) {
+        seedCounts[o.id] = o.votes;
+      }
+    }
+
     return Poll(
       id: p.pollId,
       question: p.question,
       options:
           p.options.map((o) => PollOption(id: o.id, text: o.text)).toList(),
-      insights: const {},
-      seedCounts: const {},
+      insights: insights,
+      seedCounts: seedCounts,
     );
   }
 }

@@ -501,7 +501,7 @@ class _PersonalInfoPageState extends ConsumerState<_PersonalInfoPage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(errorMsg),
-                      backgroundColor: Colors.red.shade400,
+                      backgroundColor: AppColors.primary,
                     ),
                   );
                 }
@@ -669,7 +669,7 @@ class _ProfessionalBackgroundPageState
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: const Text('Please fill all fields'),
-                          backgroundColor: Colors.red.shade400,
+                          backgroundColor: AppColors.primary,
                         ),
                       );
                     }
@@ -860,7 +860,7 @@ class _QualificationsPageState extends ConsumerState<_QualificationsPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: const Text('Please fill credentials field'),
-                          backgroundColor: Colors.red.shade400,
+                          backgroundColor: AppColors.primary,
                         ),
                       );
                     }
@@ -1012,7 +1012,7 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(errorMsg),
-                      backgroundColor: Colors.red.shade400,
+                      backgroundColor: AppColors.primary,
                     ),
                   );
                 }
@@ -1064,7 +1064,7 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
                               content: const Text(
                                 'Please upload a profile photo',
                               ),
-                              backgroundColor: Colors.red.shade400,
+                              backgroundColor: AppColors.primary,
                             ),
                           );
                           print(
@@ -1092,7 +1092,7 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
                                 content: const Text(
                                   'Application submitted successfully!',
                                 ),
-                                backgroundColor: Colors.green.shade400,
+                                backgroundColor: AppColors.success,
                               ),
                             );
                             Future.delayed(const Duration(seconds: 2), () {
@@ -1115,7 +1115,7 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('Error: $e'),
-                                backgroundColor: Colors.red.shade400,
+                                backgroundColor: AppColors.primary,
                               ),
                             );
                           }

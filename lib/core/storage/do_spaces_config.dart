@@ -2,7 +2,6 @@ class DoSpacesConfig {
   const DoSpacesConfig._();
 
   /// DigitalOcean Spaces configuration
-  /// These are non-secret identifiers - safe to hardcode in the app
   /// The actual access/secret keys are only on the backend (Firebase Cloud Functions)
   static const String endpoint = 'ams3.digitaloceanspaces.com';
   static const String region = 'ams3';
@@ -13,8 +12,6 @@ class DoSpacesConfig {
       'https://us-central1-nexus-visibility-app.cloudfunctions.net/getPresignedUploadUrl';
 
   static void validate() {
-    // All config values are hardcoded - always valid
-    // Logging for debugging purposes
     print('[DO_SPACES_CONFIG] endpoint: $endpoint');
     print('[DO_SPACES_CONFIG] region: $region');
     print('[DO_SPACES_CONFIG] bucket: $bucket');
@@ -22,8 +19,10 @@ class DoSpacesConfig {
     print('[DO_SPACES_CONFIG] ✅ Configuration is valid!');
   }
 
+  /// Construct the public URL for a given object key.
+  /// This MUST match the construction logic in functions/index.js
   static String publicUrlFor(String objectKey) {
-    // v1 convention: https://{endpoint}/{bucket}/{objectKey}
+    // Standard DO Spaces path-style URL
     return 'https://$endpoint/$bucket/$objectKey';
   }
 }

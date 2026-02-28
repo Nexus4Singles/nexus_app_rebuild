@@ -35,6 +35,11 @@ class DatingOnboardingDraft {
   final String? audio2Url;
   final String? audio3Url;
 
+  /// Audio durations in seconds (captured during recording).
+  final int? audio1Duration;
+  final int? audio2Duration;
+  final int? audio3Duration;
+
   /// User contact details (at least one required).
   /// Example:
   /// {"Instagram": "@name", "WhatsApp": "+234..."}
@@ -59,6 +64,9 @@ class DatingOnboardingDraft {
     this.audio1Url,
     this.audio2Url,
     this.audio3Url,
+    this.audio1Duration,
+    this.audio2Duration,
+    this.audio3Duration,
     this.contactInfo = const {},
   });
 
@@ -81,6 +89,9 @@ class DatingOnboardingDraft {
     String? audio1Url,
     String? audio2Url,
     String? audio3Url,
+    int? audio1Duration,
+    int? audio2Duration,
+    int? audio3Duration,
     Map<String, String>? contactInfo,
   }) {
     return DatingOnboardingDraft(
@@ -102,6 +113,9 @@ class DatingOnboardingDraft {
       audio1Url: audio1Url ?? this.audio1Url,
       audio2Url: audio2Url ?? this.audio2Url,
       audio3Url: audio3Url ?? this.audio3Url,
+      audio1Duration: audio1Duration ?? this.audio1Duration,
+      audio2Duration: audio2Duration ?? this.audio2Duration,
+      audio3Duration: audio3Duration ?? this.audio3Duration,
       contactInfo: contactInfo ?? this.contactInfo,
     );
   }
@@ -127,6 +141,9 @@ class DatingOnboardingDraft {
       'audio1Url': audio1Url,
       'audio2Url': audio2Url,
       'audio3Url': audio3Url,
+      'audio1Duration': audio1Duration,
+      'audio2Duration': audio2Duration,
+      'audio3Duration': audio3Duration,
       'contactInfo': contactInfo,
     };
   }
@@ -153,6 +170,9 @@ class DatingOnboardingDraft {
       audio1Url: json['audio1Url'] as String?,
       audio2Url: json['audio2Url'] as String?,
       audio3Url: json['audio3Url'] as String?,
+      audio1Duration: json['audio1Duration'] as int?,
+      audio2Duration: json['audio2Duration'] as int?,
+      audio3Duration: json['audio3Duration'] as int?,
       contactInfo:
           (json['contactInfo'] as Map<String, dynamic>?)
               ?.cast<String, String>() ??
@@ -218,7 +238,9 @@ class DatingOnboardingDraftNotifier
       final prefs = await SharedPreferences.getInstance();
       final jsonString = jsonEncode(state.toJson());
       await prefs.setString(_storageKey, jsonString);
-      print('[DRAFT] 💾 Saved to SharedPreferences: age=${state.age}, city=${state.city}, hobbies=${state.hobbies.length}, qualities=${state.desiredQualities.length}');
+      print(
+        '[DRAFT] 💾 Saved to SharedPreferences: age=${state.age}, city=${state.city}, hobbies=${state.hobbies.length}, qualities=${state.desiredQualities.length}',
+      );
     } catch (e) {
       print('[DRAFT] ❌ Error saving draft: $e');
     }
@@ -241,13 +263,19 @@ class DatingOnboardingDraftNotifier
   }) {
     print('[DRAFT] ✏️ Updating extra info:');
     if (city != null) print('  city: ${state.city} → $city');
-    if (countryOfResidence != null) print('  country: ${state.countryOfResidence} → $countryOfResidence');
-    if (nationality != null) print('  nationality: ${state.nationality} → $nationality');
-    if (educationLevel != null) print('  education: ${state.educationLevel} → $educationLevel');
-    if (profession != null) print('  profession: ${state.profession} → $profession');
-    if (churchName != null) print('  church: ${state.churchName} → $churchName');
-    if (otherChurchName != null) print('  otherChurch: ${state.otherChurchName} → $otherChurchName');
-    
+    if (countryOfResidence != null)
+      print('  country: ${state.countryOfResidence} → $countryOfResidence');
+    if (nationality != null)
+      print('  nationality: ${state.nationality} → $nationality');
+    if (educationLevel != null)
+      print('  education: ${state.educationLevel} → $educationLevel');
+    if (profession != null)
+      print('  profession: ${state.profession} → $profession');
+    if (churchName != null)
+      print('  church: ${state.churchName} → $churchName');
+    if (otherChurchName != null)
+      print('  otherChurch: ${state.otherChurchName} → $otherChurchName');
+
     state = state.copyWith(
       city: city ?? state.city,
       countryOfResidence: countryOfResidence ?? state.countryOfResidence,
@@ -267,7 +295,9 @@ class DatingOnboardingDraftNotifier
   }
 
   void setDesiredQualities(List<String> qualities) {
-    print('[DRAFT] ✏️ Updating desired qualities: ${state.desiredQualities} → $qualities');
+    print(
+      '[DRAFT] ✏️ Updating desired qualities: ${state.desiredQualities} → $qualities',
+    );
     state = state.copyWith(desiredQualities: qualities);
     _saveDraft();
   }
@@ -277,11 +307,21 @@ class DatingOnboardingDraftNotifier
     _saveDraft();
   }
 
-  void setAudio({String? a1, String? a2, String? a3}) {
+  void setAudio({
+    String? a1,
+    String? a2,
+    String? a3,
+    int? d1,
+    int? d2,
+    int? d3,
+  }) {
     state = state.copyWith(
       audio1Path: a1 ?? state.audio1Path,
       audio2Path: a2 ?? state.audio2Path,
       audio3Path: a3 ?? state.audio3Path,
+      audio1Duration: d1 ?? state.audio1Duration,
+      audio2Duration: d2 ?? state.audio2Duration,
+      audio3Duration: d3 ?? state.audio3Duration,
     );
     _saveDraft();
   }
@@ -314,12 +354,7 @@ class DatingOnboardingDraftNotifier
       desiredQualities: state.desiredQualities,
       photoPaths: state.photoPaths,
       photoUrls: state.photoUrls,
-      audio1Path: null,
-      audio2Path: null,
-      audio3Path: null,
-      audio1Url: null,
-      audio2Url: null,
-      audio3Url: null,
+      // audio paths/urls/durations all null by default
       contactInfo: state.contactInfo,
     );
     _saveDraft();
@@ -348,6 +383,9 @@ class DatingOnboardingDraftNotifier
           audio1Url: null, // Clear
           audio2Url: state.audio2Url,
           audio3Url: state.audio3Url,
+          audio1Duration: null, // Clear
+          audio2Duration: state.audio2Duration,
+          audio3Duration: state.audio3Duration,
           contactInfo: state.contactInfo,
         );
         break;
@@ -371,6 +409,9 @@ class DatingOnboardingDraftNotifier
           audio1Url: state.audio1Url,
           audio2Url: null, // Clear
           audio3Url: state.audio3Url,
+          audio1Duration: state.audio1Duration,
+          audio2Duration: null, // Clear
+          audio3Duration: state.audio3Duration,
           contactInfo: state.contactInfo,
         );
         break;
@@ -394,6 +435,9 @@ class DatingOnboardingDraftNotifier
           audio1Url: state.audio1Url,
           audio2Url: state.audio2Url,
           audio3Url: null, // Clear
+          audio1Duration: state.audio1Duration,
+          audio2Duration: state.audio2Duration,
+          audio3Duration: null, // Clear
           contactInfo: state.contactInfo,
         );
         break;

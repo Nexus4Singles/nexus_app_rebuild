@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
 
 void main() {
   runApp(const AudioTestApp());
 }
 
 class AudioTestApp extends StatelessWidget {
-  const AudioTestApp({Key? key}) : super(key: key);
+  const AudioTestApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: const AudioTestScreen());
+    return const MaterialApp(home: AudioTestScreen());
   }
 }
 
 class AudioTestScreen extends StatefulWidget {
-  const AudioTestScreen({Key? key}) : super(key: key);
+  const AudioTestScreen({super.key});
 
   @override
   State<AudioTestScreen> createState() => _AudioTestScreenState();
@@ -29,13 +29,20 @@ class _AudioTestScreenState extends State<AudioTestScreen> {
     setState(() => _result = 'Testing $label...');
     debugPrint('🧪 TEST: Attempting to play: $url');
     try {
-      await _player.play(UrlSource(url));
+      await _player.setUrl(url);
+      await _player.play();
       setState(() => _result = '✅ $label: PLAYING');
       debugPrint('✅ $label: Success!');
     } catch (e) {
       setState(() => _result = '❌ $label: $e');
       debugPrint('❌ $label: $e');
     }
+  }
+
+  @override
+  void dispose() {
+    _player.dispose();
+    super.dispose();
   }
 
   @override

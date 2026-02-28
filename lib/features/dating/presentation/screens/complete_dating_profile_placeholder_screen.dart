@@ -11,7 +11,7 @@ class CompleteDatingProfilePlaceholderScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.getBackground(context),
         elevation: 0,
-        title: Text('Complete Profile', style: AppTextStyles.headlineLarge),
+        title: Text('Complete Profile', style: AppTextStyles.headlineMedium),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),

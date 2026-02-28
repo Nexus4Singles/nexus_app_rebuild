@@ -20,7 +20,7 @@ class HelpCenterScreen extends StatelessWidget {
         ),
         title: Text(
           'Help Center',
-          style: AppTextStyles.headlineLarge.copyWith(
+          style: AppTextStyles.headlineMedium.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -28,7 +28,7 @@ class HelpCenterScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
         children: [
-          const _SectionTitle('Quick actions'),
+          const _SectionTitle('Quick Actions'),
           ListTile(
             contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.info_outline),

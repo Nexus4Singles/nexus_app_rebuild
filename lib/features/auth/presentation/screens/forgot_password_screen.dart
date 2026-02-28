@@ -52,7 +52,10 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       setState(() => _message = 'Password reset email sent. Check your inbox.');
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password reset email sent ✅')),
+        const SnackBar(
+          content: Text('Password reset email sent ✅'),
+          backgroundColor: AppColors.success,
+        ),
       );
     } catch (e) {
       if (!mounted) return;
@@ -106,7 +109,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                       children: [
                         Text(
                           'Forgot Password?',
-                          style: AppTextStyles.headlineLarge.copyWith(
+                          style: AppTextStyles.headlineMedium.copyWith(
                             fontWeight: FontWeight.w700,
                             height: 1.1,
                           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nexus_app_v2/core/theme/app_text_styles.dart';
 import 'package:nexus_app_v2/features/stories/data/story_repository.dart';
 import 'package:nexus_app_v2/features/stories/domain/story_models.dart';
 import 'package:nexus_app_v2/features/stories/presentation/screens/story_poll_screen.dart';
@@ -12,7 +13,12 @@ class StoryDetailScreen extends StatelessWidget {
     const repo = StoryRepository();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Story')),
+      appBar: AppBar(
+        title: Text(
+          'Story of the Week',
+          style: AppTextStyles.titleSmall.copyWith(fontWeight: FontWeight.w700),
+        ),
+      ),
       body: FutureBuilder<Story?>(
         future: repo.loadStoryById(storyId),
         builder: (context, snapshot) {
@@ -27,75 +33,84 @@ class StoryDetailScreen extends StatelessWidget {
             return const Center(child: Text('Story not found.'));
           }
 
-          final theme = Theme.of(context);
-
           return ListView(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(12),
                 child: AspectRatio(
-                  aspectRatio: 16 / 10,
+                  aspectRatio: 16 / 9,
                   child: _AdaptiveDetailImage(
                     imagePath: story.heroImageAsset,
                     placeholder: 'assets/images/stories/placeholder_couple.jpg',
                   ),
                 ),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 8),
               Row(
                 children: [
-                  _Pill(text: story.category),
+                  Expanded(
+                    child: Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: [
+                        ...story.tags.map((tag) => _Pill(text: tag)),
+                        if (story.tags.isEmpty) _Pill(text: story.category),
+                      ],
+                    ),
+                  ),
                   const SizedBox(width: 8),
                   _Pill(text: '${story.readTimeMins} min read'),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
               Text(
                 story.title,
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
+                style: AppTextStyles.titleSmall.copyWith(
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 10),
-              Text(story.intro, style: theme.textTheme.bodyMedium),
-              const SizedBox(height: 18),
+              const SizedBox(height: 4),
+              Text(
+                story.intro,
+                style: AppTextStyles.bodySmall.copyWith(height: 1.4),
+              ),
+              const SizedBox(height: 12),
 
               ...story.sections.map((s) {
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.only(bottom: 12),
                   child: _Section(heading: s.heading, body: s.body),
                 );
               }),
 
-              const SizedBox(height: 4),
               Text(
                 story.takeawayTitle,
-                style: theme.textTheme.titleMedium?.copyWith(
+                style: AppTextStyles.titleSmall.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 4),
               if (story.takeaways.isEmpty)
-                Text('Coming soon.', style: theme.textTheme.bodyMedium)
+                Text('Coming soon.', style: AppTextStyles.bodySmall)
               else
                 ...story.takeaways.map((t) => _Bullet(text: t)),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 12),
               Text(
                 'Reflection',
-                style: theme.textTheme.titleMedium?.copyWith(
+                style: AppTextStyles.titleSmall.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 4),
               _Card(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       story.reflectionPrompt,
-                      style: theme.textTheme.bodyMedium,
+                      style: AppTextStyles.bodySmall.copyWith(height: 1.4),
                     ),
                     const SizedBox(height: 10),
                     TextField(
@@ -111,14 +126,14 @@ class StoryDetailScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 12),
               Text(
                 'Weekly Poll',
-                style: theme.textTheme.titleMedium?.copyWith(
+                style: AppTextStyles.titleSmall.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 4),
               _Card(
                 child: Row(
                   children: [
@@ -127,7 +142,7 @@ class StoryDetailScreen extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'Share your answer (vote to see results).',
-                        style: theme.textTheme.bodyMedium,
+                        style: AppTextStyles.bodySmall,
                       ),
                     ),
                   ],
@@ -163,18 +178,15 @@ class _Section extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           heading,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w800,
-          ),
+          style: AppTextStyles.titleSmall.copyWith(fontWeight: FontWeight.w700),
         ),
-        const SizedBox(height: 8),
-        Text(body, style: theme.textTheme.bodyMedium),
+        const SizedBox(height: 4),
+        Text(body, style: AppTextStyles.bodySmall.copyWith(height: 1.4)),
       ],
     );
   }
@@ -186,14 +198,18 @@ class _Bullet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('•  ', style: theme.textTheme.bodyMedium),
-          Expanded(child: Text(text, style: theme.textTheme.bodyMedium)),
+          Text('•  ', style: AppTextStyles.bodySmall),
+          Expanded(
+            child: Text(
+              text,
+              style: AppTextStyles.bodySmall.copyWith(height: 1.4),
+            ),
+          ),
         ],
       ),
     );
@@ -209,10 +225,10 @@ class _Card extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(color: theme.dividerColor.withOpacity(0.35)),
       ),
       child: child,
@@ -257,14 +273,14 @@ class _Pill extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceVariant.withOpacity(0.6),
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
         text,
-        style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+        style: AppTextStyles.labelSmall.copyWith(fontWeight: FontWeight.w600),
       ),
     );
   }

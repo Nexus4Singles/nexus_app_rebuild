@@ -765,6 +765,35 @@ class DatingSearchService {
 
     final sortedProfiles = profileList;
 
+    // When Firestore returned 0 documents with a country filter active
+    // server-side, the real issue is "no profiles in this country" — not age.
+    // Detect this before the age filter so the UI shows the right message.
+    if (sortedProfiles.isEmpty &&
+        filters.countryOfResidence != null &&
+        !_selectedMeansAny(filters.countryOfResidence)) {
+      if (kDebugMode) {
+        // ignore: avoid_print
+        print(
+          '[DatingSearchService] NO PROFILES IN COUNTRY: '
+          'Firestore returned 0 profiles for country="${filters.countryOfResidence}".',
+        );
+      }
+      return DatingSearchResult(
+        items: [],
+        emptyHint: 'Country: ${filters.countryOfResidence}',
+        noProfilesInCountry: true,
+        noProfilesBreakdown: NoProfilesBreakdown(
+          totalFetched: 0,
+          afterAgeFilter: 0,
+          afterCountryFilter: 0,
+          minAge: filters.minAge,
+          maxAge: filters.maxAge,
+          countryName: filters.countryOfResidence,
+          eliminatingFilter: 'country',
+        ),
+      );
+    }
+
     // Age filter first (always applied, even in unlimited mode)
     final afterAge =
         sortedProfiles
@@ -816,6 +845,15 @@ class DatingSearchService {
             'No profiles found in your selected age bracket (${filters.minAge}-${filters.maxAge}). '
             'Try expanding your age range.',
         noProfilesInCountry: false,
+        noProfilesBreakdown: NoProfilesBreakdown(
+          totalFetched: sortedProfiles.length,
+          afterAgeFilter: 0,
+          afterCountryFilter: 0,
+          minAge: filters.minAge,
+          maxAge: filters.maxAge,
+          countryName: filters.countryOfResidence,
+          eliminatingFilter: 'age',
+        ),
       );
     }
 
@@ -869,6 +907,15 @@ class DatingSearchService {
         items: current,
         emptyHint: emptyHint,
         noProfilesInCountry: noProfilesInCountry,
+        noProfilesBreakdown: NoProfilesBreakdown(
+          totalFetched: sortedProfiles.length,
+          afterAgeFilter: afterAge.length,
+          afterCountryFilter: 0,
+          minAge: filters.minAge,
+          maxAge: filters.maxAge,
+          countryName: filters.countryOfResidence,
+          eliminatingFilter: 'country',
+        ),
       );
     }
 

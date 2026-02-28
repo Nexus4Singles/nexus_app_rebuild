@@ -163,7 +163,7 @@ class _EmailVerificationScreenState
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to resend email: $e'),
-          backgroundColor: AppColors.error,
+          backgroundColor: AppColors.primary,
         ),
       );
 
@@ -182,7 +182,7 @@ class _EmailVerificationScreenState
         titleSpacing: 0,
         title: Text(
           'Verify Email',
-          style: AppTextStyles.headlineLarge.copyWith(
+          style: AppTextStyles.headlineMedium.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -208,7 +208,7 @@ class _EmailVerificationScreenState
             const SizedBox(height: 32),
             Text(
               'Check your email',
-              style: AppTextStyles.headlineLarge.copyWith(
+              style: AppTextStyles.headlineMedium.copyWith(
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,

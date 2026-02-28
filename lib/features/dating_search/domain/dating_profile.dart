@@ -98,12 +98,24 @@ class DatingProfile {
   bool get hasValidPhoto => validProfilePhoto != null;
 
   String get displayLocation {
-    final c = (city ?? '').trim();
-    final k = (country ?? '').trim();
+    final c = _toTitleCase((city ?? '').trim());
+    final k = _toTitleCase((country ?? '').trim());
     if (c.isEmpty && k.isEmpty) return '';
     if (c.isEmpty) return k;
     if (k.isEmpty) return c;
     return '$c • $k';
+  }
+
+  /// Title-case a string: "united kingdom" → "United Kingdom"
+  static String _toTitleCase(String s) {
+    if (s.isEmpty) return s;
+    return s
+        .split(' ')
+        .map((w) {
+          if (w.isEmpty) return w;
+          return '${w[0].toUpperCase()}${w.substring(1)}';
+        })
+        .join(' ');
   }
 
   static DateTime _asDate(dynamic v) {
@@ -353,17 +365,74 @@ class DatingProfile {
               : int.tryParse('${json['age']}') ?? 0,
 
       // v1 key is usually 'gender' already; keep as-is but normalize.
-      gender: (json['gender'] ?? '').toString().toLowerCase(),
+      // Also check nested dating.profile.gender and dating.gender for v2 users.
+      gender: () {
+        final root = (json['gender'] ?? '').toString().toLowerCase().trim();
+        if (root.isNotEmpty && (root == 'male' || root == 'female'))
+          return root;
+        final datingMap =
+            (json['dating'] is Map)
+                ? (json['dating'] as Map).cast<String, dynamic>()
+                : null;
+        final datingProfileMap =
+            (datingMap?['profile'] is Map)
+                ? (datingMap!['profile'] as Map).cast<String, dynamic>()
+                : null;
+        final dpGender =
+            (datingProfileMap?['gender'] ?? datingMap?['gender'] ?? '')
+                .toString()
+                .toLowerCase()
+                .trim();
+        if (dpGender.isNotEmpty && (dpGender == 'male' || dpGender == 'female'))
+          return dpGender;
+        final nexus2 =
+            (json['nexus2'] is Map)
+                ? (json['nexus2'] as Map).cast<String, dynamic>()
+                : null;
+        final n2Gender =
+            (nexus2?['gender'] ?? '').toString().toLowerCase().trim();
+        if (n2Gender.isNotEmpty && (n2Gender == 'male' || n2Gender == 'female'))
+          return n2Gender;
+        return root.isNotEmpty ? root : '';
+      }(),
 
       // v1 stores these as snake_case; v2 may store camelCase.
       city: _pickNullable(json, ['city']),
-      country: _pickNullable(json, [
-        'country',
-        'countryOfResidence',
-        'country_of_residence',
-        'countryOfResidenceFilters',
-        'country_of_resident',
-      ]),
+      // Country extraction: check root-level keys first, then nested maps.
+      // v2 profiles store country in dating.countryOfResidence (nested map),
+      // v1 profiles may store in root 'country' or 'location.country'.
+      country:
+          _pickNullable(json, [
+            'country',
+            'countryOfResidence',
+            'country_of_residence',
+            'countryOfResidenceFilters',
+            'country_of_resident',
+          ]) ??
+          _pickStringFromMap(
+            (json['dating'] is Map<String, dynamic>)
+                ? json['dating'] as Map<String, dynamic>
+                : (json['dating'] is Map)
+                ? (json['dating'] as Map).cast<String, dynamic>()
+                : null,
+            ['countryOfResidence', 'country_of_residence', 'country'],
+          ) ??
+          _pickStringFromMap(
+            (json['location'] is Map<String, dynamic>)
+                ? json['location'] as Map<String, dynamic>
+                : (json['location'] is Map)
+                ? (json['location'] as Map).cast<String, dynamic>()
+                : null,
+            ['country', 'countryOfResidence'],
+          ) ??
+          _pickStringFromMap(
+            (json['profile'] is Map<String, dynamic>)
+                ? json['profile'] as Map<String, dynamic>
+                : (json['profile'] is Map)
+                ? (json['profile'] as Map).cast<String, dynamic>()
+                : null,
+            ['country', 'countryOfResidence', 'country_of_residence'],
+          ),
 
       // profession often exists already in v1
       profession: _pickNullable(json, ['profession']),

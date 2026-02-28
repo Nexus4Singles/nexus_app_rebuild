@@ -14,7 +14,7 @@ class SessionFlowScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.getBackground(context),
         elevation: 0,
-        title: Text('Session', style: AppTextStyles.headlineLarge),
+        title: Text('Session', style: AppTextStyles.headlineMedium),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),

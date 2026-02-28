@@ -10,6 +10,10 @@ import 'package:nexus_app_v2/features/dating_onboarding/presentation/widgets/dat
 import 'package:nexus_app_v2/features/dating_onboarding/application/dating_onboarding_draft.dart';
 import 'package:nexus_app_v2/core/storage/do_spaces_storage_service.dart';
 import 'package:nexus_app_v2/core/storage/providers/media_storage_provider.dart';
+import 'package:nexus_app_v2/core/services/media_service.dart';
+
+// Provider for MediaService to ensure we use the same instance everywhere
+final mediaServiceProvider = Provider((ref) => MediaService());
 
 class DatingAudioSummaryScreen extends ConsumerStatefulWidget {
   const DatingAudioSummaryScreen({super.key});
@@ -21,25 +25,32 @@ class DatingAudioSummaryScreen extends ConsumerStatefulWidget {
 
 class _DatingAudioSummaryScreenState
     extends ConsumerState<DatingAudioSummaryScreen> {
-  final _player = AudioPlayer();
+  late final MediaService _mediaService;
   bool _isUploading = false;
   bool _uploadError = false;
   String? _errorMessage;
 
-  // Track which audio is currently playing (1, 2, 3, or null)
   int? _playingIndex;
   bool _isPlaying = false;
-  bool _isLoading = false; // Track when audio is loading before playback
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    // Listen to player state changes to track when playback completes or starts playing
-    _player.playerStateStream.listen((state) {
-      // Stop spinner when audio actually starts playing (not just when file is loaded)
+    _mediaService = ref.read(mediaServiceProvider);
+
+    // Listen to the central media service state
+    _mediaService.onPlayerStateChanged.listen((state) {
+      if (!mounted) return;
+
+      // Clear loading when audio starts playing
       if (state.playing && _isLoading) {
         setState(() => _isLoading = false);
       }
+
+      // Always sync _isPlaying with actual player state (is audio currently playing?)
+      setState(() => _isPlaying = state.playing);
+
       // Reset when playback completes
       if (state.processingState == ProcessingState.completed) {
         setState(() {
@@ -53,7 +64,6 @@ class _DatingAudioSummaryScreenState
 
   Future<void> _uploadAudios() async {
     if (_isUploading) return;
-
     setState(() => _isUploading = true);
 
     try {
@@ -62,7 +72,6 @@ class _DatingAudioSummaryScreenState
       final a2 = draft.audio2Path;
       final a3 = draft.audio3Path;
 
-      // Check if existing URLs are valid before skipping
       if (draft.audio1Url != null &&
           draft.audio2Url != null &&
           draft.audio3Url != null) {
@@ -74,7 +83,6 @@ class _DatingAudioSummaryScreenState
           setState(() => _isUploading = false);
           return;
         }
-
         ref.read(datingOnboardingDraftProvider.notifier).clearAudios();
       }
 
@@ -82,7 +90,6 @@ class _DatingAudioSummaryScreenState
         throw Exception('One or more audio files are missing');
       }
 
-      // Validate files exist before uploading
       final file1 = File(a1);
       final file2 = File(a2);
       final file3 = File(a3);
@@ -93,51 +100,48 @@ class _DatingAudioSummaryScreenState
         throw Exception('One or more audio files do not exist on disk');
       }
 
-      // Guard: fail fast if any file is clearly empty (common on simulators with no mic)
       if (await file1.length() <= 2048 ||
           await file2.length() <= 2048 ||
           await file3.length() <= 2048) {
-        _showSnackBar(
-          'No audio captured. If you are on an iOS simulator, the microphone may be unavailable. Please retry on a physical device.',
-        );
+        _showSnackBar('No audio captured. Please retry on a physical device.');
         setState(() => _isUploading = false);
         return;
       }
 
       final storage = ref.read(mediaStorageProvider) as DoSpacesStorageService;
 
-      // Upload all three files in parallel for faster completion
       final results = await Future.wait([
         storage.uploadFile(localPath: a1),
         storage.uploadFile(localPath: a2),
         storage.uploadFile(localPath: a3),
       ]);
-      final url1 = results[0];
-      final url2 = results[1];
-      final url3 = results[2];
+
       ref
           .read(datingOnboardingDraftProvider.notifier)
-          .updateAudioUrls(audio1Url: url1, audio2Url: url2, audio3Url: url3);
+          .updateAudioUrls(
+            audio1Url: results[0],
+            audio2Url: results[1],
+            audio3Url: results[2],
+          );
 
-      // Small delay to allow SharedPreferences to save
       await Future.delayed(const Duration(milliseconds: 500));
-
-      setState(() => _isUploading = false);
+      if (mounted) setState(() => _isUploading = false);
     } catch (e) {
-      setState(() {
-        _isUploading = false;
-        _uploadError = true;
-        _errorMessage = e.toString();
-      });
+      if (mounted) {
+        setState(() {
+          _isUploading = false;
+          _uploadError = true;
+          _errorMessage = e.toString();
+        });
+      }
     }
   }
 
   @override
   void dispose() {
-    try {
-      _player.stop();
-    } catch (_) {}
-    _player.dispose();
+    // Note: We don't dispose the central MediaService here,
+    // we just stop playback if this screen is closed.
+    _mediaService.stopAudio();
     super.dispose();
   }
 
@@ -154,7 +158,7 @@ class _DatingAudioSummaryScreenState
             children: [
               const CircularProgressIndicator(),
               const SizedBox(height: 16),
-              Text('Uploading recordings...', style: AppTextStyles.bodyMedium),
+              Text('Uploading Recordings...', style: AppTextStyles.bodyMedium),
             ],
           ),
         ),
@@ -179,7 +183,7 @@ class _DatingAudioSummaryScreenState
                 Text('Upload Failed', style: AppTextStyles.headlineMedium),
                 const SizedBox(height: 8),
                 Text(
-                  'Unable to upload recordings. Please check your connection and try again.',
+                  'Unable to upload recordings. Please try again.',
                   textAlign: TextAlign.center,
                   style: AppTextStyles.bodyMedium.copyWith(
                     color: AppColors.getTextSecondary(context),
@@ -222,7 +226,7 @@ class _DatingAudioSummaryScreenState
         title: Text('Audio Recordings', style: AppTextStyles.titleLarge),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -230,11 +234,9 @@ class _DatingAudioSummaryScreenState
             const SizedBox(height: 18),
             Text('Your Responses', style: AppTextStyles.titleLarge),
             const SizedBox(height: 16),
-
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _Row(
                       n: 1,
@@ -272,7 +274,6 @@ class _DatingAudioSummaryScreenState
                 ),
               ),
             ),
-
             SafeArea(
               top: false,
               child: Column(
@@ -282,11 +283,10 @@ class _DatingAudioSummaryScreenState
                     width: double.infinity,
                     height: 54,
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(
-                          context,
-                        ).pushNamed('/dating/setup/contact-info');
-                      },
+                      onPressed:
+                          () => Navigator.of(
+                            context,
+                          ).pushNamed('/dating/setup/contact-info'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
@@ -319,25 +319,19 @@ class _DatingAudioSummaryScreenState
     }
 
     try {
-      // If clicking the same track that's already loaded
       if (_playingIndex == index) {
-        if (_isLoading) return; // Still loading, ignore tap
+        if (_isLoading) return;
         if (_isPlaying) {
-          // Currently playing → pause it
-          await _player.pause();
+          await _mediaService.pauseAudio();
           setState(() => _isPlaying = false);
         } else {
-          // Currently paused → resume it
-          await _player.play();
+          await _mediaService.resumeAudio();
           setState(() => _isPlaying = true);
         }
         return;
       }
 
-      // Different track selected: stop current, load and play new one
-      if (_playingIndex != null) {
-        await _player.stop();
-      }
+      if (_playingIndex != null) await _mediaService.stopAudio();
 
       setState(() {
         _playingIndex = index;
@@ -345,17 +339,16 @@ class _DatingAudioSummaryScreenState
         _isLoading = true;
       });
 
-      // Prefer local file (instant) — fall back to remote URL if local is gone
       bool loadedLocal = false;
       if (localPath != null) {
         final file = File(localPath);
         if (await file.exists() && await file.length() > 2048) {
-          await _player.setFilePath(localPath);
+          await _mediaService.playAudio(localPath);
           loadedLocal = true;
         }
       }
       if (!loadedLocal && url != null) {
-        await _player.setUrl(url);
+        await _mediaService.playAudio(url);
       } else if (!loadedLocal) {
         throw Exception('Local file missing and no remote URL');
       }
@@ -364,7 +357,6 @@ class _DatingAudioSummaryScreenState
         _isLoading = false;
         _isPlaying = true;
       });
-      await _player.play();
     } catch (e) {
       _showSnackBar('Unable to play recording: $e');
       setState(() {
@@ -376,22 +368,19 @@ class _DatingAudioSummaryScreenState
   }
 
   void _showSnackBar(String msg) {
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
-    }
+    if (mounted)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(msg), backgroundColor: AppColors.primary),
+      );
   }
 
-  /// Check if a URL is valid (accessible and has reasonable file size)
   Future<bool> _isUrlValid(String url) async {
     try {
       final response = await http.head(Uri.parse(url));
-      final statusCode = response.statusCode;
-      final contentLength =
-          int.tryParse(response.headers['content-length'] ?? '0') ?? 0;
-
-      // Valid if 200 OK and file is larger than 10KB (reasonable audio minimum)
-      return statusCode == 200 && contentLength > 10240;
-    } catch (e) {
+      return response.statusCode == 200 &&
+          (int.tryParse(response.headers['content-length'] ?? '0') ?? 0) >
+              10240;
+    } catch (_) {
       return false;
     }
   }

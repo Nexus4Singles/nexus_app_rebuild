@@ -291,11 +291,52 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                           );
                           // Clear in-progress when completed
                           await progressSvc.clearInProgress(widget.journeyId);
+
+                          // CRITICAL: Invalidate provider cache to force UI refresh with checkmark
+                          ref.invalidate(
+                            completedMissionIdsProvider(widget.journeyId),
+                          );
+                          ref.invalidate(
+                            isJourneyCompletedProvider(widget.journeyId),
+                          );
                         }
 
                         if (!mounted) return;
+
+                        // Check if journey is purchased and if this is the last mission
+                        final isPurchasedAsync = ref.watch(
+                          isJourneyPurchasedProvider(widget.journeyId),
+                        );
+                        final isPurchased = isPurchasedAsync.maybeWhen(
+                          data: (purchased) => purchased,
+                          orElse: () => false,
+                        );
+
+                        final isLastMission =
+                            m.missionNumber == journey.missions.length;
+
+                        // Determine the appropriate message
+                        String snackBarMessage;
+                        if (isLastMission && isPurchased) {
+                          // User completed the entire journey and has purchased
+                          snackBarMessage =
+                              '🎉 Activity completed! You\'ve finished this journey!';
+                        } else if (!isPurchased && m.isFree) {
+                          // User completed the free activity but hasn't purchased
+                          snackBarMessage =
+                              '✅ Activity completed... Purchase the complete journey to continue your progress';
+                        } else {
+                          // Standard completion message for intermediate activities
+                          snackBarMessage = '✅ Activity completed';
+                        }
+
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Activity completed')),
+                          SnackBar(
+                            content: Text(snackBarMessage),
+                            duration: const Duration(seconds: 3),
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: AppColors.success,
+                          ),
                         );
                         Navigator.pop(context);
                         return;
@@ -318,6 +359,13 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                           widget.journeyId,
                           m.id,
                           uid,
+                        );
+                        // Invalidate provider cache to sync UI with reset state
+                        ref.invalidate(
+                          completedMissionIdsProvider(widget.journeyId),
+                        );
+                        ref.invalidate(
+                          isJourneyCompletedProvider(widget.journeyId),
                         );
                       }
 
@@ -687,7 +735,7 @@ class _OutcomeButtons extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 elevation: 0,
               ),
-              child: Text(isLast ? 'Complete' : 'Next'),
+              child: Text(isLast ? '🎉 Complete Journey' : 'Next'),
             ),
           ),
           if (failed) ...[
@@ -1335,48 +1383,89 @@ List<_Block> _parseRichContent(String raw) {
   return blocks;
 }
 
+/// Bible book names used for detecting verse references inside bold segments.
+final RegExp _bibleRefPattern = RegExp(
+  r'(?:Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|'
+  r'[123]\s*Samuel|[123]\s*Kings|[123]\s*Chronicles|'
+  r'Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|'
+  r'Song\s*of\s*Solomon|Songs?\s*of\s*Songs?|'
+  r'Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|'
+  r'Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|'
+  r'Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|'
+  r'Matthew|Mark|Luke|John|Acts|Romans|'
+  r'[12]\s*Corinthians|Galatians|Ephesians|Philippians|Colossians|'
+  r'[12]\s*Thessalonians|[12]\s*Timothy|Titus|Philemon|'
+  r'Hebrews|James|[12]\s*Peter|[123]\s*John|Jude|Revelation'
+  r')\s+\d+[:\d\-]*',
+  caseSensitive: false,
+);
+
+/// Returns true when a bold segment should keep its **markers**.
+///
+/// Bold is preserved when the segment contains:
+///  • A Bible verse reference  (e.g. Psalm 34:18)
+///  • Quoted speech / key phrase  (contains " quotation marks)
+bool _shouldKeepBold(String content) {
+  if (_bibleRefPattern.hasMatch(content)) return true;
+  if (content.contains('"') ||
+      content.contains('\u201C') ||
+      content.contains('\u201D')) {
+    return true;
+  }
+  return false;
+}
+
+/// Strips unnecessary **bold** markers from journey card text while preserving
+/// bold on Bible references and quoted text.
+///
+/// Also removes orphaned ** markers (from malformed source data) that aren't
+/// part of any matched **...** pair, preventing stray ** from showing to users.
+///
+/// This runs at render-time so it works for both cloud-fetched and local content.
 String _normalizeOverBoldContent(String raw) {
-  final lines = raw.split('\n');
-  final fullyBoldLinePattern = RegExp(r'^\*\*([^*]|\*(?!\*))+\*\*$');
+  final boldPattern = RegExp(r'\*\*(.+?)\*\*');
 
-  var nonEmptyLineCount = 0;
-  var fullyBoldLineCount = 0;
+  // Step 1: Process matched **...** pairs — strip or keep based on content.
+  final afterStep1 = raw.replaceAllMapped(boldPattern, (match) {
+    final inner = match.group(1)!;
+    if (_shouldKeepBold(inner)) {
+      return match.group(0)!; // keep bold markers
+    }
+    return inner; // strip bold markers, keep the text
+  });
 
-  for (final line in lines) {
-    final trimmed = line.trim();
-    if (trimmed.isEmpty) continue;
-    nonEmptyLineCount++;
-    if (fullyBoldLinePattern.hasMatch(trimmed)) {
-      fullyBoldLineCount++;
+  // Step 2: Remove orphaned ** that aren't part of any remaining matched pair.
+  // After step 1, remaining matched pairs are intentional (Bible/quotes).
+  // Any lone ** leftover is from malformed source data.
+  final remainingMatches = boldPattern.allMatches(afterStep1).toList();
+
+  // Build a set of character positions that belong to preserved bold pairs.
+  final preservedPositions = <int>{};
+  for (final m in remainingMatches) {
+    // Mark every character index in the matched range as preserved.
+    for (var i = m.start; i < m.end; i++) {
+      preservedPositions.add(i);
     }
   }
 
-  if (nonEmptyLineCount == 0) return raw;
+  // Find ALL ** positions and remove those not inside a preserved range.
+  final starPattern = RegExp(r'\*\*');
+  final allStars = starPattern.allMatches(afterStep1).toList();
+  final orphans =
+      allStars.where((m) => !preservedPositions.contains(m.start)).toList();
 
-  final fullyBoldRatio = fullyBoldLineCount / nonEmptyLineCount;
-  if (fullyBoldRatio < 0.8) {
-    return raw;
+  if (orphans.isEmpty) return afterStep1;
+
+  // Build result, skipping orphaned ** markers.
+  final buf = StringBuffer();
+  var cursor = 0;
+  for (final orphan in orphans) {
+    buf.write(afterStep1.substring(cursor, orphan.start));
+    cursor = orphan.end; // skip the 2-char **
   }
+  buf.write(afterStep1.substring(cursor));
 
-  final normalized = lines
-      .map((line) {
-        final trimmed = line.trim();
-        if (!fullyBoldLinePattern.hasMatch(trimmed)) return line;
-
-        final leadingWhitespaceLength = line.length - line.trimLeft().length;
-        final trailingWhitespaceLength = line.length - line.trimRight().length;
-        final leading = line.substring(0, leadingWhitespaceLength);
-        final trailing =
-            trailingWhitespaceLength > 0
-                ? line.substring(line.length - trailingWhitespaceLength)
-                : '';
-
-        final inner = trimmed.substring(2, trimmed.length - 2);
-        return '$leading$inner$trailing';
-      })
-      .join('\n');
-
-  return normalized;
+  return buf.toString();
 }
 
 /// Builds widgets from parsed blocks with spacing.

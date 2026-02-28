@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -77,7 +76,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
         slivers: [
           // Premium App Bar
           SliverAppBar(
-            expandedHeight: 120,
+            expandedHeight: 100,
             floating: false,
             pinned: true,
             backgroundColor: AppColors.primary,
@@ -191,7 +190,9 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                                 Text(
                                   'Error loading journeys: $error',
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(color: Colors.red),
+                                  style: AppTextStyles.bodySmall.copyWith(
+                                    color: Colors.red,
+                                  ),
                                 ),
                               ],
                             ),
@@ -250,7 +251,9 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                                     Text(
                                       'Error loading journeys: $error',
                                       textAlign: TextAlign.center,
-                                      style: const TextStyle(color: Colors.red),
+                                      style: AppTextStyles.bodySmall.copyWith(
+                                        color: Colors.red,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -298,49 +301,49 @@ class _ActiveSubscriptionView extends ConsumerWidget {
     final expiryDate = subscription.expiryDate;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Premium Badge Card (compact horizontal layout)
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [AppColors.primary, AppColors.primary.withOpacity(0.7)],
               ),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
                   color: AppColors.primary.withOpacity(0.3),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
+                  blurRadius: 16,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.workspace_premium,
-                    size: 40,
+                    size: 28,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Premium Active',
-                        style: AppTextStyles.titleLarge.copyWith(
+                        style: AppTextStyles.titleMedium.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
@@ -408,16 +411,16 @@ class _ActiveSubscriptionView extends ConsumerWidget {
             ),
           ),
 
-          const SizedBox(height: 28),
+          const SizedBox(height: 20),
 
           // Features Section
           Text(
             'Your Premium Features',
-            style: AppTextStyles.titleLarge.copyWith(
+            style: AppTextStyles.titleMedium.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
 
           ...PremiumFeatures.allFeatures.map(
             (feature) => Padding(
@@ -426,12 +429,12 @@ class _ActiveSubscriptionView extends ConsumerWidget {
             ),
           ),
 
-          const SizedBox(height: 28),
+          const SizedBox(height: 20),
 
           // Manage Subscription
           Text(
             'Manage Subscription',
-            style: AppTextStyles.titleMedium.copyWith(
+            style: AppTextStyles.titleSmall.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -450,14 +453,14 @@ class _NoSubscriptionView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Premium Card (compact horizontal layout)
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -467,7 +470,7 @@ class _NoSubscriptionView extends ConsumerWidget {
                   AppColors.primary.withOpacity(0.05),
                 ],
               ),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: AppColors.primary.withOpacity(0.3),
                 width: 1.5,
@@ -476,25 +479,25 @@ class _NoSubscriptionView extends ConsumerWidget {
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.workspace_premium,
-                    size: 32,
+                    size: 28,
                     color: AppColors.primary,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Unlock Premium Features',
-                        style: AppTextStyles.titleMedium.copyWith(
+                        style: AppTextStyles.titleSmall.copyWith(
                           color: AppColors.getTextPrimary(context),
                           fontWeight: FontWeight.bold,
                         ),
@@ -513,16 +516,16 @@ class _NoSubscriptionView extends ConsumerWidget {
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
 
           // Features List
           Text(
             'What You Get',
-            style: AppTextStyles.titleLarge.copyWith(
+            style: AppTextStyles.titleMedium.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
 
           ...PremiumFeatures.allFeatures.map(
             (feature) => Padding(
@@ -531,16 +534,16 @@ class _NoSubscriptionView extends ConsumerWidget {
             ),
           ),
 
-          const SizedBox(height: 32),
+          const SizedBox(height: 24),
 
           // Subscription Plans
           Text(
             'Activate Your Subscription',
-            style: AppTextStyles.titleLarge.copyWith(
+            style: AppTextStyles.titleMedium.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
 
           _SubscriptionPlanCard(
             tier: SubscriptionTier.monthly,
@@ -553,10 +556,10 @@ class _NoSubscriptionView extends ConsumerWidget {
 
           // Info
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               color: AppColors.getSurface(context),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(14),
               border: Border.all(color: AppColors.getBorder(context)),
             ),
             child: Row(
@@ -645,22 +648,16 @@ class _NoSubscriptionView extends ConsumerWidget {
 
       if (!context.mounted) return;
 
-      // Show success snackbar and notify restart
+      // Show success snackbar and instruct user to restart manually
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text(
-            'Subscription unlocked! 🎉 Restarting app to activate your subscription...',
+            'Subscription unlocked! 🎉 Please restart the app to activate your subscription.',
           ),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 4),
+          backgroundColor: AppColors.success,
         ),
       );
-
-      // Schedule app restart after brief delay to let snackbar display
-      Future.delayed(const Duration(seconds: 2), () {
-        // Exit app - OS will automatically relaunch it
-        SystemNavigator.pop();
-      });
     } catch (e) {
       if (context.mounted) {
         final navigator = Navigator.of(context);
@@ -674,7 +671,7 @@ class _NoSubscriptionView extends ConsumerWidget {
 
   void _showError(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.red),
+      SnackBar(content: Text(message), backgroundColor: AppColors.primary),
     );
   }
 }
@@ -695,9 +692,9 @@ class _JourneyPurchasesTab extends StatelessWidget {
     }
 
     return ListView.separated(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       itemCount: journeys.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      separatorBuilder: (_, __) => const SizedBox(height: 10),
       itemBuilder: (context, index) {
         return _JourneyPurchaseCard(journey: journeys[index]);
       },
@@ -713,12 +710,12 @@ class _EmptyJourneysView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(28),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: AppColors.getSurface(context),
                 shape: BoxShape.circle,
@@ -729,14 +726,14 @@ class _EmptyJourneysView extends ConsumerWidget {
               ),
               child: Icon(
                 Icons.school_outlined,
-                size: 64,
+                size: 48,
                 color: AppColors.getTextSecondary(context),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
             Text(
               'No Active Journeys',
-              style: AppTextStyles.titleLarge.copyWith(
+              style: AppTextStyles.titleMedium.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -749,7 +746,7 @@ class _EmptyJourneysView extends ConsumerWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
             OutlinedButton.icon(
               onPressed: () {
                 Navigator.pop(context);
@@ -761,8 +758,8 @@ class _EmptyJourneysView extends ConsumerWidget {
               label: const Text('Explore Journeys'),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 14,
+                  horizontal: 20,
+                  vertical: 12,
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -805,13 +802,13 @@ class _FeatureTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color:
             isActive
                 ? AppColors.primary.withOpacity(0.05)
                 : AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color:
               isActive ? AppColors.primary.withOpacity(0.3) : AppColors.border,
@@ -820,28 +817,28 @@ class _FeatureTile extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color:
                   isActive
                       ? AppColors.primary
                       : AppColors.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(
               _getIcon(),
               color: isActive ? Colors.white : AppColors.primary,
-              size: 24,
+              size: 22,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   feature.title,
-                  style: AppTextStyles.titleMedium.copyWith(
+                  style: AppTextStyles.titleSmall.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -964,63 +961,57 @@ class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border, width: 1),
       ),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
             child: Row(
               children: [
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.tier.displayName,
-                        style: AppTextStyles.titleLarge.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      // Show price loaded from store/RevenueCat
-                      if (_isLoadingPrice)
-                        SizedBox(
-                          width: 60,
-                          height: 16,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.getTextSecondary(
-                                context,
-                              ).withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          ),
-                        )
-                      else if (_monthlyPrice.isNotEmpty)
-                        Text(
-                          _monthlyPrice,
-                          style: AppTextStyles.titleMedium.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary,
-                          ),
-                        )
-                      else
-                        Text(
-                          'Price from store',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.getTextSecondary(context),
-                          ),
-                        ),
-                    ],
+                  child: Text(
+                    widget.tier.displayName,
+                    style: AppTextStyles.titleMedium.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
+                // Price on the right
+                if (_isLoadingPrice)
+                  SizedBox(
+                    width: 60,
+                    height: 16,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.getTextSecondary(
+                          context,
+                        ).withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                  )
+                else if (_monthlyPrice.isNotEmpty)
+                  Text(
+                    _monthlyPrice,
+                    style: AppTextStyles.titleMedium.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
+                  )
+                else
+                  Text(
+                    'Price from store',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.getTextSecondary(context),
+                    ),
+                  ),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: ElevatedButton(
               onPressed: () async {
                 if (widget.onSubscribePressed != null) {
@@ -1092,10 +1083,10 @@ class _JourneyPurchaseCard extends ConsumerWidget {
 
   Widget _buildCard(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Column(
@@ -1104,12 +1095,12 @@ class _JourneyPurchaseCard extends ConsumerWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: AppColors.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(Icons.school, color: AppColors.primary, size: 24),
+                child: Icon(Icons.school, color: AppColors.primary, size: 22),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -1118,7 +1109,7 @@ class _JourneyPurchaseCard extends ConsumerWidget {
                   children: [
                     Text(
                       journey.journeyTitle,
-                      style: AppTextStyles.titleMedium.copyWith(
+                      style: AppTextStyles.titleSmall.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -1155,25 +1146,25 @@ class _JourneyPurchaseCard extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: AppColors.getBackground(context),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(10),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'Amount Paid',
-                  style: AppTextStyles.bodyMedium.copyWith(
+                  style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.getTextSecondary(context),
                   ),
                 ),
                 Text(
                   '${journey.currency} ${journey.pricePaid.toStringAsFixed(2)}',
-                  style: AppTextStyles.titleMedium.copyWith(
+                  style: AppTextStyles.titleSmall.copyWith(
                     fontWeight: FontWeight.bold,
                     color: AppColors.primary,
                   ),
@@ -1202,7 +1193,7 @@ class _CancelAutoRenewalButton extends ConsumerWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Error opening subscription settings: $e'),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.primary,
               ),
             );
           }

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/widgets/cached_image.dart';
+import 'package:nexus_app_v2/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/core/router/app_routes.dart';
 import 'package:nexus_app_v2/features/profile/presentation/screens/profile_screen.dart';
 import 'package:nexus_app_v2/features/subscription/presentation/screens/subscription_screen.dart';
 import 'package:nexus_app_v2/features/dating_search/application/saved_profiles_provider.dart';
@@ -11,7 +13,6 @@ import '../../domain/dating_search_result.dart';
 import '../../application/dating_search_results_provider.dart';
 import '../../application/dating_preferences_provider.dart';
 import '../../application/dating_dismissed_profiles_provider.dart';
-import 'no_profiles_screen.dart';
 import 'dating_preferences_setup_screen.dart';
 
 /// Calculate hours, minutes, and seconds remaining until 24-hour daily limit resets
@@ -24,7 +25,6 @@ String _getCountdownText(DateTime limitHitAt) {
   final minutes = difference.inMinutes % 60;
   final seconds = difference.inSeconds % 60;
 
-  // Format: "23h 45m 30s"
   if (hours > 0) {
     return '${hours}h ${minutes}m ${seconds}s';
   } else if (minutes > 0) {
@@ -53,36 +53,12 @@ class _SearchResultsGridScreenState
   int _restoreAttempts = 0;
   bool _errorRetryScheduled = false;
 
-  Future<bool> _handleBackToSavedPreferences() async {
-    try {
-      final prefs = await ref.read(datingPreferencesProvider.future);
-      if (!mounted) return false;
-
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder:
-              (_) => DatingPreferencesSetupScreen(existingPreferences: prefs),
-        ),
-      );
-      return false;
-    } catch (_) {
-      if (!mounted) return false;
-
-      // Fallback: still route to preferences setup instead of popping to a blank route.
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => const DatingPreferencesSetupScreen()),
-      );
-      return false;
-    }
-  }
-
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
 
-    // Restore scroll position after frame is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _restoreScrollPosition();
     });
@@ -104,18 +80,15 @@ class _SearchResultsGridScreenState
       final target = savedPosition.clamp(0.0, maxExtent).toDouble();
       _isRestoringPosition = true;
       _scrollController.jumpTo(target);
-      // DEBUG: Restored scroll position - skipped to reduce log noise
       _isRestoringPosition = false;
     }
   }
 
   @override
   void dispose() {
-    // Save scroll position before disposing
     if (_scrollController.hasClients) {
       final position = _scrollController.offset;
       ref.read(searchResultsScrollPositionProvider.notifier).state = position;
-      // DEBUG: Saved scroll position - skipped to reduce log noise
     }
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
@@ -126,12 +99,6 @@ class _SearchResultsGridScreenState
     if (!_scrollController.hasClients) return;
     if (_isRestoringPosition) return;
 
-    // FIXED: Removed runaway offset increment that fired on every scroll
-    // frame within 500px of bottom, causing accumulatedSearchResultsProvider
-    // to re-evaluate repeatedly and reset the grid to the top.
-    // All results are loaded in the initial 100-profile batch.
-
-    // Show daily limit card when user reaches very bottom
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 100) {
       if (!_showDailyLimitCard) {
@@ -144,33 +111,23 @@ class _SearchResultsGridScreenState
   Widget build(BuildContext context) {
     super.build(context);
     final ref = this.ref;
-    // FIXED: Use accumulating provider that shows results incrementally
     final resultsAsync = ref.watch(accumulatedSearchResultsProvider);
     final currentOffset = ref.watch(searchResultsOffsetProvider);
     final preferencesAsync = ref.watch(datingPreferencesProvider);
 
     return WillPopScope(
-      onWillPop: _handleBackToSavedPreferences,
+      onWillPop: () async => false,
       child: Scaffold(
         backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
           backgroundColor: AppColors.getBackground(context),
           elevation: 0,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios_new,
-              color: AppColors.getTextPrimary(context),
-            ),
-            onPressed: () {
-              _handleBackToSavedPreferences();
-            },
-          ),
-          title: Text('Search Results', style: AppTextStyles.headlineLarge),
+          leading: null,
+          title: Text('Search Results', style: AppTextStyles.headlineMedium),
           actions: [
             IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {
-                // Get preferences value before navigating
                 preferencesAsync.whenData((prefs) {
                   if (!mounted) return;
                   Navigator.of(context).push(
@@ -189,17 +146,12 @@ class _SearchResultsGridScreenState
         body: resultsAsync.when(
           loading: () {
             _errorRetryScheduled = false;
-            // During refresh/re-evaluation, keep showing previous results
-            // so the grid is not destroyed and scroll position is preserved.
-            // Only reuse previous results for incremental pagination loads.
-            // For preference-change refresh (offset=0), show loader immediately.
             final cached = resultsAsync.valueOrNull;
             if (currentOffset > 0 &&
                 cached != null &&
                 cached.items.isNotEmpty) {
               return RefreshIndicator(
                 onRefresh: () async {
-                  // DEBUG: User triggered refresh - skipped to reduce log noise
                   if (!mounted) return;
                   ref.invalidate(datingSearchResultsProvider);
                   ref.read(searchResultsCacheProvider.notifier).clear();
@@ -214,8 +166,6 @@ class _SearchResultsGridScreenState
                 ),
               );
             }
-            // First load — show spinner only
-            // DEBUG: First load, showing spinner - skipped to reduce log noise
             return Container(
               color: AppColors.getBackground(context),
               child: Center(
@@ -293,52 +243,57 @@ class _SearchResultsGridScreenState
           },
           data: (result) {
             _errorRetryScheduled = false;
-            // Only show "no profiles" screen when result is TRULY empty after ALL operations
-            // complete (preferences loaded, daily limits applied, daily limit checks done, etc.)
-            // If result is empty here, it means the provider (accumulatedSearchResultsProvider)
-            // has fully completed all async operations and legitimately has no profiles.
-            // This prevents showing "no profiles" during loading phases.
             if (result.items.isEmpty) {
-              return ref
-                  .watch(datingPreferencesProvider)
-                  .when(
-                    data: (preferences) {
-                      return NoProfilesScreen(
-                        noProfilesInCountry: result.noProfilesInCountry,
-                        countryName: preferences?.countryOfResidence,
-                        onRetry: () {
-                          if (!mounted) return;
-                          ref.invalidate(datingSearchResultsProvider);
-                          ref.read(searchResultsCacheProvider.notifier).clear();
-                          ref.read(searchResultsOffsetProvider.notifier).state =
-                              0;
-                        },
-                        onEditPreferences: () {
-                          preferencesAsync.whenData((prefs) {
-                            if (!mounted) return;
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder:
-                                    (_) => DatingPreferencesSetupScreen(
-                                      existingPreferences: prefs,
-                                    ),
+              // Inline empty state — no separate screen
+              return RefreshIndicator(
+                onRefresh: () async {
+                  if (!mounted) return;
+                  ref.invalidate(datingSearchResultsProvider);
+                  ref.read(searchResultsCacheProvider.notifier).clear();
+                  ref.read(searchResultsOffsetProvider.notifier).state = 0;
+                  if (!mounted) return;
+                  await ref.read(accumulatedSearchResultsProvider.future);
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(32),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.people_outline_rounded,
+                                size: 64,
+                                color: AppColors.getTextSecondary(context),
                               ),
-                            );
-                          });
-                        },
-                      );
-                    },
-                    loading:
-                        () => const Scaffold(
-                          body: Center(child: CircularProgressIndicator()),
-                        ),
-                    error:
-                        (e, st) => const Scaffold(
-                          body: Center(
-                            child: Text('Error loading preferences'),
+                              const SizedBox(height: 16),
+                              Text(
+                                'No profiles yet',
+                                style: AppTextStyles.headlineSmall.copyWith(
+                                  color: AppColors.getTextPrimary(context),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'New users join every day. Pull down to refresh.',
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  color: AppColors.getTextSecondary(context),
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
                         ),
-                  );
+                      ),
+                    ),
+                  ],
+                ),
+              );
             }
 
             return RefreshIndicator(
@@ -371,7 +326,6 @@ class _SearchResultsGridScreenState
   bool get wantKeepAlive => true;
 }
 
-/// Custom widget to handle paginated grid display with load-more indicator
 class _PaginatedGridView extends ConsumerStatefulWidget {
   final DatingSearchResult allResults;
   final ScrollController scrollController;
@@ -396,7 +350,6 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
     super.initState();
     widget.scrollController.addListener(_onScroll);
 
-    // Start a countdown timer to update UI every minute (for live countdown)
     if (widget.allResults.hitDailyLimit &&
         widget.allResults.dailyLimitHitAt != null) {
       _startCountdownTimer();
@@ -407,7 +360,7 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
     _countdownTimer?.cancel();
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (mounted) {
-        setState(() {}); // Rebuild every second for live countdown
+        setState(() {});
       }
     });
   }
@@ -421,7 +374,6 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
       widget.scrollController.addListener(_onScroll);
     }
 
-    // Restart timer if daily limit changed
     if (widget.allResults.hitDailyLimit &&
         widget.allResults.dailyLimitHitAt != null) {
       _startCountdownTimer();
@@ -441,23 +393,14 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
     if (!widget.scrollController.hasClients) return;
     final position = widget.scrollController.position;
 
-    // Show daily limit card when user reaches bottom
     if (!_showDailyLimitCard &&
         position.pixels >= position.maxScrollExtent - 100) {
       setState(() => _showDailyLimitCard = true);
     }
-
-    // Pagination removed - no more load more logic needed
   }
 
   @override
   Widget build(BuildContext context) {
-    // Pagination removed - all profiles now load at once
-    // No need to watch offset or load more
-
-    // APPLY PAGINATION DEPTH LIMIT
-    // Enforce max pages based on subscription tier
-    // Each page shows 20 profiles (2x10 grid)
     final maxProfilesAllowed = widget.allResults.maxPaginationPages * 20;
     final List<DatingProfile> displayItems = [
       ...widget.allResults.items.take(maxProfilesAllowed),
@@ -488,7 +431,6 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
                 ),
               ),
             ),
-            // Show "End of search results" message when pagination cap is reached
             if (reachedPaginationCap)
               SliverPadding(
                 padding: const EdgeInsets.all(12),
@@ -524,7 +466,6 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
               ),
           ],
         ),
-        // Daily limit footer (FREE users only) when scrolled to bottom
         if (widget.allResults.hitDailyLimit && _showDailyLimitCard)
           _buildDailyLimitCard(context),
       ],
@@ -571,7 +512,7 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Subscribe to view several profiles at once',
+                    'Subscribe to view more profiles',
                     style: AppTextStyles.bodySmall.copyWith(
                       color: Colors.white.withOpacity(0.85),
                       fontSize: 11,
@@ -639,31 +580,10 @@ class _ProfileCard extends ConsumerWidget {
 
   const _ProfileCard({required this.profile});
 
-  // Commented out - not currently used as joining date badge is disabled
-  // String _getJoinedText(DateTime createdAt) {
-  //   final now = DateTime.now();
-  //   final difference = now.difference(createdAt);
-  //
-  //   if (difference.inDays == 0) {
-  //     return 'Joined today';
-  //   } else if (difference.inDays == 1) {
-  //     return 'Joined yesterday';
-  //   } else if (difference.inDays < 7) {
-  //     return 'Joined ${difference.inDays}d ago';
-  //   } else if (difference.inDays < 30) {
-  //     final weeks = (difference.inDays / 7).floor();
-  //     return 'Joined ${weeks}w ago';
-  //   } else {
-  //     final months = (difference.inDays / 30).floor();
-  //     return 'Joined ${months}mo ago';
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     try {
       final isSaved = ref.watch(isProfileSavedProvider(profile.uid));
-      // FIXED: Use validProfilePhoto getter which handles deleted/missing photos
       final photo = profile.validProfilePhoto;
 
       return GestureDetector(
@@ -675,11 +595,12 @@ class _ProfileCard extends ConsumerWidget {
               ),
             );
           } catch (e) {
-            // FIXED: Catch navigation errors to prevent Navigator history issues
-            // This prevents cascading failures when one profile card fails
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error opening profile: $e')),
+                SnackBar(
+                  content: Text('Error opening profile: $e'),
+                  backgroundColor: AppColors.primary,
+                ),
               );
             }
           }
@@ -692,7 +613,6 @@ class _ProfileCard extends ConsumerWidget {
           ),
           child: Stack(
             children: [
-              // Background image
               Positioned.fill(
                 child:
                     photo != null
@@ -727,8 +647,6 @@ class _ProfileCard extends ConsumerWidget {
                           ),
                         ),
               ),
-
-              // Gradient overlay for readability
               Positioned(
                 bottom: 0,
                 left: 0,
@@ -748,8 +666,6 @@ class _ProfileCard extends ConsumerWidget {
                   ),
                 ),
               ),
-
-              // Name, age, and compatibility badge
               Positioned(
                 bottom: 12,
                 left: 12,
@@ -790,14 +706,11 @@ class _ProfileCard extends ConsumerWidget {
                   ],
                 ),
               ),
-
-              // Save/Bookmark button (top right)
               Positioned(
                 top: 12,
                 right: 12,
                 child: GestureDetector(
                   onTap: () {
-                    // FIXED: Don't await - fire and forget for instant UI response
                     ref
                         .read(savedProfilesNotifierProvider)
                         .toggleSave(profile.uid);
@@ -816,33 +729,11 @@ class _ProfileCard extends ConsumerWidget {
                   ),
                 ),
               ),
-
-              // Joined date badge (top left) - Commented out for now
-              // Positioned(
-              //   top: 12,
-              //   left: 12,
-              //   child: Container(
-              //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              //     decoration: BoxDecoration(
-              //       color: Colors.black.withOpacity(0.6),
-              //       borderRadius: BorderRadius.circular(12),
-              //     ),
-              //     child: Text(
-              //       _getJoinedText(profile.createdAt),
-              //       style: AppTextStyles.labelSmall.copyWith(
-              //         color: Colors.white,
-              //         fontWeight: FontWeight.w600,
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
       );
     } catch (e) {
-      // FIXED: Fallback error widget to prevent entire grid from breaking
-      // This ensures one profile's issue doesn't crash the whole search grid
       return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
@@ -851,7 +742,6 @@ class _ProfileCard extends ConsumerWidget {
         ),
         child: Stack(
           children: [
-            // Error placeholder
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(

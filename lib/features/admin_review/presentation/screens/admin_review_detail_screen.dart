@@ -276,7 +276,10 @@ class _AdminReviewDetailScreenState
           await fs.collection('users').doc(widget.userId).update(payload);
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Review pack deleted')),
+              const SnackBar(
+                content: Text('Review pack deleted'),
+                backgroundColor: AppColors.success,
+              ),
             );
           }
         }

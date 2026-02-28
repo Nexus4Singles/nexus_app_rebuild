@@ -252,6 +252,7 @@ class UserModel extends Equatable {
   final List<String>? hobbies;
   final List<String>? photos;
   final List<String>? audioPrompts;
+  final List<int>? audioDurations;
   final List<String>? likeMe;
   final List<String>? myLikes;
   final List<String>? mySaves;
@@ -312,6 +313,7 @@ class UserModel extends Equatable {
     this.hobbies,
     this.photos,
     this.audioPrompts,
+    this.audioDurations,
     this.likeMe,
     this.myLikes,
     this.mySaves,
@@ -388,10 +390,17 @@ class UserModel extends Equatable {
     // - v2 new onboarding: dating.audioPrompts
     // - v1 fallback: audioPrompts
     // - legacy fallback: audio1Url/audio2Url/audio3Url
-    final audioUrls = <String>[
+    final _rawAudioUrls = <String>[
       ...(_parseStringList(reviewPack?['audioUrls']) ?? const <String>[]),
       ...(_parseStringList(dating?['audioPrompts']) ?? const <String>[]),
       ...(_parseStringList(data['audioPrompts']) ?? const <String>[]),
+    ];
+
+    // Deduplicate while preserving order
+    final _seenAudio = <String>{};
+    final audioUrls = <String>[
+      for (final u in _rawAudioUrls)
+        if (_seenAudio.add(u.trim())) u.trim(),
     ];
 
     // DEBUG: Log audio consolidation
@@ -507,6 +516,9 @@ class UserModel extends Equatable {
         ['dating', 'photos'],
       ]),
       audioPrompts: audioUrls,
+      audioDurations:
+          _parseIntList(data['audioDurations']) ??
+          _parseIntList(dating?['audioDurations']),
       likeMe: _parseStringList(data['likeMe']),
       myLikes: _parseStringList(data['myLikes']),
       mySaves: _parseStringList(data['mySaves']),
@@ -882,6 +894,16 @@ class UserModel extends Equatable {
     if (value == null) return null;
     if (value is List) {
       return value.map((e) => e.toString()).toList();
+    }
+    return null;
+  }
+
+  static List<int>? _parseIntList(dynamic value) {
+    if (value == null) return null;
+    if (value is List) {
+      return value
+          .map((e) => (e is num) ? e.toInt() : int.tryParse(e.toString()) ?? 0)
+          .toList();
     }
     return null;
   }

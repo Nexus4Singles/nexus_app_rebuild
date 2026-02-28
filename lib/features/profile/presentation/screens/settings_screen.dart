@@ -35,7 +35,7 @@ class SettingsScreen extends ConsumerWidget {
         ),
         title: Text(
           'Settings',
-          style: AppTextStyles.headlineLarge.copyWith(
+          style: AppTextStyles.headlineMedium.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),

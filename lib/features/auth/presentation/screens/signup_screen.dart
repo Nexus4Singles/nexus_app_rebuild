@@ -126,64 +126,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         ),
         (_) => false,
       );
-
-      /* BACKUP OPTION: Manual login route (commented out)
-      // Show success dialog and route to login
-      await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: Row(
-            children: [
-              Icon(Icons.check_circle, color: Colors.green, size: 28),
-              const SizedBox(width: 12),
-              const Text('Account Created!'),
-            ],
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'We have sent a verification link to:',
-                style: TextStyle(fontSize: 15),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                email,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primary,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Please check your email and click the verification link, then return here to log in.',
-                style: TextStyle(fontSize: 15, height: 1.4),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const LoginScreen(),
-                  ),
-                );
-              },
-              child: const Text('Go to Login'),
-            ),
-          ],
-        ),
-      );
-      */
     } catch (e) {
       // ignore: avoid_print
       print('[SignupScreen] Signup error: $e');
@@ -215,7 +157,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           titleSpacing: 0,
           title: Text(
             'Create Account',
-            style: AppTextStyles.headlineLarge.copyWith(
+            style: AppTextStyles.headlineMedium.copyWith(
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -572,9 +514,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                               )
                               : Text(
                                 'Create Account',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 17,
+                                style: AppTextStyles.labelLarge.copyWith(
+                                  color: AppColors.getTextOnPrimary(context),
                                 ),
                               ),
                     ),

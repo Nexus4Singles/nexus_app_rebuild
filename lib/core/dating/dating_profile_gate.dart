@@ -9,6 +9,7 @@ import '../user/is_admin_provider.dart';
 import '../session/effective_relationship_status_provider.dart';
 import '../widgets/guest_guard.dart';
 import 'dating_profile_status_provider.dart';
+import 'package:nexus_app_v2/core/theme/theme.dart';
 
 class DatingProfileGate {
   static Future<void> requireCompleteProfile(
@@ -63,7 +64,7 @@ class DatingProfileGate {
     final ready = ref.read(firebaseReadyProvider);
     if (!ready) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Setting things up… try again shortly.')),
+        SnackBar(content: const Text('Setting things up… try again shortly.'), backgroundColor: AppColors.primary),
       );
       return;
     }

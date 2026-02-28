@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:country_picker/country_picker.dart';
 
@@ -32,8 +31,6 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
   @override
   void initState() {
     super.initState();
-    // Load existing draft values to allow resume/edit of profile
-    // User can exit at any time and come back to continue
     final draft = ref.read(datingOnboardingDraftProvider);
     _cityCtrl.text = draft.city ?? '';
     _otherChurchCtrl.text = draft.otherChurchName ?? '';
@@ -44,11 +41,6 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
     _church = draft.churchName;
     _showOtherChurch = _church == 'Other';
 
-    if (kDebugMode) {
-      print('[DatingExtraInfoScreen] Loaded draft data - age=${draft.age}, city=${draft.city}, country=${draft.countryOfResidence}');
-    }
-
-    // Add listeners for auto-save on text changes
     _cityCtrl.addListener(_saveDraft);
     _otherChurchCtrl.addListener(_saveDraft);
   }
@@ -92,7 +84,6 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
 
   void _saveDraft() {
     final draftNotifier = ref.read(datingOnboardingDraftProvider.notifier);
-
     final city = _cityCtrl.text.trim();
     final churchValue =
         _church == 'Other' ? _otherChurchCtrl.text.trim() : _church;
@@ -203,7 +194,6 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
                           ),
                       onOtherChurchChanged: () => setState(() {}),
                       onContinue: () {
-                        // Draft is already saved via auto-save
                         Navigator.of(
                           context,
                         ).pushNamed('/dating/setup/hobbies');
@@ -224,25 +214,21 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
 class _Body extends StatelessWidget {
   final TextEditingController cityCtrl;
   final TextEditingController otherChurchCtrl;
-
   final String? countryOfResidence;
   final String? nationality;
   final String? education;
   final String? profession;
   final String? church;
   final bool showOtherChurch;
-
   final List<String> churches;
   final List<String> educationLevels;
   final List<String> professions;
-
   final VoidCallback onPickCountry;
   final VoidCallback onPickNationality;
   final VoidCallback onPickEducation;
   final VoidCallback onPickProfession;
   final VoidCallback onPickChurch;
   final VoidCallback onOtherChurchChanged;
-
   final VoidCallback onContinue;
   final bool isValid;
 
@@ -271,16 +257,16 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
       child: Column(
         children: [
           const DatingProfileProgressBar(currentStep: 2, totalSteps: 9),
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
           _InfoCard(
             text:
                 'To select your church below, search with the full name. If your church is not listed, kindly select "Other" and type the full name of your Church in the text box displayed.',
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
 
           Expanded(
             child: ListView(
@@ -297,7 +283,7 @@ class _Body extends StatelessWidget {
                     onSubmitted: (_) => FocusScope.of(context).unfocus(),
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 12),
 
                 _LabeledField(
                   label: 'Country of Residence',
@@ -310,7 +296,7 @@ class _Body extends StatelessWidget {
                     },
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 12),
 
                 _LabeledField(
                   label: 'Nationality',
@@ -323,20 +309,20 @@ class _Body extends StatelessWidget {
                     },
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 12),
 
                 _LabeledField(
                   label: 'Education Level',
                   child: _PickerTile(
                     value: education,
-                    hint: 'Select Education evel',
+                    hint: 'Select Education level',
                     onTap: () {
                       FocusScope.of(context).unfocus();
                       onPickEducation();
                     },
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 12),
 
                 _LabeledField(
                   label: 'Profession',
@@ -349,7 +335,7 @@ class _Body extends StatelessWidget {
                     },
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 12),
 
                 _LabeledField(
                   label: 'Church Name',
@@ -364,7 +350,7 @@ class _Body extends StatelessWidget {
                 ),
 
                 if (showOtherChurch) ...[
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 10),
                   _LabeledField(
                     label: 'Enter your Church name',
                     child: TextField(
@@ -379,7 +365,7 @@ class _Body extends StatelessWidget {
                   ),
                 ],
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
               ],
             ),
           ),
@@ -400,61 +386,52 @@ class _Body extends StatelessWidget {
   InputDecoration _inputDeco(BuildContext context, {required String hint}) =>
       InputDecoration(
         hintText: hint,
-        hintStyle: AppTextStyles.bodyMedium.copyWith(
+        hintStyle: AppTextStyles.bodySmall.copyWith(
           color: AppColors.getTextSecondary(context),
         ),
         filled: true,
         fillColor: AppColors.getSurface(context),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: AppColors.primary, width: 1.4),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Color(0xFFEF4444), width: 1.4),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Color(0xFFEF4444), width: 1.4),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 14,
-          vertical: 14,
+          vertical: 12,
         ),
       );
 }
 
 class _InfoCard extends StatelessWidget {
   final String text;
-
   const _InfoCard({required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.info_outline, color: AppColors.primary, size: 24),
-          const SizedBox(width: 12),
+          Icon(Icons.info_outline, color: AppColors.primary, size: 20),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               text,
-              style: AppTextStyles.bodyMedium.copyWith(height: 1.5),
+              style: AppTextStyles.bodySmall.copyWith(height: 1.4),
             ),
           ),
         ],
@@ -466,7 +443,6 @@ class _InfoCard extends StatelessWidget {
 class _LabeledField extends StatelessWidget {
   final String label;
   final Widget child;
-
   const _LabeledField({required this.label, required this.child});
 
   @override
@@ -474,8 +450,11 @@ class _LabeledField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: AppTextStyles.labelLarge),
-        const SizedBox(height: 8),
+        Text(
+          label,
+          style: AppTextStyles.labelMedium.copyWith(fontSize: 12),
+        ),
+        const SizedBox(height: 6),
         child,
       ],
     );
@@ -497,14 +476,14 @@ class _PickerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: AppColors.getSurface(context),
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(12),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.getBorder(context)),
           ),
           child: Row(
@@ -514,16 +493,17 @@ class _PickerTile extends StatelessWidget {
                   value ?? hint,
                   style:
                       value == null
-                          ? AppTextStyles.bodyMedium.copyWith(
+                          ? AppTextStyles.bodySmall.copyWith(
                             color: AppColors.getTextSecondary(context),
                           )
-                          : AppTextStyles.bodyMedium,
+                          : AppTextStyles.bodySmall,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Icon(
                 Icons.keyboard_arrow_down_rounded,
                 color: AppColors.getTextSecondary(context),
+                size: 20,
               ),
             ],
           ),

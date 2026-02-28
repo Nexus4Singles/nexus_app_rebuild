@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_v2/core/user/is_admin_provider.dart';
 import 'package:nexus_app_v2/features/admin_review/presentation/screens/admin_review_queue_screen.dart';
 import 'package:nexus_app_v2/core/providers/auth_provider.dart';
+import 'package:nexus_app_v2/core/providers/tab_selection_provider.dart';
 import 'package:nexus_app_v2/core/theme/app_colors.dart';
 import 'package:nexus_app_v2/core/theme/app_text_styles.dart';
 import 'package:nexus_app_v2/features/presurvey/presentation/screens/presurvey_relationship_status_screen.dart';
@@ -25,10 +26,9 @@ import 'package:country_picker/country_picker.dart';
 
 import '../../../../core/models/user_model.dart';
 import 'package:just_audio/just_audio.dart' as ja;
-import 'package:audioplayers/audioplayers.dart';
+import 'package:path_provider/path_provider.dart' as pp;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:nexus_app_v2/core/services/media_service.dart';
-import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 import 'package:nexus_app_v2/features/profile/presentation/widgets/relationship_status_editor.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -90,20 +90,20 @@ Future<void> handleToggleDatingOptIn(
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Unable to update dating settings right now.'),
+        backgroundColor: AppColors.primary,
       ),
     );
     return;
   }
 
   try {
-    await fs.collection('users').doc(uid).set({
-      'dating': {'optIn': nextValue},
-    }, SetOptions(merge: true));
+    await fs.collection('users').doc(uid).update({'dating.optIn': nextValue});
 
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(nextValue ? 'Dating turned on ✅' : 'Dating turned off ✅'),
+        backgroundColor: AppColors.success,
       ),
     );
   } catch (_) {
@@ -111,6 +111,7 @@ Future<void> handleToggleDatingOptIn(
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Failed to update dating settings. Please try again.'),
+        backgroundColor: AppColors.primary,
       ),
     );
   }
@@ -342,8 +343,8 @@ class ProfileScreen extends ConsumerWidget {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 16,
+                    horizontal: 16,
+                    vertical: 12,
                   ),
                   child: UserInfoSection(
                     profile: profile,
@@ -367,7 +368,7 @@ class ProfileScreen extends ConsumerWidget {
                         title: 'About',
                         child: _AboutSection(profile: profile),
                       ),
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 12),
 
                       _Section(
                         title: 'Hobbies / Interests',
@@ -376,7 +377,7 @@ class ProfileScreen extends ConsumerWidget {
                           emptyText: 'No hobbies added yet.',
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 12),
 
                       _Section(
                         title: 'Most Desired Qualities',
@@ -385,7 +386,7 @@ class ProfileScreen extends ConsumerWidget {
                           emptyText: 'No desired qualities added yet.',
                         ),
                       ),
-                      const SizedBox(height: 22),
+                      const SizedBox(height: 12),
 
                       _Section(
                         title: 'Audio Prompts',
@@ -393,48 +394,36 @@ class ProfileScreen extends ConsumerWidget {
                             isViewingOtherUser
                                 ? 'Listen to their responses'
                                 : 'Audio recordings cannot be changed after profile creation',
-                        child: Builder(
-                          builder: (context) {
-                            final urls = profile.audioPrompts ?? const [];
-                            debugPrint(
-                              '🎵 [PROFILE] Audio prompts from Firestore:',
-                            );
-                            debugPrint('  Total: ${urls.length}');
-                            for (int i = 0; i < urls.length; i++) {
-                              final url = urls[i];
-                              debugPrint(
-                                '  [$i]: ${url.isEmpty ? "EMPTY" : url.substring(0, (url.length > 50 ? 50 : url.length))}...',
-                              );
-                            }
-                            if (urls.isEmpty) {
-                              debugPrint('  ⚠️ NO AUDIO PROMPTS FOUND!');
-                            }
-                            return _AudioPromptsSection(
-                              audioUrls: urls,
-                              isLocked: false,
-                              isViewingOtherUser: isViewingOtherUser,
-                              username: profile.username,
-                              gender: profile.gender,
-                            );
-                          },
+                        child: _AudioPromptsSection(
+                          audioUrls: profile.audioPrompts ?? const [],
+                          audioDurations: profile.audioDurations ?? const [],
+                          isLocked: false,
+                          isViewingOtherUser: isViewingOtherUser,
+                          username: profile.username,
+                          gender: profile.gender,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
 
                       _PremiumActionsRow(
                         isViewingOtherUser: isViewingOtherUser,
                         profile: profile,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
 
                       _Section(
                         title: 'Gallery',
                         child: _GalleryGrid(photos: photos),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
 
                       if (!isViewingOtherUser) ...[
-                        Text('Your Account', style: AppTextStyles.titleLarge),
+                        Text(
+                          'Your Account',
+                          style: AppTextStyles.titleMedium.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                         const SizedBox(height: 8),
                         _AccountTiles(
                           context,
@@ -476,7 +465,7 @@ class _BasicProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final p = profile;
-    final name = (p.name ?? p.username ?? 'User').trim();
+    final name = (p.username ?? p.name ?? 'User').trim();
     final email = (p.email ?? '').trim();
 
     return Scaffold(
@@ -553,9 +542,7 @@ class _BasicProfileScreen extends ConsumerWidget {
                                 child: Center(
                                   child: Text(
                                     _initialsFromName(name),
-                                    style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w700,
+                                    style: AppTextStyles.displayMedium.copyWith(
                                       color:
                                           Theme.of(
                                             context,
@@ -567,9 +554,7 @@ class _BasicProfileScreen extends ConsumerWidget {
                               const SizedBox(height: 14),
                               Text(
                                 name,
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w700,
+                                style: AppTextStyles.displaySmall.copyWith(
                                   color:
                                       Theme.of(context).colorScheme.onPrimary,
                                 ),
@@ -578,8 +563,7 @@ class _BasicProfileScreen extends ConsumerWidget {
                                 const SizedBox(height: 6),
                                 Text(
                                   email,
-                                  style: TextStyle(
-                                    fontSize: 14,
+                                  style: AppTextStyles.bodyMedium.copyWith(
                                     color: Theme.of(
                                       context,
                                     ).colorScheme.onPrimary.withOpacity(0.85),
@@ -785,9 +769,9 @@ Future<void> _setRelationshipStatusTagFirestore(
 ) async {
   final key = (v == RelationshipStatusTag.taken) ? 'taken' : 'available';
 
-  await FirebaseFirestore.instance.collection('users').doc(uid).set({
-    'dating': {'availability': key},
-  }, SetOptions(merge: true));
+  await FirebaseFirestore.instance.collection('users').doc(uid).update({
+    'dating.availability': key,
+  });
 }
 
 class _RelationshipStatusPill extends ConsumerWidget {
@@ -984,12 +968,15 @@ class _ProfileHeroAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final screenW = MediaQuery.of(context).size.width;
+    // Scale hero height: 380 on compact (<375), 420 on normal
+    final heroHeight = screenW < 375 ? 380.0 : 420.0;
 
     return SliverAppBar(
       pinned: true,
       stretch: true,
       backgroundColor: theme.colorScheme.background,
-      expandedHeight: 420,
+      expandedHeight: heroHeight,
       leading:
           isViewingOtherUser
               ? IconButton(
@@ -1282,16 +1269,37 @@ class _HeroCarouselState extends State<_HeroCarousel> {
                         ? _InitialsAvatar(
                           profile: widget.profile,
                           name:
-                              (widget.profile.name ??
-                                      widget.profile.username ??
+                              (widget.profile.username ??
+                                      widget.profile.name ??
                                       'User')
                                   .trim(),
                         )
-                        : Image.network(
-                          url,
+                        : CachedNetworkImage(
+                          imageUrl: url,
                           fit: BoxFit.cover,
-                          cacheWidth: 1080,
-                          cacheHeight: 1080,
+                          memCacheWidth: 1080,
+                          memCacheHeight: 1080,
+                          placeholder:
+                              (context, url) => Container(
+                                color: AppColors.border,
+                                child: const Center(
+                                  child: SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          errorWidget:
+                              (context, url, error) => Container(
+                                color: AppColors.border,
+                                child: const Icon(
+                                  Icons.broken_image_rounded,
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
                         ),
               ),
             );
@@ -1351,10 +1359,10 @@ class _SendMessageCta extends ConsumerWidget {
   const _SendMessageCta({required this.profile, required this.viewerUid});
 
   String _displayName() {
-    final n = (profile.name ?? '').trim();
-    if (n.isNotEmpty) return n;
     final u = (profile.username ?? '').trim();
     if (u.isNotEmpty) return u;
+    final n = (profile.name ?? '').trim();
+    if (n.isNotEmpty) return n;
     return 'User';
   }
 
@@ -1393,9 +1401,12 @@ class _SendMessageCta extends ConsumerWidget {
               );
               Navigator.of(context).pushNamed(AppNavRoutes.chat(id));
             } catch (e) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(e.toString())));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(e.toString()),
+                  backgroundColor: AppColors.primary,
+                ),
+              );
             }
           },
           child: Padding(
@@ -1433,7 +1444,6 @@ class _SendMessageCta extends ConsumerWidget {
                       style: AppTextStyles.titleSmall.copyWith(
                         color: AppColors.textOnPrimary,
                         fontWeight: FontWeight.w600,
-                        fontSize: 14,
                       ),
                     ),
                   ),
@@ -1486,7 +1496,7 @@ class _Section extends ConsumerWidget {
         children: [
           Text(
             title,
-            style: AppTextStyles.titleLarge.copyWith(
+            style: AppTextStyles.titleMedium.copyWith(
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -1649,165 +1659,201 @@ final _profileAudioControllerProvider = Provider<_ProfileAudioController>((
   ref,
 ) {
   final controller = _ProfileAudioController();
+  // Keep this provider alive across screen navigations so audio cache persists
+  ref.keepAlive();
   ref.onDispose(controller.dispose);
   return controller;
 });
 
 class _ProfileAudioController {
-  final AudioPlayer _player = AudioPlayer();
+  final ja.AudioPlayer _player = ja.AudioPlayer();
   String? currentUrl;
 
-  Duration duration = const Duration(seconds: 90); // Placeholder: 1:30
+  Duration duration = Duration.zero;
   Duration position = Duration.zero;
-  PlayerState state = PlayerState.stopped;
-  bool isBuffering = false; // Track if audio is currently loading/buffering
+  bool isPlaying = false;
+  bool isLoading = false;
+  bool hasError = false;
 
   bool _initialized = false;
-  bool _hasSource = false;
 
-  // Track playback status for each URL
-  final Map<String, bool> _urlsPlaying = {};
-
-  // Cache preloaded durations for URLs
+  /// In-memory cache: URL → duration. Persists across screen navigations
+  /// because the provider uses keepAlive(). Populated by:
+  /// 1. Known durations from Firestore (seedDurations)
+  /// 2. Duration learned when user actually plays a track (durationStream)
   final Map<String, Duration> _durationCache = {};
 
-  String? lastError;
-  VoidCallback? _notify;
+  /// URLs that belong to the current user's own profile.
+  /// Audio for these URLs is cached to disk via LockCachingAudioSource
+  /// so it only downloads once and replays from local storage forever after.
+  final Set<String> _ownProfileUrls = {};
 
-  Future<void> init(VoidCallback notify) async {
-    _notify = notify;
+  /// Lazily resolved cache directory for own-profile audio files.
+  Directory? _audioCacheDir;
+
+  Future<Directory> _getAudioCacheDir() async {
+    if (_audioCacheDir != null) return _audioCacheDir!;
+    final appDir = await pp.getApplicationSupportDirectory();
+    _audioCacheDir = Directory('${appDir.path}/audio_cache');
+    if (!await _audioCacheDir!.exists()) {
+      await _audioCacheDir!.create(recursive: true);
+    }
+    return _audioCacheDir!;
+  }
+
+  /// Build a stable local file path for a given URL so the cache survives
+  /// across app restarts.
+  Future<File> _cacheFileForUrl(String url) async {
+    final dir = await _getAudioCacheDir();
+    // Use a simple hash of the URL as filename to avoid path issues
+    final hash = url.hashCode.toUnsigned(32).toRadixString(16);
+    final ext = url.contains('.m4a') ? '.m4a' : '.mp3';
+    return File('${dir.path}/$hash$ext');
+  }
+
+  /// Mark URLs as belonging to the user's own profile (enables disk caching).
+  void setOwnProfileUrls(List<String> urls) {
+    _ownProfileUrls.addAll(
+      urls.map((e) => e.trim()).where((e) => e.isNotEmpty),
+    );
+  }
+
+  /// Create an audio source — uses LockCachingAudioSource for own-profile
+  /// URLs (persists to disk), plain URL for others (network-only).
+  Future<ja.AudioSource> _sourceForUrl(String url) async {
+    if (_ownProfileUrls.contains(url)) {
+      final cacheFile = await _cacheFileForUrl(url);
+      return ja.LockCachingAudioSource(Uri.parse(url), cacheFile: cacheFile);
+    }
+    return ja.AudioSource.uri(Uri.parse(url));
+  }
+
+  final Set<VoidCallback> _listeners = {};
+
+  void addListener(VoidCallback cb) => _listeners.add(cb);
+  void removeListener(VoidCallback cb) => _listeners.remove(cb);
+
+  void _notifyAll() {
+    for (final cb in Set<VoidCallback>.of(_listeners)) {
+      cb();
+    }
+  }
+
+  void init() {
     if (_initialized) return;
     _initialized = true;
 
-    try {
-      await _player.setReleaseMode(ReleaseMode.stop);
-    } catch (_) {}
+    _player.playerStateStream.listen((state) {
+      final playing = state.playing;
+      final proc = state.processingState;
 
-    _player.onDurationChanged.listen(
-      (d) {
+      isPlaying = playing && proc == ja.ProcessingState.ready;
+      isLoading =
+          proc == ja.ProcessingState.loading ||
+          proc == ja.ProcessingState.buffering;
+
+      if (proc == ja.ProcessingState.completed) {
+        isPlaying = false;
+        isLoading = false;
+      }
+      _notifyAll();
+    });
+
+    _player.durationStream.listen((d) {
+      if (d != null && d.inMilliseconds > 0) {
         duration = d;
-        notify();
-      },
-      onError: (e) {
-        lastError = 'Duration error: $e';
-        debugPrint('🎵 [AUDIO] Duration error: $e');
-        notify();
-      },
-    );
+        if (currentUrl != null) _durationCache[currentUrl!] = d;
+        _notifyAll();
+      }
+    });
 
-    _player.onPositionChanged.listen(
-      (p) {
-        position = p;
-        notify();
-      },
-      onError: (e) {
-        lastError = 'Position error: $e';
-        debugPrint('🎵 [AUDIO] Position error: $e');
-        notify();
-      },
-    );
-
-    _player.onPlayerStateChanged.listen(
-      (s) {
-        state = s;
-        notify();
-      },
-      onError: (e) {
-        lastError = 'Player state error: $e';
-        debugPrint('🎵 [AUDIO] Player state error: $e');
-        notify();
-      },
-    );
+    _player.positionStream.listen((p) {
+      position = p;
+      _notifyAll();
+    });
   }
 
-  /// Check if URL is currently playing/buffering
-  bool isLoadingUrl(String url) {
-    return _urlsPlaying[url.trim().replaceAll('@', '%40')] == true;
+  /// Pre-seed duration cache from Firestore data. Zero network requests.
+  void seedDurations(Map<String, Duration> known) {
+    _durationCache.addAll(known);
   }
 
-  /// Mark URL as loading
-  void _setUrlLoading(String url, bool loading) {
-    _urlsPlaying[url] = loading;
-    _notify?.call();
+  Duration? getCachedDuration(String url) => _durationCache[url.trim()];
+
+  /// URL that has been silently preloaded (buffered) in the background.
+  /// When the user taps play on this URL, playback starts instantly.
+  String? _preloadedUrl;
+  bool _preloading = false;
+
+  /// Silently buffer [url] in the background so the first tap is instant.
+  /// Does nothing if audio is currently playing or the URL is already loaded.
+  Future<void> preload(String url) async {
+    final u = url.trim();
+    if (u.isEmpty) return;
+    // Don't interrupt active playback or re-preload the same URL
+    if (isPlaying || isLoading || _preloading) return;
+    if (_preloadedUrl == u || currentUrl == u) return;
+    _preloading = true;
+    try {
+      final source = await _sourceForUrl(u);
+      await _player.setAudioSource(source);
+      _preloadedUrl = u;
+      // Capture duration learned during preload
+      final d = _player.duration;
+      if (d != null && d.inMilliseconds > 0) {
+        _durationCache[u] = d;
+      }
+    } catch (_) {
+      // Preload is best-effort; failure is silent
+    } finally {
+      _preloading = false;
+    }
   }
 
   Future<void> playOrPause(String url) async {
-    lastError = null;
-    var u = url.trim();
+    hasError = false;
+    final u = url.trim();
     if (u.isEmpty) return;
 
     try {
-      // Validate URL is HTTPS for security
-      if (!u.startsWith('https://') && !u.startsWith('http://')) {
-        lastError = 'Invalid URL scheme. Must be http or https.';
-        debugPrint('🎵 [AUDIO] Invalid URL scheme: $u');
-        _notify?.call();
-        return;
-      }
-
-      // URL-encode special characters that break AVFoundation parser
-      // Specifically @ symbols in email addresses need to be %40
-      u = u.replaceAll('@', '%40');
-
-      debugPrint('🎵 [AUDIO] playOrPause - Encoded URL: $u');
-
       if (currentUrl != u) {
         currentUrl = u;
         position = Duration.zero;
-        duration = const Duration(seconds: 90); // Placeholder: 1:30
-        isBuffering = true;
-        _setUrlLoading(u, true);
+        duration = _durationCache[u] ?? Duration.zero;
 
-        // stop only if we previously had a source
-        if (_hasSource) {
-          try {
-            await _player.stop();
-          } catch (_) {}
+        if (_preloadedUrl == u) {
+          // Already buffered — play instantly, no spinner
+          _preloadedUrl = null;
+          _notifyAll();
+          await _player.play();
+        } else {
+          isLoading = true;
+          _notifyAll();
+          final source = await _sourceForUrl(u);
+          await _player.setAudioSource(source);
+          await _player.play();
         }
-
-        debugPrint('🎵 [AUDIO] Attempting to play: $u');
-        try {
-          await _player.play(UrlSource(u));
-          debugPrint('🎵 [AUDIO] Play initiated successfully');
-        } catch (playError) {
-          debugPrint('❌ [AUDIO] Play failed with error: $playError');
-          lastError = playError.toString();
-          isBuffering = false;
-          _setUrlLoading(u, false);
-          rethrow;
-        }
-        _hasSource = true;
-
-        // Stop showing spinner after 3 seconds (audio should be buffering by then)
-        Future.delayed(const Duration(seconds: 3), () {
-          if (currentUrl == u) {
-            isBuffering = false;
-            _setUrlLoading(u, false);
-          }
-        });
         return;
       }
 
-      // Same URL: toggle pause/play
-      if (state == PlayerState.playing) {
-        try {
-          await _player.pause();
-        } catch (_) {}
-        return;
+      // Same URL — toggle
+      if (_player.playing) {
+        await _player.pause();
+      } else {
+        if (_player.processingState == ja.ProcessingState.completed) {
+          await _player.seek(Duration.zero);
+        }
+        await _player.play();
       }
-
-      await _player.play(UrlSource(u));
-      _hasSource = true;
     } catch (e) {
-      debugPrint('❌ [AUDIO] Exception in playOrPause: $e');
-      lastError = e.toString();
-      isBuffering = false;
-      _notify?.call();
+      hasError = true;
+      isLoading = false;
+      isPlaying = false;
+      _notifyAll();
     }
   }
 
   Future<void> seek(Duration d) async {
-    if (!_hasSource) return;
     try {
       await _player.seek(d);
     } catch (_) {}
@@ -1815,64 +1861,23 @@ class _ProfileAudioController {
 
   Future<void> stop() async {
     currentUrl = null;
+    _preloadedUrl = null;
     position = Duration.zero;
     duration = Duration.zero;
-
-    if (!_hasSource) return;
-
+    isPlaying = false;
+    isLoading = false;
+    hasError = false;
     try {
       await _player.stop();
     } catch (_) {}
-
-    _hasSource = false;
-  }
-
-  /// Preload duration for a URL without playing it
-  /// This loads metadata to show correct duration before user plays
-  Future<void> preloadDuration(String url) async {
-    final u = url.trim().replaceAll('@', '%40');
-    if (u.isEmpty) return;
-    if (_durationCache.containsKey(u)) return;
-
-    try {
-      // Create temporary player to load duration metadata
-      final tempPlayer = AudioPlayer();
-      bool durationFound = false;
-
-      tempPlayer.onDurationChanged.listen((d) {
-        if (!durationFound && d != Duration.zero) {
-          durationFound = true;
-          _durationCache[u] = d;
-          debugPrint('🎵 [AUDIO] Preloaded duration for $u: ${d.inSeconds}s');
-          _notify?.call();
-        }
-      });
-
-      // Start playback briefly to load metadata
-      await tempPlayer.play(UrlSource(u));
-      await Future.delayed(const Duration(milliseconds: 100));
-      await tempPlayer.stop();
-
-      // Dispose temp player after delay
-      Future.delayed(const Duration(seconds: 1), () {
-        try {
-          tempPlayer.dispose();
-        } catch (_) {}
-      });
-    } catch (e) {
-      debugPrint('⚠️ [AUDIO] Failed to preload duration: $e');
-    }
+    _notifyAll();
   }
 
   void dispose() {
     currentUrl = null;
-    _hasSource = false;
-    isBuffering = false;
-
     try {
       _player.stop();
     } catch (_) {}
-
     try {
       _player.dispose();
     } catch (_) {}
@@ -1881,6 +1886,7 @@ class _ProfileAudioController {
 
 class _AudioPromptsSection extends ConsumerStatefulWidget {
   final List<String> audioUrls;
+  final List<int> audioDurations; // seconds per URL (from Firestore)
   final bool isLocked;
   final bool isViewingOtherUser;
   final String? username;
@@ -1888,6 +1894,7 @@ class _AudioPromptsSection extends ConsumerStatefulWidget {
 
   const _AudioPromptsSection({
     required this.audioUrls,
+    this.audioDurations = const [],
     required this.isLocked,
     required this.isViewingOtherUser,
     this.username,
@@ -1900,20 +1907,38 @@ class _AudioPromptsSection extends ConsumerStatefulWidget {
 }
 
 class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
-  late final _ProfileAudioController _controller = _ProfileAudioController();
+  late final _ProfileAudioController _controller;
+  late final VoidCallback _controllerListener;
 
   @override
   void initState() {
     super.initState();
-    _controller.init(() {
+    _controller = ref.read(_profileAudioControllerProvider);
+    _controllerListener = () {
       if (mounted) setState(() {});
-    });
+    };
+    _controller.init();
+    _controller.addListener(_controllerListener);
+    // Seed duration cache from Firestore data — zero network requests
+    final urls = widget.audioUrls.where((e) => e.trim().isNotEmpty).toList();
+    final durations = widget.audioDurations;
+    final known = <String, Duration>{};
+    for (int i = 0; i < urls.length; i++) {
+      final secs = i < durations.length ? durations[i] : 0;
+      if (secs > 0) known[urls[i].trim()] = Duration(seconds: secs);
+    }
+    if (known.isNotEmpty) _controller.seedDurations(known);
 
-    // Preload audio durations so they display correctly before playback
-    for (final url in widget.audioUrls) {
-      if (url.trim().isNotEmpty) {
-        _controller.preloadDuration(url);
-      }
+    // For own profile, register URLs for disk caching so audio downloads once
+    // and replays from local storage on subsequent visits.
+    if (!widget.isViewingOtherUser && urls.isNotEmpty) {
+      _controller.setOwnProfileUrls(urls);
+    }
+
+    // Preload the first audio URL in the background so the first tap is
+    // near-instant instead of showing a loading spinner.
+    if (urls.isNotEmpty) {
+      _controller.preload(urls.first);
     }
   }
 
@@ -1946,16 +1971,32 @@ class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
   }
 
   @override
-  void dispose() {
+  void deactivate() {
+    // Stop audio playback when navigating away from profile (own or other user's)
     _controller.stop();
-    _controller.dispose();
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_controllerListener);
+    _controller.stop();
+    // Don't dispose controller - provider manages its lifecycle
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Stop audio when the user switches to a different tab (IndexedStack keeps
+    // widgets alive so deactivate() is never called on tab switch).
+    ref.listen(selectedTabProvider, (prev, next) {
+      if (prev != next && (_controller.isPlaying || _controller.isLoading)) {
+        _controller.stop();
+      }
+    });
     final username = widget.username ?? 'them';
-    // Normalize gender: handles variations like "Male", "male", "man", "Female", "female", "woman", etc.
+
+    // Normalize gender
     final genderNormalized =
         (widget.gender ?? '').toString().trim().toLowerCase();
     final isFemale = genderNormalized.startsWith('f');
@@ -1975,6 +2016,7 @@ class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
             ];
 
     final urls = widget.audioUrls.where((e) => e.trim().isNotEmpty).toList();
+
     if (urls.isEmpty) {
       return Text(
         'No audio recordings available yet.',
@@ -2022,17 +2064,60 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
   @override
   Widget build(BuildContext context) {
     final hasUrl = (widget.url ?? '').trim().isNotEmpty;
-    final encodedUrl = hasUrl ? widget.url!.trim().replaceAll('@', '%40') : '';
-    final isCurrent = hasUrl && (widget.controller.currentUrl == encodedUrl);
-    final isPlayingThisUrl =
-        isCurrent && widget.controller.state == PlayerState.playing;
-    final isLoadingThisUrl =
-        hasUrl && widget.controller.isLoadingUrl(encodedUrl);
+    final isCurrent =
+        hasUrl && (widget.controller.currentUrl == (widget.url ?? '').trim());
+    final isPlaying = isCurrent && widget.controller.isPlaying;
+    final isBuffering = isCurrent && widget.controller.isLoading;
+    final hasErrorOnThis = isCurrent && widget.controller.hasError;
 
-    // Use controller's duration directly (no async probing)
-    final duration = widget.controller.duration;
+    // Read duration from controller's cache (filled by section-level preload)
+    final trimmedUrl = (widget.url ?? '').trim();
+    final cachedDur = widget.controller.getCachedDuration(trimmedUrl);
+    final audioDuration =
+        cachedDur ?? (isCurrent ? widget.controller.duration : Duration.zero);
+    final hasDuration = audioDuration.inMilliseconds > 0;
+    final duration = hasDuration ? audioDuration : const Duration(seconds: 60);
+
+    // Position is only relevant for the currently playing audio
     final position = isCurrent ? widget.controller.position : Duration.zero;
     final borderColor = Theme.of(context).dividerColor;
+
+    // Decide play button icon/widget
+    Widget playButtonChild;
+    if (widget.isLocked) {
+      playButtonChild = Icon(
+        Icons.lock_rounded,
+        color: Theme.of(context).colorScheme.primary,
+        size: 22,
+      );
+    } else if (!hasUrl) {
+      playButtonChild = Icon(
+        Icons.mic_none_rounded,
+        color: Theme.of(context).colorScheme.primary,
+        size: 22,
+      );
+    } else if (hasErrorOnThis) {
+      playButtonChild = Icon(
+        Icons.refresh_rounded,
+        color: Theme.of(context).colorScheme.error,
+        size: 22,
+      );
+    } else if (isBuffering) {
+      playButtonChild = SizedBox(
+        width: 18,
+        height: 18,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      );
+    } else {
+      playButtonChild = Icon(
+        isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+        color: Theme.of(context).colorScheme.primary,
+        size: 22,
+      );
+    }
 
     return Container(
       padding: const EdgeInsets.all(14),
@@ -2057,9 +2142,15 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
           ),
           Row(
             children: [
-              // Play button or loading spinner
-              if (isLoadingThisUrl)
-                Container(
+              InkWell(
+                onTap:
+                    (!widget.isLocked && hasUrl)
+                        ? () async {
+                          await widget.controller.playOrPause(widget.url!);
+                        }
+                        : null,
+                borderRadius: BorderRadius.circular(999),
+                child: Container(
                   height: 34,
                   width: 44,
                   decoration: BoxDecoration(
@@ -2067,66 +2158,9 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
                     borderRadius: BorderRadius.circular(999),
                     border: Border.all(color: Theme.of(context).dividerColor),
                   ),
-                  child: Center(
-                    child: SizedBox(
-                      height: 18,
-                      width: 18,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation(
-                          Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              else
-                InkWell(
-                  onTap:
-                      (!widget.isLocked && hasUrl)
-                          ? () async {
-                            debugPrint(
-                              '🎵 [UI] Play button tapped for URL: ${widget.url}',
-                            );
-                            await widget.controller.playOrPause(widget.url!);
-                          }
-                          : null,
-                  borderRadius: BorderRadius.circular(999),
-                  child: Container(
-                    height: 34,
-                    width: 44,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(999),
-                      border: Border.all(color: Theme.of(context).dividerColor),
-                    ),
-                    child: Icon(
-                      widget.isLocked
-                          ? Icons.lock_rounded
-                          : hasUrl
-                          ? (isPlayingThisUrl
-                              ? Icons.pause_rounded
-                              : Icons.play_arrow_rounded)
-                          : Icons.mic_none_rounded,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 22,
-                    ),
-                  ),
+                  child: Center(child: playButtonChild),
                 ),
-              if (isCurrent && widget.controller.lastError != null)
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: Text(
-                      '❌ ${widget.controller.lastError}',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: Colors.red,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
+              ),
             ],
           ),
           if (!widget.isLocked && hasUrl) ...[
@@ -2152,13 +2186,13 @@ class _AudioPromptTileState extends State<_AudioPromptTile> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  _formatDuration(isCurrent ? position : Duration.zero),
+                  isCurrent ? _formatDuration(position) : '00:00',
                   style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.textSecondary,
                   ),
                 ),
                 Text(
-                  _formatDuration(duration),
+                  hasDuration ? _formatDuration(duration) : '--:--',
                   style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -2326,9 +2360,7 @@ class _GalleryGrid extends StatelessWidget {
     if (photos.isEmpty) {
       return Text(
         'No photos added yet.',
-        style: AppTextStyles.bodySmall.copyWith(
-          color: AppColors.getTextSecondary(context),
-        ),
+        style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
       );
     }
 
@@ -2361,7 +2393,7 @@ class _GalleryGrid extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
-                    color: AppColors.getBorder(context),
+                    color: AppColors.border,
                     child: GestureDetector(
                       onTap: () {
                         _openPhotoViewer(
@@ -2370,11 +2402,29 @@ class _GalleryGrid extends StatelessWidget {
                           initialIndex: i,
                         );
                       },
-                      child: Image.network(
-                        url,
+                      child: CachedNetworkImage(
+                        imageUrl: url,
                         fit: BoxFit.cover,
-                        cacheWidth: 400,
-                        cacheHeight: 400,
+                        memCacheWidth: 400,
+                        memCacheHeight: 400,
+                        placeholder:
+                            (context, url) => Container(
+                              color: AppColors.border,
+                              child: const Center(
+                                child: SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        errorWidget:
+                            (context, url, error) => const Icon(
+                              Icons.broken_image_rounded,
+                              color: AppColors.textSecondary,
+                            ),
                       ),
                     ),
                   ),
@@ -2493,7 +2543,7 @@ class _AccountTiles extends StatelessWidget {
                     (ctx) => AlertDialog(
                       title: const Text('Delete Dating Profile?'),
                       content: const Text(
-                        'This will remove your dating profile, photos, and audio prompts. '
+                        'This will remove your dating profile from view. '
                         'You can create a new dating profile anytime.',
                       ),
                       actions: [
@@ -2539,27 +2589,19 @@ class _AccountTiles extends StatelessWidget {
 
                 final fs = FirebaseFirestore.instance;
 
-                // Replace the 'dating' map with just {profileCompleted: false}.
-                // This wipes all photos/audio/profile data while giving
-                // datingProfileCompletedProvider an explicit `false` so it
-                // short-circuits before v1 fallback heuristics run.
+                // ARCHIVE approach: Preserve all dating data but mark
+                // the profile as inactive / not completed. The provider
+                // short-circuits on profileCompleted == false and
+                // isActive == false, so no v1 heuristic fallbacks
+                // will see the profile as completed.
+                // Using dot-notation so only these fields are touched —
+                // all other dating data (photos, audio, reviewPack, etc.)
+                // remains intact for potential future restoration.
                 await fs.collection('users').doc(uid).update({
-                  'dating': {'profileCompleted': false},
-                });
-
-                // Also clean up any top-level v1 dating fields that the
-                // provider's fallback heuristics might pick up.
-                await fs.collection('users').doc(uid).update({
-                  'profileUrl': FieldValue.delete(),
-                  'photos': FieldValue.delete(),
-                  'audioPrompts': FieldValue.delete(),
-                  'relationshipWithGod': FieldValue.delete(),
-                  'relationship_with_god': FieldValue.delete(),
-                  'roleOfHusband': FieldValue.delete(),
-                  'role_of_husband': FieldValue.delete(),
-                  'bestQualitiesOrTraits': FieldValue.delete(),
-                  'bestQualotiesOrTraits': FieldValue.delete(),
-                  'best_qualities_or_traits': FieldValue.delete(),
+                  'dating.profileCompleted': false,
+                  'dating.isActive': false,
+                  'dating.optIn': false,
+                  'dating.archivedAt': FieldValue.serverTimestamp(),
                 });
 
                 // Clear dating onboarding draft from SharedPreferences
@@ -2573,13 +2615,17 @@ class _AccountTiles extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Dating profile deleted successfully.'),
+                      backgroundColor: AppColors.success,
                     ),
                   );
                 }
 
-                // The currentUserDocProvider is a stream — removing the dating
-                // field will automatically trigger a rebuild, which shows
-                // _BasicProfileScreen with the "Create Dating Profile" CTA.
+                // The currentUserDocProvider is a stream — setting
+                // dating.profileCompleted to false will automatically
+                // trigger a rebuild, which shows _BasicProfileScreen
+                // with the "Create Dating Profile" CTA.
+                // All dating data (photos, audio, profile info) is
+                // preserved for potential future restoration.
               } catch (e) {
                 // Close loading dialog using pre-captured navigator
                 try {
@@ -2590,7 +2636,7 @@ class _AccountTiles extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Error deleting dating profile: $e'),
-                      backgroundColor: AppColors.error,
+                      backgroundColor: AppColors.primary,
                     ),
                   );
                 }
@@ -2664,7 +2710,7 @@ class _DatingProfileRequiredGate extends StatelessWidget {
         elevation: 0,
         title: Text(
           'Dating Profile Required',
-          style: AppTextStyles.headlineLarge,
+          style: AppTextStyles.headlineMedium,
         ),
       ),
       body: Padding(
@@ -2672,7 +2718,7 @@ class _DatingProfileRequiredGate extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Dating Profile', style: AppTextStyles.headlineLarge),
+            Text('Dating Profile', style: AppTextStyles.titleMedium),
             const SizedBox(height: 10),
             Text(
               'You need a dating profile to view other users in the pool.',
@@ -2728,14 +2774,14 @@ class _GuestProfileGate extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.getBackground(context),
         elevation: 0,
-        title: Text('Profile', style: AppTextStyles.headlineLarge),
+        title: Text('Profile', style: AppTextStyles.headlineMedium),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Create an account', style: AppTextStyles.headlineLarge),
+            Text('Create an account', style: AppTextStyles.titleMedium),
             const SizedBox(height: 10),
             Text(
               'You’re currently in guest mode. To access dating profiles, create an account && complete your dating profile.',
@@ -2798,8 +2844,8 @@ class _ProfileLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.getBackground(context),
-      body: Center(child: CircularProgressIndicator(color: AppColors.primary)),
+      backgroundColor: AppColors.background,
+      body: const Center(child: CircularProgressIndicator()),
     );
   }
 }
@@ -2816,14 +2862,14 @@ class _ProfileError extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
-        title: Text('Profile', style: AppTextStyles.headlineLarge),
+        title: Text('Profile', style: AppTextStyles.headlineMedium),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Something went wrong', style: AppTextStyles.headlineLarge),
+            Text('Something went wrong', style: AppTextStyles.titleMedium),
             const SizedBox(height: 10),
             Text(
               message,
@@ -2868,7 +2914,7 @@ class _ProfileNotFound extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
-        title: Text('Profile', style: AppTextStyles.headlineLarge),
+        title: Text('Profile', style: AppTextStyles.headlineMedium),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -2996,13 +3042,10 @@ class _InitialsAvatar extends StatelessWidget {
       );
     }
 
-    // For v2/new users: prefer name initials, then fallback to username
-    final displayName = (profile.name ?? '').trim();
+    // For v2/new users: show first letter of username
     final username = (profile.username ?? '').trim();
     final initials =
-        displayName.isNotEmpty
-            ? displayName[0].toUpperCase()
-            : username.isNotEmpty
+        username.isNotEmpty
             ? username[0].toUpperCase()
             : _initialsFromName(name);
 
@@ -3043,13 +3086,27 @@ List<String> _combineProfileUrlAndPhotos(
   return list;
 }
 
+/// Title-case a string: "united kingdom" → "United Kingdom"
+String _titleCase(String s) {
+  if (s.isEmpty) return s;
+  return s
+      .split(' ')
+      .map((w) {
+        if (w.isEmpty) return w;
+        return '${w[0].toUpperCase()}${w.substring(1)}';
+      })
+      .join(' ');
+}
+
 String _buildLocation(String? city, String? country) {
-  final c = (city ?? '').trim();
-  final k = (country ?? '').trim();
+  final c = _titleCase((city ?? '').trim());
+  final k = _titleCase((country ?? '').trim());
 
   if (c.isNotEmpty && k.isNotEmpty) {
-    // Avoid duplicating city if country string already contains it (case-insensitive check)
-    if (k.toLowerCase().contains(c.toLowerCase())) return k;
+    final lc = c.toLowerCase();
+    final lk = k.toLowerCase();
+    // Avoid duplicating city if residence string already includes it.
+    if (lk.contains(lc)) return k;
     return '$c, $k';
   }
 
@@ -3098,7 +3155,7 @@ void _openPhotoViewer(
   Navigator.of(context).push(
     PageRouteBuilder(
       opaque: false,
-      barrierColor: AppColors.overlay,
+      barrierColor: AppColors.getOverlayDark(context),
       pageBuilder:
           (_, __, ___) => _PhotoViewerScreen(
             photos: photos,
@@ -3145,8 +3202,10 @@ class _PhotoViewerScreenState extends State<_PhotoViewerScreen> {
   Widget build(BuildContext context) {
     final photos = widget.photos;
 
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: AppColors.getBackground(context),
+      backgroundColor: theme.colorScheme.background,
       body: SafeArea(
         child: Stack(
           children: [
@@ -3159,7 +3218,21 @@ class _PhotoViewerScreenState extends State<_PhotoViewerScreen> {
                 return InteractiveViewer(
                   minScale: 1,
                   maxScale: 4,
-                  child: Center(child: Image.network(url, fit: BoxFit.contain)),
+                  child: Center(
+                    child: CachedNetworkImage(
+                      imageUrl: url,
+                      fit: BoxFit.contain,
+                      placeholder:
+                          (context, url) =>
+                              const Center(child: CircularProgressIndicator()),
+                      errorWidget:
+                          (context, url, error) => Icon(
+                            Icons.broken_image_rounded,
+                            size: 48,
+                            color: AppColors.getTextSecondary(context),
+                          ),
+                    ),
+                  ),
                 );
               },
             ),
@@ -3180,7 +3253,7 @@ class _PhotoViewerScreenState extends State<_PhotoViewerScreen> {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.overlay,
+                      color: AppColors.getOverlayDark(context),
                       borderRadius: BorderRadius.circular(999),
                       border: Border.all(
                         color: AppColors.getBorder(context).withOpacity(0.24),
@@ -3189,7 +3262,7 @@ class _PhotoViewerScreenState extends State<_PhotoViewerScreen> {
                     child: Text(
                       '${_index + 1}/${photos.length}',
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.getTextPrimary(context),
+                        color: AppColors.getTextOnPrimary(context),
                       ),
                     ),
                   ),
@@ -3226,13 +3299,13 @@ class _ViewerIconButton extends StatelessWidget {
         height: 44,
         width: 46,
         decoration: BoxDecoration(
-          color: AppColors.overlay,
+          color: AppColors.getOverlayDark(context),
           borderRadius: BorderRadius.circular(999),
           border: Border.all(
             color: AppColors.getBorder(context).withOpacity(0.24),
           ),
         ),
-        child: Icon(icon, color: AppColors.getTextPrimary(context)),
+        child: Icon(icon, color: AppColors.getTextOnPrimary(context)),
       ),
     );
   }
@@ -3419,21 +3492,24 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
               : widget.profile.profileUrl;
 
       final trimmedName =
-          _name.trim().isEmpty
-              ? (widget.profile.name ?? '').trim()
-              : _name.trim();
+          _name.trim().isEmpty ? widget.profile.name ?? '' : _name.trim();
       final trimmedCity = _city.trim();
       final trimmedCountry = _country.trim();
       final trimmedNationality = _nationality.trim();
       final trimmedEducation = _educationLevel.trim();
       final trimmedProfession = _profession.trim();
       final trimmedChurch = _churchName.trim();
-      final desiredQualitiesValue = _qualities.join(', ');
+      final joinedQualities = _qualities.join(', ');
+      final trimmedInstagram = _instagram.trim();
+      final trimmedTwitter = _twitter.trim();
+      final trimmedWhatsapp = _whatsapp.trim();
+      final trimmedFacebook = _facebook.trim();
+      final trimmedTelegram = _telegram.trim();
+      final trimmedSnapchat = _snapchat.trim();
 
       final updates = <String, dynamic>{
+        // Root-level fields (v1 compatibility)
         'name': trimmedName,
-        'username': trimmedName,
-        'displayName': trimmedName,
         'age': _age,
         'city': trimmedCity,
         'country': trimmedCountry,
@@ -3441,19 +3517,18 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
         'educationLevel': trimmedEducation,
         'profession': trimmedProfession,
         'churchName': trimmedChurch,
-        'desiredQualities': desiredQualitiesValue,
+        'desiredQualities': joinedQualities,
         'hobbies': _hobbies,
         'photos': uploadedPhotos,
         'profileUrl': profileUrl,
-        'instagramUsername': _instagram.trim(),
-        'twitterUsername': _twitter.trim(),
-        // WhatsApp stored as phoneNumber on UserModel
-        'phoneNumber': _whatsapp.trim(),
-        'facebookUsername': _facebook.trim(),
-        'telegramUsername': _telegram.trim(),
-        'snapchatUsername': _snapchat.trim(),
+        'instagramUsername': trimmedInstagram,
+        'twitterUsername': trimmedTwitter,
+        'phoneNumber': trimmedWhatsapp,
+        'facebookUsername': trimmedFacebook,
+        'telegramUsername': trimmedTelegram,
+        'snapchatUsername': trimmedSnapchat,
+        // Nested dating.profile fields (UserModel reads these FIRST)
         'dating.profile.name': trimmedName,
-        'dating.profile.username': trimmedName,
         'dating.profile.age': _age,
         'dating.profile.city': trimmedCity,
         'dating.profile.country': trimmedCountry,
@@ -3461,38 +3536,37 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
         'dating.profile.educationLevel': trimmedEducation,
         'dating.profile.profession': trimmedProfession,
         'dating.profile.churchName': trimmedChurch,
-        'dating.profile.desiredQualities': desiredQualitiesValue,
+        'dating.profile.desiredQualities': joinedQualities,
         'dating.profile.hobbies': _hobbies,
         'dating.profile.photos': uploadedPhotos,
         'dating.profile.profileUrl': profileUrl,
-        'dating.profile.phoneNumber': _whatsapp.trim(),
-        // Clean up accidental alias fields previously introduced.
-        'userName': FieldValue.delete(),
-        'user_name': FieldValue.delete(),
-        'handle': FieldValue.delete(),
-        'fullName': FieldValue.delete(),
-        'full_name': FieldValue.delete(),
-        'dating.profile.userName': FieldValue.delete(),
-        'dating.profile.user_name': FieldValue.delete(),
-        'dating.profile.displayName': FieldValue.delete(),
-        'nexus2.profile.name': FieldValue.delete(),
-        'nexus2.profile.username': FieldValue.delete(),
-        'nexus2.profile.displayName': FieldValue.delete(),
-        // Also update nested dating fields to ensure dating search visibility
-        'dating.countryOfResidence': trimmedCountry,
-        'dating.nationality': trimmedNationality,
+        'dating.profile.phoneNumber': trimmedWhatsapp,
+        // Social media — sync to dating.profile for UserModel read paths
+        'dating.profile.instagramUsername': trimmedInstagram,
+        'dating.profile.twitterUsername': trimmedTwitter,
+        'dating.profile.facebookUsername': trimmedFacebook,
+        'dating.profile.telegramUsername': trimmedTelegram,
+        'dating.profile.snapchatUsername': trimmedSnapchat,
+        // Keep dating.contactInfo in sync (admin reference map)
+        'dating.contactInfo': <String, String>{
+          if (trimmedInstagram.isNotEmpty) 'Instagram': trimmedInstagram,
+          if (trimmedTwitter.isNotEmpty) 'X': trimmedTwitter,
+          if (trimmedFacebook.isNotEmpty) 'Facebook': trimmedFacebook,
+          if (trimmedWhatsapp.isNotEmpty) 'WhatsApp': trimmedWhatsapp,
+          if (trimmedTelegram.isNotEmpty) 'Telegram': trimmedTelegram,
+          if (trimmedSnapchat.isNotEmpty) 'Snapchat': trimmedSnapchat,
+        },
+        // Keep dating.countryOfResidence in sync for search queries
+        if (trimmedCountry.isNotEmpty)
+          'dating.countryOfResidence': trimmedCountry,
         'updatedAt': FieldValue.serverTimestamp(),
       };
 
-      await fs
-          .collection('users')
-          .doc(widget.profile.id)
-          .set(updates, SetOptions(merge: true));
+      await fs.collection('users').doc(widget.profile.id).update(updates);
 
       // Persist locally as a best-effort cache for offline reloads
       final updatedProfile = widget.profile.copyWith(
         name: trimmedName,
-        username: trimmedName,
         age: _age,
         city: trimmedCity,
         country: trimmedCountry,
@@ -3500,16 +3574,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
         educationLevel: trimmedEducation,
         profession: trimmedProfession,
         churchName: trimmedChurch,
-        desiredQualities: desiredQualitiesValue,
+        desiredQualities: joinedQualities,
         hobbies: _hobbies,
         photos: uploadedPhotos,
         profileUrl: profileUrl,
-        instagramUsername: _instagram.trim(),
-        twitterUsername: _twitter.trim(),
-        phoneNumber: _whatsapp.trim(),
-        facebookUsername: _facebook.trim(),
-        telegramUsername: _telegram.trim(),
-        snapchatUsername: _snapchat.trim(),
+        instagramUsername: trimmedInstagram,
+        twitterUsername: trimmedTwitter,
+        phoneNumber: trimmedWhatsapp,
+        facebookUsername: trimmedFacebook,
+        telegramUsername: trimmedTelegram,
+        snapchatUsername: trimmedSnapchat,
       );
 
       await ref
@@ -3524,12 +3598,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
               ? (jsonDecode(raw) as Map<String, dynamic>)
               : <String, dynamic>{};
       decoded['draftContact'] = {
-        'instagram': _instagram.trim(),
-        'twitter': _twitter.trim(),
-        'whatsappNumber': _whatsapp.trim(),
-        'facebook': _facebook.trim(),
-        'telegram': _telegram.trim(),
-        'snapchat': _snapchat.trim(),
+        'instagram': trimmedInstagram,
+        'twitter': trimmedTwitter,
+        'whatsappNumber': trimmedWhatsapp,
+        'facebook': trimmedFacebook,
+        'telegram': trimmedTelegram,
+        'snapchat': trimmedSnapchat,
       };
       await prefs.setString(
         'draft_profile_' + widget.profile.id,
@@ -3545,14 +3619,23 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
         _dirty = false;
       });
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Profile saved.')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Profile saved.'),
+          backgroundColor: AppColors.success,
+        ),
+      );
+
+      // Auto-navigate back to the profile view after successful save
+      if (mounted) Navigator.of(context).pop();
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Save failed: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Save failed: $e'),
+          backgroundColor: AppColors.primary,
+        ),
+      );
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }
@@ -3567,7 +3650,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
         appBar: AppBar(
           backgroundColor: AppColors.getBackground(context),
           elevation: 0,
-          title: Text('Edit Profile', style: AppTextStyles.headlineLarge),
+          title: Text('Edit Profile', style: AppTextStyles.headlineMedium),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new_rounded),
             onPressed: () async {
@@ -3627,8 +3710,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
                   onDelete: (index) {
                     if (_photos.length <= 1) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('You cannot delete your last photo.'),
+                        SnackBar(
+                          content: const Text(
+                            'You cannot delete your last photo.',
+                          ),
+                          backgroundColor: AppColors.primary,
                         ),
                       );
                       return;
@@ -3644,6 +3730,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('You can only add up to 6 photos.'),
+                          backgroundColor: AppColors.primary,
                         ),
                       );
                       return;
@@ -3655,10 +3742,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
                     final face = await service.hasHumanFace(file.path);
                     if (face == false) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            "We couldn’t detect a human face in that photo. Please upload a clear photo of yourself (good lighting, face visible).",
+                        SnackBar(
+                          content: const Text(
+                            "We couldn't detect a human face in that photo. Please upload a clear photo of yourself (good lighting, face visible).",
                           ),
+                          backgroundColor: AppColors.primary,
                         ),
                       );
                       return;
@@ -3667,10 +3755,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
                     if (face == null) {
                       // Fail-open: detection failed technically, but we still educate the user.
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            "We couldn’t verify this photo automatically, but we added it. Please ensure it’s a clear photo of you.",
+                        SnackBar(
+                          content: const Text(
+                            "We couldn't verify this photo automatically, but we added it. Please ensure it's a clear photo of you.",
                           ),
+                          backgroundColor: AppColors.primary,
                         ),
                       );
                     }
@@ -3682,6 +3771,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('That photo is already added.'),
+                          backgroundColor: AppColors.primary,
                         ),
                       );
                       return;
@@ -3903,13 +3993,29 @@ class _SmartImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final value = url.trim();
     if (value.startsWith('http')) {
-      return Image.network(
-        value,
+      return CachedNetworkImage(
+        imageUrl: value,
         fit: fit,
         width: double.infinity,
         height: double.infinity,
-        cacheWidth: 500,
-        cacheHeight: 500,
+        memCacheWidth: 500,
+        memCacheHeight: 500,
+        placeholder:
+            (context, url) => Container(
+              color: AppColors.border,
+              child: const Center(
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
+            ),
+        errorWidget:
+            (context, url, error) => const Icon(
+              Icons.broken_image_rounded,
+              color: AppColors.textSecondary,
+            ),
       );
     }
     return Image.file(
@@ -4013,6 +4119,7 @@ class _AboutEditor extends StatelessWidget {
           _InputField(
             label: 'Display name',
             initialValue: name,
+            maxLength: 12,
             onChanged:
                 (v) => onChanged(
                   _AboutEditorValue(
@@ -4050,7 +4157,7 @@ class _AboutEditor extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           _InputField(
-            label: 'City of Residence',
+            label: 'City',
             initialValue: city,
             onChanged:
                 (v) => onChanged(
@@ -4069,7 +4176,7 @@ class _AboutEditor extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           _CountryPickerField(
-            label: 'Country of Residence',
+            label: 'Country',
             selectedCountry: country,
             onCountrySelected:
                 (countryName) => onChanged(
@@ -4180,7 +4287,7 @@ class _AboutEditor extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _DropdownField(
-                    label: 'Church',
+                    label: 'Church (optional)',
                     value: hasChurch ? (isOther ? 'Other' : churchName) : '',
                     items: items,
                     onChanged: (v) {
@@ -4276,18 +4383,6 @@ class _InterestsEditorState extends ConsumerState<_InterestsEditor> {
   }
 
   @override
-  void didUpdateWidget(_InterestsEditor oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // Sync state when parent widget values change
-    if (oldWidget.hobbies != widget.hobbies) {
-      _selectedHobbies = [...widget.hobbies];
-    }
-    if (oldWidget.qualities != widget.qualities) {
-      _selectedQualities = [...widget.qualities];
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
       future: _OnboardingListsCache.load(context),
@@ -4343,7 +4438,7 @@ class _InterestsEditorState extends ConsumerState<_InterestsEditor> {
               _SelectableInterestGrid(
                 items: hobbyItems,
                 selected: _selectedHobbies,
-                max: 5,
+                max: 8,
                 onToggle: (v) {
                   setState(() {
                     if (_selectedHobbies.contains(v)) {
@@ -4667,11 +4762,12 @@ class _ContactEditor extends StatelessWidget {
   }
 }
 
-class _InputField extends StatefulWidget {
+class _InputField extends StatelessWidget {
   final String label;
   final String initialValue;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
+  final int? maxLength;
   final void Function(String value) onChanged;
 
   const _InputField({
@@ -4679,54 +4775,27 @@ class _InputField extends StatefulWidget {
     required this.initialValue,
     this.keyboardType,
     this.inputFormatters,
+    this.maxLength,
     required this.onChanged,
   });
-
-  @override
-  State<_InputField> createState() => _InputFieldState();
-}
-
-class _InputFieldState extends State<_InputField> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(text: widget.initialValue);
-  }
-
-  @override
-  void didUpdateWidget(_InputField oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.initialValue != widget.initialValue) {
-      _controller.text = widget.initialValue;
-    }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.label,
+          label,
           style: AppTextStyles.labelMedium.copyWith(
-            fontSize: 12,
             fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: 6),
-        TextField(
-          controller: _controller,
-          keyboardType: widget.keyboardType,
-          inputFormatters: widget.inputFormatters,
-          style: AppTextStyles.bodySmall.copyWith(fontSize: 13),
+        TextFormField(
+          initialValue: initialValue,
+          keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
+          maxLength: maxLength,
+          style: AppTextStyles.bodySmall,
           decoration: InputDecoration(
             filled: true,
             fillColor: AppColors.getSurface(context),
@@ -4746,8 +4815,9 @@ class _InputFieldState extends State<_InputField> {
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: AppColors.primary),
             ),
+            counterText: '',
           ),
-          onChanged: widget.onChanged,
+          onChanged: onChanged,
         ),
       ],
     );
@@ -4774,7 +4844,6 @@ class _CountryPickerField extends StatelessWidget {
         Text(
           label,
           style: AppTextStyles.labelMedium.copyWith(
-            fontSize: 12,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -4822,7 +4891,6 @@ class _CountryPickerField extends StatelessWidget {
                           ? 'Select $label'
                           : selectedCountry,
                       style: AppTextStyles.bodySmall.copyWith(
-                        fontSize: 13,
                         color:
                             selectedCountry.isEmpty
                                 ? AppColors.textSecondary
@@ -4850,7 +4918,9 @@ void _showComingSoon(BuildContext context, String feature) {
 }
 
 void _toast(BuildContext context, String msg) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(msg), backgroundColor: AppColors.primary),
+  );
 }
 
 class _DropdownField extends StatelessWidget {
@@ -4878,7 +4948,6 @@ class _DropdownField extends StatelessWidget {
         Text(
           label,
           style: AppTextStyles.labelMedium.copyWith(
-            fontSize: 12,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -4896,7 +4965,6 @@ class _DropdownField extends StatelessWidget {
               hint: Text(
                 'Select $label',
                 style: AppTextStyles.bodySmall.copyWith(
-                  fontSize: 13,
                   color: AppColors.textSecondary,
                 ),
               ),
@@ -4908,9 +4976,7 @@ class _DropdownField extends StatelessWidget {
                           child: Text(
                             e,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.bodySmall.copyWith(
-                              fontSize: 13,
-                            ),
+                            style: AppTextStyles.bodySmall,
                           ),
                         ),
                       )
@@ -4972,6 +5038,7 @@ class _PremiumContactViewerScreen extends StatelessWidget {
       SnackBar(
         content: Text('$label copied'),
         duration: const Duration(milliseconds: 900),
+        backgroundColor: AppColors.success,
       ),
     );
   }
@@ -5101,7 +5168,7 @@ class _PremiumContactViewerScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         surfaceTintColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
-        title: Text('Contact info', style: AppTextStyles.headlineLarge),
+        title: Text('Contact info', style: AppTextStyles.headlineMedium),
       ),
       body: SafeArea(
         child: Padding(
@@ -5481,7 +5548,7 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
           backgroundColor: Theme.of(context).colorScheme.surface,
           surfaceTintColor: Theme.of(context).colorScheme.surface,
           elevation: 0,
-          title: Text('Compatibility', style: AppTextStyles.headlineLarge),
+          title: Text('Compatibility', style: AppTextStyles.headlineMedium),
         ),
         body: SafeArea(
           child: Padding(
@@ -5524,7 +5591,7 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         surfaceTintColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
-        title: Text('Compatibility Data', style: AppTextStyles.headlineLarge),
+        title: Text('Compatibility Data', style: AppTextStyles.headlineMedium),
       ),
       body: SafeArea(
         child: Padding(

@@ -12,13 +12,11 @@ class DatingHobbiesScreen extends ConsumerStatefulWidget {
   const DatingHobbiesScreen({super.key});
 
   @override
-  ConsumerState<DatingHobbiesScreen> createState() =>
-      _DatingHobbiesScreenState();
+  ConsumerState<DatingHobbiesScreen> createState() => _DatingHobbiesScreenState();
 }
 
 class _DatingHobbiesScreenState extends ConsumerState<DatingHobbiesScreen> {
   static const int _max = 5;
-
   final Set<String> _selected = {};
 
   @override
@@ -29,14 +27,8 @@ class _DatingHobbiesScreenState extends ConsumerState<DatingHobbiesScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final listsAsync = ref.watch(onboardingListsProvider);
-
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
@@ -44,77 +36,38 @@ class _DatingHobbiesScreenState extends ConsumerState<DatingHobbiesScreen> {
         surfaceTintColor: AppColors.getBackground(context),
         elevation: 0,
         titleSpacing: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => navigateBackToHome(context),
-        ),
-        title: Text(
-          'Hobbies & Interests',
-          style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700),
-        ),
+        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new_rounded), onPressed: () => navigateBackToHome(context)),
+        title: Text('Hobbies & Interests', style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700)),
       ),
       body: listsAsync.when(
         data: (lists) => _buildContent(context, lists),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error:
-            (e, _) => Center(
-              child: Text(
-                'Failed to load hobbies: $e',
-                style: AppTextStyles.bodyMedium,
-              ),
-            ),
+        error: (e, _) => Center(child: Text('Failed to load hobbies: $e', style: AppTextStyles.bodyMedium)),
       ),
     );
   }
 
   Widget _buildContent(BuildContext context, OnboardingLists lists) {
-    final items = lists.hobbies;
-
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _ProgressHeader(
-            subtitle: 'Select up to $_max Hobbies or Interests.',
-            counter: '${_selected.length} / $_max',
-          ),
+          _ProgressHeader(subtitle: 'Select up to $_max Hobbies or Interests.', counter: '${_selected.length} / $_max'),
           const SizedBox(height: 12),
-
-          Expanded(
-            child: _SelectableGrid(
-              items: items,
-              selected: _selected,
-              max: _max,
-              onToggle: _toggle,
-            ),
-          ),
-
+          Expanded(child: _SelectableGrid(items: lists.hobbies, selected: _selected, max: _max, onToggle: _toggle)),
           SafeArea(
             top: false,
             child: Column(
               children: [
-                const SizedBox(height: 18),
+                const SizedBox(height: 12),
                 SizedBox(
                   width: double.infinity,
                   height: 54,
                   child: ElevatedButton(
-                    onPressed:
-                        _selected.isEmpty ? null : () => _onContinue(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
-                    child: Text(
-                      'Continue',
-                      style: AppTextStyles.labelLarge.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
+                    onPressed: _selected.isEmpty ? null : () => Navigator.of(context).pushNamed('/dating/setup/qualities'),
+                    style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18))),
+                    child: const Text('Continue'),
                   ),
                 ),
               ],
@@ -127,37 +80,17 @@ class _DatingHobbiesScreenState extends ConsumerState<DatingHobbiesScreen> {
 
   void _toggle(String hobby) {
     setState(() {
-      if (_selected.contains(hobby)) {
-        _selected.remove(hobby);
-      } else if (_selected.length >= _max) {
-        HapticFeedback.mediumImpact();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('You can only select up to $_max hobbies.')),
-        );
-        return;
-      } else {
-        _selected.add(hobby);
-      }
-
-      // Auto-save on every toggle
-      ref
-          .read(datingOnboardingDraftProvider.notifier)
-          .setHobbies(_selected.toList());
+      if (_selected.contains(hobby)) { _selected.remove(hobby); } 
+      else if (_selected.length >= _max) { HapticFeedback.mediumImpact(); return; } 
+      else { _selected.add(hobby); }
+      ref.read(datingOnboardingDraftProvider.notifier).setHobbies(_selected.toList());
     });
-  }
-
-  void _onContinue(BuildContext context) {
-    // Draft is already saved via auto-save
-    Navigator.of(context).pushNamed('/dating/setup/qualities');
   }
 }
 
 class _ProgressHeader extends StatelessWidget {
-  final String subtitle;
-  final String counter;
-
+  final String subtitle; final String counter;
   const _ProgressHeader({required this.subtitle, required this.counter});
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -166,26 +99,11 @@ class _ProgressHeader extends StatelessWidget {
         const DatingProfileProgressBar(currentStep: 3, totalSteps: 9),
         const SizedBox(height: 12),
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              child: Text(
-                subtitle,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.getTextMuted(context),
-                ),
-              ),
-            ),
+            Expanded(child: Text(subtitle, style: AppTextStyles.bodySmall.copyWith(color: AppColors.getTextMuted(context)))),
             const SizedBox(width: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: AppColors.getSurface(context),
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: AppColors.getBorder(context)),
-              ),
-              child: Text(counter, style: AppTextStyles.labelLarge),
-            ),
+            Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), decoration: BoxDecoration(color: AppColors.getSurface(context), borderRadius: BorderRadius.circular(999), border: Border.all(color: AppColors.getBorder(context))), child: Text(counter, style: AppTextStyles.labelSmall)),
           ],
         ),
       ],
@@ -194,88 +112,22 @@ class _ProgressHeader extends StatelessWidget {
 }
 
 class _SelectableGrid extends StatelessWidget {
-  final List<String> items;
-  final Set<String> selected;
-  final int max;
-  final ValueChanged<String> onToggle;
-
-  const _SelectableGrid({
-    required this.items,
-    required this.selected,
-    required this.max,
-    required this.onToggle,
-  });
-
+  final List<String> items; final Set<String> selected; final int max; final ValueChanged<String> onToggle;
+  const _SelectableGrid({required this.items, required this.selected, required this.max, required this.onToggle});
   @override
   Widget build(BuildContext context) {
-    if (items.isEmpty) {
-      return Center(
-        child: Text(
-          'No matches found.',
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.getTextMuted(context),
-          ),
-        ),
-      );
-    }
-
     return GridView.builder(
       padding: const EdgeInsets.only(bottom: 8),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        childAspectRatio: 3.4,
-      ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 3.4),
       itemCount: items.length,
       itemBuilder: (context, i) {
-        final value = items[i];
-        final isSelected = selected.contains(value);
-
+        final val = items[i]; final sel = selected.contains(val);
         return InkWell(
-          borderRadius: BorderRadius.circular(18),
-          onTap: () => onToggle(value),
+          borderRadius: BorderRadius.circular(14), onTap: () => onToggle(val),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            decoration: BoxDecoration(
-              color:
-                  isSelected
-                      ? AppColors.primary.withOpacity(0.10)
-                      : AppColors.getSurface(context),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color:
-                    isSelected
-                        ? AppColors.primary
-                        : AppColors.getBorder(context),
-                width: isSelected ? 1.4 : 1,
-              ),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    value,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      fontWeight:
-                          isSelected ? FontWeight.w700 : FontWeight.w500,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Icon(
-                  isSelected ? Icons.check_circle : Icons.circle_outlined,
-                  size: 20,
-                  color:
-                      isSelected
-                          ? AppColors.primary
-                          : AppColors.getTextMuted(context),
-                ),
-              ],
-            ),
+            duration: const Duration(milliseconds: 180), padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(color: sel ? AppColors.primary.withOpacity(0.10) : AppColors.getSurface(context), borderRadius: BorderRadius.circular(14), border: Border.all(color: sel ? AppColors.primary : AppColors.getBorder(context), width: sel ? 1.4 : 1)),
+            child: Row(children: [Expanded(child: Text(val, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTextStyles.bodySmall.copyWith(fontWeight: sel ? FontWeight.w700 : FontWeight.w500))), const SizedBox(width: 8), Icon(sel ? Icons.check_circle : Icons.circle_outlined, size: 18, color: sel ? AppColors.primary : AppColors.getTextMuted(context))]),
           ),
         );
       },

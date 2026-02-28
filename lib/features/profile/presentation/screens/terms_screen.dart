@@ -17,7 +17,7 @@ class TermsScreen extends StatelessWidget {
         titleSpacing: 0,
         title: Text(
           'Terms of Service',
-          style: AppTextStyles.headlineLarge.copyWith(
+          style: AppTextStyles.headlineMedium.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -40,7 +40,7 @@ class TermsScreen extends StatelessWidget {
               _buildSection(
                 context,
                 '1) WHO NEXUS IS FOR',
-                'Nexus is a personal and marital growth ecosystem that seeks to help **single, married, divorced, or widowed** individuals build Kingdom marriages and families, the way God intended.',
+                'Nexus is a personal and marital growth ecosystem that seeks to help single, married, divorced, or widowed individuals build Kingdom marriages and families, they way God intended.',
               ),
               const SizedBox(height: 20),
               _buildSection(

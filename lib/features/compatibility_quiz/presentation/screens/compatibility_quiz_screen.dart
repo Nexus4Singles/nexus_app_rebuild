@@ -37,7 +37,7 @@ class CompatibilityQuizScreen extends ConsumerWidget {
           titleSpacing: 20,
           title: Text(
             'Compatibility Quiz',
-            style: AppTextStyles.headlineLarge.copyWith(
+            style: AppTextStyles.headlineMedium.copyWith(
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -58,7 +58,7 @@ class CompatibilityQuizScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _ProgressBar(step: step),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
               Text(
                 'Question ${step + 1} of ${_quizSteps.length}',
                 style: AppTextStyles.labelMedium.copyWith(
@@ -98,7 +98,7 @@ class CompatibilityQuizScreen extends ConsumerWidget {
                   children: [
                     Expanded(
                       child: SizedBox(
-                        height: 56,
+                        height: 52,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -151,10 +151,7 @@ class CompatibilityQuizScreen extends ConsumerWidget {
                                     step < _quizSteps.length - 1
                                         ? 'Next'
                                         : 'Finish',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 17,
-                                    ),
+                                    style: AppTextStyles.buttonLarge,
                                   ),
                         ),
                       ),
@@ -190,13 +187,13 @@ class _QuizStepView extends ConsumerWidget {
           child: Text(
             q.title,
             textAlign: TextAlign.center,
-            style: AppTextStyles.titleLarge.copyWith(
+            style: AppTextStyles.titleMedium.copyWith(
               fontWeight: FontWeight.w700,
               height: 1.2,
             ),
           ),
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: 24),
         // Options - centered wrap
         Wrap(
           alignment: WrapAlignment.center,
@@ -244,7 +241,7 @@ class _OptionButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: bg,
             borderRadius: BorderRadius.circular(20),

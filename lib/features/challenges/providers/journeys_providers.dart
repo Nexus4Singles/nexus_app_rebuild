@@ -146,6 +146,18 @@ final completedMissionIdsProvider = FutureProvider.family<Set<String>, String>((
   return svc.loadCompletedMissionIds(journeyId, uid);
 });
 
+final isJourneyCompletedProvider = FutureProvider.family<bool, String>((
+  ref,
+  journeyId,
+) async {
+  final journey = ref.watch(journeyByIdProvider(journeyId));
+  if (journey == null) return false;
+
+  final completedIds =
+      await ref.watch(completedMissionIdsProvider(journeyId).future);
+  return completedIds.length >= journey.missions.length;
+});
+
 final journeyStreakProvider = FutureProvider.family<int, String>((
   ref,
   journeyId,

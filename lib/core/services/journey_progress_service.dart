@@ -116,6 +116,20 @@ class JourneyProgressService {
     _syncToFirestore(journeyId, uid, current.toList(), null, null, prefs);
   }
 
+  Future<void> restartJourney(String journeyId, String uid) async {
+    // Clear from Firestore
+    if (_firestore.isAvailable) {
+      await _firestore.deleteJourneyProgress(uid, journeyId);
+    }
+
+    // Clear from local cache
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('$_kCompletedPrefix$journeyId');
+    await prefs.remove('$_kLastCompletePrefix$journeyId');
+    await prefs.remove('$_kStreakPrefix$journeyId');
+    await prefs.remove('$_kInProgressPrefix$journeyId');
+  }
+
   /// Mark a mission as in-progress (user started but hasn't completed)
   Future<void> markMissionInProgress(
     String journeyId,

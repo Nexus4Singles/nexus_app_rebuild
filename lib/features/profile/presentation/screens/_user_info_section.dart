@@ -30,7 +30,7 @@ class UserInfoSection extends StatelessWidget {
               child: Text.rich(
                 TextSpan(
                   text: displayName,
-                  style: AppTextStyles.headlineLarge.copyWith(
+                  style: AppTextStyles.headlineSmall.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                   children:
@@ -38,7 +38,7 @@ class UserInfoSection extends StatelessWidget {
                           ? [
                             TextSpan(
                               text: ', ${profile.age}',
-                              style: AppTextStyles.headlineLarge.copyWith(
+                              style: AppTextStyles.headlineSmall.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -54,12 +54,17 @@ class UserInfoSection extends StatelessWidget {
           ],
         ),
         if (locationText.isNotEmpty) ...[
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Row(
             children: [
-              Icon(Icons.location_on, size: 16, color: Colors.grey),
-              const SizedBox(width: 4),
-              Text(locationText, style: Theme.of(context).textTheme.bodyMedium),
+              Icon(Icons.location_on, size: 14, color: Colors.grey),
+              const SizedBox(width: 3),
+              Text(
+                locationText,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: Colors.grey[600],
+                ),
+              ),
             ],
           ),
         ],
@@ -90,10 +95,9 @@ class _VerificationBadge extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             isVerified ? 'Verified' : 'Unverified',
-            style: TextStyle(
+            style: AppTextStyles.labelSmall.copyWith(
               color: isVerified ? Colors.green[800] : Colors.red[800],
               fontWeight: FontWeight.w600,
-              fontSize: 13,
             ),
           ),
         ],

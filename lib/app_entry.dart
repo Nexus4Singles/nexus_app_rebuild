@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:country_picker/country_picker.dart';
+import 'dart:math' as math;
 
 import 'app_shell.dart';
 import 'core/bootstrap/firebase_bootstrap.dart';
@@ -12,6 +13,7 @@ import 'core/router/app_router.dart';
 import 'core/services/push_notification_service.dart';
 import 'core/session/guest_session_provider.dart';
 import 'core/theme/theme_provider.dart';
+import 'core/theme/app_theme.dart';
 import 'features/launch/presentation/app_launch_gate.dart';
 import 'safe_imports.dart';
 
@@ -62,10 +64,22 @@ class _RootApp extends ConsumerWidget {
       darkTheme: AppTheme.darkTheme,
       onGenerateRoute: onGenerateRoute,
       builder: (context, child) {
-        final scheme = Theme.of(context).colorScheme;
-        return DefaultTextStyle(
-          style: TextStyle(color: scheme.onSurface),
-          child: child ?? const SizedBox.shrink(),
+        // Safe Text Scaling Logic
+        // Calculates a scale factor based on screen width to prevent 
+        // oversized fonts on small Android devices.
+        final double width = MediaQuery.of(context).size.width;
+        const double baseWidth = 390.0;
+        double scaleFactor = 1 + (width / baseWidth - 1) * 0.5;
+        double finalScale = math.max(0.88, math.min(1.10, scaleFactor));
+
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: TextScaler.linear(finalScale),
+          ),
+          child: DefaultTextStyle(
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            child: child ?? const SizedBox.shrink(),
+          ),
         );
       },
       home: const AppLaunchGate(),

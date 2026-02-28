@@ -171,7 +171,7 @@ class FirestoreService {
       fields.forEach((key, value) {
         prefixedFields['nexus2.$key'] = value;
       });
-      await _userDocRef(uid).set(prefixedFields, SetOptions(merge: true));
+      await _userDocRef(uid).update(prefixedFields);
     } catch (e) {
       throw FirestoreException('Failed to update nexus2 fields: $e');
     }
@@ -193,7 +193,7 @@ class FirestoreService {
     if (_db == null) return;
 
     try {
-      await _userDocRef(uid).set(fields, SetOptions(merge: true));
+      await _userDocRef(uid).update(fields);
     } catch (e) {
       throw FirestoreException('Failed to update user fields: $e');
     }
@@ -214,7 +214,7 @@ class FirestoreService {
         prefixedFields['dating.profile.$key'] = value;
       });
       prefixedFields['updatedAt'] = FieldValue.serverTimestamp();
-      await _userDocRef(uid).set(prefixedFields, SetOptions(merge: true));
+      await _userDocRef(uid).update(prefixedFields);
     } catch (e) {
       throw FirestoreException('Failed to update user profile fields: $e');
     }
@@ -241,12 +241,12 @@ class FirestoreService {
     if (_db == null) return;
 
     try {
+      // IMPORTANT: Cannot use .set(merge:true) with dot-notation keys
+      // because Firestore's set() treats them as literal field names, not
+      // nested paths. Only .update() interprets dots as nested paths.
+      // The nexus2 map is safe as a proper nested object.
       await _userDocRef(uid).set({
-        // Profile field: should be in dating.profile (consolidated location)
-        'dating': {
-          'profile': {'gender': gender},
-        },
-        // Dual-write gender to root for search queries (6-9 month backward compat)
+        // Dual-write gender to root for search queries
         'gender': gender,
         // Nexus 2.0 metadata (non-profile fields only)
         'nexus2': {
@@ -257,6 +257,8 @@ class FirestoreService {
           'schemaVersion': AppConfig.nexus2SchemaVersion,
         },
       }, SetOptions(merge: true));
+      // Write dating.profile.gender via .update() (dot-notation requires update)
+      await _userDocRef(uid).update({'dating.profile.gender': gender});
     } catch (e) {
       throw FirestoreException('Failed to complete onboarding: $e');
     }
@@ -476,6 +478,15 @@ class FirestoreService {
       }, SetOptions(merge: true));
     } catch (e) {
       throw FirestoreException('Failed to update journey progress: $e');
+    }
+  }
+
+  Future<void> deleteJourneyProgress(String uid, String journeyId) async {
+    if (_db == null) return;
+    try {
+      await _journeyProgressRef(uid).doc(journeyId).delete();
+    } catch (e) {
+      throw FirestoreException('Failed to delete journey progress: $e');
     }
   }
 

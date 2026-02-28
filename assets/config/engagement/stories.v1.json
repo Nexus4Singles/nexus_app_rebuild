@@ -5,10 +5,11 @@
       "id": "story_of_the_week",
       "title": "Ade & Feyi: The First Year Test",
       "category": "Marriage",
-      "readTimeMins": 4,
+      "tags": ["Marriage", "Communication", "Conflict"],
+      "readTimeMins": 10,
       "heroImageAsset": "assets/images/stories/placeholder_couple.jpg",
-      "excerpt": "They loved each other deeply—but small misunderstandings kept piling up. Here’s the moment they learned repair is a skill...",
-      "intro": "Ade and Feyi had been married for 5 years. They loved each other—but their first year revealed patterns they didn’t know they carried.",
+      "excerpt": "They loved each other deeply, but small misunderstandings kept piling up. Here's the moment they learned repair is a skill...",
+      "intro": "Ade and Feyi had been married for 5 years. They loved each other, but their first year revealed patterns they didn't know they carried.",
       "sections": [
         {
           "heading": "What went wrong",
@@ -27,7 +28,7 @@
       "takeaways": [
         "Repair beats perfection.",
         "Clarity is kinder than silence.",
-        "Conflict is information—learn from it."
+        "Conflict is information; learn from it."
       ],
       "reflectionPrompt": "Where do you tend to “win arguments” instead of building understanding?",
       "pollId": "poll_week_01",
@@ -37,10 +38,11 @@
       "id": "dating_boundaries",
       "title": "Kemi & Seyi: Godly Dating Without Confusion",
       "category": "Dating",
+      "tags": ["Dating", "Boundaries", "Faith", "Clarity"],
       "readTimeMins": 5,
       "heroImageAsset": "assets/images/stories/placeholder_couple.jpg",
       "excerpt": "Chemistry is real, but clarity is holy. This story shows how they set boundaries without killing the joy...",
-      "intro": "They liked each other. The attraction was real. But they wanted peace, clarity, and honour—without playing games.",
+      "intro": "They liked each other. The attraction was real. But they wanted peace, clarity, and honour, without playing games.",
       "sections": [
         {
           "heading": "They defined the relationship early",
@@ -48,14 +50,14 @@
         },
         {
           "heading": "They set boundaries without punishment",
-          "body": "Boundaries weren’t ultimatums—they were protection. “I’m not rejecting you; I’m guarding what God is building.”"
+          "body": "Boundaries weren’t ultimatums; they were protection. “I’m not rejecting you; I’m guarding what God is building.”"
         }
       ],
       "takeawayTitle": "Key Takeaways",
       "takeaways": [
         "Clarity reduces temptation.",
         "Boundaries protect love, not kill it.",
-        "Peace is a fruit—pay attention to it."
+        "Peace is a fruit; pay attention to it."
       ],
       "reflectionPrompt": "What boundary do you need to set so your dating life stays peaceful and honourable?",
       "pollId": "poll_week_01",

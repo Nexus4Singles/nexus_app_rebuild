@@ -6,6 +6,7 @@ import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 import 'package:nexus_app_v2/core/providers/service_providers.dart';
 import 'package:nexus_app_v2/core/constants/app_constants.dart';
+import 'package:nexus_app_v2/core/router/app_routes.dart';
 import 'package:nexus_app_v2/features/dating_search/application/saved_profiles_provider.dart';
 import 'package:nexus_app_v2/features/dating_search/domain/dating_profile.dart';
 import 'package:nexus_app_v2/features/profile/presentation/screens/profile_screen.dart';
@@ -77,11 +78,16 @@ class SavedProfilesScreen extends ConsumerWidget {
         titleSpacing: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            // Always go home to avoid navigation loops
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
+          },
         ),
         title: Text(
           'Saved Profiles',
-          style: AppTextStyles.headlineLarge.copyWith(
+          style: AppTextStyles.headlineMedium.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -180,7 +186,10 @@ class _SavedProfileCard extends ConsumerWidget {
                   // FIXED: Catch navigation errors to prevent Navigator history issues
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Error opening profile: $e')),
+                      SnackBar(
+                        content: Text('Error opening profile: $e'),
+                        backgroundColor: AppColors.primary,
+                      ),
                     );
                   }
                 }
@@ -308,7 +317,7 @@ class _SavedProfileCard extends ConsumerWidget {
                           SnackBar(
                             content: Text(e.toString()),
                             behavior: SnackBarBehavior.floating,
-                            backgroundColor: AppColors.error,
+                            backgroundColor: AppColors.primary,
                             duration: const Duration(seconds: 3),
                           ),
                         );

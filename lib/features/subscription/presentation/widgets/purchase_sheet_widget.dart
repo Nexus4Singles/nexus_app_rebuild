@@ -69,7 +69,7 @@ class _PurchaseSheetState extends ConsumerState<PurchaseSheet>
                   ? '✅ Premium activated! Enjoy unlimited features.'
                   : '🎉 Journey unlocked! Start your journey now.',
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppColors.success,
             duration: const Duration(seconds: 3),
           ),
         );
@@ -83,7 +83,7 @@ class _PurchaseSheetState extends ConsumerState<PurchaseSheet>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Purchase failed: ${e.toString()}'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.primary,
           ),
         );
       }
@@ -253,7 +253,7 @@ class _PurchaseSheetState extends ConsumerState<PurchaseSheet>
                                           content: Text(
                                             'Error: ${e.toString()}',
                                           ),
-                                          backgroundColor: Colors.red,
+                                          backgroundColor: AppColors.primary,
                                         ),
                                       );
                                     }

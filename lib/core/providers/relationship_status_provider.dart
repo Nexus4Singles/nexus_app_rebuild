@@ -29,7 +29,6 @@ class RelationshipStatusUpdater {
       throw Exception('Firestore not initialized');
     }
 
-    // ignore: avoid_print
     print(
       '[RelationshipStatusUpdater] UPDATING: uid=$uid, oldStatus=$oldStatus, newStatus=$newStatus',
     );
@@ -37,134 +36,87 @@ class RelationshipStatusUpdater {
     final userRef = _firestore.collection('users').doc(uid);
     final batch = _firestore.batch();
 
-    // DIAGNOSTIC: Log admin status BEFORE update
+    // Log admin status BEFORE update
     try {
       final preUpdateDoc = await userRef.get();
       final preIsAdmin = preUpdateDoc.data()?['isAdmin'] as bool? ?? false;
-      // ignore: avoid_print
-      print('[RelationshipStatusUpdater] 📋 BEFORE UPDATE: isAdmin=$preIsAdmin');
+      print(
+        '[RelationshipStatusUpdater] 📋 BEFORE UPDATE: isAdmin=$preIsAdmin',
+      );
     } catch (e) {
-      // ignore: avoid_print
-      print('[RelationshipStatusUpdater] Could not read isAdmin before update: $e');
+      print(
+        '[RelationshipStatusUpdater] Could not read isAdmin before update: $e',
+      );
     }
 
     // Update user's relationship status in BOTH v1 (nexus) and v2 (nexus2) fields
-    // This ensures the change is read immediately, even for v1 accounts
     batch.update(userRef, {
       'nexus.relationshipStatus': newStatus,
       'nexus2.relationshipStatus': newStatus,
     });
 
-    // ignore: avoid_print
-    print(
-      '[RelationshipStatusUpdater] Batch includes nexus=$newStatus, nexus2=$newStatus',
-    );
+    // Deterministic backup/restore logic for dating profile
+    final datingProfileArchiveRef = userRef
+        .collection('dating')
+        .doc('archived_profile');
+    final datingProfileRef = userRef.collection('dating').doc('profile');
 
-    // Archive all existing assessment results in BOTH storage locations
-    // This ensures they start fresh with assessments tailored to their new status
-
-    // ⚠️  TEMPORARILY DISABLED TO DIAGNOSE DATA REVERSION
-    // If archiving was causing the revert, disabling it should fix the issue
-
-    // 1. Archive in legacy storage (assessmentResults/{uid}/results)
-    // try {
-    //   final resultsRef = userRef
-    //       .collection('assessmentResults')
-    //       .doc(uid)
-    //       .collection('results');
-    //   final snapshot =
-    //       await resultsRef.where('archived', isEqualTo: false).get();
-
-    //   // ignore: avoid_print
-    //   print('[RelationshipStatusUpdater] Found ${snapshot.docs.length} unarchived legacy assessments to archive');
-
-    //   for (final doc in snapshot.docs) {
-    //     batch.update(doc.reference, {
-    //       'archived': true,
-    //       'archivedAt': FieldValue.serverTimestamp(),
-    //       'archivedDueToStatusChange': true,
-    //     });
-    //   }
-    // } catch (e) {
-    //   // ignore: avoid_print
-    //   print('[RelationshipStatusUpdater] ⚠️  Could not archive legacy assessments: $e');
-    // }
-
-    // 2. Archive in v2 storage (users/{uid}/assessments/{assessmentType})
-    // try {
-    //   final assessmentsRef = userRef.collection('assessments');
-    //   final v2Snapshot =
-    //       await assessmentsRef.where('archived', isEqualTo: false).get();
-
-    //   // ignore: avoid_print
-    //   print('[RelationshipStatusUpdater] Found ${v2Snapshot.docs.length} unarchived v2 assessments to archive');
-
-    //   for (final doc in v2Snapshot.docs) {
-    //     batch.update(doc.reference, {
-    //       'archived': true,
-    //       'archivedAt': FieldValue.serverTimestamp(),
-    //       'archivedDueToStatusChange': true,
-    //     });
-    //   }
-    // } catch (e) {
-    //   // ignore: avoid_print
-    //   print('[RelationshipStatusUpdater] ⚠️  Could not archive v2 assessments: $e');
-    // }
-
-    // If transitioning to married, archive the dating profile
     if (newStatus.toLowerCase() == 'married') {
-      // ignore: avoid_print
       print(
-        '[RelationshipStatusUpdater] Transitioning TO MARRIED: setting dating.optIn=false, isActive=false',
+        '[RelationshipStatusUpdater] Transitioning TO MARRIED: backing up and archiving dating profile',
       );
-      // Use set with merge instead of update, in case dating/profile doesn't exist yet
-      final datingProfileRef = userRef.collection('dating').doc('profile');
+      // Backup current dating profile (if exists)
+      final profileSnap = await datingProfileRef.get();
+      if (profileSnap.exists) {
+        final profileData = profileSnap.data();
+        if (profileData != null) {
+          await datingProfileArchiveRef.set(
+            profileData,
+            SetOptions(merge: false),
+          );
+          print(
+            '[RelationshipStatusUpdater] Dating profile backed up to archived_profile',
+          );
+        }
+      }
+      // Set isActive to false (archive)
       batch.set(datingProfileRef, {'isActive': false}, SetOptions(merge: true));
-
       // Also ensure dating opt-in is turned off for married users
       batch.update(userRef, {'dating.optIn': false});
     } else if (newStatus.toLowerCase() == 'never_married' ||
         newStatus.toLowerCase() == 'divorced' ||
         newStatus.toLowerCase() == 'widowed' ||
         newStatus.toLowerCase() == 'single') {
-      // If transitioning FROM married to eligible status,
-      // set dating profile to pending admin review AND reactivate if it was archived
       final isTransitioningFromMarried = oldStatus?.toLowerCase() == 'married';
-
       if (isTransitioningFromMarried) {
-        // ignore: avoid_print
         print(
-          '[RelationshipStatusUpdater] Transitioning FROM MARRIED to $newStatus: setting verification status to pending for admin review',
+          '[RelationshipStatusUpdater] Transitioning FROM MARRIED: restoring dating profile from archive if available',
         );
-        
-        // Log what we're about to preserve before the update
-        try {
-          final currentDoc = await userRef.get();
-          final currentData = currentDoc.data();
-          final currentDating = currentData?['dating'] as Map?;
-          final currentPhotos = currentData?['photos'] as List?;
-          final currentAudio = currentData?['audioPrompts'] as List?;
-          final datingPhotos = currentDating?['reviewPack']?['photoUrls'] as List?;
-          final datingAudio = currentDating?['audioPrompts'] as List?;
-          // ignore: avoid_print
-          print(
-            '[RelationshipStatusUpdater] 📸 BEFORE UPDATE - Root Photos: ${currentPhotos?.length ?? 0}, Root Audio: ${currentAudio?.length ?? 0}, Dating Photos: ${datingPhotos?.length ?? 0}, Dating Audio: ${datingAudio?.length ?? 0}',
-          );
-        } catch (e) {
-          // ignore: avoid_print
-          print('[RelationshipStatusUpdater] Could not log current state: $e');
+        // Restore dating profile from archive if it exists
+        final archiveSnap = await datingProfileArchiveRef.get();
+        if (archiveSnap.exists) {
+          final archivedData = archiveSnap.data();
+          if (archivedData != null) {
+            // Always set isActive true and verificationStatus to pending
+            archivedData['isActive'] = true;
+            archivedData['verificationStatus'] = 'pending';
+            archivedData['verificationQueuedAt'] = FieldValue.serverTimestamp();
+            await datingProfileRef.set(archivedData, SetOptions(merge: false));
+            print(
+              '[RelationshipStatusUpdater] Dating profile restored from archive',
+            );
+          }
+        } else {
+          // If no archive, just reactivate as before
+          batch.set(datingProfileRef, {
+            'isActive': true,
+            'verificationStatus': 'pending',
+            'verificationQueuedAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
         }
-        
-        // Reactivate archived dating profile (restore it)
-        batch.update(userRef, {
-          'dating.isActive': true,  // Reactivate archived profile
-          'dating.optIn': true,
-          'dating.verificationStatus': 'pending',
-          'dating.verificationQueuedAt': FieldValue.serverTimestamp(),
-        });
+        // Always set dating.optIn true at root
+        batch.update(userRef, {'dating.optIn': true});
       } else {
-        // If not transitioning from married, just restore dating opt-in
-        // ignore: avoid_print
         print(
           '[RelationshipStatusUpdater] Transitioning TO SINGLE STATUS (not from married): setting dating.optIn=true',
         );
@@ -172,12 +124,10 @@ class RelationshipStatusUpdater {
       }
     }
 
-    // ignore: avoid_print
     print('[RelationshipStatusUpdater] About to call batch.commit()...');
-
     await batch.commit();
 
-    // ignore: avoid_print
+    // ...existing code...
     print(
       '[RelationshipStatusUpdater] ✅ BATCH COMMIT COMPLETE - code is executing after commit',
     );
