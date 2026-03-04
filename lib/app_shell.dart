@@ -23,6 +23,16 @@ class AppShell extends ConsumerStatefulWidget {
 class _AppShellState extends ConsumerState<AppShell> {
   final Map<NavTab, Widget> _tabScreenCache = {};
 
+  @override
+  void initState() {
+    super.initState();
+    // Always start on the home tab when AppShell is created (e.g. after login).
+    // The global StateProvider may still hold a stale tab from a previous session.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(selectedTabProvider.notifier).state = NavTab.home;
+    });
+  }
+
   Widget _screenForTab(NavTab tab) {
     switch (tab) {
       case NavTab.home:
@@ -76,18 +86,6 @@ class _AppShellState extends ConsumerState<AppShell> {
     final ref = this.ref;
     // Initialize FCM for push notifications
     ref.watch(fcmInitializationProvider);
-
-    // Reset tab to home when user logs in to ensure consistent starting state
-    ref.listen<AsyncValue<User?>>(authStateProvider, (previous, next) {
-      next.whenData((user) {
-        if (user != null && !user.isAnonymous) {
-          // User just logged in, reset tab to home
-          if (ref.read(selectedTabProvider) != NavTab.home) {
-            ref.read(selectedTabProvider.notifier).state = NavTab.home;
-          }
-        }
-      });
-    });
 
     final status = ref.watch(effectiveRelationshipStatusProvider);
     final selectedTab = ref.watch(selectedTabProvider);

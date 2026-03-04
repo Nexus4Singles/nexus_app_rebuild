@@ -467,8 +467,8 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
   ///
   /// Cleans up RevenueCat (unlinks store account from this user) and
   /// device-local journey caches before signing out of Firebase Auth.
-  /// The auth state listener also handles this reactively, but doing
-  /// it explicitly here ensures cleanup even if the listener lags.
+  /// FCM token cleanup is handled by _cleanupPreviousUser() on next login,
+  /// not here, to avoid race conditions with auth state changes.
   Future<void> signOut() async {
     try {
       await RevenueCatService.logout();
@@ -476,6 +476,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
     try {
       await JourneyEntitlementsService().clearAll();
     } catch (_) {}
+
     await _clearUserLocalData();
     await _authService.signOut();
     state = const AsyncValue.data(null);
@@ -494,6 +495,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
       try {
         await JourneyEntitlementsService().clearAll();
       } catch (_) {}
+
       await _clearUserLocalData();
 
       // First delete Firestore document

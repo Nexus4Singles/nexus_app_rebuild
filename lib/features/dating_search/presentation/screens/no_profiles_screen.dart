@@ -221,11 +221,14 @@ class NoProfilesScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
-                  child: Text(
-                    diagnostics.buttonLabel,
-                    style: AppTextStyles.labelLarge.copyWith(
-                      color: AppColors.textOnPrimary,
-                      fontWeight: FontWeight.w700,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      diagnostics.buttonLabel,
+                      style: AppTextStyles.labelLarge.copyWith(
+                        color: AppColors.textOnPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
@@ -283,7 +286,7 @@ class NoProfilesScreen extends StatelessWidget {
               ),
               TextSpan(text: ' or checking back in a few days.'),
             ],
-            buttonLabel: 'Update Location Preference',
+            buttonLabel: 'Update Location',
           );
         }
 
@@ -328,7 +331,7 @@ class NoProfilesScreen extends StatelessWidget {
                   ' to connect with profiles in other locations, or check back as new users join.',
             ),
           ],
-          buttonLabel: 'Update Location Preference',
+          buttonLabel: 'Update Location',
         );
       }
 
@@ -426,7 +429,7 @@ class NoProfilesScreen extends StatelessWidget {
           ),
           TextSpan(text: ' or checking back in a few days.'),
         ],
-        buttonLabel: 'Update Location Preference',
+        buttonLabel: 'Update Location',
       );
     }
 

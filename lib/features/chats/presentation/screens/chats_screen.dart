@@ -58,8 +58,10 @@ String _formatChatTime(DateTime? dt) {
 String _displayNameFromOtherId(String otherUserId) {
   final id = otherUserId.trim();
   if (id.isEmpty) return 'Unknown';
-  // Temporary: show a short id until we wire "other user's name" lookup.
-  return 'User ${id.substring(0, 6)}';
+  // Fallback: show initials as placeholder (e.g., "A.M." from first 2 chars)
+  // This avoids showing the raw user ID which appears truncated
+  final chars = id.substring(0, 2).toUpperCase();
+  return chars.length == 2 ? '${chars[0]}.${chars[1]}' : chars;
 }
 
 /// Get the best available avatar URL from user data

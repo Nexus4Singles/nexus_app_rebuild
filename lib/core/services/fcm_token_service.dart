@@ -213,7 +213,12 @@ class FcmTokenService {
     }
   }
 
-  /// Handle user logout - cleanup token and listeners
+  /// Handle user logout - cleanup local state and listeners only
+  ///
+  /// NOTE: This does NOT delete the token from Firestore because the user
+  /// is already signed out at this point (Firestore rules would reject it).
+  /// Instead, the token in Firestore is overwritten on next login via
+  /// handleUserLogin() which saves a fresh token.
   Future<void> handleUserLogout() async {
     if (_currentUserId == null) {
       _logInfo('No user to logout');
@@ -228,12 +233,8 @@ class FcmTokenService {
       _tokenRefreshSubscription = null;
       _logInfo('Token refresh listener cancelled');
 
-      // Delete token from Firestore
-      if (_currentUserId != null) {
-        await _deleteTokenFromFirestore(_currentUserId!);
-      }
-
-      // Clear local state
+      // Clear local state only — do NOT attempt Firestore delete here
+      // (user is already signed out, Firestore rules would reject it)
       _currentUserId = null;
       _currentToken = null;
       // NOTE: Do NOT reset _initialized here.
@@ -241,7 +242,7 @@ class FcmTokenService {
       // global/device-level and don't need re-initialization per user.
       // handleUserLogin() already handles per-user token setup.
 
-      _logInfo('✅ Logout completed');
+      _logInfo('✅ Logout completed (local cleanup only)');
     } catch (e) {
       _logError('Error during logout', e);
       // Don't rethrow - logout should succeed even if cleanup fails
@@ -354,7 +355,8 @@ class FcmTokenService {
     // Don't throw - non-critical (will retry on next refresh)
   }
 
-  /// Delete token from Firestore on logout
+  /// Delete token fields from Firestore for a given user
+  /// Only called while the user is still authenticated (e.g. during user switch)
   Future<void> _deleteTokenFromFirestore(String userId) async {
     try {
       await _firestore.collection('users').doc(userId).update({
@@ -365,7 +367,24 @@ class FcmTokenService {
       });
       _logInfo('Token deleted from Firestore for user: $userId');
     } catch (e) {
-      _logError('Failed to delete token from Firestore', e);
+      _logWarning('Failed to delete token from Firestore: $e');
+    }
+  }
+
+  /// Public method to cleanup a user's token when they login (to prevent stale tokens)
+  /// This is called from _cleanupPreviousUser() which runs BEFORE the new user's token is saved
+  /// This ensures we clean up any old token while the previous user session is still active
+  /// No more permission-denied errors because cleanup happens during login, not logout
+  Future<void> cleanupUserTokenIfExists(String userId) async {
+    if (userId.isEmpty) return;
+
+    _logInfo('Cleaning up any existing token for user: $userId');
+
+    try {
+      await _deleteTokenFromFirestore(userId);
+    } catch (e) {
+      // Non-critical - if cleanup fails, we'll just overwrite the old token anyway
+      _logWarning('Could not cleanup old token for $userId (non-critical): $e');
     }
   }
 
