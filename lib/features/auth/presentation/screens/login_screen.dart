@@ -52,6 +52,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       if (!mounted) return;
 
+      // Force reload from Firebase to ensure emailVerified field is up-to-date
+      // (not cached from previous session). This prevents false negatives where
+      // a verified user's email appears unverified due to stale client state.
+      try {
+        await FirebaseAuth.instance.currentUser?.reload();
+      } catch (e) {
+        // Reload failed - continue anyway, but log it
+        // ignore: avoid_print
+        print('[LoginScreen] Warning: Failed to reload user after sign-in: $e');
+      }
+
+      if (!mounted) return;
+
       // Check if email is verified
       final authService = ref.read(authServiceProvider);
       if (!authService.isEmailVerified) {
@@ -126,7 +139,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               TextField(
                 controller: _email,
                 enabled: !_busy,
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.text,
+                autocorrect: false,
                 style: AppTextStyles.bodyLarge,
                 decoration: InputDecoration(
                   labelText: 'Email or Username',

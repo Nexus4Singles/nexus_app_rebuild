@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/widgets/cached_image.dart';
-import 'package:nexus_app_v2/core/constants/app_constants.dart';
-import 'package:nexus_app_v2/core/router/app_routes.dart';
 import 'package:nexus_app_v2/features/profile/presentation/screens/profile_screen.dart';
 import 'package:nexus_app_v2/features/subscription/presentation/screens/subscription_screen.dart';
 import 'package:nexus_app_v2/features/dating_search/application/saved_profiles_provider.dart';
@@ -12,8 +10,8 @@ import '../../domain/dating_profile.dart';
 import '../../domain/dating_search_result.dart';
 import '../../application/dating_search_results_provider.dart';
 import '../../application/dating_preferences_provider.dart';
-import '../../application/dating_dismissed_profiles_provider.dart';
 import 'dating_preferences_setup_screen.dart';
+import 'no_profiles_screen.dart';
 
 /// Calculate hours, minutes, and seconds remaining until 24-hour daily limit resets
 String _getCountdownText(DateTime limitHitAt) {
@@ -244,54 +242,38 @@ class _SearchResultsGridScreenState
           data: (result) {
             _errorRetryScheduled = false;
             if (result.items.isEmpty) {
-              // Inline empty state — no separate screen
+              // Items are empty — always show NoProfilesScreen.
+              // No middle grounds: either profiles exist (grid) or they don't (NoProfilesScreen).
+              Future<void> refreshResults() async {
+                if (!mounted) return;
+                ref.invalidate(datingSearchResultsProvider);
+                ref.read(searchResultsCacheProvider.notifier).clear();
+                ref.read(searchResultsOffsetProvider.notifier).state = 0;
+                if (!mounted) return;
+                await ref.read(accumulatedSearchResultsProvider.future);
+              }
+
               return RefreshIndicator(
-                onRefresh: () async {
-                  if (!mounted) return;
-                  ref.invalidate(datingSearchResultsProvider);
-                  ref.read(searchResultsCacheProvider.notifier).clear();
-                  ref.read(searchResultsOffsetProvider.notifier).state = 0;
-                  if (!mounted) return;
-                  await ref.read(accumulatedSearchResultsProvider.future);
-                },
-                child: CustomScrollView(
-                  slivers: [
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(32),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.people_outline_rounded,
-                                size: 64,
-                                color: AppColors.getTextSecondary(context),
+                onRefresh: refreshResults,
+                child: NoProfilesScreen(
+                  onRetry: refreshResults,
+                  onEditPreferences: () {
+                    preferencesAsync.whenData((prefs) {
+                      if (!mounted) return;
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder:
+                              (_) => DatingPreferencesSetupScreen(
+                                existingPreferences: prefs,
                               ),
-                              const SizedBox(height: 16),
-                              Text(
-                                'No profiles yet',
-                                style: AppTextStyles.headlineSmall.copyWith(
-                                  color: AppColors.getTextPrimary(context),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'New users join every day. Pull down to refresh.',
-                                style: AppTextStyles.bodySmall.copyWith(
-                                  color: AppColors.getTextSecondary(context),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
                         ),
-                      ),
-                    ),
-                  ],
+                      );
+                    });
+                  },
+                  noProfilesInCountry: result.noProfilesInCountry,
+                  countryName: result.noProfilesBreakdown?.countryName,
+                  emptyHint: result.emptyHint,
+                  breakdown: result.noProfilesBreakdown,
                 ),
               );
             }
@@ -495,7 +477,7 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
         ),
         child: Row(
           children: [
-            Icon(Icons.lock_rounded, color: Colors.white, size: 24),
+            Icon(Icons.lock_rounded, color: AppColors.textOnPrimary, size: 24),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -505,7 +487,7 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
                   Text(
                     'Maximum 10 Profiles/Day',
                     style: AppTextStyles.labelMedium.copyWith(
-                      color: Colors.white,
+                      color: AppColors.textOnPrimary,
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
                     ),
@@ -514,7 +496,7 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
                   Text(
                     'Subscribe to view more profiles',
                     style: AppTextStyles.bodySmall.copyWith(
-                      color: Colors.white.withOpacity(0.85),
+                      color: AppColors.textOnPrimary.withOpacity(0.85),
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
                     ),
@@ -525,7 +507,7 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
                       child: Text(
                         'Resets in ${_getCountdownText(limitHitAt)}',
                         style: AppTextStyles.bodySmall.copyWith(
-                          color: Colors.white.withOpacity(0.75),
+                          color: AppColors.textOnPrimary.withOpacity(0.75),
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
                           fontFamily: 'Menlo',
@@ -548,7 +530,7 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
+                  backgroundColor: AppColors.getSurface(context),
                   elevation: 0,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,

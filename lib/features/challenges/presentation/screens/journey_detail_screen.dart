@@ -511,7 +511,7 @@ class _Body extends ConsumerWidget {
   }) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: AppColors.getBackground(context),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
       ),
@@ -536,8 +536,8 @@ class _Body extends ConsumerWidget {
                 children: [
                   _IconBubble(
                     icon: iconFromKey(journey.icon),
-                    bg: Theme.of(context).colorScheme.primary.withOpacity(0.12),
-                    fg: Theme.of(context).colorScheme.primary,
+                    bg: AppColors.primary.withOpacity(0.12),
+                    fg: AppColors.primary,
                     size: 42,
                   ),
                   const SizedBox(width: 12),
@@ -547,22 +547,16 @@ class _Body extends ConsumerWidget {
                       children: [
                         Text(
                           'Unlock this Journey',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.titleMedium?.copyWith(
+                          style: AppTextStyles.titleSmall.copyWith(
                             fontWeight: FontWeight.w900,
-                            color: Theme.of(context).colorScheme.onBackground,
+                            color: AppColors.getTextPrimary(context),
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           '$missionCount activities • One-time purchase',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onBackground.withOpacity(0.7),
+                          style: AppTextStyles.caption.copyWith(
+                            color: AppColors.getTextSecondary(context),
                           ),
                         ),
                       ],
@@ -573,11 +567,9 @@ class _Body extends ConsumerWidget {
               const SizedBox(height: 12),
               Text(
                 'You can complete Activity 1 free. Unlock to access the full Journey and finish strong.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                style: AppTextStyles.bodySmall.copyWith(
                   height: 1.35,
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onBackground.withOpacity(0.85),
+                  color: AppColors.getTextPrimary(context).withOpacity(0.85),
                 ),
               ),
               const SizedBox(height: 14),
@@ -597,12 +589,9 @@ class _Body extends ConsumerWidget {
                         );
                       },
                       style: OutlinedButton.styleFrom(
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onBackground,
+                        foregroundColor: AppColors.getTextPrimary(context),
                         side: BorderSide(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withOpacity(0.28),
+                          color: AppColors.primary.withOpacity(0.28),
                           width: 1.4,
                         ),
                         shape: RoundedRectangleBorder(
@@ -610,7 +599,12 @@ class _Body extends ConsumerWidget {
                         ),
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
-                      child: const Text('Do free activity'),
+                      child: Text(
+                        'Do free activity',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -626,15 +620,20 @@ class _Body extends ConsumerWidget {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
-                      child: const Text('Unlock'),
+                      child: Text(
+                        'Unlock',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -1161,27 +1160,36 @@ class _UnlockCta extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 12),
-          ElevatedButton(
-            onPressed:
-                isLoading
-                    ? null
-                    : () {
-                      // Navigate to journey purchase screen
-                      Navigator.pushNamed(
-                        context,
-                        '/journey-purchase',
-                        arguments: journey,
-                      );
-                    },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed:
+                  isLoading
+                      ? null
+                      : () {
+                        // Navigate to journey purchase screen
+                        Navigator.pushNamed(
+                          context,
+                          '/journey-purchase',
+                          arguments: journey,
+                        );
+                      },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 14),
               ),
-              padding: const EdgeInsets.symmetric(vertical: 14),
+              child: Text(
+                'Unlock Journey',
+                style: AppTextStyles.bodySmall.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
             ),
-            child: const Text('Unlock Journey'),
           ),
         ],
       ),

@@ -7,6 +7,7 @@ import '../../../../core/router/app_routes.dart';
 import '../../../../core/widgets/guest_guard.dart';
 import '../../domain/journey_v1_models.dart';
 import '../../providers/journeys_providers.dart';
+import '../../../subscription/presentation/screens/journey_purchase_screen.dart';
 import 'journey_session_screen.dart';
 
 class JourneyGateScreen extends ConsumerStatefulWidget {
@@ -205,33 +206,13 @@ class _LockedView extends ConsumerWidget {
                 ],
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () async {
-                      final ent = ref.read(journeyEntitlementsServiceProvider);
-                      await ent.markPurchased(journey.id);
-
-                      ref.invalidate(purchasedJourneyIdsProvider);
-                      ref.invalidate(isJourneyPurchasedProvider(journey.id));
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text(
-                            'Unlocked. You can now access all activities.',
-                          ),
-                          backgroundColor: AppColors.success,
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder:
+                              (_) => JourneyPurchaseScreen(journey: journey),
                         ),
                       );
-
-                      if (context.mounted) {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder:
-                                (_) => JourneySessionScreen(
-                                  journeyId: journey.id,
-                                  missionId: activity.id,
-                                ),
-                          ),
-                        );
-                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,

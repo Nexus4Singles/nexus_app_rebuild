@@ -159,19 +159,16 @@ class StoryReactionsController extends StateNotifier<StoryReactionsState> {
     }
 
     final userName = await _getUserName(user);
-    final comment = await _firestore.addStoryComment(
+    await _firestore.addStoryComment(
       storyId: storyId,
       userId: user.uid,
       userName: userName,
       parentId: parentId,
       text: trimmed,
     );
-
-    final next = Map<String, List<StoryComment>>.from(state.commentsByStoryId);
-    final list = List<StoryComment>.from(next[storyId] ?? const []);
-    list.insert(0, comment);
-    next[storyId] = list;
-    state = state.copyWith(commentsByStoryId: next);
+    // No optimistic insert needed — the watchStoryComments stream
+    // (set up in ensureStory) already updates state via Firestore's
+    // latency-compensated snapshots() listener.
   }
 
   Future<void> addComment(String storyId, String text) async {

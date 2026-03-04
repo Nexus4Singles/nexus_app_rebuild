@@ -42,6 +42,8 @@ class PremiumFeatures {
 class SubscriptionService {
   FirebaseFirestore? _firestore;
 
+  SubscriptionService({FirebaseFirestore? firestore}) : _firestore = firestore;
+
   FirebaseFirestore? get _fsOrNull => _firestore;
 
   /// Check if user has premium subscription
@@ -117,7 +119,7 @@ class SubscriptionService {
       if (fs == null) return 0;
       final snapshot =
           await fs
-              .collection('chats')
+              .collection('nexus2_chats')
               .where('participantIds', arrayContains: userId)
               .get();
       return snapshot.docs.length;
@@ -172,7 +174,7 @@ class SubscriptionService {
     final sortedIds = [userId1, userId2]..sort();
     final chatId = '${sortedIds[0]}_${sortedIds[1]}';
 
-    final doc = await fs.collection('chats').doc(chatId).get();
+    final doc = await fs.collection('nexus2_chats').doc(chatId).get();
     return doc.exists ? doc : null;
   }
 
@@ -209,7 +211,8 @@ enum MessagePermission {
 
 /// Provider for subscription service
 final subscriptionServiceProvider = Provider<SubscriptionService>((ref) {
-  return SubscriptionService();
+  final fs = ref.watch(firestoreInstanceProvider);
+  return SubscriptionService(firestore: fs);
 });
 
 /// Provider for checking if current user is premium in real-time

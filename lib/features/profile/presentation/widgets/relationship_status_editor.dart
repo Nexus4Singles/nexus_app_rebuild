@@ -75,14 +75,14 @@ class RelationshipStatusEditor extends ConsumerWidget {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              const SizedBox(width: 46),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Switch Marital Status',
-                      style: AppTextStyles.titleMedium,
+                      style: AppTextStyles.titleSmall,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -364,7 +364,8 @@ void showRelationshipStatusDialog(
                                                   content: const Text(
                                                     'User not found',
                                                   ),
-                                                  backgroundColor: AppColors.primary,
+                                                  backgroundColor:
+                                                      AppColors.primary,
                                                 ),
                                               );
                                             }

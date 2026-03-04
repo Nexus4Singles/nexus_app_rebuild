@@ -40,24 +40,18 @@ class DatingPoolGuidelinesModal extends StatelessWidget {
                       description:
                           'For single, divorced, or widowed Christians, who have a genuine relationship with God.',
                     ),
-                    const SizedBox(height: 12),
-                    _GuidelineItem(
-                      icon: '📝',
-                      title: 'Key Profile Requirements',
-                      description:
-                          'Great Pictures & 3 Audio Recordings\n(Our Admin team will review to filter out fake or AI-generated content)',
-                    ),
+
                     const SizedBox(height: 12),
                     _GuidelineItem(
                       icon: '📸',
-                      title: 'Why Great Pictures Matter',
+                      title: 'Profile Pictures',
                       description:
                           'The quality of your Pictures will determine whether users will decide to listen to your recordings or not.',
                     ),
                     const SizedBox(height: 12),
                     _GuidelineItem(
                       icon: '🎤',
-                      title: 'Why Your Audio Recordings Matter',
+                      title: 'Audio Recordings',
                       description:
                           'Your audio recordings reveal your beliefs & thought processes because people want to know who you are beyond your looks.',
                     ),
@@ -86,7 +80,11 @@ class DatingPoolGuidelinesModal extends StatelessWidget {
 
                     // CTA Text (More compact)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.primary.withOpacity(0.08),
                         borderRadius: BorderRadius.circular(12),
@@ -96,9 +94,10 @@ class DatingPoolGuidelinesModal extends StatelessWidget {
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           const Text('⚡', style: TextStyle(fontSize: 18)),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 8),
                           Text(
                             'We wish you GODSPEED!!!',
                             style: AppTextStyles.bodySmall.copyWith(

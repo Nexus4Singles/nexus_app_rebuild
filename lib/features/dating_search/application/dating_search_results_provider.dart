@@ -175,25 +175,34 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     // DEBUG: firebaseReady status skipped to reduce log noise
   }
   if (!firebaseReady) {
-    print('[SearchResultsProvider] ❌ EARLY RETURN: Firebase not ready');
-    return const DatingSearchResult(items: []);
+    print('[SearchResultsProvider] ⏳ Firebase not ready, waiting...');
+    // Wait for Firebase to be ready instead of returning empty
+    await Future.delayed(const Duration(milliseconds: 500));
+    // Re-check after delay
+    final nowReady = ref.read(firebaseReadyProvider);
+    if (!nowReady) {
+      print('[SearchResultsProvider] ❌ Firebase still not ready after wait');
+      throw Exception('Firebase not initialized. Please restart the app.');
+    }
   }
 
   // Hard gate: disabled users cannot search.
-  final isDisabledAsync = ref.watch(currentUserDisabledProvider);
-  if (!isDisabledAsync.hasValue) {
-    print(
-      '[SearchResultsProvider] ❌ EARLY RETURN: isDisabled provider has no value yet',
-    );
-    return const DatingSearchResult(items: []);
+  // FIXED: Await the stream's first emission instead of returning empty when not ready.
+  // The old code returned DatingSearchResult(items: []) when hasValue was false,
+  // which caused a false "no matches" flash before the stream emitted.
+  bool isDisabled;
+  try {
+    isDisabled = await ref.watch(currentUserDisabledProvider.future);
+  } catch (_) {
+    isDisabled = false; // Default to not-disabled on error
   }
-  final isDisabled = isDisabledAsync.valueOrNull ?? false;
   if (kDebugMode) {
     // DEBUG: isDisabled status skipped to reduce log noise
   }
   if (isDisabled) {
     print('[SearchResultsProvider] ❌ EARLY RETURN: User account is disabled');
-    return const DatingSearchResult(items: []);
+    // CHANGED: Throw error instead of returning empty to avoid false "no profiles" state
+    throw Exception('User account is disabled');
   }
 
   // Admin bypass: Admins can search without preferences set
@@ -231,7 +240,8 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     print(
       '[SearchResultsProvider] ❌ EARLY RETURN: Gender provider threw error: $e',
     );
-    return const DatingSearchResult(items: []);
+    // CHANGED: Throw instead of returning empty to avoid false "no profiles" state
+    throw Exception('Failed to resolve user gender: $e');
   }
   if (kDebugMode) {
     // DEBUG: gender resolved - skipped to reduce log noise
@@ -245,23 +255,37 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
 
   if (gender == null || gender.trim().isEmpty) {
     print(
-      '[SearchResultsProvider] ⏳ Gender is null — retrying after brief delay...',
+      '[SearchResultsProvider] ⏳ Gender is null — retrying with escalating delays...',
     );
-    // Gender provider may have cached null from init before user doc loaded.
-    // Brief delay + re-read gives Riverpod time to propagate doc updates.
-    await Future.delayed(const Duration(milliseconds: 1500));
-    try {
-      // Force re-read (not watch) to pick up any changes since last evaluation
-      ref.invalidate(currentUserGenderProvider);
-      gender = await ref.read(currentUserGenderProvider.future);
-    } catch (_) {}
+    // Gender provider may yield null from init before user doc loaded.
+    // Retry with escalating delays and invalidation to ensure doc propagation.
+    const retryDelays = [
+      Duration(milliseconds: 800),
+      Duration(milliseconds: 1500),
+      Duration(seconds: 3),
+    ];
+    for (final delay in retryDelays) {
+      await Future.delayed(delay);
+      try {
+        ref.invalidate(currentUserGenderProvider);
+        gender = await ref
+            .read(currentUserGenderProvider.future)
+            .timeout(const Duration(seconds: 5), onTimeout: () => null);
+      } catch (_) {}
+      if (gender != null && gender.trim().isNotEmpty) {
+        print('[SearchResultsProvider] ✅ Gender resolved on retry: $gender');
+        break;
+      }
+    }
     if (gender == null || gender.trim().isEmpty) {
       print(
-        '[SearchResultsProvider] ❌ EARLY RETURN: Gender still null after retry (gender=$gender)',
+        '[SearchResultsProvider] ❌ EARLY RETURN: Gender still null after all retries (gender=$gender)',
       );
-      return const DatingSearchResult(items: []);
+      // CHANGED: Throw instead of returning empty to show loading in UI
+      throw Exception(
+        'Unable to determine user gender after multiple retries. This may indicate a connectivity issue.',
+      );
     }
-    print('[SearchResultsProvider] ✅ Gender resolved on retry: $gender');
   }
 
   String opposite(String g) {
@@ -280,7 +304,8 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     print(
       '[SearchResultsProvider] ❌ EARLY RETURN: Opposite gender is empty (user gender=$gender)',
     );
-    return const DatingSearchResult(items: []);
+    // CHANGED: Throw instead of returning empty
+    throw Exception('Unable to determine search gender (opposite of $gender)');
   }
 
   // Wait for preferences to resolve to avoid transient empty-state flashes.
@@ -291,7 +316,8 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     print(
       '[SearchResultsProvider] ❌ EARLY RETURN: Preferences provider threw error: $e',
     );
-    return const DatingSearchResult(items: []);
+    // CHANGED: Throw instead of returning empty
+    throw Exception('Failed to load preferences: $e');
   }
   if (kDebugMode) {
     // DEBUG: Preferences loaded - skipped to reduce log noise
@@ -307,7 +333,10 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
       print(
         '[SearchResultsProvider] ❌ EARLY RETURN: Preferences are null for non-admin user',
       );
-      return const DatingSearchResult(items: []);
+      // CHANGED: Throw instead of returning empty to avoid false "no profiles" state
+      throw Exception(
+        'Preferences not set up. User must complete dating preferences setup.',
+      );
     }
     // DEBUG: Admin user with no preferences - skipped to reduce log noise
     // Create default preferences for admins to see a broad range of profiles
@@ -427,11 +456,15 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
       // 2) If still slow, fall back to last good cached results.
       final stale = ref.read(searchResultsCacheProvider);
       if (stale != null && stale.items.isNotEmpty) {
+        print('[SearchResultsProvider] ⚠️ Timeout: Returning cached results');
         return stale;
       }
-      // 3) No stale data available: return neutral empty state (non-error)
-      // so UI can keep graceful loading/refresh semantics.
-      return const DatingSearchResult(items: []);
+      // 3) No stale data available: throw to trigger error state with retry
+      // This prevents false "no profiles" state - UI will show loading/error
+      print('[SearchResultsProvider] ❌ Timeout with no cache available');
+      throw TimeoutException(
+        'Search is taking longer than expected. Please check your connection and try again.',
+      );
     }
   } catch (e) {
     // Non-timeout errors should still bubble to error UI.
@@ -805,11 +838,21 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
 
           // Take up to 'remaining' profiles from unseen pool
           // This maintains the prioritized order (unseen by date)
-          final profilesToShow = allUnseenToday.take(remaining).toList();
+          final newProfilesToShow = allUnseenToday.take(remaining).toList();
 
-          // Only update if we have new profiles to show
-          if (profilesToShow.isNotEmpty) {
-            final allIds = [...shownIds, ...profilesToShow.map((p) => p.uid)];
+          // FIXED: Always include previously-shown profiles in the result set.
+          // The old code only returned new profiles (the delta), causing the grid
+          // to show fewer profiles than expected, or even empty if all new profiles
+          // were already dismissed.
+          final alreadySeenProfiles =
+              results.items.where((p) => shownIds.contains(p.uid)).toList();
+
+          // Only update persistence if we have new profiles to add
+          if (newProfilesToShow.isNotEmpty) {
+            final allIds = [
+              ...shownIds,
+              ...newProfilesToShow.map((p) => p.uid),
+            ];
 
             // Persist quota timestamp if hitting 10 for first time
             if (allIds.length >= 10 && persistedLimitHit == null) {
@@ -850,8 +893,9 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
               // Continue - deduplication may fail but user still sees results
             }
 
+            // Return FULL set: already-seen + newly-added profiles
             results = DatingSearchResult(
-              items: profilesToShow,
+              items: [...alreadySeenProfiles, ...newProfilesToShow],
               emptyHint: null,
               hitDailyLimit: allIds.length >= 10,
               totalAvailableCount: results.items.length,
@@ -862,10 +906,8 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
             );
           } else {
             // No unseen profiles left - return the already-seen profiles so grid stays populated
-            final todaysProfiles =
-                results.items.where((p) => shownIds.contains(p.uid)).toList();
             results = DatingSearchResult(
-              items: todaysProfiles,
+              items: alreadySeenProfiles,
               emptyHint: null,
               hitDailyLimit: shownIds.length >= 10,
               totalAvailableCount: results.items.length,
@@ -1009,115 +1051,128 @@ final cachedDatingSearchResultsProvider = FutureProvider<DatingSearchResult>((
 // ============================================================================
 // This provider accumulates results batches to show incrementally
 
-final paginatedDatingSearchResultsProvider = FutureProvider<DatingSearchResult>(
-  (ref) async {
-    // Watch the offset - when it changes, fetch the next batch
-    final offset = ref.watch(searchResultsOffsetProvider);
+final paginatedDatingSearchResultsProvider = FutureProvider<
+  DatingSearchResult
+>((ref) async {
+  // Watch the offset - when it changes, fetch the next batch
+  final offset = ref.watch(searchResultsOffsetProvider);
 
-    // Get current preferences
-    DatingPreferences? preferences;
-    try {
-      preferences = await ref.read(datingPreferencesProvider.future);
-    } catch (_) {
-      return const DatingSearchResult(items: []);
-    }
+  // Get current preferences
+  DatingPreferences? preferences;
+  try {
+    preferences = await ref.read(datingPreferencesProvider.future);
+  } catch (e) {
+    // Don't return empty - this is a pagination provider, empty breaks the UI
+    print(
+      '[PaginatedProvider] ⚠️ Failed to load preferences for pagination: $e',
+    );
+    // Return empty but don't break - main provider handles preferences
+    preferences = null;
+  }
 
-    if (offset == 0) {
-      // Initial load - use cached results or fetch fresh
-      return await ref.watch(cachedDatingSearchResultsProvider.future);
-    }
+  if (offset == 0) {
+    // Initial load - use cached results or fetch fresh
+    return await ref.watch(cachedDatingSearchResultsProvider.future);
+  }
 
-    // Subsequent batches - fetch more results
-    final firebaseReady = ref.watch(firebaseReadyProvider);
-    if (!firebaseReady) {
-      return const DatingSearchResult(items: []);
-    }
+  // Subsequent batches - fetch more results
+  final firebaseReady = ref.watch(firebaseReadyProvider);
+  if (!firebaseReady) {
+    // Pagination batch - return empty gracefully (main provider handles Firebase check)
+    return const DatingSearchResult(items: []);
+  }
 
-    // Get gender
-    String? gender = await ref.watch(currentUserGenderProvider.future);
-    if (gender == null || gender.trim().isEmpty) {
-      return const DatingSearchResult(items: []);
-    }
+  // Get gender
+  String? gender;
+  try {
+    gender = await ref.watch(currentUserGenderProvider.future);
+  } catch (_) {
+    // Pagination batch - return empty gracefully
+    return const DatingSearchResult(items: []);
+  }
+  if (gender == null || gender.trim().isEmpty) {
+    // Pagination batch - return empty gracefully
+    return const DatingSearchResult(items: []);
+  }
 
-    String opposite(String g) {
-      final v = g.toLowerCase();
-      if (v == 'male') return 'female';
-      if (v == 'female') return 'male';
-      return '';
-    }
+  String opposite(String g) {
+    final v = g.toLowerCase();
+    if (v == 'male') return 'female';
+    if (v == 'female') return 'male';
+    return '';
+  }
 
-    final genderToShow = opposite(gender);
+  final genderToShow = opposite(gender);
 
-    // Get dismissed profiles
-    final dismissedAsync = ref.watch(dismissedProfilesProvider);
-    final dismissedIds = dismissedAsync.valueOrNull ?? [];
+  // Get dismissed profiles
+  final dismissedAsync = ref.watch(dismissedProfilesProvider);
+  final dismissedIds = dismissedAsync.valueOrNull ?? [];
 
-    // Build filters
-    final filters =
-        preferences != null
-            ? DatingSearchFilters(
-              minAge: preferences.minAge,
-              maxAge: preferences.maxAge,
-              countryOfResidence: preferences.countryOfResidence,
-              longDistance:
-                  preferences.allowLongDistance == true
-                      ? 'Yes'
-                      : (preferences.allowLongDistance == false ? 'No' : null),
-              maritalStatus:
-                  preferences.openToMarriedBefore == false
-                      ? 'Never married'
-                      : null,
-              hasKids: preferences.openToKids == false ? 'No' : null,
-              genotype: preferences.genotypePreference,
-            )
-            : DatingSearchFilters(minAge: 21, maxAge: 70);
+  // Build filters
+  final filters =
+      preferences != null
+          ? DatingSearchFilters(
+            minAge: preferences.minAge,
+            maxAge: preferences.maxAge,
+            countryOfResidence: preferences.countryOfResidence,
+            longDistance:
+                preferences.allowLongDistance == true
+                    ? 'Yes'
+                    : (preferences.allowLongDistance == false ? 'No' : null),
+            maritalStatus:
+                preferences.openToMarriedBefore == false
+                    ? 'Never married'
+                    : null,
+            hasKids: preferences.openToKids == false ? 'No' : null,
+            genotype: preferences.genotypePreference,
+          )
+          : DatingSearchFilters(minAge: 21, maxAge: 70);
 
-    // Fetch next batch
-    final service = ref.read(datingSearchServiceProvider);
-    DatingSearchResult nextBatch;
+  // Fetch next batch
+  final service = ref.read(datingSearchServiceProvider);
+  DatingSearchResult nextBatch;
 
+  try {
+    nextBatch = await service
+        .search(
+          genderToShow: genderToShow,
+          filters: filters,
+          offset: offset,
+          limit: 30, // Subsequent batches are 30 profiles each
+        )
+        .timeout(const Duration(seconds: 20));
+  } on TimeoutException {
     try {
       nextBatch = await service
           .search(
             genderToShow: genderToShow,
             filters: filters,
             offset: offset,
-            limit: 30, // Subsequent batches are 30 profiles each
+            limit: 20,
           )
-          .timeout(const Duration(seconds: 20));
-    } on TimeoutException {
-      try {
-        nextBatch = await service
-            .search(
-              genderToShow: genderToShow,
-              filters: filters,
-              offset: offset,
-              limit: 20,
-            )
-            .timeout(const Duration(seconds: 10));
-      } catch (_) {
-        return const DatingSearchResult(items: []);
-      }
+          .timeout(const Duration(seconds: 10));
     } catch (_) {
-      // If fetching next batch fails, return empty (no more profiles)
       return const DatingSearchResult(items: []);
     }
+  } catch (_) {
+    // If fetching next batch fails, return empty (no more profiles)
+    return const DatingSearchResult(items: []);
+  }
 
-    // Filter dismissed profiles
-    if (nextBatch.items.isNotEmpty) {
-      final filtered =
-          nextBatch.items
-              .where((profile) => !dismissedIds.contains(profile.uid))
-              .toList();
-      nextBatch = DatingSearchResult(
-        items: filtered,
-        emptyHint: nextBatch.emptyHint,
-      );
-    }
+  // Filter dismissed profiles
+  if (nextBatch.items.isNotEmpty) {
+    final filtered =
+        nextBatch.items
+            .where((profile) => !dismissedIds.contains(profile.uid))
+            .toList();
+    nextBatch = DatingSearchResult(
+      items: filtered,
+      emptyHint: nextBatch.emptyHint,
+    );
+  }
 
-    return nextBatch;
-  },
-);
+  return nextBatch;
+});
 
 // ============================================================================
 // ACCUMULATOR - Combines initial results with all paginated batches

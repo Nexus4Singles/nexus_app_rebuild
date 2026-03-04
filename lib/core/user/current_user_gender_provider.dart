@@ -126,89 +126,61 @@ final currentUserGenderProvider = StreamProvider<String?>((ref) async* {
       '[currentUserGenderProvider]   v2 (nexus2): $v2Gender (valid=$v2Valid)',
     );
 
-    // MISMATCH CASE: Both exist but differ → use v1 as source of truth
-    if (v1Valid && v2Valid && v1Gender != v2Gender) {
-      print(
-        '[currentUserGenderProvider] ⚠️ MISMATCH DETECTED: v1=$v1Gender != v2=$v2Gender',
-      );
-      print(
-        '[currentUserGenderProvider] Using v1 as source of truth, updating v2...',
-      );
-
+    // Helper: write resolved gender to ALL storage locations so future
+    // lookups are consistent everywhere (root, nexus2, dating).
+    Future<void> normalizeAllGenderFields(String resolved) async {
       try {
         final firestore = FirebaseFirestore.instance;
-        await firestore.collection('users').doc(uid).update({
-          'dating.profile.gender': v1Gender,
-        });
+        await firestore.collection('users').doc(uid).set(<String, dynamic>{
+          'gender': resolved,
+          'nexus2': <String, dynamic>{'gender': resolved},
+          'dating': <String, dynamic>{
+            'gender': resolved,
+            'profile': <String, dynamic>{'gender': resolved},
+          },
+        }, SetOptions(merge: true));
         print(
-          '[currentUserGenderProvider] ✓ Fixed: updated dating.profile.gender to $v1Gender',
+          '[currentUserGenderProvider] ✓ Normalized all gender fields to $resolved',
         );
       } catch (e) {
-        print('[currentUserGenderProvider] ✗ Failed to sync gender: $e');
+        print('[currentUserGenderProvider] ✗ Failed to normalize gender: $e');
       }
-
-      yield v1Gender;
-      return;
     }
 
-    // CASE: Both valid and match → use either (already consistent)
-    if (v1Valid && v2Valid && v1Gender == v2Gender) {
-      print(
-        '[currentUserGenderProvider] ✓ Both v1 & v2 match: $v1Gender (consistent)',
-      );
-      yield v1Gender;
-      return;
+    // Resolution priority: v2 (nexus2) > dating.profile > v1 (root).
+    // nexus2.gender is the canonical source of truth.
+    String? resolved;
+    if (v2Valid) {
+      resolved = v2Gender;
+    } else if (datingValid) {
+      resolved = datingGender;
+    } else if (v1Valid) {
+      resolved = v1Gender;
     }
 
-    // CASE: Only v1 valid → use v1 and sync to v2 if nexus2 exists
-    if (v1Valid && !v2Valid) {
-      print('[currentUserGenderProvider] ✓ Using v1: $v1Gender');
+    if (resolved != null) {
+      // Check if any field disagrees with the resolved value and normalize.
+      final needsSync =
+          (v1Gender != resolved) ||
+          (v2Gender != resolved) ||
+          (datingGender != resolved);
 
-      // If nexus2 subdoc exists but gender missing, populate it
-      if (doc['nexus2'] != null) {
-        try {
-          final firestore = FirebaseFirestore.instance;
-          await firestore.collection('users').doc(uid).update({
-            'dating.profile.gender': v1Gender,
-          });
-          print('[currentUserGenderProvider] ✓ Synced v1 to v2: $v1Gender');
-        } catch (e) {
-          print('[currentUserGenderProvider] ✗ Failed to sync to v2: $e');
-        }
-      }
-
-      yield v1Gender;
-      return;
-    }
-
-    // CASE: Only v2 valid → use v2 (no sync needed, v2 is already populated)
-    if (v2Valid && !v1Valid) {
-      print('[currentUserGenderProvider] ✓ Using v2: $v2Gender');
-      yield v2Gender;
-      return;
-    }
-
-    // CASE: Only dating.profile.gender valid → use it and sync to root + v2
-    if (datingValid && !v1Valid && !v2Valid) {
-      print(
-        '[currentUserGenderProvider] ✓ Using dating.profile.gender: $datingGender (syncing to root)',
-      );
-      try {
-        final firestore = FirebaseFirestore.instance;
-        await firestore.collection('users').doc(uid).update({
-          'gender': datingGender,
-        });
+      if (needsSync) {
         print(
-          '[currentUserGenderProvider] ✓ Synced dating.profile.gender to root: $datingGender',
+          '[currentUserGenderProvider] ⚠️ Inconsistency detected — normalizing to $resolved',
         );
-      } catch (e) {
-        print('[currentUserGenderProvider] ✗ Failed to sync to root: $e');
+        await normalizeAllGenderFields(resolved);
+      } else {
+        print(
+          '[currentUserGenderProvider] ✓ All gender fields consistent: $resolved',
+        );
       }
-      yield datingGender;
+
+      yield resolved;
       return;
     }
 
-    // CASE: Neither valid
+    // CASE: No valid gender found anywhere
     print(
       '[currentUserGenderProvider] ✗ CRITICAL: Authenticated user has no valid gender (uid=$uid)',
     );

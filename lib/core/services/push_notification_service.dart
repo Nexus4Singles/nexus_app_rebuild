@@ -199,36 +199,23 @@ class PushNotificationService {
   // Guard to prevent multiple initializations
   bool _initialized = false;
 
-  /// Initialize the push notification service
-  /// Call this during app startup
+  /// @deprecated Use FcmTokenService for token management and
+  /// NotificationService for display/handling instead.
+  ///
+  /// This method is disabled to prevent dual-service conflicts.
+  /// FCM token management is now handled by FcmTokenService.
+  /// Notification display is handled by NotificationService.
   Future<void> initialize(String? userId) async {
-    // Only initialize once - prevent duplicate listeners
-    if (_initialized) {
-      print('PushNotificationService already initialized');
-      return;
-    }
-    _initialized = true;
-
-    // Request permission
-    final settings = await requestPermission();
-    if (settings.pushEnabled) {
-      // Get FCM token
-      final token = await getToken();
-      // Save token to Firestore if user is logged in
-      if (userId != null && token != null) {
-        await saveTokenToFirestore(userId, token);
-      }
-
-      // Listen for token refresh
-      _messaging.onTokenRefresh.listen((newToken) {
-        if (userId != null) {
-          saveTokenToFirestore(userId, newToken);
-        }
-      });
-
-      // Configure message handlers
-      _configureMessageHandlers();
-    }
+    print(
+      '[PushNotificationService] ⚠️ DEPRECATED - This service is disabled.',
+    );
+    print(
+      '[PushNotificationService] FCM tokens are managed by FcmTokenService.',
+    );
+    print(
+      '[PushNotificationService] Notification display is managed by NotificationService.',
+    );
+    return; // No-op - prevent competing with FcmTokenService
   }
 
   /// Request notification permission
@@ -342,9 +329,21 @@ class PushNotificationService {
 
   /// Navigate to appropriate screen based on notification data
   void _navigateFromNotification(Map<String, dynamic> data) {
-    // NOTE: Deep-link navigation disabled for MVP stability.
-    // Tapping a notification should only launch the app.
-    // We keep this method as a no-op to avoid crashes during cold starts.
+    final route = data['route'] as String?;
+
+    if (route == null || route.isEmpty) {
+      // No specific route, just open the app
+      return;
+    }
+
+    print('[PushNotificationService] Navigating to route: $route');
+
+    // Push the route onto the navigator stack
+    try {
+      navigatorKey.currentState?.pushNamed(route);
+    } catch (e) {
+      print('[PushNotificationService] Navigation error: $e');
+    }
   }
 
   /// Subscribe to a topic (e.g., "weekly_stories", "all_users")

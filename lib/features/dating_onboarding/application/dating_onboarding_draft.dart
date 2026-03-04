@@ -206,14 +206,34 @@ class DatingOnboardingDraftNotifier
 
   static const _storageKey = 'dating_onboarding_draft';
 
-  /// Load saved draft from SharedPreferences on init
+  /// Load saved draft from SharedPreferences on init.
+  ///
+  /// Only text/selection fields through "Desired Qualities" are loaded.
+  /// Any legacy photo/audio/contactInfo data that might exist in old
+  /// SharedPrefs entries is explicitly discarded to prevent stale data.
   Future<void> _loadDraft() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final jsonString = prefs.getString(_storageKey);
       if (jsonString != null) {
         final json = jsonDecode(jsonString) as Map<String, dynamic>;
-        state = DatingOnboardingDraft.fromJson(json);
+        // Only restore text/selection fields — photo/audio/contact fields
+        // are intentionally ignored even if present in legacy data.
+        state = DatingOnboardingDraft(
+          age: json['age'] as int?,
+          city: json['city'] as String?,
+          countryOfResidence: json['countryOfResidence'] as String?,
+          nationality: json['nationality'] as String?,
+          educationLevel: json['educationLevel'] as String?,
+          profession: json['profession'] as String?,
+          churchName: json['churchName'] as String?,
+          otherChurchName: json['otherChurchName'] as String?,
+          hobbies: (json['hobbies'] as List<dynamic>?)?.cast<String>() ?? [],
+          desiredQualities:
+              (json['desiredQualities'] as List<dynamic>?)?.cast<String>() ??
+              [],
+          // photoPaths, photoUrls, audio*, contactInfo: use defaults (empty)
+        );
         print(
           '[DRAFT] 📥 Loaded from SharedPreferences: age=${state.age}, city=${state.city}, country=${state.countryOfResidence}, hobbies=${state.hobbies.length}, qualities=${state.desiredQualities.length}',
         );
@@ -232,12 +252,37 @@ class DatingOnboardingDraftNotifier
     _saveDraft();
   }
 
-  /// Save draft to SharedPreferences after each change
+  /// Save draft to SharedPreferences after each change.
+  ///
+  /// IMPORTANT: Only text/selection fields up through "Desired Qualities"
+  /// (step 4 of 8) are persisted. Photo paths/URLs, audio paths/URLs/
+  /// durations, and contactInfo are deliberately EXCLUDED.
+  ///
+  /// Rationale:
+  /// - Temp file paths (photoPaths, audioPaths) are unreliable across app
+  ///   restarts — the OS can clear the tmp directory at any time.
+  /// - Persisting remote URLs leads to stale-data bugs where old URLs
+  ///   get submitted to Firestore even though the underlying media changed.
+  /// - By not persisting media fields, users always start fresh from the
+  ///   Photos step if they exit mid-onboarding. This is predictable and
+  ///   eliminates an entire class of upload/stale-data bugs.
   Future<void> _saveDraft() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final jsonString = jsonEncode(state.toJson());
-      await prefs.setString(_storageKey, jsonString);
+      final persistable = <String, dynamic>{
+        'age': state.age,
+        'city': state.city,
+        'countryOfResidence': state.countryOfResidence,
+        'nationality': state.nationality,
+        'educationLevel': state.educationLevel,
+        'profession': state.profession,
+        'churchName': state.churchName,
+        'otherChurchName': state.otherChurchName,
+        'hobbies': state.hobbies,
+        'desiredQualities': state.desiredQualities,
+        // photoPaths, photoUrls, audio*, contactInfo intentionally omitted
+      };
+      await prefs.setString(_storageKey, jsonEncode(persistable));
       print(
         '[DRAFT] 💾 Saved to SharedPreferences: age=${state.age}, city=${state.city}, hobbies=${state.hobbies.length}, qualities=${state.desiredQualities.length}',
       );
@@ -303,7 +348,10 @@ class DatingOnboardingDraftNotifier
   }
 
   void setPhotos(List<String> paths) {
-    state = state.copyWith(photoPaths: paths);
+    // Clear photoUrls when the photo list changes — the old URLs are stale
+    // and no longer correspond to the current photos. The next Continue tap
+    // will re-upload.
+    state = state.copyWith(photoPaths: paths, photoUrls: []);
     _saveDraft();
   }
 

@@ -10,6 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
+import '../services/revenuecat_service.dart';
+import '../services/journey_entitlements_service.dart';
 import 'firestore_service_provider.dart';
 
 /// Provider for AuthService instance
@@ -57,6 +59,34 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
       print(
         '[AuthNotifier] authStateChanges -> ${user?.uid ?? "null"} verified=${user?.emailVerified} anon=${user?.isAnonymous}',
       );
+
+      // ── RevenueCat ↔ auth sync ──────────────────────────────
+      // Link/unlink RevenueCat to the current user so entitlements
+      // (subscriptions & journey purchases) are scoped per-account,
+      // not per-device.
+      if (user != null && !user.isAnonymous) {
+        try {
+          await RevenueCatService.login(user.uid);
+          print('[AuthNotifier] ✅ RevenueCat linked to user: ${user.uid}');
+        } catch (e) {
+          print('[AuthNotifier] ⚠️ RevenueCat login failed (non-fatal): $e');
+        }
+      } else {
+        // user == null (signed out) or anonymous (guest mode)
+        try {
+          await RevenueCatService.logout();
+          print('[AuthNotifier] ✅ RevenueCat logged out (anonymous)');
+        } catch (e) {
+          print('[AuthNotifier] ⚠️ RevenueCat logout failed (non-fatal): $e');
+        }
+        // Clear device-local journey purchase cache so the next account
+        // doesn't see the previous user's purchased journeys.
+        try {
+          await JourneyEntitlementsService().clearAll();
+        } catch (_) {}
+        // Clear all other user-specific SharedPreferences keys
+        await _clearUserLocalData();
+      }
 
       if (user != null && !user.isAnonymous) {
         // Check if user document exists in Firestore
@@ -169,9 +199,15 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
       // Add username if available from signup
       if (pendingUsername != null && pendingUsername.trim().isNotEmpty) {
-        base['username'] = pendingUsername.trim();
-        base['name'] = pendingUsername.trim();
-        base['displayName'] = pendingUsername.trim();
+        final trimmed = pendingUsername.trim();
+        base['username'] = trimmed;
+        // Normalise: lowercase + collapse any multi-space runs
+        base['username_lower'] = trimmed.toLowerCase().replaceAll(
+          RegExp(r'\s+'),
+          ' ',
+        );
+        base['name'] = trimmed;
+        base['displayName'] = trimmed;
       }
 
       await docRef.set(base, SetOptions(merge: true));
@@ -188,13 +224,46 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
     }
 
     // Existing doc (v1 or partial v2): patch missing v2 fields only.
-    final patch = buildUserV2Patch(
+    // Also check for pending username from signup that needs to be saved
+    String? pendingUsername;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      pendingUsername = prefs.getString('pending_username_$uid');
+    } catch (_) {
+      // Ignore prefs errors
+    }
+
+    var patch = buildUserV2Patch(
       uid: uid,
       raw: raw,
       fallbackEmail: user.email,
       fallbackDisplayName: user.displayName,
       fallbackPhotoUrl: user.photoURL,
     );
+
+    // If username/name are missing, add them from pending signup or fallback
+    if (pendingUsername != null && pendingUsername.trim().isNotEmpty) {
+      final trimmed = pendingUsername.trim();
+      // Only set if not already present
+      if ((raw['username'] == null ||
+              raw['username'].toString().trim().isEmpty) &&
+          (raw['name'] == null || raw['name'].toString().trim().isEmpty)) {
+        patch['username'] = trimmed;
+        patch['name'] = trimmed;
+        patch['displayName'] = trimmed;
+        patch['username_lower'] = trimmed.toLowerCase().replaceAll(
+          RegExp(r'\s+'),
+          ' ',
+        );
+        // Clean up the pending username now that it's persisted
+        try {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.remove('pending_username_$uid');
+        } catch (_) {
+          // Ignore cleanup errors
+        }
+      }
+    }
 
     if (patch.isEmpty) return;
     await docRef.set(patch, SetOptions(merge: true));
@@ -379,6 +448,11 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
     await _firestoreService.updateUserFields(user.uid, {
       'username': normalized,
+      // Normalise: lowercase + collapse any multi-space runs
+      'username_lower': normalized.toLowerCase().replaceAll(
+        RegExp(r'\s+'),
+        ' ',
+      ),
       'dating.profile.username': normalized,
       'updatedAt': FieldValue.serverTimestamp(),
     });
@@ -390,7 +464,19 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
   }
 
   /// Sign out
+  ///
+  /// Cleans up RevenueCat (unlinks store account from this user) and
+  /// device-local journey caches before signing out of Firebase Auth.
+  /// The auth state listener also handles this reactively, but doing
+  /// it explicitly here ensures cleanup even if the listener lags.
   Future<void> signOut() async {
+    try {
+      await RevenueCatService.logout();
+    } catch (_) {}
+    try {
+      await JourneyEntitlementsService().clearAll();
+    } catch (_) {}
+    await _clearUserLocalData();
     await _authService.signOut();
     state = const AsyncValue.data(null);
   }
@@ -401,6 +487,15 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
     if (user == null) return;
 
     try {
+      // Unlink RevenueCat and clear local caches before deletion
+      try {
+        await RevenueCatService.logout();
+      } catch (_) {}
+      try {
+        await JourneyEntitlementsService().clearAll();
+      } catch (_) {}
+      await _clearUserLocalData();
+
       // First delete Firestore document
       // This triggers Cloud Function to delete Auth user
       await _firestoreService.deleteUser(user.uid);
@@ -413,6 +508,55 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
       // Even if there's an error, set state to null to log user out
       state = const AsyncValue.data(null);
       rethrow;
+    }
+  }
+
+  /// Wipe all user-specific SharedPreferences keys so the next account
+  /// on this device starts clean.  Keys that are NOT user-scoped but
+  /// hold user-specific data are enumerated here.
+  Future<void> _clearUserLocalData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      // Known per-journey prefixed keys (journey_*:)
+      const journeyPrefixes = [
+        'journey_completed_missions:',
+        'journey_last_complete:',
+        'journey_streak:',
+        'journey_in_progress:',
+        'journey_progress::',
+      ];
+
+      // Known static keys with user-specific data
+      const staticKeys = [
+        'journeys.mission_responses.v1',
+        'dating_onboarding_draft',
+        'presurvey_local_done',
+        'activeJourneyId',
+        'active_journey_id',
+        'activeJourney',
+        'active_journey',
+        'dating_search_first_completed',
+        'preferences_setup_after_status_change',
+      ];
+
+      // Remove static keys
+      for (final key in staticKeys) {
+        await prefs.remove(key);
+      }
+
+      // Remove all prefixed journey keys
+      final allKeys = prefs.getKeys();
+      for (final key in allKeys) {
+        for (final prefix in journeyPrefixes) {
+          if (key.startsWith(prefix)) {
+            await prefs.remove(key);
+            break;
+          }
+        }
+      }
+    } catch (e) {
+      print('[AuthNotifier] _clearUserLocalData error (non-fatal): $e');
     }
   }
 }

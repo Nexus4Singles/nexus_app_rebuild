@@ -84,7 +84,9 @@ class MediaService {
       if (pickedFile == null) return null;
       if (cropToSquare) return await _cropImage(pickedFile.path);
       return File(pickedFile.path);
-    } catch (e) { return null; }
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<File?> pickImageFromCamera({
@@ -94,7 +96,8 @@ class MediaService {
     bool cropToSquare = true,
   }) async {
     try {
-      if (!await requestCameraPermission()) throw MediaException('Camera permission denied');
+      if (!await requestCameraPermission())
+        throw MediaException('Camera permission denied');
       final XFile? pickedFile = await _imagePicker.pickImage(
         source: ImageSource.camera,
         maxWidth: maxWidth.toDouble(),
@@ -105,36 +108,43 @@ class MediaService {
       if (pickedFile == null) return null;
       if (cropToSquare) return await _cropImage(pickedFile.path);
       return File(pickedFile.path);
-    } catch (e) { return null; }
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<File?> pickImage(BuildContext context) async {
     final source = await showModalBottomSheet<ImageSource>(
       context: context,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
-      builder: (context) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: const Text('Photo Library'),
-                onTap: () => Navigator.pop(context, ImageSource.gallery),
-              ),
-              ListTile(
-                leading: const Icon(Icons.camera_alt),
-                title: const Text('Camera'),
-                onTap: () => Navigator.pop(context, ImageSource.camera),
-              ),
-            ],
-          ),
-        ),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
+      builder:
+          (context) => SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Photo Library'),
+                    onTap: () => Navigator.pop(context, ImageSource.gallery),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.camera_alt),
+                    title: const Text('Camera'),
+                    onTap: () => Navigator.pop(context, ImageSource.camera),
+                  ),
+                ],
+              ),
+            ),
+          ),
     );
     if (source == null) return null;
-    return source == ImageSource.camera ? await pickImageFromCamera() : await pickImageFromGallery();
+    return source == ImageSource.camera
+        ? await pickImageFromCamera()
+        : await pickImageFromGallery();
   }
 
   // ============================================================================
@@ -143,11 +153,17 @@ class MediaService {
 
   Future<bool?> hasHumanFace(String filePath) async {
     try {
-      final detector = FaceDetector(options: FaceDetectorOptions(performanceMode: FaceDetectorMode.fast));
-      final faces = await detector.processImage(InputImage.fromFilePath(filePath));
+      final detector = FaceDetector(
+        options: FaceDetectorOptions(performanceMode: FaceDetectorMode.fast),
+      );
+      final faces = await detector.processImage(
+        InputImage.fromFilePath(filePath),
+      );
       await detector.close();
       return faces.isNotEmpty;
-    } catch (_) { return null; }
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<File?> _cropImage(String sourcePath) async {
@@ -156,12 +172,18 @@ class MediaService {
         sourcePath: sourcePath,
         aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
         uiSettings: [
-          AndroidUiSettings(toolbarTitle: 'Crop Photo', toolbarColor: AppColors.primary, lockAspectRatio: true),
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Photo',
+            toolbarColor: AppColors.primary,
+            lockAspectRatio: true,
+          ),
           IOSUiSettings(title: 'Crop Photo', aspectRatioLockEnabled: true),
         ],
       );
       return croppedFile != null ? File(croppedFile.path) : File(sourcePath);
-    } catch (_) { return File(sourcePath); }
+    } catch (_) {
+      return File(sourcePath);
+    }
   }
 
   // ============================================================================
@@ -174,14 +196,23 @@ class MediaService {
     Function(double)? onAmplitudeUpdate,
   }) async {
     try {
-      if (!await requestMicrophonePermission()) throw MediaException('Microphone permission denied');
+      if (!await requestMicrophonePermission())
+        throw MediaException('Microphone permission denied');
       if (_isRecording) await stopRecording();
 
       final directory = await getTemporaryDirectory();
-      _currentRecordingPath = p.join(directory.path, 'recording_${DateTime.now().millisecondsSinceEpoch}.m4a');
+      _currentRecordingPath = p.join(
+        directory.path,
+        'recording_${DateTime.now().millisecondsSinceEpoch}.m4a',
+      );
 
       await _audioRecorder.start(
-        const RecordConfig(encoder: AudioEncoder.aacLc, bitRate: 128000, sampleRate: 44100, numChannels: 1),
+        const RecordConfig(
+          encoder: AudioEncoder.aacLc,
+          bitRate: 128000,
+          sampleRate: 44100,
+          numChannels: 1,
+        ),
         path: _currentRecordingPath!,
       );
 
@@ -190,24 +221,36 @@ class MediaService {
       onRecordingDurationUpdate = onDurationUpdate;
       onRecordingAmplitudeUpdate = onAmplitudeUpdate;
 
-      _recordingTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      _recordingTimer = Timer.periodic(const Duration(milliseconds: 100), (
+        timer,
+      ) {
         final duration = DateTime.now().difference(_recordingStartTime!);
-        if (duration.inSeconds >= maxDuration) { stopRecording(); return; }
+        if (duration.inSeconds >= maxDuration) {
+          stopRecording();
+          return;
+        }
         onRecordingDurationUpdate?.call(duration);
       });
 
       _startAmplitudeStream();
       return true;
-    } catch (_) { _isRecording = false; return false; }
+    } catch (_) {
+      _isRecording = false;
+      return false;
+    }
   }
 
   void _startAmplitudeStream() async {
     while (_isRecording) {
       try {
         final amplitude = await _audioRecorder.getAmplitude();
-        onRecordingAmplitudeUpdate?.call(((amplitude.current + 60) / 60).clamp(0.0, 1.0));
+        onRecordingAmplitudeUpdate?.call(
+          ((amplitude.current + 60) / 60).clamp(0.0, 1.0),
+        );
         await Future.delayed(const Duration(milliseconds: 50));
-      } catch (_) { break; }
+      } catch (_) {
+        break;
+      }
     }
   }
 
@@ -219,57 +262,117 @@ class MediaService {
       await Future.delayed(const Duration(milliseconds: 500));
       _isRecording = false;
       return path ?? _currentRecordingPath;
-    } catch (_) { _isRecording = false; return null; }
+    } catch (_) {
+      _isRecording = false;
+      return null;
+    }
   }
 
   // ============================================================================
   // AUDIO PLAYBACK (just_audio implementation)
   // ============================================================================
 
+  /// Play audio from file path or URL
+  /// Handles both local files and remote URLs with Android compatibility
   Future<void> playAudio(String path) async {
     try {
       if (path.startsWith('http')) {
+        // For URLs, add caching and error handling for Android
         await _audioPlayer.setUrl(path);
       } else {
         await _audioPlayer.setFilePath(path);
       }
       await _audioPlayer.play();
-    } catch (e) { throw MediaException('Failed to play audio: $e'); }
+    } catch (e) {
+      throw MediaException('Failed to play audio: $e');
+    }
   }
 
   Future<void> playAudioFromUrl(String url) async => playAudio(url);
   Future<void> pauseAudio() async => await _audioPlayer.pause();
   Future<void> resumeAudio() async => await _audioPlayer.play();
   Future<void> stopAudio() async => await _audioPlayer.stop();
-  Future<void> seekAudio(Duration position) async => await _audioPlayer.seek(position);
+  Future<void> seekAudio(Duration position) async =>
+      await _audioPlayer.seek(position);
 
+  /// Get audio duration with validation
+  /// Returns capped duration for max 90-second recordings
+  /// Returns null if duration cannot be determined
   Future<Duration?> getAudioDuration(String path) async {
     try {
-      return path.startsWith('http') 
-          ? await _audioPlayer.setUrl(path) 
-          : await _audioPlayer.setFilePath(path);
-    } catch (_) { return null; }
+      final duration =
+          path.startsWith('http')
+              ? await _audioPlayer.setUrl(path)
+              : await _audioPlayer.setFilePath(path);
+
+      // Validate duration is reasonable (max 90 seconds for recordings)
+      if (duration != null && duration.inSeconds > 90) {
+        debugPrint(
+          '[MediaService] ⚠️  Audio duration suspicious: ${duration.inSeconds}s, capping to 90s',
+        );
+        return const Duration(seconds: 90);
+      }
+
+      return duration;
+    } catch (_) {
+      return null;
+    }
   }
 
-  Stream<ja.PlayerState> get onPlayerStateChanged => _audioPlayer.playerStateStream;
+  Stream<ja.PlayerState> get onPlayerStateChanged =>
+      _audioPlayer.playerStateStream;
   Stream<Duration> get onPositionChanged => _audioPlayer.positionStream;
-  Stream<Duration?> get onDurationChanged => _audioPlayer.durationStream;
+
+  /// Duration stream with validation to prevent Android duration reporting issues
+  /// Filters out unreasonable durations (> 90 seconds for 60s max recordings)
+  Stream<Duration?> get onDurationChanged {
+    return _audioPlayer.durationStream.map((duration) {
+      // Validate and cap the duration to prevent Android reporting bugs
+      if (duration != null && duration.inSeconds > 90) {
+        debugPrint(
+          '[MediaService] ⚠️  Android duration bug detected: ${duration.inSeconds}s, filtering to reasonable max',
+        );
+        return const Duration(seconds: 90);
+      }
+      return duration;
+    });
+  }
 
   // ============================================================================
   // STORAGE OPERATIONS (Cloud-managed keys)
   // ============================================================================
 
-  Future<String> uploadProfilePhoto(String userId, File imageFile, {int photoIndex = 0, Function(double)? onProgress}) async {
+  Future<String> uploadProfilePhoto(
+    String userId,
+    File imageFile, {
+    int photoIndex = 0,
+    Function(double)? onProgress,
+  }) async {
     try {
       // Keys are generated by the backend Cloud Function
-      return await _spacesStorage.uploadFile(localPath: imageFile.path, onProgress: onProgress);
-    } catch (e) { throw MediaException('Failed to upload photo: $e'); }
+      return await _spacesStorage.uploadFile(
+        localPath: imageFile.path,
+        onProgress: onProgress,
+      );
+    } catch (e) {
+      throw MediaException('Failed to upload photo: $e');
+    }
   }
 
-  Future<String> uploadAudioRecording(String userId, String filePath, {required int questionIndex, Function(double)? onProgress}) async {
+  Future<String> uploadAudioRecording(
+    String userId,
+    String filePath, {
+    required int questionIndex,
+    Function(double)? onProgress,
+  }) async {
     try {
-      return await _spacesStorage.uploadFile(localPath: filePath, onProgress: onProgress);
-    } catch (e) { throw MediaException('Failed to upload audio: $e'); }
+      return await _spacesStorage.uploadFile(
+        localPath: filePath,
+        onProgress: onProgress,
+      );
+    } catch (e) {
+      throw MediaException('Failed to upload audio: $e');
+    }
   }
 
   Future<String> uploadChatImage({
@@ -279,8 +382,13 @@ class MediaService {
     Function(double)? onProgress,
   }) async {
     try {
-      return await _spacesStorage.uploadFile(localPath: imageFile.path, onProgress: onProgress);
-    } catch (e) { throw MediaException('Failed to upload chat image: $e'); }
+      return await _spacesStorage.uploadFile(
+        localPath: imageFile.path,
+        onProgress: onProgress,
+      );
+    } catch (e) {
+      throw MediaException('Failed to upload chat image: $e');
+    }
   }
 
   Future<String> uploadChatAudio({
@@ -290,8 +398,13 @@ class MediaService {
     Function(double)? onProgress,
   }) async {
     try {
-      return await _spacesStorage.uploadFile(localPath: filePath, onProgress: onProgress);
-    } catch (e) { throw MediaException('Failed to upload chat audio: $e'); }
+      return await _spacesStorage.uploadFile(
+        localPath: filePath,
+        onProgress: onProgress,
+      );
+    } catch (e) {
+      throw MediaException('Failed to upload chat audio: $e');
+    }
   }
 
   void dispose() {

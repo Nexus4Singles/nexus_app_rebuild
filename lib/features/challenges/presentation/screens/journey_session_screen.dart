@@ -28,6 +28,7 @@ class JourneySessionScreen extends ConsumerStatefulWidget {
 
 class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
   bool _gateChecked = false;
+  bool _markedInProgress = false;
 
   @override
   void initState() {
@@ -66,32 +67,41 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
   // cardKey -> selectedOption
   final Map<String, String> _choiceSelections = {};
   final Set<String> _hydratedCardKeys = {};
+  bool _isHydrating = false;
 
   String _cardKey(int index) => 'card_$index';
 
   Future<void> _hydrateChoices(MissionV1 activity) async {
-    final svc = ref.read(journeyMissionResponseServiceProvider);
+    if (_isHydrating) return;
+    _isHydrating = true;
+    try {
+      final svc = ref.read(journeyMissionResponseServiceProvider);
 
-    for (var i = 0; i < activity.cards.length; i++) {
-      final c = activity.cards[i];
-      if (c.type != 'choice_card') continue;
+      for (var i = 0; i < activity.cards.length; i++) {
+        final c = activity.cards[i];
+        if (c.type != 'choice_card') continue;
 
-      final key = _cardKey(i);
-      if (_hydratedCardKeys.contains(key)) continue;
+        final key = _cardKey(i);
+        if (_hydratedCardKeys.contains(key)) continue;
 
-      final saved = await svc.loadChoice(
-        journeyId: widget.journeyId,
-        missionId: widget.missionId,
-        cardKey: key,
-      );
+        final saved = await svc.loadChoice(
+          journeyId: widget.journeyId,
+          missionId: widget.missionId,
+          cardKey: key,
+        );
 
-      if (saved != null) {
-        _choiceSelections[key] = saved;
+        if (saved != null) {
+          _choiceSelections[key] = saved;
+        }
+        _hydratedCardKeys.add(key);
       }
-      _hydratedCardKeys.add(key);
-    }
 
-    if (mounted) setState(() {});
+      if (mounted) setState(() {});
+    } catch (_) {
+      // Silently handle — choices will just show unselected
+    } finally {
+      _isHydrating = false;
+    }
   }
 
   @override
@@ -149,21 +159,24 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
 
         final m = activity;
 
-        // Mark as in-progress when user opens the activity
-        final currentUserAsync = ref.watch(currentUserProvider);
-        currentUserAsync.maybeWhen(
-          data: (user) {
-            if (user?.id != null) {
-              final progressSvc = ref.read(journeyProgressServiceProvider);
-              progressSvc.markMissionInProgress(
-                widget.journeyId,
-                widget.missionId,
-                user!.id,
-              );
-            }
-          },
-          orElse: () {},
-        );
+        // Mark as in-progress once when user opens the activity
+        if (!_markedInProgress) {
+          final currentUserAsync = ref.read(currentUserProvider);
+          currentUserAsync.maybeWhen(
+            data: (user) {
+              if (user?.id != null) {
+                _markedInProgress = true;
+                final progressSvc = ref.read(journeyProgressServiceProvider);
+                progressSvc.markMissionInProgress(
+                  widget.journeyId,
+                  widget.missionId,
+                  user!.id,
+                );
+              }
+            },
+            orElse: () {},
+          );
+        }
 
         // hydrate choices once we have activity
         _hydrateChoices(m);
@@ -176,7 +189,7 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
           appBar: AppBar(
             title: Text(
               'Activity ${m.missionNumber}',
-              style: AppTextStyles.titleMedium.copyWith(
+              style: AppTextStyles.titleSmall.copyWith(
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -192,7 +205,7 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
           ),
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -205,20 +218,16 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                         totalCards == 0 ? 0.0 : progressIndex / totalCards,
                     icon: iconFromKey(m.icon),
                   ),
-                  const SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 0),
-                    child: Text(
-                      'We recommend using a Journal to document on this journey!',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 12,
-                      ),
-                      textAlign: TextAlign.center,
+                  const SizedBox(height: 6),
+                  Text(
+                    'We recommend documenting your Journeys with a Journal!',
+                    style: AppTextStyles.caption.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w700,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 6),
                   Expanded(
                     child:
                         totalCards == 0
@@ -242,39 +251,119 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                               ),
                             ),
                   ),
-                  const SizedBox(height: 12),
-                  _OutcomeButtons(
-                    failed: _failed,
-                    isFirst: _cardIndex == 0,
-                    isLast: _cardIndex >= totalCards - 1,
-                    onBack: () {
-                      if (_cardIndex == 0) return;
-                      setState(() => _cardIndex -= 1);
-                    },
-                    onNext: () async {
-                      if (totalCards == 0) return;
+                  // Navigation buttons — always visible
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: _OutcomeButtons(
+                      failed: _failed,
+                      isFirst: _cardIndex == 0,
+                      isLast: _cardIndex >= totalCards - 1,
+                      onBack: () {
+                        if (_cardIndex == 0) return;
+                        setState(() {
+                          _cardIndex -= 1;
+                        });
+                      },
+                      onNext: () async {
+                        if (totalCards == 0) return;
 
-                      // save choice card if needed
-                      final card = m.cards[_cardIndex];
-                      if (card.type == 'choice_card') {
-                        final key = _cardKey(_cardIndex);
-                        final selected = _choiceSelections[key];
-                        if (selected != null) {
-                          final svc = ref.read(
-                            journeyMissionResponseServiceProvider,
-                          );
-                          await svc.saveChoice(
-                            journeyId: widget.journeyId,
-                            missionId: widget.missionId,
-                            cardKey: key,
-                            selectedOption: selected,
-                          );
+                        // save choice card if needed
+                        final card = m.cards[_cardIndex];
+                        if (card.type == 'choice_card') {
+                          final key = _cardKey(_cardIndex);
+                          final selected = _choiceSelections[key];
+                          if (selected != null) {
+                            final svc = ref.read(
+                              journeyMissionResponseServiceProvider,
+                            );
+                            await svc.saveChoice(
+                              journeyId: widget.journeyId,
+                              missionId: widget.missionId,
+                              cardKey: key,
+                              selectedOption: selected,
+                            );
+                          }
                         }
-                      }
 
-                      if (_cardIndex >= totalCards - 1) {
-                        // mark completed
-                        final currentUserAsync = ref.watch(currentUserProvider);
+                        if (_cardIndex >= totalCards - 1) {
+                          // mark completed
+                          final currentUserAsync = ref.read(
+                            currentUserProvider,
+                          );
+                          final uid = currentUserAsync.maybeWhen(
+                            data: (user) => user?.id ?? '',
+                            orElse: () => '',
+                          );
+
+                          if (uid.isNotEmpty) {
+                            final progressSvc = ref.read(
+                              journeyProgressServiceProvider,
+                            );
+                            await progressSvc.markMissionCompleted(
+                              widget.journeyId,
+                              m.id,
+                              uid,
+                            );
+                            // Clear in-progress when completed
+                            await progressSvc.clearInProgress(widget.journeyId);
+
+                            // CRITICAL: Invalidate provider cache to force UI refresh with checkmark
+                            ref.invalidate(
+                              completedMissionIdsProvider(widget.journeyId),
+                            );
+                            ref.invalidate(
+                              isJourneyCompletedProvider(widget.journeyId),
+                            );
+                          }
+
+                          if (!mounted) return;
+
+                          // Check if journey is purchased and if this is the last mission
+                          final isPurchasedAsync = ref.read(
+                            isJourneyPurchasedProvider(widget.journeyId),
+                          );
+                          final isPurchased = isPurchasedAsync.maybeWhen(
+                            data: (purchased) => purchased,
+                            orElse: () => false,
+                          );
+
+                          final isLastMission =
+                              m.missionNumber == journey.missions.length;
+
+                          // Determine the appropriate message
+                          String snackBarMessage;
+                          if (isLastMission && isPurchased) {
+                            // User completed the entire journey and has purchased
+                            snackBarMessage =
+                                '🎉 Activity completed! You\'ve finished this journey!';
+                          } else if (!isPurchased && m.isFree) {
+                            // User completed the free activity but hasn't purchased
+                            snackBarMessage =
+                                '✅ Activity completed... Purchase the complete journey to continue your progress';
+                          } else {
+                            // Standard completion message for intermediate activities
+                            snackBarMessage = '✅ Activity completed';
+                          }
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(snackBarMessage),
+                              duration: const Duration(seconds: 3),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: AppColors.success,
+                            ),
+                          );
+                          Navigator.pop(context);
+                          return;
+                        }
+
+                        if (!mounted) return;
+                        setState(() {
+                          _cardIndex += 1;
+                        });
+                      },
+                      onReset: () async {
+                        final currentUserAsync = ref.read(currentUserProvider);
                         final uid = currentUserAsync.maybeWhen(
                           data: (user) => user?.id ?? '',
                           orElse: () => '',
@@ -284,15 +373,12 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                           final progressSvc = ref.read(
                             journeyProgressServiceProvider,
                           );
-                          await progressSvc.markMissionCompleted(
+                          await progressSvc.resetMission(
                             widget.journeyId,
                             m.id,
                             uid,
                           );
-                          // Clear in-progress when completed
-                          await progressSvc.clearInProgress(widget.journeyId);
-
-                          // CRITICAL: Invalidate provider cache to force UI refresh with checkmark
+                          // Invalidate provider cache to sync UI with reset state
                           ref.invalidate(
                             completedMissionIdsProvider(widget.journeyId),
                           );
@@ -301,90 +387,23 @@ class _JourneySessionScreenState extends ConsumerState<JourneySessionScreen> {
                           );
                         }
 
+                        final responseSvc = ref.read(
+                          journeyMissionResponseServiceProvider,
+                        );
+                        await responseSvc.clearMission(
+                          journeyId: widget.journeyId,
+                          missionId: widget.missionId,
+                        );
+
                         if (!mounted) return;
-
-                        // Check if journey is purchased and if this is the last mission
-                        final isPurchasedAsync = ref.watch(
-                          isJourneyPurchasedProvider(widget.journeyId),
-                        );
-                        final isPurchased = isPurchasedAsync.maybeWhen(
-                          data: (purchased) => purchased,
-                          orElse: () => false,
-                        );
-
-                        final isLastMission =
-                            m.missionNumber == journey.missions.length;
-
-                        // Determine the appropriate message
-                        String snackBarMessage;
-                        if (isLastMission && isPurchased) {
-                          // User completed the entire journey and has purchased
-                          snackBarMessage =
-                              '🎉 Activity completed! You\'ve finished this journey!';
-                        } else if (!isPurchased && m.isFree) {
-                          // User completed the free activity but hasn't purchased
-                          snackBarMessage =
-                              '✅ Activity completed... Purchase the complete journey to continue your progress';
-                        } else {
-                          // Standard completion message for intermediate activities
-                          snackBarMessage = '✅ Activity completed';
-                        }
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(snackBarMessage),
-                            duration: const Duration(seconds: 3),
-                            behavior: SnackBarBehavior.floating,
-                            backgroundColor: AppColors.success,
-                          ),
-                        );
-                        Navigator.pop(context);
-                        return;
-                      }
-
-                      setState(() => _cardIndex += 1);
-                    },
-                    onReset: () async {
-                      final currentUserAsync = ref.watch(currentUserProvider);
-                      final uid = currentUserAsync.maybeWhen(
-                        data: (user) => user?.id ?? '',
-                        orElse: () => '',
-                      );
-
-                      if (uid.isNotEmpty) {
-                        final progressSvc = ref.read(
-                          journeyProgressServiceProvider,
-                        );
-                        await progressSvc.resetMission(
-                          widget.journeyId,
-                          m.id,
-                          uid,
-                        );
-                        // Invalidate provider cache to sync UI with reset state
-                        ref.invalidate(
-                          completedMissionIdsProvider(widget.journeyId),
-                        );
-                        ref.invalidate(
-                          isJourneyCompletedProvider(widget.journeyId),
-                        );
-                      }
-
-                      final responseSvc = ref.read(
-                        journeyMissionResponseServiceProvider,
-                      );
-                      await responseSvc.clearMission(
-                        journeyId: widget.journeyId,
-                        missionId: widget.missionId,
-                      );
-
-                      if (!mounted) return;
-                      setState(() {
-                        _failed = false;
-                        _cardIndex = 0;
-                        _choiceSelections.clear();
-                        _hydratedCardKeys.clear();
-                      });
-                    },
+                        setState(() {
+                          _failed = false;
+                          _cardIndex = 0;
+                          _choiceSelections.clear();
+                          _hydratedCardKeys.clear();
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -456,17 +475,19 @@ class _SessionHero extends StatelessWidget {
             ? AppColors.getTextOnDark(context).withOpacity(0.88)
             : AppColors.getTextSecondary(context);
 
+    final isSmall = MediaQuery.of(context).size.width < 380;
+
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: EdgeInsets.all(isSmall ? 10 : 12),
       decoration: BoxDecoration(
         gradient: gradient,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(color: AppColors.primary.withOpacity(0.16)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.10),
-            blurRadius: 18,
-            offset: const Offset(0, 12),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 14,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -476,14 +497,14 @@ class _SessionHero extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 42,
-                height: 42,
+                width: isSmall ? 34 : 38,
+                height: isSmall ? 34 : 38,
                 decoration: BoxDecoration(
                   color:
                       isDark
                           ? AppColors.getTextOnDark(context).withOpacity(0.16)
                           : AppColors.primary.withOpacity(0.10),
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
                   icon,
@@ -491,27 +512,27 @@ class _SessionHero extends StatelessWidget {
                       isDark
                           ? AppColors.getTextOnDark(context)
                           : AppColors.primary,
-                  size: 20,
+                  size: isSmall ? 16 : 18,
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   title,
-                  style: AppTextStyles.bodyLarge.copyWith(
+                  style: AppTextStyles.bodySmall.copyWith(
                     color: textColor,
-                    fontWeight: FontWeight.w600, // milder font weight
-                    height: 1.28,
+                    fontWeight: FontWeight.w600,
+                    height: 1.25,
                   ),
                 ),
               ),
               if (showProgress)
                 Padding(
-                  padding: const EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.only(left: 6),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 11,
-                      vertical: 7,
+                      horizontal: 8,
+                      vertical: 5,
                     ),
                     decoration: BoxDecoration(
                       color:
@@ -560,23 +581,25 @@ class _SessionHero extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
             subtitle,
-            style: AppTextStyles.bodySmall.copyWith(
+            style: AppTextStyles.caption.copyWith(
               color: secondary,
-              height: 1.6,
+              height: 1.5,
               fontWeight: FontWeight.w500,
-              letterSpacing: 0.2,
+              letterSpacing: 0.1,
             ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           if (showProgress) ...[
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             ClipRRect(
               borderRadius: BorderRadius.circular(99),
               child: LinearProgressIndicator(
                 value: progress,
-                minHeight: 6,
+                minHeight: 5,
                 backgroundColor: AppColors.primary.withOpacity(0.18),
                 valueColor: AlwaysStoppedAnimation<Color>(
                   isDark ? Colors.white : AppColors.primary,
@@ -628,7 +651,6 @@ class _CardShellState extends State<_CardShell> {
             curve: Curves.easeOut,
           );
         } catch (_) {
-          // fallback to jump
           _scrollController.jumpTo(0);
         }
       }
@@ -639,23 +661,25 @@ class _CardShellState extends State<_CardShell> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+      padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(color: AppColors.getBorder(context)),
         boxShadow: [
           BoxShadow(
             color: isDark ? AppColors.shadowDark : AppColors.shadow,
-            blurRadius: 18,
-            offset: const Offset(0, 14),
+            blurRadius: 14,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
       child: SingleChildScrollView(
         controller: _scrollController,
-        physics: const ClampingScrollPhysics(),
-        child: widget.child,
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
+        child: Padding(padding: const EdgeInsets.all(2), child: widget.child),
       ),
     );
   }
@@ -680,11 +704,12 @@ class _OutcomeButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Row(
@@ -695,26 +720,20 @@ class _OutcomeButtons extends StatelessWidget {
                 onPressed: onBack,
                 style: OutlinedButton.styleFrom(
                   backgroundColor:
-                      Theme.of(context).brightness == Brightness.dark
+                      isDark
                           ? AppColors.primary.withOpacity(0.18)
                           : AppColors.primary.withOpacity(0.08),
-                  foregroundColor:
-                      Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white
-                          : AppColors.primary,
+                  foregroundColor: isDark ? Colors.white : AppColors.primary,
                   side: BorderSide(color: AppColors.primary),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                 ),
                 child: Text(
                   'Back',
-                  style: TextStyle(
-                    color:
-                        Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : AppColors.primary,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: isDark ? Colors.white : AppColors.primary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -732,10 +751,16 @@ class _OutcomeButtons extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 elevation: 0,
               ),
-              child: Text(isLast ? '🎉 Complete Journey' : 'Next'),
+              child: Text(
+                isLast ? '🎉 Complete Journey' : 'Next',
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
           ),
           if (failed) ...[
@@ -748,7 +773,7 @@ class _OutcomeButtons extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                 ),
                 child: const Text('Reset'),
               ),
@@ -816,7 +841,6 @@ class _MissionCardRenderer extends StatelessWidget {
           flavor: card.flavor ?? 'reflection',
           text: card.text ?? '',
           reflection: card.reflection ?? '',
-          responseType: card.responseType ?? 'open-text',
         );
 
       case 'action':
@@ -858,43 +882,37 @@ class _InfoCard extends StatelessWidget {
     // Parse text content with proper line breaks and formatting
     final textBlocks = _parseRichContent(text);
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-      decoration: BoxDecoration(
-        color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.getBorder(context)),
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: Text(
                   title,
-                  style: AppTextStyles.bodyLarge.copyWith(
+                  style: AppTextStyles.bodySmall.copyWith(
                     fontWeight: FontWeight.w700,
                     height: 1.25,
-                    fontSize: 15,
-                    letterSpacing: 0.2,
+                    letterSpacing: 0.15,
                   ),
                 ),
               ),
-              if (badge != null) badge,
+              if (badge != null) ...[const SizedBox(width: 6), badge],
             ],
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
 
           // Use proper rich content parsing for text
           if (textBlocks.isNotEmpty) ...[
             ..._buildBodyWidgets(
               textBlocks,
-              AppTextStyles.bodyMedium.copyWith(
-                height: 1.65,
-                letterSpacing: 0.25,
+              AppTextStyles.bodySmall.copyWith(
+                height: 1.6,
+                letterSpacing: 0.15,
                 fontWeight: FontWeight.w500,
                 color: AppColors.getTextPrimary(context),
               ),
@@ -906,30 +924,28 @@ class _InfoCard extends StatelessWidget {
             if (textBlocks.isNotEmpty) const SizedBox(height: 8),
             ...bullets!.map(
               (b) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.only(bottom: 10),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 9),
-                      child: Container(
-                        width: 7,
-                        height: 7,
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.85),
-                          borderRadius: BorderRadius.circular(99),
-                        ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 7),
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.75),
+                        borderRadius: BorderRadius.circular(99),
                       ),
                     ),
-                    const SizedBox(width: 13),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: RichText(
                         text: TextSpan(
                           children: _buildInlineSpans(
                             b.trim(),
-                            AppTextStyles.bodyMedium.copyWith(
-                              height: 1.65,
-                              letterSpacing: 0.25,
+                            AppTextStyles.bodySmall.copyWith(
+                              height: 1.6,
+                              letterSpacing: 0.15,
                               fontWeight: FontWeight.w500,
                               color: AppColors.getTextPrimary(context),
                             ),
@@ -969,8 +985,10 @@ class _ChoiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bodyStyle = AppTextStyles.bodyMedium.copyWith(
-      height: 1.45,
+    final bodyStyle = AppTextStyles.bodySmall.copyWith(
+      height: 1.6,
+      letterSpacing: 0.15,
+      fontWeight: FontWeight.w500,
       color: AppColors.getTextPrimary(context),
     );
     final badge = _flavorBadge(flavor ?? 'question');
@@ -978,31 +996,28 @@ class _ChoiceCard extends StatelessWidget {
     final parsedPrompt = _parseRichContent(prompt);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
-      decoration: BoxDecoration(
-        color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.getBorder(context)),
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: Text(
                   title,
-                  style: AppTextStyles.bodyLarge.copyWith(
-                    fontWeight: FontWeight.w600, // milder font weight
-                    height: 1.15,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    fontWeight: FontWeight.w700,
+                    height: 1.25,
+                    letterSpacing: 0.15,
                   ),
                 ),
               ),
-              if (badge != null) badge,
+              if (badge != null) ...[const SizedBox(width: 6), badge],
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
 
           ..._buildBodyWidgets(parsedPrompt, bodyStyle),
 
@@ -1041,7 +1056,7 @@ class _ChoiceCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           o,
-                          style: AppTextStyles.bodyMedium.copyWith(
+                          style: AppTextStyles.bodySmall.copyWith(
                             fontWeight: FontWeight.w600,
                             height: 1.25,
                             color:
@@ -1091,13 +1106,13 @@ class _ChoiceCard extends StatelessWidget {
           if (selected != null &&
               reflection != null &&
               reflection!.isNotEmpty) ...[
-            const SizedBox(height: 20),
+            const SizedBox(height: 14),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: AppColors.primary.withOpacity(0.08),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.primary.withOpacity(0.25)),
               ),
               child: Column(
@@ -1107,24 +1122,25 @@ class _ChoiceCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.auto_awesome,
-                        size: 18,
+                        size: 14,
                         color: AppColors.primary,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 6),
                       Text(
                         'Take a moment to reflect:',
-                        style: AppTextStyles.bodySmall.copyWith(
+                        style: AppTextStyles.caption.copyWith(
                           fontWeight: FontWeight.w700,
                           color: AppColors.primary,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   ..._buildBodyWidgets(
                     _parseRichContent(reflection!),
-                    AppTextStyles.bodyMedium.copyWith(
+                    AppTextStyles.bodySmall.copyWith(
                       height: 1.6,
+                      letterSpacing: 0.15,
                       fontWeight: FontWeight.w500,
                       color: AppColors.getTextPrimary(context),
                     ),
@@ -1151,40 +1167,34 @@ class _ActionCard extends StatelessWidget {
     final badge = _flavorBadge(flavor ?? 'action');
     final blocks = _parseRichContent(text);
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-      decoration: BoxDecoration(
-        color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.getBorder(context)),
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: Text(
                   title,
-                  style: AppTextStyles.bodyLarge.copyWith(
+                  style: AppTextStyles.bodySmall.copyWith(
                     fontWeight: FontWeight.w700,
                     height: 1.25,
-                    fontSize: 15,
-                    letterSpacing: 0.2,
+                    letterSpacing: 0.15,
                   ),
                 ),
               ),
-              if (badge != null) badge,
+              if (badge != null) ...[const SizedBox(width: 6), badge],
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
           if (blocks.isNotEmpty)
             ..._buildBodyWidgets(
               blocks,
-              AppTextStyles.bodyMedium.copyWith(
-                height: 1.65,
-                letterSpacing: 0.25,
+              AppTextStyles.bodySmall.copyWith(
+                height: 1.6,
+                letterSpacing: 0.15,
                 fontWeight: FontWeight.w500,
                 color: AppColors.getTextPrimary(context),
               ),
@@ -1201,14 +1211,12 @@ class _ReflectionCard extends StatelessWidget {
   final String flavor;
   final String text;
   final String reflection;
-  final String responseType; // 'open-text', 'single-select', 'multiple-select'
 
   const _ReflectionCard({
     required this.title,
     required this.flavor,
     required this.text,
     required this.reflection,
-    required this.responseType,
   });
 
   @override
@@ -1223,35 +1231,28 @@ class _ReflectionCard extends StatelessWidget {
     final textBlocks = _parseRichContent(text);
     final reflectionBlocks = _parseRichContent(effectiveReflectionText);
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-      decoration: BoxDecoration(
-        color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.getBorder(context)),
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: Text(
                   title,
-                  style: AppTextStyles.bodyLarge.copyWith(
+                  style: AppTextStyles.bodySmall.copyWith(
                     fontWeight: FontWeight.w700,
                     height: 1.25,
-                    fontSize: 15,
-                    letterSpacing: 0.2,
+                    letterSpacing: 0.15,
                   ),
                 ),
               ),
-              if (badge != null) badge,
+              if (badge != null) ...[const SizedBox(width: 6), badge],
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
 
           // Instructions/context with proper spacing
           // Only show text section if we have a separate reflection field
@@ -1259,19 +1260,19 @@ class _ReflectionCard extends StatelessWidget {
           if (textBlocks.isNotEmpty && reflection.isNotEmpty) ...[
             ..._buildBodyWidgets(
               textBlocks,
-              AppTextStyles.bodyMedium.copyWith(
-                height: 1.65,
-                letterSpacing: 0.25,
+              AppTextStyles.bodySmall.copyWith(
+                height: 1.6,
+                letterSpacing: 0.15,
                 fontWeight: FontWeight.w500,
                 color: AppColors.getTextPrimary(context),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
           ],
 
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: AppColors.getSurface(context),
               borderRadius: BorderRadius.circular(12),
@@ -1282,45 +1283,28 @@ class _ReflectionCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.auto_awesome, size: 16, color: bgColor),
-                    const SizedBox(width: 8),
+                    Icon(Icons.auto_awesome, size: 14, color: bgColor),
+                    const SizedBox(width: 6),
                     Text(
                       'Take a moment to reflect:',
-                      style: AppTextStyles.labelSmall.copyWith(
+                      style: AppTextStyles.caption.copyWith(
                         color: bgColor,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 8),
                 ..._buildBodyWidgets(
                   reflectionBlocks,
-                  AppTextStyles.bodyMedium.copyWith(
+                  AppTextStyles.bodySmall.copyWith(
                     height: 1.6,
+                    letterSpacing: 0.15,
                     fontWeight: FontWeight.w500,
                     color: AppColors.getTextPrimary(context),
                   ),
                 ),
               ],
-            ),
-          ),
-
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: AppColors.getSurface(context),
-              borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: AppColors.getBorder(context)),
-            ),
-            child: Text(
-              'Response type: $responseType',
-              style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.primary,
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
-              ),
             ),
           ),
         ],
@@ -1525,22 +1509,24 @@ Widget? _flavorBadge(String? flavor) {
   final bg = _flavorColor(flavor);
 
   return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
     decoration: BoxDecoration(
       color: Colors.transparent,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(8),
       border: Border.all(color: bg.withOpacity(0.25)),
     ),
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 14, color: bg),
-        const SizedBox(width: 6),
+        Icon(icon, size: 10, color: bg),
+        const SizedBox(width: 3),
         Text(
           label,
-          style: AppTextStyles.labelSmall.copyWith(
+          style: AppTextStyles.caption.copyWith(
             fontWeight: FontWeight.w800,
             color: bg,
+            fontSize: 10,
+            height: 1.3,
           ),
         ),
       ],
@@ -1580,9 +1566,7 @@ class _BulletLine extends StatelessWidget {
         const SizedBox(width: 10),
         Expanded(
           child: RichText(
-            text: TextSpan(
-              children: _buildInlineSpans(text, style.copyWith(height: 1.45)),
-            ),
+            text: TextSpan(children: _buildInlineSpans(text, style)),
           ),
         ),
       ],

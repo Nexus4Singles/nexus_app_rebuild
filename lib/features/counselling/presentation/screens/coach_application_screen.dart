@@ -299,7 +299,7 @@ class _CoachApplicationScreenState
           children: [
             Text(
               'Call for Applications',
-              style: AppTextStyles.headlineSmall.copyWith(
+              style: AppTextStyles.titleSmall.copyWith(
                 fontWeight: FontWeight.w700,
               ),
             ),

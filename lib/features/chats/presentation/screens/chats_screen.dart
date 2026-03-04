@@ -13,6 +13,25 @@ import 'package:nexus_app_v2/core/models/user_model.dart';
 import 'package:nexus_app_v2/features/launch/presentation/app_launch_gate.dart';
 import 'package:nexus_app_v2/features/auth/presentation/screens/login_screen.dart';
 
+/// Initial username fetch (one-time, fast) - used to avoid loading state
+final _userUsernameByIdProvider = FutureProvider.family<String?, String>((
+  ref,
+  uid,
+) async {
+  try {
+    final doc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    if (!doc.exists) return null;
+    final data = doc.data();
+    final username = (data?['username'] ?? '').toString().trim();
+    if (username.isNotEmpty) return username;
+    final name = (data?['name'] ?? '').toString().trim();
+    return name.isNotEmpty ? name : null;
+  } catch (_) {
+    return null;
+  }
+});
+
 final _userDocByIdProvider =
     StreamProvider.family<Map<String, dynamic>?, String>((ref, uid) {
       return FirebaseFirestore.instance
@@ -534,18 +553,37 @@ class ChatsScreen extends ConsumerWidget {
                               ? 'Say hi 👋'
                               : (c.lastMessage ?? '');
                       final time = _formatChatTime(c.lastMessageAt);
-                      final unread = c.getUnreadCount(me) > 0;
+                      final unreadCount = c.getUnreadCount(me);
+                      final unread = unreadCount > 0;
 
+                      // Try fast username fetch first (no loading state)
+                      // Then subscribe to stream for real-time avatar updates
+                      final usernameAsync = ref.watch(
+                        _userUsernameByIdProvider(otherId),
+                      );
                       final otherAsync = ref.watch(
                         _userDocByIdProvider(otherId),
                       );
+
+                      // Use the fast username from Future if available,
+                      // otherwise fall back to stream data
+                      final initialUsername = usernameAsync.maybeWhen(
+                        data: (u) => u,
+                        orElse: () => null,
+                      );
+
                       return otherAsync.when(
                         loading: () {
+                          // Show real username from initial fetch during loading
+                          final displayName =
+                              initialUsername ??
+                              _displayNameFromOtherId(otherId);
                           return _ChatRow(
-                            name: _displayNameFromOtherId(otherId),
+                            name: displayName,
                             message: subtitle,
                             time: time,
                             unread: unread,
+                            unreadCount: unreadCount,
                             avatarUrl: null,
                             onTap: () {
                               Navigator.of(context).pushNamed('/chats/${c.id}');
@@ -553,11 +591,16 @@ class ChatsScreen extends ConsumerWidget {
                           );
                         },
                         error: (_, __) {
+                          // Show real username from initial fetch on error
+                          final displayName =
+                              initialUsername ??
+                              _displayNameFromOtherId(otherId);
                           return _ChatRow(
-                            name: _displayNameFromOtherId(otherId),
+                            name: displayName,
                             message: subtitle,
                             time: time,
                             unread: unread,
+                            unreadCount: unreadCount,
                             avatarUrl: null,
                             onTap: () {
                               Navigator.of(context).pushNamed('/chats/${c.id}');
@@ -578,7 +621,8 @@ class ChatsScreen extends ConsumerWidget {
                                   ? username
                                   : (nameFromDoc.isNotEmpty
                                       ? nameFromDoc
-                                      : _displayNameFromOtherId(otherId));
+                                      : (initialUsername ??
+                                          _displayNameFromOtherId(otherId)));
 
                           final avatarUrl = _bestAvatarUrl(data);
 
@@ -587,6 +631,7 @@ class ChatsScreen extends ConsumerWidget {
                             message: subtitle,
                             time: time,
                             unread: unread,
+                            unreadCount: unreadCount,
                             avatarUrl: avatarUrl,
                             onTap: () {
                               Navigator.of(context).pushNamed('/chats/${c.id}');
@@ -611,6 +656,7 @@ class _ChatRow extends StatefulWidget {
   final String message;
   final String time;
   final bool unread;
+  final int unreadCount;
   final VoidCallback onTap;
   final String? avatarUrl;
 
@@ -619,6 +665,7 @@ class _ChatRow extends StatefulWidget {
     required this.message,
     required this.time,
     required this.unread,
+    this.unreadCount = 0,
     required this.onTap,
     this.avatarUrl,
   });
@@ -796,28 +843,39 @@ class _ChatRowState extends State<_ChatRow>
                         ],
                       ),
                     ),
-                    if (widget.unread) ...[
-                      const SizedBox(width: 12),
-                      ScaleTransition(
-                        scale: Tween<double>(begin: 0.8, end: 1.0).animate(
-                          CurvedAnimation(
-                            parent: _hoverController,
-                            curve: Curves.elasticOut,
-                          ),
+                    if (widget.unread && widget.unreadCount > 0) ...[
+                      const SizedBox(width: 10),
+                      Container(
+                        constraints: const BoxConstraints(
+                          minWidth: 22,
+                          minHeight: 22,
                         ),
-                        child: Container(
-                          width: 14,
-                          height: 14,
-                          decoration: BoxDecoration(
-                            color: AppColors.primary,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.primary.withOpacity(0.3),
-                                blurRadius: 6,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(11),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.primary.withOpacity(0.3),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            widget.unreadCount > 99
+                                ? '99+'
+                                : widget.unreadCount.toString(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              height: 1.2,
+                            ),
                           ),
                         ),
                       ),

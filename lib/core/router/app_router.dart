@@ -111,8 +111,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
   // /journey/:id
   if (segments.length == 2 && segments[0] == 'journey') {
     final journeyId = segments[1];
-    // ignore: avoid_print
-    print('[AppRouter] /journey route resolved with id=$journeyId');
+    debugPrint('[AppRouter] /journey route resolved with id=$journeyId');
     return MaterialPageRoute(
       settings: settings,
       builder: (_) => JourneyDetailScreen(id: journeyId),

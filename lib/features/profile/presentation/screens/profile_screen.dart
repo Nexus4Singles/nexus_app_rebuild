@@ -28,6 +28,7 @@ import '../../../../core/models/user_model.dart';
 import 'package:just_audio/just_audio.dart' as ja;
 import 'package:path_provider/path_provider.dart' as pp;
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:http/http.dart' as http;
 import 'package:nexus_app_v2/core/services/media_service.dart';
 import 'package:nexus_app_v2/features/profile/presentation/widgets/relationship_status_editor.dart';
 import 'dart:convert';
@@ -45,6 +46,7 @@ import '../../../subscription/presentation/screens/subscription_screen.dart';
 import '../../../dating_search/presentation/screens/saved_profiles_screen.dart';
 import '../../../dating_search/application/saved_profiles_provider.dart';
 import '../../../dating_search/domain/enhanced_compatibility_scorer.dart';
+import '../../../subscription/application/subscription_provider.dart';
 
 Future<void> handleLogout(BuildContext context, WidgetRef ref) async {
   final ok = await showDialog<bool>(
@@ -393,7 +395,7 @@ class ProfileScreen extends ConsumerWidget {
                         subtitle:
                             isViewingOtherUser
                                 ? 'Listen to their responses'
-                                : 'Audio recordings cannot be changed after profile creation',
+                                : 'Your Audio recordings cannot be changed. Kindly restart the app, if recordings don\'t play.',
                         child: _AudioPromptsSection(
                           audioUrls: profile.audioPrompts ?? const [],
                           audioDurations: profile.audioDurations ?? const [],
@@ -1679,14 +1681,22 @@ class _ProfileAudioController {
 
   /// In-memory cache: URL → duration. Persists across screen navigations
   /// because the provider uses keepAlive(). Populated by:
-  /// 1. Known durations from Firestore (seedDurations)
+  /// 1. Known durations from Firestore (seedDurations) — authoritative
   /// 2. Duration learned when user actually plays a track (durationStream)
   final Map<String, Duration> _durationCache = {};
 
-  /// URLs that belong to the current user's own profile.
-  /// Audio for these URLs is cached to disk via LockCachingAudioSource
-  /// so it only downloads once and replays from local storage forever after.
-  final Set<String> _ownProfileUrls = {};
+  /// URLs whose durations were seeded from Firestore (timer-based, accurate).
+  /// The durationStream/preload must NOT overwrite these with .m4a container
+  /// metadata durations, which can be inflated (e.g. 130s for a 30s clip).
+  final Set<String> _seededUrls = {};
+
+  /// Maximum reasonable duration for any audio prompt (recording max is 90s).
+  static const Duration _maxReasonable = Duration(seconds: 95);
+
+  /// URLs whose audio has been registered for disk caching.
+  /// Includes own-profile AND other-profile URLs so that any audio played
+  /// once is served from local storage on subsequent visits.
+  final Set<String> _cacheableUrls = {};
 
   /// Lazily resolved cache directory for own-profile audio files.
   Directory? _audioCacheDir;
@@ -1711,19 +1721,56 @@ class _ProfileAudioController {
     return File('${dir.path}/$hash$ext');
   }
 
-  /// Mark URLs as belonging to the user's own profile (enables disk caching).
-  void setOwnProfileUrls(List<String> urls) {
-    _ownProfileUrls.addAll(
-      urls.map((e) => e.trim()).where((e) => e.isNotEmpty),
-    );
+  /// Register URLs for disk caching so audio downloads once and replays
+  /// from local storage on subsequent visits. Works for any profile.
+  void setCacheableUrls(List<String> urls) {
+    _cacheableUrls.addAll(urls.map((e) => e.trim()).where((e) => e.isNotEmpty));
   }
 
-  /// Create an audio source — uses LockCachingAudioSource for own-profile
-  /// URLs (persists to disk), plain URL for others (network-only).
+  /// Create an audio source — uses disk caching for registered URLs
+  /// (persists to disk), plain URL for unregistered ones (network-only).
+  ///
+  /// On Android, LockCachingAudioSource is skipped because ExoPlayer has
+  /// known issues with it (playback fails silently, shows error icon).
+  /// Instead, we download the file to local cache first and play from disk.
+  /// iOS/AVPlayer handles LockCachingAudioSource correctly.
   Future<ja.AudioSource> _sourceForUrl(String url) async {
-    if (_ownProfileUrls.contains(url)) {
+    if (_cacheableUrls.contains(url)) {
       final cacheFile = await _cacheFileForUrl(url);
-      return ja.LockCachingAudioSource(Uri.parse(url), cacheFile: cacheFile);
+
+      if (!Platform.isAndroid) {
+        // iOS: LockCachingAudioSource works perfectly with AVPlayer
+        return ja.LockCachingAudioSource(Uri.parse(url), cacheFile: cacheFile);
+      }
+
+      // Android: download to local file first, then play from disk.
+      // This avoids LockCachingAudioSource + ExoPlayer incompatibility
+      // while still providing offline caching.
+      if (await cacheFile.exists() && await cacheFile.length() > 2048) {
+        print('[AUDIO_CACHE] Playing from local cache: ${cacheFile.path}');
+        return ja.AudioSource.file(cacheFile.path);
+      }
+
+      // Download to cache
+      try {
+        print('[AUDIO_CACHE] Downloading to cache: $url');
+        final response = await http
+            .get(Uri.parse(url))
+            .timeout(const Duration(seconds: 30));
+        if (response.statusCode >= 200 &&
+            response.statusCode < 300 &&
+            response.bodyBytes.length > 2048) {
+          await cacheFile.writeAsBytes(response.bodyBytes);
+          print('[AUDIO_CACHE] ✅ Cached ${response.bodyBytes.length} bytes');
+          return ja.AudioSource.file(cacheFile.path);
+        }
+        print(
+          '[AUDIO_CACHE] ⚠️ Download returned ${response.statusCode}, '
+          'size=${response.bodyBytes.length} — falling back to stream',
+        );
+      } catch (e) {
+        print('[AUDIO_CACHE] ⚠️ Download failed: $e — falling back to stream');
+      }
     }
     return ja.AudioSource.uri(Uri.parse(url));
   }
@@ -1761,8 +1808,19 @@ class _ProfileAudioController {
 
     _player.durationStream.listen((d) {
       if (d != null && d.inMilliseconds > 0) {
+        // Ignore unreasonable durations from .m4a container metadata
+        if (d > _maxReasonable) {
+          debugPrint(
+            '[ProfileAudio] ⚠️ durationStream reported ${d.inSeconds}s '
+            '(exceeds ${_maxReasonable.inSeconds}s cap) — ignoring',
+          );
+          return;
+        }
         duration = d;
-        if (currentUrl != null) _durationCache[currentUrl!] = d;
+        // Only cache if this URL wasn't seeded from Firestore (Firestore is authoritative)
+        if (currentUrl != null && !_seededUrls.contains(currentUrl)) {
+          _durationCache[currentUrl!] = d;
+        }
         _notifyAll();
       }
     });
@@ -1774,8 +1832,11 @@ class _ProfileAudioController {
   }
 
   /// Pre-seed duration cache from Firestore data. Zero network requests.
+  /// These values are authoritative (timer-based) and must not be overwritten
+  /// by .m4a container metadata from durationStream or preload.
   void seedDurations(Map<String, Duration> known) {
     _durationCache.addAll(known);
+    _seededUrls.addAll(known.keys);
   }
 
   Duration? getCachedDuration(String url) => _durationCache[url.trim()];
@@ -1798,34 +1859,66 @@ class _ProfileAudioController {
       final source = await _sourceForUrl(u);
       await _player.setAudioSource(source);
       _preloadedUrl = u;
-      // Capture duration learned during preload
+      // Capture duration learned during preload — but only if Firestore
+      // didn't already seed it (Firestore timer is more accurate than
+      // .m4a container metadata which can report inflated values).
       final d = _player.duration;
-      if (d != null && d.inMilliseconds > 0) {
-        _durationCache[u] = d;
+      if (d != null && d.inMilliseconds > 0 && !_seededUrls.contains(u)) {
+        if (d <= _maxReasonable) {
+          _durationCache[u] = d;
+        } else {
+          debugPrint(
+            '[ProfileAudio] ⚠️ preload metadata ${d.inSeconds}s '
+            'for URL exceeds cap — ignoring',
+          );
+        }
       }
-    } catch (_) {
-      // Preload is best-effort; failure is silent
+    } catch (e) {
+      debugPrint('[ProfileAudio] preload failed: $e');
     } finally {
       _preloading = false;
     }
   }
 
   Future<void> playOrPause(String url) async {
+    final wasError = hasError;
     hasError = false;
     final u = url.trim();
     if (u.isEmpty) return;
 
     try {
-      if (currentUrl != u) {
+      // If the previous attempt for this URL errored, force a full reload
+      // instead of entering the same-URL toggle path (player has no source).
+      if (currentUrl != u || wasError) {
         currentUrl = u;
         position = Duration.zero;
         duration = _durationCache[u] ?? Duration.zero;
 
         if (_preloadedUrl == u) {
-          // Already buffered — play instantly, no spinner
           _preloadedUrl = null;
-          _notifyAll();
-          await _player.play();
+          // Verify player is still in a loaded state (Android/ExoPlayer
+          // may have released the buffer since preload).
+          final ps = _player.processingState;
+          if (ps == ja.ProcessingState.ready ||
+              ps == ja.ProcessingState.completed) {
+            // Already buffered — play instantly, no spinner
+            _notifyAll();
+            if (ps == ja.ProcessingState.completed) {
+              await _player.seek(Duration.zero);
+            }
+            await _player.play();
+          } else {
+            // Preloaded buffer lost — do a full load
+            debugPrint(
+              '[ProfileAudio] preloaded buffer stale (state=$ps), '
+              'doing full load',
+            );
+            isLoading = true;
+            _notifyAll();
+            final source = await _sourceForUrl(u);
+            await _player.setAudioSource(source);
+            await _player.play();
+          }
         } else {
           isLoading = true;
           _notifyAll();
@@ -1845,7 +1938,12 @@ class _ProfileAudioController {
         }
         await _player.play();
       }
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('[ProfileAudio] ❌ playOrPause failed for URL: $u');
+      debugPrint('[ProfileAudio] Error: $e');
+      debugPrint(
+        '[ProfileAudio] Stack: ${st.toString().split('\n').take(5).join('\n')}',
+      );
       hasError = true;
       isLoading = false;
       isPlaying = false;
@@ -1929,10 +2027,10 @@ class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
     }
     if (known.isNotEmpty) _controller.seedDurations(known);
 
-    // For own profile, register URLs for disk caching so audio downloads once
-    // and replays from local storage on subsequent visits.
-    if (!widget.isViewingOtherUser && urls.isNotEmpty) {
-      _controller.setOwnProfileUrls(urls);
+    // Register URLs for disk caching so audio downloads once and replays
+    // from local storage on subsequent visits (own + other profiles).
+    if (urls.isNotEmpty) {
+      _controller.setCacheableUrls(urls);
     }
 
     // Preload the first audio URL in the background so the first tap is
@@ -1960,6 +2058,11 @@ class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
     final urlChanged = oldUrls.join('|') != newUrls.join('|');
     if (!urlChanged) return;
 
+    // Register new URLs for disk caching (e.g. widget rebuilt with different profile)
+    if (newUrls.isNotEmpty) {
+      _controller.setCacheableUrls(newUrls);
+    }
+
     final current = (_controller.currentUrl ?? '').trim();
     if (current.isEmpty) return;
 
@@ -1967,7 +2070,6 @@ class _AudioPromptsSectionState extends ConsumerState<_AudioPromptsSection> {
     if (!newUrls.contains(current)) {
       _controller.stop();
     }
-    ;
   }
 
   @override
@@ -2229,10 +2331,9 @@ class _PremiumActionsRow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (!isViewingOtherUser) return const SizedBox.shrink();
 
-    // Check if user is premium using the same logic as daily profiles
-    final currentUserAsync = ref.watch(currentUserProvider);
-    final currentUser = currentUserAsync.valueOrNull;
-    final isPremium = currentUser?.onPremium == true;
+    // Check if user is premium using the authoritative subscription stream
+    // (checks both isActive flag AND expiration date)
+    final isPremium = ref.watch(isPremiumUserProvider);
 
     // DEV ONLY: bypass premium gating for UI testing.
     // Run with: flutter run --dart-define=NEXUS_DEBUG_UNLOCK_PREMIUM=true
@@ -2647,7 +2748,7 @@ class _AccountTiles extends StatelessWidget {
         const SizedBox(height: 10),
         _ProfileTile(
           icon: Icons.logout_rounded,
-          title: 'Log out',
+          title: 'Log Out',
           subtitle: 'Sign out of your account',
           onTap: () async {
             final confirm = await showDialog<bool>(
@@ -2677,7 +2778,7 @@ class _AccountTiles extends StatelessWidget {
             // If you previously forced guest mode, clear it so bootstrap can show login.
             await prefs.remove('force_guest');
 
-            await FirebaseAuth.instance.signOut();
+            await ref.read(authNotifierProvider.notifier).signOut();
 
             if (!context.mounted) return;
 
@@ -2844,7 +2945,7 @@ class _ProfileLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       body: const Center(child: CircularProgressIndicator()),
     );
   }
@@ -2858,9 +2959,9 @@ class _ProfileError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         title: Text('Profile', style: AppTextStyles.headlineMedium),
       ),
@@ -2874,7 +2975,7 @@ class _ProfileError extends StatelessWidget {
             Text(
               message,
               style: AppTextStyles.bodyLarge.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.getTextSecondary(context),
               ),
             ),
             const SizedBox(height: 16),
@@ -2910,9 +3011,9 @@ class _ProfileNotFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         title: Text('Profile', style: AppTextStyles.headlineMedium),
       ),
@@ -2921,7 +3022,7 @@ class _ProfileNotFound extends StatelessWidget {
         child: Text(
           'User not found.',
           style: AppTextStyles.bodyLarge.copyWith(
-            color: AppColors.textSecondary,
+            color: AppColors.getTextSecondary(context),
           ),
         ),
       ),
@@ -2980,15 +3081,15 @@ class _ProfileTile extends StatelessWidget {
                 ),
                 child: Icon(icon, color: Theme.of(context).colorScheme.primary),
               ),
-              const SizedBox(width: 46),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style: AppTextStyles.titleMedium,
-                      maxLines: 1,
+                      style: AppTextStyles.titleSmall,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
@@ -3003,7 +3104,7 @@ class _ProfileTile extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 46),
+              const SizedBox(width: 12),
               const Icon(
                 Icons.chevron_right_rounded,
                 color: AppColors.textSecondary,
@@ -4287,7 +4388,7 @@ class _AboutEditor extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _DropdownField(
-                    label: 'Church (optional)',
+                    label: 'Church',
                     value: hasChurch ? (isOther ? 'Other' : churchName) : '',
                     items: items,
                     onChanged: (v) {
@@ -4900,7 +5001,7 @@ class _CountryPickerField extends StatelessWidget {
                   ),
                   Icon(
                     Icons.arrow_drop_down_rounded,
-                    color: AppColors.getTextMuted(context),
+                    color: AppColors.getTextSecondary(context),
                   ),
                 ],
               ),
@@ -5548,7 +5649,7 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
           backgroundColor: Theme.of(context).colorScheme.surface,
           surfaceTintColor: Theme.of(context).colorScheme.surface,
           elevation: 0,
-          title: Text('Compatibility', style: AppTextStyles.headlineMedium),
+          title: Text('Compatibility', style: AppTextStyles.titleSmall),
         ),
         body: SafeArea(
           child: Padding(
@@ -5591,7 +5692,7 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         surfaceTintColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
-        title: Text('Compatibility Data', style: AppTextStyles.headlineMedium),
+        title: Text('Compatibility Data', style: AppTextStyles.titleSmall),
       ),
       body: SafeArea(
         child: Padding(
@@ -5713,14 +5814,14 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                         name.isEmpty
                             ? 'Compatibility'
                             : 'Compatibility with $name',
-                        style: AppTextStyles.titleLarge.copyWith(
+                        style: AppTextStyles.titleSmall.copyWith(
                           fontWeight: FontWeight.w900,
                         ),
                       ),
                       const SizedBox(height: 6),
                       Text(
                         'These insights are based on questionnaire data stored on the profile.',
-                        style: AppTextStyles.bodyMedium.copyWith(
+                        style: AppTextStyles.bodySmall.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           height: 1.35,
                         ),
@@ -5789,7 +5890,7 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                               );
 
                               return Container(
-                                padding: const EdgeInsets.all(14),
+                                padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(16),
@@ -5802,14 +5903,14 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      height: 38,
-                                      width: 38,
+                                      height: 32,
+                                      width: 32,
                                       decoration: BoxDecoration(
                                         color:
                                             Theme.of(context)
                                                 .colorScheme
                                                 .surfaceContainerHighest,
-                                        borderRadius: BorderRadius.circular(12),
+                                        borderRadius: BorderRadius.circular(10),
                                         border: Border.all(
                                           color:
                                               Theme.of(
@@ -5823,10 +5924,10 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                                             Theme.of(
                                               context,
                                             ).colorScheme.primary,
-                                        size: 20,
+                                        size: 16,
                                       ),
                                     ),
-                                    const SizedBox(width: 12),
+                                    const SizedBox(width: 10),
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
@@ -5834,7 +5935,7 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                                         children: [
                                           Text(
                                             label,
-                                            style: AppTextStyles.bodySmall
+                                            style: AppTextStyles.caption
                                                 .copyWith(
                                                   color:
                                                       Theme.of(context)
@@ -5843,10 +5944,10 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                                                   height: 1.1,
                                                 ),
                                           ),
-                                          const SizedBox(height: 4),
+                                          const SizedBox(height: 3),
                                           Text(
                                             sentence,
-                                            style: AppTextStyles.bodyMedium
+                                            style: AppTextStyles.bodySmall
                                                 .copyWith(height: 1.25),
                                           ),
                                         ],
@@ -5929,8 +6030,8 @@ class _CompatibilityInsightsSummary extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
+                  horizontal: 10,
+                  vertical: 4,
                 ),
                 decoration: BoxDecoration(
                   color: _getScoreColor(score.score, context),
@@ -5938,24 +6039,24 @@ class _CompatibilityInsightsSummary extends StatelessWidget {
                 ),
                 child: Text(
                   '${score.score}%',
-                  style: AppTextStyles.labelMedium.copyWith(
+                  style: AppTextStyles.caption.copyWith(
                     color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 10),
               Expanded(
                 child: Text(
                   'Why You Match',
-                  style: AppTextStyles.titleMedium.copyWith(
+                  style: AppTextStyles.titleSmall.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
 
           // Category breakdown
           ...score.fieldScores.entries.map((entry) {
@@ -5969,7 +6070,7 @@ class _CompatibilityInsightsSummary extends StatelessWidget {
                 children: [
                   Text(
                     _getCategoryLabel(category),
-                    style: AppTextStyles.bodyMedium,
+                    style: AppTextStyles.bodySmall,
                   ),
                   const Spacer(),
                   Container(

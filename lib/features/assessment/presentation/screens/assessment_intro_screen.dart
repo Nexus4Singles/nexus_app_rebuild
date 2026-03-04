@@ -33,7 +33,7 @@ class AssessmentIntroScreen extends ConsumerWidget {
     final configAsync = ref.watch(assessmentConfigProvider(typeToUse));
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: AppColors.getBackground(context),
       body: SafeArea(
         child: configAsync.when(
           data: (config) {
@@ -91,7 +91,7 @@ class AssessmentIntroScreen extends ConsumerWidget {
                     Center(
                       child: Text(
                         meta.subtitle,
-                        style: AppTextStyles.bodyMedium.copyWith(
+                        style: AppTextStyles.bodySmall.copyWith(
                           color: AppColors.getTextSecondary(context),
                           height: 1.3,
                         ),
@@ -99,18 +99,20 @@ class AssessmentIntroScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 14),
-                    _InfoRow(
-                      items: [
-                        _InfoChip(
-                          icon: Icons.quiz_outlined,
-                          title: '${config.questions.length} Questions',
-                        ),
-                        _InfoChip(
-                          icon: Icons.timer_outlined,
-                          title: '7–10 Minutes',
-                        ),
-                        _InfoChip(icon: Icons.lock_outline, title: 'Private'),
-                      ],
+                    Center(
+                      child: _InfoRow(
+                        items: [
+                          _InfoChip(
+                            icon: Icons.quiz_outlined,
+                            title: '${config.questions.length} Questions',
+                          ),
+                          _InfoChip(
+                            icon: Icons.timer_outlined,
+                            title: '7–10 Minutes',
+                          ),
+                          _InfoChip(icon: Icons.lock_outline, title: 'Private'),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 12),
                     Container(
@@ -210,7 +212,7 @@ class AssessmentIntroScreen extends ConsumerWidget {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Your honesty is crucial. Answer based on how you truly feel and behave—not how you wish you were. The accuracy of your results depends on your authentic responses.\n\nTake your time and be genuine with yourself.',
+                            'Your honesty is crucial. Answer based on how you truly feel and behave, not how you wish you were. The accuracy of your results depends on your authentic responses.\n\nTake your time and be genuine with yourself.',
                             style: AppTextStyles.bodySmall.copyWith(
                               color: AppColors.getTextSecondary(context),
                               height: 1.3,
@@ -219,10 +221,10 @@ class AssessmentIntroScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 60),
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
-                      height: 50,
+                      height: 48,
                       child: ElevatedButton(
                         onPressed: () {
                           if (!isLoggedIn) {
@@ -230,14 +232,43 @@ class AssessmentIntroScreen extends ConsumerWidget {
                               context: context,
                               builder:
                                   (_) => AlertDialog(
-                                    title: const Text('Sign in required'),
-                                    content: const Text(
+                                    backgroundColor: AppColors.getSurface(
+                                      context,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    title: Text(
+                                      'Sign in required',
+                                      style: AppTextStyles.titleSmall.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.getTextPrimary(
+                                          context,
+                                        ),
+                                      ),
+                                    ),
+                                    content: Text(
                                       'Create an account or sign in to take assessments.',
+                                      style: AppTextStyles.bodySmall.copyWith(
+                                        color: AppColors.getTextSecondary(
+                                          context,
+                                        ),
+                                        height: 1.4,
+                                      ),
                                     ),
                                     actions: [
                                       TextButton(
                                         onPressed: () => Navigator.pop(context),
-                                        child: const Text('Not now'),
+                                        child: Text(
+                                          'Not now',
+                                          style: AppTextStyles.bodySmall
+                                              .copyWith(
+                                                color:
+                                                    AppColors.getTextSecondary(
+                                                      context,
+                                                    ),
+                                              ),
+                                        ),
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
@@ -247,7 +278,24 @@ class AssessmentIntroScreen extends ConsumerWidget {
                                             AppRoutes.login,
                                           );
                                         },
-                                        child: const Text('Sign in'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.primary,
+                                          foregroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
+                                          ),
+                                          elevation: 0,
+                                        ),
+                                        child: Text(
+                                          'Sign in',
+                                          style: AppTextStyles.bodySmall
+                                              .copyWith(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -330,7 +378,7 @@ class AssessmentMeta {
           subtitle: 'Heal, reset, and prepare for a healthier second chance.',
           discoveries: [
             'Healing progress & emotional stability',
-            'Patterns that could repeat in the next marriage',
+            'Patterns that could be repeated in the next marriage',
             'Practical steps for healthier relationships',
           ],
           note:
@@ -381,18 +429,11 @@ class _InfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children:
-          items
-              .map(
-                (i) => Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: i,
-                  ),
-                ),
-              )
-              .toList(),
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      alignment: WrapAlignment.center,
+      children: items,
     );
   }
 }
@@ -405,22 +446,20 @@ class _InfoChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 46,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.getBorder(context)),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 18, color: AppColors.primary),
-          const SizedBox(width: 8),
+          Icon(icon, size: 16, color: AppColors.primary),
+          const SizedBox(width: 6),
           Text(
             title,
-            style: AppTextStyles.bodySmall.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.w600),
           ),
         ],
       ),

@@ -9,6 +9,7 @@ import '../user/is_admin_provider.dart';
 import '../session/effective_relationship_status_provider.dart';
 import '../widgets/guest_guard.dart';
 import 'dating_profile_status_provider.dart';
+import 'dating_profile_exists_provider.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 
 class DatingProfileGate {
@@ -64,7 +65,10 @@ class DatingProfileGate {
     final ready = ref.read(firebaseReadyProvider);
     if (!ready) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: const Text('Setting things up… try again shortly.'), backgroundColor: AppColors.primary),
+        SnackBar(
+          content: const Text('Setting things up… try again shortly.'),
+          backgroundColor: AppColors.primary,
+        ),
       );
       return;
     }
@@ -110,14 +114,34 @@ class DatingProfileGate {
       return;
     }
 
+    // Check if profile exists at all (to give different message if they haven't created one)
+    final profileExistsAsync = ref.read(datingProfileExistsProvider);
+    final profileExists = profileExistsAsync.maybeWhen(
+      data: (exists) => exists,
+      orElse: () => false,
+    );
+
+    String title, message, buttonText;
+    if (status == DatingProfileStatus.none && !profileExists) {
+      // User hasn't created a dating profile yet
+      title = 'Create Your Dating Profile';
+      message =
+          'To use this feature, you need to create a dating profile first. Start building your profile now!';
+      buttonText = 'Create Profile';
+    } else {
+      // User has started a profile but it's incomplete
+      title = 'Complete Your Profile';
+      message =
+          'You\'ve started your dating profile, but need to finish it before using this feature.';
+      buttonText = 'Complete Profile';
+    }
+
     await showDialog<void>(
       context: context,
       builder:
           (_) => AlertDialog(
-            title: const Text('Complete your profile'),
-            content: const Text(
-              'You need to complete your dating profile before using this feature.',
-            ),
+            title: Text(title),
+            content: Text(message),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -128,7 +152,7 @@ class DatingProfileGate {
                   Navigator.pop(context);
                   Navigator.of(context).pushNamed('/dating/setup/age');
                 },
-                child: const Text('Complete profile'),
+                child: Text(buttonText),
               ),
             ],
           ),

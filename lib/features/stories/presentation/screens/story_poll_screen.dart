@@ -124,7 +124,7 @@ class _StoryPollScreenState extends ConsumerState<StoryPollScreen> {
           onPressed: () => navigateBackToHome(context),
         ),
         title: Text(
-          'Weekly Poll',
+          'Poll',
           style: AppTextStyles.headlineSmall.copyWith(
             fontWeight: FontWeight.w700,
           ),

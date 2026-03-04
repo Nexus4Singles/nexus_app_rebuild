@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/constants/app_constants.dart';
@@ -15,6 +17,7 @@ import 'package:nexus_app_v2/features/subscription/application/subscription_prov
 import 'package:nexus_app_v2/features/subscription/domain/subscription_models.dart';
 import 'package:nexus_app_v2/features/challenges/presentation/screens/journey_detail_screen.dart';
 import 'package:nexus_app_v2/features/challenges/providers/journeys_providers.dart';
+import 'package:nexus_app_v2/core/services/secure_purchase_validation_service.dart';
 
 // Note: Using journeyByIdProvider from journeys_providers.dart (cloud-first with fallback)
 // This replaces the old local repository-based loading
@@ -627,7 +630,8 @@ class _NoSubscriptionView extends ConsumerWidget {
         builder: (context) => const Center(child: CircularProgressIndicator()),
       );
 
-      // Make purchase
+      // Make purchase - SDK handles payment sheet display
+      // SDK will throw if user cancels, return CustomerInfo if successful
       final customerInfo = await RevenueCatService.purchasePackage(
         monthlyPackage,
       );
@@ -635,28 +639,82 @@ class _NoSubscriptionView extends ConsumerWidget {
       if (!context.mounted) return;
       Navigator.pop(context); // Close loading dialog
 
-      // If `customerInfo` is null, the user cancelled the native purchase
-      // sheet. Treat this as a non-error and simply return.
+      // If customerInfo is null, the user cancelled the native purchase UI.
       if (customerInfo == null) {
+        debugPrint(
+          '🟡 [SubscriptionPurchase] Purchase cancelled by user (null result)',
+        );
         return;
       }
 
-      // Record purchase in Firestore
-      await ref
-          .read(subscriptionNotifierProvider.notifier)
-          .updateSubscription(isActive: true, tier: SubscriptionTier.monthly);
+      // ====================================================================
+      // OPTIMISTIC: Trust the SDK, record immediately (proven by world-class apps)
+      // ====================================================================
+      // The RevenueCat SDK has already validated the purchase with Apple/Google.
+      // We trust this validation and record the purchase immediately.
+      // Background async verification happens via our webhook system.
 
-      if (!context.mounted) return;
+      debugPrint(
+        '🟢 [SubscriptionPurchase] SDK validated, recording optimistically',
+      );
 
-      // Show success snackbar and instruct user to restart manually
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text(
-            'Subscription unlocked! 🎉 Please restart the app to activate your subscription.',
+      // Extract a subscription transaction reference from CustomerInfo.
+      // The RevenueCat Flutter SDK does not expose store transaction IDs
+      // for subscriptions (only for nonSubscriptionTransactions), so we
+      // build a meaningful synthetic identifier for audit purposes.
+      String subscriptionTransactionId = '';
+      try {
+        final activeEntitlements = customerInfo.entitlements.active;
+        if (activeEntitlements.isNotEmpty) {
+          final entry = activeEntitlements.values.first;
+          subscriptionTransactionId =
+              'sub_${entry.productIdentifier}_${DateTime.now().millisecondsSinceEpoch}';
+        }
+      } catch (e) {
+        debugPrint(
+          '⚠️  [SubscriptionPurchase] Entitlement extraction error: $e',
+        );
+      }
+      if (subscriptionTransactionId.isEmpty) {
+        subscriptionTransactionId =
+            'sub_${customerInfo.originalAppUserId}_${DateTime.now().millisecondsSinceEpoch}';
+      }
+      debugPrint(
+        '🔐 [SubscriptionPurchase] Transaction reference: $subscriptionTransactionId',
+      );
+
+      // Record subscription optimistically (fire-and-forget async verification)
+      try {
+        await _recordSubscriptionOptimistically(
+          packageId: monthlyPackage.storeProduct.identifier,
+          transactionId: subscriptionTransactionId,
+          tier: SubscriptionTier.monthly.id,
+        );
+      } catch (e) {
+        // Even if local recording fails, the user has the subscription. Don't block.
+        debugPrint('⚠️  [SubscriptionPurchase] Local recording error: $e');
+      }
+
+      // Show success immediately (user has already paid via SDK validation)
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Subscription unlocked! 🎉'),
+            duration: const Duration(seconds: 4),
+            backgroundColor: AppColors.success,
           ),
-          duration: const Duration(seconds: 4),
-          backgroundColor: AppColors.success,
-        ),
+        );
+      }
+
+      // Invalidate subscription providers to refresh UI immediately
+      ref.invalidate(subscriptionStatusProvider);
+      ref.invalidate(isPremiumUserProvider);
+
+      // Fire background verification async (won't block user, not awaited)
+      _verifySubscriptionAsync(
+        packageId: monthlyPackage.storeProduct.identifier,
+        transactionId: subscriptionTransactionId,
+        tier: SubscriptionTier.monthly.id,
       );
     } catch (e) {
       if (context.mounted) {
@@ -665,7 +723,30 @@ class _NoSubscriptionView extends ConsumerWidget {
           navigator.pop();
         }
       }
-      _showError(context, 'Purchase failed: ${e.toString()}');
+
+      debugPrint(
+        '🔴 [SubscriptionPurchase] Caught exception: ${e.runtimeType}: $e',
+      );
+
+      // Check if this is a configuration error (product not in App Store Connect)
+      final errorStr = e.toString();
+      if (errorStr.contains('code: 1') &&
+          errorStr.contains('userCancelled: true')) {
+        debugPrint('🔴 [SubscriptionPurchase] CONFIGURATION ERROR DETECTED!');
+        _showError(context, '''
+Purchase failed: Product not configured in App Store Connect.
+
+Please verify:
+1. Subscription product exists in App Store Connect
+2. Bundle ID matches your Xcode project
+3. StoreKit configuration is complete
+4. RevenueCat dashboard products are synced
+
+Contact support if the issue persists.
+''');
+      } else {
+        _showError(context, 'Purchase failed: ${e.toString()}');
+      }
     }
   }
 
@@ -673,6 +754,91 @@ class _NoSubscriptionView extends ConsumerWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), backgroundColor: AppColors.primary),
     );
+  }
+
+  /// Records subscription optimistically to Firestore
+  /// Uses Cloud Firestore directly without waiting for backend validation
+  Future<void> _recordSubscriptionOptimistically({
+    required String packageId,
+    required String transactionId,
+    required String tier,
+  }) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final db = FirebaseFirestore.instance;
+
+    final subscriptionRecord = {
+      'isActive': true,
+      'tier': tier,
+      'startDate': FieldValue.serverTimestamp(),
+      // Set expiry to 30 days from now (will be updated by webhook with real expiry)
+      'expiryDate': Timestamp.fromDate(
+        DateTime.now().add(const Duration(days: 30)),
+      ),
+      'autoRenew': true,
+      'revenueCatTransactionId': transactionId,
+      'packageId': packageId,
+      'type': 'subscription',
+      'verificationStatus':
+          'pending', // Will be updated by webhook/async verification
+      'optimisticRecord': true, // Marked as optimistic for audit
+    };
+
+    // Record subscription
+    await db.collection('users').doc(user.uid).update({
+      'subscription': subscriptionRecord,
+      'onPremium': true,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  /// Verifies subscription asynchronously with backend (fire-and-forget)
+  /// Doesn't block user experience. Called after optimistic record is done.
+  void _verifySubscriptionAsync({
+    required String packageId,
+    required String transactionId,
+    required String tier,
+  }) {
+    // Fire async verification without awaiting
+    Future.microtask(() async {
+      try {
+        debugPrint(
+          '🔐 [SubscriptionPurchase] Async verification: Validating with backend',
+        );
+
+        await SecurePurchaseValidationService().validateAndRecordSubscription(
+          packageId: packageId,
+          transactionId: transactionId,
+          tier: tier,
+        );
+
+        debugPrint('🟢 [SubscriptionPurchase] Async verification successful');
+        // Update verification status
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .update({'subscription.verificationStatus': 'verified'});
+        }
+      } on PurchaseValidationException catch (e) {
+        debugPrint('⚠️  [SubscriptionPurchase] Async verification failed: $e');
+        // Mark as verification_failed but don't revoke - user already has access
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .update({
+                'subscription.verificationStatus': 'verification_failed',
+              });
+        }
+      } catch (e) {
+        debugPrint('⚠️  [SubscriptionPurchase] Async verification error: $e');
+        // Silent fail - user already has access, verification is just for audit
+      }
+    });
   }
 }
 

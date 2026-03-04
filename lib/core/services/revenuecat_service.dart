@@ -1,6 +1,8 @@
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'dart:io' show Platform;
+import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
 import '../config/revenuecat_config.dart';
 
@@ -47,33 +49,124 @@ class RevenueCatService {
 
   /// Purchase a package (subscriptions or one-time). Returns [CustomerInfo]
   /// on success, or `null` if the user cancelled the native purchase UI.
+  ///
+  /// Throws an exception if purchase fails for any reason other than user cancellation.
   static Future<CustomerInfo?> purchasePackage(Package package) async {
+    // ── FORENSIC: capture entitlement state BEFORE purchase ──
+    // ── FORENSIC LOGGING (uses print() so it works in release builds too) ──
     try {
-      return await Purchases.purchasePackage(package);
+      final preInfo = await Purchases.getCustomerInfo();
+      print('🔍 [RevenueCatService] PRE-PURCHASE entitlements:');
+      print('   Active: ${preInfo.entitlements.active.keys.toList()}');
+      print('   All:    ${preInfo.entitlements.all.keys.toList()}');
+      print(
+        '   NonSubscriptionTransactions: ${preInfo.nonSubscriptionTransactions.map((t) => t.productIdentifier).toList()}',
+      );
     } catch (e) {
-      final msg = e.toString().toLowerCase();
-      // Heuristic checks for user-initiated cancellation messages from
-      // platform SDKs. If detected, return null to indicate a cancelled
-      // purchase (not an error the user needs to see).
-      if (msg.contains('cancel') ||
-          msg.contains('user cancelled') ||
-          msg.contains('user canceled') ||
-          msg.contains('purchase cancelled') ||
-          msg.contains('purchase canceled')) {
-        print('🟡 [RevenueCatService] Purchase cancelled by user: $e');
+      print('⚠️ [RevenueCatService] Could not fetch pre-purchase info: $e');
+    }
+
+    print(
+      '🔵 [RevenueCatService] Calling Purchases.purchasePackage for: '
+      '${package.storeProduct.identifier} (type: ${package.packageType})',
+    );
+
+    try {
+      // Add timeout to prevent simulator from hanging indefinitely
+      final result = await Purchases.purchasePackage(package).timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          print(
+            '⏱️ [RevenueCatService] purchasePackage timed out after 30 seconds on simulator',
+          );
+          throw TimeoutException(
+            'Purchase took too long (30s). This may be a simulator issue. Please try on a real device or restart the simulator.',
+          );
+        },
+      );
+      // ── FORENSIC: capture what the SDK returned ──
+      print('🟢 [RevenueCatService] purchasePackage RETURNED (not thrown)');
+      print(
+        '   Active entitlements: ${result.entitlements.active.keys.toList()}',
+      );
+      print(
+        '   NonSubscriptionTransactions: ${result.nonSubscriptionTransactions.map((t) => '${t.productIdentifier}@${t.purchaseDate}').toList()}',
+      );
+      return result;
+    } on PlatformException catch (e) {
+      print(
+        '🔴 [RevenueCatService] PlatformException: code=${e.code} message=${e.message}',
+      );
+      print('   Details type: ${e.details?.runtimeType}');
+      print('   Details: ${e.details}');
+
+      // Check for user cancellation
+      final errorDetails = e.details as Map?;
+      final wasUserCancelled = errorDetails?['userCancelled'] as bool? ?? false;
+      final readableErrorCode =
+          errorDetails?['readableErrorCode'] as String? ?? '';
+
+      print(
+        '   userCancelled=$wasUserCancelled  readableErrorCode=$readableErrorCode',
+      );
+
+      if (wasUserCancelled) {
+        print('🟡 [RevenueCatService] User cancelled purchase');
         return null;
       }
 
-      print('🔴 [RevenueCatService] Error purchasing package: $e');
+      // Detect "product already purchased" specifically
+      if (readableErrorCode.contains('PRODUCT_ALREADY_PURCHASED') ||
+          (e.message ?? '').toLowerCase().contains('already') ||
+          e.code == '6') {
+        print(
+          '🟠 [RevenueCatService] PRODUCT ALREADY PURCHASED – '
+          'the Apple ID owns this non-consumable. No payment sheet will appear.',
+        );
+        // Re-throw so caller can handle this distinctly
+        rethrow;
+      }
+
+      // Any other error, re-throw it
+      rethrow;
+    } catch (e) {
+      print('🔴 [RevenueCatService] Non-platform exception: ${e.runtimeType}');
+      print('   Full error: $e');
+
+      final msg = e.toString().toLowerCase();
+      // Only treat as cancellation if it's genuinely a cancel message
+      if (msg.contains('user cancel') || msg.contains('purchase cancel')) {
+        print('🟡 [RevenueCatService] User cancelled (string match)');
+        return null;
+      }
+
+      print('🔴 [RevenueCatService] Unexpected error – rethrowing');
       rethrow;
     }
   }
 
   static Future<Offerings?> getOfferings() async {
     try {
+      debugPrint(
+        '🔵 [RevenueCatService] Fetching offerings from RevenueCat...',
+      );
       final offerings = await Purchases.getOfferings();
+
+      debugPrint('🟢 [RevenueCatService] Offerings received:');
+      debugPrint('  Current offering: ${offerings.current?.identifier}');
+      debugPrint('  Total offerings: ${offerings.all.length}');
+      offerings.all.forEach((key, offering) {
+        debugPrint(
+          '  - Offering "$key": ${offering.availablePackages.length} packages',
+        );
+        offering.availablePackages.forEach((package) {
+          debugPrint('    - ${package.storeProduct.identifier}');
+        });
+      });
+
       return offerings;
     } catch (e) {
+      debugPrint('🔴 [RevenueCatService] Error fetching offerings: $e');
       return null;
     }
   }
@@ -82,67 +175,75 @@ class RevenueCatService {
     return await Purchases.getCustomerInfo();
   }
 
+  /// Checks if a non-consumable product is already owned (present in
+  /// nonSubscriptionTransactions). On iOS, already-owned non-consumables
+  /// won't show a purchase sheet — StoreKit silently returns the existing
+  /// purchase. Use this to detect that case and handle it gracefully
+  /// (e.g. restore access without calling purchasePackage).
+  static Future<bool> isProductOwned(String productId) async {
+    try {
+      final info = await Purchases.getCustomerInfo();
+      return info.nonSubscriptionTransactions.any(
+        (t) => t.productIdentifier == productId,
+      );
+    } catch (e) {
+      debugPrint('⚠️ [RevenueCatService] isProductOwned check failed: $e');
+      return false;
+    }
+  }
+
   /// Opens the native subscription management UI for the platform
-  /// (iOS: App Store, Android: Google Play)
+  /// (iOS: App Store, Android: Google Play).
+  ///
+  /// NOTE: We skip `canLaunchUrl` entirely because it requires platform-
+  /// specific manifest/plist declarations (`<queries>` on Android 11+,
+  /// `LSApplicationQueriesSchemes` on iOS) and returns false even when the
+  /// URL is perfectly launchable. Instead we call `launchUrl` directly and
+  /// catch failures.
   static Future<void> manageSubscriptions() async {
     try {
       if (Platform.isIOS) {
-        // iOS - Try multiple URL schemes in order of preference
-        const urls = [
-          // Primary: Settings app deep link (iOS 15.1+)
-          'itms-apps://apps.apple.com/account/subscriptions',
-          // Fallback: Web URL
-          'https://apps.apple.com/account/subscriptions',
-        ];
-
-        for (final url in urls) {
-          try {
-            print('🟡 [RevenueCatService] Trying iOS URL: $url');
-            final uri = Uri.parse(url);
-            if (await canLaunchUrl(uri)) {
-              await launchUrl(uri, mode: LaunchMode.externalApplication);
-              print('🟢 [RevenueCatService] Successfully opened: $url');
-              return;
-            } else {
-              print('🔴 [RevenueCatService] Cannot launch URL: $url');
-            }
-          } catch (e) {
-            print('🔴 [RevenueCatService] Error with URL $url: $e');
-          }
-        }
-
-        throw Exception(
-          'Failed to open App Store subscriptions management on iOS. None of the URL schemes worked.',
+        // Primary: deep-link into the App Store subscriptions page
+        const primary = 'https://apps.apple.com/account/subscriptions';
+        print('🟡 [RevenueCatService] Opening iOS subscriptions: $primary');
+        final launched = await launchUrl(
+          Uri.parse(primary),
+          mode: LaunchMode.externalApplication,
         );
+        if (launched) {
+          print('🟢 [RevenueCatService] Successfully opened iOS subscriptions');
+          return;
+        }
+        throw Exception('launchUrl returned false for $primary');
       } else if (Platform.isAndroid) {
-        // Android - Try multiple approaches
-        const appPackage = 'com.nexusapp';
-        const urls = [
-          // Primary: Google Play subscriptions
-          'https://play.google.com/store/account/subscriptions?package=$appPackage',
-          // Fallback: Direct Google Play Store link
-          'https://play.google.com/store/apps/details?id=$appPackage',
-        ];
-
-        for (final url in urls) {
-          try {
-            print('🟡 [RevenueCatService] Trying Android URL: $url');
-            final uri = Uri.parse(url);
-            if (await canLaunchUrl(uri)) {
-              await launchUrl(uri, mode: LaunchMode.externalApplication);
-              print('🟢 [RevenueCatService] Successfully opened: $url');
-              return;
-            } else {
-              print('🔴 [RevenueCatService] Cannot launch URL: $url');
-            }
-          } catch (e) {
-            print('🔴 [RevenueCatService] Error with URL $url: $e');
-          }
-        }
-
-        throw Exception(
-          'Failed to open Google Play subscriptions management on Android. None of the URL schemes worked.',
+        // The applicationId MUST match build.gradle.kts → applicationId
+        const appPackage = 'com.nexusapptest.app';
+        // Primary: Google Play subscription settings filtered to this app
+        const primary =
+            'https://play.google.com/store/account/subscriptions?package=$appPackage';
+        print('🟡 [RevenueCatService] Opening Android subscriptions: $primary');
+        final launched = await launchUrl(
+          Uri.parse(primary),
+          mode: LaunchMode.externalApplication,
         );
+        if (launched) {
+          print(
+            '🟢 [RevenueCatService] Successfully opened Android subscriptions',
+          );
+          return;
+        }
+        // Fallback: generic Play Store subscriptions page (without package filter)
+        const fallback = 'https://play.google.com/store/account/subscriptions';
+        print('🟡 [RevenueCatService] Trying fallback: $fallback');
+        final fallbackLaunched = await launchUrl(
+          Uri.parse(fallback),
+          mode: LaunchMode.externalApplication,
+        );
+        if (fallbackLaunched) {
+          print('🟢 [RevenueCatService] Successfully opened fallback');
+          return;
+        }
+        throw Exception('Failed to open Google Play subscriptions');
       }
     } catch (e) {
       print('🔴 [RevenueCatService] manageSubscriptions error: $e');

@@ -29,5 +29,6 @@ class RevenueCatConfig {
   // ============================================================================
   // TEST MODE
   // ============================================================================
-  static const bool enableTestMode = true; // Set to false for production
+  static const bool enableTestMode =
+      false; // Set to true for sandbox testing only
 }

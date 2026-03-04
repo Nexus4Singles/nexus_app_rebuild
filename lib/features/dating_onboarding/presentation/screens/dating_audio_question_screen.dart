@@ -150,6 +150,20 @@ class _DatingAudioQuestionScreenState
         (_isRecording && _elapsed >= _minSeconds) ||
         (_recordedDuration >= _minSeconds && !_isRecording);
 
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmallScreen = screenHeight < 700;
+
+    // Responsive spacing - tighter at top
+    final topPadding = isSmallScreen ? 8.0 : 12.0;
+    final progressSpacing = isSmallScreen ? 10.0 : 14.0;
+    final questionSpacing = isSmallScreen ? 12.0 : 18.0;
+    final timerSpacing = isSmallScreen ? 10.0 : 18.0;
+    final buttonsSpacing = isSmallScreen ? 20.0 : 32.0;
+
+    // Responsive font sizing
+    final questionFontSize = isSmallScreen ? 15.0 : 16.0;
+    final timerFontSize = isSmallScreen ? 28.0 : 32.0;
+
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
@@ -166,8 +180,8 @@ class _DatingAudioQuestionScreenState
       ),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+          SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(20, topPadding, 20, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -175,13 +189,16 @@ class _DatingAudioQuestionScreenState
                   currentStep: 5 + widget.questionNumber,
                   totalSteps: 9,
                 ),
-                const SizedBox(height: 18),
+                SizedBox(height: progressSpacing),
                 _StepIndicator(step: widget.questionNumber),
-                const SizedBox(height: 18),
+                SizedBox(height: progressSpacing),
                 Text(
                   _questionText,
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.titleMedium.copyWith(height: 1.35),
+                  style: AppTextStyles.titleMedium.copyWith(
+                    height: 1.35,
+                    fontSize: questionFontSize,
+                  ),
                 ),
                 if (_helperText != null) ...[
                   const SizedBox(height: 8),
@@ -190,10 +207,11 @@ class _DatingAudioQuestionScreenState
                     textAlign: TextAlign.center,
                     style: AppTextStyles.caption.copyWith(
                       color: AppColors.getTextMuted(context),
+                      fontSize: isSmallScreen ? 11.0 : 12.0,
                     ),
                   ),
                 ],
-                const SizedBox(height: 28),
+                SizedBox(height: questionSpacing),
                 Text(
                   // Show playback position when playing, otherwise show recording elapsed time
                   _isPlaying
@@ -201,6 +219,7 @@ class _DatingAudioQuestionScreenState
                       : _formatTime(_elapsed),
                   style: AppTextStyles.headlineLarge.copyWith(
                     letterSpacing: 0.5,
+                    fontSize: timerFontSize,
                   ),
                 ),
                 // Debug info: show actual recorded duration vs timer duration
@@ -213,17 +232,17 @@ class _DatingAudioQuestionScreenState
                       'Recorded duration: ${_formatTime(_recordedDuration)}',
                       style: AppTextStyles.labelSmall.copyWith(
                         color: AppColors.getTextMuted(context),
+                        fontSize: isSmallScreen ? 9.0 : 10.0,
                       ),
                     ),
                   ),
-                const SizedBox(height: 24),
+                SizedBox(height: timerSpacing),
                 _Waveform(
                   active: _isRecording && !_isPaused,
                   hasRecording: _hasRecording,
                   isPlaying: _isPlaying,
                 ),
-                const SizedBox(height: 44),
-
+                SizedBox(height: buttonsSpacing),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -259,37 +278,48 @@ class _DatingAudioQuestionScreenState
                   ],
                 ),
 
-                const Spacer(),
-
+                // Extra bottom padding so content doesn't hide behind
+                // the pinned Continue button.
                 SizedBox(
-                  width: double.infinity,
-                  height: 54,
-                  child: ElevatedButton(
-                    onPressed:
-                        canNext
-                            ? () =>
-                                (widget.questionNumber == 3
-                                    ? _goSummary(context)
-                                    : _goNext(context))
-                            : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
-                    child: Text(
-                      'Continue',
-                      style: AppTextStyles.labelLarge.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
+                  height:
+                      buttonsSpacing +
+                      54 +
+                      MediaQuery.of(context).padding.bottom +
+                      (isSmallScreen ? 20 : 40),
+                ),
+              ],
+            ),
+          ),
+
+          // Continue button pinned to the bottom edge (matching other onboarding screens)
+          Positioned(
+            left: 20,
+            right: 20,
+            bottom: MediaQuery.of(context).padding.bottom + 20,
+            child: SizedBox(
+              width: double.infinity,
+              height: 54,
+              child: ElevatedButton(
+                onPressed:
+                    canNext
+                        ? () =>
+                            (widget.questionNumber == 3
+                                ? _goSummary(context)
+                                : _goNext(context))
+                        : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
                   ),
                 ),
-                const SizedBox(height: 18),
-              ],
+                child: Text(
+                  'Continue',
+                  style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
+                ),
+              ),
             ),
           ),
           if (_busy)

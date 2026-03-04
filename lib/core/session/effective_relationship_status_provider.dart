@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/app_constants.dart';
@@ -30,8 +31,9 @@ RelationshipStatus? _parseRelationshipStatusKey(String? key) {
 /// If signed in but missing relationshipStatus (v1 user pre-presurvey), returns singleNeverMarried as fallback.
 /// NavConfig already treats this default as singles (so tabs don't disappear).
 final effectiveRelationshipStatusProvider = Provider<RelationshipStatus>((ref) {
-  // ignore: avoid_print
-  print('[effectiveRelationshipStatusProvider] PROVIDER EVALUATION STARTING');
+  debugPrint(
+    '[effectiveRelationshipStatusProvider] PROVIDER EVALUATION STARTING',
+  );
 
   final authAsync = ref.watch(authStateProvider);
   final user = authAsync.maybeWhen(data: (u) => u, orElse: () => null);
@@ -39,8 +41,7 @@ final effectiveRelationshipStatusProvider = Provider<RelationshipStatus>((ref) {
   // Signed out / anonymous -> guest session status (or default to singles)
   if (user == null || user.isAnonymous) {
     final guest = ref.watch(guestSessionProvider);
-    // ignore: avoid_print
-    print(
+    debugPrint(
       '[effectiveRelationshipStatusProvider] Anonymous user (user=$user, anon=${user?.isAnonymous}), using guest status: ${guest?.relationshipStatus}',
     );
     return guest?.relationshipStatus ?? RelationshipStatus.singleNeverMarried;
@@ -50,8 +51,7 @@ final effectiveRelationshipStatusProvider = Provider<RelationshipStatus>((ref) {
   final docAsync = ref.watch(currentUserDocProvider);
   final doc = docAsync.maybeWhen(data: (d) => d, orElse: () => null);
   if (doc == null) {
-    // ignore: avoid_print
-    print(
+    debugPrint(
       '[effectiveRelationshipStatusProvider] Doc is null for signed-in user (${user.uid}), returning default',
     );
     return RelationshipStatus.singleNeverMarried;

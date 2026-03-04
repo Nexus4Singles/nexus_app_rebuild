@@ -39,180 +39,198 @@ class NoProfilesScreen extends StatelessWidget {
   // Simple layout — used for non-diagnostic hints (daily limit, pagination, etc.)
   // ---------------------------------------------------------------------------
   Widget _buildSimpleHintLayout(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.getBackground(context),
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.hourglass_empty_rounded,
-                    color: AppColors.primary,
-                    size: 56,
-                  ),
-                ),
-                const SizedBox(height: 32),
-                Text(
-                  emptyHint!,
-                  style: AppTextStyles.headlineSmall.copyWith(
-                    color: AppColors.getTextPrimary(context),
-                    fontWeight: FontWeight.w600,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 32),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: onRetry,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: Text(
-                      'Refresh',
-                      style: AppTextStyles.labelLarge.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height * 0.7,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.hourglass_empty_rounded,
+                color: AppColors.primary,
+                size: 36,
+              ),
             ),
-          ),
+            const SizedBox(height: 20),
+            Text(
+              emptyHint!,
+              style: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.getTextPrimary(context),
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton(
+                onPressed: onRetry,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  'Refresh',
+                  style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   // ---------------------------------------------------------------------------
+  // Headline with optional highlighted substring (e.g. country name)
+  // ---------------------------------------------------------------------------
+  Widget _buildHeadline(BuildContext context, _Diagnostics diagnostics) {
+    final baseStyle = AppTextStyles.titleMedium.copyWith(
+      color: AppColors.getTextPrimary(context),
+      fontWeight: FontWeight.w700,
+    );
+    final hl = diagnostics.headlineHighlight;
+    if (hl == null || !diagnostics.headline.contains(hl)) {
+      return Text(
+        diagnostics.headline,
+        style: baseStyle,
+        textAlign: TextAlign.center,
+      );
+    }
+    final idx = diagnostics.headline.indexOf(hl);
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        style: baseStyle,
+        children: [
+          if (idx > 0) TextSpan(text: diagnostics.headline.substring(0, idx)),
+          TextSpan(
+            text: hl,
+            style: baseStyle.copyWith(color: AppColors.primary),
+          ),
+          if (idx + hl.length < diagnostics.headline.length)
+            TextSpan(text: diagnostics.headline.substring(idx + hl.length)),
+        ],
+      ),
+    );
+  }
+
   // Diagnostic layout — specific reasons why no profiles were found
   // ---------------------------------------------------------------------------
   Widget _buildDiagnosticLayout(BuildContext context) {
     final diagnostics = _buildDiagnostics();
 
-    return Scaffold(
-      backgroundColor: AppColors.getBackground(context),
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Icon — contextual based on reason
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    diagnostics.icon,
-                    color: AppColors.primary,
-                    size: 44,
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Headline
-                Text(
-                  diagnostics.headline,
-                  style: AppTextStyles.headlineMedium.copyWith(
-                    color: AppColors.getTextPrimary(context),
-                    fontWeight: FontWeight.w700,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-
-                const SizedBox(height: 16),
-
-                // Suggestion box — specific actionable advice first
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.06),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: AppColors.primary.withOpacity(0.15),
-                    ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.lightbulb_outline_rounded,
-                        color: AppColors.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.getTextPrimary(context),
-                              fontWeight: FontWeight.w500,
-                              height: 1.45,
-                            ),
-                            children: diagnostics.suggestionSpans,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Diagnostic reason cards
-                ...diagnostics.reasons.map(
-                  (reason) => _DiagnosticReasonCard(reason: reason),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Action button
-                if (onEditPreferences != null)
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: onEditPreferences,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      child: Text(
-                        diagnostics.buttonLabel,
-                        style: AppTextStyles.labelLarge.copyWith(
-                          color: AppColors.textOnPrimary,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height * 0.7,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Icon — contextual based on reason
+            Container(
+              width: 64,
+              height: 64,
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(diagnostics.icon, color: AppColors.primary, size: 32),
             ),
-          ),
+
+            const SizedBox(height: 16),
+
+            // Headline
+            _buildHeadline(context, diagnostics),
+
+            const SizedBox(height: 12),
+
+            // Suggestion box — specific actionable advice first
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.06),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.primary.withOpacity(0.15)),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.lightbulb_outline_rounded,
+                    color: AppColors.primary,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: RichText(
+                      text: TextSpan(
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.getTextPrimary(context),
+                          fontWeight: FontWeight.w500,
+                          height: 1.4,
+                          fontSize: 11.5,
+                        ),
+                        children: diagnostics.suggestionSpans,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            // Diagnostic reason cards
+            ...diagnostics.reasons.map(
+              (reason) => _DiagnosticReasonCard(reason: reason),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Action button
+            if (onEditPreferences != null)
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: onEditPreferences,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                  child: Text(
+                    diagnostics.buttonLabel,
+                    style: AppTextStyles.labelLarge.copyWith(
+                      color: AppColors.textOnPrimary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );
@@ -239,6 +257,7 @@ class NoProfilesScreen extends StatelessWidget {
           return _Diagnostics(
             icon: Icons.location_off_rounded,
             headline: 'No Profiles in $country Yet',
+            headlineHighlight: country,
             description:
                 'There are no profiles in $country at the moment. '
                 'The community in $country is still growing.',
@@ -273,6 +292,7 @@ class NoProfilesScreen extends StatelessWidget {
         return _Diagnostics(
           icon: Icons.location_off_rounded,
           headline: 'No Profiles in $country Yet',
+          headlineHighlight: country,
           description:
               'We found ${b.afterAgeFilter} profile${b.afterAgeFilter == 1 ? '' : 's'} '
               'in your age range (${b.minAge}–${b.maxAge}), but none '
@@ -383,6 +403,7 @@ class NoProfilesScreen extends StatelessWidget {
       return _Diagnostics(
         icon: Icons.location_off_rounded,
         headline: 'No Profiles in $country Yet',
+        headlineHighlight: country,
         description: 'There are no active profiles in $country at the moment.',
         reasons: [
           _Reason(
@@ -460,6 +481,7 @@ class NoProfilesScreen extends StatelessWidget {
 class _Diagnostics {
   final IconData icon;
   final String headline;
+  final String? headlineHighlight;
   final String description;
   final List<_Reason> reasons;
   final List<InlineSpan> suggestionSpans;
@@ -468,6 +490,7 @@ class _Diagnostics {
   const _Diagnostics({
     required this.icon,
     required this.headline,
+    this.headlineHighlight,
     required this.description,
     required this.reasons,
     required this.suggestionSpans,
@@ -493,25 +516,26 @@ class _DiagnosticReasonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 8),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           color: AppColors.getSurface(context),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(color: AppColors.getBorder(context)),
         ),
         child: Row(
           children: [
-            Icon(reason.icon, color: AppColors.primary, size: 20),
-            const SizedBox(width: 12),
+            Icon(reason.icon, color: AppColors.primary, size: 18),
+            const SizedBox(width: 10),
             Expanded(
               child: Text(
                 reason.label,
                 style: AppTextStyles.bodySmall.copyWith(
                   color: AppColors.getTextPrimary(context),
                   fontWeight: FontWeight.w600,
+                  fontSize: 11.5,
                 ),
               ),
             ),

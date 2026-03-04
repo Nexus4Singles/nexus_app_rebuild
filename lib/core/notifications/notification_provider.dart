@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'notification_service.dart';
 import 'notification_models.dart';
 import 'package:nexus_app_v2/core/providers/auth_provider.dart';
+import 'package:nexus_app_v2/core/providers/fcm_token_provider.dart';
 
 // ============================================================================
 // NOTIFICATION PROVIDERS
@@ -33,16 +34,20 @@ final userNotificationsProvider = StreamProvider<List<NotificationRecord>>((
   return service.getUserNotifications(userId);
 });
 
-/// Provider to initialize FCM and save token on auth state change
-final fcmInitializationProvider = Provider<void>((ref) {
-  final service = ref.watch(notificationServiceProvider);
-  final userId = ref.watch(currentUserIdProvider);
+/// ✅ NEW: Combined initialization provider
+///
+/// This initializes BOTH:
+/// 1. NotificationService - for local notification display, foreground handling, navigation
+/// 2. FcmTokenService (via fcmUserManagementProvider) - for token management, APNs, retries
+///
+/// The two services have clean separation:
+/// - NotificationService: DISPLAY (show notifications, handle taps, navigate)
+/// - FcmTokenService: TOKENS (generate, persist, refresh, user lifecycle)
+final fcmInitializationProvider = FutureProvider<void>((ref) async {
+  // 1. Initialize notification display (local notifications, foreground handlers, message taps)
+  final displayService = ref.watch(notificationServiceProvider);
+  await displayService.initialize();
 
-  // Initialize FCM when app starts
-  service.initialize();
-
-  // Save token when user logs in
-  if (userId != null) {
-    service.saveFcmToken(userId);
-  }
+  // 2. Initialize FCM token management (APNs, token generation, Firestore persistence)
+  await ref.watch(fcmUserManagementProvider.future);
 });

@@ -400,7 +400,7 @@ class _DatingPreferencesSetupScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Preferences', style: AppTextStyles.headlineLarge),
+                      Text('Preferences', style: AppTextStyles.headlineSmall),
                       const SizedBox(height: 16),
                       Text(
                         'You are currently in guest mode. To save your dating preferences, create an account or log in.',
@@ -613,7 +613,7 @@ class _DatingPreferencesSetupScreenState
                 : null,
         title: Text(
           isEditing ? 'Edit Preferences' : 'Find a Life Partner',
-          style: AppTextStyles.headlineLarge,
+          style: AppTextStyles.headlineSmall,
         ),
       ),
       body: SafeArea(
@@ -624,7 +624,7 @@ class _DatingPreferencesSetupScreenState
             children: [
               Text(
                 'State your preferences below',
-                style: AppTextStyles.titleLarge.copyWith(
+                style: AppTextStyles.titleSmall.copyWith(
                   fontWeight: FontWeight.w700,
                   color: AppColors.getTextPrimary(context),
                 ),

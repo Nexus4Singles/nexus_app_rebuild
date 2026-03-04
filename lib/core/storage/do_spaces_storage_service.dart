@@ -108,9 +108,12 @@ class DoSpacesStorageService implements MediaStorageService {
     final decoded = jsonDecode(presignResp.body) as Map<String, dynamic>;
     final uploadUrl = (decoded['uploadUrl'] ?? '').toString();
     final publicUrl = (decoded['publicUrl'] ?? '').toString();
+    final objectKey = (decoded['objectKey'] ?? '').toString();
 
-    if (uploadUrl.isEmpty || publicUrl.isEmpty) {
-      throw StateError('Backend returned empty uploadUrl or publicUrl');
+    if (uploadUrl.isEmpty || publicUrl.isEmpty || objectKey.isEmpty) {
+      throw StateError(
+        'Backend returned empty uploadUrl, publicUrl, or objectKey',
+      );
     }
 
     print('[DO_UPLOAD] Presigned URL obtained, uploading to DO Spaces…');
@@ -139,6 +142,25 @@ class DoSpacesStorageService implements MediaStorageService {
             '[DO_UPLOAD] ✅ Upload succeeded on attempt $attempt '
             '(status ${response.statusCode})',
           );
+
+          // Step 3: Set object ACL to public-read via backend
+          // This ensures the file is publicly accessible even if the presigned URL
+          // didn't properly include ACL (some S3-compatible services have issues)
+          if (idToken != null) {
+            try {
+              await _setObjectAcl(objectKey, idToken);
+              print('[DO_UPLOAD] ✅ Object ACL set to public-read');
+            } catch (e) {
+              print(
+                '[DO_UPLOAD] ⚠️ Failed to set ACL, but upload succeeded: $e',
+              );
+              // Don't fail the upload if ACL setting fails - the object is still uploaded
+              // and can be accessed via a future ACL fix script
+            }
+          } else {
+            print('[DO_UPLOAD] ⚠️ Could not set ACL - idToken is null');
+          }
+
           onProgress?.call(1.0);
           return publicUrl;
         }
@@ -191,6 +213,29 @@ class DoSpacesStorageService implements MediaStorageService {
     throw StateError(
       'Upload failed after $_maxRetries attempts. Last error: $lastError',
     );
+  }
+
+  /// Set the object ACL to public-read via backend Cloud Function.
+  /// This ensures newly uploaded files are publicly accessible.
+  Future<void> _setObjectAcl(String objectKey, String idToken) async {
+    const aclTimeout = Duration(seconds: 15);
+
+    final response = await http
+        .post(
+          Uri.parse(DoSpacesConfig.setAclUrl),
+          headers: {
+            'Authorization': 'Bearer $idToken',
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({'objectKey': objectKey}),
+        )
+        .timeout(aclTimeout);
+
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw StateError(
+        'Set ACL failed (${response.statusCode}): ${response.body}',
+      );
+    }
   }
 
   @override

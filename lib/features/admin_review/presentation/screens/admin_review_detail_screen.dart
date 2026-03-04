@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:just_audio/just_audio.dart' as ja;
 
 import 'package:nexus_app_v2/core/user/is_admin_provider.dart';
 import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
@@ -23,25 +26,73 @@ class _AdminReviewDetailScreenState
     extends ConsumerState<AdminReviewDetailScreen> {
   String? _currentlyPlayingUrl;
   bool _isPlaying = false;
+  bool _isPaused = false; // distinguishes paused vs stopped
+  StreamSubscription<ja.PlayerState>? _playerStateSub;
 
   MediaService get _media => ref.read(mediaServiceProvider);
 
+  @override
+  void initState() {
+    super.initState();
+    // Listen for playback completion so icon resets when track ends naturally
+    _playerStateSub = _media.onPlayerStateChanged.listen((state) {
+      if (!mounted) return;
+      if (state.processingState == ja.ProcessingState.completed) {
+        setState(() {
+          _isPlaying = false;
+          _isPaused = false;
+          _currentlyPlayingUrl = null;
+        });
+      }
+    });
+  }
+
   Future<void> _togglePlay(String url) async {
     try {
+      // Tap the same track that is currently playing → pause it
       if (_currentlyPlayingUrl == url && _isPlaying) {
         await _media.pauseAudio();
-        setState(() => _isPlaying = false);
+        setState(() {
+          _isPlaying = false;
+          _isPaused = true;
+        });
         return;
       }
 
-      // If switching tracks, stop then play the new one
+      // Tap the same track that was paused → resume it
+      if (_currentlyPlayingUrl == url && _isPaused) {
+        await _media.resumeAudio();
+        setState(() {
+          _isPlaying = true;
+          _isPaused = false;
+        });
+        return;
+      }
+
+      // Different track (or first play) → stop current, start new
       await _media.stopAudio();
-      await _media.playAudioFromUrl(url);
       setState(() {
         _currentlyPlayingUrl = url;
         _isPlaying = true;
+        _isPaused = false;
       });
-    } catch (_) {}
+      await _media.playAudioFromUrl(url);
+    } catch (e) {
+      print('[ADMIN_REVIEW] Audio playback error for $url: $e');
+      setState(() {
+        _currentlyPlayingUrl = null;
+        _isPlaying = false;
+        _isPaused = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Audio playback failed: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -52,17 +103,20 @@ class _AdminReviewDetailScreenState
     } catch (_) {}
     _currentlyPlayingUrl = null;
     _isPlaying = false;
+    _isPaused = false;
     super.deactivate();
   }
 
   @override
   void dispose() {
+    _playerStateSub?.cancel();
     // Extra safety: stop audio again in dispose
     try {
       _media.stopAudio(); // Fire and forget
     } catch (_) {}
     _currentlyPlayingUrl = null;
     _isPlaying = false;
+    _isPaused = false;
     super.dispose();
   }
 
@@ -114,6 +168,11 @@ class _AdminReviewDetailScreenState
                     .take(2)
                     .toList()
                 : <String>[];
+
+        // Debug logging for admin troubleshooting
+        print('[ADMIN_REVIEW] reviewPack present: ${rp != null}');
+        print('[ADMIN_REVIEW] photoUrls (${photos.length}): $photos');
+        print('[ADMIN_REVIEW] audioUrls (${audios.length}): $audios');
 
         final name = (data['name'] ?? data['username'] ?? 'User').toString();
         final status = dating?['verificationStatus']?.toString();
@@ -240,48 +299,6 @@ class _AdminReviewDetailScreenState
           }
 
           await fs.collection('users').doc(widget.userId).update(payload);
-        }
-
-        Future<void> deleteReviewPack() async {
-          final confirmDelete = await showDialog<bool>(
-            context: context,
-            builder:
-                (ctx) => AlertDialog(
-                  title: const Text('Delete review pack?'),
-                  content: const Text(
-                    'This will delete all photos and audio in the review pack. This action cannot be undone.',
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(ctx).pop(false),
-                      child: const Text('Cancel'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => Navigator.of(ctx).pop(true),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.error,
-                      ),
-                      child: const Text('Delete'),
-                    ),
-                  ],
-                ),
-          );
-
-          if (confirmDelete != true) return;
-
-          final payload = <String, dynamic>{
-            'dating.reviewPack': FieldValue.delete(),
-          };
-
-          await fs.collection('users').doc(widget.userId).update(payload);
-          if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Review pack deleted'),
-                backgroundColor: AppColors.success,
-              ),
-            );
-          }
         }
 
         return Scaffold(
@@ -484,6 +501,56 @@ class _AdminReviewDetailScreenState
                               width: 150,
                               height: 150,
                               fit: BoxFit.cover,
+                              loadingBuilder: (_, child, progress) {
+                                if (progress == null) return child;
+                                return SizedBox(
+                                  width: 150,
+                                  height: 150,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          progress.expectedTotalBytes != null
+                                              ? progress.cumulativeBytesLoaded /
+                                                  progress.expectedTotalBytes!
+                                              : null,
+                                    ),
+                                  ),
+                                );
+                              },
+                              errorBuilder: (_, error, __) {
+                                print(
+                                  '[ADMIN_REVIEW] Photo load error for $url: $error',
+                                );
+                                return Container(
+                                  width: 150,
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: AppColors.error.withOpacity(0.5),
+                                    ),
+                                  ),
+                                  child: const Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.broken_image_rounded,
+                                        color: AppColors.error,
+                                        size: 32,
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        'Load failed',
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: AppColors.error,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ),
@@ -558,17 +625,6 @@ class _AdminReviewDetailScreenState
                   ],
                 ),
                 const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton.icon(
-                    onPressed: deleteReviewPack,
-                    icon: const Icon(Icons.delete_outline_rounded),
-                    label: const Text('Delete Review Pack'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.red,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

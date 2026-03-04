@@ -16,6 +16,9 @@ const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
 const { Parser } = require('json2csv');
 
+// Import purchase validation functions
+const { validateAndRecordPurchase, revenueCatWebhook } = require('./validate_purchase');
+
 admin.initializeApp({
   storageBucket: 'nexus-visibility-app.appspot.com'
 });
@@ -391,9 +394,9 @@ exports.sendPushNotification = functions.firestore
       const userDoc = await admin.firestore().collection('users').doc(userId).get();
       const userData = userDoc.data();
       
-      if (!userData || !userData.fcmToken) {
-        console.log(`⚠️ No FCM token found for user: ${userId}`);
-        // Mark as sent anyway so we don't retry infinitely
+      // ✅ IMPROVED: Validate user exists
+      if (!userData) {
+        console.log(`⚠️ User document not found: ${userId}`);
         await admin.firestore()
           .collection('users')
           .doc(userId)
@@ -402,18 +405,18 @@ exports.sendPushNotification = functions.firestore
           .update({
             isSent: true,
             sentAt: admin.firestore.FieldValue.serverTimestamp(),
-            sendError: 'No FCM token found',
+            sendError: 'User document not found',
           });
         return null;
       }
 
-      // Handle both string token and object token formats for compatibility
-      const fcmToken = typeof userData.fcmToken === 'string' 
-        ? userData.fcmToken 
-        : userData.fcmToken.token;
+      // ✅ IMPROVED: Expect fcmToken to always be a string (no object fallback)
+      const fcmToken = userData.fcmToken;
 
-      if (!fcmToken) {
-        console.log(`⚠️ FCM token is empty for user: ${userId}`);
+      if (!fcmToken || typeof fcmToken !== 'string') {
+        console.log(
+          `⚠️ Invalid or missing FCM token for user: ${userId} (type: ${typeof userData.fcmToken})`
+        );
         await admin.firestore()
           .collection('users')
           .doc(userId)
@@ -422,13 +425,38 @@ exports.sendPushNotification = functions.firestore
           .update({
             isSent: true,
             sentAt: admin.firestore.FieldValue.serverTimestamp(),
-            sendError: 'FCM token is empty',
+            sendError: 'Invalid FCM token',
           });
         return null;
+      }
+
+      // ✅ IMPROVED: Validate token format (FCM tokens typically 152+ chars)
+      if (fcmToken.length < 50) {
+        console.log(
+          `⚠️ Token format invalid for user ${userId}: too short (${fcmToken.length} chars)`
+        );
+        await admin.firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('notifications')
+          .doc(notificationId)
+          .update({
+            isSent: true,
+            sentAt: admin.firestore.FieldValue.serverTimestamp(),
+            sendError: 'Token format invalid',
+          });
+        return null;
+      }
+
+      // ✅ IMPROVED: Check if token is marked as valid
+      if (userData.fcmTokenValid !== true) {
+        console.log(
+          `⚠️ FCM token not marked as valid for user: ${userId} (will attempt anyway)`
+        );
       }
 
       const payload = notification.payload || {};
-      const notificationType = payload.type || 'system';
+      const notificationType = payload.type || notification.type || 'system';
 
       // Determine priority based on notification type
       const isHighPriority = 
@@ -436,14 +464,19 @@ exports.sendPushNotification = functions.firestore
         notificationType === 'profile_rejected' ||
         notificationType === 'profile_verified' ||
         notificationType === 'subscription_activated' ||
+        notificationType === 'chat_message' ||
         notificationType === 'new_message';
+
+      // ✅ ROBUST: Check both nested payload and top-level fields for title/body
+      const notifTitle = payload.title || notification.title || 'Nexus';
+      const notifBody = payload.body || notification.body || '';
 
       // Build FCM message with platform-specific configurations
       const message = {
         token: fcmToken,
         notification: {
-          title: payload.title || 'Nexus',
-          body: payload.body || '',
+          title: notifTitle,
+          body: notifBody,
         },
         android: {
           priority: isHighPriority ? 'high' : 'normal',
@@ -452,6 +485,8 @@ exports.sendPushNotification = functions.firestore
             sound: 'default',
             channelId: 'nexus_default_channel',
             icon: '@mipmap/ic_launcher',
+            defaultVibrateTimings: true,
+            notificationCount: 1,
           },
         },
         webpush: {
@@ -465,16 +500,17 @@ exports.sendPushNotification = functions.firestore
         },
         apns: {
           headers: {
-            'apns-priority': isHighPriority ? '10' : '10',
+            'apns-priority': isHighPriority ? '10' : '5',
           },
           payload: {
             aps: {
               alert: {
-                title: payload.title || 'Nexus',
-                body: payload.body || '',
+                title: notifTitle,
+                body: notifBody,
               },
               badge: 1,
               sound: 'default',
+              'content-available': 1, // ✅ Critical for iOS notification delivery
             },
           },
         },
@@ -484,7 +520,13 @@ exports.sendPushNotification = functions.firestore
       if (payload && typeof payload === 'object') {
         message.data = {};
         for (const [key, value] of Object.entries(payload)) {
-          if (key !== 'title' && key !== 'body' && key !== 'type') {
+          if (['title', 'body', 'type'].includes(key)) continue;
+          // Flatten nested objects (e.g. payload.data contains route, chatId, etc.)
+          if (value && typeof value === 'object' && !Array.isArray(value)) {
+            for (const [nestedKey, nestedValue] of Object.entries(value)) {
+              message.data[nestedKey] = String(nestedValue);
+            }
+          } else {
             message.data[key] = String(value);
           }
         }
@@ -603,14 +645,12 @@ exports.testSendNotification = functions.https.onCall(async (data, context) => {
       );
     }
 
-    const fcmToken = typeof userData.fcmToken === 'string' 
-      ? userData.fcmToken 
-      : userData.fcmToken.token;
+    const fcmToken = userData.fcmToken;
 
-    if (!fcmToken) {
+    if (!fcmToken || typeof fcmToken !== 'string') {
       throw new functions.https.HttpsError(
         'failed-precondition',
-        `FCM token is empty for user: ${userId}`
+        `Invalid or empty FCM token for user: ${userId} (type: ${typeof userData.fcmToken})`
       );
     }
 
@@ -1183,3 +1223,81 @@ exports.listJourneys = functions.https.onRequest((req, res) => {
     }
   })();
 });
+
+// ============================================================================
+// COMPATIBILITY QUIZ COMPLETION - SEND PROFILE PENDING VERIFICATION NOTIFICATION
+// ============================================================================
+
+/**
+ * Triggers when a user completes the compatibility quiz
+ * Listens for: users/{userId} when compatibilitySetted changes from false/undefined to true
+ * 
+ * This function:
+ * 1. Detects when compatibilitySetted changes to true
+ * 2. Creates a notification document for "profile pending verification"
+ * 3. The existing sendPushNotification trigger will catch it and send the FCM
+ */
+exports.onCompatibilityQuizCompleted = functions.firestore
+  .document('users/{userId}')
+  .onUpdate(async (change, context) => {
+    const { userId } = context.params;
+    const before = change.before.data();
+    const after = change.after.data();
+    
+    // Check if compatibilitySetted changed from false/undefined to true
+    const wasNotComplete = !before?.compatibilitySetted;
+    const isNowComplete = after?.compatibilitySetted === true;
+    
+    if (!wasNotComplete || !isNowComplete) {
+      // No change relevant to quiz completion
+      return null;
+    }
+    
+    try {
+      console.log(`✅ Quiz completed for user: ${userId}`);
+      
+      const db = admin.firestore();
+      
+      // Create notification document that will trigger sendPushNotification
+      const notification = {
+        type: 'profile_pending_verification',
+        title: '🔍 Profile Under Review',
+        body: 'Your dating profile has been submitted and is now under review by our team. You\'ll be notified once a decision is made.',
+        payload: {
+          type: 'profile_pending_verification',
+          title: '🔍 Profile Under Review',
+          body: 'Your dating profile has been submitted and is now under review by our team. You\'ll be notified once a decision is made.',
+          route: '/profile',
+          verificationStatus: 'pending',
+        },
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        isSent: false,
+      };
+      
+      // Add the notification document - this will trigger sendPushNotification
+      const notificationDocRef = await db
+        .collection('users')
+        .doc(userId)
+        .collection('notifications')
+        .add(notification);
+      
+      console.log(`📬 Notification created for user ${userId}: ${notificationDocRef.id}`);
+      
+      return {
+        success: true,
+        userId,
+        notificationId: notificationDocRef.id,
+      };
+      
+    } catch (error) {
+      console.error(`❌ Error creating notification for user ${userId}:`, error);
+      // Don't throw - log the error but don't fail the entire function
+      return { success: false, userId, error: error.message };
+    }
+  });
+
+// ============================================================================
+// PURCHASE VALIDATION FUNCTIONS (from validate_purchase.js)
+// ============================================================================
+exports.validateAndRecordPurchase = validateAndRecordPurchase;
+exports.revenueCatWebhook = revenueCatWebhook;

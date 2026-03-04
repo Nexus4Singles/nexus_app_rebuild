@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:nexus_app_v2/core/auth/firebase_auth_import.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -71,10 +72,10 @@ class AuthService {
     try {
       // If email format, use directly
       if (emailOrUsername.contains('@')) {
-        print(
+        debugPrint(
           '✅ DEBUG: Input is email format, using directly: "$emailOrUsername"',
         );
-        print(
+        debugPrint(
           '🔐 DEBUG: Attempting Firebase Auth sign-in with email: "$emailOrUsername"',
         );
         return await _auth.signInWithEmailAndPassword(
@@ -84,9 +85,14 @@ class AuthService {
       }
 
       // Username lookup - try to authenticate with all matching usernames
-      print('🔍 DEBUG: Looking up username: "$emailOrUsername"');
+      debugPrint('🔍 DEBUG: Looking up username: "$emailOrUsername"');
 
       final emailsToTry = <String>[];
+      // Normalise: lowercase, trim, collapse multiple spaces to single space
+      final lowerInput = emailOrUsername.toLowerCase().trim().replaceAll(
+        RegExp(r'\s+'),
+        ' ',
+      );
 
       try {
         final usersRef = firestore.collection('users');
@@ -95,15 +101,13 @@ class AuthService {
         // NOTE: We query ALL matches (no .limit(1)) to handle potential duplicate usernames
         // Then we try authentication with each email until one succeeds
 
-        // Try exact match (case-sensitive) by username
-        print(
-          '🔍 DEBUG: Querying exact match for username: "$emailOrUsername"',
-        );
+        // 1. Try case-insensitive lookup via username_lower field (preferred)
+        print('🔍 DEBUG: Querying username_lower for: "$lowerInput"');
         var query =
-            await usersRef.where('username', isEqualTo: emailOrUsername).get();
+            await usersRef.where('username_lower', isEqualTo: lowerInput).get();
 
         print(
-          '🔍 DEBUG: Exact match query returned ${query.docs.length} documents',
+          '🔍 DEBUG: username_lower query returned ${query.docs.length} documents',
         );
 
         for (final doc in query.docs) {
@@ -113,9 +117,40 @@ class AuthService {
           }
         }
 
-        // If not found by username, try displayName
+        // 2. Fallback: exact match by username (for users without username_lower)
         if (emailsToTry.isEmpty) {
-          print('🔍 DEBUG: Username not found, trying displayName...');
+          print('🔍 DEBUG: Trying exact username match: "$emailOrUsername"');
+          query =
+              await usersRef
+                  .where('username', isEqualTo: emailOrUsername)
+                  .get();
+          print(
+            '🔍 DEBUG: Exact username query returned ${query.docs.length} documents',
+          );
+
+          for (final doc in query.docs) {
+            final email = doc['email'] as String?;
+            if (email != null && email.isNotEmpty) {
+              emailsToTry.add(email);
+            }
+            // Backfill username_lower for this user so future logins are faster
+            try {
+              final storedUsername = (doc['username'] ?? '').toString();
+              if (storedUsername.isNotEmpty && doc['username_lower'] == null) {
+                doc.reference.update({
+                  'username_lower': storedUsername
+                      .trim()
+                      .toLowerCase()
+                      .replaceAll(RegExp(r'\s+'), ' '),
+                });
+              }
+            } catch (_) {}
+          }
+        }
+
+        // 3. Fallback: exact match by displayName
+        if (emailsToTry.isEmpty) {
+          print('🔍 DEBUG: Trying displayName match: "$emailOrUsername"');
           query =
               await usersRef
                   .where('displayName', isEqualTo: emailOrUsername)
@@ -132,12 +167,10 @@ class AuthService {
           }
         }
 
-        // If not found, try lowercase username (for compatibility)
+        // 4. Fallback: try case-insensitive match by querying stored lowercase username
         if (emailsToTry.isEmpty) {
-          final lowerUsername = emailOrUsername.toLowerCase();
-          print('🔍 DEBUG: Trying lowercase username match: "$lowerUsername"');
-          query =
-              await usersRef.where('username', isEqualTo: lowerUsername).get();
+          print('🔍 DEBUG: Trying lowercase username match: "$lowerInput"');
+          query = await usersRef.where('username', isEqualTo: lowerInput).get();
           print(
             '🔍 DEBUG: Lowercase username query returned ${query.docs.length} documents',
           );
@@ -150,16 +183,11 @@ class AuthService {
           }
         }
 
-        // If not found, try lowercase displayName (for compatibility)
+        // 5. Fallback: try lowercase displayName
         if (emailsToTry.isEmpty) {
-          final lowerDisplayName = emailOrUsername.toLowerCase();
-          print(
-            '🔍 DEBUG: Trying lowercase displayName match: "$lowerDisplayName"',
-          );
+          print('🔍 DEBUG: Trying lowercase displayName match: "$lowerInput"');
           query =
-              await usersRef
-                  .where('displayName', isEqualTo: lowerDisplayName)
-                  .get();
+              await usersRef.where('displayName', isEqualTo: lowerInput).get();
           print(
             '🔍 DEBUG: Lowercase displayName query returned ${query.docs.length} documents',
           );

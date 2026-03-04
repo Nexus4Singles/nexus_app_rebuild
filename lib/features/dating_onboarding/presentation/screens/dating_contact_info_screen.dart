@@ -373,7 +373,7 @@ class _DatingContactInfoScreenState
         }
 
         // DEBUG: Log draft contents to identify why data may be missing
-        print('[DATING_SAVE] Draft contents at save time:');
+        debugPrint('[DATING_SAVE] Draft contents at save time:');
         print(
           '[DATING_SAVE]   age=${d.age}, city=${d.city}, country=${d.countryOfResidence}',
         );
@@ -395,11 +395,44 @@ class _DatingContactInfoScreenState
         final photoUrls = d.photoUrls;
         print('[DATING_SAVE]   photoUrls=${photoUrls.length} urls: $photoUrls');
 
+        // ── Safety guard: abort if media URLs are missing ──
+        // This prevents writing an empty reviewPack to Firestore, which
+        // would cause the admin review screen to show "No photos/audio".
+        if (photoUrls.isEmpty) {
+          debugPrint('[DATING_SAVE] ❌ ABORT: photoUrls is empty at submission');
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'Photo upload data is missing. Please go back to the Photos step and re-upload.',
+                ),
+                duration: Duration(seconds: 5),
+              ),
+            );
+          }
+          return;
+        }
+
         // Collect audio URLs for review pack
         final audioUrls = <String>[];
         if (d.audio1Url?.isNotEmpty ?? false) audioUrls.add(d.audio1Url!);
         if (d.audio2Url?.isNotEmpty ?? false) audioUrls.add(d.audio2Url!);
         if (d.audio3Url?.isNotEmpty ?? false) audioUrls.add(d.audio3Url!);
+
+        if (audioUrls.isEmpty) {
+          debugPrint('[DATING_SAVE] ❌ ABORT: audioUrls is empty at submission');
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'Audio upload data is missing. Please go back to the Audio step and re-record.',
+                ),
+                duration: Duration(seconds: 5),
+              ),
+            );
+          }
+          return;
+        }
 
         // Collect audio durations (seconds) in matching order.
         // Clamp each to 90s max as a safety net (prevents stale draft data
@@ -558,7 +591,7 @@ class _DatingContactInfoScreenState
           await fs.collection('users').doc(uid).set(<String, dynamic>{});
         }
         await fs.collection('users').doc(uid).update(updatePayload);
-        print('[DATING_SAVE] ✅ Firestore write successful (dot-notation)');
+        debugPrint('[DATING_SAVE] ✅ Firestore write successful (dot-notation)');
         print(
           '[DATING_SAVE]   Root-level photos (${photoUrls.length}): $photoUrls',
         );
@@ -567,16 +600,20 @@ class _DatingContactInfoScreenState
         );
 
         // Track nationality and country through service (centralized handling)
-        print('[DATING_SAVE] Tracking nationality and country via service...');
+        debugPrint(
+          '[DATING_SAVE] Tracking nationality and country via service...',
+        );
         try {
           final profileService = ref.read(datingProfileServiceProvider);
           if (d.nationality?.isNotEmpty ?? false) {
             await profileService.trackNationality(d.nationality!);
-            print('[DATING_SAVE] ✅ Tracked nationality: ${d.nationality}');
+            debugPrint('[DATING_SAVE] ✅ Tracked nationality: ${d.nationality}');
           }
           if (d.countryOfResidence?.isNotEmpty ?? false) {
             await profileService.trackCountryOfResidence(d.countryOfResidence!);
-            print('[DATING_SAVE] ✅ Tracked country: ${d.countryOfResidence}');
+            debugPrint(
+              '[DATING_SAVE] ✅ Tracked country: ${d.countryOfResidence}',
+            );
           }
         } catch (trackError) {
           print(
@@ -590,8 +627,8 @@ class _DatingContactInfoScreenState
         );
       }
     } catch (e, st) {
-      print('[DATING_SAVE] ❌ Error saving profile: $e');
-      print('[DATING_SAVE] Stack: $st');
+      debugPrint('[DATING_SAVE] ❌ Error saving profile: $e');
+      debugPrint('[DATING_SAVE] Stack: $st');
     }
 
     if (!mounted) return;

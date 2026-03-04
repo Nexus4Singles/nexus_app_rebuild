@@ -19,6 +19,8 @@ import '../../../core/session/guest_session_provider.dart';
 import '../../auth/presentation/screens/login_screen.dart';
 import '../../auth/presentation/screens/signup_screen.dart';
 import 'screens/account_disabled_screen.dart';
+import 'screens/force_update_screen.dart';
+import '../../../core/services/force_update_service.dart';
 
 class AppLaunchGate extends ConsumerWidget {
   const AppLaunchGate({super.key});
@@ -88,8 +90,36 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
     return (account?['disabled'] == true) || (account?['isDisabled'] == true);
   }
 
+  Future<void> _checkForceUpdate() async {
+    try {
+      final result = await ForceUpdateService.check();
+      if (!mounted) return;
+
+      if (result.updateRequired) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => ForceUpdateScreen(result: result)),
+        );
+        return;
+      }
+    } catch (_) {
+      // Fail open — don't block app launch on errors.
+    }
+
+    // No update required (or check failed) — continue normal routing.
+    if (mounted) _route();
+  }
+
+  bool _forceUpdateChecked = false;
+
   void _route() {
     if (!mounted) return;
+
+    // Force-update check runs once, before anything else.
+    if (!_forceUpdateChecked) {
+      _forceUpdateChecked = true;
+      _checkForceUpdate();
+      return;
+    }
 
     final authAsync = ref.read(authStateProvider);
 
@@ -509,7 +539,7 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
                 child: FadeTransition(
                   opacity: _taglineFade,
                   child: Text(
-                    'Raising Godly Families through\nKingdom Relationships & Marriages.',
+                    'Raising Godly Families through\nKingdom Relationships & Marriages',
                     textAlign: TextAlign.center,
                     style: AppTextStyles.bodyMedium.copyWith(
                       color: Colors.white.withOpacity(0.9),

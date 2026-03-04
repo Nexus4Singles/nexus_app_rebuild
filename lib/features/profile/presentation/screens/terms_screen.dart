@@ -17,7 +17,7 @@ class TermsScreen extends StatelessWidget {
         titleSpacing: 0,
         title: Text(
           'Terms of Service',
-          style: AppTextStyles.headlineMedium.copyWith(
+          style: AppTextStyles.headlineSmall.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -40,7 +40,7 @@ class TermsScreen extends StatelessWidget {
               _buildSection(
                 context,
                 '1) WHO NEXUS IS FOR',
-                'Nexus is a personal and marital growth ecosystem that seeks to help single, married, divorced, or widowed individuals build Kingdom marriages and families, they way God intended.',
+                'Nexus is a personal and marital growth ecosystem that seeks to help single, married, divorced, or widowed christians build Kingdom marriages and families, they way God intended.',
               ),
               const SizedBox(height: 20),
               _buildSection(
@@ -163,7 +163,7 @@ class TermsScreen extends StatelessWidget {
   static Widget _buildHeader(BuildContext context, String text) {
     return Text(
       text,
-      style: AppTextStyles.titleLarge.copyWith(
+      style: AppTextStyles.titleSmall.copyWith(
         fontWeight: FontWeight.w800,
         color: AppColors.getTextPrimary(context),
       ),
@@ -182,7 +182,7 @@ class TermsScreen extends StatelessWidget {
   static Widget _buildBodyText(BuildContext context, String text) {
     return Text(
       text,
-      style: AppTextStyles.bodyMedium.copyWith(
+      style: AppTextStyles.bodySmall.copyWith(
         color: AppColors.getTextPrimary(context),
         height: 1.6,
       ),
@@ -201,7 +201,7 @@ class TermsScreen extends StatelessWidget {
       children: [
         Text(
           title,
-          style: AppTextStyles.titleMedium.copyWith(
+          style: AppTextStyles.titleSmall.copyWith(
             fontWeight: FontWeight.w700,
             color: AppColors.getTextPrimary(context),
           ),
@@ -234,7 +234,7 @@ class TermsScreen extends StatelessWidget {
               padding: const EdgeInsets.only(right: 12, top: 4),
               child: Text(
                 '•',
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.bodySmall.copyWith(
                   color: AppColors.primary,
                   fontWeight: FontWeight.bold,
                 ),

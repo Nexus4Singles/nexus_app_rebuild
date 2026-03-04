@@ -1,12 +1,29 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
+    // User-specific coach files: only the owner can read/write
     match /coaches/{userId}/{allPaths=**} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
-    // Allow read access to all files (optional, for testing)
+
+    // Public assets (images, fonts, etc.) - readable by authenticated users
+    match /assets/{allPaths=**} {
+      allow read: if request.auth != null;
+    }
+
+    // Journey content - readable by authenticated users
+    match /journeys/{allPaths=**} {
+      allow read: if request.auth != null;
+    }
+
+    // Profile photos - readable by authenticated users
+    match /profile_photos/{allPaths=**} {
+      allow read: if request.auth != null;
+    }
+
+    // Default deny all other paths
     match /{allPaths=**} {
-      allow read;
+      allow read, write: if false;
     }
   }
 }

@@ -19,9 +19,7 @@ class CoachRequirementsScreen extends StatelessWidget {
         ),
         title: Text(
           'Call for Applications',
-          style: AppTextStyles.headlineSmall.copyWith(
-            fontWeight: FontWeight.w700,
-          ),
+          style: AppTextStyles.titleSmall.copyWith(fontWeight: FontWeight.w700),
         ),
       ),
       body: SingleChildScrollView(
@@ -92,7 +90,7 @@ class CoachRequirementsScreen extends StatelessWidget {
               // Introduction Text
               Text(
                 'Becoming one of our certified marriage or family therapists will provide you with the visibility you need to get more clients from our users, while you earn money, based on the number of online counseling sessions you hold.',
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.bodySmall.copyWith(
                   height: 1.6,
                   color: AppColors.getTextSecondary(context),
                 ),
@@ -103,7 +101,7 @@ class CoachRequirementsScreen extends StatelessWidget {
               // Calendar Availability Text
               Text(
                 'You will be required to add your availability dates and times to your calendar on this app, to enable individuals or couples book slots from your calendar.',
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.bodySmall.copyWith(
                   height: 1.6,
                   color: AppColors.getTextSecondary(context),
                 ),
@@ -114,7 +112,7 @@ class CoachRequirementsScreen extends StatelessWidget {
               // Requirements Title
               Text(
                 'Eligibility Requirements:',
-                style: AppTextStyles.titleMedium.copyWith(
+                style: AppTextStyles.titleSmall.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -143,7 +141,7 @@ class CoachRequirementsScreen extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'Be a spirit-filled Christian',
-                        style: AppTextStyles.bodyMedium.copyWith(height: 1.5),
+                        style: AppTextStyles.bodySmall.copyWith(height: 1.5),
                       ),
                     ),
                   ],
@@ -172,7 +170,7 @@ class CoachRequirementsScreen extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'Show at least 1 evidence that you are a licensed family/marriage/relationship coach practicing for at least 5 years.\n(Acceptable evidences include certifications, Social Media page with a decent following, licenses etc.)',
-                        style: AppTextStyles.bodyMedium.copyWith(height: 1.5),
+                        style: AppTextStyles.bodySmall.copyWith(height: 1.5),
                       ),
                     ),
                   ],
@@ -201,7 +199,7 @@ class CoachRequirementsScreen extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'You must be willing to sign a NDA to keep all conversations between you and clients private',
-                        style: AppTextStyles.bodyMedium.copyWith(height: 1.5),
+                        style: AppTextStyles.bodySmall.copyWith(height: 1.5),
                       ),
                     ),
                   ],
@@ -211,7 +209,7 @@ class CoachRequirementsScreen extends StatelessWidget {
               // Closing Text
               Text(
                 'We look forward to your application',
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.bodySmall.copyWith(
                   fontWeight: FontWeight.w600,
                   color: AppColors.primary,
                 ),
@@ -240,7 +238,7 @@ class CoachRequirementsScreen extends StatelessWidget {
                   ),
                   child: const Text(
                     'Start Application',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),

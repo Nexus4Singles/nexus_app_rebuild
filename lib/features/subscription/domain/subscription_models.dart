@@ -16,6 +16,11 @@ enum SubscriptionTier {
   const SubscriptionTier(this.id, this.displayName);
 
   static SubscriptionTier fromId(String id) {
+    // Accept 'monthly' as an alias for 'monthly_premium' since both
+    // the client optimistic record and webhook may store either form.
+    if (id == 'monthly' || id.contains('monthly_premium')) {
+      return SubscriptionTier.monthly;
+    }
     return SubscriptionTier.values.firstWhere(
       (tier) => tier.id == id,
       orElse: () => SubscriptionTier.free,
@@ -135,7 +140,7 @@ class PurchasedJourney extends Equatable {
     required this.journeyTitle,
     required this.purchaseDate,
     required this.pricePaid,
-    this.currency = 'NGN',
+    this.currency = 'USD',
     this.revenueCatTransactionId,
     this.isActive = true,
   });
@@ -155,7 +160,7 @@ class PurchasedJourney extends Equatable {
       journeyTitle: data['journeyTitle'] as String? ?? 'Unknown Journey',
       purchaseDate: purchaseDate,
       pricePaid: (data['pricePaid'] as num?)?.toDouble() ?? 0.0,
-      currency: data['currency'] as String? ?? 'NGN',
+      currency: data['currency'] as String? ?? 'USD',
       revenueCatTransactionId: data['revenueCatTransactionId'] as String?,
       isActive: data['isActive'] as bool? ?? true,
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'dart:async';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
@@ -26,9 +27,9 @@ class DatingAudioSummaryScreen extends ConsumerStatefulWidget {
 class _DatingAudioSummaryScreenState
     extends ConsumerState<DatingAudioSummaryScreen> {
   late final MediaService _mediaService;
+  StreamSubscription<PlayerState>? _playerStateSub;
   bool _isUploading = false;
   bool _uploadError = false;
-  String? _errorMessage;
 
   int? _playingIndex;
   bool _isPlaying = false;
@@ -40,7 +41,7 @@ class _DatingAudioSummaryScreenState
     _mediaService = ref.read(mediaServiceProvider);
 
     // Listen to the central media service state
-    _mediaService.onPlayerStateChanged.listen((state) {
+    _playerStateSub = _mediaService.onPlayerStateChanged.listen((state) {
       if (!mounted) return;
 
       // Clear loading when audio starts playing
@@ -59,13 +60,12 @@ class _DatingAudioSummaryScreenState
         });
       }
     });
+    // Set uploading state BEFORE calling upload to prevent race condition
+    setState(() => _isUploading = true);
     _uploadAudios();
   }
 
   Future<void> _uploadAudios() async {
-    if (_isUploading) return;
-    setState(() => _isUploading = true);
-
     try {
       final draft = ref.read(datingOnboardingDraftProvider);
       final a1 = draft.audio1Path;
@@ -80,7 +80,7 @@ class _DatingAudioSummaryScreenState
         final url3Valid = await _isUrlValid(draft.audio3Url!);
 
         if (url1Valid && url2Valid && url3Valid) {
-          setState(() => _isUploading = false);
+          if (mounted) setState(() => _isUploading = false);
           return;
         }
         ref.read(datingOnboardingDraftProvider.notifier).clearAudios();
@@ -131,17 +131,29 @@ class _DatingAudioSummaryScreenState
         setState(() {
           _isUploading = false;
           _uploadError = true;
-          _errorMessage = e.toString();
         });
       }
     }
   }
 
   @override
+  void deactivate() {
+    // Stop audio when navigating away. pushNamed keeps this widget alive
+    // (dispose is NOT called), so we must stop playback here.
+    try {
+      _mediaService.stopAudio();
+    } catch (_) {}
+    super.deactivate();
+  }
+
+  @override
   void dispose() {
-    // Note: We don't dispose the central MediaService here,
-    // we just stop playback if this screen is closed.
-    _mediaService.stopAudio();
+    // Cancel stream subscription to prevent leak
+    _playerStateSub?.cancel();
+    // Safety net: also stop in dispose in case the screen is truly removed.
+    try {
+      _mediaService.stopAudio();
+    } catch (_) {}
     super.dispose();
   }
 
@@ -150,62 +162,27 @@ class _DatingAudioSummaryScreenState
     final draft = ref.watch(datingOnboardingDraftProvider);
 
     if (_isUploading) {
-      return Scaffold(
-        backgroundColor: AppColors.getBackground(context),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const CircularProgressIndicator(),
-              const SizedBox(height: 16),
-              Text('Uploading Recordings...', style: AppTextStyles.bodyMedium),
-            ],
-          ),
-        ),
-      );
-    }
-
-    if (_uploadError) {
-      return Scaffold(
-        backgroundColor: AppColors.getBackground(context),
-        appBar: AppBar(
+      return PopScope(
+        canPop: false,
+        child: Scaffold(
           backgroundColor: AppColors.getBackground(context),
-          elevation: 0,
-        ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
+          appBar: AppBar(
+            backgroundColor: AppColors.getBackground(context),
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new_rounded),
+              onPressed: null,
+            ),
+          ),
+          body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, size: 64, color: AppColors.primary),
+                const CircularProgressIndicator(),
                 const SizedBox(height: 16),
-                Text('Upload Failed', style: AppTextStyles.headlineMedium),
-                const SizedBox(height: 8),
                 Text(
-                  'Unable to upload recordings. Please try again.',
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.getTextSecondary(context),
-                  ),
-                ),
-                if (_errorMessage != null) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    'Details: ' + _errorMessage!,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.caption.copyWith(
-                      color: AppColors.getTextSecondary(context),
-                    ),
-                  ),
-                ],
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() => _uploadError = false);
-                    _uploadAudios();
-                  },
-                  child: const Text('Retry'),
+                  'Uploading Recordings...',
+                  style: AppTextStyles.bodyMedium,
                 ),
               ],
             ),
@@ -214,99 +191,163 @@ class _DatingAudioSummaryScreenState
       );
     }
 
-    return Scaffold(
-      backgroundColor: AppColors.getBackground(context),
-      appBar: AppBar(
-        backgroundColor: AppColors.getBackground(context),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => navigateBackToHome(context),
-        ),
-        title: Text('Audio Recordings', style: AppTextStyles.titleLarge),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const DatingProfileProgressBar(currentStep: 8, totalSteps: 9),
-            const SizedBox(height: 18),
-            Text('Your Responses', style: AppTextStyles.titleLarge),
-            const SizedBox(height: 16),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _Row(
-                      n: 1,
-                      q: 'How would you describe your current relationship with God & why is this relationship important to you?',
-                      url: draft.audio1Url,
-                      index: 1,
-                      isPlaying: _playingIndex == 1 && _isPlaying,
-                      isPaused: _playingIndex == 1 && !_isPlaying,
-                      isLoading: _playingIndex == 1 && _isLoading,
-                      onPlay: () => _play(draft.audio1Path, draft.audio1Url, 1),
-                    ),
-                    const SizedBox(height: 14),
-                    _Row(
-                      n: 2,
-                      q: 'What are your thoughts on the role of a husband and a wife in marriage?',
-                      url: draft.audio2Url,
-                      index: 2,
-                      isPlaying: _playingIndex == 2 && _isPlaying,
-                      isPaused: _playingIndex == 2 && !_isPlaying,
-                      isLoading: _playingIndex == 2 && _isLoading,
-                      onPlay: () => _play(draft.audio2Path, draft.audio2Url, 2),
-                    ),
-                    const SizedBox(height: 14),
-                    _Row(
-                      n: 3,
-                      q: 'What are your favorite qualities or traits about yourself?',
-                      url: draft.audio3Url,
-                      index: 3,
-                      isPlaying: _playingIndex == 3 && _isPlaying,
-                      isPaused: _playingIndex == 3 && !_isPlaying,
-                      isLoading: _playingIndex == 3 && _isLoading,
-                      onPlay: () => _play(draft.audio3Path, draft.audio3Url, 3),
-                    ),
-                  ],
-                ),
-              ),
+    if (_uploadError) {
+      return PopScope(
+        canPop: false,
+        child: Scaffold(
+          backgroundColor: AppColors.getBackground(context),
+          appBar: AppBar(
+            backgroundColor: AppColors.getBackground(context),
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new_rounded),
+              onPressed: null,
             ),
-            SafeArea(
-              top: false,
+          ),
+          body: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 18),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 54,
-                    child: ElevatedButton(
-                      onPressed:
-                          () => Navigator.of(
-                            context,
-                          ).pushNamed('/dating/setup/contact-info'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                      ),
-                      child: Text(
-                        'Continue',
-                        style: AppTextStyles.labelLarge.copyWith(
-                          color: Colors.white,
-                        ),
-                      ),
+                  Icon(Icons.error_outline, size: 64, color: AppColors.primary),
+                  const SizedBox(height: 16),
+                  Text('Upload Failed', style: AppTextStyles.headlineMedium),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Something went wrong uploading your\nrecordings. Tap below to try again.',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.getTextSecondary(context),
                     ),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() => _uploadError = false);
+                      setState(() => _isUploading = true);
+                      _uploadAudios();
+                    },
+                    child: const Text('Retry'),
                   ),
                 ],
               ),
             ),
-          ],
+          ),
+        ),
+      );
+    }
+
+    return PopScope(
+      canPop: !_isUploading,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        if (_isUploading) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Please wait for upload to complete'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.getBackground(context),
+        appBar: AppBar(
+          backgroundColor: AppColors.getBackground(context),
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            onPressed: _isUploading ? null : () => navigateBackToHome(context),
+          ),
+          title: Text('Audio Recordings', style: AppTextStyles.titleLarge),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const DatingProfileProgressBar(currentStep: 8, totalSteps: 9),
+              const SizedBox(height: 18),
+              Text('Your Responses', style: AppTextStyles.titleLarge),
+              const SizedBox(height: 16),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _Row(
+                        n: 1,
+                        q: 'How would you describe your current relationship with God & why is this relationship important to you?',
+                        url: draft.audio1Url,
+                        index: 1,
+                        isPlaying: _playingIndex == 1 && _isPlaying,
+                        isPaused: _playingIndex == 1 && !_isPlaying,
+                        isLoading: _playingIndex == 1 && _isLoading,
+                        onPlay:
+                            () => _play(draft.audio1Path, draft.audio1Url, 1),
+                      ),
+                      const SizedBox(height: 14),
+                      _Row(
+                        n: 2,
+                        q: 'What are your thoughts on the role of a husband and a wife in marriage?',
+                        url: draft.audio2Url,
+                        index: 2,
+                        isPlaying: _playingIndex == 2 && _isPlaying,
+                        isPaused: _playingIndex == 2 && !_isPlaying,
+                        isLoading: _playingIndex == 2 && _isLoading,
+                        onPlay:
+                            () => _play(draft.audio2Path, draft.audio2Url, 2),
+                      ),
+                      const SizedBox(height: 14),
+                      _Row(
+                        n: 3,
+                        q: 'What are your favorite qualities or traits about yourself?',
+                        url: draft.audio3Url,
+                        index: 3,
+                        isPlaying: _playingIndex == 3 && _isPlaying,
+                        isPaused: _playingIndex == 3 && !_isPlaying,
+                        isLoading: _playingIndex == 3 && _isLoading,
+                        onPlay:
+                            () => _play(draft.audio3Path, draft.audio3Url, 3),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SafeArea(
+                top: false,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 18),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 54,
+                      child: ElevatedButton(
+                        onPressed:
+                            () => Navigator.of(
+                              context,
+                            ).pushNamed('/dating/setup/contact-info'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                        ),
+                        child: Text(
+                          'Continue',
+                          style: AppTextStyles.labelLarge.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

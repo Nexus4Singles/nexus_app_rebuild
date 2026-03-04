@@ -1,83 +1,69 @@
 import 'dart:io';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'notification_models.dart';
+import 'package:nexus_app_v2/core/services/push_notification_service.dart' show navigatorKey;
 
 // ============================================================================
 // FIREBASE CLOUD MESSAGING SERVICE
 // ============================================================================
 
 class NotificationService {
+  // Singleton pattern - prevents duplicate listener registration
+  static final NotificationService _instance = NotificationService._internal();
+
+  factory NotificationService() {
+    return _instance;
+  }
+
+  NotificationService._internal();
+
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  String? _fcmToken;
-  String? get fcmToken => _fcmToken;
-
-  // Guard to prevent multiple initializations
+  // Guard to prevent multiple initializations (and duplicate listeners)
   bool _initialized = false;
 
-  /// Initialize FCM and local notifications
+  /// Initialize notification DISPLAY and message handling only.
+  ///
+  /// FCM token management is handled separately by FcmTokenService.
+  /// This method only sets up:
+  /// - Local notification plugin (for foreground display)
+  /// - Foreground message listener (show local notification)
+  /// - Background message tap listener (navigation)
+  /// - Initial message check (app opened from killed state)
   Future<void> initialize() async {
     // Only initialize once - prevent duplicate listeners
     if (_initialized) {
-      print('NotificationService already initialized');
+      print('ℹ️ NotificationService already initialized (display-only mode)');
       return;
     }
+    print('🔔 Initializing NotificationService (display-only mode)...');
     _initialized = true;
-    // Request permission (iOS)
-    final settings = await _firebaseMessaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-      provisional: false,
-    );
 
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted notification permission');
-    } else if (settings.authorizationStatus ==
-        AuthorizationStatus.provisional) {
-      print('User granted provisional permission');
-    } else {
-      print('User declined or has not accepted permission');
-      return;
-    }
-
-    // Initialize local notifications
+    // Initialize local notifications for foreground display
     await _initializeLocalNotifications();
 
-    // Get FCM token (handle iOS simulator case where APNS token may not be available)
-    try {
-      _fcmToken = await _firebaseMessaging.getToken();
-      print('FCM Token: $_fcmToken');
-    } catch (e) {
-      // iOS simulator or APNS token not available yet
-      print('FCM Token not available (likely iOS simulator): $e');
-      _fcmToken = null;
-    }
-
-    // Listen for token refresh
-    _firebaseMessaging.onTokenRefresh.listen((newToken) {
-      _fcmToken = newToken;
-      print('FCM Token refreshed: $newToken');
-      // Token will be saved when user logs in
-    });
-
-    // Handle foreground messages
+    // Handle foreground messages (show local notification)
     FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
 
-    // Handle background message tap
+    // Handle background message tap (navigation)
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageTap);
 
-    // Check if app was opened from a notification
+    // Check if app was opened from a notification (killed state)
     final initialMessage = await _firebaseMessaging.getInitialMessage();
     if (initialMessage != null) {
       _handleMessageTap(initialMessage);
     }
+
+    print('✅ NotificationService display handlers initialized');
   }
 
   /// Initialize local notifications for foreground display
@@ -108,20 +94,31 @@ class NotificationService {
     );
 
     // Create notification channel for Android
+    // NOTE: Android notification channels are IMMUTABLE after creation.
+    // To apply updated settings (sound, vibration, importance), we must
+    // delete the old channel and recreate it.
     if (Platform.isAndroid) {
-      const channel = AndroidNotificationChannel(
-        'nexus_default_channel',
-        'Nexus Notifications',
-        description: 'Default notification channel for Nexus app',
-        importance: Importance.high,
-        playSound: true,
-      );
-
-      await _localNotifications
+      final androidPlugin = _localNotifications
           .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin
-          >()
-          ?.createNotificationChannel(channel);
+          >();
+
+      if (androidPlugin != null) {
+        // Delete old channel to ensure updated settings take effect
+        await androidPlugin.deleteNotificationChannel('nexus_default_channel');
+
+        final channel = AndroidNotificationChannel(
+          'nexus_default_channel',
+          'Nexus Notifications',
+          description: 'Default notification channel for Nexus app',
+          importance: Importance.high,
+          playSound: true,
+          enableVibration: true,
+          vibrationPattern: Int64List.fromList([0, 250, 250, 250]),
+        );
+
+        await androidPlugin.createNotificationChannel(channel);
+      }
     }
   }
 
@@ -130,10 +127,12 @@ class NotificationService {
     print('Received foreground message: ${message.notification?.title}');
 
     if (message.notification != null) {
+      // Encode data as JSON so it can be parsed on tap
+      final payloadJson = message.data.isNotEmpty ? jsonEncode(message.data) : null;
       await _showLocalNotification(
         title: message.notification!.title ?? 'Nexus',
         body: message.notification!.body ?? '',
-        payload: message.data.toString(),
+        payload: payloadJson,
       );
     }
   }
@@ -144,13 +143,15 @@ class NotificationService {
     required String body,
     String? payload,
   }) async {
-    const androidDetails = AndroidNotificationDetails(
+    final androidDetails = AndroidNotificationDetails(
       'nexus_default_channel',
       'Nexus Notifications',
       channelDescription: 'Default notification channel for Nexus app',
       importance: Importance.high,
       priority: Priority.high,
       playSound: true,
+      enableVibration: true,
+      vibrationPattern: Int64List.fromList([0, 250, 250, 250]),
       icon: '@mipmap/ic_launcher',
     );
 
@@ -160,7 +161,7 @@ class NotificationService {
       presentSound: true,
     );
 
-    const notificationDetails = NotificationDetails(
+    final notificationDetails = NotificationDetails(
       android: androidDetails,
       iOS: iosDetails,
     );
@@ -179,16 +180,25 @@ class NotificationService {
     print('Notification tapped: ${message.data}');
     final route = message.data['route'] as String?;
     if (route != null) {
-      // Navigation will be handled by the app
-      // Store the route to navigate after app initializes
       _pendingRoute = route;
+      _navigateToRoute(route);
     }
   }
 
-  /// Handle local notification tap
+  /// Handle local notification tap (foreground notifications shown via flutter_local_notifications)
   void _handleNotificationTap(String payload) {
     print('Local notification tapped: $payload');
-    // Parse payload and navigate
+    try {
+      final data = jsonDecode(payload) as Map<String, dynamic>;
+      final route = data['route'] as String?;
+      if (route != null) {
+        _pendingRoute = route;
+        // Attempt immediate navigation if navigator is available
+        _navigateToRoute(route);
+      }
+    } catch (e) {
+      print('Failed to parse notification payload: $e');
+    }
   }
 
   String? _pendingRoute;
@@ -198,31 +208,20 @@ class NotificationService {
     return route;
   }
 
-  /// Save FCM token to Firestore
-  Future<void> saveFcmToken(String userId) async {
-    if (_fcmToken == null) return;
-
-    final tokenInfo = FcmTokenInfo(
-      token: _fcmToken!,
-      platform: Platform.isIOS ? 'ios' : 'android',
-      lastUpdated: DateTime.now(),
-    );
-
-    await _firestore.collection('users').doc(userId).update({
-      'fcmToken': tokenInfo.toFirestore(),
-    });
-
-    print('FCM token saved for user: $userId');
-  }
-
-  /// Delete FCM token (on logout)
-  Future<void> deleteFcmToken(String userId) async {
-    await _firestore.collection('users').doc(userId).update({
-      'fcmToken': FieldValue.delete(),
-    });
-
-    await _firebaseMessaging.deleteToken();
-    _fcmToken = null;
+  /// Navigate to a route using the global navigator key
+  void _navigateToRoute(String route) {
+    try {
+      final navigator = navigatorKey.currentState;
+      if (navigator != null) {
+        navigator.pushNamed(route);
+        // Clear pending route since we navigated successfully
+        _pendingRoute = null;
+      } else {
+        print('Navigator not ready, route saved as pending: $route');
+      }
+    } catch (e) {
+      print('Navigation failed, route saved as pending: $e');
+    }
   }
 
   /// Send notification to specific user (trigger Cloud Function)

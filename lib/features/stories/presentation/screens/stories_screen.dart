@@ -34,7 +34,7 @@ class StoriesScreen extends ConsumerWidget {
         ),
         titleSpacing: 20,
         title: Text(
-          'Story of the Week',
+          'Stories',
           style: AppTextStyles.headlineSmall.copyWith(
             fontWeight: FontWeight.w700,
           ),
@@ -136,7 +136,7 @@ class _StoryOfWeekView extends ConsumerWidget {
 
         const SizedBox(height: 14),
         Text(
-          'Weekly Poll',
+          'Poll',
           style: AppTextStyles.titleSmall.copyWith(fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 8),
@@ -246,9 +246,11 @@ class _StoryActionsCard extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Did you enjoy this story?',
-              style: TextStyle(fontWeight: FontWeight.w900),
+              style: AppTextStyles.bodySmall.copyWith(
+                fontWeight: FontWeight.w900,
+              ),
             ),
             const SizedBox(height: 10),
             SingleChildScrollView(
@@ -311,7 +313,7 @@ class _StoryActionsCard extends ConsumerWidget {
 
   static void _shareStory(Story story) {
     final text =
-        'Story of the Week: ${story.title}\n\n'
+        'Stories: ${story.title}\n\n'
         '${story.intro}\n\n'
         'Shared from Nexus.';
     Share.share(text);
@@ -327,507 +329,655 @@ class _StoryActionsCard extends ConsumerWidget {
       context: context,
       isScrollControlled: true,
       builder: (ctx) {
-        return Consumer(
-          builder: (context, ref, _) {
-            final controller = ref.read(storyReactionsProvider.notifier);
-            final reactions = ref.watch(storyReactionsProvider);
-            final comments = reactions.commentsByStoryId[story.id] ?? const [];
+        return _CommentsSheetContent(story: story, canInteract: canInteract);
+      },
+    );
+  }
+}
 
-            controller.ensureStory(story.id);
+/// Stateful widget for managing comment sheet resources properly
+class _CommentsSheetContent extends ConsumerStatefulWidget {
+  final Story story;
+  final bool canInteract;
 
-            final input = TextEditingController();
-            final replyTarget = ValueNotifier<StoryComment?>(null);
-            final expandedReplies = ValueNotifier<Set<String>>({});
+  const _CommentsSheetContent({required this.story, required this.canInteract});
 
-            return SafeArea(
-              top: false,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: 16,
-                  right: 16,
-                  top: 12,
-                  bottom: MediaQuery.of(ctx).viewInsets.bottom + 12,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 44,
-                      height: 5,
-                      decoration: BoxDecoration(
-                        color: Theme.of(ctx).colorScheme.outlineVariant,
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Comments',
-                        style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    ValueListenableBuilder<StoryComment?>(
-                      valueListenable: replyTarget,
-                      builder: (context, replyTo, __) {
-                        List<StoryComment> topLevel =
-                            comments.where((c) => !c.isReply).toList()
-                              ..sort((a, b) {
-                                final likeCmp = b.likeCount.compareTo(
-                                  a.likeCount,
-                                );
-                                if (likeCmp != 0) return likeCmp;
-                                return b.createdAt.compareTo(a.createdAt);
-                              });
-                        final repliesByParent = <String, List<StoryComment?>>{};
-                        for (final cm in comments.where((c) => c.isReply)) {
-                          final key = cm.parentId ?? '';
-                          repliesByParent.putIfAbsent(key, () => []);
-                          repliesByParent[key]!.add(cm);
-                        }
-                        for (final entry in repliesByParent.entries) {
-                          entry.value.sort(
-                            (a, b) => (a?.createdAt ?? DateTime.now())
-                                .compareTo(b?.createdAt ?? DateTime.now()),
-                          );
-                        }
+  @override
+  ConsumerState<_CommentsSheetContent> createState() =>
+      _CommentsSheetContentState();
+}
 
-                        return Column(
-                          children: [
-                            if (comments.isEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: Text(
-                                  'No comments yet.',
-                                  style: Theme.of(ctx).textTheme.bodyMedium,
-                                ),
-                              )
-                            else
-                              SizedBox(
-                                height: MediaQuery.of(ctx).size.height * 0.6,
-                                child: ListView.separated(
-                                  itemCount: topLevel.length,
-                                  separatorBuilder:
-                                      (_, __) => const Divider(height: 18),
-                                  itemBuilder: (c, i) {
-                                    final cm = topLevel[i];
-                                    final replies =
-                                        repliesByParent[cm.id] ?? [];
-                                    final liked = controller.isCommentLiked(
-                                      story.id,
-                                      cm.id,
-                                    );
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Icon(
-                                              Icons.account_circle_outlined,
-                                              size: 22,
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    cm.userName,
-                                                    style:
-                                                        Theme.of(
-                                                          ctx,
-                                                        ).textTheme.labelLarge,
-                                                  ),
-                                                  const SizedBox(height: 2),
-                                                  Text(cm.text),
-                                                  const SizedBox(height: 6),
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        _fmtTime(cm.createdAt),
-                                                        style:
-                                                            Theme.of(ctx)
-                                                                .textTheme
-                                                                .bodySmall,
-                                                      ),
-                                                      const SizedBox(width: 12),
-                                                      Text(
-                                                        '${cm.likeCount} likes',
-                                                        style:
-                                                            Theme.of(ctx)
-                                                                .textTheme
-                                                                .bodySmall,
-                                                      ),
-                                                      const SizedBox(width: 12),
-                                                      TextButton(
-                                                        style: TextButton.styleFrom(
-                                                          padding:
-                                                              EdgeInsets.zero,
-                                                          minimumSize:
-                                                              Size.zero,
-                                                          tapTargetSize:
-                                                              MaterialTapTargetSize
-                                                                  .shrinkWrap,
-                                                        ),
-                                                        onPressed: () {
-                                                          if (!canInteract) {
-                                                            _showGuestGateDialog(
-                                                              context,
-                                                            );
-                                                            return;
-                                                          }
-                                                          replyTarget.value =
-                                                              cm;
-                                                        },
-                                                        child: const Text(
-                                                          'Reply',
-                                                        ),
-                                                      ),
-                                                      const SizedBox(width: 8),
-                                                      TextButton.icon(
-                                                        style: TextButton.styleFrom(
-                                                          padding:
-                                                              EdgeInsets.zero,
-                                                          minimumSize:
-                                                              Size.zero,
-                                                          tapTargetSize:
-                                                              MaterialTapTargetSize
-                                                                  .shrinkWrap,
-                                                        ),
-                                                        onPressed: () {
-                                                          if (!canInteract) {
-                                                            _showGuestGateDialog(
-                                                              context,
-                                                            );
-                                                            return;
-                                                          }
-                                                          controller
-                                                              .toggleCommentLike(
-                                                                story.id,
-                                                                cm.id,
-                                                              );
-                                                        },
-                                                        icon: Icon(
-                                                          liked
-                                                              ? Icons.favorite
-                                                              : Icons
-                                                                  .favorite_border,
-                                                          size: 16,
-                                                        ),
-                                                        label: const Text(
-                                                          'Like',
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            if (canInteract)
-                                              IconButton(
-                                                tooltip: 'Delete',
-                                                onPressed:
-                                                    () => controller
-                                                        .deleteComment(
-                                                          story.id,
-                                                          cm.id,
-                                                        ),
-                                                icon: const Icon(
-                                                  Icons.delete_outline,
-                                                ),
-                                              ),
-                                          ],
-                                        ),
-                                        if (replies.isNotEmpty) ...[
-                                          const SizedBox(height: 8),
-                                          ValueListenableBuilder<Set<String>>(
-                                            valueListenable: expandedReplies,
-                                            builder: (context, expanded, _) {
-                                              final isExpanded = expanded
-                                                  .contains(cm.id);
-                                              return Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Center(
-                                                    child: TextButton(
-                                                      style: TextButton.styleFrom(
-                                                        padding:
-                                                            EdgeInsets.zero,
-                                                        minimumSize: Size.zero,
-                                                        tapTargetSize:
-                                                            MaterialTapTargetSize
-                                                                .shrinkWrap,
-                                                      ),
-                                                      onPressed: () {
-                                                        final next =
-                                                            Set<String>.from(
-                                                              expanded,
-                                                            );
-                                                        if (isExpanded) {
-                                                          next.remove(cm.id);
-                                                        } else {
-                                                          next.add(cm.id);
-                                                        }
-                                                        expandedReplies.value =
-                                                            next;
-                                                      },
-                                                      child: Text(
-                                                        isExpanded
-                                                            ? 'Hide replies'
-                                                            : 'View ${replies.length} repl${replies.length == 1 ? 'y' : 'ies'}',
-                                                        style: TextStyle(
-                                                          fontSize: 12,
-                                                          color:
-                                                              Theme.of(ctx)
-                                                                  .colorScheme
-                                                                  .primary,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  if (isExpanded)
-                                                    Column(
-                                                      children:
-                                                          replies
-                                                              .map(
-                                                                (rc) => Padding(
-                                                                  padding:
-                                                                      const EdgeInsets.only(
-                                                                        left:
-                                                                            32,
-                                                                        top: 8,
-                                                                      ),
-                                                                  child:
-                                                                      rc == null
-                                                                          ? const SizedBox()
-                                                                          : Row(
-                                                                            crossAxisAlignment:
-                                                                                CrossAxisAlignment.start,
-                                                                            children: [
-                                                                              const Icon(
-                                                                                Icons.account_circle_outlined,
-                                                                                size:
-                                                                                    18,
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                width:
-                                                                                    8,
-                                                                              ),
-                                                                              Expanded(
-                                                                                child: Column(
-                                                                                  crossAxisAlignment:
-                                                                                      CrossAxisAlignment.start,
-                                                                                  children: [
-                                                                                    Text(
-                                                                                      rc.userName,
-                                                                                      style:
-                                                                                          Theme.of(
-                                                                                            ctx,
-                                                                                          ).textTheme.labelMedium,
-                                                                                    ),
-                                                                                    const SizedBox(
-                                                                                      height:
-                                                                                          2,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      rc.text,
-                                                                                    ),
-                                                                                    const SizedBox(
-                                                                                      height:
-                                                                                          4,
-                                                                                    ),
-                                                                                    Row(
-                                                                                      children: [
-                                                                                        Text(
-                                                                                          _fmtTime(
-                                                                                            rc.createdAt,
-                                                                                          ),
-                                                                                          style:
-                                                                                              Theme.of(
-                                                                                                ctx,
-                                                                                              ).textTheme.bodySmall,
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          width:
-                                                                                              12,
-                                                                                        ),
-                                                                                        Text(
-                                                                                          '${rc.likeCount} likes',
-                                                                                          style:
-                                                                                              Theme.of(
-                                                                                                ctx,
-                                                                                              ).textTheme.bodySmall,
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          width:
-                                                                                              8,
-                                                                                        ),
-                                                                                        TextButton.icon(
-                                                                                          style: TextButton.styleFrom(
-                                                                                            padding:
-                                                                                                EdgeInsets.zero,
-                                                                                            minimumSize:
-                                                                                                Size.zero,
-                                                                                            tapTargetSize:
-                                                                                                MaterialTapTargetSize.shrinkWrap,
-                                                                                          ),
-                                                                                          onPressed: () {
-                                                                                            if (!canInteract) {
-                                                                                              _showGuestGateDialog(
-                                                                                                context,
-                                                                                              );
-                                                                                              return;
-                                                                                            }
-                                                                                            controller.toggleCommentLike(
-                                                                                              story.id,
-                                                                                              rc.id,
-                                                                                            );
-                                                                                          },
-                                                                                          icon: Icon(
-                                                                                            controller.isCommentLiked(
-                                                                                                  story.id,
-                                                                                                  rc.id,
-                                                                                                )
-                                                                                                ? Icons.favorite
-                                                                                                : Icons.favorite_border,
-                                                                                            size:
-                                                                                                14,
-                                                                                          ),
-                                                                                          label: const Text(
-                                                                                            'Like',
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                ),
-                                                              )
-                                                              .toList(),
-                                                    ),
-                                                ],
-                                              );
-                                            },
-                                          ),
-                                        ],
-                                      ],
-                                    );
-                                  },
-                                ),
-                              ),
-                            const SizedBox(height: 12),
-                            if (!canInteract)
-                              SizedBox(
-                                width: double.infinity,
-                                child: OutlinedButton(
-                                  onPressed: () {
-                                    Navigator.of(ctx).pop();
-                                    _showGuestGateDialog(context);
-                                  },
-                                  child: const Text(
-                                    'Create an account to comment',
-                                  ),
-                                ),
-                              )
-                            else ...[
-                              if (replyTo != null)
-                                Container(
-                                  width: double.infinity,
-                                  margin: const EdgeInsets.only(bottom: 6),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 8,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(
-                                          ctx,
-                                        ).colorScheme.surfaceVariant,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          'Replying to ${replyTo.userName}',
-                                          style:
-                                              Theme.of(ctx).textTheme.bodySmall,
-                                        ),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.close, size: 18),
-                                        onPressed:
-                                            () => replyTarget.value = null,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: TextField(
-                                      controller: input,
-                                      decoration: const InputDecoration(
-                                        hintText: 'Write a comment…',
-                                        border: OutlineInputBorder(),
-                                      ),
-                                      minLines: 1,
-                                      maxLines: 4,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  FilledButton(
-                                    onPressed: () {
-                                      if (replyTo != null) {
-                                        controller.addReply(
-                                          story.id,
-                                          replyTo.id,
-                                          input.text,
-                                        );
-                                      } else {
-                                        controller.addComment(
-                                          story.id,
-                                          input.text,
-                                        );
-                                      }
-                                      input.clear();
-                                      replyTarget.value = null;
-                                      FocusScope.of(ctx).unfocus();
-                                    },
-                                    child: const Text('Send'),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ],
-                        );
-                      },
-                    ),
-                  ],
+class _CommentsSheetContentState extends ConsumerState<_CommentsSheetContent> {
+  late final TextEditingController _input;
+  late final ValueNotifier<StoryComment?> _replyTarget;
+  late final ValueNotifier<Set<String>> _expandedReplies;
+  late final ValueNotifier<bool> _isPosting;
+
+  @override
+  void initState() {
+    super.initState();
+    _input = TextEditingController();
+    _replyTarget = ValueNotifier<StoryComment?>(null);
+    _expandedReplies = ValueNotifier<Set<String>>({});
+    _isPosting = ValueNotifier<bool>(false);
+  }
+
+  @override
+  void dispose() {
+    _input.dispose();
+    _replyTarget.dispose();
+    _expandedReplies.dispose();
+    _isPosting.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = ref.read(storyReactionsProvider.notifier);
+    final reactions = ref.watch(storyReactionsProvider);
+    final comments = reactions.commentsByStoryId[widget.story.id] ?? const [];
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    controller.ensureStory(widget.story.id);
+
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          top: 12,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 12,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 44,
+              height: 5,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.outlineVariant,
+                borderRadius: BorderRadius.circular(999),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Comments',
+                style: AppTextStyles.titleSmall.copyWith(
+                  fontWeight: FontWeight.w900,
                 ),
               ),
-            );
-          },
-        );
-      },
+            ),
+            const SizedBox(height: 10),
+            ValueListenableBuilder<StoryComment?>(
+              valueListenable: _replyTarget,
+              builder: (innerContext, replyTo, __) {
+                List<StoryComment> topLevel =
+                    comments.where((c) => !c.isReply).toList()..sort((a, b) {
+                      final likeCmp = b.likeCount.compareTo(a.likeCount);
+                      if (likeCmp != 0) return likeCmp;
+                      return b.createdAt.compareTo(a.createdAt);
+                    });
+                final repliesByParent = <String, List<StoryComment?>>{};
+                for (final cm in comments.where((c) => c.isReply)) {
+                  final key = cm.parentId ?? '';
+                  repliesByParent.putIfAbsent(key, () => []);
+                  repliesByParent[key]!.add(cm);
+                }
+                for (final entry in repliesByParent.entries) {
+                  entry.value.sort(
+                    (a, b) => (a?.createdAt ?? DateTime.now()).compareTo(
+                      b?.createdAt ?? DateTime.now(),
+                    ),
+                  );
+                }
+
+                return Column(
+                  children: [
+                    if (comments.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          'No comments yet.',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.getTextSecondary(context),
+                          ),
+                        ),
+                      )
+                    else
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight:
+                              (MediaQuery.of(context).size.height -
+                                  MediaQuery.of(context).viewInsets.bottom) *
+                              0.5,
+                          minHeight: 100,
+                        ),
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          itemCount: topLevel.length,
+                          separatorBuilder:
+                              (_, __) => const Divider(height: 18),
+                          itemBuilder: (c, i) {
+                            final cm = topLevel[i];
+                            final replies = repliesByParent[cm.id] ?? [];
+                            final liked = controller.isCommentLiked(
+                              widget.story.id,
+                              cm.id,
+                            );
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      Icons.account_circle_outlined,
+                                      size: 22,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            cm.userName,
+                                            style: AppTextStyles.bodySmall
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                          ),
+                                          const SizedBox(height: 2),
+                                          Text(
+                                            cm.text,
+                                            style: AppTextStyles.bodySmall,
+                                          ),
+                                          const SizedBox(height: 6),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                _fmtTime(cm.createdAt),
+                                                style: AppTextStyles.caption
+                                                    .copyWith(
+                                                      color:
+                                                          AppColors.getTextSecondary(
+                                                            context,
+                                                          ),
+                                                    ),
+                                              ),
+                                              const SizedBox(width: 12),
+                                              Text(
+                                                '${cm.likeCount} likes',
+                                                style: AppTextStyles.caption
+                                                    .copyWith(
+                                                      color:
+                                                          AppColors.getTextSecondary(
+                                                            context,
+                                                          ),
+                                                    ),
+                                              ),
+                                              const SizedBox(width: 12),
+                                              TextButton(
+                                                style: TextButton.styleFrom(
+                                                  padding: EdgeInsets.zero,
+                                                  minimumSize: Size.zero,
+                                                  tapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                ),
+                                                onPressed: () {
+                                                  if (!widget.canInteract) {
+                                                    _showGuestGateDialog(
+                                                      context,
+                                                    );
+                                                    return;
+                                                  }
+                                                  _replyTarget.value = cm;
+                                                },
+                                                child: Text(
+                                                  'Reply',
+                                                  style: AppTextStyles.caption
+                                                      .copyWith(
+                                                        color:
+                                                            AppColors.primary,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 8),
+                                              TextButton.icon(
+                                                style: TextButton.styleFrom(
+                                                  padding: EdgeInsets.zero,
+                                                  minimumSize: Size.zero,
+                                                  tapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                ),
+                                                onPressed: () {
+                                                  if (!widget.canInteract) {
+                                                    _showGuestGateDialog(
+                                                      context,
+                                                    );
+                                                    return;
+                                                  }
+                                                  controller.toggleCommentLike(
+                                                    widget.story.id,
+                                                    cm.id,
+                                                  );
+                                                },
+                                                icon: Icon(
+                                                  liked
+                                                      ? Icons.favorite
+                                                      : Icons.favorite_border,
+                                                  size: 16,
+                                                ),
+                                                label: Text(
+                                                  'Like',
+                                                  style: AppTextStyles.caption
+                                                      .copyWith(
+                                                        color:
+                                                            AppColors.primary,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    if (widget.canInteract &&
+                                        currentUser?.uid == cm.userId)
+                                      IconButton(
+                                        tooltip: 'Delete',
+                                        iconSize: 18,
+                                        padding: EdgeInsets.zero,
+                                        constraints: const BoxConstraints(),
+                                        onPressed:
+                                            () => controller.deleteComment(
+                                              widget.story.id,
+                                              cm.id,
+                                            ),
+                                        icon: Icon(
+                                          Icons.delete_outline,
+                                          size: 18,
+                                          color: AppColors.getTextSecondary(
+                                            context,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                if (replies.isNotEmpty) ...[
+                                  const SizedBox(height: 8),
+                                  ValueListenableBuilder<Set<String>>(
+                                    valueListenable: _expandedReplies,
+                                    builder: (innerContext, expanded, _) {
+                                      final isExpanded = expanded.contains(
+                                        cm.id,
+                                      );
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Center(
+                                            child: TextButton(
+                                              style: TextButton.styleFrom(
+                                                padding: EdgeInsets.zero,
+                                                minimumSize: Size.zero,
+                                                tapTargetSize:
+                                                    MaterialTapTargetSize
+                                                        .shrinkWrap,
+                                              ),
+                                              onPressed: () {
+                                                final next = Set<String>.from(
+                                                  expanded,
+                                                );
+                                                if (isExpanded) {
+                                                  next.remove(cm.id);
+                                                } else {
+                                                  next.add(cm.id);
+                                                }
+                                                _expandedReplies.value = next;
+                                              },
+                                              child: Text(
+                                                isExpanded
+                                                    ? 'Hide replies'
+                                                    : 'View ${replies.length} repl${replies.length == 1 ? 'y' : 'ies'}',
+                                                style: AppTextStyles.caption
+                                                    .copyWith(
+                                                      color: AppColors.primary,
+                                                    ),
+                                              ),
+                                            ),
+                                          ),
+                                          if (isExpanded)
+                                            Column(
+                                              children:
+                                                  replies
+                                                      .map(
+                                                        (rc) => Padding(
+                                                          padding:
+                                                              const EdgeInsets.only(
+                                                                left: 32,
+                                                                top: 8,
+                                                              ),
+                                                          child:
+                                                              rc == null
+                                                                  ? const SizedBox()
+                                                                  : Row(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      const Icon(
+                                                                        Icons
+                                                                            .account_circle_outlined,
+                                                                        size:
+                                                                            18,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            8,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Text(
+                                                                              rc.userName,
+                                                                              style: AppTextStyles.caption.copyWith(
+                                                                                fontWeight:
+                                                                                    FontWeight.w700,
+                                                                              ),
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height:
+                                                                                  2,
+                                                                            ),
+                                                                            Text(
+                                                                              rc.text,
+                                                                              style:
+                                                                                  AppTextStyles.caption,
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height:
+                                                                                  4,
+                                                                            ),
+                                                                            Row(
+                                                                              children: [
+                                                                                Text(
+                                                                                  _fmtTime(
+                                                                                    rc.createdAt,
+                                                                                  ),
+                                                                                  style: AppTextStyles.caption.copyWith(
+                                                                                    color: AppColors.getTextSecondary(
+                                                                                      context,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                                const SizedBox(
+                                                                                  width:
+                                                                                      12,
+                                                                                ),
+                                                                                Text(
+                                                                                  '${rc.likeCount} likes',
+                                                                                  style: AppTextStyles.caption.copyWith(
+                                                                                    color: AppColors.getTextSecondary(
+                                                                                      context,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                                const SizedBox(
+                                                                                  width:
+                                                                                      8,
+                                                                                ),
+                                                                                TextButton.icon(
+                                                                                  style: TextButton.styleFrom(
+                                                                                    padding:
+                                                                                        EdgeInsets.zero,
+                                                                                    minimumSize:
+                                                                                        Size.zero,
+                                                                                    tapTargetSize:
+                                                                                        MaterialTapTargetSize.shrinkWrap,
+                                                                                  ),
+                                                                                  onPressed: () {
+                                                                                    if (!widget.canInteract) {
+                                                                                      _showGuestGateDialog(
+                                                                                        context,
+                                                                                      );
+                                                                                      return;
+                                                                                    }
+                                                                                    controller.toggleCommentLike(
+                                                                                      widget.story.id,
+                                                                                      rc.id,
+                                                                                    );
+                                                                                  },
+                                                                                  icon: Icon(
+                                                                                    controller.isCommentLiked(
+                                                                                          widget.story.id,
+                                                                                          rc.id,
+                                                                                        )
+                                                                                        ? Icons.favorite
+                                                                                        : Icons.favorite_border,
+                                                                                    size:
+                                                                                        14,
+                                                                                  ),
+                                                                                  label: Text(
+                                                                                    'Like',
+                                                                                    style: AppTextStyles.caption.copyWith(
+                                                                                      color:
+                                                                                          AppColors.primary,
+                                                                                      fontWeight:
+                                                                                          FontWeight.w600,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                            ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    const SizedBox(height: 12),
+                    if (!widget.canInteract)
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            _showGuestGateDialog(context);
+                          },
+                          child: Text(
+                            'Create an account to comment',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      )
+                    else ...[
+                      if (replyTo != null)
+                        Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(bottom: 6),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surfaceVariant,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Replying to ${replyTo.userName}',
+                                  style: AppTextStyles.caption.copyWith(
+                                    color: AppColors.getTextSecondary(context),
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.close, size: 18),
+                                onPressed: () => _replyTarget.value = null,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ValueListenableBuilder<bool>(
+                        valueListenable: _isPosting,
+                        builder: (innerContext, posting, _) {
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _input,
+                                  enabled: !posting,
+                                  style: AppTextStyles.bodySmall,
+                                  decoration: InputDecoration(
+                                    hintText: 'Write a comment…',
+                                    hintStyle: AppTextStyles.bodySmall.copyWith(
+                                      color: AppColors.getTextMuted(context),
+                                    ),
+                                    isDense: true,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 10,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  minLines: 1,
+                                  maxLines: 4,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              FilledButton(
+                                style: FilledButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 14,
+                                    vertical: 10,
+                                  ),
+                                  minimumSize: Size.zero,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                onPressed:
+                                    posting
+                                        ? null
+                                        : () async {
+                                          if (_input.text.trim().isEmpty) {
+                                            return;
+                                          }
+                                          _isPosting.value = true;
+                                          try {
+                                            if (replyTo != null) {
+                                              await controller.addReply(
+                                                widget.story.id,
+                                                replyTo.id,
+                                                _input.text,
+                                              );
+                                            } else {
+                                              await controller.addComment(
+                                                widget.story.id,
+                                                _input.text,
+                                              );
+                                            }
+                                            _input.clear();
+                                            _replyTarget.value = null;
+                                            FocusScope.of(context).unfocus();
+                                          } catch (e) {
+                                            if (mounted) {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Failed to post comment: $e',
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          } finally {
+                                            _isPosting.value = false;
+                                          }
+                                        },
+                                child:
+                                    posting
+                                        ? const SizedBox(
+                                          width: 16,
+                                          height: 16,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
+                                        )
+                                        : Text(
+                                          'Send',
+                                          style: AppTextStyles.bodySmall
+                                              .copyWith(
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   static String _fmtTime(DateTime dt) {
-    final h = dt.hour.toString().padLeft(2, '0');
-    final m = dt.minute.toString().padLeft(2, '0');
-    return '${dt.year}-${dt.month.toString().padLeft(2, '0')}-${dt.day.toString().padLeft(2, '0')} $h:$m';
+    final now = DateTime.now();
+    final diff = now.difference(dt);
+
+    if (diff.isNegative) return 'just now';
+    if (diff.inSeconds < 60) return 'just now';
+    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
+    if (diff.inHours < 24) return '${diff.inHours}h ago';
+    if (diff.inDays == 1) return 'yesterday';
+    if (diff.inDays < 7) return '${diff.inDays}d ago';
+    if (diff.inDays < 30) {
+      final weeks = (diff.inDays / 7).floor();
+      return '$weeks${weeks == 1 ? ' week' : ' weeks'} ago';
+    }
+    if (diff.inDays < 365) {
+      final months = (diff.inDays / 30).floor();
+      return '$months${months == 1 ? ' month' : ' months'} ago';
+    }
+    final years = (diff.inDays / 365).floor();
+    return '$years${years == 1 ? ' year' : ' years'} ago';
   }
 }
 
@@ -858,9 +1008,14 @@ class _ActionChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 18),
-            const SizedBox(width: 8),
-            Text(label, style: const TextStyle(fontWeight: FontWeight.w700)),
+            Icon(icon, size: 16),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: AppTextStyles.bodySmall.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ],
         ),
       ),

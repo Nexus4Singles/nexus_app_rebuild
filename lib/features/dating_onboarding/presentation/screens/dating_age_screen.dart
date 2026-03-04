@@ -48,14 +48,26 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
   Future<void> _onBackPressed() async {
     final shouldDiscard = await showDialog<bool>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Discard Profile Setup?'),
-        content: const Text('Going back will discard all progress. You\'ll need to start over.'),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Continue')),
-          TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Discard', style: TextStyle(color: Colors.red))),
-        ],
-      ),
+      builder:
+          (ctx) => AlertDialog(
+            title: const Text('Discard Profile Setup?'),
+            content: const Text(
+              'Going back will discard all progress. You\'ll need to start over.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx, false),
+                child: const Text('Continue'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(ctx, true),
+                child: const Text(
+                  'Discard',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
     );
     if (shouldDiscard == true && mounted) {
       ref.read(datingOnboardingDraftProvider.notifier).reset();
@@ -64,14 +76,21 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
   }
 
   void _showGuidelinesManual() {
-    showDialog(context: context, builder: (ctx) => DatingPoolGuidelinesModal(onDismiss: () => Navigator.of(ctx).pop()));
+    showDialog(
+      context: context,
+      builder:
+          (ctx) => DatingPoolGuidelinesModal(
+            onDismiss: () => Navigator.of(ctx).pop(),
+          ),
+    );
   }
 
   Future<void> _resetAndShowGuidelines() async {
     final userId = ref.watch(currentUserIdProvider);
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('dating_pool_guidelines_shown');
-    if (userId != null) await prefs.remove('dating_pool_guidelines_shown_$userId');
+    if (userId != null)
+      await prefs.remove('dating_pool_guidelines_shown_$userId');
     if (mounted) _showGuidelinesIfNeeded();
   }
 
@@ -86,10 +105,14 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (ctx) => DatingPoolGuidelinesModal(onDismiss: () {
-          Navigator.of(ctx).pop();
-          if (mounted) ref.read(markGuidelinesSeenProvider.notifier).markAsRead();
-        }),
+        builder:
+            (ctx) => DatingPoolGuidelinesModal(
+              onDismiss: () {
+                Navigator.of(ctx).pop();
+                if (mounted)
+                  ref.read(markGuidelinesSeenProvider.notifier).markAsRead();
+              },
+            ),
       );
     }
   }
@@ -101,19 +124,41 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
       final clamped = draft.age!.clamp(_minAge, _maxAge);
       _syncedFromDraft = true;
       _selectedAge = clamped;
-      WidgetsBinding.instance.addPostFrameCallback((_) { if (mounted) { _controller.jumpToItem(clamped - _minAge); setState(() {}); }});
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _controller.jumpToItem(clamped - _minAge);
+          setState(() {});
+        }
+      });
     }
 
     return WillPopScope(
-      onWillPop: () async { await _onBackPressed(); return false; },
+      onWillPop: () async {
+        await _onBackPressed();
+        return false;
+      },
       child: Scaffold(
         backgroundColor: AppColors.getBackground(context),
         appBar: AppBar(
-          elevation: 0, backgroundColor: AppColors.getBackground(context),
-          leading: IconButton(icon: const Icon(Icons.arrow_back_rounded), onPressed: _onBackPressed),
-          title: Text('Age', style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700)),
+          elevation: 0,
+          backgroundColor: AppColors.getBackground(context),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_rounded),
+            onPressed: _onBackPressed,
+          ),
+          title: Text(
+            'Age',
+            style: AppTextStyles.titleLarge.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
           centerTitle: true,
-          actions: [IconButton(icon: const Icon(Icons.info_outline_rounded), onPressed: _showGuidelinesManual)],
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.info_outline_rounded),
+              onPressed: _showGuidelinesManual,
+            ),
+          ],
         ),
         body: SafeArea(
           child: Padding(
@@ -125,21 +170,52 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
                 const SizedBox(height: 12),
                 Text('How old are you?', style: AppTextStyles.headlineSmall),
                 const SizedBox(height: 6),
-                Text('Nexus is for users between the ages of 21 to 70 years', style: AppTextStyles.bodySmall.copyWith(color: AppColors.getTextSecondary(context))),
+                Text(
+                  'Nexus is for users between the ages of 21 to 70 years',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.getTextSecondary(context),
+                  ),
+                ),
                 const SizedBox(height: 16),
                 Expanded(
                   child: Center(
                     child: Container(
                       height: 220, // Reduced height for better fit
-                      decoration: BoxDecoration(color: AppColors.getSurface(context), borderRadius: BorderRadius.circular(24), border: Border.all(color: AppColors.getBorder(context))),
+                      decoration: BoxDecoration(
+                        color: AppColors.getSurface(context),
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(color: AppColors.getBorder(context)),
+                      ),
                       child: ListWheelScrollView.useDelegate(
-                        controller: _controller, itemExtent: 52, physics: const FixedExtentScrollPhysics(),
-                        onSelectedItemChanged: (i) { setState(() => _selectedAge = _minAge + i); ref.read(datingOnboardingDraftProvider.notifier).setAge(_selectedAge); },
+                        controller: _controller,
+                        itemExtent: 52,
+                        physics: const FixedExtentScrollPhysics(),
+                        onSelectedItemChanged: (i) {
+                          setState(() => _selectedAge = _minAge + i);
+                          ref
+                              .read(datingOnboardingDraftProvider.notifier)
+                              .setAge(_selectedAge);
+                        },
                         childDelegate: ListWheelChildBuilderDelegate(
                           builder: (_, i) {
                             final age = _minAge + i;
                             final sel = age == _selectedAge;
-                            return Center(child: Text('$age', style: sel ? AppTextStyles.headlineMedium.copyWith(fontWeight: FontWeight.w800, color: AppColors.getTextPrimary(context)) : AppTextStyles.titleLarge.copyWith(color: AppColors.getTextSecondary(context))));
+                            return Center(
+                              child: Text(
+                                '$age',
+                                style:
+                                    sel
+                                        ? AppTextStyles.headlineMedium.copyWith(
+                                          fontWeight: FontWeight.w800,
+                                          color: AppColors.primary,
+                                        )
+                                        : AppTextStyles.titleLarge.copyWith(
+                                          color: AppColors.getTextSecondary(
+                                            context,
+                                          ),
+                                        ),
+                              ),
+                            );
                           },
                           childCount: (_maxAge - _minAge) + 1,
                         ),
@@ -148,7 +224,14 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                SizedBox(width: double.infinity, height: 54, child: ElevatedButton(onPressed: _continue, child: const Text('Continue'))),
+                SizedBox(
+                  width: double.infinity,
+                  height: 54,
+                  child: ElevatedButton(
+                    onPressed: _continue,
+                    child: const Text('Continue'),
+                  ),
+                ),
               ],
             ),
           ),

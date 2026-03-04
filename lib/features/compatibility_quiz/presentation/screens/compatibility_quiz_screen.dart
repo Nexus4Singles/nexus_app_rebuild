@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nexus_app_v2/core/router/safe_nav.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/constants/app_constants.dart';
 import 'package:nexus_app_v2/core/providers/tab_selection_provider.dart';
+import 'package:nexus_app_v2/core/notifications/notification_service.dart';
 import '../../application/compatibility_quiz_provider.dart';
 
 class CompatibilityQuizScreen extends ConsumerWidget {
@@ -125,6 +127,24 @@ class CompatibilityQuizScreen extends ConsumerWidget {
                                     } else {
                                       await notifier.submit();
                                       if (context.mounted) {
+                                        // Abort if submission failed (error is shown in UI)
+                                        final postSubmitState = ref.read(
+                                          compatibilityQuizProvider,
+                                        );
+                                        if (postSubmitState.error != null)
+                                          return;
+
+                                        // Send "profile under review" push notification
+                                        final uid =
+                                            FirebaseAuth
+                                                .instance
+                                                .currentUser
+                                                ?.uid;
+                                        if (uid != null) {
+                                          NotificationHelpers.sendProfilePendingVerificationNotification(
+                                            userId: uid,
+                                          );
+                                        }
                                         // Switch to profile tab and navigate home
                                         ref
                                             .read(selectedTabProvider.notifier)

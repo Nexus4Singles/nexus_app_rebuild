@@ -14,6 +14,7 @@ import 'core/services/push_notification_service.dart';
 import 'core/session/guest_session_provider.dart';
 import 'core/theme/theme_provider.dart';
 import 'core/theme/app_theme.dart';
+import 'core/widgets/chat_media_upload_lifecycle_handler.dart';
 import 'features/launch/presentation/app_launch_gate.dart';
 import 'safe_imports.dart';
 
@@ -65,7 +66,7 @@ class _RootApp extends ConsumerWidget {
       onGenerateRoute: onGenerateRoute,
       builder: (context, child) {
         // Safe Text Scaling Logic
-        // Calculates a scale factor based on screen width to prevent 
+        // Calculates a scale factor based on screen width to prevent
         // oversized fonts on small Android devices.
         final double width = MediaQuery.of(context).size.width;
         const double baseWidth = 390.0;
@@ -73,12 +74,14 @@ class _RootApp extends ConsumerWidget {
         double finalScale = math.max(0.88, math.min(1.10, scaleFactor));
 
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(
-            textScaler: TextScaler.linear(finalScale),
-          ),
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: TextScaler.linear(finalScale)),
           child: DefaultTextStyle(
             style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-            child: child ?? const SizedBox.shrink(),
+            child: ChatMediaUploadLifecycleHandler(
+              child: child ?? const SizedBox.shrink(),
+            ),
           ),
         );
       },

@@ -11,8 +11,10 @@ import '../../../core/services/journey_mission_response_service.dart';
 import '../../../core/services/firestore_service.dart';
 import '../../../core/session/effective_relationship_status_provider.dart';
 import '../../../core/user/current_user_gender_provider.dart';
+import '../../../core/user/current_user_doc_provider.dart';
 import '../../../core/providers/firestore_service_provider.dart';
 import '../../../core/providers/user_provider.dart';
+import '../../../core/providers/auth_provider.dart';
 import '../domain/journey_v1_models.dart';
 
 final journeysServiceProvider = Provider((ref) => const JourneysService());
@@ -29,6 +31,19 @@ final journeyMissionResponseServiceProvider = Provider(
 );
 
 final journeyCatalogProvider = FutureProvider<JourneyCatalogV1>((ref) async {
+  // CRITICAL: Wait for auth and user doc to load before fetching journeys.
+  // This prevents a race condition where effectiveRelationshipStatusProvider
+  // returns a default status before user data is ready, causing journeys to load
+  // with wrong status initially and showing empty states before correcting.
+
+  // Ensure auth state is resolved (not loading)
+  final authAsync = await ref.watch(authStateProvider.future);
+
+  // If user is signed in (not anonymous), wait for user doc to be available
+  if (authAsync != null && !authAsync.isAnonymous) {
+    await ref.watch(currentUserDocProvider.future);
+  }
+
   final status = ref.watch(effectiveRelationshipStatusProvider);
 
   // ignore: avoid_print
@@ -70,7 +85,7 @@ final journeyCatalogProvider = FutureProvider<JourneyCatalogV1>((ref) async {
 
       if (gender != null) {
         gender = gender.trim().toLowerCase();
-      } else {}
+      }
     } catch (e) {
       gender = null;
     }
@@ -153,8 +168,9 @@ final isJourneyCompletedProvider = FutureProvider.family<bool, String>((
   final journey = ref.watch(journeyByIdProvider(journeyId));
   if (journey == null) return false;
 
-  final completedIds =
-      await ref.watch(completedMissionIdsProvider(journeyId).future);
+  final completedIds = await ref.watch(
+    completedMissionIdsProvider(journeyId).future,
+  );
   return completedIds.length >= journey.missions.length;
 });
 
@@ -192,8 +208,8 @@ final isJourneyPurchasedProvider = FutureProvider.family<bool, String>((
 
   if (userId == null) return false;
 
+  // ── Source 1: Firestore purchase record (written by Cloud Function) ──
   try {
-    // Check if journey is in user's purchases collection
     final doc =
         await FirebaseFirestore.instance
             .collection('users')
@@ -201,12 +217,23 @@ final isJourneyPurchasedProvider = FutureProvider.family<bool, String>((
             .collection('purchases')
             .doc(journeyId)
             .get();
-    return doc.exists;
+    if (doc.exists) return true;
   } catch (e) {
-    // Fall back to shared preferences as backup
-    final svc = ref.watch(journeyEntitlementsServiceProvider);
-    return svc.isPurchased(journeyId);
+    debugPrint(
+      '⚠️ [isJourneyPurchased] Firestore check failed for $journeyId: $e',
+    );
+    // Continue to fallback instead of returning false
   }
+
+  // ── Source 2: SharedPreferences (local cache, written at purchase time) ──
+  // This is the reliable fallback for when Firestore reads fail (App Check,
+  // offline, etc.) or when the Cloud Function hasn't written yet.
+  try {
+    final svc = ref.watch(journeyEntitlementsServiceProvider);
+    if (await svc.isPurchased(journeyId)) return true;
+  } catch (_) {}
+
+  return false;
 });
 
 final bestJourneysStreakProvider = FutureProvider<int>((ref) async {

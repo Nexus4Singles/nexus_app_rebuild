@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:nexus_app_v2/core/storage/chat_media_upload_queue.dart';
 
 /// Chat message model
 class ChatMessage {
@@ -293,44 +296,6 @@ class ChatService {
   // ============================================================================
   // PREMIUM CHECK
   // ============================================================================
-  Future<bool> _isPremiumUser(String uid) async {
-    try {
-      final doc = await _fs.collection('users').doc(uid).get();
-      final data = doc.data();
-      if (data == null) return false;
-
-      // Check new subscription structure first
-      final subscriptionData = data['subscription'] as Map<String, dynamic>?;
-      if (subscriptionData != null) {
-        final isActive = subscriptionData['isActive'] as bool? ?? false;
-        if (!isActive) return false;
-
-        // Check expiration date
-        final expiryDate = subscriptionData['expiryDate'];
-        if (expiryDate != null) {
-          if (expiryDate is Timestamp) {
-            return expiryDate.toDate().isAfter(DateTime.now());
-          } else if (expiryDate is DateTime) {
-            return expiryDate.isAfter(DateTime.now());
-          }
-        }
-        return isActive;
-      }
-
-      // Fallback: Check legacy onPremium flag with expiration
-      final onPremium = data['onPremium'] as bool? ?? false;
-      if (!onPremium) return false;
-
-      final expDate = data['subExpDate'] as Timestamp?;
-      if (expDate == null) return false;
-
-      return expDate.toDate().isAfter(DateTime.now());
-    } catch (_) {
-      // Fail-closed: treat as not premium.
-      return false;
-    }
-  }
-
   // ============================================================================
   // FREE-TIER GATING (SEND-TIME ONLY)
   //
@@ -342,11 +307,101 @@ class ChatService {
   // Storage:
   // - users/{uid}.chat.freeChatPartnerId
   // ============================================================================
+
+  /// Read-only pre-check: can this user send a message to this receiver?
+  /// Returns normally if allowed, throws [ChatException] if blocked.
+  /// Does NOT record the partner or modify any data — safe to call
+  /// before opening the image picker or starting audio recording.
+  Future<void> checkCanSendToReceiver({
+    required String senderId,
+    required String receiverId,
+  }) async {
+    if (senderId.trim().isEmpty || receiverId.trim().isEmpty) return;
+
+    final meRef = _fs.collection('users').doc(senderId);
+    final snap = await meRef.get();
+    final meData = snap.data();
+
+    // --- Premium check (mirrors _enforceFreeTierOnSend) ---
+    final subscriptionData = meData?['subscription'] as Map<String, dynamic>?;
+    if (subscriptionData != null) {
+      final isActive = subscriptionData['isActive'] as bool? ?? false;
+      if (isActive) {
+        final expiryDate = subscriptionData['expiryDate'];
+        if (expiryDate != null) {
+          if (expiryDate is Timestamp &&
+              expiryDate.toDate().isAfter(DateTime.now()))
+            return;
+          if (expiryDate is DateTime && expiryDate.isAfter(DateTime.now())) {
+            return;
+          }
+        } else {
+          return; // No expiry — indefinite premium
+        }
+      }
+    } else {
+      final onPremium = meData?['onPremium'] as bool? ?? false;
+      if (onPremium) {
+        final expDate = meData?['subExpDate'] as Timestamp?;
+        if (expDate != null && expDate.toDate().isAfter(DateTime.now())) {
+          return;
+        }
+      }
+    }
+
+    // --- Free-tier partner check (read-only, no writes) ---
+    final chatMap = (meData?['chat'] is Map) ? (meData!['chat'] as Map) : null;
+
+    List<String> freeList = <String>[];
+    final rawList = chatMap?['freeChatPartnerIds'];
+    if (rawList is List) {
+      freeList =
+          rawList
+              .map((e) => e.toString().trim())
+              .where((e) => e.isNotEmpty)
+              .toList();
+    }
+
+    if (freeList.isEmpty) {
+      final legacy1 = chatMap?['freeChatPartnerId']?.toString().trim();
+      if (legacy1 != null && legacy1.isNotEmpty) {
+        freeList = [legacy1];
+      } else {
+        final legacy2 = meData?['freeChatPartnerId']?.toString().trim();
+        if (legacy2 != null && legacy2.isNotEmpty) {
+          freeList = [legacy2];
+        }
+      }
+    }
+
+    freeList = freeList.toSet().toList()..removeWhere((e) => e.trim().isEmpty);
+
+    // Already-allowed partner — OK
+    if (freeList.contains(receiverId)) return;
+
+    // At limit — only allow if there's message history
+    if (freeList.length >= _kFreeChatPartnerLimit) {
+      final okBecauseHistory = await _hasPreviouslyMessagedPartner(
+        senderId: senderId,
+        receiverId: receiverId,
+      );
+      if (okBecauseHistory) return;
+
+      throw ChatException(
+        'You can only chat with $_kFreeChatPartnerLimit person for free. '
+        'Subscribe to chat with more people.',
+      );
+    }
+
+    // Under limit — user can still send (partner will be recorded on actual send)
+  }
+
   Future<void> _enforceFreeTierOnSend({
     required String senderId,
     required String receiverId,
   }) async {
     // Enforce free-tier chat partner limit ONLY when sending a message.
+    // ⚠️ OPTIMIZED: Single Firestore read (was 2 reads: isPremiumUser + meRef.get)
     // Storage:
     // - users/{uid}.chat.freeChatPartnerIds : List<String> (preferred)
     // - users/{uid}.chat.freeChatPartnerId  : String (legacy fallback)
@@ -357,9 +412,6 @@ class ChatService {
     // - Else => throw a friendly ChatException, *unless* sender has previously
     //   messaged this receiver (back-compat for older chats).
 
-    final isPremium = await _isPremiumUser(senderId);
-    if (isPremium) return;
-
     if (senderId.trim().isEmpty || receiverId.trim().isEmpty) {
       // Be safe: if ids are missing, don't enforce here; the send will fail elsewhere anyway.
       return;
@@ -367,10 +419,50 @@ class ChatService {
 
     final meRef = _fs.collection('users').doc(senderId);
 
-    // Read current state first (outside transaction) so we can do a back-compat check
-    // without doing cross-collection reads inside a transaction.
+    // ⚠️ SINGLE READ: Get user doc once (was doing this + isPremiumUser check separately)
     final snap = await meRef.get();
     final meData = snap.data();
+
+    // Check premium status inline (was calling _isPremiumUser which did another read)
+    // ⚠️ CRITICAL: If new subscription structure exists, use ONLY that, never check legacy
+    final subscriptionData = meData?['subscription'] as Map<String, dynamic>?;
+    if (subscriptionData != null) {
+      // New subscription structure exists - validate it (don't check legacy)
+      final isActive = subscriptionData['isActive'] as bool? ?? false;
+      if (isActive) {
+        // Subscription is active - check expiration date
+        final expiryDate = subscriptionData['expiryDate'];
+        if (expiryDate != null) {
+          if (expiryDate is Timestamp) {
+            if (expiryDate.toDate().isAfter(DateTime.now())) {
+              return; // Premium subscription valid
+            }
+            // Expired - treat as free tier (don't check legacy)
+          } else if (expiryDate is DateTime) {
+            if (expiryDate.isAfter(DateTime.now())) {
+              return; // Premium subscription valid
+            }
+            // Expired - treat as free tier (don't check legacy)
+          }
+        } else {
+          return; // No expiry - indefinite premium
+        }
+      }
+      // If we reach here, subscription exists but user is NOT premium
+      // (either isActive=false or subscription expired)
+      // Do NOT check legacy - user has opted into new subscription system
+    } else {
+      // No new subscription structure - check legacy premium logic only
+      final onPremium = meData?['onPremium'] as bool? ?? false;
+      if (onPremium) {
+        final expDate = meData?['subExpDate'] as Timestamp?;
+        if (expDate != null && expDate.toDate().isAfter(DateTime.now())) {
+          return; // Premium legacy
+        }
+      }
+    }
+
+    // User is free tier, continue with enforcement checks
 
     final chatMap = (meData?['chat'] is Map) ? (meData!['chat'] as Map) : null;
 
@@ -413,12 +505,13 @@ class ChatService {
       if (okBecauseHistory) return;
 
       throw ChatException(
-        'Premium required: you can only chat with $_kFreeChatPartnerLimit people for free. Subscribe to chat with more people.',
+        'You can only chat with $_kFreeChatPartnerLimit person for free. Subscribe to chat with more people.',
       );
     }
 
-    // Otherwise, add receiverId transactionally (still check-only; actual "consume" is
-    // finalized by _recordFreeTierPartnerIfNeeded after successful send).
+    // Otherwise, transactionally add receiverId to the free-tier partner list.
+    // Transaction re-checks the limit to catch any concurrent writes, then atomically
+    // adds receiverId to ensure consistency.
     await _fs.runTransaction((tx) async {
       final cur = await tx.get(meRef);
       final curData = cur.data();
@@ -453,11 +546,19 @@ class ChatService {
       if (curList.contains(receiverId)) return;
 
       if (curList.length >= _kFreeChatPartnerLimit) {
-        // Another concurrent write may have filled the list. Do the same back-compat check.
-        // (If this throws, UI should show premium modal.)
-        throw ChatException(
-          'Premium required: you can only chat with $_kFreeChatPartnerLimit people for free. Subscribe to chat with more people.',
+        // Another concurrent write may have filled the list.
+        // Same logic as pre-transaction: check history before denying.
+        final okBecauseHistory = await _hasPreviouslyMessagedPartner(
+          senderId: senderId,
+          receiverId: receiverId,
         );
+        if (!okBecauseHistory) {
+          throw ChatException(
+            'You can only chat with $_kFreeChatPartnerLimit person for free. Subscribe to chat with more people.',
+          );
+        }
+        // User has history, allow the message
+        return;
       }
 
       curList.add(receiverId);
@@ -539,11 +640,19 @@ class ChatService {
     final m1 = d1.data();
     final m2 = d2.data();
 
-    // Gender: check root, then dating.profile.gender, then dating.gender, then nexus2.gender
+    // Priority: nexus2.gender > dating.profile.gender > dating.gender > root gender.
+    // nexus2.gender is the canonical v2 source of truth; root/dating may be stale
+    // from v1 migrations.
     String? _extractGender(Map<String, dynamic>? m) {
       if (m == null) return null;
-      final root = _normalizeGender(m['gender']);
-      if (root != null) return root;
+
+      final nexus2 =
+          (m['nexus2'] is Map)
+              ? (m['nexus2'] as Map).cast<String, dynamic>()
+              : null;
+      final n2G = _normalizeGender(nexus2?['gender']);
+      if (n2G != null) return n2G;
+
       final dating =
           (m['dating'] is Map)
               ? (m['dating'] as Map).cast<String, dynamic>()
@@ -556,15 +665,35 @@ class ChatService {
         datingProfile?['gender'] ?? dating?['gender'],
       );
       if (dpG != null) return dpG;
-      final nexus2 =
-          (m['nexus2'] is Map)
-              ? (m['nexus2'] as Map).cast<String, dynamic>()
-              : null;
-      return _normalizeGender(nexus2?['gender']);
+
+      return _normalizeGender(m['gender']);
     }
 
     final g1 = _extractGender(m1);
     final g2 = _extractGender(m2);
+
+    // Auto-normalize: write the resolved gender back to all fields so
+    // stale v1 data doesn't cause future mismatches. Fire-and-forget.
+    Future<void> _normalizeUserGender(String uid, String resolvedGender) async {
+      try {
+        await _fs.collection('users').doc(uid).set(<String, dynamic>{
+          'gender': resolvedGender,
+          'nexus2': <String, dynamic>{'gender': resolvedGender},
+          'dating': <String, dynamic>{
+            'gender': resolvedGender,
+            'profile': <String, dynamic>{'gender': resolvedGender},
+          },
+        }, SetOptions(merge: true));
+      } catch (_) {
+        // Best-effort normalization; don't block the chat flow.
+      }
+    }
+
+    // Normalize both users in parallel (fire-and-forget, non-blocking for UX).
+    final futures = <Future<void>>[];
+    if (g1 != null) futures.add(_normalizeUserGender(userId1, g1));
+    if (g2 != null) futures.add(_normalizeUserGender(userId2, g2));
+    unawaited(Future.wait(futures));
 
     final isOpposite =
         (g1 == 'male' && g2 == 'female') || (g1 == 'female' && g2 == 'male');
@@ -715,6 +844,9 @@ class ChatService {
   /// Delete/deactivate a conversation
   Future<void> deleteConversation(String chatId) async {
     try {
+      // Clean up any pending media uploads for this chat
+      await ChatMediaUploadQueueDb.deleteByChat(chatId);
+
       await _chatsRef.doc(chatId).update({
         'isActive': false,
         'updatedAt': FieldValue.serverTimestamp(),
@@ -730,40 +862,6 @@ class ChatService {
 
   /// Record a free-tier chat partner ONLY after a message is successfully sent.
   /// This guarantees: opening chats / failed sends do not consume free slots.
-  Future<void> _recordFreeTierPartnerIfNeeded({
-    required String senderId,
-    required String receiverId,
-  }) async {
-    final meRef = _fs.collection('users').doc(senderId);
-    final snap = await meRef.get();
-    final data = snap.data();
-
-    final chatMap = (data?['chat'] as Map?)?.cast<String, dynamic>();
-    final rawList = chatMap?['freeChatPartnerIds'];
-    final legacySingle = chatMap?['freeChatPartnerId'];
-
-    final freeList = <String>[];
-    if (rawList is List) {
-      for (final v in rawList) {
-        if (v is String && v.trim().isNotEmpty) freeList.add(v.trim());
-      }
-    }
-    if (legacySingle is String && legacySingle.trim().isNotEmpty) {
-      final v = legacySingle.trim();
-      if (!freeList.contains(v)) freeList.add(v);
-    }
-
-    if (freeList.contains(receiverId)) return;
-
-    // If already at limit, don't throw here — send already succeeded.
-    if (freeList.length >= _kFreeChatPartnerLimit) return;
-
-    freeList.add(receiverId);
-    await meRef.set(<String, dynamic>{
-      'chat': <String, dynamic>{'freeChatPartnerIds': freeList},
-    }, SetOptions(merge: true));
-  }
-
   /// Send a text message
   Future<ChatMessage> sendMessage({
     required String chatId,
@@ -809,10 +907,9 @@ class ChatService {
       });
 
       await batch.commit();
-      await _recordFreeTierPartnerIfNeeded(
-        senderId: senderId,
-        receiverId: receiverId,
-      );
+      // Note: Free-tier partner was already recorded in _enforceFreeTierOnSend transaction,
+      // so no need for additional recording here. The transaction atomically reserves the slot
+      // before the message is written.
       return message;
     } catch (e) {
       // Preserve user-facing gating/errors.

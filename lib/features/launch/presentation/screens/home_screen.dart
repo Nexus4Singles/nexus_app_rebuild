@@ -213,7 +213,7 @@ class HomeScreen extends ConsumerWidget {
                           )
                         else
                           Text(
-                            'Explore different features below',
+                            'Explore different features we have designed for you below',
                             style: AppTextStyles.bodySmall.copyWith(
                               color: AppColors.getTextSecondary(context),
                               height: 1.3,
@@ -808,7 +808,7 @@ class _StoryOfWeekCard extends StatelessWidget {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'Story of the Week',
+                            'Stories',
                             style: AppTextStyles.titleSmall.copyWith(
                               fontWeight: FontWeight.w700,
                             ),
@@ -873,7 +873,7 @@ class _StoryOfWeekCard extends StatelessWidget {
                                     ),
                                     const SizedBox(width: 6),
                                     Text(
-                                      'Story of the Week',
+                                      'Stories',
                                       style: AppTextStyles.labelSmall.copyWith(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w700,

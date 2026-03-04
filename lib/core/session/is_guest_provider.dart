@@ -26,7 +26,6 @@ final isGuestProvider = StreamProvider<bool>((ref) async* {
 
   // Real authenticated user = not a guest
   if (user != null && !user.isAnonymous) {
-    print('[isGuestProvider] ✓ Authenticated user: NOT a guest');
     yield false;
     return;
   }
@@ -37,15 +36,11 @@ final isGuestProvider = StreamProvider<bool>((ref) async* {
     final forceGuest = prefs.getBool('force_guest') ?? false;
 
     if (user == null || user.isAnonymous || forceGuest) {
-      print(
-        '[isGuestProvider] ✓ IS a guest (user=$user, anon=${user?.isAnonymous}, forceGuest=$forceGuest)',
-      );
       yield true;
     } else {
       yield false;
     }
   } catch (e) {
-    print('[isGuestProvider] Error checking guest status: $e');
     // If error checking prefs, default to guest
     yield true;
   }

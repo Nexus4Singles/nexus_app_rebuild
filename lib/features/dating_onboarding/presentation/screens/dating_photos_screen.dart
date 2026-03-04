@@ -59,95 +59,125 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
     final canContinue = _photoPaths.length >= _minPhotos;
     final maxReached = _photoPaths.length >= _maxPhotos;
 
-    return Scaffold(
-      backgroundColor: AppColors.getBackground(context),
-      appBar: AppBar(
+    return PopScope(
+      canPop: !_busy,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        if (_busy) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Please wait for upload to complete'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      },
+      child: Scaffold(
         backgroundColor: AppColors.getBackground(context),
-        surfaceTintColor: AppColors.getBackground(context),
-        elevation: 0,
-        titleSpacing: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => navigateBackToHome(context),
+        appBar: AppBar(
+          backgroundColor: AppColors.getBackground(context),
+          surfaceTintColor: AppColors.getBackground(context),
+          elevation: 0,
+          titleSpacing: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            onPressed: _busy ? null : () => navigateBackToHome(context),
+          ),
+          title: Text(
+            'Photos',
+            style: AppTextStyles.titleLarge.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ),
-        title: Text(
-          'Photos',
-          style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700),
-        ),
-      ),
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const DatingProfileProgressBar(currentStep: 5, totalSteps: 9),
-                const SizedBox(height: 12),
-                Text(
-                  'Add at least 2 Photos of yourself. We highly recommend uploading your best pictures because first impressions really matter. Profiles with AI-generated or indecent pictures will not be approved.',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.getTextMuted(context),
-                    height: 1.3,
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const DatingProfileProgressBar(currentStep: 5, totalSteps: 9),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Add at least 2 Photos of yourself. We highly recommend uploading your best pictures because first impressions really matter. Profiles with AI-generated or indecent pictures will not be approved.',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.getTextMuted(context),
+                      height: 1.3,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
+                  const SizedBox(height: 12),
 
-                _PhotoGrid(
-                  photoPaths: _photoPaths,
-                  onAdd: (_busy || maxReached) ? null : _pickPhoto,
-                  onRemove: _removePhoto,
-                ),
+                  _PhotoGrid(
+                    photoPaths: _photoPaths,
+                    onAdd: (_busy || maxReached) ? null : _pickPhoto,
+                    onRemove: _removePhoto,
+                  ),
 
-                SafeArea(
-                  top: false,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 54,
-                        child: ElevatedButton(
-                          onPressed:
-                              (!canContinue || _busy)
-                                  ? null
-                                  : () => _onContinue(context),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: Colors.white,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18),
+                  SafeArea(
+                    top: false,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 12),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 54,
+                          child: ElevatedButton(
+                            onPressed:
+                                (!canContinue || _busy)
+                                    ? null
+                                    : () => _onContinue(context),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary,
+                              foregroundColor: Colors.white,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18),
+                              ),
                             ),
-                          ),
-                          child: Text(
-                            maxReached
-                                ? 'Maximum 5 Photos'
-                                : canContinue
-                                ? 'Continue'
-                                : 'Add at least 2 Photos',
-                            style: AppTextStyles.labelLarge.copyWith(
-                              color: Colors.white,
+                            child: Text(
+                              maxReached
+                                  ? 'Maximum 5 Photos'
+                                  : canContinue
+                                  ? 'Continue'
+                                  : 'Add at least 2 Photos',
+                              style: AppTextStyles.labelLarge.copyWith(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-
-          if (_busy)
-            Positioned.fill(
-              child: Container(
-                color: Colors.black.withOpacity(0.25),
-                child: const Center(child: CircularProgressIndicator()),
+                ],
               ),
             ),
-        ],
+
+            if (_busy)
+              Positioned.fill(
+                child: Container(
+                  color: Colors.black.withOpacity(0.25),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const CircularProgressIndicator(),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Uploading Photos...',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -208,6 +238,7 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
       if (draft.photoUrls.isNotEmpty &&
           draft.photoUrls.length == _photoPaths.length) {
         if (!context.mounted) return;
+        setState(() => _busy = false);
         Navigator.of(context).pushNamed('/dating/setup/audio');
         return;
       }
@@ -224,6 +255,7 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
           .read(datingOnboardingDraftProvider.notifier)
           .setPhotoUrls(uploadedUrls);
       if (!context.mounted) return;
+      setState(() => _busy = false);
       Navigator.of(context).pushNamed('/dating/setup/audio');
     } catch (e) {
       _toast('Upload error: $e');

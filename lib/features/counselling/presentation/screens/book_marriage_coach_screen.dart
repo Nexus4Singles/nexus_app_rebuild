@@ -330,7 +330,7 @@ class _BookMarriageCoachScreenState
                   children: [
                     Text(
                       'Call for Applications',
-                      style: AppTextStyles.titleMedium.copyWith(
+                      style: AppTextStyles.titleSmall.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -351,7 +351,7 @@ class _BookMarriageCoachScreenState
 
           // Description
           Text(
-            'Are you a licensed marriage counselor, family therapist or relationship coach? Enroll as one of our experienced professionals providing expert guidance to people who need help in navigating relationships and marriage.',
+            'Are you a licensed marriage counselor, relationship coach or family therapist? Enroll as one of our experienced professionals providing expert guidance to people who need help navigating life, relationships, marriage or even parenting.',
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.getTextSecondary(context),
               height: 1.5,

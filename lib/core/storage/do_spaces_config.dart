@@ -11,11 +11,17 @@ class DoSpacesConfig {
   static const String presignUrl =
       'https://us-central1-nexus-visibility-app.cloudfunctions.net/getPresignedUploadUrl';
 
+  /// Full HTTPS Function URL for setting object ACL to public-read.
+  /// Called after upload succeeds to ensure the file is publicly accessible.
+  static const String setAclUrl =
+      'https://us-central1-nexus-visibility-app.cloudfunctions.net/setObjectAcl';
+
   static void validate() {
     print('[DO_SPACES_CONFIG] endpoint: $endpoint');
     print('[DO_SPACES_CONFIG] region: $region');
     print('[DO_SPACES_CONFIG] bucket: $bucket');
     print('[DO_SPACES_CONFIG] presignUrl: $presignUrl');
+    print('[DO_SPACES_CONFIG] setAclUrl: $setAclUrl');
     print('[DO_SPACES_CONFIG] ✅ Configuration is valid!');
   }
 

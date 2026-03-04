@@ -31,9 +31,17 @@ final subscriptionStatusProvider = StreamProvider<SubscriptionStatus>((ref) {
           return SubscriptionStatus.fromFirestore(subscriptionData);
         }
 
-        // Legacy: check onPremium flag
+        // Legacy: check onPremium flag + expiry
+        // Must have a valid, non-expired subExpDate to be premium.
+        // This aligns with ChatService._isPremiumUser() and
+        // SubscriptionService.isPremium() which both require subExpDate.
         final onPremium = data['onPremium'] as bool? ?? false;
         if (onPremium) {
+          final subExpDate = data['subExpDate'] as Timestamp?;
+          if (subExpDate == null ||
+              subExpDate.toDate().isBefore(DateTime.now())) {
+            return SubscriptionStatus.free();
+          }
           return const SubscriptionStatus(
             isActive: true,
             tier: SubscriptionTier.monthly,
@@ -129,19 +137,10 @@ final purchasedJourneysProvider = StreamProvider<List<PurchasedJourney>>((ref) {
       });
 });
 
-/// Provider to check if a specific journey is purchased
-final isJourneyPurchasedProvider = Provider.family<bool, String>((
-  ref,
-  journeyId,
-) {
-  final purchased = ref.watch(purchasedJourneysProvider);
-  return purchased.maybeWhen(
-    data:
-        (journeys) =>
-            journeys.any((j) => j.journeyId == journeyId && j.isActive),
-    orElse: () => false,
-  );
-});
+// NOTE: isJourneyPurchasedProvider is defined in
+// lib/features/challenges/providers/journeys_providers.dart
+// (FutureProvider.family<bool, String>) as the single source of truth.
+// Do NOT re-define it here to avoid dual-provider ambiguity.
 
 // ============================================================================
 // SUBSCRIPTION NOTIFIER (for updates)
@@ -212,7 +211,16 @@ class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
     }
   }
 
-  /// Record journey purchase
+  /// ⚠️ DEPRECATED: Do not use! Purchases are now recorded optimistically in UI.
+  ///
+  /// This method is no longer used. Purchase recording has been moved to:
+  /// - [JourneyPurchaseScreen._recordPurchaseOptimistically] for journeys
+  /// - [SubscriptionScreen._recordSubscriptionOptimistically] for subscriptions
+  ///
+  /// These methods record purchases immediately to Firestore, then verify asynchronously
+  /// with the backend. This pattern is used by world-class apps (Spotify, Netflix, etc.)
+  /// to provide instant UX without blocking on server validation.
+  @deprecated
   Future<void> recordJourneyPurchase({
     required String journeyId,
     required String journeyTitle,
@@ -220,48 +228,10 @@ class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
     String currency = 'NGN',
     String? revenueCatTransactionId,
   }) async {
-    state = const AsyncValue.loading();
-
-    try {
-      final purchase = PurchasedJourney(
-        journeyId: journeyId,
-        journeyTitle: journeyTitle,
-        purchaseDate: DateTime.now(),
-        pricePaid: pricePaid,
-        currency: currency,
-        revenueCatTransactionId: revenueCatTransactionId,
-      );
-
-      print('🟡 [SubscriptionNotifier] recordJourneyPurchase called');
-      print('   - journeyId: $journeyId');
-      print('   - pricePaid: $pricePaid');
-      print('   - currency: $currency');
-      
-      final firestoreData = {...purchase.toFirestore(), 'type': 'journey'};
-      print('🟡 [SubscriptionNotifier] Firestore data being written:');
-      print('   - $firestoreData');
-
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .collection('purchases')
-          .doc(journeyId)
-          .set(firestoreData);
-
-      print('🟢 [SubscriptionNotifier] Successfully written to Firestore');
-
-      // Send journey purchased notification
-      await NotificationHelpers.sendJourneyPurchasedNotification(
-        userId: userId,
-        journeyTitle: journeyTitle,
-      );
-
-      state = const AsyncValue.data(null);
-    } catch (e, stack) {
-      print('🔴 [SubscriptionNotifier] Error: $e');
-      state = AsyncValue.error(e, stack);
-      rethrow;
-    }
+    throw UnsupportedError(
+      'recordJourneyPurchase is deprecated. '
+      'Purchase recording now happens in JourneyPurchaseScreen._recordPurchaseOptimistically.',
+    );
   }
 }
 

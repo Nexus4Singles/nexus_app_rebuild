@@ -17,7 +17,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         titleSpacing: 0,
         title: Text(
           'Privacy Policy',
-          style: AppTextStyles.headlineMedium.copyWith(
+          style: AppTextStyles.headlineSmall.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -147,7 +147,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
   static Widget _buildHeader(BuildContext context, String text) {
     return Text(
       text,
-      style: AppTextStyles.titleLarge.copyWith(
+      style: AppTextStyles.titleSmall.copyWith(
         fontWeight: FontWeight.w800,
         color: AppColors.getTextPrimary(context),
       ),
@@ -166,7 +166,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
   static Widget _buildBodyText(BuildContext context, String text) {
     return Text(
       text,
-      style: AppTextStyles.bodyMedium.copyWith(
+      style: AppTextStyles.bodySmall.copyWith(
         color: AppColors.getTextPrimary(context),
         height: 1.6,
       ),
@@ -186,7 +186,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
       children: [
         Text(
           title,
-          style: AppTextStyles.titleMedium.copyWith(
+          style: AppTextStyles.titleSmall.copyWith(
             fontWeight: FontWeight.w700,
             color: AppColors.getTextPrimary(context),
           ),
@@ -224,7 +224,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               padding: const EdgeInsets.only(right: 12, top: 4),
               child: Text(
                 '•',
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.bodySmall.copyWith(
                   color: AppColors.primary,
                   fontWeight: FontWeight.bold,
                 ),
@@ -245,7 +245,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
       return [
         Text(
           subsection.title,
-          style: AppTextStyles.bodyMedium.copyWith(
+          style: AppTextStyles.bodySmall.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.getTextPrimary(context),
           ),

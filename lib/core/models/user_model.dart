@@ -671,6 +671,11 @@ class UserModel extends Equatable {
     return {
       'name': name,
       'username': username,
+      if (username != null)
+        'username_lower': username!.toLowerCase().replaceAll(
+          RegExp(r'\s+'),
+          ' ',
+        ),
       'email': email,
       'profileUrl': profileUrl,
       'age': age,

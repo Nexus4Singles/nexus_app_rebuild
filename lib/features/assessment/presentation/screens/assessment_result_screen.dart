@@ -32,7 +32,19 @@ class AssessmentResultScreen extends ConsumerWidget {
             () => Scaffold(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               body: Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(color: AppColors.primary),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Loading Assessment Results',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.getTextSecondary(context),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
         error: (_, __) => _buildNoResultScreen(context),
@@ -95,7 +107,19 @@ class AssessmentResultScreen extends ConsumerWidget {
               () => Scaffold(
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 body: Center(
-                  child: CircularProgressIndicator(color: AppColors.primary),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(color: AppColors.primary),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Loading Assessment Results',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.getTextSecondary(context),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
           error: (_, __) {
@@ -136,7 +160,19 @@ class AssessmentResultScreen extends ConsumerWidget {
                 () => Scaffold(
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   body: Center(
-                    child: CircularProgressIndicator(color: AppColors.primary),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(color: AppColors.primary),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Loading Assessment Results',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.getTextSecondary(context),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
             error: (_, __) => _buildNoResultScreen(context),
@@ -185,7 +221,19 @@ class AssessmentResultScreen extends ConsumerWidget {
           () => Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: Center(
-              child: CircularProgressIndicator(color: AppColors.primary),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(color: AppColors.primary),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Loading Assessment Results',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.getTextSecondary(context),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
       error: (error, stack) {
@@ -232,6 +280,16 @@ class AssessmentResultScreen extends ConsumerWidget {
     RecommendationBundle bundle,
   ) {
     final readinessPct = (result.overallPercentage * 100).round();
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmallScreen = screenWidth < 360;
+    final isCompactScreen = screenWidth < 400;
+
+    // Responsive sizing
+    final ringSize = _getResponsiveRingSize(screenWidth);
+    final headerHPadding = _getResponsiveHPadding(screenWidth);
+    final headerVPadding = isSmallScreen ? 40.0 : 60.0;
+    final titleFontSize = _getResponsiveTitleFontSize(screenWidth);
+    final ringRightSpacing = isCompactScreen ? 8.0 : 12.0;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -240,16 +298,21 @@ class AssessmentResultScreen extends ConsumerWidget {
           // ── Fixed hero header ──
           Stack(
             children: [
-              // Hero header content with much more top padding
+              // Hero header content with responsive padding
               Container(
                 width: double.infinity,
                 color: _tierColor(result.overallTier).withOpacity(0.08),
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 60, 24, 18),
+                  padding: EdgeInsets.fromLTRB(
+                    headerHPadding,
+                    headerVPadding,
+                    headerHPadding,
+                    12,
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const SizedBox(width: 40), // space for back button
+                      const SizedBox(width: 36), // space for back button
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,19 +322,21 @@ class AssessmentResultScreen extends ConsumerWidget {
                               bundle.profileTitle,
                               style: AppTextStyles.titleLarge.copyWith(
                                 fontWeight: FontWeight.w900,
-                                fontSize: 20,
+                                fontSize: titleFontSize,
                               ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: 8),
                             _TierChip(tier: result.overallTier),
                           ],
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: ringRightSpacing),
                       _ReadinessRing(
                         percentage: readinessPct,
                         tier: result.overallTier,
-                        size: 115,
+                        size: ringSize,
                         label: _ringLabel(result.assessmentId),
                       ),
                     ],
@@ -307,7 +372,12 @@ class AssessmentResultScreen extends ConsumerWidget {
           // ── Scrollable body ──
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
+              padding: EdgeInsets.fromLTRB(
+                _getResponsiveHPadding(MediaQuery.of(context).size.width),
+                8,
+                _getResponsiveHPadding(MediaQuery.of(context).size.width),
+                40,
+              ),
               children: [
                 if (bundle.isSafetyAlert) ...[
                   const SizedBox(height: 12),
@@ -470,6 +540,38 @@ class AssessmentResultScreen extends ConsumerWidget {
         return AppColors.primary;
     }
   }
+
+  /// Get responsive ring size based on screen width
+  static double _getResponsiveRingSize(double screenWidth) {
+    if (screenWidth < 320) return 85;
+    if (screenWidth < 360) return 95;
+    if (screenWidth < 400) return 105;
+    return 115;
+  }
+
+  /// Get responsive horizontal padding based on screen width
+  static double _getResponsiveHPadding(double screenWidth) {
+    if (screenWidth < 320) return 12;
+    if (screenWidth < 360) return 14;
+    if (screenWidth < 400) return 16;
+    return 20;
+  }
+
+  /// Get responsive title font size based on screen width (optimized for wrapping)
+  static double _getResponsiveTitleFontSize(double screenWidth) {
+    if (screenWidth < 320) return 14;
+    if (screenWidth < 360) return 15;
+    if (screenWidth < 400) return 16;
+    return 17;
+  }
+
+  /// Get responsive dimension card title font size
+  static double _getResponsiveDimensionTitleSize(double screenWidth) {
+    if (screenWidth < 320) return 14;
+    if (screenWidth < 360) return 14;
+    if (screenWidth < 400) return 15;
+    return 16;
+  }
 }
 
 class _PrimaryButton extends StatelessWidget {
@@ -479,6 +581,9 @@ class _PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final fontSize = screenWidth < 360 ? 14.0 : 16.0;
+
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
@@ -489,7 +594,7 @@ class _PrimaryButton extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+        style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w700),
       ),
     );
   }
@@ -501,9 +606,17 @@ class _TierChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     final color = AssessmentResultScreen._tierColor(tier);
+
+    // Responsive sizing
+    final hPadding = screenWidth < 360 ? 10.0 : 12.0;
+    final vPadding = screenWidth < 360 ? 5.0 : 7.0;
+    final iconSize = screenWidth < 360 ? 12.0 : 14.0;
+    final fontSize = screenWidth < 360 ? 10.0 : 11.0;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+      padding: EdgeInsets.symmetric(horizontal: hPadding, vertical: vPadding),
       decoration: BoxDecoration(
         color: color.withOpacity(0.12),
         borderRadius: BorderRadius.circular(999),
@@ -511,13 +624,14 @@ class _TierChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.auto_awesome_outlined, size: 14, color: color),
+          Icon(Icons.auto_awesome_outlined, size: iconSize, color: color),
           const SizedBox(width: 6),
           Text(
             tier.displayName,
             style: AppTextStyles.labelSmall.copyWith(
               color: color,
               fontWeight: FontWeight.w800,
+              fontSize: fontSize,
             ),
           ),
         ],
@@ -533,8 +647,21 @@ class _NarrativeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Responsive card padding
+    final cardPadding = screenWidth < 360 ? 14.0 : 20.0;
+    final iconSize = screenWidth < 360 ? 16.0 : 18.0;
+    final titleSize = screenWidth < 360 ? 14.0 : 16.0;
+    final bodySize =
+        screenWidth < 360
+            ? 11.0
+            : screenWidth < 400
+            ? 12.0
+            : 13.0;
+
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(cardPadding),
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(20),
@@ -547,7 +674,7 @@ class _NarrativeCard extends StatelessWidget {
             children: [
               Icon(
                 Icons.auto_stories_outlined,
-                size: 18,
+                size: iconSize,
                 color: AppColors.primary,
               ),
               const SizedBox(width: 8),
@@ -555,6 +682,7 @@ class _NarrativeCard extends StatelessWidget {
                 'Assessment Summary',
                 style: AppTextStyles.titleMedium.copyWith(
                   fontWeight: FontWeight.w900,
+                  fontSize: titleSize,
                 ),
               ),
             ],
@@ -562,9 +690,10 @@ class _NarrativeCard extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             summary,
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: AppTextStyles.bodySmall.copyWith(
               color: AppColors.getTextSecondary(context),
               height: 1.55,
+              fontSize: bodySize,
             ),
           ),
         ],
@@ -588,9 +717,25 @@ class _ReadinessRing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = AssessmentResultScreen._tierColor(tier);
-    final strokeW = size >= 120 ? 10.0 : 7.0;
-    final pctFont = size >= 120 ? 32.0 : 22.0;
-    final labelFont = size >= 120 ? 11.0 : 9.5;
+    final strokeW =
+        size >= 120
+            ? 10.0
+            : size >= 100
+            ? 8.5
+            : 7.0;
+    final pctFont =
+        size >= 120
+            ? 32.0
+            : size >= 100
+            ? 26.0
+            : 22.0;
+    final labelFont =
+        size >= 120
+            ? 11.0
+            : size >= 100
+            ? 9.5
+            : 8.5;
+
     return SizedBox(
       width: size,
       height: size,
@@ -642,7 +787,7 @@ class _ReadinessRing extends StatelessWidget {
                     color: AppColors.getTextSecondary(context),
                     fontWeight: FontWeight.w700,
                     fontSize: labelFont,
-                    height: 1.2,
+                    height: 1.15,
                   ),
                 ),
               ],
@@ -660,13 +805,28 @@ class _WhatWeNoticedSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     // Convert outcome labels to full sentences and sort by length (shortest first)
     final sentences = labels.map(_convertToSentence).toList();
     final sortedLabels = [...sentences]
       ..sort((a, b) => a.length.compareTo(b.length));
-    final cardHPadding = 8.0;
+
+    // Responsive card padding
+    final cardHPadding = screenWidth < 360 ? 12.0 : 8.0;
+    final cardVPadding = screenWidth < 360 ? 14.0 : 18.0;
+    final iconSize = screenWidth < 360 ? 16.0 : 18.0;
+    final titleSize = screenWidth < 360 ? 14.0 : 16.0;
+    final subtitleSize = screenWidth < 360 ? 10.0 : 12.0;
+    final tagSpacing = screenWidth < 360 ? 6.0 : 8.0;
+
     return Container(
-      padding: EdgeInsets.fromLTRB(cardHPadding, 18, cardHPadding, 18),
+      padding: EdgeInsets.fromLTRB(
+        cardHPadding,
+        cardVPadding,
+        cardHPadding,
+        cardVPadding,
+      ),
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(20),
@@ -679,7 +839,7 @@ class _WhatWeNoticedSection extends StatelessWidget {
             children: [
               Icon(
                 Icons.psychology_outlined,
-                size: 18,
+                size: iconSize,
                 color: AppColors.primary,
               ),
               const SizedBox(width: 8),
@@ -687,6 +847,7 @@ class _WhatWeNoticedSection extends StatelessWidget {
                 'What We Noticed',
                 style: AppTextStyles.titleMedium.copyWith(
                   fontWeight: FontWeight.w900,
+                  fontSize: titleSize,
                 ),
               ),
             ],
@@ -696,12 +857,13 @@ class _WhatWeNoticedSection extends StatelessWidget {
             'Patterns we identified across multiple areas',
             style: AppTextStyles.bodySmall.copyWith(
               color: AppColors.getTextSecondary(context),
+              fontSize: subtitleSize,
             ),
           ),
           const SizedBox(height: 12),
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: tagSpacing,
+            runSpacing: tagSpacing,
             children:
                 sortedLabels
                     .map((label) => _TagPill(label: label, isError: true))
@@ -1234,6 +1396,7 @@ class _TagPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     final bgColor =
         isError ? AppColors.primary : AppColors.primary.withOpacity(0.10);
     final borderColor =
@@ -1242,8 +1405,19 @@ class _TagPill extends StatelessWidget {
             : AppColors.primary.withOpacity(0.18);
     final textColor =
         isError ? AppColors.getTextOnPrimary(context) : AppColors.primary;
+
+    // Responsive font sizing and padding
+    final fontSize =
+        screenWidth < 360
+            ? 11.0
+            : screenWidth < 400
+            ? 11.5
+            : 12.0;
+    final hPadding = screenWidth < 360 ? 8.0 : 10.0;
+    final vPadding = screenWidth < 360 ? 6.0 : 8.0;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: hPadding, vertical: vPadding),
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(16),
@@ -1255,8 +1429,8 @@ class _TagPill extends StatelessWidget {
         style: AppTextStyles.labelSmall.copyWith(
           fontWeight: FontWeight.w600,
           color: textColor,
-          fontSize: 12.0,
-          height: 1.3,
+          fontSize: fontSize,
+          height: 1.25,
         ),
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
@@ -1286,8 +1460,16 @@ class _DimensionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Responsive card padding
+    final cardPadding = screenWidth < 360 ? 14.0 : 18.0;
+    final iconSize = screenWidth < 360 ? 16.0 : 18.0;
+    final titleSize = screenWidth < 360 ? 14.0 : 16.0;
+    final subtitleSize = screenWidth < 360 ? 11.0 : 12.0;
+
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: EdgeInsets.all(cardPadding),
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(20),
@@ -1298,12 +1480,13 @@ class _DimensionSection extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, size: 18, color: iconColor),
+              Icon(icon, size: iconSize, color: iconColor),
               const SizedBox(width: 8),
               Text(
                 title,
                 style: AppTextStyles.titleMedium.copyWith(
                   fontWeight: FontWeight.w900,
+                  fontSize: titleSize,
                 ),
               ),
             ],
@@ -1313,6 +1496,7 @@ class _DimensionSection extends StatelessWidget {
             subtitle,
             style: AppTextStyles.bodySmall.copyWith(
               color: AppColors.getTextSecondary(context),
+              fontSize: subtitleSize,
             ),
           ),
           const SizedBox(height: 16),
@@ -1357,8 +1541,17 @@ class _DimensionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     final insightText = (genderInsight ?? insight ?? '').trim();
     final microStepText = (genderMicroStep ?? microStep ?? '').trim();
+
+    // Responsive font sizing
+    final titleSize = AssessmentResultScreen._getResponsiveDimensionTitleSize(
+      screenWidth,
+    );
+    final percentSize = screenWidth < 360 ? 12.0 : 13.0;
+    final insightSize = screenWidth < 360 ? 11.0 : 12.0;
+    final microStepSize = screenWidth < 360 ? 10.0 : 11.0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1370,6 +1563,7 @@ class _DimensionCard extends StatelessWidget {
                 name,
                 style: AppTextStyles.bodyLarge.copyWith(
                   fontWeight: FontWeight.w800,
+                  fontSize: titleSize,
                 ),
               ),
             ),
@@ -1381,6 +1575,7 @@ class _DimensionCard extends StatelessWidget {
                     style: AppTextStyles.bodyMedium.copyWith(
                       fontWeight: FontWeight.w800,
                       color: barColor,
+                      fontSize: percentSize,
                     ),
                   ),
                   TextSpan(
@@ -1388,6 +1583,7 @@ class _DimensionCard extends StatelessWidget {
                     style: AppTextStyles.bodyMedium.copyWith(
                       fontWeight: FontWeight.w900,
                       color: barColor,
+                      fontSize: percentSize,
                     ),
                   ),
                 ],
@@ -1419,6 +1615,7 @@ class _DimensionCard extends StatelessWidget {
             style: AppTextStyles.bodySmall.copyWith(
               color: AppColors.getTextSecondary(context),
               height: 1.45,
+              fontSize: insightSize,
             ),
           ),
         ],
@@ -1445,6 +1642,7 @@ class _DimensionCard extends StatelessWidget {
                     style: AppTextStyles.labelSmall.copyWith(
                       color: barColor,
                       height: 1.3,
+                      fontSize: microStepSize,
                     ),
                   ),
                 ),
@@ -1466,8 +1664,16 @@ class _Banner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Responsive sizing
+    final hPadding = screenWidth < 360 ? 12.0 : 14.0;
+    final vPadding = screenWidth < 360 ? 10.0 : 12.0;
+    final iconSize = screenWidth < 360 ? 18.0 : 20.0;
+    final fontSize = screenWidth < 360 ? 11.0 : 12.0;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: hPadding, vertical: vPadding),
       decoration: BoxDecoration(
         color: color.withOpacity(0.08),
         borderRadius: BorderRadius.circular(14),
@@ -1475,8 +1681,8 @@ class _Banner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: color),
-          const SizedBox(width: 10),
+          Icon(icon, size: iconSize, color: color),
+          SizedBox(width: hPadding),
           Expanded(
             child: Text(
               text,
@@ -1484,6 +1690,7 @@ class _Banner extends StatelessWidget {
                 height: 1.4,
                 color: color,
                 fontWeight: FontWeight.w600,
+                fontSize: fontSize,
               ),
             ),
           ),

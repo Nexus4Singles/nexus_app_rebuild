@@ -4,9 +4,12 @@ import 'package:nexus_app_v2/core/bootstrap/firebase_ready_provider.dart';
 import 'package:nexus_app_v2/core/bootstrap/firestore_instance_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:nexus_app_v2/core/services/chat_service.dart';
 import 'package:nexus_app_v2/core/services/duplicate_detection_service.dart';
 import 'package:nexus_app_v2/core/services/media_cache_service.dart';
+import 'package:nexus_app_v2/core/storage/chat_media_upload_service.dart';
+import 'package:nexus_app_v2/core/providers/chat_media_upload_provider.dart';
 
 import '../services/media_service.dart';
 import '../services/dating_profile_service.dart';
@@ -219,15 +222,15 @@ final getOrCreateChatProvider = FutureProvider.family<String, String>((
 /// State notifier for chat operations
 class ChatNotifier extends StateNotifier<AsyncValue<void>> {
   final ChatService _chatService;
-  final MediaService _mediaService;
   final String _currentUserId;
   final Future<bool> Function() _isDisabled;
+  final ChatMediaUploadService _uploadService;
 
   ChatNotifier(
     this._chatService,
-    this._mediaService,
     this._currentUserId,
     this._isDisabled,
+    this._uploadService,
   ) : super(const AsyncValue.data(null));
 
   /// Send a text message (optionally includes metadata e.g. reply info)
@@ -260,6 +263,45 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
     }
   }
 
+  /// Convert HEIC image to JPEG for Android compatibility
+  /// Returns the path to the converted image (or original if not HEIC)
+  Future<String> _convertHeicToJpegIfNeeded(String imagePath) async {
+    try {
+      // Check if the file is HEIC format
+      if (!imagePath.toLowerCase().endsWith('.heic')) {
+        return imagePath; // Not HEIC, return as-is
+      }
+
+      debugPrint('[Chat] 🔄 Converting HEIC to JPEG: $imagePath');
+
+      final jpegPath = imagePath.replaceAll(
+        RegExp(r'\.heic$', caseSensitive: false),
+        '.jpg',
+      );
+
+      // Compress and convert HEIC to JPEG
+      final result = await FlutterImageCompress.compressAndGetFile(
+        imagePath,
+        jpegPath,
+        quality: 85, // Good quality/size tradeoff
+        format: CompressFormat.jpeg,
+      );
+
+      if (result != null) {
+        debugPrint('[Chat] ✅ HEIC converted to JPEG: $jpegPath');
+        return result.path;
+      } else {
+        debugPrint(
+          '[Chat] ⚠️ HEIC conversion failed, using original: $imagePath',
+        );
+        return imagePath;
+      }
+    } catch (e) {
+      debugPrint('[Chat] ❌ Error converting HEIC: $e, using original');
+      return imagePath;
+    }
+  }
+
   /// Send an image message (sends immediately, uploads in background)
   Future<ChatMessage?> sendImage({
     required String chatId,
@@ -274,28 +316,52 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
         throw StateError('Your account has been disabled by Admin.');
       }
 
+      // Convert HEIC to JPEG if needed (for Android compatibility)
+      String processedImagePath = imageUrl;
+      if (!imageUrl.startsWith('http')) {
+        processedImagePath = await _convertHeicToJpegIfNeeded(imageUrl);
+
+        final imageFile = File(processedImagePath);
+        if (!await imageFile.exists()) {
+          throw StateError('Image file not found: $processedImagePath');
+        }
+      }
+
       final merged = <String, dynamic>{
         if (metadata != null) ...metadata,
         if (caption != null) 'caption': caption,
       };
 
-      // OPTIMIZED: Send message immediately with local path or URL
+      // Add upload status to metadata
+      merged['uploadStatus'] = 'pending';
+
+      // Send message immediately with local path or URL
       // Upload happens in background for better UX (instant message delivery)
       final message = await _chatService.sendMessage(
         chatId: chatId,
         senderId: _currentUserId,
         receiverId: receiverId,
-        content: imageUrl, // Send immediately with original content
+        content: processedImagePath, // Send with processed path
         type: MessageType.image,
         metadata: merged.isEmpty ? null : merged,
       );
-      debugPrint('[Chat] ✅ Image message sent immediately: $imageUrl');
+      debugPrint(
+        '[Chat] ✅ Image message sent immediately: $processedImagePath',
+      );
 
       state = const AsyncValue.data(null);
 
-      // Upload to cloud storage in background (non-blocking)
-      if (!imageUrl.startsWith('http')) {
-        _uploadImageInBackground(chatId, message.id, imageUrl);
+      // Queue for upload in background (with crash recovery)
+      if (!processedImagePath.startsWith('http')) {
+        unawaited(
+          _uploadService.uploadMedia(
+            chatId: chatId,
+            messageId: message.id,
+            localFilePath: processedImagePath,
+            userId: _currentUserId,
+            mediaType: 'image',
+          ),
+        );
       }
 
       return message;
@@ -303,42 +369,6 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
       state = AsyncValue.error(e, st);
       rethrow;
     }
-  }
-
-  /// Background task: upload image and update message with cloud URL
-  void _uploadImageInBackground(
-    String chatId,
-    String messageId,
-    String localPath,
-  ) {
-    // Fire-and-forget: upload doesn't block message send
-    Future(() async {
-      try {
-        final imageFile = File(localPath);
-        if (!await imageFile.exists()) {
-          debugPrint('[Chat] ⚠️ Local image file no longer exists: $localPath');
-          return;
-        }
-
-        final cloudUrl = await _mediaService.uploadChatImage(
-          userId: _currentUserId,
-          chatId: chatId,
-          imageFile: imageFile,
-        );
-
-        if (cloudUrl.isEmpty) {
-          debugPrint('[Chat] ⚠️ Image upload returned empty URL');
-          return;
-        }
-
-        // Update message with cloud URL
-        await _chatService.updateMessageContent(chatId, messageId, cloudUrl);
-        debugPrint('[Chat] ✅ Image uploaded and message updated: $cloudUrl');
-      } catch (e) {
-        debugPrint('[Chat] ⚠️ Background image upload failed: $e');
-        // User's message already sent, upload failure is non-critical
-      }
-    });
   }
 
   /// Send an audio message (sends immediately with local path, uploads in background)
@@ -370,6 +400,9 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
         await Future.delayed(const Duration(milliseconds: 100));
       }
 
+      // Add upload status to metadata
+      merged['uploadStatus'] = 'pending';
+
       // Send message immediately with current URL (local path or cloud URL)
       final message = await _chatService.sendMessage(
         chatId: chatId,
@@ -385,9 +418,17 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
 
       state = const AsyncValue.data(null);
 
-      // Upload to cloud storage in background (non-blocking)
+      // Queue for upload in background (with crash recovery)
       if (!audioUrl.startsWith('http')) {
-        _uploadAudioInBackground(chatId, message.id, audioUrl, durationSeconds);
+        unawaited(
+          _uploadService.uploadMedia(
+            chatId: chatId,
+            messageId: message.id,
+            localFilePath: audioUrl,
+            userId: _currentUserId,
+            mediaType: 'audio',
+          ),
+        );
       }
 
       return message;
@@ -397,46 +438,14 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
     }
   }
 
-  /// Background task: upload audio and update message with cloud URL
-  void _uploadAudioInBackground(
-    String chatId,
-    String messageId,
-    String localPath,
-    int durationSeconds,
-  ) {
-    // Fire-and-forget: upload doesn't block message send
-    Future(() async {
-      try {
-        final audioFile = File(localPath);
-        if (!await audioFile.exists()) {
-          debugPrint('[Chat] ⚠️ Local audio file no longer exists: $localPath');
-          return;
-        }
-
-        final fileSize = await audioFile.length();
-        debugPrint(
-          '[Chat] 🎵 Uploading audio: ${durationSeconds}s, ${fileSize}B',
-        );
-
-        final cloudUrl = await _mediaService.uploadChatAudio(
-          userId: _currentUserId,
-          chatId: chatId,
-          filePath: localPath,
-        );
-
-        if (cloudUrl.isEmpty) {
-          debugPrint('[Chat] ⚠️ Audio upload returned empty URL');
-          return;
-        }
-
-        // Update message with cloud URL
-        await _chatService.updateMessageContent(chatId, messageId, cloudUrl);
-        debugPrint('[Chat] ✅ Audio uploaded and message updated: $cloudUrl');
-      } catch (e) {
-        debugPrint('[Chat] ⚠️ Background audio upload failed: $e');
-        // User's message already sent, upload failure is non-critical
-      }
-    });
+  /// Read-only pre-check: can the current user send to [receiverId]?
+  /// Returns normally if allowed, throws [ChatException] if blocked.
+  /// Safe to call before image picker / audio recording for early gating.
+  Future<void> checkCanSendToReceiver(String receiverId) async {
+    await _chatService.checkCanSendToReceiver(
+      senderId: _currentUserId,
+      receiverId: receiverId,
+    );
   }
 
   /// Mark messages as read in this chat
@@ -462,7 +471,6 @@ class ChatNotifier extends StateNotifier<AsyncValue<void>> {
 final chatNotifierProvider =
     StateNotifierProvider<ChatNotifier, AsyncValue<void>>((ref) {
       final chatService = ref.watch(chatServiceProvider);
-      final mediaService = ref.watch(mediaServiceProvider);
       final userId = ref.watch(currentUserIdProvider);
 
       if (userId == null) {
@@ -470,7 +478,8 @@ final chatNotifierProvider =
       }
 
       Future<bool> isDisabled() => ref.read(currentUserDisabledProvider.future);
-      return ChatNotifier(chatService, mediaService, userId, isDisabled);
+      final uploadService = ref.watch(chatMediaUploadServiceProvider);
+      return ChatNotifier(chatService, userId, isDisabled, uploadService);
     });
 
 // ============================================================================

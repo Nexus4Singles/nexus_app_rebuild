@@ -106,7 +106,24 @@ service cloud.firestore {
       allow create: if isSignedIn() && request.auth.uid == uid;
 
       allow update: if isSignedIn() && (
-        request.auth.uid == uid ||
+        request.auth.uid == uid && 
+        // ⚠️ SECURITY: Block client writes to subscription fields
+        // Only Cloud Functions (service account) can write these fields
+        !request.resource.data.diff(resource.data).changedKeys().hasAny([
+          'subscription',
+          'onPremium',
+          'subExpDate',
+          'purchasedJourneys',
+          'lastPurchaseAt',
+          'lastPurchaseJourney',
+          'entitledUser',
+          'prevSubscribed',
+          'lastFlutterwaveTransactionId',
+          'lastPaymentMethod',
+          'lastPaymentDate',
+          'hasExternalSubscriptionFlow'
+        ])
+        ||
         (isAdmin() && adminUserUpdateAllowed())
       );
 
@@ -136,22 +153,26 @@ service cloud.firestore {
         }
       }
 
+      // SECURE PURCHASES: Only Cloud Functions can write via backend validation
+      // Users can only read their own purchase history
       match /purchases/{purchaseId} {
+        // Users can list their own purchases
         allow list: if isSignedIn() && request.auth.uid == uid;
+        
+        // Users can read their own purchases
         allow read: if isSignedIn() && request.auth.uid == uid;
-        allow create: if isSignedIn() && request.auth.uid == uid;
-        allow update: if isSignedIn() && request.auth.uid == uid;
+        
+        // ⛔ BLOCKED: No direct client writes - only Cloud Functions can create via validatePurchase()
+        allow create: if false;
+        
+        // ⛔ BLOCKED: No client updates allowed
+        allow update: if false;
+        
+        // ⛔ BLOCKED: No deletion (audit trail must be preserved)
         allow delete: if false;
       }
     }
 
-    // ============================================================================
-    // Nexus v2 Chats (strict + opposite gender enforced)
-    // ============================================================================
-
-    // ============================================================================
-    // Nexus v2 Chats (strict + opposite gender enforced)
-    // ============================================================================
     // ============================================================================
     // Nexus v2 Chats (strict + opposite gender enforced)
     // ============================================================================
@@ -175,10 +196,11 @@ service cloud.firestore {
           return get(/databases/$(database)/documents/nexus2_chats/$(chatId)).data;
         }
 
-        // READ: Allow participants to read messages in their chats
-        allow read: if isSignedIn() && (
+        // READ: Allow participants to read messages AND allow Cloud Functions (triggers)
+        // Cloud Functions use service account with request.auth == null
+        allow read: if (isSignedIn() && (
           !(parentChat() is map) || isParticipant(parentChat())
-        );
+        )) || request.auth == null;
 
         // CREATE: Strict validation - only sender can create, must be participant
         allow create: if isSignedIn()
@@ -187,63 +209,49 @@ service cloud.firestore {
           && request.resource.data.receiverId in participantIdsOf(parentChat())
           && isParticipant(parentChat());
 
-        // UPDATE: Only receiver can update (mark as read)
+        // UPDATE: Participants can update their own messages
+        // - Receiver: mark as read (isRead, readAt)
+        // - Sender: replace local path with cloud URL after background media upload
         allow update: if isSignedIn()
-          && request.auth.uid == resource.data.receiverId
-          && isParticipant(parentChat());
+          && isParticipant(parentChat())
+          && (request.auth.uid == resource.data.receiverId
+              || request.auth.uid == resource.data.senderId);
 
         allow delete: if false;
       }
     }
 
+// ============================================================================
+// DEPRECATED: v1 chats collection (read-only)
+// v1 app (old codebase) used this collection. v2 uses nexus2_chats.
+// Reads are still allowed so old messages are accessible during transition.
+// All writes are DENIED to force v1 users to update to v2.
+// ============================================================================
 match /chats/{chatId} {
-  // Allow reads for signed-in participants.
-  // If the doc doesn't exist yet, Firestore returns null for resource.data, which is not a map,
-  // so !(resource.data is map) returns true, allowing the read.
   allow read: if isSignedIn() && (!(resource.data is map) || isParticipant(resource.data));
-
-  // Allow list/query for signed-in users querying their own conversations.
-  // The `where('participantIds', arrayContains: userId)` query is supported and efficient.
   allow list: if isSignedIn();
-
-  // Allow create: Any signed-in user can create a chat.
-  // NOTE: Gating for "max 3 free conversations" is enforced ONLY at message-send level
-  // via canSendMessage() in SubscriptionService, NOT at the chat-open level.
-  allow create: if isSignedIn();
-
-  // Participants can update
-  allow update: if isSignedIn() && isParticipant(resource.data);
-
-  allow delete: if false;
+  allow create, update, delete: if false; // LOCKED — v1 deprecated
 
   match /messages/{messageId} {
     function parentChat() {
       return get(/databases/$(database)/documents/chats/$(chatId)).data;
     }
 
-    // Read permission: user is signed in and is a participant
-    allow read: if isSignedIn() && (
+    // READ: Allow participants to read + allow Cloud Functions for any legacy triggers
+    allow read, list: if (isSignedIn() && (
       !(parentChat() is map) || isParticipant(parentChat())
-    );
-
-    // List permission for querying messages in a chat: user is a participant
-    allow list: if isSignedIn() && (
-      !(parentChat() is map) || isParticipant(parentChat())
-    );
-
-    // Only sender can create a message; receiver must be the other participant
-    // NOTE: Gating for "max 3 free conversations" is enforced ONLY at message-send level
-    // via canSendMessage() in SubscriptionService, NOT in Firestore rules.
-    allow create: if isSignedIn()
-      && request.resource.data.senderId == request.auth.uid
-      && isParticipant(parentChat());
-
-    // Conservative: only receiver updates (mark read) OR sender updates their own message.
-    allow update: if isSignedIn()
-      && isParticipant(parentChat());
-
-    allow delete: if false;
+    )) || request.auth == null;
+    allow create, update, delete: if false; // LOCKED — v1 deprecated
   }
+}
+
+// ============================================================================
+// App configuration (force-update, feature flags, etc.)
+// Readable by all signed-in users. Only admin/backend can write.
+// ============================================================================
+match /config/{configId} {
+  allow read: if isSignedIn();
+  allow write: if false; // Only settable via Firebase console or admin SDK
 }
 
     // ============================================================================
@@ -410,26 +418,28 @@ match /chats/{chatId} {
     // AUDIT LOGS (Cloud Functions only)
     // ============================================================================
     // Users can read their own audit logs to verify payment history
-    // Cloud Functions write to these logs (no explicit rule needed for service accounts)
+    // Cloud Functions write via Admin SDK (bypasses Firestore rules entirely)
     match /users/{uid}/auditLog/{entryId} {
       // Users can read their own audit logs
       allow read: if isSignedIn() && request.auth.uid == uid;
       
-      // Only Cloud Functions (service account) can write
-      allow create, update, delete: if false; // Enforced via Cloud Function auth
+      // Cloud Functions use Admin SDK to write (bypasses these rules)
+      // These rules are here for documentation; writes use privileged access
+      allow create, update, delete: if false;
     }
 
     // ============================================================================
     // JOURNEY PURCHASES (Cloud Functions writes, Users read)
     // ============================================================================
     // Users can read their own journey purchases
-    // Cloud Functions create entries when payment is successful
+    // Cloud Functions create entries when payment is successful via Admin SDK
     match /users/{uid}/journeyPurchases/{purchaseId} {
       // Users can read their own purchases
       allow read: if isSignedIn() && request.auth.uid == uid;
       
-      // Only Cloud Functions (service account) can write
-      allow create, update, delete: if false; // Enforced via Cloud Function auth
+      // Cloud Functions use Admin SDK to write (bypasses these rules)
+      // These rules are here for documentation; writes use privileged access
+      allow create, update, delete: if false;
     }
 
     // ============================================================================

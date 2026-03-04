@@ -20,7 +20,7 @@ class HelpCenterScreen extends StatelessWidget {
         ),
         title: Text(
           'Help Center',
-          style: AppTextStyles.headlineMedium.copyWith(
+          style: AppTextStyles.headlineSmall.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -31,18 +31,43 @@ class HelpCenterScreen extends StatelessWidget {
           const _SectionTitle('Quick Actions'),
           ListTile(
             contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.info_outline),
-            title: const Text('About Nexus'),
-            subtitle: const Text('What Nexus is and how it helps'),
-            trailing: const Icon(Icons.chevron_right),
+            leading: Icon(
+              Icons.info_outline,
+              color: AppColors.getTextSecondary(context),
+            ),
+            title: Text('About Nexus', style: AppTextStyles.titleSmall),
+            subtitle: Text(
+              'What Nexus is and how it helps',
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.getTextSecondary(context),
+              ),
+            ),
+            trailing: Icon(
+              Icons.chevron_right,
+              color: AppColors.getTextSecondary(context),
+            ),
             onTap: () => _showAbout(context),
           ),
           ListTile(
             contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.shield_outlined),
-            title: const Text('Safety & community guidelines'),
-            subtitle: const Text('How to stay safe and report issues'),
-            trailing: const Icon(Icons.chevron_right),
+            leading: Icon(
+              Icons.shield_outlined,
+              color: AppColors.getTextSecondary(context),
+            ),
+            title: Text(
+              'Safety & community guidelines',
+              style: AppTextStyles.titleSmall,
+            ),
+            subtitle: Text(
+              'How to stay safe and report issues',
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.getTextSecondary(context),
+              ),
+            ),
+            trailing: Icon(
+              Icons.chevron_right,
+              color: AppColors.getTextSecondary(context),
+            ),
             onTap: () => _showSafetySheet(context),
           ),
 
@@ -72,20 +97,31 @@ class HelpCenterScreen extends StatelessWidget {
             q: 'How do I report bad behavior or safety concerns?',
             a: 'Use Contact Support and select “Safety Concern.” Include screenshots, usernames, and what happened. We take safety seriously and may restrict accounts that violate our standards.',
           ),
-          const _FaqItem(
-            q: 'I found a bug—what should I include in a report?',
-            a: 'Describe what you expected vs what happened, your device model, OS version, and the steps to reproduce. If possible, attach a screenshot.',
-          ),
 
           const SizedBox(height: 16),
-          const Text(
+          Text(
             'Still need help?',
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+            style: AppTextStyles.titleSmall.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 8),
-          FilledButton(
-            onPressed: () => Navigator.of(context).pushNamed('/contact'),
-            child: const Text('Contact Support'),
+          SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: FilledButton(
+              onPressed: () => Navigator.of(context).pushNamed('/contact'),
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+              child: Text(
+                'Contact Support',
+                style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
+              ),
+            ),
           ),
         ],
       ),
@@ -110,42 +146,34 @@ class HelpCenterScreen extends StatelessWidget {
                     width: 44,
                     height: 5,
                     decoration: BoxDecoration(
-                      color: Theme.of(ctx).colorScheme.outlineVariant,
+                      color: AppColors.getBorder(ctx),
                       borderRadius: BorderRadius.circular(999),
                     ),
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text(
+                Text(
                   'About Nexus',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Family is the smallest unit that shapes society and we are on a mission to raise Godly families through kingdom relationships and marriages. We have created Nexus as a personal and marital growth ecosystem that seeks to help single, married, divorced, or widowed individuals build kingdom marriages and families, the way God intended.\n\n'
-                  'Inside Nexus you’ll find:\n'
-                  '• A Purposeful Dating section for singles, divorced or widowed individuals seeking relationships leading to marriage.\n'
-                  '• Practical Assessments to reflect on patterns\n'
-                  '• Guided Journeys made up of small activities to enhance your knowledge and provide you with clarity on how to strengthen your relationships or marriage, using biblical principles.\n'
-                  '• Beautiful weekly stories that uncover powerful lessons for navigating relationships and marriage.\n'
-                  '• Expert guidance from professional Marriage Counsellors and Family Therapists (Coming Soon).\n\n'
-                  'Nexus is designed to be supportive and respectful across different life seasons—',
-                ),
-                RichText(
-                  text: const TextSpan(
-                    children: [
-                      TextSpan(text: 'single, married, divorced, or widowed'),
-                      TextSpan(text: '.\n\n'),
-                    ],
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      color: Colors.black87,
-                    ),
+                  style: AppTextStyles.titleSmall.copyWith(
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-                const Text(
-                  ''
+                const SizedBox(height: 8),
+                Text(
+                  'Family is the smallest unit that shapes society and we are on a mission to raise Godly families through kingdom relationships and marriages. We have created Nexus as a personal and marital growth ecosystem that seeks to help single, married, divorced, or widowed individuals build kingdom marriages and families, the way God intended.\n\n'
+                  'Inside Nexus you\u2019ll find:\n'
+                  '\u2022 A Purposeful Dating section for singles, divorced or widowed individuals seeking relationships leading to marriage.\n'
+                  '\u2022 Practical Assessments to reflect on patterns\n'
+                  '\u2022 Guided Journeys made up of small activities to enhance your knowledge and provide you with clarity on how to strengthen your relationships or marriage, using biblical principles.\n'
+                  '\u2022 Beautiful weekly stories that uncover powerful lessons for navigating relationships and marriage.\n'
+                  '\u2022 Expert guidance from professional Marriage Counsellors and Family Therapists (Coming Soon).\n\n'
+                  'Nexus is designed to be supportive and respectful across different life seasons\u2014'
+                  'single, married, divorced, or widowed.\n\n'
                   'Important: Nexus is educational and is not medical, mental health, or legal advice. If you need professional or emergency support, please contact a qualified provider or local emergency services.',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.getTextPrimary(ctx),
+                    height: 1.5,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Align(
@@ -178,24 +206,30 @@ class HelpCenterScreen extends StatelessWidget {
                   width: 44,
                   height: 5,
                   decoration: BoxDecoration(
-                    color: Theme.of(ctx).colorScheme.outlineVariant,
+                    color: AppColors.getBorder(ctx),
                     borderRadius: BorderRadius.circular(999),
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Align(
+                Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Safety tips',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900),
+                    style: AppTextStyles.titleSmall.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   '• Don’t share sensitive personal info (address, passwords, financial details).\n'
                   '• If someone pressures you, asks for money, or threatens you—stop engaging and report.\n'
                   '• Meet in public places if meeting anyone offline.\n'
-                  '• Use Contact Support → “Safety Concern” to report issues.',
+                  '• Use Contact Support → "Safety Concern" to report issues.',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.getTextPrimary(ctx),
+                    height: 1.5,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Align(
@@ -224,9 +258,7 @@ class _SectionTitle extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8),
       child: Text(
         text,
-        style: Theme.of(
-          context,
-        ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w900),
+        style: AppTextStyles.titleSmall.copyWith(fontWeight: FontWeight.w700),
       ),
     );
   }
@@ -248,6 +280,12 @@ class _FaqItemState extends State<_FaqItem> {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
+      color: AppColors.getSurface(context),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: AppColors.getBorder(context)),
+      ),
+      elevation: 0,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () => setState(() => _open = !_open),
@@ -261,13 +299,29 @@ class _FaqItemState extends State<_FaqItem> {
                   Expanded(
                     child: Text(
                       widget.q,
-                      style: const TextStyle(fontWeight: FontWeight.w800),
+                      style: AppTextStyles.bodySmall.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.getTextPrimary(context),
+                      ),
                     ),
                   ),
-                  Icon(_open ? Icons.expand_less : Icons.expand_more),
+                  Icon(
+                    _open ? Icons.expand_less : Icons.expand_more,
+                    color: AppColors.getTextSecondary(context),
+                    size: 20,
+                  ),
                 ],
               ),
-              if (_open) ...[const SizedBox(height: 8), Text(widget.a)],
+              if (_open) ...[
+                const SizedBox(height: 8),
+                Text(
+                  widget.a,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.getTextSecondary(context),
+                    height: 1.5,
+                  ),
+                ),
+              ],
             ],
           ),
         ),

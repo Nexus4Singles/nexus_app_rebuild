@@ -30,8 +30,12 @@ Future<void> main() async {
   // Initialize App Check safely for production
   try {
     await FirebaseAppCheck.instance.activate(
-      androidProvider: kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
-      appleProvider: kReleaseMode ? AppleProvider.deviceCheck : AppleProvider.debug,
+      androidProvider:
+          kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
+      // App Attest is registered in Firebase Console; DeviceCheck auth key is NOT uploaded.
+      // Use App Attest for production (iOS 14+, real devices) and debug for development.
+      appleProvider:
+          kReleaseMode ? AppleProvider.appAttest : AppleProvider.debug,
     );
   } catch (e) {
     debugPrint('App Check initialization failed: $e');
@@ -39,7 +43,7 @@ Future<void> main() async {
 
   await ContentCacheService().init();
   await RevenueCatService.init();
-  
+
   // Note: appEntry() likely calls runApp(), so we handle global scaling inside the app root
   await appEntry();
 }
@@ -65,12 +69,12 @@ class ResponsiveTextWrapper extends StatelessWidget {
   double _calculateTextScale(double width) {
     // Base width for scaling calculations (standard modern smartphone width)
     const double baseWidth = 390.0;
-    
+
     // We use a milder scaling factor to prevent extreme changes
     double scaleFactor = 1 + (width / baseWidth - 1) * 0.5;
-    
+
     // Clamp the scale factor between 0.88 and 1.10
-    // This prevents text from becoming too tiny on small phones 
+    // This prevents text from becoming too tiny on small phones
     // or too massive on large ones.
     return math.max(0.88, math.min(1.10, scaleFactor));
   }
