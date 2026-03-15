@@ -130,7 +130,8 @@ service cloud.firestore {
       allow delete: if false;
 
       match /notifications/{notificationId} {
-        allow read, create, update, delete: if isSignedIn() && request.auth.uid == uid;
+        // Allow user to manage their own notifications, or admin to create notifications for users
+        allow read, create, update, delete: if isSignedIn() && (request.auth.uid == uid || isAdmin());
       }
 
       match /assessments/{assessmentId} {

@@ -12,6 +12,7 @@ import 'package:nexus_app_v2/core/services/media_service.dart';
 import 'package:nexus_app_v2/core/providers/service_providers.dart';
 import 'package:nexus_app_v2/core/services/duplicate_detection_service.dart';
 import 'package:nexus_app_v2/core/theme/app_colors.dart';
+import 'package:nexus_app_v2/core/notifications/notification_service.dart';
 
 class AdminReviewDetailScreen extends ConsumerStatefulWidget {
   final String userId;
@@ -170,14 +171,24 @@ class _AdminReviewDetailScreenState
                 : <String>[];
 
         // Debug logging for admin troubleshooting
+        print('[ADMIN_REVIEW] ====== AdminReviewDetailScreen LOADED ======');
         print('[ADMIN_REVIEW] reviewPack present: ${rp != null}');
         print('[ADMIN_REVIEW] photoUrls (${photos.length}): $photos');
         print('[ADMIN_REVIEW] audioUrls (${audios.length}): $audios');
 
         final name = (data['name'] ?? data['username'] ?? 'User').toString();
+        // Age: try root-level first (safest), then nested dating.profile.age
+        final profile =
+            (dating?['profile'] is Map) ? dating!['profile'] as Map : null;
+        final age = (data['age'] ?? profile?['age'])?.toString() ?? '?';
+        final email = (data['email'] ?? '').toString();
         final status = dating?['verificationStatus']?.toString();
 
         Future<void> setStatus(String newStatus, {String? reason}) async {
+          print(
+            '[DEBUG] setStatus called: newStatus=$newStatus, userId=${widget.userId}, reason=$reason',
+          );
+
           final adminId = FirebaseAuth.instance.currentUser?.uid ?? 'admin';
           final payload = <String, dynamic>{
             'dating.verificationStatus': newStatus,
@@ -191,12 +202,42 @@ class _AdminReviewDetailScreenState
           };
 
           if (newStatus == 'verified') {
+            print(
+              '[DEBUG] Approval flow triggered: newStatus==verified is TRUE, attempting to send notification',
+            );
             payload['dating.verifiedAt'] = FieldValue.serverTimestamp();
             // After approval: delete review pack (no longer needed)
             payload['dating.reviewPack'] = FieldValue.delete();
+            // Send notification to user
+            try {
+              print(
+                '[DEBUG] About to call NotificationHelpers.sendProfileVerifiedNotification for userId=${widget.userId}',
+              );
+              await NotificationHelpers.sendProfileVerifiedNotification(
+                userId: widget.userId,
+              );
+              print(
+                '[DEBUG] NotificationHelpers.sendProfileVerifiedNotification completed successfully',
+              );
+            } catch (e, st) {
+              print(
+                '[DEBUG] CAUGHT EXCEPTION in sendProfileVerifiedNotification: $e',
+              );
+              print('[DEBUG] Stack trace: $st');
+              print(
+                '[ADMIN_REVIEW] Failed to send verification notification: $e',
+              );
+            }
+          } else {
+            print(
+              '[DEBUG] Approval flow NOT triggered: newStatus=$newStatus (expected: verified)',
+            );
           }
 
           if (newStatus == 'rejected') {
+            print(
+              '[DEBUG] Rejection flow triggered: newStatus==rejected is TRUE, attempting to send notification',
+            );
             payload['dating.rejectedAt'] = FieldValue.serverTimestamp();
             if (reason != null && reason.trim().isNotEmpty) {
               payload['dating.rejectionReason'] = reason.trim();
@@ -208,9 +249,32 @@ class _AdminReviewDetailScreenState
             payload['account.disabledAt'] = FieldValue.serverTimestamp();
             payload['account.disabledReason'] =
                 'Profile rejected: ${reason?.trim() ?? 'Failed verification'}';
+            // Send notification to user
+            try {
+              print(
+                '[DEBUG] About to call NotificationHelpers.sendProfileRejectedNotification for userId=${widget.userId}',
+              );
+              await NotificationHelpers.sendProfileRejectedNotification(
+                userId: widget.userId,
+                rejectionReason: reason,
+              );
+              print(
+                '[DEBUG] NotificationHelpers.sendProfileRejectedNotification completed successfully',
+              );
+            } catch (e, st) {
+              print(
+                '[DEBUG] CAUGHT EXCEPTION in sendProfileRejectedNotification: $e',
+              );
+              print('[DEBUG] Stack trace: $st');
+              print('[ADMIN_REVIEW] Failed to send rejection notification: $e');
+            }
           }
 
+          print('[DEBUG] About to update Firestore user document with payload');
           await fs.collection('users').doc(widget.userId).update(payload);
+          print(
+            '[DEBUG] Firestore update completed, setStatus execution finished',
+          );
         }
 
         Future<String?> askRejectionReason() async {
@@ -302,7 +366,7 @@ class _AdminReviewDetailScreenState
         }
 
         return Scaffold(
-          appBar: AppBar(title: Text('Review: $name')),
+          appBar: AppBar(title: Text('Review: $name, $age')),
           body: Padding(
             padding: const EdgeInsets.all(16),
             child: ListView(
@@ -310,6 +374,30 @@ class _AdminReviewDetailScreenState
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Email display
+                    if (email.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Row(
+                          children: [
+                            const Text(
+                              'Email: ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                email,
+                                style: const TextStyle(fontSize: 14),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    const SizedBox(height: 12),
                     // Status badge
                     Builder(
                       builder: (_) {
@@ -602,7 +690,10 @@ class _AdminReviewDetailScreenState
                     Expanded(
                       child: ElevatedButton.icon(
                         onPressed: () async {
+                          print('[ROOT] Approve button onPressed triggered');
+                          print('[ROOT] About to call setStatus(verified)');
                           await setStatus('verified');
+                          print('[ROOT] setStatus completed, about to pop');
                           if (context.mounted) Navigator.of(context).pop();
                         },
                         icon: const Icon(Icons.verified_rounded),

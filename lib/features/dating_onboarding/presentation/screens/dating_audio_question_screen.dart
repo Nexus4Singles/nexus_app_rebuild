@@ -180,146 +180,143 @@ class _DatingAudioQuestionScreenState
       ),
       body: Stack(
         children: [
-          SingleChildScrollView(
+          Padding(
             padding: EdgeInsets.fromLTRB(20, topPadding, 20, 0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                DatingProfileProgressBar(
-                  currentStep: 5 + widget.questionNumber,
-                  totalSteps: 9,
-                ),
-                SizedBox(height: progressSpacing),
-                _StepIndicator(step: widget.questionNumber),
-                SizedBox(height: progressSpacing),
-                Text(
-                  _questionText,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.titleMedium.copyWith(
-                    height: 1.35,
-                    fontSize: questionFontSize,
-                  ),
-                ),
-                if (_helperText != null) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    _helperText!,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.caption.copyWith(
-                      color: AppColors.getTextMuted(context),
-                      fontSize: isSmallScreen ? 11.0 : 12.0,
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        DatingProfileProgressBar(
+                          currentStep: 5 + widget.questionNumber,
+                          totalSteps: 9,
+                        ),
+                        SizedBox(height: progressSpacing),
+                        _StepIndicator(step: widget.questionNumber),
+                        SizedBox(height: progressSpacing),
+                        Text(
+                          _questionText,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.titleMedium.copyWith(
+                            height: 1.35,
+                            fontSize: questionFontSize,
+                          ),
+                        ),
+                        if (_helperText != null) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            _helperText!,
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.caption.copyWith(
+                              color: AppColors.getTextMuted(context),
+                              fontSize: isSmallScreen ? 11.0 : 12.0,
+                            ),
+                          ),
+                        ],
+                        SizedBox(height: questionSpacing),
+                        Text(
+                          // Show playback position when playing, otherwise show recording elapsed time
+                          _isPlaying
+                              ? _formatTime(_playbackPosition ~/ 1000)
+                              : _formatTime(_elapsed),
+                          style: AppTextStyles.headlineLarge.copyWith(
+                            letterSpacing: 0.5,
+                            fontSize: timerFontSize,
+                          ),
+                        ),
+                        // Debug info: show actual recorded duration vs timer duration
+                        if (_hasRecording &&
+                            !_isRecording &&
+                            _recordedDuration != _elapsed)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Text(
+                              'Recorded duration: ${_formatTime(_recordedDuration)}',
+                              style: AppTextStyles.labelSmall.copyWith(
+                                color: AppColors.getTextMuted(context),
+                                fontSize: isSmallScreen ? 9.0 : 10.0,
+                              ),
+                            ),
+                          ),
+                        SizedBox(height: timerSpacing),
+                        _Waveform(
+                          active: _isRecording && !_isPaused,
+                          hasRecording: _hasRecording,
+                          isPlaying: _isPlaying,
+                        ),
+                        SizedBox(height: buttonsSpacing),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Left control (Restart)
+                            _CircleIconButton(
+                              icon: Icons.restart_alt_rounded,
+                              label: 'Restart',
+                              onTap: _busy ? null : _restart,
+                            ),
+
+                            // Even spacing so the central record button sits exactly
+                            // in the horizontal center of the screen.
+                            const SizedBox(width: 36),
+
+                            // Central record control
+                            _RecordButton(
+                              isRecording: _isRecording,
+                              isPaused: _isPaused,
+                              canStop: _isRecording && _elapsed >= _minSeconds,
+                              onTap: _busy || _hasRecording ? null : _toggleRecord,
+                            ),
+
+                            const SizedBox(width: 36),
+
+                            // Right control (Play)
+                            _PlayButton(
+                              isPlaying: _isPlaying,
+                              hasRecording: _hasRecording,
+                              canPlayDuringRecording: false,
+                              onTap: _hasRecording && !_busy ? _playRecording : null,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                ],
-                SizedBox(height: questionSpacing),
-                Text(
-                  // Show playback position when playing, otherwise show recording elapsed time
-                  _isPlaying
-                      ? _formatTime(_playbackPosition ~/ 1000)
-                      : _formatTime(_elapsed),
-                  style: AppTextStyles.headlineLarge.copyWith(
-                    letterSpacing: 0.5,
-                    fontSize: timerFontSize,
-                  ),
                 ),
-                // Debug info: show actual recorded duration vs timer duration
-                if (_hasRecording &&
-                    !_isRecording &&
-                    _recordedDuration != _elapsed)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      'Recorded duration: ${_formatTime(_recordedDuration)}',
-                      style: AppTextStyles.labelSmall.copyWith(
-                        color: AppColors.getTextMuted(context),
-                        fontSize: isSmallScreen ? 9.0 : 10.0,
+                // Continue button anchored to the bottom
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 54,
+                      child: ElevatedButton(
+                        onPressed:
+                            canNext
+                                ? () =>
+                                    (widget.questionNumber == 3
+                                        ? _goSummary(context)
+                                        : _goNext(context))
+                                : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                        ),
+                        child: Text(
+                          'Continue',
+                          style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
+                        ),
                       ),
                     ),
                   ),
-                SizedBox(height: timerSpacing),
-                _Waveform(
-                  active: _isRecording && !_isPaused,
-                  hasRecording: _hasRecording,
-                  isPlaying: _isPlaying,
-                ),
-                SizedBox(height: buttonsSpacing),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Left control (Restart)
-                    _CircleIconButton(
-                      icon: Icons.restart_alt_rounded,
-                      label: 'Restart',
-                      onTap: _busy ? null : _restart,
-                    ),
-
-                    // Even spacing so the central record button sits exactly
-                    // in the horizontal center of the screen.
-                    const SizedBox(width: 36),
-
-                    // Central record control
-                    _RecordButton(
-                      isRecording: _isRecording,
-                      isPaused: _isPaused,
-                      canStop: _isRecording && _elapsed >= _minSeconds,
-                      onTap: _busy || _hasRecording ? null : _toggleRecord,
-                    ),
-
-                    const SizedBox(width: 36),
-
-                    // Right control (Play)
-                    _PlayButton(
-                      isPlaying: _isPlaying,
-                      hasRecording: _hasRecording,
-                      canPlayDuringRecording: false,
-                      onTap: _hasRecording && !_busy ? _playRecording : null,
-                    ),
-                  ],
-                ),
-
-                // Extra bottom padding so content doesn't hide behind
-                // the pinned Continue button.
-                SizedBox(
-                  height:
-                      buttonsSpacing +
-                      54 +
-                      MediaQuery.of(context).padding.bottom +
-                      (isSmallScreen ? 20 : 40),
                 ),
               ],
-            ),
-          ),
-
-          // Continue button pinned to the bottom edge (matching other onboarding screens)
-          Positioned(
-            left: 20,
-            right: 20,
-            bottom: MediaQuery.of(context).padding.bottom + 20,
-            child: SizedBox(
-              width: double.infinity,
-              height: 54,
-              child: ElevatedButton(
-                onPressed:
-                    canNext
-                        ? () =>
-                            (widget.questionNumber == 3
-                                ? _goSummary(context)
-                                : _goNext(context))
-                        : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                ),
-                child: Text(
-                  'Continue',
-                  style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
-                ),
-              ),
             ),
           ),
           if (_busy)

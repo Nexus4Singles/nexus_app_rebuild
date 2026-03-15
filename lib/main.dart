@@ -10,7 +10,8 @@ import 'dart:math' as math;
 import 'firebase_options.dart';
 import 'app_entry.dart';
 import 'core/services/content_cache_service.dart';
-import 'core/services/push_notification_service.dart';
+import 'core/notifications/notification_service.dart'
+    show firebaseMessagingBackgroundHandler;
 import 'core/services/revenuecat_service.dart';
 import 'core/theme/app_theme.dart';
 
@@ -42,7 +43,16 @@ Future<void> main() async {
   }
 
   await ContentCacheService().init();
-  await RevenueCatService.init();
+
+  // Initialize RevenueCat for purchase/subscription management
+  try {
+    debugPrint('🔵 [main] Initializing RevenueCat...');
+    await RevenueCatService.init();
+    debugPrint('🟢 [main] RevenueCat initialized successfully');
+  } catch (e) {
+    debugPrint('🔴 [main] RevenueCat initialization failed: $e');
+    debugPrint('   This may cause subscription issues later');
+  }
 
   // Note: appEntry() likely calls runApp(), so we handle global scaling inside the app root
   await appEntry();

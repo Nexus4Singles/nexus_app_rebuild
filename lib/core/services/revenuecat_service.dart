@@ -152,21 +152,53 @@ class RevenueCatService {
       );
       final offerings = await Purchases.getOfferings();
 
-      debugPrint('🟢 [RevenueCatService] Offerings received:');
-      debugPrint('  Current offering: ${offerings.current?.identifier}');
+      debugPrint('🟢 [RevenueCatService] Offerings received successfully');
+      debugPrint(
+        '  Current offering: ${offerings.current?.identifier ?? "NONE"}',
+      );
       debugPrint('  Total offerings: ${offerings.all.length}');
+
+      if (offerings.all.isEmpty) {
+        debugPrint('⚠️ [RevenueCatService] WARNING: No offerings configured!');
+        debugPrint(
+          '   This means NO products/packages are available for purchase',
+        );
+        debugPrint(
+          '   Check RevenueCat dashboard to ensure offerings are created',
+        );
+      }
+
       offerings.all.forEach((key, offering) {
         debugPrint(
           '  - Offering "$key": ${offering.availablePackages.length} packages',
         );
         offering.availablePackages.forEach((package) {
-          debugPrint('    - ${package.storeProduct.identifier}');
+          debugPrint(
+            '    - Package: ${package.identifier} → Product: ${package.storeProduct.identifier}',
+          );
         });
       });
 
       return offerings;
-    } catch (e) {
-      debugPrint('🔴 [RevenueCatService] Error fetching offerings: $e');
+    } catch (e, st) {
+      debugPrint('🔴 [RevenueCatService] Error fetching offerings');
+      debugPrint('   Exception: ${e.runtimeType}');
+      debugPrint('   Message: $e');
+      debugPrint('   StackTrace: $st');
+
+      // Provide specific diagnostic hints
+      if (e.toString().contains('No such file or directory')) {
+        debugPrint(
+          '   💡 Hint: This may indicate the SDK is not initialized properly',
+        );
+      } else if (e.toString().toLowerCase().contains('network') ||
+          e.toString().toLowerCase().contains('connection')) {
+        debugPrint('   💡 Hint: Network error - check internet connection');
+      } else if (e.toString().toLowerCase().contains('unauthorized') ||
+          e.toString().toLowerCase().contains('forbidden')) {
+        debugPrint('   💡 Hint: API key may be wrong or invalid');
+      }
+
       return null;
     }
   }

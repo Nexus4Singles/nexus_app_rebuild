@@ -43,7 +43,7 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
   Future<void> _loadActualPrice() async {
     try {
       final offerings = await RevenueCatService.getOfferings();
-      if (offerings == null || offerings.current == null) return;
+      if (offerings == null) return;
 
       final journeyWithCategory = ref.read(
         journeyWithCategoryProvider(widget.journey.id),
@@ -52,14 +52,21 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
       final productId = _getProductIdForCategory(category);
 
       Package? journeyPackage;
-      for (final p in offerings.current!.availablePackages) {
-        if (p.storeProduct.identifier.toLowerCase() ==
-            productId.toLowerCase()) {
-          journeyPackage = p;
-          break;
+
+      // First: search in the dedicated per-category offering (e.g. "singles_journey")
+      final categoryOfferingId = '${category.toLowerCase()}_journey';
+      final categoryOffering = offerings.getOffering(categoryOfferingId);
+      if (categoryOffering != null) {
+        for (final p in categoryOffering.availablePackages) {
+          if (p.storeProduct.identifier.toLowerCase() ==
+              productId.toLowerCase()) {
+            journeyPackage = p;
+            break;
+          }
         }
       }
 
+      // Second: search all offerings (covers any offering layout)
       if (journeyPackage == null) {
         for (final offering in offerings.all.values) {
           for (final p in offering.availablePackages) {
@@ -390,10 +397,8 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
       debugPrint('🔵 [JourneyPurchase] Purchase flow started');
 
       final offerings = await RevenueCatService.getOfferings();
-      if (offerings == null || offerings.current == null) {
-        debugPrint(
-          '🔴 [JourneyPurchase] CRITICAL: Offerings are null or current offering is null!',
-        );
+      if (offerings == null) {
+        debugPrint('🔴 [JourneyPurchase] CRITICAL: Offerings are null!');
         _showError(
           'Purchase service unavailable. Please check your connection and try again.',
         );
@@ -402,10 +407,9 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
       }
 
       // Safety check: ensure offerings have packages
-      if (offerings.current!.availablePackages.isEmpty &&
-          offerings.all.isEmpty) {
+      if (offerings.all.isEmpty) {
         debugPrint(
-          '🔴 [JourneyPurchase] ERROR: Offerings loaded but NO packages available in any offering!',
+          '🔴 [JourneyPurchase] ERROR: No offerings available at all!',
         );
         _showError(
           'No products available for purchase. Please try again later.',
@@ -415,7 +419,7 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
       }
 
       debugPrint(
-        '🔵 [JourneyPurchase] Offerings loaded: ${offerings.current?.identifier}',
+        '🔵 [JourneyPurchase] Offerings loaded: ${offerings.all.length} total, current: ${offerings.current?.identifier ?? "none"}',
       );
 
       final journeyWithCategory = ref.read(
@@ -429,7 +433,29 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
       );
 
       Package? journeyPackage;
-      if (offerings.current != null) {
+
+      // First: check the dedicated per-category offering (e.g. "singles_journey", "married_journey")
+      final categoryOfferingId = '${category.toLowerCase()}_journey';
+      final categoryOffering = offerings.getOffering(categoryOfferingId);
+      if (categoryOffering != null) {
+        debugPrint(
+          '🔵 [JourneyPurchase] Searching in dedicated offering: $categoryOfferingId (${categoryOffering.availablePackages.length} packages)',
+        );
+        for (final p in categoryOffering.availablePackages) {
+          debugPrint('  - Found package: ${p.storeProduct.identifier}');
+          if (p.storeProduct.identifier.toLowerCase() ==
+              productId.toLowerCase()) {
+            journeyPackage = p;
+            debugPrint(
+              '🟢 [JourneyPurchase] Matched package in dedicated offering!',
+            );
+            break;
+          }
+        }
+      }
+
+      // Second: search in offerings.current if not yet found
+      if (journeyPackage == null && offerings.current != null) {
         debugPrint(
           '🔵 [JourneyPurchase] Searching in current offering (${offerings.current!.availablePackages.length} packages)',
         );

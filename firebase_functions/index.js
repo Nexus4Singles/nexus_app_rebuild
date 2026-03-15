@@ -15,6 +15,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
 const { Parser } = require('json2csv');
+const crypto = require('crypto');
 
 // Import purchase validation functions
 const { validateAndRecordPurchase, revenueCatWebhook } = require('./validate_purchase');
@@ -39,6 +40,553 @@ const transporter = nodemailer.createTransport({
     pass: functions.config().gmail?.password || process.env.GMAIL_APP_PASSWORD,
   },
 });
+
+// ============================================================================
+// FLUTTERWAVE WEBHOOK HANDLER - SUBSCRIPTION ACTIVATION (EXTERNAL PAYMENT)
+// ============================================================================
+
+/**
+ * Webhook handler for Flutterwave payment completions
+ * Activated when user completes bank transfer via external Flutterwave link
+ * (https://flutterwave.com/pay/mmtqwah5duoo)
+ * 
+ * SECURITY: Verifies webhook signature with FLUTTERWAVE_WEBHOOK_SECRET
+ * SETUP: 
+ * 1. Set secret: firebase functions:secrets:set FLUTTERWAVE_WEBHOOK_SECRET
+ * 2. Configure webhook in Flutterwave dashboard pointing to this function
+ * 3. Use tx_ref in Flutterwave form to link to Nexus user
+ */
+exports.handleUpdateUserSubscriptionStatus = functions
+  .runWith({ 
+    secrets: ['FLUTTERWAVE_WEBHOOK_SECRET'],
+    memory: '256MB',
+    timeoutSeconds: 60,
+  })
+  .https.onRequest(async (req, res) => {
+    const WEBHOOK_SECRET = process.env.FLUTTERWAVE_WEBHOOK_SECRET;
+    
+    try {
+      // Only accept POST requests
+      if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+      }
+
+      // Validate request body exists
+      if (!req.body) {
+        console.error('[Flutterwave] Missing request body');
+        return res.status(400).json({ error: 'Missing request body' });
+      }
+
+      console.log('[Flutterwave] Webhook received:', req.body?.data?.id);
+
+      // ====================================================================
+      // SECURITY: Verify webhook signature
+      // ====================================================================
+      const signature = req.headers['verificationhash'] || req.headers['x-flutterwave-signature'];
+      if (!signature) {
+        console.error('[Flutterwave] Missing signature header');
+        return res.status(401).json({ error: 'Unauthorized: Missing signature' });
+      }
+
+      if (!WEBHOOK_SECRET) {
+        console.error('[Flutterwave] Webhook secret not configured');
+        return res.status(500).json({ error: 'Server misconfigured' });
+      }
+
+      // Flutterwave uses SHA256 hash for verification
+      const payload = JSON.stringify(req.body);
+      const hash = crypto
+        .createHmac('sha256', WEBHOOK_SECRET)
+        .update(payload)
+        .digest('hex');
+
+      if (hash !== signature) {
+        console.error('[Flutterwave] Signature verification failed');
+        return res.status(401).json({ error: 'Unauthorized: Invalid signature' });
+      }
+
+      console.log('[Flutterwave] ✓ Signature verified');
+
+      // ====================================================================
+      // Parse webhook data
+      // ====================================================================
+      const webhookData = req.body.data;
+      if (!webhookData) {
+        return res.status(400).json({ error: 'Missing webhook data' });
+      }
+
+      const {
+        id: transactionId,
+        status,
+        tx_ref: txRef,
+        amount,
+        currency,
+        customer: { email } = {},
+        meta = {},
+      } = webhookData;
+
+      console.log(`[Flutterwave] Transaction ${transactionId}: status=${status}, ref=${txRef}`);
+
+      // Only process successful payments
+      if (status !== 'successful') {
+        console.log(`[Flutterwave] Ignoring non-successful status: ${status}`);
+        return res.status(200).json({ success: true, message: 'Payment not successful, ignored' });
+      }
+
+      if (!txRef) {
+        console.error('[Flutterwave] Missing tx_ref - cannot identify user');
+        return res.status(400).json({ error: 'Missing tx_ref' });
+      }
+
+      // Validate amount
+      if (!amount || amount <= 0) {
+        console.error(`[Flutterwave] Invalid amount: ${amount}`);
+        return res.status(400).json({ error: 'Invalid payment amount' });
+      }
+
+      // ====================================================================
+      // Extract userId from tx_ref
+      // Format: "nexus_sub:{userId}"
+      // ====================================================================
+      if (!txRef.startsWith('nexus_sub:')) {
+        console.error(`[Flutterwave] Invalid tx_ref format (must start with 'nexus_sub:'): ${txRef}`);
+        return res.status(400).json({ error: 'Invalid tx_ref format - must be nexus_sub:{userId}' });
+      }
+
+      const userId = txRef.substring(9); // Remove "nexus_sub:" prefix
+
+      if (!userId || userId.trim() === '') {
+        console.error(`[Flutterwave] Empty userId in tx_ref: ${txRef}`);
+        return res.status(400).json({ error: 'Empty userId in tx_ref' });
+      }
+
+      console.log(`[Flutterwave] Processing subscription for user: ${userId}`);
+
+      // ====================================================================
+      // Verify user exists
+      // ====================================================================
+      const userRef = admin.firestore().collection('users').doc(userId);
+      const userDoc = await userRef.get();
+
+      if (!userDoc.exists) {
+        console.error(`[Flutterwave] User not found: ${userId}`);
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // ====================================================================
+      // PREVENT DUPLICATE TRANSACTIONS
+      // Check if this transaction was already processed
+      // ====================================================================
+      const existingLog = await userRef
+        .collection('auditLog')
+        .where('transactionId', '==', transactionId)
+        .limit(1)
+        .get();
+
+      if (!existingLog.empty) {
+        console.log(`[Flutterwave] Transaction already processed: ${transactionId}`);
+        return res.status(200).json({ 
+          success: true, 
+          message: 'Transaction already processed',
+          note: 'This webhook was sent before, ignoring duplicate'
+        });
+      }
+
+      const userData = userDoc.data();
+      console.log(`[Flutterwave] User found: ${userData?.email || userData?.username}`);
+
+      // ====================================================================
+      // Calculate subscription expiration (30 days from now)
+      // ====================================================================
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + 30);
+
+      // ====================================================================
+      // UPDATE USER SUBSCRIPTION FIELDS
+      // ====================================================================
+      const updateData = {
+        // Subscription activation
+        onPremium: true,
+        subExpDate: admin.firestore.Timestamp.fromDate(expiryDate),
+        entitledUser: true,
+        
+        // External payment tracking
+        hasExternalSubscriptionFlow: true,
+        lastFlutterwaveTransactionId: transactionId,
+        
+        // Payment history
+        lastPaymentMethod: 'flutterwave',
+        lastPaymentDate: admin.firestore.FieldValue.serverTimestamp(),
+        lastPaymentAmount: amount,
+        lastPaymentCurrency: currency,
+        
+        // Mark as recurring customer
+        prevSubscribed: true,
+        
+        // Timestamp
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      };
+
+      await userRef.update(updateData);
+      console.log(`[Flutterwave] ✓ Subscription activated for user ${userId}, expires ${expiryDate.toISOString()}`);
+
+      // ====================================================================
+      // CREATE AUDIT LOG
+      // ====================================================================
+      await userRef
+        .collection('auditLog')
+        .add({
+          action: 'subscription_activated_external',
+          provider: 'flutterwave',
+          transactionId,
+          amount,
+          currency,
+          expiryDate: admin.firestore.Timestamp.fromDate(expiryDate),
+          timestamp: admin.firestore.FieldValue.serverTimestamp(),
+          email,
+        });
+
+      console.log(`[Flutterwave] ✓ Audit log created for transaction ${transactionId}`);
+
+      // ====================================================================
+      // CREATE NOTIFICATION (isolated - don't fail webhook if this fails)
+      // ====================================================================
+      try {
+        const notification = {
+          type: 'subscription_activated_external',
+          title: '💎 Premium Activated',
+          body: `Your Nexus Premium subscription is now active for 30 days!`,
+          payload: {
+            type: 'subscription_activated_external',
+            title: '💎 Premium Activated',
+            body: `Your Nexus Premium subscription is now active for 30 days!`,
+            route: '/subscription',
+            expiryDate: expiryDate.toISOString(),
+          },
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          isSent: false,
+        };
+
+        const notifRef = await userRef
+          .collection('notifications')
+          .add(notification);
+
+        console.log(`[Flutterwave] ✓ Notification created: ${notifRef.id}`);
+      } catch (notifError) {
+        console.warn(`[Flutterwave] ⚠️ Failed to create notification for user ${userId}: ${notifError.message}`);
+        // Don't fail webhook - subscription was already activated
+      }
+
+      // ====================================================================
+      // SUCCESS RESPONSE
+      // ====================================================================
+      return res.status(200).json({
+        success: true,
+        message: 'Subscription activated successfully',
+        userId,
+        transactionId,
+        expiryDate: expiryDate.toISOString(),
+      });
+
+    } catch (error) {
+      console.error('[Flutterwave] Error:', error);
+      return res.status(500).json({
+        error: 'Internal server error',
+        details: error.message,
+      });
+    }
+  });
+
+// ============================================================================
+// ADMIN: BATCH SYNC V1 SUBSCRIPTIONS TO V2 STRUCTURE
+// ============================================================================
+
+/**
+ * Batch syncs all v1 users with active subscriptions to v2 subscription structure
+ * 
+ * This function:
+ * 1. Finds all users with onPremium = true and valid subExpDate
+ * 2. Creates the new v2 'subscription' object for each
+ * 3. Preserves existing v1 fields for backward compatibility
+ * 
+ * Callable HTTPS Function - Execute once to fix all v1 users
+ * 
+ * Usage from Firebase Console terminal:
+ * firebase functions:shell
+ * batchSyncV1SubscriptionsToV2()
+ */
+exports.batchSyncV1SubscriptionsToV2 = functions
+  .region('us-central1')
+  .https.onCall(async (data, context) => {
+    // Optional: Require admin role
+    // if (!context.auth?.token?.admin) {
+    //   throw new functions.https.HttpsError('permission-denied', 'Only admins can run this');
+    // }
+
+    console.log('[V1→V2 Sync] Starting batch sync of v1 subscriptions');
+    
+    try {
+      const db = admin.firestore();
+      
+      // Find all users with onPremium = true and valid subExpDate in future
+      const now = admin.firestore.Timestamp.now();
+      const usersSnapshot = await db
+        .collection('users')
+        .where('onPremium', '==', true)
+        .where('subExpDate', '>', now)  // Only non-expired subscriptions
+        .get();
+
+      console.log(`[V1→V2 Sync] Found ${usersSnapshot.docs.length} v1 users with active subscriptions`);
+
+      let syncedCount = 0;
+      let skippedCount = 0;
+      let errorCount = 0;
+      const errors = [];
+
+      for (const userDoc of usersSnapshot.docs) {
+        try {
+          const userId = userDoc.id;
+          const userData = userDoc.data();
+          const subExpDate = userData.subExpDate;
+
+          // Skip if already has v2 subscription structure
+          if (userData.subscription && userData.subscription.isActive) {
+            console.log(`[V1→V2 Sync] ⏭️ Skipping ${userId} - already has v2 subscription`);
+            skippedCount++;
+            continue;
+          }
+
+          // Create v2 subscription object from v1 data
+          const updateData = {
+            subscription: {
+              isActive: true,
+              tier: 'monthly_premium',
+              startDate: userData.lastPaymentDate || admin.firestore.FieldValue.serverTimestamp(),
+              expiryDate: subExpDate,  // Use their existing v1 expiry date
+              autoRenew: true,
+              revenueCatCustomerId: null,  // External payment or v1 legacy
+              revenueCatSubscriptionId: null
+            },
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          };
+
+          await userDoc.ref.update(updateData);
+          
+          console.log(`[V1→V2 Sync] ✅ Synced user ${userId} (expires: ${subExpDate?.toDate()})`);
+          syncedCount++;
+
+        } catch (error) {
+          console.error(`[V1→V2 Sync] ❌ Error syncing user ${userDoc.id}:`, error.message);
+          errors.push({ userId: userDoc.id, error: error.message });
+          errorCount++;
+        }
+      }
+
+      console.log(`[V1→V2 Sync] Complete: ${syncedCount} synced, ${skippedCount} skipped, ${errorCount} errors`);
+
+      return {
+        success: true,
+        message: 'Batch sync completed',
+        stats: {
+          totalProcessed: usersSnapshot.docs.length,
+          synced: syncedCount,
+          skipped: skippedCount,
+          errors: errorCount
+        },
+        errors: errors.length > 0 ? errors : null
+      };
+
+    } catch (error) {
+      console.error('[V1→V2 Sync] Fatal error:', error);
+      throw new functions.https.HttpsError('internal', error.message);
+    }
+  });
+
+/**
+ * Fix subscription for a specific user by email (single user fix)
+ * 
+ * Usage:
+ * firebase functions:shell
+ * fixUserSubscriptionByEmail({email: 'user@example.com'})
+ */
+exports.fixUserSubscriptionByEmail = functions
+  .region('us-central1')
+  .https.onCall(async (data, context) => {
+    const { email } = data;
+
+    if (!email) {
+      throw new functions.https.HttpsError('invalid-argument', 'email required');
+    }
+
+    console.log(`[Fix User] Looking up user by email: ${email}`);
+
+    try {
+      const db = admin.firestore();
+      
+      // Find user by email
+      const usersSnapshot = await db
+        .collection('users')
+        .where('email', '==', email)
+        .limit(1)
+        .get();
+
+      if (usersSnapshot.empty) {
+        throw new functions.https.HttpsError('not-found', `No user found with email: ${email}`);
+      }
+
+      const userDoc = usersSnapshot.docs[0];
+      const userId = userDoc.id;
+      const userData = userDoc.data();
+
+      console.log(`[Fix User] Found user: ${userId} (${userData.username || userData.name})`);
+
+      // Check if user has v1 subscription
+      if (!(userData.onPremium && userData.subExpDate)) {
+        throw new functions.https.HttpsError(
+          'failed-precondition',
+          `User has no active v1 subscription (onPremium: ${userData.onPremium}, subExpDate: ${userData.subExpDate})`
+        );
+      }
+
+      // Check if already has v2 subscription
+      if (userData.subscription && userData.subscription.isActive) {
+        return {
+          success: true,
+          message: 'User already has v2 subscription structure',
+          userId,
+          email,
+          status: 'already_synced'
+        };
+      }
+
+      // Create v2 subscription structure
+      const expiryDate = userData.subExpDate;
+      const updateData = {
+        subscription: {
+          isActive: true,
+          tier: 'monthly_premium',
+          startDate: userData.lastPaymentDate || new Date(),
+          expiryDate: expiryDate,
+          autoRenew: true,
+          revenueCatCustomerId: null,
+          revenueCatSubscriptionId: null
+        },
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      };
+
+      await userDoc.ref.update(updateData);
+
+      console.log(`[Fix User] ✅ Fixed subscription for user ${userId} (${email})`);
+
+      return {
+        success: true,
+        message: 'User subscription fixed successfully',
+        userId,
+        email,
+        status: 'fixed',
+        subscriptionExpiresAt: expiryDate?.toDate?.()?.toISOString?.() || expiryDate
+      };
+
+    } catch (error) {
+      console.error(`[Fix User] Error:`, error);
+      if (error instanceof functions.https.HttpsError) {
+        throw error;
+      }
+      throw new functions.https.HttpsError('internal', error.message);
+    }
+  });
+
+// ============================================================================
+// SCHEDULED FUNCTION: Cancel Expired Subscriptions
+// Runs daily at 2:00 AM UTC to check and cancel expired subscriptions
+// ============================================================================
+
+/**
+ * Automatically cancels subscriptions that have passed their expiry date
+ * Sets onPremium = false and creates audit log entry
+ * Runs on a schedule (Cloud Scheduler trigger)
+ */
+exports.checkAndCancelExpiredSubscriptions = functions
+  .pubsub.schedule('0 2 * * *') // Daily at 2:00 AM UTC
+  .timeZone('UTC')
+  .onRun(async (context) => {
+    console.log('[SubscriptionExpiry] Starting scheduled check for expired subscriptions');
+    
+    try {
+      const db = admin.firestore();
+      const now = admin.firestore.Timestamp.now();
+
+      // Find all users with onPremium = true and subExpDate <= now
+      // Paginate in batches to avoid timeout/memory issues
+      const expiredSnapshot = await db
+        .collection('users')
+        .where('onPremium', '==', true)
+        .where('subExpDate', '<=', now)
+        .limit(1000) // Process max 1000 at a time
+        .get();
+
+      console.log(`[SubscriptionExpiry] Found ${expiredSnapshot.docs.length} expired subscriptions`);
+
+      let processedCount = 0;
+      let errorCount = 0;
+
+      for (const userDoc of expiredSnapshot.docs) {
+        try {
+          const userId = userDoc.id;
+          const userData = userDoc.data();
+          const expiredDate = userData.subExpDate?.toDate();
+
+          console.log(`[SubscriptionExpiry] Cancelling subscription for user ${userId} (expired: ${expiredDate})`);
+
+          // Cancel subscription
+          await userDoc.ref.update({
+            onPremium: false,
+            cancelledAt: admin.firestore.FieldValue.serverTimestamp(),
+            lastCancellationReason: 'subscription_expired',
+          });
+
+          // Create audit log
+          await userDoc.ref
+            .collection('auditLog')
+            .add({
+              action: 'subscription_expired_auto_cancelled',
+              provider: 'flutterwave',
+              expiryDate: userData.subExpDate,
+              timestamp: admin.firestore.FieldValue.serverTimestamp(),
+              reason: 'Subscription expiration date reached',
+            });
+
+          // Create notification
+          await userDoc.ref
+            .collection('notifications')
+            .add({
+              type: 'subscription_expired',
+              title: '⏰ Subscription Expired',
+              body: 'Your Premium subscription has expired. Renew to maintain access to premium features.',
+              payload: {
+                type: 'subscription_expired',
+                route: '/subscription',
+              },
+              createdAt: admin.firestore.FieldValue.serverTimestamp(),
+              isSent: false,
+            });
+
+          console.log(`[SubscriptionExpiry] ✓ Cancelled for user ${userId}`);
+          processedCount++;
+        } catch (error) {
+          console.error(`[SubscriptionExpiry] Error processing user ${userDoc.id}:`, error);
+          errorCount++;
+        }
+      }
+
+      console.log(`[SubscriptionExpiry] Complete: ${processedCount} cancelled, ${errorCount} errors`);
+      return { processed: processedCount, errors: errorCount };
+
+    } catch (error) {
+      console.error('[SubscriptionExpiry] Fatal error:', error);
+      throw error;
+    }
+  });
 
 // ============================================================================
 // SUPPORT REQUEST EMAIL FUNCTION
@@ -1253,47 +1801,9 @@ exports.onCompatibilityQuizCompleted = functions.firestore
       return null;
     }
     
-    try {
-      console.log(`✅ Quiz completed for user: ${userId}`);
-      
-      const db = admin.firestore();
-      
-      // Create notification document that will trigger sendPushNotification
-      const notification = {
-        type: 'profile_pending_verification',
-        title: '🔍 Profile Under Review',
-        body: 'Your dating profile has been submitted and is now under review by our team. You\'ll be notified once a decision is made.',
-        payload: {
-          type: 'profile_pending_verification',
-          title: '🔍 Profile Under Review',
-          body: 'Your dating profile has been submitted and is now under review by our team. You\'ll be notified once a decision is made.',
-          route: '/profile',
-          verificationStatus: 'pending',
-        },
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
-        isSent: false,
-      };
-      
-      // Add the notification document - this will trigger sendPushNotification
-      const notificationDocRef = await db
-        .collection('users')
-        .doc(userId)
-        .collection('notifications')
-        .add(notification);
-      
-      console.log(`📬 Notification created for user ${userId}: ${notificationDocRef.id}`);
-      
-      return {
-        success: true,
-        userId,
-        notificationId: notificationDocRef.id,
-      };
-      
-    } catch (error) {
-      console.error(`❌ Error creating notification for user ${userId}:`, error);
-      // Don't throw - log the error but don't fail the entire function
-      return { success: false, userId, error: error.message };
-    }
+    // Notification creation removed. Flutter app now handles sending 'profile under review' notification.
+    console.log(`✅ Quiz completed for user: ${userId} (notification handled by app)`);
+    return { success: true, userId };
   });
 
 // ============================================================================

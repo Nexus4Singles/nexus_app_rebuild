@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_plus/share_plus.dart';
 
 import 'package:nexus_app_v2/core/models/story_model.dart' hide Story;
 import 'package:nexus_app_v2/core/theme/theme.dart';
@@ -64,152 +63,166 @@ class StoriesScreen extends ConsumerWidget {
   }
 }
 
-class _StoryOfWeekView extends ConsumerWidget {
+class _StoryOfWeekView extends ConsumerStatefulWidget {
   final Story story;
   final bool canInteract;
 
   const _StoryOfWeekView({required this.story, required this.canInteract});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+  ConsumerState<_StoryOfWeekView> createState() => _StoryOfWeekViewState();
+}
+
+class _StoryOfWeekViewState extends ConsumerState<_StoryOfWeekView> {
+  @override
+  Widget build(BuildContext context) {
+    final story = widget.story;
+    final canInteract = widget.canInteract;
+
+    return Stack(
       children: [
-        _HeroCover(
-          imagePath: story.heroImageAsset,
-          title: story.title,
-          chips: Wrap(
-            spacing: 6,
-            runSpacing: 6,
-            children: [
-              ...story.tags.map((tag) => _ChipPill(text: tag)),
-              if (story.tags.isEmpty) _ChipPill(text: story.category),
-              _ChipPill(text: '${story.readTimeMins} min read'),
-            ],
-          ),
-        ),
-        const SizedBox(height: 14),
-
-        _Card(
-          child: Text(
-            story.intro,
-            style: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.getTextPrimary(context),
-              height: 1.4,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
-        const SizedBox(height: 12),
-
-        ...story.sections.map(
-          (s) => Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: _SectionCard(heading: s.heading, body: s.body),
-          ),
-        ),
-
-        const SizedBox(height: 14),
-        Text(
-          story.takeawayTitle,
-          style: AppTextStyles.titleSmall.copyWith(fontWeight: FontWeight.w700),
-        ),
-        const SizedBox(height: 8),
-        _Card(
-          child:
-              story.takeaways.isEmpty
-                  ? Text(
-                    'Coming soon.',
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.getTextSecondary(context),
-                    ),
-                  )
-                  : Column(
-                    children:
-                        story.takeaways.map((t) => _CheckRow(text: t)).toList(),
-                  ),
-        ),
-
-        // ✅ Reactions card placed AFTER story content, BEFORE poll
-        const SizedBox(height: 18),
-        _StoryActionsCard(story: story, canInteract: canInteract),
-
-        const SizedBox(height: 14),
-        Text(
-          'Poll',
-          style: AppTextStyles.titleSmall.copyWith(fontWeight: FontWeight.w700),
-        ),
-        const SizedBox(height: 8),
-        GestureDetector(
-          onTap: () {
-            if (!canInteract) {
-              _showGuestGateDialog(context);
-              return;
-            }
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => StoryPollScreen(storyId: story.id),
+        // Main story content
+        ListView(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+          children: [
+            _HeroCover(
+              imagePath: story.heroImageAsset,
+              title: story.title,
+              chips: Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: [
+                  ...story.tags.map((tag) => _ChipPill(text: tag)),
+                  if (story.tags.isEmpty) _ChipPill(text: story.category),
+                  _ChipPill(text: '${story.readTimeMins} min read'),
+                ],
               ),
-            );
-          },
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.06),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: AppColors.primary.withOpacity(0.15)),
             ),
-            child: Row(
-              children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.12),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.poll_rounded,
-                    color: AppColors.primary,
-                    size: 24,
-                  ),
+            const SizedBox(height: 14),
+
+            _Card(
+              child: Text(
+                story.intro,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.getTextPrimary(context),
+                  height: 1.4,
+                  fontWeight: FontWeight.w400,
                 ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        canInteract
-                            ? 'Share your perspective'
-                            : 'Create an account to vote',
-                        style: AppTextStyles.labelLarge.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.getTextPrimary(context),
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        canInteract
-                            ? 'Vote to see how others responded.'
-                            : 'Sign up to vote and see poll results.',
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            ...story.sections.map(
+              (s) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: _SectionCard(heading: s.heading, body: s.body),
+              ),
+            ),
+
+            const SizedBox(height: 14),
+            Text(
+              story.takeawayTitle,
+              style: AppTextStyles.titleSmall.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 8),
+            _Card(
+              child:
+                  story.takeaways.isEmpty
+                      ? Text(
+                        'Coming soon.',
                         style: AppTextStyles.bodySmall.copyWith(
                           color: AppColors.getTextSecondary(context),
                         ),
+                      )
+                      : Column(
+                        children:
+                            story.takeaways
+                                .map((t) => _CheckRow(text: t))
+                                .toList(),
                       ),
-                    ],
+            ),
+
+            // ✅ Reactions card placed AFTER story content, BEFORE poll
+            const SizedBox(height: 18),
+            _StoryActionsCard(story: story, canInteract: canInteract),
+
+            const SizedBox(height: 8),
+            GestureDetector(
+              onTap: () {
+                if (!canInteract) {
+                  _showGuestGateDialog(context);
+                  return;
+                }
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => StoryPollScreen(storyId: story.id),
+                  ),
+                );
+              },
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.06),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: AppColors.primary.withOpacity(0.15),
                   ),
                 ),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                  color: AppColors.primary,
+                child: Row(
+                  children: [
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.12),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.poll_rounded,
+                        color: AppColors.primary,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            canInteract
+                                ? 'Poll: Share your perspective'
+                                : 'Poll: Create an account to vote',
+                            style: AppTextStyles.labelLarge.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.getTextPrimary(context),
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            canInteract
+                                ? 'Vote to see how others responded.'
+                                : 'Sign up to vote and see poll results.',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.getTextSecondary(context),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 16,
+                      color: AppColors.primary,
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ],
     );
@@ -253,70 +266,43 @@ class _StoryActionsCard extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 10),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  _ActionChip(
-                    icon: liked ? Icons.favorite : Icons.favorite_border,
-                    label:
-                        liked
-                            ? 'Liked ($likeCount)'
-                            : likeCount > 0
-                            ? 'Like ($likeCount)'
-                            : 'Like',
-                    onTap: () {
-                      if (!canInteract) {
-                        _showGuestGateDialog(context);
-                        return;
-                      }
-                      controller.toggleLike(story.id);
-                    },
-                  ),
-                  const SizedBox(width: 10),
-                  _ActionChip(
-                    icon: Icons.mode_comment_outlined,
-                    label:
-                        commentsCount == 0
-                            ? 'Comment'
-                            : 'Comments ($commentsCount)',
-                    onTap:
-                        () => _showCommentsSheet(
-                          context,
-                          ref,
-                          story,
-                          canInteract,
-                        ),
-                  ),
-                  const SizedBox(width: 10),
-                  _ActionChip(
-                    icon: Icons.ios_share,
-                    label: 'Share',
-                    onTap: () {
-                      if (!canInteract) {
-                        _showGuestGateDialog(context);
-                        return;
-                      }
-                      controller.incrementShare(story.id);
-                      _shareStory(story);
-                    },
-                  ),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _ActionChip(
+                  icon: liked ? Icons.favorite : Icons.favorite_border,
+                  label:
+                      liked
+                          ? 'Liked ($likeCount)'
+                          : likeCount > 0
+                          ? 'Like ($likeCount)'
+                          : 'Like',
+                  onTap: () {
+                    if (!canInteract) {
+                      _showGuestGateDialog(context);
+                      return;
+                    }
+                    controller.toggleLike(story.id);
+                  },
+                ),
+                const SizedBox(width: 10),
+                _ActionChip(
+                  icon: Icons.mode_comment_outlined,
+                  label:
+                      commentsCount == 0
+                          ? 'Comment'
+                          : 'Comments ($commentsCount)',
+                  onTap:
+                      () =>
+                          _showCommentsSheet(context, ref, story, canInteract),
+                ),
+              ],
             ),
             const SizedBox(height: 10),
           ],
         ),
       ),
     );
-  }
-
-  static void _shareStory(Story story) {
-    final text =
-        'Stories: ${story.title}\n\n'
-        '${story.intro}\n\n'
-        'Shared from Nexus.';
-    Share.share(text);
   }
 
   static Future<void> _showCommentsSheet(

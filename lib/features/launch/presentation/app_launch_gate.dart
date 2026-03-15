@@ -539,7 +539,7 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
                 child: FadeTransition(
                   opacity: _taglineFade,
                   child: Text(
-                    'Raising Godly Families through\nKingdom Relationships & Marriages',
+                    'The Digital Playbook for Building Healthy\nRelationships, Marriages, & Families',
                     textAlign: TextAlign.center,
                     style: AppTextStyles.bodyMedium.copyWith(
                       color: Colors.white.withOpacity(0.9),

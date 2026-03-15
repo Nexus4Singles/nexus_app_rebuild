@@ -40,6 +40,219 @@ exports.validateAndRecordSubscription = validateAndRecordSubscription;
 exports.revenueCatWebhook = revenueCatWebhook;
 
 // ============================================================================
+// ADMIN VERIFICATION FUNCTION - Manually verify users by email
+// ============================================================================
+
+/**
+ * HTTP Cloud Function: Verify a user's dating profile manually
+ * 
+ * USAGE:
+ * POST /verifyUserProfile
+ * Headers: Authorization: Bearer <YOUR_ID_TOKEN>
+ * Body: {
+ *   "email": "user@example.com",
+ *   "verificationStatus": "verified" (optional, defaults to "verified")
+ * }
+ * 
+ * RESPONSE:
+ * {
+ *   "success": true,
+ *   "userId": "abc123",
+ *   "message": "User verified: user@example.com",
+ *   "updated": {
+ *     "verificationStatus": "verified",
+ *     "verifiedAt": "2026-03-13T10:30:00Z",
+ *     "verifiedBy": "admin_manual_verification"
+ *   }
+ * }
+ * 
+ * SECURITY:
+ * - Requires valid Firebase ID token
+ * - Requires user to have admin: true custom claim
+ * - Logs all changes for audit trail
+ */
+exports.verifyUserProfile = functions.https.onRequest(async (req, res) => {
+  // Enable CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if (req.method === 'OPTIONS') return res.status(200).send('');
+
+  try {
+    // 1. Verify authentication
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Missing or invalid Authorization header' });
+    }
+
+    const idToken = authHeader.substring(7);
+    let decodedToken;
+    try {
+      decodedToken = await admin.auth().verifyIdToken(idToken);
+    } catch (e) {
+      return res.status(401).json({ error: 'Invalid ID token', details: e.message });
+    }
+
+    // 2. Check if user is admin
+    if (!decodedToken.admin) {
+      console.warn(`[verifyUserProfile] Non-admin user ${decodedToken.uid} tried to verify user`);
+      return res.status(403).json({ 
+        error: 'Admin access required',
+        note: 'Your Firebase account needs admin: true custom claim'
+      });
+    }
+
+    // 3. Extract email from request
+    const { email, verificationStatus = 'verified' } = req.body;
+    if (!email || typeof email !== 'string') {
+      return res.status(400).json({ error: 'email field is required and must be a string' });
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    // 4. Find user by email
+    console.log(`[verifyUserProfile] Admin ${decodedToken.uid} searching for user: ${normalizedEmail}`);
+    const usersSnapshot = await admin.firestore()
+      .collection('users')
+      .where('email', '==', normalizedEmail)
+      .limit(1)
+      .get();
+
+    if (usersSnapshot.empty) {
+      console.warn(`[verifyUserProfile] User not found: ${normalizedEmail}`);
+      return res.status(404).json({ error: `User not found with email: ${normalizedEmail}` });
+    }
+
+    const targetDoc = usersSnapshot.docs[0];
+    const userId = targetDoc.id;
+    const userData = targetDoc.data();
+
+    // 5. Update verification status
+    const now = admin.firestore.FieldValue.serverTimestamp();
+    const updateData = {
+      'dating.verificationStatus': verificationStatus,
+      'dating.verifiedAt': now,
+      'dating.verifiedBy': `admin:${decodedToken.uid}`,
+      'dating.reviewedAt': now,
+      'dating.reviewedBy': decodedToken.email || decodedToken.uid,
+    };
+
+    // Auto-lock verified users to prevent auto-revert on profile updates
+    if (verificationStatus === 'verified') {
+      updateData['dating.verificationLockedByAdmin'] = true;
+      updateData['dating.verificationLockedAt'] = now;
+      updateData['dating.verificationLockedReason'] = 'Auto-locked to prevent revert on profile updates';
+      console.log(`[verifyUserProfile] ✅ Auto-locking user to prevent revert on profile edits`);
+    }
+
+    console.log(`[verifyUserProfile] Updating user ${userId}:`, updateData);
+    await admin.firestore()
+      .collection('users')
+      .doc(userId)
+      .update(updateData);
+
+    // 5.1 Send notification based on verification status
+    console.log(`[verifyUserProfile] Creating notification for status: ${verificationStatus}`);
+    let notificationPayload = {
+      createdAt: now,
+      isSent: false,
+    };
+
+    if (verificationStatus === 'verified') {
+      notificationPayload = {
+        ...notificationPayload,
+        type: 'profile_verified',
+        title: '✅ Profile Verified!',
+        body: 'Congratulations! Your profile has been verified.',
+        payload: {
+          type: 'profile_verified',
+          title: '✅ Profile Verified!',
+          body: 'Congratulations! Your profile has been verified.',
+          route: '/search',
+        },
+      };
+    } else if (verificationStatus === 'rejected') {
+      notificationPayload = {
+        ...notificationPayload,
+        type: 'profile_rejected',
+        title: '❌ Profile Rejected',
+        body: 'Your profile was not approved. Check the app to see the reason.',
+        payload: {
+          type: 'profile_rejected',
+          title: '❌ Profile Rejected',
+          body: 'Your profile was not approved. Check the app to see the reason.',
+          route: '/profile',
+          verificationStatus: 'rejected',
+        },
+      };
+    } else if (verificationStatus === 'pending') {
+      notificationPayload = {
+        ...notificationPayload,
+        type: 'profile_pending_verification',
+        title: '🔍 Profile Under Review',
+        body: 'Your profile is being reviewed. You\'ll be notified of the decision soon.',
+        payload: {
+          type: 'profile_pending_verification',
+          title: '🔍 Profile Under Review',
+          body: 'Your profile is being reviewed. You\'ll be notified of the decision soon.',
+          route: '/profile',
+          verificationStatus: 'pending',
+        },
+      };
+    }
+
+    try {
+      const notifRef = await admin.firestore()
+        .collection('users')
+        .doc(userId)
+        .collection('notifications')
+        .add(notificationPayload);
+      console.log(`[verifyUserProfile] ✅ Notification created for user ${userId}: ${notifRef.id}`);
+    } catch (notifError) {
+      console.warn(`[verifyUserProfile] ⚠️  Failed to create notification for user ${userId}: ${notifError.message}`);
+      // Don't fail the entire function if notification creation fails
+    }
+
+    // 6. Log audit trail
+    await admin.firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('auditLog')
+      .add({
+        action: 'dating_profile_verified_manually',
+        performedBy: decodedToken.uid,
+        performedByEmail: decodedToken.email,
+        verificationStatus,
+        timestamp: now,
+      });
+
+    console.log(`✅ [verifyUserProfile] Successfully verified ${normalizedEmail} (${userId})`);
+
+    return res.status(200).json({
+      success: true,
+      userId,
+      userEmail: userData.email,
+      userName: userData.username || userData.name,
+      message: `User verified: ${normalizedEmail}`,
+      updated: {
+        verificationStatus,
+        verifiedAt: new Date().toISOString(),
+        verifiedBy: `admin:${decodedToken.uid}`,
+      },
+    });
+
+  } catch (error) {
+    console.error('[verifyUserProfile] Error:', error);
+    return res.status(500).json({
+      success: false,
+      error: error.message,
+      code: error.code,
+    });
+  }
+});
+
+// ============================================================================
 // EMAIL CONFIGURATION
 // ============================================================================
 
@@ -944,73 +1157,359 @@ exports.setObjectAcl = functions
 });
 
 // ============================================================================
-// COMPATIBILITY QUIZ COMPLETION - SEND PROFILE PENDING VERIFICATION NOTIFICATION
+// FLUTTERWAVE WEBHOOK: Handle Subscription Activation
 // ============================================================================
 
 /**
- * Triggers when a user completes the compatibility quiz
- * Listens for: users/{userId} when compatibilitySetted changes from false/undefined to true
+ * Accepts Flutterwave payment webhooks and activates subscriptions
+ * GEN 2 CLOUD FUNCTION
  * 
- * This function:
- * 1. Detects when compatibilitySetted changes to true
- * 2. Creates a notification document for "profile pending verification"
- * 3. The existing sendPushNotification trigger will catch it and send the FCM
+ * Webhook expects:
+ * - POST request with signature verification via HMAC-SHA256
+ * - Signature in: verificationhash or x-flutterwave-signature header
+ * - Body contains: id, status, tx_ref (format: "nexus_sub:{userId}"), amount, currency
+ * 
+ * On success:
+ * - Sets user.onPremium = true
+ * - Sets user.subExpDate = 30 days from now
+ * - Creates audit log entry
+ * - Creates notification
+ * 
+ * Cloud Run URL: https://handleupdateusersubscriptionstatus-{hash}-{region}.a.run.app
  */
-exports.onCompatibilityQuizCompleted = functions.firestore
-  .document('users/{userId}')
-  .onUpdate(async (change, context) => {
-    const { userId } = context.params;
-    const before = change.before.data();
-    const after = change.after.data();
-    
-    // Check if compatibilitySetted changed from false/undefined to true
-    const wasNotComplete = !before?.compatibilitySetted;
-    const isNowComplete = after?.compatibilitySetted === true;
-    
-    if (!wasNotComplete || !isNowComplete) {
-      // No change relevant to quiz completion
-      return null;
-    }
+exports.handleUpdateUserSubscriptionStatus = functions
+  .region('us-central1')
+  .runWith({ 
+    secrets: ['FLUTTERWAVE_WEBHOOK_SECRET'],
+    memory: '256MB',
+    timeoutSeconds: 60,
+  })
+  .https.onRequest(async (req, res) => {
+    const WEBHOOK_SECRET = process.env.FLUTTERWAVE_WEBHOOK_SECRET;
     
     try {
-      console.log(`✅ Quiz completed for user: ${userId}`);
-      
-      const db = admin.firestore();
-      
-      // Create notification document that will trigger sendPushNotification
-      const notification = {
-        type: 'profile_pending_verification',
-        title: '🔍 Profile Under Review',
-        body: 'Your dating profile has been submitted and is now under review by our team. You\'ll be notified once a decision is made.',
-        payload: {
-          type: 'profile_pending_verification',
-          title: '🔍 Profile Under Review',
-          body: 'Your dating profile has been submitted and is now under review by our team. You\'ll be notified once a decision is made.',
-          route: '/profile',
-          verificationStatus: 'pending',
-        },
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
-        isSent: false,
+      // Only accept POST requests
+      if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+      }
+
+      // Validate request body exists
+      if (!req.body) {
+        console.error('[Flutterwave] Missing request body');
+        return res.status(400).json({ error: 'Missing request body' });
+      }
+
+      console.log('[Flutterwave] Webhook received:', req.body?.data?.id);
+
+      // ====================================================================
+      // SECURITY: Verify webhook signature
+      // ====================================================================
+      const signature = req.headers['verificationhash'] || req.headers['x-flutterwave-signature'];
+      if (!signature) {
+        console.error('[Flutterwave] Missing signature header');
+        return res.status(401).json({ error: 'Unauthorized: Missing signature' });
+      }
+
+      if (!WEBHOOK_SECRET) {
+        console.error('[Flutterwave] Webhook secret not configured');
+        return res.status(500).json({ error: 'Server misconfigured' });
+      }
+
+      // Flutterwave uses SHA256 hash for verification
+      const payload = JSON.stringify(req.body);
+      const hash = crypto
+        .createHmac('sha256', WEBHOOK_SECRET)
+        .update(payload)
+        .digest('hex');
+
+      if (hash !== signature) {
+        console.error('[Flutterwave] Signature verification failed');
+        return res.status(401).json({ error: 'Unauthorized: Invalid signature' });
+      }
+
+      console.log('[Flutterwave] ✓ Signature verified');
+
+      // ====================================================================
+      // Parse webhook data
+      // ====================================================================
+      const webhookData = req.body.data;
+      if (!webhookData) {
+        return res.status(400).json({ error: 'Missing webhook data' });
+      }
+
+      const {
+        id: transactionId,
+        status,
+        tx_ref: txRef,
+        amount,
+        currency,
+        customer: { email } = {},
+        meta = {},
+      } = webhookData;
+
+      console.log(`[Flutterwave] Transaction ${transactionId}: status=${status}, ref=${txRef}`);
+
+      // Only process successful payments
+      if (status !== 'successful') {
+        console.log(`[Flutterwave] Ignoring non-successful status: ${status}`);
+        return res.status(200).json({ success: true, message: 'Payment not successful, ignored' });
+      }
+
+      if (!txRef) {
+        console.error('[Flutterwave] Missing tx_ref - cannot identify user');
+        return res.status(400).json({ error: 'Missing tx_ref' });
+      }
+
+      // Validate amount
+      if (!amount || amount <= 0) {
+        console.error(`[Flutterwave] Invalid amount: ${amount}`);
+        return res.status(400).json({ error: 'Invalid payment amount' });
+      }
+
+      // ====================================================================
+      // Extract userId from tx_ref
+      // Format: "nexus_sub:{userId}"
+      // ====================================================================
+      if (!txRef.startsWith('nexus_sub:')) {
+        console.error(`[Flutterwave] Invalid tx_ref format (must start with 'nexus_sub:'): ${txRef}`);
+        return res.status(400).json({ error: 'Invalid tx_ref format - must be nexus_sub:{userId}' });
+      }
+
+      const userId = txRef.substring(9); // Remove "nexus_sub:" prefix
+
+      if (!userId || userId.trim() === '') {
+        console.error(`[Flutterwave] Empty userId in tx_ref: ${txRef}`);
+        return res.status(400).json({ error: 'Empty userId in tx_ref' });
+      }
+
+      console.log(`[Flutterwave] Processing subscription for user: ${userId}`);
+
+      // ====================================================================
+      // Verify user exists
+      // ====================================================================
+      const userRef = admin.firestore().collection('users').doc(userId);
+      const userDoc = await userRef.get();
+
+      if (!userDoc.exists) {
+        console.error(`[Flutterwave] User not found: ${userId}`);
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // ====================================================================
+      // PREVENT DUPLICATE TRANSACTIONS
+      // Check if this transaction was already processed
+      // ====================================================================
+      const existingLog = await userRef
+        .collection('auditLog')
+        .where('transactionId', '==', transactionId)
+        .limit(1)
+        .get();
+
+      if (!existingLog.empty) {
+        console.log(`[Flutterwave] Transaction already processed: ${transactionId}`);
+        return res.status(200).json({ 
+          success: true, 
+          message: 'Transaction already processed',
+          note: 'This webhook was sent before, ignoring duplicate'
+        });
+      }
+
+      const userData = userDoc.data();
+      console.log(`[Flutterwave] User found: ${userData?.email || userData?.username}`);
+
+      // ====================================================================
+      // Calculate subscription expiration (30 days from now)
+      // ====================================================================
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + 30);
+
+      // ====================================================================
+      // UPDATE USER SUBSCRIPTION FIELDS
+      // ====================================================================
+      const updateData = {
+        // Subscription activation
+        onPremium: true,
+        subExpDate: admin.firestore.Timestamp.fromDate(expiryDate),
+        entitledUser: true,
+        
+        // External payment tracking
+        hasExternalSubscriptionFlow: true,
+        lastFlutterwaveTransactionId: transactionId,
+        
+        // Payment history
+        lastPaymentMethod: 'flutterwave',
+        lastPaymentDate: admin.firestore.FieldValue.serverTimestamp(),
+        lastPaymentAmount: amount,
+        lastPaymentCurrency: currency,
+        
+        // Mark as recurring customer
+        prevSubscribed: true,
+        
+        // Timestamp
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       };
-      
-      // Add the notification document - this will trigger sendPushNotification
-      const notificationDocRef = await db
-        .collection('users')
-        .doc(userId)
-        .collection('notifications')
-        .add(notification);
-      
-      console.log(`📬 Notification created for user ${userId}: ${notificationDocRef.id}`);
-      
-      return {
+
+      await userRef.update(updateData);
+      console.log(`[Flutterwave] ✓ Subscription activated for user ${userId}, expires ${expiryDate.toISOString()}`);
+
+      // ====================================================================
+      // CREATE AUDIT LOG
+      // ====================================================================
+      await userRef
+        .collection('auditLog')
+        .add({
+          action: 'subscription_activated_external',
+          provider: 'flutterwave',
+          transactionId,
+          amount,
+          currency,
+          expiryDate: admin.firestore.Timestamp.fromDate(expiryDate),
+          timestamp: admin.firestore.FieldValue.serverTimestamp(),
+          email,
+        });
+
+      console.log(`[Flutterwave] ✓ Audit log created for transaction ${transactionId}`);
+
+      // ====================================================================
+      // CREATE NOTIFICATION (isolated - don't fail webhook if this fails)
+      // ====================================================================
+      try {
+        const notification = {
+          type: 'subscription_activated_external',
+          title: '💎 Premium Activated',
+          body: `Your Nexus Premium subscription is now active for 30 days!`,
+          payload: {
+            type: 'subscription_activated_external',
+            title: '💎 Premium Activated',
+            body: `Your Nexus Premium subscription is now active for 30 days!`,
+            route: '/subscription',
+            expiryDate: expiryDate.toISOString(),
+          },
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          isSent: false,
+        };
+
+        const notifRef = await userRef
+          .collection('notifications')
+          .add(notification);
+
+        console.log(`[Flutterwave] ✓ Notification created: ${notifRef.id}`);
+      } catch (notifError) {
+        console.warn(`[Flutterwave] ⚠️ Failed to create notification for user ${userId}: ${notifError.message}`);
+        // Don't fail webhook - subscription was already activated
+      }
+
+      // ====================================================================
+      // SUCCESS RESPONSE
+      // ====================================================================
+      return res.status(200).json({
         success: true,
+        message: 'Subscription activated successfully',
         userId,
-        notificationId: notificationDocRef.id,
-      };
-      
+        transactionId,
+        expiryDate: expiryDate.toISOString(),
+      });
+
     } catch (error) {
-      console.error(`❌ Error creating notification for user ${userId}:`, error);
-      // Don't throw - log the error but don't fail the entire function
-      return { success: false, userId, error: error.message };
+      console.error('[Flutterwave] Error:', error);
+      return res.status(500).json({
+        error: 'Internal server error',
+        details: error.message,
+      });
+    }
+  });
+
+// ============================================================================
+// SCHEDULED FUNCTION: Cancel Expired Subscriptions
+// Runs daily at 2:00 AM UTC to check and cancel expired subscriptions
+// ============================================================================
+
+/**
+ * Automatically cancels subscriptions that have passed their expiry date
+ * GEN 2 CLOUD FUNCTION
+ * 
+ * Sets onPremium = false and creates audit log entry
+ * Runs on a schedule (Cloud Scheduler trigger) - Daily at 2:00 AM UTC
+ */
+exports.checkAndCancelExpiredSubscriptions = functions
+  .region('us-central1')
+  .pubsub.schedule('0 2 * * *') // Daily at 2:00 AM UTC
+  .timeZone('UTC')
+  .onRun(async (context) => {
+    console.log('[SubscriptionExpiry] Starting scheduled check for expired subscriptions');
+    
+    try {
+      const db = admin.firestore();
+      const now = admin.firestore.Timestamp.now();
+
+      // Find all users with onPremium = true and subExpDate <= now
+      // Paginate in batches to avoid timeout/memory issues
+      const expiredSnapshot = await db
+        .collection('users')
+        .where('onPremium', '==', true)
+        .where('subExpDate', '<=', now)
+        .limit(1000) // Process max 1000 at a time
+        .get();
+
+      console.log(`[SubscriptionExpiry] Found ${expiredSnapshot.docs.length} expired subscriptions`);
+
+      let processedCount = 0;
+      let errorCount = 0;
+
+      for (const userDoc of expiredSnapshot.docs) {
+        try {
+          const userId = userDoc.id;
+          const userData = userDoc.data();
+          const expiredDate = userData.subExpDate?.toDate();
+
+          console.log(`[SubscriptionExpiry] Cancelling subscription for user ${userId} (expired: ${expiredDate})`);
+
+          // Cancel subscription
+          await userDoc.ref.update({
+            onPremium: false,
+            cancelledAt: admin.firestore.FieldValue.serverTimestamp(),
+            lastCancellationReason: 'subscription_expired',
+          });
+
+          // Create audit log
+          await userDoc.ref
+            .collection('auditLog')
+            .add({
+              action: 'subscription_expired_auto_cancelled',
+              provider: 'flutterwave',
+              expiryDate: userData.subExpDate,
+              timestamp: admin.firestore.FieldValue.serverTimestamp(),
+              reason: 'Subscription expiration date reached',
+            });
+
+          // Create notification
+          await userDoc.ref
+            .collection('notifications')
+            .add({
+              type: 'subscription_expired',
+              title: '⏰ Subscription Expired',
+              body: 'Your Premium subscription has expired. Renew to maintain access to premium features.',
+              payload: {
+                type: 'subscription_expired',
+                route: '/subscription',
+              },
+              createdAt: admin.firestore.FieldValue.serverTimestamp(),
+              isSent: false,
+            });
+
+          console.log(`[SubscriptionExpiry] ✓ Cancelled for user ${userId}`);
+          processedCount++;
+        } catch (error) {
+          console.error(`[SubscriptionExpiry] Error processing user ${userDoc.id}:`, error);
+          errorCount++;
+        }
+      }
+
+      console.log(`[SubscriptionExpiry] Complete: ${processedCount} cancelled, ${errorCount} errors`);
+      return { processed: processedCount, errors: errorCount };
+
+    } catch (error) {
+      console.error('[SubscriptionExpiry] Fatal error:', error);
+      throw error;
     }
   });

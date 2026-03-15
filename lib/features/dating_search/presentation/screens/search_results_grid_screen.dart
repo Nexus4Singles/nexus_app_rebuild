@@ -485,7 +485,7 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Maximum 10 Profiles/Day',
+                    'Maximum of 10 Profiles Daily',
                     style: AppTextStyles.labelMedium.copyWith(
                       color: AppColors.textOnPrimary,
                       fontWeight: FontWeight.w700,
@@ -505,7 +505,7 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
                     Padding(
                       padding: const EdgeInsets.only(top: 4),
                       child: Text(
-                        'Resets in ${_getCountdownText(limitHitAt)}',
+                        'New Profiles will be displayed in ${_getCountdownText(limitHitAt)}',
                         style: AppTextStyles.bodySmall.copyWith(
                           color: AppColors.textOnPrimary.withOpacity(0.75),
                           fontSize: 11,

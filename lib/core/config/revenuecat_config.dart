@@ -1,3 +1,5 @@
+import 'dart:io';
+
 /// RevenueCat Configuration for Nexus v2
 /// API Keys, Product IDs, and Entitlements
 
@@ -14,8 +16,18 @@ class RevenueCatConfig {
   /// Entitlement for premium dating features (subscriptions only)
   static const String premiumEntitlement = 'premium';
 
-  /// Subscription product IDs
-  static const String subscriptionMonthlyId = 'nexus_premium_v2';
+  /// Platform-specific subscription product IDs
+  /// iOS App Store: nexus_premium_v2
+  /// Android Play Store: monthly_premium_v2
+  static const String iosSubscriptionProductId = 'nexus_premium_v2';
+  static const String androidSubscriptionProductId = 'monthly_premium_v2';
+
+  /// Returns the correct subscription product ID based on platform
+  static String getSubscriptionProductId() {
+    return Platform.isIOS
+        ? iosSubscriptionProductId
+        : androidSubscriptionProductId;
+  }
 
   // ============================================================================
   // JOURNEY PURCHASE PRODUCT IDs & ENTITLEMENTS

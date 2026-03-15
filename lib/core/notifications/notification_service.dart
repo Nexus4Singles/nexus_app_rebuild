@@ -2,12 +2,22 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'notification_models.dart';
-import 'package:nexus_app_v2/core/services/push_notification_service.dart' show navigatorKey;
+
+/// Background message handler for Firebase Messaging
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // You may need to initialize Firebase here if not already done
+  // await Firebase.initializeApp();
+  // Handle background notification logic if needed
+}
+
+/// Global navigator key for notification navigation
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // ============================================================================
 // FIREBASE CLOUD MESSAGING SERVICE
@@ -54,6 +64,16 @@ class NotificationService {
     // Handle foreground messages (show local notification)
     FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
 
+    // iOS: Configure foreground notification presentation (alert, sound, badge)
+    if (Platform.isIOS) {
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+    }
+
     // Handle background message tap (navigation)
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageTap);
 
@@ -98,10 +118,11 @@ class NotificationService {
     // To apply updated settings (sound, vibration, importance), we must
     // delete the old channel and recreate it.
     if (Platform.isAndroid) {
-      final androidPlugin = _localNotifications
-          .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin
-          >();
+      final androidPlugin =
+          _localNotifications
+              .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin
+              >();
 
       if (androidPlugin != null) {
         // Delete old channel to ensure updated settings take effect
@@ -125,15 +146,30 @@ class NotificationService {
   /// Handle foreground message (show local notification)
   Future<void> _handleForegroundMessage(RemoteMessage message) async {
     print('Received foreground message: ${message.notification?.title}');
+    print('Platform: ${Platform.operatingSystem}');
 
     if (message.notification != null) {
-      // Encode data as JSON so it can be parsed on tap
-      final payloadJson = message.data.isNotEmpty ? jsonEncode(message.data) : null;
-      await _showLocalNotification(
-        title: message.notification!.title ?? 'Nexus',
-        body: message.notification!.body ?? '',
-        payload: payloadJson,
-      );
+      // iOS: Native presentation is handled by setForegroundNotificationPresentationOptions
+      // Don't show a second local notification to avoid duplicates
+      if (Platform.isIOS) {
+        print('iOS: Using native notification presentation');
+        return;
+      }
+
+      // Android: Use local notification plugin to display foreground messages
+      print('Android: Showing local notification');
+      final payloadJson =
+          message.data.isNotEmpty ? jsonEncode(message.data) : null;
+      try {
+        await _showLocalNotification(
+          title: message.notification!.title ?? 'Nexus',
+          body: message.notification!.body ?? '',
+          payload: payloadJson,
+        );
+        print('Android: Local notification shown successfully');
+      } catch (e) {
+        print('Android: Failed to show local notification: $e');
+      }
     }
   }
 
@@ -247,8 +283,25 @@ class NotificationService {
       isSent: false,
     );
 
-    await notificationRef.set(record.toFirestore());
-    print('Notification queued for user: $userId');
+    // Enhanced debug log: notification payload and record
+    print(
+      '[DEBUG] sendNotificationToUser: userId=$userId, notificationId=${notificationRef.id}',
+    );
+    print(
+      '[DEBUG] Notification payload: type=${payload.type}, title=${payload.title}, body=${payload.body}, data=${payload.data}',
+    );
+    print('[DEBUG] NotificationRecord: ${record.toString()}');
+    try {
+      await notificationRef.set(record.toFirestore());
+      print(
+        '[DEBUG] Notification queued for user: $userId, notificationId=${notificationRef.id}',
+      );
+    } catch (e) {
+      print(
+        '[DEBUG] sendNotificationToUser: FAILED to queue notification for user: $userId, notificationId=${notificationRef.id}, error=$e',
+      );
+      rethrow;
+    }
   }
 
   /// Mark notification as read
@@ -337,9 +390,21 @@ class NotificationHelpers {
   static Future<void> sendProfileVerifiedNotification({
     required String userId,
   }) async {
+    print('[DEBUG] sendProfileVerifiedNotification called for userId=$userId');
     final payload = NotificationPayload.profileVerified();
-
-    await _service.sendNotificationToUser(userId: userId, payload: payload);
+    print(
+      '[DEBUG] ProfileVerified payload: type=[${payload.type}], title=${payload.title}, body=${payload.body}, data=${payload.data}',
+    );
+    try {
+      await _service.sendNotificationToUser(userId: userId, payload: payload);
+      print(
+        '[DEBUG] sendProfileVerifiedNotification: Notification creation succeeded for userId=$userId',
+      );
+    } catch (e) {
+      print(
+        '[DEBUG] sendProfileVerifiedNotification: Notification creation FAILED for userId=$userId, error=$e',
+      );
+    }
   }
 
   /// Send journey purchased notification

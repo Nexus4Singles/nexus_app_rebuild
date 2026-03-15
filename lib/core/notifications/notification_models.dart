@@ -74,8 +74,7 @@ class NotificationPayload extends Equatable {
     return const NotificationPayload(
       type: NotificationType.profileVerified,
       title: '✅ Profile Verified!',
-      body:
-          'Congratulations! Your profile has been verified and is now visible to other users.',
+      body: 'Congratulations! Your profile has been verified.',
       data: {'route': '/search'},
     );
   }
@@ -85,7 +84,7 @@ class NotificationPayload extends Equatable {
       type: NotificationType.profilePendingVerification,
       title: '🔍 Profile Under Review',
       body:
-          'Your dating profile has been submitted and is now under review by our team. You\'ll be notified once a decision is made.',
+          'Your profile is being reviewed. You\'ll be notified of the decision soon.',
       data: {'route': '/profile', 'verificationStatus': 'pending'},
     );
   }
@@ -98,7 +97,7 @@ class NotificationPayload extends Equatable {
     return NotificationPayload(
       type: NotificationType.profileRejected,
       title: '❌ Profile Rejected',
-      body: 'Your profile was not approved: "$reason"',
+      body: 'Your profile was not approved. Check the app to see the reason.',
       data: {
         'route': '/profile',
         'verificationStatus': 'rejected',

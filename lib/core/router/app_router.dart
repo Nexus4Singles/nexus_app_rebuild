@@ -59,7 +59,31 @@ import '../../features/admin_review/presentation/screens/admin_review_queue_scre
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   final name = settings.name ?? '/';
 
-  // Ignore external scheme deeplinks for stability.
+  // Handle custom scheme deeplinks (nexusapp://...)
+  if (name.contains('nexusapp://')) {
+    final uri = Uri.parse(name);
+
+    // nexusapp://story/{storyId}
+    if (uri.host == 'story' && uri.pathSegments.isNotEmpty) {
+      final storyId = uri.pathSegments[0];
+      debugPrint('[AppRouter] Custom scheme deeplink resolved: story/$storyId');
+      return MaterialPageRoute(
+        settings: RouteSettings(
+          name: '/story/$storyId',
+          arguments: settings.arguments,
+        ),
+        builder: (_) => StoryDetailScreen(storyId: storyId),
+      );
+    }
+
+    // Default to AppShell for other nexusapp:// schemes
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => const AppShell(),
+    );
+  }
+
+  // Ignore other external scheme deeplinks for stability.
   if (name.contains('://')) {
     return MaterialPageRoute(
       settings: settings,
@@ -115,6 +139,16 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     return MaterialPageRoute(
       settings: settings,
       builder: (_) => JourneyDetailScreen(id: journeyId),
+    );
+  }
+
+  // /story/:id
+  if (segments.length == 2 && segments[0] == 'story') {
+    final storyId = segments[1];
+    debugPrint('[AppRouter] /story route resolved with id=$storyId');
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => StoryDetailScreen(storyId: storyId),
     );
   }
 

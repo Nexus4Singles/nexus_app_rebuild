@@ -10,7 +10,7 @@ import 'app_shell.dart';
 import 'core/bootstrap/firebase_bootstrap.dart';
 import 'core/bootstrap/firebase_ready_provider.dart';
 import 'core/router/app_router.dart';
-import 'core/services/push_notification_service.dart';
+import 'core/notifications/notification_service.dart' show navigatorKey;
 import 'core/session/guest_session_provider.dart';
 import 'core/theme/theme_provider.dart';
 import 'core/theme/app_theme.dart';

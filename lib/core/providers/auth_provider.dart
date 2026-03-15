@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import 'package:nexus_app_v2/core/constants/app_constants.dart';
 import 'package:nexus_app_v2/core/session/guest_session_provider.dart';
@@ -68,6 +69,17 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         try {
           await RevenueCatService.login(user.uid);
           print('[AuthNotifier] ✅ RevenueCat linked to user: ${user.uid}');
+
+          // ── NEW: Sync any existing RevenueCat subscriptions to Firestore ──
+          // This ensures v1 users' subscriptions are recognized in v2
+          try {
+            await _syncRevenueCatSubscriptionToFirestore(user.uid);
+          } catch (syncError) {
+            print(
+              '[AuthNotifier] ⚠️ RevenueCat subscription sync failed (non-fatal): $syncError',
+            );
+            // Non-fatal - don't block login
+          }
         } catch (e) {
           print('[AuthNotifier] ⚠️ RevenueCat login failed (non-fatal): $e');
         }
@@ -510,6 +522,109 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
       // Even if there's an error, set state to null to log user out
       state = const AsyncValue.data(null);
       rethrow;
+    }
+  }
+
+  /// Syncs active RevenueCat subscriptions to Firestore
+  /// Called after RevenueCat login to ensure v1 users' subscriptions are recognized in v2
+  ///
+  /// Problem: V1 users have subscriptions in RevenueCat but Firestore `subscription` object
+  /// may not be created. This causes them to appear as free users in v2.
+  ///
+  /// Solution: After linking RevenueCat to the user account, check for active entitlements
+  /// and sync them to the v2 `subscription` object in Firestore.
+  Future<void> _syncRevenueCatSubscriptionToFirestore(String userId) async {
+    try {
+      // Get customer info from RevenueCat
+      final customerInfo = await Purchases.getCustomerInfo();
+      final activeEntitlements = customerInfo.entitlements.active;
+
+      // No active subscriptions - nothing to sync
+      if (activeEntitlements.isEmpty) {
+        print('[AuthNotifier] No active RevenueCat entitlements to sync');
+        return;
+      }
+
+      // Check if user already has a valid subscription in Firestore
+      // to avoid overwriting recent/updated subscription data
+      final userDoc =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userId)
+              .get();
+
+      if (userDoc.exists) {
+        final userData = userDoc.data();
+        final existingSubscription =
+            userData?['subscription'] as Map<String, dynamic>?;
+
+        if (existingSubscription != null &&
+            (existingSubscription['isActive'] as bool? ?? false)) {
+          // Already has active v2 subscription - skip sync to avoid overwriting
+          print(
+            '[AuthNotifier] User already has active v2 subscription, skipping RevenueCat sync',
+          );
+          return;
+        }
+
+        // Check if they have v1 subscription fields (for v1→v2 migration)
+        final hasV1Subscription =
+            (userData?['onPremium'] as bool? ?? false) &&
+            (userData?['subExpDate'] as Timestamp?) != null;
+
+        if (!hasV1Subscription) {
+          // No subscription in either v1 or v2 format - nothing to sync
+          return;
+        }
+      }
+
+      // They have RevenueCat subscription but not synced to Firestore
+      // Check for 'premium' entitlement
+      final premiumEntitlement = activeEntitlements['premium'];
+      if (premiumEntitlement == null) {
+        print('[AuthNotifier] No "premium" entitlement found in RevenueCat');
+        return;
+      }
+
+      // Build the v2 subscription object
+      // Note: RevenueCat's expirationDate is a String (ISO 8601 format)
+      final expiryDateStr = premiumEntitlement.expirationDate;
+
+      Timestamp? expiryTimestamp;
+      if (expiryDateStr != null) {
+        final parsedDate = DateTime.tryParse(expiryDateStr);
+        if (parsedDate != null) {
+          expiryTimestamp = Timestamp.fromDate(parsedDate);
+        }
+      }
+
+      final subscriptionObject = <String, dynamic>{
+        'isActive': true,
+        'tier': 'monthly_premium',
+        'startDate': FieldValue.serverTimestamp(),
+        if (expiryTimestamp != null) 'expiryDate': expiryTimestamp,
+        'autoRenew': true,
+        'revenueCatCustomerId': customerInfo.originalAppUserId,
+        'revenueCatSubscriptionId': null, // Not typically available
+      };
+
+      // Sync to Firestore
+      await FirebaseFirestore.instance.collection('users').doc(userId).update({
+        'subscription': subscriptionObject,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+
+      print(
+        '[AuthNotifier] ✅ Synced RevenueCat subscription to Firestore for user: $userId',
+      );
+      print('   - tier: monthly_premium');
+      if (expiryDateStr != null) {
+        print('   - expiryDate: $expiryDateStr');
+      }
+    } catch (e) {
+      // Non-fatal - log but don't block login
+      print('[AuthNotifier] ⚠️ Failed to sync RevenueCat subscription: $e');
+      // Silently fail - RevenueCat entitlements will still work even if Firestore sync fails
     }
   }
 

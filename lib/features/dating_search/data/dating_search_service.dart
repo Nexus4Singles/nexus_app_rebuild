@@ -19,6 +19,16 @@ class DatingSearchService {
   FirebaseFirestore get _fs =>
       _firestore ?? (throw StateError('Firestore not ready'));
 
+  /// List of emails to exclude from dating search results
+  static const Set<String> blockedEmails = {
+    'nexusgodlydatingapp@gmail.com',
+    'ayomide@migo.money',
+    'aoluriyike@gmail.com',
+    'bajomooluwapelumi@gmail.com',
+    'nexus4singles@gmail.com',
+    'ayomidebaj@gmail.com',
+  };
+
   bool _isDisabledUserDoc(Map<String, dynamic> data) {
     final accountStatus =
         (data['accountStatus'] ?? '').toString().toLowerCase();
@@ -32,6 +42,12 @@ class DatingSearchService {
 
     // Do NOT exclude admin users from searching; only exclude them from appearing in other users' results.
     return false;
+  }
+
+  bool _isBlockedEmail(Map<String, dynamic> data) {
+    final email = (data['email'] ?? '').toString().toLowerCase().trim();
+    if (email.isEmpty) return false;
+    return blockedEmails.contains(email);
   }
 
   /// Firestore equality on `gender` is case-sensitive + exact-match.
@@ -599,6 +615,13 @@ class DatingSearchService {
           skippedDisabled++;
           continue;
         }
+
+        // Enforce: blocked emails are NOT visible in search results
+        if (_isBlockedEmail(data)) {
+          skippedDisabled++;
+          continue;
+        }
+
         final isAdmin = data['isAdmin'] == true;
         // Exclude admin profiles from appearing in search results for other users
         // (but allow current admin user to see their own profile if needed)

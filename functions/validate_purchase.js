@@ -383,6 +383,13 @@ exports.validateAndRecordSubscription = functions.https.onRequest(async (req, re
       });
     }
 
+    // Normalize tier to current format to ensure consistency
+    let normalizedTier = tier;
+    if (tier === 'Premium' || tier === 'nexus_premium' || tier === 'monthly') {
+      normalizedTier = 'monthly_premium';
+    }
+    console.log(`[validateSubscription] Normalized tier: "${tier}" → "${normalizedTier}"`);
+
     try {
       // ====================================================================
       // FRAUD CHECK 1: Verify user exists and is legitimate
@@ -433,7 +440,7 @@ exports.validateAndRecordSubscription = functions.https.onRequest(async (req, re
       // ====================================================================
       const subscriptionRecord = {
         isActive: true,
-        tier: tier,
+        tier: normalizedTier,
         startDate: admin.firestore.FieldValue.serverTimestamp(),
         expiryDate: null, // Will be set by RevenueCat webhook based on renewal
         autoRenew: true,
@@ -456,14 +463,14 @@ exports.validateAndRecordSubscription = functions.https.onRequest(async (req, re
       });
 
       console.log(
-        `[validateSubscription] ✅ Subscription recorded: User=${userId}, Tier=${tier}`
+        `[validateSubscription] ✅ Subscription recorded: User=${userId}, Tier=${normalizedTier}`
       );
 
       // ====================================================================
       // SEND NOTIFICATIONS
       // ====================================================================
       try {
-        await sendSubscriptionActivationNotification(userId, tier, txData.price);
+        await sendSubscriptionActivationNotification(userId, normalizedTier, txData.price);
       } catch (notifError) {
         console.error('[validateSubscription] Notification error (non-fatal):', notifError);
         // Don't fail the purchase if notification fails
@@ -847,8 +854,14 @@ async function updateSubscriptionStatus(userId, event) {
       ? new Date(event.expiration_at_ms)
       : null;
 
-    // Read tier from event, don't hardcode
-    const tier = event.product_id_aliases?.[0] || event.product_id || 'monthly';
+    // Read tier from event and normalize to current format
+    let tier = event.product_id_aliases?.[0] || event.product_id || 'monthly';
+    
+    // Normalize old product IDs to current 'monthly_premium' format
+    // This ensures consistency and compatibility with SubscriptionTier enum
+    if (tier === 'Premium' || tier === 'nexus_premium' || tier === 'monthly') {
+      tier = 'monthly_premium';
+    }
 
     // Use dot notation to merge individual fields instead of overwriting
     // the entire subscription object. This preserves metadata set by the
@@ -884,7 +897,7 @@ async function updateSubscriptionStatus(userId, event) {
       isSent: false,
     });
 
-    console.log(`[RevenueCat] ✅ Updated subscription for user: ${userId} with notification`);
+    console.log(`[RevenueCat] ✅ Updated subscription for user: ${userId} with notification (tier=${tier})`);
   } catch (error) {
     console.error('[RevenueCat] Failed to update subscription:', error);
     // Don't throw - let webhook succeed even if notification fails

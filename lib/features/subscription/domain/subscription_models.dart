@@ -16,9 +16,17 @@ enum SubscriptionTier {
   const SubscriptionTier(this.id, this.displayName);
 
   static SubscriptionTier fromId(String id) {
-    // Accept 'monthly' as an alias for 'monthly_premium' since both
-    // the client optimistic record and webhook may store either form.
-    if (id == 'monthly' || id.contains('monthly_premium')) {
+    // Normalize product IDs from different sources (RevenueCat, old offerings, etc.)
+    // Accept all variations that map to monthly subscription:
+    // - Current: 'monthly_premium', 'monthly_premium_v2'
+    // - App Store: 'nexus_premium_v2'
+    // - Play Store: 'monthly_premium_v2'
+    // - Old offerings: 'Premium', 'nexus_premium', 'monthly'
+    if (id == 'monthly' ||
+        id == 'Premium' ||
+        id == 'nexus_premium' ||
+        id.contains('monthly_premium') ||
+        id.contains('nexus_premium')) {
       return SubscriptionTier.monthly;
     }
     return SubscriptionTier.values.firstWhere(

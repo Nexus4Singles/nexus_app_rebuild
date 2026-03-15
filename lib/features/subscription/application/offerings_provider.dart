@@ -15,12 +15,15 @@ final offeringsProvider = FutureProvider<Offerings?>((ref) async {
 });
 
 /// Provider for subscription offerings (premium dating features)
+/// Tries nexus_premium_v2 first, falls back to offerings.current, then old Premium offering
 final subscriptionOfferingProvider = FutureProvider<Offering?>((ref) async {
   try {
     final offerings = await ref.watch(offeringsProvider.future);
     if (offerings == null) return null;
-    // 'premium' is the offering identifier for subscriptions
-    return offerings.getOffering('premium');
+    // Try the new nexus_premium_v2 offering first
+    return offerings.getOffering('nexus_premium_v2') ??
+        offerings.current ??
+        offerings.getOffering('Premium');
   } catch (e) {
     print('Error fetching subscription offering: $e');
     return null;
@@ -28,12 +31,17 @@ final subscriptionOfferingProvider = FutureProvider<Offering?>((ref) async {
 });
 
 /// Provider for journey purchase offering
+/// Journey products are in per-category offerings: singles_journey, married_journey, etc.
+/// This provider returns the singles_journey offering as a default reference.
 final journeyOfferingProvider = FutureProvider<Offering?>((ref) async {
   try {
     final offerings = await ref.watch(offeringsProvider.future);
     if (offerings == null) return null;
-    // 'journeys' is the offering identifier for journey purchases
-    return offerings.getOffering('journeys');
+    // Try common journey offering identifiers
+    return offerings.getOffering('singles_journey') ??
+        offerings.getOffering('married_journey') ??
+        offerings.getOffering('divorced_journey') ??
+        offerings.getOffering('widowed_journey');
   } catch (e) {
     print('Error fetching journey offering: $e');
     return null;
@@ -59,22 +67,26 @@ final subscriptionPackagesProvider = FutureProvider<Package?>((ref) async {
     final offering = await ref.watch(subscriptionOfferingProvider.future);
     if (offering == null) return null;
 
-    // Fetch the monthly subscription package from RevenueCat
-    final monthlyPackage = offering.getPackage('\$rc_monthly');
-    if (monthlyPackage != null) {
-      return monthlyPackage;
-    }
-
-    // Fallback: try to find package containing 'monthly' in identifier
     final packages = offering.availablePackages;
+    if (packages.isEmpty) return null;
+
+    // Try RevenueCat $rc_monthly package type first
+    final rcMonthly = offering.getPackage('\$rc_monthly');
+    if (rcMonthly != null) return rcMonthly;
+
+    // Try to find by platform-specific product ID
+    final targetProductId =
+        RevenueCatConfig.getSubscriptionProductId().toLowerCase();
     for (final p in packages) {
-      if (p.storeProduct.identifier.toLowerCase().contains('monthly')) {
+      if (p.storeProduct.identifier.toLowerCase() == targetProductId) return p;
+    }
+    for (final p in packages) {
+      if (p.storeProduct.identifier.toLowerCase().contains(targetProductId))
         return p;
-      }
     }
 
     // Last resort: return first available package
-    return packages.isNotEmpty ? packages.first : null;
+    return packages.first;
   } catch (e) {
     print('Error fetching subscription package: $e');
     return null;

@@ -92,15 +92,21 @@ class AccountDisabledScreen extends StatelessWidget {
 
               const Spacer(),
 
-              // Support button
+              // Try Different Account button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/contact');
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    if (context.mounted) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/',
+                        (route) => false,
+                      );
+                    }
                   },
-                  icon: const Icon(Icons.mail_outline_rounded),
-                  label: const Text('Contact Support'),
+                  icon: const Icon(Icons.swap_horiz_rounded),
+                  label: const Text('Try Different Account'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: AppColors.primary,
@@ -113,15 +119,15 @@ class AccountDisabledScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // Logout button
+              // Contact Support button
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
-                  onPressed: () async {
-                    await FirebaseAuth.instance.signOut();
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/contact');
                   },
-                  icon: const Icon(Icons.logout_rounded),
-                  label: const Text('Sign Out'),
+                  icon: const Icon(Icons.mail_outline_rounded),
+                  label: const Text('Contact Support'),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.white,
                     side: const BorderSide(color: Colors.white, width: 1.5),

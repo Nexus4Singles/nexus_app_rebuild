@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +20,17 @@ import 'package:nexus_app_v2/core/services/secure_purchase_validation_service.da
 
 // Note: Using journeyByIdProvider from journeys_providers.dart (cloud-first with fallback)
 // This replaces the old local repository-based loading
+
+// Extension for safer list operations
+extension NullableFirstWhere<T> on List<T> {
+  T? firstWhereOrNull(bool Function(T) test) {
+    try {
+      return firstWhere(test);
+    } catch (e) {
+      return null;
+    }
+  }
+}
 
 class SubscriptionScreen extends ConsumerStatefulWidget {
   /// Optional: set initial tab index (0 = Dating Features, 1 = Journey Purchases)
@@ -600,26 +610,102 @@ class _NoSubscriptionView extends ConsumerWidget {
       );
 
       // Get offerings from RevenueCat
+      debugPrint('🔵 [Subscription] Fetching RevenueCat offerings...');
       final offerings = await RevenueCatService.getOfferings();
 
       if (!context.mounted) return;
       Navigator.pop(context); // Close loading dialog
 
-      if (offerings == null || offerings.current == null) {
+      if (offerings == null) {
+        debugPrint(
+          '🔴 [Subscription] offerings is NULL - RevenueCat SDK error',
+        );
         _showError(
           context,
-          'Unable to load subscription options. Please try again.',
+          'Unable to load subscription options from store. Please ensure:\n'
+          '1. App has internet connection\n'
+          '2. RevenueCat is configured in the store\n'
+          '3. Subscription products exist in App Store/Play Store\n\n'
+          'Try again or contact support if issue persists.',
         );
         return;
       }
 
+      // Get the specific subscription offering (nexus_premium_v2)
+      Offering? subscriptionOffering = offerings.getOffering(
+        'nexus_premium_v2',
+      );
+
+      // Fallback 1: Try offerings.current if nexus_premium_v2 not found
+      if (subscriptionOffering == null) {
+        debugPrint(
+          '🟡 [Subscription] nexus_premium_v2 not available, trying offerings.current',
+        );
+        subscriptionOffering = offerings.current;
+      }
+
+      // Fallback 2: Try old "Premium" offering for backward compatibility
+      if (subscriptionOffering == null) {
+        debugPrint(
+          '🟡 [Subscription] offerings.current not available, trying fallback to "Premium" offering',
+        );
+        subscriptionOffering = offerings.getOffering('Premium');
+      }
+
+      if (subscriptionOffering == null) {
+        debugPrint('🔴 [Subscription] No subscription offering available');
+        _showError(
+          context,
+          'Subscription offering not configured. This is a backend configuration issue.\n\n'
+          'Please contact support.',
+        );
+        return;
+      }
+
+      debugPrint(
+        '🟢 [Subscription] Using offering: ${subscriptionOffering.identifier}',
+      );
+
       // Find the monthly subscription package
-      final packages = offerings.current!.availablePackages;
-      final monthlyPackage = packages.firstWhere(
-        (p) => p.storeProduct.identifier.toLowerCase().contains(
-          RevenueCatConfig.subscriptionMonthlyId.toLowerCase(),
-        ),
-        orElse: () => packages.first,
+      final packages = subscriptionOffering.availablePackages;
+
+      if (packages.isEmpty) {
+        debugPrint('🔴 [Subscription] Offering has no available packages');
+        _showError(
+          context,
+          'No subscription packages available. This is a backend configuration issue.\n\n'
+          'Please contact support.',
+        );
+        return;
+      }
+
+      debugPrint(
+        '🟡 [Subscription] Available packages: ${packages.map((p) => p.storeProduct.identifier).toList()}',
+      );
+
+      // Find package by product ID
+      Package? monthlyPackage;
+      final targetProductId =
+          RevenueCatConfig.getSubscriptionProductId().toLowerCase();
+
+      // Try exact match first
+      monthlyPackage = packages.firstWhereOrNull(
+        (p) => p.storeProduct.identifier.toLowerCase() == targetProductId,
+      );
+
+      // Fallback to contains match
+      if (monthlyPackage == null) {
+        monthlyPackage = packages.firstWhereOrNull(
+          (p) =>
+              p.storeProduct.identifier.toLowerCase().contains(targetProductId),
+        );
+      }
+
+      // Last resort: use first package
+      monthlyPackage ??= packages.first;
+
+      debugPrint(
+        '🟢 [Subscription] Selected package: ${monthlyPackage.storeProduct.identifier}',
       );
 
       // Show loading again during purchase
@@ -1067,7 +1153,7 @@ class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
       print('🟡 [SubscriptionCard] Loading monthly price from RevenueCat...');
 
       final offerings = await RevenueCatService.getOfferings();
-      if (offerings == null || offerings.current == null) {
+      if (offerings == null) {
         print('🔴 [SubscriptionCard] No offerings available');
         if (mounted) {
           setState(() => _isLoadingPrice = false);
@@ -1075,34 +1161,77 @@ class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
         return;
       }
 
+      // Get the specific subscription offering (nexus_premium_v2)
+      Offering? subscriptionOffering = offerings.getOffering(
+        'nexus_premium_v2',
+      );
+
+      // Fallback 1: Try offerings.current if nexus_premium_v2 not found
+      if (subscriptionOffering == null) {
+        print(
+          '🟡 [SubscriptionCard] nexus_premium_v2 not available, trying offerings.current',
+        );
+        subscriptionOffering = offerings.current;
+      }
+
+      // Fallback 2: Try old Premium offering for backward compatibility
+      if (subscriptionOffering == null) {
+        print(
+          '🟡 [SubscriptionCard] offerings.current not available, trying fallback to Premium offering',
+        );
+        subscriptionOffering = offerings.getOffering('Premium');
+      }
+
+      if (subscriptionOffering == null) {
+        print('🔴 [SubscriptionCard] No subscription offering available');
+        if (mounted) {
+          setState(() => _isLoadingPrice = false);
+        }
+        return;
+      }
+
       // Find the monthly subscription package
-      final packages = offerings.current!.availablePackages;
+      final packages = subscriptionOffering.availablePackages;
       print(
         '🟡 [SubscriptionCard] Available packages: ${packages.map((p) => p.storeProduct.identifier).toList()}',
       );
 
+      // Match the correct platform-specific product ID
       Package? monthlyPackage;
+      final targetProductId =
+          RevenueCatConfig.getSubscriptionProductId().toLowerCase();
 
-      // Try 1: Match 'monthly' pattern (e.g., $rc_monthly, nexus_monthly_premium)
-      for (final p in packages) {
-        if (p.storeProduct.identifier.toLowerCase().contains('monthly')) {
-          monthlyPackage = p;
-          print(
-            '🟢 [SubscriptionCard] Found monthly package: ${p.storeProduct.identifier}',
-          );
-          break;
-        }
-      }
+      // Try exact match first
+      monthlyPackage = packages.firstWhereOrNull(
+        (p) => p.storeProduct.identifier.toLowerCase() == targetProductId,
+      );
 
-      // Try 2: If not found, take first package as fallback
-      if (monthlyPackage == null && packages.isNotEmpty) {
-        monthlyPackage = packages.first;
-        print(
-          '🟡 [SubscriptionCard] No "monthly" match found, using first package: ${monthlyPackage.storeProduct.identifier}',
+      // Fallback to contains match
+      if (monthlyPackage == null) {
+        monthlyPackage = packages.firstWhereOrNull(
+          (p) =>
+              p.storeProduct.identifier.toLowerCase().contains(targetProductId),
         );
       }
 
-      if (monthlyPackage != null && mounted) {
+      // Last resort: use first package
+      monthlyPackage ??= packages.isNotEmpty ? packages.first : null;
+
+      if (monthlyPackage == null) {
+        print(
+          '🔴 [SubscriptionCard] No matching package found for product ID: ${RevenueCatConfig.getSubscriptionProductId()}',
+        );
+        if (mounted) {
+          setState(() => _isLoadingPrice = false);
+        }
+        return;
+      }
+
+      print(
+        '🟢 [SubscriptionCard] Found package: ${monthlyPackage.storeProduct.identifier}',
+      );
+
+      if (mounted) {
         print(
           '🟢 [SubscriptionCard] Setting price: ${monthlyPackage.storeProduct.priceString} (currency: ${monthlyPackage.storeProduct.currencyCode})',
         );
@@ -1110,9 +1239,6 @@ class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
           _monthlyPrice = monthlyPackage!.storeProduct.priceString;
           _isLoadingPrice = false;
         });
-      } else if (mounted) {
-        print('🔴 [SubscriptionCard] No package found, showing fallback');
-        setState(() => _isLoadingPrice = false);
       }
     } catch (e) {
       print('🔴 [SubscriptionCard] Error loading price: $e');
