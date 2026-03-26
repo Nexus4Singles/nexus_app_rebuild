@@ -19,15 +19,77 @@ class DatingSearchService {
   FirebaseFirestore get _fs =>
       _firestore ?? (throw StateError('Firestore not ready'));
 
-  /// List of emails to exclude from dating search results
-  static const Set<String> blockedEmails = {
+  /// Fallback blocked emails (for when Firestore is unavailable)
+  /// These should also be added to Firestore config/blockedEmails for persistence
+  static const Set<String> fallbackBlockedEmails = {
     'nexusgodlydatingapp@gmail.com',
     'ayomide@migo.money',
     'aoluriyike@gmail.com',
     'bajomooluwapelumi@gmail.com',
     'nexus4singles@gmail.com',
     'ayomidebaj@gmail.com',
+    'noreply@nexus4singles.com',
+    'contact@nexus4singles.com',
   };
+
+  /// Cache for blocked emails (stores fetched list + timestamp)
+  Set<String>? _cachedBlockedEmails;
+  DateTime? _cachedBlockedEmailsTime;
+  static const Duration _cacheValidityDuration = Duration(hours: 1);
+
+  /// Fetch blocked emails from Firestore with caching
+  Future<Set<String>> _getBlockedEmails() async {
+    try {
+      // Return cached list if still valid
+      if (_cachedBlockedEmails != null && _cachedBlockedEmailsTime != null) {
+        if (DateTime.now().difference(_cachedBlockedEmailsTime!) <
+            _cacheValidityDuration) {
+          return _cachedBlockedEmails!;
+        }
+      }
+
+      // Fetch from Firestore
+      final doc = await _fs.collection('config').doc('blockedEmails').get();
+      if (doc.exists) {
+        final data = doc.data();
+        final emails = data?['emails'];
+        if (emails is List) {
+          _cachedBlockedEmails =
+              emails
+                  .map((e) => (e ?? '').toString().toLowerCase().trim())
+                  .where((e) => e.isNotEmpty)
+                  .toSet();
+          _cachedBlockedEmailsTime = DateTime.now();
+          if (kDebugMode) {
+            print(
+              '[DatingSearchService] ✅ Loaded ${_cachedBlockedEmails!.length} blocked emails from Firestore',
+            );
+          }
+          return _cachedBlockedEmails!;
+        }
+      }
+
+      // Fall back to hard-coded list if document doesn't exist
+      _cachedBlockedEmails = fallbackBlockedEmails;
+      _cachedBlockedEmailsTime = DateTime.now();
+      if (kDebugMode) {
+        print(
+          '[DatingSearchService] ⚠️  Using fallback blocked emails (${_cachedBlockedEmails!.length} entries)',
+        );
+      }
+      return _cachedBlockedEmails!;
+    } catch (e) {
+      if (kDebugMode) {
+        print(
+          '[DatingSearchService] ⚠️  Error fetching blocked emails from Firestore: $e',
+        );
+      }
+      // Fall back to hard-coded list on error
+      _cachedBlockedEmails = fallbackBlockedEmails;
+      _cachedBlockedEmailsTime = DateTime.now();
+      return _cachedBlockedEmails!;
+    }
+  }
 
   bool _isDisabledUserDoc(Map<String, dynamic> data) {
     final accountStatus =
@@ -47,7 +109,9 @@ class DatingSearchService {
   bool _isBlockedEmail(Map<String, dynamic> data) {
     final email = (data['email'] ?? '').toString().toLowerCase().trim();
     if (email.isEmpty) return false;
-    return blockedEmails.contains(email);
+    // Use cached list if available, otherwise fall back to hard-coded list
+    final blockedSet = _cachedBlockedEmails ?? fallbackBlockedEmails;
+    return blockedSet.contains(email);
   }
 
   /// Firestore equality on `gender` is case-sensitive + exact-match.
@@ -431,6 +495,9 @@ class DatingSearchService {
     int offset = 0,
     int limit = 20,
   }) async {
+    // Fetch blocked emails from Firestore (cached for 1 hour)
+    await _getBlockedEmails();
+
     final genders = _genderQueryValues(genderToShow);
     print(
       '[DatingSearchService] ⚠️  CRITICAL DEBUG: Querying for genderToShow="$genderToShow" -> queryValues=$genders',

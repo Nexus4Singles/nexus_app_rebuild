@@ -6,10 +6,12 @@ import '../auth/auth_providers.dart';
 import '../bootstrap/firebase_ready_provider.dart';
 import '../user/dating_opt_in_provider.dart';
 import '../user/is_admin_provider.dart';
+import '../user/current_user_doc_provider.dart';
 import '../session/effective_relationship_status_provider.dart';
 import '../widgets/guest_guard.dart';
 import 'dating_profile_status_provider.dart';
 import 'dating_profile_exists_provider.dart';
+import 'dating_verification_status_provider.dart';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 
 class DatingProfileGate {
@@ -95,6 +97,69 @@ class DatingProfileGate {
                     Navigator.of(context).pushNamed('/profile');
                   },
                   child: const Text('Go to Profile'),
+                ),
+              ],
+            ),
+      );
+      return;
+    }
+
+    // Check if profile was rejected
+    final verificationStatusAsync = ref.read(datingVerificationStatusProvider);
+    final verificationStatus = verificationStatusAsync.maybeWhen(
+      data: (status) => status,
+      orElse: () => null,
+    );
+
+    if (verificationStatus == 'rejected') {
+      // Get the rejection reason from the user doc
+      final userDocData = await ref.read(currentUserDocProvider.future);
+      final dating = (userDocData?['dating'] as Map?)?.cast<String, dynamic>();
+      final rejectionReason =
+          dating?['rejectionReason']?.toString() ??
+          'Your profile did not meet our requirements.';
+
+      await showDialog<void>(
+        context: context,
+        builder:
+            (_) => AlertDialog(
+              title: const Text('Profile Rejected'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Your dating profile was not approved after admin review.',
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Reason:',
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    rejectionReason,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'You can create a new dating profile to try again. Make sure to follow our community guidelines.',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Go Back'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushNamed('/dating/setup/age');
+                  },
+                  child: const Text('Create New Profile'),
                 ),
               ],
             ),

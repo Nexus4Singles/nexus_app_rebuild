@@ -109,12 +109,22 @@ class CoachApplicationDetail {
     final credentialsPdfUrl = credentialsPdf?['url'] as String?;
 
     // Debug logging for credentials PDF
-    print('[CoachApplicationDetail] Firestore data keys: ${data.keys.join(', ')}');
-    print('[CoachApplicationDetail] credentialsPdf field: ${data['credentialsPdf']}');
-    print('[CoachApplicationDetail] credentialsPdf type: ${data['credentialsPdf'].runtimeType}');
-    print('[CoachApplicationDetail] credentialsPdf URL extracted: $credentialsPdfUrl');
+    print(
+      '[CoachApplicationDetail] Firestore data keys: ${data.keys.join(', ')}',
+    );
+    print(
+      '[CoachApplicationDetail] credentialsPdf field: ${data['credentialsPdf']}',
+    );
+    print(
+      '[CoachApplicationDetail] credentialsPdf type: ${data['credentialsPdf'].runtimeType}',
+    );
+    print(
+      '[CoachApplicationDetail] credentialsPdf URL extracted: $credentialsPdfUrl',
+    );
     if (credentialsPdfUrl == null || credentialsPdfUrl.isEmpty) {
-      print('[⚠️ WARNING] No credentials PDF URL found! credentialsPdf=$credentialsPdf');
+      print(
+        '[⚠️ WARNING] No credentials PDF URL found! credentialsPdf=$credentialsPdf',
+      );
     } else {
       print('[✅ OK] Credentials PDF URL: $credentialsPdfUrl');
     }
@@ -238,6 +248,22 @@ final updateCoachApplicationStatusProvider = FutureProvider.family<
       .collection('coachApplications')
       .doc(applicationId)
       .update(updateData);
+
+  // Invalidate the stream so UI updates
+  ref.invalidate(pendingCoachApplicationsProvider);
+});
+
+/// Delete a coach application completely
+final deleteCoachApplicationProvider = FutureProvider.family<void, String>((
+  ref,
+  applicationId,
+) async {
+  final fs = ref.watch(firestoreInstanceProvider);
+  if (fs == null) {
+    throw Exception('Firestore not initialized');
+  }
+
+  await fs.collection('coachApplications').doc(applicationId).delete();
 
   // Invalidate the stream so UI updates
   ref.invalidate(pendingCoachApplicationsProvider);

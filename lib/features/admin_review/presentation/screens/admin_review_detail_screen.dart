@@ -177,10 +177,41 @@ class _AdminReviewDetailScreenState
         print('[ADMIN_REVIEW] audioUrls (${audios.length}): $audios');
 
         final name = (data['name'] ?? data['username'] ?? 'User').toString();
-        // Age: try root-level first (safest), then nested dating.profile.age
+        // Age: try multiple sources in priority order:
+        // 1. Root-level age (most reliable, always written by dating onboarding)
+        // 2. dating.profile.age (nested, if profile exists)
+        // 3. dating-level age (if it was written at dating root)
+        // 4. Default to ? if none found
         final profile =
             (dating?['profile'] is Map) ? dating!['profile'] as Map : null;
-        final age = (data['age'] ?? profile?['age'])?.toString() ?? '?';
+
+        // Try to extract age from multiple sources
+        String age;
+        if (data['age'] != null) {
+          // Try root-level first
+          age =
+              (data['age'] is int
+                  ? data['age'].toString()
+                  : int.tryParse(data['age'].toString())?.toString()) ??
+              '?';
+        } else if (profile != null && profile['age'] != null) {
+          // Try dating.profile.age
+          age =
+              (profile['age'] is int
+                  ? profile['age'].toString()
+                  : int.tryParse(profile['age'].toString())?.toString()) ??
+              '?';
+        } else if (dating != null && dating['age'] != null) {
+          // Try dating-level age (if it was written at dating root)
+          age =
+              (dating['age'] is int
+                  ? dating['age'].toString()
+                  : int.tryParse(dating['age'].toString())?.toString()) ??
+              '?';
+        } else {
+          // Fallback to ?
+          age = '?';
+        }
         final email = (data['email'] ?? '').toString();
         final status = dating?['verificationStatus']?.toString();
 
@@ -242,13 +273,19 @@ class _AdminReviewDetailScreenState
             if (reason != null && reason.trim().isNotEmpty) {
               payload['dating.rejectionReason'] = reason.trim();
             }
-            // After rejection: delete review pack AND auto-disable account
+            // After rejection: delete review pack and clear profile data
+            // (Account remains active so user can recreate profile)
             payload['dating.reviewPack'] = FieldValue.delete();
-            payload['account.disabled'] = true;
-            payload['account.disabledBy'] = adminId;
-            payload['account.disabledAt'] = FieldValue.serverTimestamp();
-            payload['account.disabledReason'] =
-                'Profile rejected: ${reason?.trim() ?? 'Failed verification'}';
+            payload['dating.profile'] = FieldValue.delete();
+            // Clear root-level profile fields (used by search & display)
+            payload['photos'] = FieldValue.delete();
+            payload['audioPrompts'] = FieldValue.delete();
+            payload['audioDurations'] = FieldValue.delete();
+            payload['profileUrl'] = FieldValue.delete();
+            // Clear dating-level audio fields
+            payload['dating.audioPrompts'] = FieldValue.delete();
+            // Reset completion flag so profile screen shows "Create Dating Profile" CTA
+            payload['dating.profileCompleted'] = false;
             // Send notification to user
             try {
               print(
@@ -271,10 +308,40 @@ class _AdminReviewDetailScreenState
           }
 
           print('[DEBUG] About to update Firestore user document with payload');
-          await fs.collection('users').doc(widget.userId).update(payload);
-          print(
-            '[DEBUG] Firestore update completed, setStatus execution finished',
-          );
+          print('[DEBUG] Payload keys: ${payload.keys.toList()}');
+          print('[DEBUG] widget.userId: ${widget.userId}');
+
+          try {
+            await fs.collection('users').doc(widget.userId).update(payload);
+            print(
+              '[DEBUG] Firestore update completed successfully for user ${widget.userId}',
+            );
+          } catch (e, st) {
+            print(
+              '[ERROR] FIRESTORE UPDATE FAILED for user ${widget.userId}: $e',
+            );
+            print('[ERROR] Stack trace: $st');
+            print('[ERROR] Payload was: $payload');
+
+            // Re-throw so the caller can handle the error
+            rethrow;
+          }
+
+          // If rejecting, also clear the v2 datingProfiles/{uid} doc to force profile recreation
+          if (newStatus == 'rejected') {
+            try {
+              print(
+                '[DEBUG] Clearing v2 profile: datingProfiles/${widget.userId}',
+              );
+              await fs.collection('datingProfiles').doc(widget.userId).delete();
+              print('[DEBUG] v2 profile cleared successfully');
+            } catch (e) {
+              print(
+                '[DEBUG] Note: v2 profile clear failed (may not exist for v1 users): $e',
+              );
+              // Don't fail the rejection if v2 profile doesn't exist
+            }
+          }
         }
 
         Future<String?> askRejectionReason() async {
@@ -362,7 +429,16 @@ class _AdminReviewDetailScreenState
             }
           }
 
-          await fs.collection('users').doc(widget.userId).update(payload);
+          try {
+            await fs.collection('users').doc(widget.userId).update(payload);
+            print(
+              '[DEBUG] setAccountDisabled(disabled=$disabled) completed successfully',
+            );
+          } catch (e, st) {
+            print('[ERROR] setAccountDisabled failed: $e');
+            print('[ERROR] Stack trace: $st');
+            rethrow;
+          }
         }
 
         return Scaffold(
@@ -494,8 +570,22 @@ class _AdminReviewDetailScreenState
                                 enabling: false,
                               );
                               if (reason == null) return;
-                              await setAccountDisabled(true, reason: reason);
-                              if (context.mounted) Navigator.of(context).pop();
+                              try {
+                                await setAccountDisabled(true, reason: reason);
+                                if (context.mounted)
+                                  Navigator.of(context).pop();
+                              } catch (e) {
+                                print('[ERROR] Account disable failed: $e');
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Disable failed: $e'),
+                                      duration: const Duration(seconds: 5),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              }
                             },
                             icon: const Icon(Icons.block_rounded),
                             label: const Text('Disable account'),
@@ -509,8 +599,22 @@ class _AdminReviewDetailScreenState
                                 enabling: true,
                               );
                               if (note == null) return;
-                              await setAccountDisabled(false);
-                              if (context.mounted) Navigator.of(context).pop();
+                              try {
+                                await setAccountDisabled(false);
+                                if (context.mounted)
+                                  Navigator.of(context).pop();
+                              } catch (e) {
+                                print('[ERROR] Account enable failed: $e');
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Enable failed: $e'),
+                                      duration: const Duration(seconds: 5),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              }
                             },
                             icon: const Icon(Icons.check_circle_rounded),
                             label: const Text('Enable account'),
@@ -692,9 +796,22 @@ class _AdminReviewDetailScreenState
                         onPressed: () async {
                           print('[ROOT] Approve button onPressed triggered');
                           print('[ROOT] About to call setStatus(verified)');
-                          await setStatus('verified');
-                          print('[ROOT] setStatus completed, about to pop');
-                          if (context.mounted) Navigator.of(context).pop();
+                          try {
+                            await setStatus('verified');
+                            print('[ROOT] setStatus completed, about to pop');
+                            if (context.mounted) Navigator.of(context).pop();
+                          } catch (e) {
+                            print('[ERROR] Approval failed: $e');
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Approval failed: $e'),
+                                  duration: const Duration(seconds: 5),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          }
                         },
                         icon: const Icon(Icons.verified_rounded),
                         label: const Text('Approve'),
@@ -706,8 +823,21 @@ class _AdminReviewDetailScreenState
                         onPressed: () async {
                           final reason = await askRejectionReason();
                           if (reason == null) return; // cancelled
-                          await setStatus('rejected', reason: reason);
-                          if (context.mounted) Navigator.of(context).pop();
+                          try {
+                            await setStatus('rejected', reason: reason);
+                            if (context.mounted) Navigator.of(context).pop();
+                          } catch (e) {
+                            print('[ERROR] Rejection failed: $e');
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Rejection failed: $e'),
+                                  duration: const Duration(seconds: 5),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          }
                         },
                         icon: const Icon(Icons.block_rounded),
                         label: const Text('Reject'),

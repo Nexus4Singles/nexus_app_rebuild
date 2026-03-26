@@ -19,6 +19,7 @@ import '../domain/dating_search_result.dart';
 import '../domain/dating_preferences.dart';
 import 'dating_preferences_provider.dart';
 import 'dating_dismissed_profiles_provider.dart';
+import 'dating_clicked_profiles_provider.dart';
 import 'daily_limit_provider.dart';
 import '../domain/enhanced_compatibility_scorer.dart';
 import 'package:nexus_app_v2/core/session/effective_relationship_status_provider.dart';
@@ -616,7 +617,29 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   // Determine subscription tier for pagination cap
   // Subscribed: 100 pages (2000 profiles), Free: 25 pages (500 profiles)
   // (Will use existing isPremium variable from below, for now use isAdmin)
-  final maxPages = isAdmin ? 500 : (currentUser?.onPremium == true ? 100 : 25);
+  // Check both new format (subscription.isActive) and legacy format (onPremium) for max pages
+  bool isPremiumForMaxPages = false;
+  final subscriptionDataForMaxPages = currentUser?.subscription;
+  if (subscriptionDataForMaxPages != null) {
+    final isActive = subscriptionDataForMaxPages['isActive'] as bool? ?? false;
+    if (isActive) {
+      final expiryDate = subscriptionDataForMaxPages['expiryDate'];
+      if (expiryDate != null) {
+        if (expiryDate is Timestamp &&
+            expiryDate.toDate().isAfter(DateTime.now())) {
+          isPremiumForMaxPages = true;
+        }
+      } else {
+        isPremiumForMaxPages = true;
+      }
+    }
+  } else if (currentUser?.onPremium == true) {
+    final expDate = currentUser?.subExpDate;
+    if (expDate != null && expDate.isAfter(DateTime.now())) {
+      isPremiumForMaxPages = true;
+    }
+  }
+  final maxPages = isAdmin ? 500 : (isPremiumForMaxPages ? 100 : 25);
 
   // Count active (recent) vs inactive (old) profiles
   int activeCount = 0;
@@ -721,7 +744,33 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   // - Show up to 10: [unseen profiles...] then [previously seen...]
   // - This ensures no one is left out due to not checking daily
 
-  final isPremium = currentUser?.onPremium == true;
+  // Check both new format (subscription.isActive) and legacy format (onPremium)
+  bool isPremium = false;
+
+  // Check new subscription format first
+  final subscriptionData = currentUser?.subscription;
+  if (subscriptionData != null) {
+    final isActive = subscriptionData['isActive'] as bool? ?? false;
+    if (isActive) {
+      final expiryDate = subscriptionData['expiryDate'];
+      if (expiryDate != null) {
+        if (expiryDate is Timestamp &&
+            expiryDate.toDate().isAfter(DateTime.now())) {
+          isPremium = true;
+        }
+      } else {
+        isPremium = true; // No expiry — indefinite premium
+      }
+    }
+  }
+
+  // Fallback to legacy format
+  if (!isPremium && currentUser?.onPremium == true) {
+    final expDate = currentUser?.subExpDate;
+    if (expDate != null && expDate.isAfter(DateTime.now())) {
+      isPremium = true;
+    }
+  }
 
   if (!isPremium && results.items.isNotEmpty) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
@@ -775,10 +824,24 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
         // Case 1: Already shown 10+ profiles today (limit hit within 24 hours)
         if (shownIds.length >= 10) {
           // Return the profiles already shown today so user keeps seeing their grid
-          final todaysProfiles =
+          // SAFETY FIX: If filter changed, previously-shown profiles won't be in current results.
+          // Fall back to showing from prioritized pool to prevent empty grid.
+          var todaysProfiles =
               results.items.where((p) => shownIds.contains(p.uid)).toList();
+
+          // Fallback: if filter change orphaned the profiles, show from prioritized pool
+          if (todaysProfiles.isEmpty && prioritizedResults.isNotEmpty) {
+            todaysProfiles =
+                prioritizedResults
+                    .where((p) => shownIds.contains(p.uid))
+                    .toList();
+          }
+
           results = DatingSearchResult(
-            items: todaysProfiles,
+            items:
+                todaysProfiles.isEmpty
+                    ? prioritizedResults.take(10).toList()
+                    : todaysProfiles,
             emptyHint: null,
             hitDailyLimit: true,
             totalAvailableCount: results.items.length,
@@ -906,8 +969,22 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
             );
           } else {
             // No unseen profiles left - return the already-seen profiles so grid stays populated
+            // SAFETY FIX: If alreadySeenProfiles is empty (filter changed), pull from broader pool
+            var profilesToReturn = alreadySeenProfiles;
+            if (profilesToReturn.isEmpty && prioritizedResults.isNotEmpty) {
+              // Backward compatibility: show from all available profiles (not just current filter)
+              profilesToReturn =
+                  prioritizedResults
+                      .where((p) => shownIds.contains(p.uid))
+                      .toList();
+            }
+            if (profilesToReturn.isEmpty && prioritizedResults.isNotEmpty) {
+              // Last resort: show any available profiles to prevent empty grid
+              profilesToReturn = prioritizedResults.take(10).toList();
+            }
+
             results = DatingSearchResult(
-              items: alreadySeenProfiles,
+              items: profilesToReturn,
               emptyHint: null,
               hitDailyLimit: shownIds.length >= 10,
               totalAvailableCount: results.items.length,
@@ -921,13 +998,25 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
         // No other cases needed - above cases are exhaustive
         else {
           // Defensive fallback: return already-seen profiles so grid stays populated
-          final todaysProfiles =
+          // SAFETY FIX: Use prioritized pool to handle filter changes gracefully
+          var todaysProfiles =
               results.items.where((p) => shownIds.contains(p.uid)).toList();
+
+          // Try to get from prioritized pool if filtered results are empty
+          if (todaysProfiles.isEmpty && prioritizedResults.isNotEmpty) {
+            todaysProfiles =
+                prioritizedResults
+                    .where((p) => shownIds.contains(p.uid))
+                    .toList();
+          }
+
+          // Last resort: show any available profiles to prevent empty grid
+          if (todaysProfiles.isEmpty && prioritizedResults.isNotEmpty) {
+            todaysProfiles = prioritizedResults.take(10).toList();
+          }
+
           results = DatingSearchResult(
-            items:
-                todaysProfiles.isNotEmpty
-                    ? todaysProfiles
-                    : results.items.take(10).toList(),
+            items: todaysProfiles,
             emptyHint: null,
             hitDailyLimit: shownIds.length >= 10,
             totalAvailableCount: results.items.length,
@@ -1044,6 +1133,75 @@ final cachedDatingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     // DISABLED: print('[cachedDatingSearchResultsProvider] Error fetching results: $e');
     rethrow;
   }
+});
+
+// ============================================================================
+// FILTERED RESULTS PROVIDER (SEPARATE from caching)
+// ============================================================================
+// Applies premium user filtering (clicked profiles) to cached results
+// Isolated from result-fetching logic to avoid Riverpod lifecycle issues
+final filteredDatingSearchResultsProvider = FutureProvider<DatingSearchResult>((
+  ref,
+) async {
+  // Get uncached results
+  final baseResults = await ref.watch(cachedDatingSearchResultsProvider.future);
+
+  if (baseResults.items.isEmpty) {
+    return baseResults;
+  }
+
+  // Watch dependencies for filtering
+  final currentUser = ref.watch(currentUserProvider).valueOrNull;
+  final clickedProfiles = ref.watch(clickedProfilesProvider);
+
+  // Check if user is premium
+  bool isPremium = false;
+  if (currentUser != null) {
+    final subscriptionData = currentUser.subscription;
+    if (subscriptionData != null) {
+      final isActive = subscriptionData['isActive'] as bool? ?? false;
+      if (isActive) {
+        final expiryDate = subscriptionData['expiryDate'];
+        if (expiryDate != null) {
+          if (expiryDate is Timestamp &&
+              expiryDate.toDate().isAfter(DateTime.now())) {
+            isPremium = true;
+          }
+        } else {
+          isPremium = true;
+        }
+      }
+    } else if (currentUser.onPremium == true) {
+      final expDate = currentUser.subExpDate;
+      if (expDate != null && expDate.isAfter(DateTime.now())) {
+        isPremium = true;
+      }
+    }
+  }
+
+  // If not premium or no clicked profiles, return as-is
+  if (!isPremium || clickedProfiles.isEmpty) {
+    return baseResults;
+  }
+
+  // Premium user with clicked profiles - filter them out
+  final filteredItems =
+      baseResults.items
+          .where((profile) => !clickedProfiles.keys.contains(profile.uid))
+          .toList();
+
+  return DatingSearchResult(
+    items: filteredItems,
+    emptyHint: baseResults.emptyHint,
+    hitDailyLimit: baseResults.hitDailyLimit,
+    totalAvailableCount: baseResults.totalAvailableCount,
+    dailyLimitHitAt: baseResults.dailyLimitHitAt,
+    noProfilesInCountry: baseResults.noProfilesInCountry,
+    allAvailableShownToday: baseResults.allAvailableShownToday,
+    shownProfileIds: baseResults.shownProfileIds,
+    maxPaginationPages: baseResults.maxPaginationPages,
+    noProfilesBreakdown: baseResults.noProfilesBreakdown,
+  );
 });
 
 // ============================================================================
@@ -1229,8 +1387,72 @@ final accumulatedSearchResultsProvider = FutureProvider<DatingSearchResult>((
 
   // DEBUG: print skipped - reducing log noise
 
+  // ========== NEW: FILTER CLICKED PROFILES FOR PREMIUM USERS ==========
+  // Premium users should not see profiles they've already clicked to view
+  // This improves scroll experience by reducing repeated profiles
+  // Only applies to premium users (free users stay with 10-profile daily limit)
+
+  List<DatingProfile> finalResults = combined;
+
+  try {
+    final currentUser = ref.watch(currentUserProvider).valueOrNull;
+    if (currentUser != null) {
+      // Check if user is premium
+      bool isPremium = false;
+      final subscriptionData = currentUser.subscription;
+      if (subscriptionData != null) {
+        final isActive = subscriptionData['isActive'] as bool? ?? false;
+        if (isActive) {
+          final expiryDate = subscriptionData['expiryDate'];
+          if (expiryDate != null) {
+            if (expiryDate is Timestamp &&
+                expiryDate.toDate().isAfter(DateTime.now())) {
+              isPremium = true;
+            }
+          } else {
+            isPremium = true;
+          }
+        }
+      } else if (currentUser.onPremium == true) {
+        final expDate = currentUser.subExpDate;
+        if (expDate != null && expDate.isAfter(DateTime.now())) {
+          isPremium = true;
+        }
+      }
+
+      // If premium, filter out clicked profiles
+      if (isPremium) {
+        final clickedProfiles = ref.watch(clickedProfilesProvider);
+        if (clickedProfiles.isNotEmpty) {
+          finalResults =
+              combined
+                  .where(
+                    (profile) => !clickedProfiles.keys.contains(profile.uid),
+                  )
+                  .toList();
+
+          if (kDebugMode) {
+            final filtered = combined.length - finalResults.length;
+            print(
+              '[AccumulatedResults] Premium user: filtered $filtered clicked profiles | '
+              '${combined.length} → ${finalResults.length} total',
+            );
+          }
+        }
+      }
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print('[AccumulatedResults] Error filtering clicked profiles: $e');
+    }
+    // Silently fall back to showing all - don't break the user experience
+    finalResults = combined;
+  }
+
+  // ====================================================================
+
   return DatingSearchResult(
-    items: combined,
+    items: finalResults,
     emptyHint: initialBatch.emptyHint,
     hitDailyLimit: initialBatch.hitDailyLimit,
     dailyLimitHitAt: initialBatch.dailyLimitHitAt,

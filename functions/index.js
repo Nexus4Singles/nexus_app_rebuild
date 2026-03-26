@@ -1199,7 +1199,7 @@ exports.handleUpdateUserSubscriptionStatus = functions
         return res.status(400).json({ error: 'Missing request body' });
       }
 
-      console.log('[Flutterwave] Webhook received:', req.body?.data?.id);
+      console.log('[Flutterwave] Webhook received (v2-subscriptions):', req.body?.data?.id);
 
       // ====================================================================
       // SECURITY: Verify webhook signature
@@ -1324,10 +1324,22 @@ exports.handleUpdateUserSubscriptionStatus = functions
       expiryDate.setDate(expiryDate.getDate() + 30);
 
       // ====================================================================
-      // UPDATE USER SUBSCRIPTION FIELDS
+      // UPDATE USER SUBSCRIPTION FIELDS (NEW FORMAT)
       // ====================================================================
+      const now = admin.firestore.FieldValue.serverTimestamp();
       const updateData = {
-        // Subscription activation
+        // NEW SUBSCRIPTION FORMAT (primary)
+        subscription: {
+          isActive: true,
+          tier: 'monthly_premium',
+          expiryDate: admin.firestore.Timestamp.fromDate(expiryDate),
+          startDate: now,
+          validatedBy: 'flutterwave_webhook',
+          autoRenew: true,
+          validatedAt: now,
+        },
+        
+        // LEGACY FORMAT (backward compatibility for old app versions)
         onPremium: true,
         subExpDate: admin.firestore.Timestamp.fromDate(expiryDate),
         entitledUser: true,
@@ -1338,7 +1350,7 @@ exports.handleUpdateUserSubscriptionStatus = functions
         
         // Payment history
         lastPaymentMethod: 'flutterwave',
-        lastPaymentDate: admin.firestore.FieldValue.serverTimestamp(),
+        lastPaymentDate: now,
         lastPaymentAmount: amount,
         lastPaymentCurrency: currency,
         
@@ -1346,7 +1358,7 @@ exports.handleUpdateUserSubscriptionStatus = functions
         prevSubscribed: true,
         
         // Timestamp
-        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: now,
       };
 
       await userRef.update(updateData);
@@ -1363,6 +1375,7 @@ exports.handleUpdateUserSubscriptionStatus = functions
           transactionId,
           amount,
           currency,
+          tier: 'monthly_premium',
           expiryDate: admin.firestore.Timestamp.fromDate(expiryDate),
           timestamp: admin.firestore.FieldValue.serverTimestamp(),
           email,

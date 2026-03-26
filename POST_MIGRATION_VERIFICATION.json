@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-03-25T19:59:02.493Z",
+  "checkType": "verify_6_uk_users_v2_visibility",
+  "summary": {
+    "totalChecked": 6,
+    "nowVisible": 6,
+    "stillNotVisible": 0
+  },
+  "userDetails": [
+    {
+      "uid": "2f1NmgHjBncBGPp74MZpMEXecZk1",
+      "email": "rkate8260@gmail.com",
+      "username": "Victoria",
+      "verificationStatus": "verified",
+      "countryOfResidence": "United Kingdom",
+      "photosCount": 2,
+      "hasAudio": false,
+      "v2Visible": true
+    },
+    {
+      "uid": "IJIo4RXEducEZh7j18YxF1KPL893",
+      "email": "katelynpro01@gmail.com",
+      "username": "Ruth",
+      "verificationStatus": "verified",
+      "countryOfResidence": "United Kingdom",
+      "photosCount": 2,
+      "hasAudio": false,
+      "v2Visible": true
+    },
+    {
+      "uid": "OMSzC4NcAeVZZ31Kji5gC6ctm7W2",
+      "email": "najjukoshamim123@gmail.com",
+      "username": "Gloria",
+      "verificationStatus": "verified",
+      "countryOfResidence": "United Kingdom",
+      "photosCount": 2,
+      "hasAudio": false,
+      "v2Visible": true
+    },
+    {
+      "uid": "P65Zye2Y6uNyg5orEunCo8jIUJj2",
+      "email": "ayomidebaj@gmail.com",
+      "username": "Olumide",
+      "verificationStatus": "verified",
+      "countryOfResidence": "United Kingdom",
+      "photosCount": 2,
+      "hasAudio": false,
+      "v2Visible": true
+    },
+    {
+      "uid": "aaJwGREE1fO8mQ6wtUZTp3q0lQp1",
+      "email": "hardwicksamuel293@gmail.com",
+      "username": "Samuel",
+      "verificationStatus": "verified",
+      "countryOfResidence": "United Kingdom",
+      "photosCount": 2,
+      "hasAudio": false,
+      "v2Visible": true
+    },
+    {
+      "uid": "ppLn3l3UzaPJChVpbhd2megVg7J2",
+      "email": "mbase2003w@gmail.com",
+      "username": "Nicole",
+      "verificationStatus": "verified",
+      "countryOfResidence": "United Kingdom",
+      "photosCount": 2,
+      "hasAudio": false,
+      "v2Visible": true
+    }
+  ]
+}

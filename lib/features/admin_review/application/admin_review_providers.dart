@@ -38,8 +38,8 @@ DateTime? _asDate(dynamic v) {
 }
 
 // Real-time stream for pending reviews - updates automatically when other admins approve/reject
-// Shows: pending profiles + rejected/disabled profiles (admins can see why they were rejected)
-// Excludes: verified profiles, current admin's own profile
+// Shows: only pending profiles awaiting admin review
+// Excludes: verified (approved) profiles and rejected profiles (wiped from queue like approvals)
 final pendingReviewUsersProvider = StreamProvider<List<AdminReviewItem>>((ref) {
   final firebaseReady = ref.watch(firebaseReadyProvider);
   if (!firebaseReady) return Stream.value(const []);
@@ -50,12 +50,12 @@ final pendingReviewUsersProvider = StreamProvider<List<AdminReviewItem>>((ref) {
   // Get current user ID to exclude from review queue
   final currentUserId = ref.watch(currentUserIdProvider);
 
-  // Real-time Firestore snapshots - get pending AND rejected/disabled profiles
-  // Excludes verified profiles (they're done)
+  // Real-time Firestore snapshots - get only pending profiles for review
+  // Excludes verified (approved) and rejected profiles (wiped from queue)
   final stream =
       fs
           .collection('users')
-          .where('dating.verificationStatus', whereIn: ['pending', 'rejected'])
+          .where('dating.verificationStatus', isEqualTo: 'pending')
           .orderBy('dating.verificationQueuedAt', descending: true)
           .limit(200)
           .snapshots();

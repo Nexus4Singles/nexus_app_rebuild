@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-03-25T20:03:43.749Z",
+  "audit": "uk_users_media_and_eligibility",
+  "summary": {
+    "totalScanned": 59,
+    "withPhotosOnly": 16,
+    "withAudioOnly": 0,
+    "withBothMedia": 0,
+    "fullyEligibleButNotVerified": 0
+  },
+  "eligibleUserSamples": [],
+  "conclusion": "All UK users with complete media are already verified"
+}

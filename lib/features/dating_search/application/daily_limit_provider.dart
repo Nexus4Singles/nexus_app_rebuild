@@ -179,7 +179,31 @@ final currentUserDailyLimitProvider = FutureProvider<DateTime?>((ref) async {
   // Check if user is premium - if so, no limit applies
   final userAsync = ref.watch(currentUserProvider);
   final user = userAsync.valueOrNull;
-  if (user?.onPremium == true) {
+
+  // Check both new format (subscription.isActive) and legacy format (onPremium)
+  bool isPremium = false;
+  final subscriptionData = user?.subscription;
+  if (subscriptionData != null) {
+    final isActive = subscriptionData['isActive'] as bool? ?? false;
+    if (isActive) {
+      final expiryDate = subscriptionData['expiryDate'];
+      if (expiryDate != null) {
+        if (expiryDate is Timestamp &&
+            expiryDate.toDate().isAfter(DateTime.now())) {
+          isPremium = true;
+        }
+      } else {
+        isPremium = true;
+      }
+    }
+  } else if (user?.onPremium == true) {
+    final expDate = user?.subExpDate;
+    if (expDate != null && expDate.isAfter(DateTime.now())) {
+      isPremium = true;
+    }
+  }
+
+  if (isPremium) {
     print('[currentUserDailyLimitProvider] User is premium, no daily limit');
     return null;
   }
@@ -199,7 +223,31 @@ final currentUserShownProfileIdsProvider = FutureProvider<List<String>>((
   // Check if user is premium
   final userAsync = ref.watch(currentUserProvider);
   final user = userAsync.valueOrNull;
-  if (user?.onPremium == true) {
+
+  // Check both new format (subscription.isActive) and legacy format (onPremium)
+  bool isPremium = false;
+  final subscriptionData = user?.subscription;
+  if (subscriptionData != null) {
+    final isActive = subscriptionData['isActive'] as bool? ?? false;
+    if (isActive) {
+      final expiryDate = subscriptionData['expiryDate'];
+      if (expiryDate != null) {
+        if (expiryDate is Timestamp &&
+            expiryDate.toDate().isAfter(DateTime.now())) {
+          isPremium = true;
+        }
+      } else {
+        isPremium = true;
+      }
+    }
+  } else if (user?.onPremium == true) {
+    final expDate = user?.subExpDate;
+    if (expDate != null && expDate.isAfter(DateTime.now())) {
+      isPremium = true;
+    }
+  }
+
+  if (isPremium) {
     return []; // Premium users not tracked
   }
 

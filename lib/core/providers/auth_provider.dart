@@ -324,6 +324,24 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
       // Also persist presurvey data
       await _persistPresurveyToFirestore(user.uid);
 
+      // ───────────────────────────────────────────────────────────────
+      // FIX: Link RevenueCat BEFORE state update to prevent Android race
+      // ───────────────────────────────────────────────────────────────
+      // CRITICAL: Must complete before UI can navigate to purchase screen
+      // This prevents the race condition where user sees anonymous RevenueCat ID
+      try {
+        await RevenueCatService.login(user.uid);
+        print(
+          '[AuthNotifier.signUpWithEmail] ✅ RevenueCat linked to user: ${user.uid}',
+        );
+      } catch (e) {
+        // Non-fatal: RevenueCat failure doesn't block signup
+        // Listener will retry on auth state changes
+        print(
+          '[AuthNotifier.signUpWithEmail] ⚠️ RevenueCat login failed (non-fatal): $e',
+        );
+      }
+
       // IMPORTANT: Keep user signed in so EmailVerificationScreen can detect when verified
       // Don't sign out yet - user session stays active for verification detection
       state = AsyncValue.data(user);
@@ -353,6 +371,22 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         await _ensureUserDocNormalized(user);
 
         await _persistPresurveyToFirestore(user.uid);
+
+        // ───────────────────────────────────────────────────────────────
+        // FIX: Link RevenueCat BEFORE state update to prevent Android race
+        // ───────────────────────────────────────────────────────────────
+        try {
+          await RevenueCatService.login(user.uid);
+          print(
+            '[AuthNotifier.signInWithEmail] ✅ RevenueCat linked to user: ${user.uid}',
+          );
+        } catch (e) {
+          // Non-fatal: RevenueCat failure doesn't block signin
+          // Listener will retry on auth state changes
+          print(
+            '[AuthNotifier.signInWithEmail] ⚠️ RevenueCat login failed (non-fatal): $e',
+          );
+        }
       }
 
       state = AsyncValue.data(user);
@@ -400,6 +434,22 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         }
 
         await _persistPresurveyToFirestore(user.uid);
+
+        // ───────────────────────────────────────────────────────────────
+        // FIX: Link RevenueCat BEFORE state update to prevent Android race
+        // ───────────────────────────────────────────────────────────────
+        try {
+          await RevenueCatService.login(user.uid);
+          print(
+            '[AuthNotifier.signInWithEmailOrUsername] ✅ RevenueCat linked to user: ${user.uid}',
+          );
+        } catch (e) {
+          // Non-fatal: RevenueCat failure doesn't block signin
+          // Listener will retry on auth state changes
+          print(
+            '[AuthNotifier.signInWithEmailOrUsername] ⚠️ RevenueCat login failed (non-fatal): $e',
+          );
+        }
       }
 
       state = AsyncValue.data(user);
@@ -441,6 +491,23 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         ),
       );
       await _persistPresurveyToFirestore(user.uid);
+
+      // ───────────────────────────────────────────────────────────────
+      // FIX: Link RevenueCat BEFORE state update to prevent Android race
+      // ───────────────────────────────────────────────────────────────
+      try {
+        await RevenueCatService.login(user.uid);
+        print(
+          '[AuthNotifier.signInWithGoogle] ✅ RevenueCat linked to user: ${user.uid}',
+        );
+      } catch (e) {
+        // Non-fatal: RevenueCat failure doesn't block signin
+        // Listener will retry on auth state changes
+        print(
+          '[AuthNotifier.signInWithGoogle] ⚠️ RevenueCat login failed (non-fatal): $e',
+        );
+      }
+
       final needsUsername = (user.displayName ?? '').trim().isEmpty;
       state = AsyncValue.data(user);
       return needsUsername;
@@ -500,10 +567,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
     if (user == null) return;
 
     try {
-      // Unlink RevenueCat and clear local caches before deletion
-      try {
-        await RevenueCatService.logout();
-      } catch (_) {}
+      // Clear local caches BEFORE deletion (but logout RevenueCat AFTER)
       try {
         await JourneyEntitlementsService().clearAll();
       } catch (_) {}
@@ -516,6 +580,13 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
       // Then delete Auth user (redundant but ensures deletion even if Cloud Function fails)
       await _authService.deleteAccount();
+
+      // Logout from RevenueCat AFTER deletion completes
+      // This ensures all subscription data is finalized on RevenueCat servers
+      // Revenue data remains permanently in RevenueCat dashboard
+      try {
+        await RevenueCatService.logout();
+      } catch (_) {}
 
       state = const AsyncValue.data(null);
     } catch (e) {

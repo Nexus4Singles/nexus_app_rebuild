@@ -533,8 +533,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
           msg.toLowerCase().contains('premium required') ||
           msg.toLowerCase().contains('upgrade') ||
           msg.toLowerCase().contains('subscribe') ||
-          msg.toLowerCase().contains('chat with only one person') ||
-          msg.toLowerCase().contains('message only one person');
+          msg.toLowerCase().contains('can only chat with');
 
       if (looksLikePremiumGate) {
         await _showPremiumRequiredDialog(msg);
@@ -574,8 +573,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
           msg.toLowerCase().contains('premium required') ||
           msg.toLowerCase().contains('upgrade') ||
           msg.toLowerCase().contains('subscribe') ||
-          msg.toLowerCase().contains('chat with only one person') ||
-          msg.toLowerCase().contains('message only one person');
+          msg.toLowerCase().contains('can only chat with');
 
       if (looksLikePremiumGate) {
         if (mounted) await _showPremiumRequiredDialog(msg);
@@ -889,8 +887,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
             msg.toLowerCase().contains('premium required') ||
             msg.toLowerCase().contains('upgrade') ||
             msg.toLowerCase().contains('subscribe') ||
-            msg.toLowerCase().contains('chat with only one person') ||
-            msg.toLowerCase().contains('message only one person');
+            msg.toLowerCase().contains('can only chat with');
 
         if (looksLikePremiumGate) {
           await _showPremiumRequiredDialog(msg);
@@ -991,8 +988,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
             msg.toLowerCase().contains('premium required') ||
             msg.toLowerCase().contains('upgrade') ||
             msg.toLowerCase().contains('subscribe') ||
-            msg.toLowerCase().contains('chat with only one person') ||
-            msg.toLowerCase().contains('message only one person');
+            msg.toLowerCase().contains('can only chat with');
 
         if (looksLikePremiumGate) {
           await _showPremiumRequiredDialog(msg);
@@ -1266,8 +1262,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
           msg.toLowerCase().contains('premium required') ||
           msg.toLowerCase().contains('upgrade') ||
           msg.toLowerCase().contains('subscribe') ||
-          msg.toLowerCase().contains('chat with only one person') ||
-          msg.toLowerCase().contains('message only one person');
+          msg.toLowerCase().contains('can only chat with');
 
       if (looksLikePremiumGate) {
         await _showPremiumRequiredDialog(msg);
@@ -1370,7 +1365,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
             ],
           ),
           content: Text(
-            'You can only chat with 1 user on the free version of Nexus. Kindly subscribe to chat with more users',
+            'You can only chat with 3 users on the free version of Nexus. Kindly subscribe to chat with more users',
             textAlign: TextAlign.center,
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.getTextPrimary(context),

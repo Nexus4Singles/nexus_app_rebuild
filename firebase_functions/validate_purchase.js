@@ -549,6 +549,8 @@ async function updateSubscriptionStatus(userId, event) {
         lastUpdated: admin.firestore.FieldValue.serverTimestamp(),
       },
       'onPremium': true,
+      'subExpDate': expireDate, // Legacy field for backward compatibility
+      'entitledUser': true,
       'updatedAt': admin.firestore.FieldValue.serverTimestamp(),
     });
 

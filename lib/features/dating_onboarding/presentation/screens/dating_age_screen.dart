@@ -28,9 +28,13 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = FixedExtentScrollController();
+    // CRITICAL: Must initialize with initialItem=0 to ensure the wheel
+    // is properly positioned. Without this, FixedExtentScrollPhysics fails
+    // and onSelectedItemChanged may never fire if the user doesn't scroll.
+    // This bug was causing age to remain null for users with incomplete drafts.
+    _controller = FixedExtentScrollController(initialItem: 0);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _resetAndShowGuidelines();
+      _showGuidelinesIfNeeded();
     });
   }
 
@@ -41,6 +45,13 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
   }
 
   void _continue() {
+    // Ensure age is always valid before continuing
+    if (_selectedAge < _minAge || _selectedAge > _maxAge) {
+      print(
+        '[DatingAgeScreen] ⚠️ Invalid age: $_selectedAge, resetting to $_minAge',
+      );
+      _selectedAge = _minAge;
+    }
     ref.read(datingOnboardingDraftProvider.notifier).setAge(_selectedAge);
     Navigator.pushNamed(context, '/dating/setup/extra-info');
   }
@@ -85,22 +96,13 @@ class _DatingAgeScreenState extends ConsumerState<DatingAgeScreen> {
     );
   }
 
-  Future<void> _resetAndShowGuidelines() async {
-    final userId = ref.watch(currentUserIdProvider);
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('dating_pool_guidelines_shown');
-    if (userId != null)
-      await prefs.remove('dating_pool_guidelines_shown_$userId');
-    if (mounted) _showGuidelinesIfNeeded();
-  }
-
   Future<void> _showGuidelinesIfNeeded() async {
     if (_guidelinesModalShown) return;
     final userId = ref.watch(currentUserIdProvider);
     if (userId == null) return;
     final prefs = await SharedPreferences.getInstance();
     final userSpecificKey = 'dating_pool_guidelines_shown_$userId';
-    if (prefs.getBool(userSpecificKey) == false && mounted) {
+    if ((prefs.getBool(userSpecificKey) ?? false) == false && mounted) {
       _guidelinesModalShown = true;
       showDialog(
         context: context,

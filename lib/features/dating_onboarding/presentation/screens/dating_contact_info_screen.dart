@@ -533,6 +533,9 @@ class _DatingContactInfoScreenState
           'dating.createdAt': FieldValue.serverTimestamp(),
           'dating.verificationStatus': 'pending',
           'dating.verificationQueuedAt': FieldValue.serverTimestamp(),
+          // Clear any previous rejection data when creating/updating profile
+          'dating.rejectionReason': FieldValue.delete(),
+          'dating.rejectedAt': FieldValue.delete(),
           'dating.schemaVersion': 2,
           'dating.maritalStatus': canonMaritalStatus,
           // Country of residence — used by dating_search_service Firestore

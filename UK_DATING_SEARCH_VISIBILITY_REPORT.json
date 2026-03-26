@@ -1,0 +1,64 @@
+{
+  "timestamp": "2026-03-25T19:33:21.410Z",
+  "summary": {
+    "totalChecked": 6,
+    "visibleInSearch": 0,
+    "notVisible": 6,
+    "missingVerification": 2,
+    "missingCountry": 5
+  },
+  "issues": [
+    {
+      "uid": "2f1NmgHjBncBGPp74MZpMEXecZk1",
+      "email": "rkate8260@gmail.com",
+      "username": "Victoria",
+      "country": "United Kingdom",
+      "issue": "verificationStatus=undefined, countryOfResidence=undefined"
+    },
+    {
+      "uid": "IJIo4RXEducEZh7j18YxF1KPL893",
+      "email": "katelynpro01@gmail.com",
+      "username": "Ruth",
+      "verificationStatus": "verified",
+      "country": "United Kingdom",
+      "issue": "verificationStatus=verified, countryOfResidence=undefined"
+    },
+    {
+      "uid": "OMSzC4NcAeVZZ31Kji5gC6ctm7W2",
+      "email": "najjukoshamim123@gmail.com",
+      "username": "Gloria",
+      "verificationStatus": "verified",
+      "country": "United Kingdom",
+      "issue": "verificationStatus=verified, countryOfResidence=undefined"
+    },
+    {
+      "uid": "P65Zye2Y6uNyg5orEunCo8jIUJj2",
+      "email": "ayomidebaj@gmail.com",
+      "username": "Olumide",
+      "verificationStatus": "unverified",
+      "countryOfResidence": "United Kingdom",
+      "country": "United Kingdom",
+      "issue": "verificationStatus=unverified, countryOfResidence=United Kingdom"
+    },
+    {
+      "uid": "aaJwGREE1fO8mQ6wtUZTp3q0lQp1",
+      "email": "hardwicksamuel293@gmail.com",
+      "username": "Samuel",
+      "verificationStatus": "verified",
+      "country": "United Kingdom",
+      "issue": "verificationStatus=verified, countryOfResidence=undefined"
+    },
+    {
+      "uid": "ppLn3l3UzaPJChVpbhd2megVg7J2",
+      "email": "mbase2003w@gmail.com",
+      "username": "Nicole",
+      "verificationStatus": "verified",
+      "country": "United Kingdom",
+      "issue": "verificationStatus=verified, countryOfResidence=undefined"
+    }
+  ],
+  "requirements": {
+    "verificationStatus": "must be \"verified\"",
+    "countryOfResidence": "must be set (e.g., \"United Kingdom\")"
+  }
+}

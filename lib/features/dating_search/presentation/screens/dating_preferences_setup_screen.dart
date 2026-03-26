@@ -51,11 +51,22 @@ class _DatingPreferencesSetupScreenState
 
   bool _isLoading = false;
   bool _guidelinesModalShown = false; // Track if modal was shown this session
+  bool _guidelinesCheckQueued =
+      false; // Track if we've already queued the check
 
   @override
   void initState() {
     super.initState();
     _initializePreferences();
+    // Queue guidelines check once on initial load (not on every rebuild)
+    if (widget.existingPreferences == null &&
+        !widget.isReactivatingAfterStatusChange &&
+        !_guidelinesCheckQueued) {
+      _guidelinesCheckQueued = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showGuidelinesModalIfNeeded();
+      });
+    }
   }
 
   Future<void> _initializePreferences() async {
@@ -98,13 +109,6 @@ class _DatingPreferencesSetupScreenState
     } else {
       _minAge = 21;
       _maxAge = 70;
-      // Show guidelines modal on first visit to dating search (non-editing mode, not reactivating)
-      // Only show if context will be rendered (not hidden in IndexedStack background)
-      if (!widget.isReactivatingAfterStatusChange) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _showGuidelinesModalIfNeeded();
-        });
-      }
     }
   }
 
@@ -570,16 +574,6 @@ class _DatingPreferencesSetupScreenState
 
   @override
   Widget build(BuildContext context) {
-    // Check if this is now visible and should show guidelines
-    // (handles case where screen is in IndexedStack but becomes visible later)
-    if (!_guidelinesModalShown &&
-        widget.existingPreferences == null &&
-        !widget.isReactivatingAfterStatusChange) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showGuidelinesModalIfNeeded();
-      });
-    }
-
     final isEditing = widget.existingPreferences != null;
 
     // Check if dating profile exists (checking if dating doc exists, not if it's "complete")

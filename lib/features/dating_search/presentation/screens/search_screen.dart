@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:nexus_app_v2/core/providers/auth_provider.dart';
 import 'package:nexus_app_v2/core/lists/nexus_lists_provider.dart';
@@ -12,8 +13,10 @@ import 'package:nexus_app_v2/features/presurvey/presentation/screens/presurvey_r
 import 'package:nexus_app_v2/core/widgets/disabled_account_gate.dart';
 import 'package:nexus_app_v2/core/dating/dating_profile_gate.dart';
 import 'package:nexus_app_v2/features/compatibility_quiz/application/compatibility_status_provider.dart';
+import 'package:nexus_app_v2/core/providers/user_provider.dart';
 import 'package:nexus_app_v2/features/dating_search/application/dating_search_results_provider.dart';
 import 'package:nexus_app_v2/features/dating_search/application/saved_profiles_provider.dart';
+import 'package:nexus_app_v2/features/dating_search/application/dating_clicked_profiles_provider.dart';
 import 'package:nexus_app_v2/features/dating_search/domain/dating_search_filters.dart';
 import 'package:nexus_app_v2/features/dating_search/domain/dating_profile.dart';
 import 'package:nexus_app_v2/features/profile/presentation/screens/profile_screen.dart';
@@ -600,13 +603,24 @@ class _SearchResultRow extends ConsumerWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        onTap: () {
+        onTap: () async {
           try {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => ProfileScreen(userId: profile.uid),
-              ),
-            );
+            // Track this profile click for premium users (local storage persistence)
+            // CRITICAL: Get current user's ID for storage key, not the profile's ID
+            final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+            if (currentUserId != null) {
+              await ref
+                  .read(clickedProfilesProvider.notifier)
+                  .addClickedProfile(currentUserId, profile.uid);
+            }
+
+            if (context.mounted) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => ProfileScreen(userId: profile.uid),
+                ),
+              );
+            }
           } catch (e) {
             // FIXED: Catch navigation errors to prevent Navigator history issues
             if (context.mounted) {

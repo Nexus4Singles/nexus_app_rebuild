@@ -1,0 +1,80 @@
+{
+  "timestamp": "2026-03-25T20:05:54.133Z",
+  "audit": "comprehensive_media_audit_by_country",
+  "summary": {
+    "photosOnly": 777,
+    "audioOnly": 0,
+    "both": 52
+  },
+  "byCountry": {
+    "United Kingdom": {
+      "total": 59,
+      "photosOnly": 16,
+      "audioOnly": 0,
+      "both": 0,
+      "neither": 43,
+      "withMedia": 16
+    },
+    "Nigeria": {
+      "total": 500,
+      "photosOnly": 333,
+      "audioOnly": 0,
+      "both": 28,
+      "neither": 139,
+      "withMedia": 361
+    },
+    "United States": {
+      "total": 499,
+      "photosOnly": 190,
+      "audioOnly": 0,
+      "both": 1,
+      "neither": 308,
+      "withMedia": 191
+    },
+    "Canada": {
+      "total": 54,
+      "photosOnly": 18,
+      "audioOnly": 0,
+      "both": 2,
+      "neither": 34,
+      "withMedia": 20
+    },
+    "Ghana": {
+      "total": 258,
+      "photosOnly": 46,
+      "audioOnly": 0,
+      "both": 10,
+      "neither": 202,
+      "withMedia": 56
+    },
+    "Kenya": {
+      "total": 305,
+      "photosOnly": 111,
+      "audioOnly": 0,
+      "both": 5,
+      "neither": 189,
+      "withMedia": 116
+    },
+    "Uganda": {
+      "total": 162,
+      "photosOnly": 47,
+      "audioOnly": 0,
+      "both": 6,
+      "neither": 109,
+      "withMedia": 53
+    },
+    "Australia": {
+      "total": 43,
+      "photosOnly": 16,
+      "audioOnly": 0,
+      "both": 0,
+      "neither": 27,
+      "withMedia": 16
+    }
+  },
+  "recommendations": {
+    "bothMediaUsers": "52 high-quality profiles with complete media (photos + audio) - excellent for verification",
+    "photosOnlyUsers": "777 users with photos but no audio - can be made visible with lower bar",
+    "audioOnlyUsers": "0 users with audio but no photos - unusual, may indicate data issues"
+  }
+}

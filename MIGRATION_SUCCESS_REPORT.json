@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-03-25T20:00:18.931Z",
+  "migration": {
+    "phase1": "Populate dating.countryOfResidence from root country",
+    "phase2": "Auto-verify V1 legacy profiles with photos + audio",
+    "phase3": "Targeted fix for specific high-priority users"
+  },
+  "results": {
+    "totalVisibleProfiles": 1421,
+    "countryBreakdown": {
+      "United Kingdom": 6,
+      "Nigeria": 1288,
+      "United States": 32,
+      "Canada": 4,
+      "Ghana": 30,
+      "Kenya": 28,
+      "Uganda": 25,
+      "Australia": 4,
+      "South Africa": 1,
+      "Germany": 3
+    },
+    "targetedUsers": {
+      "country": "United Kingdom",
+      "count": 6,
+      "names": [
+        "Victoria",
+        "Ruth",
+        "Gloria",
+        "Olumide",
+        "Samuel",
+        "Nicole"
+      ],
+      "status": "ALL VISIBLE ✅"
+    }
+  },
+  "status": "COMPLETE"
+}

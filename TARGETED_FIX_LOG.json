@@ -1,0 +1,66 @@
+{
+  "timestamp": "2026-03-25T19:58:35.549Z",
+  "operationType": "targeted_fix_6_uk_users",
+  "summary": {
+    "totalAttempted": 5,
+    "successCount": 5,
+    "errorCount": 0
+  },
+  "fixes": [
+    {
+      "uid": "2f1NmgHjBncBGPp74MZpMEXecZk1",
+      "email": "rkate8260@gmail.com",
+      "updates": {
+        "dating.verificationStatus": "verified",
+        "dating.verifiedAt": {},
+        "dating.verifiedBy": "targeted_uk_migration_fix"
+      },
+      "reason": "Set verification status (country already populated)",
+      "timestamp": "2026-03-25T19:58:33.689Z",
+      "status": "completed"
+    },
+    {
+      "uid": "OMSzC4NcAeVZZ31Kji5gC6ctm7W2",
+      "email": "najjukoshamim123@gmail.com",
+      "updates": {
+        "dating.countryOfResidence": "United Kingdom"
+      },
+      "reason": "Populate missing countryOfResidence",
+      "timestamp": "2026-03-25T19:58:34.036Z",
+      "status": "completed"
+    },
+    {
+      "uid": "P65Zye2Y6uNyg5orEunCo8jIUJj2",
+      "email": "ayomidebaj@gmail.com",
+      "updates": {
+        "dating.verificationStatus": "verified",
+        "dating.verifiedAt": {},
+        "dating.verifiedBy": "targeted_uk_migration_fix"
+      },
+      "reason": "Set verification status (country already populated)",
+      "timestamp": "2026-03-25T19:58:34.598Z",
+      "status": "completed"
+    },
+    {
+      "uid": "aaJwGREE1fO8mQ6wtUZTp3q0lQp1",
+      "email": "hardwicksamuel293@gmail.com",
+      "updates": {
+        "dating.countryOfResidence": "United Kingdom"
+      },
+      "reason": "Populate missing countryOfResidence",
+      "timestamp": "2026-03-25T19:58:34.937Z",
+      "status": "completed"
+    },
+    {
+      "uid": "ppLn3l3UzaPJChVpbhd2megVg7J2",
+      "email": "mbase2003w@gmail.com",
+      "updates": {
+        "dating.countryOfResidence": "United Kingdom"
+      },
+      "reason": "Populate missing countryOfResidence",
+      "timestamp": "2026-03-25T19:58:35.548Z",
+      "status": "completed"
+    }
+  ],
+  "status": "COMPLETED"
+}

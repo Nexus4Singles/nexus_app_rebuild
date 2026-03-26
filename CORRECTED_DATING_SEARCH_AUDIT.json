@@ -1,0 +1,318 @@
+{
+  "timestamp": "2026-03-25T19:40:52.914Z",
+  "note": "Dating search uses TWO query paths: V2 (dating.verificationStatus + dating.countryOfResidence) and V1 Legacy (registration_progress + location.country)",
+  "countryResults": [
+    {
+      "country": "Nigeria",
+      "v2Profiles": 100,
+      "v1LegacyProfiles": 151,
+      "totalSearchable": 251,
+      "v1Samples": [
+        {
+          "uid": "0TgaP4u6zXh0wJRoDd7w6xHt7y02",
+          "email": "Ebitemiracle@gmail.com",
+          "username": "Miracle",
+          "country": "Nigeria",
+          "locationCountry": "Nigeria",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "2PnmoT4dReVnJq0YGgRtitHVszl2",
+          "email": "aslemjohn1993@gmail.com",
+          "username": "John",
+          "country": "Nigeria",
+          "locationCountry": "Nigeria",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "3eBJvv2hegWUUVdLlouLkWrMXHz2",
+          "email": "ogbonnadaniel6@gmail.com",
+          "username": "Daniel",
+          "country": "Nigeria",
+          "locationCountry": "Nigeria",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "3oLBgkqHSHUNPQY8WTr76FAHn1t1",
+          "email": "oluwatosinayinde1@gmail.com",
+          "username": "Oluwatosin",
+          "country": "Nigeria",
+          "locationCountry": "Nigeria",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "unverified",
+            "countryOfResidence": "Nigeria"
+          }
+        },
+        {
+          "uid": "5EfMfdRtGPMnCTZskSqwSsxEqAk1",
+          "email": "frankumole@gmail.com",
+          "username": "Franklin",
+          "country": "Lagos , Nigeria",
+          "locationCountry": "Nigeria",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified",
+            "countryOfResidence": "Lagos , Nigeria"
+          }
+        }
+      ]
+    },
+    {
+      "country": "United Kingdom",
+      "v2Profiles": 0,
+      "v1LegacyProfiles": 47,
+      "totalSearchable": 47,
+      "v1Samples": [
+        {
+          "uid": "IrREepmRNISjEM0m7JyOGn0jkuk2",
+          "email": "dalleyoluwasegun@gmail.com",
+          "username": "Samuel",
+          "country": "Nigeria",
+          "locationCountry": "United Kingdom",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "101vSesJ4dhznQruUHBNe6lloza2",
+          "email": "aniekanokono@gmail.com",
+          "username": "Anioko",
+          "country": "Nigeria",
+          "locationCountry": "United Kingdom",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "F8pNgY5vbJhGSk8gQbwmNNUKVr02",
+          "email": "niranchris55@gmail.com",
+          "username": "Leon",
+          "country": "Philippines",
+          "locationCountry": "United Kingdom",
+          "registrationProgress": "completed",
+          "dating": {}
+        },
+        {
+          "uid": "Gm7j13KnRHZC59PXMAAL3HuL9yu2",
+          "email": "bobl96@outlook.com",
+          "username": "AJ",
+          "country": "Nigeria",
+          "locationCountry": "United Kingdom",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "RmMNZEOMkXMuwjktEgLyahc2y5s1",
+          "email": "tansichristopher@gmail.com",
+          "username": "Olu",
+          "country": "Nigeria",
+          "locationCountry": "United Kingdom",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        }
+      ]
+    },
+    {
+      "country": "United States",
+      "v2Profiles": 0,
+      "v1LegacyProfiles": 100,
+      "totalSearchable": 100,
+      "v1Samples": [
+        {
+          "uid": "0YZMa7FHbYOXOc9P5qemxCvZGUi2",
+          "email": "kingjamesjordan8@gmail.com",
+          "username": "Anthony",
+          "country": "United States",
+          "locationCountry": "United States",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "3FDwbTysVbRG42R6N39UKrI5V773",
+          "email": "meyerthompson268@gmail.com",
+          "username": "ANTHONY",
+          "country": "United States",
+          "locationCountry": "United States",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "444DUaCklnNMbtoJX890vIwDzmi1",
+          "email": "jameswo562@gmail.com",
+          "username": "Jameson",
+          "country": "United States",
+          "locationCountry": "United States",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "4T1fbPmgmnPrXiJd0QWm5F6CmjZ2",
+          "email": "zentya01@gmail.com",
+          "username": "Zenty",
+          "country": "United States",
+          "locationCountry": "United States",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "50aWnBNbewebEyQv9pb5gyYZg6A3",
+          "email": "hurts9095@gmail.com",
+          "username": "Lucas",
+          "country": "United States",
+          "locationCountry": "United States",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        }
+      ]
+    },
+    {
+      "country": "Kenya",
+      "v2Profiles": 4,
+      "v1LegacyProfiles": 68,
+      "totalSearchable": 72,
+      "v1Samples": [
+        {
+          "uid": "2EeERwc4pKcan9LseQWNYVrnTEM2",
+          "email": "moszkeith@gmail.com",
+          "username": "Mosz",
+          "country": "Kenya",
+          "locationCountry": "Kenya",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "GkXeXT7cX1V9HToCABKGVYFSBa92",
+          "email": "vostichsantos@gmail.com",
+          "username": "Steve",
+          "country": "Kenya",
+          "locationCountry": "Kenya",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "Gvs840ukyJgh6qeJ99oUFbfWDZM2",
+          "email": "forealxp@gmail.com",
+          "username": "Nathan",
+          "country": "Kenya",
+          "locationCountry": "Kenya",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "H22vWxzGbfhtyHQONs9vZUlFPFA2",
+          "email": "eric.kanjih@gmail.com",
+          "username": "Eric",
+          "country": "Kenya",
+          "locationCountry": "Kenya",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "Jd73Rd2Ac6Wlcj9SFYkEOFxm3Pe2",
+          "email": "adilson.texeiradesousa@gmail.com",
+          "username": "Adilson",
+          "country": "Kenya",
+          "locationCountry": "Kenya",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        }
+      ]
+    },
+    {
+      "country": "Ghana",
+      "v2Profiles": 10,
+      "v1LegacyProfiles": 46,
+      "totalSearchable": 56,
+      "v1Samples": [
+        {
+          "uid": "2PMtdOftoAO902CAw0UXyZGQvoh1",
+          "email": "boatbiljonathan35@gmail.com",
+          "username": "Jonathan",
+          "country": "Ghana",
+          "locationCountry": "Ghana",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "3VVbY1rlzeUioOf4zDn5C0nK1b03",
+          "email": "philipmofodarkwa@gmail.com",
+          "username": "Steward",
+          "country": "Ghana",
+          "locationCountry": "Ghana",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "4vPXKXDS9SfsLs8Ai53MPHsygQd2",
+          "email": "afranciskwasi@gmail.com",
+          "username": "FRANCIS",
+          "country": "Ghana",
+          "locationCountry": "Ghana",
+          "registrationProgress": "completed",
+          "dating": {}
+        },
+        {
+          "uid": "6yIfyw8YI7NlUSXt0Dgm1UOQgkl2",
+          "email": "michaelnkansahjunior@gmail.com",
+          "username": "Mic",
+          "country": "Ghana",
+          "locationCountry": "Ghana",
+          "registrationProgress": "completed",
+          "dating": {
+            "verificationStatus": "verified"
+          }
+        },
+        {
+          "uid": "7CWWhQYroWgd5rMgGZAKViaOR1r1",
+          "email": "mensahebenezer145@gmail.com",
+          "username": "Nhyira",
+          "country": "Ghana",
+          "locationCountry": "Ghana",
+          "registrationProgress": "completed",
+          "dating": {}
+        }
+      ]
+    }
+  ],
+  "conclusion": "Profiles ARE searchable if they appear in either V2 or V1 query path"
+}

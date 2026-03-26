@@ -101,6 +101,9 @@ class RelationshipStatusUpdater {
             archivedData['isActive'] = true;
             archivedData['verificationStatus'] = 'pending';
             archivedData['verificationQueuedAt'] = FieldValue.serverTimestamp();
+            // Clear any previous rejection data
+            archivedData.remove('rejectionReason');
+            archivedData.remove('rejectedAt');
             await datingProfileRef.set(archivedData, SetOptions(merge: false));
             print(
               '[RelationshipStatusUpdater] Dating profile restored from archive',
@@ -113,6 +116,11 @@ class RelationshipStatusUpdater {
             'verificationStatus': 'pending',
             'verificationQueuedAt': FieldValue.serverTimestamp(),
           }, SetOptions(merge: true));
+          // Clear rejection fields separately using update
+          batch.update(datingProfileRef, {
+            'rejectionReason': FieldValue.delete(),
+            'rejectedAt': FieldValue.delete(),
+          });
         }
         // Always set dating.optIn true at root
         batch.update(userRef, {'dating.optIn': true});

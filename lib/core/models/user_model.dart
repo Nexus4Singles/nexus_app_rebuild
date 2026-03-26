@@ -292,6 +292,7 @@ class UserModel extends Equatable {
   final DateTime? recommendedTime;
   final bool? hasExternalSubscriptionFlow;
   final DateTime? profileCompletionDate;
+  final Map<String, dynamic>? subscription;
 
   // ========================
   // NEXUS 2.0 EXTENSION
@@ -353,6 +354,7 @@ class UserModel extends Equatable {
     this.recommendedTime,
     this.hasExternalSubscriptionFlow,
     this.profileCompletionDate,
+    this.subscription,
     this.nexus2,
   });
 
@@ -656,6 +658,7 @@ class UserModel extends Equatable {
         data['hasExternalSubscriptionFlow'],
       ),
       profileCompletionDate: _parseTimestamp(data['profileCompletionDate']),
+      subscription: data['subscription'] as Map<String, dynamic>?,
       nexus2: Nexus2Data.fromMap(data['nexus2'] as Map<String, dynamic>?),
     );
   }
@@ -731,6 +734,7 @@ class UserModel extends Equatable {
           profileCompletionDate != null
               ? Timestamp.fromDate(profileCompletionDate!)
               : null,
+      'subscription': subscription,
       'nexus2': nexus2?.toMap(),
     };
   }
@@ -787,6 +791,7 @@ class UserModel extends Equatable {
     DateTime? recommendedTime,
     bool? hasExternalSubscriptionFlow,
     DateTime? profileCompletionDate,
+    Map<String, dynamic>? subscription,
     Nexus2Data? nexus2,
   }) {
     return UserModel(
@@ -844,6 +849,7 @@ class UserModel extends Equatable {
           hasExternalSubscriptionFlow ?? this.hasExternalSubscriptionFlow,
       profileCompletionDate:
           profileCompletionDate ?? this.profileCompletionDate,
+      subscription: subscription ?? this.subscription,
       nexus2: nexus2 ?? this.nexus2,
     );
   }

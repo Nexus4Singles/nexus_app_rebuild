@@ -858,6 +858,28 @@ class FirestoreService {
     return _storyLikesDoc(storyId, userId).snapshots().map((doc) => doc.exists);
   }
 
+  /// Stream of all comment IDs liked by the user in a given story.
+  /// Returns a Set<String> of commentIds that the user has liked.
+  Stream<Set<String>> watchUserLikedComments(String storyId, String userId) {
+    return _db!
+        .collection("storyCommentLikes")
+        .doc(storyId)
+        .collection("likes")
+        .where("userId", isEqualTo: userId)
+        .snapshots()
+        .map((snap) {
+          final likedSet = <String>{};
+          for (final doc in snap.docs) {
+            final data = doc.data();
+            final commentId = data['commentId'] as String?;
+            if (commentId != null && commentId.isNotEmpty) {
+              likedSet.add(commentId);
+            }
+          }
+          return likedSet;
+        });
+  }
+
   Stream<List<StoryComment>> watchStoryComments(String storyId) {
     return _storyCommentsRef(storyId)
         .orderBy("likeCount", descending: true)
@@ -989,6 +1011,20 @@ class FirestoreService {
   }) async {
     if (_db == null) return;
 
+    // Check if already liked to prevent duplicate increments
+    final likeDoc =
+        await _storyCommentLikesDoc(storyId, commentId, userId).get();
+    if (likeDoc.exists) {
+      // Already liked, skip to prevent double-increment
+      return;
+    }
+
+    // Get actual like count before incrementing
+    final actualCount = await getActualCommentLikeCount(
+      storyId: storyId,
+      commentId: commentId,
+    );
+
     await _storyCommentLikesDoc(storyId, commentId, userId).set({
       "storyId": storyId,
       "commentId": commentId,
@@ -996,8 +1032,10 @@ class FirestoreService {
       "createdAt": FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
 
+    // Set the likeCount to the actual count + 1 (safer than increment)
+    // This prevents inconsistencies from previous operations
     await _storyCommentsRef(storyId).doc(commentId).set({
-      "likeCount": FieldValue.increment(1),
+      "likeCount": actualCount + 1,
       "updatedAt": FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
   }
@@ -1009,10 +1047,27 @@ class FirestoreService {
   }) async {
     if (_db == null) return;
 
+    // First, verify the like actually exists before deleting
+    final likeDoc =
+        await _storyCommentLikesDoc(storyId, commentId, userId).get();
+    if (!likeDoc.exists) {
+      // Like doesn't exist, skip operation to prevent negative counts
+      return;
+    }
+
+    // Get actual like count before decrementing
+    final actualCount = await getActualCommentLikeCount(
+      storyId: storyId,
+      commentId: commentId,
+    );
+
     await _storyCommentLikesDoc(storyId, commentId, userId).delete();
 
+    // Set the likeCount to max(0, actualCount - 1) to prevent going negative
+    // This fixes inconsistencies from old data
+    final newCount = (actualCount - 1) < 0 ? 0 : (actualCount - 1);
     await _storyCommentsRef(storyId).doc(commentId).set({
-      "likeCount": FieldValue.increment(-1),
+      "likeCount": newCount,
       "updatedAt": FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
   }
@@ -1024,6 +1079,45 @@ class FirestoreService {
   }) async {
     final doc = await _storyCommentLikesDoc(storyId, commentId, userId).get();
     return doc.exists;
+  }
+
+  /// Get actual comment like count from the database
+  /// This queries the actual likes collection (source of truth)
+  /// and compares with stored likeCount field to detect inconsistencies
+  Future<int> getActualCommentLikeCount({
+    required String storyId,
+    required String commentId,
+  }) async {
+    if (_db == null) return 0;
+
+    try {
+      // Query the actual likes from storyCommentLikes
+      final likesSnapshot =
+          await _db
+              .collection("storyCommentLikes")
+              .doc(storyId)
+              .collection("likes")
+              .where("commentId", isEqualTo: commentId)
+              .count()
+              .get();
+
+      return likesSnapshot.count ?? 0;
+    } catch (e) {
+      // If count query fails, fall back to fetching all docs
+      try {
+        final likesSnapshot =
+            await _db
+                .collection("storyCommentLikes")
+                .doc(storyId)
+                .collection("likes")
+                .where("commentId", isEqualTo: commentId)
+                .get();
+        return likesSnapshot.docs.length;
+      } catch (e) {
+        // If query fails, return 0 as safe default
+        return 0;
+      }
+    }
   }
 
   Future<void> incrementShareCount(String storyId) async {

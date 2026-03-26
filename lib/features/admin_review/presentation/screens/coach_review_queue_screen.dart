@@ -53,6 +53,53 @@ class _CoachApplicationListTile extends ConsumerWidget {
   const _CoachApplicationListTile({Key? key, required this.application})
     : super(key: key);
 
+  void _showDeleteConfirmation(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder:
+          (dialogContext) => AlertDialog(
+            title: const Text('Delete Application'),
+            content: Text(
+              'Delete ${application.fullName}\'s coach application? This cannot be undone.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: const Text('Cancel'),
+              ),
+              FilledButton(
+                style: FilledButton.styleFrom(backgroundColor: Colors.red),
+                onPressed: () async {
+                  Navigator.pop(dialogContext);
+                  try {
+                    await ref.read(
+                      deleteCoachApplicationProvider(
+                        application.applicationId,
+                      ).future,
+                    );
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Application deleted'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+                    }
+                  }
+                },
+                child: const Text('Delete'),
+              ),
+            ],
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
@@ -76,7 +123,17 @@ class _CoachApplicationListTile extends ConsumerWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: const Icon(Icons.chevron_right),
+      trailing: Wrap(
+        spacing: 8,
+        children: [
+          IconButton(
+            icon: Icon(Icons.delete_outline, color: Colors.red[600]),
+            onPressed: () => _showDeleteConfirmation(context, ref),
+            tooltip: 'Delete application',
+          ),
+          const Icon(Icons.chevron_right),
+        ],
+      ),
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(

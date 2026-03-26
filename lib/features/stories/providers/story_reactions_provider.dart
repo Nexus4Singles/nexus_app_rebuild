@@ -54,6 +54,7 @@ class StoryReactionsController extends StateNotifier<StoryReactionsState> {
   final Map<String, StreamSubscription> _engagementSubs = {};
   final Map<String, StreamSubscription> _commentsSubs = {};
   final Map<String, StreamSubscription> _likeSubs = {};
+  final Map<String, StreamSubscription> _commentLikesSubs = {};
 
   String? get _userId => _ref.read(currentUserIdProvider);
 
@@ -107,6 +108,19 @@ class StoryReactionsController extends StateNotifier<StoryReactionsState> {
         }
         state = state.copyWith(likedStoryIds: next);
       });
+    }
+
+    // Watch which comments the user has liked
+    if (uid != null && !_commentLikesSubs.containsKey(storyId)) {
+      _commentLikesSubs[storyId] = _firestore
+          .watchUserLikedComments(storyId, uid)
+          .listen((likedCommentIds) {
+            final nextLikedMap = Map<String, Set<String>>.from(
+              state.likedCommentsByStoryId,
+            );
+            nextLikedMap[storyId] = likedCommentIds;
+            state = state.copyWith(likedCommentsByStoryId: nextLikedMap);
+          });
     }
   }
 
@@ -190,32 +204,59 @@ class StoryReactionsController extends StateNotifier<StoryReactionsState> {
       throw StateError('User must be signed in to like comments');
     }
 
-    final likedSet = Set<String>.from(
+    // Get current state before making changes
+    final currentLikedSet = Set<String>.from(
       state.likedCommentsByStoryId[storyId] ?? const {},
     );
-    final isLikedNow = likedSet.contains(commentId);
+    final isCurrentlyLiked = currentLikedSet.contains(commentId);
 
-    if (isLikedNow) {
-      await _firestore.unlikeComment(
-        storyId: storyId,
-        commentId: commentId,
-        userId: user.uid,
-      );
-      likedSet.remove(commentId);
+    // Prepare optimistic update
+    final optimisticSet = Set<String>.from(currentLikedSet);
+    if (isCurrentlyLiked) {
+      optimisticSet.remove(commentId);
     } else {
-      await _firestore.likeComment(
-        storyId: storyId,
-        commentId: commentId,
-        userId: user.uid,
-      );
-      likedSet.add(commentId);
+      optimisticSet.add(commentId);
     }
 
-    final nextLikedMap = Map<String, Set<String>>.from(
-      state.likedCommentsByStoryId,
-    );
-    nextLikedMap[storyId] = likedSet;
-    state = state.copyWith(likedCommentsByStoryId: nextLikedMap);
+    try {
+      // Apply optimistic update first for better UX
+      final optimisticMap = Map<String, Set<String>>.from(
+        state.likedCommentsByStoryId,
+      );
+      optimisticMap[storyId] = optimisticSet;
+      state = state.copyWith(likedCommentsByStoryId: optimisticMap);
+
+      // Now attempt the actual Firestore operation
+      if (isCurrentlyLiked) {
+        await _firestore.unlikeComment(
+          storyId: storyId,
+          commentId: commentId,
+          userId: user.uid,
+        );
+      } else {
+        await _firestore.likeComment(
+          storyId: storyId,
+          commentId: commentId,
+          userId: user.uid,
+        );
+      }
+
+      // Firestore operation succeeded
+      // Don't call ensureStory() again yet - let stream listener naturally update
+      // But also trigger a refresh of comment data to ensure likeCount is in sync
+      // The stream listener will handle updating the state with the fresh data
+    } catch (e) {
+      // Revert optimistic update on failure
+      final revertMap = Map<String, Set<String>>.from(
+        state.likedCommentsByStoryId,
+      );
+      revertMap[storyId] = currentLikedSet;
+      state = state.copyWith(likedCommentsByStoryId: revertMap);
+
+      // Log and rethrow for user feedback
+      print('Error toggling like: $e');
+      rethrow;
+    }
   }
 
   Future<void> incrementShare(String storyId) async {
@@ -231,6 +272,9 @@ class StoryReactionsController extends StateNotifier<StoryReactionsState> {
       sub.cancel();
     }
     for (final sub in _likeSubs.values) {
+      sub.cancel();
+    }
+    for (final sub in _commentLikesSubs.values) {
       sub.cancel();
     }
     super.dispose();

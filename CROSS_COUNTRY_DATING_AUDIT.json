@@ -1,0 +1,473 @@
+{
+  "timestamp": "2026-03-25T19:36:12.768Z",
+  "summary": {
+    "totalUsersAudited": 789,
+    "totalMissingCountryOfResidence": 766,
+    "totalMissingVerification": 604,
+    "overallVisibilityRate": 2.92,
+    "affectedCountries": 15
+  },
+  "countryResults": [
+    {
+      "country": "United States",
+      "totalUsers": 100,
+      "withVerification": 15,
+      "withCountryOfResidence": 0,
+      "fullyComplete": 0,
+      "missingCountry": 100,
+      "missingVerification": 85,
+      "visibilityRate": 0,
+      "samples": [
+        {
+          "uid": "07gu47mZJxPyGutjwqQmtaNIITt2",
+          "email": "benniesuccess1@gmail.com",
+          "username": "Derrick",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "0DeHedP2JIZRrm2LkEokOJcdQ8K2",
+          "email": "carcodo01@gmail.com",
+          "username": "PamA",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "0VrjjsH6bOYZA6zvRHXqNQ5b8ag2",
+          "email": "godwill.nd555@gmail.com",
+          "username": "Godwill",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "Kenya",
+      "totalUsers": 100,
+      "withVerification": 19,
+      "withCountryOfResidence": 2,
+      "fullyComplete": 2,
+      "missingCountry": 98,
+      "missingVerification": 81,
+      "visibilityRate": 2,
+      "samples": [
+        {
+          "uid": "08ilX8Jx2DbgqKORhwDfbUKNbRJ2",
+          "email": "musiyadaisy@gmail.com",
+          "username": "Shiki",
+          "verificationStatus": "verified",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "0KIkhT0AL6P4etrx5rEzM2crKxV2",
+          "email": "mourinefatu@gmail.com",
+          "username": "Maurine",
+          "verificationStatus": "verified",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "0Nhcy91TA9YaKiKwLEHCtEfxgl52",
+          "email": "abayojapheth@gmail.com",
+          "username": "Japheth",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "Ghana",
+      "totalUsers": 100,
+      "withVerification": 22,
+      "withCountryOfResidence": 4,
+      "fullyComplete": 4,
+      "missingCountry": 96,
+      "missingVerification": 78,
+      "visibilityRate": 4,
+      "samples": [
+        {
+          "uid": "07XoIKx809ciKsf3YUA76irKcvU2",
+          "email": "budumicha@gmail.com",
+          "username": "Kingbudu",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "0E44Jr5DU9QFWzxLXuDgOMhyZFG3",
+          "email": "pearllamptey00@gmail.com",
+          "username": "Nhaa",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "0ZGt1WvtZ2WuCcKc52mho8kmyvg2",
+          "email": "www.dorisaklasu201@icloud.com",
+          "username": "Doris",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "Uganda",
+      "totalUsers": 100,
+      "withVerification": 28,
+      "withCountryOfResidence": 4,
+      "fullyComplete": 4,
+      "missingCountry": 96,
+      "missingVerification": 72,
+      "visibilityRate": 4,
+      "samples": [
+        {
+          "uid": "0Ehx28Ymp3be6XGt4VWD3QYJRKx1",
+          "email": "janemercy2024@gmail.com",
+          "username": "Jane",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "0cIVJqtgcWNA4d8mD2LxJT0SOVq1",
+          "email": "ritanalumu23@gmail.com",
+          "username": "Rita",
+          "verificationStatus": "verified",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "0na6w3BOTHZiJfFWe7gbDWTugpn2",
+          "email": "bridgetnambejja12@gmail.com",
+          "username": "Bridget",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "Nigeria",
+      "totalUsers": 100,
+      "withVerification": 50,
+      "withCountryOfResidence": 6,
+      "fullyComplete": 6,
+      "missingCountry": 94,
+      "missingVerification": 50,
+      "visibilityRate": 6,
+      "samples": [
+        {
+          "uid": "005Dd8QoMBTGmqxOjgiRiuVy3e43",
+          "email": "emmanuelshomefun@gmail.com",
+          "username": "Emma",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "00wEuPwZ6lfuZ1nQDQ9dm9fXS1f2",
+          "email": "hisroyaltouch@gmail.com",
+          "username": "Adeyomola",
+          "verificationStatus": "verified",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "023jSOmofmVyKxvm59IrCeGEdl13",
+          "email": "inakwuomimi@gmail.com",
+          "username": "Faith",
+          "verificationStatus": "verified",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "United Kingdom",
+      "totalUsers": 59,
+      "withVerification": 4,
+      "withCountryOfResidence": 1,
+      "fullyComplete": 0,
+      "missingCountry": 58,
+      "missingVerification": 55,
+      "visibilityRate": 0,
+      "samples": [
+        {
+          "uid": "2f1NmgHjBncBGPp74MZpMEXecZk1",
+          "email": "rkate8260@gmail.com",
+          "username": "Victoria",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "38XP0AGNlzfQjZsVaPn30QqPWw03",
+          "email": "sarahrees435@hotmail.co.uk",
+          "username": "Sarah",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "3bs9cJ5jS4ReewB1DScWM851OzI3",
+          "email": "gouldrh@googlemail.com",
+          "username": "Rach",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "Canada",
+      "totalUsers": 54,
+      "withVerification": 12,
+      "withCountryOfResidence": 2,
+      "fullyComplete": 2,
+      "missingCountry": 52,
+      "missingVerification": 42,
+      "visibilityRate": 3.7,
+      "samples": [
+        {
+          "uid": "0MtDEEX7WydxKBNeUhs81HGMF2X2",
+          "email": "zoeoldfashiongal04@gmail.com",
+          "username": "Jesusgirl",
+          "verificationStatus": "verified",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "2FlmEHnJHsgxOJSZLnnlw4AQTwJ3",
+          "email": "martinsrodriguez309@gmail.com",
+          "username": "Martins",
+          "verificationStatus": "verified",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "6fxycanSZgMKvJXe3JP3KtbibOo1",
+          "email": "joycekoranteng223@gmail.com",
+          "username": "Joy",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "Germany",
+      "totalUsers": 49,
+      "withVerification": 9,
+      "withCountryOfResidence": 2,
+      "fullyComplete": 2,
+      "missingCountry": 47,
+      "missingVerification": 40,
+      "visibilityRate": 4.08,
+      "samples": [
+        {
+          "uid": "03505eB25WcUiwVqfr7IROY2tst2",
+          "email": "kareemjamal935@gmail.com",
+          "username": "Jannet",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "2MfuYUeMI8PFzuoduyI6IYwWjhM2",
+          "email": "roskemonika37@gmail.com",
+          "username": "Monika",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "58R77teVv4UAt4FUMESIrn9y6eD2",
+          "email": "gonzalezsven7@gmail.com",
+          "username": "Haynes",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "Australia",
+      "totalUsers": 43,
+      "withVerification": 12,
+      "withCountryOfResidence": 1,
+      "fullyComplete": 0,
+      "missingCountry": 42,
+      "missingVerification": 31,
+      "visibilityRate": 0,
+      "samples": [
+        {
+          "uid": "0VXmZRNQ7lUht3iwBywNUeDX2st1",
+          "email": "khodygudy@gmail.com",
+          "username": "John",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "1gvrjnoB5rPMPBqgSxKdIxdvEdw1",
+          "email": "meritam298@outlook.com",
+          "username": "Skye",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "2GILuvnvCqMG7UxL2AiWhDQIwJi1",
+          "email": "providencedaniel2020@gmail.com",
+          "username": "Toviasmith",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "South Africa",
+      "totalUsers": 39,
+      "withVerification": 5,
+      "withCountryOfResidence": 0,
+      "fullyComplete": 0,
+      "missingCountry": 39,
+      "missingVerification": 34,
+      "visibilityRate": 0,
+      "samples": [
+        {
+          "uid": "0L86tJUCkFUPmPS6icogLyFjamp1",
+          "email": "keighbemathlabe@gmail.com",
+          "username": "Kabelo",
+          "verificationStatus": "verified",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "69AoOtk5iKQHL8O6xaxdX2yXzmp2",
+          "email": "info.blondbridebotig@gmail.com",
+          "username": "Gabriella",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "8Z0ArPIHWHbJfUUK9XLUQ1qiAnm1",
+          "email": "jenamedzo@gmail.com",
+          "username": "Jen",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "Italy",
+      "totalUsers": 14,
+      "withVerification": 4,
+      "withCountryOfResidence": 0,
+      "fullyComplete": 0,
+      "missingCountry": 14,
+      "missingVerification": 10,
+      "visibilityRate": 0,
+      "samples": [
+        {
+          "uid": "0x73tqUYgwhcuHGod3hO1lwGBeb2",
+          "email": "doradomarco76@gmail.com",
+          "username": "BonaDora",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "Bks30ZvPCeW91dPRqVs2KiXPilY2",
+          "email": "andreasabuchi2@gmail.com",
+          "username": "Bruno",
+          "verificationStatus": "verified",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "IKU5QSabG2hU130XjkEuFeYWLvh1",
+          "email": "jwire018@gmail.com",
+          "username": "Perryh",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "Netherlands",
+      "totalUsers": 12,
+      "withVerification": 4,
+      "withCountryOfResidence": 0,
+      "fullyComplete": 0,
+      "missingCountry": 12,
+      "missingVerification": 8,
+      "visibilityRate": 0,
+      "samples": [
+        {
+          "uid": "GlQf8Dm2pxTeH3qFzTsHAGvKfuQ2",
+          "email": "yanbillions581@gmail.com",
+          "username": "Yan",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "I1k0EhSiH3RsHxCbNThiqE7JZKm2",
+          "email": "wendywilliana9@gmail.com",
+          "username": "Lilenscott",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "JvPYPG1QLsYItAD7RU8dBhsaa1h1",
+          "email": "roywannberg@gmail.com",
+          "username": "Roywannberg",
+          "verificationStatus": "verified",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "Spain",
+      "totalUsers": 8,
+      "withVerification": 1,
+      "withCountryOfResidence": 0,
+      "fullyComplete": 0,
+      "missingCountry": 8,
+      "missingVerification": 7,
+      "visibilityRate": 0,
+      "samples": [
+        {
+          "uid": "0Wj6IYL9fJTa4D8fjAKaP5s1Eay2",
+          "email": "jefferyharon@gmail.com",
+          "username": "Jefferyharon",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "0jzEVD4lWoaOo56exaKQx5y8o6q2",
+          "email": "abellad259764@gmail.com",
+          "username": "Jennifer",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "7B3BZyIzbzNgRxdqW4OBQGOwsfk2",
+          "email": "gabrijimru@gmail.com",
+          "username": "Gabriel",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "India",
+      "totalUsers": 7,
+      "withVerification": 0,
+      "withCountryOfResidence": 1,
+      "fullyComplete": 0,
+      "missingCountry": 6,
+      "missingVerification": 7,
+      "visibilityRate": 0,
+      "samples": [
+        {
+          "uid": "EOSaFtcI1YRvwwNuD3gWOcS7dpu1",
+          "email": "elena.lamoure@gmail.com",
+          "username": "Elena",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "KsX3XDSjUNc3IebkvXEj60Q8ZT02",
+          "email": "unikscasino@gmail.com",
+          "username": "Thatgirl",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "NJXPLiH7q0cRiOqk7AGFsNqkZQi2",
+          "email": "jishnudileep73@gmail.com",
+          "username": "Jishnu",
+          "hasCountryOfResidence": false
+        }
+      ]
+    },
+    {
+      "country": "France",
+      "totalUsers": 4,
+      "withVerification": 0,
+      "withCountryOfResidence": 0,
+      "fullyComplete": 0,
+      "missingCountry": 4,
+      "missingVerification": 4,
+      "visibilityRate": 0,
+      "samples": [
+        {
+          "uid": "FrYrShaGf8Xx2IjcNcoDSn5gKC13",
+          "email": "leadalhia5@gmail.com",
+          "username": "Lea",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "IwvMrcaGcISRnUnaqXN2bLVy4mF2",
+          "email": "monbaha@hotmail.com",
+          "username": "Monique",
+          "hasCountryOfResidence": false
+        },
+        {
+          "uid": "XmNWZVhqEFeXRePU6US3SZ97HMJ2",
+          "email": "meliogochukwu@gmail.com",
+          "username": "Melly",
+          "hasCountryOfResidence": false
+        }
+      ]
+    }
+  ],
+  "conclusion": "ISSUE CONFIRMED: 766 users (97.08%) across 15 countries are missing dating.countryOfResidence"
+}

@@ -77,6 +77,8 @@ async function activateUserSubscription(email, expiryDateString) {
     await userRef.update({
       subscription: subscriptionData,
       onPremium: true, // Legacy flag for backward compatibility
+      subExpDate: expiryDate, // Legacy field needed for old code paths
+      entitledUser: true, // Legacy field
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 

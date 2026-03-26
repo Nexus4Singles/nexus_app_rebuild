@@ -876,6 +876,8 @@ async function updateSubscriptionStatus(userId, event) {
       'subscription.lastUpdated': admin.firestore.FieldValue.serverTimestamp(),
       'subscription.verificationStatus': 'verified',
       'onPremium': true,
+      'subExpDate': expireDate, // Legacy field for backward compatibility
+      'entitledUser': true,
       'updatedAt': admin.firestore.FieldValue.serverTimestamp(),
     });
 
@@ -958,6 +960,8 @@ async function expireSubscriptionStatus(userId) {
     await userRef.update({
       'subscription.isActive': false,
       'onPremium': false,
+      'subExpDate': null, // Clear legacy field on expiry
+      'entitledUser': false, // Clear legacy premium indicator
       'updatedAt': admin.firestore.FieldValue.serverTimestamp(),
     });
 

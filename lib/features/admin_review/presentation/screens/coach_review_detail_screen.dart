@@ -20,6 +20,7 @@ class _CoachReviewDetailScreenState
     extends ConsumerState<CoachReviewDetailScreen> {
   bool _isApproving = false;
   bool _isRejecting = false;
+  bool _isDeleting = false;
 
   @override
   Widget build(BuildContext context) {
@@ -179,70 +180,99 @@ class _CoachReviewDetailScreenState
                       const SizedBox(height: 24),
 
                       // Action Buttons
-                      if (application.status == 'pending')
-                        Row(
-                          children: [
-                            Expanded(
-                              child: FilledButton.tonal(
-                                onPressed:
-                                    _isRejecting
-                                        ? null
-                                        : () => _showRejectDialog(context, ref),
-                                style: FilledButton.styleFrom(
-                                  backgroundColor: Colors.red[100],
-                                  foregroundColor: Colors.red[900],
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          if (application.status == 'pending')
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: FilledButton.tonal(
+                                    onPressed:
+                                        _isRejecting
+                                            ? null
+                                            : () =>
+                                                _showRejectDialog(context, ref),
+                                    style: FilledButton.styleFrom(
+                                      backgroundColor: Colors.red[100],
+                                      foregroundColor: Colors.red[900],
+                                    ),
+                                    child:
+                                        _isRejecting
+                                            ? const SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                              ),
+                                            )
+                                            : const Text('Reject'),
+                                  ),
                                 ),
-                                child:
-                                    _isRejecting
-                                        ? const SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                          ),
-                                        )
-                                        : const Text('Reject'),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: FilledButton(
+                                    onPressed:
+                                        _isApproving
+                                            ? null
+                                            : () => _approveApplication(ref),
+                                    child:
+                                        _isApproving
+                                            ? const SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation(
+                                                      Colors.white,
+                                                    ),
+                                              ),
+                                            )
+                                            : const Text('Approve'),
+                                  ),
+                                ),
+                              ],
+                            )
+                          else
+                            Center(
+                              child: Chip(
+                                label: Text(
+                                  'Status: ${application.status.toUpperCase()}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                backgroundColor:
+                                    application.status == 'approved'
+                                        ? Colors.green[100]
+                                        : Colors.red[100],
                               ),
                             ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: FilledButton(
-                                onPressed:
-                                    _isApproving
-                                        ? null
-                                        : () => _approveApplication(ref),
-                                child:
-                                    _isApproving
-                                        ? const SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            valueColor: AlwaysStoppedAnimation(
-                                              Colors.white,
-                                            ),
-                                          ),
-                                        )
-                                        : const Text('Approve'),
-                              ),
+                          const SizedBox(height: 12),
+                          // Delete button
+                          FilledButton.tonal(
+                            onPressed:
+                                _isDeleting
+                                    ? null
+                                    : () => _showDeleteDialog(context, ref),
+                            style: FilledButton.styleFrom(
+                              backgroundColor: Colors.orange[100],
+                              foregroundColor: Colors.orange[900],
                             ),
-                          ],
-                        )
-                      else
-                        Center(
-                          child: Chip(
-                            label: Text(
-                              'Status: ${application.status.toUpperCase()}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            backgroundColor:
-                                application.status == 'approved'
-                                    ? Colors.green[100]
-                                    : Colors.red[100],
+                            child:
+                                _isDeleting
+                                    ? const SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                    : const Text('Delete Application'),
                           ),
-                        ),
+                        ],
+                      ),
                       const SizedBox(height: 24),
                     ],
                   ),
@@ -375,6 +405,62 @@ class _CoachReviewDetailScreenState
       }
     } finally {
       if (mounted) setState(() => _isRejecting = false);
+    }
+  }
+
+  void _showDeleteDialog(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder:
+          (dialogContext) => AlertDialog(
+            title: const Text('Delete Application'),
+            content: const Text(
+              'Are you sure you want to permanently delete this coach application? This action cannot be undone.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: const Text('Cancel'),
+              ),
+              FilledButton(
+                style: FilledButton.styleFrom(backgroundColor: Colors.red),
+                onPressed: () {
+                  Navigator.pop(dialogContext);
+                  _deleteApplication(ref);
+                },
+                child: const Text('Delete'),
+              ),
+            ],
+          ),
+    );
+  }
+
+  Future<void> _deleteApplication(WidgetRef ref) async {
+    setState(() => _isDeleting = true);
+    try {
+      await ref.read(
+        deleteCoachApplicationProvider(widget.applicationId).future,
+      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Application deleted successfully'),
+            backgroundColor: AppColors.success,
+          ),
+        );
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error deleting: $e'),
+            backgroundColor: AppColors.primary,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isDeleting = false);
     }
   }
 

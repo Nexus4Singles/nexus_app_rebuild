@@ -81,6 +81,417 @@ Future<void> handleLogout(BuildContext context, WidgetRef ref) async {
   );
 }
 
+Future<void> handleDeleteProfile(BuildContext context, WidgetRef ref) async {
+  // Professional delete dialog with choice options - responsive for all screen sizes
+  final deleteOption = await showDialog<String>(
+    context: context,
+    builder: (ctx) {
+      final screenWidth = MediaQuery.of(ctx).size.width;
+      final isThin = screenWidth < 400;
+      final horizontalPadding = isThin ? 16.0 : 24.0;
+      final contentPadding = isThin ? 16.0 : 24.0;
+      const minCardHeight = 12.0; // Spacing between cards
+
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        insetPadding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(contentPadding),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Title
+                Text(
+                  'What do you want to delete?',
+                  style: Theme.of(ctx).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: isThin ? 18 : null,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Choose an option below',
+                  style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(ctx).textTheme.bodySmall?.color,
+                    fontSize: isThin ? 13 : null,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: contentPadding),
+
+                // Dating Profile Option
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => Navigator.of(ctx).pop('dating'),
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      padding: EdgeInsets.all(isThin ? 12 : 16),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(ctx).dividerColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        color: Theme.of(ctx).colorScheme.surface,
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: isThin ? 40 : 48,
+                            height: isThin ? 40 : 48,
+                            decoration: BoxDecoration(
+                              color: Theme.of(
+                                ctx,
+                              ).colorScheme.primary.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(
+                                isThin ? 8 : 12,
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.favorite,
+                              size: isThin ? 20 : 24,
+                              color: Theme.of(ctx).colorScheme.primary,
+                            ),
+                          ),
+                          SizedBox(width: isThin ? 12 : 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Dating Profile Only',
+                                  style: Theme.of(
+                                    ctx,
+                                  ).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: isThin ? 14 : null,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Remove from dating. Keep your account.',
+                                  style: Theme.of(
+                                    ctx,
+                                  ).textTheme.bodySmall?.copyWith(
+                                    color: Theme.of(ctx)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.color
+                                        ?.withOpacity(0.7),
+                                    fontSize: isThin ? 12 : null,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: isThin ? 8 : 12),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: isThin ? 14 : 16,
+                            color: Theme.of(
+                              ctx,
+                            ).textTheme.bodySmall?.color?.withOpacity(0.5),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: minCardHeight),
+
+                // Full Account Option (Destructive - theme-aware styling)
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => Navigator.of(ctx).pop('account'),
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      padding: EdgeInsets.all(isThin ? 12 : 16),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: AppColors.primary.withOpacity(0.4),
+                          width: 1.5,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        color:
+                            Theme.of(ctx).brightness == Brightness.light
+                                ? AppColors.primary.withOpacity(0.08)
+                                : AppColors.primary.withOpacity(0.12),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: isThin ? 40 : 48,
+                            height: isThin ? 40 : 48,
+                            decoration: BoxDecoration(
+                              color: AppColors.primary.withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(
+                                isThin ? 8 : 12,
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.delete_forever,
+                              size: isThin ? 20 : 24,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                          SizedBox(width: isThin ? 12 : 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Full Account',
+                                  style: Theme.of(
+                                    ctx,
+                                  ).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.primary,
+                                    fontSize: isThin ? 14 : null,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Permanently delete everything. Cannot be undone.',
+                                  style: Theme.of(
+                                    ctx,
+                                  ).textTheme.bodySmall?.copyWith(
+                                    color: AppColors.primary.withOpacity(0.7),
+                                    fontSize: isThin ? 12 : null,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: isThin ? 8 : 12),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: isThin ? 14 : 16,
+                            color: AppColors.primary.withOpacity(0.5),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: contentPadding),
+
+                // Cancel Button
+                TextButton(
+                  onPressed: () => Navigator.of(ctx).pop(null),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: Theme.of(ctx).textTheme.bodyMedium?.color,
+                      fontWeight: FontWeight.w500,
+                      fontSize: isThin ? 14 : null,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+
+  if (deleteOption == null) return;
+  if (!context.mounted) return;
+
+  // Handle Dating Profile Deletion
+  if (deleteOption == 'dating') {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder:
+          (ctx) => AlertDialog(
+            title: const Text('Delete Dating Profile?'),
+            content: const Text(
+              'This will remove your dating profile from view. '
+              'You can create a new dating profile anytime.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                child: const Text(
+                  'Delete',
+                  style: TextStyle(color: AppColors.primary),
+                ),
+              ),
+            ],
+          ),
+    );
+
+    if (confirm != true) return;
+    if (!context.mounted) return;
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder:
+          (ctx) => const AlertDialog(
+            content: SizedBox(
+              height: 50,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          ),
+    );
+
+    // Capture navigator BEFORE any async work
+    final nav = Navigator.of(context);
+
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) throw Exception('User not found');
+
+      final fs = FirebaseFirestore.instance;
+
+      await fs.collection('users').doc(uid).update({
+        'dating.profileCompleted': false,
+        'dating.isActive': false,
+        'dating.optIn': false,
+        'dating.archivedAt': FieldValue.serverTimestamp(),
+      });
+
+      // Clear dating onboarding draft from SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('dating_onboarding_draft');
+
+      // Close loading dialog using pre-captured navigator
+      nav.pop();
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Dating profile deleted successfully.'),
+            backgroundColor: AppColors.success,
+          ),
+        );
+      }
+    } catch (e) {
+      // Close loading dialog using pre-captured navigator
+      try {
+        nav.pop();
+      } catch (_) {}
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error deleting dating profile: $e'),
+            backgroundColor: AppColors.primary,
+          ),
+        );
+      }
+    }
+    return;
+  }
+
+  // Handle Full Account Deletion
+  if (deleteOption == 'account') {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder:
+          (ctx) => AlertDialog(
+            title: const Text('Delete Full Account?'),
+            content: const Text(
+              'This will permanently delete your entire account, including:\n'
+              '• Your profile and all data\n'
+              '• Dating profile\n'
+              '• All subscriptions\n'
+              '• All messages and connections\n\n'
+              'This action cannot be undone.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                child: const Text(
+                  'Delete My Account',
+                  style: TextStyle(color: AppColors.primary),
+                ),
+              ),
+            ],
+          ),
+    );
+
+    if (confirm != true) return;
+    if (!context.mounted) return;
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder:
+          (ctx) => const AlertDialog(
+            content: SizedBox(
+              height: 50,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          ),
+    );
+
+    // Capture navigator BEFORE any async work
+    final nav = Navigator.of(context);
+
+    try {
+      await ref.read(authNotifierProvider.notifier).deleteAccount();
+
+      // Close loading dialog
+      nav.pop();
+      if (!context.mounted) return;
+
+      // Show success and navigate to welcome screen
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Your account has been deleted.'),
+          backgroundColor: AppColors.success,
+        ),
+      );
+
+      // Navigate to welcome screen
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const AppLaunchGate()),
+        (_) => false,
+      );
+    } catch (e) {
+      // Close loading dialog
+      try {
+        nav.pop();
+      } catch (_) {}
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error deleting account: $e'),
+            backgroundColor: AppColors.primary,
+          ),
+        );
+      }
+    }
+  }
+}
+
 Future<void> handleToggleDatingOptIn(
   BuildContext context,
   WidgetRef ref, {
@@ -2505,7 +2916,7 @@ class _GalleryGrid extends StatelessWidget {
                       },
                       child: CachedNetworkImage(
                         imageUrl: url,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                         memCacheWidth: 400,
                         memCacheHeight: 400,
                         placeholder:
@@ -2627,121 +3038,17 @@ class _AccountTiles extends StatelessWidget {
             return RelationshipStatusEditor(currentStatus: currentStatus);
           },
         ),
-        // Only show "Delete Dating Profile" when a dating profile actually exists
+        // Only show "Delete" when a dating profile actually exists
         if (ref
             .watch(datingProfileCompletedProvider)
             .maybeWhen(data: (v) => v, orElse: () => false)) ...[
           const SizedBox(height: 10),
           _ProfileTile(
             icon: Icons.delete_rounded,
-            title: 'Delete Dating Profile',
-            subtitle: 'Switch back to a basic account',
-            onTap: () async {
-              // Step 1: Confirm deletion intent
-              final confirm = await showDialog<bool>(
-                context: context,
-                builder:
-                    (ctx) => AlertDialog(
-                      title: const Text('Delete Dating Profile?'),
-                      content: const Text(
-                        'This will remove your dating profile from view. '
-                        'You can create a new dating profile anytime.',
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(ctx).pop(false),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.of(ctx).pop(true),
-                          child: const Text(
-                            'Delete',
-                            style: TextStyle(color: AppColors.error),
-                          ),
-                        ),
-                      ],
-                    ),
-              );
-
-              if (confirm != true) return;
-              if (!context.mounted) return;
-
-              // Show loading dialog
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder:
-                    (ctx) => const AlertDialog(
-                      content: SizedBox(
-                        height: 50,
-                        child: Center(child: CircularProgressIndicator()),
-                      ),
-                    ),
-              );
-
-              // Capture navigator BEFORE any async work — the widget tree
-              // will rebuild (dating → basic) when Firestore updates, which
-              // unmounts the current widget and invalidates `context`.
-              final nav = Navigator.of(context);
-
-              try {
-                final uid = FirebaseAuth.instance.currentUser?.uid;
-                if (uid == null) throw Exception('User not found');
-
-                final fs = FirebaseFirestore.instance;
-
-                // ARCHIVE approach: Preserve all dating data but mark
-                // the profile as inactive / not completed. The provider
-                // short-circuits on profileCompleted == false and
-                // isActive == false, so no v1 heuristic fallbacks
-                // will see the profile as completed.
-                // Using dot-notation so only these fields are touched —
-                // all other dating data (photos, audio, reviewPack, etc.)
-                // remains intact for potential future restoration.
-                await fs.collection('users').doc(uid).update({
-                  'dating.profileCompleted': false,
-                  'dating.isActive': false,
-                  'dating.optIn': false,
-                  'dating.archivedAt': FieldValue.serverTimestamp(),
-                });
-
-                // Clear dating onboarding draft from SharedPreferences
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.remove('dating_onboarding_draft');
-
-                // Close loading dialog using pre-captured navigator
-                nav.pop();
-
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Dating profile deleted successfully.'),
-                      backgroundColor: AppColors.success,
-                    ),
-                  );
-                }
-
-                // The currentUserDocProvider is a stream — setting
-                // dating.profileCompleted to false will automatically
-                // trigger a rebuild, which shows _BasicProfileScreen
-                // with the "Create Dating Profile" CTA.
-                // All dating data (photos, audio, profile info) is
-                // preserved for potential future restoration.
-              } catch (e) {
-                // Close loading dialog using pre-captured navigator
-                try {
-                  nav.pop();
-                } catch (_) {}
-
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Error deleting dating profile: $e'),
-                      backgroundColor: AppColors.primary,
-                    ),
-                  );
-                }
-              }
+            title: 'Delete Account',
+            subtitle: 'Delete dating profile or full account',
+            onTap: () {
+              handleDeleteProfile(context, ref);
             },
           ),
         ], // end datingProfileCompleted guard

@@ -266,7 +266,7 @@ class ChatConversation {
 
 /// Service for managing chat functionality
 class ChatService {
-  static const int _kFreeChatPartnerLimit = 1;
+  static const int _kFreeChatPartnerLimit = 3;
 
   String _chatIdFor(String u1, String u2) {
     final a = u1.trim();
@@ -301,11 +301,12 @@ class ChatService {
   //
   // Rule:
   // - Free users can OPEN chats with anyone (createConversation allowed).
-  // - Free users can SEND messages to ONLY ONE partner.
-  // - Lock happens on FIRST message send.
+  // - Free users can SEND messages to UP TO THREE partners.
+  // - Lock happens on FIRST message send to a new partner.
   //
   // Storage:
-  // - users/{uid}.chat.freeChatPartnerId
+  // - users/{uid}.chat.freeChatPartnerIds : List<String> (preferred)
+  // - users/{uid}.chat.freeChatPartnerId  : String (legacy fallback for backward-compat)
   // ============================================================================
 
   /// Read-only pre-check: can this user send a message to this receiver?
@@ -716,7 +717,7 @@ class ChatService {
   /// Create or open a chat conversation between two users.
   ///
   /// Deterministic chatId: "<smallerUid>_<largerUid>".
-  /// Premium rule (v2): free users can chat with only ONE partner.
+  /// Premium rule (v2): free users can chat with only UP TO THREE partners.
   /// We enforce this WITHOUT querying nexus2_chats (queries can be denied by rules).
   Future<String> createConversation(String userId1, String userId2) async {
     final a = userId1.trim();

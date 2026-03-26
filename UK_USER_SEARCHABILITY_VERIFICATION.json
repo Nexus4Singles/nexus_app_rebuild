@@ -1,0 +1,113 @@
+{
+  "timestamp": "2026-03-25T19:41:33.155Z",
+  "summary": {
+    "totalChecked": 6,
+    "v1SearchableCount": 0,
+    "v2SearchableCount": 0,
+    "totalSearchable": 0
+  },
+  "userDetails": [
+    {
+      "uid": "2f1NmgHjBncBGPp74MZpMEXecZk1",
+      "email": "rkate8260@gmail.com",
+      "username": "Victoria",
+      "v1Searchable": false,
+      "v2Searchable": false,
+      "v1Details": {
+        "gender": "Female",
+        "registrationProgress": "contact-info",
+        "locationCountry": "United Kingdom",
+        "valid": false
+      },
+      "v2Details": {
+        "valid": false
+      }
+    },
+    {
+      "uid": "IJIo4RXEducEZh7j18YxF1KPL893",
+      "email": "katelynpro01@gmail.com",
+      "username": "Ruth",
+      "v1Searchable": false,
+      "v2Searchable": false,
+      "v1Details": {
+        "gender": "Female",
+        "registrationProgress": "completed",
+        "locationCountry": "Nigeria",
+        "valid": false
+      },
+      "v2Details": {
+        "datingVerificationStatus": "verified",
+        "valid": false
+      }
+    },
+    {
+      "uid": "OMSzC4NcAeVZZ31Kji5gC6ctm7W2",
+      "email": "najjukoshamim123@gmail.com",
+      "username": "Gloria",
+      "v1Searchable": false,
+      "v2Searchable": false,
+      "v1Details": {
+        "gender": "Female",
+        "registrationProgress": "completed",
+        "locationCountry": "Australia",
+        "valid": false
+      },
+      "v2Details": {
+        "datingVerificationStatus": "verified",
+        "valid": false
+      }
+    },
+    {
+      "uid": "P65Zye2Y6uNyg5orEunCo8jIUJj2",
+      "email": "ayomidebaj@gmail.com",
+      "username": "Olumide",
+      "v1Searchable": false,
+      "v2Searchable": false,
+      "v1Details": {
+        "gender": "female",
+        "registrationProgress": "completed",
+        "locationCountry": "Ireland",
+        "valid": false
+      },
+      "v2Details": {
+        "datingVerificationStatus": "unverified",
+        "datingCountryOfResidence": "United Kingdom",
+        "valid": false
+      }
+    },
+    {
+      "uid": "aaJwGREE1fO8mQ6wtUZTp3q0lQp1",
+      "email": "hardwicksamuel293@gmail.com",
+      "username": "Samuel",
+      "v1Searchable": false,
+      "v2Searchable": false,
+      "v1Details": {
+        "gender": "Male",
+        "registrationProgress": "completed",
+        "locationCountry": "Angola",
+        "valid": false
+      },
+      "v2Details": {
+        "datingVerificationStatus": "verified",
+        "valid": false
+      }
+    },
+    {
+      "uid": "ppLn3l3UzaPJChVpbhd2megVg7J2",
+      "email": "mbase2003w@gmail.com",
+      "username": "Nicole",
+      "v1Searchable": false,
+      "v2Searchable": false,
+      "v1Details": {
+        "gender": "Female",
+        "registrationProgress": "completed",
+        "locationCountry": "Portugal",
+        "valid": false
+      },
+      "v2Details": {
+        "datingVerificationStatus": "verified",
+        "valid": false
+      }
+    }
+  ]
+}

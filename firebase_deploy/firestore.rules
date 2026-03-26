@@ -45,9 +45,15 @@ service cloud.firestore {
       // Only allow admins to modify specific safe subsets on users/{uid}
       let changedTop = request.resource.data.diff(resource.data).changedKeys();
 
-      // Only these top-level keys may change:
+      // Allowed top-level keys that admins can modify
+      // (dating, account, and profile-related fields that need deletion on rejection)
       let topOk =
+        changedTop.hasOnly(['dating', 'account', 'photos', 'audioPrompts', 'audioDurations', 'profileUrl']) ||
+        changedTop.hasOnly(['dating', 'account', 'photos', 'audioPrompts', 'audioDurations']) ||
+        changedTop.hasOnly(['dating', 'account', 'photos', 'audioPrompts']) ||
+        changedTop.hasOnly(['dating', 'account', 'photos']) ||
         changedTop.hasOnly(['dating', 'account']) ||
+        changedTop.hasOnly(['dating', 'photos', 'audioPrompts', 'audioDurations', 'profileUrl']) ||
         changedTop.hasOnly(['dating']) ||
         changedTop.hasOnly(['account']);
 
@@ -65,7 +71,11 @@ service cloud.firestore {
           'reviewedBy',
           'reviewedAt',
           'rejectedAt',
-          'rejectionReason'
+          'rejectionReason',
+          'profileCompleted',
+          'profile',
+          'audioPrompts',
+          'reviewPack'
         ]);
 
       // account.* allowed keys (admin moderation disable/enable)
@@ -105,29 +115,35 @@ service cloud.firestore {
 
       allow create: if isSignedIn() && request.auth.uid == uid;
 
-      allow update: if isSignedIn() && (
-        request.auth.uid == uid && 
-        // ⚠️ SECURITY: Block client writes to subscription fields
-        // Only Cloud Functions (service account) can write these fields
-        !request.resource.data.diff(resource.data).changedKeys().hasAny([
-          'subscription',
-          'onPremium',
-          'subExpDate',
-          'purchasedJourneys',
-          'lastPurchaseAt',
-          'lastPurchaseJourney',
-          'entitledUser',
-          'prevSubscribed',
-          'lastFlutterwaveTransactionId',
-          'lastPaymentMethod',
-          'lastPaymentDate',
-          'hasExternalSubscriptionFlow'
-        ])
-        ||
-        (isAdmin() && adminUserUpdateAllowed())
+      allow update: if (
+        // CASE 1: Cloud Functions (service account) can update ANY fields for webhook processing
+        request.auth == null
+      ) || (
+        // CASE 2: Authenticated user can update, but NOT subscription/payment fields
+        isSignedIn() && (
+          request.auth.uid == uid && 
+          // ⚠️ SECURITY: Block client writes to subscription fields
+          // Only Cloud Functions (service account) can write these fields
+          !request.resource.data.diff(resource.data).changedKeys().hasAny([
+            'subscription',
+            'onPremium',
+            'subExpDate',
+            'purchasedJourneys',
+            'lastPurchaseAt',
+            'lastPurchaseJourney',
+            'entitledUser',
+            'prevSubscribed',
+            'lastFlutterwaveTransactionId',
+            'lastPaymentMethod',
+            'lastPaymentDate',
+            'hasExternalSubscriptionFlow'
+          ])
+          ||
+          (isAdmin() && adminUserUpdateAllowed())
+        )
       );
 
-      allow delete: if false;
+      allow delete: if isSignedIn() && request.auth.uid == uid;
 
       match /notifications/{notificationId} {
         // Allow user to manage their own notifications, or admin to create notifications for users
@@ -326,7 +342,12 @@ match /config/{configId} {
     match /storyComments/{storyId}/comments/{commentId} {
       allow read: if true;
       allow create: if isSignedIn();
-      allow update: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow update: if isSignedIn() && (
+        resource.data.userId == request.auth.uid
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount', 'replyCount', 'updatedAt'])
+          && request.resource.data.likeCount >= 0
+          && request.resource.data.replyCount >= 0)
+      );
       allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
     }
 
@@ -339,9 +360,13 @@ match /config/{configId} {
 
     // Comment likes for threaded comment system
     match /storyCommentLikes/{storyId}/likes/{likeId} {
-      allow read: if isSignedIn();
-      allow create: if isSignedIn() && likeId.matches('^[^:]+:' + request.auth.uid + '$');
-      allow delete: if isSignedIn() && likeId.matches('^[^:]+:' + request.auth.uid + '$');
+      allow read: if true;
+      allow create: if isSignedIn() 
+        && request.resource.data.userId == request.auth.uid
+        && likeId.matches('^[^:]+:' + request.auth.uid + '$');
+      allow delete: if isSignedIn() 
+        && resource.data.userId == request.auth.uid 
+        && likeId.matches('^[^:]+:' + request.auth.uid + '$');
       allow update: if false;
     }
 
@@ -349,7 +374,7 @@ match /config/{configId} {
     match /datingProfiles/{uid} {
       allow read: if isSignedIn();
       allow create, update: if isSignedIn() && request.auth.uid == uid;
-      allow delete: if false;
+      allow delete: if isAdmin();
     }
 
     // ============================================================================

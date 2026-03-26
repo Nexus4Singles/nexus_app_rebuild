@@ -1,0 +1,93 @@
+{
+  "timestamp": "2026-03-25T19:29:41.547Z",
+  "summary": {
+    "totalCandidates": 59,
+    "eligibleCount": 6,
+    "disabledCount": 0,
+    "eligibilityRate": 10.16949152542373
+  },
+  "samples": [
+    {
+      "uid": "2f1NmgHjBncBGPp74MZpMEXecZk1",
+      "email": "rkate8260@gmail.com",
+      "username": "Victoria",
+      "country": "United Kingdom",
+      "photos": 2,
+      "profileCompletedOn": {
+        "_seconds": 1763582800,
+        "_nanoseconds": 359000000
+      },
+      "compatibilitySetted": true,
+      "registrationProgress": "contact-info"
+    },
+    {
+      "uid": "IJIo4RXEducEZh7j18YxF1KPL893",
+      "email": "katelynpro01@gmail.com",
+      "username": "Ruth",
+      "country": "United Kingdom",
+      "photos": 2,
+      "profileCompletedOn": {
+        "_seconds": 1748793743,
+        "_nanoseconds": 709000000
+      },
+      "compatibilitySetted": true,
+      "registrationProgress": "completed"
+    },
+    {
+      "uid": "OMSzC4NcAeVZZ31Kji5gC6ctm7W2",
+      "email": "najjukoshamim123@gmail.com",
+      "username": "Gloria",
+      "country": "United Kingdom",
+      "photos": 2,
+      "profileCompletedOn": {
+        "_seconds": 1743270060,
+        "_nanoseconds": 410000000
+      },
+      "compatibilitySetted": true,
+      "registrationProgress": "completed"
+    },
+    {
+      "uid": "P65Zye2Y6uNyg5orEunCo8jIUJj2",
+      "email": "ayomidebaj@gmail.com",
+      "username": "Olumide",
+      "country": "United Kingdom",
+      "photos": 2,
+      "compatibilitySetted": true,
+      "registrationProgress": "completed"
+    },
+    {
+      "uid": "aaJwGREE1fO8mQ6wtUZTp3q0lQp1",
+      "email": "hardwicksamuel293@gmail.com",
+      "username": "Samuel",
+      "country": "United Kingdom",
+      "photos": 2,
+      "profileCompletedOn": {
+        "_seconds": 1749927437,
+        "_nanoseconds": 721000000
+      },
+      "compatibilitySetted": true,
+      "registrationProgress": "completed"
+    },
+    {
+      "uid": "ppLn3l3UzaPJChVpbhd2megVg7J2",
+      "email": "mbase2003w@gmail.com",
+      "username": "Nicole",
+      "country": "United Kingdom",
+      "photos": 2,
+      "profileCompletedOn": {
+        "_seconds": 1751599899,
+        "_nanoseconds": 568000000
+      },
+      "compatibilitySetted": true,
+      "registrationProgress": "completed"
+    }
+  ],
+  "requirements": {
+    "country": "United Kingdom",
+    "hasPhotos": true,
+    "eligibilityOptions": [
+      "profile_completed_on is set",
+      "compatibility_setted === true AND registration_progress === 'completed'"
+    ]
+  }
+}
