@@ -201,7 +201,7 @@ class PurchasedJourney extends Equatable {
 
 /// Premium features available to subscribers
 class PremiumFeatures {
-  /// Unlimited chat conversations (free users limited to 3)
+  /// Unlimited chat conversations (free users limited to 1)
   static const String unlimitedMessaging = 'unlimited_messaging';
 
   /// View compatibility data on user profiles
@@ -209,9 +209,6 @@ class PremiumFeatures {
 
   /// View contact information on user profiles
   static const String viewContactInfo = 'view_contact_info';
-
-  /// Unlimited daily search results (free users limited to 10 per day)
-  static const String unlimitedSearchResults = 'unlimited_search_results';
 
   /// All premium features
   static const List<PremiumFeature> allFeatures = [
@@ -232,13 +229,6 @@ class PremiumFeatures {
       title: 'View Contact Information',
       description: 'Access phone numbers and social media handles',
       icon: 'contact_page',
-    ),
-    PremiumFeature(
-      id: unlimitedSearchResults,
-      title: 'Unlimited Daily Profiles',
-      description:
-          'View all matching profiles every day. Free users see only 10 per day.',
-      icon: 'explore',
     ),
   ];
 }

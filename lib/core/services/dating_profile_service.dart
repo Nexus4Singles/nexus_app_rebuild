@@ -87,7 +87,7 @@ class DatingProfileService {
 
     // Only bump to pending if not locked by admin
     if (bumpToPendingIfVerified &&
-        currentStatus == 'verified' &&
+        (currentStatus == 'verified' || currentStatus == 'rejected') &&
         !isLockedByAdmin) {
       // Bump back to pending when user changes evidence content (photos/audio).
       updates['dating.verificationStatus'] = 'pending';
@@ -223,8 +223,7 @@ class DatingProfileService {
     ];
 
     // Build the dating sub-fields using dot-notation to avoid wiping
-    // existing dating.* fields (e.g. optIn, availability, audioPrompts,
-    // dailyLimitFirstHit, shownProfileIds, etc.)
+    // existing dating.* fields (e.g. optIn, availability, audioPrompts, etc.)
     final reviewPack = _buildReviewPack(
       photoUrls: photoUrls,
       audioUrls: audioUrls,
@@ -292,7 +291,7 @@ class DatingProfileService {
     final currentStatus = previousDating['verificationStatus']?.toString();
     final isLockedByAdmin = previousDating['verificationLockedByAdmin'] == true;
 
-    if (currentStatus == 'verified' && !isLockedByAdmin) {
+    if ((currentStatus == 'verified' || currentStatus == 'rejected') && !isLockedByAdmin) {
       datingUpdates['dating.verificationStatus'] = 'pending';
       datingUpdates['dating.pendingAt'] = FieldValue.serverTimestamp();
       // Clear prior decisions
@@ -336,7 +335,7 @@ class DatingProfileService {
 
     // Merge top-level and dot-notation dating updates into one payload.
     // Using dot-notation preserves existing dating.* sibling fields
-    // (e.g. optIn, availability, dailyLimitFirstHit, shownProfileIds).
+    // (e.g. optIn, availability).
     final payload =
         <String, dynamic>{}
           ..addAll(topLevel)

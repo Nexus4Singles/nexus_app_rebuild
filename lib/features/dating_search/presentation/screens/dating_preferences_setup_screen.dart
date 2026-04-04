@@ -880,26 +880,33 @@ class _DatingPreferencesSetupScreenState
                             print(
                               '[DatingPreferencesSetupScreen] ⏳ Profile unverified: status=$verificationStatus',
                             );
+                            final isRejected = verificationStatus == 'rejected';
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Row(
                                   children: [
-                                    const Icon(
-                                      Icons.hourglass_top_rounded,
+                                    Icon(
+                                      isRejected
+                                          ? Icons.cancel_outlined
+                                          : Icons.hourglass_top_rounded,
                                       color: Colors.white,
                                       size: 20,
                                     ),
                                     const SizedBox(width: 10),
-                                    const Expanded(
+                                    Expanded(
                                       child: Text(
-                                        'Your profile is pending admin verification. You\'ll be able to save preferences once approved.',
+                                        isRejected
+                                            ? 'Your profile was rejected. Go to your Profile tab to see the reason and create a new one.'
+                                            : 'Your profile is pending admin verification. You\'ll be able to save preferences once approved.',
                                       ),
                                     ),
                                   ],
                                 ),
-                                backgroundColor: AppColors.primary,
+                                backgroundColor: isRejected
+                                    ? Colors.red.shade700
+                                    : AppColors.primary,
                                 behavior: SnackBarBehavior.floating,
-                                duration: const Duration(seconds: 4),
+                                duration: const Duration(seconds: 5),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

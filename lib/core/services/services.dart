@@ -5,3 +5,4 @@ export 'firestore_service.dart';
 export 'media_service.dart';
 export 'dating_profile_service.dart';
 export 'chat_service.dart';
+export 'app_update_service.dart';

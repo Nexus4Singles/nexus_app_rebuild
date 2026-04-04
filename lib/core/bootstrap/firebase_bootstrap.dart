@@ -26,15 +26,18 @@ Future<void> initFirebaseSafely() async {
 
     if (!userDoc.exists) {
       // User is signed in but Firestore doc is missing (deleted account)
-      // Sign them out and clear local data
+      // Sign them out and clear all local data
       // ignore: avoid_print
       print(
         '[BOOTSTRAP] User signed in but Firestore doc missing → signing out and clearing cache',
       );
 
       await auth.signOut();
+      // Clear ALL preferences to ensure clean state
       await prefs.clear();
+      // Explicitly remove presurvey flags
       await prefs.remove('force_guest');
+      await prefs.remove('presurvey_local_done');
 
       return;
     }

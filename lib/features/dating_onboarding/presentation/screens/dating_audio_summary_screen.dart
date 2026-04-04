@@ -11,10 +11,8 @@ import 'package:nexus_app_v2/features/dating_onboarding/presentation/widgets/dat
 import 'package:nexus_app_v2/features/dating_onboarding/application/dating_onboarding_draft.dart';
 import 'package:nexus_app_v2/core/storage/do_spaces_storage_service.dart';
 import 'package:nexus_app_v2/core/storage/providers/media_storage_provider.dart';
+import 'package:nexus_app_v2/core/providers/service_providers.dart';
 import 'package:nexus_app_v2/core/services/media_service.dart';
-
-// Provider for MediaService to ensure we use the same instance everywhere
-final mediaServiceProvider = Provider((ref) => MediaService());
 
 class DatingAudioSummaryScreen extends ConsumerStatefulWidget {
   const DatingAudioSummaryScreen({super.key});

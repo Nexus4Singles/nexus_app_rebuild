@@ -41,6 +41,10 @@ import '../../features/challenges/domain/journey_v1_models.dart';
 
 import '../../features/subscription/presentation/screens/journey_purchase_screen.dart';
 import '../../features/counselling/presentation/screens/book_marriage_coach_screen.dart';
+import '../../features/counselling/presentation/screens/coach_list_screen.dart';
+import '../../features/counselling/presentation/screens/my_bookings_screen.dart';
+import '../../features/counselling/presentation/screens/coach_dashboard_screen.dart';
+import '../../features/counselling/domain/counselling_models.dart';
 
 import '../../features/assessment/presentation/screens/assessments_hub_screen.dart';
 import '../../features/assessment/presentation/screens/assessment_intro_screen.dart';
@@ -53,6 +57,8 @@ import '../../features/compatibility_quiz/presentation/screens/compatibility_qui
 import '../../features/auth/presentation/screens/signup_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
+import '../../features/launch/presentation/app_launch_gate.dart'
+    show AuthEntryScreen;
 
 import '../../features/admin_review/presentation/screens/admin_review_queue_screen.dart';
 
@@ -295,6 +301,12 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         settings: settings,
         builder: (_) => const PrivacyPolicyScreen(),
       );
+    case '/auth-entry':
+      return MaterialPageRoute<void>(
+        settings: settings,
+        builder: (_) => const AuthEntryScreen(),
+      );
+
     case '/signup':
       return MaterialPageRoute(
         settings: settings,
@@ -385,6 +397,25 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => const CompatibilityQuizScreen(),
+      );
+
+    case AppRoutes.coachList:
+      final sessionType = settings.arguments as SessionType? ?? SessionType.individual;
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => CoachListScreen(sessionType: sessionType),
+      );
+
+    case AppRoutes.myBookings:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const MyBookingsScreen(),
+      );
+
+    case AppRoutes.coachDashboard:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const CoachDashboardScreen(),
       );
 
     default:

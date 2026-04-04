@@ -10,6 +10,7 @@ import '../../../../core/widgets/guest_guard.dart';
 import '../../../../core/ui/icon_mapper.dart';
 import '../../domain/journey_v1_models.dart';
 import '../../providers/journeys_providers.dart';
+import '../widgets/audio_teaching_card.dart';
 
 class JourneySessionScreen extends ConsumerStatefulWidget {
   final String journeyId;
@@ -808,6 +809,21 @@ class _MissionCardRenderer extends StatelessWidget {
       case 'instruction_card':
       case 'tip_card':
       case 'mission_card':
+      case 'teaching':
+      case 'confrontation':
+        // Check if this is an audio teaching card
+        if (card.audioUrl?.isNotEmpty == true) {
+          return AudioTeachingCard(
+            audioUrl: card.audioUrl!,
+            cardTitle: card.title,
+            cardText: card.text ?? '',
+            onCompleted: () {
+              // Optional: trigger next card action here if needed
+            },
+            autoPlay: true,
+          );
+        }
+        // Otherwise, show text version
         return _InfoCard(
           title: card.title,
           flavor: card.flavor,

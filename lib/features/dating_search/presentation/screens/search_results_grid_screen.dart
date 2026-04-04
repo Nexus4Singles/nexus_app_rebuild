@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:async';
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/widgets/cached_image.dart';
 import 'package:nexus_app_v2/features/profile/presentation/screens/profile_screen.dart';
-import 'package:nexus_app_v2/features/subscription/presentation/screens/subscription_screen.dart';
 import 'package:nexus_app_v2/features/dating_search/application/saved_profiles_provider.dart';
 import '../../domain/dating_profile.dart';
 import '../../domain/dating_search_result.dart';
@@ -12,27 +10,6 @@ import '../../application/dating_search_results_provider.dart';
 import '../../application/dating_preferences_provider.dart';
 import 'dating_preferences_setup_screen.dart';
 import 'no_profiles_screen.dart';
-
-/// Calculate hours, minutes, and seconds remaining until 24-hour daily limit resets
-String _getCountdownText(DateTime limitHitAt) {
-  final now = DateTime.now();
-  final resetTime = limitHitAt.add(const Duration(hours: 24));
-  final difference = resetTime.difference(now);
-
-  final hours = difference.inHours;
-  final minutes = difference.inMinutes % 60;
-  final seconds = difference.inSeconds % 60;
-
-  if (hours > 0) {
-    return '${hours}h ${minutes}m ${seconds}s';
-  } else if (minutes > 0) {
-    return '${minutes}m ${seconds}s';
-  } else if (seconds > 0) {
-    return '${seconds}s';
-  } else {
-    return 'Resetting...';
-  }
-}
 
 class SearchResultsGridScreen extends ConsumerStatefulWidget {
   const SearchResultsGridScreen({Key? key}) : super(key: key);
@@ -46,10 +23,10 @@ class _SearchResultsGridScreenState
     extends ConsumerState<SearchResultsGridScreen>
     with AutomaticKeepAliveClientMixin {
   late ScrollController _scrollController;
-  bool _showDailyLimitCard = false;
   bool _isRestoringPosition = false;
   int _restoreAttempts = 0;
   bool _errorRetryScheduled = false;
+  bool _autoRetryInFlight = false;
 
   @override
   void initState() {
@@ -96,13 +73,6 @@ class _SearchResultsGridScreenState
   void _onScroll() {
     if (!_scrollController.hasClients) return;
     if (_isRestoringPosition) return;
-
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 100) {
-      if (!_showDailyLimitCard) {
-        setState(() => _showDailyLimitCard = true);
-      }
-    }
   }
 
   @override
@@ -186,6 +156,7 @@ class _SearchResultsGridScreenState
           error: (e, st) {
             if (!_errorRetryScheduled && mounted) {
               _errorRetryScheduled = true;
+              _autoRetryInFlight = true;
               Future.delayed(const Duration(seconds: 2), () async {
                 if (!mounted) return;
                 ref.invalidate(datingSearchResultsProvider);
@@ -194,7 +165,30 @@ class _SearchResultsGridScreenState
                 try {
                   await ref.read(accumulatedSearchResultsProvider.future);
                 } catch (_) {}
+                if (mounted) setState(() => _autoRetryInFlight = false);
               });
+            }
+            // Show loading spinner while the auto-retry is in flight,
+            // so users never see "Something went wrong" for transient startup errors.
+            if (_autoRetryInFlight) {
+              return Container(
+                color: AppColors.getBackground(context),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(color: AppColors.primary),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Loading Matches...',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.getTextPrimary(context),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             }
             return Center(
               child: Column(
@@ -221,19 +215,15 @@ class _SearchResultsGridScreenState
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
-                  SizedBox(
-                    width: 120,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        if (!mounted) return;
-                        ref.invalidate(datingSearchResultsProvider);
-                        ref.read(searchResultsCacheProvider.notifier).clear();
-                        ref.read(searchResultsOffsetProvider.notifier).state =
-                            0;
-                      },
-                      icon: const Icon(Icons.refresh, size: 18),
-                      label: const Text('Retry'),
-                    ),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      if (!mounted) return;
+                      ref.invalidate(datingSearchResultsProvider);
+                      ref.read(searchResultsCacheProvider.notifier).clear();
+                      ref.read(searchResultsOffsetProvider.notifier).state = 0;
+                    },
+                    icon: const Icon(Icons.refresh, size: 18),
+                    label: const Text('Retry'),
                   ),
                 ],
               ),
@@ -241,6 +231,7 @@ class _SearchResultsGridScreenState
           },
           data: (result) {
             _errorRetryScheduled = false;
+            _autoRetryInFlight = false;
             if (result.items.isEmpty) {
               // Items are empty — always show NoProfilesScreen.
               // No middle grounds: either profiles exist (grid) or they don't (NoProfilesScreen).
@@ -324,27 +315,10 @@ class _PaginatedGridView extends ConsumerStatefulWidget {
 }
 
 class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
-  bool _showDailyLimitCard = false;
-  Timer? _countdownTimer;
-
   @override
   void initState() {
     super.initState();
     widget.scrollController.addListener(_onScroll);
-
-    if (widget.allResults.hitDailyLimit &&
-        widget.allResults.dailyLimitHitAt != null) {
-      _startCountdownTimer();
-    }
-  }
-
-  void _startCountdownTimer() {
-    _countdownTimer?.cancel();
-    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (mounted) {
-        setState(() {});
-      }
-    });
   }
 
   @override
@@ -355,31 +329,15 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
       oldWidget.scrollController.removeListener(_onScroll);
       widget.scrollController.addListener(_onScroll);
     }
-
-    if (widget.allResults.hitDailyLimit &&
-        widget.allResults.dailyLimitHitAt != null) {
-      _startCountdownTimer();
-    } else {
-      _countdownTimer?.cancel();
-    }
   }
 
   @override
   void dispose() {
-    _countdownTimer?.cancel();
     widget.scrollController.removeListener(_onScroll);
     super.dispose();
   }
 
-  void _onScroll() {
-    if (!widget.scrollController.hasClients) return;
-    final position = widget.scrollController.position;
-
-    if (!_showDailyLimitCard &&
-        position.pixels >= position.maxScrollExtent - 100) {
-      setState(() => _showDailyLimitCard = true);
-    }
-  }
+  void _onScroll() {}
 
   @override
   Widget build(BuildContext context) {
@@ -399,6 +357,44 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
           ),
           controller: widget.scrollController,
           slivers: [
+            if (widget.allResults.isExpandedSearch)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: AppColors.primary.withOpacity(0.18),
+                      ),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.public_rounded,
+                          size: 16,
+                          color: AppColors.primary,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Showing compatible matches beyond your region while your local community grows.',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             SliverPadding(
               padding: const EdgeInsets.all(12),
               sliver: SliverGrid(
@@ -448,111 +444,7 @@ class _PaginatedGridViewState extends ConsumerState<_PaginatedGridView> {
               ),
           ],
         ),
-        if (widget.allResults.hitDailyLimit && _showDailyLimitCard)
-          _buildDailyLimitCard(context),
       ],
-    );
-  }
-
-  Widget _buildDailyLimitCard(BuildContext context) {
-    final limitHitAt = widget.allResults.dailyLimitHitAt;
-
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppColors.primary.withOpacity(0.95),
-              AppColors.primaryDark,
-            ],
-          ),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          children: [
-            Icon(Icons.lock_rounded, color: AppColors.textOnPrimary, size: 24),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Maximum of 10 Profiles Daily',
-                    style: AppTextStyles.labelMedium.copyWith(
-                      color: AppColors.textOnPrimary,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 13,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'Subscribe to view more profiles',
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textOnPrimary.withOpacity(0.85),
-                      fontSize: 11,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  if (limitHitAt != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Text(
-                        'New Profiles will be displayed in ${_getCountdownText(limitHitAt)}',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.textOnPrimary.withOpacity(0.75),
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Menlo',
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 12),
-            SizedBox(
-              width: 85,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder:
-                          (_) => const SubscriptionScreen(initialTabIndex: 0),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.getSurface(context),
-                  elevation: 0,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 6,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: Text(
-                  'Upgrade',
-                  style: AppTextStyles.labelSmall.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

@@ -202,6 +202,8 @@ class CoachApplicationNotifier extends StateNotifier<CoachApplication> {
   void setLinkedinProfile(String value) =>
       state = state.copyWith(linkedinProfile: value.isEmpty ? null : value);
 
+  void setHourlyRate(int value) => state = state.copyWith(hourlyRate: value);
+
   void setProfilePhoto(File? file) =>
       state = state.copyWith(profilePhoto: file);
 
@@ -221,6 +223,7 @@ class CoachApplicationNotifier extends StateNotifier<CoachApplication> {
         state.maritalStatus != null &&
         state.credentials != null &&
         state.credentials!.isNotEmpty &&
+        state.hourlyRate != null &&
         state.profilePhoto != null;
   }
 
@@ -346,6 +349,7 @@ class _CoachApplicationScreenState
               onPageChanged: (page) {
                 setState(() => _currentPage = page);
               },
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 _PersonalInfoPage(onNext: _nextPage),
                 _ProfessionalBackgroundPage(
@@ -804,6 +808,51 @@ class _QualificationsPageState extends ConsumerState<_QualificationsPage> {
           ),
           const SizedBox(height: 16),
 
+          // ── Hourly Rate ──────────────────────────────────────────────────
+          const SizedBox(height: 4),
+          Text(
+            'Session Rate (USD/hr) *',
+            style: AppTextStyles.labelLarge.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 10),
+          _RateSelector(
+            selectedRate: application.hourlyRate,
+            onChanged: (rate) => notifier.setHourlyRate(rate),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.06),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppColors.primary.withOpacity(0.18)),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.lightbulb_outline_rounded,
+                  color: AppColors.primary,
+                  size: 16,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Counselors with lower starting rates attract more first-time bookings. '
+                    'We recommend proving your worth to users first and then increase your rates afterwards.',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.getTextSecondary(context),
+                      fontSize: 11,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
           // Social Media (Optional)
           const SizedBox(height: 12),
           _buildTextFieldWithController(
@@ -854,12 +903,17 @@ class _QualificationsPageState extends ConsumerState<_QualificationsPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (application.credentials != null &&
-                        application.credentials!.isNotEmpty) {
+                        application.credentials!.isNotEmpty &&
+                        application.hourlyRate != null) {
                       widget.onNext();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: const Text('Please fill credentials field'),
+                          content: Text(
+                            application.hourlyRate == null
+                                ? 'Please select your session rate'
+                                : 'Please fill credentials field',
+                          ),
                           backgroundColor: AppColors.primary,
                         ),
                       );
@@ -1058,18 +1112,23 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
                       ? null
                       : () async {
                         print('[DEBUG] Submit button pressed.');
-                        if (application.profilePhoto == null) {
+                        final notifier = ref.read(
+                          coachApplicationProvider.notifier,
+                        );
+                        if (!notifier.isFormValid()) {
+                          final msg =
+                              application.profilePhoto == null
+                                  ? 'Please upload a profile photo'
+                                  : application.hourlyRate == null
+                                  ? 'Please select your session rate'
+                                  : 'Please complete all required fields';
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text(
-                                'Please upload a profile photo',
-                              ),
+                              content: Text(msg),
                               backgroundColor: AppColors.primary,
                             ),
                           );
-                          print(
-                            '[DEBUG] Submission blocked: profile photo missing.',
-                          );
+                          print('[DEBUG] Submission blocked: form invalid.');
                           return;
                         }
 
@@ -1157,6 +1216,64 @@ class _MediaPageState extends ConsumerState<_MediaPage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+// ── Rate Selector ─────────────────────────────────────────────────────────────
+
+class _RateSelector extends StatelessWidget {
+  final int? selectedRate;
+  final ValueChanged<int> onChanged;
+
+  // Allowed rate options in USD
+  static const List<int> _rates = [20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+  const _RateSelector({required this.selectedRate, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children:
+          _rates.map((rate) {
+            final isSelected = selectedRate == rate;
+            return GestureDetector(
+              onTap: () => onChanged(rate),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 150),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color:
+                      isSelected
+                          ? AppColors.primary
+                          : AppColors.getSurface(context),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color:
+                        isSelected
+                            ? AppColors.primary
+                            : AppColors.getBorder(context),
+                    width: isSelected ? 2 : 1,
+                  ),
+                ),
+                child: Text(
+                  '\$$rate/hr',
+                  style: AppTextStyles.labelMedium.copyWith(
+                    color:
+                        isSelected
+                            ? Colors.white
+                            : AppColors.getTextSecondary(context),
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
     );
   }
 }

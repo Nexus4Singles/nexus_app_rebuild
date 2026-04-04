@@ -36,7 +36,7 @@ class NoProfilesScreen extends StatelessWidget {
   }
 
   // ---------------------------------------------------------------------------
-  // Simple layout — used for non-diagnostic hints (daily limit, pagination, etc.)
+  // Simple layout — used for non-diagnostic hints (pagination, etc.)
   // ---------------------------------------------------------------------------
   Widget _buildSimpleHintLayout(BuildContext context) {
     return SingleChildScrollView(

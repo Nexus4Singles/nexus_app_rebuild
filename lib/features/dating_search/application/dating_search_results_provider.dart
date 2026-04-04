@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nexus_app_v2/core/bootstrap/firebase_ready_provider.dart';
 import 'package:nexus_app_v2/core/session/guest_session_provider.dart';
 import 'package:nexus_app_v2/core/user/current_user_gender_provider.dart';
@@ -20,7 +19,6 @@ import '../domain/dating_preferences.dart';
 import 'dating_preferences_provider.dart';
 import 'dating_dismissed_profiles_provider.dart';
 import 'dating_clicked_profiles_provider.dart';
-import 'daily_limit_provider.dart';
 import '../domain/enhanced_compatibility_scorer.dart';
 import 'package:nexus_app_v2/core/session/effective_relationship_status_provider.dart';
 import 'package:nexus_app_v2/core/constants/app_constants.dart';
@@ -486,6 +484,7 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
       noProfilesInCountry: results.noProfilesInCountry,
       noProfilesBreakdown: results.noProfilesBreakdown,
       maxPaginationPages: results.maxPaginationPages,
+      isExpandedSearch: results.isExpandedSearch,
     );
   }
 
@@ -600,6 +599,7 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
       noProfilesInCountry: results.noProfilesInCountry,
       noProfilesBreakdown: results.noProfilesBreakdown,
       maxPaginationPages: results.maxPaginationPages,
+      isExpandedSearch: results.isExpandedSearch,
     );
   } else if (results.items.isNotEmpty) {
     results.items.sort((a, b) {
@@ -614,32 +614,8 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   // After all sorting and prioritization, apply pagination limits
   // This naturally cuts off old inactive v1 profiles as they're at the end
 
-  // Determine subscription tier for pagination cap
-  // Subscribed: 100 pages (2000 profiles), Free: 25 pages (500 profiles)
-  // (Will use existing isPremium variable from below, for now use isAdmin)
-  // Check both new format (subscription.isActive) and legacy format (onPremium) for max pages
-  bool isPremiumForMaxPages = false;
-  final subscriptionDataForMaxPages = currentUser?.subscription;
-  if (subscriptionDataForMaxPages != null) {
-    final isActive = subscriptionDataForMaxPages['isActive'] as bool? ?? false;
-    if (isActive) {
-      final expiryDate = subscriptionDataForMaxPages['expiryDate'];
-      if (expiryDate != null) {
-        if (expiryDate is Timestamp &&
-            expiryDate.toDate().isAfter(DateTime.now())) {
-          isPremiumForMaxPages = true;
-        }
-      } else {
-        isPremiumForMaxPages = true;
-      }
-    }
-  } else if (currentUser?.onPremium == true) {
-    final expDate = currentUser?.subExpDate;
-    if (expDate != null && expDate.isAfter(DateTime.now())) {
-      isPremiumForMaxPages = true;
-    }
-  }
-  final maxPages = isAdmin ? 500 : (isPremiumForMaxPages ? 100 : 25);
+  // All users: 100 pages (2000 profiles), Admin: 500 pages
+  final maxPages = isAdmin ? 500 : 100;
 
   // Count active (recent) vs inactive (old) profiles
   int activeCount = 0;
@@ -669,6 +645,7 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     noProfilesInCountry: results.noProfilesInCountry,
     noProfilesBreakdown: results.noProfilesBreakdown,
     maxPaginationPages: maxPages, // Pass to UI layer
+    isExpandedSearch: results.isExpandedSearch,
   );
 
   // Prioritize by relationship status for widows/divorcees when user has no marital filter
@@ -696,6 +673,7 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
             noProfilesInCountry: results.noProfilesInCountry,
             noProfilesBreakdown: results.noProfilesBreakdown,
             maxPaginationPages: results.maxPaginationPages,
+            isExpandedSearch: results.isExpandedSearch,
           );
           // DEBUG: print skipped - reducing log noise
         }
@@ -706,7 +684,7 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   }
 
   // Prioritize local profiles when user has no country preference
-  // Free users see local profiles first, then international (maintains 10/day limit across both)
+  // Users see local profiles first, then international
   if (results.items.isNotEmpty &&
       resolvedPreferences.countryOfResidence != null &&
       filters.countryOfResidence == null) {
@@ -727,322 +705,11 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
         noProfilesInCountry: results.noProfilesInCountry,
         noProfilesBreakdown: results.noProfilesBreakdown,
         maxPaginationPages: results.maxPaginationPages,
+        isExpandedSearch: results.isExpandedSearch,
       );
       // DEBUG: print skipped - reducing log noise
     }
   }
-
-  // ============================================================================
-  // DAILY LIMIT FOR FREE USERS (Premium users are not affected)
-  // ============================================================================
-  // Premium users: unlimited access to all profiles matching their filters
-  // Free users: 10 profiles/day, persisted across app restarts
-  //
-  // SMART LOGIC: Track which profiles user has seen (not timebound)
-  // - Never limit by "created in 24 hours" to avoid missing older profiles
-  // - Prioritize unseen profiles (higher in stack)
-  // - Show up to 10: [unseen profiles...] then [previously seen...]
-  // - This ensures no one is left out due to not checking daily
-
-  // Check both new format (subscription.isActive) and legacy format (onPremium)
-  bool isPremium = false;
-
-  // Check new subscription format first
-  final subscriptionData = currentUser?.subscription;
-  if (subscriptionData != null) {
-    final isActive = subscriptionData['isActive'] as bool? ?? false;
-    if (isActive) {
-      final expiryDate = subscriptionData['expiryDate'];
-      if (expiryDate != null) {
-        if (expiryDate is Timestamp &&
-            expiryDate.toDate().isAfter(DateTime.now())) {
-          isPremium = true;
-        }
-      } else {
-        isPremium = true; // No expiry — indefinite premium
-      }
-    }
-  }
-
-  // Fallback to legacy format
-  if (!isPremium && currentUser?.onPremium == true) {
-    final expDate = currentUser?.subExpDate;
-    if (expDate != null && expDate.isAfter(DateTime.now())) {
-      isPremium = true;
-    }
-  }
-
-  if (!isPremium && results.items.isNotEmpty) {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    final manager = ref.read(dailyLimitManagerProvider);
-
-    if (uid != null) {
-      try {
-        // Get persisted daily limit timestamp (if it exists and 24h hasn't passed)
-        final persistedLimitHit = await manager.getDailyLimitFirstHit(uid);
-
-        // Get already-shown profile IDs from today
-        var shownIds = await manager.getShownProfileIds(uid);
-
-        // SAFEGUARD: If reset happened (persistedLimitHit=null) but shownIds has entries,
-        // it means old data persists. Clear it now.
-        if (persistedLimitHit == null && shownIds.isNotEmpty) {
-          try {
-            await manager.setShownProfileIds(uid, []);
-            shownIds = [];
-          } catch (e) {
-            if (kDebugMode) {
-              print(
-                '[DatingSearchResults] ⚠️ Warning: Failed to clear stale shownIds: $e',
-              );
-            }
-            // Continue anyway - use the stale data rather than breaking
-          }
-        }
-
-        // ====================================================================
-        // SMART PRIORITIZATION: Unseen > Seen (by createdAt within each group)
-        // ====================================================================
-        // Split all results into unseen and seen
-        // Results are already sorted by createdAt (newest first)
-        final unseenProfiles =
-            results.items.where((p) => !shownIds.contains(p.uid)).toList();
-
-        final seenProfiles =
-            results.items.where((p) => shownIds.contains(p.uid)).toList();
-
-        // Combine: unseen first (maintaining createdAt order), then seen
-        final prioritizedResults = <DatingProfile>[
-          ...unseenProfiles,
-          ...seenProfiles,
-        ];
-
-        // ====================================================================
-        // CASE LOGIC FOR FREE USER DAILY LIMIT
-        // ====================================================================
-
-        // Case 1: Already shown 10+ profiles today (limit hit within 24 hours)
-        if (shownIds.length >= 10) {
-          // Return the profiles already shown today so user keeps seeing their grid
-          // SAFETY FIX: If filter changed, previously-shown profiles won't be in current results.
-          // Fall back to showing from prioritized pool to prevent empty grid.
-          var todaysProfiles =
-              results.items.where((p) => shownIds.contains(p.uid)).toList();
-
-          // Fallback: if filter change orphaned the profiles, show from prioritized pool
-          if (todaysProfiles.isEmpty && prioritizedResults.isNotEmpty) {
-            todaysProfiles =
-                prioritizedResults
-                    .where((p) => shownIds.contains(p.uid))
-                    .toList();
-          }
-
-          results = DatingSearchResult(
-            items:
-                todaysProfiles.isEmpty
-                    ? prioritizedResults.take(10).toList()
-                    : todaysProfiles,
-            emptyHint: null,
-            hitDailyLimit: true,
-            totalAvailableCount: results.items.length,
-            dailyLimitHitAt: persistedLimitHit,
-            allAvailableShownToday: true,
-            shownProfileIds: shownIds,
-            maxPaginationPages: results.maxPaginationPages,
-          );
-        }
-        // Case 2: Fresh start after 24h reset (shownIds was cleared)
-        else if (shownIds.isEmpty && unseenProfiles.isNotEmpty) {
-          // Show up to 10 from prioritized list (unseen first, then seen)
-          final profilesToShow = prioritizedResults.take(10).toList();
-          final allIds = profilesToShow.map((p) => p.uid).toList();
-
-          // Persist daily limit timestamp and shown profile IDs
-          try {
-            await manager.setDailyLimitFirstHit(uid);
-            await manager.setShownProfileIds(uid, allIds);
-            if (kDebugMode) {
-              print(
-                '[DatingSearchResults] ✅ Case 2: Persisted daily limit & ${allIds.length} profile IDs',
-              );
-            }
-          } catch (e) {
-            if (kDebugMode) {
-              print(
-                '[DatingSearchResults] ⚠️ Error persisting daily limit (Case 2): $e',
-              );
-              print(
-                '[DatingSearchResults] ⚠️ User will still see profiles, but quota tracking may be lost',
-              );
-            }
-            // Continue anyway - user can still see results, quota just won't persist
-          }
-
-          results = DatingSearchResult(
-            items: profilesToShow,
-            emptyHint: null,
-            hitDailyLimit: allIds.length >= 10,
-            totalAvailableCount: results.items.length,
-            dailyLimitHitAt: persistedLimitHit ?? DateTime.now(),
-            allAvailableShownToday: allIds.length >= 10,
-            shownProfileIds: allIds,
-            maxPaginationPages: results.maxPaginationPages,
-          );
-        }
-        // Case 3: Mid-session - need to show more profiles to reach 10
-        else if (shownIds.isNotEmpty && shownIds.length < 10) {
-          final remaining = 10 - shownIds.length;
-
-          // Get all profiles not yet shown today (unseen)
-          final allUnseenToday =
-              prioritizedResults
-                  .where((p) => !shownIds.contains(p.uid))
-                  .toList();
-
-          // Take up to 'remaining' profiles from unseen pool
-          // This maintains the prioritized order (unseen by date)
-          final newProfilesToShow = allUnseenToday.take(remaining).toList();
-
-          // FIXED: Always include previously-shown profiles in the result set.
-          // The old code only returned new profiles (the delta), causing the grid
-          // to show fewer profiles than expected, or even empty if all new profiles
-          // were already dismissed.
-          final alreadySeenProfiles =
-              results.items.where((p) => shownIds.contains(p.uid)).toList();
-
-          // Only update persistence if we have new profiles to add
-          if (newProfilesToShow.isNotEmpty) {
-            final allIds = [
-              ...shownIds,
-              ...newProfilesToShow.map((p) => p.uid),
-            ];
-
-            // Persist quota timestamp if hitting 10 for first time
-            if (allIds.length >= 10 && persistedLimitHit == null) {
-              try {
-                await manager.setDailyLimitFirstHit(uid);
-                if (kDebugMode) {
-                  print(
-                    '[DatingSearchResults] ✅ Case 3a: User hit 10-profile limit',
-                  );
-                }
-              } catch (e) {
-                if (kDebugMode) {
-                  print(
-                    '[DatingSearchResults] ⚠️ Error setting daily limit timestamp (Case 3a): $e',
-                  );
-                }
-                // Continue - timestamp tracking lost but profiles still shown
-              }
-            }
-
-            // Persist updated profile IDs
-            try {
-              await manager.setShownProfileIds(uid, allIds);
-              if (kDebugMode) {
-                print(
-                  '[DatingSearchResults] ✅ Case 3a: Persisted ${allIds.length} profile IDs',
-                );
-              }
-            } catch (e) {
-              if (kDebugMode) {
-                print(
-                  '[DatingSearchResults] ⚠️ Error persisting shownProfileIds (Case 3a): $e',
-                );
-                print(
-                  '[DatingSearchResults] ⚠️ User will see duplicates on next search if persistence fails',
-                );
-              }
-              // Continue - deduplication may fail but user still sees results
-            }
-
-            // Return FULL set: already-seen + newly-added profiles
-            results = DatingSearchResult(
-              items: [...alreadySeenProfiles, ...newProfilesToShow],
-              emptyHint: null,
-              hitDailyLimit: allIds.length >= 10,
-              totalAvailableCount: results.items.length,
-              dailyLimitHitAt: persistedLimitHit ?? DateTime.now(),
-              allAvailableShownToday: allIds.length >= 10,
-              shownProfileIds: allIds,
-              maxPaginationPages: results.maxPaginationPages,
-            );
-          } else {
-            // No unseen profiles left - return the already-seen profiles so grid stays populated
-            // SAFETY FIX: If alreadySeenProfiles is empty (filter changed), pull from broader pool
-            var profilesToReturn = alreadySeenProfiles;
-            if (profilesToReturn.isEmpty && prioritizedResults.isNotEmpty) {
-              // Backward compatibility: show from all available profiles (not just current filter)
-              profilesToReturn =
-                  prioritizedResults
-                      .where((p) => shownIds.contains(p.uid))
-                      .toList();
-            }
-            if (profilesToReturn.isEmpty && prioritizedResults.isNotEmpty) {
-              // Last resort: show any available profiles to prevent empty grid
-              profilesToReturn = prioritizedResults.take(10).toList();
-            }
-
-            results = DatingSearchResult(
-              items: profilesToReturn,
-              emptyHint: null,
-              hitDailyLimit: shownIds.length >= 10,
-              totalAvailableCount: results.items.length,
-              dailyLimitHitAt: persistedLimitHit,
-              allAvailableShownToday: true,
-              shownProfileIds: shownIds,
-              maxPaginationPages: results.maxPaginationPages,
-            );
-          }
-        }
-        // No other cases needed - above cases are exhaustive
-        else {
-          // Defensive fallback: return already-seen profiles so grid stays populated
-          // SAFETY FIX: Use prioritized pool to handle filter changes gracefully
-          var todaysProfiles =
-              results.items.where((p) => shownIds.contains(p.uid)).toList();
-
-          // Try to get from prioritized pool if filtered results are empty
-          if (todaysProfiles.isEmpty && prioritizedResults.isNotEmpty) {
-            todaysProfiles =
-                prioritizedResults
-                    .where((p) => shownIds.contains(p.uid))
-                    .toList();
-          }
-
-          // Last resort: show any available profiles to prevent empty grid
-          if (todaysProfiles.isEmpty && prioritizedResults.isNotEmpty) {
-            todaysProfiles = prioritizedResults.take(10).toList();
-          }
-
-          results = DatingSearchResult(
-            items: todaysProfiles,
-            emptyHint: null,
-            hitDailyLimit: shownIds.length >= 10,
-            totalAvailableCount: results.items.length,
-            dailyLimitHitAt: persistedLimitHit,
-            allAvailableShownToday: true,
-            shownProfileIds: shownIds,
-            maxPaginationPages: results.maxPaginationPages,
-          );
-        }
-      } catch (e) {
-        // Critical error in daily limit logic - log and fallback
-        if (kDebugMode) {
-          print(
-            '[DatingSearchResults] ❌ CRITICAL ERROR in daily limit logic: $e',
-          );
-          print(
-            '[DatingSearchResults] ❌ Falling back to showing all results without quota tracking',
-          );
-        }
-        // Return original results without any quota/tracking applied
-        // This ensures user still sees search results even if persistence fails
-      }
-    }
-  }
-
-  // Premium users: no daily limit applied, show all filtered profiles as-is
 
   // Update lastRefreshedAt in Firestore if preferences exist and need refresh
   if (resolvedPreferences.needsRefresh()) {
@@ -1061,8 +728,7 @@ final datingSearchResultsProvider = FutureProvider<DatingSearchResult>((
     'items=${results.items.length}, '
     'emptyHint=${results.emptyHint != null ? '"${results.emptyHint}"' : 'null'}, '
     'noProfilesInCountry=${results.noProfilesInCountry}, '
-    'breakdown=${results.noProfilesBreakdown != null ? 'eliminatingFilter=${results.noProfilesBreakdown!.eliminatingFilter}, totalFetched=${results.noProfilesBreakdown!.totalFetched}' : 'null'}, '
-    'hitDailyLimit=${results.hitDailyLimit}',
+    'breakdown=${results.noProfilesBreakdown != null ? 'eliminatingFilter=${results.noProfilesBreakdown!.eliminatingFilter}, totalFetched=${results.noProfilesBreakdown!.totalFetched}' : 'null'}',
   );
 
   return results;
@@ -1193,14 +859,10 @@ final filteredDatingSearchResultsProvider = FutureProvider<DatingSearchResult>((
   return DatingSearchResult(
     items: filteredItems,
     emptyHint: baseResults.emptyHint,
-    hitDailyLimit: baseResults.hitDailyLimit,
-    totalAvailableCount: baseResults.totalAvailableCount,
-    dailyLimitHitAt: baseResults.dailyLimitHitAt,
     noProfilesInCountry: baseResults.noProfilesInCountry,
-    allAvailableShownToday: baseResults.allAvailableShownToday,
-    shownProfileIds: baseResults.shownProfileIds,
     maxPaginationPages: baseResults.maxPaginationPages,
     noProfilesBreakdown: baseResults.noProfilesBreakdown,
+    isExpandedSearch: baseResults.isExpandedSearch,
   );
 });
 
@@ -1340,7 +1002,7 @@ final paginatedDatingSearchResultsProvider = FutureProvider<
 //
 // CRITICAL FIX: Don't return early for empty results during the loading phase.
 // The base provider (datingSearchResultsProvider) needs time to complete all
-// its operations (daily limit checks, compatibility scoring, etc.) before we
+// its operations (compatibility scoring, etc.) before we
 // decide if results are truly empty. Returning early causes the UI to flicker
 // between empty state and loading state.
 
@@ -1390,7 +1052,7 @@ final accumulatedSearchResultsProvider = FutureProvider<DatingSearchResult>((
   // ========== NEW: FILTER CLICKED PROFILES FOR PREMIUM USERS ==========
   // Premium users should not see profiles they've already clicked to view
   // This improves scroll experience by reducing repeated profiles
-  // Only applies to premium users (free users stay with 10-profile daily limit)
+  // Only applies to premium users
 
   List<DatingProfile> finalResults = combined;
 
@@ -1454,11 +1116,10 @@ final accumulatedSearchResultsProvider = FutureProvider<DatingSearchResult>((
   return DatingSearchResult(
     items: finalResults,
     emptyHint: initialBatch.emptyHint,
-    hitDailyLimit: initialBatch.hitDailyLimit,
-    dailyLimitHitAt: initialBatch.dailyLimitHitAt,
     noProfilesInCountry: initialBatch.noProfilesInCountry,
     maxPaginationPages: initialBatch.maxPaginationPages,
     noProfilesBreakdown: initialBatch.noProfilesBreakdown,
+    isExpandedSearch: initialBatch.isExpandedSearch,
   );
 });
 

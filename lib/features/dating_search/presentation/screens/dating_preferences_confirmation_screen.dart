@@ -176,7 +176,7 @@ class _DatingPreferencesConfirmationScreenState
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'View unlimited profiles daily instead of just 10!',
+                                'Unlock compatibility insights, contact info, and unlimited messaging with your matches!',
                                 style: AppTextStyles.bodySmall.copyWith(
                                   color: AppColors.getTextSecondary(context),
                                   height: 1.5,

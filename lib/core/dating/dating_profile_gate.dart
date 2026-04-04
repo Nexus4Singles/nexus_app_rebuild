@@ -105,15 +105,13 @@ class DatingProfileGate {
     }
 
     // Check if profile was rejected
-    final verificationStatusAsync = ref.read(datingVerificationStatusProvider);
-    final verificationStatus = verificationStatusAsync.maybeWhen(
-      data: (status) => status,
-      orElse: () => null,
-    );
+    final verificationStatus = await ref.read(datingVerificationStatusProvider.future);
+    if (!context.mounted) return;
 
     if (verificationStatus == 'rejected') {
       // Get the rejection reason from the user doc
       final userDocData = await ref.read(currentUserDocProvider.future);
+      if (!context.mounted) return;
       final dating = (userDocData?['dating'] as Map?)?.cast<String, dynamic>();
       final rejectionReason =
           dating?['rejectionReason']?.toString() ??
@@ -124,30 +122,32 @@ class DatingProfileGate {
         builder:
             (_) => AlertDialog(
               title: const Text('Profile Rejected'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Your dating profile was not approved after admin review.',
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Reason:',
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    rejectionReason,
-                    style: const TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'You can create a new dating profile to try again. Make sure to follow our community guidelines.',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                ],
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Your dating profile was not approved after admin review.',
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Reason:',
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      rejectionReason,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'You can create a new dating profile to try again. Make sure to follow our community guidelines.',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                  ],
+                ),
               ),
               actions: [
                 TextButton(

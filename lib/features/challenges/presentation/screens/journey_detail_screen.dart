@@ -389,8 +389,11 @@ class _Body extends ConsumerWidget {
           final idx = entry.key;
           final m = entry.value;
 
-          final isFree = m.missionNumber == 1 && m.isFree;
-          final isLocked = !(isPurchased || isFree);
+          // EARLY ACCESS: isFree unused while gating is disabled
+          // final isFree = m.missionNumber == 1 && m.isFree;
+          // EARLY ACCESS: All journeys temporarily free — gating disabled
+          // final isLocked = !(isPurchased || isFree);
+          const isLocked = false;
           final isDone = completedMissionIds.contains(m.id);
           final isLast = idx == activities.length - 1;
 
@@ -403,15 +406,16 @@ class _Body extends ConsumerWidget {
               showRail: !isLast,
               isPurchased: isPurchased,
               onTap: () {
-                if (isLocked) {
-                  _showUnlockSheet(
-                    context,
-                    ref,
-                    journey: journey,
-                    freeMissionId: freeMissionId,
-                  );
-                  return;
-                }
+                // EARLY ACCESS: Gating disabled — all activities accessible
+                // if (isLocked) {
+                //   _showUnlockSheet(
+                //     context,
+                //     ref,
+                //     journey: journey,
+                //     freeMissionId: freeMissionId,
+                //   );
+                //   return;
+                // }
 
                 Navigator.pushNamed(
                   context,
@@ -498,11 +502,14 @@ class _Body extends ConsumerWidget {
             },
           ),
         const SizedBox(height: 6),
-        if (!isPurchased) _UnlockCta(journey: journey, isLoading: isLoading),
+        // EARLY ACCESS: Unlock CTA hidden — journeys are free temporarily
+        // if (!isPurchased) _UnlockCta(journey: journey, isLoading: isLoading),
       ],
     );
   }
 
+  // EARLY ACCESS: _showUnlockSheet kept for future use when gating is re-enabled
+  // ignore: unused_element
   void _showUnlockSheet(
     BuildContext context,
     WidgetRef ref, {
@@ -945,7 +952,8 @@ class _ActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isFree = activity.missionNumber == 1 && activity.isFree;
+    // EARLY ACCESS: isFree unused while Free tag is hidden
+    // final isFree = activity.missionNumber == 1 && activity.isFree;
     final theme = Theme.of(context);
     final cardBg =
         isLocked
@@ -1006,49 +1014,50 @@ class _ActivityCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 4),
-                      if (isDone)
-                        _AnimatedCompletionCheckmark(theme: theme)
-                      else if (isFree &&
-                          activity.missionNumber == 1 &&
-                          !isPurchased)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 6,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.primary.withOpacity(0.09),
-                            borderRadius: BorderRadius.circular(7),
-                          ),
-                          child: Text(
-                            'Free',
-                            style: theme.textTheme.labelSmall?.copyWith(
-                              color: theme.colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 11,
-                            ),
-                          ),
-                        )
-                      else if (isLocked)
-                        Container(
-                          width: 28,
-                          height: 28,
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.primary.withOpacity(0.10),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: theme.colorScheme.primary.withOpacity(
-                                0.20,
-                              ),
-                              width: 0.8,
-                            ),
-                          ),
-                          child: Icon(
-                            Icons.lock_rounded,
-                            size: 14,
-                            color: theme.colorScheme.primary,
-                          ),
-                        ),
+                      if (isDone) _AnimatedCompletionCheckmark(theme: theme),
+                      // EARLY ACCESS: Free tag hidden temporarily
+                      // else if (isFree &&
+                      //     activity.missionNumber == 1 &&
+                      //     !isPurchased)
+                      //   Container(
+                      //     padding: const EdgeInsets.symmetric(
+                      //       horizontal: 6,
+                      //       vertical: 2,
+                      //     ),
+                      //     decoration: BoxDecoration(
+                      //       color: theme.colorScheme.primary.withOpacity(0.09),
+                      //       borderRadius: BorderRadius.circular(7),
+                      //     ),
+                      //     child: Text(
+                      //       'Free',
+                      //       style: theme.textTheme.labelSmall?.copyWith(
+                      //         color: theme.colorScheme.primary,
+                      //         fontWeight: FontWeight.bold,
+                      //         fontSize: 11,
+                      //       ),
+                      //     ),
+                      //   )
+                      // EARLY ACCESS: Lock icon hidden temporarily
+                      // else if (isLocked)
+                      //   Container(
+                      //     width: 28,
+                      //     height: 28,
+                      //     decoration: BoxDecoration(
+                      //       color: theme.colorScheme.primary.withOpacity(0.10),
+                      //       borderRadius: BorderRadius.circular(8),
+                      //       border: Border.all(
+                      //         color: theme.colorScheme.primary.withOpacity(
+                      //           0.20,
+                      //         ),
+                      //         width: 0.8,
+                      //       ),
+                      //     ),
+                      //     child: Icon(
+                      //       Icons.lock_rounded,
+                      //       size: 14,
+                      //       color: theme.colorScheme.primary,
+                      //     ),
+                      //   ),
                     ],
                   ),
                   const SizedBox(height: 5),
@@ -1127,6 +1136,8 @@ class _ProgressRailDot extends StatelessWidget {
   }
 }
 
+// EARLY ACCESS: _UnlockCta is kept for future use when gating is re-enabled
+// ignore: unused_element
 class _UnlockCta extends ConsumerWidget {
   final JourneyV1 journey;
   final bool isLoading;

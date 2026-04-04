@@ -11,7 +11,8 @@ import 'core/providers/auth_provider.dart';
 import 'safe_imports.dart';
 import 'features/stories/presentation/screens/stories_screen.dart';
 import 'features/dating_search/presentation/screens/new_dating_search_screen.dart';
-import 'features/counselling/presentation/screens/book_marriage_coach_screen.dart';
+import 'features/counselling/presentation/screens/book_marriage_coach_screen.dart'
+    show BookMarriageCoachScreen;
 
 class AppShell extends ConsumerStatefulWidget {
   const AppShell({super.key});
@@ -46,7 +47,10 @@ class _AppShellState extends ConsumerState<AppShell> {
       case NavTab.challenges:
         return const ChallengesScreen();
       case NavTab.counselling:
-        return const BookMarriageCoachScreen();
+        if (FirebaseAuth.instance.currentUser?.email == 'nexus4singles@gmail.com') {
+          return const BookMarriageCoachScreen();
+        }
+        return const _CounsellingComingSoon();
       case NavTab.profile:
         return const ProfileScreen();
     }
@@ -197,6 +201,51 @@ class _AppShellState extends ConsumerState<AppShell> {
           ),
         ),
       ],
+    );
+  }
+}
+
+// ── Coming soon placeholder for the Counselling tab ──────────────────────────
+class _CounsellingComingSoon extends StatelessWidget {
+  const _CounsellingComingSoon();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.getBackground(context),
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.construction_rounded,
+                  size: 72,
+                  color: AppColors.primary.withOpacity(0.35),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Coming Soon',
+                  style: AppTextStyles.headlineMedium.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Speak to a Marriage Coach will be available in a future update.',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.getTextSecondary(context),
+                    height: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

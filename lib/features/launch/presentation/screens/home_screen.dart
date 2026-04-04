@@ -1074,13 +1074,13 @@ class _JourneyCard extends StatelessWidget {
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
-            height: 46,
             child: ElevatedButton(
               onPressed: onTap,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: AppColors.primary,
                 elevation: 0,
+                padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
@@ -1228,8 +1228,8 @@ class _MarriageCoachCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Get expert guidance from professional marriage counselors and family therapists',
-                    maxLines: 2,
+                    'Get expert guidance from professional marriage counselors & family therapists',
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.getTextSecondary(context),

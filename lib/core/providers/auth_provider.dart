@@ -562,35 +562,121 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
   }
 
   /// Delete account (deletes both Firestore document and Auth user)
+  ///
+  /// This performs a complete account deletion with timeouts to prevent hanging:
+  /// 1. Clears local caches (journey entitlements, shared prefs)
+  /// 2. Deletes Firestore user document
+  /// 3. Deletes Firebase Auth user
+  /// 4. Logs out from RevenueCat
+  /// 5. Updates auth state to null
   Future<void> deleteAccount() async {
     final user = _authService.currentUser;
-    if (user == null) return;
+    if (user == null) {
+      print('[AuthNotifier] ⚠️ deleteAccount called but no user found');
+      return;
+    }
+
+    final userId = user.uid;
+    print('[AuthNotifier] 🗑️  Starting account deletion for user: $userId');
 
     try {
-      // Clear local caches BEFORE deletion (but logout RevenueCat AFTER)
+      // Step 1: Clear journey entitlements cache (5 second timeout)
       try {
-        await JourneyEntitlementsService().clearAll();
+        await JourneyEntitlementsService().clearAll().timeout(
+          const Duration(seconds: 5),
+          onTimeout: () {
+            print(
+              '[AuthNotifier] ⚠️ Journey entitlements clear timed out (continuing anyway)',
+            );
+          },
+        );
+        print('[AuthNotifier] ✅ Journey entitlements cleared');
+      } catch (e) {
+        print('[AuthNotifier] ⚠️ Failed to clear journey entitlements: $e');
+      }
+
+      // Step 2: Clear local user data (5 second timeout)
+      try {
+        await _clearUserLocalData().timeout(
+          const Duration(seconds: 5),
+          onTimeout: () {
+            print(
+              '[AuthNotifier] ⚠️ Local data clear timed out (continuing anyway)',
+            );
+          },
+        );
+        print('[AuthNotifier] ✅ Local user data cleared');
+      } catch (e) {
+        print('[AuthNotifier] ⚠️ Failed to clear local user data: $e');
+      }
+
+      // Step 3: Delete Firestore user document (10 second timeout - critical step)
+      try {
+        await _firestoreService
+            .deleteUser(userId)
+            .timeout(
+              const Duration(seconds: 10),
+              onTimeout: () {
+                throw Exception(
+                  'Firestore user delete timed out after 10 seconds',
+                );
+              },
+            );
+        print('[AuthNotifier] ✅ Firestore user document deleted');
+      } catch (e) {
+        print('[AuthNotifier] ❌ Error deleting Firestore document: $e');
+        // Set state to null immediately on critical failure
+        state = const AsyncValue.data(null);
+        rethrow;
+      }
+
+      // Step 4: Delete Auth user (5 second timeout)
+      try {
+        await _authService.deleteAccount().timeout(
+          const Duration(seconds: 5),
+          onTimeout: () {
+            print(
+              '[AuthNotifier] ⚠️ Auth delete timed out (may still succeed on server)',
+            );
+          },
+        );
+        print('[AuthNotifier] ✅ Firebase Auth user deleted');
+      } catch (e) {
+        print('[AuthNotifier] ⚠️ Auth delete failed but Firestore done: $e');
+        // Don't rethrow - Firestore deletion was successful
+      }
+
+      // Step 4b: Sign out locally to clear FirebaseAuth.instance.currentUser.
+      // Without this, the cached user survives deletion and the router's
+      // loading-branch fallback treats the user as still signed in,
+      // sending them to presurvey instead of the welcome screen.
+      try {
+        await FirebaseAuth.instance.signOut();
       } catch (_) {}
 
-      await _clearUserLocalData();
-
-      // First delete Firestore document
-      // This triggers Cloud Function to delete Auth user
-      await _firestoreService.deleteUser(user.uid);
-
-      // Then delete Auth user (redundant but ensures deletion even if Cloud Function fails)
-      await _authService.deleteAccount();
-
-      // Logout from RevenueCat AFTER deletion completes
-      // This ensures all subscription data is finalized on RevenueCat servers
-      // Revenue data remains permanently in RevenueCat dashboard
+      // Step 5: Logout from RevenueCat (5 second timeout - non-critical)
       try {
-        await RevenueCatService.logout();
-      } catch (_) {}
+        await RevenueCatService.logout().timeout(
+          const Duration(seconds: 5),
+          onTimeout: () {
+            print('[AuthNotifier] ⚠️ RevenueCat logout timed out (continuing)');
+          },
+        );
+        print('[AuthNotifier] ✅ RevenueCat logged out');
+      } catch (e) {
+        print('[AuthNotifier] ⚠️ RevenueCat logout failed: $e');
+        // Don't rethrow - non-critical
+      }
 
+      // Step 6: Update auth state to null (immediate - no timeout needed)
       state = const AsyncValue.data(null);
+      print('[AuthNotifier] ✅ Auth state cleared - user logged out');
+      print(
+        '[AuthNotifier] ✅ Account deletion completed successfully for user: $userId',
+      );
     } catch (e) {
       // Even if there's an error, set state to null to log user out
+      print('[AuthNotifier] ❌ Error during account deletion: $e');
       state = const AsyncValue.data(null);
       rethrow;
     }

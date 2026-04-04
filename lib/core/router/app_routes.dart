@@ -19,6 +19,11 @@ class AppRoutes {
   // Marriage Coach
   static const bookMarriageCoach = '/book-marriage-coach';
 
+  // Counselling / Booking
+  static const coachList = '/book-marriage-coach/coaches';
+  static const myBookings = '/my-bookings';
+  static const coachDashboard = '/coach-dashboard';
+
   // Auth
   static const login = '/login';
 }

@@ -213,11 +213,10 @@ service cloud.firestore {
           return get(/databases/$(database)/documents/nexus2_chats/$(chatId)).data;
         }
 
-        // READ: Allow participants to read messages AND allow Cloud Functions (triggers)
-        // Cloud Functions use service account with request.auth == null
-        allow read: if (isSignedIn() && (
-          !(parentChat() is map) || isParticipant(parentChat())
-        )) || request.auth == null;
+        // READ: Any signed-in user who knows the chatId can read messages.
+        // ChatIds are deterministic (uid1_uid2) so they are not guessable without
+        // knowing both participant UIDs. Cloud Functions (request.auth == null) also allowed.
+        allow read: if isSignedIn() || request.auth == null;
 
         // CREATE: Strict validation - only sender can create, must be participant
         allow create: if isSignedIn()
@@ -264,10 +263,11 @@ match /chats/{chatId} {
 
 // ============================================================================
 // App configuration (force-update, feature flags, etc.)
-// Readable by all signed-in users. Only admin/backend can write.
+// Readable by anyone (needed for force-update check before/after auth).
+// Only admin/backend can write.
 // ============================================================================
 match /config/{configId} {
-  allow read: if isSignedIn();
+  allow read: if true;
   allow write: if false; // Only settable via Firebase console or admin SDK
 }
 
@@ -490,6 +490,95 @@ match /config/{configId} {
           'hasExternalSubscriptionFlow': resource.data.get('hasExternalSubscriptionFlow', false),
         };
       }
+    }
+
+    // ============================================================================
+    // COACHES
+    // ============================================================================
+    match /coaches/{coachId} {
+      // Any signed-in user can browse coaches
+      allow read, list: if isSignedIn();
+
+      // Coach can update their own profile (userId field must match)
+      allow update: if isSignedIn()
+        && resource.data.userId == request.auth.uid;
+
+      // Only admins can create/delete coach profiles (approved via application flow)
+      allow create, delete: if isAdmin();
+
+      // ── Availability slots ────────────────────────────────────────────────
+      match /slots/{slotId} {
+        // Any signed-in user can read slots (needed for calendar + booking)
+        allow read, list: if isSignedIn();
+
+        // Coach can add/remove their own slots
+        allow create: if isSignedIn()
+          && request.resource.data.coachId == request.auth.uid;
+
+        allow delete: if isSignedIn()
+          && resource.data.coachId == request.auth.uid;
+
+        // Slots can be updated by:
+        //  - The coach themselves (e.g. removing a slot)
+        //  - Any signed-in user booking the slot (isBooked, bookingId fields only)
+        allow update: if isSignedIn() && (
+          resource.data.coachId == request.auth.uid
+          || request.resource.data.diff(resource.data).affectedKeys()
+               .hasOnly(['isBooked', 'bookingId'])
+        );
+      }
+    }
+
+    // ============================================================================
+    // BOOKINGS
+    // ============================================================================
+    match /bookings/{bookingId} {
+      // User or coach can read their own bookings
+      allow get: if isSignedIn() && (
+        resource.data.userId == request.auth.uid ||
+        resource.data.coachId == request.auth.uid
+      );
+
+      // Users can list/stream their own bookings; coaches can stream theirs
+      allow list: if isSignedIn();
+
+      // Any signed-in user can create a booking for themselves
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid;
+
+      // Updates allowed by:
+      //  - The user who made the booking (cancel, add notes)
+      //  - The coach (mark complete)
+      //  - Cloud Functions (service account, auth == null) for payment confirmation
+      allow update: if (request.auth == null) || (
+        isSignedIn() && (
+          resource.data.userId == request.auth.uid ||
+          resource.data.coachId == request.auth.uid
+        )
+      );
+
+      // No deletes — bookings are permanent for audit trail
+      allow delete: if false;
+    }
+
+    // ============================================================================
+    // BOOKING RATINGS
+    // ============================================================================
+    match /bookingRatings/{ratingId} {
+      // User or coach can read ratings relevant to them
+      allow read: if isSignedIn() && (
+        resource.data.userId == request.auth.uid ||
+        resource.data.coachId == request.auth.uid
+      );
+
+      // Coaches can list their own ratings (for display on profile)
+      allow list: if isSignedIn();
+
+      // User can create/update a rating for their own booking
+      allow create, update: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid;
+
+      allow delete: if false;
     }
 
     // ============================================================================

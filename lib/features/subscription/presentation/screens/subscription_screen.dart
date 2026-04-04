@@ -50,9 +50,10 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
   void initState() {
     super.initState();
     _tabController = TabController(
-      length: 2,
+      // EARLY ACCESS: Journey Purchases tab removed — length reduced to 1
+      length: 1,
       vsync: this,
-      initialIndex: widget.initialTabIndex ?? 0,
+      initialIndex: 0,
     );
     print('🟢 [SubscriptionScreen] initState called - TabController created');
   }
@@ -89,7 +90,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
         slivers: [
           // Premium App Bar
           SliverAppBar(
-            expandedHeight: 100,
+            expandedHeight: 200,
             floating: false,
             pinned: true,
             backgroundColor: AppColors.primary,
@@ -101,6 +102,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
               onPressed: () => Navigator.pop(context),
             ),
             flexibleSpace: FlexibleSpaceBar(
+              titlePadding: const EdgeInsets.only(left: 20, bottom: 20),
               title: Text(
                 isMarried ? 'Journey Purchases' : 'Subscriptions',
                 style: AppTextStyles.titleLarge.copyWith(
@@ -122,21 +124,30 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                 child: Stack(
                   children: [
                     Positioned(
-                      top: 0,
+                      top: -10,
                       right: -50,
                       child: Icon(
                         Icons.workspace_premium,
-                        size: 140,
+                        size: 200,
                         color: Colors.white.withOpacity(0.08),
                       ),
                     ),
                     Positioned(
-                      bottom: 5,
+                      bottom: 50,
                       left: 10,
                       child: Icon(
                         Icons.star,
-                        size: 40,
+                        size: 55,
                         color: Colors.amber.withOpacity(0.2),
+                      ),
+                    ),
+                    Positioned(
+                      top: 60,
+                      left: 20,
+                      child: Icon(
+                        Icons.star,
+                        size: 28,
+                        color: Colors.amber.withOpacity(0.12),
                       ),
                     ),
                   ],
@@ -145,27 +156,28 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
             ),
           ),
 
-          // Tab Bar (hide for married users)
-          if (!isMarried)
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: _SliverAppBarDelegate(
-                TabBar(
-                  controller: _tabController,
-                  labelColor: AppColors.primary,
-                  unselectedLabelColor: AppColors.textMuted,
-                  indicatorColor: AppColors.primary,
-                  indicatorWeight: 3,
-                  labelStyle: AppTextStyles.labelLarge.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  tabs: const [
-                    Tab(text: 'Dating Features'),
-                    Tab(text: 'Journey Purchases'),
-                  ],
-                ),
-              ),
-            ),
+          // EARLY ACCESS: Journey Purchases tab removed — tab bar hidden
+          // Tab bar will be re-enabled when Journey Purchases tab is restored
+          // if (!isMarried)
+          //   SliverPersistentHeader(
+          //     pinned: true,
+          //     delegate: _SliverAppBarDelegate(
+          //       TabBar(
+          //         controller: _tabController,
+          //         labelColor: AppColors.primary,
+          //         unselectedLabelColor: AppColors.textMuted,
+          //         indicatorColor: AppColors.primary,
+          //         indicatorWeight: 3,
+          //         labelStyle: AppTextStyles.labelLarge.copyWith(
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //         tabs: const [
+          //           Tab(text: 'Dating Features'),
+          //           Tab(text: 'Journey Purchases'),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
 
           // Content
           SliverFillRemaining(
@@ -213,69 +225,81 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                         );
                       },
                     )
-                    : TabBarView(
-                      controller: _tabController,
-                      children: [
-                        // Dating Subscription Tab
-                        subscriptionAsync.when(
-                          data:
-                              (subscription) => _DatingSubscriptionTab(
-                                subscription: subscription,
-                              ),
-                          loading:
-                              () => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                          error:
-                              (error, _) =>
-                                  Center(child: Text('Error: $error')),
-                        ),
-
-                        // Journey Purchases Tab
-                        purchasedJourneysAsync.when(
-                          data: (journeys) {
-                            return _JourneyPurchasesTab(journeys: journeys);
-                          },
-                          loading: () {
-                            return const Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CircularProgressIndicator(),
-                                  SizedBox(height: 16),
-                                  Text('Loading purchased journeys...'),
-                                ],
-                              ),
-                            );
-                          },
-                          error: (error, stackTrace) {
-                            return Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.error_outline,
-                                      size: 64,
-                                      color: Colors.red,
-                                    ),
-                                    const SizedBox(height: 16),
-                                    Text(
-                                      'Error loading journeys: $error',
-                                      textAlign: TextAlign.center,
-                                      style: AppTextStyles.bodySmall.copyWith(
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+                    // EARLY ACCESS: Journey Purchases tab removed — show Subscriptions content directly (centred)
+                    // When Journey Purchases tab is restored, replace the block below with the original TabBarView
+                    : subscriptionAsync.when(
+                      data:
+                          (subscription) => _DatingSubscriptionTab(
+                            subscription: subscription,
+                          ),
+                      loading:
+                          () =>
+                              const Center(child: CircularProgressIndicator()),
+                      error: (error, _) => Center(child: Text('Error: $error')),
                     ),
+            // EARLY ACCESS: Original TabBarView commented out below
+            // : TabBarView(
+            //   controller: _tabController,
+            //   children: [
+            //     // Dating Subscription Tab
+            //     subscriptionAsync.when(
+            //       data:
+            //           (subscription) => _DatingSubscriptionTab(
+            //             subscription: subscription,
+            //           ),
+            //       loading:
+            //           () => const Center(
+            //             child: CircularProgressIndicator(),
+            //           ),
+            //       error:
+            //           (error, _) =>
+            //               Center(child: Text('Error: $error')),
+            //     ),
+            //     // Journey Purchases Tab
+            //     purchasedJourneysAsync.when(
+            //       data: (journeys) {
+            //         return _JourneyPurchasesTab(journeys: journeys);
+            //       },
+            //       loading: () {
+            //         return const Center(
+            //           child: Column(
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               CircularProgressIndicator(),
+            //               SizedBox(height: 16),
+            //               Text('Loading purchased journeys...'),
+            //             ],
+            //           ),
+            //         );
+            //       },
+            //       error: (error, stackTrace) {
+            //         return Center(
+            //           child: Padding(
+            //             padding: const EdgeInsets.all(20),
+            //             child: Column(
+            //               mainAxisAlignment: MainAxisAlignment.center,
+            //               children: [
+            //                 const Icon(
+            //                   Icons.error_outline,
+            //                   size: 64,
+            //                   color: Colors.red,
+            //                 ),
+            //                 const SizedBox(height: 16),
+            //                 Text(
+            //                   'Error loading journeys: $error',
+            //                   textAlign: TextAlign.center,
+            //                   style: AppTextStyles.bodySmall.copyWith(
+            //                     color: Colors.red,
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //         );
+            //       },
+            //     ),
+            //   ],
+            // ),
           ),
         ],
       ),
@@ -1509,6 +1533,8 @@ class _CancelAutoRenewalButton extends ConsumerWidget {
 // HELPER CLASSES
 // ============================================================================
 
+// EARLY ACCESS: _SliverAppBarDelegate kept for future use when tabs are restored
+// ignore: unused_element
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate(this._tabBar);
 

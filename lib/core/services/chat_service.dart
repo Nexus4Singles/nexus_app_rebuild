@@ -266,7 +266,7 @@ class ChatConversation {
 
 /// Service for managing chat functionality
 class ChatService {
-  static const int _kFreeChatPartnerLimit = 3;
+  static const int _kFreeChatPartnerLimit = 1;
 
   String _chatIdFor(String u1, String u2) {
     final a = u1.trim();
@@ -301,7 +301,7 @@ class ChatService {
   //
   // Rule:
   // - Free users can OPEN chats with anyone (createConversation allowed).
-  // - Free users can SEND messages to UP TO THREE partners.
+  // - Free users can SEND messages to UP TO ONE partner.
   // - Lock happens on FIRST message send to a new partner.
   //
   // Storage:
@@ -592,10 +592,14 @@ class ChatService {
     final data = doc.data();
     if (data == null) return false;
 
-    // v2 canonical disable flag
+    // v2 canonical disable flag — matches currentUserDisabledProvider field name
     final account = (data['account'] is Map) ? (data['account'] as Map) : null;
-    final isDisabled = account?['isDisabled'];
-    if (isDisabled == true) return true;
+    if (account != null) {
+      if (account['disabled'] == true) return true;
+      if (account['isDisabled'] == true) return true; // legacy field name fallback
+      final acctStatus = account['status']?.toString().toLowerCase();
+      if (acctStatus == 'disabled') return true;
+    }
 
     // Legacy fallbacks (safe for older docs)
     final accountStatus = data['accountStatus']?.toString().toLowerCase();
@@ -717,7 +721,7 @@ class ChatService {
   /// Create or open a chat conversation between two users.
   ///
   /// Deterministic chatId: "<smallerUid>_<largerUid>".
-  /// Premium rule (v2): free users can chat with only UP TO THREE partners.
+  /// Premium rule (v2): free users can chat with only ONE partner.
   /// We enforce this WITHOUT querying nexus2_chats (queries can be denied by rules).
   Future<String> createConversation(String userId1, String userId2) async {
     final a = userId1.trim();
@@ -803,10 +807,10 @@ class ChatService {
     try {
       // NOTE: Do NOT filter by `isActive` in Firestore.
       // Older chat docs may not have the field, and Firestore would exclude them.
+      // NOTE: No orderBy here — avoids needing a composite index. Sort client-side.
       final query =
           await _chatsRef
               .where('participantIds', arrayContains: userId)
-              .orderBy('lastMessageAt', descending: true)
               .get();
 
       final all =
@@ -814,8 +818,11 @@ class ChatService {
               .map((doc) => ChatConversation.fromFirestore(doc.data(), doc.id))
               .toList();
 
-      // Client-side filter: treat missing `isActive` as active (model defaults to true).
-      return all.where((c) => c.isActive).toList();
+      // Client-side filter and sort.
+      return all
+          .where((c) => c.isActive)
+          .toList()
+        ..sort((a, b) => (b.lastMessageAt ?? DateTime(0)).compareTo(a.lastMessageAt ?? DateTime(0)));
     } catch (e) {
       throw ChatException('Failed to get conversations: $e');
     }
@@ -825,9 +832,9 @@ class ChatService {
   Stream<List<ChatConversation>> streamUserConversations(String userId) {
     // NOTE: Do NOT filter by `isActive` in Firestore.
     // Older chat docs may not have the field, and Firestore would exclude them.
+    // NOTE: No orderBy here — avoids needing a composite index. Sort client-side.
     return _chatsRef
         .where('participantIds', arrayContains: userId)
-        .orderBy('lastMessageAt', descending: true)
         .snapshots()
         .map((snapshot) {
           final all =
@@ -837,8 +844,11 @@ class ChatService {
                   )
                   .toList();
 
-          // Client-side filter: treat missing `isActive` as active (model defaults to true).
-          return all.where((c) => c.isActive).toList();
+          // Client-side filter and sort: newest first.
+          return all
+              .where((c) => c.isActive)
+              .toList()
+            ..sort((a, b) => (b.lastMessageAt ?? DateTime(0)).compareTo(a.lastMessageAt ?? DateTime(0)));
         });
   }
 

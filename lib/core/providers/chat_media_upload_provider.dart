@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:nexus_app_v2/core/storage/chat_media_upload_service.dart';
 import 'package:nexus_app_v2/core/services/media_service.dart';
 import 'package:nexus_app_v2/core/services/chat_service.dart';
+import 'package:nexus_app_v2/core/providers/service_providers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -55,11 +56,6 @@ class _FirestoreChatDb implements ChatQueueDatabaseService {
     await messagesRef.doc(messageId).update({'metadata.uploadStatus': status});
   }
 }
-
-/// Riverpod provider for MediaService (dependency)
-final mediaServiceProvider = Provider((ref) {
-  return MediaService();
-});
 
 /// Riverpod provider to resume pending uploads on app startup
 final resumePendingUploadsProvider = FutureProvider((ref) async {

@@ -5,8 +5,11 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/router/safe_nav.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../../features/counselling/domain/counselling_models.dart';
 import 'coach_application_screen.dart';
+import 'coach_list_screen.dart';
 import 'coach_requirements_screen.dart';
+import 'my_bookings_screen.dart';
 
 // Counseling type model
 class CounselingType {
@@ -87,6 +90,14 @@ class _BookMarriageCoachScreenState
             fontWeight: FontWeight.w700,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.calendar_month_outlined),
+            tooltip: 'My Bookings',
+            onPressed:
+                () => Navigator.of(context).pushNamed(AppRoutes.myBookings),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -243,11 +254,20 @@ class _BookMarriageCoachScreenState
                       onPressed:
                           selectedIndex != null
                               ? () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'This feature is coming soon!',
-                                    ),
+                                final categories = [
+                                  SessionType.individual,
+                                  SessionType.premarital,
+                                  SessionType.postMarital,
+                                  SessionType.parenting,
+                                ];
+                                final sessionType =
+                                    categories[selectedIndex!];
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        CoachListScreen(
+                                          sessionType: sessionType,
+                                        ),
                                   ),
                                 );
                               }

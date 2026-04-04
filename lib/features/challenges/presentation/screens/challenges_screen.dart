@@ -254,6 +254,8 @@ class ChallengesScreen extends ConsumerWidget {
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
+                  const Spacer(),
+                  const _EarlyAccessBadge(),
                 ],
               ),
               const SizedBox(height: 6),
@@ -523,6 +525,64 @@ class _JourneyListCard extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+// Early Access blinking badge
+class _EarlyAccessBadge extends StatefulWidget {
+  const _EarlyAccessBadge();
+
+  @override
+  State<_EarlyAccessBadge> createState() => _EarlyAccessBadgeState();
+}
+
+class _EarlyAccessBadgeState extends State<_EarlyAccessBadge>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacity;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..repeat(reverse: true);
+    _opacity = Tween<double>(
+      begin: 1.0,
+      end: 0.25,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = Theme.of(context).colorScheme.primary;
+    return FadeTransition(
+      opacity: _opacity,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: primary.withOpacity(0.10),
+          borderRadius: BorderRadius.circular(7),
+          border: Border.all(color: primary.withOpacity(0.35), width: 1.0),
+        ),
+        child: Text(
+          'Early Access',
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+            fontSize: 11,
+            letterSpacing: 0.3,
+            color: primary,
+          ),
         ),
       ),
     );

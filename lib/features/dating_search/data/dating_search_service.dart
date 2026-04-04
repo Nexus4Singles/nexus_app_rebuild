@@ -19,6 +19,29 @@ class DatingSearchService {
   FirebaseFirestore get _fs =>
       _firestore ?? (throw StateError('Firestore not ready'));
 
+  // ---------------------------------------------------------------------------
+  // Pool expansion constants
+  // ---------------------------------------------------------------------------
+
+  /// Countries that participate in cross-market profile expansion.
+  /// When a user's selected country has fewer than [_kExpansionThreshold]
+  /// results, profiles from any country in this set are shown instead.
+  static const Set<String> kExpandedPoolCountries = {
+    'United Kingdom',
+    'Nigeria',
+    'Ghana',
+    'United States',
+    'Canada',
+    'Australia',
+  };
+
+  /// Minimum number of profiles from the selected country before expansion
+  /// is skipped (i.e. if the user's country already has this many, no
+  /// profiles from other pool countries are mixed in).
+  static const int kExpansionThreshold = 20;
+
+  // ---------------------------------------------------------------------------
+
   /// Fallback blocked emails (for when Firestore is unavailable)
   /// These should also be added to Firestore config/blockedEmails for persistence
   static const Set<String> fallbackBlockedEmails = {
@@ -323,6 +346,12 @@ class DatingSearchService {
     return a == b;
   }
 
+  /// Returns true when [country] is in the shared expansion pool.
+  bool _isExpansionEligibleCountry(String? country) {
+    if (country == null || country.isEmpty) return false;
+    return kExpandedPoolCountries.contains(country);
+  }
+
   bool _matchCountry(DatingProfile p, DatingSearchFilters f) {
     final selected = f.countryOfResidence;
 
@@ -520,6 +549,17 @@ class DatingSearchService {
     // Add 20% buffer for profiles that will be filtered out by age/preferences
     final fsLimit = ((offset + limit) * 1.2).ceil().clamp(500, 10000).toInt();
 
+    // Decide at query-build time whether pool expansion is possible for this
+    // search. We only fetch the full pool via whereIn when:
+    //   (a) the user selected a pool-eligible country, AND
+    //   (b) they have NOT explicitly opted out of long-distance connections.
+    // All other cases use the original isEqualTo (no behaviour change for
+    // existing users).
+    final willAttemptExpansion =
+        !_selectedMeansAny(filters.countryOfResidence) &&
+        _isExpansionEligibleCountry(filters.countryOfResidence) &&
+        _canonYesNo(filters.longDistance) != 'no';
+
     final futures = <Future<QuerySnapshot<Map<String, dynamic>>>>[];
     for (final g in genders) {
       // Build v2 verified query with server-side filters
@@ -531,21 +571,36 @@ class DatingSearchService {
           .where('gender', isEqualTo: g)
           .where('dating.verificationStatus', isEqualTo: 'verified');
 
-      // Apply server-side filters before fetching
+      // Apply server-side filters before fetching.
+      // Only use whereIn (pool fetch) when willAttemptExpansion is true.
+      // Otherwise fall back to the original isEqualTo — no change for existing users.
       if (!_selectedMeansAny(filters.countryOfResidence)) {
         final country =
             filters.countryOfResidence; // Use exact value (already capitalized)
         if (country != null && country.isNotEmpty) {
-          if (kDebugMode) {
-            // ignore: avoid_print
-            print(
-              '[DatingSearchService] V2 query filter: country="$country" (exact match)',
+          if (willAttemptExpansion) {
+            if (kDebugMode) {
+              // ignore: avoid_print
+              print(
+                '[DatingSearchService] V2 query filter: expansion-eligible country="$country" -> whereIn pool',
+              );
+            }
+            verifiedQ = verifiedQ.where(
+              'dating.countryOfResidence',
+              whereIn: kExpandedPoolCountries.toList(),
+            );
+          } else {
+            if (kDebugMode) {
+              // ignore: avoid_print
+              print(
+                '[DatingSearchService] V2 query filter: country="$country" (exact match)',
+              );
+            }
+            verifiedQ = verifiedQ.where(
+              'dating.countryOfResidence',
+              isEqualTo: country,
             );
           }
-          verifiedQ = verifiedQ.where(
-            'dating.countryOfResidence',
-            isEqualTo: country,
-          );
         }
       }
 
@@ -570,20 +625,35 @@ class DatingSearchService {
             .where('gender', isEqualTo: g)
             .where('registration_progress', isEqualTo: reg);
 
-        // Apply country filter to legacy profiles
+        // Apply country filter to legacy profiles.
+        // Use whereIn (pool fetch) only when willAttemptExpansion is true.
         if (!_selectedMeansAny(filters.countryOfResidence)) {
           final country =
               filters
                   .countryOfResidence; // Use exact value (already capitalized)
           if (country != null && country.isNotEmpty) {
-            if (kDebugMode) {
-              // ignore: avoid_print
-              print(
-                '[DatingSearchService] V1 query filter: country="$country" (exact match)',
+            if (willAttemptExpansion) {
+              if (kDebugMode) {
+                // ignore: avoid_print
+                print(
+                  '[DatingSearchService] V1 query filter: expansion-eligible country="$country" -> whereIn pool',
+                );
+              }
+              // V1 legacy profiles store country in location.country
+              legacyQ = legacyQ.where(
+                'location.country',
+                whereIn: kExpandedPoolCountries.toList(),
               );
+            } else {
+              if (kDebugMode) {
+                // ignore: avoid_print
+                print(
+                  '[DatingSearchService] V1 query filter: country="$country" (exact match)',
+                );
+              }
+              // V1 legacy profiles store country in location.country with capitalization
+              legacyQ = legacyQ.where('location.country', isEqualTo: country);
             }
-            // V1 legacy profiles store country in location.country with capitalization
-            legacyQ = legacyQ.where('location.country', isEqualTo: country);
           }
         }
 
@@ -973,6 +1043,10 @@ class DatingSearchService {
     String? emptyHint;
     bool noProfilesInCountry = false;
 
+    // True when the county had < kExpansionThreshold profiles and the search
+    // was silently widened to the shared English-speaking pool.
+    bool isExpandedSearch = false;
+
     void captureEmptyHint(String label, String? selected) {
       if (emptyHint != null) return;
       if (_selectedMeansAny(selected)) return;
@@ -981,33 +1055,113 @@ class DatingSearchService {
       emptyHint = '$label: $s';
     }
 
-    current = _step(
-      current,
-      'country',
-      (p) => _matchCountry(p, filters),
-      selectedRaw: filters.countryOfResidence,
-      selectedCanon: _canonCountry(filters.countryOfResidence),
-      sampleCanon: (p) => _canonCountry(p.country),
-    );
-    if (current.isEmpty) {
-      captureEmptyHint('Country', filters.countryOfResidence);
-      // If we have 0 results after country filter, no profiles exist in this country
-      noProfilesInCountry = true;
-      return DatingSearchResult(
-        items: current,
-        emptyHint: emptyHint,
-        noProfilesInCountry: noProfilesInCountry,
-        noProfilesBreakdown: NoProfilesBreakdown(
-          totalFetched: sortedProfiles.length,
-          afterAgeFilter: afterAge.length,
-          afterCountryFilter: 0,
-          minAge: filters.minAge,
-          maxAge: filters.maxAge,
-          countryName: filters.countryOfResidence,
-          eliminatingFilter: 'country',
-        ),
+    // --- Country filter (with pool-expansion logic) ---
+    final selectedCountry = filters.countryOfResidence;
+
+    // Only expand when the user hasn't explicitly opted OUT of long-distance
+    // connections. If they chose "No" to long distance, they want local matches
+    // only — honour that intent and show the standard no-profiles screen below.
+    final userBlocksLongDistance = _canonYesNo(filters.longDistance) == 'no';
+
+    if (!_selectedMeansAny(selectedCountry) &&
+        _isExpansionEligibleCountry(selectedCountry) &&
+        !userBlocksLongDistance) {
+      // Count how many profiles exactly match the user's selected country.
+      final exactCountryProfiles =
+          afterAge.where((p) => _matchCountry(p, filters)).toList();
+
+      if (exactCountryProfiles.length >= kExpansionThreshold) {
+        // Enough results in the selected country — no expansion needed.
+        current = exactCountryProfiles;
+        if (kDebugMode) {
+          // ignore: avoid_print
+          print(
+            '[DatingSearchService] EXPANSION: ${exactCountryProfiles.length} profiles in "$selectedCountry" >= threshold $kExpansionThreshold — no expansion.',
+          );
+        }
+      } else {
+        // Below threshold — expand to the full pool.
+        final poolProfiles =
+            afterAge
+                .where((p) => kExpandedPoolCountries.contains(p.country))
+                .toList();
+
+        if (poolProfiles.isEmpty) {
+          // Even the expanded pool is empty — nothing to show.
+          captureEmptyHint('Country', selectedCountry);
+          noProfilesInCountry = true;
+          return DatingSearchResult(
+            items: [],
+            emptyHint: emptyHint,
+            noProfilesInCountry: true,
+            noProfilesBreakdown: NoProfilesBreakdown(
+              totalFetched: sortedProfiles.length,
+              afterAgeFilter: afterAge.length,
+              afterCountryFilter: 0,
+              minAge: filters.minAge,
+              maxAge: filters.maxAge,
+              countryName: selectedCountry,
+              eliminatingFilter: 'country',
+            ),
+          );
+        }
+
+        // Pool has results — use them and flag so the UI can show the banner.
+        // Prioritise exact-country profiles first (stacking at the top as new
+        // local users join), then fill with the rest of the pool below.
+        // Both sub-lists preserve the existing newest-first date order.
+        final otherPoolProfiles =
+            poolProfiles.where((p) => !_matchCountry(p, filters)).toList();
+        current = [...exactCountryProfiles, ...otherPoolProfiles];
+        isExpandedSearch = poolProfiles.length > exactCountryProfiles.length;
+        if (kDebugMode) {
+          // ignore: avoid_print
+          print(
+            '[DatingSearchService] EXPANSION: Only ${exactCountryProfiles.length} profiles in "$selectedCountry" '
+            '(threshold $kExpansionThreshold) — expanding to pool: ${poolProfiles.length} profiles.',
+          );
+        }
+      }
+    } else {
+      // Normal country filter (non-expansion-eligible country, or "Any").
+      current = _step(
+        current,
+        'country',
+        (p) => _matchCountry(p, filters),
+        selectedRaw: filters.countryOfResidence,
+        selectedCanon: _canonCountry(filters.countryOfResidence),
+        sampleCanon: (p) => _canonCountry(p.country),
       );
+      if (current.isEmpty) {
+        captureEmptyHint('Country', filters.countryOfResidence);
+        noProfilesInCountry = true;
+        return DatingSearchResult(
+          items: current,
+          emptyHint: emptyHint,
+          noProfilesInCountry: noProfilesInCountry,
+          noProfilesBreakdown: NoProfilesBreakdown(
+            totalFetched: sortedProfiles.length,
+            afterAgeFilter: afterAge.length,
+            afterCountryFilter: 0,
+            minAge: filters.minAge,
+            maxAge: filters.maxAge,
+            countryName: filters.countryOfResidence,
+            eliminatingFilter: 'country',
+          ),
+        );
+      }
     }
+
+    // postCountryPool is the correct fallback pool for all subsequent preference
+    // filters. It is country-scoped (no cross-country leakage):
+    //   - Expansion happened:  current = poolProfiles  (all pool countries)
+    //   - No expansion:        current = exactCountryProfiles / step result
+    //     (selected country only — Firestore may have fetched extra countries
+    //     but current has already been narrowed back down)
+    // Using postCountryPool instead of afterAge ensures that when marital/kids/
+    // genotype preferences drain the pool and we fall back, we never silently
+    // show profiles from a different country than what the user selected.
+    final postCountryPool = List<DatingProfile>.unmodifiable(current);
 
     current = _step(
       current,
@@ -1019,14 +1173,15 @@ class DatingSearchService {
     );
     if (current.isEmpty) {
       captureEmptyHint('Long distance', filters.longDistance);
-      // Fallback to age-only when preferences exhausted
-      if (afterAge.isNotEmpty) {
+      // Fallback to country-scoped pool when preferences exhausted
+      if (postCountryPool.isNotEmpty) {
         return DatingSearchResult(
-          items: afterAge,
+          items: postCountryPool,
           emptyHint:
               'No more profiles matching your preferences. '
               'Showing other profiles in your age bracket.',
           noProfilesInCountry: false,
+          isExpandedSearch: isExpandedSearch,
         );
       }
       // No profiles even in age bracket
@@ -1034,6 +1189,7 @@ class DatingSearchService {
         items: current,
         emptyHint: emptyHint,
         noProfilesInCountry: false,
+        isExpandedSearch: isExpandedSearch,
       );
     }
 
@@ -1047,21 +1203,21 @@ class DatingSearchService {
     );
     if (current.isEmpty) {
       captureEmptyHint('Marital status', filters.maritalStatus);
-      // Fallback to age-only when preferences exhausted
-      if (afterAge.isNotEmpty) {
+      if (postCountryPool.isNotEmpty) {
         return DatingSearchResult(
-          items: afterAge,
+          items: postCountryPool,
           emptyHint:
               'No more profiles matching your preferences. '
               'Showing other profiles in your age bracket.',
           noProfilesInCountry: false,
+          isExpandedSearch: isExpandedSearch,
         );
       }
-      // No profiles even in age bracket
       return DatingSearchResult(
         items: current,
         emptyHint: emptyHint,
         noProfilesInCountry: false,
+        isExpandedSearch: isExpandedSearch,
       );
     }
 
@@ -1075,21 +1231,21 @@ class DatingSearchService {
     );
     if (current.isEmpty) {
       captureEmptyHint('Kids preference', filters.hasKids);
-      // Fallback to age-only when preferences exhausted
-      if (afterAge.isNotEmpty) {
+      if (postCountryPool.isNotEmpty) {
         return DatingSearchResult(
-          items: afterAge,
+          items: postCountryPool,
           emptyHint:
               'No more profiles matching your preferences. '
               'Showing other profiles in your age bracket.',
           noProfilesInCountry: false,
+          isExpandedSearch: isExpandedSearch,
         );
       }
-      // No profiles even in age bracket
       return DatingSearchResult(
         items: current,
         emptyHint: emptyHint,
         noProfilesInCountry: false,
+        isExpandedSearch: isExpandedSearch,
       );
     }
 
@@ -1126,12 +1282,13 @@ class DatingSearchService {
       print('[DatingSearchService] filtered=${current.length}');
     }
 
-    // If preferences filtering resulted in 0 results, fall back to age-only
-    if (current.isEmpty && afterAge.isNotEmpty) {
-      // CRITICAL: Only return profiles in the age bracket, nothing else
-      // Re-validate that all items in fallback are within age range
+    // If preferences filtering resulted in 0 results, fall back to country-scoped pool.
+    if (current.isEmpty && postCountryPool.isNotEmpty) {
+      // Re-validate that all items in fallback are within age range.
+      // (postCountryPool was derived from afterAge so ages should already be
+      // valid, but the check is a safety guard.)
       final validatedFallback =
-          afterAge
+          postCountryPool
               .where((p) => p.age >= filters.minAge && p.age <= filters.maxAge)
               .toList();
 
@@ -1178,6 +1335,7 @@ class DatingSearchService {
         items: paginatedFallback,
         emptyHint: hint,
         noProfilesInCountry: false,
+        isExpandedSearch: isExpandedSearch,
       );
     }
 
@@ -1213,6 +1371,7 @@ class DatingSearchService {
       items: paginatedResults,
       emptyHint: emptyHint,
       noProfilesInCountry: false,
+      isExpandedSearch: isExpandedSearch,
     );
   }
 }

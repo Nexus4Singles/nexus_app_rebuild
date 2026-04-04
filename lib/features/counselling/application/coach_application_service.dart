@@ -24,6 +24,7 @@ class CoachApplication {
   final String? linkedinProfile;
   final File? profilePhoto;
   final File? credentialsPdf;
+  final int? hourlyRate; // USD per session hour
 
   CoachApplication({
     this.fullName,
@@ -43,6 +44,7 @@ class CoachApplication {
     this.linkedinProfile,
     this.profilePhoto,
     this.credentialsPdf,
+    this.hourlyRate,
   });
 
   // Sentinel value to distinguish "not provided" from "explicitly null"
@@ -66,6 +68,7 @@ class CoachApplication {
     String? linkedinProfile,
     dynamic profilePhoto = _unset,
     dynamic credentialsPdf = _unset,
+    int? hourlyRate,
   }) {
     return CoachApplication(
       fullName: fullName ?? this.fullName,
@@ -89,6 +92,7 @@ class CoachApplication {
           credentialsPdf == _unset
               ? this.credentialsPdf
               : credentialsPdf as File?,
+      hourlyRate: hourlyRate ?? this.hourlyRate,
     );
   }
 }
@@ -138,6 +142,7 @@ class CoachApplicationService {
         'coachingPhilosophy': application.coachingPhilosophy,
         'instagramHandle': application.instagramHandle,
         'linkedinProfile': application.linkedinProfile,
+        'hourlyRate': application.hourlyRate,
         'profilePhoto': <String, dynamic>{
           'url': '', // Will be updated after upload
           'filename': application.profilePhoto?.path.split('/').last,

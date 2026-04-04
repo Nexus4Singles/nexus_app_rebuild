@@ -47,6 +47,8 @@ import '../../../dating_search/presentation/screens/saved_profiles_screen.dart';
 import '../../../dating_search/application/saved_profiles_provider.dart';
 import '../../../dating_search/domain/enhanced_compatibility_scorer.dart';
 import '../../../subscription/application/subscription_provider.dart';
+import '../../../counselling/application/counselling_providers.dart';
+import '../../../counselling/presentation/screens/coach_dashboard_screen.dart';
 
 Future<void> handleLogout(BuildContext context, WidgetRef ref) async {
   final ok = await showDialog<bool>(
@@ -82,233 +84,248 @@ Future<void> handleLogout(BuildContext context, WidgetRef ref) async {
 }
 
 Future<void> handleDeleteProfile(BuildContext context, WidgetRef ref) async {
-  // Professional delete dialog with choice options - responsive for all screen sizes
-  final deleteOption = await showDialog<String>(
-    context: context,
-    builder: (ctx) {
-      final screenWidth = MediaQuery.of(ctx).size.width;
-      final isThin = screenWidth < 400;
-      final horizontalPadding = isThin ? 16.0 : 24.0;
-      final contentPadding = isThin ? 16.0 : 24.0;
-      const minCardHeight = 12.0; // Spacing between cards
+  // Check if user has a dating profile
+  final hasDatingProfile = ref
+      .read(datingProfileCompletedProvider)
+      .maybeWhen(data: (v) => v, orElse: () => false);
 
-      return Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        insetPadding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(contentPadding),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Title
-                Text(
-                  'What do you want to delete?',
-                  style: Theme.of(ctx).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: isThin ? 18 : null,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Choose an option below',
-                  style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(ctx).textTheme.bodySmall?.color,
-                    fontSize: isThin ? 13 : null,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: contentPadding),
+  late String deleteOption;
 
-                // Dating Profile Option
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () => Navigator.of(ctx).pop('dating'),
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      padding: EdgeInsets.all(isThin ? 12 : 16),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Theme.of(ctx).dividerColor,
-                          width: 1,
+  if (hasDatingProfile) {
+    // User has dating profile: Show 2 options (Dating Profile Only or Full Account)
+    final result = await showDialog<String>(
+      context: context,
+      builder: (ctx) {
+        final screenWidth = MediaQuery.of(ctx).size.width;
+        final isThin = screenWidth < 400;
+        final horizontalPadding = isThin ? 16.0 : 24.0;
+        final contentPadding = isThin ? 16.0 : 24.0;
+        const minCardHeight = 12.0; // Spacing between cards
+
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          insetPadding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(contentPadding),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Title
+                  Text(
+                    'What do you want to delete?',
+                    style: Theme.of(ctx).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: isThin ? 18 : null,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Choose an option below',
+                    style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(ctx).textTheme.bodySmall?.color,
+                      fontSize: isThin ? 13 : null,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: contentPadding),
+
+                  // Dating Profile Option
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () => Navigator.of(ctx).pop('dating'),
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: EdgeInsets.all(isThin ? 12 : 16),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Theme.of(ctx).dividerColor,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          color: Theme.of(ctx).colorScheme.surface,
                         ),
-                        borderRadius: BorderRadius.circular(12),
-                        color: Theme.of(ctx).colorScheme.surface,
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: isThin ? 40 : 48,
-                            height: isThin ? 40 : 48,
-                            decoration: BoxDecoration(
+                        child: Row(
+                          children: [
+                            Container(
+                              width: isThin ? 40 : 48,
+                              height: isThin ? 40 : 48,
+                              decoration: BoxDecoration(
+                                color: Theme.of(
+                                  ctx,
+                                ).colorScheme.primary.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(
+                                  isThin ? 8 : 12,
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.favorite,
+                                size: isThin ? 20 : 24,
+                                color: Theme.of(ctx).colorScheme.primary,
+                              ),
+                            ),
+                            SizedBox(width: isThin ? 12 : 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Dating Profile Only',
+                                    style: Theme.of(
+                                      ctx,
+                                    ).textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: isThin ? 14 : null,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Remove from dating. Keep your account.',
+                                    style: Theme.of(
+                                      ctx,
+                                    ).textTheme.bodySmall?.copyWith(
+                                      color: Theme.of(ctx)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.color
+                                          ?.withOpacity(0.7),
+                                      fontSize: isThin ? 12 : null,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: isThin ? 8 : 12),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: isThin ? 14 : 16,
                               color: Theme.of(
                                 ctx,
-                              ).colorScheme.primary.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(
-                                isThin ? 8 : 12,
-                              ),
+                              ).textTheme.bodySmall?.color?.withOpacity(0.5),
                             ),
-                            child: Icon(
-                              Icons.favorite,
-                              size: isThin ? 20 : 24,
-                              color: Theme.of(ctx).colorScheme.primary,
-                            ),
-                          ),
-                          SizedBox(width: isThin ? 12 : 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Dating Profile Only',
-                                  style: Theme.of(
-                                    ctx,
-                                  ).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: isThin ? 14 : null,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  'Remove from dating. Keep your account.',
-                                  style: Theme.of(
-                                    ctx,
-                                  ).textTheme.bodySmall?.copyWith(
-                                    color: Theme.of(ctx)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.color
-                                        ?.withOpacity(0.7),
-                                    fontSize: isThin ? 12 : null,
-                                  ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(width: isThin ? 8 : 12),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: isThin ? 14 : 16,
-                            color: Theme.of(
-                              ctx,
-                            ).textTheme.bodySmall?.color?.withOpacity(0.5),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: minCardHeight),
-
-                // Full Account Option (Destructive - theme-aware styling)
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () => Navigator.of(ctx).pop('account'),
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      padding: EdgeInsets.all(isThin ? 12 : 16),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.primary.withOpacity(0.4),
-                          width: 1.5,
+                          ],
                         ),
-                        borderRadius: BorderRadius.circular(12),
-                        color:
-                            Theme.of(ctx).brightness == Brightness.light
-                                ? AppColors.primary.withOpacity(0.08)
-                                : AppColors.primary.withOpacity(0.12),
                       ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: isThin ? 40 : 48,
-                            height: isThin ? 40 : 48,
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.15),
-                              borderRadius: BorderRadius.circular(
-                                isThin ? 8 : 12,
+                    ),
+                  ),
+                  SizedBox(height: minCardHeight),
+
+                  // Full Account Option (Destructive - theme-aware styling)
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () => Navigator.of(ctx).pop('account'),
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: EdgeInsets.all(isThin ? 12 : 16),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColors.primary.withOpacity(0.4),
+                            width: 1.5,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          color:
+                              Theme.of(ctx).brightness == Brightness.light
+                                  ? AppColors.primary.withOpacity(0.08)
+                                  : AppColors.primary.withOpacity(0.12),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: isThin ? 40 : 48,
+                              height: isThin ? 40 : 48,
+                              decoration: BoxDecoration(
+                                color: AppColors.primary.withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(
+                                  isThin ? 8 : 12,
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.delete_forever,
+                                size: isThin ? 20 : 24,
+                                color: AppColors.primary,
                               ),
                             ),
-                            child: Icon(
-                              Icons.delete_forever,
-                              size: isThin ? 20 : 24,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                          SizedBox(width: isThin ? 12 : 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Full Account',
-                                  style: Theme.of(
-                                    ctx,
-                                  ).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.primary,
-                                    fontSize: isThin ? 14 : null,
+                            SizedBox(width: isThin ? 12 : 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Full Account',
+                                    style: Theme.of(
+                                      ctx,
+                                    ).textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.primary,
+                                      fontSize: isThin ? 14 : null,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  'Permanently delete everything. Cannot be undone.',
-                                  style: Theme.of(
-                                    ctx,
-                                  ).textTheme.bodySmall?.copyWith(
-                                    color: AppColors.primary.withOpacity(0.7),
-                                    fontSize: isThin ? 12 : null,
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Permanently delete everything. Cannot be undone.',
+                                    style: Theme.of(
+                                      ctx,
+                                    ).textTheme.bodySmall?.copyWith(
+                                      color: AppColors.primary.withOpacity(0.7),
+                                      fontSize: isThin ? 12 : null,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(width: isThin ? 8 : 12),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: isThin ? 14 : 16,
-                            color: AppColors.primary.withOpacity(0.5),
-                          ),
-                        ],
+                            SizedBox(width: isThin ? 8 : 12),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: isThin ? 14 : 16,
+                              color: AppColors.primary.withOpacity(0.5),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: contentPadding),
+                  SizedBox(height: contentPadding),
 
-                // Cancel Button
-                TextButton(
-                  onPressed: () => Navigator.of(ctx).pop(null),
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(
-                      color: Theme.of(ctx).textTheme.bodyMedium?.color,
-                      fontWeight: FontWeight.w500,
-                      fontSize: isThin ? 14 : null,
+                  // Cancel Button
+                  TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(null),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: Theme.of(ctx).textTheme.bodyMedium?.color,
+                        fontWeight: FontWeight.w500,
+                        fontSize: isThin ? 14 : null,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    },
-  );
+        );
+      },
+    );
+    if (result == null) return;
+    deleteOption = result;
+  } else {
+    // User does NOT have dating profile: Skip directly to full account deletion
+    deleteOption = 'account';
+  }
 
-  if (deleteOption == null) return;
   if (!context.mounted) return;
 
   // Handle Dating Profile Deletion
@@ -405,18 +422,22 @@ Future<void> handleDeleteProfile(BuildContext context, WidgetRef ref) async {
 
   // Handle Full Account Deletion
   if (deleteOption == 'account') {
-    final confirm = await showDialog<bool>(
+    // FIRST CONFIRMATION: Detailed warning
+    final firstConfirm = await showDialog<bool>(
       context: context,
       builder:
           (ctx) => AlertDialog(
-            title: const Text('Delete Full Account?'),
-            content: const Text(
-              'This will permanently delete your entire account, including:\n'
-              '• Your profile and all data\n'
-              '• Dating profile\n'
-              '• All subscriptions\n'
-              '• All messages and connections\n\n'
-              'This action cannot be undone.',
+            title: const Text('⚠️ Delete Full Account?'),
+            content: const SingleChildScrollView(
+              child: Text(
+                'This will permanently delete your entire account, including:\n\n'
+                '• Your profile and all data\n'
+                '• Dating profile and matches\n'
+                '• All subscriptions\n'
+                '• All messages and connections\n'
+                '• All purchase history\n\n'
+                'This action cannot be undone. Your email may be reused after 30 days.',
+              ),
             ),
             actions: [
               TextButton(
@@ -426,7 +447,7 @@ Future<void> handleDeleteProfile(BuildContext context, WidgetRef ref) async {
               TextButton(
                 onPressed: () => Navigator.of(ctx).pop(true),
                 child: const Text(
-                  'Delete My Account',
+                  'Yes, Delete My Account',
                   style: TextStyle(color: AppColors.primary),
                 ),
               ),
@@ -434,61 +455,96 @@ Future<void> handleDeleteProfile(BuildContext context, WidgetRef ref) async {
           ),
     );
 
-    if (confirm != true) return;
+    if (firstConfirm != true) return;
+    if (!context.mounted) return;
+
+    // SECOND CONFIRMATION: Final "Are you sure?" confirmation
+    final secondConfirm = await showDialog<bool>(
+      context: context,
+      builder:
+          (ctx) => AlertDialog(
+            title: const Text('Final Confirmation'),
+            content: const Text(
+              'Are you absolutely sure? There is no going back.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                child: const Text(
+                  'Yes, Delete Everything',
+                  style: TextStyle(color: AppColors.primary),
+                ),
+              ),
+            ],
+          ),
+    );
+
+    if (secondConfirm != true) return;
     if (!context.mounted) return;
 
     // Show loading dialog
+    if (!context.mounted) return;
+
+    // Capture the root NavigatorState BEFORE deletion.
+    // When deleteAccount() fires, GuestEntryGate detects the auth-null state
+    // and unmounts ProfileScreen. After that, context.mounted becomes false
+    // and Navigator.of(context) would throw. The captured NavigatorState
+    // (root Navigator from MaterialApp) survives the unmount, so we can
+    // still pop the dialog and push the welcome screen.
+    final navigator = Navigator.of(context);
+
     showDialog(
       context: context,
       barrierDismissible: false,
       builder:
           (ctx) => const AlertDialog(
-            content: SizedBox(
-              height: 50,
-              child: Center(child: CircularProgressIndicator()),
+            content: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16),
+                  Text(
+                    'Deleting your account...',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
             ),
           ),
     );
 
-    // Capture navigator BEFORE any async work
-    final nav = Navigator.of(context);
-
     try {
-      await ref.read(authNotifierProvider.notifier).deleteAccount();
+      await ref
+          .read(authNotifierProvider.notifier)
+          .deleteAccount()
+          .timeout(
+            const Duration(seconds: 30),
+            onTimeout: () {
+              throw Exception('Account deletion timed out');
+            },
+          );
+    } catch (e) {
+      print('[ProfileScreen] ❌ Deletion error: $e');
+      // Even on error the Firestore doc may already be gone,
+      // so navigate to welcome regardless.
+    }
 
-      // Close loading dialog
-      nav.pop();
-      if (!context.mounted) return;
-
-      // Show success and navigate to welcome screen
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Your account has been deleted.'),
-          backgroundColor: AppColors.success,
-        ),
-      );
-
-      // Navigate to welcome screen
-      Navigator.pushAndRemoveUntil(
-        context,
+    // Pop loading spinner and navigate to welcome — use the captured
+    // NavigatorState which is still alive (root Navigator).
+    try {
+      navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const AppLaunchGate()),
         (_) => false,
       );
-    } catch (e) {
-      // Close loading dialog
-      try {
-        nav.pop();
-      } catch (_) {}
-
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error deleting account: $e'),
-            backgroundColor: AppColors.primary,
-          ),
-        );
-      }
-    }
+    } catch (_) {}
   }
 }
 
@@ -721,6 +777,29 @@ class ProfileScreen extends ConsumerWidget {
             );
           }
 
+          // Was their profile rejected by admin?
+          final datingData =
+              (map['dating'] as Map?)?.cast<String, dynamic>();
+          final verifStatus =
+              datingData?['verificationStatus']?.toString();
+
+          if (verifStatus == 'rejected') {
+            final reason = datingData?['rejectionReason']?.toString();
+            final body = (reason != null && reason.isNotEmpty)
+                ? 'Your profile was not approved for the following reason:\n\n"$reason"\n\nYou can create a new profile and resubmit for review.'
+                : 'Your dating profile did not meet our requirements. You can create a new profile and resubmit for review.';
+            return _BasicProfileScreen(
+              profile: profile,
+              ref: ref,
+              messageTitle: 'Dating Profile Rejected',
+              messageBody: body,
+              showCreateDatingProfileCta: true,
+              onCreateDatingProfile: () {
+                Navigator.of(context).pushNamed('/dating/setup/age');
+              },
+            );
+          }
+
           return _BasicProfileScreen(
             profile: profile,
             ref: ref,
@@ -821,12 +900,6 @@ class ProfileScreen extends ConsumerWidget {
                       _PremiumActionsRow(
                         isViewingOtherUser: isViewingOtherUser,
                         profile: profile,
-                      ),
-                      const SizedBox(height: 16),
-
-                      _Section(
-                        title: 'Gallery',
-                        child: _GalleryGrid(photos: photos),
                       ),
                       const SizedBox(height: 16),
 
@@ -1046,10 +1119,12 @@ class _BasicProfileScreen extends ConsumerWidget {
                               ),
                             ),
                             const SizedBox(width: 12),
-                            Text(
-                              messageTitle,
-                              style: AppTextStyles.titleMedium.copyWith(
-                                fontWeight: FontWeight.w700,
+                            Flexible(
+                              child: Text(
+                                messageTitle,
+                                style: AppTextStyles.titleMedium.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ],
@@ -1381,9 +1456,7 @@ class _ProfileHeroAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final screenW = MediaQuery.of(context).size.width;
-    // Scale hero height: 380 on compact (<375), 420 on normal
-    final heroHeight = screenW < 375 ? 380.0 : 420.0;
+    const heroHeight = 520.0;
 
     return SliverAppBar(
       pinned: true,
@@ -1687,32 +1760,40 @@ class _HeroCarouselState extends State<_HeroCarousel> {
                                       'User')
                                   .trim(),
                         )
-                        : CachedNetworkImage(
-                          imageUrl: url,
-                          fit: BoxFit.cover,
-                          memCacheWidth: 1080,
-                          memCacheHeight: 1080,
-                          placeholder:
-                              (context, url) => Container(
-                                color: AppColors.border,
-                                child: const Center(
-                                  child: SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
+                        : GestureDetector(
+                          onTap:
+                              () => _openPhotoViewer(
+                                context,
+                                photos: widget.photos,
+                                initialIndex: i,
+                              ),
+                          child: CachedNetworkImage(
+                            imageUrl: url,
+                            fit: BoxFit.contain,
+                            memCacheWidth: 1200,
+                            memCacheHeight: 1600,
+                            placeholder:
+                                (context, url) => Container(
+                                  color: AppColors.border,
+                                  child: const Center(
+                                    child: SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                          errorWidget:
-                              (context, url, error) => Container(
-                                color: AppColors.border,
-                                child: const Icon(
-                                  Icons.broken_image_rounded,
-                                  color: AppColors.textSecondary,
+                            errorWidget:
+                                (context, url, error) => Container(
+                                  color: AppColors.border,
+                                  child: const Icon(
+                                    Icons.broken_image_rounded,
+                                    color: AppColors.textSecondary,
+                                  ),
                                 ),
-                              ),
+                          ),
                         ),
               ),
             );
@@ -2840,13 +2921,14 @@ class _PremiumButton extends StatelessWidget {
               ),
               child: Icon(icon, size: 18, color: AppColors.textOnPrimary),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             Flexible(
               child: Text(
                 title,
-                maxLines: 2,
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.bodySmall.copyWith(
+                  fontSize: 11,
                   color: AppColors.textOnPrimary,
                   fontWeight: FontWeight.w800,
                   height: 1.1,
@@ -2863,93 +2945,6 @@ class _PremiumButton extends StatelessWidget {
 /// ------------------------------
 /// GALLERY GRID
 /// ------------------------------
-class _GalleryGrid extends StatelessWidget {
-  final List<String> photos;
-  const _GalleryGrid({required this.photos});
-
-  @override
-  Widget build(BuildContext context) {
-    if (photos.isEmpty) {
-      return Text(
-        'No photos added yet.',
-        style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
-      );
-    }
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        // 2 columns, auto-expand height
-        final crossAxisCount = 2;
-        final rowCount = (photos.length / crossAxisCount).ceil();
-        final spacing = 6.0;
-        final itemWidth =
-            (constraints.maxWidth - (spacing * (crossAxisCount - 1))) /
-            crossAxisCount;
-        final gridHeight = (itemWidth * rowCount) + (spacing * (rowCount - 1));
-        return SizedBox(
-          height: gridHeight,
-          child: GridView.builder(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: photos.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 6,
-              crossAxisSpacing: 6,
-              childAspectRatio: 1.0,
-            ),
-            itemBuilder: (context, i) {
-              final url = photos[i];
-              return RepaintBoundary(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Container(
-                    color: AppColors.border,
-                    child: GestureDetector(
-                      onTap: () {
-                        _openPhotoViewer(
-                          context,
-                          photos: photos,
-                          initialIndex: i,
-                        );
-                      },
-                      child: CachedNetworkImage(
-                        imageUrl: url,
-                        fit: BoxFit.contain,
-                        memCacheWidth: 400,
-                        memCacheHeight: 400,
-                        placeholder:
-                            (context, url) => Container(
-                              color: AppColors.border,
-                              child: const Center(
-                                child: SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                ),
-                              ),
-                            ),
-                        errorWidget:
-                            (context, url, error) => const Icon(
-                              Icons.broken_image_rounded,
-                              color: AppColors.textSecondary,
-                            ),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
-}
-
 /// ------------------------------
 /// ACCOUNT TILES (Existing behavior)
 /// ------------------------------
@@ -3016,6 +3011,28 @@ class _AccountTiles extends StatelessWidget {
           },
         ),
         const SizedBox(height: 10),
+        Consumer(
+          builder: (ctx, cref, _) {
+            final coachAsync = cref.watch(myCoachProfileProvider);
+            final isCoach = coachAsync.valueOrNull != null;
+            if (!isCoach) return const SizedBox.shrink();
+            return Column(
+              children: [
+                _ProfileTile(
+                  icon: Icons.dashboard_outlined,
+                  title: 'Coach Portal',
+                  subtitle: 'Manage your sessions & availability',
+                  onTap: () => Navigator.of(ctx).push(
+                    MaterialPageRoute(
+                      builder: (_) => const CoachDashboardScreen(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+              ],
+            );
+          },
+        ),
         _ProfileTile(
           icon: Icons.workspace_premium_outlined,
           title: 'Subscriptions',
@@ -3038,20 +3055,17 @@ class _AccountTiles extends StatelessWidget {
             return RelationshipStatusEditor(currentStatus: currentStatus);
           },
         ),
-        // Only show "Delete" when a dating profile actually exists
-        if (ref
-            .watch(datingProfileCompletedProvider)
-            .maybeWhen(data: (v) => v, orElse: () => false)) ...[
-          const SizedBox(height: 10),
-          _ProfileTile(
-            icon: Icons.delete_rounded,
-            title: 'Delete Account',
-            subtitle: 'Delete dating profile or full account',
-            onTap: () {
-              handleDeleteProfile(context, ref);
-            },
-          ),
-        ], // end datingProfileCompleted guard
+        const SizedBox(height: 10),
+        // Delete Account: Available to all users (not just those with dating profiles)
+        // Users can delete dating profile only, or full account
+        _ProfileTile(
+          icon: Icons.delete_rounded,
+          title: 'Delete Account',
+          subtitle: 'Delete dating profile or full account',
+          onTap: () {
+            handleDeleteProfile(context, ref);
+          },
+        ),
         const SizedBox(height: 10),
         _ProfileTile(
           icon: Icons.logout_rounded,
@@ -5747,7 +5761,9 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
         return 4;
       if (hasAny([
         'marrysomeonefs',
+        'marrysomeonenotfs',
         'marry_someone_fs',
+        'marry_someone_not_fs',
         'financialstability',
         'financial',
       ]))
@@ -5800,7 +5816,9 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
       return 'Source of Income';
     }
     if (k.contains('marrysomeonefs') ||
+        k.contains('marrysomeonenotfs') ||
         k.contains('marry_someone_fs') ||
+        k.contains('marry_someone_not_fs') ||
         k.contains('financial')) {
       return 'Financial Stability';
     }
@@ -5880,17 +5898,16 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
       return '$subj believes $v.';
     }
 
-    // Financial stability (your requested grammar)
-    // meaning: can/cannot marry someone who is NOT financially stable yet
+    // Financial stability
     if (k.contains('marrysomeonefs') ||
+        k.contains('marrysomeonenotfs') ||
         k.contains('marry_someone_fs') ||
+        k.contains('marry_someone_not_fs') ||
         k.contains('financial')) {
       if (yn == true)
-        return '$subj can marry someone who is not yet financially stable.';
+        return '$subj can marry someone who is not financially stable as long as they are diligent and responsible.';
       if (yn == false)
-        return '$subj cannot marry someone who is not yet financially stable.';
-      if (v.isEmpty)
-        return '$subj has not shared their view on marrying someone who is not yet financially stable.';
+        return '$subj cannot marry someone who is not financially stable.';
       return '$subj believes $v.';
     }
 
@@ -6244,6 +6261,7 @@ class _PremiumCompatibilityViewerScreen extends ConsumerWidget {
                                             label,
                                             style: AppTextStyles.caption
                                                 .copyWith(
+                                                  fontWeight: FontWeight.w700,
                                                   color:
                                                       Theme.of(context)
                                                           .colorScheme

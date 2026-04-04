@@ -267,7 +267,8 @@ class _DatingAudioQuestionScreenState
                               isRecording: _isRecording,
                               isPaused: _isPaused,
                               canStop: _isRecording && _elapsed >= _minSeconds,
-                              onTap: _busy || _hasRecording ? null : _toggleRecord,
+                              onTap:
+                                  _busy || _hasRecording ? null : _toggleRecord,
                             ),
 
                             const SizedBox(width: 36),
@@ -277,7 +278,10 @@ class _DatingAudioQuestionScreenState
                               isPlaying: _isPlaying,
                               hasRecording: _hasRecording,
                               canPlayDuringRecording: false,
-                              onTap: _hasRecording && !_busy ? _playRecording : null,
+                              onTap:
+                                  _hasRecording && !_busy
+                                      ? _playRecording
+                                      : null,
                             ),
                           ],
                         ),
@@ -310,7 +314,9 @@ class _DatingAudioQuestionScreenState
                         ),
                         child: Text(
                           'Continue',
-                          style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
+                          style: AppTextStyles.labelLarge.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -616,9 +622,10 @@ class _DatingAudioQuestionScreenState
   void _saveDraftPath({bool clear = false}) {
     final notifier = ref.read(datingOnboardingDraftProvider.notifier);
     if (clear) {
-      if (widget.questionNumber == 1) notifier.setAudio(a1: null, d1: null);
-      if (widget.questionNumber == 2) notifier.setAudio(a2: null, d2: null);
-      if (widget.questionNumber == 3) notifier.setAudio(a3: null, d3: null);
+      // Use clearSingleAudio() instead of setAudio() to properly clear both paths AND URLs.
+      // setAudio() uses ?? operators which don't actually clear values when null is passed,
+      // leaving stale audio URLs in the draft that cause playback errors on restart.
+      notifier.clearSingleAudio(widget.questionNumber);
       return;
     }
 

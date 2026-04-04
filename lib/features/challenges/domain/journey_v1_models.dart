@@ -223,6 +223,7 @@ class MissionCardV1 {
   final String? reflection; // Reflection prompt text
   final String?
   responseType; // e.g. 'open-text', 'single-select', 'multiple-select'
+  final String? audioUrl; // Optional audio URL (for teaching cards with audio)
 
   MissionCardV1({
     required this.type,
@@ -236,6 +237,7 @@ class MissionCardV1 {
     this.options,
     this.reflection,
     this.responseType,
+    this.audioUrl,
   });
 
   factory MissionCardV1.fromJson(Map<String, dynamic> json) {
@@ -282,6 +284,7 @@ class MissionCardV1 {
       options: finalOptions,
       reflection: json['reflection'] as String?,
       responseType: json['responseType'] as String?,
+      audioUrl: json['audioUrl'] as String?,
     );
   }
 }

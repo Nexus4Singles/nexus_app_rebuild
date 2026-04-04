@@ -130,7 +130,7 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
         // Logged out (or anonymous) -> Welcome screen with auth options
         if (user == null || user.isAnonymous) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const _AuthEntryScreen()),
+            MaterialPageRoute(builder: (_) => const AuthEntryScreen()),
           );
           return;
         }
@@ -296,7 +296,7 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
         // Still no auth info; keep splash visible and try again.
         if (_retryCount >= _maxRetries) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const _AuthEntryScreen()),
+            MaterialPageRoute(builder: (_) => const AuthEntryScreen()),
           );
           return;
         }
@@ -308,7 +308,7 @@ class _AppSplashRouterState extends ConsumerState<_AppSplashRouter> {
       error: (_, __) {
         // If auth stream errors, fall back to auth entry.
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const _AuthEntryScreen()),
+          MaterialPageRoute(builder: (_) => const AuthEntryScreen()),
         );
       },
     );
@@ -558,8 +558,8 @@ class _NexusSplashScreenState extends State<_NexusSplashScreen>
   }
 }
 
-class _AuthEntryScreen extends StatelessWidget {
-  const _AuthEntryScreen();
+class AuthEntryScreen extends StatelessWidget {
+  const AuthEntryScreen();
 
   @override
   Widget build(BuildContext context) {

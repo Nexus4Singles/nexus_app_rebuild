@@ -477,8 +477,7 @@ class _DatingContactInfoScreenState
         // IMPORTANT: We use .update() with dot-notation keys instead of
         // .set(merge:true) with a full 'dating' object. A nested object
         // inside set(merge:true) REPLACES the entire map, wiping sibling
-        // fields like dating.optIn, dating.availability,
-        // dating.dailyLimitFirstHit, dating.shownProfileIds, etc.
+        // fields like dating.optIn, dating.availability, etc.
         // Dot-notation preserves all existing sibling fields.
 
         // ── Map contactInfo display-keys → individual Firestore fields ──
@@ -767,6 +766,18 @@ class _PhoneInputTile extends StatelessWidget {
                   ),
                 const SizedBox(width: 10),
                 Text(label, style: AppTextStyles.labelLarge),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    '(include your country code in the first box)',
+                    style: AppTextStyles.caption.copyWith(
+                      color: AppColors.getTextSecondary(context),
+                      fontSize: 10,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 10),

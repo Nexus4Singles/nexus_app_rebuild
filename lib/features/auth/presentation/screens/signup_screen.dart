@@ -55,9 +55,91 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     if (value == null || value.trim().isEmpty) {
       return 'Email is required';
     }
-    if (!value.contains('@') || !value.contains('.')) {
-      return 'Please enter a valid email';
+
+    final trimmedEmail = value.trim();
+
+    // Basic structural checks
+    if (!trimmedEmail.contains('@')) {
+      return 'Email must contain @ symbol';
     }
+
+    if (!trimmedEmail.contains('.')) {
+      return 'Email must contain a domain';
+    }
+
+    // More comprehensive email validation regex
+    // Pattern: local-part@domain.extension
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+
+    if (!emailRegex.hasMatch(trimmedEmail)) {
+      // Provide specific error messages based on common mistakes
+      if (trimmedEmail.startsWith('@')) {
+        return 'Email cannot start with @';
+      }
+      if (trimmedEmail.endsWith('@')) {
+        return 'Email cannot end with @';
+      }
+      if (trimmedEmail.split('@').length > 2) {
+        return 'Email can only contain one @ symbol';
+      }
+      if (trimmedEmail.endsWith('.')) {
+        return 'Email cannot end with a dot';
+      }
+      if (trimmedEmail.contains('..')) {
+        return 'Email cannot contain consecutive dots';
+      }
+      if (trimmedEmail.contains(' ')) {
+        return 'Email cannot contain spaces';
+      }
+      return 'Please enter a valid email address';
+    }
+
+    // Extract and validate TLD length
+    final parts = trimmedEmail.split('@');
+    if (parts.length != 2) {
+      return 'Invalid email format';
+    }
+
+    final domainPart = parts[1];
+    final domainParts = domainPart.split('.');
+
+    if (domainParts.length < 2) {
+      return 'Email must have a valid domain';
+    }
+
+    final tld = domainParts.last.toLowerCase();
+
+    // Validate TLD length
+    if (tld.length < 2) {
+      return 'TLD must be at least 2 characters';
+    }
+
+    // TLD should typically be 2-6 characters
+    // Most valid TLDs: com(3), uk(2), co(2), io(2), org(3), net(3), edu(3)
+    // New gTLDs up to 6: tech(4), guru(4), shop(4), museum(6), travel(6)
+    // Catches mistakes like: comn(4), neet(4), con(3), coom(4)
+    if (tld.length > 6) {
+      return 'That TLD seems too long. Please double-check your email';
+    }
+
+    // Additional check: Common typos
+    // Catches mistakes where user adds extra characters
+    if (tld == 'comn' ||
+        tld == 'con' ||
+        tld == 'coom' ||
+        tld == 'comu' ||
+        tld == 'comm') {
+      return 'Did you mean .com? Please check your email';
+    }
+    if (tld == 'neet' || tld == 'nett') {
+      return 'Did you mean .net? Please check your email';
+    }
+    if (tld == 'ogr' || tld == 'orgg') {
+      return 'Did you mean .org? Please check your email';
+    }
+
     return null;
   }
 
@@ -140,13 +222,16 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // If there's an error, clear it and allow back navigation
-        // This prevents the "red error screen" crash when going back
+        // If there's an error, clear it first
         if (_error != null) {
           setState(() => _error = null);
-          return false; // Don't pop yet, just clear error
+          return false;
         }
-        return true; // Allow normal back navigation
+        // Always go back to the welcome screen, regardless of stack state
+        Navigator.of(
+          context,
+        ).pushNamedAndRemoveUntil('/auth-entry', (_) => false);
+        return false;
       },
       child: Scaffold(
         backgroundColor: AppColors.getBackground(context),
@@ -155,13 +240,23 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           surfaceTintColor: AppColors.getBackground(context),
           elevation: 0,
           titleSpacing: 0,
+          automaticallyImplyLeading: false,
+          leading:
+              _busy
+                  ? null
+                  : IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                    onPressed:
+                        () => Navigator.of(
+                          context,
+                        ).pushNamedAndRemoveUntil('/auth-entry', (_) => false),
+                  ),
           title: Text(
             'Create Account',
             style: AppTextStyles.headlineMedium.copyWith(
               fontWeight: FontWeight.w700,
             ),
           ),
-          automaticallyImplyLeading: !_busy,
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -293,9 +388,15 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     style: AppTextStyles.bodyLarge,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      hintText: '8+ chars, start with caps, 1 special char',
+                      hintText:
+                          '8+ characters, start with caps, 1 special char',
                       labelStyle: AppTextStyles.bodyMedium.copyWith(
                         color: AppColors.getTextSecondary(context),
+                      ),
+                      hintStyle: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.getTextSecondary(
+                          context,
+                        ).withOpacity(0.7),
                       ),
                       filled: true,
                       fillColor: AppColors.getSurface(context),

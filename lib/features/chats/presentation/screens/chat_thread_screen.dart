@@ -441,6 +441,13 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
     _player = ja.AudioPlayer();
     _recorder = AudioRecorder();
 
+    // Keep the send button in sync with the text field on ALL Android input
+    // methods (IME suggestions, swipe/glide typing, voice input, etc.).
+    // The TextField.onChanged callback is not always called by Android IMEs
+    // when text is committed via suggestion bar or predictive input, so this
+    // listener acts as a reliable fallback to trigger a rebuild.
+    _controller.addListener(_onControllerChanged);
+
     _player.playerStateStream.listen((_) {
       if (!mounted) return;
       setState(() {});
@@ -454,8 +461,13 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
     });
   }
 
+  void _onControllerChanged() {
+    if (mounted) setState(() {});
+  }
+
   @override
   void dispose() {
+    _controller.removeListener(_onControllerChanged);
     _controller.dispose();
     _scroll.dispose();
     _player.dispose();
@@ -1365,7 +1377,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
             ],
           ),
           content: Text(
-            'You can only chat with 3 users on the free version of Nexus. Kindly subscribe to chat with more users',
+            'You can only chat with 1 user on the free version of Nexus. Kindly subscribe to chat with more users',
             textAlign: TextAlign.center,
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.getTextPrimary(context),

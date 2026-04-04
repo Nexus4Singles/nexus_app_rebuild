@@ -882,15 +882,21 @@ async function updateSubscriptionStatus(userId, event) {
     });
 
     // ✅ FIXED: Send notification about subscription activation (triggers FCM)
+    const tierDisplayNames = {
+      'nexus_premium_v2': 'Nexus Premium',
+      'monthly_premium_v2': 'Nexus Premium',
+      'monthly_premium': 'Nexus Premium',
+    };
+    const tierDisplay = tierDisplayNames[tier] || 'Nexus Premium';
     const notificationsRef = userRef.collection('notifications');
     await notificationsRef.add({
       type: 'subscription_activated',
       title: '✅ Subscription Active',
-      body: `Your ${tier} subscription is now active!`,
+      body: `Your ${tierDisplay} subscription is now active!`,
       payload: {
         type: 'subscription_activated',
         title: '✅ Subscription Active',
-        body: `Your ${tier} subscription is active until ${expireDate?.toLocaleDateString()}`,
+        body: `Your ${tierDisplay} subscription is active until ${expireDate?.toLocaleDateString()}`,
         tier: tier,
         expiryDate: expireDate?.toISOString(),
         route: '/profile',

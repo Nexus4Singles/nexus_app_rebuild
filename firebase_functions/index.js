@@ -874,11 +874,26 @@ exports.onUserDeleted = functions.firestore
     console.log(`🗑️  User document deleted: ${userId} (${userData?.email || 'no email'})`);
     
     try {
-      // Delete the user from Firebase Authentication
-      await admin.auth().deleteUser(userId);
-      console.log(`✅ Firebase Auth user deleted: ${userId}`);
+      // Delete the user from Firebase Authentication with 5-second timeout
+      try {
+        await Promise.race([
+          admin.auth().deleteUser(userId),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Auth deletion timeout after 5s')), 5000)
+          )
+        ]);
+        console.log(`✅ Firebase Auth user deleted: ${userId}`);
+      } catch (authError) {
+        // If user doesn't exist, that's fine - still considered success
+        if (authError.code === 'auth/user-not-found') {
+          console.log(`ℹ️  Auth user not found (already deleted): ${userId}`);
+        } else {
+          console.error(`❌ Auth deletion failed: ${authError.message}`);
+          throw authError;
+        }
+      }
       
-      // Optional: Send account deletion confirmation email
+      // Send account deletion confirmation email (non-critical, with 3-second timeout)
       if (userData?.email) {
         const mailOptions = {
           from: '"Nexus Team" <nexusgodlydating@gmail.com>',
@@ -907,17 +922,23 @@ exports.onUserDeleted = functions.firestore
         };
         
         try {
-          await transporter.sendMail(mailOptions);
+          await Promise.race([
+            transporter.sendMail(mailOptions),
+            new Promise((_, reject) => 
+              setTimeout(() => reject(new Error('Email send timeout')), 3000)
+            )
+          ]);
           console.log(`✅ Deletion confirmation email sent to ${userData.email}`);
         } catch (emailError) {
-          console.error(`⚠️  Failed to send deletion email:`, emailError.message);
-          // Don't fail the entire function if email fails
+          console.warn(`⚠️  Failed to send deletion email (non-critical): ${emailError.message}`);
+          // Non-critical: don't fail the entire deletion if email fails
         }
       }
       
+      console.log(`✅ Account deletion completed for user: ${userId}`);
       return { success: true, userId };
     } catch (error) {
-      console.error(`❌ Error deleting Firebase Auth user ${userId}:`, error);
+      console.error(`❌ Critical error during account deletion for ${userId}:`, error.message);
       
       // If user doesn't exist in Auth (already deleted), that's okay
       if (error.code === 'auth/user-not-found') {

@@ -1,0 +1,48 @@
+=== COMPREHENSIVE HIDDEN USERS SCAN ===
+
+Fetching all users from Firestore...
+Total users: 7671
+
+Checking hiding mechanisms:
+
+1️⃣  Checking disabled: true
+   Found: 0
+2️⃣  Checking accountStatus: disabled
+   Found: 0
+3️⃣  Checking status: disabled
+   Found: 0
+4️⃣  Checking isAdmin: true
+   Found: 2
+5️⃣  Checking other visibility flags (hidden, isHidden, etc)
+   Found: 1
+6️⃣  Checking blocked emails
+   Found: 0
+7️⃣  Checking for incomplete profiles or missing dating data
+   Found: 3968
+
+============================================================
+
+📊 SUMMARY OF HIDDEN USERS: 2
+
+1. contact@nexus4singles.com
+   UID: 5gSsntMpsSOnJS1t4j0V61uvUFL2
+   Username: Nexus
+   Reasons: isAdmin: true, hidden: true, isHidden: true
+
+2. nexus4singles@gmail.com
+   UID: yjXNtVfxyraQBmD2LEvvaiGWrJo1
+   Username: Ayodele
+   Reasons: isAdmin: true
+
+============================================================
+
+📋 BREAKDOWN BY REASON:
+
+  isAdmin: true: 2
+  hidden: true: 1
+  isHidden: true: 1
+
+============================================================
+
+✅ Scan complete!
+

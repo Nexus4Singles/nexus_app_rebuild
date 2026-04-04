@@ -89,39 +89,47 @@ class _JourneyGateScreenState extends ConsumerState<JourneyGateScreen> {
       );
     }
 
-    final activity = journey.missions.firstWhere(
-      (m) => m.id == missionId,
-      orElse: () => journey.missions.first,
-    );
+    // EARLY ACCESS: activity variable kept for when gating is restored
+    // final activity = journey.missions.firstWhere(
+    //   (m) => m.id == missionId,
+    //   orElse: () => journey.missions.first,
+    // );
 
-    final isFree = activity.missionNumber == 1 && activity.isFree;
-    final purchasedAsync = ref.watch(isJourneyPurchasedProvider(journeyId));
+    // EARLY ACCESS: Gating disabled — all activities pass through directly.
+    // When re-enabling, restore the purchasedAsync.when block below.
+    return JourneySessionScreen(journeyId: journeyId, missionId: missionId);
 
-    return purchasedAsync.when(
-      loading: () => const _GateLoading(),
-      error:
-          (_, __) => _LockedView(
-            journey: journey,
-            activity: activity,
-            allowFree: isFree,
-          ),
-      data: (isPurchased) {
-        if (isPurchased || isFree) {
-          return JourneySessionScreen(
-            journeyId: journeyId,
-            missionId: missionId,
-          );
-        }
-        return _LockedView(
-          journey: journey,
-          activity: activity,
-          allowFree: true,
-        );
-      },
-    );
+    // ignore: dead_code
+    // --- Original gating logic (restore for paid access) ---
+    // final isFree = activity.missionNumber == 1 && activity.isFree;
+    // final purchasedAsync = ref.watch(isJourneyPurchasedProvider(journeyId));
+    // return purchasedAsync.when(
+    //   loading: () => const _GateLoading(),
+    //   error:
+    //       (_, __) => _LockedView(
+    //         journey: journey,
+    //         activity: activity,
+    //         allowFree: isFree,
+    //       ),
+    //   data: (isPurchased) {
+    //     if (isPurchased || isFree) {
+    //       return JourneySessionScreen(
+    //         journeyId: journeyId,
+    //         missionId: missionId,
+    //       );
+    //     }
+    //     return _LockedView(
+    //       journey: journey,
+    //       activity: activity,
+    //       allowFree: true,
+    //     );
+    //   },
+    // );
   }
 }
 
+// EARLY ACCESS: _GateLoading kept for when gating is restored
+// ignore: unused_element
 class _GateLoading extends StatelessWidget {
   const _GateLoading();
 
@@ -134,6 +142,8 @@ class _GateLoading extends StatelessWidget {
   }
 }
 
+// EARLY ACCESS: _LockedView kept for when gating is restored
+// ignore: unused_element
 class _LockedView extends ConsumerWidget {
   final JourneyV1 journey;
   final MissionV1 activity;

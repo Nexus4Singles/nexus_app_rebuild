@@ -39,6 +39,10 @@ exports.validateAndRecordPurchase = validateAndRecordPurchase;
 exports.validateAndRecordSubscription = validateAndRecordSubscription;
 exports.revenueCatWebhook = revenueCatWebhook;
 
+// Re-export scheduled booking expiry function
+const { expireStaleBookings } = require('./expire_stale_bookings');
+exports.expireStaleBookings = expireStaleBookings;
+
 // ============================================================================
 // ADMIN VERIFICATION FUNCTION - Manually verify users by email
 // ============================================================================
@@ -1267,12 +1271,37 @@ exports.handleUpdateUserSubscriptionStatus = functions
       }
 
       // ====================================================================
-      // Extract userId from tx_ref
-      // Format: "nexus_sub:{userId}"
+      // Route by tx_ref format:
+      //   "nexus_sub:{userId}"           → subscription payment
+      //   "nexus-coaching-{bookingId}-*" → booking payment
       // ====================================================================
+      if (txRef.match(/^nexus-coaching-([^-]+)/)) {
+        const bookingIdMatch = txRef.match(/^nexus-coaching-([^-]+)/);
+        const bookingId = bookingIdMatch[1];
+        console.log(`[Flutterwave] Routing to booking handler. bookingId=${bookingId}`);
+        const bookingRef = admin.firestore().collection('bookings').doc(bookingId);
+        const bookingSnap = await bookingRef.get();
+        if (!bookingSnap.exists) {
+          console.error(`[Flutterwave] Booking not found: ${bookingId}`);
+          return res.status(200).json({ success: true, note: 'Booking not found, ignored' });
+        }
+        const bookingData = bookingSnap.data();
+        if (bookingData.status === 'confirmed') {
+          return res.status(200).json({ success: true, note: 'Already confirmed' });
+        }
+        await bookingRef.update({
+          paymentStatus: 'paid',
+          status: 'confirmed',
+          paymentReference: txRef,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+        console.log(`[Flutterwave] ✅ Booking ${bookingId} confirmed via webhook`);
+        return res.status(200).json({ success: true });
+      }
+
       if (!txRef.startsWith('nexus_sub:')) {
-        console.error(`[Flutterwave] Invalid tx_ref format (must start with 'nexus_sub:'): ${txRef}`);
-        return res.status(400).json({ error: 'Invalid tx_ref format - must be nexus_sub:{userId}' });
+        console.error(`[Flutterwave] Unknown tx_ref format: ${txRef}`);
+        return res.status(200).json({ success: true, note: 'Unknown tx_ref format, ignored' });
       }
 
       const userId = txRef.substring(9); // Remove "nexus_sub:" prefix
@@ -1525,4 +1554,414 @@ exports.checkAndCancelExpiredSubscriptions = functions
       console.error('[SubscriptionExpiry] Fatal error:', error);
       throw error;
     }
+  });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COACHING BOOKING FUNCTIONS
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * createPaymentLink
+ * HTTP GET  ?bookingId=xxx&method=flutterwave|paypal
+ * Creates a Flutterwave or PayPal payment link for a coaching booking and
+ * stores the payment URL back on the booking document.
+ */
+exports.createPaymentLink = functions
+  .runWith({ secrets: ['FLUTTERWAVE_SECRET_KEY'] })
+  .https.onRequest(async (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  if (req.method === 'OPTIONS') { res.status(204).send(''); return; }
+
+  const { bookingId, method } = req.query;
+  if (!bookingId || !method) {
+    res.status(400).json({ error: 'bookingId and method are required' });
+    return;
+  }
+
+  try {
+    const bookingRef = admin.firestore().collection('bookings').doc(bookingId);
+    const bookingSnap = await bookingRef.get();
+    if (!bookingSnap.exists) {
+      res.status(404).json({ error: 'Booking not found' });
+      return;
+    }
+    const booking = bookingSnap.data();
+    const amount = booking.totalAmount || 0;
+    const currency = booking.currency || 'NGN';
+    const customerEmail = booking.userEmail || '';
+    const customerName = booking.userName || 'Customer';
+
+    let paymentUrl = '';
+
+    if (method === 'flutterwave') {
+      const FLW_SECRET_KEY = process.env.FLUTTERWAVE_SECRET_KEY
+        || functions.config().flutterwave?.secret_key
+        || '';
+      const txRef = `nexus-coaching-${bookingId}-${Date.now()}`;
+
+      // Flutterwave inline payment link (redirect-based)
+      const payload = {
+        tx_ref: txRef,
+        amount: amount,
+        currency: currency,
+        redirect_url: `https://nexus-visibility-app.web.app/booking-success?bookingId=${bookingId}`,
+        customer: { email: customerEmail, name: customerName },
+        customizations: {
+          title: 'Nexus Coaching Session',
+          description: `Coaching session booking #${bookingId.substring(0, 8).toUpperCase()}`,
+          logo: 'https://nexus-visibility-app.web.app/icons/Icon-192.png',
+        },
+        meta: { bookingId },
+      };
+
+      const flwRes = await fetch('https://api.flutterwave.com/v3/payments', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${FLW_SECRET_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      const flwData = await flwRes.json();
+      if (flwData.status === 'success') {
+        paymentUrl = flwData.data.link;
+      } else {
+        console.error('[createPaymentLink] Flutterwave error:', flwData);
+        res.status(502).json({ error: 'Failed to create Flutterwave link', detail: flwData });
+        return;
+      }
+
+    } else if (method === 'paypal') {
+      const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID
+        || functions.config().paypal?.client_id
+        || '';
+      const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET
+        || functions.config().paypal?.client_secret
+        || '';
+      const PAYPAL_BASE = process.env.PAYPAL_ENV === 'live'
+        ? 'https://api-m.paypal.com'
+        : 'https://api-m.sandbox.paypal.com';
+
+      // Get access token
+      const tokenRes = await fetch(`${PAYPAL_BASE}/v1/oauth2/token`, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Basic ' + Buffer.from(`${PAYPAL_CLIENT_ID}:${PAYPAL_CLIENT_SECRET}`).toString('base64'),
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'grant_type=client_credentials',
+      });
+      const tokenData = await tokenRes.json();
+      const accessToken = tokenData.access_token;
+
+      // Create PayPal order
+      const orderRes = await fetch(`${PAYPAL_BASE}/v2/checkout/orders`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          intent: 'CAPTURE',
+          purchase_units: [{
+            reference_id: bookingId,
+            amount: { currency_code: 'USD', value: (amount / 1500).toFixed(2) }, // approximate USD
+            description: `Nexus Coaching Session #${bookingId.substring(0, 8).toUpperCase()}`,
+          }],
+          application_context: {
+            brand_name: 'Nexus',
+            return_url: `https://nexus-visibility-app.web.app/booking-success?bookingId=${bookingId}`,
+            cancel_url: `https://nexus-visibility-app.web.app/booking-cancel?bookingId=${bookingId}`,
+          },
+        }),
+      });
+      const orderData = await orderRes.json();
+      const approveLink = (orderData.links || []).find(l => l.rel === 'approve');
+      if (approveLink) {
+        paymentUrl = approveLink.href;
+      } else {
+        console.error('[createPaymentLink] PayPal error:', orderData);
+        res.status(502).json({ error: 'Failed to create PayPal order', detail: orderData });
+        return;
+      }
+    } else {
+      res.status(400).json({ error: `Unknown payment method: ${method}` });
+      return;
+    }
+
+    // Store the payment URL on the booking document
+    await bookingRef.update({ paymentUrl, 'paymentStatus': 'pending' });
+
+    res.status(200).json({ paymentUrl });
+  } catch (err) {
+    console.error('[createPaymentLink] Error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * flutterwaveBookingWebhook
+ * Handles Flutterwave webhook for coaching session payments.
+ * On successful charge, marks booking as confirmed + payment as paid.
+ */
+exports.flutterwaveBookingWebhook = functions
+  .runWith({ secrets: ['FLUTTERWAVE_WEBHOOK_SECRET'] })
+  .https.onRequest(async (req, res) => {
+    const WEBHOOK_SECRET = process.env.FLUTTERWAVE_WEBHOOK_SECRET;
+    const signature = req.headers['verificationhash'] || req.headers['x-flutterwave-signature'];
+
+    if (WEBHOOK_SECRET) {
+      const hash = crypto.createHmac('sha256', WEBHOOK_SECRET)
+        .update(JSON.stringify(req.body))
+        .digest('hex');
+      if (hash !== signature) {
+        console.warn('[BookingWebhook] Invalid signature');
+        res.status(401).send('Unauthorized');
+        return;
+      }
+    }
+
+    const event = req.body;
+    const eventType = event.event || '';
+    if (eventType !== 'charge.completed') {
+      res.status(200).send('ok');
+      return;
+    }
+
+    const data = event.data || {};
+    const status = (data.status || '').toLowerCase();
+    const txRef = data.tx_ref || '';
+    const bookingIdMatch = txRef.match(/nexus-coaching-([^-]+)/);
+
+    if (!bookingIdMatch || status !== 'successful') {
+      res.status(200).send('ignored');
+      return;
+    }
+
+    const bookingId = bookingIdMatch[1];
+    try {
+      const bookingRef = admin.firestore().collection('bookings').doc(bookingId);
+      await bookingRef.update({
+        paymentStatus: 'paid',
+        status: 'confirmed',
+        paymentReference: data.flw_ref || txRef,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+      console.log(`[BookingWebhook] ✅ Booking ${bookingId} confirmed via Flutterwave`);
+    } catch (err) {
+      console.error('[BookingWebhook] Error updating booking:', err);
+    }
+
+    res.status(200).send('ok');
+  });
+
+/**
+ * onBookingConfirmed
+ * Firestore trigger: fires when a booking status changes to "confirmed".
+ * Sends booking confirmation emails to both user and coach.
+ */
+exports.onBookingConfirmed = functions.firestore
+  .document('bookings/{bookingId}')
+  .onWrite(async (change, context) => {
+    const before = change.before.data();
+    const after = change.after.data();
+
+    // Only act when status transitions to 'confirmed'
+    if (!after || after.status !== 'confirmed' || before?.status === 'confirmed') {
+      return null;
+    }
+
+    const {
+      bookingId = context.params.bookingId,
+      userName = 'User',
+      userEmail,
+      coachName = 'Coach',
+      coachEmail,
+      sessionType = 'Individual',
+      scheduledDate,
+      startTime,
+      endTime,
+      meetingLink,
+      notes,
+      totalAmount,
+      currency = 'NGN',
+    } = after;
+
+    const dateStr = scheduledDate
+      ? new Date(scheduledDate.toDate()).toDateString()
+      : 'TBD';
+
+    const sessionLabel = {
+      Individual: 'Individual Counseling',
+      Premarital: 'Premarital Counseling',
+      PostMarital: 'Post-Marital Counseling',
+      Parenting: 'Parenting Counseling',
+    }[sessionType] || sessionType;
+
+    const baseEmailStyle = `
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      max-width: 580px;
+      margin: 0 auto;
+      background: #ffffff;
+    `;
+
+    const userHtml = `
+      <div style="${baseEmailStyle}">
+        <div style="background:#BA223C;padding:28px 32px;">
+          <h1 style="color:white;margin:0;font-size:22px;">Booking Confirmed ✅</h1>
+        </div>
+        <div style="padding:28px 32px;">
+          <p style="font-size:16px;color:#333;">Hi <strong>${userName}</strong>,</p>
+          <p style="color:#555;">Your coaching session has been confirmed. Here are your details:</p>
+          <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+            <tr style="background:#f9f9f9;"><td style="padding:10px 12px;font-weight:600;color:#333;">Session Type</td><td style="padding:10px 12px;color:#555;">${sessionLabel}</td></tr>
+            <tr><td style="padding:10px 12px;font-weight:600;color:#333;">Coach</td><td style="padding:10px 12px;color:#555;">${coachName}</td></tr>
+            <tr style="background:#f9f9f9;"><td style="padding:10px 12px;font-weight:600;color:#333;">Date</td><td style="padding:10px 12px;color:#555;">${dateStr}</td></tr>
+            <tr><td style="padding:10px 12px;font-weight:600;color:#333;">Time</td><td style="padding:10px 12px;color:#555;">${startTime} – ${endTime}</td></tr>
+            <tr style="background:#f9f9f9;"><td style="padding:10px 12px;font-weight:600;color:#333;">Amount Paid</td><td style="padding:10px 12px;color:#555;">${currency} ${totalAmount}</td></tr>
+          </table>
+          ${notes ? `
+          <div style="background:#f9f9f9;border-left:3px solid #BA223C;border-radius:4px;padding:12px 16px;margin:16px 0;">
+            <p style="margin:0 0 4px;font-weight:600;color:#333;">Your Notes</p>
+            <p style="margin:0;color:#555;white-space:pre-wrap;">${notes}</p>
+          </div>` : ''}
+          ${meetingLink ? `
+          <div style="background:#FEF3F2;border:1px solid #BA223C30;border-radius:10px;padding:16px 20px;margin:20px 0;">
+            <p style="margin:0 0 6px;font-weight:700;color:#BA223C;">📹 Your Meeting Link</p>
+            <a href="${meetingLink}" style="color:#BA223C;word-break:break-all;">${meetingLink}</a>
+            <p style="margin:8px 0 0;font-size:12px;color:#999;">Click the link at the time of your session. No account or download required.</p>
+          </div>` : ''}
+          <p style="color:#888;font-size:13px;margin-top:28px;">Booking ID: <code>${bookingId.substring(0,8).toUpperCase()}</code></p>
+        </div>
+        <div style="background:#f4f4f4;padding:16px 32px;text-align:center;">
+          <p style="color:#aaa;font-size:12px;margin:0;">Nexus — Godly Relationships &amp; Marriages</p>
+        </div>
+      </div>`;
+
+    const coachHtml = `
+      <div style="${baseEmailStyle}">
+        <div style="background:#BA223C;padding:28px 32px;">
+          <h1 style="color:white;margin:0;font-size:22px;">New Session Booked 📅</h1>
+        </div>
+        <div style="padding:28px 32px;">
+          <p style="font-size:16px;color:#333;">Hi <strong>${coachName}</strong>,</p>
+          <p style="color:#555;">You have a new confirmed coaching session.</p>
+          <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+            <tr style="background:#f9f9f9;"><td style="padding:10px 12px;font-weight:600;color:#333;">Client</td><td style="padding:10px 12px;color:#555;">${userName}</td></tr>
+            <tr><td style="padding:10px 12px;font-weight:600;color:#333;">Session Type</td><td style="padding:10px 12px;color:#555;">${sessionLabel}</td></tr>
+            <tr style="background:#f9f9f9;"><td style="padding:10px 12px;font-weight:600;color:#333;">Date</td><td style="padding:10px 12px;color:#555;">${dateStr}</td></tr>
+            <tr><td style="padding:10px 12px;font-weight:600;color:#333;">Time</td><td style="padding:10px 12px;color:#555;">${startTime} – ${endTime}</td></tr>
+          </table>
+          ${meetingLink ? `
+          <div style="background:#FEF3F2;border:1px solid #BA223C30;border-radius:10px;padding:16px 20px;margin:20px 0;">
+            <p style="margin:0 0 6px;font-weight:700;color:#BA223C;">📹 Meeting Link</p>
+            <a href="${meetingLink}" style="color:#BA223C;word-break:break-all;">${meetingLink}</a>
+          </div>` : ''}
+          <p style="color:#888;font-size:13px;margin-top:28px;">Booking ID: <code>${bookingId.substring(0,8).toUpperCase()}</code></p>
+        </div>
+        <div style="background:#f4f4f4;padding:16px 32px;text-align:center;">
+          <p style="color:#aaa;font-size:12px;margin:0;">Nexus — Godly Relationships &amp; Marriages</p>
+        </div>
+      </div>`;
+
+    const sendPromises = [];
+
+    if (userEmail) {
+      sendPromises.push(transporter.sendMail({
+        from: '"Nexus Coaching" <nexusgodlydating@gmail.com>',
+        to: userEmail,
+        subject: `✅ Booking Confirmed — ${sessionLabel} with ${coachName}`,
+        html: userHtml,
+      }));
+    }
+
+    if (coachEmail) {
+      sendPromises.push(transporter.sendMail({
+        from: '"Nexus Coaching" <nexusgodlydating@gmail.com>',
+        to: coachEmail,
+        subject: `📅 New Session Booked — ${sessionLabel} with ${userName}`,
+        html: coachHtml,
+      }));
+    }
+
+    try {
+      await Promise.all(sendPromises);
+      await change.after.ref.update({ emailsSent: true });
+      console.log(`[onBookingConfirmed] ✅ Emails sent for booking ${context.params.bookingId}`);
+    } catch (emailErr) {
+      console.error('[onBookingConfirmed] Email error:', emailErr);
+    }
+
+    return null;
+  });
+
+/**
+ * verifyAndConfirmBookingPayment
+ * Callable function: verifies a Flutterwave transaction server-side using the
+ * secret key, then marks the booking as confirmed in Firestore.
+ * Called by the Flutter app after the SDK payment modal completes.
+ */
+exports.verifyAndConfirmBookingPayment = functions
+  .runWith({ secrets: ['FLUTTERWAVE_SECRET_KEY'], memory: '256MB', timeoutSeconds: 60 })
+  .https.onCall(async (data, context) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError('unauthenticated', 'Must be authenticated');
+    }
+
+    const { bookingId, txRef } = data;
+    if (!bookingId || !txRef) {
+      throw new functions.https.HttpsError('invalid-argument', 'bookingId and txRef are required');
+    }
+
+    const db = admin.firestore();
+    const bookingRef = db.collection('bookings').doc(bookingId);
+    const snap = await bookingRef.get();
+    if (!snap.exists) {
+      throw new functions.https.HttpsError('not-found', 'Booking not found');
+    }
+    const booking = snap.data();
+
+    if (booking.userId !== context.auth.uid) {
+      throw new functions.https.HttpsError('permission-denied', 'Not your booking');
+    }
+
+    // Idempotent — already confirmed
+    if (booking.status === 'confirmed') {
+      return { success: true };
+    }
+
+    const secretKey = process.env.FLUTTERWAVE_SECRET_KEY;
+    if (!secretKey) {
+      throw new functions.https.HttpsError('internal', 'Payment service not configured');
+    }
+
+    // Verify transaction with Flutterwave
+    const fwRes = await fetch(
+      `https://api.flutterwave.com/v3/transactions/verify_by_reference?tx_ref=${encodeURIComponent(txRef)}`,
+      { headers: { 'Authorization': `Bearer ${secretKey}` } },
+    );
+    const fwData = await fwRes.json();
+
+    if (fwData.status !== 'success' || fwData.data?.status !== 'successful') {
+      console.error('[verifyAndConfirm] FW verification failed:', JSON.stringify(fwData));
+      throw new functions.https.HttpsError('failed-precondition', 'Payment not verified by Flutterwave');
+    }
+
+    // Guard against amount tampering (allow ±0.50 rounding tolerance)
+    const paidAmount = fwData.data.amount;
+    const expectedAmount = booking.totalAmount;
+    if (Math.abs(paidAmount - expectedAmount) > 0.5) {
+      console.error(`[verifyAndConfirm] Amount mismatch: paid ${paidAmount}, expected ${expectedAmount}`);
+      throw new functions.https.HttpsError('failed-precondition', 'Payment amount mismatch');
+    }
+
+    await bookingRef.update({
+      status: 'confirmed',
+      paymentStatus: 'paid',
+      paymentReference: txRef,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    console.log(`[verifyAndConfirm] ✅ Booking ${bookingId} confirmed. TxRef: ${txRef}`);
+    return { success: true };
   });
