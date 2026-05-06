@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../../core/theme/theme.dart';
 import '../../../../core/providers/auth_provider.dart';
@@ -24,7 +25,8 @@ class EmailVerificationScreen extends ConsumerStatefulWidget {
 }
 
 class _EmailVerificationScreenState
-    extends ConsumerState<EmailVerificationScreen> {
+    extends ConsumerState<EmailVerificationScreen>
+    with SingleTickerProviderStateMixin {
   Timer? _timer;
   Timer? _resendCountdownTimer;
   bool _isCheckingVerification = false;
@@ -35,9 +37,23 @@ class _EmailVerificationScreenState
   int _consecutiveFailures = 0;
   String? _lastCheckError;
 
+  // Blink animation for spam folder warning
+  late final AnimationController _blinkController;
+  late final Animation<double> _blinkAnimation;
+
   @override
   void initState() {
     super.initState();
+
+    // Pulsing opacity animation for spam warning
+    _blinkController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    )..repeat(reverse: true);
+    _blinkAnimation = Tween<double>(begin: 0.4, end: 1.0).animate(
+      CurvedAnimation(parent: _blinkController, curve: Curves.easeInOut),
+    );
+
     // Auto-check verification status every 3 seconds
     _timer = Timer.periodic(const Duration(seconds: 3), (_) {
       _checkEmailVerified();
@@ -48,6 +64,7 @@ class _EmailVerificationScreenState
 
   @override
   void dispose() {
+    _blinkController.dispose();
     _timer?.cancel();
     _resendCountdownTimer?.cancel();
     super.dispose();
@@ -249,11 +266,31 @@ class _EmailVerificationScreenState
           final user = FirebaseAuth.instance.currentUser;
 
           if (user != null) {
+            final uid = user.uid;
+            // Delete the Firestore document FIRST (before deleting auth user),
+            // otherwise we lose access to the uid.
+            try {
+              await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(uid)
+                  .delete();
+              // ignore: avoid_print
+              print(
+                '[EmailVerification] Deleted Firestore doc (back button) for uid: $uid',
+              );
+            } catch (fsError) {
+              // ignore: avoid_print
+              print(
+                '[EmailVerification] Firestore doc deletion failed on back: $fsError',
+              );
+              // Non-fatal: still proceed with auth deletion
+            }
+
             try {
               await user.delete();
               // ignore: avoid_print
               print(
-                '[EmailVerification] Deleted incomplete account (back button) for uid: ${user.uid}',
+                '[EmailVerification] Deleted incomplete account (back button) for uid: $uid',
               );
             } on FirebaseAuthException catch (deleteError) {
               // ignore: avoid_print
@@ -374,23 +411,40 @@ class _EmailVerificationScreenState
                       ],
                     ),
                     const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.folder_outlined,
-                          size: 20,
-                          color: AppColors.getTextSecondary(context),
+                    FadeTransition(
+                      opacity: _blinkAnimation,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 10,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Check your spam folder if you don\'t see it in your inbox',
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.getTextSecondary(context),
-                            ),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: AppColors.primary.withOpacity(0.4),
                           ),
                         ),
-                      ],
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.warning_amber_rounded,
+                              size: 22,
+                              color: AppColors.primary,
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                'If you dont find it in your inbox, check your SPAM / JUNK folder',
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 12),
                     Row(
@@ -485,13 +539,33 @@ class _EmailVerificationScreenState
                     final user = FirebaseAuth.instance.currentUser;
 
                     if (user != null) {
+                      final uid = user.uid;
+                      // Delete Firestore document FIRST (before auth deletion)
+                      // to prevent orphaned documents when user retries signup.
+                      try {
+                        await FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(uid)
+                            .delete();
+                        // ignore: avoid_print
+                        print(
+                          '[EmailVerification] Deleted Firestore doc for uid: $uid',
+                        );
+                      } catch (fsError) {
+                        // ignore: avoid_print
+                        print(
+                          '[EmailVerification] Firestore doc deletion failed: $fsError',
+                        );
+                        // Non-fatal: still proceed with auth deletion
+                      }
+
                       // Delete the current Firebase Auth account to roll back the failed signup
                       // This allows the user to sign up again with the same email corrected
                       try {
                         await user.delete();
                         // ignore: avoid_print
                         print(
-                          '[EmailVerification] Deleted incomplete account for uid: ${user.uid}',
+                          '[EmailVerification] Deleted incomplete account for uid: $uid',
                         );
                       } on FirebaseAuthException catch (deleteError) {
                         // Account deletion can fail if user hasn't signed in recently

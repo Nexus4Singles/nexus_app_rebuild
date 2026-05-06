@@ -15,12 +15,16 @@ final allCoachesProvider = StreamProvider<List<CoachModel>>((ref) {
 /// Available coaches filtered to a specific session type.
 final coachesBySessionTypeProvider =
     StreamProvider.family<List<CoachModel>, String>((ref, sessionTypeKey) {
-  return ref.read(coachServiceProvider).watchCoaches(sessionTypeKey: sessionTypeKey);
-});
+      return ref
+          .read(coachServiceProvider)
+          .watchCoaches(sessionTypeKey: sessionTypeKey);
+    });
 
 /// Single coach profile.
-final coachDetailProvider =
-    FutureProvider.family<CoachModel?, String>((ref, coachId) {
+final coachDetailProvider = FutureProvider.family<CoachModel?, String>((
+  ref,
+  coachId,
+) {
   return ref.read(coachServiceProvider).getCoach(coachId);
 });
 
@@ -43,25 +47,25 @@ final myCoachProfileProvider = StreamProvider<CoachModel?>((ref) {
 /// navigating back to the profile/calendar is instant on repeated visits.
 final availableSlotsProvider =
     StreamProvider.family<List<TimeSlotModel>, String>((ref, coachId) {
-  ref.keepAlive();
-  return ref.read(coachServiceProvider).watchAvailableSlots(coachId);
-});
+      ref.keepAlive();
+      return ref.read(coachServiceProvider).watchAvailableSlots(coachId);
+    });
 
 /// All slots (available + booked) for a coach — used in coach dashboard.
 final allCoachSlotsProvider =
     StreamProvider.family<List<TimeSlotModel>, String>((ref, coachId) {
-  ref.keepAlive();
-  return ref.read(coachServiceProvider).watchAllSlots(coachId);
-});
+      ref.keepAlive();
+      return ref.read(coachServiceProvider).watchAllSlots(coachId);
+    });
 
 /// Dates that have at least one available slot for a coach.
 final availableDatesProvider =
     Provider.family<Set<DateTime>, List<TimeSlotModel>>((ref, slots) {
-  return slots.map((s) {
-    final d = s.dateTime;
-    return DateTime(d.year, d.month, d.day);
-  }).toSet();
-});
+      return slots.map((s) {
+        final d = s.dateTime;
+        return DateTime(d.year, d.month, d.day);
+      }).toSet();
+    });
 
 // ── Booking providers ─────────────────────────────────────────────────────────
 
@@ -78,13 +82,16 @@ final myBookingsProvider = StreamProvider<List<BookingModel>>((ref) {
 });
 
 /// Bookings for a specific coach.
-final coachBookingsProvider =
-    StreamProvider.family<List<BookingModel>, String>((ref, coachId) {
-  return ref.read(bookingServiceProvider).watchCoachBookings(coachId);
-});
+final coachBookingsProvider = StreamProvider.family<List<BookingModel>, String>(
+  (ref, coachId) {
+    return ref.read(bookingServiceProvider).watchCoachBookings(coachId);
+  },
+);
 
 /// Real-time stream for a single booking (used to watch payment confirmation).
-final bookingStreamProvider =
-    StreamProvider.family<BookingModel?, String>((ref, bookingId) {
+final bookingStreamProvider = StreamProvider.family<BookingModel?, String>((
+  ref,
+  bookingId,
+) {
   return ref.read(bookingServiceProvider).watchBooking(bookingId);
 });

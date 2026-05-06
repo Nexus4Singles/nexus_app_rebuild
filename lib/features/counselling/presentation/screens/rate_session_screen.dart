@@ -29,9 +29,9 @@ class _RateSessionScreenState extends ConsumerState<RateSessionScreen> {
 
   Future<void> _submit() async {
     if (_rating == 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a rating.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please select a rating.')));
       return;
     }
 
@@ -44,9 +44,10 @@ class _RateSessionScreenState extends ConsumerState<RateSessionScreen> {
         coachId: widget.booking.coachId,
         userId: widget.booking.userId,
         rating: _rating,
-        review: _reviewController.text.trim().isEmpty
-            ? null
-            : _reviewController.text.trim(),
+        review:
+            _reviewController.text.trim().isEmpty
+                ? null
+                : _reviewController.text.trim(),
         createdAt: Timestamp.fromDate(DateTime.now()),
       );
 
@@ -89,8 +90,9 @@ class _RateSessionScreenState extends ConsumerState<RateSessionScreen> {
         ),
         title: Text(
           'Rate Your Session',
-          style: AppTextStyles.headlineSmall
-              .copyWith(fontWeight: FontWeight.w700),
+          style: AppTextStyles.headlineSmall.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -113,17 +115,18 @@ class _RateSessionScreenState extends ConsumerState<RateSessionScreen> {
                         widget.booking.coachPhotoUrl != null
                             ? NetworkImage(widget.booking.coachPhotoUrl!)
                             : null,
-                    child: widget.booking.coachPhotoUrl == null
-                        ? Text(
-                            widget.booking.coachName
-                                .substring(0, 1)
-                                .toUpperCase(),
-                            style: AppTextStyles.titleMedium.copyWith(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          )
-                        : null,
+                    child:
+                        widget.booking.coachPhotoUrl == null
+                            ? Text(
+                              widget.booking.coachName
+                                  .substring(0, 1)
+                                  .toUpperCase(),
+                              style: AppTextStyles.titleMedium.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            )
+                            : null,
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -186,9 +189,10 @@ class _RateSessionScreenState extends ConsumerState<RateSessionScreen> {
                 key: ValueKey(_rating),
                 _ratingLabel(_rating),
                 style: AppTextStyles.titleSmall.copyWith(
-                  color: _rating > 0
-                      ? AppColors.primary
-                      : AppColors.getTextSecondary(context),
+                  color:
+                      _rating > 0
+                          ? AppColors.primary
+                          : AppColors.getTextSecondary(context),
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -201,8 +205,9 @@ class _RateSessionScreenState extends ConsumerState<RateSessionScreen> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Write a review (optional)',
-                style: AppTextStyles.titleSmall
-                    .copyWith(fontWeight: FontWeight.w600),
+                style: AppTextStyles.titleSmall.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             const SizedBox(height: 8),
@@ -212,8 +217,7 @@ class _RateSessionScreenState extends ConsumerState<RateSessionScreen> {
               maxLength: 400,
               style: AppTextStyles.bodyMedium,
               decoration: InputDecoration(
-                hintText:
-                    'Share your experience to help others...',
+                hintText: 'Share your experience to help others...',
                 hintStyle: AppTextStyles.bodySmall.copyWith(
                   color: AppColors.getTextSecondary(context),
                 ),
@@ -226,7 +230,9 @@ class _RateSessionScreenState extends ConsumerState<RateSessionScreen> {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
-                      color: AppColors.primary, width: 2),
+                    color: AppColors.primary,
+                    width: 2,
+                  ),
                 ),
                 counterStyle: AppTextStyles.bodySmall.copyWith(
                   color: AppColors.getTextSecondary(context),
@@ -249,20 +255,22 @@ class _RateSessionScreenState extends ConsumerState<RateSessionScreen> {
                     borderRadius: BorderRadius.circular(14),
                   ),
                 ),
-                child: _isSubmitting
-                    ? const SizedBox(
-                        width: 22,
-                        height: 22,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2.5,
+                child:
+                    _isSubmitting
+                        ? const SizedBox(
+                          width: 22,
+                          height: 22,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2.5,
+                          ),
+                        )
+                        : Text(
+                          'Submit Review',
+                          style: AppTextStyles.labelLarge.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
-                      )
-                    : Text(
-                        'Submit Review',
-                        style: AppTextStyles.labelLarge
-                            .copyWith(color: Colors.white),
-                      ),
               ),
             ),
           ],
@@ -272,11 +280,11 @@ class _RateSessionScreenState extends ConsumerState<RateSessionScreen> {
   }
 
   String _ratingLabel(int rating) => switch (rating) {
-        1 => 'Poor',
-        2 => 'Fair',
-        3 => 'Good',
-        4 => 'Very Good',
-        5 => 'Excellent!',
-        _ => 'Tap a star to rate',
-      };
+    1 => 'Poor',
+    2 => 'Fair',
+    3 => 'Good',
+    4 => 'Very Good',
+    5 => 'Excellent!',
+    _ => 'Tap a star to rate',
+  };
 }

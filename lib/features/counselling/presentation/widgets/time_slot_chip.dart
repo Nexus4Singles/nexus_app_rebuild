@@ -23,25 +23,25 @@ class TimeSlotChip extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
         decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primary
-              : AppColors.getSurface(context),
+          color: isSelected ? AppColors.primary : AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected
-                ? AppColors.primary
-                : AppColors.getTextSecondary(context).withOpacity(0.2),
+            color:
+                isSelected
+                    ? AppColors.primary
+                    : AppColors.getTextSecondary(context).withOpacity(0.2),
             width: isSelected ? 2 : 1,
           ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: AppColors.primary.withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  )
-                ]
-              : [],
+          boxShadow:
+              isSelected
+                  ? [
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                  : [],
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -49,9 +49,10 @@ class TimeSlotChip extends StatelessWidget {
             Text(
               slot.formattedStart,
               style: AppTextStyles.labelLarge.copyWith(
-                color: isSelected
-                    ? Colors.white
-                    : AppColors.getTextPrimary(context),
+                color:
+                    isSelected
+                        ? Colors.white
+                        : AppColors.getTextPrimary(context),
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -60,9 +61,10 @@ class TimeSlotChip extends StatelessWidget {
               '${slot.durationMinutes}min',
               style: AppTextStyles.bodySmall.copyWith(
                 fontSize: 10,
-                color: isSelected
-                    ? Colors.white.withOpacity(0.85)
-                    : AppColors.getTextSecondary(context),
+                color:
+                    isSelected
+                        ? Colors.white.withOpacity(0.85)
+                        : AppColors.getTextSecondary(context),
               ),
             ),
           ],

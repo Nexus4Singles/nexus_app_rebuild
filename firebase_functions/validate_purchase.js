@@ -488,6 +488,14 @@ exports.revenueCatWebhook = functions.https.onRequest(async (req, res) => {
     const eventType = event.type;
     const customerId = event.app_user_id;
 
+    // LOG: Always log what we're receiving
+    console.log('[RevenueCat Webhook] EVENT RECEIVED:');
+    console.log(`  event_type: ${eventType}`);
+    console.log(`  app_user_id: ${customerId}`);
+    console.log(`  product_id: ${event.product_id}`);
+    console.log(`  product_id_aliases: ${JSON.stringify(event.product_id_aliases)}`);
+    console.log(`  expiration_at_ms: ${event.expiration_at_ms}`);
+
     if (!customerId) {
       console.error('[RevenueCat Webhook] Missing app_user_id');
       return res.status(400).json({ error: 'Missing app_user_id' });
@@ -522,12 +530,15 @@ exports.revenueCatWebhook = functions.https.onRequest(async (req, res) => {
 
 async function updateSubscriptionStatus(userId, event) {
   try {
+    console.log(`[RevenueCat] Attempting to update subscription for user: ${userId}`);
+    
     // SECURITY: Verify user exists before updating
     const userRef = db.collection('users').doc(userId);
     const userDoc = await userRef.get();
     
     if (!userDoc.exists) {
-      console.warn(`[RevenueCat Webhook] Ignoring subscription for non-existent user: ${userId}`);
+      console.warn(`[RevenueCat Webhook] ⚠️ SUBSCRIPTION NOT CREATED - User not found: ${userId}`);
+      console.warn(`[RevenueCat Webhook]   This is likely the race condition: RevenueCat has Anonymous ID but Firestore has Firebase UID`);
       return; // Silently ignore - don't create orphaned records
     }
 
@@ -637,3 +648,139 @@ async function expireSubscriptionStatus(userId) {
     console.error('[RevenueCat] Failed to expire subscription:', error);
   }
 }
+
+// ============================================================================
+// SUBSCRIPTION VALIDATION (Client-Initiated, not Webhook-Based)
+// ============================================================================
+
+/**
+ * Cloud function to validate and record subscription purchases
+ * Called directly by client after purchase completes
+ * This creates subscription records IMMEDIATELY in Firestore
+ */
+exports.validateAndRecordSubscription = functions.https.onRequest(async (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+
+  if (req.method !== 'POST') {
+    res.status(405).json({ success: false, error: 'Only POST requests allowed' });
+    return;
+  }
+
+  try {
+    // AUTHENTICATION: Verify Firebase ID token
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.error('[validateAndRecordSubscription] Missing auth header');
+      res.status(401).json({ success: false, error: 'Missing Authorization header' });
+      return;
+    }
+
+    const idToken = authHeader.substring(7);
+    let decodedToken;
+    try {
+      decodedToken = await admin.auth().verifyIdToken(idToken);
+    } catch (authErr) {
+      console.error('[validateAndRecordSubscription] Token verification failed:', authErr.message);
+      res.status(401).json({ success: false, error: 'Invalid ID token' });
+      return;
+    }
+
+    const userId = decodedToken.uid;
+    const { packageId, transactionId, tier } = req.body;
+
+    console.log('[validateAndRecordSubscription] REQUEST:');
+    console.log(`  userId: ${userId}`);
+    console.log(`  packageId: ${packageId}`);
+    console.log(`  transactionId: ${transactionId}`);
+    console.log(`  tier: ${tier}`);
+
+    // VALIDATION
+    if (!packageId || !transactionId || !tier) {
+      console.error('[validateAndRecordSubscription] Missing required fields');
+      res.status(400).json({ success: false, error: 'Missing packageId, transactionId, or tier' });
+      return;
+    }
+
+    // VERIFY USER EXISTS
+    const userDoc = await db.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+      console.error(`[validateAndRecordSubscription] User not found: ${userId}`);
+      res.status(404).json({ success: false, error: 'User not found' });
+      return;
+    }
+
+    console.log(`[validateAndRecordSubscription] ✅ User verified: ${userId}`);
+
+    // CREATE SUBSCRIPTION RECORD IMMEDIATELY
+    // This ensures the user has subscription fields even before webhook fires
+    const now = new Date();
+    const expiryDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
+
+    const subscriptionRecord = {
+      isActive: true,
+      tier: tier || 'monthly_premium',
+      startDate: admin.firestore.FieldValue.serverTimestamp(),
+      expiryDate: admin.firestore.Timestamp.fromDate(expiryDate),
+      autoRenew: true,
+      revenueCatCustomerId: null, // Will be updated by webhook if needed
+      revenueCatTransactionId: transactionId,
+      verificationStatus: 'verified',
+      type: 'subscription',
+      packageId: packageId,
+    };
+
+    await db.collection('users').doc(userId).update({
+      'subscription': subscriptionRecord,
+      'onPremium': true,
+      'subExpDate': admin.firestore.Timestamp.fromDate(expiryDate),
+      'entitledUser': true,
+      'prevSubscribed': true,
+      'updatedAt': admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    console.log(`[validateAndRecordSubscription] ✅ Subscription recorded for user: ${userId}`);
+    console.log(`   tier: ${tier}`);
+    console.log(`   expiryDate: ${expiryDate.toISOString()}`);
+
+    // Queue notification
+    try {
+      await db.collection('users').doc(userId).collection('notifications').add({
+        type: 'subscription_activated',
+        title: '✅ Subscription Active',
+        body: 'Your premium subscription is now active!',
+        payload: {
+          type: 'subscription_activated',
+          tier: tier,
+          expiryDate: expiryDate.toISOString(),
+          route: '/subscription',
+        },
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        isSent: false,
+      });
+      console.log('[validateAndRecordSubscription] ✅ Notification queued');
+    } catch (notifErr) {
+      console.warn('[validateAndRecordSubscription] Notification queueing failed (non-fatal):', notifErr.message);
+    }
+
+    res.json({
+      success: true,
+      message: 'Subscription recorded successfully',
+      subscription: {
+        isActive: true,
+        tier: tier,
+        expiryDate: expiryDate.toISOString(),
+      },
+    });
+
+  } catch (error) {
+    console.error('[validateAndRecordSubscription] Error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});

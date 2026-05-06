@@ -400,7 +400,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       );
 
     case AppRoutes.coachList:
-      final sessionType = settings.arguments as SessionType? ?? SessionType.individual;
+      final sessionType =
+          settings.arguments as SessionType? ?? SessionType.individual;
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => CoachListScreen(sessionType: sessionType),

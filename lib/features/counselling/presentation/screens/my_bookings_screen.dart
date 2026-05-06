@@ -30,8 +30,9 @@ class MyBookingsScreen extends ConsumerWidget {
           ),
           title: Text(
             'My Bookings',
-            style: AppTextStyles.headlineSmall
-                .copyWith(fontWeight: FontWeight.w700),
+            style: AppTextStyles.headlineSmall.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
           ),
           bottom: TabBar(
             labelColor: AppColors.primary,
@@ -41,16 +42,14 @@ class MyBookingsScreen extends ConsumerWidget {
             labelStyle: AppTextStyles.titleSmall.copyWith(
               fontWeight: FontWeight.w600,
             ),
-            tabs: const [
-              Tab(text: 'Upcoming'),
-              Tab(text: 'Past'),
-            ],
+            tabs: const [Tab(text: 'Upcoming'), Tab(text: 'Past')],
           ),
         ),
         body: bookingsAsync.when(
-          loading: () => const Center(
-            child: CircularProgressIndicator(color: AppColors.primary),
-          ),
+          loading:
+              () => const Center(
+                child: CircularProgressIndicator(color: AppColors.primary),
+              ),
           error: (err, _) => Center(child: Text('Error: $err')),
           data: (bookings) {
             // Auto-cancel any pending-payment bookings whose 3-hour window expired
@@ -59,18 +58,24 @@ class MyBookingsScreen extends ConsumerWidget {
             });
 
             final now = DateTime.now();
-            final upcoming = bookings
-                .where((b) =>
-                    b.scheduledDateTime.isAfter(now) &&
-                    b.bookingStatus != BookingStatus.cancelled &&
-                    b.bookingStatus != BookingStatus.completed)
-                .toList();
-            final past = bookings
-                .where((b) =>
-                    b.scheduledDateTime.isBefore(now) ||
-                    b.bookingStatus == BookingStatus.cancelled ||
-                    b.bookingStatus == BookingStatus.completed)
-                .toList();
+            final upcoming =
+                bookings
+                    .where(
+                      (b) =>
+                          b.scheduledDateTime.isAfter(now) &&
+                          b.bookingStatus != BookingStatus.cancelled &&
+                          b.bookingStatus != BookingStatus.completed,
+                    )
+                    .toList();
+            final past =
+                bookings
+                    .where(
+                      (b) =>
+                          b.scheduledDateTime.isBefore(now) ||
+                          b.bookingStatus == BookingStatus.cancelled ||
+                          b.bookingStatus == BookingStatus.completed,
+                    )
+                    .toList();
 
             return TabBarView(
               children: [
@@ -88,11 +93,12 @@ class MyBookingsScreen extends ConsumerWidget {
                   emptyMessage: 'No past sessions yet',
                   emptySubtext: 'Your completed sessions will appear here.',
                   allowRate: true,
-                  onRate: (b) => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => RateSessionScreen(booking: b),
-                    ),
-                  ),
+                  onRate:
+                      (b) => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => RateSessionScreen(booking: b),
+                        ),
+                      ),
                 ),
               ],
             );
@@ -109,53 +115,58 @@ class MyBookingsScreen extends ConsumerWidget {
     );
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => BookingConfirmationScreen(
-          booking: booking,
-          paymentMethod: method,
-          popOnClose: true,
-        ),
+        builder:
+            (_) => BookingConfirmationScreen(
+              booking: booking,
+              paymentMethod: method,
+              popOnClose: true,
+            ),
       ),
     );
   }
 
   Future<void> _cancelBooking(
-      BuildContext context, WidgetRef ref, BookingModel booking) async {
+    BuildContext context,
+    WidgetRef ref,
+    BookingModel booking,
+  ) async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Cancel Booking?'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Are you sure you want to cancel your session with ${booking.coachName}?',
-              style: AppTextStyles.bodyMedium,
+      builder:
+          (ctx) => AlertDialog(
+            title: const Text('Cancel Booking?'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Are you sure you want to cancel your session with ${booking.coachName}?',
+                  style: AppTextStyles.bodyMedium,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Please note that cancellation and refund policies apply.',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.getTextSecondary(context),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-            Text(
-              'Please note that cancellation and refund policies apply.',
-              style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.getTextSecondary(context),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: const Text('Keep Booking'),
               ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Keep Booking'),
+              ElevatedButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.error,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Cancel Session'),
+              ),
+            ],
           ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.error,
-              foregroundColor: Colors.white,
-            ),
-            child: const Text('Cancel Session'),
-          ),
-        ],
-      ),
     );
 
     if (confirmed == true && context.mounted) {
@@ -242,14 +253,16 @@ class _BookingList extends StatelessWidget {
     return ListView.builder(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
       itemCount: bookings.length,
-      itemBuilder: (context, i) => BookingCard(
-        booking: bookings[i],
-        onCancel: allowCancel ? () => onCancel?.call(bookings[i]) : null,
-        onRate: allowRate ? () => onRate?.call(bookings[i]) : null,
-        onReturnToPayment: bookings[i].bookingStatus == BookingStatus.pendingPayment
-            ? () => onReturnToPayment?.call(bookings[i])
-            : null,
-      ),
+      itemBuilder:
+          (context, i) => BookingCard(
+            booking: bookings[i],
+            onCancel: allowCancel ? () => onCancel?.call(bookings[i]) : null,
+            onRate: allowRate ? () => onRate?.call(bookings[i]) : null,
+            onReturnToPayment:
+                bookings[i].bookingStatus == BookingStatus.pendingPayment
+                    ? () => onReturnToPayment?.call(bookings[i])
+                    : null,
+          ),
     );
   }
 }

@@ -778,16 +778,15 @@ class ProfileScreen extends ConsumerWidget {
           }
 
           // Was their profile rejected by admin?
-          final datingData =
-              (map['dating'] as Map?)?.cast<String, dynamic>();
-          final verifStatus =
-              datingData?['verificationStatus']?.toString();
+          final datingData = (map['dating'] as Map?)?.cast<String, dynamic>();
+          final verifStatus = datingData?['verificationStatus']?.toString();
 
           if (verifStatus == 'rejected') {
             final reason = datingData?['rejectionReason']?.toString();
-            final body = (reason != null && reason.isNotEmpty)
-                ? 'Your profile was not approved for the following reason:\n\n"$reason"\n\nYou can create a new profile and resubmit for review.'
-                : 'Your dating profile did not meet our requirements. You can create a new profile and resubmit for review.';
+            final body =
+                (reason != null && reason.isNotEmpty)
+                    ? 'Your profile was not approved for the following reason:\n\n"$reason"\n\nYou can create a new profile and resubmit for review.'
+                    : 'Your dating profile did not meet our requirements. You can create a new profile and resubmit for review.';
             return _BasicProfileScreen(
               profile: profile,
               ref: ref,
@@ -805,7 +804,7 @@ class ProfileScreen extends ConsumerWidget {
             ref: ref,
             messageTitle: 'Dating Profile',
             messageBody:
-                'If you would like to join the dating pool, you would need a profile to view opposite gender users in the pool & to appear in Search results.',
+                'Create a dating profile to connect with fellow Christian singles of the opposite gender & to appear on their Search results as well.',
             showCreateDatingProfileCta: true,
             onCreateDatingProfile: () {
               Navigator.of(context).pushNamed('/dating/setup/age');
@@ -3022,11 +3021,12 @@ class _AccountTiles extends StatelessWidget {
                   icon: Icons.dashboard_outlined,
                   title: 'Coach Portal',
                   subtitle: 'Manage your sessions & availability',
-                  onTap: () => Navigator.of(ctx).push(
-                    MaterialPageRoute(
-                      builder: (_) => const CoachDashboardScreen(),
-                    ),
-                  ),
+                  onTap:
+                      () => Navigator.of(ctx).push(
+                        MaterialPageRoute(
+                          builder: (_) => const CoachDashboardScreen(),
+                        ),
+                      ),
                 ),
                 const SizedBox(height: 10),
               ],

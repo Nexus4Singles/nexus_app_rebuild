@@ -12,51 +12,50 @@ enum SessionType {
   parenting;
 
   String get label => switch (this) {
-        individual => 'Individual Counseling',
-        premarital => 'Premarital Counseling',
-        postMarital => 'Post-Marital Counseling',
-        parenting => 'Parenting Counseling',
-      };
+    individual => 'Individual Counseling',
+    premarital => 'Premarital Counseling',
+    postMarital => 'Post-Marital Counseling',
+    parenting => 'Parenting Counseling',
+  };
 
   String get shortLabel => switch (this) {
-        individual => 'Individual',
-        premarital => 'Premarital',
-        postMarital => 'Post-Marital',
-        parenting => 'Parenting',
-      };
+    individual => 'Individual',
+    premarital => 'Premarital',
+    postMarital => 'Post-Marital',
+    parenting => 'Parenting',
+  };
 
   String get description => switch (this) {
-        individual =>
-          'One-on-one sessions to address personal relationship challenges',
-        premarital =>
-          'Prepare for a strong and healthy marriage before your wedding',
-        postMarital =>
-          'Strengthen your marriage and overcome challenges together',
-        parenting =>
-          'Navigate parenting challenges and build a healthy family dynamic',
-      };
+    individual =>
+      'One-on-one sessions to address personal relationship challenges',
+    premarital =>
+      'Prepare for a strong and healthy marriage before your wedding',
+    postMarital => 'Strengthen your marriage and overcome challenges together',
+    parenting =>
+      'Navigate parenting challenges and build a healthy family dynamic',
+  };
 
   IconData get icon => switch (this) {
-        individual => Icons.person_outline_rounded,
-        premarital => Icons.favorite_border_rounded,
-        postMarital => Icons.home_outlined,
-        parenting => Icons.family_restroom_rounded,
-      };
+    individual => Icons.person_outline_rounded,
+    premarital => Icons.favorite_border_rounded,
+    postMarital => Icons.home_outlined,
+    parenting => Icons.family_restroom_rounded,
+  };
 
   String get firestoreKey => switch (this) {
-        individual => 'Individual',
-        premarital => 'Premarital',
-        postMarital => 'PostMarital',
-        parenting => 'Parenting',
-      };
+    individual => 'Individual',
+    premarital => 'Premarital',
+    postMarital => 'PostMarital',
+    parenting => 'Parenting',
+  };
 
   static SessionType fromString(String? value) => switch (value) {
-        'Individual' => individual,
-        'Premarital' => premarital,
-        'PostMarital' => postMarital,
-        'Parenting' => parenting,
-        _ => individual,
-      };
+    'Individual' => individual,
+    'Premarital' => premarital,
+    'PostMarital' => postMarital,
+    'Parenting' => parenting,
+    _ => individual,
+  };
 }
 
 enum BookingStatus {
@@ -67,44 +66,44 @@ enum BookingStatus {
   rescheduled;
 
   String get label => switch (this) {
-        pendingPayment => 'Pending Payment',
-        confirmed => 'Confirmed',
-        completed => 'Completed',
-        cancelled => 'Cancelled',
-        rescheduled => 'Rescheduled',
-      };
+    pendingPayment => 'Pending Payment',
+    confirmed => 'Confirmed',
+    completed => 'Completed',
+    cancelled => 'Cancelled',
+    rescheduled => 'Rescheduled',
+  };
 
   Color get color => switch (this) {
-        pendingPayment => const Color(0xFFF97316),
-        confirmed => const Color(0xFF22C55E),
-        completed => const Color(0xFF3B82F6),
-        cancelled => const Color(0xFFEF4444),
-        rescheduled => const Color(0xFF8B5CF6),
-      };
+    pendingPayment => const Color(0xFFF97316),
+    confirmed => const Color(0xFF22C55E),
+    completed => const Color(0xFF3B82F6),
+    cancelled => const Color(0xFFEF4444),
+    rescheduled => const Color(0xFF8B5CF6),
+  };
 
   Color get backgroundColor => switch (this) {
-        pendingPayment => const Color(0xFFFFF7ED),
-        confirmed => const Color(0xFFDCFCE7),
-        completed => const Color(0xFFDBEAFE),
-        cancelled => const Color(0xFFFEE2E2),
-        rescheduled => const Color(0xFFF3E8FF),
-      };
+    pendingPayment => const Color(0xFFFFF7ED),
+    confirmed => const Color(0xFFDCFCE7),
+    completed => const Color(0xFFDBEAFE),
+    cancelled => const Color(0xFFFEE2E2),
+    rescheduled => const Color(0xFFF3E8FF),
+  };
 
   String get firestoreKey => switch (this) {
-        pendingPayment => 'pending_payment',
-        confirmed => 'confirmed',
-        completed => 'completed',
-        cancelled => 'cancelled',
-        rescheduled => 'rescheduled',
-      };
+    pendingPayment => 'pending_payment',
+    confirmed => 'confirmed',
+    completed => 'completed',
+    cancelled => 'cancelled',
+    rescheduled => 'rescheduled',
+  };
 
   static BookingStatus fromString(String? value) => switch (value) {
-        'confirmed' => confirmed,
-        'completed' => completed,
-        'cancelled' => cancelled,
-        'rescheduled' => rescheduled,
-        _ => pendingPayment,
-      };
+    'confirmed' => confirmed,
+    'completed' => completed,
+    'cancelled' => cancelled,
+    'rescheduled' => rescheduled,
+    _ => pendingPayment,
+  };
 }
 
 enum PaymentMethod {
@@ -112,26 +111,26 @@ enum PaymentMethod {
   paypal;
 
   String get label => switch (this) {
-        flutterwave => 'Flutterwave',
-        paypal => 'PayPal',
-      };
+    flutterwave => 'Flutterwave',
+    paypal => 'PayPal',
+  };
 
   String get subtitle => switch (this) {
-        flutterwave => 'Card, Bank Transfer, USSD, Mobile Money',
-        paypal => 'International Cards & PayPal Balance',
-      };
+    flutterwave => 'Card, Bank Transfer, USSD, Mobile Money',
+    paypal => 'International Cards & PayPal Balance',
+  };
 
   IconData get icon => switch (this) {
-        flutterwave => Icons.account_balance_wallet_outlined,
-        paypal => Icons.language_rounded,
-      };
+    flutterwave => Icons.account_balance_wallet_outlined,
+    paypal => Icons.language_rounded,
+  };
 
   String get firestoreKey => name;
 
   static PaymentMethod fromString(String? value) => switch (value) {
-        'paypal' => paypal,
-        _ => flutterwave,
-      };
+    'paypal' => paypal,
+    _ => flutterwave,
+  };
 }
 
 enum PaymentStatus {
@@ -143,11 +142,11 @@ enum PaymentStatus {
   String get firestoreKey => name;
 
   static PaymentStatus fromString(String? value) => switch (value) {
-        'paid' => paid,
-        'failed' => failed,
-        'refunded' => refunded,
-        _ => pending,
-      };
+    'paid' => paid,
+    'failed' => failed,
+    'refunded' => refunded,
+    _ => pending,
+  };
 }
 
 // ============================================================================
@@ -213,8 +212,9 @@ class CoachModel {
       bio: data['bio'] as String? ?? '',
       profilePhotoUrl: data['profilePhotoUrl'] as String?,
       sessionTypes: List<String>.from(data['sessionTypes'] as List? ?? []),
-      specializations:
-          List<String>.from(data['specializations'] as List? ?? []),
+      specializations: List<String>.from(
+        data['specializations'] as List? ?? [],
+      ),
       sessionRates: Map<String, double>.from(
         (data['sessionRates'] as Map? ?? {}).map(
           (k, v) => MapEntry(k.toString(), (v as num).toDouble()),
@@ -236,27 +236,27 @@ class CoachModel {
   }
 
   Map<String, dynamic> toFirestore() => {
-        'userId': userId,
-        'name': name,
-        'title': title,
-        'bio': bio,
-        'profilePhotoUrl': profilePhotoUrl,
-        'sessionTypes': sessionTypes,
-        'specializations': specializations,
-        'sessionRates': sessionRates,
-        'currency': currency,
-        'rating': rating,
-        'totalRatings': totalRatings,
-        'totalSessions': totalSessions,
-        'timezone': timezone,
-        'isAvailable': isAvailable,
-        'approvedAt': approvedAt,
-        'yearsOfExperience': yearsOfExperience,
-        'email': email,
-        'linkedinProfile': linkedinProfile,
-        'instagramHandle': instagramHandle,
-        'phoneNumber': phoneNumber,
-      };
+    'userId': userId,
+    'name': name,
+    'title': title,
+    'bio': bio,
+    'profilePhotoUrl': profilePhotoUrl,
+    'sessionTypes': sessionTypes,
+    'specializations': specializations,
+    'sessionRates': sessionRates,
+    'currency': currency,
+    'rating': rating,
+    'totalRatings': totalRatings,
+    'totalSessions': totalSessions,
+    'timezone': timezone,
+    'isAvailable': isAvailable,
+    'approvedAt': approvedAt,
+    'yearsOfExperience': yearsOfExperience,
+    'email': email,
+    'linkedinProfile': linkedinProfile,
+    'instagramHandle': instagramHandle,
+    'phoneNumber': phoneNumber,
+  };
 
   double rateForSession(String sessionTypeKey) =>
       sessionRates[sessionTypeKey] ?? sessionRates.values.firstOrNull ?? 0.0;
@@ -265,7 +265,9 @@ class CoachModel {
       totalRatings == 0 ? 'New' : rating.toStringAsFixed(1);
 
   String get ratingSubtext =>
-      totalRatings == 0 ? '' : '($totalRatings review${totalRatings == 1 ? '' : 's'})';
+      totalRatings == 0
+          ? ''
+          : '($totalRatings review${totalRatings == 1 ? '' : 's'})';
 
   /// Short timezone abbreviation derived from the coach's IANA timezone, e.g. "WAT".
   String get timezoneLabel => _tzLabel(timezone);
@@ -333,33 +335,32 @@ class TimeSlotModel {
       durationMinutes: data['durationMinutes'] as int? ?? 60,
       isBooked: data['isBooked'] as bool? ?? false,
       bookingId: data['bookingId'] as String?,
-      sessionTypes:
-          List<String>.from(data['sessionTypes'] as List? ?? []),
+      sessionTypes: List<String>.from(data['sessionTypes'] as List? ?? []),
     );
   }
 
   Map<String, dynamic> toFirestore() => {
-        'coachId': coachId,
-        'date': date,
-        'startTime': startTime,
-        'endTime': endTime,
-        'durationMinutes': durationMinutes,
-        'isBooked': isBooked,
-        'bookingId': bookingId,
-        'sessionTypes': sessionTypes,
-      };
+    'coachId': coachId,
+    'date': date,
+    'startTime': startTime,
+    'endTime': endTime,
+    'durationMinutes': durationMinutes,
+    'isBooked': isBooked,
+    'bookingId': bookingId,
+    'sessionTypes': sessionTypes,
+  };
 
   TimeSlotModel copyWith({bool? isBooked, String? bookingId}) => TimeSlotModel(
-        id: id,
-        coachId: coachId,
-        date: date,
-        startTime: startTime,
-        endTime: endTime,
-        durationMinutes: durationMinutes,
-        isBooked: isBooked ?? this.isBooked,
-        bookingId: bookingId ?? this.bookingId,
-        sessionTypes: sessionTypes,
-      );
+    id: id,
+    coachId: coachId,
+    date: date,
+    startTime: startTime,
+    endTime: endTime,
+    durationMinutes: durationMinutes,
+    isBooked: isBooked ?? this.isBooked,
+    bookingId: bookingId ?? this.bookingId,
+    sessionTypes: sessionTypes,
+  );
 }
 
 // ============================================================================
@@ -415,8 +416,10 @@ class BookingModel {
 
   // Payment
   final double coachRate;
-  final double nexusCommission; // 4% of coachRate — charged on top, paid by user
-  final double totalAmount; // = coachRate + nexusCommission (what the user pays)
+  final double
+  nexusCommission; // 4% of coachRate — charged on top, paid by user
+  final double
+  totalAmount; // = coachRate + nexusCommission (what the user pays)
   final String currency;
   final String paymentMethod;
   final String paymentStatus;
@@ -430,7 +433,8 @@ class BookingModel {
   final bool emailsSent;
   final Timestamp createdAt;
   final Timestamp? updatedAt;
-  final Timestamp? paymentExpiresAt; // 3 hours after creation for pendingPayment
+  final Timestamp?
+  paymentExpiresAt; // 3 hours after creation for pendingPayment
 
   // Post-session
   final int? userRating;
@@ -472,7 +476,8 @@ class BookingModel {
   });
 
   BookingStatus get bookingStatus => BookingStatus.fromString(status);
-  PaymentStatus get paymentStatusEnum => PaymentStatus.fromString(paymentStatus);
+  PaymentStatus get paymentStatusEnum =>
+      PaymentStatus.fromString(paymentStatus);
   SessionType get sessionTypeEnum => SessionType.fromString(sessionType);
 
   DateTime get scheduledDateTime => scheduledDate.toDate();
@@ -480,6 +485,7 @@ class BookingModel {
   /// Formats startTime/endTime as 12-hour AM/PM, e.g. "4:00 PM".
   String get formattedStartTime => _fmtTime(startTime);
   String get formattedEndTime => _fmtTime(endTime);
+
   /// Short timezone abbreviation, e.g. "WAT".
   String get timezoneLabel => _tzLabel(coachTimezone);
 
@@ -493,7 +499,10 @@ class BookingModel {
     final expiry = paymentExpiresAt?.toDate();
     if (expiry == null) {
       // Legacy bookings without expiry field: expire 3h after creation
-      return createdAt.toDate().add(const Duration(hours: 3)).isBefore(DateTime.now());
+      return createdAt
+          .toDate()
+          .add(const Duration(hours: 3))
+          .isBefore(DateTime.now());
     }
     return expiry.isBefore(DateTime.now());
   }
@@ -501,7 +510,8 @@ class BookingModel {
   /// Remaining time before payment window closes (null if not pending or already expired).
   Duration? get paymentTimeRemaining {
     if (bookingStatus != BookingStatus.pendingPayment) return null;
-    final expiry = paymentExpiresAt?.toDate() ??
+    final expiry =
+        paymentExpiresAt?.toDate() ??
         createdAt.toDate().add(const Duration(hours: 3));
     final remaining = expiry.difference(DateTime.now());
     return remaining.isNegative ? Duration.zero : remaining;
@@ -546,38 +556,38 @@ class BookingModel {
   }
 
   Map<String, dynamic> toFirestore() => {
-        'userId': userId,
-        'coachId': coachId,
-        'slotId': slotId,
-        'sessionType': sessionType,
-        'scheduledDate': scheduledDate,
-        'startTime': startTime,
-        'endTime': endTime,
-        'durationMinutes': durationMinutes,
-        'coachName': coachName,
-        'coachPhotoUrl': coachPhotoUrl,
-        'userName': userName,
-        'userEmail': userEmail,
-        'coachEmail': coachEmail,
-        'coachTimezone': coachTimezone,
-        'coachRate': coachRate,
-        'nexusCommission': nexusCommission,
-        'totalAmount': totalAmount,
-        'currency': currency,
-        'paymentMethod': paymentMethod,
-        'paymentStatus': paymentStatus,
-        'paymentReference': paymentReference,
-        'paymentUrl': paymentUrl,
-        'status': status,
-        'meetingLink': meetingLink,
-        'notes': notes,
-        'emailsSent': emailsSent,
-        'createdAt': createdAt,
-        'updatedAt': updatedAt,
-        if (paymentExpiresAt != null) 'paymentExpiresAt': paymentExpiresAt,
-        'userRating': userRating,
-        'userReview': userReview,
-      };
+    'userId': userId,
+    'coachId': coachId,
+    'slotId': slotId,
+    'sessionType': sessionType,
+    'scheduledDate': scheduledDate,
+    'startTime': startTime,
+    'endTime': endTime,
+    'durationMinutes': durationMinutes,
+    'coachName': coachName,
+    'coachPhotoUrl': coachPhotoUrl,
+    'userName': userName,
+    'userEmail': userEmail,
+    'coachEmail': coachEmail,
+    'coachTimezone': coachTimezone,
+    'coachRate': coachRate,
+    'nexusCommission': nexusCommission,
+    'totalAmount': totalAmount,
+    'currency': currency,
+    'paymentMethod': paymentMethod,
+    'paymentStatus': paymentStatus,
+    'paymentReference': paymentReference,
+    'paymentUrl': paymentUrl,
+    'status': status,
+    'meetingLink': meetingLink,
+    'notes': notes,
+    'emailsSent': emailsSent,
+    'createdAt': createdAt,
+    'updatedAt': updatedAt,
+    if (paymentExpiresAt != null) 'paymentExpiresAt': paymentExpiresAt,
+    'userRating': userRating,
+    'userReview': userReview,
+  };
 }
 
 // ============================================================================
@@ -617,13 +627,13 @@ class BookingRatingModel {
   }
 
   Map<String, dynamic> toFirestore() => {
-        'bookingId': bookingId,
-        'coachId': coachId,
-        'userId': userId,
-        'rating': rating,
-        'review': review,
-        'createdAt': createdAt,
-      };
+    'bookingId': bookingId,
+    'coachId': coachId,
+    'userId': userId,
+    'rating': rating,
+    'review': review,
+    'createdAt': createdAt,
+  };
 }
 
 // ============================================================================

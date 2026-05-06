@@ -180,7 +180,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         .set(payload, SetOptions(merge: true));
   }
 
-  Future<void> _ensureUserDocNormalized(User user) async {
+  Future<void> _ensureUserDocNormalized(User user, {String? username}) async {
     final uid = user.uid;
     final docRef = FirebaseFirestore.instance.collection('users').doc(uid);
 
@@ -189,13 +189,15 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
     // If missing doc entirely, create a minimal v2-compatible base doc (merge-safe).
     if (!snap.exists) {
-      // Try to load pending username from SharedPreferences (set during signup)
-      String? pendingUsername;
-      try {
-        final prefs = await SharedPreferences.getInstance();
-        pendingUsername = prefs.getString('pending_username_$uid');
-      } catch (_) {
-        // Ignore prefs errors
+      // Use directly-passed username first, fall back to SharedPreferences
+      String? pendingUsername = username;
+      if (pendingUsername == null || pendingUsername.trim().isEmpty) {
+        try {
+          final prefs = await SharedPreferences.getInstance();
+          pendingUsername = prefs.getString('pending_username_$uid');
+        } catch (_) {
+          // Ignore prefs errors
+        }
       }
 
       final base = <String, dynamic>{
@@ -237,12 +239,14 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
     // Existing doc (v1 or partial v2): patch missing v2 fields only.
     // Also check for pending username from signup that needs to be saved
-    String? pendingUsername;
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      pendingUsername = prefs.getString('pending_username_$uid');
-    } catch (_) {
-      // Ignore prefs errors
+    String? pendingUsername = username;
+    if (pendingUsername == null || pendingUsername.trim().isEmpty) {
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        pendingUsername = prefs.getString('pending_username_$uid');
+      } catch (_) {
+        // Ignore prefs errors
+      }
     }
 
     var patch = buildUserV2Patch(
@@ -315,11 +319,12 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
       // Send email verification
       await _authService.sendEmailVerification();
 
-      // Store username in SharedPreferences for later (when creating Firestore document)
+      // Store username in SharedPreferences as backup (for recovery if app crashes)
       await prefs.setString('pending_username_${user.uid}', username);
 
-      // Create the Firestore document immediately so profile screen can access it
-      await _ensureUserDocNormalized(user);
+      // Create the Firestore document immediately — pass username directly
+      // to avoid relying solely on SharedPreferences (which can fail silently)
+      await _ensureUserDocNormalized(user, username: username);
 
       // Also persist presurvey data
       await _persistPresurveyToFirestore(user.uid);
@@ -368,7 +373,10 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
 
       final user = credential.user;
       if (user != null) {
-        await _ensureUserDocNormalized(user);
+        // Check if there's a pending username from a signup that
+        // created the auth user but failed before writing the Firestore doc.
+        final pendingUsername = prefs.getString('pending_username_${user.uid}');
+        await _ensureUserDocNormalized(user, username: pendingUsername);
 
         await _persistPresurveyToFirestore(user.uid);
 
@@ -417,7 +425,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
         // Check if there's a pending username from signup
         final pendingUsername = prefs.getString('pending_username_${user.uid}');
 
-        await _ensureUserDocNormalized(user);
+        await _ensureUserDocNormalized(user, username: pendingUsername);
 
         // Create user document if it doesn't exist (for new signups)
         if (pendingUsername != null) {

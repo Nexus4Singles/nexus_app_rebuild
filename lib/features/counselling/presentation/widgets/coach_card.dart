@@ -29,9 +29,10 @@ class CoachCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: isDark
-                  ? Colors.black.withOpacity(0.3)
-                  : Colors.black.withOpacity(0.07),
+              color:
+                  isDark
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.black.withOpacity(0.07),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -43,23 +44,27 @@ class CoachCard extends StatelessWidget {
             // Photo — flex so it shrinks when the card height is constrained
             Expanded(
               child: ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(16)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
                 child: SizedBox.expand(
-                  child: coach.profilePhotoUrl != null
-                      ? CachedNetworkImage(
-                          imageUrl: coach.profilePhotoUrl!,
-                          fit: BoxFit.cover,
-                          placeholder: (_, __) => _PhotoPlaceholder(
-                            name: coach.name,
-                            isDark: isDark,
-                          ),
-                          errorWidget: (_, __, ___) => _PhotoPlaceholder(
-                            name: coach.name,
-                            isDark: isDark,
-                          ),
-                        )
-                      : _PhotoPlaceholder(name: coach.name, isDark: isDark),
+                  child:
+                      coach.profilePhotoUrl != null
+                          ? CachedNetworkImage(
+                            imageUrl: coach.profilePhotoUrl!,
+                            fit: BoxFit.cover,
+                            placeholder:
+                                (_, __) => _PhotoPlaceholder(
+                                  name: coach.name,
+                                  isDark: isDark,
+                                ),
+                            errorWidget:
+                                (_, __, ___) => _PhotoPlaceholder(
+                                  name: coach.name,
+                                  isDark: isDark,
+                                ),
+                          )
+                          : _PhotoPlaceholder(name: coach.name, isDark: isDark),
                 ),
               ),
             ),
@@ -152,14 +157,14 @@ class _PhotoPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final initials = name.trim().split(' ').take(2).map((w) {
-      return w.isNotEmpty ? w[0].toUpperCase() : '';
-    }).join();
+    final initials =
+        name.trim().split(' ').take(2).map((w) {
+          return w.isNotEmpty ? w[0].toUpperCase() : '';
+        }).join();
 
     return Container(
-      color: isDark
-          ? AppColors.primary.withOpacity(0.2)
-          : AppColors.primaryMuted,
+      color:
+          isDark ? AppColors.primary.withOpacity(0.2) : AppColors.primaryMuted,
       child: Center(
         child: Text(
           initials,
@@ -190,9 +195,10 @@ class _StarRating extends StatelessWidget {
         return Icon(
           half ? Icons.star_half_rounded : Icons.star_rounded,
           size: 12,
-          color: filled || half
-              ? const Color(0xFFFFB800)
-              : AppColors.getTextSecondary(context).withOpacity(0.3),
+          color:
+              filled || half
+                  ? const Color(0xFFFFB800)
+                  : AppColors.getTextSecondary(context).withOpacity(0.3),
         );
       }),
     );
@@ -234,21 +240,23 @@ class _StarRatingWidgetState extends State<StarRatingWidget> {
       children: List.generate(5, (i) {
         final filled = i < _rating;
         return GestureDetector(
-          onTap: widget.readOnly
-              ? null
-              : () {
-                  setState(() => _rating = i + 1);
-                  widget.onRatingChanged?.call(i + 1);
-                },
+          onTap:
+              widget.readOnly
+                  ? null
+                  : () {
+                    setState(() => _rating = i + 1);
+                    widget.onRatingChanged?.call(i + 1);
+                  },
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 200),
             child: Icon(
               filled ? Icons.star_rounded : Icons.star_outline_rounded,
               key: ValueKey(filled),
               size: widget.iconSize,
-              color: filled
-                  ? const Color(0xFFFFB800)
-                  : AppColors.getTextSecondary(context).withOpacity(0.4),
+              color:
+                  filled
+                      ? const Color(0xFFFFB800)
+                      : AppColors.getTextSecondary(context).withOpacity(0.4),
             ),
           ),
         );

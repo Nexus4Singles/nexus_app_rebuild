@@ -260,12 +260,11 @@ class _BookMarriageCoachScreenState
                                   SessionType.postMarital,
                                   SessionType.parenting,
                                 ];
-                                final sessionType =
-                                    categories[selectedIndex!];
+                                final sessionType = categories[selectedIndex!];
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (_) =>
-                                        CoachListScreen(
+                                    builder:
+                                        (_) => CoachListScreen(
                                           sessionType: sessionType,
                                         ),
                                   ),

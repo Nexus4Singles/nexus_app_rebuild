@@ -17,16 +17,18 @@ class CoachDashboardScreen extends ConsumerWidget {
     final myCoachAsync = ref.watch(myCoachProfileProvider);
 
     return myCoachAsync.when(
-      loading: () => Scaffold(
-        backgroundColor: AppColors.getBackground(context),
-        body: const Center(
-          child: CircularProgressIndicator(color: AppColors.primary),
-        ),
-      ),
-      error: (err, _) => Scaffold(
-        backgroundColor: AppColors.getBackground(context),
-        body: Center(child: Text('Error: $err')),
-      ),
+      loading:
+          () => Scaffold(
+            backgroundColor: AppColors.getBackground(context),
+            body: const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            ),
+          ),
+      error:
+          (err, _) => Scaffold(
+            backgroundColor: AppColors.getBackground(context),
+            body: Center(child: Text('Error: $err')),
+          ),
       data: (coach) {
         if (coach == null) {
           return _NotACoachScreen();
@@ -77,22 +79,21 @@ class _CoachDashboard extends ConsumerWidget {
                         children: [
                           CircleAvatar(
                             radius: 26,
-                            backgroundColor:
-                                Colors.white.withOpacity(0.2),
-                            backgroundImage: coach.profilePhotoUrl != null
-                                ? NetworkImage(coach.profilePhotoUrl!)
-                                : null,
-                            child: coach.profilePhotoUrl == null
-                                ? Text(
-                                    coach.name
-                                        .substring(0, 1)
-                                        .toUpperCase(),
-                                    style: AppTextStyles.titleLarge.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  )
-                                : null,
+                            backgroundColor: Colors.white.withOpacity(0.2),
+                            backgroundImage:
+                                coach.profilePhotoUrl != null
+                                    ? NetworkImage(coach.profilePhotoUrl!)
+                                    : null,
+                            child:
+                                coach.profilePhotoUrl == null
+                                    ? Text(
+                                      coach.name.substring(0, 1).toUpperCase(),
+                                      style: AppTextStyles.titleLarge.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    )
+                                    : null,
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -119,7 +120,9 @@ class _CoachDashboard extends ConsumerWidget {
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 4),
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(20),
@@ -127,8 +130,11 @@ class _CoachDashboard extends ConsumerWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(Icons.star_rounded,
-                                    color: Color(0xFFFFB800), size: 14),
+                                const Icon(
+                                  Icons.star_rounded,
+                                  color: Color(0xFFFFB800),
+                                  size: 14,
+                                ),
                                 const SizedBox(width: 4),
                                 Text(
                                   coach.formattedRating,
@@ -158,10 +164,8 @@ class _CoachDashboard extends ConsumerWidget {
                 bookingsAsync.when(
                   loading: () => const SizedBox(height: 80),
                   error: (_, __) => const SizedBox.shrink(),
-                  data: (bookings) => _StatsRow(
-                    coach: coach,
-                    bookings: bookings,
-                  ),
+                  data:
+                      (bookings) => _StatsRow(coach: coach, bookings: bookings),
                 ),
 
                 const SizedBox(height: 24),
@@ -176,12 +180,14 @@ class _CoachDashboard extends ConsumerWidget {
                         icon: Icons.calendar_month_rounded,
                         label: 'Manage\nAvailability',
                         color: AppColors.primary,
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                CoachAvailabilityScreen(coach: coach),
-                          ),
-                        ),
+                        onTap:
+                            () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder:
+                                    (_) =>
+                                        CoachAvailabilityScreen(coach: coach),
+                              ),
+                            ),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -190,8 +196,7 @@ class _CoachDashboard extends ConsumerWidget {
                         icon: Icons.list_alt_rounded,
                         label: 'View All\nBookings',
                         color: const Color(0xFF8B5CF6),
-                        onTap: () => _showAllBookings(
-                            context, ref, coach.id),
+                        onTap: () => _showAllBookings(context, ref, coach.id),
                       ),
                     ),
                   ],
@@ -204,21 +209,24 @@ class _CoachDashboard extends ConsumerWidget {
                 const SizedBox(height: 12),
 
                 bookingsAsync.when(
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(
-                        color: AppColors.primary),
-                  ),
-                  error: (err, _) =>
-                      Text('Error loading bookings: $err'),
+                  loading:
+                      () => const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.primary,
+                        ),
+                      ),
+                  error: (err, _) => Text('Error loading bookings: $err'),
                   data: (bookings) {
                     final now = DateTime.now();
-                    final upcoming = bookings
-                        .where((b) =>
-                            b.scheduledDateTime.isAfter(now) &&
-                            b.bookingStatus ==
-                                BookingStatus.confirmed)
-                        .take(5)
-                        .toList();
+                    final upcoming =
+                        bookings
+                            .where(
+                              (b) =>
+                                  b.scheduledDateTime.isAfter(now) &&
+                                  b.bookingStatus == BookingStatus.confirmed,
+                            )
+                            .take(5)
+                            .toList();
 
                     if (upcoming.isEmpty) {
                       return _EmptySection(
@@ -228,13 +236,16 @@ class _CoachDashboard extends ConsumerWidget {
                     }
 
                     return Column(
-                      children: upcoming
-                          .map((b) => _CoachBookingTile(
-                                booking: b,
-                                onMarkComplete: () =>
-                                    _markComplete(context, ref, b),
-                              ))
-                          .toList(),
+                      children:
+                          upcoming
+                              .map(
+                                (b) => _CoachBookingTile(
+                                  booking: b,
+                                  onMarkComplete:
+                                      () => _markComplete(context, ref, b),
+                                ),
+                              )
+                              .toList(),
                     );
                   },
                 ),
@@ -256,18 +267,19 @@ class _CoachDashboard extends ConsumerWidget {
                         icon: Icons.calendar_today_outlined,
                         message: 'No open slots added yet',
                         action: 'Add availability',
-                        onAction: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                CoachAvailabilityScreen(coach: coach),
-                          ),
-                        ),
+                        onAction:
+                            () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder:
+                                    (_) =>
+                                        CoachAvailabilityScreen(coach: coach),
+                              ),
+                            ),
                       );
                     }
                     return Column(
-                      children: available
-                          .map((s) => _SlotTile(slot: s))
-                          .toList(),
+                      children:
+                          available.map((s) => _SlotTile(slot: s)).toList(),
                     );
                   },
                 ),
@@ -280,30 +292,34 @@ class _CoachDashboard extends ConsumerWidget {
   }
 
   Future<void> _markComplete(
-      BuildContext context, WidgetRef ref, BookingModel booking) async {
+    BuildContext context,
+    WidgetRef ref,
+    BookingModel booking,
+  ) async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Mark Session Complete?'),
-        content: Text(
-          'Mark your session with ${booking.userName} as completed? This will allow them to rate the session.',
-          style: AppTextStyles.bodyMedium,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Not Yet'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.success,
-              foregroundColor: Colors.white,
+      builder:
+          (ctx) => AlertDialog(
+            title: const Text('Mark Session Complete?'),
+            content: Text(
+              'Mark your session with ${booking.userName} as completed? This will allow them to rate the session.',
+              style: AppTextStyles.bodyMedium,
             ),
-            child: const Text('Mark Complete'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: const Text('Not Yet'),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.success,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Mark Complete'),
+              ),
+            ],
           ),
-        ],
-      ),
     );
     if (confirmed == true && context.mounted) {
       try {
@@ -329,8 +345,7 @@ class _CoachDashboard extends ConsumerWidget {
     }
   }
 
-  void _showAllBookings(
-      BuildContext context, WidgetRef ref, String coachId) {
+  void _showAllBookings(BuildContext context, WidgetRef ref, String coachId) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -353,15 +368,16 @@ class _StatsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final confirmed = bookings
-        .where((b) => b.bookingStatus == BookingStatus.confirmed)
-        .length;
-    final completed = bookings
-        .where((b) => b.bookingStatus == BookingStatus.completed)
-        .length;
+    final confirmed =
+        bookings
+            .where((b) => b.bookingStatus == BookingStatus.confirmed)
+            .length;
+    final completed =
+        bookings
+            .where((b) => b.bookingStatus == BookingStatus.completed)
+            .length;
     final totalEarned = bookings
-        .where((b) =>
-            b.paymentStatusEnum == PaymentStatus.paid)
+        .where((b) => b.paymentStatusEnum == PaymentStatus.paid)
         .fold<double>(0, (sum, b) => sum + b.coachRate);
 
     return Row(
@@ -391,8 +407,10 @@ class _StatsRow extends StatelessWidget {
   }
 
   String _fmtMoney(double amount, String currency) {
-    if (amount >= 1000000) return '${currency} ${(amount / 1000000).toStringAsFixed(1)}M';
-    if (amount >= 1000) return '${currency} ${(amount / 1000).toStringAsFixed(0)}k';
+    if (amount >= 1000000)
+      return '${currency} ${(amount / 1000000).toStringAsFixed(1)}M';
+    if (amount >= 1000)
+      return '${currency} ${(amount / 1000).toStringAsFixed(0)}k';
     return '$currency ${amount.toStringAsFixed(0)}';
   }
 }
@@ -495,8 +513,7 @@ class _SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style:
-          AppTextStyles.titleMedium.copyWith(fontWeight: FontWeight.w700),
+      style: AppTextStyles.titleMedium.copyWith(fontWeight: FontWeight.w700),
     );
   }
 }
@@ -524,10 +541,11 @@ class _EmptySection extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(icon,
-              size: 36,
-              color:
-                  AppColors.getTextSecondary(context).withOpacity(0.3)),
+          Icon(
+            icon,
+            size: 36,
+            color: AppColors.getTextSecondary(context).withOpacity(0.3),
+          ),
           const SizedBox(height: 8),
           Text(
             message,
@@ -581,8 +599,11 @@ class _CoachBookingTile extends StatelessWidget {
               color: AppColors.primary.withOpacity(0.08),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.person_outline_rounded,
-                color: AppColors.primary, size: 20),
+            child: Icon(
+              Icons.person_outline_rounded,
+              color: AppColors.primary,
+              size: 20,
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -602,7 +623,7 @@ class _CoachBookingTile extends StatelessWidget {
                     fontSize: 11,
                   ),
                 ),
-                if (booking.notes != null && booking.notes!.isNotEmpty) ...[  
+                if (booking.notes != null && booking.notes!.isNotEmpty) ...[
                   const SizedBox(height: 4),
                   Text(
                     '📝 ${booking.notes!}',
@@ -635,18 +656,21 @@ class _CoachBookingTile extends StatelessWidget {
                   fontSize: 10,
                 ),
               ),
-              if (onMarkComplete != null) ...[  
+              if (onMarkComplete != null) ...[
                 const SizedBox(height: 6),
                 GestureDetector(
                   onTap: onMarkComplete,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 3),
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.success.withOpacity(0.12),
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                          color: AppColors.success.withOpacity(0.3)),
+                        color: AppColors.success.withOpacity(0.3),
+                      ),
                     ),
                     child: Text(
                       'Mark Complete',
@@ -674,22 +698,22 @@ class _SlotTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date =
-        DateFormat('EEE, d MMM').format(slot.dateTime);
+    final date = DateFormat('EEE, d MMM').format(slot.dateTime);
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.success.withOpacity(0.2),
-        ),
+        border: Border.all(color: AppColors.success.withOpacity(0.2)),
       ),
       child: Row(
         children: [
-          Icon(Icons.event_available_rounded,
-              color: AppColors.success, size: 18),
+          Icon(
+            Icons.event_available_rounded,
+            color: AppColors.success,
+            size: 18,
+          ),
           const SizedBox(width: 12),
           Text(
             '$date  ·  ${slot.formattedStart}',
@@ -741,28 +765,35 @@ class _AllBookingsSheet extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 'All Bookings',
-                style: AppTextStyles.headlineSmall
-                    .copyWith(fontWeight: FontWeight.w700),
+                style: AppTextStyles.headlineSmall.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             const SizedBox(height: 12),
             Expanded(
               child: bookingsAsync.when(
-                loading: () => const Center(
-                  child: CircularProgressIndicator(
-                      color: AppColors.primary),
-                ),
-                error: (err, _) => Center(child: Text('$err')),
-                data: (bookings) => bookings.isEmpty
-                    ? const Center(child: Text('No bookings yet.'))
-                    : ListView.builder(
-                        controller: scrollController,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16),
-                        itemCount: bookings.length,
-                        itemBuilder: (_, i) =>
-                            _CoachBookingTile(booking: bookings[i]),
+                loading:
+                    () => const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.primary,
                       ),
+                    ),
+                error: (err, _) => Center(child: Text('$err')),
+                data:
+                    (bookings) =>
+                        bookings.isEmpty
+                            ? const Center(child: Text('No bookings yet.'))
+                            : ListView.builder(
+                              controller: scrollController,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              itemCount: bookings.length,
+                              itemBuilder:
+                                  (_, i) =>
+                                      _CoachBookingTile(booking: bookings[i]),
+                            ),
               ),
             ),
           ],
@@ -786,8 +817,9 @@ class _NotACoachScreen extends StatelessWidget {
         ),
         title: Text(
           'Coach Portal',
-          style: AppTextStyles.headlineSmall
-              .copyWith(fontWeight: FontWeight.w700),
+          style: AppTextStyles.headlineSmall.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
       body: Center(
@@ -819,11 +851,12 @@ class _NotACoachScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const CoachRequirementsScreen(),
-                  ),
-                ),
+                onPressed:
+                    () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const CoachRequirementsScreen(),
+                      ),
+                    ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,

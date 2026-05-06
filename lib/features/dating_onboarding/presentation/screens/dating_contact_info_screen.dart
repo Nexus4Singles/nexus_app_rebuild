@@ -505,7 +505,8 @@ class _DatingContactInfoScreenState
           'age': d.age,
           // Only write gender if non-null — avoid overwriting presurvey gender with null
           if (gender != null) 'gender': gender,
-          'name': userData?['name'],
+          // Only write name if non-null — avoid overwriting username with null
+          if (userData?['name'] != null) 'name': userData!['name'],
           'city': d.city,
           'country': d.countryOfResidence?.trim() ?? '',
           'nationality': d.nationality,

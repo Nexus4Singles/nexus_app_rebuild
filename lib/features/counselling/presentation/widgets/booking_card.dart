@@ -52,14 +52,16 @@ class BookingCard extends StatelessWidget {
                     child: SizedBox(
                       width: 52,
                       height: 52,
-                      child: booking.coachPhotoUrl != null
-                          ? CachedNetworkImage(
-                              imageUrl: booking.coachPhotoUrl!,
-                              fit: BoxFit.cover,
-                              errorWidget: (_, __, ___) =>
-                                  _CoachInitials(name: booking.coachName),
-                            )
-                          : _CoachInitials(name: booking.coachName),
+                      child:
+                          booking.coachPhotoUrl != null
+                              ? CachedNetworkImage(
+                                imageUrl: booking.coachPhotoUrl!,
+                                fit: BoxFit.cover,
+                                errorWidget:
+                                    (_, __, ___) =>
+                                        _CoachInitials(name: booking.coachName),
+                              )
+                              : _CoachInitials(name: booking.coachName),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -91,7 +93,9 @@ class BookingCard extends StatelessWidget {
                   // Status badge
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 4),
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: status.backgroundColor,
                       borderRadius: BorderRadius.circular(20),
@@ -117,8 +121,7 @@ class BookingCard extends StatelessWidget {
 
             // Date/time row
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
                 children: [
                   _InfoChip(
@@ -147,7 +150,8 @@ class BookingCard extends StatelessWidget {
               ),
 
             // Action buttons
-            if (onRate != null || onCancel != null ||
+            if (onRate != null ||
+                onCancel != null ||
                 (onReturnToPayment != null &&
                     status == BookingStatus.pendingPayment))
               Padding(
@@ -168,8 +172,10 @@ class BookingCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: const Text('Cancel',
-                              style: TextStyle(fontSize: 13)),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(fontSize: 13),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -186,8 +192,10 @@ class BookingCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: const Text('Rate Session',
-                              style: TextStyle(fontSize: 13)),
+                          child: const Text(
+                            'Rate Session',
+                            style: TextStyle(fontSize: 13),
+                          ),
                         ),
                       ),
                   ],
@@ -206,9 +214,10 @@ class _CoachInitials extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final initials = name.trim().split(' ').take(2).map((w) {
-      return w.isNotEmpty ? w[0].toUpperCase() : '';
-    }).join();
+    final initials =
+        name.trim().split(' ').take(2).map((w) {
+          return w.isNotEmpty ? w[0].toUpperCase() : '';
+        }).join();
 
     return Container(
       color: AppColors.primaryMuted,
@@ -340,8 +349,10 @@ class _PaymentExpiryBannerState extends State<_PaymentExpiryBanner> {
             GestureDetector(
               onTap: widget.onPayNow,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(8),

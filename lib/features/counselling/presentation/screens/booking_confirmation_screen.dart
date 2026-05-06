@@ -13,6 +13,7 @@ import '../../domain/counselling_models.dart';
 class BookingConfirmationScreen extends ConsumerStatefulWidget {
   final BookingModel booking;
   final PaymentMethod paymentMethod;
+
   /// When true, the close/× button pops back to the previous screen instead
   /// of clearing the entire nav stack. Use this when opening from My Bookings.
   final bool popOnClose;
@@ -52,10 +53,7 @@ class _BookingConfirmationScreenState
       parent: _animController,
       curve: Curves.elasticOut,
     );
-    _fadeAnim = CurvedAnimation(
-      parent: _animController,
-      curve: Curves.easeIn,
-    );
+    _fadeAnim = CurvedAnimation(parent: _animController, curve: Curves.easeIn);
     _animController.forward();
   }
 
@@ -114,8 +112,9 @@ class _BookingConfirmationScreenState
     if (widget.popOnClose && Navigator.of(context).canPop()) {
       Navigator.of(context).pop();
     } else {
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(AppRoutes.home, (_) => false);
+      Navigator.of(
+        context,
+      ).pushNamedAndRemoveUntil(AppRoutes.home, (_) => false);
     }
   }
 
@@ -126,23 +125,24 @@ class _BookingConfirmationScreenState
     }
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Leave this booking?'),
-        content: const Text(
-          'Your booking has been saved. You can complete payment anytime from My Bookings.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Stay'),
+      builder:
+          (_) => AlertDialog(
+            title: const Text('Leave this booking?'),
+            content: const Text(
+              'Your booking has been saved. You can complete payment anytime from My Bookings.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('Stay'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                style: TextButton.styleFrom(foregroundColor: AppColors.error),
+                child: const Text('Leave'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Leave'),
-          ),
-        ],
-      ),
     );
     if (confirmed == true && mounted) _goHome();
   }
@@ -163,8 +163,7 @@ class _BookingConfirmationScreenState
     });
 
     final sessionDate = _currentBooking.scheduledDateTime;
-    final formattedDate =
-        DateFormat('EEEE, d MMMM yyyy').format(sessionDate);
+    final formattedDate = DateFormat('EEEE, d MMMM yyyy').format(sessionDate);
 
     return PopScope(
       canPop: false,
@@ -185,14 +184,14 @@ class _BookingConfirmationScreenState
           ),
           title: Text(
             _isPaid ? 'Booking Confirmed' : 'Booking Created',
-            style: AppTextStyles.titleMedium
-                .copyWith(fontWeight: FontWeight.w700),
+            style: AppTextStyles.titleMedium.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             child: Column(
               children: [
                 // ── Success illustration ──
@@ -261,12 +260,16 @@ class _BookingConfirmationScreenState
                       color: const Color(0xFFFFF7ED),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                          color: AppColors.warning.withOpacity(0.3)),
+                        color: AppColors.warning.withOpacity(0.3),
+                      ),
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.info_outline_rounded,
-                            color: AppColors.warning, size: 18),
+                        Icon(
+                          Icons.info_outline_rounded,
+                          color: AppColors.warning,
+                          size: 18,
+                        ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
@@ -287,12 +290,16 @@ class _BookingConfirmationScreenState
                       color: AppColors.success.withOpacity(0.08),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                          color: AppColors.success.withOpacity(0.2)),
+                        color: AppColors.success.withOpacity(0.2),
+                      ),
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.check_circle_outline_rounded,
-                            color: AppColors.success, size: 18),
+                        Icon(
+                          Icons.check_circle_outline_rounded,
+                          color: AppColors.success,
+                          size: 18,
+                        ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
@@ -327,28 +334,29 @@ class _BookingConfirmationScreenState
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: _isProcessingPayment ? null : _processPayment,
-                      icon: _isProcessingPayment
-                          ? const SizedBox(
-                              width: 18,
-                              height: 18,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : const Icon(Icons.payment_rounded, size: 18),
+                      icon:
+                          _isProcessingPayment
+                              ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                              : const Icon(Icons.payment_rounded, size: 18),
                       label: Text(
                         _isProcessingPayment
                             ? 'Processing…'
                             : 'Complete Payment via ${widget.paymentMethod.label}',
-                        style: AppTextStyles.labelLarge
-                            .copyWith(color: Colors.white),
+                        style: AppTextStyles.labelLarge.copyWith(
+                          color: Colors.white,
+                        ),
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
@@ -363,16 +371,18 @@ class _BookingConfirmationScreenState
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
                       ),
                       child: Text(
-                        widget.popOnClose ? 'Back to My Bookings' : 'Back to Home',
-                        style: AppTextStyles.labelLarge
-                            .copyWith(color: Colors.white),
+                        widget.popOnClose
+                            ? 'Back to My Bookings'
+                            : 'Back to Home',
+                        style: AppTextStyles.labelLarge.copyWith(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -383,9 +393,13 @@ class _BookingConfirmationScreenState
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
-                    onPressed: () => widget.popOnClose
-                        ? _goHome()
-                        : Navigator.of(context).pushNamed('/my-bookings'),
+                    onPressed:
+                        () =>
+                            widget.popOnClose
+                                ? _goHome()
+                                : Navigator.of(
+                                  context,
+                                ).pushNamed('/my-bookings'),
                     child: Text(
                       'View My Bookings',
                       style: AppTextStyles.labelLarge.copyWith(
@@ -411,10 +425,7 @@ class _SummaryCard extends StatelessWidget {
   final BookingModel booking;
   final String formattedDate;
 
-  const _SummaryCard({
-    required this.booking,
-    required this.formattedDate,
-  });
+  const _SummaryCard({required this.booking, required this.formattedDate});
 
   @override
   Widget build(BuildContext context) {
@@ -426,22 +437,36 @@ class _SummaryCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _Row(icon: Icons.person_outline_rounded, label: 'Counselor', value: booking.coachName),
+          _Row(
+            icon: Icons.person_outline_rounded,
+            label: 'Counselor',
+            value: booking.coachName,
+          ),
           const _Divider(),
-          _Row(icon: booking.sessionTypeEnum.icon, label: 'Session', value: booking.sessionTypeEnum.label),
+          _Row(
+            icon: booking.sessionTypeEnum.icon,
+            label: 'Session',
+            value: booking.sessionTypeEnum.label,
+          ),
           const _Divider(),
-          _Row(icon: Icons.calendar_today_rounded, label: 'Date', value: formattedDate),
+          _Row(
+            icon: Icons.calendar_today_rounded,
+            label: 'Date',
+            value: formattedDate,
+          ),
           const _Divider(),
           _Row(
             icon: Icons.schedule_rounded,
             label: 'Time',
-            value: '${booking.formattedStartTime} – ${booking.formattedEndTime} (${booking.timezoneLabel})',
+            value:
+                '${booking.formattedStartTime} – ${booking.formattedEndTime} (${booking.timezoneLabel})',
           ),
           const _Divider(),
           _Row(
             icon: Icons.payments_outlined,
             label: 'Amount',
-            value: '${booking.currency} ${NumberFormat('#,###').format(booking.totalAmount)}',
+            value:
+                '${booking.currency} ${NumberFormat('#,###').format(booking.totalAmount)}',
           ),
         ],
       ),
@@ -454,8 +479,7 @@ class _Row extends StatelessWidget {
   final String label;
   final String value;
 
-  const _Row(
-      {required this.icon, required this.label, required this.value});
+  const _Row({required this.icon, required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -467,14 +491,16 @@ class _Row extends StatelessWidget {
           const SizedBox(width: 10),
           Text(
             label,
-            style: AppTextStyles.bodySmall
-                .copyWith(color: AppColors.getTextSecondary(context)),
+            style: AppTextStyles.bodySmall.copyWith(
+              color: AppColors.getTextSecondary(context),
+            ),
           ),
           const Spacer(),
           Text(
             value,
-            style: AppTextStyles.bodyMedium
-                .copyWith(fontWeight: FontWeight.w500),
+            style: AppTextStyles.bodyMedium.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
@@ -511,8 +537,7 @@ class _MeetingLinkCard extends StatelessWidget {
           ],
         ),
         borderRadius: BorderRadius.circular(16),
-        border:
-            Border.all(color: AppColors.primary.withOpacity(0.2)),
+        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -525,8 +550,11 @@ class _MeetingLinkCard extends StatelessWidget {
                   color: AppColors.primary.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.videocam_rounded,
-                    color: AppColors.primary, size: 18),
+                child: const Icon(
+                  Icons.videocam_rounded,
+                  color: AppColors.primary,
+                  size: 18,
+                ),
               ),
               const SizedBox(width: 10),
               Column(
@@ -552,8 +580,7 @@ class _MeetingLinkCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 12, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(
               color: AppColors.getBackground(context),
               borderRadius: BorderRadius.circular(8),
@@ -580,8 +607,11 @@ class _MeetingLinkCard extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Icon(Icons.copy_rounded,
-                      size: 16, color: AppColors.primary),
+                  child: Icon(
+                    Icons.copy_rounded,
+                    size: 16,
+                    color: AppColors.primary,
+                  ),
                 ),
               ],
             ),

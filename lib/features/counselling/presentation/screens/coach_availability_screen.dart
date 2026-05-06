@@ -20,14 +20,12 @@ class CoachAvailabilityScreen extends ConsumerStatefulWidget {
 
 class _CoachAvailabilityScreenState
     extends ConsumerState<CoachAvailabilityScreen> {
-  DateTime _focusedMonth =
-      DateTime(DateTime.now().year, DateTime.now().month);
+  DateTime _focusedMonth = DateTime(DateTime.now().year, DateTime.now().month);
   DateTime? _selectedDay;
 
   @override
   Widget build(BuildContext context) {
-    final slotsAsync =
-        ref.watch(allCoachSlotsProvider(widget.coach.id));
+    final slotsAsync = ref.watch(allCoachSlotsProvider(widget.coach.id));
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
@@ -41,8 +39,9 @@ class _CoachAvailabilityScreenState
         ),
         title: Text(
           'Manage Availability',
-          style:
-              AppTextStyles.headlineSmall.copyWith(fontWeight: FontWeight.w700),
+          style: AppTextStyles.headlineSmall.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -53,9 +52,10 @@ class _CoachAvailabilityScreenState
         label: const Text('Add Time Slot'),
       ),
       body: slotsAsync.when(
-        loading: () => const Center(
-          child: CircularProgressIndicator(color: AppColors.primary),
-        ),
+        loading:
+            () => const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            ),
         error: (err, _) => Center(child: Text('Error: $err')),
         data: (slots) {
           // Build a map: dateKey → list of slots
@@ -65,9 +65,10 @@ class _CoachAvailabilityScreenState
             slotsByDate.putIfAbsent(key, () => []).add(slot);
           }
 
-          final daySlots = _selectedDay != null
-              ? (slotsByDate[_dateKey(_selectedDay!)] ?? [])
-              : <TimeSlotModel>[];
+          final daySlots =
+              _selectedDay != null
+                  ? (slotsByDate[_dateKey(_selectedDay!)] ?? [])
+                  : <TimeSlotModel>[];
 
           return Column(
             children: [
@@ -78,34 +79,39 @@ class _CoachAvailabilityScreenState
                   focusedMonth: _focusedMonth,
                   selectedDay: _selectedDay,
                   slotsByDate: slotsByDate,
-                  onMonthChanged: (m) =>
-                      setState(() => _focusedMonth = m),
-                  onDaySelected: (d) =>
-                      setState(() => _selectedDay = d),
+                  onMonthChanged: (m) => setState(() => _focusedMonth = m),
+                  onDaySelected: (d) => setState(() => _selectedDay = d),
                 ),
               ),
 
               // ── Divider ──
               Divider(
-                  height: 1,
-                  color:
-                      AppColors.getTextSecondary(context).withOpacity(0.1)),
+                height: 1,
+                color: AppColors.getTextSecondary(context).withOpacity(0.1),
+              ),
 
               // ── Slots list ──
               Expanded(
-                child: _selectedDay == null
-                    ? _NoSelectionHint()
-                    : daySlots.isEmpty
+                child:
+                    _selectedDay == null
+                        ? _NoSelectionHint()
+                        : daySlots.isEmpty
                         ? _EmptyDay(
-                            onAdd: () => _showAddSlotSheet(context,
-                                preselectedDate: _selectedDay),
-                          )
+                          onAdd:
+                              () => _showAddSlotSheet(
+                                context,
+                                preselectedDate: _selectedDay,
+                              ),
+                        )
                         : _SlotList(
-                            slots: daySlots,
-                            coachId: widget.coach.id,
-                            onAdd: () => _showAddSlotSheet(context,
-                                preselectedDate: _selectedDay),
-                          ),
+                          slots: daySlots,
+                          coachId: widget.coach.id,
+                          onAdd:
+                              () => _showAddSlotSheet(
+                                context,
+                                preselectedDate: _selectedDay,
+                              ),
+                        ),
               ),
             ],
           );
@@ -125,14 +131,15 @@ class _CoachAvailabilityScreenState
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (_) => _AddSlotSheet(
-        coach: widget.coach,
-        initialDate: preselectedDate ?? _selectedDay ?? DateTime.now(),
-        onAdded: () {
-          Navigator.of(context).pop();
-          // refresh is automatic via Stream
-        },
-      ),
+      builder:
+          (_) => _AddSlotSheet(
+            coach: widget.coach,
+            initialDate: preselectedDate ?? _selectedDay ?? DateTime.now(),
+            onAdded: () {
+              Navigator.of(context).pop();
+              // refresh is automatic via Stream
+            },
+          ),
     );
   }
 }
@@ -173,24 +180,30 @@ class _AvailabilityCalendar extends StatelessWidget {
       final date = DateTime(focusedMonth.year, focusedMonth.month, d);
       final key = _dateKey(date);
       final slotsOnDay = slotsByDate[key] ?? [];
-      final isToday = date.year == today.year &&
+      final isToday =
+          date.year == today.year &&
           date.month == today.month &&
           date.day == today.day;
-      final isSelected = selectedDay != null &&
+      final isSelected =
+          selectedDay != null &&
           date.year == selectedDay!.year &&
           date.month == selectedDay!.month &&
           date.day == selectedDay!.day;
-      final isPast = date.isBefore(DateTime(today.year, today.month, today.day));
+      final isPast = date.isBefore(
+        DateTime(today.year, today.month, today.day),
+      );
 
-      cells.add(_DayCell(
-        day: d,
-        date: date,
-        slotCount: slotsOnDay.length,
-        hasBooked: slotsOnDay.any((s) => s.isBooked),
-        isToday: isToday,
-        isSelected: isSelected,
-        isPast: isPast,
-      ));
+      cells.add(
+        _DayCell(
+          day: d,
+          date: date,
+          slotCount: slotsOnDay.length,
+          hasBooked: slotsOnDay.any((s) => s.isBooked),
+          isToday: isToday,
+          isSelected: isSelected,
+          isPast: isPast,
+        ),
+      );
     }
 
     return Column(
@@ -201,39 +214,45 @@ class _AvailabilityCalendar extends StatelessWidget {
           children: [
             IconButton(
               icon: const Icon(Icons.chevron_left_rounded),
-              onPressed: () => onMonthChanged(
-                DateTime(focusedMonth.year, focusedMonth.month - 1),
-              ),
+              onPressed:
+                  () => onMonthChanged(
+                    DateTime(focusedMonth.year, focusedMonth.month - 1),
+                  ),
             ),
             Text(
               DateFormat('MMMM yyyy').format(focusedMonth),
-              style: AppTextStyles.titleMedium
-                  .copyWith(fontWeight: FontWeight.w700),
+              style: AppTextStyles.titleMedium.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
             ),
             IconButton(
               icon: const Icon(Icons.chevron_right_rounded),
-              onPressed: () => onMonthChanged(
-                DateTime(focusedMonth.year, focusedMonth.month + 1),
-              ),
+              onPressed:
+                  () => onMonthChanged(
+                    DateTime(focusedMonth.year, focusedMonth.month + 1),
+                  ),
             ),
           ],
         ),
         // Weekday headers
         Row(
-          children: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-              .map((d) => Expanded(
-                    child: Center(
-                      child: Text(
-                        d,
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.getTextSecondary(context),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 11,
+          children:
+              ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+                  .map(
+                    (d) => Expanded(
+                      child: Center(
+                        child: Text(
+                          d,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.getTextSecondary(context),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11,
+                          ),
                         ),
                       ),
                     ),
-                  ))
-              .toList(),
+                  )
+                  .toList(),
         ),
         const SizedBox(height: 4),
         // Grid
@@ -241,60 +260,66 @@ class _AvailabilityCalendar extends StatelessWidget {
           crossAxisCount: 7,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          children: cells.map((cell) {
-            if (cell.date == null) return const SizedBox.shrink();
-            return GestureDetector(
-              onTap: () => onDaySelected(cell.date!),
-              child: Container(
-                margin: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                  color: cell.isSelected
-                      ? AppColors.primary
-                      : cell.isToday
-                          ? AppColors.primary.withOpacity(0.1)
-                          : null,
-                  shape: BoxShape.circle,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${cell.day}',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        fontWeight: cell.isToday || cell.isSelected
-                            ? FontWeight.w700
-                            : FontWeight.w400,
-                        color: cell.isSelected
-                            ? Colors.white
-                            : cell.isPast
-                                ? AppColors.getTextSecondary(context)
-                                    .withOpacity(0.3)
-                                : AppColors.getTextPrimary(context),
-                      ),
+          children:
+              cells.map((cell) {
+                if (cell.date == null) return const SizedBox.shrink();
+                return GestureDetector(
+                  onTap: () => onDaySelected(cell.date!),
+                  child: Container(
+                    margin: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color:
+                          cell.isSelected
+                              ? AppColors.primary
+                              : cell.isToday
+                              ? AppColors.primary.withOpacity(0.1)
+                              : null,
+                      shape: BoxShape.circle,
                     ),
-                    if (cell.slotCount > 0 && !cell.isSelected) ...[
-                      const SizedBox(height: 1),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 4,
-                            height: 4,
-                            decoration: BoxDecoration(
-                              color: cell.hasBooked
-                                  ? AppColors.primary
-                                  : AppColors.success,
-                              shape: BoxShape.circle,
-                            ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${cell.day}',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            fontWeight:
+                                cell.isToday || cell.isSelected
+                                    ? FontWeight.w700
+                                    : FontWeight.w400,
+                            color:
+                                cell.isSelected
+                                    ? Colors.white
+                                    : cell.isPast
+                                    ? AppColors.getTextSecondary(
+                                      context,
+                                    ).withOpacity(0.3)
+                                    : AppColors.getTextPrimary(context),
+                          ),
+                        ),
+                        if (cell.slotCount > 0 && !cell.isSelected) ...[
+                          const SizedBox(height: 1),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 4,
+                                height: 4,
+                                decoration: BoxDecoration(
+                                  color:
+                                      cell.hasBooked
+                                          ? AppColors.primary
+                                          : AppColors.success,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            );
-          }).toList(),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
         ),
         // Legend
         Padding(
@@ -362,14 +387,14 @@ class _DayCell {
   });
 
   factory _DayCell.empty() => const _DayCell(
-        day: null,
-        date: null,
-        slotCount: 0,
-        hasBooked: false,
-        isToday: false,
-        isSelected: false,
-        isPast: false,
-      );
+    day: null,
+    date: null,
+    slotCount: 0,
+    hasBooked: false,
+    isToday: false,
+    isSelected: false,
+    isPast: false,
+  );
 }
 
 // ── Slot list ─────────────────────────────────────────────────────────────────
@@ -395,8 +420,9 @@ class _SlotList extends ConsumerWidget {
           children: [
             Text(
               '${slots.length} slot${slots.length == 1 ? '' : 's'}',
-              style: AppTextStyles.titleSmall
-                  .copyWith(fontWeight: FontWeight.w600),
+              style: AppTextStyles.titleSmall.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
             TextButton.icon(
               onPressed: onAdd,
@@ -431,9 +457,10 @@ class _SlotRow extends ConsumerWidget {
         color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: slot.isBooked
-              ? AppColors.primary.withOpacity(0.2)
-              : AppColors.success.withOpacity(0.2),
+          color:
+              slot.isBooked
+                  ? AppColors.primary.withOpacity(0.2)
+                  : AppColors.success.withOpacity(0.2),
         ),
       ),
       child: Row(
@@ -477,8 +504,7 @@ class _SlotRow extends ConsumerWidget {
           ),
           if (slot.isBooked)
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: AppColors.primary.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(20),
@@ -494,8 +520,7 @@ class _SlotRow extends ConsumerWidget {
             )
           else
             IconButton(
-              icon: Icon(Icons.delete_outline_rounded,
-                  color: AppColors.error),
+              icon: Icon(Icons.delete_outline_rounded, color: AppColors.error),
               tooltip: 'Remove slot',
               onPressed: () => _confirmDelete(context, ref),
             ),
@@ -507,35 +532,33 @@ class _SlotRow extends ConsumerWidget {
   Future<void> _confirmDelete(BuildContext context, WidgetRef ref) async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Remove Slot?'),
-        content: const Text(
-            'This time slot will be permanently removed.'),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel')),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            style:
-                TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Remove'),
+      builder:
+          (_) => AlertDialog(
+            title: const Text('Remove Slot?'),
+            content: const Text('This time slot will be permanently removed.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                style: TextButton.styleFrom(foregroundColor: AppColors.error),
+                child: const Text('Remove'),
+              ),
+            ],
           ),
-        ],
-      ),
     );
 
     if (confirmed != true || !context.mounted) return;
 
     try {
-      await ref
-          .read(coachServiceProvider)
-          .removeSlot(coachId, slot.id);
+      await ref.read(coachServiceProvider).removeSlot(coachId, slot.id);
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not remove: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Could not remove: $e')));
       }
     }
   }
@@ -663,8 +686,7 @@ class _AddSlotSheetState extends ConsumerState<_AddSlotSheet> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: AppColors.getTextSecondary(context)
-                      .withOpacity(0.3),
+                  color: AppColors.getTextSecondary(context).withOpacity(0.3),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -703,26 +725,26 @@ class _AddSlotSheetState extends ConsumerState<_AddSlotSheet> {
             _FieldLabel(label: 'Duration'),
             Wrap(
               spacing: 8,
-              children: _durations.map((d) {
-                final selected = d == _durationMinutes;
-                return ChoiceChip(
-                  label: Text(
-                    d < 60
-                        ? '${d}min'
-                        : '${d ~/ 60}h${d % 60 > 0 ? ' ${d % 60}m' : ''}',
-                  ),
-                  selected: selected,
-                  onSelected: (_) =>
-                      setState(() => _durationMinutes = d),
-                  selectedColor: AppColors.primary,
-                  labelStyle: TextStyle(
-                    color: selected ? Colors.white : null,
-                    fontWeight:
-                        selected ? FontWeight.w600 : FontWeight.w400,
-                  ),
-                  backgroundColor: AppColors.getSurface(context),
-                );
-              }).toList(),
+              children:
+                  _durations.map((d) {
+                    final selected = d == _durationMinutes;
+                    return ChoiceChip(
+                      label: Text(
+                        d < 60
+                            ? '${d}min'
+                            : '${d ~/ 60}h${d % 60 > 0 ? ' ${d % 60}m' : ''}',
+                      ),
+                      selected: selected,
+                      onSelected: (_) => setState(() => _durationMinutes = d),
+                      selectedColor: AppColors.primary,
+                      labelStyle: TextStyle(
+                        color: selected ? Colors.white : null,
+                        fontWeight:
+                            selected ? FontWeight.w600 : FontWeight.w400,
+                      ),
+                      backgroundColor: AppColors.getSurface(context),
+                    );
+                  }).toList(),
             ),
 
             const SizedBox(height: 4),
@@ -740,42 +762,46 @@ class _AddSlotSheetState extends ConsumerState<_AddSlotSheet> {
             Wrap(
               spacing: 8,
               runSpacing: 4,
-              children: SessionType.values.map((type) {
-                final isOffered =
-                    widget.coach.sessionTypes.contains(type.firestoreKey);
-                final selected =
-                    _selectedTypes.contains(type.firestoreKey);
-                return FilterChip(
-                  label: Text(type.shortLabel),
-                  selected: selected,
-                  onSelected: isOffered
-                      ? (val) {
-                          setState(() {
-                            if (val) {
-                              _selectedTypes.add(type.firestoreKey);
-                            } else {
-                              _selectedTypes
-                                  .remove(type.firestoreKey);
-                            }
-                          });
-                        }
-                      : null,
-                  selectedColor: AppColors.primary.withOpacity(0.15),
-                  checkmarkColor: AppColors.primary,
-                  backgroundColor: AppColors.getSurface(context),
-                  disabledColor: AppColors.getTextSecondary(context)
-                      .withOpacity(0.05),
-                  labelStyle: TextStyle(
-                    color: !isOffered
-                        ? AppColors.getTextSecondary(context)
-                            .withOpacity(0.4)
-                        : selected
-                            ? AppColors.primary
-                            : null,
-                    fontSize: 12,
-                  ),
-                );
-              }).toList(),
+              children:
+                  SessionType.values.map((type) {
+                    final isOffered = widget.coach.sessionTypes.contains(
+                      type.firestoreKey,
+                    );
+                    final selected = _selectedTypes.contains(type.firestoreKey);
+                    return FilterChip(
+                      label: Text(type.shortLabel),
+                      selected: selected,
+                      onSelected:
+                          isOffered
+                              ? (val) {
+                                setState(() {
+                                  if (val) {
+                                    _selectedTypes.add(type.firestoreKey);
+                                  } else {
+                                    _selectedTypes.remove(type.firestoreKey);
+                                  }
+                                });
+                              }
+                              : null,
+                      selectedColor: AppColors.primary.withOpacity(0.15),
+                      checkmarkColor: AppColors.primary,
+                      backgroundColor: AppColors.getSurface(context),
+                      disabledColor: AppColors.getTextSecondary(
+                        context,
+                      ).withOpacity(0.05),
+                      labelStyle: TextStyle(
+                        color:
+                            !isOffered
+                                ? AppColors.getTextSecondary(
+                                  context,
+                                ).withOpacity(0.4)
+                                : selected
+                                ? AppColors.primary
+                                : null,
+                        fontSize: 12,
+                      ),
+                    );
+                  }).toList(),
             ),
 
             const SizedBox(height: 24),
@@ -783,9 +809,8 @@ class _AddSlotSheetState extends ConsumerState<_AddSlotSheet> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _isLoading || _selectedTypes.isEmpty
-                    ? null
-                    : _addSlot,
+                onPressed:
+                    _isLoading || _selectedTypes.isEmpty ? null : _addSlot,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
@@ -794,16 +819,17 @@ class _AddSlotSheetState extends ConsumerState<_AddSlotSheet> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: _isLoading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : const Text('Add Slot'),
+                child:
+                    _isLoading
+                        ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                        : const Text('Add Slot'),
               ),
             ),
           ],
@@ -816,14 +842,15 @@ class _AddSlotSheetState extends ConsumerState<_AddSlotSheet> {
     final totalMinutes =
         _startTime.hour * 60 + _startTime.minute + _durationMinutes;
     return TimeOfDay(
-        hour: (totalMinutes ~/ 60) % 24, minute: totalMinutes % 60);
+      hour: (totalMinutes ~/ 60) % 24,
+      minute: totalMinutes % 60,
+    );
   }
 
   Future<void> _pickDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate:
-          _date.isBefore(DateTime.now()) ? DateTime.now() : _date,
+      initialDate: _date.isBefore(DateTime.now()) ? DateTime.now() : _date,
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
@@ -846,8 +873,7 @@ class _AddSlotSheetState extends ConsumerState<_AddSlotSheet> {
 
     try {
       final endTime = _computeEndTime();
-      final slotDate = DateTime(
-          _date.year, _date.month, _date.day);
+      final slotDate = DateTime(_date.year, _date.month, _date.day);
 
       final slot = TimeSlotModel(
         id: '',
@@ -865,9 +891,9 @@ class _AddSlotSheetState extends ConsumerState<_AddSlotSheet> {
       widget.onAdded();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add slot: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to add slot: $e')));
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -913,20 +939,17 @@ class _TappableRow extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
           color: AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color:
-                AppColors.getTextSecondary(context).withOpacity(0.15),
+            color: AppColors.getTextSecondary(context).withOpacity(0.15),
           ),
         ),
         child: Row(
           children: [
-            Icon(icon,
-                color: AppColors.getTextSecondary(context), size: 18),
+            Icon(icon, color: AppColors.getTextSecondary(context), size: 18),
             const SizedBox(width: 10),
             Text(
               text,
@@ -935,8 +958,11 @@ class _TappableRow extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Icon(Icons.chevron_right_rounded,
-                color: AppColors.getTextSecondary(context), size: 18),
+            Icon(
+              Icons.chevron_right_rounded,
+              color: AppColors.getTextSecondary(context),
+              size: 18,
+            ),
           ],
         ),
       ),

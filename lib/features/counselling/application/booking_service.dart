@@ -20,9 +20,10 @@ class BookingService {
 
   /// Generates a free Jitsi Meet room URL unique to this booking.
   static String generateMeetingLink(String bookingId) {
-    final shortCode = bookingId.length >= 8
-        ? bookingId.substring(0, 8).toUpperCase()
-        : bookingId.toUpperCase();
+    final shortCode =
+        bookingId.length >= 8
+            ? bookingId.substring(0, 8).toUpperCase()
+            : bookingId.toUpperCase();
     return 'https://meet.jit.si/NexusCoaching-$shortCode';
   }
 
@@ -90,14 +91,12 @@ class BookingService {
       final slotData = freshSlot.data() as Map<String, dynamic>;
       if (slotData['isBooked'] == true) {
         throw Exception(
-            'This time slot was just booked by someone else. Please pick another slot.');
+          'This time slot was just booked by someone else. Please pick another slot.',
+        );
       }
 
       // Reserve the slot
-      txn.update(slotRef, {
-        'isBooked': true,
-        'bookingId': bookingRef.id,
-      });
+      txn.update(slotRef, {'isBooked': true, 'bookingId': bookingRef.id});
 
       // Create the booking
       txn.set(bookingRef, booking.toFirestore());
@@ -134,9 +133,10 @@ class BookingService {
   // ── Queries ───────────────────────────────────────────────────────────────
 
   Stream<BookingModel?> watchBooking(String bookingId) {
-    return _bookings.doc(bookingId).snapshots().map(
-          (doc) => doc.exists ? BookingModel.fromFirestore(doc) : null,
-        );
+    return _bookings
+        .doc(bookingId)
+        .snapshots()
+        .map((doc) => doc.exists ? BookingModel.fromFirestore(doc) : null);
   }
 
   Future<BookingModel?> getBooking(String bookingId) async {
@@ -179,10 +179,7 @@ class BookingService {
 
     // Free the slot
     final slotRef = _slots(booking.coachId).doc(booking.slotId);
-    batch.update(slotRef, {
-      'isBooked': false,
-      'bookingId': null,
-    });
+    batch.update(slotRef, {'isBooked': false, 'bookingId': null});
 
     await batch.commit();
   }
@@ -197,9 +194,14 @@ class BookingService {
   /// Cancels all pending-payment bookings whose payment window has expired.
   /// Call this when the user opens their bookings screen.
   Future<void> expireStaleBookings(List<BookingModel> bookings) async {
-    final expired = bookings
-        .where((b) => b.bookingStatus == BookingStatus.pendingPayment && b.isPaymentExpired)
-        .toList();
+    final expired =
+        bookings
+            .where(
+              (b) =>
+                  b.bookingStatus == BookingStatus.pendingPayment &&
+                  b.isPaymentExpired,
+            )
+            .toList();
     if (expired.isEmpty) return;
 
     final batch = _db.batch();

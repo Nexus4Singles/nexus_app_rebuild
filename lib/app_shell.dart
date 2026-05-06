@@ -13,6 +13,8 @@ import 'features/stories/presentation/screens/stories_screen.dart';
 import 'features/dating_search/presentation/screens/new_dating_search_screen.dart';
 import 'features/counselling/presentation/screens/book_marriage_coach_screen.dart'
     show BookMarriageCoachScreen;
+import 'core/user/current_user_doc_provider.dart';
+import 'features/launch/presentation/screens/account_disabled_screen.dart';
 
 class AppShell extends ConsumerStatefulWidget {
   const AppShell({super.key});
@@ -47,7 +49,8 @@ class _AppShellState extends ConsumerState<AppShell> {
       case NavTab.challenges:
         return const ChallengesScreen();
       case NavTab.counselling:
-        if (FirebaseAuth.instance.currentUser?.email == 'nexus4singles@gmail.com') {
+        if (FirebaseAuth.instance.currentUser?.email ==
+            'nexus4singles@gmail.com') {
           return const BookMarriageCoachScreen();
         }
         return const _CounsellingComingSoon();
@@ -90,6 +93,28 @@ class _AppShellState extends ConsumerState<AppShell> {
     final ref = this.ref;
     // Initialize FCM for push notifications
     ref.watch(fcmInitializationProvider);
+
+    // Immediately kick out any user whose account is disabled mid-session.
+    // The Firestore stream fires in real-time so this triggers within seconds
+    // of an admin setting account.disabled = true.
+    ref.listen<AsyncValue<Map<String, dynamic>?>>(currentUserDocProvider, (
+      _,
+      next,
+    ) {
+      next.whenData((data) {
+        final account = data?['account'];
+        final isDisabled = account is Map && account['disabled'] == true;
+        if (isDisabled && context.mounted) {
+          final reason = account['disabledReason'] as String?;
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (_) => AccountDisabledScreen(disabledReason: reason),
+            ),
+            (_) => false,
+          );
+        }
+      });
+    });
 
     final status = ref.watch(effectiveRelationshipStatusProvider);
     final selectedTab = ref.watch(selectedTabProvider);

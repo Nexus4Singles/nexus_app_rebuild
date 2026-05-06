@@ -11,11 +11,7 @@ class PaymentResult {
   final String? txRef;
   final String? errorMessage;
 
-  const PaymentResult._({
-    required this.success,
-    this.txRef,
-    this.errorMessage,
-  });
+  const PaymentResult._({required this.success, this.txRef, this.errorMessage});
 
   factory PaymentResult.success(String txRef) =>
       PaymentResult._(success: true, txRef: txRef);
@@ -51,10 +47,7 @@ class PaymentService {
         publicKey: _fwPublicKey,
         currency: booking.currency,
         amount: booking.totalAmount.toStringAsFixed(2),
-        customer: Customer(
-          email: booking.userEmail,
-          name: booking.userName,
-        ),
+        customer: Customer(email: booking.userEmail, name: booking.userName),
         paymentOptions: 'card, banktransfer, ussd, mobilemoney',
         customization: Customization(
           title: 'Nexus Coaching',
@@ -92,8 +85,9 @@ class PaymentService {
     required String bookingId,
     required String txRef,
   }) async {
-    final callable = FirebaseFunctions.instanceFor(region: 'us-central1')
-        .httpsCallable('verifyAndConfirmBookingPayment');
+    final callable = FirebaseFunctions.instanceFor(
+      region: 'us-central1',
+    ).httpsCallable('verifyAndConfirmBookingPayment');
 
     final result = await callable.call<Map<String, dynamic>>({
       'bookingId': bookingId,

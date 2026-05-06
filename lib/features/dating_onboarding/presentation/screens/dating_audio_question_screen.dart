@@ -123,7 +123,7 @@ class _DatingAudioQuestionScreenState
   String get _questionText {
     switch (widget.questionNumber) {
       case 1:
-        return 'How would you describe your current relationship with God & why is this relationship important to you?';
+        return 'How would you describe your current relationship with God & why is your relationship with God important to you?';
       case 2:
         return 'What are your thoughts on the role of a husband and a wife in marriage?';
       case 3:

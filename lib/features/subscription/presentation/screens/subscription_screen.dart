@@ -17,6 +17,7 @@ import 'package:nexus_app_v2/features/subscription/domain/subscription_models.da
 import 'package:nexus_app_v2/features/challenges/presentation/screens/journey_detail_screen.dart';
 import 'package:nexus_app_v2/features/challenges/providers/journeys_providers.dart';
 import 'package:nexus_app_v2/core/services/secure_purchase_validation_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Note: Using journeyByIdProvider from journeys_providers.dart (cloud-first with fallback)
 // This replaces the old local repository-based loading
@@ -605,11 +606,30 @@ class _NoSubscriptionView extends ConsumerWidget {
                 Icon(Icons.info_outline, color: AppColors.primary, size: 20),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text(
-                    'This subscription will auto-renew. Cancel anytime from your Playstore or Appstore subscription settings.',
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.getTextSecondary(context),
-                      height: 1.4,
+                  child: RichText(
+                    text: TextSpan(
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.getTextSecondary(context),
+                        height: 1.4,
+                      ),
+                      children: [
+                        const TextSpan(
+                          text:
+                              'This subscription will auto-renew. Cancel anytime from your Playstore or Appstore subscription settings.\n\nHaving issues subscribing with cards? Visit our Instagram page ',
+                        ),
+                        TextSpan(
+                          text: '@nexus4christians',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.getTextSecondary(context),
+                            fontWeight: FontWeight.bold,
+                            height: 1.4,
+                          ),
+                        ),
+                        const TextSpan(
+                          text:
+                              ' and click the link in our bio to subscribe via bank transfer. Send proof of payment to us and your subscription will be activated. ',
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -655,7 +675,9 @@ class _NoSubscriptionView extends ConsumerWidget {
         return;
       }
 
-      // Get the specific subscription offering (nexus_premium_v2)
+      // Get the specific subscription offering
+      // Note: Offering ID 'nexus_premium_v2' is the same for both iOS and Android.
+      // It contains packages for both platforms with different product IDs.
       Offering? subscriptionOffering = offerings.getOffering(
         'nexus_premium_v2',
       );
@@ -663,7 +685,7 @@ class _NoSubscriptionView extends ConsumerWidget {
       // Fallback 1: Try offerings.current if nexus_premium_v2 not found
       if (subscriptionOffering == null) {
         debugPrint(
-          '🟡 [Subscription] nexus_premium_v2 not available, trying offerings.current',
+          '🟡 [Subscription] nexus_premium_v2 offering not available, trying offerings.current',
         );
         subscriptionOffering = offerings.current;
       }
@@ -717,11 +739,12 @@ class _NoSubscriptionView extends ConsumerWidget {
         (p) => p.storeProduct.identifier.toLowerCase() == targetProductId,
       );
 
-      // Fallback to contains match
+      // Fallback to contains match (handles RevenueCat composite format like 'monthly_premium_v2:monthly-premium-v2')
       if (monthlyPackage == null) {
         monthlyPackage = packages.firstWhereOrNull(
-          (p) =>
-              p.storeProduct.identifier.toLowerCase().contains(targetProductId),
+          (p) => p.storeProduct.identifier.toLowerCase().startsWith(
+            targetProductId,
+          ),
         );
       }
 
@@ -874,7 +897,12 @@ Contact support if the issue persists.
     required String tier,
   }) async {
     final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
+    if (user == null) {
+      debugPrint(
+        '🔴 [SubscriptionRecording] CRITICAL: currentUser is null - subscription fields NOT created!',
+      );
+      return;
+    }
 
     final db = FirebaseFirestore.instance;
 
@@ -1163,113 +1191,10 @@ class _SubscriptionPlanCard extends ConsumerStatefulWidget {
 }
 
 class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
-  String _monthlyPrice = '';
-  bool _isLoadingPrice = true;
-
   @override
   void initState() {
     super.initState();
-    _loadMonthlyPrice();
-  }
-
-  Future<void> _loadMonthlyPrice() async {
-    try {
-      print('🟡 [SubscriptionCard] Loading monthly price from RevenueCat...');
-
-      final offerings = await RevenueCatService.getOfferings();
-      if (offerings == null) {
-        print('🔴 [SubscriptionCard] No offerings available');
-        if (mounted) {
-          setState(() => _isLoadingPrice = false);
-        }
-        return;
-      }
-
-      // Get the specific subscription offering (nexus_premium_v2)
-      Offering? subscriptionOffering = offerings.getOffering(
-        'nexus_premium_v2',
-      );
-
-      // Fallback 1: Try offerings.current if nexus_premium_v2 not found
-      if (subscriptionOffering == null) {
-        print(
-          '🟡 [SubscriptionCard] nexus_premium_v2 not available, trying offerings.current',
-        );
-        subscriptionOffering = offerings.current;
-      }
-
-      // Fallback 2: Try old Premium offering for backward compatibility
-      if (subscriptionOffering == null) {
-        print(
-          '🟡 [SubscriptionCard] offerings.current not available, trying fallback to Premium offering',
-        );
-        subscriptionOffering = offerings.getOffering('Premium');
-      }
-
-      if (subscriptionOffering == null) {
-        print('🔴 [SubscriptionCard] No subscription offering available');
-        if (mounted) {
-          setState(() => _isLoadingPrice = false);
-        }
-        return;
-      }
-
-      // Find the monthly subscription package
-      final packages = subscriptionOffering.availablePackages;
-      print(
-        '🟡 [SubscriptionCard] Available packages: ${packages.map((p) => p.storeProduct.identifier).toList()}',
-      );
-
-      // Match the correct platform-specific product ID
-      Package? monthlyPackage;
-      final targetProductId =
-          RevenueCatConfig.getSubscriptionProductId().toLowerCase();
-
-      // Try exact match first
-      monthlyPackage = packages.firstWhereOrNull(
-        (p) => p.storeProduct.identifier.toLowerCase() == targetProductId,
-      );
-
-      // Fallback to contains match
-      if (monthlyPackage == null) {
-        monthlyPackage = packages.firstWhereOrNull(
-          (p) =>
-              p.storeProduct.identifier.toLowerCase().contains(targetProductId),
-        );
-      }
-
-      // Last resort: use first package
-      monthlyPackage ??= packages.isNotEmpty ? packages.first : null;
-
-      if (monthlyPackage == null) {
-        print(
-          '🔴 [SubscriptionCard] No matching package found for product ID: ${RevenueCatConfig.getSubscriptionProductId()}',
-        );
-        if (mounted) {
-          setState(() => _isLoadingPrice = false);
-        }
-        return;
-      }
-
-      print(
-        '🟢 [SubscriptionCard] Found package: ${monthlyPackage.storeProduct.identifier}',
-      );
-
-      if (mounted) {
-        print(
-          '🟢 [SubscriptionCard] Setting price: ${monthlyPackage.storeProduct.priceString} (currency: ${monthlyPackage.storeProduct.currencyCode})',
-        );
-        setState(() {
-          _monthlyPrice = monthlyPackage!.storeProduct.priceString;
-          _isLoadingPrice = false;
-        });
-      }
-    } catch (e) {
-      print('🔴 [SubscriptionCard] Error loading price: $e');
-      if (mounted) {
-        setState(() => _isLoadingPrice = false);
-      }
-    }
+    // Price is loaded and displayed only in native payment sheet for better UX
   }
 
   @override
@@ -1284,46 +1209,11 @@ class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    widget.tier.displayName,
-                    style: AppTextStyles.titleMedium.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                // Price on the right
-                if (_isLoadingPrice)
-                  SizedBox(
-                    width: 60,
-                    height: 16,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.getTextSecondary(
-                          context,
-                        ).withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  )
-                else if (_monthlyPrice.isNotEmpty)
-                  Text(
-                    _monthlyPrice,
-                    style: AppTextStyles.titleMedium.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
-                    ),
-                  )
-                else
-                  Text(
-                    'Price from store',
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.getTextSecondary(context),
-                    ),
-                  ),
-              ],
+            child: Text(
+              widget.tier.displayName,
+              style: AppTextStyles.titleMedium.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Padding(

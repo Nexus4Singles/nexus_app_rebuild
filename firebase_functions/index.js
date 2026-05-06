@@ -18,7 +18,7 @@ const { Parser } = require('json2csv');
 const crypto = require('crypto');
 
 // Import purchase validation functions
-const { validateAndRecordPurchase, revenueCatWebhook } = require('./validate_purchase');
+const { validateAndRecordPurchase, revenueCatWebhook, validateAndRecordSubscription } = require('./validate_purchase');
 
 admin.initializeApp({
   storageBucket: 'nexus-visibility-app.appspot.com'

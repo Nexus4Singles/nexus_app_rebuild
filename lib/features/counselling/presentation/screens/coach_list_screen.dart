@@ -15,7 +15,8 @@ class CoachListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final coachesAsync = ref.watch(
-        coachesBySessionTypeProvider(sessionType.firestoreKey));
+      coachesBySessionTypeProvider(sessionType.firestoreKey),
+    );
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
@@ -55,8 +56,10 @@ class CoachListScreen extends ConsumerWidget {
           }
           return RefreshIndicator(
             color: AppColors.primary,
-            onRefresh: () async =>
-                ref.invalidate(coachesBySessionTypeProvider(sessionType.firestoreKey)),
+            onRefresh:
+                () async => ref.invalidate(
+                  coachesBySessionTypeProvider(sessionType.firestoreKey),
+                ),
             child: CustomScrollView(
               slivers: [
                 SliverPadding(
@@ -72,24 +75,26 @@ class CoachListScreen extends ConsumerWidget {
                       (context, i) => CoachCard(
                         coach: coaches[i],
                         sessionTypeKey: sessionType.firestoreKey,
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => CoachProfileScreen(
-                              coach: coaches[i],
-                              sessionType: sessionType,
+                        onTap:
+                            () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder:
+                                    (_) => CoachProfileScreen(
+                                      coach: coaches[i],
+                                      sessionType: sessionType,
+                                    ),
+                              ),
                             ),
-                          ),
-                        ),
                       ),
                       childCount: coaches.length,
                     ),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 0.72,
-                    ),
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 0.72,
+                        ),
                   ),
                 ),
               ],
@@ -117,9 +122,7 @@ class _SessionTypeHeader extends StatelessWidget {
           ],
         ),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: AppColors.primary.withOpacity(0.15),
-        ),
+        border: Border.all(color: AppColors.primary.withOpacity(0.15)),
       ),
       child: Row(
         children: [
@@ -211,11 +214,9 @@ class _ErrorState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline_rounded,
-                size: 48, color: AppColors.error),
+            Icon(Icons.error_outline_rounded, size: 48, color: AppColors.error),
             const SizedBox(height: 12),
-            Text('Something went wrong',
-                style: AppTextStyles.titleSmall),
+            Text('Something went wrong', style: AppTextStyles.titleSmall),
             const SizedBox(height: 6),
             Text(
               message,
@@ -269,8 +270,9 @@ class _SkeletonCard extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 color: AppColors.getTextSecondary(context).withOpacity(0.1),
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(16)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
               ),
             ),
           ),
@@ -290,7 +292,9 @@ class _SkeletonCard extends StatelessWidget {
                   Container(
                     height: 10,
                     width: 70,
-                    color: AppColors.getTextSecondary(context).withOpacity(0.08),
+                    color: AppColors.getTextSecondary(
+                      context,
+                    ).withOpacity(0.08),
                   ),
                 ],
               ),

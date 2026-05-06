@@ -23,16 +23,14 @@ class BookingCalendarScreen extends ConsumerStatefulWidget {
       _BookingCalendarScreenState();
 }
 
-class _BookingCalendarScreenState
-    extends ConsumerState<BookingCalendarScreen> {
+class _BookingCalendarScreenState extends ConsumerState<BookingCalendarScreen> {
   DateTime _focusedMonth = DateTime.now();
   DateTime? _selectedDate;
   TimeSlotModel? _selectedSlot;
 
   @override
   Widget build(BuildContext context) {
-    final slotsAsync =
-        ref.watch(availableSlotsProvider(widget.coach.id));
+    final slotsAsync = ref.watch(availableSlotsProvider(widget.coach.id));
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
@@ -49,8 +47,9 @@ class _BookingCalendarScreenState
           children: [
             Text(
               'Select Date & Time',
-              style: AppTextStyles.titleMedium
-                  .copyWith(fontWeight: FontWeight.w700),
+              style: AppTextStyles.titleMedium.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
             ),
             Text(
               widget.coach.name,
@@ -78,32 +77,38 @@ class _BookingCalendarScreenState
           // Filter to session type
           final filteredByDate = <DateTime, List<TimeSlotModel>>{};
           slotsByDate.forEach((date, daySlots) {
-            final filtered = daySlots
-                .where((s) =>
-                    s.supportsSessionType(widget.sessionType.firestoreKey))
-                .toList();
+            final filtered =
+                daySlots
+                    .where(
+                      (s) => s.supportsSessionType(
+                        widget.sessionType.firestoreKey,
+                      ),
+                    )
+                    .toList();
             if (filtered.isNotEmpty) filteredByDate[date] = filtered;
           });
 
-          final selectedDaySlots = _selectedDate != null
-              ? (filteredByDate[_selectedDate] ?? [])
-              : <TimeSlotModel>[];
+          final selectedDaySlots =
+              _selectedDate != null
+                  ? (filteredByDate[_selectedDate] ?? [])
+                  : <TimeSlotModel>[];
 
           return Column(
             children: [
               // Month calendar — fixed
               Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+                padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
                 child: _MonthCalendar(
                   focusedMonth: _focusedMonth,
                   availableDates: filteredByDate.keys.toSet(),
                   selectedDate: _selectedDate,
-                  onDateSelected: (date) => setState(() {
-                    _selectedDate = date;
-                    _selectedSlot = null;
-                  }),
-                  onMonthChanged: (month) =>
-                      setState(() => _focusedMonth = month),
+                  onDateSelected:
+                      (date) => setState(() {
+                        _selectedDate = date;
+                        _selectedSlot = null;
+                      }),
+                  onMonthChanged:
+                      (month) => setState(() => _focusedMonth = month),
                 ),
               ),
 
@@ -111,66 +116,76 @@ class _BookingCalendarScreenState
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
-                  child: _selectedDate != null
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.schedule_rounded,
-                                    color: AppColors.primary, size: 16),
-                                const SizedBox(width: 6),
-                                Expanded(
-                                  child: Text(
-                                    'Available times on ${DateFormat('EEEE, d MMMM').format(_selectedDate!)}',
-                                    style: AppTextStyles.titleSmall.copyWith(
-                                        fontWeight: FontWeight.w600),
+                  child:
+                      _selectedDate != null
+                          ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.schedule_rounded,
+                                    color: AppColors.primary,
+                                    size: 16,
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 12),
-                            if (selectedDaySlots.isEmpty)
-                              Container(
-                                padding: const EdgeInsets.all(14),
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: AppColors.getSurface(context),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  'All slots on this day have been booked.',
-                                  style: AppTextStyles.bodySmall.copyWith(
-                                    color:
-                                        AppColors.getTextSecondary(context),
+                                  const SizedBox(width: 6),
+                                  Expanded(
+                                    child: Text(
+                                      'Available times on ${DateFormat('EEEE, d MMMM').format(_selectedDate!)}',
+                                      style: AppTextStyles.titleSmall.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              )
-                            else
-                              Wrap(
-                                spacing: 10,
-                                runSpacing: 10,
-                                children: selectedDaySlots.map((slot) {
-                                  return TimeSlotChip(
-                                    slot: slot,
-                                    isSelected: _selectedSlot?.id == slot.id,
-                                    onTap: () =>
-                                        setState(() => _selectedSlot = slot),
-                                  );
-                                }).toList(),
+                                ],
                               ),
-                          ],
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(top: 24),
-                          child: Text(
-                            'Select a highlighted date above to see available times.',
-                            style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.getTextSecondary(context),
+                              const SizedBox(height: 12),
+                              if (selectedDaySlots.isEmpty)
+                                Container(
+                                  padding: const EdgeInsets.all(14),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.getSurface(context),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    'All slots on this day have been booked.',
+                                    style: AppTextStyles.bodySmall.copyWith(
+                                      color: AppColors.getTextSecondary(
+                                        context,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              else
+                                Wrap(
+                                  spacing: 10,
+                                  runSpacing: 10,
+                                  children:
+                                      selectedDaySlots.map((slot) {
+                                        return TimeSlotChip(
+                                          slot: slot,
+                                          isSelected:
+                                              _selectedSlot?.id == slot.id,
+                                          onTap:
+                                              () => setState(
+                                                () => _selectedSlot = slot,
+                                              ),
+                                        );
+                                      }).toList(),
+                                ),
+                            ],
+                          )
+                          : Padding(
+                            padding: const EdgeInsets.only(top: 24),
+                            child: Text(
+                              'Select a highlighted date above to see available times.',
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: AppColors.getTextSecondary(context),
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            textAlign: TextAlign.center,
                           ),
-                        ),
                 ),
               ),
 
@@ -181,23 +196,25 @@ class _BookingCalendarScreenState
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: _selectedSlot != null
-                          ? () => Navigator.of(context).push(
+                      onPressed:
+                          _selectedSlot != null
+                              ? () => Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (_) => BookingSummaryScreen(
-                                    coach: widget.coach,
-                                    sessionType: widget.sessionType,
-                                    slot: _selectedSlot!,
-                                  ),
+                                  builder:
+                                      (_) => BookingSummaryScreen(
+                                        coach: widget.coach,
+                                        sessionType: widget.sessionType,
+                                        slot: _selectedSlot!,
+                                      ),
                                 ),
                               )
-                          : null,
+                              : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
                         disabledBackgroundColor: AppColors.getTextSecondary(
-                                context)
-                            .withOpacity(0.2),
+                          context,
+                        ).withOpacity(0.2),
                         padding: const EdgeInsets.symmetric(vertical: 13),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -208,9 +225,10 @@ class _BookingCalendarScreenState
                             ? 'Continue — ${_selectedSlot!.formattedStart}'
                             : 'Select a time slot',
                         style: AppTextStyles.labelLarge.copyWith(
-                          color: _selectedSlot != null
-                              ? Colors.white
-                              : AppColors.getTextSecondary(context),
+                          color:
+                              _selectedSlot != null
+                                  ? Colors.white
+                                  : AppColors.getTextSecondary(context),
                         ),
                       ),
                     ),
@@ -246,8 +264,10 @@ class _CalendarSkeletonState extends State<_CalendarSkeleton>
       duration: const Duration(milliseconds: 900),
       vsync: this,
     )..repeat(reverse: true);
-    _fade = Tween(begin: 0.35, end: 0.75)
-        .animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
+    _fade = Tween(
+      begin: 0.35,
+      end: 0.75,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
   }
 
   @override
@@ -265,13 +285,13 @@ class _CalendarSkeletonState extends State<_CalendarSkeleton>
         final color = base.withOpacity(_fade.value);
 
         Widget bone(double w, double h, {double r = 10}) => Container(
-              width: w,
-              height: h,
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(r),
-              ),
-            );
+          width: w,
+          height: h,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(r),
+          ),
+        );
 
         return Padding(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
@@ -288,10 +308,7 @@ class _CalendarSkeletonState extends State<_CalendarSkeleton>
               Wrap(
                 spacing: 10,
                 runSpacing: 10,
-                children: List.generate(
-                  6,
-                  (_) => bone(90, 52, r: 10),
-                ),
+                children: List.generate(6, (_) => bone(90, 52, r: 10)),
               ),
             ],
           ),
@@ -337,9 +354,10 @@ class _MonthCalendar extends StatelessWidget {
           Row(
             children: [
               IconButton(
-                onPressed: () => onMonthChanged(
-                  DateTime(focusedMonth.year, focusedMonth.month - 1),
-                ),
+                onPressed:
+                    () => onMonthChanged(
+                      DateTime(focusedMonth.year, focusedMonth.month - 1),
+                    ),
                 icon: const Icon(Icons.chevron_left_rounded),
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
@@ -348,14 +366,16 @@ class _MonthCalendar extends StatelessWidget {
                 child: Text(
                   DateFormat('MMMM yyyy').format(focusedMonth),
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.titleSmall
-                      .copyWith(fontWeight: FontWeight.w700),
+                  style: AppTextStyles.titleSmall.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               IconButton(
-                onPressed: () => onMonthChanged(
-                  DateTime(focusedMonth.year, focusedMonth.month + 1),
-                ),
+                onPressed:
+                    () => onMonthChanged(
+                      DateTime(focusedMonth.year, focusedMonth.month + 1),
+                    ),
                 icon: const Icon(Icons.chevron_right_rounded),
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
@@ -367,22 +387,23 @@ class _MonthCalendar extends StatelessWidget {
 
           // Day-of-week headers
           Row(
-            children: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
-                .map(
-                  (d) => Expanded(
-                    child: Center(
-                      child: Text(
-                        d,
-                        style: AppTextStyles.bodySmall.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.getTextSecondary(context),
-                          fontSize: 10,
+            children:
+                ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+                    .map(
+                      (d) => Expanded(
+                        child: Center(
+                          child: Text(
+                            d,
+                            style: AppTextStyles.bodySmall.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.getTextSecondary(context),
+                              fontSize: 10,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                )
-                .toList(),
+                    )
+                    .toList(),
           ),
 
           const SizedBox(height: 2),
@@ -401,25 +422,28 @@ class _MonthCalendar extends StatelessWidget {
               final day = i - startPad + 1;
               final date = DateTime(focusedMonth.year, focusedMonth.month, day);
               final normalized = DateTime(date.year, date.month, date.day);
-              final isToday = normalized ==
-                  DateTime(today.year, today.month, today.day);
+              final isToday =
+                  normalized == DateTime(today.year, today.month, today.day);
               final isAvailable = availableDates.contains(normalized);
-              final isSelected = selectedDate != null &&
-                  selectedDate == normalized;
+              final isSelected =
+                  selectedDate != null && selectedDate == normalized;
               final isPast = date.isBefore(
-                  DateTime(today.year, today.month, today.day));
+                DateTime(today.year, today.month, today.day),
+              );
 
               return GestureDetector(
-                onTap: isAvailable && !isPast
-                    ? () => onDateSelected(normalized)
-                    : null,
+                onTap:
+                    isAvailable && !isPast
+                        ? () => onDateSelected(normalized)
+                        : null,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 150),
-                margin: const EdgeInsets.all(1),
+                  margin: const EdgeInsets.all(1),
                   decoration: BoxDecoration(
-                    color: isSelected
-                        ? AppColors.primary
-                        : isToday
+                    color:
+                        isSelected
+                            ? AppColors.primary
+                            : isToday
                             ? AppColors.primary.withOpacity(0.12)
                             : Colors.transparent,
                     shape: BoxShape.circle,
@@ -430,18 +454,22 @@ class _MonthCalendar extends StatelessWidget {
                       Text(
                         '$day',
                         style: AppTextStyles.bodySmall.copyWith(
-                          fontWeight: isSelected || isToday
-                              ? FontWeight.w700
-                              : FontWeight.normal,
-                          color: isSelected
-                              ? Colors.white
-                              : isPast
-                                  ? AppColors.getTextSecondary(context)
-                                      .withOpacity(0.3)
+                          fontWeight:
+                              isSelected || isToday
+                                  ? FontWeight.w700
+                                  : FontWeight.normal,
+                          color:
+                              isSelected
+                                  ? Colors.white
+                                  : isPast
+                                  ? AppColors.getTextSecondary(
+                                    context,
+                                  ).withOpacity(0.3)
                                   : isAvailable
-                                      ? AppColors.getTextPrimary(context)
-                                      : AppColors.getTextSecondary(context)
-                                          .withOpacity(0.4),
+                                  ? AppColors.getTextPrimary(context)
+                                  : AppColors.getTextSecondary(
+                                    context,
+                                  ).withOpacity(0.4),
                         ),
                       ),
                       // Availability dot
