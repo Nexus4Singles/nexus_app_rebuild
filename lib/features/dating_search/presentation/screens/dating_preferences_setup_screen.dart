@@ -198,8 +198,14 @@ class _DatingPreferencesSetupScreenState
 
       // If editing existing preferences, just pop back to results
       if (widget.existingPreferences != null) {
-        if (mounted) Navigator.of(context).pop();
-        if (mounted) setState(() => _isLoading = false);
+        if (mounted) {
+          if (Navigator.canPop(context)) {
+            Navigator.of(context).pop();
+          } else if (widget.onComplete != null) {
+            widget.onComplete!();
+          }
+          setState(() => _isLoading = false);
+        }
         return;
       }
 
@@ -221,8 +227,14 @@ class _DatingPreferencesSetupScreenState
         }
       } else {
         // Just pop back if editing
-        if (mounted) Navigator.of(context).pop();
-        if (mounted) setState(() => _isLoading = false);
+        if (mounted) {
+          if (Navigator.canPop(context)) {
+            Navigator.of(context).pop();
+          } else if (widget.onComplete != null) {
+            widget.onComplete!();
+          }
+          setState(() => _isLoading = false);
+        }
       }
     } catch (e) {
       if (mounted) {
