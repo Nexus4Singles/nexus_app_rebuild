@@ -112,7 +112,7 @@ class _DatingPreferencesSetupScreenState
     }
   }
 
-  void _savePreferences() async {
+  Future<void> _savePreferences() async {
     // Check if user is authenticated - if not, show guest gate modal
     final authAsync = ref.watch(authStateProvider);
     final isSignedIn = authAsync.maybeWhen(
@@ -122,18 +122,21 @@ class _DatingPreferencesSetupScreenState
 
     if (!isSignedIn) {
       _showGuestGateModal();
+      if (mounted) setState(() => _isLoading = false);
       return;
     }
 
     // Validate required fields
     if (_country == null || _country!.isEmpty) {
       _showSnackBar('Please select your country of residence');
+      if (mounted) setState(() => _isLoading = false);
       return;
     }
 
     // Age is already set with defaults but validate it makes sense
     if (_minAge >= _maxAge) {
       _showSnackBar('Minimum age must be less than maximum age');
+      if (mounted) setState(() => _isLoading = false);
       return;
     }
 
@@ -196,6 +199,7 @@ class _DatingPreferencesSetupScreenState
       // If editing existing preferences, just pop back to results
       if (widget.existingPreferences != null) {
         if (mounted) Navigator.of(context).pop();
+        if (mounted) setState(() => _isLoading = false);
         return;
       }
 
@@ -203,16 +207,22 @@ class _DatingPreferencesSetupScreenState
       // Just call onComplete to switch parent IndexedStack
       if (widget.isReactivatingAfterStatusChange) {
         if (widget.onComplete != null) widget.onComplete!();
+        if (mounted) setState(() => _isLoading = false);
         return;
       }
 
       // Check if there are any matching profiles for the new preferences
       // Skip this check if we're editing existing preferences
       if (widget.existingPreferences == null) {
-        _checkProfilesAndNavigate(prefs);
+        try {
+          await _checkProfilesAndNavigate(prefs);
+        } finally {
+          if (mounted) setState(() => _isLoading = false);
+        }
       } else {
         // Just pop back if editing
         if (mounted) Navigator.of(context).pop();
+        if (mounted) setState(() => _isLoading = false);
       }
     } catch (e) {
       if (mounted) {
@@ -222,7 +232,7 @@ class _DatingPreferencesSetupScreenState
     }
   }
 
-  void _checkProfilesAndNavigate(DatingPreferences prefs) async {
+  Future<void> _checkProfilesAndNavigate(DatingPreferences prefs) async {
     if (!mounted) return;
 
     // Show loading dialog
@@ -745,10 +755,10 @@ class _DatingPreferencesSetupScreenState
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed:
+                    onPressed:
                       _isLoading
-                          ? null
-                          : () {
+                        ? null
+                        : () async {
                             // DIAGNOSTIC: Log current verification state
                             print(
                               '[DatingPreferencesSetupScreen] Save button pressed: isEditing=$isEditing, hasDatingProfile=$hasDatingProfile (profile exists), isVerified=$isVerified, verificationStatus=$verificationStatus',
@@ -822,17 +832,36 @@ class _DatingPreferencesSetupScreenState
 
                             // ⚠️ CRITICAL FIX: Proper verification gating logic
                             // Gate BOTH new setup AND editing if profile is unverified
-                            // If verification status is null, it means not yet fetched from Firestore
-                            if (verificationStatus != null && isVerified) {
+                            // Try to fetch the freshest verification status from the user doc
+                            var currentVerificationStatus = verificationStatus;
+                            try {
                               print(
-                                '[DatingPreferencesSetupScreen] ✅ Profile verified (status=$verificationStatus) - saving preferences',
+                                '[DatingPreferencesSetupScreen] 🔄 Fetching latest user doc for verification (timeout 2s)'
                               );
-                              _savePreferences();
+                              final latestDoc = await ref
+                                  .read(currentUserDocProvider.stream)
+                                  .first
+                                  .timeout(const Duration(seconds: 2));
+                              final datingMap = (latestDoc == null)
+                                  ? null
+                                  : (latestDoc['dating'] as Map?)?.cast<String, dynamic>();
+                              currentVerificationStatus = datingMap?['verificationStatus']?.toString();
+                              print('[DatingPreferencesSetupScreen] 🔄 Latest verificationStatus fetched: $currentVerificationStatus');
+                            } catch (e) {
+                              print('[DatingPreferencesSetupScreen] Failed to fetch latest user doc for verification: $e');
+                              // fall back to provider value
+                            }
+
+                            if (currentVerificationStatus != null && currentVerificationStatus == 'verified') {
+                              print(
+                                '[DatingPreferencesSetupScreen] ✅ Profile verified (status=$currentVerificationStatus) - saving preferences',
+                              );
+                              await _savePreferences();
                               return;
                             }
 
                             // If we get here, profile is either unverified or verification status unknown
-                            if (verificationStatus == null) {
+                            if (currentVerificationStatus == null) {
                               print(
                                 '[DatingPreferencesSetupScreen] ⚠️  VERIFICATION STATUS NULL - checking if user can view search results',
                               );
@@ -872,15 +901,15 @@ class _DatingPreferencesSetupScreenState
                               print(
                                 '[DatingPreferencesSetupScreen] ✅ Editing existing preferences with null verification - allowing (user has results)',
                               );
-                              _savePreferences();
+                              await _savePreferences();
                               return;
                             }
 
                             // Verification status is not 'verified'
                             print(
-                              '[DatingPreferencesSetupScreen] ⏳ Profile unverified: status=$verificationStatus',
+                              '[DatingPreferencesSetupScreen] ⏳ Profile unverified: status=$currentVerificationStatus',
                             );
-                            final isRejected = verificationStatus == 'rejected';
+                            final isRejected = currentVerificationStatus == 'rejected';
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Row(
