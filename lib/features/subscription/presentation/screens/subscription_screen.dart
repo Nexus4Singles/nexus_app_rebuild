@@ -37,22 +37,16 @@ const _bankTransferUrl = 'https://flutterwave.com/pay/mmtqwah5duoo';
 
 Future<void> _launchBankTransferUrl(BuildContext context) async {
   final uri = Uri.parse(_bankTransferUrl);
-
   if (!await canLaunchUrl(uri)) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Unable to open the payment link. Please try again.'),
-        ),
-      );
-    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Unable to open the payment link. Please try again.'),
+      ),
+    );
     return;
   }
 
-  final launchedInApp = await launchUrl(
-    uri,
-    mode: LaunchMode.inAppWebView,
-  );
+  final launchedInApp = await launchUrl(uri, mode: LaunchMode.inAppWebView);
 
   if (launchedInApp) {
     return;
@@ -63,7 +57,7 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
     mode: LaunchMode.externalApplication,
   );
 
-  if (!launchedExternal && context.mounted) {
+  if (!launchedExternal) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Unable to open the payment link. Please try again.'),
@@ -645,50 +639,50 @@ class _NoSubscriptionView extends ConsumerWidget {
                 Icon(Icons.info_outline, color: AppColors.primary, size: 20),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'If you have trouble subscribing with cards, you can complete payment via Flutterwave bank transfer using the button below.',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.getTextSecondary(context),
-                          height: 1.6,
-                        ),
+                  child: RichText(
+                    text: TextSpan(
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.getTextSecondary(context),
+                        height: 1.4,
                       ),
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton.icon(
-                          onPressed: () => _launchBankTransferUrl(context),
-                          icon: const Icon(Icons.open_in_new, size: 18),
-                          label: Text(
-                            'Pay with Flutterwave',
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.bold,
+                      children: [
+                        const TextSpan(
+                          text:
+                              'This subscription will auto-renew. Cancel anytime from your Playstore or Appstore subscription settings.\n\nHaving issues subscribing with cards? You can subscribe via bank transfer using this ',
+                        ),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: GestureDetector(
+                            onTap: () => _launchBankTransferUrl(context),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary.withOpacity(0.12),
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: AppColors.primary.withOpacity(0.3),
+                                ),
+                              ),
+                              child: Text(
+                                'Link',
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.bold,
+                                  height: 1.4,
+                                ),
+                              ),
                             ),
                           ),
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 14,
-                              horizontal: 16,
-                            ),
-                            side: BorderSide(color: AppColors.primary),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        'After payment, send proof of payment to contact@nexus4christians.com or @nexus4christians on Instagram and your subscription will be activated.',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.getTextSecondary(context),
-                          height: 1.6,
+                        const TextSpan(
+                          text:
+                              '. After subscription, kindly send proof of payment to us via contact@nexus4christians.com or @nexus4christians on Instagram and your subscription will be activated. ',
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -1334,18 +1328,6 @@ class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'This subscription will auto-renew. Cancel anytime from your Playstore or Appstore subscription settings.',
-              style: AppTextStyles.caption.copyWith(
-                color: AppColors.getTextSecondary(context),
-                height: 1.4,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(height: 12),
         ],
       ),
     );
