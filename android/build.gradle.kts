@@ -20,15 +20,6 @@ subprojects {
         }
     }
 
-    // Suppress obsolete Java version warnings for all plugins
-    afterEvaluate {
-        if (project.plugins.hasPlugin("java")) {
-            tasks.withType<JavaCompile> {
-                options.compilerArgs.add("-Xlint:-options")
-                options.compilerArgs.add("-Xlint:-unchecked")
-            }
-        }
-    }
 }
 
 subprojects {

@@ -1308,7 +1308,8 @@ exports.handleUpdateUserSubscriptionStatus = functions
         return res.status(200).json({ success: true, note: 'Unknown tx_ref format, ignored' });
       }
 
-      const userId = txRef.substring(9); // Remove "nexus_sub:" prefix
+      const userIdPart = txRef.replace(/^nexus_sub:/, '');
+      const userId = userIdPart.split(':')[0];
 
       if (!userId || userId.trim() === '') {
         console.error(`[Flutterwave] Empty userId in tx_ref: ${txRef}`);
@@ -1699,6 +1700,164 @@ exports.createPaymentLink = functions
     res.status(200).json({ paymentUrl });
   } catch (err) {
     console.error('[createPaymentLink] Error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * Country-based subscription pricing.
+ *
+ * Flutterwave does not know App Store / Play Store prices. The server must
+ * choose the amount and currency using business logic or a pricing table.
+ * Update this table as your local pricing strategy changes.
+ */
+const DEFAULT_SUBSCRIPTION_PRICING = { amount: 5900, currency: 'NGN' };
+const SUBSCRIPTION_PRICING_BY_COUNTRY = {
+  'nigeria': { amount: 5900, currency: 'NGN' },
+  'united kingdom': { amount: 6.99, currency: 'GBP' },
+  'united states': { amount: 9.99, currency: 'USD' },
+  'kenya': { amount: 990, currency: 'KES' },
+  'ghana': { amount: 79.99, currency: 'GHS' },
+  'south africa': { amount: 119, currency: 'ZAR' },
+  'uganda': { amount: 22000, currency: 'UGX' },
+  'rwanda': { amount: 9450, currency: 'RWF' },
+  'tanzania': { amount: 26900, currency: 'TZS' },
+};
+
+function getSubscriptionPricingForCountry(country) {
+  const normalized = String(country || '').trim().toLowerCase();
+  return SUBSCRIPTION_PRICING_BY_COUNTRY[normalized] || DEFAULT_SUBSCRIPTION_PRICING;
+}
+
+/**
+ * createSubscriptionPaymentLink
+ * HTTP POST
+ * Generates a user-specific Flutterwave payment link for monthly subscriptions.
+ */
+exports.createSubscriptionPaymentLink = functions
+  .runWith({ secrets: ['FLUTTERWAVE_SECRET_KEY'] })
+  .https.onRequest(async (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') { res.status(204).send(''); return; }
+  if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
+
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const token = authHeader.slice(7);
+    const decoded = await admin.auth().verifyIdToken(token);
+    const uid = decoded.uid;
+
+    const userRef = admin.firestore().collection('users').doc(uid);
+    const userSnap = await userRef.get();
+    if (!userSnap.exists) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const userData = userSnap.data() || {};
+    const customerEmail = userData.email || decoded.email || 'customer@example.com';
+    const customerName = userData.username || userData.displayName || decoded.name || 'Nexus Customer';
+    // Prefer explicit 'countryOfResidence' fields (top-level or under dating)
+    // because 'dating.profile.country' is used for profile region/nationality in some places.
+    const countryOfResidence = userData.dating?.countryOfResidence
+      || userData.countryOfResidence
+      || userData.dating?.profile?.country
+      || userData.country
+      || 'Unknown';
+
+    const serverPricing = getSubscriptionPricingForCountry(countryOfResidence);
+    let amount = serverPricing.amount;
+    let currency = serverPricing.currency;
+
+    if (req.body && typeof req.body === 'object') {
+      const parsedAmount = Number(req.body.amount);
+      const parsedCurrency = String(req.body.currency || '').trim().toUpperCase();
+      if (!Number.isNaN(parsedAmount) && parsedAmount > 0 && parsedCurrency) {
+        const normalizedServerCurrency = String(serverPricing.currency).trim().toUpperCase();
+        const currencyMatches = parsedCurrency === normalizedServerCurrency;
+        const amountMatches = Math.abs(parsedAmount - serverPricing.amount) <= 0.01;
+
+        if (currencyMatches && amountMatches) {
+          amount = parsedAmount;
+          currency = parsedCurrency;
+          console.log(
+            `[createSubscriptionPaymentLink] Client price validated for ${countryOfResidence}: ${amount} ${currency}`,
+          );
+        } else {
+          console.warn(
+            `[createSubscriptionPaymentLink] Client price did not match server pricing. ` +
+            `Client: ${parsedAmount} ${parsedCurrency}, Server: ${serverPricing.amount} ${serverPricing.currency}. Using server pricing.`,
+          );
+        }
+      }
+    }
+
+    console.log(
+      `[createSubscriptionPaymentLink] Final pricing for ${countryOfResidence}: ${amount} ${currency}`,
+    );
+    const txRef = `nexus_sub:${uid}:${Date.now()}`;
+
+    const payload = {
+      tx_ref: txRef,
+      amount,
+      currency,
+      payment_options: 'banktransfer',
+      redirect_url: `https://nexus-visibility-app.web.app/subscription-success?txRef=${encodeURIComponent(txRef)}`,
+      customer: {
+        email: customerEmail,
+        name: customerName,
+      },
+      customizations: {
+        title: 'Nexus Premium Subscription',
+        description: 'Monthly Nexus subscription via Flutterwave bank transfer',
+        logo: 'https://nexus-visibility-app.web.app/icons/Icon-192.png',
+      },
+      meta: {
+        userId: uid,
+        countryOfResidence,
+        source: 'subscription-bank-transfer',
+      },
+    };
+
+    const FLW_SECRET_KEY = process.env.FLUTTERWAVE_SECRET_KEY
+      || functions.config().flutterwave?.secret_key
+      || '';
+
+    const flwRes = await fetch('https://api.flutterwave.com/v3/payments', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${FLW_SECRET_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    const flwData = await flwRes.json();
+    if (flwData.status !== 'success') {
+      console.error('[createSubscriptionPaymentLink] Flutterwave error:', flwData);
+      return res.status(502).json({ error: 'Failed to create Flutterwave link', detail: flwData });
+    }
+
+    const paymentUrl = flwData.data.link;
+    await userRef.update({
+      subscriptionPayment: {
+        txRef,
+        amount,
+        currency,
+        paymentUrl,
+        status: 'pending',
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        countryOfResidence,
+      },
+    });
+
+    res.status(200).json({ paymentUrl, txRef });
+  } catch (err) {
+    console.error('[createSubscriptionPaymentLink] Error:', err);
     res.status(500).json({ error: err.message });
   }
 });

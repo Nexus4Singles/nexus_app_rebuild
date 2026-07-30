@@ -745,13 +745,30 @@ async function sendPurchaseConfirmationNotification(userId, journeyTitle, price)
   }
 }
 
-async function sendSubscriptionActivationNotification(userId, tier, price) {
+async function sendSubscriptionActivationNotification(userId, tier, price = null) {
   try {
     const userRef = db.collection('users').doc(userId);
     const notificationsRef = userRef.collection('notifications');
     
     const tierDisplay = tier.charAt(0).toUpperCase() + tier.slice(1);
-    
+    const recentWindow = admin.firestore.Timestamp.fromMillis(
+      Date.now() - 5 * 60 * 1000,
+    );
+
+    const duplicateQuery = await notificationsRef
+      .where('type', '==', 'subscription_activated')
+      .where('payload.tier', '==', tier)
+      .where('createdAt', '>=', recentWindow)
+      .limit(1)
+      .get();
+
+    if (!duplicateQuery.empty) {
+      console.log(
+        `[Notification] Skipping duplicate subscription activation notification for ${userId} tier=${tier}`,
+      );
+      return;
+    }
+
     await notificationsRef.add({
       type: 'subscription_activated',
       title: '✨ Premium Unlocked!',
@@ -761,7 +778,7 @@ async function sendSubscriptionActivationNotification(userId, tier, price) {
         title: '✨ Premium Unlocked!',
         body: `Your ${tierDisplay} subscription unlocks unlimited premium features`,
         tier: tier,
-        price: price,
+        ...(price != null ? { price: price } : {}),
         route: '/subscription',
       },
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -935,29 +952,7 @@ async function updateSubscriptionStatus(userId, event) {
       'updatedAt': admin.firestore.FieldValue.serverTimestamp(),
     });
 
-    // ✅ FIXED: Send notification about subscription activation (triggers FCM)
-    const tierDisplayNames = {
-      'nexus_premium_v2': 'Nexus Premium',
-      'monthly_premium_v2': 'Nexus Premium',
-      'monthly_premium': 'Nexus Premium',
-    };
-    const tierDisplay = tierDisplayNames[tier] || 'Nexus Premium';
-    const notificationsRef = userRef.collection('notifications');
-    await notificationsRef.add({
-      type: 'subscription_activated',
-      title: '✅ Subscription Active',
-      body: `Your ${tierDisplay} subscription is now active!`,
-      payload: {
-        type: 'subscription_activated',
-        title: '✅ Subscription Active',
-        body: `Your ${tierDisplay} subscription is active until ${expireDate?.toLocaleDateString()}`,
-        tier: tier,
-        expiryDate: expireDate?.toISOString(),
-        route: '/profile',
-      },
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      isSent: false,
-    });
+    await sendSubscriptionActivationNotification(userId, tier, null);
 
     console.log(`[RevenueCat] ✅ Updated subscription for user: ${userId} with notification (tier=${tier})`);
   } catch (error) {

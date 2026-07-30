@@ -1,4 +1,7 @@
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nexus_app_v2/core/router/safe_nav.dart';
 import 'package:nexus_app_v2/core/theme/app_colors.dart';
@@ -119,6 +122,8 @@ class SettingsScreen extends ConsumerWidget {
                 subtitle: 'Email us for support and feedback',
                 onTap: () => Navigator.of(context).pushNamed('/contact'),
               ),
+              _Divider(),
+              _DebugTokenTile(),
             ],
           ),
 
@@ -183,6 +188,139 @@ class SettingsScreen extends ConsumerWidget {
 // ============================================================================
 // SECTION HEADER
 // ============================================================================
+class _DebugTokenTile extends StatefulWidget {
+  const _DebugTokenTile();
+
+  @override
+  State<_DebugTokenTile> createState() => _DebugTokenTileState();
+}
+
+class _DebugTokenTileState extends State<_DebugTokenTile> {
+  String? _token;
+  bool _loading = false;
+  String? _error;
+
+  Future<void> _loadToken() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      final token = await user?.getIdToken();
+      if (!mounted) return;
+      setState(() {
+        _token = token;
+        _loading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _error = e.toString();
+        _loading = false;
+      });
+    }
+  }
+
+  Future<void> _copyToken() async {
+    if (_token == null || _token!.isEmpty) {
+      return;
+    }
+    await Clipboard.setData(ClipboardData(text: _token!));
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Firebase ID token copied')));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: _loadToken,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFDBEAFE),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.vpn_key_outlined,
+                  color: Color(0xFF2563EB),
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Debug Firebase Token',
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      _loading
+                          ? 'Loading token...'
+                          : _error != null
+                          ? 'Error: $_error'
+                          : _token == null
+                          ? 'Tap to load the current Firebase ID token'
+                          : 'Tap to refresh • Long press to copy',
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.getTextSecondary(context),
+                      ),
+                    ),
+                    if (_token != null) ...[
+                      const SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: AppColors.getSurface(context),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: AppColors.getBorder(
+                              context,
+                            ).withOpacity(0.5),
+                          ),
+                        ),
+                        child: SelectableText(
+                          _token!.length > 220
+                              ? '${_token!.substring(0, 220)}...'
+                              : _token!,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            fontFamily: 'monospace',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              IconButton(
+                onPressed: _token == null ? null : _copyToken,
+                icon: const Icon(Icons.copy_outlined),
+                tooltip: 'Copy token',
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _SectionHeader extends StatelessWidget {
   final String title;
 

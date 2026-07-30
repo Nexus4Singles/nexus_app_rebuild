@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'dart:io' show Platform;
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:nexus_app_v2/features/subscription/domain/subscription_models.dart';
 import '../config/revenuecat_config.dart';
 
 class RevenueCatService {
@@ -223,6 +224,71 @@ class RevenueCatService {
 
   static Future<CustomerInfo> getCustomerInfo() async {
     return await Purchases.getCustomerInfo();
+  }
+
+  /// Sync active RevenueCat subscription entitlement to Firestore for the
+  /// current user. Returns true if a Firestore update was applied.
+  static Future<bool> syncActiveSubscriptionToFirestore({
+    required String userId,
+    CustomerInfo? customerInfo,
+  }) async {
+    try {
+      final info = customerInfo ?? await Purchases.getCustomerInfo();
+      final activeEntitlements = info.entitlements.active;
+
+      if (activeEntitlements.isEmpty) {
+        debugPrint(
+          '[RevenueCatService] No active entitlements to sync for user: $userId',
+        );
+        return false;
+      }
+
+      final entitlement =
+          activeEntitlements['premium'] ?? activeEntitlements.values.first;
+      final expiryDateStr = entitlement.expirationDate;
+      Timestamp? expiryTimestamp;
+      if (expiryDateStr != null) {
+        final parsed = DateTime.tryParse(expiryDateStr);
+        if (parsed != null) {
+          expiryTimestamp = Timestamp.fromDate(parsed);
+        }
+      }
+
+      final subscriptionData = <String, dynamic>{
+        'isActive': true,
+        'tier': SubscriptionTier.monthly.id,
+        'startDate': FieldValue.serverTimestamp(),
+        if (expiryTimestamp != null) 'expiryDate': expiryTimestamp,
+        'autoRenew': true,
+        'revenueCatCustomerId': info.originalAppUserId,
+        'revenueCatSubscriptionId': entitlement.productIdentifier,
+      };
+
+      final updateData = <String, dynamic>{
+        'subscription': subscriptionData,
+        'onPremium': true,
+        'entitledUser': true,
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+      if (expiryTimestamp != null) {
+        updateData['subExpDate'] = expiryTimestamp;
+      }
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .set(updateData, SetOptions(merge: true));
+
+      debugPrint(
+        '[RevenueCatService] ✅ Synced active RevenueCat subscription to Firestore for user: $userId',
+      );
+      return true;
+    } catch (e) {
+      debugPrint(
+        '[RevenueCatService] ⚠️ Failed to sync active RevenueCat subscription: $e',
+      );
+      return false;
+    }
   }
 
   /// Checks if a non-consumable product is already owned (present in

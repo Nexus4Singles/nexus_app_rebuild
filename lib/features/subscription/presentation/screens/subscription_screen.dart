@@ -1,9 +1,13 @@
+import 'dart:convert';
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/constants/app_constants.dart';
@@ -33,38 +37,123 @@ extension NullableFirstWhere<T> on List<T> {
   }
 }
 
-const _bankTransferUrl = 'https://flutterwave.com/pay/mmtqwah5duoo';
+const _subscriptionPaymentLinkFunctionUrl =
+    'https://us-central1-nexus-visibility-app.cloudfunctions.net/createSubscriptionPaymentLink';
 
 Future<void> _launchBankTransferUrl(BuildContext context) async {
-  final uri = Uri.parse(_bankTransferUrl);
-  if (!await canLaunchUrl(uri)) {
+  final currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser == null) {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Unable to open the payment link. Please try again.'),
+          content: Text('Please sign in to start bank transfer payment.'),
         ),
       );
     }
     return;
   }
 
-  final launchedInApp = await launchUrl(uri, mode: LaunchMode.inAppWebView);
-
-  if (launchedInApp) {
-    return;
-  }
-
-  final launchedExternal = await launchUrl(
-    uri,
-    mode: LaunchMode.externalApplication,
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => const Center(child: CircularProgressIndicator()),
   );
 
-  if (!launchedExternal && context.mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Unable to open the payment link. Please try again.'),
-      ),
+  try {
+    final offerings = await RevenueCatService.getOfferings();
+    if (offerings == null) {
+      throw Exception('Unable to load subscription pricing from RevenueCat');
+    }
+
+    Offering? subscriptionOffering =
+        offerings.getOffering('nexus_premium_v2') ??
+        offerings.current ??
+        offerings.getOffering('Premium');
+    if (subscriptionOffering == null) {
+      throw Exception('No subscription offering available');
+    }
+
+    final packages = subscriptionOffering.availablePackages;
+    if (packages.isEmpty) {
+      throw Exception('No subscription packages available');
+    }
+
+    final targetProductId =
+        RevenueCatConfig.getSubscriptionProductId().toLowerCase();
+    Package? monthlyPackage = packages.firstWhereOrNull(
+      (p) => p.storeProduct.identifier.toLowerCase() == targetProductId,
     );
+    monthlyPackage ??= packages.firstWhereOrNull(
+      (p) =>
+          p.storeProduct.identifier.toLowerCase().startsWith(targetProductId),
+    );
+    monthlyPackage ??= packages.first;
+
+    final storeProduct = monthlyPackage.storeProduct;
+    final amount = storeProduct.price;
+    final currency = storeProduct.currencyCode.toUpperCase();
+
+    if (currency.isEmpty) {
+      throw Exception('RevenueCat pricing data is unavailable.');
+    }
+
+    final idToken = await currentUser.getIdToken(true);
+    final response = await http.post(
+      Uri.parse(_subscriptionPaymentLinkFunctionUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $idToken',
+      },
+      body: jsonEncode({
+        'amount': amount,
+        'currency': currency,
+        'productId': storeProduct.identifier,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      final errorMessage =
+          response.body.isNotEmpty
+              ? response.body
+              : 'Unable to create payment link';
+      throw Exception(errorMessage);
+    }
+
+    final data = jsonDecode(response.body) as Map<String, dynamic>;
+    final paymentUrl = data['paymentUrl'] as String?;
+    if (paymentUrl == null || paymentUrl.isEmpty) {
+      throw Exception('Payment link response was invalid');
+    }
+
+    final uri = Uri.parse(paymentUrl);
+    Navigator.pop(context);
+
+    final launchedInApp = await launchUrl(uri, mode: LaunchMode.inAppWebView);
+    if (launchedInApp) return;
+
+    final launchedExternal = await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
+
+    if (!launchedExternal && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Unable to open the payment link. Please try again.'),
+        ),
+      );
+    }
+  } catch (error) {
+    if (context.mounted) {
+      final navigator = Navigator.of(context);
+      if (navigator.canPop()) navigator.pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Bank transfer failed: ${error.toString()}'),
+          backgroundColor: AppColors.primary,
+        ),
+      );
+    }
   }
 }
 
@@ -645,7 +734,7 @@ class _NoSubscriptionView extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'If you have trouble subscribing with cards, you can complete payment via Flutterwave bank transfer using the button below.',
+                        'If you have trouble subscribing through Playstore/Appstore, you can subscribe via card or bank transfer using the button below.',
                         style: AppTextStyles.bodySmall.copyWith(
                           color: AppColors.getTextSecondary(context),
                           height: 1.6,
@@ -658,7 +747,7 @@ class _NoSubscriptionView extends ConsumerWidget {
                           onPressed: () => _launchBankTransferUrl(context),
                           icon: const Icon(Icons.open_in_new, size: 18),
                           label: Text(
-                            'Pay with Flutterwave',
+                            'Pay Online',
                             style: AppTextStyles.bodySmall.copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.bold,
@@ -677,11 +766,35 @@ class _NoSubscriptionView extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      Text(
-                        'After payment, send proof of payment to contact@nexus4christians.com or @nexus4christians on Instagram and your subscription will be activated.',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.getTextSecondary(context),
-                          height: 1.6,
+                      Text.rich(
+                        TextSpan(
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.getTextSecondary(context),
+                            height: 1.6,
+                          ),
+                          children: [
+                            const TextSpan(
+                              text:
+                                  'If your subscription is not activated after payment, kindly reach out to us by sending proof of payment to ',
+                            ),
+                            TextSpan(
+                              text: 'contact@nexus4christians.com',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const TextSpan(text: ' or '),
+                            TextSpan(
+                              text: '@nexus4christians',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const TextSpan(
+                              text:
+                                  ' on Instagram and your subscription will be activated.',
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -897,6 +1010,24 @@ class _NoSubscriptionView extends ConsumerWidget {
         debugPrint('⚠️  [SubscriptionPurchase] Local recording error: $e');
       }
 
+      // Sync the active RevenueCat entitlement into Firestore immediately.
+      if (firebaseUid != null) {
+        try {
+          final synced =
+              await RevenueCatService.syncActiveSubscriptionToFirestore(
+                userId: firebaseUid,
+                customerInfo: customerInfo,
+              );
+          debugPrint(
+            '🟢 [SubscriptionPurchase] RevenueCat entitlement sync completed: $synced',
+          );
+        } catch (e) {
+          debugPrint(
+            '⚠️ [SubscriptionPurchase] RevenueCat entitlement sync failed: $e',
+          );
+        }
+      }
+
       // Show success immediately (user has already paid via SDK validation)
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -931,10 +1062,9 @@ class _NoSubscriptionView extends ConsumerWidget {
         '🔴 [SubscriptionPurchase] Caught exception: ${e.runtimeType}: $e',
       );
 
-      // Check if this is a configuration error (product not in App Store Connect)
-      final errorStr = e.toString();
+      final errorStr = e.toString().toLowerCase();
       if (errorStr.contains('code: 1') &&
-          errorStr.contains('userCancelled: true')) {
+          errorStr.contains('usercancelled: true')) {
         debugPrint('🔴 [SubscriptionPurchase] CONFIGURATION ERROR DETECTED!');
         _showError(context, '''
 Purchase failed: Product not configured in App Store Connect.
@@ -947,6 +1077,39 @@ Please verify:
 
 Contact support if the issue persists.
 ''');
+      } else if (errorStr.contains('product_already_purchased') ||
+          errorStr.contains('already purchased') ||
+          errorStr.contains('already owned')) {
+        debugPrint(
+          '🟠 [SubscriptionPurchase] Existing subscription detected, restoring entitlement',
+        );
+        final firebaseUid = ref.read(currentUserIdProvider);
+        if (firebaseUid != null) {
+          try {
+            await RevenueCatService.login(firebaseUid);
+            await RevenueCatService.syncActiveSubscriptionToFirestore(
+              userId: firebaseUid,
+            );
+            ref.invalidate(subscriptionStatusProvider);
+            ref.invalidate(isPremiumUserProvider);
+          } catch (restoreError) {
+            debugPrint(
+              '⚠️ [SubscriptionPurchase] Restore failed: $restoreError',
+            );
+          }
+        }
+
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Subscription is already active. Restored premium access.',
+              ),
+              duration: Duration(seconds: 4),
+              backgroundColor: AppColors.success,
+            ),
+          );
+        }
       } else {
         _showError(context, 'Purchase failed: ${e.toString()}');
       }

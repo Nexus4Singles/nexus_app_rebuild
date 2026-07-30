@@ -67,11 +67,6 @@ android {
     }
 }
 
-// Suppress obsolete Java version warnings from plugins
-tasks.withType<JavaCompile> {
-    options.compilerArgs.add("-Xlint:-options")
-}
-
 flutter {
     source = "../.."
 }
