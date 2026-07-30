@@ -18,7 +18,7 @@ const { Parser } = require('json2csv');
 const crypto = require('crypto');
 
 // Import purchase validation functions
-const { validateAndRecordPurchase, revenueCatWebhook, validateAndRecordSubscription } = require('./validate_purchase');
+const { validateAndRecordPurchase, revenueCatWebhook } = require('./validate_purchase');
 
 admin.initializeApp({
   storageBucket: 'nexus-visibility-app.appspot.com'
@@ -1845,3 +1845,114 @@ exports.onCompatibilityQuizCompleted = functions.firestore
 // ============================================================================
 exports.validateAndRecordPurchase = validateAndRecordPurchase;
 exports.revenueCatWebhook = revenueCatWebhook;
+
+// ============================================================================
+// DAILY PROFILES FUNCTIONS (UK Launch - Daily 5 Feature)
+// ============================================================================
+
+const dailyProfilesModule = require('./daily_profiles');
+
+/**
+ * SCHEDULED: Calculate daily profiles at midnight UTC
+ * Cloud Scheduler Job (create manually in GCP Console):
+ * - Name: daily-profile-refresh-uk
+ * - Frequency: 0 0 * * * (midnight UTC)
+ * - HTTP Target: https://us-central1-{PROJECT_ID}.cloudfunctions.net/calculateDailyProfilesScheduled
+ * - Time zone: UTC
+ */
+exports.calculateDailyProfilesScheduled = functions
+  .pubsub.schedule('0 0 * * *')  // Midnight UTC every day
+  .timeZone('UTC')
+  .onRun(async (context) => {
+    console.log('⏰ [Scheduler] Daily profile calculation triggered at', new Date().toISOString());
+    try {
+      const result = await dailyProfilesModule.calculateDailyProfiles(
+        { body: {} },
+        {
+          status: (code) => ({
+            json: (data) => console.log('[Scheduler] Response:', data),
+          }),
+        }
+      );
+      console.log('✅ [Scheduler] Daily profile calculation completed');
+      return { success: true };
+    } catch (error) {
+      console.error('❌ [Scheduler] Error in daily profile calculation:', error);
+      return { success: false, error: error.message };
+    }
+  });
+
+/**
+ * SCHEDULED: Send daily profile notifications after profiles are calculated
+ * Runs 5 minutes after calculateDailyProfilesScheduled
+ */
+exports.sendDailyProfileNotificationsScheduled = functions
+  .pubsub.schedule('5 0 * * *')  // 00:05 UTC (5 min after midnight)
+  .timeZone('UTC')
+  .onRun(async (context) => {
+    console.log('📢 [Scheduler] Daily notifications trigger at', new Date().toISOString());
+    try {
+      await dailyProfilesModule.sendDailyProfileNotifications(
+        { body: {} },
+        {
+          status: (code) => ({
+            json: (data) => console.log('[Scheduler] Notifications sent:', data),
+          }),
+        }
+      );
+      console.log('✅ [Scheduler] Daily notifications sent');
+      return { success: true };
+    } catch (error) {
+      console.error('❌ [Scheduler] Error sending notifications:', error);
+      return { success: false, error: error.message };
+    }
+  });
+
+/**
+ * SCHEDULED: Clean up old daily profile data (older than 30 days)
+ * Runs at 1:00 AM UTC to avoid peak hours
+ */
+exports.cleanupOldDailyProfilesScheduled = functions
+  .pubsub.schedule('0 1 * * *')  // 1:00 AM UTC daily
+  .timeZone('UTC')
+  .onRun(async (context) => {
+    console.log('🧹 [Scheduler] Cleanup job triggered at', new Date().toISOString());
+    try {
+      await dailyProfilesModule.cleanupOldDailyProfiles(
+        { body: {} },
+        {
+          status: (code) => ({
+            json: (data) => console.log('[Scheduler] Cleanup completed:', data),
+          }),
+        }
+      );
+      return { success: true };
+    } catch (error) {
+      console.error('❌ [Scheduler] Cleanup error:', error);
+      return { success: false, error: error.message };
+    }
+  });
+
+/**
+ * CALLABLE: Update daily profiles when user changes preferences
+ * Called from Flutter app: FirebaseFunctions.instance.httpsCallable('updateProfilesOnPreferenceChange')
+ */
+exports.updateProfilesOnPreferenceChange = functions.https.onCall(
+  dailyProfilesModule.updateProfilesOnPreferenceChange
+);
+
+/**
+ * CALLABLE: Admin function to handle profile approval
+ * Called from admin review screen
+ */
+exports.handleNewProfileApproval = functions.https.onCall(
+  dailyProfilesModule.handleNewProfileApproval
+);
+
+/**
+ * Market Launch Management Functions
+ */
+const marketLaunchManager = require('./market_launch_manager');
+exports.initializeMarket = marketLaunchManager.initializeMarket;
+exports.send_waitlist_reminder_14day = marketLaunchManager.send_waitlist_reminder_14day;
+exports.executeMarketLaunch = marketLaunchManager.executeMarketLaunch;

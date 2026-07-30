@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,23 @@ class RevenueCatService {
 
   static Future<void> login(String userId) async {
     await Purchases.logIn(userId);
+
+    try {
+      final customerInfo = await Purchases.getCustomerInfo();
+      final customerId = customerInfo.originalAppUserId;
+      if (customerId.isNotEmpty) {
+        await FirebaseFirestore.instance.collection('users').doc(userId).set({
+          'revenueCat': {
+            'customerId': customerId,
+            'lastLinkedAt': FieldValue.serverTimestamp(),
+          },
+        }, SetOptions(merge: true));
+      }
+    } catch (e) {
+      debugPrint(
+        '⚠️ [RevenueCatService] Could not persist RevenueCat identity: $e',
+      );
+    }
   }
 
   static Future<void> logout() async {

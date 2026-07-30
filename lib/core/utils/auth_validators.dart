@@ -1,25 +1,16 @@
 class AuthValidators {
   /// Username requirements:
   /// - required
-  /// - allow spaces
-  /// - must have each word start with capital letter
-  /// - no minimum length required beyond non-empty
+  /// - must be 3-12 characters
+  /// - alphabet-only (letters only, no numbers/symbols/spaces)
   static String? username(String? v) {
     final value = (v ?? '').trim();
     if (value.isEmpty) return 'Username is required';
+    if (value.length < 3) return 'Username must be at least 3 characters';
+    if (value.length > 12) return 'Username must be 12 characters or fewer';
 
-    // Allow letters + spaces only
-    if (!RegExp(r'^[A-Za-z ]+$').hasMatch(value)) {
-      return 'Username can only contain letters and spaces';
-    }
-
-    // Ensure each word is Title Case: "Ayomide Bajomo"
-    final words = value.split(RegExp(r'\s+')).where((w) => w.isNotEmpty);
-    for (final w in words) {
-      if (w.isEmpty) continue;
-      if (w[0] != w[0].toUpperCase()) {
-        return 'Each word must start with a capital letter';
-      }
+    if (!RegExp(r'^[A-Za-z]+$').hasMatch(value)) {
+      return 'Username can only contain letters';
     }
 
     return null;

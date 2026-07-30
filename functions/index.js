@@ -43,6 +43,10 @@ exports.revenueCatWebhook = revenueCatWebhook;
 const { expireStaleBookings } = require('./expire_stale_bookings');
 exports.expireStaleBookings = expireStaleBookings;
 
+// Re-export daily discover profiles refresh function
+const { refreshDiscoverProfiles } = require('./refresh_discover_profiles');
+exports.refreshDiscoverProfiles = refreshDiscoverProfiles;
+
 // ============================================================================
 // ADMIN VERIFICATION FUNCTION - Manually verify users by email
 // ============================================================================
@@ -823,7 +827,7 @@ exports.onCoachApplicationSubmitted = functions.firestore
 
       const mailOptions = {
         from: 'nexusgodlydating@gmail.com',
-        to: 'contact@nexus4singles.com',
+        to: 'contact@nexus4christians.com',
         subject: `🎯 New Coach Application: ${data.fullName}`,
         html: `<div style="max-width: 600px; margin: 0 auto;"><div style="background: #667eea; color: white; padding: 24px; border-radius: 8px 8px 0 0; text-align: center;"><h1 style="margin: 0;">🎯 New Coach Application</h1></div><div style="background: #f9fafb; padding: 24px; border-radius: 0 0 8px 8px;"><table style="width: 100%;"><tr><td style="padding: 8px 0; font-weight: 600;">Name:</td><td>${data.fullName || 'N/A'}</td></tr><tr><td style="padding: 8px 0; font-weight: 600;">Email:</td><td><a href="mailto:${data.email}">${data.email || 'N/A'}</a></td></tr><tr><td style="padding: 8px 0; font-weight: 600;">Experience:</td><td>${data.yearsOfExperience || 0} years</td></tr></table></div></div>`,
         attachments,
@@ -1965,3 +1969,11 @@ exports.verifyAndConfirmBookingPayment = functions
     console.log(`[verifyAndConfirm] ✅ Booking ${bookingId} confirmed. TxRef: ${txRef}`);
     return { success: true };
   });
+
+/**
+ * Market Launch Management Functions
+ */
+const marketLaunchManager = require('./market_launch_manager');
+exports.initializeMarket = marketLaunchManager.initializeMarket;
+exports.send_waitlist_reminder_14day = marketLaunchManager.send_waitlist_reminder_14day;
+exports.executeMarketLaunch = marketLaunchManager.executeMarketLaunch;

@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../application/dating_preferences_provider.dart';
 import '../../domain/dating_preferences.dart';
 import 'dating_preferences_setup_screen.dart';
-import 'search_results_grid_screen.dart';
+import 'search_results_router_screen.dart';
 
 /// Main dating search screen
 class NewDatingSearchScreen extends ConsumerStatefulWidget {
@@ -74,9 +74,10 @@ class _NewDatingSearchScreenState extends ConsumerState<NewDatingSearchScreen>
     }
 
     final preferencesAsync = ref.watch(datingPreferencesProvider);
+    DatingPreferences? preferences;
 
     if (preferencesAsync.hasValue) {
-      final preferences = preferencesAsync.valueOrNull;
+      preferences = preferencesAsync.valueOrNull;
       _showSetupScreenCached = _resolveShowSetup(preferences);
     }
 
@@ -87,8 +88,11 @@ class _NewDatingSearchScreenState extends ConsumerState<NewDatingSearchScreen>
     return IndexedStack(
       index: _showSetupScreenCached! ? 0 : 1,
       children: [
-        DatingPreferencesSetupScreen(onComplete: _handlePreferencesComplete),
-        const SearchResultsGridScreen(),
+        DatingPreferencesSetupScreen(
+          existingPreferences: preferences,
+          onComplete: _handlePreferencesComplete,
+        ),
+        const SearchResultsRouterScreen(),
       ],
     );
   }
@@ -107,12 +111,20 @@ class _NewDatingSearchScreenState extends ConsumerState<NewDatingSearchScreen>
         _didMarkFirstSearchComplete = true;
         Future(() => _markFirstSearchAsComplete());
       }
-      return true;
+      return preferences == null ||
+          preferences.countryOfResidence == null ||
+          preferences.countryOfResidence!.isEmpty;
     }
 
     if (preferences == null) {
       return true;
     }
+
+    if (preferences.countryOfResidence == null ||
+        preferences.countryOfResidence!.isEmpty) {
+      return true;
+    }
+
     return false;
   }
 

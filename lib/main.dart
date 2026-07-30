@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -43,6 +44,14 @@ Future<void> main() async {
   }
 
   await ContentCacheService().init();
+
+  // Initialize AdMob for native ads
+  try {
+    await MobileAds.instance.initialize();
+    debugPrint('🟢 [main] AdMob initialized successfully');
+  } catch (e) {
+    debugPrint('🔴 [main] AdMob initialization failed: $e');
+  }
 
   // Initialize RevenueCat for purchase/subscription management
   try {

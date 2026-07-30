@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/router/safe_nav.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/providers/user_provider.dart';
 import '../../../../features/counselling/domain/counselling_models.dart';
 import 'coach_application_screen.dart';
 import 'coach_list_screen.dart';
@@ -254,6 +255,25 @@ class _BookMarriageCoachScreenState
                       onPressed:
                           selectedIndex != null
                               ? () {
+                                final currentUser =
+                                    ref.read(currentUserProvider).valueOrNull;
+                                const adminEmail = 'nexus4singles@gmail.com';
+
+                                if (currentUser?.email != adminEmail) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text(
+                                        'This feature is Coming Soon',
+                                      ),
+                                      backgroundColor: AppColors.primary,
+                                      duration: const Duration(
+                                        milliseconds: 1500,
+                                      ),
+                                    ),
+                                  );
+                                  return;
+                                }
+
                                 final categories = [
                                   SessionType.individual,
                                   SessionType.premarital,
@@ -291,12 +311,12 @@ class _BookMarriageCoachScreenState
                     ),
                   ),
 
-                  const SizedBox(height: 32),
+                  // const SizedBox(height: 32),
 
-                  // Professional Recruitment Section
-                  _buildRecruitmentSection(context),
+                  // // Professional Recruitment Section
+                  // _buildRecruitmentSection(context),
 
-                  const SizedBox(height: 24),
+                  // const SizedBox(height: 24),
                 ],
               ),
             ),
@@ -306,6 +326,9 @@ class _BookMarriageCoachScreenState
     );
   }
 
+  /// ========== COMMENTED OUT: Professional Recruitment Section ==========
+  /// This section was hidden to make "Book a Session" the final CTA on the page
+  /*
   Widget _buildRecruitmentSection(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -564,6 +587,111 @@ class _CounselingCard extends StatelessWidget {
                   ],
                 ),
               ),
+          ],
+        ),
+      ),
+    );
+  }
+  */
+}
+
+class _CounselingCard extends StatelessWidget {
+  final CounselingType counseling;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _CounselingCard({
+    required this.counseling,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color:
+              isSelected
+                  ? AppColors.primary.withOpacity(0.1)
+                  : AppColors.getSurface(context),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color:
+                isSelected ? AppColors.primary : AppColors.getBorder(context),
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Icon Container - push to top
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color:
+                    isSelected
+                        ? AppColors.primary.withOpacity(0.15)
+                        : AppColors.getSurface(context),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                counseling.icon,
+                size: 20,
+                color:
+                    isSelected
+                        ? AppColors.primary
+                        : AppColors.getTextSecondary(context),
+              ),
+            ),
+
+            // Text - centered
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      counseling.title,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.labelSmall.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color:
+                            isSelected
+                                ? AppColors.primary
+                                : AppColors.getTextPrimary(context),
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color:
+                            isSelected
+                                ? AppColors.primary.withOpacity(0.2)
+                                : AppColors.getSurface(context),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        counseling.type,
+                        style: TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w500,
+                          color: _getTypeColor(counseling.type, context),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

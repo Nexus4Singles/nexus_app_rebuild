@@ -40,6 +40,7 @@ class SecurePurchaseValidationService {
     required String packageId,
     double? pricePaid,
     String? currency,
+    String? revenueCatCustomerId,
   }) async {
     try {
       debugPrint(
@@ -73,6 +74,8 @@ class SecurePurchaseValidationService {
           'packageId': packageId,
           if (pricePaid != null) 'pricePaid': pricePaid,
           if (currency != null) 'currency': currency,
+          if (revenueCatCustomerId != null && revenueCatCustomerId.isNotEmpty)
+            'revenueCatCustomerId': revenueCatCustomerId,
         }),
       );
 
@@ -121,6 +124,7 @@ class SecurePurchaseValidationService {
     required String packageId,
     required String transactionId,
     required String tier,
+    String? revenueCatCustomerId,
   }) async {
     try {
       debugPrint(
@@ -150,6 +154,8 @@ class SecurePurchaseValidationService {
           'packageId': packageId,
           'transactionId': transactionId,
           'tier': tier,
+          if (revenueCatCustomerId != null && revenueCatCustomerId.isNotEmpty)
+            'revenueCatCustomerId': revenueCatCustomerId,
         }),
       );
 

@@ -3,7 +3,7 @@
 /**
  * Update a user's verification status
  * Usage: node update_verification_status.js <email> <newStatus>
- *   e.g., node update_verification_status.js contact@nexus4singles.com unverified
+ *   e.g., node update_verification_status.js contact@nexus4christians.com unverified
  */
 
 const admin = require('firebase-admin');
@@ -18,7 +18,7 @@ const db = admin.firestore();
 async function updateVerificationStatus(email, newStatus) {
   if (!email || !newStatus) {
     console.error('Usage: node update_verification_status.js <email> <newStatus>');
-    console.error('Example: node update_verification_status.js contact@nexus4singles.com unverified');
+    console.error('Example: node update_verification_status.js contact@nexus4christians.com unverified');
     process.exit(1);
   }
 

@@ -582,6 +582,7 @@ class AssessmentResult extends Equatable {
   final String userId;
   final int totalScore;
   final int maxScore;
+  final int questionCount;
   final double percentage;
   final SignalTier overallTier;
   final List<AssessmentAnswer> answers;
@@ -599,6 +600,7 @@ class AssessmentResult extends Equatable {
     required this.userId,
     required this.totalScore,
     required this.maxScore,
+    required this.questionCount,
     required this.percentage,
     required this.overallTier,
     required this.answers,
@@ -614,6 +616,12 @@ class AssessmentResult extends Equatable {
   /// Alias for percentage (UI compatibility)
   double get overallPercentage => percentage;
 
+  /// Completion rate based on how many questions were answered out of the total.
+  double get completionRate {
+    if (questionCount <= 0) return 0.0;
+    return (answers.length / questionCount).clamp(0.0, 1.0);
+  }
+
   factory AssessmentResult.fromJson(Map<String, dynamic> json) {
     return AssessmentResult(
       id: json['id'] as String? ?? '',
@@ -621,6 +629,10 @@ class AssessmentResult extends Equatable {
       userId: json['userId'] as String,
       totalScore: json['totalScore'] as int,
       maxScore: json['maxScore'] as int,
+      questionCount:
+          (json['questionCount'] as int?) ??
+          (json['answers'] as List<dynamic>?)?.length ??
+          0,
       percentage: (json['percentage'] as num).toDouble(),
       overallTier: SignalTier.fromValue(json['overallTier'] as String),
       answers:
@@ -794,6 +806,7 @@ class AssessmentResult extends Equatable {
       userId: userId,
       totalScore: totalScore,
       maxScore: maxScore,
+      questionCount: config.questionCount,
       percentage: percentage,
       overallTier: overallTier,
       answers: answers,
@@ -810,6 +823,7 @@ class AssessmentResult extends Equatable {
     'userId': userId,
     'totalScore': totalScore,
     'maxScore': maxScore,
+    'questionCount': questionCount,
     'percentage': percentage,
     'overallTier': overallTier.value,
     'answers': answers.map((a) => a.toJson()).toList(),
@@ -840,6 +854,7 @@ class AssessmentResult extends Equatable {
     userId,
     totalScore,
     maxScore,
+    questionCount,
     percentage,
     overallTier,
     answers,

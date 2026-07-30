@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +17,8 @@ import 'core/widgets/chat_media_upload_lifecycle_handler.dart';
 import 'core/email_verification/email_verification_gate.dart';
 import 'features/launch/presentation/app_launch_gate.dart';
 import 'features/app_update/presentation/screens/app_update_checker.dart';
+import 'core/providers/auth_provider.dart';
+import 'core/services/chat_service.dart';
 import 'safe_imports.dart';
 
 Future<void> appEntry() async {
@@ -83,7 +84,9 @@ class _RootApp extends ConsumerWidget {
             child: DefaultTextStyle(
               style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
               child: ChatMediaUploadLifecycleHandler(
-                child: child ?? const SizedBox.shrink(),
+                child: AppLifecycleListener(
+                  child: child ?? const SizedBox.shrink(),
+                ),
               ),
             ),
           );
@@ -91,5 +94,69 @@ class _RootApp extends ConsumerWidget {
         home: const EmailVerificationGate(child: AppLaunchGate()),
       ),
     );
+  }
+}
+
+/// Tracks app lifecycle and updates user's last active status
+class AppLifecycleListener extends ConsumerStatefulWidget {
+  final Widget child;
+
+  const AppLifecycleListener({super.key, required this.child});
+
+  @override
+  ConsumerState<AppLifecycleListener> createState() =>
+      _AppLifecycleListenerState();
+}
+
+class _AppLifecycleListenerState extends ConsumerState<AppLifecycleListener>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _updateLastActive();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        // App came to foreground - update last active
+        _updateLastActive();
+        break;
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+      case AppLifecycleState.hidden:
+      case AppLifecycleState.inactive:
+        // App went to background
+        break;
+    }
+  }
+
+  Future<void> _updateLastActive() async {
+    try {
+      // Get current user ID from auth
+      final authService = ref.read(authServiceProvider);
+      final userId = authService.currentUser?.uid;
+
+      if (userId != null && userId.isNotEmpty) {
+        // Update last active timestamp in Firestore
+        final chatService = ChatService();
+        await chatService.updateUserLastActive(userId);
+      }
+    } catch (e) {
+      debugPrint('Error updating last active: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 }

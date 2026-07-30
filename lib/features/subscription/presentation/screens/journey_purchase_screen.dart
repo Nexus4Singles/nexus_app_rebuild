@@ -530,6 +530,24 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
         return;
       }
 
+      final userId = ref.read(currentUserIdProvider);
+      if (userId == null) {
+        _showError('User not authenticated');
+        setState(() => _isPurchasing = false);
+        return;
+      }
+
+      try {
+        await RevenueCatService.login(userId);
+        debugPrint(
+          '🟢 [JourneyPurchase] RevenueCat linked to Firebase user: $userId',
+        );
+      } catch (e) {
+        debugPrint(
+          '⚠️ [JourneyPurchase] RevenueCat login before purchase failed: $e',
+        );
+      }
+
       debugPrint(
         '🔵 [JourneyPurchase] Calling purchasePackage for: '
         '${journeyPackage.storeProduct.identifier} (journey: ${widget.journey.id})',
@@ -561,13 +579,6 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
       // OPTIMISTIC: Trust the SDK, record immediately
       // ====================================================================
       // The RevenueCat SDK has returned successfully, confirming the purchase.
-      final userId = ref.read(currentUserIdProvider);
-      if (userId == null) {
-        _showError('User not authenticated');
-        setState(() => _isPurchasing = false);
-        return;
-      }
-
       debugPrint(
         '🟢 [JourneyPurchase] SDK confirmed purchase for ${widget.journey.id}',
       );
@@ -750,6 +761,7 @@ class _JourneyPurchaseScreenState extends ConsumerState<JourneyPurchaseScreen> {
           packageId: packageId,
           pricePaid: journeyPackage.storeProduct.price,
           currency: journeyPackage.storeProduct.currencyCode,
+          revenueCatCustomerId: customerInfo.originalAppUserId,
         );
       }
     } catch (e) {
@@ -822,6 +834,7 @@ Contact support if the issue persists.
     required String packageId,
     double? pricePaid,
     String? currency,
+    String? revenueCatCustomerId,
   }) {
     // Fire async verification without awaiting
     Future.microtask(() async {
@@ -837,6 +850,7 @@ Contact support if the issue persists.
           packageId: packageId,
           pricePaid: pricePaid,
           currency: currency,
+          revenueCatCustomerId: revenueCatCustomerId,
         );
 
         debugPrint('🟢 [JourneyPurchase] Backend verification successful');

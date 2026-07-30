@@ -33,6 +33,45 @@ extension NullableFirstWhere<T> on List<T> {
   }
 }
 
+const _bankTransferUrl = 'https://flutterwave.com/pay/mmtqwah5duoo';
+
+Future<void> _launchBankTransferUrl(BuildContext context) async {
+  final uri = Uri.parse(_bankTransferUrl);
+
+  if (!await canLaunchUrl(uri)) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Unable to open the payment link. Please try again.'),
+        ),
+      );
+    }
+    return;
+  }
+
+  final launchedInApp = await launchUrl(
+    uri,
+    mode: LaunchMode.inAppWebView,
+  );
+
+  if (launchedInApp) {
+    return;
+  }
+
+  final launchedExternal = await launchUrl(
+    uri,
+    mode: LaunchMode.externalApplication,
+  );
+
+  if (!launchedExternal && context.mounted) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Unable to open the payment link. Please try again.'),
+      ),
+    );
+  }
+}
+
 class SubscriptionScreen extends ConsumerStatefulWidget {
   /// Optional: set initial tab index (0 = Dating Features, 1 = Journey Purchases)
   final int? initialTabIndex;
@@ -606,31 +645,50 @@ class _NoSubscriptionView extends ConsumerWidget {
                 Icon(Icons.info_outline, color: AppColors.primary, size: 20),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: RichText(
-                    text: TextSpan(
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.getTextSecondary(context),
-                        height: 1.4,
-                      ),
-                      children: [
-                        const TextSpan(
-                          text:
-                              'This subscription will auto-renew. Cancel anytime from your Playstore or Appstore subscription settings.\n\nHaving issues subscribing with cards? Visit our Instagram page ',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'If you have trouble subscribing with cards, you can complete payment via Flutterwave bank transfer using the button below.',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.getTextSecondary(context),
+                          height: 1.6,
                         ),
-                        TextSpan(
-                          text: '@nexus4christians',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.getTextSecondary(context),
-                            fontWeight: FontWeight.bold,
-                            height: 1.4,
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () => _launchBankTransferUrl(context),
+                          icon: const Icon(Icons.open_in_new, size: 18),
+                          label: Text(
+                            'Pay with Flutterwave',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 14,
+                              horizontal: 16,
+                            ),
+                            side: BorderSide(color: AppColors.primary),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
                           ),
                         ),
-                        const TextSpan(
-                          text:
-                              ' and click the link in our bio to subscribe via bank transfer. Send proof of payment to us and your subscription will be activated. ',
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'After payment, send proof of payment to contact@nexus4christians.com or @nexus4christians on Instagram and your subscription will be activated.',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.getTextSecondary(context),
+                          height: 1.6,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -765,6 +823,20 @@ class _NoSubscriptionView extends ConsumerWidget {
 
       // Make purchase - SDK handles payment sheet display
       // SDK will throw if user cancels, return CustomerInfo if successful
+      final firebaseUid = ref.read(currentUserIdProvider);
+      if (firebaseUid != null) {
+        try {
+          await RevenueCatService.login(firebaseUid);
+          debugPrint(
+            '🟢 [SubscriptionPurchase] RevenueCat linked to Firebase user: $firebaseUid',
+          );
+        } catch (e) {
+          debugPrint(
+            '⚠️ [SubscriptionPurchase] RevenueCat login before purchase failed: $e',
+          );
+        }
+      }
+
       final customerInfo = await RevenueCatService.purchasePackage(
         monthlyPackage,
       );
@@ -822,6 +894,7 @@ class _NoSubscriptionView extends ConsumerWidget {
           packageId: monthlyPackage.storeProduct.identifier,
           transactionId: subscriptionTransactionId,
           tier: SubscriptionTier.monthly.id,
+          revenueCatCustomerId: customerInfo.originalAppUserId,
         );
       } catch (e) {
         // Even if local recording fails, the user has the subscription. Don't block.
@@ -848,6 +921,7 @@ class _NoSubscriptionView extends ConsumerWidget {
         packageId: monthlyPackage.storeProduct.identifier,
         transactionId: subscriptionTransactionId,
         tier: SubscriptionTier.monthly.id,
+        revenueCatCustomerId: customerInfo.originalAppUserId,
       );
     } catch (e) {
       if (context.mounted) {
@@ -895,6 +969,7 @@ Contact support if the issue persists.
     required String packageId,
     required String transactionId,
     required String tier,
+    String? revenueCatCustomerId,
   }) async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
@@ -905,17 +980,19 @@ Contact support if the issue persists.
     }
 
     final db = FirebaseFirestore.instance;
+    final expiryDate = Timestamp.fromDate(
+      DateTime.now().add(const Duration(days: 30)),
+    );
 
     final subscriptionRecord = {
       'isActive': true,
       'tier': tier,
       'startDate': FieldValue.serverTimestamp(),
       // Set expiry to 30 days from now (will be updated by webhook with real expiry)
-      'expiryDate': Timestamp.fromDate(
-        DateTime.now().add(const Duration(days: 30)),
-      ),
+      'expiryDate': expiryDate,
       'autoRenew': true,
       'revenueCatTransactionId': transactionId,
+      'revenueCatCustomerId': revenueCatCustomerId,
       'packageId': packageId,
       'type': 'subscription',
       'verificationStatus':
@@ -927,6 +1004,8 @@ Contact support if the issue persists.
     await db.collection('users').doc(user.uid).update({
       'subscription': subscriptionRecord,
       'onPremium': true,
+      'subExpDate': expiryDate,
+      'entitledUser': true,
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }
@@ -937,6 +1016,7 @@ Contact support if the issue persists.
     required String packageId,
     required String transactionId,
     required String tier,
+    String? revenueCatCustomerId,
   }) {
     // Fire async verification without awaiting
     Future.microtask(() async {
@@ -949,6 +1029,7 @@ Contact support if the issue persists.
           packageId: packageId,
           transactionId: transactionId,
           tier: tier,
+          revenueCatCustomerId: revenueCatCustomerId,
         );
 
         debugPrint('🟢 [SubscriptionPurchase] Async verification successful');
@@ -1253,6 +1334,18 @@ class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              'This subscription will auto-renew. Cancel anytime from your Playstore or Appstore subscription settings.',
+              style: AppTextStyles.caption.copyWith(
+                color: AppColors.getTextSecondary(context),
+                height: 1.4,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: 12),
         ],
       ),
     );

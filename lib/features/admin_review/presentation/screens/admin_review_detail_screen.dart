@@ -13,6 +13,7 @@ import 'package:nexus_app_v2/core/providers/service_providers.dart';
 import 'package:nexus_app_v2/core/services/duplicate_detection_service.dart';
 import 'package:nexus_app_v2/core/theme/app_colors.dart';
 import 'package:nexus_app_v2/core/notifications/notification_service.dart';
+import 'package:nexus_app_v2/features/admin_review/application/admin_review_audio_url_utils.dart';
 
 class AdminReviewDetailScreen extends ConsumerStatefulWidget {
   final String userId;
@@ -162,13 +163,7 @@ class _AdminReviewDetailScreenState
                     .toList()
                 : <String>[];
 
-        final audios =
-            (rp?['audioUrls'] is List)
-                ? (rp!['audioUrls'] as List)
-                    .map((e) => e.toString())
-                    .take(2)
-                    .toList()
-                : <String>[];
+        final audios = extractAdminReviewAudioUrls(data).take(3).toList();
 
         // Debug logging for admin troubleshooting
         print('[ADMIN_REVIEW] ====== AdminReviewDetailScreen LOADED ======');
@@ -213,7 +208,6 @@ class _AdminReviewDetailScreenState
           age = '?';
         }
         final email = (data['email'] ?? '').toString();
-        final status = dating?['verificationStatus']?.toString();
 
         Future<void> setStatus(String newStatus, {String? reason}) async {
           print(
@@ -376,75 +370,10 @@ class _AdminReviewDetailScreenState
           );
         }
 
-        Future<String?> askDisableReason({required bool enabling}) async {
-          final controller = TextEditingController();
-          return showDialog<String?>(
-            context: context,
-            builder: (ctx) {
-              return AlertDialog(
-                title: Text(enabling ? 'Enable account' : 'Disable account'),
-                content: TextField(
-                  controller: controller,
-                  autofocus: true,
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                    hintText:
-                        enabling
-                            ? 'Optional note (will be cleared on enable)…'
-                            : 'Optional reason (e.g. policy violation, spam, abuse)…',
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(null),
-                    child: const Text('Cancel'),
-                  ),
-                  ElevatedButton(
-                    onPressed:
-                        () => Navigator.of(ctx).pop(controller.text.trim()),
-                    child: Text(enabling ? 'Enable' : 'Disable'),
-                  ),
-                ],
-              );
-            },
-          );
-        }
-
-        Future<void> setAccountDisabled(bool disabled, {String? reason}) async {
-          final adminId = FirebaseAuth.instance.currentUser?.uid ?? 'admin';
-          final payload = <String, dynamic>{
-            'account.disabled': disabled,
-            'account.disabledBy': adminId,
-            'account.disabledAt': FieldValue.serverTimestamp(),
-          };
-
-          if (!disabled) {
-            // Clear reason when enabling.
-            payload['account.disabledReason'] = FieldValue.delete();
-          } else {
-            if (reason != null && reason.trim().isNotEmpty) {
-              payload['account.disabledReason'] = reason.trim();
-            } else {
-              payload['account.disabledReason'] = FieldValue.delete();
-            }
-          }
-
-          try {
-            await fs.collection('users').doc(widget.userId).update(payload);
-            print(
-              '[DEBUG] setAccountDisabled(disabled=$disabled) completed successfully',
-            );
-          } catch (e, st) {
-            print('[ERROR] setAccountDisabled failed: $e');
-            print('[ERROR] Stack trace: $st');
-            rethrow;
-          }
-        }
-
         return Scaffold(
           appBar: AppBar(title: Text('Review: $name, $age')),
           body: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: ListView(
               children: [
                 Column(
@@ -453,7 +382,7 @@ class _AdminReviewDetailScreenState
                     // Email display
                     if (email.isNotEmpty)
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
+                        padding: const EdgeInsets.only(bottom: 8),
                         child: Row(
                           children: [
                             const Text(
@@ -473,61 +402,128 @@ class _AdminReviewDetailScreenState
                           ],
                         ),
                       ),
-                    const SizedBox(height: 12),
-                    // Status badge
+                    const SizedBox(height: 8),
+
+                    // User Details Section
                     Builder(
                       builder: (_) {
-                        final status =
-                            dating?['verificationStatus']?.toString() ??
-                            'unknown';
-                        final account =
-                            (data['account'] is Map)
-                                ? data['account'] as Map
+                        final profileData =
+                            (dating?['profile'] is Map)
+                                ? dating!['profile'] as Map
                                 : null;
-                        final disabled =
-                            (account?['disabled'] == true) ||
-                            (account?['isDisabled'] == true);
+                        final city = profileData?['city']?.toString() ?? 'N/A';
+                        final countryOfResidence =
+                            dating?['countryOfResidence']?.toString() ?? 'N/A';
+                        final nationality =
+                            profileData?['nationality']?.toString() ?? 'N/A';
+                        final profession =
+                            profileData?['profession']?.toString() ?? 'N/A';
+                        final churchName =
+                            profileData?['churchName']?.toString() ?? 'N/A';
 
-                        Color badgeColor = AppColors.textMuted;
-                        if (disabled) {
-                          badgeColor = AppColors.error;
-                        } else if (status == 'verified') {
-                          badgeColor = AppColors.success;
-                        } else if (status == 'rejected') {
-                          badgeColor = AppColors.warning;
-                        } else if (status == 'pending') {
-                          badgeColor = AppColors.info;
-                        }
-
-                        String badgeText = status.toUpperCase();
-                        if (disabled) badgeText = '⛔ DISABLED';
-
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: badgeColor.withOpacity(0.2),
-                            border: Border.all(color: badgeColor),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            badgeText,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: badgeColor,
-                              fontSize: 14,
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Text(
+                                  'City: ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    city,
+                                    style: const TextStyle(fontSize: 14),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                const Text(
+                                  'Country of Residence: ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    countryOfResidence,
+                                    style: const TextStyle(fontSize: 14),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                const Text(
+                                  'Nationality: ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    nationality,
+                                    style: const TextStyle(fontSize: 14),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                const Text(
+                                  'Profession: ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    profession,
+                                    style: const TextStyle(fontSize: 14),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                const Text(
+                                  'Church Name: ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    churchName,
+                                    style: const TextStyle(fontSize: 14),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         );
                       },
                     ),
-                    const SizedBox(height: 12),
-                    Text('Status: ${status ?? "unknown"}'),
-                    const SizedBox(height: 6),
-
-                    // Account disable status (moderation)
+                    const SizedBox(height: 4),
+                    // Account disable status (only if disabled)
                     Builder(
                       builder: (_) {
                         final account =
@@ -537,14 +533,15 @@ class _AdminReviewDetailScreenState
                         final disabled =
                             (account?['disabled'] == true) ||
                             (account?['isDisabled'] == true);
+
+                        // Only show if account is actually disabled
+                        if (!disabled) return const SizedBox.shrink();
+
                         final disabledBy = account?['disabledBy']?.toString();
                         final disabledReason =
                             account?['disabledReason']?.toString();
 
-                        final lines = <String>[];
-                        lines.add(
-                          'Account disabled: ${disabled ? "YES" : "NO"}',
-                        );
+                        final lines = <String>['⛔ Account Disabled'];
                         if (disabledBy != null && disabledBy.isNotEmpty) {
                           lines.add('Disabled by: $disabledBy');
                         }
@@ -559,8 +556,11 @@ class _AdminReviewDetailScreenState
                       },
                     ),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 4),
 
+                    // NOTE: Disable and Enable account buttons have been commented out
+                    // and replaced with user details display above
+                    /*
                     Row(
                       children: [
                         Expanded(
@@ -622,8 +622,8 @@ class _AdminReviewDetailScreenState
                         ),
                       ],
                     ),
-
-                    const SizedBox(height: 14),
+                    */
+                    const SizedBox(height: 8),
 
                     Builder(
                       builder: (_) {
@@ -669,13 +669,13 @@ class _AdminReviewDetailScreenState
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 10),
 
                 const Text(
                   'Photos (review pack)',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 if (photos.isEmpty)
                   const Text('No photos in review pack.')
                 else
@@ -749,12 +749,12 @@ class _AdminReviewDetailScreenState
                     ],
                   ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 12),
                 const Text(
                   'Audio (review pack)',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 if (audios.isEmpty)
                   const Text('No audio in review pack.')
                 else
@@ -771,24 +771,7 @@ class _AdminReviewDetailScreenState
                     ],
                   ),
 
-                const SizedBox(height: 24),
-
-                // Duplicate Detection Section
-                _DuplicateDetectionWidget(
-                  userId: widget.userId,
-                  photoHashes:
-                      (rp?['photoHashes'] as List?)
-                          ?.map((e) => e.toString())
-                          .toList() ??
-                      [],
-                  audioHashes:
-                      (rp?['audioHashes'] as List?)
-                          ?.map((e) => e.toString())
-                          .toList() ??
-                      [],
-                ),
-
-                const SizedBox(height: 24),
+                const SizedBox(height: 12),
                 Row(
                   children: [
                     Expanded(
@@ -846,6 +829,22 @@ class _AdminReviewDetailScreenState
                   ],
                 ),
                 const SizedBox(height: 12),
+
+                // Duplicate Detection Section
+                _DuplicateDetectionWidget(
+                  userId: widget.userId,
+                  photoHashes:
+                      (rp?['photoHashes'] as List?)
+                          ?.map((e) => e.toString())
+                          .toList() ??
+                      [],
+                  audioHashes:
+                      (rp?['audioHashes'] as List?)
+                          ?.map((e) => e.toString())
+                          .toList() ??
+                      [],
+                ),
+                const SizedBox(height: 8),
               ],
             ),
           ),

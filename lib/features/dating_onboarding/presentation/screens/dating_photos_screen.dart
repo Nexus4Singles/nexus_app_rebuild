@@ -101,7 +101,7 @@ class _DatingPhotosScreenState extends ConsumerState<DatingPhotosScreen> {
                   const DatingProfileProgressBar(currentStep: 5, totalSteps: 9),
                   const SizedBox(height: 12),
                   Text(
-                    'Add at least 2 Photos of yourself. We highly recommend uploading your best pictures because first impressions really matter. Profiles with AI-generated or indecent pictures will not be approved.',
+                    'Add at least 2 different Photos of yourself. We highly recommend uploading your best pictures because first impressions really matter. Profiles with AI-generated or indecent pictures will not be approved.',
                     style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.getTextMuted(context),
                       height: 1.3,

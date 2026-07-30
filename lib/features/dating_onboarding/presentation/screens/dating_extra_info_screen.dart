@@ -41,6 +41,20 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
     _church = draft.churchName;
     _showOtherChurch = _church == 'Other';
 
+    // Log if draft has incomplete data (helps catch edge cases)
+    if (_countryOfResidence == null ||
+        _nationality == null ||
+        _education == null ||
+        _profession == null ||
+        _church == null) {
+      debugPrint(
+        '[DATING_EXTRA_INFO] ⚠️ INIT: Loaded incomplete draft. '
+        'city="${draft.city}", country=$_countryOfResidence, '
+        'nationality=$_nationality, education=$_education, '
+        'profession=$_profession, church=$_church',
+      );
+    }
+
     _cityCtrl.addListener(_saveDraft);
     _otherChurchCtrl.addListener(_saveDraft);
   }
@@ -194,6 +208,27 @@ class _DatingExtraInfoScreenState extends ConsumerState<DatingExtraInfoScreen> {
                           ),
                       onOtherChurchChanged: () => setState(() {}),
                       onContinue: () {
+                        // CRITICAL: Double-check validation before navigating
+                        // This prevents edge case where incomplete draft data is saved
+                        // and user somehow navigates to next screen
+                        if (!_valid) {
+                          debugPrint(
+                            '[DATING_EXTRA_INFO] ⚠️ CAUGHT: Invalid state at continue. '
+                            'city=${_cityCtrl.text.trim()}, country=$_countryOfResidence, '
+                            'nationality=$_nationality, education=$_education, '
+                            'profession=$_profession, church=$_church',
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text(
+                                'Please fill all required fields before continuing.',
+                              ),
+                              backgroundColor: Colors.red[400],
+                              duration: const Duration(seconds: 3),
+                            ),
+                          );
+                          return;
+                        }
                         Navigator.of(
                           context,
                         ).pushNamed('/dating/setup/hobbies');
@@ -450,10 +485,7 @@ class _LabeledField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: AppTextStyles.labelMedium.copyWith(fontSize: 12),
-        ),
+        Text(label, style: AppTextStyles.labelMedium.copyWith(fontSize: 12)),
         const SizedBox(height: 6),
         child,
       ],

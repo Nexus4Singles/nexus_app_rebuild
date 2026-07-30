@@ -161,6 +161,10 @@ service cloud.firestore {
         allow read, write: if isSignedIn() && request.auth.uid == uid;
       }
 
+      match /dailyProfilesViewed/{viewId} {
+        allow read, create, update, delete: if isSignedIn() && request.auth.uid == uid;
+      }
+
       match /journeys/{journeyId} {
         allow list: if isSignedIn() && request.auth.uid == uid;
         allow read: if isSignedIn() && request.auth.uid == uid;
@@ -226,7 +230,7 @@ service cloud.firestore {
           && isParticipant(parentChat());
 
         // UPDATE: Participants can update their own messages
-        // - Receiver: mark as read (isRead, readAt)
+        // - Receiver: mark as read (isRead, readAt) or decline (isDeclined, declineReason, declinedAt)
         // - Sender: replace local path with cloud URL after background media upload
         allow update: if isSignedIn()
           && isParticipant(parentChat())
@@ -579,6 +583,49 @@ match /config/{configId} {
         && request.resource.data.userId == request.auth.uid;
 
       allow delete: if false;
+    }
+
+    // ============================================================================
+    // MARKETS (UK Launch)
+    // ============================================================================
+    match /markets/{market} {
+      // All signed-in users can read market phase/status
+      allow read: if isSignedIn();
+      
+      // Only admin/backend can write
+      allow write: if isAdmin();
+    }
+
+    // ============================================================================
+    // DAILY PROFILES (Carousel for UK/other markets)
+    // ============================================================================
+    match /dailyProfiles/{date} {
+      // Allow signed-in users to read daily profiles for any date
+      allow read: if isSignedIn();
+      
+      // Only admin/backend can write (populated by Cloud Functions)
+      allow write: if isAdmin();
+      
+      match /users/{uid} {
+        // Users can read their own daily profiles
+        allow read: if isSignedIn() && request.auth.uid == uid;
+        
+        // Cloud Functions can write
+        allow write: if isAdmin();
+      }
+    }
+
+    // ============================================================================
+    // WAITING LIST STATS (UK Launch - Gender Distribution)
+    // ============================================================================
+    // Note: This is accessed via config/waitingListStats/countries/{country}
+    // The config rule allows read: if true, but we need explicit subcollection rules
+    match /config/waitingListStats/countries/{country} {
+      // All signed-in users can read waiting list stats
+      allow read: if isSignedIn();
+      
+      // Only admin/backend can write
+      allow write: if isAdmin();
     }
 
     // ============================================================================

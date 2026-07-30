@@ -54,6 +54,9 @@ class ChatMessage {
   final DateTime sentAt;
   final DateTime? readAt;
   final bool isRead;
+  final bool isDeclined;
+  final DateTime? declinedAt;
+  final String? declineReason;
 
   const ChatMessage({
     required this.id,
@@ -65,6 +68,9 @@ class ChatMessage {
     required this.sentAt,
     this.readAt,
     this.isRead = false,
+    this.isDeclined = false,
+    this.declinedAt,
+    this.declineReason,
   });
 
   factory ChatMessage.fromFirestore(Map<String, dynamic> data, String id) {
@@ -78,6 +84,9 @@ class ChatMessage {
       sentAt: (data['sentAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       readAt: (data['readAt'] as Timestamp?)?.toDate(),
       isRead: data['isRead'] as bool? ?? false,
+      isDeclined: data['isDeclined'] as bool? ?? false,
+      declinedAt: (data['declinedAt'] as Timestamp?)?.toDate(),
+      declineReason: data['declineReason'] as String?,
     );
   }
 }

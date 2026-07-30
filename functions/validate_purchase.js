@@ -82,7 +82,7 @@ exports.validateAndRecordPurchase = functions.https.onRequest(async (req, res) =
     console.log('[validatePurchase] requestBody keys:', Object.keys(requestBody));
 
     // Extract parameters from parsed body
-    const { journeyId, journeyTitle, transactionId, packageId } = requestBody;
+    const { journeyId, journeyTitle, transactionId, packageId, revenueCatCustomerId } = requestBody;
 
     // ========================================================================
     // INPUT VALIDATION
@@ -182,7 +182,8 @@ exports.validateAndRecordPurchase = functions.https.onRequest(async (req, res) =
       const revenueCatValidation = await validateWithRevenueCat(
         userId,
         transactionId,
-        packageId
+        packageId,
+        revenueCatCustomerId
       );
 
       if (!revenueCatValidation.isValid) {
@@ -371,7 +372,7 @@ exports.validateAndRecordSubscription = functions.https.onRequest(async (req, re
     console.log('[validateSubscription] req.body type:', typeof req.body);
     console.log('[validateSubscription] req.body:', JSON.stringify(req.body));
 
-    const { packageId, transactionId, tier } = requestBody;
+    const { packageId, transactionId, tier, revenueCatCustomerId } = requestBody;
 
     // ========================================================================
     // INPUT VALIDATION
@@ -410,7 +411,12 @@ exports.validateAndRecordSubscription = functions.https.onRequest(async (req, re
         `[validateSubscription] Validating with RevenueCat: User=${userId}, Transaction=${transactionId}`
       );
 
-      const revenueCatValidation = await validateWithRevenueCat(userId, transactionId, packageId);
+      const revenueCatValidation = await validateWithRevenueCat(
+        userId,
+        transactionId,
+        packageId,
+        revenueCatCustomerId
+      );
 
       if (!revenueCatValidation.isValid) {
         console.error(
@@ -453,12 +459,25 @@ exports.validateAndRecordSubscription = functions.https.onRequest(async (req, re
         userAgent: req.headers['user-agent'] || 'unknown',
         revenueCatVerified: true,
       };
+      const fallbackExpiryDate = admin.firestore.Timestamp.fromDate(
+        new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+      );
+
+      if (revenueCatValidation.customerId && revenueCatValidation.customerId !== userId) {
+        await db.collection('revenuecatMappings').doc(revenueCatValidation.customerId).set({
+          firebaseUid: userId,
+          source: 'validate_subscription',
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        }, { merge: true });
+      }
 
       // Update subscription record (overwrites existing)
       const userRef = db.collection('users').doc(userId);
       await userRef.update({
         'subscription': subscriptionRecord,
         'onPremium': true, // Legacy flag for backward compatibility
+        'subExpDate': fallbackExpiryDate,
+        'entitledUser': true,
         'updatedAt': admin.firestore.FieldValue.serverTimestamp(),
       });
 
@@ -508,7 +527,7 @@ exports.validateAndRecordSubscription = functions.https.onRequest(async (req, re
  * 2. Server-side: We verify user exists and has purchase history
  * 3. Transaction ID: Verified client-side, logged server-side for audit trail
  */
-async function validateWithRevenueCat(userId, transactionId, packageId) {
+async function validateWithRevenueCat(userId, transactionId, packageId, revenueCatCustomerId) {
   console.log(
     `[RevenueCat] Starting validation for user=${userId}, transactionId=${transactionId}`
   );
@@ -531,12 +550,14 @@ async function validateWithRevenueCat(userId, transactionId, packageId) {
       });
     }
 
+    const lookupId = (revenueCatCustomerId || userId || '').trim();
+    const path = `/v1/subscribers/${encodeURIComponent(lookupId)}`;
+
     // RevenueCat API endpoint to get customer info
-    // We use the customer ID which is typically the user ID in our case
     const options = {
       hostname: 'api.revenuecat.com',
       port: 443,
-      path: `/v1/subscribers/${userId}`,
+      path,
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${REVENUECAT_API_KEY}`,
@@ -590,9 +611,15 @@ async function validateWithRevenueCat(userId, transactionId, packageId) {
           // Extract transaction details - use subscriptions for better pricing data
           const txData = extractTransactionData(customerData, packageId);
 
+          const resolvedCustomerId =
+            customerData.original_app_user_id ||
+            customerData.app_user_id ||
+            lookupId ||
+            userId;
+
           resolve({
             isValid: true,
-            customerId: userId,
+            customerId: resolvedCustomerId,
             transactionData: txData,
             revenueCatCustomer: customerData,
           });
@@ -812,20 +839,26 @@ exports.revenueCatWebhook = functions.https.onRequest(async (req, res) => {
       return res.status(400).json({ error: 'Missing app_user_id' });
     }
 
+    const resolvedFirebaseUid = await resolveRevenueCatCustomerToFirebaseUid(customerId);
+    if (!resolvedFirebaseUid) {
+      console.warn(`[RevenueCat Webhook] Could not resolve RevenueCat customer ${customerId} to a Firebase user; ignoring event`);
+      return res.status(200).json({ success: true, skipped: true });
+    }
+
     switch (eventType) {
       case 'INITIAL_SUBSCRIPTION':
       case 'RENEWAL':
         // Update subscription status
-        await updateSubscriptionStatus(customerId, event);
+        await updateSubscriptionStatus(resolvedFirebaseUid, event);
         break;
 
       case 'SUBSCRIPTION_PAUSED':
       case 'SUBSCRIPTION_CANCELLED':
-        await cancelSubscriptionStatus(customerId, event);
+        await cancelSubscriptionStatus(resolvedFirebaseUid, event);
         break;
 
       case 'EXPIRED':
-        await expireSubscriptionStatus(customerId);
+        await expireSubscriptionStatus(resolvedFirebaseUid);
         break;
 
       default:
@@ -838,6 +871,27 @@ exports.revenueCatWebhook = functions.https.onRequest(async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+async function resolveRevenueCatCustomerToFirebaseUid(customerId) {
+  try {
+    const directUserRef = db.collection('users').doc(customerId);
+    const directUserDoc = await directUserRef.get();
+    if (directUserDoc.exists) {
+      return customerId;
+    }
+
+    const mappingDoc = await db.collection('revenuecatMappings').doc(customerId).get();
+    if (mappingDoc.exists) {
+      const mappingData = mappingDoc.data() || {};
+      return mappingData.firebaseUid || null;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('[RevenueCat] Failed to resolve RevenueCat customer mapping:', error);
+    return null;
+  }
+}
 
 async function updateSubscriptionStatus(userId, event) {
   try {

@@ -6,8 +6,8 @@ import 'package:flutter/foundation.dart';
 /// Notes:
 /// - We keep updates narrowly-scoped (only fields we intend to change).
 /// - We maintain a small set of Nexus 1.x compatibility fields (profileUrl1..4 etc).
-/// - "Moderation bump" logic is conservative: when media changes and user was
-///   previously verified, we can bump status back to pending.
+/// - Profile edits keep the existing verification state intact and only refresh
+///   the review pack metadata when media is updated.
 class DatingProfileService {
   final FirebaseFirestore _fs;
 
@@ -63,44 +63,16 @@ class DatingProfileService {
     };
   }
 
-  static Map<String, dynamic> _datingModerationUpdates({
-    required Map<String, dynamic> existingUserDoc,
+  static Map<String, dynamic> buildModerationUpdates({
     required List<String> photoUrls,
     required List<String> audioUrls,
-    required bool bumpToPendingIfVerified,
   }) {
-    // Read current status from user doc: users/{uid}.dating.verificationStatus
-    final dating =
-        (existingUserDoc['dating'] is Map)
-            ? (existingUserDoc['dating'] as Map).cast<String, dynamic>()
-            : null;
-
-    final currentStatus = dating?['verificationStatus']?.toString();
-    final isLockedByAdmin = dating?['verificationLockedByAdmin'] == true;
-
-    final updates = <String, dynamic>{
+    return <String, dynamic>{
       'dating.reviewPack': _buildReviewPack(
         photoUrls: photoUrls,
         audioUrls: audioUrls,
       ),
     };
-
-    // Only bump to pending if not locked by admin
-    if (bumpToPendingIfVerified &&
-        (currentStatus == 'verified' || currentStatus == 'rejected') &&
-        !isLockedByAdmin) {
-      // Bump back to pending when user changes evidence content (photos/audio).
-      updates['dating.verificationStatus'] = 'pending';
-      updates['dating.pendingAt'] = FieldValue.serverTimestamp();
-      // Clear prior decisions (optional but reduces confusion).
-      updates['dating.verifiedAt'] = null;
-      updates['dating.verifiedBy'] = null;
-      updates['dating.rejectedAt'] = null;
-      updates['dating.rejectedBy'] = null;
-      updates['dating.rejectionReason'] = null;
-    }
-
-    return updates;
   }
 
   // --------------------------------------------------------------------------
@@ -214,7 +186,6 @@ class DatingProfileService {
     final userRef = _userDocRef(uid);
 
     final doc = await userRef.get();
-    final existing = doc.data() ?? <String, dynamic>{};
 
     final audioUrls = <String>[
       if (audio1Url != null && audio1Url.trim().isNotEmpty) audio1Url.trim(),
@@ -282,25 +253,6 @@ class DatingProfileService {
           'Snapchat': snapchatUsername!,
       },
     };
-
-    // If the user was previously verified and we changed evidence, bump to pending
-    final previousDating =
-        (existing['dating'] is Map)
-            ? (existing['dating'] as Map).cast<String, dynamic>()
-            : <String, dynamic>{};
-    final currentStatus = previousDating['verificationStatus']?.toString();
-    final isLockedByAdmin = previousDating['verificationLockedByAdmin'] == true;
-
-    if ((currentStatus == 'verified' || currentStatus == 'rejected') && !isLockedByAdmin) {
-      datingUpdates['dating.verificationStatus'] = 'pending';
-      datingUpdates['dating.pendingAt'] = FieldValue.serverTimestamp();
-      // Clear prior decisions
-      datingUpdates['dating.verifiedAt'] = null;
-      datingUpdates['dating.verifiedBy'] = null;
-      datingUpdates['dating.rejectedAt'] = null;
-      datingUpdates['dating.rejectedBy'] = null;
-      datingUpdates['dating.rejectionReason'] = null;
-    }
 
     // Top-level fields: non-profile metadata + search-critical fields (dual-write)
     // DatingProfile.fromFirestore reads ALL these from root level, so they
@@ -425,11 +377,9 @@ class DatingProfileService {
     final audioUrls = _audioUrlsFromExisting(existing);
 
     updateData.addAll(
-      _datingModerationUpdates(
-        existingUserDoc: existing,
+      buildModerationUpdates(
         photoUrls: photoUrls,
         audioUrls: audioUrls,
-        bumpToPendingIfVerified: true,
       ),
     );
 
@@ -462,11 +412,9 @@ class DatingProfileService {
     };
 
     updates.addAll(
-      _datingModerationUpdates(
-        existingUserDoc: existing,
+      buildModerationUpdates(
         photoUrls: photoUrls,
         audioUrls: audioUrls,
-        bumpToPendingIfVerified: true,
       ),
     );
 

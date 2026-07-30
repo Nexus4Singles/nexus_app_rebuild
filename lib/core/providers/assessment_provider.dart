@@ -261,6 +261,16 @@ class AssessmentNotifier extends StateNotifier<AssessmentState> {
       }
 
       print('[AssessmentNotifier] ✓ Loaded config: ${config.assessmentId}');
+
+      try {
+        await _firestoreService.trackAssessmentStart(
+          config.assessmentId,
+          config.questionCount,
+        );
+      } catch (e) {
+        print('[AssessmentNotifier] ⚠️ Failed to track assessment start: $e');
+      }
+
       state = AssessmentState(config: config);
     } catch (e) {
       print('[AssessmentNotifier] ❌ Error starting assessment: $e');

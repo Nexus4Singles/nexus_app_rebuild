@@ -24,7 +24,7 @@ Checking hiding mechanisms:
 
 📊 SUMMARY OF HIDDEN USERS: 2
 
-1. contact@nexus4singles.com
+1. contact@nexus4christians.com
    UID: 5gSsntMpsSOnJS1t4j0V61uvUFL2
    Username: Nexus
    Reasons: isAdmin: true, hidden: true, isHidden: true

@@ -61,6 +61,7 @@ import '../../features/launch/presentation/app_launch_gate.dart'
     show AuthEntryScreen;
 
 import '../../features/admin_review/presentation/screens/admin_review_queue_screen.dart';
+import '../../features/admin_review/presentation/screens/market_launch_control_screen.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   final name = settings.name ?? '/';
@@ -417,6 +418,12 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => const CoachDashboardScreen(),
+      );
+
+    case '/admin/market-launch':
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const MarketLaunchControlScreen(),
       );
 
     default:

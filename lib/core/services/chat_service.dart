@@ -16,6 +16,9 @@ class ChatMessage {
   final DateTime? readAt;
   final bool isRead;
   final Map<String, dynamic>? metadata;
+  final bool isDeclined;
+  final DateTime? declinedAt;
+  final String? declineReason;
 
   const ChatMessage({
     required this.id,
@@ -28,6 +31,9 @@ class ChatMessage {
     this.readAt,
     this.isRead = false,
     this.metadata,
+    this.isDeclined = false,
+    this.declinedAt,
+    this.declineReason,
   });
 
   factory ChatMessage.fromFirestore(Map<String, dynamic> data, String id) {
@@ -42,6 +48,9 @@ class ChatMessage {
       readAt: (data['readAt'] as Timestamp?)?.toDate(),
       isRead: data['isRead'] as bool? ?? false,
       metadata: data['metadata'] as Map<String, dynamic>?,
+      isDeclined: data['isDeclined'] as bool? ?? false,
+      declinedAt: (data['declinedAt'] as Timestamp?)?.toDate(),
+      declineReason: data['declineReason'] as String?,
     );
   }
 
@@ -56,6 +65,9 @@ class ChatMessage {
       'readAt': readAt != null ? Timestamp.fromDate(readAt!) : null,
       'isRead': isRead,
       'metadata': metadata,
+      'isDeclined': isDeclined,
+      'declinedAt': declinedAt != null ? Timestamp.fromDate(declinedAt!) : null,
+      'declineReason': declineReason,
     };
   }
 
@@ -70,6 +82,9 @@ class ChatMessage {
     DateTime? readAt,
     bool? isRead,
     Map<String, dynamic>? metadata,
+    bool? isDeclined,
+    DateTime? declinedAt,
+    String? declineReason,
   }) {
     return ChatMessage(
       id: id ?? this.id,
@@ -82,6 +97,9 @@ class ChatMessage {
       readAt: readAt ?? this.readAt,
       isRead: isRead ?? this.isRead,
       metadata: metadata ?? this.metadata,
+      isDeclined: isDeclined ?? this.isDeclined,
+      declinedAt: declinedAt ?? this.declinedAt,
+      declineReason: declineReason ?? this.declineReason,
     );
   }
 }
@@ -266,7 +284,7 @@ class ChatConversation {
 
 /// Service for managing chat functionality
 class ChatService {
-  static const int _kFreeChatPartnerLimit = 1;
+  static const int _kFreeChatPartnerLimit = 3;
 
   String _chatIdFor(String u1, String u2) {
     final a = u1.trim();
@@ -389,8 +407,8 @@ class ChatService {
       if (okBecauseHistory) return;
 
       throw ChatException(
-        'You can only chat with $_kFreeChatPartnerLimit person for free. '
-        'Subscribe to chat with more people.',
+        'You can only chat with $_kFreeChatPartnerLimit people for free. '
+        'Subscribe to chat with more users.',
       );
     }
 
@@ -506,7 +524,7 @@ class ChatService {
       if (okBecauseHistory) return;
 
       throw ChatException(
-        'You can only chat with $_kFreeChatPartnerLimit person for free. Subscribe to chat with more people.',
+        'You can only chat with $_kFreeChatPartnerLimit people for free. Subscribe to chat with more users.',
       );
     }
 
@@ -555,7 +573,7 @@ class ChatService {
         );
         if (!okBecauseHistory) {
           throw ChatException(
-            'You can only chat with $_kFreeChatPartnerLimit person for free. Subscribe to chat with more people.',
+            'You can only chat with $_kFreeChatPartnerLimit people for free. Subscribe to chat with more users.',
           );
         }
         // User has history, allow the message
@@ -596,7 +614,8 @@ class ChatService {
     final account = (data['account'] is Map) ? (data['account'] as Map) : null;
     if (account != null) {
       if (account['disabled'] == true) return true;
-      if (account['isDisabled'] == true) return true; // legacy field name fallback
+      if (account['isDisabled'] == true)
+        return true; // legacy field name fallback
       final acctStatus = account['status']?.toString().toLowerCase();
       if (acctStatus == 'disabled') return true;
     }
@@ -809,9 +828,7 @@ class ChatService {
       // Older chat docs may not have the field, and Firestore would exclude them.
       // NOTE: No orderBy here — avoids needing a composite index. Sort client-side.
       final query =
-          await _chatsRef
-              .where('participantIds', arrayContains: userId)
-              .get();
+          await _chatsRef.where('participantIds', arrayContains: userId).get();
 
       final all =
           query.docs
@@ -819,10 +836,11 @@ class ChatService {
               .toList();
 
       // Client-side filter and sort.
-      return all
-          .where((c) => c.isActive)
-          .toList()
-        ..sort((a, b) => (b.lastMessageAt ?? DateTime(0)).compareTo(a.lastMessageAt ?? DateTime(0)));
+      return all.where((c) => c.isActive).toList()..sort(
+        (a, b) => (b.lastMessageAt ?? DateTime(0)).compareTo(
+          a.lastMessageAt ?? DateTime(0),
+        ),
+      );
     } catch (e) {
       throw ChatException('Failed to get conversations: $e');
     }
@@ -845,10 +863,11 @@ class ChatService {
                   .toList();
 
           // Client-side filter and sort: newest first.
-          return all
-              .where((c) => c.isActive)
-              .toList()
-            ..sort((a, b) => (b.lastMessageAt ?? DateTime(0)).compareTo(a.lastMessageAt ?? DateTime(0)));
+          return all.where((c) => c.isActive).toList()..sort(
+            (a, b) => (b.lastMessageAt ?? DateTime(0)).compareTo(
+              a.lastMessageAt ?? DateTime(0),
+            ),
+          );
         });
   }
 
@@ -1185,6 +1204,78 @@ class ChatService {
     } catch (e) {
       return [];
     }
+  }
+
+  // ============================================================================
+  // MESSAGE READ STATUS
+  // ============================================================================
+
+  /// Mark a message as read by updating readAt timestamp
+  /// Called when message is viewed in chat thread
+  Future<void> markMessageAsRead(String chatId, String messageId) async {
+    try {
+      await _messagesRef(chatId).doc(messageId).update({
+        'isRead': true,
+        'readAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      print('[ChatService] Error marking message as read: $e');
+      // Don't throw - read status is non-critical
+    }
+  }
+
+  // ============================================================================
+  // LAST ACTIVE STATUS
+  // ============================================================================
+
+  /// Update user's last active timestamp (called when app comes to foreground)
+  Future<void> updateUserLastActive(String userId) async {
+    if (userId.trim().isEmpty) return;
+
+    try {
+      await _fs.collection('users').doc(userId).update({
+        'lastActiveAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      print('[ChatService] Error updating last active: $e');
+      // Don't throw - this is non-critical
+    }
+  }
+
+  /// Get user's last active timestamp
+  Future<DateTime?> getUserLastActive(String userId) async {
+    if (userId.trim().isEmpty) return null;
+
+    try {
+      final doc = await _fs.collection('users').doc(userId).get();
+      final data = doc.data();
+      if (data?['lastActiveAt'] is Timestamp) {
+        return (data!['lastActiveAt'] as Timestamp).toDate();
+      }
+      return null;
+    } catch (e) {
+      print('[ChatService] Error fetching last active: $e');
+      return null;
+    }
+  }
+
+  /// Format last active for display
+  static String formatLastActive(DateTime? lastActive) {
+    if (lastActive == null) return 'Offline';
+
+    final now = DateTime.now();
+    final diff = now.difference(lastActive);
+
+    if (diff.inMinutes < 1) return 'Active now';
+    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
+    if (diff.inHours < 24) return '${diff.inHours}h ago';
+    if (diff.inDays < 7) return '${diff.inDays}d ago';
+    if (diff.inDays < 30) {
+      final weeks = (diff.inDays / 7).floor();
+      return '${weeks}w ago';
+    }
+
+    return 'Long time ago';
   }
 
   /// Exception for chat operations

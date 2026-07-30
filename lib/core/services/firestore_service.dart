@@ -266,8 +266,34 @@ class FirestoreService {
 
   // ==================== ASSESSMENT OPERATIONS ====================
 
+  Future<void> trackAssessmentStart(
+    String assessmentId,
+    int questionCount,
+  ) async {
+    final db = _db;
+    if (db == null) return;
+
+    try {
+      final summaryRef = db
+          .collection('assessmentCompletionStats')
+          .doc(assessmentId);
+
+      await summaryRef.set({
+        'assessmentId': assessmentId,
+        'questionCount': questionCount,
+        'count': FieldValue.increment(1),
+        'startedCount': FieldValue.increment(1),
+        'lastStartedAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    } catch (e) {
+      throw FirestoreException('Failed to track assessment start: $e');
+    }
+  }
+
   Future<void> saveAssessmentResult(String uid, AssessmentResult result) async {
-    if (_db == null) return;
+    final db = _db;
+    if (db == null) return;
 
     try {
       final now = DateTime.now();
@@ -288,6 +314,37 @@ class FirestoreService {
       final legacyDocId =
           '${result.assessmentId}_${now.millisecondsSinceEpoch}';
       await _assessmentResultsRef(uid).doc(legacyDocId).set(result.toJson());
+
+      // ✅ Simple aggregate for quick completion-rate reporting.
+      final summaryRef = db
+          .collection('assessmentCompletionStats')
+          .doc(result.assessmentId);
+
+      await db.runTransaction((transaction) async {
+        final summarySnap = await transaction.get(summaryRef);
+        final existing = summarySnap.data();
+
+        final startedCount = (existing?['startedCount'] as int?) ?? 0;
+        final completedCount = (existing?['completedCount'] as int?) ?? 0;
+        final persistedQuestionCount =
+            (existing?['questionCount'] as int?) ?? result.questionCount;
+
+        final nextCompletedCount = completedCount + 1;
+        final completionRate =
+            startedCount > 0 ? (nextCompletedCount / startedCount) : 0.0;
+
+        transaction.set(summaryRef, {
+          'assessmentId': result.assessmentId,
+          'count': startedCount,
+          'startedCount': startedCount,
+          'completedCount': nextCompletedCount,
+          'questionCount': persistedQuestionCount,
+          'completionRate': completionRate,
+          'completionRatePercent': completionRate * 100,
+          'lastCompletedAt': FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+      });
     } catch (e) {
       throw FirestoreException('Failed to save assessment result: $e');
     }

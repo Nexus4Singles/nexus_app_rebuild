@@ -5,7 +5,7 @@ import 'package:nexus_app_v2/core/theme/theme.dart';
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
 
-  static const String contactEmail = 'contact@nexus4singles.com';
+  static const String contactEmail = 'contact@nexus4christians.com';
 
   @override
   Widget build(BuildContext context) {

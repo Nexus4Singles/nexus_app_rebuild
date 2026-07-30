@@ -9,7 +9,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 async function hideUserFromSearch() {
-  const email = 'contact@nexus4singles.com';
+  const email = 'contact@nexus4christians.com';
   
   console.log(`\n=== HIDING USER FROM SEARCH ===\n`);
 

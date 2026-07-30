@@ -18,7 +18,7 @@ async function findHiddenUsers() {
     const knownEmails = [
       'nexus4singles@gmail.com',
       'nexusgodlydatingapp@gmail.com',
-      'contact@nexus4singles.com'
+      'contact@nexus4christians.com'
     ];
 
     let hiddenUsersFound = [];

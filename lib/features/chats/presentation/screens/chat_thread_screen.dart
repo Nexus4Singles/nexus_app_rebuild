@@ -259,6 +259,26 @@ final _userDocProvider = StreamProvider.family<Map<String, dynamic>?, String>((
       .map((d) => d.data());
 });
 
+/// Provider for user's last active status (real-time)
+final _userLastActiveProvider = StreamProvider.family<String, String>((
+  ref,
+  userId,
+) {
+  return FirebaseFirestore.instance
+      .collection('users')
+      .doc(userId)
+      .snapshots()
+      .map((doc) {
+        final data = doc.data();
+        final lastActiveAt = data?['lastActiveAt'] as Timestamp?;
+        if (lastActiveAt == null) {
+          return 'Offline';
+        }
+        final dateTime = lastActiveAt.toDate();
+        return ChatService.formatLastActive(dateTime);
+      });
+});
+
 String _bestDisplayName(Map<String, dynamic>? u) {
   if (u == null) return 'Chat';
   final candidates = [
@@ -492,6 +512,218 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
         curve: Curves.easeOut,
       );
     });
+  }
+
+  /// Generate status text for message delivery and interaction states
+  String _getMessageStatusText(_UiMessage msg) {
+    // Declined takes priority - show decline reason or fallback to "Declined"
+    if (msg.isDeclined) {
+      final reason = msg.declineReason?.trim() ?? '';
+      if (reason.isNotEmpty) {
+        return 'Declined: $reason';
+      } else {
+        return 'Declined';
+      }
+    }
+
+    // For received messages, just show the time
+    if (!msg.isMe) {
+      return msg.timeLabel;
+    }
+
+    // For sent messages, show delivery/read status
+    if (msg.isRead && msg.readAt != null) {
+      final rt = TimeOfDay.fromDateTime(msg.readAt!);
+      final rhh = rt.hour.toString().padLeft(2, '0');
+      final rmm = rt.minute.toString().padLeft(2, '0');
+      return 'Read at $rhh:$rmm';
+    }
+
+    // Default: just show time
+    return msg.timeLabel;
+  }
+
+  /// Get visual read status indicator for sent messages
+  /// Returns: ✓ (sent), ✓✓ (delivered), ✓✓ (read, blue)
+  Widget _getMessageReadStatusIcon(_UiMessage msg, BuildContext context) {
+    if (!msg.isMe) {
+      return const SizedBox.shrink();
+    }
+
+    // Read (blue double checkmark)
+    if (msg.isRead) {
+      return Text(
+        '✓✓',
+        style: TextStyle(
+          color: AppColors.primary,
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    }
+
+    // Sent/Delivered (grey double checkmark)
+    return Text(
+      '✓✓',
+      style: TextStyle(
+        color: AppColors.getTextSecondary(context),
+        fontSize: 10,
+      ),
+    );
+  }
+
+  /// Show decline reason bottom sheet with templated options
+  Future<void> _showDeclineReasonBottomSheet(
+    BuildContext context,
+    _UiMessage message,
+  ) async {
+    if (!mounted) return;
+
+    const declineReasons = [
+      'Looking for different connections',
+      'Not a good fit for me right now',
+      'Already chatting with someone',
+    ];
+
+    await showModalBottomSheet<String>(
+      context: context,
+      backgroundColor: AppColors.getSurface(context),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                child: Column(
+                  children: [
+                    Container(
+                      width: 44,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: AppColors.getBorder(context),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Let them know why',
+                      style: AppTextStyles.titleMedium.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'They\'ll get a friendly notification',
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.getTextSecondary(context),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
+              Divider(
+                height: 1,
+                color: AppColors.getBorder(context).withOpacity(0.2),
+              ),
+              ...declineReasons.map((reason) {
+                return ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  title: Text(reason),
+                  onTap: () {
+                    Navigator.of(context).pop(reason);
+                    _handleDeclineMessage(message, reason);
+                  },
+                );
+              }).toList(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  /// Handle message decline - update Firestore and send notification
+  Future<void> _handleDeclineMessage(_UiMessage message, String reason) async {
+    if (!mounted) return;
+
+    try {
+      final authAsync = ref.read(authStateProvider);
+      final me = authAsync.maybeWhen(
+        data: (a) => a.user?.uid,
+        orElse: () => null,
+      );
+      if (me == null) return;
+
+      // Update the message in Firestore to mark as declined
+      await FirebaseFirestore.instance
+          .collection('nexus2_chats')
+          .doc(widget.chatId)
+          .collection('messages')
+          .doc(message.id)
+          .update({
+            'isDeclined': true,
+            'declineReason': reason,
+            'declinedAt': FieldValue.serverTimestamp(),
+          });
+
+      // Get sender info for notification
+      final senderName = await _getUserDisplayName(message.senderId);
+
+      // Trigger cloud function to send friendly push notification
+      // Must be stored under users/{userId}/notifications/ for the FCM trigger to work
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(message.senderId)
+          .collection('notifications')
+          .add({
+            'type': 'message_declined',
+            'title': 'Interest Update',
+            'body': 'Hey! They\'re $reason, but you can keep exploring',
+            'senderName': senderName,
+            'declineReason': reason,
+            'timestamp': FieldValue.serverTimestamp(),
+            'read': false,
+          });
+
+      if (!mounted) return;
+      _toast('Response sent');
+    } catch (e) {
+      if (!mounted) return;
+      _toast('Failed to send response');
+      debugPrint('[ChatThread] Decline error: $e');
+    }
+  }
+
+  /// Get display name for a user
+  Future<String> _getUserDisplayName(String uid) async {
+    try {
+      final doc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      if (!doc.exists) return 'Someone';
+
+      final data = doc.data();
+      final candidates = [
+        data?['username'],
+        data?['displayName'],
+        data?['name'],
+        data?['fullName'],
+      ];
+      for (final c in candidates) {
+        final v = (c ?? '').toString().trim();
+        if (v.isNotEmpty) return v;
+      }
+      return 'Someone';
+    } catch (_) {
+      return 'Someone';
+    }
   }
 
   void _toast(String msg) {
@@ -1377,7 +1609,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
             ],
           ),
           content: Text(
-            'You can only chat with 1 user on the free version of Nexus. Kindly subscribe to chat with more users',
+            'You can only chat with 3 users on the free version of Nexus. Kindly subscribe to chat with more users.',
             textAlign: TextAlign.center,
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.getTextPrimary(context),
@@ -1782,6 +2014,9 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                   data: (u) {
                     final name = _bestDisplayName(u);
                     final avatarUrl = _bestAvatarUrl(u);
+                    final lastActiveAsync = ref.watch(
+                      _userLastActiveProvider(otherId),
+                    );
 
                     return Row(
                       children: [
@@ -1803,12 +2038,29 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              Text(
-                                'Tap to view profile',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: AppColors.getTextSecondary(context),
-                                ),
-                                overflow: TextOverflow.ellipsis,
+                              lastActiveAsync.maybeWhen(
+                                data: (lastActive) {
+                                  return Text(
+                                    lastActive,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: AppColors.getTextSecondary(
+                                        context,
+                                      ),
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  );
+                                },
+                                orElse: () {
+                                  return Text(
+                                    'Tap to view profile',
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: AppColors.getTextSecondary(
+                                        context,
+                                      ),
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -2140,6 +2392,10 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                               uploadStatus: uploadStatus,
                               replyToSnippet: replyToSnippet,
                               replyToWasMine: replyToWasMine,
+                              isRead: m.isRead,
+                              readAt: m.readAt,
+                              isDeclined: m.isDeclined,
+                              declineReason: m.declineReason,
                             );
                           }
                           if (m.type == MessageType.audio) {
@@ -2152,6 +2408,10 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                               uploadStatus: uploadStatus,
                               replyToSnippet: replyToSnippet,
                               replyToWasMine: replyToWasMine,
+                              isRead: m.isRead,
+                              readAt: m.readAt,
+                              isDeclined: m.isDeclined,
+                              declineReason: m.declineReason,
                             );
                           }
                           return _UiMessage.text(
@@ -2162,6 +2422,10 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                             senderId: m.senderId,
                             replyToSnippet: replyToSnippet,
                             replyToWasMine: replyToWasMine,
+                            isRead: m.isRead,
+                            readAt: m.readAt,
+                            isDeclined: m.isDeclined,
+                            declineReason: m.declineReason,
                           );
                         }).toList();
 
@@ -2182,6 +2446,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                       itemBuilder: (context, index) {
                         final m = uiMsgs[index];
                         return _Bubble(
+                          chatId: widget.chatId,
                           message: m,
                           isPlaying:
                               _playingMessageId == m.id && _player.playing,
@@ -2190,6 +2455,11 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                           durationStream: _player.durationStream,
                           onAudioTap: () => _togglePlay(m),
                           onLongPress: () => _openMessageActions(m),
+                          onDeclineTap:
+                              (ctx, msg) =>
+                                  _showDeclineReasonBottomSheet(ctx, msg),
+                          getStatusText: _getMessageStatusText,
+                          getReadStatusIcon: _getMessageReadStatusIcon,
                         );
                       },
                     );
@@ -2623,6 +2893,7 @@ class _AnimatedRecordingDotState extends State<_AnimatedRecordingDot>
 }
 
 class _Bubble extends ConsumerWidget {
+  final String chatId;
   final _UiMessage message;
 
   final bool isPlaying;
@@ -2631,8 +2902,12 @@ class _Bubble extends ConsumerWidget {
   final Stream<Duration?> durationStream;
   final VoidCallback onAudioTap;
   final VoidCallback? onLongPress;
+  final Function(BuildContext, _UiMessage) onDeclineTap;
+  final String Function(_UiMessage) getStatusText;
+  final Widget Function(_UiMessage, BuildContext) getReadStatusIcon;
 
   const _Bubble({
+    required this.chatId,
     required this.message,
     required this.isPlaying,
     required this.isThisAudioSelected,
@@ -2640,6 +2915,9 @@ class _Bubble extends ConsumerWidget {
     required this.durationStream,
     required this.onAudioTap,
     this.onLongPress,
+    required this.onDeclineTap,
+    required this.getStatusText,
+    required this.getReadStatusIcon,
   });
 
   String _fmt(Duration d) {
@@ -2658,6 +2936,18 @@ class _Bubble extends ConsumerWidget {
                 0.82 // More width on thin screens
             : screenWidth * 0.68; // Less width on wider screens
     final isMe = message.isMe;
+
+    // Mark received unread messages as read when displayed
+    if (!isMe && !message.isRead) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        try {
+          final chatService = ChatService();
+          chatService.markMessageAsRead(chatId, message.id);
+        } catch (e) {
+          debugPrint('Error marking message as read: $e');
+        }
+      });
+    }
 
     // Build retry callback for failed media uploads (sender only)
     final VoidCallback? retryCallback;
@@ -2743,15 +3033,62 @@ class _Bubble extends ConsumerWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 2),
-                          child: Text(
-                            message.timeLabel,
-                            style: AppTextStyles.caption.copyWith(
-                              color: AppColors.getTextOnPrimary(context),
-                              fontSize: 11,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // "Not Interested" button for received messages
+                            if (!isMe && !message.isDeclined)
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () => onDeclineTap(context, message),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 4,
+                                      horizontal: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.getBackground(context),
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        color: AppColors.getBorder(context),
+                                        width: 0.5,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Not Interested',
+                                      style: AppTextStyles.caption.copyWith(
+                                        color: AppColors.getTextSecondary(
+                                          context,
+                                        ),
+                                        fontSize: 9,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            const SizedBox(width: 6),
+                            // Status indicator with icon and text
+                            Padding(
+                              padding: const EdgeInsets.only(right: 2),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                spacing: 2,
+                                children: [
+                                  getReadStatusIcon(message, context),
+                                  Text(
+                                    getStatusText(message),
+                                    style: AppTextStyles.caption.copyWith(
+                                      color: AppColors.getTextOnPrimary(
+                                        context,
+                                      ),
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
@@ -2813,15 +3150,30 @@ class _Bubble extends ConsumerWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 2),
-                          child: Text(
-                            message.timeLabel,
-                            style: AppTextStyles.caption.copyWith(
-                              color: AppColors.getTextOnPrimary(context),
-                              fontSize: 11,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const SizedBox(width: 1),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 2),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                spacing: 2,
+                                children: [
+                                  getReadStatusIcon(message, context),
+                                  Text(
+                                    getStatusText(message),
+                                    style: AppTextStyles.caption.copyWith(
+                                      color: AppColors.getTextOnPrimary(
+                                        context,
+                                      ),
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
@@ -3389,6 +3741,11 @@ class _UiMessage {
   final String? replyToSnippet;
   final bool? replyToWasMine;
 
+  final bool isRead;
+  final DateTime? readAt;
+  final bool isDeclined;
+  final String? declineReason;
+
   const _UiMessage._({
     required this.id,
     required this.kind,
@@ -3401,6 +3758,10 @@ class _UiMessage {
     this.replyToId,
     this.replyToSnippet,
     this.replyToWasMine,
+    this.isRead = false,
+    this.readAt,
+    this.isDeclined = false,
+    this.declineReason,
   });
 
   factory _UiMessage.text({
@@ -3412,6 +3773,10 @@ class _UiMessage {
     String? replyToId,
     String? replyToSnippet,
     bool? replyToWasMine,
+    bool isRead = false,
+    DateTime? readAt,
+    bool isDeclined = false,
+    String? declineReason,
   }) {
     return _UiMessage._(
       id: id,
@@ -3423,6 +3788,10 @@ class _UiMessage {
       replyToId: replyToId,
       replyToSnippet: replyToSnippet,
       replyToWasMine: replyToWasMine,
+      isRead: isRead,
+      readAt: readAt,
+      isDeclined: isDeclined,
+      declineReason: declineReason,
     );
   }
 
@@ -3436,6 +3805,10 @@ class _UiMessage {
     String? replyToId,
     String? replyToSnippet,
     bool? replyToWasMine,
+    bool isRead = false,
+    DateTime? readAt,
+    bool isDeclined = false,
+    String? declineReason,
   }) {
     return _UiMessage._(
       id: id,
@@ -3448,6 +3821,10 @@ class _UiMessage {
       replyToId: replyToId,
       replyToSnippet: replyToSnippet,
       replyToWasMine: replyToWasMine,
+      isRead: isRead,
+      readAt: readAt,
+      isDeclined: isDeclined,
+      declineReason: declineReason,
     );
   }
 
@@ -3461,6 +3838,10 @@ class _UiMessage {
     String? replyToId,
     String? replyToSnippet,
     bool? replyToWasMine,
+    bool isRead = false,
+    DateTime? readAt,
+    bool isDeclined = false,
+    String? declineReason,
   }) {
     return _UiMessage._(
       id: id,
@@ -3473,6 +3854,10 @@ class _UiMessage {
       replyToId: replyToId,
       replyToSnippet: replyToSnippet,
       replyToWasMine: replyToWasMine,
+      isRead: isRead,
+      readAt: readAt,
+      isDeclined: isDeclined,
+      declineReason: declineReason,
     );
   }
 }

@@ -8,6 +8,7 @@ import '../../domain/dating_profile.dart';
 import '../../domain/dating_search_result.dart';
 import '../../application/dating_search_results_provider.dart';
 import '../../application/dating_preferences_provider.dart';
+import '../../application/market_country_utils.dart';
 import 'dating_preferences_setup_screen.dart';
 import 'no_profiles_screen.dart';
 
@@ -83,6 +84,11 @@ class _SearchResultsGridScreenState
     final currentOffset = ref.watch(searchResultsOffsetProvider);
     final preferencesAsync = ref.watch(datingPreferencesProvider);
 
+    final showPreferencesEditor = preferencesAsync.maybeWhen(
+      data: (prefs) => prefs != null,
+      orElse: () => false,
+    );
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -93,22 +99,23 @@ class _SearchResultsGridScreenState
           leading: null,
           title: Text('Search Results', style: AppTextStyles.headlineMedium),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {
-                preferencesAsync.whenData((prefs) {
-                  if (!mounted) return;
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder:
-                          (_) => DatingPreferencesSetupScreen(
-                            existingPreferences: prefs,
-                          ),
-                    ),
-                  );
-                });
-              },
-            ),
+            if (showPreferencesEditor)
+              IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  preferencesAsync.whenData((prefs) {
+                    if (!mounted) return;
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder:
+                            (_) => DatingPreferencesSetupScreen(
+                              existingPreferences: prefs,
+                            ),
+                      ),
+                    );
+                  });
+                },
+              ),
           ],
         ),
         body: resultsAsync.when(
@@ -248,19 +255,22 @@ class _SearchResultsGridScreenState
                 onRefresh: refreshResults,
                 child: NoProfilesScreen(
                   onRetry: refreshResults,
-                  onEditPreferences: () {
-                    preferencesAsync.whenData((prefs) {
-                      if (!mounted) return;
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder:
-                              (_) => DatingPreferencesSetupScreen(
-                                existingPreferences: prefs,
-                              ),
-                        ),
-                      );
-                    });
-                  },
+                  onEditPreferences:
+                      showPreferencesEditor
+                          ? () {
+                            preferencesAsync.whenData((prefs) {
+                              if (!mounted) return;
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder:
+                                      (_) => DatingPreferencesSetupScreen(
+                                        existingPreferences: prefs,
+                                      ),
+                                ),
+                              );
+                            });
+                          }
+                          : null,
                   noProfilesInCountry: result.noProfilesInCountry,
                   countryName: result.noProfilesBreakdown?.countryName,
                   emptyHint: result.emptyHint,

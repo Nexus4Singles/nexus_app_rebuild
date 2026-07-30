@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/theme.dart';
 import '../../../../core/providers/auth_provider.dart';
+import '../../../../core/utils/auth_validators.dart';
 import '../../../../core/bootstrap/bootstrap_gate.dart';
 import '../../../guest/guest_entry_gate.dart';
 import '../../../launch/presentation/app_launch_gate.dart';
@@ -36,19 +37,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     _email.dispose();
     _password.dispose();
     super.dispose();
-  }
-
-  String? _validateUsername(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'Username is required';
-    }
-    if (value.trim().length < 3) {
-      return 'Username must be at least 3 characters';
-    }
-    if (value.trim().length > 12) {
-      return 'Username must be 12 characters or fewer';
-    }
-    return null;
   }
 
   String? _validateEmail(String? value) {
@@ -284,15 +272,18 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   TextFormField(
                     controller: _username,
                     enabled: !_busy,
-                    textCapitalization: TextCapitalization.words,
-                    inputFormatters: [LengthLimitingTextInputFormatter(12)],
+                    textCapitalization: TextCapitalization.none,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z]')),
+                      LengthLimitingTextInputFormatter(12),
+                    ],
                     maxLength: 12,
-                    validator: _validateUsername,
+                    validator: AuthValidators.username,
                     style: AppTextStyles.bodyLarge,
                     decoration: InputDecoration(
                       labelText: 'Username',
-                      hintText: 'Choose a username (max 12 chars)',
-                      helperText: 'Maximum 12 characters',
+                      hintText: 'Choose a username (letters only)',
+                      helperText: 'Letters only, 3-12 characters',
                       labelStyle: AppTextStyles.bodyMedium.copyWith(
                         color: AppColors.getTextSecondary(context),
                       ),
