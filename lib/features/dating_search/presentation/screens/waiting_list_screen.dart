@@ -8,6 +8,10 @@ import '../../application/market_country_utils.dart';
 import '../../application/market_phase_provider.dart';
 import 'dating_preferences_setup_screen.dart';
 
+DateTime resolveLaunchDateForUkMarket(DateTime? marketLaunchDate) {
+  return marketLaunchDate ?? _WaitingListScreenState._defaultLaunchDate;
+}
+
 /// Premium waiting list screen for UK launch
 /// World-class design with animations, gradients, and dark mode support
 class WaitingListScreen extends ConsumerStatefulWidget {
@@ -19,7 +23,7 @@ class WaitingListScreen extends ConsumerStatefulWidget {
 
 class _WaitingListScreenState extends ConsumerState<WaitingListScreen>
     with SingleTickerProviderStateMixin {
-  static final DateTime _fixedLaunchDate = DateTime(2026, 9, 5);
+  static final DateTime _defaultLaunchDate = DateTime(2026, 9, 5);
 
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -233,7 +237,7 @@ class _WaitingListScreenState extends ConsumerState<WaitingListScreen>
   }
 
   Widget _buildLaunchCountdownCard(BuildContext context, MarketData? market) {
-    final launchDate = _fixedLaunchDate;
+    final launchDate = resolveLaunchDateForUkMarket(market?.launchDate);
 
     // Calculate countdown from launch date
     final now = DateTime.now();
