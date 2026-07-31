@@ -9,8 +9,28 @@ import 'package:nexus_app_v2/features/subscription/domain/subscription_models.da
 import '../config/revenuecat_config.dart';
 
 class RevenueCatService {
+  static final List<String> _purchaseDebugLog = <String>[];
+  static final ValueNotifier<List<String>> purchaseDebugNotifier =
+      ValueNotifier<List<String>>(const <String>[]);
+
+  static void clearDebugLog() {
+    _purchaseDebugLog.clear();
+    purchaseDebugNotifier.value = const <String>[];
+  }
+
+  static void logDebug(String message) {
+    final timestamp = DateTime.now().toIso8601String().substring(11, 19);
+    final entry = '[$timestamp] $message';
+    _purchaseDebugLog.add(entry);
+    if (_purchaseDebugLog.length > 40) {
+      _purchaseDebugLog.removeAt(0);
+    }
+    purchaseDebugNotifier.value = List<String>.from(_purchaseDebugLog);
+  }
+
   static Future<void> init() async {
     try {
+      logDebug('Initializing RevenueCat SDK');
       // Determine platform and configure RevenueCat
       final configuration = PurchasesConfiguration(
         Platform.isIOS
@@ -19,13 +39,16 @@ class RevenueCatService {
       );
 
       await Purchases.configure(configuration);
+      logDebug('RevenueCat SDK configured');
     } catch (e) {
+      logDebug('RevenueCat initialization failed: $e');
       rethrow;
     }
   }
 
   static Future<void> login(String userId) async {
     try {
+      logDebug('RevenueCat login requested for $userId');
       await Purchases.logIn(userId).timeout(
         const Duration(seconds: 20),
         onTimeout:
@@ -35,6 +58,7 @@ class RevenueCatService {
                 ),
       );
 
+      logDebug('RevenueCat login completed; fetching customer info');
       final customerInfo = await Purchases.getCustomerInfo().timeout(
         const Duration(seconds: 20),
         onTimeout:
@@ -45,6 +69,7 @@ class RevenueCatService {
       );
 
       final customerId = customerInfo.originalAppUserId;
+      logDebug('RevenueCat customer id resolved: $customerId');
       if (customerId.isNotEmpty) {
         await FirebaseFirestore.instance.collection('users').doc(userId).set({
           'revenueCat': {
@@ -54,6 +79,7 @@ class RevenueCatService {
         }, SetOptions(merge: true));
       }
     } catch (e) {
+      logDebug('RevenueCat login/linking failed: $e');
       debugPrint(
         '⚠️ [RevenueCatService] Could not persist RevenueCat identity: $e',
       );
@@ -123,6 +149,11 @@ class RevenueCatService {
                   key.startsWith('SIMCTL_CHILD_'),
             )
             .toList();
+    logDebug(
+      'Runtime diagnostics: os=${Platform.operatingSystem}, '
+      'isIOS=${Platform.isIOS}, '
+      'isAndroid=${Platform.isAndroid}',
+    );
     debugPrint(
       '💡 [RevenueCatService] runtime diagnostics: '
       'os=${Platform.operatingSystem}, '
@@ -143,6 +174,7 @@ class RevenueCatService {
     }
 
     debugPrintSynchronously('🔧 [RevenueCatService] purchasePackage START');
+    logDebug('Purchase attempt started for ${package.storeProduct.identifier}');
     print(
       '🔵 [RevenueCatService] Calling Purchases.purchasePackage for: '
       '${package.storeProduct.identifier} (type: ${package.packageType})',
@@ -152,6 +184,7 @@ class RevenueCatService {
       debugPrintSynchronously(
         '🔧 [RevenueCatService] before Purchases.purchasePackage',
       );
+      logDebug('Calling Purchases.purchasePackage');
       final result = await Purchases.purchasePackage(package).timeout(
         const Duration(seconds: 25),
         onTimeout: () {
@@ -166,6 +199,7 @@ class RevenueCatService {
       debugPrintSynchronously(
         '🔧 [RevenueCatService] after Purchases.purchasePackage',
       );
+      logDebug('Purchases.purchasePackage returned');
       // ── FORENSIC: capture what the SDK returned ──
       print('🟢 [RevenueCatService] purchasePackage RETURNED (not thrown)');
       print(
@@ -176,6 +210,9 @@ class RevenueCatService {
       );
       return result;
     } on PlatformException catch (e) {
+      logDebug(
+        'Purchase platform exception: code=${e.code} message=${e.message}',
+      );
       print(
         '🔴 [RevenueCatService] PlatformException: code=${e.code} message=${e.message}',
       );
@@ -201,6 +238,7 @@ class RevenueCatService {
       if (readableErrorCode.contains('PRODUCT_ALREADY_PURCHASED') ||
           (e.message ?? '').toLowerCase().contains('already') ||
           e.code == '6') {
+        logDebug('Purchase flow hit PRODUCT_ALREADY_PURCHASED');
         print(
           '🟠 [RevenueCatService] PRODUCT ALREADY PURCHASED – '
           'the Apple ID owns this non-consumable. No payment sheet will appear.',
@@ -212,6 +250,7 @@ class RevenueCatService {
       // Any other error, re-throw it
       rethrow;
     } catch (e) {
+      logDebug('Purchase threw non-platform exception: $e');
       print('🔴 [RevenueCatService] Non-platform exception: ${e.runtimeType}');
       print('   Full error: $e');
 
@@ -229,11 +268,13 @@ class RevenueCatService {
 
   static Future<Offerings?> getOfferings() async {
     try {
+      logDebug('Fetching offerings from RevenueCat');
       debugPrint(
         '🔵 [RevenueCatService] Fetching offerings from RevenueCat...',
       );
       final offerings = await Purchases.getOfferings();
 
+      logDebug('Offerings received successfully');
       debugPrint('🟢 [RevenueCatService] Offerings received successfully');
       debugPrint(
         '  Current offering: ${offerings.current?.identifier ?? "NONE"}',

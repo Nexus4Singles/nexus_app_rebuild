@@ -685,6 +685,63 @@ class _NoSubscriptionView extends ConsumerWidget {
 
           const SizedBox(height: 24),
 
+          ValueListenableBuilder<List<String>>(
+            valueListenable: RevenueCatService.purchaseDebugNotifier,
+            builder: (context, messages, _) {
+              final visibleMessages =
+                  messages.isEmpty
+                      ? <String>['No purchase activity yet.']
+                      : messages.take(10).toList();
+
+              return Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.getSurface(context),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: AppColors.getBorder(context)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.bug_report_outlined,
+                          size: 18,
+                          color: AppColors.primary,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Live purchase debug',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    ...visibleMessages.reversed.map((message) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Text(
+                          message,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.getTextSecondary(context),
+                            fontFamily: 'monospace',
+                            fontSize: 11,
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              );
+            },
+          ),
+
+          const SizedBox(height: 24),
+
           // Info
           Container(
             padding: const EdgeInsets.all(14),
@@ -796,6 +853,9 @@ class _NoSubscriptionView extends ConsumerWidget {
           '🟡 [Subscription] Warning: firebaseUid is null at purchase time (may be auth race). Proceeding.',
         );
       }
+      RevenueCatService.clearDebugLog();
+      RevenueCatService.logDebug('Subscription purchase flow started');
+
       // Show loading dialog
       showDialog(
         context: context,
@@ -804,6 +864,7 @@ class _NoSubscriptionView extends ConsumerWidget {
       );
 
       // Get offerings from RevenueCat (with timeout to avoid indefinite spinner)
+      RevenueCatService.logDebug('Fetching offerings from RevenueCat');
       debugPrint('🔵 [Subscription] Fetching RevenueCat offerings...');
       final offerings = await RevenueCatService.getOfferings().timeout(
         const Duration(seconds: 20),
@@ -876,6 +937,9 @@ class _NoSubscriptionView extends ConsumerWidget {
         return;
       }
 
+      RevenueCatService.logDebug(
+        'Using offering: ${subscriptionOffering.identifier}',
+      );
       debugPrint(
         '🟢 [Subscription] Using offering: ${subscriptionOffering.identifier}',
       );
@@ -925,6 +989,9 @@ class _NoSubscriptionView extends ConsumerWidget {
       // Last resort: use first available package
       monthlyPackage ??= packages.first;
 
+      RevenueCatService.logDebug(
+        'Selected package: ${monthlyPackage.storeProduct.identifier}',
+      );
       debugPrint(
         '🟢 [Subscription] Selected package: ${monthlyPackage.storeProduct.identifier}',
       );
@@ -943,6 +1010,9 @@ class _NoSubscriptionView extends ConsumerWidget {
 
       if (firebaseUid != null) {
         try {
+          RevenueCatService.logDebug(
+            'Linking RevenueCat identity to Firebase user',
+          );
           debugPrint('🔧 [SubscriptionScreen] before RevenueCatService.login');
           await RevenueCatService.login(firebaseUid);
           debugPrint(
@@ -959,6 +1029,7 @@ class _NoSubscriptionView extends ConsumerWidget {
         );
       }
 
+      RevenueCatService.logDebug('Launching purchase sheet');
       debugPrint(
         '🔧 [SubscriptionScreen] before RevenueCatService.purchasePackage',
       );
@@ -1086,6 +1157,7 @@ class _NoSubscriptionView extends ConsumerWidget {
         }
       }
 
+      RevenueCatService.logDebug('Purchase flow failed: $e');
       debugPrint(
         '🔴 [SubscriptionPurchase] Caught exception: ${e.runtimeType}: $e',
       );
