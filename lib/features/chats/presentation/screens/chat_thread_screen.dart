@@ -18,10 +18,12 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'package:nexus_app_v2/core/constants/app_constants.dart';
 import 'package:nexus_app_v2/features/subscription/presentation/screens/subscription_screen.dart';
+import 'package:nexus_app_v2/features/subscription/application/subscription_provider.dart';
 import 'package:nexus_app_v2/core/widgets/cached_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:nexus_app_v2/core/providers/chat_media_upload_provider.dart';
 import 'package:http/http.dart' as http;
+import 'chat_thread_decline_utils.dart';
 
 final _userDocByIdProvider =
     StreamProvider.family<Map<String, dynamic>?, String>((ref, uid) {
@@ -674,8 +676,8 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
             'declinedAt': FieldValue.serverTimestamp(),
           });
 
-      // Get sender info for notification
-      final senderName = await _getUserDisplayName(message.senderId);
+      // Get decliner info for notification
+      final declinerName = await _getUserDisplayName(me);
 
       // Trigger cloud function to send friendly push notification
       // Must be stored under users/{userId}/notifications/ for the FCM trigger to work
@@ -686,15 +688,15 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
           .add({
             'type': 'message_declined',
             'title': 'Interest Update',
-            'body': 'Hey! They\'re $reason, but you can keep exploring',
-            'senderName': senderName,
+            'body': buildDeclineNotificationBody(declinerName, reason),
+            'senderName': declinerName,
             'declineReason': reason,
             'timestamp': FieldValue.serverTimestamp(),
             'read': false,
           });
 
       if (!mounted) return;
-      _toast('Response sent');
+      _toast(buildDeclineStatusText(reason));
     } catch (e) {
       if (!mounted) return;
       _toast('Failed to send response');
@@ -2960,6 +2962,14 @@ class _Bubble extends ConsumerWidget {
     }
 
     final userDocAsync = ref.watch(_userDocByIdProvider(message.senderId));
+    final subscriptionAsync = ref.watch(subscriptionStatusProvider);
+    final showDeclineOption =
+        !isMe &&
+        !message.isDeclined &&
+        subscriptionAsync.maybeWhen(
+          data: (status) => !(status.isActive && !status.isExpired),
+          orElse: () => true,
+        );
 
     return GestureDetector(
       onLongPress: onLongPress,
@@ -3036,15 +3046,18 @@ class _Bubble extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // "Not Interested" button for received messages
-                            if (!isMe && !message.isDeclined)
-                              Expanded(
+                            // Polite decline option for non-premium users
+                            if (showDeclineOption)
+                              Flexible(
                                 child: GestureDetector(
                                   onTap: () => onDeclineTap(context, message),
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
-                                      vertical: 4,
-                                      horizontal: 8,
+                                      vertical: 2,
+                                      horizontal: 6,
+                                    ),
+                                    constraints: const BoxConstraints(
+                                      minHeight: 22,
                                     ),
                                     decoration: BoxDecoration(
                                       color: AppColors.getBackground(context),
@@ -3054,15 +3067,19 @@ class _Bubble extends ConsumerWidget {
                                         width: 0.5,
                                       ),
                                     ),
-                                    child: Text(
-                                      'Not Interested',
-                                      style: AppTextStyles.caption.copyWith(
-                                        color: AppColors.getTextSecondary(
-                                          context,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        buildDeclineButtonLabel(),
+                                        style: AppTextStyles.caption.copyWith(
+                                          color: AppColors.getTextSecondary(
+                                            context,
+                                          ),
+                                          fontSize: 8,
                                         ),
-                                        fontSize: 9,
+                                        textAlign: TextAlign.center,
+                                        maxLines: 1,
                                       ),
-                                      textAlign: TextAlign.center,
                                     ),
                                   ),
                                 ),

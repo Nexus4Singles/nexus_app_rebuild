@@ -61,53 +61,6 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
   );
 
   try {
-    final offerings = await RevenueCatService.getOfferings().timeout(
-      const Duration(seconds: 20),
-      onTimeout: () {
-        throw TimeoutException(
-          'Unable to load subscription pricing. Please check your internet connection and try again.',
-        );
-      },
-    );
-    if (offerings == null) {
-      throw Exception('Unable to load subscription pricing from RevenueCat');
-    }
-
-    Offering? subscriptionOffering =
-        offerings.getOffering('nexus_premium_v2') ??
-        offerings.current ??
-        offerings.getOffering('Premium');
-    if (subscriptionOffering == null) {
-      throw Exception('No subscription offering available');
-    }
-
-    final packages = subscriptionOffering.availablePackages;
-    if (packages.isEmpty) {
-      throw Exception('No subscription packages available');
-    }
-
-    final targetProductId =
-        RevenueCatConfig.getSubscriptionProductId().toLowerCase();
-    Package? monthlyPackage = packages.firstWhereOrNull(
-      (p) => p.storeProduct.identifier.toLowerCase() == targetProductId,
-    );
-    monthlyPackage ??= packages.firstWhereOrNull(
-      (p) =>
-          p.storeProduct.identifier.toLowerCase().startsWith(targetProductId),
-    );
-    monthlyPackage ??= packages.first;
-
-    final storeProduct = monthlyPackage.storeProduct;
-    final amount = storeProduct.price;
-    final currency = storeProduct.currencyCode.toUpperCase();
-
-    if (currency.isEmpty) {
-      throw Exception('RevenueCat pricing data is unavailable.');
-    }
-
-    print(
-      '🟢 [SubscriptionScreen] requesting payment link: amount=$amount currency=$currency product=${storeProduct.identifier}',
-    );
     final idToken = await currentUser
         .getIdToken(true)
         .timeout(
@@ -119,6 +72,9 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
           },
         );
 
+    print(
+      '🟢 [SubscriptionScreen] requesting payment link for subscription bank transfer',
+    );
     final response = await http
         .post(
           Uri.parse(_subscriptionPaymentLinkFunctionUrl),
@@ -127,9 +83,7 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
             'Authorization': 'Bearer $idToken',
           },
           body: jsonEncode({
-            'amount': amount,
-            'currency': currency,
-            'productId': storeProduct.identifier,
+            'productId': RevenueCatConfig.getSubscriptionProductId(),
           }),
         )
         .timeout(
@@ -863,7 +817,7 @@ class _NoSubscriptionView extends ConsumerWidget {
       );
 
       if (!context.mounted) return;
-      Navigator.pop(context); // Close loading dialog
+      Navigator.of(context, rootNavigator: true).pop(); // Close loading dialog
 
       if (offerings == null) {
         debugPrint(
@@ -880,27 +834,30 @@ class _NoSubscriptionView extends ConsumerWidget {
         return;
       }
 
-      // Get the specific subscription offering
-      // Note: Offering ID 'nexus_premium_v2' is the same for both iOS and Android.
-      // It contains packages for both platforms with different product IDs.
-      Offering? subscriptionOffering = offerings.getOffering(
-        'nexus_premium_v2',
-      );
+      // Get the specific subscription offering, preferring platform-specific offering IDs.
+      final preferredOfferingId = Platform.isIOS ? 'nexus_premium_v2' : 'monthly_premium_v2';
+      Offering? subscriptionOffering = offerings.getOffering(preferredOfferingId);
 
-      // Fallback 1: Try offerings.current if nexus_premium_v2 not found
       if (subscriptionOffering == null) {
         debugPrint(
-          '🟡 [Subscription] nexus_premium_v2 offering not available, trying offerings.current',
+          '🟡 [Subscription] preferred offering $preferredOfferingId not available, trying offerings.current',
         );
         subscriptionOffering = offerings.current;
       }
 
-      // Fallback 2: Try old "Premium" offering for backward compatibility
       if (subscriptionOffering == null) {
         debugPrint(
           '🟡 [Subscription] offerings.current not available, trying fallback to "Premium" offering',
         );
         subscriptionOffering = offerings.getOffering('Premium');
+      }
+
+      if (subscriptionOffering == null && Platform.isAndroid) {
+        debugPrint(
+          '🟡 [Subscription] Trying Android legacy offering keys on Android',
+        );
+        subscriptionOffering = offerings.getOffering('monthly_premium') ??
+            offerings.getOffering('monthly');
       }
 
       if (subscriptionOffering == null) {
@@ -934,26 +891,31 @@ class _NoSubscriptionView extends ConsumerWidget {
         '🟡 [Subscription] Available packages: ${packages.map((p) => p.storeProduct.identifier).toList()}',
       );
 
-      // Find package by product ID
+      // Find package by product ID and package type, with stronger Android fallback.
       Package? monthlyPackage;
       final targetProductId =
           RevenueCatConfig.getSubscriptionProductId().toLowerCase();
 
-      // Try exact match first
+      // Exact product identifier match first
       monthlyPackage = packages.firstWhereOrNull(
         (p) => p.storeProduct.identifier.toLowerCase() == targetProductId,
       );
 
-      // Fallback to contains match (handles RevenueCat composite format like 'monthly_premium_v2:monthly-premium-v2')
+      // Next try identifier contains match
       if (monthlyPackage == null) {
         monthlyPackage = packages.firstWhereOrNull(
-          (p) => p.storeProduct.identifier.toLowerCase().startsWith(
-            targetProductId,
-          ),
+          (p) => p.storeProduct.identifier.toLowerCase().contains(targetProductId),
         );
       }
 
-      // Last resort: use first package
+      // Prefer monthly package types if available
+      if (monthlyPackage == null) {
+        monthlyPackage = packages.firstWhereOrNull(
+          (p) => p.packageType == PackageType.monthly,
+        );
+      }
+
+      // Last resort: use first available package
       monthlyPackage ??= packages.first;
 
       debugPrint(
@@ -1097,7 +1059,7 @@ class _NoSubscriptionView extends ConsumerWidget {
       );
     } catch (e) {
       if (context.mounted) {
-        final navigator = Navigator.of(context);
+        final navigator = Navigator.of(context, rootNavigator: true);
         if (navigator.canPop()) {
           navigator.pop();
         }

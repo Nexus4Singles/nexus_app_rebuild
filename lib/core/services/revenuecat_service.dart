@@ -25,10 +25,21 @@ class RevenueCatService {
   }
 
   static Future<void> login(String userId) async {
-    await Purchases.logIn(userId);
-
     try {
-      final customerInfo = await Purchases.getCustomerInfo();
+      await Purchases.logIn(userId).timeout(
+        const Duration(seconds: 20),
+        onTimeout: () => throw TimeoutException(
+          'RevenueCat login timed out. Please check your internet connection and try again.',
+        ),
+      );
+
+      final customerInfo = await Purchases.getCustomerInfo().timeout(
+        const Duration(seconds: 20),
+        onTimeout: () => throw TimeoutException(
+          'RevenueCat customer info fetch timed out. Please check your internet connection and try again.',
+        ),
+      );
+
       final customerId = customerInfo.originalAppUserId;
       if (customerId.isNotEmpty) {
         await FirebaseFirestore.instance.collection('users').doc(userId).set({
@@ -42,6 +53,8 @@ class RevenueCatService {
       debugPrint(
         '⚠️ [RevenueCatService] Could not persist RevenueCat identity: $e',
       );
+      // Do not rethrow here: purchase should still proceed even if user linking
+      // or customer info persistence fails.
     }
   }
 
@@ -121,52 +134,16 @@ class RevenueCatService {
     }
 
     debugPrintSynchronously('🔧 [RevenueCatService] purchasePackage START');
-    debugPrintSynchronously(
-      '🔧 [RevenueCatService] before Purchases.getCustomerInfo',
-    );
-
-    // ── FORENSIC: capture entitlement state BEFORE purchase ──
-    // ── FORENSIC LOGGING (uses print() so it works in release builds too) ──
-    try {
-      final preInfo = await Purchases.getCustomerInfo();
-      debugPrintSynchronously(
-        '🔧 [RevenueCatService] after Purchases.getCustomerInfo',
-      );
-      print('🔍 [RevenueCatService] PRE-PURCHASE entitlements:');
-      print('   Active: ${preInfo.entitlements.active.keys.toList()}');
-      print('   All:    ${preInfo.entitlements.all.keys.toList()}');
-      print(
-        '   NonSubscriptionTransactions: ${preInfo.nonSubscriptionTransactions.map((t) => t.productIdentifier).toList()}',
-      );
-    } catch (e) {
-      print('⚠️ [RevenueCatService] Could not fetch pre-purchase info: $e');
-    }
-
     print(
       '🔵 [RevenueCatService] Calling Purchases.purchasePackage for: '
       '${package.storeProduct.identifier} (type: ${package.packageType})',
     );
 
     try {
-      // Add timeout to avoid indefinite hanging when the native purchase
-      // flow fails to complete or the Play Store / App Store UI never returns.
-      const timeoutSeconds = 90;
       debugPrintSynchronously(
         '🔧 [RevenueCatService] before Purchases.purchasePackage',
       );
-      final result = await Purchases.purchasePackage(package).timeout(
-        const Duration(seconds: timeoutSeconds),
-        onTimeout: () {
-          print(
-            '⏱️ [RevenueCatService] purchasePackage timed out after $timeoutSeconds seconds',
-          );
-          throw TimeoutException(
-            'Purchase did not complete after $timeoutSeconds seconds. '
-            'This may indicate the platform purchase UI failed to open or '
-            'that the store flow stalled. Please try again or restart the app.',
-          );
-        },
-      );
+      final result = await Purchases.purchasePackage(package);
       debugPrintSynchronously(
         '🔧 [RevenueCatService] after Purchases.purchasePackage',
       );
