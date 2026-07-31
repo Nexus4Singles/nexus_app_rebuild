@@ -28,16 +28,20 @@ class RevenueCatService {
     try {
       await Purchases.logIn(userId).timeout(
         const Duration(seconds: 20),
-        onTimeout: () => throw TimeoutException(
-          'RevenueCat login timed out. Please check your internet connection and try again.',
-        ),
+        onTimeout:
+            () =>
+                throw TimeoutException(
+                  'RevenueCat login timed out. Please check your internet connection and try again.',
+                ),
       );
 
       final customerInfo = await Purchases.getCustomerInfo().timeout(
         const Duration(seconds: 20),
-        onTimeout: () => throw TimeoutException(
-          'RevenueCat customer info fetch timed out. Please check your internet connection and try again.',
-        ),
+        onTimeout:
+            () =>
+                throw TimeoutException(
+                  'RevenueCat customer info fetch timed out. Please check your internet connection and try again.',
+                ),
       );
 
       final customerId = customerInfo.originalAppUserId;
@@ -95,25 +99,30 @@ class RevenueCatService {
           key.toLowerCase().contains('device') ||
           key.startsWith('SIMCTL_CHILD_'),
     );
-    final homeIndicatesSimulator =
-        home.contains('/Library/Developer/CoreSimulator/');
-    final tmpDirIndicatesSimulator =
-        tmpDir.contains('/Library/Developer/CoreSimulator/');
-    return hasSimulatorKey || homeIndicatesSimulator || tmpDirIndicatesSimulator;
+    final homeIndicatesSimulator = home.contains(
+      '/Library/Developer/CoreSimulator/',
+    );
+    final tmpDirIndicatesSimulator = tmpDir.contains(
+      '/Library/Developer/CoreSimulator/',
+    );
+    return hasSimulatorKey ||
+        homeIndicatesSimulator ||
+        tmpDirIndicatesSimulator;
   }
 
   static Future<CustomerInfo?> purchasePackage(Package package) async {
     final envMap = Platform.environment;
     final home = envMap['HOME'] ?? '';
     final tmpDir = envMap['TMPDIR'] ?? '';
-    final envKeys = envMap.keys
-        .where(
-          (key) =>
-              key.toLowerCase().contains('simulator') ||
-              key.toLowerCase().contains('device') ||
-              key.startsWith('SIMCTL_CHILD_'),
-        )
-        .toList();
+    final envKeys =
+        envMap.keys
+            .where(
+              (key) =>
+                  key.toLowerCase().contains('simulator') ||
+                  key.toLowerCase().contains('device') ||
+                  key.startsWith('SIMCTL_CHILD_'),
+            )
+            .toList();
     debugPrint(
       '💡 [RevenueCatService] runtime diagnostics: '
       'os=${Platform.operatingSystem}, '
@@ -143,7 +152,17 @@ class RevenueCatService {
       debugPrintSynchronously(
         '🔧 [RevenueCatService] before Purchases.purchasePackage',
       );
-      final result = await Purchases.purchasePackage(package);
+      final result = await Purchases.purchasePackage(package).timeout(
+        const Duration(seconds: 25),
+        onTimeout: () {
+          print(
+            '⏱️ [RevenueCatService] purchasePackage timed out after 25 seconds',
+          );
+          throw TimeoutException(
+            'Purchase did not complete within 25 seconds. Please try again.',
+          );
+        },
+      );
       debugPrintSynchronously(
         '🔧 [RevenueCatService] after Purchases.purchasePackage',
       );

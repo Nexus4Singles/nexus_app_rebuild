@@ -577,7 +577,8 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   /// Show decline reason bottom sheet with templated options
   Future<void> _showDeclineReasonBottomSheet(
     BuildContext context,
-    _UiMessage message,
+    String messageId,
+    String senderId,
   ) async {
     if (!mounted) return;
 
@@ -641,7 +642,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                   title: Text(reason),
                   onTap: () {
                     Navigator.of(context).pop(reason);
-                    _handleDeclineMessage(message, reason);
+                    _handleDeclineMessage(messageId, senderId, reason);
                   },
                 );
               }).toList(),
@@ -653,7 +654,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   }
 
   /// Handle message decline - update Firestore and send notification
-  Future<void> _handleDeclineMessage(_UiMessage message, String reason) async {
+  Future<void> _handleDeclineMessage(String messageId, String senderId, String reason) async {
     if (!mounted) return;
 
     try {
@@ -669,7 +670,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
           .collection('nexus2_chats')
           .doc(widget.chatId)
           .collection('messages')
-          .doc(message.id)
+          .doc(messageId)
           .update({
             'isDeclined': true,
             'declineReason': reason,
@@ -683,7 +684,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
       // Must be stored under users/{userId}/notifications/ for the FCM trigger to work
       await FirebaseFirestore.instance
           .collection('users')
-          .doc(message.senderId)
+          .doc(senderId)
           .collection('notifications')
           .add({
             'type': 'message_declined',
@@ -1881,6 +1882,8 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    String? declineMessageId;
+    String? declineSenderId;
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
@@ -2431,6 +2434,17 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                           );
                         }).toList();
 
+                    _UiMessage? latestIncomingMessage;
+                    for (final item in uiMsgs) {
+                      if (!item.isMe && !item.isDeclined) {
+                        latestIncomingMessage = item;
+                        break;
+                      }
+                    }
+
+                    declineMessageId = latestIncomingMessage?.id;
+                    declineSenderId = latestIncomingMessage?.senderId;
+
                     if (mine.isNotEmpty && !_didMarkAsReadForOpen) {
                       _didMarkAsReadForOpen = true;
                       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -2457,9 +2471,6 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                           durationStream: _player.durationStream,
                           onAudioTap: () => _togglePlay(m),
                           onLongPress: () => _openMessageActions(m),
-                          onDeclineTap:
-                              (ctx, msg) =>
-                                  _showDeclineReasonBottomSheet(ctx, msg),
                           getStatusText: _getMessageStatusText,
                           getReadStatusIcon: _getMessageReadStatusIcon,
                         );
@@ -2551,6 +2562,13 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                       await _sendText();
                     }
                     : null,
+            onDeclineTap: declineMessageId != null && declineSenderId != null
+                ? () => _showDeclineReasonBottomSheet(
+                      context,
+                      declineMessageId!,
+                      declineSenderId!,
+                    )
+                : null,
             replySnippet: _replyTo == null ? null : _replySnippet(_replyTo!),
             replyWasMine: _replyTo?.isMe,
             onClearReply: () => setState(() => _replyTo = null),
@@ -2574,6 +2592,7 @@ class _Composer extends StatelessWidget {
   final VoidCallback onPhoto;
   final VoidCallback onMic;
   final VoidCallback? onSend;
+  final VoidCallback? onDeclineTap;
 
   final String? replySnippet;
   final bool? replyWasMine;
@@ -2592,6 +2611,7 @@ class _Composer extends StatelessWidget {
     required this.onPhoto,
     required this.onMic,
     required this.onSend,
+    this.onDeclineTap,
     this.replySnippet,
     this.replyWasMine,
     this.onClearReply,
@@ -2675,6 +2695,36 @@ class _Composer extends StatelessWidget {
             Row(
               children: [
                 if (!isRecording) ...[
+                  if (onDeclineTap != null)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4),
+                      child: TextButton(
+                        onPressed: onDeclineTap,
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          minimumSize: const Size(0, 30),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: AppColors.textOnPrimary,
+                        ),
+                        child: Text(
+                          'Not Interested? Decline Politely',
+                          style: AppTextStyles.caption.copyWith(
+                            color: AppColors.textOnPrimary,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
                   IconButton(
                     tooltip: 'Attach photo',
                     icon: const Icon(Icons.image_outlined),
@@ -2904,7 +2954,6 @@ class _Bubble extends ConsumerWidget {
   final Stream<Duration?> durationStream;
   final VoidCallback onAudioTap;
   final VoidCallback? onLongPress;
-  final Function(BuildContext, _UiMessage) onDeclineTap;
   final String Function(_UiMessage) getStatusText;
   final Widget Function(_UiMessage, BuildContext) getReadStatusIcon;
 
@@ -2917,7 +2966,6 @@ class _Bubble extends ConsumerWidget {
     required this.durationStream,
     required this.onAudioTap,
     this.onLongPress,
-    required this.onDeclineTap,
     required this.getStatusText,
     required this.getReadStatusIcon,
   });
@@ -2962,14 +3010,6 @@ class _Bubble extends ConsumerWidget {
     }
 
     final userDocAsync = ref.watch(_userDocByIdProvider(message.senderId));
-    final subscriptionAsync = ref.watch(subscriptionStatusProvider);
-    final showDeclineOption =
-        !isMe &&
-        !message.isDeclined &&
-        subscriptionAsync.maybeWhen(
-          data: (status) => !(status.isActive && !status.isExpired),
-          orElse: () => true,
-        );
 
     return GestureDetector(
       onLongPress: onLongPress,
@@ -3046,45 +3086,6 @@ class _Bubble extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // Polite decline option for non-premium users
-                            if (showDeclineOption)
-                              Flexible(
-                                child: GestureDetector(
-                                  onTap: () => onDeclineTap(context, message),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 2,
-                                      horizontal: 6,
-                                    ),
-                                    constraints: const BoxConstraints(
-                                      minHeight: 22,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.getBackground(context),
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(
-                                        color: AppColors.getBorder(context),
-                                        width: 0.5,
-                                      ),
-                                    ),
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Text(
-                                        buildDeclineButtonLabel(),
-                                        style: AppTextStyles.caption.copyWith(
-                                          color: AppColors.getTextSecondary(
-                                            context,
-                                          ),
-                                          fontSize: 8,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                        maxLines: 1,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            const SizedBox(width: 6),
                             // Status indicator with icon and text
                             Padding(
                               padding: const EdgeInsets.only(right: 2),

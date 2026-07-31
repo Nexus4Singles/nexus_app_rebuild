@@ -260,11 +260,49 @@ class NotificationService {
     }
   }
 
+  Future<bool> _isDuplicateSubscriptionNotification({
+    required String userId,
+    required NotificationPayload payload,
+  }) async {
+    if (payload.type != NotificationType.subscriptionActivated) {
+      return false;
+    }
+
+    final cutoff = DateTime.now().subtract(const Duration(hours: 24));
+    final snapshot =
+        await _firestore
+            .collection('users')
+            .doc(userId)
+            .collection('notifications')
+            .where('payload.type', isEqualTo: payload.type.id)
+            .where(
+              'createdAt',
+              isGreaterThanOrEqualTo: Timestamp.fromDate(cutoff),
+            )
+            .limit(1)
+            .get();
+
+    return snapshot.docs.isNotEmpty;
+  }
+
   /// Send notification to specific user (trigger Cloud Function)
   Future<void> sendNotificationToUser({
     required String userId,
     required NotificationPayload payload,
   }) async {
+    if (payload.type == NotificationType.subscriptionActivated) {
+      final duplicate = await _isDuplicateSubscriptionNotification(
+        userId: userId,
+        payload: payload,
+      );
+      if (duplicate) {
+        print(
+          '[DEBUG] Skipping duplicate subscription notification for user=$userId',
+        );
+        return;
+      }
+    }
+
     // Create notification record in Firestore
     // Cloud Function will detect this and send via FCM
     final notificationRef =

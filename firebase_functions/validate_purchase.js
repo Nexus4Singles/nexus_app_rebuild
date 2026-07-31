@@ -530,33 +530,93 @@ exports.revenueCatWebhook = functions.https.onRequest(async (req, res) => {
 
 async function updateSubscriptionStatus(userId, event) {
   try {
-    console.log(`[RevenueCat] Attempting to update subscription for user: ${userId}`);
-    
-    // SECURITY: Verify user exists before updating
-    const userRef = db.collection('users').doc(userId);
-    const userDoc = await userRef.get();
-    
+    console.log(`[RevenueCat] Attempting to update subscription for revenueCat customer: ${userId}`);
+
+    // Attempt to resolve the revenueCat app_user_id to a Firebase user document.
+    // 1) Direct doc id match
+    // 2) Match users where `revenueCat.customerId` == app_user_id
+    // 3) Match users where `subscription.revenueCatCustomerId` == app_user_id
+    // If not found, write an orphan record for manual reconciliation.
+
+    let userRef = db.collection('users').doc(userId);
+    let userDoc = await userRef.get();
+
     if (!userDoc.exists) {
-      console.warn(`[RevenueCat Webhook] ⚠️ SUBSCRIPTION NOT CREATED - User not found: ${userId}`);
-      console.warn(`[RevenueCat Webhook]   This is likely the race condition: RevenueCat has Anonymous ID but Firestore has Firebase UID`);
-      return; // Silently ignore - don't create orphaned records
+      console.log('[RevenueCat] Direct user doc not found; trying lookup by revenueCat.customerId...');
+      const byRc = await db.collection('users')
+        .where('revenueCat.customerId', '==', userId)
+        .limit(1)
+        .get();
+
+      if (!byRc.empty) {
+        userDoc = byRc.docs[0];
+        userRef = userDoc.ref;
+        console.log(`[RevenueCat] Resolved to user id via revenueCat.customerId: ${userRef.id}`);
+      } else {
+        console.log('[RevenueCat] No match on revenueCat.customerId, trying subscription.revenueCatCustomerId...');
+        const bySub = await db.collection('users')
+          .where('subscription.revenueCatCustomerId', '==', userId)
+          .limit(1)
+          .get();
+
+        if (!bySub.empty) {
+          userDoc = bySub.docs[0];
+          userRef = userDoc.ref;
+          console.log(`[RevenueCat] Resolved to user id via subscription.revenueCatCustomerId: ${userRef.id}`);
+        }
+      }
     }
 
-    const expireDate = event.expiration_at_ms
-      ? new Date(event.expiration_at_ms)
-      : null;
+    if (!userDoc || !userDoc.exists) {
+      console.warn(`[RevenueCat Webhook] ⚠️ No user found for RevenueCat customer: ${userId}`);
+      // Create an orphaned event record for admin reconciliation
+      // Try to enrich the orphaned event with customer metadata (email) by
+      // calling RevenueCat server-to-server API. This helps admins identify
+      // the correct Firebase user by email when app_user_id is anonymous.
+      let customerEmail = null;
+      try {
+        const customer = await fetchRevenueCatCustomer(userId);
+        if (customer) {
+          // Try common email locations in RevenueCat response
+          customerEmail = customer.email ||
+            (customer.subscriber && customer.subscriber.email) ||
+            (customer.attributes && customer.attributes.email) ||
+            null;
+        }
+      } catch (fetchErr) {
+        console.warn('[RevenueCat Webhook] Failed to fetch customer from RevenueCat:', fetchErr.message || fetchErr);
+      }
 
-    // Read tier from event, don't hardcode
-    const tier = event.product_id_aliases?.[0] || event.product_id || 'monthly';
+      const orphanRef = db.collection('revenuecat_orphaned_events').doc();
+      await orphanRef.set({
+        appUserId: userId,
+        customerEmail: customerEmail || null,
+        eventType: event.type || null,
+        productId: event.product_id || null,
+        productAliases: event.product_id_aliases || null,
+        rawEvent: event,
+        receivedAt: admin.firestore.FieldValue.serverTimestamp(),
+        handled: false,
+      });
+
+      console.log(`[RevenueCat Webhook] Orphaned event recorded: ${orphanRef.id}`);
+      return; // stop here — admin can reconcile the orphan later
+    }
+
+    const expireDate = event.expiration_at_ms ? new Date(event.expiration_at_ms) : null;
+
+    // Read tier from event if available
+    const tierFromEvent = (event.product_id_aliases && event.product_id_aliases[0]) || event.product_id || 'monthly';
 
     await userRef.update({
       'subscription': {
         isActive: true,
-        tier: 'monthly', // Read from event if available
+        tier: tierFromEvent,
         startDate: new Date(),
         expiryDate: expireDate,
         autoRenew: true,
         revenueCatCustomerId: userId,
+        revenueCatSubscriptionId: event.product_id || null,
         lastUpdated: admin.firestore.FieldValue.serverTimestamp(),
       },
       'onPremium': true,
@@ -565,7 +625,7 @@ async function updateSubscriptionStatus(userId, event) {
       'updatedAt': admin.firestore.FieldValue.serverTimestamp(),
     });
 
-    console.log(`[RevenueCat] Updated subscription for user: ${userId}`);
+    console.log(`[RevenueCat] Updated subscription for resolved user: ${userRef.id}`);
   } catch (error) {
     console.error('[RevenueCat] Failed to update subscription:', error);
   }
@@ -647,6 +707,53 @@ async function expireSubscriptionStatus(userId) {
   } catch (error) {
     console.error('[RevenueCat] Failed to expire subscription:', error);
   }
+}
+
+/**
+ * Fetch RevenueCat customer object using server-to-server API.
+ * Returns the parsed customer object or null on not-found.
+ */
+async function fetchRevenueCatCustomer(appUserId) {
+  if (!REVENUECAT_API_KEY) {
+    throw new Error('RevenueCat API key not configured');
+  }
+
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'api.revenuecat.com',
+      port: 443,
+      path: `/v1/customers/${encodeURIComponent(appUserId)}`,
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${REVENUECAT_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      timeout: 5000,
+    };
+
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk) => { data += chunk; });
+      res.on('end', () => {
+        if (res.statusCode !== 200) {
+          console.warn(`[RevenueCat] Customer lookup returned status ${res.statusCode}`);
+          return resolve(null);
+        }
+        try {
+          const parsed = JSON.parse(data);
+          // RevenueCat returns { customer: { ... } }
+          const customer = parsed.customer || parsed;
+          resolve(customer);
+        } catch (err) {
+          reject(err);
+        }
+      });
+    });
+
+    req.on('error', (err) => reject(err));
+    req.on('timeout', () => { req.destroy(); resolve(null); });
+    req.end();
+  });
 }
 
 // ============================================================================

@@ -146,6 +146,17 @@ final purchasedJourneysProvider = StreamProvider<List<PurchasedJourney>>((ref) {
 // SUBSCRIPTION NOTIFIER (for updates)
 // ============================================================================
 
+bool shouldSendSubscriptionActivatedNotification({
+  required bool isActive,
+  required SubscriptionTier tier,
+  required bool existingActive,
+  required String? existingTierId,
+}) {
+  return isActive &&
+      tier != SubscriptionTier.free &&
+      (!existingActive || existingTierId != tier.id);
+}
+
 class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
   final String userId;
 
@@ -163,6 +174,18 @@ class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
     state = const AsyncValue.loading();
 
     try {
+      final existingDoc =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userId)
+              .get();
+      final existingData = existingDoc.data();
+      final existingSubscription =
+          existingData?['subscription'] as Map<String, dynamic>?;
+      final existingActive =
+          existingSubscription?['isActive'] as bool? ?? false;
+      final existingTier = existingSubscription?['tier'] as String?;
+
       final subscription = SubscriptionStatus(
         isActive: isActive,
         tier: tier,
@@ -173,14 +196,20 @@ class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
         revenueCatSubscriptionId: revenueCatSubscriptionId,
       );
 
-      await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      await FirebaseFirestore.instance.collection('users').doc(userId).set({
         'subscription': subscription.toFirestore(),
         'onPremium': isActive, // Legacy flag for backward compatibility
         'updatedAt': FieldValue.serverTimestamp(),
-      });
+      }, SetOptions(merge: true));
 
-      // Send notification for new subscription activation
-      if (isActive && tier != SubscriptionTier.free) {
+      // Send notification only when the user transitions to an active premium state.
+      final shouldNotify = shouldSendSubscriptionActivatedNotification(
+        isActive: isActive,
+        tier: tier,
+        existingActive: existingActive,
+        existingTierId: existingTier,
+      );
+      if (shouldNotify) {
         await NotificationHelpers.sendSubscriptionActivatedNotification(
           userId: userId,
           tier: tier.name,
