@@ -53,7 +53,6 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
     }
     return;
   }
-
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -61,20 +60,8 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
   );
 
   try {
-    final idToken = await currentUser
-        .getIdToken(true)
-        .timeout(
-          const Duration(seconds: 20),
-          onTimeout: () {
-            throw TimeoutException(
-              'Unable to refresh your login token. Please check your connection and try again.',
-            );
-          },
-        );
+    final idToken = await currentUser.getIdToken(true);
 
-    print(
-      '🟢 [SubscriptionScreen] requesting payment link for subscription bank transfer',
-    );
     final response = await http
         .post(
           Uri.parse(_subscriptionPaymentLinkFunctionUrl),
@@ -82,17 +69,15 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $idToken',
           },
-          body: jsonEncode({
-            'productId': RevenueCatConfig.getSubscriptionProductId(),
-          }),
+          body: jsonEncode({'uid': currentUser.uid}),
         )
         .timeout(
-          const Duration(seconds: 30),
-          onTimeout: () {
-            throw TimeoutException(
-              'Payment link request timed out. Please check your internet connection and try again.',
-            );
-          },
+          const Duration(seconds: 20),
+          onTimeout:
+              () =>
+                  throw TimeoutException(
+                    'Payment link request timed out. Please check your internet connection and try again.',
+                  ),
         );
 
     if (response.statusCode != 200) {
@@ -796,7 +781,21 @@ class _NoSubscriptionView extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) async {
+    // Capture current Firebase UID so it is available in catch blocks.
+    final firebaseUid = ref.read(currentUserIdProvider);
+
     try {
+      // NOTE: Do not block purchases when `firebaseUid` is null here.
+      // There are legitimate race conditions where RevenueCat may receive
+      // the purchase before the client has fully linked the Firebase UID.
+      // We still attempt to link and sync after purchase; the server-side
+      // webhook will reconcile anonymous App User IDs to Firebase users
+      // where possible. For UX, allow the purchase to proceed.
+      if (firebaseUid == null) {
+        debugPrint(
+          '🟡 [Subscription] Warning: firebaseUid is null at purchase time (may be auth race). Proceeding.',
+        );
+      }
       // Show loading dialog
       showDialog(
         context: context,
@@ -834,29 +833,36 @@ class _NoSubscriptionView extends ConsumerWidget {
         return;
       }
 
-      // Get the specific subscription offering, preferring platform-specific offering IDs.
-      final preferredOfferingId = Platform.isIOS ? 'nexus_premium_v2' : 'monthly_premium_v2';
-      Offering? subscriptionOffering = offerings.getOffering(preferredOfferingId);
+      // Get the specific subscription offering based on the RevenueCat offering ID.
+      // The offering ID in RevenueCat is configured as `nexus_premium_v2`.
+      final preferredOfferingIds = [
+        RevenueCatConfig.subscriptionOfferingId,
+        'monthly_premium_v2',
+        'Premium',
+      ];
 
-      if (subscriptionOffering == null) {
-        debugPrint(
-          '🟡 [Subscription] preferred offering $preferredOfferingId not available, trying offerings.current',
-        );
-        subscriptionOffering = offerings.current;
+      Offering? subscriptionOffering;
+      for (final offeringId in preferredOfferingIds) {
+        subscriptionOffering = offerings.getOffering(offeringId);
+        if (subscriptionOffering != null) {
+          debugPrint('🟢 [Subscription] Found offering by id: $offeringId');
+          break;
+        }
       }
 
       if (subscriptionOffering == null) {
         debugPrint(
-          '🟡 [Subscription] offerings.current not available, trying fallback to "Premium" offering',
+          '🟡 [Subscription] preferred offering IDs not available, trying offerings.current',
         );
-        subscriptionOffering = offerings.getOffering('Premium');
+        subscriptionOffering = offerings.current;
       }
 
       if (subscriptionOffering == null && Platform.isAndroid) {
         debugPrint(
           '🟡 [Subscription] Trying Android legacy offering keys on Android',
         );
-        subscriptionOffering = offerings.getOffering('monthly_premium') ??
+        subscriptionOffering =
+            offerings.getOffering('monthly_premium') ??
             offerings.getOffering('monthly');
       }
 
@@ -904,7 +910,8 @@ class _NoSubscriptionView extends ConsumerWidget {
       // Next try identifier contains match
       if (monthlyPackage == null) {
         monthlyPackage = packages.firstWhereOrNull(
-          (p) => p.storeProduct.identifier.toLowerCase().contains(targetProductId),
+          (p) =>
+              p.storeProduct.identifier.toLowerCase().contains(targetProductId),
         );
       }
 
@@ -932,7 +939,8 @@ class _NoSubscriptionView extends ConsumerWidget {
 
       // Make purchase - SDK handles payment sheet display
       // SDK will throw if user cancels, return CustomerInfo if successful
-      final firebaseUid = ref.read(currentUserIdProvider);
+      // (use firebaseUid captured at the top of this method)
+
       if (firebaseUid != null) {
         try {
           debugPrint('🔧 [SubscriptionScreen] before RevenueCatService.login');
@@ -945,6 +953,10 @@ class _NoSubscriptionView extends ConsumerWidget {
             '⚠️ [SubscriptionPurchase] RevenueCat login before purchase failed: $e',
           );
         }
+      } else {
+        debugPrint(
+          '🟡 [SubscriptionPurchase] No firebaseUid available before purchase; proceeding without RevenueCat login',
+        );
       }
 
       debugPrint(
@@ -955,6 +967,11 @@ class _NoSubscriptionView extends ConsumerWidget {
       );
       final customerInfo = await RevenueCatService.purchasePackage(
         monthlyPackage,
+      ).timeout(
+        const Duration(seconds: 25),
+        onTimeout: () {
+          throw TimeoutException('Purchase did not respond. Please try again.');
+        },
       );
 
       if (!context.mounted) return;
@@ -1033,6 +1050,10 @@ class _NoSubscriptionView extends ConsumerWidget {
             '⚠️ [SubscriptionPurchase] RevenueCat entitlement sync failed: $e',
           );
         }
+      } else {
+        debugPrint(
+          '🟡 [SubscriptionPurchase] Skipping Firestore entitlement sync (no firebaseUid available)',
+        );
       }
 
       // Show success immediately (user has already paid via SDK validation)
@@ -1090,7 +1111,7 @@ Contact support if the issue persists.
         debugPrint(
           '🟠 [SubscriptionPurchase] Existing subscription detected, restoring entitlement',
         );
-        final firebaseUid = ref.read(currentUserIdProvider);
+        // use firebaseUid captured at the top of this method
         if (firebaseUid != null) {
           try {
             await RevenueCatService.login(firebaseUid);
@@ -1104,6 +1125,10 @@ Contact support if the issue persists.
               '⚠️ [SubscriptionPurchase] Restore failed: $restoreError',
             );
           }
+        } else {
+          debugPrint(
+            '🟡 [SubscriptionPurchase] Cannot auto-restore: firebaseUid missing',
+          );
         }
 
         if (context.mounted) {
@@ -1171,14 +1196,15 @@ Contact support if the issue persists.
       'optimisticRecord': true, // Marked as optimistic for audit
     };
 
-    // Record subscription
-    await db.collection('users').doc(user.uid).update({
+    // Record subscription merge-safe so purchase state is preserved even if the
+    // user document is missing or partially populated.
+    await db.collection('users').doc(user.uid).set({
       'subscription': subscriptionRecord,
       'onPremium': true,
       'subExpDate': expiryDate,
       'entitledUser': true,
       'updatedAt': FieldValue.serverTimestamp(),
-    });
+    }, SetOptions(merge: true));
   }
 
   /// Verifies subscription asynchronously with backend (fire-and-forget)

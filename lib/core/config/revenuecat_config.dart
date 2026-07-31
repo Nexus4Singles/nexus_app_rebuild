@@ -22,6 +22,10 @@ class RevenueCatConfig {
   static const String iosSubscriptionProductId = 'nexus_premium_v2';
   static const String androidSubscriptionProductId = 'monthly_premium_v2';
 
+  /// RevenueCat offering identifier for the subscription offering
+  /// This is the offering ID configured in RevenueCat, not the product ID.
+  static const String subscriptionOfferingId = 'nexus_premium_v2';
+
   /// Returns the correct subscription product ID based on platform
   static String getSubscriptionProductId() {
     return Platform.isIOS
