@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
 
@@ -60,7 +61,14 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
   );
 
   try {
-    final offerings = await RevenueCatService.getOfferings();
+    final offerings = await RevenueCatService.getOfferings().timeout(
+      const Duration(seconds: 20),
+      onTimeout: () {
+        throw TimeoutException(
+          'Unable to load subscription pricing. Please check your internet connection and try again.',
+        );
+      },
+    );
     if (offerings == null) {
       throw Exception('Unable to load subscription pricing from RevenueCat');
     }
@@ -97,19 +105,41 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
       throw Exception('RevenueCat pricing data is unavailable.');
     }
 
-    final idToken = await currentUser.getIdToken(true);
-    final response = await http.post(
-      Uri.parse(_subscriptionPaymentLinkFunctionUrl),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $idToken',
-      },
-      body: jsonEncode({
-        'amount': amount,
-        'currency': currency,
-        'productId': storeProduct.identifier,
-      }),
+    print(
+      '🟢 [SubscriptionScreen] requesting payment link: amount=$amount currency=$currency product=${storeProduct.identifier}',
     );
+    final idToken = await currentUser
+        .getIdToken(true)
+        .timeout(
+          const Duration(seconds: 20),
+          onTimeout: () {
+            throw TimeoutException(
+              'Unable to refresh your login token. Please check your connection and try again.',
+            );
+          },
+        );
+
+    final response = await http
+        .post(
+          Uri.parse(_subscriptionPaymentLinkFunctionUrl),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $idToken',
+          },
+          body: jsonEncode({
+            'amount': amount,
+            'currency': currency,
+            'productId': storeProduct.identifier,
+          }),
+        )
+        .timeout(
+          const Duration(seconds: 30),
+          onTimeout: () {
+            throw TimeoutException(
+              'Payment link request timed out. Please check your internet connection and try again.',
+            );
+          },
+        );
 
     if (response.statusCode != 200) {
       final errorMessage =
@@ -820,9 +850,17 @@ class _NoSubscriptionView extends ConsumerWidget {
         builder: (context) => const Center(child: CircularProgressIndicator()),
       );
 
-      // Get offerings from RevenueCat
+      // Get offerings from RevenueCat (with timeout to avoid indefinite spinner)
       debugPrint('🔵 [Subscription] Fetching RevenueCat offerings...');
-      final offerings = await RevenueCatService.getOfferings();
+      final offerings = await RevenueCatService.getOfferings().timeout(
+        const Duration(seconds: 20),
+        onTimeout: () {
+          debugPrint('🔴 [Subscription] RevenueCat.getOfferings() timed out');
+          throw TimeoutException(
+            'Unable to load subscription options from store (timeout). Please check your connection and try again.',
+          );
+        },
+      );
 
       if (!context.mounted) return;
       Navigator.pop(context); // Close loading dialog
@@ -935,6 +973,7 @@ class _NoSubscriptionView extends ConsumerWidget {
       final firebaseUid = ref.read(currentUserIdProvider);
       if (firebaseUid != null) {
         try {
+          debugPrint('🔧 [SubscriptionScreen] before RevenueCatService.login');
           await RevenueCatService.login(firebaseUid);
           debugPrint(
             '🟢 [SubscriptionPurchase] RevenueCat linked to Firebase user: $firebaseUid',
@@ -946,6 +985,12 @@ class _NoSubscriptionView extends ConsumerWidget {
         }
       }
 
+      debugPrint(
+        '🔧 [SubscriptionScreen] before RevenueCatService.purchasePackage',
+      );
+      debugPrint(
+        '🔧 [SubscriptionScreen] selected package: ${monthlyPackage.storeProduct.identifier}',
+      );
       final customerInfo = await RevenueCatService.purchasePackage(
         monthlyPackage,
       );
@@ -1110,6 +1155,11 @@ Contact support if the issue persists.
             ),
           );
         }
+      } else if (e is TimeoutException || errorStr.contains('timed out')) {
+        _showError(
+          context,
+          'Purchase timed out. On simulators the native subscription flow may not complete correctly. Please try again on a real device.',
+        );
       } else {
         _showError(context, 'Purchase failed: ${e.toString()}');
       }
@@ -1493,6 +1543,18 @@ class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              'This subscription will auto-renew. Cancel anytime from your Playstore or Appstore subscription settings.',
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.getTextSecondary(context),
+                height: 1.4,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: 12),
         ],
       ),
     );

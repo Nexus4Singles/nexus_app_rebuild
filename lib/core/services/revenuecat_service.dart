@@ -70,11 +70,68 @@ class RevenueCatService {
   /// on success, or `null` if the user cancelled the native purchase UI.
   ///
   /// Throws an exception if purchase fails for any reason other than user cancellation.
+  static bool get _isRunningOnIOSSimulator {
+    if (!Platform.isIOS) return false;
+
+    final env = Platform.environment;
+    final home = env['HOME'] ?? '';
+    final tmpDir = env['TMPDIR'] ?? '';
+    final hasSimulatorKey = env.keys.any(
+      (key) =>
+          key.toLowerCase().contains('simulator') ||
+          key.toLowerCase().contains('device') ||
+          key.startsWith('SIMCTL_CHILD_'),
+    );
+    final homeIndicatesSimulator =
+        home.contains('/Library/Developer/CoreSimulator/');
+    final tmpDirIndicatesSimulator =
+        tmpDir.contains('/Library/Developer/CoreSimulator/');
+    return hasSimulatorKey || homeIndicatesSimulator || tmpDirIndicatesSimulator;
+  }
+
   static Future<CustomerInfo?> purchasePackage(Package package) async {
+    final envMap = Platform.environment;
+    final home = envMap['HOME'] ?? '';
+    final tmpDir = envMap['TMPDIR'] ?? '';
+    final envKeys = envMap.keys
+        .where(
+          (key) =>
+              key.toLowerCase().contains('simulator') ||
+              key.toLowerCase().contains('device') ||
+              key.startsWith('SIMCTL_CHILD_'),
+        )
+        .toList();
+    debugPrint(
+      '💡 [RevenueCatService] runtime diagnostics: '
+      'os=${Platform.operatingSystem}, '
+      'osVersion=${Platform.operatingSystemVersion}, '
+      'isIOS=${Platform.isIOS}, '
+      'isAndroid=${Platform.isAndroid}, '
+      'simulatorEnvKeys=$envKeys, '
+      'simulatorEnv=${envMap.entries.where((entry) => entry.key.toLowerCase().contains('simulator') || entry.key.toLowerCase().contains('device')).map((entry) => '${entry.key}=${entry.value}').join(', ')}, '
+      'home=$home, '
+      'tmpDir=$tmpDir',
+    );
+
+    if (_isRunningOnIOSSimulator) {
+      throw TimeoutException(
+        'Subscriptions cannot be completed on the iOS Simulator. '
+        'Please test on a real iOS device or use a sandbox device instead.',
+      );
+    }
+
+    debugPrintSynchronously('🔧 [RevenueCatService] purchasePackage START');
+    debugPrintSynchronously(
+      '🔧 [RevenueCatService] before Purchases.getCustomerInfo',
+    );
+
     // ── FORENSIC: capture entitlement state BEFORE purchase ──
     // ── FORENSIC LOGGING (uses print() so it works in release builds too) ──
     try {
       final preInfo = await Purchases.getCustomerInfo();
+      debugPrintSynchronously(
+        '🔧 [RevenueCatService] after Purchases.getCustomerInfo',
+      );
       print('🔍 [RevenueCatService] PRE-PURCHASE entitlements:');
       print('   Active: ${preInfo.entitlements.active.keys.toList()}');
       print('   All:    ${preInfo.entitlements.all.keys.toList()}');
@@ -91,17 +148,27 @@ class RevenueCatService {
     );
 
     try {
-      // Add timeout to prevent simulator from hanging indefinitely
+      // Add timeout to avoid indefinite hanging when the native purchase
+      // flow fails to complete or the Play Store / App Store UI never returns.
+      const timeoutSeconds = 90;
+      debugPrintSynchronously(
+        '🔧 [RevenueCatService] before Purchases.purchasePackage',
+      );
       final result = await Purchases.purchasePackage(package).timeout(
-        const Duration(seconds: 30),
+        const Duration(seconds: timeoutSeconds),
         onTimeout: () {
           print(
-            '⏱️ [RevenueCatService] purchasePackage timed out after 30 seconds on simulator',
+            '⏱️ [RevenueCatService] purchasePackage timed out after $timeoutSeconds seconds',
           );
           throw TimeoutException(
-            'Purchase took too long (30s). This may be a simulator issue. Please try on a real device or restart the simulator.',
+            'Purchase did not complete after $timeoutSeconds seconds. '
+            'This may indicate the platform purchase UI failed to open or '
+            'that the store flow stalled. Please try again or restart the app.',
           );
         },
+      );
+      debugPrintSynchronously(
+        '🔧 [RevenueCatService] after Purchases.purchasePackage',
       );
       // ── FORENSIC: capture what the SDK returned ──
       print('🟢 [RevenueCatService] purchasePackage RETURNED (not thrown)');
