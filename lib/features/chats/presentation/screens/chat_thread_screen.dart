@@ -654,7 +654,11 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   }
 
   /// Handle message decline - update Firestore and send notification
-  Future<void> _handleDeclineMessage(String messageId, String senderId, String reason) async {
+  Future<void> _handleDeclineMessage(
+    String messageId,
+    String senderId,
+    String reason,
+  ) async {
     if (!mounted) return;
 
     try {
@@ -2434,16 +2438,17 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                           );
                         }).toList();
 
-                    _UiMessage? latestIncomingMessage;
-                    for (final item in uiMsgs) {
-                      if (!item.isMe && !item.isDeclined) {
-                        latestIncomingMessage = item;
-                        break;
-                      }
-                    }
+                    final declineTarget =
+                        findLatestIncomingDeclineTarget<_UiMessage>(
+                          items: uiMsgs,
+                          isMe: (item) => item.isMe,
+                          isDeclined: (item) => item.isDeclined,
+                          messageId: (item) => item.id,
+                          senderId: (item) => item.senderId,
+                        );
 
-                    declineMessageId = latestIncomingMessage?.id;
-                    declineSenderId = latestIncomingMessage?.senderId;
+                    declineMessageId = declineTarget?.messageId;
+                    declineSenderId = declineTarget?.senderId;
 
                     if (mine.isNotEmpty && !_didMarkAsReadForOpen) {
                       _didMarkAsReadForOpen = true;
@@ -2562,13 +2567,14 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                       await _sendText();
                     }
                     : null,
-            onDeclineTap: declineMessageId != null && declineSenderId != null
-                ? () => _showDeclineReasonBottomSheet(
+            onDeclineTap:
+                declineMessageId != null && declineSenderId != null
+                    ? () => _showDeclineReasonBottomSheet(
                       context,
                       declineMessageId!,
                       declineSenderId!,
                     )
-                : null,
+                    : null,
             replySnippet: _replyTo == null ? null : _replySnippet(_replyTo!),
             replyWasMine: _replyTo?.isMe,
             onClearReply: () => setState(() => _replyTo = null),
@@ -2698,9 +2704,9 @@ class _Composer extends StatelessWidget {
                   if (onDeclineTap != null)
                     Padding(
                       padding: const EdgeInsets.only(right: 4),
-                      child: TextButton(
+                      child: FilledButton.icon(
                         onPressed: onDeclineTap,
-                        style: TextButton.styleFrom(
+                        style: FilledButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 10,
                             vertical: 6,
@@ -2713,8 +2719,9 @@ class _Composer extends StatelessWidget {
                           backgroundColor: AppColors.primary,
                           foregroundColor: AppColors.textOnPrimary,
                         ),
-                        child: Text(
-                          'Not Interested? Decline Politely',
+                        icon: const Icon(Icons.block_outlined, size: 14),
+                        label: Text(
+                          'Not interested? Decline politely',
                           style: AppTextStyles.caption.copyWith(
                             color: AppColors.textOnPrimary,
                             fontSize: 10,

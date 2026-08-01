@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -685,63 +684,6 @@ class _NoSubscriptionView extends ConsumerWidget {
 
           const SizedBox(height: 24),
 
-          ValueListenableBuilder<List<String>>(
-            valueListenable: RevenueCatService.purchaseDebugNotifier,
-            builder: (context, messages, _) {
-              final visibleMessages =
-                  messages.isEmpty
-                      ? <String>['No purchase activity yet.']
-                      : messages.take(10).toList();
-
-              return Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.getSurface(context),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppColors.getBorder(context)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.bug_report_outlined,
-                          size: 18,
-                          color: AppColors.primary,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Live purchase debug',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    ...visibleMessages.reversed.map((message) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 6),
-                        child: Text(
-                          message,
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.getTextSecondary(context),
-                            fontFamily: 'monospace',
-                            fontSize: 11,
-                          ),
-                        ),
-                      );
-                    }),
-                  ],
-                ),
-              );
-            },
-          ),
-
-          const SizedBox(height: 24),
-
           // Info
           Container(
             padding: const EdgeInsets.all(14),
@@ -838,46 +780,23 @@ class _NoSubscriptionView extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) async {
-    // Capture current Firebase UID so it is available in catch blocks.
     final firebaseUid = ref.read(currentUserIdProvider);
 
     try {
-      // NOTE: Do not block purchases when `firebaseUid` is null here.
-      // There are legitimate race conditions where RevenueCat may receive
-      // the purchase before the client has fully linked the Firebase UID.
-      // We still attempt to link and sync after purchase; the server-side
-      // webhook will reconcile anonymous App User IDs to Firebase users
-      // where possible. For UX, allow the purchase to proceed.
-      if (firebaseUid == null) {
-        debugPrint(
-          '🟡 [Subscription] Warning: firebaseUid is null at purchase time (may be auth race). Proceeding.',
-        );
-      }
-      RevenueCatService.clearDebugLog();
-      RevenueCatService.logDebug('Subscription purchase flow started');
-
       // Show loading dialog
       showDialog(
         context: context,
         barrierDismissible: false,
+        useRootNavigator: true,
         builder: (context) => const Center(child: CircularProgressIndicator()),
       );
 
-      // Get offerings from RevenueCat (with timeout to avoid indefinite spinner)
-      RevenueCatService.logDebug('Fetching offerings from RevenueCat');
+      // Get offerings from RevenueCat
       debugPrint('🔵 [Subscription] Fetching RevenueCat offerings...');
-      final offerings = await RevenueCatService.getOfferings().timeout(
-        const Duration(seconds: 20),
-        onTimeout: () {
-          debugPrint('🔴 [Subscription] RevenueCat.getOfferings() timed out');
-          throw TimeoutException(
-            'Unable to load subscription options from store (timeout). Please check your connection and try again.',
-          );
-        },
-      );
+      final offerings = await RevenueCatService.getOfferings();
 
       if (!context.mounted) return;
-      Navigator.of(context, rootNavigator: true).pop(); // Close loading dialog
+      Navigator.pop(context); // Close loading dialog
 
       if (offerings == null) {
         debugPrint(
@@ -894,37 +813,25 @@ class _NoSubscriptionView extends ConsumerWidget {
         return;
       }
 
-      // Get the specific subscription offering based on the RevenueCat offering ID.
-      // The offering ID in RevenueCat is configured as `nexus_premium_v2`.
-      final preferredOfferingIds = [
-        RevenueCatConfig.subscriptionOfferingId,
-        'monthly_premium_v2',
-        'Premium',
-      ];
+      // Get the specific subscription offering (nexus_premium_v2)
+      Offering? subscriptionOffering = offerings.getOffering(
+        'nexus_premium_v2',
+      );
 
-      Offering? subscriptionOffering;
-      for (final offeringId in preferredOfferingIds) {
-        subscriptionOffering = offerings.getOffering(offeringId);
-        if (subscriptionOffering != null) {
-          debugPrint('🟢 [Subscription] Found offering by id: $offeringId');
-          break;
-        }
-      }
-
+      // Fallback 1: Try offerings.current if nexus_premium_v2 not found
       if (subscriptionOffering == null) {
         debugPrint(
-          '🟡 [Subscription] preferred offering IDs not available, trying offerings.current',
+          '🟡 [Subscription] nexus_premium_v2 not available, trying offerings.current',
         );
         subscriptionOffering = offerings.current;
       }
 
-      if (subscriptionOffering == null && Platform.isAndroid) {
+      // Fallback 2: Try old "Premium" offering for backward compatibility
+      if (subscriptionOffering == null) {
         debugPrint(
-          '🟡 [Subscription] Trying Android legacy offering keys on Android',
+          '🟡 [Subscription] offerings.current not available, trying fallback to "Premium" offering',
         );
-        subscriptionOffering =
-            offerings.getOffering('monthly_premium') ??
-            offerings.getOffering('monthly');
+        subscriptionOffering = offerings.getOffering('Premium');
       }
 
       if (subscriptionOffering == null) {
@@ -937,9 +844,6 @@ class _NoSubscriptionView extends ConsumerWidget {
         return;
       }
 
-      RevenueCatService.logDebug(
-        'Using offering: ${subscriptionOffering.identifier}',
-      );
       debugPrint(
         '🟢 [Subscription] Using offering: ${subscriptionOffering.identifier}',
       );
@@ -961,17 +865,17 @@ class _NoSubscriptionView extends ConsumerWidget {
         '🟡 [Subscription] Available packages: ${packages.map((p) => p.storeProduct.identifier).toList()}',
       );
 
-      // Find package by product ID and package type, with stronger Android fallback.
+      // Find package by product ID
       Package? monthlyPackage;
       final targetProductId =
           RevenueCatConfig.getSubscriptionProductId().toLowerCase();
 
-      // Exact product identifier match first
+      // Try exact match first
       monthlyPackage = packages.firstWhereOrNull(
         (p) => p.storeProduct.identifier.toLowerCase() == targetProductId,
       );
 
-      // Next try identifier contains match
+      // Fallback to contains match
       if (monthlyPackage == null) {
         monthlyPackage = packages.firstWhereOrNull(
           (p) =>
@@ -979,19 +883,9 @@ class _NoSubscriptionView extends ConsumerWidget {
         );
       }
 
-      // Prefer monthly package types if available
-      if (monthlyPackage == null) {
-        monthlyPackage = packages.firstWhereOrNull(
-          (p) => p.packageType == PackageType.monthly,
-        );
-      }
-
-      // Last resort: use first available package
+      // Last resort: use first package
       monthlyPackage ??= packages.first;
 
-      RevenueCatService.logDebug(
-        'Selected package: ${monthlyPackage.storeProduct.identifier}',
-      );
       debugPrint(
         '🟢 [Subscription] Selected package: ${monthlyPackage.storeProduct.identifier}',
       );
@@ -1001,57 +895,43 @@ class _NoSubscriptionView extends ConsumerWidget {
       showDialog(
         context: context,
         barrierDismissible: false,
+        useRootNavigator: true,
         builder: (context) => const Center(child: CircularProgressIndicator()),
       );
 
-      // Make purchase - SDK handles payment sheet display
-      // SDK will throw if user cancels, return CustomerInfo if successful
-      // (use firebaseUid captured at the top of this method)
-
       if (firebaseUid != null) {
         try {
-          RevenueCatService.logDebug(
-            'Linking RevenueCat identity to Firebase user',
-          );
-          debugPrint('🔧 [SubscriptionScreen] before RevenueCatService.login');
+          debugPrint('🔧 [SubscriptionScreen] Linking RevenueCat identity...');
           await RevenueCatService.login(firebaseUid);
-          debugPrint(
-            '🟢 [SubscriptionPurchase] RevenueCat linked to Firebase user: $firebaseUid',
-          );
         } catch (e) {
-          debugPrint(
-            '⚠️ [SubscriptionPurchase] RevenueCat login before purchase failed: $e',
-          );
+          debugPrint('⚠️ [SubscriptionPurchase] RevenueCat login failed: $e');
         }
-      } else {
-        debugPrint(
-          '🟡 [SubscriptionPurchase] No firebaseUid available before purchase; proceeding without RevenueCat login',
-        );
       }
 
-      RevenueCatService.logDebug('Launching purchase sheet');
-      debugPrint(
-        '🔧 [SubscriptionScreen] before RevenueCatService.purchasePackage',
-      );
-      debugPrint(
-        '🔧 [SubscriptionScreen] selected package: ${monthlyPackage.storeProduct.identifier}',
-      );
+      // Make purchase - SDK handles payment sheet display
+      // SDK will throw if user cancels, return CustomerInfo if successful
       final customerInfo = await RevenueCatService.purchasePackage(
         monthlyPackage,
-      ).timeout(
-        const Duration(seconds: 25),
-        onTimeout: () {
-          throw TimeoutException('Purchase did not respond. Please try again.');
-        },
       );
 
       if (!context.mounted) return;
-      Navigator.pop(context); // Close loading dialog
+      Navigator.of(context, rootNavigator: true).pop(); // Close loading dialog
 
       // If customerInfo is null, the user cancelled the native purchase UI.
       if (customerInfo == null) {
         debugPrint(
           '🟡 [SubscriptionPurchase] Purchase cancelled by user (null result)',
+        );
+        return;
+      }
+
+      if (customerInfo.entitlements.active.isEmpty) {
+        debugPrint(
+          '⚠️ [SubscriptionPurchase] Purchase returned, but no active entitlements were present',
+        );
+        _showError(
+          context,
+          'Purchase completed, but premium access is not active yet. Please wait a moment and try again.',
         );
         return;
       }
@@ -1105,7 +985,6 @@ class _NoSubscriptionView extends ConsumerWidget {
         debugPrint('⚠️  [SubscriptionPurchase] Local recording error: $e');
       }
 
-      // Sync the active RevenueCat entitlement into Firestore immediately.
       if (firebaseUid != null) {
         try {
           final synced =
@@ -1114,17 +993,11 @@ class _NoSubscriptionView extends ConsumerWidget {
                 customerInfo: customerInfo,
               );
           debugPrint(
-            '🟢 [SubscriptionPurchase] RevenueCat entitlement sync completed: $synced',
+            '🟢 [SubscriptionPurchase] Firestore sync completed: $synced',
           );
         } catch (e) {
-          debugPrint(
-            '⚠️ [SubscriptionPurchase] RevenueCat entitlement sync failed: $e',
-          );
+          debugPrint('⚠️ [SubscriptionPurchase] Firestore sync failed: $e');
         }
-      } else {
-        debugPrint(
-          '🟡 [SubscriptionPurchase] Skipping Firestore entitlement sync (no firebaseUid available)',
-        );
       }
 
       // Show success immediately (user has already paid via SDK validation)
@@ -1157,33 +1030,23 @@ class _NoSubscriptionView extends ConsumerWidget {
         }
       }
 
-      RevenueCatService.logDebug('Purchase flow failed: $e');
       debugPrint(
         '🔴 [SubscriptionPurchase] Caught exception: ${e.runtimeType}: $e',
       );
 
       final errorStr = e.toString().toLowerCase();
-      if (errorStr.contains('code: 1') &&
-          errorStr.contains('usercancelled: true')) {
-        debugPrint('🔴 [SubscriptionPurchase] CONFIGURATION ERROR DETECTED!');
-        _showError(context, '''
-Purchase failed: Product not configured in App Store Connect.
-
-Please verify:
-1. Subscription product exists in App Store Connect
-2. Bundle ID matches your Xcode project
-3. StoreKit configuration is complete
-4. RevenueCat dashboard products are synced
-
-Contact support if the issue persists.
-''');
+      if (errorStr.contains('usercancelled') ||
+          errorStr.contains('user cancelled') ||
+          errorStr.contains('user_cancelled')) {
+        debugPrint('🟡 [SubscriptionPurchase] User cancelled purchase');
+        return;
       } else if (errorStr.contains('product_already_purchased') ||
           errorStr.contains('already purchased') ||
-          errorStr.contains('already owned')) {
+          errorStr.contains('already owned') ||
+          errorStr.contains('already_purchased')) {
         debugPrint(
           '🟠 [SubscriptionPurchase] Existing subscription detected, restoring entitlement',
         );
-        // use firebaseUid captured at the top of this method
         if (firebaseUid != null) {
           try {
             await RevenueCatService.login(firebaseUid);
@@ -1197,10 +1060,6 @@ Contact support if the issue persists.
               '⚠️ [SubscriptionPurchase] Restore failed: $restoreError',
             );
           }
-        } else {
-          debugPrint(
-            '🟡 [SubscriptionPurchase] Cannot auto-restore: firebaseUid missing',
-          );
         }
 
         if (context.mounted) {

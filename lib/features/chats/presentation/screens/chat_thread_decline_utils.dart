@@ -1,4 +1,29 @@
+class DeclineTarget {
+  final String? messageId;
+  final String? senderId;
+
+  const DeclineTarget({this.messageId, this.senderId});
+}
+
 String buildDeclineButtonLabel() => 'Decline';
+
+DeclineTarget? findLatestIncomingDeclineTarget<T>({
+  required List<T> items,
+  required bool Function(T item) isMe,
+  required bool Function(T item) isDeclined,
+  required String? Function(T item) messageId,
+  required String? Function(T item) senderId,
+}) {
+  for (final item in items) {
+    if (!isMe(item) && !isDeclined(item)) {
+      return DeclineTarget(
+        messageId: messageId(item),
+        senderId: senderId(item),
+      );
+    }
+  }
+  return null;
+}
 
 String buildDeclineNotificationBody(String? declinerName, String reason) {
   final name = (declinerName ?? '').trim();
