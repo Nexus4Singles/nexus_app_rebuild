@@ -444,46 +444,76 @@ exports.validateAndRecordSubscription = functions.https.onRequest(async (req, re
       // ====================================================================
       // RECORD SUBSCRIPTION (Only if all validations pass)
       // ====================================================================
-      const subscriptionRecord = {
-        isActive: true,
-        tier: normalizedTier,
-        startDate: admin.firestore.FieldValue.serverTimestamp(),
-        expiryDate: null, // Will be set by RevenueCat webhook based on renewal
-        autoRenew: true,
-        revenueCatCustomerId: revenueCatValidation.customerId,
-        revenueCatTransactionId: transactionId,
-        packageId: packageId,
-        validatedAt: admin.firestore.FieldValue.serverTimestamp(),
-        validatedBy: 'revenuecat_validation',
-        ipAddress: req.ip || 'unknown',
-        userAgent: req.headers['user-agent'] || 'unknown',
-        revenueCatVerified: true,
-      };
-      const fallbackExpiryDate = admin.firestore.Timestamp.fromDate(
-        new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-      );
+        const subscriptionRecord = {
+          isActive: true,
+          tier: normalizedTier,
+          startDate: admin.firestore.FieldValue.serverTimestamp(),
+          expiryDate: null, // Will be set by RevenueCat webhook based on renewal
+          autoRenew: true,
+          revenueCatCustomerId: revenueCatValidation.customerId,
+          revenueCatTransactionId: transactionId,
+          packageId: packageId,
+          validatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          validatedBy: 'revenuecat_validation',
+          ipAddress: req.ip || 'unknown',
+          userAgent: req.headers['user-agent'] || 'unknown',
+          revenueCatVerified: true,
+        };
+        const fallbackExpiryDate = admin.firestore.Timestamp.fromDate(
+          new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+        );
 
-      if (revenueCatValidation.customerId && revenueCatValidation.customerId !== userId) {
-        await db.collection('revenuecatMappings').doc(revenueCatValidation.customerId).set({
-          firebaseUid: userId,
-          source: 'validate_subscription',
-          createdAt: admin.firestore.FieldValue.serverTimestamp(),
-        }, { merge: true });
-      }
+        const userRef = db.collection('users').doc(userId);
 
-      // Update subscription record (overwrites existing)
-      const userRef = db.collection('users').doc(userId);
-      await userRef.update({
-        'subscription': subscriptionRecord,
-        'onPremium': true, // Legacy flag for backward compatibility
-        'subExpDate': fallbackExpiryDate,
-        'entitledUser': true,
-        'updatedAt': admin.firestore.FieldValue.serverTimestamp(),
-      });
+        // Persist revenuecat mapping if needed
+        if (revenueCatValidation.customerId && revenueCatValidation.customerId !== userId) {
+          await db.collection('revenuecatMappings').doc(revenueCatValidation.customerId).set({
+            firebaseUid: userId,
+            source: 'validate_subscription',
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          }, { merge: true });
+        }
 
-      console.log(
-        `[validateSubscription] ✅ Subscription recorded: User=${userId}, Tier=${normalizedTier}`
-      );
+        // Use a transaction to atomically update the user subscription and create an audit log
+        try {
+          await db.runTransaction(async (transaction) => {
+            const userSnap = await transaction.get(userRef);
+
+            // Idempotency: if the same RevenueCat transactionId is already recorded, skip
+            const existingSub = userSnap.exists ? userSnap.get('subscription') : null;
+            if (existingSub && existingSub.revenueCatTransactionId === transactionId) {
+              console.log(`[validateSubscription] Duplicate subscription transaction detected for ${userId} (${transactionId}) - skipping write`);
+              return;
+            }
+
+            const updateData = {
+              'subscription': subscriptionRecord,
+              'onPremium': true,
+              'subExpDate': fallbackExpiryDate,
+              'entitledUser': true,
+              'updatedAt': admin.firestore.FieldValue.serverTimestamp(),
+            };
+
+            transaction.update(userRef, updateData);
+
+            const auditRef = userRef.collection('auditLog').doc();
+            transaction.set(auditRef, {
+              action: 'subscription_validated',
+              provider: 'revenuecat',
+              transactionId: transactionId,
+              normalizedTier: normalizedTier,
+              recordedAt: admin.firestore.FieldValue.serverTimestamp(),
+              revenuecatResponse: revenueCatValidation.revenueCatCustomer || null,
+            });
+          });
+
+          console.log(
+            `[validateSubscription] ✅ Subscription recorded: User=${userId}, Tier=${normalizedTier}`
+          );
+        } catch (txErr) {
+          console.error('[validateSubscription] Transaction failed:', txErr);
+          throw txErr;
+        }
 
       // ====================================================================
       // SEND NOTIFICATIONS

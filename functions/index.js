@@ -1358,104 +1358,107 @@ exports.handleUpdateUserSubscriptionStatus = functions
       expiryDate.setDate(expiryDate.getDate() + 30);
 
       // ====================================================================
-      // UPDATE USER SUBSCRIPTION FIELDS (NEW FORMAT)
+      // UPDATE USER SUBSCRIPTION FIELDS (NEW FORMAT) - ATOMIC + IDEMPOTENT
       // ====================================================================
       const now = admin.firestore.FieldValue.serverTimestamp();
-      const updateData = {
-        // NEW SUBSCRIPTION FORMAT (primary)
-        subscription: {
-          isActive: true,
-          tier: 'monthly_premium',
-          expiryDate: admin.firestore.Timestamp.fromDate(expiryDate),
-          startDate: now,
-          validatedBy: 'flutterwave_webhook',
-          autoRenew: true,
-          validatedAt: now,
-        },
-        
-        // LEGACY FORMAT (backward compatibility for old app versions)
-        onPremium: true,
-        subExpDate: admin.firestore.Timestamp.fromDate(expiryDate),
-        entitledUser: true,
-        
-        // External payment tracking
-        hasExternalSubscriptionFlow: true,
-        lastFlutterwaveTransactionId: transactionId,
-        
-        // Payment history
-        lastPaymentMethod: 'flutterwave',
-        lastPaymentDate: now,
-        lastPaymentAmount: amount,
-        lastPaymentCurrency: currency,
-        
-        // Mark as recurring customer
-        prevSubscribed: true,
-        
-        // Timestamp
-        updatedAt: now,
-      };
 
-      await userRef.update(updateData);
-      console.log(`[Flutterwave] ✓ Subscription activated for user ${userId}, expires ${expiryDate.toISOString()}`);
-
-      // ====================================================================
-      // CREATE AUDIT LOG
-      // ====================================================================
-      await userRef
-        .collection('auditLog')
-        .add({
-          action: 'subscription_activated_external',
-          provider: 'flutterwave',
-          transactionId,
-          amount,
-          currency,
-          tier: 'monthly_premium',
-          expiryDate: admin.firestore.Timestamp.fromDate(expiryDate),
-          timestamp: admin.firestore.FieldValue.serverTimestamp(),
-          email,
-        });
-
-      console.log(`[Flutterwave] ✓ Audit log created for transaction ${transactionId}`);
-
-      // ====================================================================
-      // CREATE NOTIFICATION (isolated - don't fail webhook if this fails)
-      // ====================================================================
       try {
-        const notification = {
-          type: 'subscription_activated_external',
-          title: '💎 Premium Activated',
-          body: `Your Nexus Premium subscription is now active for 30 days!`,
-          payload: {
+        await db.runTransaction(async (transaction) => {
+          const userSnap = await transaction.get(userRef);
+          const userData = userSnap.exists ? userSnap.data() || {} : {};
+
+          // Idempotency: if this transactionId already processed in auditLog or subscriptionPayment marked completed, skip
+          const existingPayment = userData.subscriptionPayment || {};
+          if (existingPayment.txRef === txRef && existingPayment.status === 'completed') {
+            console.log(`[Flutterwave] Transaction already completed for user ${userId}: ${txRef}`);
+            return;
+          }
+
+          // Prepare subscription + legacy fields
+          const subscriptionUpdate = {
+            isActive: true,
+            tier: 'monthly_premium',
+            expiryDate: admin.firestore.Timestamp.fromDate(expiryDate),
+            startDate: now,
+            validatedBy: 'flutterwave_webhook',
+            autoRenew: true,
+            validatedAt: now,
+          };
+
+          const updatedSubscriptionPayment = Object.assign({}, existingPayment, {
+            txRef: txRef,
+            flw_ref: transactionId,
+            amount: amount,
+            currency: currency,
+            status: 'completed',
+            updatedAt: now,
+          });
+
+          const updateData = {
+            subscription: subscriptionUpdate,
+            onPremium: true,
+            subExpDate: admin.firestore.Timestamp.fromDate(expiryDate),
+            entitledUser: true,
+            hasExternalSubscriptionFlow: true,
+            lastFlutterwaveTransactionId: transactionId,
+            lastPaymentMethod: 'flutterwave',
+            lastPaymentDate: now,
+            lastPaymentAmount: amount,
+            lastPaymentCurrency: currency,
+            prevSubscribed: true,
+            subscriptionPayment: updatedSubscriptionPayment,
+            updatedAt: now,
+          };
+
+          transaction.update(userRef, updateData);
+
+          // Audit log entry
+          const auditRef = userRef.collection('auditLog').doc();
+          transaction.set(auditRef, {
+            action: 'subscription_activated_external',
+            provider: 'flutterwave',
+            transactionId,
+            amount,
+            currency,
+            tier: 'monthly_premium',
+            expiryDate: admin.firestore.Timestamp.fromDate(expiryDate),
+            timestamp: admin.firestore.FieldValue.serverTimestamp(),
+            email,
+            txRef,
+          });
+
+          // Notification (created inside transaction to ensure user gets notification once)
+          const notifRef = userRef.collection('notifications').doc();
+          transaction.set(notifRef, {
             type: 'subscription_activated_external',
             title: '💎 Premium Activated',
             body: `Your Nexus Premium subscription is now active for 30 days!`,
-            route: '/subscription',
-            expiryDate: expiryDate.toISOString(),
-          },
-          createdAt: admin.firestore.FieldValue.serverTimestamp(),
-          isSent: false,
-        };
+            payload: {
+              type: 'subscription_activated_external',
+              title: '💎 Premium Activated',
+              body: `Your Nexus Premium subscription is now active for 30 days!`,
+              route: '/subscription',
+              expiryDate: expiryDate.toISOString(),
+            },
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            isSent: false,
+          });
+        });
 
-        const notifRef = await userRef
-          .collection('notifications')
-          .add(notification);
+        console.log(`[Flutterwave] ✓ Subscription activated for user ${userId}, expires ${expiryDate.toISOString()}`);
+        console.log(`[Flutterwave] ✓ Audit log and notification created for transaction ${transactionId}`);
 
-        console.log(`[Flutterwave] ✓ Notification created: ${notifRef.id}`);
-      } catch (notifError) {
-        console.warn(`[Flutterwave] ⚠️ Failed to create notification for user ${userId}: ${notifError.message}`);
-        // Don't fail webhook - subscription was already activated
+        return res.status(200).json({
+          success: true,
+          message: 'Subscription activated successfully',
+          userId,
+          transactionId,
+          expiryDate: expiryDate.toISOString(),
+        });
+      } catch (txErr) {
+        console.error('[Flutterwave] Transaction error processing webhook:', txErr);
+        return res.status(500).json({ error: 'Internal server error', details: txErr.message });
       }
-
-      // ====================================================================
-      // SUCCESS RESPONSE
-      // ====================================================================
-      return res.status(200).json({
-        success: true,
-        message: 'Subscription activated successfully',
-        userId,
-        transactionId,
-        expiryDate: expiryDate.toISOString(),
-      });
 
     } catch (error) {
       console.error('[Flutterwave] Error:', error);
@@ -1815,7 +1818,7 @@ exports.createSubscriptionPaymentLink = functions
       customizations: {
         title: 'Nexus Premium Subscription',
         description: 'Monthly Nexus subscription via Flutterwave bank transfer',
-        logo: 'https://nexus-visibility-app.web.app/icons/Icon-192.png',
+        logo: 'https://www.nexus4christians.com/favicon.png',
       },
       meta: {
         userId: uid,

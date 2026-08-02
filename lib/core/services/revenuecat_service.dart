@@ -9,28 +9,8 @@ import 'package:nexus_app_v2/features/subscription/domain/subscription_models.da
 import '../config/revenuecat_config.dart';
 
 class RevenueCatService {
-  static final List<String> _purchaseDebugLog = <String>[];
-  static final ValueNotifier<List<String>> purchaseDebugNotifier =
-      ValueNotifier<List<String>>(const <String>[]);
-
-  static void clearDebugLog() {
-    _purchaseDebugLog.clear();
-    purchaseDebugNotifier.value = const <String>[];
-  }
-
-  static void logDebug(String message) {
-    final timestamp = DateTime.now().toIso8601String().substring(11, 19);
-    final entry = '[$timestamp] $message';
-    _purchaseDebugLog.add(entry);
-    if (_purchaseDebugLog.length > 40) {
-      _purchaseDebugLog.removeAt(0);
-    }
-    purchaseDebugNotifier.value = List<String>.from(_purchaseDebugLog);
-  }
-
   static Future<void> init() async {
     try {
-      logDebug('Initializing RevenueCat SDK');
       // Determine platform and configure RevenueCat
       final configuration = PurchasesConfiguration(
         Platform.isIOS
@@ -39,53 +19,13 @@ class RevenueCatService {
       );
 
       await Purchases.configure(configuration);
-      logDebug('RevenueCat SDK configured');
     } catch (e) {
-      logDebug('RevenueCat initialization failed: $e');
       rethrow;
     }
   }
 
   static Future<void> login(String userId) async {
-    try {
-      logDebug('RevenueCat login requested for $userId');
-      await Purchases.logIn(userId).timeout(
-        const Duration(seconds: 20),
-        onTimeout:
-            () =>
-                throw TimeoutException(
-                  'RevenueCat login timed out. Please check your internet connection and try again.',
-                ),
-      );
-
-      logDebug('RevenueCat login completed; fetching customer info');
-      final customerInfo = await Purchases.getCustomerInfo().timeout(
-        const Duration(seconds: 20),
-        onTimeout:
-            () =>
-                throw TimeoutException(
-                  'RevenueCat customer info fetch timed out. Please check your internet connection and try again.',
-                ),
-      );
-
-      final customerId = customerInfo.originalAppUserId;
-      logDebug('RevenueCat customer id resolved: $customerId');
-      if (customerId.isNotEmpty) {
-        await FirebaseFirestore.instance.collection('users').doc(userId).set({
-          'revenueCat': {
-            'customerId': customerId,
-            'lastLinkedAt': FieldValue.serverTimestamp(),
-          },
-        }, SetOptions(merge: true));
-      }
-    } catch (e) {
-      logDebug('RevenueCat login/linking failed: $e');
-      debugPrint(
-        '⚠️ [RevenueCatService] Could not persist RevenueCat identity: $e',
-      );
-      // Do not rethrow here: purchase should still proceed even if user linking
-      // or customer info persistence fails.
-    }
+    await Purchases.logIn(userId);
   }
 
   static Future<void> logout() async {
@@ -113,93 +53,39 @@ class RevenueCatService {
   /// on success, or `null` if the user cancelled the native purchase UI.
   ///
   /// Throws an exception if purchase fails for any reason other than user cancellation.
-  static bool get _isRunningOnIOSSimulator {
-    if (!Platform.isIOS) return false;
-
-    final env = Platform.environment;
-    final home = env['HOME'] ?? '';
-    final tmpDir = env['TMPDIR'] ?? '';
-    final hasSimulatorKey = env.keys.any(
-      (key) =>
-          key.toLowerCase().contains('simulator') ||
-          key.toLowerCase().contains('device') ||
-          key.startsWith('SIMCTL_CHILD_'),
-    );
-    final homeIndicatesSimulator = home.contains(
-      '/Library/Developer/CoreSimulator/',
-    );
-    final tmpDirIndicatesSimulator = tmpDir.contains(
-      '/Library/Developer/CoreSimulator/',
-    );
-    return hasSimulatorKey ||
-        homeIndicatesSimulator ||
-        tmpDirIndicatesSimulator;
-  }
-
   static Future<CustomerInfo?> purchasePackage(Package package) async {
-    final envMap = Platform.environment;
-    final home = envMap['HOME'] ?? '';
-    final tmpDir = envMap['TMPDIR'] ?? '';
-    final envKeys =
-        envMap.keys
-            .where(
-              (key) =>
-                  key.toLowerCase().contains('simulator') ||
-                  key.toLowerCase().contains('device') ||
-                  key.startsWith('SIMCTL_CHILD_'),
-            )
-            .toList();
-    logDebug(
-      'Runtime diagnostics: os=${Platform.operatingSystem}, '
-      'isIOS=${Platform.isIOS}, '
-      'isAndroid=${Platform.isAndroid}',
-    );
-    debugPrint(
-      '💡 [RevenueCatService] runtime diagnostics: '
-      'os=${Platform.operatingSystem}, '
-      'osVersion=${Platform.operatingSystemVersion}, '
-      'isIOS=${Platform.isIOS}, '
-      'isAndroid=${Platform.isAndroid}, '
-      'simulatorEnvKeys=$envKeys, '
-      'simulatorEnv=${envMap.entries.where((entry) => entry.key.toLowerCase().contains('simulator') || entry.key.toLowerCase().contains('device')).map((entry) => '${entry.key}=${entry.value}').join(', ')}, '
-      'home=$home, '
-      'tmpDir=$tmpDir',
-    );
-
-    if (_isRunningOnIOSSimulator) {
-      throw TimeoutException(
-        'Subscriptions cannot be completed on the iOS Simulator. '
-        'Please test on a real iOS device or use a sandbox device instead.',
+    // ── FORENSIC: capture entitlement state BEFORE purchase ──
+    // ── FORENSIC LOGGING (uses print() so it works in release builds too) ──
+    try {
+      final preInfo = await Purchases.getCustomerInfo();
+      print('🔍 [RevenueCatService] PRE-PURCHASE entitlements:');
+      print('   Active: ${preInfo.entitlements.active.keys.toList()}');
+      print('   All:    ${preInfo.entitlements.all.keys.toList()}');
+      print(
+        '   NonSubscriptionTransactions: ${preInfo.nonSubscriptionTransactions.map((t) => t.productIdentifier).toList()}',
       );
+    } catch (e) {
+      print('⚠️ [RevenueCatService] Could not fetch pre-purchase info: $e');
     }
 
-    debugPrintSynchronously('🔧 [RevenueCatService] purchasePackage START');
-    logDebug('Purchase attempt started for ${package.storeProduct.identifier}');
     print(
       '🔵 [RevenueCatService] Calling Purchases.purchasePackage for: '
       '${package.storeProduct.identifier} (type: ${package.packageType})',
     );
 
     try {
-      debugPrintSynchronously(
-        '🔧 [RevenueCatService] before Purchases.purchasePackage',
-      );
-      logDebug('Calling Purchases.purchasePackage');
+      // Add timeout to prevent simulator from hanging indefinitely
       final result = await Purchases.purchasePackage(package).timeout(
-        const Duration(seconds: 25),
+        const Duration(seconds: 30),
         onTimeout: () {
           print(
-            '⏱️ [RevenueCatService] purchasePackage timed out after 25 seconds',
+            '⏱️ [RevenueCatService] purchasePackage timed out after 30 seconds on simulator',
           );
           throw TimeoutException(
-            'Purchase did not complete within 25 seconds. Please try again.',
+            'Purchase took too long (30s). This may be a simulator issue. Please try on a real device or restart the simulator.',
           );
         },
       );
-      debugPrintSynchronously(
-        '🔧 [RevenueCatService] after Purchases.purchasePackage',
-      );
-      logDebug('Purchases.purchasePackage returned');
       // ── FORENSIC: capture what the SDK returned ──
       print('🟢 [RevenueCatService] purchasePackage RETURNED (not thrown)');
       print(
@@ -210,9 +96,6 @@ class RevenueCatService {
       );
       return result;
     } on PlatformException catch (e) {
-      logDebug(
-        'Purchase platform exception: code=${e.code} message=${e.message}',
-      );
       print(
         '🔴 [RevenueCatService] PlatformException: code=${e.code} message=${e.message}',
       );
@@ -238,7 +121,6 @@ class RevenueCatService {
       if (readableErrorCode.contains('PRODUCT_ALREADY_PURCHASED') ||
           (e.message ?? '').toLowerCase().contains('already') ||
           e.code == '6') {
-        logDebug('Purchase flow hit PRODUCT_ALREADY_PURCHASED');
         print(
           '🟠 [RevenueCatService] PRODUCT ALREADY PURCHASED – '
           'the Apple ID owns this non-consumable. No payment sheet will appear.',
@@ -250,7 +132,6 @@ class RevenueCatService {
       // Any other error, re-throw it
       rethrow;
     } catch (e) {
-      logDebug('Purchase threw non-platform exception: $e');
       print('🔴 [RevenueCatService] Non-platform exception: ${e.runtimeType}');
       print('   Full error: $e');
 
@@ -268,13 +149,11 @@ class RevenueCatService {
 
   static Future<Offerings?> getOfferings() async {
     try {
-      logDebug('Fetching offerings from RevenueCat');
       debugPrint(
         '🔵 [RevenueCatService] Fetching offerings from RevenueCat...',
       );
       final offerings = await Purchases.getOfferings();
 
-      logDebug('Offerings received successfully');
       debugPrint('🟢 [RevenueCatService] Offerings received successfully');
       debugPrint(
         '  Current offering: ${offerings.current?.identifier ?? "NONE"}',
@@ -330,69 +209,50 @@ class RevenueCatService {
     return await Purchases.getCustomerInfo();
   }
 
-  /// Sync active RevenueCat subscription entitlement to Firestore for the
-  /// current user. Returns true if a Firestore update was applied.
+  static DateTime? _parseRevenueCatDate(String? rawDate) {
+    if (rawDate == null || rawDate.isEmpty) return null;
+    return DateTime.tryParse(rawDate);
+  }
+
   static Future<bool> syncActiveSubscriptionToFirestore({
     required String userId,
-    CustomerInfo? customerInfo,
   }) async {
-    try {
-      final info = customerInfo ?? await Purchases.getCustomerInfo();
-      final activeEntitlements = info.entitlements.active;
-
-      if (activeEntitlements.isEmpty) {
-        debugPrint(
-          '[RevenueCatService] No active entitlements to sync for user: $userId',
-        );
-        return false;
-      }
-
-      final entitlement =
-          activeEntitlements['premium'] ?? activeEntitlements.values.first;
-      final expiryDateStr = entitlement.expirationDate;
-      Timestamp? expiryTimestamp;
-      if (expiryDateStr != null) {
-        final parsed = DateTime.tryParse(expiryDateStr);
-        if (parsed != null) {
-          expiryTimestamp = Timestamp.fromDate(parsed);
-        }
-      }
-
-      final subscriptionData = <String, dynamic>{
-        'isActive': true,
-        'tier': SubscriptionTier.monthly.id,
-        'startDate': FieldValue.serverTimestamp(),
-        if (expiryTimestamp != null) 'expiryDate': expiryTimestamp,
-        'autoRenew': true,
-        'revenueCatCustomerId': info.originalAppUserId,
-        'revenueCatSubscriptionId': entitlement.productIdentifier,
-      };
-
-      final updateData = <String, dynamic>{
-        'subscription': subscriptionData,
-        'onPremium': true,
-        'entitledUser': true,
-        'updatedAt': FieldValue.serverTimestamp(),
-      };
-      if (expiryTimestamp != null) {
-        updateData['subExpDate'] = expiryTimestamp;
-      }
-
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .set(updateData, SetOptions(merge: true));
-
-      debugPrint(
-        '[RevenueCatService] ✅ Synced active RevenueCat subscription to Firestore for user: $userId',
-      );
-      return true;
-    } catch (e) {
-      debugPrint(
-        '[RevenueCatService] ⚠️ Failed to sync active RevenueCat subscription: $e',
-      );
+    final customerInfo = await getCustomerInfo();
+    final activeEntitlements = customerInfo.entitlements.active.values;
+    if (activeEntitlements.isEmpty) {
       return false;
     }
+
+    // Use the first active entitlement to derive the current subscription.
+    final entitlement = activeEntitlements.first;
+    final tier = SubscriptionTier.fromId(entitlement.productIdentifier);
+    final startDate = _parseRevenueCatDate(entitlement.originalPurchaseDate) ??
+        _parseRevenueCatDate(entitlement.latestPurchaseDate);
+    final expiryDate = _parseRevenueCatDate(entitlement.expirationDate);
+
+    final subscriptionStatus = SubscriptionStatus(
+      isActive: true,
+      tier: tier,
+      startDate: startDate,
+      expiryDate: expiryDate,
+      autoRenew: entitlement.willRenew,
+      revenueCatCustomerId: customerInfo.originalAppUserId,
+      revenueCatSubscriptionId: entitlement.identifier,
+    );
+
+    final data = <String, dynamic>{
+      'subscription': subscriptionStatus.toFirestore(),
+      'onPremium': true,
+      'subExpDate': expiryDate != null ? Timestamp.fromDate(expiryDate) : null,
+      'hasExternalSubscriptionFlow': true,
+    };
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .set(data, SetOptions(merge: true));
+
+    return true;
   }
 
   /// Checks if a non-consumable product is already owned (present in
