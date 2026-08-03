@@ -836,7 +836,9 @@ exports.validateAndRecordSubscription = functions.https.onRequest(async (req, re
       startDate: admin.firestore.FieldValue.serverTimestamp(),
       expiryDate: admin.firestore.Timestamp.fromDate(expiryDate),
       autoRenew: true,
-      revenueCatCustomerId: null, // Will be updated by webhook if needed
+      // FIX 4: Use the real revenueCatCustomerId from the client request body if provided.
+      // The client passes customerInfo.originalAppUserId which is needed for future webhook-to-user matching.
+      revenueCatCustomerId: req.body.revenueCatCustomerId || null,
       revenueCatTransactionId: transactionId,
       verificationStatus: 'verified',
       type: 'subscription',
