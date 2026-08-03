@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +9,6 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
 
 import 'package:nexus_app_v2/core/theme/theme.dart';
 import 'package:nexus_app_v2/core/constants/app_constants.dart';
@@ -22,6 +22,7 @@ import 'package:nexus_app_v2/features/subscription/domain/subscription_models.da
 import 'package:nexus_app_v2/features/challenges/presentation/screens/journey_detail_screen.dart';
 import 'package:nexus_app_v2/features/challenges/providers/journeys_providers.dart';
 import 'package:nexus_app_v2/core/services/secure_purchase_validation_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Note: Using journeyByIdProvider from journeys_providers.dart (cloud-first with fallback)
 // This replaces the old local repository-based loading
@@ -52,7 +53,6 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
     }
     return;
   }
-
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -73,15 +73,18 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
         )
         .timeout(
           const Duration(seconds: 20),
-          onTimeout: () => throw TimeoutException(
-            'Payment link request timed out. Please check your internet connection and try again.',
-          ),
+          onTimeout:
+              () =>
+                  throw TimeoutException(
+                    'Payment link request timed out. Please check your internet connection and try again.',
+                  ),
         );
 
     if (response.statusCode != 200) {
-      final errorMessage = response.body.isNotEmpty
-          ? response.body
-          : 'Unable to create payment link';
+      final errorMessage =
+          response.body.isNotEmpty
+              ? response.body
+              : 'Unable to create payment link';
       throw Exception(errorMessage);
     }
 
@@ -146,6 +149,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
       vsync: this,
       initialIndex: 0,
     );
+    print('🟢 [SubscriptionScreen] initState called - TabController created');
   }
 
   @override
@@ -159,6 +163,17 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
     final subscriptionAsync = ref.watch(subscriptionStatusProvider);
     final purchasedJourneysAsync = ref.watch(purchasedJourneysProvider);
     final relationshipStatus = ref.watch(effectiveRelationshipStatusProvider);
+
+    // Debug: Check userId being watched
+    final userId = ref.watch(currentUserIdProvider);
+    print('🟢 [SubscriptionScreen] BUILD called');
+    print('🟢 [SubscriptionScreen] userId=$userId');
+    print('🟢 [SubscriptionScreen] relationshipStatus=$relationshipStatus');
+
+    // Log states for debugging
+    subscriptionAsync.whenData((sub) {});
+
+    purchasedJourneysAsync.whenData((journeys) {});
 
     // Married users should only see Journey Purchases tab
     final isMarried = relationshipStatus == RelationshipStatus.married;
@@ -668,8 +683,9 @@ class _NoSubscriptionView extends ConsumerWidget {
             },
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
 
+          // Info
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
@@ -677,63 +693,78 @@ class _NoSubscriptionView extends ConsumerWidget {
               borderRadius: BorderRadius.circular(14),
               border: Border.all(color: AppColors.getBorder(context)),
             ),
-            child: Column(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'If you have trouble subscribing through Playstore/Appstore, you can subscribe via card or bank transfer using the button below.',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.getTextSecondary(context),
-                    height: 1.6,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton.icon(
-                    onPressed: () => _launchBankTransferUrl(context),
-                    icon: const Icon(Icons.open_in_new, size: 18),
-                    label: Text(
-                      'Pay Online',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 14,
-                        horizontal: 16,
-                      ),
-                      side: BorderSide(color: AppColors.primary),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text.rich(
-                  TextSpan(
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.getTextSecondary(context),
-                      height: 1.6,
-                    ),
+                Icon(Icons.info_outline, color: AppColors.primary, size: 20),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const TextSpan(
-                        text: 'If your subscription is not activated after payment, kindly reach out to us by sending proof of payment to ',
+                      Text(
+                        'If you have trouble subscribing through Playstore/Appstore, you can subscribe via card or bank transfer using the button below.',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.getTextSecondary(context),
+                          height: 1.6,
+                        ),
                       ),
-                      TextSpan(
-                        text: 'contact@nexus4christians.com',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () => _launchBankTransferUrl(context),
+                          icon: const Icon(Icons.open_in_new, size: 18),
+                          label: Text(
+                            'Pay Online',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 14,
+                              horizontal: 16,
+                            ),
+                            side: BorderSide(color: AppColors.primary),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                        ),
                       ),
-                      const TextSpan(text: ' or '),
-                      TextSpan(
-                        text: '@nexus4christians',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const TextSpan(
-                        text: ' on Instagram and your subscription will be activated.',
+                      const SizedBox(height: 12),
+                      Text.rich(
+                        TextSpan(
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.getTextSecondary(context),
+                            height: 1.6,
+                          ),
+                          children: [
+                            const TextSpan(
+                              text:
+                                  'If your subscription is not activated after payment, kindly reach out to us by sending proof of payment to ',
+                            ),
+                            TextSpan(
+                              text: 'contact@nexus4christians.com',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const TextSpan(text: ' or '),
+                            TextSpan(
+                              text: '@nexus4christians',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const TextSpan(
+                              text:
+                                  ' on Instagram and your subscription will be activated.',
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -750,21 +781,39 @@ class _NoSubscriptionView extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) async {
+    // Capture current Firebase UID so it is available in catch blocks.
+    final firebaseUid = ref.read(currentUserIdProvider);
+
     try {
+      // NOTE: Do not block purchases when `firebaseUid` is null here.
+      // There are legitimate race conditions where RevenueCat may receive
+      // the purchase before the client has fully linked the Firebase UID.
+      // We still attempt to link and sync after purchase; the server-side
+      // webhook will reconcile anonymous App User IDs to Firebase users
+      // where possible. For UX, allow the purchase to proceed.
+      if (firebaseUid == null) {
+        debugPrint(
+          '🟡 [Subscription] Warning: firebaseUid is null at purchase time (may be auth race). Proceeding.',
+        );
+      }
       // Show loading dialog
       showDialog(
         context: context,
         barrierDismissible: false,
+        useRootNavigator: true,
         builder: (context) => const Center(child: CircularProgressIndicator()),
       );
 
-      // Get offerings from RevenueCat
+      debugPrint('🔵 [Subscription] Fetching RevenueCat offerings...');
       final offerings = await RevenueCatService.getOfferings();
 
       if (!context.mounted) return;
-      Navigator.pop(context); // Close loading dialog
+      Navigator.of(context, rootNavigator: true).pop(); // Close loading dialog
 
       if (offerings == null) {
+        debugPrint(
+          '🔴 [Subscription] offerings is NULL - RevenueCat SDK error',
+        );
         _showError(
           context,
           'Unable to load subscription options from store. Please ensure:\n'
@@ -776,22 +825,41 @@ class _NoSubscriptionView extends ConsumerWidget {
         return;
       }
 
-      // Get the specific subscription offering (nexus_premium_v2)
-      Offering? subscriptionOffering = offerings.getOffering(
-        'nexus_premium_v2',
-      );
+      // Get the specific subscription offering based on the RevenueCat offering ID.
+      // The offering ID in RevenueCat is configured as `nexus_premium_v2`.
+      final preferredOfferingIds = [
+        RevenueCatConfig.subscriptionOfferingId,
+        'monthly_premium_v2',
+        'Premium',
+      ];
 
-      // Fallback 1: Try offerings.current if nexus_premium_v2 not found
+      Offering? subscriptionOffering;
+      for (final offeringId in preferredOfferingIds) {
+        subscriptionOffering = offerings.getOffering(offeringId);
+        if (subscriptionOffering != null) {
+          debugPrint('🟢 [Subscription] Found offering by id: $offeringId');
+          break;
+        }
+      }
+
       if (subscriptionOffering == null) {
+        debugPrint(
+          '🟡 [Subscription] preferred offering IDs not available, trying offerings.current',
+        );
         subscriptionOffering = offerings.current;
       }
 
-      // Fallback 2: Try old "Premium" offering for backward compatibility
-      if (subscriptionOffering == null) {
-        subscriptionOffering = offerings.getOffering('Premium');
+      if (subscriptionOffering == null && Platform.isAndroid) {
+        debugPrint(
+          '🟡 [Subscription] Trying Android legacy offering keys on Android',
+        );
+        subscriptionOffering =
+            offerings.getOffering('monthly_premium') ??
+            offerings.getOffering('monthly');
       }
 
       if (subscriptionOffering == null) {
+        debugPrint('🔴 [Subscription] No subscription offering available');
         _showError(
           context,
           'Subscription offering not configured. This is a backend configuration issue.\n\n'
@@ -800,10 +868,15 @@ class _NoSubscriptionView extends ConsumerWidget {
         return;
       }
 
+      debugPrint(
+        '🟢 [Subscription] Using offering: ${subscriptionOffering.identifier}',
+      );
+
       // Find the monthly subscription package
       final packages = subscriptionOffering.availablePackages;
 
       if (packages.isEmpty) {
+        debugPrint('🔴 [Subscription] Offering has no available packages');
         _showError(
           context,
           'No subscription packages available. This is a backend configuration issue.\n\n'
@@ -812,18 +885,21 @@ class _NoSubscriptionView extends ConsumerWidget {
         return;
       }
 
+      debugPrint(
+        '🟡 [Subscription] Available packages: ${packages.map((p) => p.storeProduct.identifier).toList()}',
+      );
 
-      // Find package by product ID
+      // Find package by product ID and package type, with stronger Android fallback.
       Package? monthlyPackage;
       final targetProductId =
           RevenueCatConfig.getSubscriptionProductId().toLowerCase();
 
-      // Try exact match first
+      // Exact product identifier match first
       monthlyPackage = packages.firstWhereOrNull(
         (p) => p.storeProduct.identifier.toLowerCase() == targetProductId,
       );
 
-      // Fallback to contains match
+      // Next try identifier contains match
       if (monthlyPackage == null) {
         monthlyPackage = packages.firstWhereOrNull(
           (p) =>
@@ -831,29 +907,69 @@ class _NoSubscriptionView extends ConsumerWidget {
         );
       }
 
-      // Last resort: use first package
+      // Prefer monthly package types if available
+      if (monthlyPackage == null) {
+        monthlyPackage = packages.firstWhereOrNull(
+          (p) => p.packageType == PackageType.monthly,
+        );
+      }
+
+      // Last resort: use first available package
       monthlyPackage ??= packages.first;
 
+      debugPrint(
+        '🟢 [Subscription] Selected package: ${monthlyPackage.storeProduct.identifier}',
+      );
 
       // Show loading again during purchase
       if (!context.mounted) return;
       showDialog(
         context: context,
         barrierDismissible: false,
+        useRootNavigator: true,
         builder: (context) => const Center(child: CircularProgressIndicator()),
       );
 
       // Make purchase - SDK handles payment sheet display
       // SDK will throw if user cancels, return CustomerInfo if successful
+      // (use firebaseUid captured at the top of this method)
+
+      if (firebaseUid != null) {
+        try {
+          debugPrint('🔧 [SubscriptionScreen] before RevenueCatService.login');
+          await RevenueCatService.login(firebaseUid);
+          debugPrint(
+            '🟢 [SubscriptionPurchase] RevenueCat linked to Firebase user: $firebaseUid',
+          );
+        } catch (e) {
+          debugPrint(
+            '⚠️ [SubscriptionPurchase] RevenueCat login before purchase failed: $e',
+          );
+        }
+      } else {
+        debugPrint(
+          '🟡 [SubscriptionPurchase] No firebaseUid available before purchase; proceeding without RevenueCat login',
+        );
+      }
+
+      debugPrint(
+        '🔧 [SubscriptionScreen] before RevenueCatService.purchasePackage',
+      );
+      debugPrint(
+        '🔧 [SubscriptionScreen] selected package: ${monthlyPackage.storeProduct.identifier}',
+      );
       final customerInfo = await RevenueCatService.purchasePackage(
         monthlyPackage,
       );
 
       if (!context.mounted) return;
-      Navigator.pop(context); // Close loading dialog
+      Navigator.of(context, rootNavigator: true).pop(); // Close loading dialog
 
       // If customerInfo is null, the user cancelled the native purchase UI.
       if (customerInfo == null) {
+        debugPrint(
+          '🟡 [SubscriptionPurchase] Purchase cancelled by user (null result)',
+        );
         return;
       }
 
@@ -864,6 +980,9 @@ class _NoSubscriptionView extends ConsumerWidget {
       // We trust this validation and record the purchase immediately.
       // Background async verification happens via our webhook system.
 
+      debugPrint(
+        '🟢 [SubscriptionPurchase] SDK validated, recording optimistically',
+      );
 
       // Extract a subscription transaction reference from CustomerInfo.
       // The RevenueCat Flutter SDK does not expose store transaction IDs
@@ -878,11 +997,17 @@ class _NoSubscriptionView extends ConsumerWidget {
               'sub_${entry.productIdentifier}_${DateTime.now().millisecondsSinceEpoch}';
         }
       } catch (e) {
-        }
+        debugPrint(
+          '⚠️  [SubscriptionPurchase] Entitlement extraction error: $e',
+        );
+      }
       if (subscriptionTransactionId.isEmpty) {
         subscriptionTransactionId =
             'sub_${customerInfo.originalAppUserId}_${DateTime.now().millisecondsSinceEpoch}';
       }
+      debugPrint(
+        '🔐 [SubscriptionPurchase] Transaction reference: $subscriptionTransactionId',
+      );
 
       // Record subscription optimistically (fire-and-forget async verification)
       try {
@@ -890,9 +1015,32 @@ class _NoSubscriptionView extends ConsumerWidget {
           packageId: monthlyPackage.storeProduct.identifier,
           transactionId: subscriptionTransactionId,
           tier: SubscriptionTier.monthly.id,
+          revenueCatCustomerId: customerInfo.originalAppUserId,
         );
-      } catch (_) {
+      } catch (e) {
         // Even if local recording fails, the user has the subscription. Don't block.
+        debugPrint('⚠️  [SubscriptionPurchase] Local recording error: $e');
+      }
+
+      // Sync the active RevenueCat entitlement into Firestore immediately.
+      if (firebaseUid != null) {
+        try {
+          final synced =
+              await RevenueCatService.syncActiveSubscriptionToFirestore(
+                userId: firebaseUid,
+              );
+          debugPrint(
+            '🟢 [SubscriptionPurchase] RevenueCat entitlement sync completed: $synced',
+          );
+        } catch (e) {
+          debugPrint(
+            '⚠️ [SubscriptionPurchase] RevenueCat entitlement sync failed: $e',
+          );
+        }
+      } else {
+        debugPrint(
+          '🟡 [SubscriptionPurchase] Skipping Firestore entitlement sync (no firebaseUid available)',
+        );
       }
 
       // Show success immediately (user has already paid via SDK validation)
@@ -915,19 +1063,24 @@ class _NoSubscriptionView extends ConsumerWidget {
         packageId: monthlyPackage.storeProduct.identifier,
         transactionId: subscriptionTransactionId,
         tier: SubscriptionTier.monthly.id,
+        revenueCatCustomerId: customerInfo.originalAppUserId,
       );
     } catch (e) {
       if (context.mounted) {
-        final navigator = Navigator.of(context);
+        final navigator = Navigator.of(context, rootNavigator: true);
         if (navigator.canPop()) {
           navigator.pop();
         }
       }
 
-      // Check if this is a configuration error (product not in App Store Connect)
-      final errorStr = e.toString();
+      debugPrint(
+        '🔴 [SubscriptionPurchase] Caught exception: ${e.runtimeType}: $e',
+      );
+
+      final errorStr = e.toString().toLowerCase();
       if (errorStr.contains('code: 1') &&
-          errorStr.contains('userCancelled: true')) {
+          errorStr.contains('usercancelled: true')) {
+        debugPrint('🔴 [SubscriptionPurchase] CONFIGURATION ERROR DETECTED!');
         _showError(context, '''
 Purchase failed: Product not configured in App Store Connect.
 
@@ -939,6 +1092,48 @@ Please verify:
 
 Contact support if the issue persists.
 ''');
+      } else if (errorStr.contains('product_already_purchased') ||
+          errorStr.contains('already purchased') ||
+          errorStr.contains('already owned')) {
+        debugPrint(
+          '🟠 [SubscriptionPurchase] Existing subscription detected, restoring entitlement',
+        );
+        // use firebaseUid captured at the top of this method
+        if (firebaseUid != null) {
+          try {
+            await RevenueCatService.login(firebaseUid);
+            await RevenueCatService.syncActiveSubscriptionToFirestore(
+              userId: firebaseUid,
+            );
+            ref.invalidate(subscriptionStatusProvider);
+            ref.invalidate(isPremiumUserProvider);
+          } catch (restoreError) {
+            debugPrint(
+              '⚠️ [SubscriptionPurchase] Restore failed: $restoreError',
+            );
+          }
+        } else {
+          debugPrint(
+            '🟡 [SubscriptionPurchase] Cannot auto-restore: firebaseUid missing',
+          );
+        }
+
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Subscription is already active. Restored premium access.',
+              ),
+              duration: Duration(seconds: 4),
+              backgroundColor: AppColors.success,
+            ),
+          );
+        }
+      } else if (e is TimeoutException || errorStr.contains('timed out')) {
+        _showError(
+          context,
+          'Purchase timed out. On simulators the native subscription flow may not complete correctly. Please try again on a real device.',
+        );
       } else {
         _showError(context, 'Purchase failed: ${e.toString()}');
       }
@@ -957,22 +1152,30 @@ Contact support if the issue persists.
     required String packageId,
     required String transactionId,
     required String tier,
+    String? revenueCatCustomerId,
   }) async {
     final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
+    if (user == null) {
+      debugPrint(
+        '🔴 [SubscriptionRecording] CRITICAL: currentUser is null - subscription fields NOT created!',
+      );
+      return;
+    }
 
     final db = FirebaseFirestore.instance;
+    final expiryDate = Timestamp.fromDate(
+      DateTime.now().add(const Duration(days: 30)),
+    );
 
     final subscriptionRecord = {
       'isActive': true,
       'tier': tier,
       'startDate': FieldValue.serverTimestamp(),
       // Set expiry to 30 days from now (will be updated by webhook with real expiry)
-      'expiryDate': Timestamp.fromDate(
-        DateTime.now().add(const Duration(days: 30)),
-      ),
+      'expiryDate': expiryDate,
       'autoRenew': true,
       'revenueCatTransactionId': transactionId,
+      'revenueCatCustomerId': revenueCatCustomerId,
       'packageId': packageId,
       'type': 'subscription',
       'verificationStatus':
@@ -980,12 +1183,15 @@ Contact support if the issue persists.
       'optimisticRecord': true, // Marked as optimistic for audit
     };
 
-    // Record subscription
-    await db.collection('users').doc(user.uid).update({
+    // Record subscription merge-safe so purchase state is preserved even if the
+    // user document is missing or partially populated.
+    await db.collection('users').doc(user.uid).set({
       'subscription': subscriptionRecord,
       'onPremium': true,
+      'subExpDate': expiryDate,
+      'entitledUser': true,
       'updatedAt': FieldValue.serverTimestamp(),
-    });
+    }, SetOptions(merge: true));
   }
 
   /// Verifies subscription asynchronously with backend (fire-and-forget)
@@ -994,16 +1200,23 @@ Contact support if the issue persists.
     required String packageId,
     required String transactionId,
     required String tier,
+    String? revenueCatCustomerId,
   }) {
     // Fire async verification without awaiting
     Future.microtask(() async {
       try {
+        debugPrint(
+          '🔐 [SubscriptionPurchase] Async verification: Validating with backend',
+        );
+
         await SecurePurchaseValidationService().validateAndRecordSubscription(
           packageId: packageId,
           transactionId: transactionId,
           tier: tier,
+          revenueCatCustomerId: revenueCatCustomerId,
         );
 
+        debugPrint('🟢 [SubscriptionPurchase] Async verification successful');
         // Update verification status
         final user = FirebaseAuth.instance.currentUser;
         if (user != null) {
@@ -1012,7 +1225,8 @@ Contact support if the issue persists.
               .doc(user.uid)
               .update({'subscription.verificationStatus': 'verified'});
         }
-      } on PurchaseValidationException catch (_) {
+      } on PurchaseValidationException catch (e) {
+        debugPrint('⚠️  [SubscriptionPurchase] Async verification failed: $e');
         // Mark as verification_failed but don't revoke - user already has access
         final user = FirebaseAuth.instance.currentUser;
         if (user != null) {
@@ -1023,7 +1237,8 @@ Contact support if the issue persists.
                 'subscription.verificationStatus': 'verification_failed',
               });
         }
-      } catch (_) {
+      } catch (e) {
+        debugPrint('⚠️  [SubscriptionPurchase] Async verification error: $e');
         // Silent fail - user already has access, verification is just for audit
       }
     });
@@ -1229,14 +1444,26 @@ class _FeatureTile extends StatelessWidget {
 }
 
 // Subscription Plan Card - fetches price from RevenueCat
-class _SubscriptionPlanCard extends ConsumerWidget {
+class _SubscriptionPlanCard extends ConsumerStatefulWidget {
   final SubscriptionTier tier;
   final VoidCallback? onSubscribePressed;
 
   const _SubscriptionPlanCard({required this.tier, this.onSubscribePressed});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_SubscriptionPlanCard> createState() =>
+      _SubscriptionPlanCardState();
+}
+
+class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
+  @override
+  void initState() {
+    super.initState();
+    // Price is loaded and displayed only in native payment sheet for better UX
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.getSurface(context),
@@ -1247,25 +1474,19 @@ class _SubscriptionPlanCard extends ConsumerWidget {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    tier.displayName,
-                    style: AppTextStyles.titleMedium.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
+            child: Text(
+              widget.tier.displayName,
+              style: AppTextStyles.titleMedium.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: ElevatedButton(
               onPressed: () async {
-                if (onSubscribePressed != null) {
-                  onSubscribePressed!();
+                if (widget.onSubscribePressed != null) {
+                  widget.onSubscribePressed!();
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -1298,15 +1519,17 @@ class _SubscriptionPlanCard extends ConsumerWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              'To cancel your subscription, open your Play Store or App Store subscriptions page, select Nexus, and tap Cancel subscription.',
+              'This subscription will auto-renew. Cancel anytime from your Playstore or Appstore subscription settings.',
               style: AppTextStyles.bodySmall.copyWith(
                 color: AppColors.getTextSecondary(context),
-                height: 1.5,
+                height: 1.4,
               ),
+              textAlign: TextAlign.center,
             ),
           ),
+          const SizedBox(height: 12),
         ],
       ),
     );
