@@ -784,23 +784,30 @@ class _NoSubscriptionView extends ConsumerWidget {
     // Capture current Firebase UID so it is available in catch blocks.
     final firebaseUid = ref.read(currentUserIdProvider);
 
-    try {
-      // NOTE: Do not block purchases when `firebaseUid` is null here.
-      // There are legitimate race conditions where RevenueCat may receive
-      // the purchase before the client has fully linked the Firebase UID.
-      // We still attempt to link and sync after purchase; the server-side
-      // webhook will reconcile anonymous App User IDs to Firebase users
-      // where possible. For UX, allow the purchase to proceed.
-      if (firebaseUid == null) {
-        debugPrint(
-          '🟡 [Subscription] Warning: firebaseUid is null at purchase time (may be auth race). Proceeding.',
+    // FIX 1: Login BEFORE any dialog is shown, with a hard timeout so it cannot hang the UI spinner.
+    if (firebaseUid != null) {
+      try {
+        debugPrint('🔧 [SubscriptionScreen] Pre-purchase RC login for: $firebaseUid');
+        await RevenueCatService.login(firebaseUid).timeout(
+          const Duration(seconds: 8),
+          onTimeout: () {
+            debugPrint('⚠️ [SubscriptionScreen] RC login timed out (8s) - proceeding anyway');
+          },
         );
+        debugPrint('🟢 [SubscriptionScreen] RC login complete');
+      } catch (e) {
+        debugPrint('⚠️ [SubscriptionScreen] RC login failed (non-fatal): $e');
       }
-      // Show loading dialog
+    }
+
+    try {
+      if (firebaseUid == null) {
+        debugPrint('🟡 [Subscription] Warning: firebaseUid is null at purchase time (may be auth race). Proceeding.');
+      }
+      // FIX 2: Remove useRootNavigator — use widget navigator consistently to match dialog dismiss calls
       showDialog(
         context: context,
         barrierDismissible: false,
-        useRootNavigator: true,
         builder: (context) => const Center(child: CircularProgressIndicator()),
       );
 
@@ -808,7 +815,7 @@ class _NoSubscriptionView extends ConsumerWidget {
       final offerings = await RevenueCatService.getOfferings();
 
       if (!context.mounted) return;
-      Navigator.of(context, rootNavigator: true).pop(); // Close loading dialog
+      Navigator.of(context).pop(); // FIX 2: plain pop — matches non-rootNavigator dialog
 
       if (offerings == null) {
         debugPrint(
@@ -923,10 +930,10 @@ class _NoSubscriptionView extends ConsumerWidget {
 
       // Show loading again during purchase
       if (!context.mounted) return;
+      // FIX 2: No useRootNavigator — consistent with first dialog
       showDialog(
         context: context,
         barrierDismissible: false,
-        useRootNavigator: true,
         builder: (context) => const Center(child: CircularProgressIndicator()),
       );
 
@@ -934,36 +941,15 @@ class _NoSubscriptionView extends ConsumerWidget {
       // SDK will throw if user cancels, return CustomerInfo if successful
       // (use firebaseUid captured at the top of this method)
 
-      if (firebaseUid != null) {
-        try {
-          debugPrint('🔧 [SubscriptionScreen] before RevenueCatService.login');
-          await RevenueCatService.login(firebaseUid);
-          debugPrint(
-            '🟢 [SubscriptionPurchase] RevenueCat linked to Firebase user: $firebaseUid',
-          );
-        } catch (e) {
-          debugPrint(
-            '⚠️ [SubscriptionPurchase] RevenueCat login before purchase failed: $e',
-          );
-        }
-      } else {
-        debugPrint(
-          '🟡 [SubscriptionPurchase] No firebaseUid available before purchase; proceeding without RevenueCat login',
-        );
-      }
-
       debugPrint(
-        '🔧 [SubscriptionScreen] before RevenueCatService.purchasePackage',
-      );
-      debugPrint(
-        '🔧 [SubscriptionScreen] selected package: ${monthlyPackage.storeProduct.identifier}',
+        '🔵 [SubscriptionScreen] Calling purchasePackage: ${monthlyPackage.storeProduct.identifier}',
       );
       final customerInfo = await RevenueCatService.purchasePackage(
         monthlyPackage,
       );
 
       if (!context.mounted) return;
-      Navigator.of(context, rootNavigator: true).pop(); // Close loading dialog
+      Navigator.of(context).pop(); // FIX 2: close loading dialog — matches non-rootNavigator dialog
 
       // If customerInfo is null, the user cancelled the native purchase UI.
       if (customerInfo == null) {
@@ -1022,27 +1008,6 @@ class _NoSubscriptionView extends ConsumerWidget {
         debugPrint('⚠️  [SubscriptionPurchase] Local recording error: $e');
       }
 
-      // Sync the active RevenueCat entitlement into Firestore immediately.
-      if (firebaseUid != null) {
-        try {
-          final synced =
-              await RevenueCatService.syncActiveSubscriptionToFirestore(
-                userId: firebaseUid,
-              );
-          debugPrint(
-            '🟢 [SubscriptionPurchase] RevenueCat entitlement sync completed: $synced',
-          );
-        } catch (e) {
-          debugPrint(
-            '⚠️ [SubscriptionPurchase] RevenueCat entitlement sync failed: $e',
-          );
-        }
-      } else {
-        debugPrint(
-          '🟡 [SubscriptionPurchase] Skipping Firestore entitlement sync (no firebaseUid available)',
-        );
-      }
-
       // Show success immediately (user has already paid via SDK validation)
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -1067,7 +1032,7 @@ class _NoSubscriptionView extends ConsumerWidget {
       );
     } catch (e) {
       if (context.mounted) {
-        final navigator = Navigator.of(context, rootNavigator: true);
+        final navigator = Navigator.of(context); // FIX 2: no rootNavigator
         if (navigator.canPop()) {
           navigator.pop();
         }

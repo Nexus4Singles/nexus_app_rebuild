@@ -554,6 +554,8 @@ exports.checkAndCancelExpiredSubscriptions = functions
           // Cancel subscription
           await userDoc.ref.update({
             onPremium: false,
+            'subscription.isActive': false,
+            'subscription.autoRenew': false,
             cancelledAt: admin.firestore.FieldValue.serverTimestamp(),
             lastCancellationReason: 'subscription_expired',
           });
@@ -563,7 +565,7 @@ exports.checkAndCancelExpiredSubscriptions = functions
             .collection('auditLog')
             .add({
               action: 'subscription_expired_auto_cancelled',
-              provider: 'flutterwave',
+              provider: 'auto_expiry', // FIX 5: was 'flutterwave' — this scheduler handles all subscription types
               expiryDate: userData.subExpDate,
               timestamp: admin.firestore.FieldValue.serverTimestamp(),
               reason: 'Subscription expiration date reached',
