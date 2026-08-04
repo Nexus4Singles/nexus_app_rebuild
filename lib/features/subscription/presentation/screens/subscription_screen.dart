@@ -41,9 +41,7 @@ extension NullableFirstWhere<T> on List<T> {
 const _subscriptionPaymentLinkFunctionUrl =
     'https://us-central1-nexus-visibility-app.cloudfunctions.net/createSubscriptionPaymentLink';
 
-// Isolation toggle for spinner investigation.
-// Keep false to mirror live behavior (subscribe-only UI).
-const _showPayOnlineFallback = false;
+const _showPayOnlineFallback = true;
 
 Future<void> _launchBankTransferUrl(BuildContext context) async {
   final currentUser = FirebaseAuth.instance.currentUser;
