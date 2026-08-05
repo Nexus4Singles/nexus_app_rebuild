@@ -9,6 +9,7 @@ import '../../application/booking_service.dart';
 import '../../application/counselling_providers.dart';
 import '../../application/payment_service.dart';
 import '../../domain/counselling_models.dart';
+import '../../../subscription/presentation/screens/subscription_screen.dart';
 
 class BookingConfirmationScreen extends ConsumerStatefulWidget {
   final BookingModel booking;
@@ -83,6 +84,19 @@ class _BookingConfirmationScreenState
               backgroundColor: AppColors.error,
             ),
           );
+
+          // If the user cancelled the Flutterwave flow, return them to the
+          // subscriptions screen so they can retry or pick another option.
+          final wasCancelled = (result.errorMessage ?? '').toLowerCase().contains('cancel');
+          if (wasCancelled) {
+            if (widget.popOnClose && Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            } else {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const SubscriptionScreen()),
+              );
+            }
+          }
         }
         return;
       }

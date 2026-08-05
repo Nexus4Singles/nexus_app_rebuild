@@ -145,10 +145,15 @@ class _SearchResultsRouterScreenState
       final marketAsync = ref.watch(marketPhaseProvider('uk'));
       return marketAsync.when(
         data: (marketData) {
+          final nowUtc = DateTime.now().toUtc();
+          final launchDateUtc = marketData?.launchDate?.toUtc();
+          final hasLaunchDatePassed =
+              launchDateUtc != null && !launchDateUtc.isAfter(nowUtc);
           final phase = marketData?.phase ?? MarketPhase.prelaunch;
-          if (phase == MarketPhase.active) {
+
+          if (hasLaunchDatePassed || phase == MarketPhase.active) {
             print(
-              '[SearchResultsRouter] 🇬🇧 UK market is active - applying verification gate before showing daily profiles',
+              '[SearchResultsRouter] 🇬🇧 UK market launch date reached or phase active - showing daily profiles',
             );
             return _buildDailyProfilesOrVerificationGate(context, preferences);
           }

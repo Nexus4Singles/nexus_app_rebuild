@@ -840,18 +840,32 @@ exports.revenueCatWebhook = functions.https.onRequest(async (req, res) => {
     // req.body is already a parsed object. req.rawBody contains the raw buffer
     // for signature verification.
     // ========================================================================
-    const requestBody = req.body || {};
-    const rawBody = req.rawBody ? req.rawBody.toString() : JSON.stringify(requestBody);
+    let requestBody = req.body;
+    let rawBody = req.rawBody ? req.rawBody.toString() : null;
+
+    if (typeof requestBody === 'string') {
+      try {
+        requestBody = JSON.parse(requestBody);
+      } catch (err) {
+        console.error('[RevenueCat Webhook] Failed to parse raw request body as JSON:', err);
+        return res.status(400).json({ error: 'Invalid JSON payload' });
+      }
+    }
+
+    requestBody = requestBody || {};
+    rawBody = rawBody || (typeof req.body === 'string' ? req.body : JSON.stringify(requestBody));
 
     console.log('[RevenueCat Webhook] Received event:', requestBody?.event?.type);
 
     // SECURITY: Verify webhook signature (if available)
     // This prevents attackers from sending fake subscription updates
     if (REVENUECAT_WEBHOOK_SECRET) {
-      const signature = req.headers['x-rc-webhook-signature'];
+      const signature = req.headers['x-rc-webhook-signature']
+        || req.headers['x-revenuecat-signature']
+        || req.headers['x-rc-signature'];
       
       if (!signature) {
-        console.error('[RevenueCat Webhook] Missing signature header');
+        console.error('[RevenueCat Webhook] Missing signature header. Available headers:', Object.keys(req.headers));
         return res.status(401).json({ error: 'Missing signature' });
       }
 
@@ -868,7 +882,11 @@ exports.revenueCatWebhook = functions.https.onRequest(async (req, res) => {
         .digest('hex');
 
       if (signature !== expectedSignature) {
-        console.error('[RevenueCat Webhook] Invalid signature - rejecting webhook');
+        console.error('[RevenueCat Webhook] Invalid signature - rejecting webhook', {
+          provided: signature,
+          expected: expectedSignature,
+          rawBodyPreview: rawBody.slice(0, 200),
+        });
         return res.status(401).json({ error: 'Invalid signature' });
       }
 

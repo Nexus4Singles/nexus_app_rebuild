@@ -23,10 +23,7 @@ void main() {
 
     test('builds a short notification body for common decline reasons', () {
       expect(
-        buildDeclineNotificationBody(
-          'alice',
-          'Looking for different connections',
-        ),
+        buildDeclineNotificationBody('alice', 'Looking for different connections'),
         '@alice is looking for a different type of connection at this time',
       );
       expect(
@@ -75,10 +72,7 @@ void main() {
 
     test('returns a friendly fallback status for declined messages', () {
       expect(buildDeclineStatusText(''), 'Polite response sent');
-      expect(
-        buildDeclineStatusText('Already chatting with someone'),
-        'Response sent',
-      );
+      expect(buildDeclineStatusText('Already chatting with someone'), 'Response sent');
     });
   });
 }

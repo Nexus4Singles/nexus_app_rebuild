@@ -8,8 +8,39 @@ import '../../application/market_country_utils.dart';
 import '../../application/market_phase_provider.dart';
 import 'dating_preferences_setup_screen.dart';
 
-DateTime resolveLaunchDateForUkMarket(DateTime? marketLaunchDate) {
-  return marketLaunchDate ?? _WaitingListScreenState._defaultLaunchDate;
+DateTime resolveLaunchDateForUkMarket(
+  DateTime? marketLaunchDate, {
+  DateTime? now,
+}) {
+  if (marketLaunchDate != null) {
+    return marketLaunchDate;
+  }
+
+  return _WaitingListScreenState._defaultLaunchDate;
+}
+
+class CountdownValue {
+  final int days;
+  final int hours;
+  final int minutes;
+
+  const CountdownValue({
+    required this.days,
+    required this.hours,
+    required this.minutes,
+  });
+}
+
+CountdownValue calculateLaunchCountdown(DateTime launchDate, DateTime now) {
+  final nowUtc = now.toUtc();
+  final launchUtc = launchDate.toUtc();
+  final remaining =
+      launchUtc.isAfter(nowUtc) ? launchUtc.difference(nowUtc) : Duration.zero;
+
+  final days = remaining.inDays;
+  final hours = remaining.inHours % 24;
+  final minutes = remaining.inMinutes % 60;
+  return CountdownValue(days: days, hours: hours, minutes: minutes);
 }
 
 /// Premium waiting list screen for UK launch
@@ -239,12 +270,12 @@ class _WaitingListScreenState extends ConsumerState<WaitingListScreen>
   Widget _buildLaunchCountdownCard(BuildContext context, MarketData? market) {
     final launchDate = resolveLaunchDateForUkMarket(market?.launchDate);
 
-    // Calculate countdown from launch date
+    // Calculate countdown from launch date and clamp negative time to zero.
     final now = DateTime.now();
-    final difference = launchDate.difference(now);
-    final days = difference.inDays;
-    final hours = difference.inHours % 24;
-    final minutes = difference.inMinutes % 60;
+    final countdown = calculateLaunchCountdown(launchDate, now);
+    final days = countdown.days.toString().padLeft(2, '0');
+    final hours = countdown.hours.toString().padLeft(2, '0');
+    final minutes = countdown.minutes.toString().padLeft(2, '0');
 
     // Format launch date as "5 September 2026" (no timestamp)
     final launchDateFormatted = _formatLaunchDate(launchDate);
@@ -366,7 +397,7 @@ class _WaitingListScreenState extends ConsumerState<WaitingListScreen>
               launchDateFormatted,
               style: TextStyle(
                 fontSize: _getResponsiveValue(context, small: 14, large: 18),
-                color: AppColors.primary,
+                color: Colors.white,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 0.3,
               ),

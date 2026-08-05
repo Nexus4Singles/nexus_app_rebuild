@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -366,6 +367,12 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   late final ja.AudioPlayer _player;
   late final AudioRecorder _recorder;
 
+  String? _debugOtherId;
+  String? _debugFirstMessageSenderId;
+  bool? _debugFirstMessageIsMe;
+  bool? _debugFirstMessageIsDeclined;
+  int _debugMessageCount = 0;
+
   bool _isRecording = false;
   String? _recordingPath;
   Timer? _recordingTimer;
@@ -376,6 +383,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
 
   _UiMessage? _replyTo;
   bool _didMarkAsReadForOpen = false;
+  String? _clearedDeclineMessageId;
   // Messages are Firestore-backed via chatMessagesProvider.
 
   // Audio cache directory for voice notes - persistent across app restarts
@@ -2434,16 +2442,42 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                           );
                         }).toList();
 
-                    final declineTarget = findLatestIncomingDeclineTarget<_UiMessage>(
-                      items: uiMsgs,
-                      isMe: (item) => item.isMe,
-                      isDeclined: (item) => item.isDeclined,
-                      messageId: (item) => item.id,
-                      senderId: (item) => item.senderId,
+                    _debugMessageCount = uiMsgs.length;
+                    _debugFirstMessageSenderId = uiMsgs.isNotEmpty ? uiMsgs[0].senderId : null;
+                    _debugFirstMessageIsMe = uiMsgs.isNotEmpty ? uiMsgs[0].isMe : null;
+                    _debugFirstMessageIsDeclined = uiMsgs.isNotEmpty ? uiMsgs[0].isDeclined : null;
+
+                    final convoAsync = ref.watch(chatConversationProvider(widget.chatId));
+                    _debugOtherId = convoAsync.maybeWhen(
+                      data: (c) => _resolveOtherId(c, mine),
+                      orElse: () => null,
                     );
+
+                    debugPrint('[ChatThread] decline-scan mine=$mine otherId=${_debugOtherId ?? 'null'} count=${uiMsgs.length}');
+                    for (final item in uiMsgs) {
+                      final normalizedSender = item.senderId.trim();
+                      debugPrint('[ChatThread] decline-candidate id=${item.id} sender=${normalizedSender} isMe=${item.isMe} isDeclined=${item.isDeclined}');
+                    }
+
+                    DeclineTarget? declineTarget;
+                    for (final item in uiMsgs) {
+                      if (!item.isMe && !item.isDeclined) {
+                        declineTarget = DeclineTarget(
+                          messageId: item.id,
+                          senderId: item.senderId.trim(),
+                        );
+                        break;
+                      }
+                    }
+                    debugPrint('[ChatThread] declineTarget=${declineTarget == null ? 'null' : '${declineTarget.messageId}/${declineTarget.senderId}'}');
 
                     declineMessageId = declineTarget?.messageId;
                     declineSenderId = declineTarget?.senderId;
+                    if (declineMessageId != null &&
+                        declineMessageId == _clearedDeclineMessageId) {
+                      declineMessageId = null;
+                      declineSenderId = null;
+                    }
 
                     if (mine.isNotEmpty && !_didMarkAsReadForOpen) {
                       _didMarkAsReadForOpen = true;
@@ -2481,6 +2515,26 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
               },
             ),
           ),
+          if (kDebugMode)
+            Container(
+              width: double.infinity,
+              color: Colors.yellow.shade100,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Text(
+                'DEBUG: chatId=${widget.chatId} '
+                'otherId=${_debugOtherId ?? 'null'} '
+                'count=${_debugMessageCount} '
+                'first.sender=${_debugFirstMessageSenderId ?? 'null'} '
+                'first.isMe=${_debugFirstMessageIsMe ?? 'null'} '
+                'first.declined=${_debugFirstMessageIsDeclined ?? 'null'} '
+                'declineMessageId=${declineMessageId ?? 'null'} '
+                'declineSenderId=${declineSenderId ?? 'null'}',
+                style: AppTextStyles.caption.copyWith(
+                  color: Colors.black87,
+                  fontSize: 12,
+                ),
+              ),
+            ),
           // Block status indicator
           Consumer(
             builder: (context, ref, _) {
@@ -2569,6 +2623,11 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                       declineSenderId!,
                     )
                 : null,
+            onDeclineClear: declineMessageId != null
+                ? () => setState(() {
+                      _clearedDeclineMessageId = declineMessageId;
+                    })
+                : null,
             replySnippet: _replyTo == null ? null : _replySnippet(_replyTo!),
             replyWasMine: _replyTo?.isMe,
             onClearReply: () => setState(() => _replyTo = null),
@@ -2593,6 +2652,7 @@ class _Composer extends StatelessWidget {
   final VoidCallback onMic;
   final VoidCallback? onSend;
   final VoidCallback? onDeclineTap;
+  final VoidCallback? onDeclineClear;
 
   final String? replySnippet;
   final bool? replyWasMine;
@@ -2612,6 +2672,7 @@ class _Composer extends StatelessWidget {
     required this.onMic,
     required this.onSend,
     this.onDeclineTap,
+    this.onDeclineClear,
     this.replySnippet,
     this.replyWasMine,
     this.onClearReply,
@@ -2696,35 +2757,60 @@ class _Composer extends StatelessWidget {
               children: [
                 if (!isRecording) ...[
                   if (onDeclineTap != null)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: FilledButton.icon(
-                        onPressed: onDeclineTap,
-                        style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 6,
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 4),
+                          child: FilledButton.icon(
+                            onPressed: onDeclineTap,
+                            style: FilledButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 6,
+                              ),
+                              minimumSize: const Size(0, 30),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              backgroundColor: AppColors.primary,
+                              foregroundColor: AppColors.textOnPrimary,
+                            ),
+                            icon: const Icon(Icons.block_outlined, size: 14),
+                            label: Text(
+                              'Not interested? Decline politely',
+                              style: AppTextStyles.caption.copyWith(
+                                color: AppColors.textOnPrimary,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                          minimumSize: const Size(0, 30),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.textOnPrimary,
                         ),
-                        icon: const Icon(Icons.block_outlined, size: 14),
-                        label: Text(
-                          'Not interested? Decline politely',
-                          style: AppTextStyles.caption.copyWith(
-                            color: AppColors.textOnPrimary,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
+                        if (onDeclineClear != null)
+                          GestureDetector(
+                            onTap: onDeclineClear,
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: AppColors.getBackground(context),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.getBorder(context),
+                                  width: 0.8,
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.close,
+                                size: 16,
+                                color: AppColors.getTextSecondary(context),
+                              ),
+                            ),
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                      ],
                     ),
                   IconButton(
                     tooltip: 'Attach photo',
