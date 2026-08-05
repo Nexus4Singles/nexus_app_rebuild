@@ -48,7 +48,7 @@ dependencies:
   fluttertoast: ^8.2.0
   cloud_functions: ^6.0.0
   google_sign_in: ^7.2.0
-  purchases_flutter: ^8.2.3
+  purchases_flutter: ^10.7.0
   package_info_plus: ^9.0.0
   flutter_image_compress: ^2.4.0
   google_mobile_ads: ^9.0.0

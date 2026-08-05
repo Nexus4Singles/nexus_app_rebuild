@@ -25,7 +25,41 @@ class RevenueCatService {
   }
 
   static Future<void> login(String userId) async {
-    await Purchases.logIn(userId);
+    try {
+      await Purchases.logIn(userId).timeout(
+        const Duration(seconds: 20),
+        onTimeout:
+            () =>
+                throw TimeoutException(
+                  'RevenueCat login timed out. Please check your internet connection and try again.',
+                ),
+      );
+
+      final customerInfo = await Purchases.getCustomerInfo().timeout(
+        const Duration(seconds: 20),
+        onTimeout:
+            () =>
+                throw TimeoutException(
+                  'RevenueCat customer info fetch timed out. Please check your internet connection and try again.',
+                ),
+      );
+
+      final customerId = customerInfo.originalAppUserId;
+      if (customerId.isNotEmpty) {
+        await FirebaseFirestore.instance.collection('users').doc(userId).set({
+          'revenueCat': {
+            'customerId': customerId,
+            'lastLinkedAt': FieldValue.serverTimestamp(),
+          },
+        }, SetOptions(merge: true));
+      }
+    } catch (e) {
+      debugPrint(
+        '⚠️ [RevenueCatService] Could not persist RevenueCat identity: $e',
+      );
+      // Do not rethrow here: purchase should still proceed even if user linking
+      // or customer info persistence fails.
+    }
   }
 
   static Future<void> logout() async {
@@ -53,48 +87,100 @@ class RevenueCatService {
   /// on success, or `null` if the user cancelled the native purchase UI.
   ///
   /// Throws an exception if purchase fails for any reason other than user cancellation.
+  static bool get _isRunningOnIOSSimulator {
+    if (!Platform.isIOS) return false;
+
+    final env = Platform.environment;
+    final home = env['HOME'] ?? '';
+    final tmpDir = env['TMPDIR'] ?? '';
+    final hasSimulatorKey = env.keys.any(
+      (key) =>
+          key.toLowerCase().contains('simulator') ||
+          key.toLowerCase().contains('device') ||
+          key.startsWith('SIMCTL_CHILD_'),
+    );
+    final homeIndicatesSimulator = home.contains(
+      '/Library/Developer/CoreSimulator/',
+    );
+    final tmpDirIndicatesSimulator = tmpDir.contains(
+      '/Library/Developer/CoreSimulator/',
+    );
+    return hasSimulatorKey ||
+        homeIndicatesSimulator ||
+        tmpDirIndicatesSimulator;
+  }
+
   static Future<CustomerInfo?> purchasePackage(Package package) async {
-    // ── FORENSIC: capture entitlement state BEFORE purchase ──
-    // ── FORENSIC LOGGING (uses print() so it works in release builds too) ──
-    try {
-      final preInfo = await Purchases.getCustomerInfo();
-      print('🔍 [RevenueCatService] PRE-PURCHASE entitlements:');
-      print('   Active: ${preInfo.entitlements.active.keys.toList()}');
-      print('   All:    ${preInfo.entitlements.all.keys.toList()}');
-      print(
-        '   NonSubscriptionTransactions: ${preInfo.nonSubscriptionTransactions.map((t) => t.productIdentifier).toList()}',
+    final envMap = Platform.environment;
+    final home = envMap['HOME'] ?? '';
+    final tmpDir = envMap['TMPDIR'] ?? '';
+    final envKeys =
+        envMap.keys
+            .where(
+              (key) =>
+                  key.toLowerCase().contains('simulator') ||
+                  key.toLowerCase().contains('device') ||
+                  key.startsWith('SIMCTL_CHILD_'),
+            )
+            .toList();
+    debugPrint(
+      '💡 [RevenueCatService] runtime diagnostics: '
+      'os=${Platform.operatingSystem}, '
+      'osVersion=${Platform.operatingSystemVersion}, '
+      'isIOS=${Platform.isIOS}, '
+      'isAndroid=${Platform.isAndroid}, '
+      'simulatorEnvKeys=$envKeys, '
+      'simulatorEnv=${envMap.entries.where((entry) => entry.key.toLowerCase().contains('simulator') || entry.key.toLowerCase().contains('device')).map((entry) => '${entry.key}=${entry.value}').join(', ')}, '
+      'home=$home, '
+      'tmpDir=$tmpDir',
+    );
+
+    if (_isRunningOnIOSSimulator) {
+      throw TimeoutException(
+        'Subscriptions cannot be completed on the iOS Simulator. '
+        'Please test on a real iOS device or use a sandbox device instead.',
       );
-    } catch (e) {
-      print('⚠️ [RevenueCatService] Could not fetch pre-purchase info: $e');
     }
 
+    debugPrintSynchronously('🔧 [RevenueCatService] purchasePackage START');
     print(
       '🔵 [RevenueCatService] Calling Purchases.purchasePackage for: '
       '${package.storeProduct.identifier} (type: ${package.packageType})',
     );
 
     try {
-      // Add timeout to prevent simulator from hanging indefinitely
-      final result = await Purchases.purchasePackage(package).timeout(
-        const Duration(seconds: 30),
+      debugPrintSynchronously(
+        '🔧 [RevenueCatService] before Purchases.purchasePackage',
+      );
+      final purchaseResult = await Purchases.purchasePackage(package).timeout(
+        const Duration(seconds: 25),
         onTimeout: () {
           print(
-            '⏱️ [RevenueCatService] purchasePackage timed out after 30 seconds on simulator',
+            '⏱️ [RevenueCatService] purchasePackage timed out after 25 seconds',
           );
           throw TimeoutException(
-            'Purchase took too long (30s). This may be a simulator issue. Please try on a real device or restart the simulator.',
+            'Purchase did not complete within 25 seconds. Please try again.',
           );
         },
       );
+      debugPrintSynchronously(
+        '🔧 [RevenueCatService] after Purchases.purchasePackage',
+      );
+      final customerInfo = purchaseResult.customerInfo;
+      final storeTransaction = purchaseResult.storeTransaction;
+
       // ── FORENSIC: capture what the SDK returned ──
       print('🟢 [RevenueCatService] purchasePackage RETURNED (not thrown)');
       print(
-        '   Active entitlements: ${result.entitlements.active.keys.toList()}',
+        '   Active entitlements: ${customerInfo.entitlements.active.keys.toList()}',
       );
       print(
-        '   NonSubscriptionTransactions: ${result.nonSubscriptionTransactions.map((t) => '${t.productIdentifier}@${t.purchaseDate}').toList()}',
+        '   NonSubscriptionTransactions: ${customerInfo.nonSubscriptionTransactions.map((t) => '${t.productIdentifier}@${t.purchaseDate}').toList()}',
       );
-      return result;
+      print(
+        '   StoreTransaction: ${storeTransaction.productIdentifier}@${storeTransaction.purchaseDate}',
+      );
+      return customerInfo;
     } on PlatformException catch (e) {
       print(
         '🔴 [RevenueCatService] PlatformException: code=${e.code} message=${e.message}',
@@ -209,50 +295,69 @@ class RevenueCatService {
     return await Purchases.getCustomerInfo();
   }
 
-  static DateTime? _parseRevenueCatDate(String? rawDate) {
-    if (rawDate == null || rawDate.isEmpty) return null;
-    return DateTime.tryParse(rawDate);
-  }
-
+  /// Sync active RevenueCat subscription entitlement to Firestore for the
+  /// current user. Returns true if a Firestore update was applied.
   static Future<bool> syncActiveSubscriptionToFirestore({
     required String userId,
+    CustomerInfo? customerInfo,
   }) async {
-    final customerInfo = await getCustomerInfo();
-    final activeEntitlements = customerInfo.entitlements.active.values;
-    if (activeEntitlements.isEmpty) {
+    try {
+      final info = customerInfo ?? await Purchases.getCustomerInfo();
+      final activeEntitlements = info.entitlements.active;
+
+      if (activeEntitlements.isEmpty) {
+        debugPrint(
+          '[RevenueCatService] No active entitlements to sync for user: $userId',
+        );
+        return false;
+      }
+
+      final entitlement =
+          activeEntitlements['premium'] ?? activeEntitlements.values.first;
+      final expiryDateStr = entitlement.expirationDate;
+      Timestamp? expiryTimestamp;
+      if (expiryDateStr != null) {
+        final parsed = DateTime.tryParse(expiryDateStr);
+        if (parsed != null) {
+          expiryTimestamp = Timestamp.fromDate(parsed);
+        }
+      }
+
+      final subscriptionData = <String, dynamic>{
+        'isActive': true,
+        'tier': SubscriptionTier.monthly.id,
+        'startDate': FieldValue.serverTimestamp(),
+        if (expiryTimestamp != null) 'expiryDate': expiryTimestamp,
+        'autoRenew': true,
+        'revenueCatCustomerId': info.originalAppUserId,
+        'revenueCatSubscriptionId': entitlement.productIdentifier,
+      };
+
+      final updateData = <String, dynamic>{
+        'subscription': subscriptionData,
+        'onPremium': true,
+        'entitledUser': true,
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+      if (expiryTimestamp != null) {
+        updateData['subExpDate'] = expiryTimestamp;
+      }
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .set(updateData, SetOptions(merge: true));
+
+      debugPrint(
+        '[RevenueCatService] ✅ Synced active RevenueCat subscription to Firestore for user: $userId',
+      );
+      return true;
+    } catch (e) {
+      debugPrint(
+        '[RevenueCatService] ⚠️ Failed to sync active RevenueCat subscription: $e',
+      );
       return false;
     }
-
-    // Use the first active entitlement to derive the current subscription.
-    final entitlement = activeEntitlements.first;
-    final tier = SubscriptionTier.fromId(entitlement.productIdentifier);
-    final startDate = _parseRevenueCatDate(entitlement.originalPurchaseDate) ??
-        _parseRevenueCatDate(entitlement.latestPurchaseDate);
-    final expiryDate = _parseRevenueCatDate(entitlement.expirationDate);
-
-    final subscriptionStatus = SubscriptionStatus(
-      isActive: true,
-      tier: tier,
-      startDate: startDate,
-      expiryDate: expiryDate,
-      autoRenew: entitlement.willRenew,
-      revenueCatCustomerId: customerInfo.originalAppUserId,
-      revenueCatSubscriptionId: entitlement.identifier,
-    );
-
-    final data = <String, dynamic>{
-      'subscription': subscriptionStatus.toFirestore(),
-      'onPremium': true,
-      'subExpDate': expiryDate != null ? Timestamp.fromDate(expiryDate) : null,
-      'hasExternalSubscriptionFlow': true,
-    };
-
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .set(data, SetOptions(merge: true));
-
-    return true;
   }
 
   /// Checks if a non-consumable product is already owned (present in
