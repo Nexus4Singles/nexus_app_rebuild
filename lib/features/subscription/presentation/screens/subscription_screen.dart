@@ -1039,21 +1039,13 @@ class _NoSubscriptionViewState extends ConsumerState<_NoSubscriptionView> {
         debugPrint('⚠️  [SubscriptionPurchase] Local recording error: $e');
       }
 
-      // Sync the active RevenueCat entitlement into Firestore immediately.
+      // Do not attempt direct client-side writes to the protected Firestore
+      // subscription fields. Firestore security rules block these fields from
+      // signed-in user updates, so we rely on backend/RevenueCat webhook sync.
       if (firebaseUid != null) {
-        try {
-          final synced =
-              await RevenueCatService.syncActiveSubscriptionToFirestore(
-                userId: firebaseUid,
-              );
-          debugPrint(
-            '🟢 [SubscriptionPurchase] RevenueCat entitlement sync completed: $synced',
-          );
-        } catch (e) {
-          debugPrint(
-            '⚠️ [SubscriptionPurchase] RevenueCat entitlement sync failed: $e',
-          );
-        }
+        debugPrint(
+          '🟡 [SubscriptionPurchase] Skipping direct Firestore entitlement sync for user $firebaseUid; backend webhook will reconcile.',
+        );
       } else {
         debugPrint(
           '🟡 [SubscriptionPurchase] Skipping Firestore entitlement sync (no firebaseUid available)',
@@ -1186,9 +1178,8 @@ Contact support if the issue persists.
         revenueCatCustomerId: customerInfo.originalAppUserId,
       );
 
-      await RevenueCatService.syncActiveSubscriptionToFirestore(
-        userId: firebaseUid,
-        customerInfo: customerInfo,
+      debugPrint(
+        '🟡 [SubscriptionPurchase] Skipping direct Realtime Firestore entitlement sync during recovery; backend webhook/validation will reconcile.',
       );
 
       ref.invalidate(subscriptionStatusProvider);
@@ -1261,20 +1252,48 @@ Contact support if the issue persists.
       'revenueCatCustomerId': revenueCatCustomerId,
       'packageId': packageId,
       'type': 'subscription',
-      'verificationStatus':
-          'pending', // Will be updated by webhook/async verification
+      'verificationStatus': 'pending', // Will be updated by webhook/async verification
       'optimisticRecord': true, // Marked as optimistic for audit
     };
 
-    // Record subscription merge-safe so purchase state is preserved even if the
-    // user document is missing or partially populated.
+    // NOTE: Firestore security rules forbid client writes to the canonical
+    // `subscription` fields. To avoid immediate server rejection (which causes
+    // the UI to briefly show then rollback), store an allowed top-level key
+    // `lastLocalSubscriptionAttempt` and keep an in-memory optimistic provider
+    // to drive immediate UX until the backend webhook confirms the purchase.
     await db.collection('users').doc(user.uid).set({
-      'subscription': subscriptionRecord,
-      'onPremium': true,
-      'subExpDate': expiryDate,
-      'entitledUser': true,
+      'lastLocalSubscriptionAttempt': {
+        ...subscriptionRecord,
+        'recordedAt': FieldValue.serverTimestamp(),
+      },
       'updatedAt': FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
+
+    // Set an in-memory optimistic subscription so the UI reflects premium
+    // access instantly without attempting to overwrite protected fields.
+    try {
+      final optimisticStatus = SubscriptionStatus(
+        isActive: true,
+        tier: SubscriptionTier.fromId(tier),
+        startDate: DateTime.now(),
+        expiryDate: DateTime.now().add(const Duration(days: 30)),
+        autoRenew: true,
+        revenueCatCustomerId: revenueCatCustomerId,
+        revenueCatSubscriptionId: packageId,
+      );
+
+      // Set the provider and auto-clear after 2 minutes (or when backend writes)
+      ref.read(localOptimisticSubscriptionProvider.notifier).state = optimisticStatus;
+      Future.delayed(const Duration(minutes: 2), () {
+        if (!mounted) return;
+        // Clear optimistic override if backend hasn't reconciled yet
+        if (ref.read(localOptimisticSubscriptionProvider) == optimisticStatus) {
+          ref.read(localOptimisticSubscriptionProvider.notifier).state = null;
+        }
+      });
+    } catch (e) {
+      debugPrint('⚠️ [SubscriptionRecording] Could not set optimistic provider: $e');
+    }
   }
 
   /// Verifies subscription asynchronously with backend (fire-and-forget)
@@ -1303,22 +1322,17 @@ Contact support if the issue persists.
         // Update verification status
         final user = FirebaseAuth.instance.currentUser;
         if (user != null) {
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .update({'subscription.verificationStatus': 'verified'});
+          debugPrint(
+            '🟡 [SubscriptionPurchase] Skipping client-side subscription.verificationStatus update; backend should persist verification metadata.',
+          );
         }
       } on PurchaseValidationException catch (e) {
         debugPrint('⚠️  [SubscriptionPurchase] Async verification failed: $e');
-        // Mark as verification_failed but don't revoke - user already has access
         final user = FirebaseAuth.instance.currentUser;
         if (user != null) {
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .update({
-                'subscription.verificationStatus': 'verification_failed',
-              });
+          debugPrint(
+            '🟡 [SubscriptionPurchase] Skipping client-side verification failure status write; backend should persist verification metadata.',
+          );
         }
       } catch (e) {
         debugPrint('⚠️  [SubscriptionPurchase] Async verification error: $e');

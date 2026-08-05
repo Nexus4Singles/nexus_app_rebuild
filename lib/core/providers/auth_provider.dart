@@ -699,24 +699,12 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
   /// Solution: After linking RevenueCat to the user account, check for active entitlements
   /// and sync them to the v2 `subscription` object in Firestore.
   Future<void> _syncRevenueCatSubscriptionToFirestore(String userId) async {
-    try {
-      final synced = await RevenueCatService.syncActiveSubscriptionToFirestore(
-        userId: userId,
-      );
-
-      if (synced) {
-        print(
-          '[AuthNotifier] ✅ Synced RevenueCat subscription to Firestore for user: $userId',
-        );
-      } else {
-        print(
-          '[AuthNotifier] No active RevenueCat subscription found for user: $userId',
-        );
-      }
-    } catch (e) {
-      // Non-fatal - log but don't block login
-      print('[AuthNotifier] ⚠️ Failed to sync RevenueCat subscription: $e');
-    }
+    // Direct client-side writes to protected subscription fields are blocked by
+    // Firestore security rules. This method is intentionally disabled in the
+    // Flutter client to avoid failed update attempts and UI rollback.
+    print(
+      '[AuthNotifier] 🟡 Skipping client-side RevenueCat subscription sync for user: $userId. Use backend webhook or reconciliation job instead.',
+    );
   }
 
   /// Wipe all user-specific SharedPreferences keys so the next account

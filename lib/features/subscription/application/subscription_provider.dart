@@ -11,7 +11,61 @@ import 'package:nexus_app_v2/core/notifications/notification_service.dart';
 // ============================================================================
 
 /// Provider for user's current subscription status
+final localOptimisticSubscriptionProvider = StateProvider<SubscriptionStatus?>((ref) => null);
+
 final subscriptionStatusProvider = StreamProvider<SubscriptionStatus>((ref) {
+  // Short-lived in-memory optimistic override set by the UI after a
+  // successful client-side purchase. This avoids attempting to write the
+  // protected `subscription` field from the client (security rules deny it),
+  // while still providing immediate UX feedback until the backend confirms
+  // and writes the canonical subscription document.
+  final optimistic = ref.watch(localOptimisticSubscriptionProvider);
+  if (optimistic != null) {
+    // If an optimistic override exists, return a combined stream that first
+    // yields the optimistic value and then forwards the canonical Firestore
+    // stream. This ensures the UI shows immediate premium access but still
+    // reconciles with the backend update as soon as it arrives.
+    if (optimistic.isActive && !optimistic.isExpired) {
+      final userId = ref.watch(currentUserIdProvider);
+      if (userId == null) return Stream.value(SubscriptionStatus.free());
+
+      Stream<SubscriptionStatus> combined() async* {
+        yield optimistic;
+        yield* FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .snapshots()
+            .map((doc) {
+              if (!doc.exists) return SubscriptionStatus.free();
+              final data = doc.data();
+              if (data == null) return SubscriptionStatus.free();
+              final subscriptionData = data['subscription'] as Map<String, dynamic>?;
+              if (subscriptionData != null) {
+                final backendStatus = SubscriptionStatus.fromFirestore(subscriptionData);
+                // If we had an optimistic override, clear it now that the
+                // backend has written the canonical subscription state.
+                final optimisticNow = ref.read(localOptimisticSubscriptionProvider);
+                if (optimisticNow != null && backendStatus.isActive) {
+                  ref.read(localOptimisticSubscriptionProvider.notifier).state = null;
+                }
+                return backendStatus;
+              }
+              final onPremium = data['onPremium'] as bool? ?? false;
+              if (onPremium) {
+                final subExpDate = data['subExpDate'] as Timestamp?;
+                if (subExpDate == null || subExpDate.toDate().isBefore(DateTime.now())) {
+                  return SubscriptionStatus.free();
+                }
+                return const SubscriptionStatus(isActive: true, tier: SubscriptionTier.monthly);
+              }
+              return SubscriptionStatus.free();
+            });
+            }
+
+          return combined();
+    }
+  }
+
   final userId = ref.watch(currentUserIdProvider);
   if (userId == null) return Stream.value(SubscriptionStatus.free());
 
@@ -145,128 +199,26 @@ final purchasedJourneysProvider = StreamProvider<List<PurchasedJourney>>((ref) {
 // ============================================================================
 // SUBSCRIPTION NOTIFIER (for updates)
 // ============================================================================
-
-bool shouldSendSubscriptionActivatedNotification({
-  required bool isActive,
-  required SubscriptionTier tier,
-  required bool existingActive,
-  required String? existingTierId,
-}) {
-  return isActive &&
-      tier != SubscriptionTier.free &&
-      (!existingActive || existingTierId != tier.id);
-}
-
+// Minimal SubscriptionNotifier to allow programmatic refreshes from UI/tests
 class SubscriptionNotifier extends StateNotifier<AsyncValue<void>> {
   final String userId;
-
   SubscriptionNotifier(this.userId) : super(const AsyncValue.data(null));
 
-  /// Update subscription status (called by RevenueCat webhook or purchase flow)
-  Future<void> updateSubscription({
-    required bool isActive,
-    required SubscriptionTier tier,
-    DateTime? expiryDate,
-    bool autoRenew = true,
-    String? revenueCatCustomerId,
-    String? revenueCatSubscriptionId,
-  }) async {
+  Future<void> refresh() async {
     state = const AsyncValue.loading();
-
     try {
-      final existingDoc =
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(userId)
-              .get();
-      final existingData = existingDoc.data();
-      final existingSubscription =
-          existingData?['subscription'] as Map<String, dynamic>?;
-      final existingActive =
-          existingSubscription?['isActive'] as bool? ?? false;
-      final existingTier = existingSubscription?['tier'] as String?;
-
-      final subscription = SubscriptionStatus(
-        isActive: isActive,
-        tier: tier,
-        startDate: isActive ? DateTime.now() : null,
-        expiryDate: expiryDate,
-        autoRenew: autoRenew,
-        revenueCatCustomerId: revenueCatCustomerId,
-        revenueCatSubscriptionId: revenueCatSubscriptionId,
-      );
-
-      await FirebaseFirestore.instance.collection('users').doc(userId).set({
-        'subscription': subscription.toFirestore(),
-        'onPremium': isActive, // Legacy flag for backward compatibility
-        'updatedAt': FieldValue.serverTimestamp(),
-      }, SetOptions(merge: true));
-
-      // Send notification only when the user transitions to an active premium state.
-      final shouldNotify = shouldSendSubscriptionActivatedNotification(
-        isActive: isActive,
-        tier: tier,
-        existingActive: existingActive,
-        existingTierId: existingTier,
-      );
-      if (shouldNotify) {
-        await NotificationHelpers.sendSubscriptionActivatedNotification(
-          userId: userId,
-          tier: tier.name,
-        );
-      }
-
+      // Trigger a shallow read to warm caches; real work is driven by providers
+      await FirebaseFirestore.instance.collection('users').doc(userId).get();
       state = const AsyncValue.data(null);
-    } catch (e, stack) {
-      state = AsyncValue.error(e, stack);
-      rethrow;
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
     }
-  }
-
-  /// Cancel subscription (disable auto-renewal)
-  Future<void> cancelAutoRenewal() async {
-    state = const AsyncValue.loading();
-
-    try {
-      await FirebaseFirestore.instance.collection('users').doc(userId).update({
-        'subscription.autoRenew': false,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
-
-      state = const AsyncValue.data(null);
-    } catch (e, stack) {
-      state = AsyncValue.error(e, stack);
-      rethrow;
-    }
-  }
-
-  /// ⚠️ DEPRECATED: Do not use! Purchases are now recorded optimistically in UI.
-  ///
-  /// This method is no longer used. Purchase recording has been moved to:
-  /// - [JourneyPurchaseScreen._recordPurchaseOptimistically] for journeys
-  /// - [SubscriptionScreen._recordSubscriptionOptimistically] for subscriptions
-  ///
-  /// These methods record purchases immediately to Firestore, then verify asynchronously
-  /// with the backend. This pattern is used by world-class apps (Spotify, Netflix, etc.)
-  /// to provide instant UX without blocking on server validation.
-  @deprecated
-  Future<void> recordJourneyPurchase({
-    required String journeyId,
-    required String journeyTitle,
-    required double pricePaid,
-    String currency = 'NGN',
-    String? revenueCatTransactionId,
-  }) async {
-    throw UnsupportedError(
-      'recordJourneyPurchase is deprecated. '
-      'Purchase recording now happens in JourneyPurchaseScreen._recordPurchaseOptimistically.',
-    );
   }
 }
 
 final subscriptionNotifierProvider =
     StateNotifierProvider<SubscriptionNotifier, AsyncValue<void>>((ref) {
-      final userId = ref.watch(currentUserIdProvider);
-      if (userId == null) throw Exception('User not authenticated');
-      return SubscriptionNotifier(userId);
-    });
+  final userId = ref.watch(currentUserIdProvider);
+  if (userId == null) throw Exception('User not authenticated');
+  return SubscriptionNotifier(userId);
+});

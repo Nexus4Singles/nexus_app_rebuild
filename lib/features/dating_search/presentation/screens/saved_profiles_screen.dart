@@ -302,7 +302,7 @@ class _SavedProfileCard extends ConsumerWidget {
                 child: ElevatedButton.icon(
                   onPressed: () async {
                     try {
-                      // This will automatically enforce the 3 free chats limit
+                      // This will automatically enforce the 2 free chats limit
                       final chatId = await ref.read(
                         getOrCreateChatProvider(profile.uid).future,
                       );

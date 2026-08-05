@@ -284,7 +284,7 @@ class ChatConversation {
 
 /// Service for managing chat functionality
 class ChatService {
-  static const int _kFreeChatPartnerLimit = 3;
+  static const int _kFreeChatPartnerLimit = 2;
 
   String _chatIdFor(String u1, String u2) {
     final a = u1.trim();

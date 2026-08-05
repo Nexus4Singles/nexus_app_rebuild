@@ -654,11 +654,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   }
 
   /// Handle message decline - update Firestore and send notification
-  Future<void> _handleDeclineMessage(
-    String messageId,
-    String senderId,
-    String reason,
-  ) async {
+  Future<void> _handleDeclineMessage(String messageId, String senderId, String reason) async {
     if (!mounted) return;
 
     try {
@@ -1616,7 +1612,7 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
             ],
           ),
           content: Text(
-            'You can only chat with 3 users on the free version of Nexus. Kindly subscribe to chat with more users.',
+            'You can only chat with 2 users on the free version of Nexus. Kindly subscribe to chat with more users.',
             textAlign: TextAlign.center,
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.getTextPrimary(context),
@@ -2438,14 +2434,13 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                           );
                         }).toList();
 
-                    final declineTarget =
-                        findLatestIncomingDeclineTarget<_UiMessage>(
-                          items: uiMsgs,
-                          isMe: (item) => item.isMe,
-                          isDeclined: (item) => item.isDeclined,
-                          messageId: (item) => item.id,
-                          senderId: (item) => item.senderId,
-                        );
+                    final declineTarget = findLatestIncomingDeclineTarget<_UiMessage>(
+                      items: uiMsgs,
+                      isMe: (item) => item.isMe,
+                      isDeclined: (item) => item.isDeclined,
+                      messageId: (item) => item.id,
+                      senderId: (item) => item.senderId,
+                    );
 
                     declineMessageId = declineTarget?.messageId;
                     declineSenderId = declineTarget?.senderId;
@@ -2567,14 +2562,13 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                       await _sendText();
                     }
                     : null,
-            onDeclineTap:
-                declineMessageId != null && declineSenderId != null
-                    ? () => _showDeclineReasonBottomSheet(
+            onDeclineTap: declineMessageId != null && declineSenderId != null
+                ? () => _showDeclineReasonBottomSheet(
                       context,
                       declineMessageId!,
                       declineSenderId!,
                     )
-                    : null,
+                : null,
             replySnippet: _replyTo == null ? null : _replySnippet(_replyTo!),
             replyWasMine: _replyTo?.isMe,
             onClearReply: () => setState(() => _replyTo = null),

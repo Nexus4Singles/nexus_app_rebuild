@@ -933,11 +933,130 @@ async function resolveRevenueCatCustomerToFirebaseUid(customerId) {
       return mappingData.firebaseUid || null;
     }
 
+    // Attempt to resolve by querying RevenueCat for subscriber details
+    try {
+      const subscriber = await fetchSubscriberFromRevenueCat(customerId);
+      if (subscriber) {
+        // 1) If RevenueCat's original_app_user_id appears to be a firebase uid, try to verify it
+        const originalAppUserId = subscriber.original_app_user_id || subscriber.app_user_id || null;
+        if (originalAppUserId) {
+          try {
+            const authUser = await admin.auth().getUser(originalAppUserId);
+            if (authUser && authUser.uid) {
+              // create mapping and return
+              await db.collection('revenuecatMappings').doc(customerId).set({
+                firebaseUid: authUser.uid,
+                source: 'revenuecat_auto_resolve_original_id',
+                createdAt: admin.firestore.FieldValue.serverTimestamp(),
+              }, { merge: true });
+              return authUser.uid;
+            }
+          } catch (e) {
+            // not a valid firebase uid - ignore
+          }
+        }
+
+        // 2) Try to extract an email from subscriber attributes (if available)
+        const attributes = (subscriber.attributes && typeof subscriber.attributes === 'object') ? subscriber.attributes : {};
+        const email = subscriber.email || attributes.email || attributes.user_email || null;
+        if (email && typeof email === 'string') {
+          try {
+            const userByEmail = await admin.auth().getUserByEmail(email);
+            if (userByEmail && userByEmail.uid) {
+              await db.collection('revenuecatMappings').doc(customerId).set({
+                firebaseUid: userByEmail.uid,
+                source: 'revenuecat_auto_resolve_email',
+                createdAt: admin.firestore.FieldValue.serverTimestamp(),
+              }, { merge: true });
+              return userByEmail.uid;
+            }
+          } catch (e) {
+            // No user with that email - ignore
+          }
+        }
+
+        // 3) Fallback: search users collection for a doc that already wrote this customerId inside revenueCat field
+        try {
+          const q = await db.collection('users').where('revenueCat.customerId', '==', customerId).limit(1).get();
+          if (!q.empty) {
+            const found = q.docs[0];
+            await db.collection('revenuecatMappings').doc(customerId).set({
+              firebaseUid: found.id,
+              source: 'revenuecat_auto_resolve_users_query',
+              createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            }, { merge: true });
+            return found.id;
+          }
+        } catch (e) {
+          // ignore fallback errors
+        }
+      }
+    } catch (err) {
+      console.error('[RevenueCat] Auto-resolve failed:', err);
+    }
+
     return null;
   } catch (error) {
     console.error('[RevenueCat] Failed to resolve RevenueCat customer mapping:', error);
     return null;
   }
+}
+
+/**
+ * Fetch subscriber details from RevenueCat server API for a given app_user_id
+ */
+async function fetchSubscriberFromRevenueCat(customerId) {
+  if (!REVENUECAT_API_KEY) {
+    console.error('[RevenueCat] API key not configured for fetchSubscriberFromRevenueCat');
+    return null;
+  }
+
+  return new Promise((resolve) => {
+    const path = `/v1/subscribers/${encodeURIComponent(customerId)}`;
+    const options = {
+      hostname: 'api.revenuecat.com',
+      port: 443,
+      path,
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${REVENUECAT_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      timeout: 5000,
+    };
+
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk) => { data += chunk; });
+      res.on('end', () => {
+        try {
+          if (res.statusCode !== 200) {
+            console.error(`[RevenueCat] fetchSubscriber API error: ${res.statusCode} - ${data}`);
+            return resolve(null);
+          }
+          const response = JSON.parse(data);
+          const subscriber = response.subscriber || null;
+          resolve(subscriber);
+        } catch (err) {
+          console.error('[RevenueCat] fetchSubscriber parse error:', err);
+          resolve(null);
+        }
+      });
+    });
+
+    req.on('error', (err) => {
+      console.error('[RevenueCat] fetchSubscriber request error:', err);
+      resolve(null);
+    });
+
+    req.on('timeout', () => {
+      console.error('[RevenueCat] fetchSubscriber request timeout');
+      req.destroy();
+      resolve(null);
+    });
+
+    req.end();
+  });
 }
 
 async function updateSubscriptionStatus(userId, event) {
