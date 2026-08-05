@@ -152,17 +152,7 @@ class RevenueCatService {
       debugPrintSynchronously(
         '🔧 [RevenueCatService] before Purchases.purchasePackage',
       );
-      final purchaseResult = await Purchases.purchasePackage(package).timeout(
-        const Duration(seconds: 25),
-        onTimeout: () {
-          print(
-            '⏱️ [RevenueCatService] purchasePackage timed out after 25 seconds',
-          );
-          throw TimeoutException(
-            'Purchase did not complete within 25 seconds. Please try again.',
-          );
-        },
-      );
+      final purchaseResult = await Purchases.purchasePackage(package);
       debugPrintSynchronously(
         '🔧 [RevenueCatService] after Purchases.purchasePackage',
       );

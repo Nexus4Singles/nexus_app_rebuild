@@ -1110,45 +1110,111 @@ Contact support if the issue persists.
         debugPrint(
           '🟠 [SubscriptionPurchase] Existing subscription detected, restoring entitlement',
         );
-        // use firebaseUid captured at the top of this method
-        if (firebaseUid != null) {
-          try {
-            await RevenueCatService.login(firebaseUid);
-            await RevenueCatService.syncActiveSubscriptionToFirestore(
-              userId: firebaseUid,
-            );
-            ref.invalidate(subscriptionStatusProvider);
-            ref.invalidate(isPremiumUserProvider);
-          } catch (restoreError) {
-            debugPrint(
-              '⚠️ [SubscriptionPurchase] Restore failed: $restoreError',
-            );
-          }
-        } else {
-          debugPrint(
-            '🟡 [SubscriptionPurchase] Cannot auto-restore: firebaseUid missing',
-          );
-        }
-
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Subscription is already active. Restored premium access.',
-              ),
-              duration: Duration(seconds: 4),
-              backgroundColor: AppColors.success,
-            ),
-          );
-        }
-      } else if (e is TimeoutException || errorStr.contains('timed out')) {
-        _showError(
-          context,
-          'Purchase timed out. On simulators the native subscription flow may not complete correctly. Please try again on a real device.',
+        await _recoverRevenueCatSubscription(
+          context: context,
+          ref: ref,
+          firebaseUid: firebaseUid,
+          feedbackMessage:
+              'Subscription is already active. Restored premium access.',
         );
+      } else if (e is TimeoutException || errorStr.contains('timed out')) {
+        final restored = await _recoverRevenueCatSubscription(
+          context: context,
+          ref: ref,
+          firebaseUid: firebaseUid,
+          feedbackMessage:
+              'Your payment completed and premium access has now been restored.',
+        );
+        if (!restored) {
+          _showError(
+            context,
+            'Purchase timed out before the app received confirmation. If you were charged, tap Subscribe again to retry sync or contact support.',
+          );
+        }
       } else {
         _showError(context, 'Purchase failed: ${e.toString()}');
       }
+    }
+  }
+
+  Future<bool> _recoverRevenueCatSubscription({
+    required BuildContext context,
+    required WidgetRef ref,
+    required String? firebaseUid,
+    required String feedbackMessage,
+  }) async {
+    if (firebaseUid == null) {
+      debugPrint(
+        '🟡 [SubscriptionPurchase] Cannot recover Firestore subscription: firebaseUid missing',
+      );
+      return false;
+    }
+
+    try {
+      await RevenueCatService.login(firebaseUid);
+    } catch (loginError) {
+      debugPrint(
+        '⚠️ [SubscriptionPurchase] RevenueCat login during recovery failed: $loginError',
+      );
+    }
+
+    try {
+      final customerInfo = await RevenueCatService.getCustomerInfo();
+      final activeEntitlements = customerInfo.entitlements.active;
+      if (activeEntitlements.isEmpty) {
+        debugPrint(
+          '🟡 [SubscriptionPurchase] Recovery found no active entitlements for $firebaseUid',
+        );
+        return false;
+      }
+
+      final entitlement =
+          activeEntitlements['premium'] ?? activeEntitlements.values.first;
+      final packageId = entitlement.productIdentifier;
+      final recoveryTransactionId =
+          'sub_recovery_${packageId}_${DateTime.now().millisecondsSinceEpoch}';
+
+      await _recordSubscriptionOptimistically(
+        packageId: packageId,
+        transactionId: recoveryTransactionId,
+        tier: SubscriptionTier.monthly.id,
+        revenueCatCustomerId: customerInfo.originalAppUserId,
+      );
+
+      await RevenueCatService.syncActiveSubscriptionToFirestore(
+        userId: firebaseUid,
+        customerInfo: customerInfo,
+      );
+
+      ref.invalidate(subscriptionStatusProvider);
+      ref.invalidate(isPremiumUserProvider);
+
+      _verifySubscriptionAsync(
+        packageId: packageId,
+        transactionId: recoveryTransactionId,
+        tier: SubscriptionTier.monthly.id,
+        revenueCatCustomerId: customerInfo.originalAppUserId,
+      );
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(feedbackMessage),
+            duration: const Duration(seconds: 4),
+            backgroundColor: AppColors.success,
+          ),
+        );
+      }
+
+      debugPrint(
+        '🟢 [SubscriptionPurchase] Recovery synced active RevenueCat entitlement for $firebaseUid',
+      );
+      return true;
+    } catch (restoreError) {
+      debugPrint(
+        '⚠️ [SubscriptionPurchase] Recovery failed: $restoreError',
+      );
+      return false;
     }
   }
 
