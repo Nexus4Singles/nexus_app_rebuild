@@ -580,11 +580,19 @@ class _ActiveSubscriptionView extends ConsumerWidget {
 }
 
 // No Subscription View
-class _NoSubscriptionView extends ConsumerWidget {
+class _NoSubscriptionView extends ConsumerStatefulWidget {
   const _NoSubscriptionView();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_NoSubscriptionView> createState() =>
+      _NoSubscriptionViewState();
+}
+
+class _NoSubscriptionViewState extends ConsumerState<_NoSubscriptionView> {
+  bool _isPurchaseInFlight = false;
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -680,8 +688,17 @@ class _NoSubscriptionView extends ConsumerWidget {
 
           _SubscriptionPlanCard(
             tier: SubscriptionTier.monthly,
-            onSubscribePressed: () {
-              _handleSubscriptionPurchase(context, ref);
+            isProcessing: _isPurchaseInFlight,
+            onSubscribePressed: () async {
+              if (_isPurchaseInFlight) return;
+              setState(() => _isPurchaseInFlight = true);
+              try {
+                await _handleSubscriptionPurchase(context, ref);
+              } finally {
+                if (mounted) {
+                  setState(() => _isPurchaseInFlight = false);
+                }
+              }
             },
           ),
 
@@ -933,15 +950,6 @@ class _NoSubscriptionView extends ConsumerWidget {
         '🟢 [Subscription] Selected package: ${monthlyPackage.storeProduct.identifier}',
       );
 
-      // Show loading again during purchase
-      if (!context.mounted) return;
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        useRootNavigator: true,
-        builder: (context) => const Center(child: CircularProgressIndicator()),
-      );
-
       // Make purchase - SDK handles payment sheet display
       // SDK will throw if user cancels, return CustomerInfo if successful
       // (use firebaseUid captured at the top of this method)
@@ -973,9 +981,6 @@ class _NoSubscriptionView extends ConsumerWidget {
       final customerInfo = await RevenueCatService.purchasePackage(
         monthlyPackage,
       );
-
-      if (!context.mounted) return;
-      Navigator.of(context, rootNavigator: true).pop(); // Close loading dialog
 
       // If customerInfo is null, the user cancelled the native purchase UI.
       if (customerInfo == null) {
@@ -1524,9 +1529,14 @@ class _FeatureTile extends StatelessWidget {
 // Subscription Plan Card - fetches price from RevenueCat
 class _SubscriptionPlanCard extends ConsumerStatefulWidget {
   final SubscriptionTier tier;
-  final VoidCallback? onSubscribePressed;
+  final Future<void> Function()? onSubscribePressed;
+  final bool isProcessing;
 
-  const _SubscriptionPlanCard({required this.tier, this.onSubscribePressed});
+  const _SubscriptionPlanCard({
+    required this.tier,
+    this.onSubscribePressed,
+    this.isProcessing = false,
+  });
 
   @override
   ConsumerState<_SubscriptionPlanCard> createState() =>
@@ -1562,11 +1572,14 @@ class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: ElevatedButton(
-              onPressed: () async {
-                if (widget.onSubscribePressed != null) {
-                  widget.onSubscribePressed!();
-                }
-              },
+              onPressed:
+                  widget.isProcessing
+                      ? null
+                      : () async {
+                        if (widget.onSubscribePressed != null) {
+                          await widget.onSubscribePressed!();
+                        }
+                      },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
@@ -1579,19 +1592,32 @@ class _SubscriptionPlanCardState extends ConsumerState<_SubscriptionPlanCard> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  if (widget.isProcessing) ...[
+                    const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                  ],
                   Text(
-                    'Subscribe Now',
+                    widget.isProcessing ? 'Opening Store...' : 'Subscribe Now',
                     style: AppTextStyles.labelLarge.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  const Icon(
-                    Icons.arrow_forward,
-                    size: 18,
-                    color: Colors.white,
-                  ),
+                  if (!widget.isProcessing) ...[
+                    const SizedBox(width: 8),
+                    const Icon(
+                      Icons.arrow_forward,
+                      size: 18,
+                      color: Colors.white,
+                    ),
+                  ],
                 ],
               ),
             ),
