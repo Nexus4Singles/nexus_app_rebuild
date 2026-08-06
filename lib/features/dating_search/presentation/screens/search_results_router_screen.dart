@@ -145,17 +145,24 @@ class _SearchResultsRouterScreenState
       final marketAsync = ref.watch(marketPhaseProvider('uk'));
       return marketAsync.when(
         data: (marketData) {
-          final nowUtc = DateTime.now().toUtc();
-          final launchDateUtc = marketData?.launchDate?.toUtc();
-          final hasLaunchDatePassed =
-              launchDateUtc != null && !launchDateUtc.isAfter(nowUtc);
-          final phase = marketData?.phase ?? MarketPhase.prelaunch;
+          final shouldShowProfiles = shouldShowProfilesForUkMarket(marketData);
 
-          if (hasLaunchDatePassed || phase == MarketPhase.active) {
+          if (shouldShowProfiles) {
             print(
-              '[SearchResultsRouter] 🇬🇧 UK market launch date reached or phase active - showing daily profiles',
+              '[SearchResultsRouter] 🇬🇧 UK market launch date has passed - showing daily profiles',
             );
             return _buildDailyProfilesOrVerificationGate(context, preferences);
+          }
+
+          final launchDateUtc = marketData?.launchDate?.toUtc();
+          if (launchDateUtc != null) {
+            print(
+              '[SearchResultsRouter] 🇬🇧 UK market launch date not reached yet; phase is ignored until launch',
+            );
+          } else {
+            print(
+              '[SearchResultsRouter] 🇬🇧 UK market has no launch date configured; staying on waitlist until date is set',
+            );
           }
 
           print(

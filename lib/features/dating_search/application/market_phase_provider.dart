@@ -37,6 +37,20 @@ class MarketData {
   }
 }
 
+/// Returns true only when the UK market launch date has passed.
+///
+/// This intentionally ignores the stored phase value when the launch date is
+/// configured and still pending. If the launch date has not been reached, the
+/// UK market stays on waitlist regardless of phase.
+bool shouldShowProfilesForUkMarket(
+  MarketData? market, {
+  DateTime? nowUtc,
+}) {
+  final now = (nowUtc ?? DateTime.now()).toUtc();
+  final launchDateUtc = market?.launchDate?.toUtc();
+  return launchDateUtc != null && !launchDateUtc.isAfter(now);
+}
+
 /// Provider for market phase (real-time stream)
 final marketPhaseProvider = StreamProvider.family<MarketData?, String>((
   ref,

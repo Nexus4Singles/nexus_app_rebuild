@@ -4,8 +4,26 @@ import '../user/current_user_doc_provider.dart';
 
 String? _extractVerificationStatus(Map<String, dynamic>? userDoc) {
   if (userDoc == null) return null;
+
   final dating = (userDoc['dating'] as Map?)?.cast<String, dynamic>();
-  return dating?['verificationStatus']?.toString();
+  final rawStatus = dating?['verificationStatus']?.toString().trim().toLowerCase();
+
+  if (rawStatus == 'verified' || rawStatus == 'pending' || rawStatus == 'rejected') {
+    return rawStatus;
+  }
+
+  // Some older or partially-repaired records carry verification metadata
+  // (verifiedBy/verifiedAt) but still store an outdated 'unverified' value.
+  // Treat those as verified so the app and preferences flow remain consistent.
+  final hasVerificationMetadata =
+      (dating?['verifiedAt'] != null) ||
+      ((dating?['verifiedBy']?.toString().trim().isNotEmpty ?? false));
+
+  if (hasVerificationMetadata) {
+    return 'verified';
+  }
+
+  return rawStatus;
 }
 
 /// Provider that streams the dating profile verification status.

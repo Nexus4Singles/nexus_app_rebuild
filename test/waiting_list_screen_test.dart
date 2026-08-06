@@ -1,7 +1,42 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:nexus_app_v2/features/dating_search/application/market_phase_provider.dart';
 import 'package:nexus_app_v2/features/dating_search/presentation/screens/waiting_list_screen.dart';
 
 void main() {
+  group('shouldShowProfilesForUkMarket', () {
+    test('returns false when market is null', () {
+      expect(shouldShowProfilesForUkMarket(null), isFalse);
+    });
+
+    test('returns false when launch date is still in the future', () {
+      final nowUtc = DateTime(2026, 8, 1, 10, 0).toUtc();
+      final market = MarketData(
+        country: 'United Kingdom',
+        phase: MarketPhase.active,
+        launchDate: DateTime(2026, 9, 5, 12, 30),
+        approvedProfileCount: 0,
+        maleCount: 0,
+        femaleCount: 0,
+      );
+
+      expect(shouldShowProfilesForUkMarket(market, nowUtc: nowUtc), isFalse);
+    });
+
+    test('returns true when launch date has already passed', () {
+      final nowUtc = DateTime(2026, 9, 6, 10, 0).toUtc();
+      final market = MarketData(
+        country: 'United Kingdom',
+        phase: MarketPhase.prelaunch,
+        launchDate: DateTime(2026, 9, 5, 0, 0),
+        approvedProfileCount: 0,
+        maleCount: 0,
+        femaleCount: 0,
+      );
+
+      expect(shouldShowProfilesForUkMarket(market, nowUtc: nowUtc), isTrue);
+    });
+  });
+
   group('resolveLaunchDateForUkMarket', () {
     test('uses the market launch date when it is available', () {
       final marketLaunchDate = DateTime(2026, 10, 1);

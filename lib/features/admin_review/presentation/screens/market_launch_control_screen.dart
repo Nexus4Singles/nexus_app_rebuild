@@ -575,7 +575,56 @@ class _MarketLaunchControlScreenState
         _selectedLaunchTime!.minute,
       );
 
+      final nowUtc = DateTime.now().toUtc();
+      final launchDateTimeUtc = launchDateTime.toUtc();
+      if (!launchDateTimeUtc.isAfter(nowUtc)) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please choose a future launch date and time.'),
+            backgroundColor: AppColors.warning,
+          ),
+        );
+        return;
+      }
+
       final fs = ref.read(firestoreInstanceProvider);
+      final marketDoc = await fs?.collection('markets').doc(_selectedMarket).get();
+      final existingLaunchDate = marketDoc?.data()?['launchDate'] as Timestamp?;
+
+      if (existingLaunchDate != null) {
+        final currentLaunchDateUtc = existingLaunchDate.toDate().toUtc();
+        if (launchDateTimeUtc.isBefore(currentLaunchDateUtc)) {
+          final confirmed = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Confirm earlier launch date'),
+              content: Text(
+                'The selected launch date is earlier than the currently scheduled launch date (${existingLaunchDate.toDate().toUtc()}).\n\nAre you sure you want to move it earlier?',
+                style: AppTextStyles.bodyMedium,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.warning,
+                  ),
+                  child: const Text('Confirm'),
+                ),
+              ],
+            ),
+          );
+
+          if (confirmed != true) {
+            return;
+          }
+        }
+      }
+
       await fs?.collection('markets').doc(_selectedMarket).update({
         'phase': 'prelaunch',
         'launchDate': Timestamp.fromDate(launchDateTime),

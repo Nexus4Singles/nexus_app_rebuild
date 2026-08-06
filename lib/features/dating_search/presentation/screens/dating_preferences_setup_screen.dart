@@ -186,13 +186,10 @@ class _DatingPreferencesSetupScreenState
 
       // If editing existing preferences, just pop back to results
       if (widget.existingPreferences != null) {
-        if (mounted) {
-          if (Navigator.canPop(context)) {
-            Navigator.of(context).pop();
-          } else if (widget.onComplete != null) {
-            widget.onComplete!();
-          }
-          setState(() => _isLoading = false);
+        if (Navigator.canPop(context)) {
+          Navigator.of(context).pop();
+        } else if (widget.onComplete != null) {
+          widget.onComplete!();
         }
         return;
       }
@@ -201,34 +198,19 @@ class _DatingPreferencesSetupScreenState
       // Just call onComplete to switch parent IndexedStack
       if (widget.isReactivatingAfterStatusChange) {
         if (widget.onComplete != null) widget.onComplete!();
-        if (mounted) setState(() => _isLoading = false);
         return;
       }
 
-      // Check if there are any matching profiles for the new preferences
-      // Skip this check if we're editing existing preferences
-      if (widget.existingPreferences == null) {
-        // Directly complete setup and let the parent IndexedStack show results.
-        if (widget.onComplete != null) {
-          widget.onComplete!();
-        }
-        if (mounted) setState(() => _isLoading = false);
-      } else {
-        // Just complete edit handling via parent callback if available.
-        if (widget.onComplete != null) {
-          widget.onComplete!();
-        } else if (mounted) {
-          if (Navigator.canPop(context)) {
-            Navigator.of(context).pop();
-          }
-        }
-        if (mounted) setState(() => _isLoading = false);
+      // Complete setup and let parent IndexedStack show results.
+      if (widget.onComplete != null) {
+        widget.onComplete!();
       }
     } catch (e) {
       if (mounted) {
         _showSnackBar('Error saving preferences: $e');
-        setState(() => _isLoading = false);
       }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
