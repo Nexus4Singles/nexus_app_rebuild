@@ -470,6 +470,13 @@ class _DatingContactInfoScreenState
             userData?['gender'] as String?;
         final relationshipStatus = nexus2?['relationshipStatus'] as String?;
 
+        // Preserve verified status on profile edits. Only re-open review if
+        // the existing status is not already verified.
+        final existingVerificationStatus =
+            (datingMap?['verificationStatus'] as String?)?.toLowerCase();
+        final shouldMarkVerificationPending =
+            existingVerificationStatus != 'verified';
+
         // Canonicalize marital status for consistent Firestore queries
         final canonMaritalStatus = _canonMarital(relationshipStatus);
 
@@ -531,8 +538,10 @@ class _DatingContactInfoScreenState
           'dating.profileCompleted': true,
           'dating.isActive': true,
           'dating.createdAt': FieldValue.serverTimestamp(),
-          'dating.verificationStatus': 'pending',
-          'dating.verificationQueuedAt': FieldValue.serverTimestamp(),
+          if (shouldMarkVerificationPending) ...{
+            'dating.verificationStatus': 'pending',
+            'dating.verificationQueuedAt': FieldValue.serverTimestamp(),
+          },
           // Clear any previous rejection data when creating/updating profile
           'dating.rejectionReason': FieldValue.delete(),
           'dating.rejectedAt': FieldValue.delete(),
