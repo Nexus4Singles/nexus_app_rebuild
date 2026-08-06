@@ -156,16 +156,49 @@ class _DailyProfilesScreenState extends ConsumerState<DailyProfilesScreen>
                 return const WaitingListScreen();
               }
 
+              // If user has saved age-range preferences, show a specific
+              // message explaining there are no profiles within that range
+              final prefs = preferencesAsync.maybeWhen(
+                data: (p) => p,
+                orElse: () => null,
+              );
+
+              if (prefs != null) {
+                return _AgeRangeEmptyState(
+                  minAge: prefs.minAge,
+                  maxAge: prefs.maxAge,
+                  onEdit: () {
+                    if (!mounted) return;
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => DatingPreferencesSetupScreen(
+                          existingPreferences: prefs,
+                        ),
+                      ),
+                    );
+                  },
+                  onRefresh: () => ref.invalidate(dailyProfilesProvider),
+                );
+              }
+
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.people_outline_rounded,
-                      size: 64,
-                      color: AppColors.getTextSecondary(context),
+                    Container(
+                      width: 72,
+                      height: 72,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.08),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.people_outline_rounded,
+                        size: 36,
+                        color: AppColors.primary,
+                      ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 14),
                     Text(
                       'No Profiles Available',
                       style: AppTextStyles.headlineSmall.copyWith(
@@ -175,8 +208,25 @@ class _DailyProfilesScreenState extends ConsumerState<DailyProfilesScreen>
                     const SizedBox(height: 8),
                     Text(
                       'Check back tomorrow for new matches',
-                      style: AppTextStyles.bodyMedium.copyWith(
+                      style: AppTextStyles.bodySmall.copyWith(
                         color: AppColors.getTextSecondary(context),
+                        height: 1.3,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: 160,
+                      height: 40,
+                      child: ElevatedButton.icon(
+                        onPressed: () => ref.invalidate(dailyProfilesProvider),
+                        icon: const Icon(Icons.refresh, size: 18),
+                        label: const Text('Refresh'),
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -635,6 +685,144 @@ class _TraitBadge extends StatelessWidget {
         style: AppTextStyles.bodySmall.copyWith(
           color: AppColors.textOnPrimary,
           fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+}
+
+// Compact, styled empty state for age-range specific 'no profiles' cases
+class _AgeRangeEmptyState extends StatelessWidget {
+  final int minAge;
+  final int maxAge;
+  final VoidCallback onEdit;
+  final VoidCallback onRefresh;
+
+  const _AgeRangeEmptyState({
+    required this.minAge,
+    required this.maxAge,
+    required this.onEdit,
+    required this.onRefresh,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height * 0.6,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 68,
+              height: 68,
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.08),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.calendar_today_outlined,
+                color: AppColors.primary,
+                size: 34,
+              ),
+            ),
+
+            const SizedBox(height: 14),
+
+            Text(
+              'No Profiles within your selected Age Range Yet. Check back later.',
+              style: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.getTextPrimary(context),
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+              ),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 8),
+
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              margin: const EdgeInsets.only(top: 8),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.04),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.primary.withOpacity(0.08)),
+              ),
+              child: Text(
+                'There are currently no profiles between $minAge and $maxAge years. Try widening your age range or check back later.',
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.getTextSecondary(context),
+                  height: 1.35,
+                  fontSize: 13,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 140,
+                  height: 42,
+                  child: ElevatedButton(
+                    onPressed: onEdit,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        'Edit Age Range',
+                        style: AppTextStyles.labelLarge.copyWith(
+                          color: AppColors.textOnPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 12),
+
+                SizedBox(
+                  width: 120,
+                  height: 42,
+                  child: OutlinedButton(
+                    onPressed: onRefresh,
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: AppColors.primary.withOpacity(0.25)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        'Refresh',
+                        style: AppTextStyles.labelLarge.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

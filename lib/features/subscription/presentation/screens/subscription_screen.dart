@@ -101,12 +101,14 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
     Navigator.pop(context);
 
     // Use an in-app WebView so we can detect success redirects and user cancels.
-    Navigator.pop(context);
     final result = await Navigator.of(context).push<bool?>(
       MaterialPageRoute(
         builder: (_) => InAppPaymentWebviewScreen(
           url: uri,
-          successRedirectPrefix: 'https://nexus-visibility-app.web.app/booking-success',
+          successRedirectPrefix:
+              'https://nexus-visibility-app.web.app/subscription-success',
+          cancelRedirectPrefix:
+              'https://nexus-visibility-app.web.app/subscription-cancel',
         ),
       ),
     );
@@ -114,15 +116,12 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
     // If the webview indicated success, nothing more to do.
     if (result == true) return;
 
-    // Otherwise treat as cancelled/failed and return user to the subscription screen.
+    // Otherwise treat as cancelled/failed and leave the user on the subscription screen.
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Payment was not completed.'),
         ),
-      );
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const SubscriptionScreen()),
       );
     }
   } catch (error) {

@@ -21,6 +21,18 @@ const { S3Client, PutObjectCommand, PutObjectAclCommand } = require('@aws-sdk/cl
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const crypto = require('crypto');
 
+// Flutterwave live mode. Set to true only for sandbox testing and redeploy when switching environments.
+const _USE_FLUTTERWAVE_TEST_MODE = false;
+const _FLUTTERWAVE_TEST_SECRET_KEY = process.env.FLUTTERWAVE_TEST_SECRET_KEY || '';
+function getFlutterwaveSecretKey() {
+  if (_USE_FLUTTERWAVE_TEST_MODE) {
+    return _FLUTTERWAVE_TEST_SECRET_KEY;
+  }
+  return process.env.FLUTTERWAVE_SECRET_KEY
+    || functions.config().flutterwave?.secret_key
+    || '';
+}
+
 // ============================================================================
 // INITIALIZATION (ONE ONLY - DO NOT DUPLICATE)
 // ============================================================================
@@ -1602,9 +1614,7 @@ exports.createPaymentLink = functions
     let paymentUrl = '';
 
     if (method === 'flutterwave') {
-      const FLW_SECRET_KEY = process.env.FLUTTERWAVE_SECRET_KEY
-        || functions.config().flutterwave?.secret_key
-        || '';
+      const FLW_SECRET_KEY = getFlutterwaveSecretKey();
       const txRef = `nexus-coaching-${bookingId}-${Date.now()}`;
 
       // Flutterwave inline payment link (redirect-based)
@@ -1811,6 +1821,7 @@ exports.createSubscriptionPaymentLink = functions
       currency,
       payment_options: 'banktransfer',
       redirect_url: `https://nexus-visibility-app.web.app/subscription-success?txRef=${encodeURIComponent(txRef)}`,
+      cancel_url: `https://nexus-visibility-app.web.app/subscription-cancel?txRef=${encodeURIComponent(txRef)}`,
       customer: {
         email: customerEmail,
         name: customerName,
@@ -1827,9 +1838,7 @@ exports.createSubscriptionPaymentLink = functions
       },
     };
 
-    const FLW_SECRET_KEY = process.env.FLUTTERWAVE_SECRET_KEY
-      || functions.config().flutterwave?.secret_key
-      || '';
+    const FLW_SECRET_KEY = getFlutterwaveSecretKey();
 
     const flwRes = await fetch('https://api.flutterwave.com/v3/payments', {
       method: 'POST',
@@ -2096,7 +2105,7 @@ exports.verifyAndConfirmBookingPayment = functions
       return { success: true };
     }
 
-    const secretKey = process.env.FLUTTERWAVE_SECRET_KEY;
+    const secretKey = getFlutterwaveSecretKey();
     if (!secretKey) {
       throw new functions.https.HttpsError('internal', 'Payment service not configured');
     }

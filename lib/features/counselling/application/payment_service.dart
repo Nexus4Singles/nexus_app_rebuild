@@ -29,7 +29,7 @@ class PaymentService {
   //   "FLUTTERWAVE_PUBLIC_KEY": "FLWPUBK-xxxxxxxxxxxxxxxx"
   static const _fwPublicKey = String.fromEnvironment(
     'FLUTTERWAVE_PUBLIC_KEY',
-    defaultValue: 'FLWPUBK_TEST-REPLACE-WITH-YOUR-KEY',
+    defaultValue: 'FLWPUBK_TEST-9d7444a8eea47eafdac1ee96a323776a-X',
   );
 
   /// Opens the Flutterwave in-app payment sheet.
@@ -56,7 +56,7 @@ class PaymentService {
         ),
         txRef: txRef,
         redirectUrl: 'https://nexus-visibility-app.web.app/booking-success',
-        isTestMode: false, // set to true during development/testing
+        isTestMode: false, // live mode for Flutterwave payments
       );
 
       // context is passed to charge(), not the constructor
