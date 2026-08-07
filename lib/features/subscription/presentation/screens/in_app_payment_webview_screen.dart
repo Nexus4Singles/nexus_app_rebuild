@@ -23,6 +23,7 @@ class InAppPaymentWebviewScreen extends StatefulWidget {
 class _InAppPaymentWebviewScreenState extends State<InAppPaymentWebviewScreen> {
   late final WebViewController _controller;
   bool _isLoading = true;
+  bool _redirectHandled = false;
 
   @override
   void initState() {
@@ -48,6 +49,7 @@ class _InAppPaymentWebviewScreenState extends State<InAppPaymentWebviewScreen> {
   }
 
   bool _checkRedirectUrl(String url) {
+    if (_redirectHandled) return false;
     try {
       final uri = Uri.parse(url);
       final normalizedUrl = uri.toString();
@@ -58,6 +60,7 @@ class _InAppPaymentWebviewScreenState extends State<InAppPaymentWebviewScreen> {
           normalizedUrl.startsWith(widget.cancelRedirectPrefix!);
 
       if (isSuccessUrl) {
+        _redirectHandled = true;
         if (status == 'cancelled' || status == 'failed' || status == 'error') {
           if (mounted) Navigator.of(context).pop(false);
           return true;
@@ -74,6 +77,7 @@ class _InAppPaymentWebviewScreenState extends State<InAppPaymentWebviewScreen> {
       }
 
       if (isCancelUrl || status == 'cancelled' || status == 'failed') {
+        _redirectHandled = true;
         if (mounted) Navigator.of(context).pop(false);
         return true;
       }

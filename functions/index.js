@@ -1819,7 +1819,7 @@ exports.createSubscriptionPaymentLink = functions
       tx_ref: txRef,
       amount,
       currency,
-      payment_options: 'banktransfer',
+      payment_options: 'card,banktransfer',
       redirect_url: `https://nexus-visibility-app.web.app/subscription-success?txRef=${encodeURIComponent(txRef)}`,
       cancel_url: `https://nexus-visibility-app.web.app/subscription-cancel?txRef=${encodeURIComponent(txRef)}`,
       customer: {
@@ -1828,13 +1828,13 @@ exports.createSubscriptionPaymentLink = functions
       },
       customizations: {
         title: 'Nexus Premium Subscription',
-        description: 'Monthly Nexus subscription via Flutterwave bank transfer',
+        description: 'Monthly Nexus subscription via Flutterwave',
         logo: 'https://www.nexus4christians.com/favicon.png',
       },
       meta: {
         userId: uid,
         countryOfResidence,
-        source: 'subscription-bank-transfer',
+        source: 'subscription',
       },
     };
 

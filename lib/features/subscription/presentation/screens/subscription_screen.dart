@@ -44,7 +44,7 @@ const _subscriptionPaymentLinkFunctionUrl =
 
 const _showPayOnlineFallback = true;
 
-Future<void> _launchBankTransferUrl(BuildContext context) async {
+Future<void> _launchBankTransferUrl(BuildContext context, WidgetRef ref) async {
   final currentUser = FirebaseAuth.instance.currentUser;
   if (currentUser == null) {
     if (context.mounted) {
@@ -113,8 +113,23 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
       ),
     );
 
-    // If the webview indicated success, nothing more to do.
-    if (result == true) return;
+    // If the webview indicated success, refresh subscription state and show optimistic premium access.
+    if (result == true) {
+      _applyBankTransferOptimisticSubscription(ref);
+      ref.invalidate(subscriptionStatusProvider);
+      ref.invalidate(isPremiumUserProvider);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'Payment completed. Your subscription is activating now.',
+            ),
+            backgroundColor: AppColors.success,
+          ),
+        );
+      }
+      return;
+    }
 
     // Otherwise treat as cancelled/failed and leave the user on the subscription screen.
     if (context.mounted) {
@@ -136,6 +151,24 @@ Future<void> _launchBankTransferUrl(BuildContext context) async {
       );
     }
   }
+}
+
+void _applyBankTransferOptimisticSubscription(WidgetRef ref) {
+  final optimisticStatus = SubscriptionStatus(
+    isActive: true,
+    tier: SubscriptionTier.monthly,
+    startDate: DateTime.now(),
+    expiryDate: DateTime.now().add(const Duration(days: 30)),
+    autoRenew: true,
+  );
+
+  ref.read(localOptimisticSubscriptionProvider.notifier).state = optimisticStatus;
+
+  Future.delayed(const Duration(minutes: 2), () {
+    if (ref.read(localOptimisticSubscriptionProvider) == optimisticStatus) {
+      ref.read(localOptimisticSubscriptionProvider.notifier).state = null;
+    }
+  });
 }
 
 class SubscriptionScreen extends ConsumerStatefulWidget {
@@ -743,7 +776,7 @@ class _NoSubscriptionViewState extends ConsumerState<_NoSubscriptionView> {
                         SizedBox(
                           width: double.infinity,
                           child: OutlinedButton.icon(
-                            onPressed: () => _launchBankTransferUrl(context),
+                            onPressed: () => _launchBankTransferUrl(context, ref),
                             icon: const Icon(Icons.open_in_new, size: 18),
                             label: Text(
                               'Pay Online',
